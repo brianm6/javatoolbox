@@ -15,29 +15,33 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.lang.math.IntRange;
 import org.apache.log4j.Logger;
 
-import org.jedit.syntax.KeywordMap;
-import org.jedit.syntax.SQLTokenMarker;
+import org.jedit.syntax.TSQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
 
+import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
-import toolbox.jedit.JavaDefaults;
+import toolbox.jedit.SQLDefaults;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.JConveyorPopupMenu;
+import toolbox.util.db.SQLFormatter;
+import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
@@ -62,7 +66,9 @@ import toolbox.workspace.WorkspaceAction;
  * <p>
  * <table border=1>
  *   <tr><th>Key</th><th>Function</th></tr>
- *   <tr><td>Ctrl-Enter</td><td>Execute query</td></tr>
+ *   <tr><td>Ctrl-Enter</td><td>Execute all SQL statements</td></tr>
+ *   <tr><td>Ctrl-Shift-Enter</td><td>Execute the current SQL statement</td></tr>
+ *   <tr><td>Ctrl-Shift-F</td><td>Format the active SQL statement(s)</td></tr>
  *   <tr><td>Ctrl-Up</td><td>Scroll up in SQL history</td></tr>
  *   <tr><td>Ctrl-Down</td><td>Scroll down in SQL history</td></tr>
  * </table>
@@ -140,9 +146,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     private JFlipPane leftFlipPane_;
     
     /** 
-     * Popup menu that contains a history of recently executed sql. 
+     * Menu that contains a history of recently executed sql. 
      */
-    private JConveyorPopupMenu sqlPopup_;    
+    private JConveyorMenu sqlMenu_;    
     
     /** 
      * Maps sqlpopup_ menu items to the actual sql text. 
@@ -189,14 +195,24 @@ public class QueryPlugin extends JPanel implements IPlugin
     protected void buildView()
     {
         sqlHistory_ = new HashMap();
-        sqlPopup_ = new JConveyorPopupMenu("crapola",10);
+        
+        sqlMenu_ = new JConveyorMenu("SQL History", 10);
+        JEditPopupMenu editMenu = new JEditPopupMenu();
+        editMenu.setLabel("Edit");
+        
+        JPopupMenu rootPopup = new JSmartPopupMenu("Root menu");
+        rootPopup.add(sqlMenu_);
 
-        TextAreaDefaults defaults = new JavaDefaults();
-        defaults.popup = sqlPopup_;
-                        
-        sqlArea_ = new JEditTextArea(
-            new SQLTokenMarker(new KeywordMap(true)), defaults);
-            
+        TextAreaDefaults defaults = new SQLDefaults();
+        defaults.popup = rootPopup;
+        
+        sqlArea_ = new JEditTextArea(new TSQLTokenMarker(), defaults);
+        
+        editMenu.setTextArea(sqlArea_);
+        editMenu.buildView();
+        
+        rootPopup.add(SwingUtil.popupToMenu(editMenu));
+        
         sqlArea_.setFont(SwingUtil.getPreferredMonoFont());
         
         sqlArea_.getInputHandler().addKeyBinding(
@@ -208,6 +224,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlArea_.getInputHandler().addKeyBinding(
             "C+UP", new CtrlUpAction());
                          
+        sqlArea_.getInputHandler().addKeyBinding(
+            "CS+F", new FormatSQLAction());
+        
         resultsArea_ = new JSmartTextArea();
         resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
         
@@ -301,10 +320,114 @@ public class QueryPlugin extends JPanel implements IPlugin
             JMenuItem menuItem = 
                 new JSmartMenuItem(new ExecutePriorAction(sql));
             
-            sqlPopup_.add(menuItem);
+            sqlMenu_.add(menuItem);
         }
     }
 
+    
+    /**
+     * Determines the range of what we consider "active" text in the sql input
+     * text area. Active text is defined as follows:<p>
+     * <ol>
+     *  <li>The selected text if the selection is not empty.
+     *  <li>The current sql statement.
+     *  <li>The entire contents of the text area. 
+     * </ol>
+     * 
+     * @return Range enclosing active text.
+     */
+    protected IntRange getActiveRange()
+    {
+        IntRange range = new IntRange(0);
+        String selected = sqlArea_.getSelectedText();
+        
+        if (!StringUtil.isNullOrEmpty(selected))
+        {
+            range = new IntRange(
+                sqlArea_.getSelectionStart(), sqlArea_.getSelectionEnd());
+        }
+        else  
+        {
+            int caret = sqlArea_.getCaretPosition();
+            String all = sqlArea_.getText();
+            int semi = all.indexOf(';', caret);
+            
+            if (semi >=0)
+            {
+                // Terminating semicolon found. so we just have to find the
+                // beginning of the statement which either be the beginning of
+                // the buffer or the first semicolor going in the reverse 
+                // direction from the carets location.
+                int begin;
+                
+                for (begin = caret-1; begin>=0; begin--)
+                {
+                    if (all.charAt(begin) == ';')
+                    {    
+                        break;
+                    }
+                }
+                
+                range = new IntRange(begin+1, semi);
+            }
+            else
+            {
+                // No terminating semicolon found so just return the contents
+                // of the entire textarea.
+                range = new IntRange(0, all.length() - 1);
+            }
+        }
+        
+        return range;
+    }
+    
+    
+    /**
+     * Gets the active sql statement(s) based on the cursor position, selection
+     * and position in an existing sql statement.
+     * 
+     * @return Selected text if a selection exists. SQL statement if the cursor
+     *         is position in the bounds of a valid sql statement, or the
+     *         entire contents of the text area.
+     */
+    protected String getActiveText()
+    {
+        IntRange range = getActiveRange();
+        
+        String active =  
+            sqlArea_.getText(
+                range.getMinimumInteger(), 
+                range.getMaximumInteger() - range.getMinimumInteger());
+        
+        return active;
+    }
+    
+    
+    /**
+     * Replaces the current active text.
+     * 
+     * @param active Text to replace current active text with.
+     */
+    protected void setActiveText(String active)
+    {
+        String all = sqlArea_.getText();
+        IntRange range = getActiveRange();
+        int min = range.getMinimumInteger();
+        int max = range.getMaximumInteger();
+        
+        logger_.debug("Range: " + range);
+        logger_.debug("JETA: " + sqlArea_.getText().length());
+        
+        StringBuffer sb = new StringBuffer();
+        sb.append(all.substring(0, range.getMinimumInteger()));
+        sb.append("\n");
+        sb.append(active);
+        sb.append("\n");
+        sb.append(all.substring(max, all.length()));
+        
+        sqlArea_.setText(sb.toString());
+    }
+    
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
@@ -367,7 +490,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_QUERY_PLUGIN, new Element(NODE_QUERY_PLUGIN));
         
-        sqlPopup_.setCapacity(XOMUtil.getInteger(
+        sqlMenu_.setCapacity(XOMUtil.getInteger(
             root.getFirstChildElement(ATTR_HISTORY_MAX), 10));
         
         Elements historyItems = root.getChildElements(NODE_HISTORY_ITEM);
@@ -494,6 +617,45 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
+    // FormatSQLAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Formats the current or selected sql statements.
+     */
+    class FormatSQLAction extends WorkspaceAction
+    {
+        FormatSQLAction()
+        {
+            super("Format", false, null, statusBar_);
+        }
+    
+        public void runAction(ActionEvent e) throws Exception
+        {
+            String sql = getActiveText();
+            
+            if (StringUtil.isNullOrBlank(sql))
+            {
+                statusBar_.setStatus("Nothing to format.");
+            }
+            else
+            {   
+                SQLFormatter formatter = new SQLFormatter();
+                String[] statements = StringUtil.tokenize(sql, ";");
+                StringBuffer sb = new StringBuffer();
+                
+                for (int i=0; i<statements.length; i++)
+                {
+                    sb.append(formatter.format(statements[i] + ";"));
+                    sb.append("\n");
+                }
+                
+                setActiveText(sb.toString());
+            }
+        }
+    }
+    
+    //--------------------------------------------------------------------------
     // ExecutePriorAction
     //--------------------------------------------------------------------------
     
@@ -534,7 +696,11 @@ public class QueryPlugin extends JPanel implements IPlugin
     
         public void actionPerformed(ActionEvent e)
         {
-            statusBar_.setStatus("Ctrl-up registered!");
+            statusBar_.setStatus("TODO: Implement ctrl-up");
+            
+            String s = getActiveText();
+            
+            System.out.println(StringUtil.bars(s));
         }
     }
     
