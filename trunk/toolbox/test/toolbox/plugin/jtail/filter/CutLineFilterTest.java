@@ -9,6 +9,8 @@ import toolbox.util.StringUtil;
 
 /**
  * Unit test for CutLineFilter.
+ * 
+ * @see toolbox.plugin.jtail.filter.CutLineFilter
  */
 public class CutLineFilterTest extends TestCase
 {
