@@ -197,11 +197,6 @@ public class QueryPlugin extends JPanel implements IPlugin
     private JConveyorMenu sqlMenu_;
 
     /**
-     * Maps sqlpopup_ menu items to the actual sql text.
-     */
-    //private Map sqlHistory_;
-
-    /**
      * Database configuration panel.
      */
     private DBConfig dbConfigPane_;
@@ -302,8 +297,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         String active =
             sqlEditor_.getText(
                 range.getMinimumInteger(),
-                range.getMaximumInteger() - range.getMinimumInteger());
+                range.getMaximumInteger() - range.getMinimumInteger() + 1);
 
+        logger_.info(StringUtil.banner("Active Text:\n" + "'" + active +"'"));
         return active;
     }
 
@@ -326,10 +322,10 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         StringBuffer sb = new StringBuffer();
         sb.append(all.substring(0, min));
-        sb.append("\n");
+        //sb.append("\n");
         sb.append(active);
-        sb.append("\n");
-        sb.append(all.substring(max, len));
+        //sb.append("\n");
+        sb.append(all.substring(max + 1, len));
 
         sqlEditor_.setText(sb.toString());
     }
@@ -576,12 +572,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected void addToHistory(String sql)
     {
-        //if (!sqlHistory_.containsValue(sql))
-        //{
-        //    sqlHistory_.put(sql, sql);
-        
-            sqlMenu_.add(new JSmartMenuItem(new ExecutePriorAction(sql)));
-        //}
+        sqlMenu_.add(new JSmartMenuItem(new ExecutePriorAction(sql)));
     }
 
 
@@ -610,6 +601,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             int caret = sqlEditor_.getCaretPosition();
             String all = sqlEditor_.getText();
+            
+            // Find first semicolon after the caret and let that be our sql
+            // statement terminator
             int semi = all.indexOf(';', caret);
 
             if (semi >= 0)
