@@ -10,17 +10,17 @@ public class LineScanner implements MachineConstants
     //--------------------------------------------------------------------------
     
     /**
-     * Debug flag.
+     * Debug flag prints to system.out when true.
      */
     private static boolean debug_;
     
     /** 
-     * Line of source code. 
+     * Line of source code to scan. 
      */
     private String line_;
     
     /** 
-     * Current position.
+     * Current position of the scanner.
      */
     private int position_;
     
@@ -35,18 +35,6 @@ public class LineScanner implements MachineConstants
     {
     }
     
-    
-    /**
-     * Creates a LineScanner for the given line of source code. Assumes tabs
-     * have already been removed from the line of source code.
-     * 
-     * @param line Line of source code.
-     */
-    public LineScanner(String line)
-    {
-        setLine(line);
-    }
-
     //--------------------------------------------------------------------------
     //  Public
     //--------------------------------------------------------------------------
@@ -64,9 +52,9 @@ public class LineScanner implements MachineConstants
 
     
     /**
-     * Peeks to next token in the line.
+     * Peeks at the next token in line and returns the state of the machine.
      * 
-     * @return State of machine.
+     * @return int
      */
     public int peek()
     {
@@ -132,9 +120,9 @@ public class LineScanner implements MachineConstants
     
     
     /**
-     * Returns the next token.
+     * Returns the next token in line.
      * 
-     * @return token 
+     * @return int 
      */
     public int getNextToken()
     {
@@ -157,8 +145,6 @@ public class LineScanner implements MachineConstants
                 
             default: 
                 throw new IllegalArgumentException("token " + i + " not valid");
-                
         }
-        
     }
 }

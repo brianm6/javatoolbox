@@ -47,6 +47,17 @@ class SourceParser implements Runnable
     {
         sourceView_ = view;
     }
+
+    
+    /**
+     * Returns the statistics totals.
+     * 
+     * @return FileStats
+     */
+    public FileStats getTotals()
+    {
+        return totals_;
+    }
     
     //--------------------------------------------------------------------------
     // Public
@@ -145,16 +156,5 @@ class SourceParser implements Runnable
         
         elapsed.setEndTime();
         sourceView_.setScanStatus("Elapsed time: " + elapsed.toString());
-    }
-
-    
-    /**
-     * Returns the statistics totals.
-     * 
-     * @return FileStats
-     */
-    public FileStats getTotals()
-    {
-        return totals_;
     }
 }

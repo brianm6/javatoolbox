@@ -13,7 +13,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.ui.SmartAction;
 
 /**
- * ErrorHandlerAction is an alternative to the build in error handler in 
+ * ErrorHandlerAction is an alternative to the built in error handler in 
  * SmartAction. This handler appends the details of the thrown exception to
  * the results text area of the QueryPlugin instead of popping the error up
  * in a dialog box.

@@ -11,7 +11,7 @@ public class Machine implements MachineConstants
     //--------------------------------------------------------------------------
     
     /**
-     * Scans a line.
+     * Scans a line of source code.
      * 
      * @param line Line to scan.
      * @param linestatus Line's status.

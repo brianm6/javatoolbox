@@ -51,10 +51,10 @@ public class StatsCollector
     //--------------------------------------------------------------------------
 
     /**
-     * Scans a given file and generates statistics.
+     * Scans a given file and returns the source code statistics.
      * 
      * @param filename Name of the file.
-     * @return File statistics.
+     * @return FileStats
      * @throws IOException on I/O error.
      */
     public FileStats getStats(String filename) throws IOException
@@ -69,10 +69,10 @@ public class StatsCollector
     
     
     /**
-     * Scans a given file and generates statistics.
+     * Scans a given file and generates source code statistics.
      * 
      * @param rdr Source of source code.
-     * @return File statistics.
+     * @return FileStats
      * @throws IOException on I/O error.
      */
     public FileStats getStats(Reader rdr) throws IOException
