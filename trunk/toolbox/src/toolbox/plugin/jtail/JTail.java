@@ -191,7 +191,7 @@ public class JTail extends JFrame
         getContentPane().add(BorderLayout.WEST, flipPane_);
         getContentPane().add(BorderLayout.CENTER, tabbedPane_);
         
-        setJMenuBar(buildMenuBar());
+        getContentPane().add(BorderLayout.NORTH, buildMenuBar());
     }
     
     /**
