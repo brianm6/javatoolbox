@@ -53,7 +53,7 @@ public final class ExceptionUtil
      */
     public static void handleUI(Throwable t, Logger c)
     {
-        c.warn(t.getMessage(), t);
+        c.error(t.getMessage(), t);
         JSmartOptionPane.showExceptionMessageDialog(null,t);
     }
 }
