@@ -313,14 +313,14 @@ public class MonitoredOutputStreamTest extends TestCase
         }
         
         //----------------------------------------------------------------------
-        // EvenoutOutputStream.Listener Interface
+        // MonitoredOutputStream.OutputStreamListener Interface
         //----------------------------------------------------------------------
         
         /**
          * @see toolbox.util.io.MonitoredOutputStream.Listener#streamClosed(
-         *      java.io.OutputStream)
+         *      MonitoredOutputStream)
          */
-        public void streamClosed(OutputStream stream)
+        public void streamClosed(MonitoredOutputStream stream)
         {
             closeQueue_.push(stream);
         }
@@ -328,9 +328,9 @@ public class MonitoredOutputStreamTest extends TestCase
         
         /**
          * @see toolbox.util.io.MonitoredOutputStream.Listener#streamFlushed(
-         *      java.io.OutputStream)
+         *      MonitoredOutputStream)
          */
-        public void streamFlushed(OutputStream stream)
+        public void streamFlushed(MonitoredOutputStream stream)
         {
             flushQueue_.push(stream);
         }
