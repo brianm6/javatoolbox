@@ -22,13 +22,12 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.PreferencedUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.CompoundIcon;
@@ -50,10 +49,31 @@ import toolbox.workspace.IPreferenced;
  */
 public class JFlipPane extends JPanel implements IPreferenced
 {
+    // TODO: Add property change listener support for java been props
+    
     private static final Logger logger_ = Logger.getLogger(JFlipPane.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
+    // Javabean Property Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Javabean property for the collapsed state of the flippane.
+     */
+    private static final String PROP_COLLAPSED = "collapsed";
+
+    /**
+     * Javabean property for the height/width of the flippane.
+     */
+    private static final String PROP_DIMENSION = "dimension";
+
+    /**
+     * Javabean property for the currently selected flipper.
+     */
+    private static final String PROP_ACTIVE_FLIPPER = "activeFlipper";
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     /**
@@ -62,19 +82,13 @@ public class JFlipPane extends JPanel implements IPreferenced
     private static final String NODE_JFLIPPANE = "JFlipPane";
 
     /**
-     * Attribute for the collapsed state of the flippane.
+     * List of javabean properties saved by the IPreferenced interface impl.
      */
-    private static final String ATTR_COLLAPSED = "collapsed";
-
-    /**
-     * Attribute for the height/width of the flippane.
-     */
-    private static final String ATTR_DIMENSION = "dimension";
-
-    /**
-     * Attribute for the currently selected flipper.
-     */
-    private static final String ATTR_ACTIVE = "activeFlipper";
+    private static final String[] SAVED_PROPS = {
+        PROP_COLLAPSED,
+        PROP_DIMENSION,
+        PROP_ACTIVE_FLIPPER
+    };
 
     //--------------------------------------------------------------------------
     // Directional Constants
@@ -302,13 +316,14 @@ public class JFlipPane extends JPanel implements IPreferenced
 
 
     /**
-     * Returns the currently active flipper.
+     * Returns the name of the currently active flipper or null if there is no
+     * active flipper.
      * 
-     * @return JComponent
+     * @return String
      */
-    public JComponent getActiveFlipper()
+    public String getActiveFlipper()
     {
-        return current_;
+        return current_ != null ? current_.getName() : null;
     }
 
 
@@ -354,7 +369,19 @@ public class JFlipPane extends JPanel implements IPreferenced
         }
     }
 
+    
+    /**
+     * Sets the flippane to its collapsed state if b true, otherwise to its
+     * expanded state.
+     * 
+     * @param b True to collapse, false to expand.
+     */
+    public void setCollapsed(boolean b)
+    {
+        setExpanded(!b);
+    }
 
+    
     /**
      * Sets the flippane to its expanded or collapsed state.
      * 
@@ -431,32 +458,23 @@ public class JFlipPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element root = 
             XOMUtil.getFirstChildElement(
                 prefs, NODE_JFLIPPANE, new Element(NODE_JFLIPPANE));
 
-        int dim = XOMUtil.getIntegerAttribute(root, ATTR_DIMENSION, 100);
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+        
+        //int dim = XOMUtil.getIntegerAttribute(root, ATTR_DIMENSION, 100);
 
         // HACK BEGIN
-        dim += SPLITTER_WIDTH + 3;
+        //dim += SPLITTER_WIDTH + 3;
         // HACK END
 
-        setDimension(dim);
+        //setDimension(dim);
 
-        boolean collapsed = 
-            XOMUtil.getBooleanAttribute(
-                root, ATTR_COLLAPSED, false);
-
-        if (collapsed != isCollapsed())
-            toggleFlipper();
-
-        String flipper = XOMUtil.getStringAttribute(root, ATTR_ACTIVE, "");
-
-        if (!StringUtils.isEmpty(flipper))
-            setActiveFlipper(flipper);
-
+        // TODO: Do we need this?
         repaint();
     }
 
@@ -464,22 +482,10 @@ public class JFlipPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element flipPane = new Element(NODE_JFLIPPANE);
-
-        flipPane.addAttribute(
-            new Attribute(ATTR_COLLAPSED, isCollapsed() + ""));
-
-        flipPane.addAttribute(
-            new Attribute(ATTR_DIMENSION, getDimension() + ""));
-
-        JComponent flipper = getActiveFlipper();
-
-        if (flipper != null)
-            flipPane.addAttribute(
-                new Attribute(ATTR_ACTIVE, flipper.getName()));
-
+        PreferencedUtil.writePreferences(this, flipPane, SAVED_PROPS);
         XOMUtil.insertOrReplace(prefs, flipPane);
     }
 
@@ -589,8 +595,10 @@ public class JFlipPane extends JPanel implements IPreferenced
      * 
      * @param dimension New dimension.
      */
-    protected void setDimension(int dimension)
+    public void setDimension(int dimension)
     {
+        // TODO: Figure out why dim has to be adjusted
+        
         if (dimension != 0)
         {
             dimension_ = dimension - SPLITTER_WIDTH - 3;
@@ -606,7 +614,7 @@ public class JFlipPane extends JPanel implements IPreferenced
      * 
      * @return True if the flipPane is collapsed, false otherwise.
      */
-    protected boolean isCollapsed()
+    public boolean isCollapsed()
     {
         return !ArrayUtil.contains(getComponents(), flipCardPanel_);
     }
@@ -733,7 +741,7 @@ public class JFlipPane extends JPanel implements IPreferenced
      * 
      * @return int
      */
-    protected int getDimension()
+    public int getDimension()
     {
         return dimension_;
     }
