@@ -35,7 +35,7 @@ public class JSmartTextAreaTest extends UITestCase
     /** 
      * Entry point.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args) 
     {
@@ -48,13 +48,17 @@ public class JSmartTextAreaTest extends UITestCase
     
     /**
      * Tests autoscroll feature.
+     * 
+     * @throws Exception on error.
      */
-    public void testAutoScroll()
+    public void testAutoScroll() throws Exception
     {
         logger_.info("Running testAutoScroll...");
         
         JPanel cp = new JPanel(new BorderLayout());
-        cp.add(new JScrollPane(new JSmartTextArea("hello")));
+        JSmartTextArea area = new JSmartTextArea("hello");
+        cp.add(new JScrollPane(area), BorderLayout.CENTER);
+        cp.add(createPropertySheet(area), BorderLayout.SOUTH);
         launchInDialog(cp, SCREEN_ONE_THIRD);
     }
     
