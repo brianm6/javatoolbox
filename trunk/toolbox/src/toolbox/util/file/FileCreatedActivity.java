@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * An activity that is capable of recognizing when new files
- * are added to a directory.
+ * An activity that is capable of recognizing when new files are added to a 
+ * directory.
  */
 public class FileCreatedActivity implements IFileActivity
 {
@@ -38,14 +38,14 @@ public class FileCreatedActivity implements IFileActivity
      * Determines new files in a directory since the last time a snapshot was
      * taken.
      * 
-     * @param  dir  Directory to analyze
-     * @return List of new files
+     * @param   dir  Directory to analyze
+     * @return  List of new files
      */
     public File[] getFiles(File dir)
     {
         File[] newFiles = new File[0];
         
-        Set history = (Set)snapshots_.get(dir);
+        Set history = (Set) snapshots_.get(dir);
         
         if (history == null)
         {
@@ -79,17 +79,5 @@ public class FileCreatedActivity implements IFileActivity
         }
         
         return newFiles;
-    }
-
-    //--------------------------------------------------------------------------
-    //  Overridden Methods from Object
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @return  Simple name
-     */    
-    public String toString()
-    {
-        return "FileCreatedActivity";
     }
 }
