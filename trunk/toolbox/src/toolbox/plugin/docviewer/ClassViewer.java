@@ -63,17 +63,9 @@ public class ClassViewer extends JavaViewer
      */
     public void view(File file) throws DocumentViewerException
     {
-        try
-        {
-            Decompiler d = DecompilerFactory.createPreferred();
-            String javacode = d.decompile(file);
-            super.view(new StringInputStream(javacode));
-            
-        }
-        catch (DecompilerException e)
-        {
-            throw new DocumentViewerException(e);
-        }
+        Decompiler d = DecompilerFactory.createPreferred();
+        String javacode = d.decompile(file);
+        super.view(new StringInputStream(javacode));
     }
 
     

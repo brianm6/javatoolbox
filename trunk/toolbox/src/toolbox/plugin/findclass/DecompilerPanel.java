@@ -101,19 +101,8 @@ public class DecompilerPanel extends JHeaderPanel
      */
     protected void buildView()
     {
-        Decompiler[] decompilers = null;
-        
-        try
-        {
-            decompilers = DecompilerFactory.createAll(); 
-        }
-        catch (DecompilerException de)
-        {
-            ExceptionUtil.handleUI(de, logger_);
-        }
-
+        Decompiler[] decompilers = DecompilerFactory.createAll(); 
         JPanel content = new JPanel(new BorderLayout());
-
         decompilerCombo_ = new JSmartComboBox(decompilers);
         
         JButton decompile = createButton(
