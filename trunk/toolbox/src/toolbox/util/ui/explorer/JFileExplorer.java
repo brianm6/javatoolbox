@@ -20,6 +20,7 @@ package toolbox.util.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -867,5 +868,10 @@ public class JFileExplorer extends JPanel
             logger_.debug("Node " + i + "\tClass " + 
                 nodes[i].getClass().getName() + "\tString " + 
                     nodes[i].toString());
+    }
+    
+    public Dimension getPreferredSize()
+    {
+        return new Dimension(200, 400);
     }
 }
