@@ -17,6 +17,7 @@ import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.net.DefaultSocketServerListener;
+import toolbox.util.net.EchoConnectionHandler;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
@@ -86,7 +87,7 @@ public class TcpTunnelTest extends TestCase
         SocketServerConfig serverConfig = new SocketServerConfig();
         
         serverConfig.setConnectionHandlerType(
-            "toolbox.util.net.test.EchoConnectionHandler");
+            EchoConnectionHandler.class.getName());
             
         serverConfig.setName("testTcpTunnel");
         serverConfig.setServerPort(SocketUtil.getFreePort());
