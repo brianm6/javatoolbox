@@ -6,46 +6,46 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ResourceCloser;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.collections.AsMap;
 
 /**
  * Encapsulates configuration properties for a Socket Server
  */
 public class SocketServerConfig
 {
-    /** 
-     * Logger 
-     */
+    /** Logger **/
     private static final Logger logger_ = 
         Logger.getLogger(SocketServerConfig.class);
 
     /** 
-     * Socket server port number property
+     * Property for server socket port number
      */
     public static final String PROP_SERVER_PORT = 
         "socketserver.serverport";
 
     /** 
-     * Max number of threads in pool property
+     * Property for max number of threads in pool 
      */
     public static final String PROP_ACTIVE_CONNECTIONS = 
         "socketserver.activeconnections";
 
     /** 
-     * Waiting queue size for incoming socket connections property
+     * Property for waiting queue size for socket 
      */
     public static final String PROP_SOCKET_QUEUE_SIZE = 
         "socketserver.socketqueuesize";
 
     /** 
-     * Waiting queue size for the handler/thread pool property
+     * Property for waiting queue size for the handler/thread pool 
      */
     public static final String PROP_HANDLER_QUEUE_SIZE = 
         "socketserver.handlerqueuesize";
 
     /** 
-     * Server socket connection timeout property
+     * Property for server socket timeout 
      */
     public static final String PROP_SOCKET_TIMEOUT = 
         "socketserver.sockettimeout";
@@ -58,8 +58,19 @@ public class SocketServerConfig
     public static final String PROP_CONNECTION_HANDLER = 
         "socketserver.connectionhandler";
 
+    /**
+     * Property for the name of the socket server
+     */
+    public static final String PROP_SERVER_NAME = 
+        "socketserver.name";
+
+    /**
+     * Optional name of socket server for identification purposes
+     */
+    private String name_;
+    
     /** 
-     * Server port
+     * Server socket port number
      */
     private int serverPort_;
 
@@ -77,14 +88,14 @@ public class SocketServerConfig
      * Number of sockets that can be queued up by OS 
      */
     private int socketQueueSize_;
-
+ 
     /** 
      * Socket timeout in millis 
      */
     private int socketTimeout_;
 
-    /** 
-     * Connection handler type for this server config. Java class name
+    /**
+     * Connection handler type for this server config 
      */
     private String connectionHandlerType_;
 
@@ -95,15 +106,16 @@ public class SocketServerConfig
 
     static
     {
-        // set default properties
+        // Set default properties
         defaults_ = new Properties();
+        defaults_.put(PROP_SERVER_NAME, "");
         defaults_.put(PROP_ACTIVE_CONNECTIONS, "5");
         defaults_.put(PROP_SERVER_PORT, "0");
         defaults_.put(PROP_HANDLER_QUEUE_SIZE, "10");
         defaults_.put(PROP_SOCKET_QUEUE_SIZE, "20");
         defaults_.put(PROP_SOCKET_TIMEOUT, "30000");
         defaults_.put(PROP_CONNECTION_HANDLER, 
-            "toolbox.util.net.test.EchoConnectionHandler");
+                     "com.swa.turbo.util.comm.test.EchoConnectionHandler");
     }
 
     //--------------------------------------------------------------------------
@@ -111,13 +123,12 @@ public class SocketServerConfig
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a socket server configuration with default properties
+     * Creates a SocketServerConfig with default configuration
      */
     public SocketServerConfig()
     {
         this(defaults_);
     }
-
 
     /**
      * Creates a socket server configuration with the given properties
@@ -129,12 +140,11 @@ public class SocketServerConfig
         load(props);
     }
 
-
     /**
-     * Creates a socket server configuration with the properties read in 
-     * from the given file.
+     * Creates a socket server configuration with the 
+     * properties from the given file
      * 
-     * @param   file    Properties file
+     * @param   file    Properties file to read configuration from
      * @throws  IOException on I/O error
      */
     public SocketServerConfig(String file) throws IOException
@@ -143,9 +153,9 @@ public class SocketServerConfig
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Loads configuration properties from a file on the classpath
      * 
@@ -154,8 +164,7 @@ public class SocketServerConfig
      */
     public void load(String file) throws IOException
     {
-
-        // has to start with a slash to search from the root of the classpath
+        // Has to start with a slash to search from root of classpath
         if (!file.startsWith("/"))
             file = "/" + file;
 
@@ -171,20 +180,9 @@ public class SocketServerConfig
         }
         finally
         {
-            if (is != null)
-            {
-                try
-                {
-                    is.close();
-                }
-                catch (IOException e)
-                {
-                    ;
-                }
-            }
+            ResourceCloser.close(is);
         }
     }
-
 
     /**
      * Loads configuration properties from an existing set of properties 
@@ -193,26 +191,31 @@ public class SocketServerConfig
      */
     public void load(Properties props)
     {
-        // load from props. use defaults if any properties are missing
-        setServerPort(Integer.parseInt(props.getProperty(
-            PROP_SERVER_PORT, defaults_.getProperty(PROP_SERVER_PORT))));
+        // Load from props. use defaults if any properties are missing
+        setServerPort(
+            Integer.parseInt(props.getProperty(PROP_SERVER_PORT, 
+            defaults_.getProperty(PROP_SERVER_PORT))));
             
-        setActiveConnections(Integer.parseInt(props.getProperty(
-            PROP_ACTIVE_CONNECTIONS, defaults_.getProperty(PROP_ACTIVE_CONNECTIONS))));
+        setActiveConnections(
+            Integer.parseInt(props.getProperty(PROP_ACTIVE_CONNECTIONS, 
+            defaults_.getProperty(PROP_ACTIVE_CONNECTIONS))));
             
-        setSocketQueueSize(Integer.parseInt(props.getProperty(
-            PROP_SOCKET_QUEUE_SIZE, defaults_.getProperty(PROP_SOCKET_QUEUE_SIZE))));
+        setSocketQueueSize(
+            Integer.parseInt(props.getProperty(PROP_SOCKET_QUEUE_SIZE, 
+            defaults_.getProperty(PROP_SOCKET_QUEUE_SIZE))));
             
-        setHandlerQueueSize(Integer.parseInt(props.getProperty(
-            PROP_HANDLER_QUEUE_SIZE, defaults_.getProperty(PROP_HANDLER_QUEUE_SIZE))));
+        setHandlerQueueSize(
+            Integer.parseInt(props.getProperty(PROP_HANDLER_QUEUE_SIZE, 
+            defaults_.getProperty(PROP_HANDLER_QUEUE_SIZE))));
             
-        setSocketTimeout(Integer.parseInt(props.getProperty(
-            PROP_SOCKET_TIMEOUT, defaults_.getProperty(PROP_SOCKET_TIMEOUT))));
+        setSocketTimeout(
+            Integer.parseInt(props.getProperty(PROP_SOCKET_TIMEOUT, 
+            defaults_.getProperty(PROP_SOCKET_TIMEOUT))));
             
-        setConnectionHandlerType(props.getProperty(
-            PROP_CONNECTION_HANDLER, defaults_.getProperty(PROP_CONNECTION_HANDLER)));
+        setConnectionHandlerType(
+            props.getProperty(PROP_CONNECTION_HANDLER, 
+            defaults_.getProperty(PROP_CONNECTION_HANDLER)));
     }
-
 
     /**
      * Accessor for server socket port
@@ -224,7 +227,6 @@ public class SocketServerConfig
         return serverPort_;
     }
 
-
     /**
      * Mutator for server socket port
      * 
@@ -234,7 +236,6 @@ public class SocketServerConfig
     {
         serverPort_ = port;
     }
-
 
     /**
      * Accessor for the max number of active connections (threads)
@@ -246,7 +247,6 @@ public class SocketServerConfig
         return activeConnections_;
     }
 
-
     /**
      * Mutator for the max number of active connections
      * 
@@ -256,7 +256,6 @@ public class SocketServerConfig
     {
         activeConnections_ = activeConnections;
     }
-
 
     /**
      * Accessor for the max number of connections in the socket waiting queue
@@ -268,7 +267,6 @@ public class SocketServerConfig
         return socketQueueSize_;
     }
 
-
     /**
      * Mutator for the max number of connections in the socket waiting queue
      * 
@@ -278,7 +276,6 @@ public class SocketServerConfig
     {
         socketQueueSize_ = socketQueueSize;
     }
-
 
     /**
      * Accessor for the max number of connections in the handler waiting queue
@@ -290,7 +287,6 @@ public class SocketServerConfig
         return handlerQueueSize_;
     }
 
-
     /**
      * Mutator for the max number of connections in the handler waiting queue
      * 
@@ -300,7 +296,6 @@ public class SocketServerConfig
     {
         handlerQueueSize_ = handlerQueueSize;
     }
-
 
     /**
      * Accessor for the server socket timeout
@@ -312,7 +307,6 @@ public class SocketServerConfig
         return socketTimeout_;
     }
 
-
     /**
      * Mutator for the server socket timeout
      * 
@@ -322,7 +316,6 @@ public class SocketServerConfig
     {
         socketTimeout_ = socketTimeout;
     }
-
 
     /**
      * Returns IConnectionHandler class
@@ -363,7 +356,6 @@ public class SocketServerConfig
         return handler;
     }
 
-
     /** 
      * Returns type of connection handler 
      * 
@@ -373,7 +365,6 @@ public class SocketServerConfig
     {
         return connectionHandlerType_;
     }
-
 
     /**
      * Sets connection handler type.
@@ -385,21 +376,30 @@ public class SocketServerConfig
         connectionHandlerType_ = type;
     }
 
+    /**
+     * Returns the name.
+     * @return String
+     */
+    public String getName()
+    {
+        return name_;
+    }
+
+    /**
+     * Sets the name.
+     * @param name The name to set
+     */
+    public void setName(String name)
+    {
+        name_ = name;
+    }
+
 
     /**
      * Dumps to string
      */
     public String toString()
     {
-        String NL = "\n";
-
-        return NL + "{" + NL + "svrPort      = " + 
-               getServerPort() + NL + "activeConns  = " + 
-               getActiveConnections() + NL + 
-               "queuedSocks  = " + getSocketQueueSize() + NL + 
-               "queuedHandlr = " + getHandlerQueueSize() + NL + 
-               "sockTimeout  = " + getSocketTimeout() + NL + 
-               "connHandler  = " + 
-               getConnectionHandlerType() + NL + "}";
+        return AsMap.of(this).toString();
     }
 }
