@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LookAndFeels>
+
+  <!-- ==================================================================== -->
+  <!-- Information is duplicated instead of nested for the LAFs with themes -->
+  <!-- for simpler mapping to java objects and consistent serialization.    -->
+  <!-- ==================================================================== -->
+
+  <!-- ==================================================================== -->
+  <!-- Sun Look and Feels                                                   -->
+  <!-- ==================================================================== -->
+  
+  <LookAndFeel 
+      name="Metal"
+      class="javax.swing.plaf.metal.MetalLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+  
+  <LookAndFeel 
+      name="Motif"
+      class="com.sun.java.swing.plaf.motif.MotifLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+  
+  <LookAndFeel 
+      name="Windows" 
+      class="com.sun.java.swing.plaf.windows.WindowsLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>  
+  
+  <LookAndFeel 
+      name="GTK" 
+      class="com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>  
+  
+  <!-- ==================================================================== -->
+  <!-- 3rd Party Look and Feels                                             -->
+  <!-- ==================================================================== -->
+  
+  <LookAndFeel 
+      name="Metouia" 
+      class="net.sourceforge.mlf.metouia.MetouiaLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Kunststoff"
+      class="com.incors.plaf.kunststoff.KunststoffLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Tonic"
+      class="com.digitprop.tonic.TonicLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Liquid"
+      class="com.birosoft.liquid.LiquidLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Hippo"
+      class="se.diod.hippo.plaf.HippoLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+
+  <!-- ==================================================================== -->
+  <!-- JGoodies Look and Feels                                              -->
+  <!-- ==================================================================== -->
+
+  <LookAndFeel 
+      name="JGoodies Windows" 
+      class="com.jgoodies.plaf.windows.ExtWindowsLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>  
+
+  <LookAndFeel 
+      name="JGoodies Plastic" 
+      class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>  
+  
+  <LookAndFeel 
+      name="JGoodies Plastic" 
+      class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
+  
+      <Property name="theme.name"  value="Dark Star"/>
+      <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
+  </LookAndFeel>  
+
+  <LookAndFeel 
+      name="JGoodies Plastic" 
+      class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
+
+      <Property	name="theme.name"  value="Desert Red"/>
+      <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
+  </LookAndFeel>  
+  
+  <!-- -->
+  
+  <LookAndFeel 
+      name="JGoodies Plastic 3D" 
+      class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>  
+  
+  <LookAndFeel 
+      name="JGoodies Plastic 3D" 
+      class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
+  
+      <Property name="theme.name"  value="Dark Star"/>
+      <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
+  </LookAndFeel>  
+
+  <LookAndFeel 
+      name="JGoodies Plastic 3D" 
+      class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
+
+      <Property	name="theme.name"  value="Desert Red"/>
+      <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
+  </LookAndFeel>  
+
+  <!-- -->
+  
+  <LookAndFeel 
+      name="JGoodies Plastic XP" 
+      class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>  
+  
+  <LookAndFeel 
+      name="JGoodies Plastic XP" 
+      class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
+  
+      <Property name="theme.name"  value="Dark Star"/>
+      <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
+  </LookAndFeel>  
+
+  <LookAndFeel 
+      name="JGoodies Plastic XP" 
+      class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
+
+      <Property	name="theme.name"  value="Desert Red"/>
+      <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
+  </LookAndFeel>  
+
+  <!-- ==================================================================== -->
+  <!-- Skin Look and Feels                                                  -->
+  <!-- ==================================================================== -->
+
+  <!--
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Aqua"/>
+      <Property name="theme.path" value="skinlf/aqua.zip"/>
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="BBJ"/>
+      <Property name="theme.path" value="skinlf/bbj.zip"/>
+  </LookAndFeel>
+ 
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Beos"/>
+      <Property name="theme.path" value="skinlf/beos.zip"/>
+  </LookAndFeel>
+  -->
+    
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Cell Shaded"/>
+      <Property name="theme.path" value="skinlf/cellshaded.zip"/>
+  </LookAndFeel>
+
+  <!--
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Mac"/>
+      <Property name="theme.path" value="skinlf/macos.zip"/>
+  </LookAndFeel>
+  -->
+    
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Modern"/>
+      <Property name="theme.path" value="skinlf/modern.zip"/>
+  </LookAndFeel>
+
+  
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Toxic"/>
+      <Property name="theme.path" value="skinlf/toxic.zip"/>
+  </LookAndFeel>
+  
+  <!--
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Whistler"/>
+      <Property name="theme.path" value="skinlf/whistler.zip"/>
+  </LookAndFeel>
+  
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="XP Luna"/>
+      <Property name="theme.path" value="skinlf/xpluna.zip"/>
+  </LookAndFeel>
+  -->
+  
+</LookAndFeels>
