@@ -338,6 +338,12 @@
       </dependency>
     
       <dependency>
+        <id>l2fprod-common</id>
+        <version/>
+        <properties/>
+      </dependency>
+    
+      <dependency>
         <id>liquidlf</id>
         <version/>
         <properties>
