@@ -104,6 +104,7 @@ public class ParagraphLayout extends ConstraintLayout
     public void measureLayout(Container target, Dimension dimension, int type)
     {
         int count = target.getComponentCount();
+        
         if (count > 0)
         {
             Insets insets = target.getInsets();
@@ -366,5 +367,4 @@ public class ParagraphLayout extends ConstraintLayout
             }
         }
     }
-
 }

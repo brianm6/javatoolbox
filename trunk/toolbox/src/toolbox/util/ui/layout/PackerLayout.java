@@ -107,6 +107,7 @@ public class PackerLayout extends ConstraintLayout implements Direction
     public void measureLayout(Container target, Dimension dimension, int type)
     {
         int count = target.getComponentCount();
+        
         if (count > 0)
         {
             Insets insets = target.getInsets();
@@ -123,6 +124,7 @@ public class PackerLayout extends ConstraintLayout implements Direction
             for (int i = 0; i < count; i++)
             {
                 Component c = target.getComponent(i);
+                
                 if (includeComponent(c))
                 {
                     Dimension d = getComponentSize(c, type);
@@ -148,8 +150,10 @@ public class PackerLayout extends ConstraintLayout implements Direction
 
                         if (n != null)
                             v = n.intValue();
+                            
                         position = (v >> 8) & 0x7f;
                         alignment = v & 0xff;
+                        
                         if ((v & 0x80) != 0)
                             fill = Alignment.FILL_BOTH;
 
@@ -166,13 +170,16 @@ public class PackerLayout extends ConstraintLayout implements Direction
                                         x = maxX + hGap_;
                                         break;
                                 }
+                                
                                 if (alignment == Alignment.TOP)
                                     y = minY;
                                 else if (alignment == Alignment.BOTTOM)
                                     y = maxY - h;
                                 else if (alignment == Alignment.CENTER)
                                     y = (minY + maxY - h) / 2;
+                                    
                                 break;
+                                
                             case Direction.TOP :
                             case Direction.BOTTOM :
                                 switch (position)
@@ -184,18 +191,22 @@ public class PackerLayout extends ConstraintLayout implements Direction
                                         y = maxY + vGap_;
                                         break;
                                 }
+                                
                                 if (alignment == Alignment.LEFT)
                                     x = minX;
                                 else if (alignment == Alignment.RIGHT)
                                     x = maxX - w;
                                 else if (alignment == Alignment.CENTER)
                                     x = (minX + maxX - w) / 2;
+                                    
                                 break;
                         }
+                        
                         minX = Math.min(minX, x);
                         maxX = Math.max(maxX, x + w);
                         minY = Math.min(minY, y);
                         maxY = Math.max(maxY, y + h);
+                        
                         switch (position)
                         {
                             case Direction.LEFT :
@@ -229,6 +240,7 @@ public class PackerLayout extends ConstraintLayout implements Direction
                 for (int i = 0; i < count; i++)
                 {
                     Component c = target.getComponent(i);
+                    
                     if (includeComponent(c))
                     {
                         Rectangle r = sizes[i];
@@ -241,6 +253,5 @@ public class PackerLayout extends ConstraintLayout implements Direction
                 }
             }
         }
-
     }
 }

@@ -69,11 +69,13 @@ public class StackLayout extends ConstraintLayout
     public void measureLayout(Container target, Dimension dimension, int type)
     {
         int count = target.getComponentCount();
+        
         if (dimension != null)
         {
             for (int i = 0; i < count; i++)
             {
                 Component m = target.getComponent(i);
+                
                 if (m.isVisible())
                 {
                     Dimension d = getComponentSize(m, type);
@@ -89,12 +91,14 @@ public class StackLayout extends ConstraintLayout
             int w = size.width - (insets.left + insets.right);
             int h = size.height - (insets.top + insets.bottom);
             Rectangle cell = new Rectangle(insets.left, insets.top, w, h);
+            
             for (int i = 0; i < count; i++)
             {
                 Component m = target.getComponent(i);
                 int n = ((Integer) getConstraint(m)).intValue();
                 int alignment = n & 0xff;
                 int fill = (n >> 8) & 0xff;
+                
                 if (m.isVisible())
                 {
                     Dimension d = getComponentSize(m, type);

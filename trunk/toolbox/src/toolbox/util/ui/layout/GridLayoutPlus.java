@@ -7,8 +7,9 @@ import java.awt.Component;
  */
 public class GridLayoutPlus extends BasicGridLayout
 {
-
-    private int[] rowWeights_, colWeights_, colFlags_;
+    private int[]   rowWeights_, 
+                    colWeights_, 
+                    colFlags_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -127,6 +128,14 @@ public class GridLayoutPlus extends BasicGridLayout
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Sets the weight
+     * 
+     * @param  w        Array of weights
+     * @param  index    Index into array of weights
+     * @param  weight   Weight to set
+     * @return New array of weights
+     */
     private int[] setWeight(int[] w, int index, int weight)
     {
         if (w == null)
@@ -141,6 +150,12 @@ public class GridLayoutPlus extends BasicGridLayout
         return w;
     }
 
+    /**
+     * Returns weight for a given row
+     * 
+     * @param  row  Row to get weight for
+     * @return Row weight
+     */
     protected int getRowWeight(int row)
     {
         if (rowWeights_ != null && row < rowWeights_.length)
@@ -148,6 +163,12 @@ public class GridLayoutPlus extends BasicGridLayout
         return 0;
     }
 
+    /**
+     * Returns weight for a given column
+     * 
+     * @param  col  Column to get weight for
+     * @return Column weight
+     */
     protected int getColWeight(int col)
     {
         if (colWeights_ != null && col < colWeights_.length)
@@ -155,6 +176,12 @@ public class GridLayoutPlus extends BasicGridLayout
         return 0;
     }
 
+    /**
+     * Returns alignment for a given column
+     * 
+     * @param  col  Column to get alignment for
+     * @return Column alighment
+     */
     protected int getColAlignment(int col)
     {
         if (colFlags_ != null && col < colFlags_.length)
@@ -163,21 +190,50 @@ public class GridLayoutPlus extends BasicGridLayout
         return getAlignment();
     }
 
+    /**
+     * Returns aligment
+     * 
+     * @param  c    Component to get alignment for
+     * @param  row  Row to get alignment for
+     * @param  col  Column to get alightment for
+     * @return Alignment
+     */
     protected int alignmentFor(Component c, int row, int col)
     {
         return getColAlignment(col);
     }
 
+    /**
+     * Returns fill
+     * 
+     * @param  c    Component to get fill for
+     * @param  row  Row to get fill for
+     * @param  col  Column to get fill for
+     * @return Fill
+     */
     protected int fillFor(Component c, int row, int col)
     {
         return getFill();
     }
 
+    /**
+     * Returns weight for a given column
+     * 
+     * @param  col  Column
+     * @return Column weight
+     */
     protected int weightForColumn(int col)
     {
         return 1;
     }
 
+    /**
+     * Returns weight for a given (row, col)
+     * 
+     * @param  row  Row 
+     * @param  col  Column
+     * @return Weight
+     */
     protected int weightForColumn(int row, int col)
     {
         return 1;
