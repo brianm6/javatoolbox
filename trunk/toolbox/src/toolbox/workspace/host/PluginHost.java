@@ -4,6 +4,9 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.Initializable;
+import toolbox.util.service.Nameable;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 
@@ -15,7 +18,8 @@ import toolbox.workspace.IPreferenced;
  * 
  * @see PluginHostManager
  */
-public interface PluginHost extends IPreferenced
+public interface PluginHost extends IPreferenced, Nameable, Destroyable, 
+    Initializable
 {
     //--------------------------------------------------------------------------
     // IPreferenced Constants
@@ -36,23 +40,7 @@ public interface PluginHost extends IPreferenced
      * @return JComponent
      */
     JComponent getComponent();
-    
-    
-    /**
-     * Returns a UI friendly name of the plugin host.
-     * 
-     * @return String
-     */
-    String getName();
-    
-    
-    /**
-     * Initializes the plugin host.
-     * 
-     * @param props Map of initialization properties. 
-     */
-    void startup(Map props);
-    
+
     
     /**
      * Adds a plugin to be hosted by an PluginHost implementor.
@@ -136,13 +124,6 @@ public interface PluginHost extends IPreferenced
      * @return Map containing the startup parameters.
      */
     Map getStartupConfig();
-    
-    
-    /**
-     * Shuts the plugin host down. A plugin host should be reusable by
-     * simply calling startup() after shutdown().
-     */
-    void shutdown();
     
     //--------------------------------------------------------------------------
     // Event Notification

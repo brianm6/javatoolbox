@@ -11,6 +11,7 @@ import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.service.ServiceException;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
 import toolbox.workspace.IPlugin;
@@ -52,15 +53,16 @@ public class TabbedPluginHost extends AbstractPluginHost
     private BidiMap pluginMap_;
     
     //--------------------------------------------------------------------------
-    // PluginHost Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.workspace.host.PluginHost#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map props)
+    public void initialize(Map props)
     {
-        super.startup(props);
+        super.initialize(props);
+        setName("Tabbed Panel");
         
         workspace_ = 
             (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
@@ -84,7 +86,10 @@ public class TabbedPluginHost extends AbstractPluginHost
         });
     }
 
-    
+    //--------------------------------------------------------------------------
+    // PluginHost Interface
+    //--------------------------------------------------------------------------
+
     /**
      * @see toolbox.workspace.host.PluginHost#addPlugin(
      *      toolbox.workspace.IPlugin)
@@ -169,20 +174,14 @@ public class TabbedPluginHost extends AbstractPluginHost
         return tabPanel_;
     }
     
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.host.PluginHost#getName()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public String getName()
-    {
-        return "Tabbed Panel";
-    }
-    
-    
-    /**
-     * @see toolbox.workspace.host.PluginHost#shutdown()
-     */
-    public void shutdown()
+    public void destroy() throws ServiceException
     {
         tabPanel_.removeAll();
         tabPanel_ = null;

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.service.ServiceException;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartOptionPane;
@@ -159,11 +160,25 @@ public class PluginHostManager
 
         if (firstTime)
         {
-            current_.startup(props);
+            try
+            {
+                current_.initialize(props);
+            }
+            catch (ServiceException se)
+            {
+                throw new PluginException(se);
+            }
         }
         else
         {
-            transferAssets(previous, current_);
+            try
+            {
+                transferAssets(previous, current_);
+            }
+            catch (ServiceException e1)
+            {
+                throw new PluginException(e1);
+            }
             recepticle_.remove(previous.getComponent());
         }
 
@@ -211,8 +226,10 @@ public class PluginHostManager
      *
      * @param source Plugin host to transfer assets from.
      * @param dest Plugin host to transfer assets to.
+     * @throws ServiceException on error.
      */
-    protected void transferAssets(PluginHost source, PluginHost dest)
+    protected void transferAssets(PluginHost source, PluginHost dest) 
+        throws ServiceException
     {
         logger_.debug(
             "Transferring " +
@@ -220,7 +237,7 @@ public class PluginHostManager
             source.getClass().getName() + " --> " +
             dest.getClass().getName());
 
-        dest.startup(source.getStartupConfig());
+        dest.initialize(source.getStartupConfig());
 
         //
         // Transfer over the plugins
@@ -245,7 +262,7 @@ public class PluginHostManager
             dest.addPluginHostListener(listeners[i]);
         }
 
-        source.shutdown();
+        source.destroy();
     }
 
     //--------------------------------------------------------------------------

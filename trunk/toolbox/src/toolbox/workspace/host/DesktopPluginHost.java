@@ -32,6 +32,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.beans.BeanPropertyFilter;
+import toolbox.util.service.ServiceException;
 import toolbox.util.ui.JSmartInternalFrame;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
@@ -74,19 +75,18 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
      * Parent workspace.
      */
     private PluginWorkspace workspace_;
+    
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
 
-    
-    //--------------------------------------------------------------------------
-    // PluginHost Interface
-    //--------------------------------------------------------------------------
-    
     /**
-     * @see toolbox.workspace.host.PluginHost#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map props)
+    public void initialize(Map props)
     {
-        super.startup(props);
-
+        super.initialize(props);
+        setName("Desktop");
         workspace_ = (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
         desktop_ = new JDesktopPane();
         pluginMap_ = new DualHashBidiMap();
@@ -122,7 +122,10 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
         */
     }
 
-    
+    //--------------------------------------------------------------------------
+    // PluginHost Interface
+    //--------------------------------------------------------------------------
+
     /**
      * @see toolbox.workspace.host.PluginHost#addPlugin(
      *      toolbox.workspace.IPlugin)
@@ -259,20 +262,14 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
         return (IPlugin) frameMap_.get(desktop_.getSelectedFrame());
     }
     
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.host.PluginHost#getName()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public String getName()
-    {
-        return "Desktop";
-    }
-    
-    
-    /**
-     * @see toolbox.workspace.host.PluginHost#shutdown()
-     */
-    public void shutdown()
+    public void destroy() throws ServiceException
     {
         removeWindowMenu();
         desktop_.removeAll();

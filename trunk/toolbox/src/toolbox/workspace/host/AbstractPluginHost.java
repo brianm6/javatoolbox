@@ -41,6 +41,11 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      */
     private PluginHostListener[] pluginHostListeners_;
     
+    /**
+     * Friendly name of the plugin.
+     */
+    private String name_;
+    
     //--------------------------------------------------------------------------
     // PluginHost Interface
     //--------------------------------------------------------------------------
@@ -49,9 +54,9 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      * Saves a copy of the initialization props that will be passed to each
      * plugin on startup().
      * 
-     * @see toolbox.workspace.host.PluginHost#startup(java.util.Map)
+     * @see toolbox.workspace.host.PluginHost#initialize(java.util.Map)
      */
-    public void startup(Map props)
+    public void initialize(Map props)
     {
         logger_.debug("Starting up " + ClassUtils.getShortClassName(getClass()));
         
@@ -187,6 +192,26 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
         
         plugins_.clear();
         plugins_ = null;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Nameable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Nameable#getName()
+     */
+    public String getName()
+    {
+        return name_;
+    }
+
+    /**
+     * @see toolbox.util.service.Nameable#setName(java.lang.String)
+     */
+    public void setName(String name)
+    {
+        name_ = name;
     }
     
     //--------------------------------------------------------------------------
