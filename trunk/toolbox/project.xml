@@ -222,6 +222,16 @@
     </dependency>
 
     <dependency>
+      <id>colt</id>
+      <version>LATEST</version>
+      <url></url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+    
+    <dependency>
       <id>commons-beanutils</id>
       <version>LATEST</version>
       <url>http://jakarta.apache.org/commons/beanutils</url>

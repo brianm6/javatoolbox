@@ -16,6 +16,7 @@
 	<classpathentry sourcepath="lib/src/bsh-src.zip" kind="lib" path="lib/bsh.jar"/>
 	<classpathentry kind="lib" path="lib/calphahtml.jar"/>
 	<classpathentry sourcepath="lib/src/classworlds-src.zip" kind="lib" path="lib/classworlds.jar"/>
+	<classpathentry kind="lib" path="lib/colt.jar"/>
 	<classpathentry sourcepath="lib/src/commons-beanutils-src.zip" kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry sourcepath="lib/src/commons-cli-src.zip" kind="lib" path="lib/commons-cli.jar"/>
 	<classpathentry sourcepath="lib/src/commons-dbcp-src.zip" kind="lib" path="lib/commons-dbcp.jar"/>
