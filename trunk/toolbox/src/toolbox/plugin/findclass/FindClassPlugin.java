@@ -19,6 +19,10 @@ public class FindClassPlugin implements IPlugin
     private static final Logger logger_ = 
         Logger.getLogger(FindClassPlugin.class);
         
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Delegate JFindClass. 
      */    
