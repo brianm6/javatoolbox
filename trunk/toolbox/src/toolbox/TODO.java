@@ -14,15 +14,13 @@ package toolbox;
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
  * TODO: Add HTTP proxy support to preferences dialog.
- * TODO: Add history to statusbar.
  * TODO: Add icons to statusbar.
  * TODO: Add way to copy the current selection from the file explorer dir pane.
  * TODO: Really pick apart JSmartTextArea and figure out a good way optimizing
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Convert all gifs to pngs.
- * TODO: Make plugin dialog double click automatically add plugin.
- * =============================================================================
+ *  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
  * TODO: FindClass: Reduce startup time.
