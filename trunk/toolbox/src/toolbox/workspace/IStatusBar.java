@@ -17,7 +17,7 @@ public interface IStatusBar
      */
     public void setStatus(String status);
     
-    public void setBusy(String status);
+    public void setBusy(boolean busy);
     public void setError(String status);
     public void setInfo(String status);
     public void setWarning(String status);
