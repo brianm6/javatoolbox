@@ -178,7 +178,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                         if (textComponent_ instanceof AntiAliased)
                         {
                             ((AntiAliased) textComponent_).setAntiAliased(
-                                fontChooser.isAntiAlias());
+                                fontChooser.isAntiAliased());
                         }
                     }
                     catch (FontChooserException fce)

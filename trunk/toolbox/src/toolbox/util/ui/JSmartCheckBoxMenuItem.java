@@ -103,7 +103,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.AntiAliased#isAntiAlias()
+     * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
     public boolean isAntiAliased()
     {

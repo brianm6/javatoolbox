@@ -147,7 +147,7 @@ public interface ITailPaneConfig extends IPreferenced
      * 
      * @return True if antialias is on, false otherwise
      */
-    public boolean isAntiAlias();
+    public boolean isAntiAliased();
     
     
     /**

@@ -38,7 +38,7 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.AntiAliased#isAntiAlias()
+     * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
     public boolean isAntiAliased()
     {

@@ -209,7 +209,7 @@ public final class JEditActions
                         area_.getPainter().setFont(
                             fontChooser.getSelectedFont());
                             
-                        area_.setAntiAliased(fontChooser.isAntiAlias());    
+                        area_.setAntiAliased(fontChooser.isAntiAliased());    
                     }
                     catch (FontChooserException fce)
                     {

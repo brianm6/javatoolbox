@@ -185,7 +185,7 @@ public class PhraseCanvas extends JComponent
      * @return whether or not anti-aliasing is used when rendering the 
      *         phrase 
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
         return antiAlias_;
     }

@@ -94,7 +94,7 @@ public class JSmartTree extends JTree implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.AntiAliased#isAntiAlias()
+     * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
     public boolean isAntiAliased()
     {

@@ -1409,11 +1409,11 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.AntiAliased#isAntiAlias()
+     * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
     public boolean isAntiAliased()
     {
-        return antiAliased_;
+                return antiAliased_;
     }
 
     /**

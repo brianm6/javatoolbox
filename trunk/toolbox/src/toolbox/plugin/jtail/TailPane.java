@@ -429,7 +429,7 @@ public class TailPane extends JPanel
         lineNumberDecorator_.setEnabled(lineNumbers);
         
         tailArea_.setFont(config_.getFont());
-        tailArea_.setAntiAliased(config.isAntiAlias());
+        tailArea_.setAntiAliased(config.isAntiAliased());
         
         setRegularExpression(config_.getRegularExpression());
         setCutExpression(config_.getCutExpression());

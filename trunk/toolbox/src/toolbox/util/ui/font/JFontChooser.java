@@ -396,7 +396,7 @@ public class JFontChooser extends JPanel
      * 
      * @return Antialias flag
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
         return antiAliasCheckBox_.isSelected();
     }
@@ -704,7 +704,7 @@ public class JFontChooser extends JPanel
                 phraseCanvas_.setFont(
                     JFontChooser.this.getSelectedFont());
                     
-                phraseCanvas_.setAntiAlias(JFontChooser.this.isAntiAlias());
+                phraseCanvas_.setAntiAlias(JFontChooser.this.isAntiAliased());
             }
             catch (FontChooserException e)
             {

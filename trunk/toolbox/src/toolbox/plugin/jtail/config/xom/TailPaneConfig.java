@@ -146,7 +146,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
             new Attribute(ATTR_LINENUMBERS,isShowLineNumbers()+""));
         
         root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));    
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias() + ""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
         root.addAttribute(new Attribute(ATTR_AUTOSTART, isAutoStart() + ""));
 
         for (int i=0; i<filenames_.length; i++)
@@ -305,9 +305,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     }
 
     /**
-     * @see toolbox.jtail.config.ITailPaneConfig#isAntiAlias()
+     * @see toolbox.jtail.config.ITailPaneConfig#isAntiAliased()
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
         return antiAlias_;
     }

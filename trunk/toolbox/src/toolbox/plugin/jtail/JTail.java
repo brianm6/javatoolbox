@@ -454,7 +454,7 @@ public class JTail extends JFrame implements IPreferenced
             config.setFilenames(new String[] { file } );
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
-            config.setAntiAlias(defaults.isAntiAlias());
+            config.setAntiAlias(defaults.isAntiAliased());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
             
@@ -489,7 +489,7 @@ public class JTail extends JFrame implements IPreferenced
                 
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
-            config.setAntiAlias(defaults.isAntiAlias());
+            config.setAntiAlias(defaults.isAntiAliased());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
             config.setCutExpression(defaults.getCutExpression());
@@ -654,7 +654,7 @@ public class JTail extends JFrame implements IPreferenced
         {
             // Remember state just in case user cancels operation
             lastFont_      = getSelectedConfig().getFont();
-            lastAntiAlias_ = getSelectedConfig().isAntiAlias();
+            lastAntiAlias_ = getSelectedConfig().isAntiAliased();
             
             // Show font selection dialog with font from the current
             // tail set as the default selected font
@@ -679,7 +679,7 @@ public class JTail extends JFrame implements IPreferenced
                 // Apply current settings
                 ITailPaneConfig config = getSelectedConfig();
                 config.setFont(fontChooser.getSelectedFont());
-                config.setAntiAlias(fontChooser.isAntiAlias());
+                config.setAntiAlias(fontChooser.isAntiAliased());
                 getSelectedTail().setConfiguration(config);
             }
             catch (FontChooserException fse)
@@ -716,7 +716,7 @@ public class JTail extends JFrame implements IPreferenced
                 // Use new settings
                 ITailPaneConfig config = getSelectedConfig();
                 config.setFont(fontChooser.getSelectedFont());
-                config.setAntiAlias(fontChooser.isAntiAlias());
+                config.setAntiAlias(fontChooser.isAntiAliased());
                 getSelectedTail().setConfiguration(config);
             }
             catch (FontChooserException fse)
