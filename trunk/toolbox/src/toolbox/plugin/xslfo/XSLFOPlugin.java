@@ -161,20 +161,40 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     protected static SyntaxStyle[] getSyntaxStyles()
     {
-       SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
+        SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
 
-       styles[Token.COMMENT1] = new SyntaxStyle(Color.red.darker(),false,false);
-       styles[Token.COMMENT2] = new SyntaxStyle(new Color(0x990033),false,false);
-       styles[Token.KEYWORD1] = new SyntaxStyle(Color.blue.darker(),false,false);
-       styles[Token.KEYWORD2] = new SyntaxStyle(Color.blue.darker(),false,false);
-       styles[Token.KEYWORD3] = new SyntaxStyle(new Color(0x009600),false,false);
-       styles[Token.LITERAL1] = new SyntaxStyle(Color.green.darker()/*new Color(0x650099)*/,false,false);
-       styles[Token.LITERAL2] = new SyntaxStyle(new Color(0x650099),false,false);
-       styles[Token.LABEL   ] = new SyntaxStyle(new Color(0x990033),false,false);
-       styles[Token.OPERATOR] = new SyntaxStyle(Color.blue.darker(),false,false);
-       styles[Token.INVALID ] = new SyntaxStyle(Color.red,false,false);
+        styles[Token.COMMENT1] =
+            new SyntaxStyle(Color.red.darker(), false, false);
+            
+        styles[Token.COMMENT2] =
+            new SyntaxStyle(new Color(0x990033), false, false);
+            
+        styles[Token.KEYWORD1] =
+            new SyntaxStyle(Color.blue.darker(), false, false);
+            
+        styles[Token.KEYWORD2] =
+            new SyntaxStyle(Color.blue.darker(), false, false);
+            
+        styles[Token.KEYWORD3] =
+            new SyntaxStyle(new Color(0x009600), false, false);
+            
+        styles[Token.LITERAL1] =
+            new SyntaxStyle(Color.green.darker() /*new Color(0x650099)*/
+                , false, false);
+                
+        styles[Token.LITERAL2] =
+            new SyntaxStyle(new Color(0x650099), false, false);
+            
+        styles[Token.LABEL] =
+            new SyntaxStyle(new Color(0x990033), false, false);
+            
+        styles[Token.OPERATOR] =
+            new SyntaxStyle(Color.blue.darker(), false, false);
+            
+        styles[Token.INVALID] = 
+            new SyntaxStyle(Color.red, false, false);
 
-       return styles;
+        return styles;
     }
     
     /**
