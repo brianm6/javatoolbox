@@ -20,6 +20,21 @@ public final class StringUtil
     private static final Logger logger_ = 
         Logger.getLogger(StringUtil.class);
     
+    /** 
+     * Line break. 
+     */
+    public static final String BR = repeat("=", 80);
+    
+    /** 
+     * New line.
+     */
+    public static final String NL = "\n";//System.getProperty("line.separator");
+    
+    /** 
+     * Break with newline. 
+     */
+    public static final String BRNL = BR + NL;
+    
     // Clover private constructor workaround
     static { new StringUtil(); }
     
@@ -346,20 +361,19 @@ public final class StringUtil
     }
     
     
-    /** 
-     * Wraps a string to a default width of 80. The beginnning of line and
-     * end of line are decorated with brackets to create a box effect if
-     * the border flag is set.
-     * 
-     * <pre>
-     * [some text here]
-     * [more text here]
-     * </pre>
-     * 
-     * @param s String to wrap
-     * @param border True to enclose wrapped text in brackets
-     * @return Wrapped string with box decoration
-     */
+    /**
+	 * Wraps a string to a default width of 80. The beginnning of line and end
+	 * of line are decorated with brackets to create a box effect if the border
+	 * flag is set.
+	 * 
+	 * <pre>
+	 *  [some text here] [more text here]
+	 *       * </pre>
+	 * 
+	 * @param s String to wrap
+	 * @param border True to enclose wrapped text in brackets
+	 * @return Wrapped string with box decoration
+	 */
     public static String wrap(String s, boolean border)
     {
         return wrap(s, 80, border);
@@ -630,10 +644,20 @@ public final class StringUtil
         StringBuffer sb = new StringBuffer();
         String bar = StringUtil.repeat("=", 80);
         sb.append("\n");
+        sb.append(" ");
         sb.append(bar);
         sb.append("\n");
-        sb.append(s);
+
+        String[] lines = StringUtil.tokenize(s, "\n");
+        
+        for (int i=0; i<lines.length-1; i++)
+            sb.append("|").append(lines[i]).append("\n");
+        
+        if (lines.length > 0)
+            sb.append("|").append(lines[lines.length-1]);
+        
         sb.append("\n");
+        sb.append(" ");
         sb.append(bar);
         sb.append("\n");
         
