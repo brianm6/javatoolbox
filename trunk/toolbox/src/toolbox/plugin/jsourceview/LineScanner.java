@@ -58,26 +58,29 @@ public class LineScanner implements MachineConstants
      */
     public int peek()
     {
-        String posStr = "pos=" + position_;
-        
         if (debug_)
+        {
+            String posStr = "pos=" + position_;
             System.out.println(posStr);
+        }
             
-        if (line_.length() == 0)
+        int len = line_.length();
+        
+        if (len == 0)
         {
             if (debug_)
                 System.out.println("EOL");
             return 1;
         }
         
-        if (position_ == line_.length())
+        if (position_ == len)
         {
             if (debug_)
                 System.out.println("EOL");
             return 1;
         }
         
-        if (position_ + 2 <= line_.length())
+        if (position_ + 2 <= len)
         {
             char ac[] = new char[2];
             ac[0] = line_.charAt(position_);
