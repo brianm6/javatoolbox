@@ -1,7 +1,9 @@
 package toolbox.util;
 
 import java.util.List;
-import java.util.Random;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 
 /**
  * Utility class for generating commonly used random elements.
@@ -10,16 +12,6 @@ public final class RandomUtil
 {
     // Clover private constructor workaround
     static { new RandomUtil(); }
-
-    /**
-     * Random number generator.
-     */
-    private static Random random_ = new Random(System.currentTimeMillis());
-
-    /**
-     * All alpha characters.
-     */
-    private static final String alphaChars_ = "abcdefghijklmnopqrstuvwxyz";
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -43,7 +35,7 @@ public final class RandomUtil
      */
     public static int nextInt()
     {
-        return Math.abs(random_.nextInt());
+        return RandomUtils.nextInt();
     }
 
     
@@ -55,7 +47,7 @@ public final class RandomUtil
      */
     public static int nextInt(int ceiling)
     {
-        return (nextInt() % (ceiling + 1));
+        return RandomUtils.nextInt(ceiling + 1);
     }
 
     
@@ -83,7 +75,7 @@ public final class RandomUtil
      */
     public static char nextLowerAlpha()
     {
-        return alphaChars_.charAt(nextInt(alphaChars_.length() - 1));
+        return RandomStringUtils.randomAlphabetic(1).toLowerCase().charAt(0);
     }
 
     
@@ -106,8 +98,8 @@ public final class RandomUtil
     public static char nextAlpha()
     {
         char c = nextLowerAlpha();
-
-        if (random_.nextBoolean())
+        
+        if (nextBoolean())
             c = Character.toUpperCase(c);
 
         return c;
@@ -122,7 +114,7 @@ public final class RandomUtil
     public static double nextDouble()
     {
         int decimal = nextInt();
-        int fraction = nextInt(100);
+        int fraction = nextInt(99);
         return (double) (decimal + fraction / 100);
     }
 
@@ -136,7 +128,7 @@ public final class RandomUtil
     public static double nextDouble(double ceiling)
     {
         int decimal = nextInt((int) ceiling - 1);
-        int fraction = nextInt(100);
+        int fraction = nextInt(99);
         return (double) (decimal + fraction / 100);
     }
 
@@ -148,7 +140,7 @@ public final class RandomUtil
      */
     public static boolean nextBoolean()
     {
-        return (nextInt() % 2 == 0);
+        return RandomUtils.nextBoolean();
     }
 
     
@@ -184,12 +176,7 @@ public final class RandomUtil
      */
     public static String nextString(int length)
     {
-        StringBuffer sb = new StringBuffer();
-        
-        for (int i = 0; i < length; i++)
-            sb.append(nextAlpha());
-        
-        return sb.toString();
+        return RandomStringUtils.randomAlphanumeric(length);
     }
     
     
