@@ -20,8 +20,9 @@ import toolbox.util.SwingUtil;
  *       state of the button must be kept in sync with a flag beloging to
  *       another component.
  * </ul>
- * Intended usage:
- * <pre>
+ * <br>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * JSmartToggleButton b = new JSmartToggleButton();
  *
  * //
@@ -107,7 +108,7 @@ public class JSmartToggleButton extends JToggleButton implements AntiAliased
      * Toggles the state of the button based on a property change event
      * for a component.
      *
-     * @param comp  Component generating the property change event.
+     * @param comp Component generating the property change event.
      * @param propName Property name to listen for.
      */
     public void toggleOnProperty(JComponent comp, String propName)
