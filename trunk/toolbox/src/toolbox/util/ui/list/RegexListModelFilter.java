@@ -26,7 +26,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Default regular expression is to match all.
      */    
-    public static final String MATCH_ALL = ".*";
+    public static final String REGEX_MATCH_ALL = ".*";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -63,7 +63,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
      */
     public RegexListModelFilter(ListModel delegate)
     {
-        this(delegate, MATCH_ALL);
+        this(delegate, REGEX_MATCH_ALL);
     }
 
     
@@ -111,8 +111,8 @@ public class RegexListModelFilter extends AbstractListModelFilter
         regex_ = regex;
 
         // Match all on null or empty
-        if (StringUtils.isEmpty(regex_))
-            regex_ = MATCH_ALL;
+        if (StringUtils.isBlank(regex_))
+            regex_ = REGEX_MATCH_ALL;
             
         try
         {
