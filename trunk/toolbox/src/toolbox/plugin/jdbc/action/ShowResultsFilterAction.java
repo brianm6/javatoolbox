@@ -13,6 +13,8 @@ import toolbox.util.ui.textarea.DynamicFilterView;
 /**
  * Toggles the visibility of the filter view that is attached to the botton
  * of the results text area.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ShowResultsFilterAction extends BaseAction
 {
@@ -41,6 +43,7 @@ public class ShowResultsFilterAction extends BaseAction
      * Creates a ShowResultsFilterAction.
      * 
      * @param plugin Parent plugin.
+     * @param resultsPanel Panel that contains the results text area.
      */
     public ShowResultsFilterAction(QueryPlugin plugin, JPanel resultsPanel)
     {
@@ -49,7 +52,7 @@ public class ShowResultsFilterAction extends BaseAction
     }
 
     //--------------------------------------------------------------------------
-    // Abstract SmartAction
+    // SmartAction Abstract Methods
     //--------------------------------------------------------------------------
     
     /**

@@ -7,6 +7,8 @@ import toolbox.util.db.SQLFormatter;
 
 /**
  * Runs the query selected from the SQL history popup menu.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ExecutePriorAction extends BaseAction
 {
@@ -26,8 +28,8 @@ public class ExecutePriorAction extends BaseAction
     /**
      * Creates a ExecutePriorAction.
      *
+     * @param plugin Query plugin.
      * @param sql SQL to execute.
-     * @param plugin TODO
      */
     public ExecutePriorAction(QueryPlugin plugin, String sql)
     {
@@ -43,7 +45,7 @@ public class ExecutePriorAction extends BaseAction
     }
 
     //--------------------------------------------------------------------------
-    // SmartAction Interface
+    // SmartAction Abstract Methods
     //--------------------------------------------------------------------------
     
     /**

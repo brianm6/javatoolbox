@@ -18,6 +18,10 @@ import toolbox.util.ui.ImageCache;
  */
 public class BenchmarkAction extends BaseAction 
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a BenchmarkAction.
      * 
@@ -31,6 +35,9 @@ public class BenchmarkAction extends BaseAction
         putValue(SHORT_DESCRIPTION, "Runs JDBC Benchmark");
     }
     
+    //--------------------------------------------------------------------------
+    // SmartAction Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.util.ui.SmartAction#runAction(

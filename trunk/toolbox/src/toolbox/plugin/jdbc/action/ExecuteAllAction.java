@@ -15,9 +15,15 @@ import toolbox.util.StringUtil;
  * Runs all SQL statements in the editor. Each SQL statement must be 
  * terminated by a semicolon. The results are appendended to the output 
  * textarea.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ExecuteAllAction extends BaseAction
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates an ExecuteAllAction.
      */
@@ -28,7 +34,10 @@ public class ExecuteAllAction extends BaseAction
         putValue(SHORT_DESCRIPTION, "Executes all the SQL statements");
     }
 
-
+    //--------------------------------------------------------------------------
+    // SmartAction Abstract Methods
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.util.ui.SmartAction#runAction(
      *      java.awt.event.ActionEvent)

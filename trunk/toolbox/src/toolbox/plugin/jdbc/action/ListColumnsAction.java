@@ -35,7 +35,7 @@ public class ListColumnsAction extends BaseAction
     }
 
     //--------------------------------------------------------------------------
-    // Abstract SmartAction
+    // SmartAction Abstract Methods
     //--------------------------------------------------------------------------
     
     /**

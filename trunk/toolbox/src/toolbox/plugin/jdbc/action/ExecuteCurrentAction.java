@@ -35,7 +35,7 @@ public class ExecuteCurrentAction extends BaseAction
     }
 
     //--------------------------------------------------------------------------
-    // SmartAction Abstract Method
+    // SmartAction Abstract Methods
     //--------------------------------------------------------------------------
     
     /**

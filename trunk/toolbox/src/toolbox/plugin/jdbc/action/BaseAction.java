@@ -29,7 +29,11 @@ public abstract class BaseAction extends WorkspaceAction
     /**
      * Creates a BaseAction.
      * 
-     * @param plugin Parent plugin.
+     * @param plugin Query plugin.
+     * @param name Action name.
+     * @param async True to run asynchrously.
+     * @param scope Scope of the busy cursor.
+     * @param statusBar Status bar for updates.
      */
     public BaseAction(
         QueryPlugin plugin, 

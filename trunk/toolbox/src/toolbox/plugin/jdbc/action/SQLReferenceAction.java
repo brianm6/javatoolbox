@@ -32,7 +32,7 @@ public class SQLReferenceAction extends BaseAction
     }
 
     //--------------------------------------------------------------------------
-    // ActionListener Interface
+    // SmartAction Abstract Methods
     //--------------------------------------------------------------------------
     
     /**
