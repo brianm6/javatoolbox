@@ -54,11 +54,22 @@ public class AOLMessengerTest extends TestCase
         
         InstantMessenger messenger = new AOLMessenger();
         
-        logger_.debug("Before init...");     messenger.initialize(new Properties());
-        logger_.debug("Before login...");    messenger.login("spatel73", "techno");
-        logger_.debug("Before send...");     messenger.send("analogue", "Hello from the testLifeCycle unit test."); ThreadUtil.sleep(10000);
-        logger_.debug("Before logout...");   messenger.logout();
-        logger_.debug("Before shutdown..."); messenger.shutdown();
+        logger_.debug("Before init...");     
+        messenger.initialize(new Properties());
+        
+        logger_.debug("Before login...");    
+        messenger.login("supahfuzz", "techno");
+        
+        logger_.debug("Before send...");     
+        messenger.send("analogue", "Hello from the testLifeCycle unit test."); 
+        ThreadUtil.sleep(10000);
+        
+        logger_.debug("Before logout...");   
+        messenger.logout();
+        
+        logger_.debug("Before shutdown..."); 
+        messenger.shutdown();
+        
         logger_.debug("All done!");
     }
     
@@ -86,6 +97,12 @@ public class AOLMessengerTest extends TestCase
         messenger.shutdown();
     }
     
+    /**
+     * Tests that the configuration in the xml file is read and executed
+     * correctly.
+     *  
+     * @throws Exception on error
+     */
     public void testConfigByXML() throws Exception
     {
         logger_.info("Running testConfigByXML...");

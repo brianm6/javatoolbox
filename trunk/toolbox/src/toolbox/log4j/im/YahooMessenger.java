@@ -25,25 +25,39 @@ public class YahooMessenger implements InstantMessenger
      // NOTE: Cannot use Log4J logging since this is included in the 
      //       implementation of a Log4J appender.
     
-    /** Return code for a successful connection */
+    /** 
+     * Return code for a successful connection 
+     */
     public static final String CONNECT_SUCCEEDED = "Connect succeeded!";
     
-    /** Return code for a failed connection */
+    /** 
+     * Return code for a failed connection 
+     */
     public static final String CONNECT_FAILED = "Connect failed!";
     
-    /** Available instant messaging protocols */
+    /** 
+     * Available instant messaging protocols 
+     */
     private Protocol[] protocols;
     
-    /** Yahoo instant messaging protocol */
+    /** 
+     * Yahoo instant messaging protocol 
+     */
     private Protocol yahoo_;
     
-    /** Listener for client and server side generated Yahoo events */
+    /** 
+     * Listener for client and server side generated Yahoo events 
+     */
     private YahooListener listener_;
     
-    /** Flag that tracks the connection state */
+    /** 
+     * Flag that tracks the connection state 
+     */
     private boolean connected_;
     
-    /** Invoker used to handle the sending of messages */
+    /** 
+     * Invoker used to handle the sending of messages 
+     */
     private Invoker invoker_;
     
     //--------------------------------------------------------------------------
@@ -51,7 +65,7 @@ public class YahooMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a YahooMessenger
      */
     public YahooMessenger()
     {
@@ -175,10 +189,14 @@ public class YahooMessenger implements InstantMessenger
      */
     class YahooListener extends IMAdapter
     {
-        /** Login success and failures both go in this queue */
+        /** 
+         * Login success and failures both go in this queue 
+         */
         BlockingQueue connected_;
         
-        /** Disconnect notification goes into this queue */
+        /** 
+         * Disconnect notification goes into this queue 
+         */
         BlockingQueue disconnected_;
         
         //----------------------------------------------------------------------
@@ -186,7 +204,7 @@ public class YahooMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /** 
-         * Default constructor
+         * Creates a YahooListener
          */
         public YahooListener()
         {

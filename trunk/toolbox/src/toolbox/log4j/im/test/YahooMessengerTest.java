@@ -91,6 +91,12 @@ public class YahooMessengerTest extends TestCase
         messenger.shutdown();
     }
     
+    /**
+     * Tests that the configuration in the xml file is read and executed
+     * correctly.
+     *  
+     * @throws Exception on error
+     */
     public void testConfigByXML() throws Exception
     {
         logger_.info("Running testConfigByXML...");
