@@ -3,15 +3,14 @@ package toolbox.util.ui.layout.test;
 import java.awt.Color;
 import java.awt.Container;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.junit.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
@@ -21,7 +20,7 @@ import toolbox.util.ui.layout.StackLayout;
 /**
  * Unit test for StackLayout.
  */
-public class StackLayoutTest extends TestCase
+public class StackLayoutTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(StackLayoutTest.class);
@@ -35,9 +34,8 @@ public class StackLayoutTest extends TestCase
 	 * 
 	 * @param args None recognized
 	 */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
-        SwingUtil.setPreferredLAF();
         TestRunner.run(StackLayoutTest.class);
     }
 
@@ -52,20 +50,18 @@ public class StackLayoutTest extends TestCase
     {
         logger_.info("Running testStackLayout...");
 
-        JFrame frame = new JFrame("StackLayoutTest");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        Container contentPane = frame.getContentPane();
+        JPanel cp = new JPanel();
         
         JPanel p;
         JSmartTextArea t;
         Color color = Color.red;
 
-        contentPane.setLayout(new StackLayout(StackLayout.VERTICAL));
+        cp.setLayout(new StackLayout(StackLayout.VERTICAL));
 
-        contentPane.add(new JSmartLabel("StackLayout Demo & Tester")).
+        cp.add(new JSmartLabel("StackLayout Demo & Tester")).
             setFont(SwingUtil.getPreferredMonoFont());
 
-        p = addHPanel(frame);
+        p = addHPanel(cp);
         p.add("Left", new JSmartButton("Left"));
         
         p.add("Wide", new JSmartLabel(
@@ -73,51 +69,52 @@ public class StackLayoutTest extends TestCase
         
         p.add("Right", new JSmartButton("Right"));
 
-        contentPane.add("Fill", new JScrollPane(t = new JSmartTextArea()));
+        cp.add("Fill", new JScrollPane(t = new JSmartTextArea()));
         
         t.append(
             "This is a Fill'ed Text Area.\n" 
             + "With some text in it.\nIt is stretchy");
 
-        contentPane.add("Center", new JSmartLabel("Below is an hrule"));
-        contentPane.add("Wide Height=3 Flush", new JPanel()).setBackground(color);
-        contentPane.add("Wide Tall*2", new JScrollPane(t = new JSmartTextArea()));
+        cp.add("Center", new JSmartLabel("Below is an hrule"));
+        cp.add("Wide Height=3 Flush", new JPanel()).setBackground(color);
+        cp.add("Wide Tall*2", new JScrollPane(t = new JSmartTextArea()));
         
         t.append(
             "This is another Text Area,\n"
             + "with some text in it.\n"
             + "It's height is filled with weight 2");
         
-        contentPane.add("Wide", new JSmartButton("A wide Button"));
-        contentPane.add("Wide Height=3 Flush", new JPanel()).setBackground(color);
-        contentPane.add("Center", new JSmartLabel("Ugly, but shows placement"));
+        cp.add("Wide", new JSmartButton("A wide Button"));
+        cp.add("Wide Height=3 Flush", new JPanel()).setBackground(color);
+        cp.add("Center", new JSmartLabel("Ugly, but shows placement"));
 
-        p = addHPanel(frame);
+        p = addHPanel(cp);
         p.add("Left", new JSmartButton("Left"));
         p.add("Left", new JSmartButton("Left, too"));
         p.add("Right", new JSmartButton("Right"));
 
-        p = addHPanel(frame);
+        p = addHPanel(cp);
         p.add("Left", new JSmartButton("Left"));
         p.add("Center", new JSmartButton("Center"));
         p.add("Center", new JSmartButton("Center,too"));
         p.add("Right", new JSmartButton("Right"));
 
-        p = addHPanel(frame);
+        p = addHPanel(cp);
         p.add("Left", new JSmartButton("Left"));
         p.add("Center", new JSmartButton("Center"));
         p.add("Left", new JSmartButton("Left!!"));
         p.add("Right", new JSmartButton("Right"));
 
-        p = addHPanel(frame);
+        p = addHPanel(cp);
         p.add("Left", new JSmartButton("Left"));
         p.add("Center", new JSmartButton("Center"));
         p.add("Right", new JSmartButton("Right"));
         p.add("Right", new JSmartButton("Right, too"));
 
-        contentPane.add("Wide Height=3 Flush", new JPanel()).setBackground(color);
+        cp.add("Wide Height=3 Flush", 
+                new JPanel()).setBackground(color);
 
-        p = addHPanel(frame);
+        p = addHPanel(cp);
         p.add("Left", new JSmartLabel("Horizontal panel w/50pixel Strut"));
         p.add("Left Width=3 Height=50 Flush", new JPanel()).
             setBackground(color);
@@ -127,17 +124,15 @@ public class StackLayoutTest extends TestCase
         p.add("Bottom", new JSmartButton("Bottom"));
         p.add("Tall", new JSmartButton("Tall"));
 
-        frame.pack();
-        SwingUtil.centerWindow(frame);
-        frame.setVisible(true);
+        launchInDialog(cp);
     }
 
     
-    JPanel addHPanel(JFrame f)
+    JPanel addHPanel(Container jp)
     {
         JPanel p = new JPanel();
         p.setLayout(new StackLayout(StackLayout.HORIZONTAL));
-        f.getContentPane().add("Wide Flush", p);
+        jp.add("Wide Flush", p);
         return p;
     }
 }
