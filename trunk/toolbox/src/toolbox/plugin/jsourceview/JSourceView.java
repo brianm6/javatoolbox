@@ -393,7 +393,8 @@ public class JSourceView extends JPanel implements IPreferenced
         tableModel_  = new SmartTableModel(COL_NAMES, 0);
         tableSorter_ = new TableSorter(tableModel_);
         table_       = new JSmartTable(tableSorter_);
-        tableSorter_.addMouseListenerToHeaderInTable(table_);
+        // REMOVE: tableSorter_.addMouseListenerToHeaderInTable(table_);
+        tableSorter_.setTableHeader(table_.getTableHeader());
         
         // Set alternating row renderer
         table_.setDefaultRenderer(Integer.class, new SourceTableCellRenderer());
@@ -527,7 +528,8 @@ public class JSourceView extends JPanel implements IPreferenced
                 // To avoid a whole mess of sorting going on while the table is
                 // being populated, just disable the sorter temporarily. This
                 // is turned back on when the parser thread completes.
-                 tableSorter_.setEnabled(false);
+                
+                // REMOVE: tableSorter_.setEnabled(false);
             
                 scanDirWorker_ = 
                     new SourceScanner(JSourceView.this, new File(dir));
