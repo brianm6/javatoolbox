@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
@@ -62,6 +63,10 @@ public class ConfigManager implements IConfigManager
         catch (IOException ioe)
         {
             throw new IllegalArgumentException(ioe.getMessage());
+        } 
+        catch (SAXException se)
+        {
+            throw new IllegalArgumentException(se.getMessage());
         }
     }
 
