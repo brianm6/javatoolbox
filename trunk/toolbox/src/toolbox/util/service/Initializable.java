@@ -1,14 +1,10 @@
 package toolbox.util.service;
 
 /**
- * Initializable is responsible for _____.
+ * An Initializable service can be initialized once and only once.
  */
 public interface Initializable
 {
-    //--------------------------------------------------------------------------
-    // LifeCycle
-    //--------------------------------------------------------------------------
-
     /**
      * Initializes the service.
      * 

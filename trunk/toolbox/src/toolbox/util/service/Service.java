@@ -29,10 +29,6 @@ package toolbox.util.service;
 public interface Service extends Initializable, Startable, Suspendable, 
     Destroyable
 {
-    //--------------------------------------------------------------------------
-    // LifeCycle
-    //--------------------------------------------------------------------------
-    
     /**
      * Returns the current state of this service.
      * 

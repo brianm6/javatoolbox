@@ -1,8 +1,9 @@
 package toolbox.util.service;
 
 /**
- * Destroyable is the terminal state for a Service that has been destroyed and
- * is no longer usable.
+ * A Destroyable service can be destroyed once and only once. The destroyed
+ * state is a terminal state. A service can only be destroyed if in the Stopped
+ * state.
  */
 public interface Destroyable
 {

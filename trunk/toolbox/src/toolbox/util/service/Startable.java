@@ -1,38 +1,32 @@
 package toolbox.util.service;
 
 /**
- * A Startable service is one that can be started/stopped at will.
+ * A Startable service can be started and stopped at will.
  */
 public interface Startable
 {
-    //--------------------------------------------------------------------------
-    // LifeCycle
-    //--------------------------------------------------------------------------
-
     /**
-     * Starts the service. Once a service it started, it may either be paused or
-     * stopped.
+     * Starts the service. Once a service it started, it may either be suspended
+     * or stopped.
      * 
-     * @throws ServiceException if the service encounters problems starting up.
+     * @throws ServiceException if the service encounters problems starting 
+     *         itself.
      */
     void start() throws ServiceException;
 
 
-
     /**
-     * Stops the service. One a service is stopped, it may be restarted safely.
+     * Stops the service. One a service is stopped, it may be started or 
+     * detroyed.
      * 
-     * @throws ServiceException if the service encounters problems stopping.
+     * @throws ServiceException if the service encounters problems stopping
+     *         itself.
      */
     void stop() throws ServiceException;
 
 
-    //--------------------------------------------------------------------------
-    // Monitoring
-    //--------------------------------------------------------------------------
-
     /**
-     * Returns true if the service is running, false otherwise.
+     * Returns true if the service has been started, false otherwise.
      * 
      * @return boolean
      */

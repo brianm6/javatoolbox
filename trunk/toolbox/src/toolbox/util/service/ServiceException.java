@@ -1,18 +1,17 @@
 package toolbox.util.service;
 
 /**
- * ServiceException.
+ * ServiceException is thrown for Service related failures.
  */
 public class ServiceException extends Exception
 {
     /**
      * Creates a ServiceException.
-     *
      */
     public ServiceException()
     {
     }
-    
+
     
     /**
      * Creates a ServiceException.
