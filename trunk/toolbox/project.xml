@@ -714,6 +714,7 @@
     
   <reports>     
 
+    <report>maven-changes-plugin</report>          
     <report>maven-developer-activity-plugin</report>
     <report>maven-file-activity-plugin</report>
     <report>maven-jdepend-plugin</report>
@@ -729,9 +730,6 @@
     <report>maven-pmd-plugin</report>
     <report>maven-statcvs-plugin</report>
     <report>maven-license-plugin</report>
-    ======================================
-    Doesn't seem to do anything at all
-    <report>maven-changes-plugin</report>
     ======================================
     Uses vdoclet to find tags so will only
     flag stuff that starts with an @      
