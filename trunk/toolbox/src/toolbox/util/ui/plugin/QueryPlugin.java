@@ -39,14 +39,29 @@ import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * Simple SQL query Plugin
+ * Simple SQL Plugin that allows you to query and update a database via JDBC.
+ * <p>
+ * Features:
+ * <ul>
+ * <li>Remembers past queries so you don't have to type them in again
+ *     (activated by a right mouse click in the SQL text area)
+ * <li>Output is in plain text aligned by columns. Great for copy and paste to 
+ *     other applications.
+ * </ul>
  * 
- * <pre>
- * TODO: create SQLDefaults for syntax hiliting
- * <pre>
+ * Shortcuts:
+ * <p>
+ * <table border=1>
+ *   <tr><th>Key</th><th>Function</th></tr>
+ *   <tr><td>Ctrl-Enter</td><td>Execute query</td></tr>
+ * </table>
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
-{ 
+{
+    /*
+     * TODO: create SQLDefaults for syntax hiliting
+     */
+     
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
@@ -96,7 +111,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    //  Private
+    //  Protected
     //--------------------------------------------------------------------------
     
     /** 
@@ -153,9 +168,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     /**
-     * Builds the Configuration view in a Flip pane
+     * Builds the panel which displays all the JDBC configuration information 
      * 
-     * @return JPanel containing the Configuration UI
+     * @return JDBC configuration panel
      */
     protected JPanel buildConfigView()
     {
@@ -181,11 +196,12 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     /**
-     * Runs a query against the database and returns the results in a 
-     * formatted string
+     * Runs a query against the database and returns the results as a nicely 
+     * formatted string.
      * 
      * @param  sql  SQL query
      * @return Formatted results
+     * @see    JDBCUtil#format(ResultSet)
      */
     protected String executeSQL(String sql)
     {
@@ -319,7 +335,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Runs the query
+     * Runs the query and appends the results to the output text area
      */
     private class RunQueryAction extends AbstractAction
     {
@@ -347,7 +363,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * Runs the query off the history popup menu
+     * Runs the query selected from the SQL history popup menu
      */
     private class RunHistoryQueryAction extends AbstractAction
     {
@@ -368,7 +384,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     /**
-     * Clears the output
+     * Clears the output text area
      */
     private class ClearAction extends AbstractAction
     {
