@@ -87,7 +87,16 @@
       <properties/>
     </dependency>
     -->
-    
+      
+    <dependency>
+      <id>3dlf</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+      <url>http://www.markus-hillenbrand.de/3dlf</url>
+    </dependency>
+          
     <dependency>
       <id>acrobat</id>
       <version/>
