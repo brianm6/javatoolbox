@@ -11,6 +11,10 @@ import toolbox.util.io.MonitoredChannel;
  */
 public class TransferredEvent 
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Source of the transfer event.
      */
@@ -45,8 +49,8 @@ public class TransferredEvent
     public TransferredEvent(
         MonitoredChannel source, 
         int sampleLength, 
-        long total) {
-        
+        long total) 
+    {
         setSource(source);
         setTimestamp(new Date());
         setSampleLength(sampleLength);
@@ -58,7 +62,9 @@ public class TransferredEvent
     //--------------------------------------------------------------------------
     
     /**
-     * @return Returns the sampleLength.
+     * Returns the sampleLength.
+     * 
+     * @return int 
      */
     public int getSampleLength()
     {
@@ -67,6 +73,8 @@ public class TransferredEvent
 
 
     /**
+     * Sets the sample length.
+     * 
      * @param sampleLength The sampleLength to set.
      */
     public void setSampleLength(int sampleLength)
@@ -76,7 +84,9 @@ public class TransferredEvent
 
 
     /**
-     * @return Returns the source.
+     * Returns the source.
+     * 
+     * @return MonitoredChannel
      */
     public MonitoredChannel getSource()
     {
@@ -85,6 +95,8 @@ public class TransferredEvent
 
 
     /**
+     * Sets the source.
+     * 
      * @param source The source to set.
      */
     public void setSource(MonitoredChannel source)
@@ -94,7 +106,9 @@ public class TransferredEvent
 
 
     /**
-     * @return Returns the timestamp.
+     * Returns the timestamp of the data transfer.
+     * 
+     * @return Date
      */
     public Date getTimestamp()
     {
@@ -103,6 +117,8 @@ public class TransferredEvent
 
 
     /**
+     * Sets the timestamp of the data transfer.
+     * 
      * @param timestamp The timestamp to set.
      */
     public void setTimestamp(Date timestamp)
@@ -112,7 +128,9 @@ public class TransferredEvent
 
 
     /**
-     * @return Returns the total.
+     * Returns the total number of bytes transferred.
+     * 
+     * @return long
      */
     public long getTotal()
     {
@@ -121,6 +139,8 @@ public class TransferredEvent
 
 
     /**
+     * Sets the total number of bytes transferred.
+     * 
      * @param total The total to set.
      */
     public void setTotal(long total)
