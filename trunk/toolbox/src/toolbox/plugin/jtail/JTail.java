@@ -1,15 +1,22 @@
 package toolbox.jtail;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -49,7 +56,12 @@ public class JTail extends JFrame
     private static final Category logger_ = 
         Category.getInstance(JTail.class);
 
-    private static final String DOC_JTAIL   = "JTail";
+    private static final String ELEMENT_JTAIL = "JTail";
+    private static final String ATTR_HEIGHT   = "height";
+    private static final String ATTR_WIDTH    = "width";
+    private static final String ATTR_X        = "x";
+    private static final String ATTR_Y        = "y";
+    
     private static final String CONFIG_FILE = ".jtail.xml";
     
     
@@ -58,8 +70,9 @@ public class JTail extends JFrame
     private JSmartStatusBar   statusBar_;    
     private JMenuBar          menuBar_;    
     private Map               tailMap_;
-
-    private boolean testMode_ = true;
+    private Point             location_;
+    private Dimension         size_;
+    private boolean           testMode_ = true;
         
         
     /**
@@ -102,13 +115,13 @@ public class JTail extends JFrame
     {
         try
         {
-            tailMap_ = new HashMap();
+            // Init variables
+            tailMap_  = new HashMap();
+            
             buildView();
             addListeners();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
             applyConfiguration(loadConfiguration());
-            setSize(800,400);
-            SwingUtil.centerWindow(this);            
         }
         catch (Exception e)
         {
@@ -165,30 +178,14 @@ public class JTail extends JFrame
         menuBar.add(fileMenu);
         return menuBar;
     }
-    
-    
-    /**
-     * Tails a file
-     * 
-     * @param  file   File to tail
-     */     
-    protected void tail(File file)
-    {
-        TailConfig config = new TailConfig();
-        config.setFilename(file.getAbsolutePath());
-        config.setAutoScroll(true);
-        config.setShowLineNumbers(false);
-        
-        tail(config);
-    }
 
 
     /**
-     * Creates a tail of the given configuration
+     * Adds a tail of the given configuration to the output area
      * 
      * @param  config  Tail configuration
      */     
-    protected void tail(TailConfig config)
+    protected void addTail(TailConfig config)
     {
         try
         {
@@ -250,10 +247,21 @@ public class JTail extends JFrame
             try
             {
                 Document config = new Document(xmlFile);            
+                Element jtailNode = config.getRoot();
+                
+                location_ = new Point();
+                location_.x  = Integer.parseInt(jtailNode.getAttribute(ATTR_X));
+                location_.y  = Integer.parseInt(jtailNode.getAttribute(ATTR_Y));
+                
+                size_ = new Dimension();
+                size_.height = Integer.parseInt(jtailNode.getAttribute(ATTR_HEIGHT));
+                size_.width  = Integer.parseInt(jtailNode.getAttribute(ATTR_WIDTH));
 
-                // Iterate through each "tail" element, hydrate the object
-                // and apply the configuration
-                for (Elements tails = config.getRoot().getElements(); 
+                                
+                // Iterate through each "tail" element, hydrate the 
+                // corresponding TailConfig object
+                for (Elements tails = 
+                        jtailNode.getElements(TailConfig.ELEMENT_TAIL); 
                     tails.hasMoreElements();)
                 {
                     Element tail = tails.next();
@@ -284,21 +292,28 @@ public class JTail extends JFrame
 
         try
         {
-            Document document = new Document();
-            document.setRoot(DOC_JTAIL);                    
+            Element jtailNode = new Element(ELEMENT_JTAIL);
+            jtailNode.setAttribute(ATTR_HEIGHT, getSize().height + "");
+            jtailNode.setAttribute(ATTR_WIDTH, getSize().width + "");
+            jtailNode.setAttribute(ATTR_X, getLocation().x + "");
+            jtailNode.setAttribute(ATTR_Y, getLocation().y + "");
 
-            logger_.debug("[save  ] Saving " + tailMap_.size() + " configurations");
+            logger_.debug("[save  ] Saving "+tailMap_.size()+" configurations");
+
+            List keys = new ArrayList();
+            keys.addAll(tailMap_.keySet());
+            Collections.reverse(keys);            
             
-            for (Iterator i = tailMap_.keySet().iterator(); i.hasNext(); )
+            for (Iterator i = keys.iterator(); i.hasNext(); )
             {
                 TailPane tail = (TailPane)tailMap_.get(i.next());
                 TailConfig config = tail.getConfiguration();
-                document.getRoot().addElement(config.marshal());                
+                jtailNode.addElement(config.marshal());                
             }
 
+            Document document = new Document();    
+            document.setRoot(jtailNode);
             document.write(configFile);
-            
-            logger_.debug(document.toString());
         }
         catch (IOException ioe)
         {
@@ -312,10 +327,20 @@ public class JTail extends JFrame
      */
     protected void applyConfiguration(TailConfig[] configs)
     {
+        if (size_ != null)
+            setSize(size_);
+        else
+            setSize(800,400);
+            
+        if (location_ != null)
+            setLocation(location_);
+        else
+            SwingUtil.centerWindow(this);
+        
         for (int i=0; i<configs.length; i++)
         {
             TailConfig config = configs[i];
-            tail(config);
+            addTail(config);
         }
     }    
     
@@ -325,6 +350,9 @@ public class JTail extends JFrame
      */
     protected void addListeners()
     {
+        // Intercept closing of app to save configuration
+        addWindowListener(new WindowListener());
+        
         fileSelectionPane_.getFileExplorer().
             addJFileExplorerListener(new FileSelectionListener());
             
@@ -332,6 +360,69 @@ public class JTail extends JFrame
             addActionListener(new TailButtonListener());
     }
     
+
+    /**
+     * Unmarshals an XML element representing a TailProp object
+     * 
+     * @param   tail  Element representing a tailprops
+     * @return  Fully populated TailProp
+     */
+    public static TailConfig unmarshal(Element jtailNode) throws IOException 
+    {
+        
+        
+//        TailConfig props = new TailConfig();
+//        
+//        // Handle tail element
+//        props.setFilename(tail.getAttribute(ATTR_FILE));
+//        props.setAutoScroll(
+//            new Boolean(tail.getAttribute(ATTR_AUTOSCROLL)).booleanValue());
+//        props.setShowLineNumbers(
+//            new Boolean(tail.getAttribute(ATTR_LINENUMBERS)).booleanValue());
+//        
+//        // Handle font element    
+//        Element fontNode = tail.getElement(ELEMENT_FONT);
+//        String  family   = fontNode.getAttribute(ATTR_FAMILY);
+//        int     style    = Integer.parseInt(fontNode.getAttribute(ATTR_STYLE));
+//        int     size     = Integer.parseInt(fontNode.getAttribute(ATTR_SIZE));
+//        props.setFont(new Font(family, style, size));
+//            
+//        return props;
+
+        return null;
+    }
+
+
+    /**
+     * Marshals from Java object representation to XML representation
+     * 
+     * @return  Tail XML node
+     */
+    public Element marshal()  throws IOException 
+    {
+//        // Tail element
+//        Element tail = new Element(ELEMENT_TAIL);
+//        tail.setAttribute(ATTR_FILE, getFilename());
+//        tail.setAttribute(ATTR_AUTOSCROLL, 
+//            new Boolean(isAutoScroll()).toString());
+//        tail.setAttribute(ATTR_LINENUMBERS, 
+//            new Boolean(isShowLineNumbers()).toString());
+//        
+//        // Font element    
+//        Element font = new Element(ELEMENT_FONT);
+//        font.setAttribute(ATTR_FAMILY, getFont().getFamily());
+//        font.setAttribute(ATTR_STYLE, getFont().getStyle() + "");
+//        font.setAttribute(ATTR_SIZE, getFont().getSize() + "");            
+//        
+//        // Make font child of tail
+//        tail.addElement(font);
+//        
+//        return tail;
+
+        return null;
+    }
+
+
 
     /**
      * Listener for the file explorer
@@ -345,7 +436,10 @@ public class JTail extends JFrame
          */
         public void fileDoubleClicked(String file)
         {
-            tail(new File(file));
+            TailConfig config = new TailConfig(file, true, false, 
+                SwingUtil.getPreferredMonoFont());
+                
+            addTail(config);
         }
     }
     
@@ -362,9 +456,12 @@ public class JTail extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            tail(new File(
-                fileSelectionPane_.getFileExplorer().getFilePath()));
-                
+            
+            TailConfig config = new TailConfig(
+                fileSelectionPane_.getFileExplorer().getFilePath(), 
+                    true, false, SwingUtil.getPreferredMonoFont());
+            
+            addTail(config);
         }
     }
     
@@ -388,6 +485,10 @@ public class JTail extends JFrame
             TailPane pane = (TailPane)tailMap_.get(closeButton);
             tabbedPane_.remove(pane);        
             tailMap_.remove(closeButton);
+            
+            // Save the configuration since the tail is gone
+            saveConfiguration();
+            
         }
     }
     
@@ -424,7 +525,7 @@ public class JTail extends JFrame
     {
         public SaveAction()
         {
-            super("Save");
+            super("Save Settings");
             putValue(MNEMONIC_KEY, new Integer('S'));
             putValue(SHORT_DESCRIPTION, "Saves tail configuration");
             putValue(LONG_DESCRIPTION, "Saves tail configuration to .jtail.xml");
@@ -483,14 +584,14 @@ public class JTail extends JFrame
         public SetFontAction()
         {
             super("Set font ..");
-            putValue(MNEMONIC_KEY, new Integer('S'));
+            putValue(MNEMONIC_KEY, new Integer('t'));
             putValue(SHORT_DESCRIPTION, "Sets the font of the tail output");
             putValue(ACCELERATOR_KEY, 
-                KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
+                KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
         }
     
         /**
-         * Saves the configuration
+         * Pops up the Font selection dialog
          */
         public void actionPerformed(ActionEvent e)
         {
@@ -541,6 +642,18 @@ public class JTail extends JFrame
             {
                 JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
             }
+        }
+    }
+    
+    
+    /**
+     * Saves the configuration when the application is being closed
+     */
+    private class WindowListener extends WindowAdapter
+    {
+        public void windowClosing(WindowEvent e)
+        {
+            saveConfiguration();
         }
     }
 }
