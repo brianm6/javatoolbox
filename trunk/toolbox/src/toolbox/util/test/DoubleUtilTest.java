@@ -2,10 +2,10 @@ package toolbox.util.test;
 
 import java.text.DecimalFormat;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.DoubleUtil;
 
@@ -14,7 +14,6 @@ import toolbox.util.DoubleUtil;
  */
 public class DoubleUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(DoubleUtilTest.class);
     
@@ -23,6 +22,10 @@ public class DoubleUtilTest extends TestCase
      */
     public static final DecimalFormat TWO_DIGIT_FORMAT = 
         new DecimalFormat("#########.##");
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
         
     /**
      * Entry point
@@ -32,20 +35,6 @@ public class DoubleUtilTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(DoubleUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for DoubleUtilTest.
-     * 
-     * @param arg0  name
-     */
-    public DoubleUtilTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -72,7 +61,6 @@ public class DoubleUtilTest extends TestCase
             DoubleUtil.isDouble("    87.774747   "));
     }
 
-
     /**
      * Tests isDouble() for scenarios where the result is false
      * 
@@ -97,7 +85,6 @@ public class DoubleUtilTest extends TestCase
             !DoubleUtil.isDouble("al;dfj0&**&&*345jklsjdf;90q354090**"));
     }
 
-
     /**
      * Test median() for an empty set
      * 
@@ -120,7 +107,6 @@ public class DoubleUtilTest extends TestCase
         }
     }
 
-
     /**
      * Tests median() for even set
      * 
@@ -140,7 +126,6 @@ public class DoubleUtilTest extends TestCase
 
         assertEquals("values don't match", 3.5, e, 0);
     }
-
 
     /**
      * Tests median() for an odd set
@@ -163,7 +148,6 @@ public class DoubleUtilTest extends TestCase
         assertEquals("values don't match", 3, e, 0);
     }
 
-
     /**
      * Tests median for a set of 1
      * 
@@ -177,7 +161,6 @@ public class DoubleUtilTest extends TestCase
         double e = DoubleUtil.median(d);
         assertEquals("values don't match", d[0], e, 0);
     }
-
 
     /**
      * Tests round() for rounding a number down
@@ -193,7 +176,6 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.12", s);
     }
 
-
     /**
      * Tests round() for a big ugly number
      * 
@@ -208,7 +190,6 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.66", s);
     }
 
-
     /**
      * Tests round() with one decimal number
      * 
@@ -222,7 +203,6 @@ public class DoubleUtilTest extends TestCase
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.1", s);
     }
-
 
     /**
      * Tests round() with a two decimal number
@@ -242,7 +222,6 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.12", s);
     }
 
-
     /**
      * Tests round() for rounding a number up
      * 
@@ -257,7 +236,6 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.13", s);
     }
 
-
     /**
      * Tests round() with a whole number
      * 
@@ -271,7 +249,6 @@ public class DoubleUtilTest extends TestCase
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100", s);
     }
-    
 
     /**
      * Tests round() for a double passed in as a string
@@ -284,7 +261,6 @@ public class DoubleUtilTest extends TestCase
         String s = DoubleUtil.round(d+"", TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.12", s);
     }
-
     
     /** 
      * Tests isBetween()
@@ -306,7 +282,6 @@ public class DoubleUtilTest extends TestCase
         assertTrue(!DoubleUtil.isBetween(a, b, b));
         assertTrue(!DoubleUtil.isBetween(c, a, b));
     }
- 
     
     /**
      * Tests average()
@@ -318,8 +293,10 @@ public class DoubleUtilTest extends TestCase
         double[] d = new double[] { 1.0, 1.1, 1.2 };
         assertEquals( (double) 1.1, (double) DoubleUtil.average(d), 
             /* this should be 0.0 */ 0.01);
+            
+        assertEquals((double)0.0, DoubleUtil.average(new double[0]), 
+            (double)0.0);
     }
-    
     
     /**
      * Tests difference()
@@ -335,7 +312,6 @@ public class DoubleUtilTest extends TestCase
         for (int i=0; i<c.length; i++)
             assertEquals(0.0, c[i], 0.0); 
     }
-    
     
     /**
      * Tests occurs()
@@ -353,7 +329,6 @@ public class DoubleUtilTest extends TestCase
         assertEquals(0, DoubleUtil.occurs(4.5, c));
     }
     
-    
     /**
      * Tests sum()
      */
@@ -364,5 +339,4 @@ public class DoubleUtilTest extends TestCase
         double[] d = new double[] { 1.0, 1.1, 1.2 };
         assertEquals( (double) 3.3, (double) DoubleUtil.sum(d), 0.0);
     }
-    
 }
