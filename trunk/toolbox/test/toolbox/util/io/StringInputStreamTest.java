@@ -9,7 +9,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for StringInputStream. 
+ * Unit test for {@link toolbox.util.io.StringInputStream}. 
  */
 public class StringInputStreamTest extends TestCase
 {

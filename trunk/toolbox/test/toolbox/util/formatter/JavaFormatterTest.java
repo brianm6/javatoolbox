@@ -12,9 +12,7 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for JavaFormatter.
- * 
- * @see toolbox.util.formatter.JavaFormatter
+ * Unit test for {@link toolbox.util.formatter.JavaFormatter}.
  */
 public class JavaFormatterTest extends TestCase
 {

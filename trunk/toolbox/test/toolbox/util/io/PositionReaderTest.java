@@ -8,7 +8,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for PositionReader.
+ * Unit test for {@link toolbox.util.io.PositionReader}.
  */
 public class PositionReaderTest extends TestCase
 {

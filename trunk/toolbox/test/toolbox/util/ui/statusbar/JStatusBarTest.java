@@ -14,7 +14,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.ui.JSmartLabel;
 
 /**
- * Unit test for JStatusBar.
+ * Unit test for {@link toolbox.util.ui.statusbar.JStatusBar}.
  */
 public class JStatusBarTest extends UITestCase
 {

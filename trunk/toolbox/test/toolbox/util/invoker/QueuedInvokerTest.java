@@ -16,9 +16,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for QueuedInvoker.
- * 
- * @see toolbox.util.invoker.QueuedInvoker
+ * Unit test for {@link toolbox.util.invoker.QueuedInvoker}.
  */
 public class QueuedInvokerTest extends TestCase
 {

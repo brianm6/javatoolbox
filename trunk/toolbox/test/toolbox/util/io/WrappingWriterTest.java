@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for WrappingWriter.
+ * Unit test for {@link toolbox.util.io.WrappingWriter}.
  */
 public class WrappingWriterTest extends TestCase
 {
@@ -330,6 +330,7 @@ public class WrappingWriterTest extends TestCase
         logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }
+ 
     
     /**
      * Tests toString().

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.Platform;
 
 /**
- * Unit Test for FileNodeTest. 
+ * Unit test for {@link toolbox.util.ui.explorer.FileNode}. 
  */
 public class FileNodeTest extends TestCase
 {

@@ -11,7 +11,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 
 /**
- * Unit test for LAFInfoTest.
+ * Unit test for {@link toolbox.util.ui.plaf.LAFInfo}.
  */
 public class LAFInfoTest extends TestCase
 {

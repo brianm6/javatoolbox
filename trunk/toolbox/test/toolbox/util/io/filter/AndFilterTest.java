@@ -11,9 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for AndFilter.
- * 
- * @see toolbox.util.io.filter.AndFilter
+ * Unit test for {@link toolbox.util.io.filter.AndFilter}.
  */
 public class AndFilterTest extends TestCase
 {

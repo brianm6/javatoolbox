@@ -9,9 +9,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for RandomSequenceFactory.
- * 
- * @see toolbox.util.random.RandomSequenceFactory
+ * Unit test for {@link toolbox.util.random.RandomSequenceFactory}.
  */
 public class RandomSequenceFactoryTest extends TestCase
 {

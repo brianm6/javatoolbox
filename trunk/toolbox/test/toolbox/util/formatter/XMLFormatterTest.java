@@ -12,9 +12,7 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for XMLFormatter.
- * 
- * @see toolbox.util.formatter.XMLFormatter
+ * Unit test for {@link toolbox.util.formatter.XMLFormatter}.
  */
 public class XMLFormatterTest extends TestCase
 {
@@ -51,7 +49,10 @@ public class XMLFormatterTest extends TestCase
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Tests formating strings.
+     */
     public void testFormatStrings() throws Exception
     {
         logger_.info("Running testFormatStrings...");
@@ -72,6 +73,9 @@ public class XMLFormatterTest extends TestCase
     }
         
 
+    /**
+     * Tests formating streams.
+     */
     public void testFormatStreams() throws Exception
     {
         logger_.info("Running testFormatStreams...");
@@ -102,8 +106,11 @@ public class XMLFormatterTest extends TestCase
         logger_.info(StringUtil.banner(out));
         assertEquals(XML_TEST3_OUT, out);
     }
+
     
-    
+    /**
+     * Tests persistence of preferences.
+     */
     public void testPreferenced() throws Exception
     {
         logger_.info("Running testPreferenced...");

@@ -12,9 +12,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.formatter.XMLFormatter;
 
 /**
- * Unit test for TextToolsPlugin.
- * 
- * @see toolbox.plugin.texttools.TextToolsPlugin
+ * Unit test for {@link toolbox.plugin.texttools.TextToolsPlugin}.
  */
 public class TextToolsPluginTest extends TestCase
 {

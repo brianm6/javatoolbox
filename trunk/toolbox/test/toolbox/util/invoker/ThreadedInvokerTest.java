@@ -9,9 +9,7 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for ThreadedInvoker.
- * 
- * @see toolbox.util.invoker.ThreadedInvoker
+ * Unit test for {@link toolbox.util.invoker.ThreadedInvoker}.
  */
 public class ThreadedInvokerTest extends TestCase
 {

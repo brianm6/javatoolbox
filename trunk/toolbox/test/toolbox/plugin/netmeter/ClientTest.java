@@ -6,9 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for Client.
- * 
- * @see toolbox.plugin.netmeter.Client
+ * Unit test for {@link toolbox.plugin.netmeter.Client}.
  */
 public class ClientTest extends TestCase
 {
@@ -26,7 +24,10 @@ public class ClientTest extends TestCase
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Tests invalid state transitions within the client.
+     */
     public void testInvalidTransitions() throws Exception
     {
         logger_.info("Running testInvalidTransitions...");

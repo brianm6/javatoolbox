@@ -9,7 +9,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for FixedWidthWriter.
+ * Unit test for {@link toolbox.util.io.FixedWidthWriter}.
  */
 public class FixedWidthWriterTest extends TestCase
 {

@@ -25,7 +25,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.explorer.JFileExplorer;
 
 /**
- * Unit test for JFlipPane.
+ * Unit test for {@link toolbox.util.ui.flippane.JFlipPane}.
  */
 public class JFlipPaneTest extends UITestCase
 {

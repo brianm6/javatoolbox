@@ -31,7 +31,7 @@ import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * Unit test for TcpTunnel.
+ * Unit test for {@link toolbox.tunnel.TcpTunnel}.
  */
 public class TcpTunnelTest extends TestCase
 {

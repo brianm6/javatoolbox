@@ -14,9 +14,7 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for HTMLFormatter.
- * 
- * @see toolbox.util.formatter.HTMLFormatter
+ * Unit test for {@link toolbox.util.formatter.HTMLFormatter}.
  */
 public class HTMLFormatterTest extends TestCase
 {
@@ -121,7 +119,10 @@ public class HTMLFormatterTest extends TestCase
         assertNotSame(HTML_OBFUSCATED, out);
     }
 
-    
+
+    /**
+     * Tests persistence of preferences.
+     */
     public void testPreferenced() throws Exception
     {
         logger_.info("Running testPreferenced...");

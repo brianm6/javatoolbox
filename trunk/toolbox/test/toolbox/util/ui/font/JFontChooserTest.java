@@ -12,7 +12,7 @@ import toolbox.junit.testcase.UITestCase;
 import toolbox.util.FontUtil;
 
 /**
- * Unit test for JFontChooser.
+ * Unit test for {@link toolbox.util.ui.font.JFontChooser}.
  */
 public class JFontChooserTest extends UITestCase
 {

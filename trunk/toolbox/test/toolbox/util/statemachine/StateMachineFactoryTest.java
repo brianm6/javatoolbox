@@ -6,9 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for StateMachineFactory.
- * 
- * @see toolbox.util.statemachine.StateMachineFactory
+ * Unit test for {@link toolbox.util.statemachine.StateMachineFactory}.
  */
 public class StateMachineFactoryTest extends TestCase
 {

@@ -23,7 +23,7 @@ import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.table.action.AutoTailAction;
 
 /**
- * Unit test for JSmartTable.
+ * Unit test for {@link toolbox.util.ui.table.JSmartTable}.
  */
 public class JSmartTableTest extends UITestCase
 {

@@ -8,7 +8,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /** 
- * Unit test for RegexFilterReader.
+ * Unit test for {@link toolbox.util.io.RegexFilterReader}.
  */
 public class RegexFilterReaderTest extends TestCase
 {

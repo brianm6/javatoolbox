@@ -12,7 +12,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * Unit test for SocketServerConfig.
+ * Unit test for {@link toolbox.util.net.SocketServerConfig}.
  */
 public class SocketServerConfigTest extends TestCase
 {

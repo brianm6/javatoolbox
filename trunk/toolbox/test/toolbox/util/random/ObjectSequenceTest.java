@@ -14,9 +14,7 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.RandomUtil;
 
 /**
- * Unit test for ObjectSequence.
- * 
- * @see toolbox.util.random.ObjectSequence
+ * Unit test for {@link toolbox.util.random.ObjectSequence}.
  */
 public class ObjectSequenceTest extends TestCase
 {

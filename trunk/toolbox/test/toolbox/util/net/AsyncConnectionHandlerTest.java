@@ -19,7 +19,7 @@ import toolbox.util.thread.ThreadDispatcher;
 import toolbox.util.thread.strategy.ThreadPoolStrategy;
 
 /**
- * Unit test for AsyncConnectionHandler.
+ * Unit test for {@link toolbox.util.net.AsyncConnectionHandler}.
  */
 public class AsyncConnectionHandlerTest extends TestCase
 {

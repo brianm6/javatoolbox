@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for NotFilter.
+ * Unit test for {@link toolbox.util.io.filter.NotFilter}.
  */
 public class NotFilterTest extends TestCase
 {

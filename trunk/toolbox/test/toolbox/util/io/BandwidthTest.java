@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for Bandwidth.
- * 
- * @see toolbox.util.io.Bandwidth 
+ * Unit test for {@link toolbox.util.io.Bandwidth}.
  */
 public class BandwidthTest extends TestCase
 {

@@ -8,7 +8,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for NullWriter.
+ * Unit test for {@link toolbox.util.io.NullWriter}.
  */
 public class NullWriterTest extends TestCase
 {

@@ -6,9 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for AbstractService.
- * 
- * @see toolbox.util.service.AbstractService
+ * Unit test for {@link toolbox.util.service.AbstractService}.
  */
 public class AbstractServiceTest extends TestCase
 {

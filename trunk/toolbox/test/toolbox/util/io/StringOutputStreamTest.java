@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for StringOutputStream.
+ * Unit test for {@link toolbox.util.io.StringOutputStream}.
  */
 public class StringOutputStreamTest extends TestCase
 {

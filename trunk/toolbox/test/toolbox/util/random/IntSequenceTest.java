@@ -11,9 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ElapsedTime;
 
 /**
- * Unit test for IntSequence.
- * 
- * @see toolbox.util.random.IntSequence
+ * Unit test for {@link toolbox.util.random.IntSequence}.
  */
 public class IntSequenceTest extends TestCase
 {

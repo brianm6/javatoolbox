@@ -17,9 +17,7 @@ import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * Unit test for SocketServer.
- * 
- * @see toolbox.util.net.SocketServer
+ * Unit test for {@link toolbox.util.net.SocketServer}..
  */
 public class SocketServerTest extends TestCase
 {

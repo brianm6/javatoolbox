@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 
 /**
- * Unit test for JListPopupMenu.
+ * Unit test for {@link toolbox.util.ui.list.JListPopupMenu}.
  */
 public class JListPopupMenuTest extends UITestCase
 {

@@ -12,9 +12,7 @@ import toolbox.junit.testcase.UITestCase;
 import toolbox.util.RandomUtil;
 
 /**
- * Unit test for JSmartTableHeader.
- * 
- * @see toolbox.util.ui.table.JSmartTableHeader
+ * Unit test for {@link toolbox.util.ui.table.JSmartTableHeader}.
  */
 public class JSmartTableHeaderTest extends UITestCase
 {

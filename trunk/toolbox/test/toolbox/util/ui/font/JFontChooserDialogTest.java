@@ -27,9 +27,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for JFontChooserDialog.
- * 
- * @see toolbox.util.ui.font.JFontChooserDialog
+ * Unit test for {@link toolbox.util.ui.font.JFontChooserDialog}.
  */
 public class JFontChooserDialogTest extends UITestCase
 {

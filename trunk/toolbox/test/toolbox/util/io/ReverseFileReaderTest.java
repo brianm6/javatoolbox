@@ -12,9 +12,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for ReverseFileReader.
- * 
- * @see toolbox.util.io.ReverseFileReader
+ * Unit test for {@link toolbox.util.io.ReverseFileReader}.
  */
 public class ReverseFileReaderTest extends TestCase
 {

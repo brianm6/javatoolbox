@@ -12,7 +12,7 @@ import toolbox.util.net.IConnection;
 import toolbox.util.net.StringConnection;
 
 /**
- * Unit test for StringConnection.
+ * Unit test for {@link toolbox.util.net.StringConnection}.
  */
 public class StringConnectionTest extends TestCase
 {

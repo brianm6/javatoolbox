@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ElapsedTime;
 
 /**
- * Unit test for BlockingInvoker.
- * 
- * @see toolbox.util.invoker.BlockingInvoker
+ * Unit test for {@link toolbox.util.invoker.BlockingInvoker}.
  */
 public class BlockingInvokerTest extends TestCase
 {

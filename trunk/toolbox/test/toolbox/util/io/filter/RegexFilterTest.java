@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for RegexFilter.
+ * Unit test for {@link toolbox.util.io.filter.RegexFilter}.
  */
 public class RegexFilterTest extends TestCase
 {

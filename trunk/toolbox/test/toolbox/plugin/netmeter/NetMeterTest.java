@@ -6,7 +6,8 @@ import junit.textui.TestRunner;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for NetMeter. 
+ * Unit test for {@link toolbox.plugin.netmeter.Client} and 
+ * {@link toolbox.plugin.netmeter.Server}. 
  */
 public class NetMeterTest extends TestCase
 {

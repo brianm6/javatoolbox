@@ -8,7 +8,7 @@ import toolbox.junit.testcase.UITestCase;
 import toolbox.util.ui.JSmartLabel;
 
 /**
- * Unit test for JMultiSplitPane.
+ * Unit test for {@link toolbox.util.ui.splitpane.JMultiSplitPane}.
  */
 public class JMultiSplitPaneTest extends UITestCase
 {

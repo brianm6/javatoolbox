@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for ExtensionFilter.
+ * Unit test for {@link toolbox.util.io.filter.ExtensionFilter}.
  */
 public class ExtensionFilterTest extends TestCase
 {

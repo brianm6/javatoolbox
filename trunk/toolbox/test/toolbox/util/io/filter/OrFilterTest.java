@@ -11,9 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for OrFilter.
- * 
- * @see toolbox.util.io.filter.OrFilter
+ * Unit test for {@link toolbox.util.io.filter.OrFilter}.
  */
 public class OrFilterTest extends TestCase
 {

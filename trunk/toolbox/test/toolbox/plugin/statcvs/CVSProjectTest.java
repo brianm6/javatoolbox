@@ -13,9 +13,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.formatter.XMLFormatter;
 
 /**
- * Unit test for CVSProject.
- * 
- * @see toolbox.plugin.statcvs.CVSProject
+ * Unit test for {@link toolbox.plugin.statcvs.CVSProject}.
  */
 public class CVSProjectTest extends TestCase
 {

@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for MulticastOutputStream.
+ * Unit test for {@link toolbox.util.io.MulticastOutputStream}.
  */
 public class MulticastOutputStreamTest extends TestCase
 {

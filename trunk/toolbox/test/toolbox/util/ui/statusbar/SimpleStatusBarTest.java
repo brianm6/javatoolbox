@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 
 /**
- * Unit test for SimpleStatusBar.
+ * Unit test for {@link toolbox.util.ui.statusbar.SimpleStatusBar}.
  */
 public class SimpleStatusBarTest extends UITestCase
 {

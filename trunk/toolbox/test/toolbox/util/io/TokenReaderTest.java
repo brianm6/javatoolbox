@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 
 /**
- * Unit test for TokenReader.
+ * Unit test for {@link toolbox.util.io.TokenReader}.
  */
 public class TokenReaderTest extends TestCase
 {
