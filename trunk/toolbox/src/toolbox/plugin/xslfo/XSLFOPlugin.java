@@ -73,7 +73,7 @@ public class XSLFOPlugin extends AbstractPlugin
     private static final Logger logger_ = Logger.getLogger(XSLFOPlugin.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
     /** 
