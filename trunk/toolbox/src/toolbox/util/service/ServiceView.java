@@ -3,14 +3,17 @@ package toolbox.util.service;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 
 import org.apache.commons.collections.MapUtils;
+import org.apache.log4j.Logger;
 
+import toolbox.util.statemachine.StateMachine;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 
@@ -24,34 +27,7 @@ import toolbox.util.ui.SmartAction;
  */
 public class ServiceView extends JPanel
 {
-    //--------------------------------------------------------------------------
-    // Action Constants
-    //--------------------------------------------------------------------------
-
-    private static final String ACTION_INITIALIZE = "initialize";
-    
-    /**
-     * Action name to start the service.
-     */
-    private static final String ACTION_START = "start";
-
-    /**
-     * Action name to suspend the service.
-     */
-    private static final String ACTION_SUSPEND = "suspend";
-    
-    /**
-     * Action name to resume the service.
-     */
-    private static final String ACTION_RESUME = "resume";
-    
-    /**
-     * Action name to stop the service.
-     */
-    private static final String ACTION_STOP = "stop";
-    
-    
-    private static final String ACTION_DESTROY = "destroy";
+    private static final Logger logger_ = Logger.getLogger(ServiceView.class);
     
     //--------------------------------------------------------------------------
     // Fields
@@ -60,7 +36,7 @@ public class ServiceView extends JPanel
     /**
      * Service thats services as the model for this view.
      */
-    private Service service_;
+    private ObservableService service_;
 
     /**
      * Maps an action's name to its corresponding action.
@@ -71,8 +47,6 @@ public class ServiceView extends JPanel
      * Internal listener for this service.
      */
     private ServiceListener myServiceListener_;
-
-
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -83,7 +57,7 @@ public class ServiceView extends JPanel
      * 
      * @param service Service that acts as the model for this view.
      */
-    public ServiceView(Service service)
+    public ServiceView(ObservableService service)
     {
         myServiceListener_ = new MyServiceListener();
         setService(service);
@@ -100,7 +74,7 @@ public class ServiceView extends JPanel
      * 
      * @return Service
      */
-    public Service getService()
+    public ObservableService getService()
     {
         return service_;
     }
@@ -111,16 +85,16 @@ public class ServiceView extends JPanel
      * 
      * @param service The service to set.
      */
-    public void setService(Service service)
+    public void setService(ObservableService service)
     {
         // Remove the old one if one exists
         if (service_ != null)
-            ((ObservableService) service_).removeServiceListener(myServiceListener_);
+            service_.removeServiceListener(myServiceListener_);
         
         service_ = service;
         
         // Transsfer the listener to the newly appointed service.
-        ((ObservableService) service_).addServiceListener(myServiceListener_);
+        service_.addServiceListener(myServiceListener_);
     }
     
     //--------------------------------------------------------------------------
@@ -136,30 +110,42 @@ public class ServiceView extends JPanel
 
         if (service_ instanceof Initializable)
         {    
-            actions_.put(ACTION_INITIALIZE, new InitializeAction());
-            add(new JSmartButton((Action) actions_.get(ACTION_INITIALIZE)));
+            actions_.put(ServiceTransition.INITIALIZE, new InitializeAction());
+            
+            add(new JSmartButton((Action) 
+                actions_.get(ServiceTransition.INITIALIZE)));
         }
 
         if (service_ instanceof Startable)
         {    
-            actions_.put(ACTION_START, new StartAction());
-            actions_.put(ACTION_STOP, new StopAction());
-            add(new JSmartButton((Action) actions_.get(ACTION_START)));
-            add(new JSmartButton((Action) actions_.get(ACTION_STOP)));
+            actions_.put(ServiceTransition.START, new StartAction());
+            actions_.put(ServiceTransition.STOP, new StopAction());
+            
+            add(new JSmartButton((Action) 
+                actions_.get(ServiceTransition.START)));
+            
+            add(new JSmartButton((Action) 
+                actions_.get(ServiceTransition.STOP)));
         }
         
         if (service_ instanceof Suspendable)
         {
-            actions_.put(ACTION_SUSPEND, new SuspendAction());
-            actions_.put(ACTION_RESUME, new ResumeAction());
-            add(new JSmartButton((Action) actions_.get(ACTION_SUSPEND)));
-            add(new JSmartButton((Action) actions_.get(ACTION_RESUME)));
+            actions_.put(ServiceTransition.SUSPEND, new SuspendAction());
+            actions_.put(ServiceTransition.RESUME, new ResumeAction());
+            
+            add(new JSmartButton((Action) 
+                actions_.get(ServiceTransition.SUSPEND)));
+            
+            add(new JSmartButton((Action) 
+                actions_.get(ServiceTransition.RESUME)));
         }
         
         if (service_ instanceof Destroyable)
         {    
-            //actions_.put(ACTION_DESTROY, new DestroyAction());
-            add(new JSmartButton((Action) actions_.get(ACTION_DESTROY)));
+            actions_.put(ServiceTransition.DESTROY, new DestroyAction());
+            
+            add(new JSmartButton((Action) 
+                actions_.get(ServiceTransition.DESTROY)));
         }
     }
     
@@ -182,22 +168,23 @@ public class ServiceView extends JPanel
         {
             ServiceState current = service.getState();
             
+            logger_.debug("New state = " + service.getState());
+            
             if (service instanceof ObservableService)
             {
-                // TODO: Left off here
+                ObservableService obs = (ObservableService) service;
+                StateMachine sm = obs.getStateMachine();
+                List transitions = sm.getTransitionsFrom(current);
                 
-                //ObservableService obs = (ObservableService) service;
-                //obs.
-            }
-            
-            
-            
-            if (service.getState() == ServiceState.INITIALIZED)
-            {
-                ((AbstractAction) actions_.get(ACTION_START)).setEnabled(true);
-                ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
-                ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
-                ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
+                for (Iterator iter = actions_.entrySet().iterator(); 
+                     iter.hasNext();)
+                {
+                    Map.Entry entry = (Map.Entry) iter.next();
+                    
+                    ServiceTransition tran = (ServiceTransition) entry.getKey();
+                    Action action = (Action) entry.getValue();
+                    action.setEnabled(transitions.contains(tran));
+                }
             }
         }
     }
@@ -261,10 +248,11 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Startable) service_).start();
-            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
-            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
-            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
-            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
+            
+//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
+//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
+//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
+//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
         }
     }
 
@@ -294,10 +282,11 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Startable) service_).stop();
-            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(true);
-            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
-            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
-            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
+            
+//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(true);
+//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
+//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
+//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
         }
     }
 
@@ -327,10 +316,11 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Suspendable) service_).suspend();
-            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
-            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
-            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
-            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(true);
+            
+//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
+//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
+//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
+//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(true);
         }
     }
 
@@ -359,10 +349,39 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Suspendable) service_).resume();
-            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
-            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
-            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
-            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
+            
+//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
+//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
+//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
+//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // DestroyAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Destroys the service.
+     */
+    class DestroyAction extends SmartAction
+    {
+        /**
+         * Creates an DestroyAction.
+         */
+        public DestroyAction()
+        {
+            super("Destroy", true, false, null);
+        }
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        {
+            ((Destroyable) service_).destroy();
         }
     }
 }
