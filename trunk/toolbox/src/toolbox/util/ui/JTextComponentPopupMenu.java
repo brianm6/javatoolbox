@@ -90,6 +90,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
      */    
     class CopyAction extends AbstractAction
     {
+        /**
+         * Creates a CopyAction.
+         */
         CopyAction()
         {
             super("Copy");
@@ -99,6 +102,10 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             textComponent_.copy();
@@ -114,6 +121,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
      */    
     class PasteAction extends AbstractAction
     {
+        /**
+         * Creates a PasteAction.
+         */
         PasteAction()
         {
             super("Paste");
@@ -123,6 +133,10 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             textComponent_.paste();
@@ -138,12 +152,19 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
      */
     class SelectAllAction extends AbstractAction
     {
+        /**
+         * Creates a SelectAllAction.
+         */
         SelectAllAction()
         {
             super("Select All");
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             textComponent_.selectAll();
@@ -159,12 +180,19 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
      */
     class SetFontAction extends AbstractAction
     {
+        /**
+         * Creates a SetFontAction.
+         */
         SetFontAction()
         {
             super("Set font..");
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             final Font originalFont = textComponent_.getFont();
@@ -176,8 +204,8 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                 (w != null && w instanceof Frame) ? (Frame) w : new Frame();
             
             boolean antialias = 
-                textComponent_ instanceof AntiAliased ? 
-                    ((AntiAliased) textComponent_).isAntiAliased():false;
+                textComponent_ instanceof AntiAliased ?
+                    ((AntiAliased) textComponent_).isAntiAliased() : false;
 
             JFontChooserDialog fontChooser =
                 new JFontChooserDialog(
@@ -234,6 +262,11 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
      */    
     class FindAction extends AbstractAction
     {
+        /**
+         * Creates a FindAction.
+         * 
+         * @param textComp Component to search.
+         */
         FindAction(JTextComponent textComp)
         {
             super("Find..");
@@ -244,7 +277,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
             final JTextComponent finalTextComp = textComp;
             
             // Bind Ctrl-F to activate the find action
-            textComp.addKeyListener( new KeyAdapter()
+            textComp.addKeyListener(new KeyAdapter()
             {
                 public void keyTyped(KeyEvent e)
                 {
@@ -252,12 +285,16 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                         ((KeyEvent.getKeyModifiersText(
                             e.getModifiers()).equals("Ctrl"))))
                             actionPerformed(
-                                new ActionEvent(finalTextComp, 0, "" ));
+                                new ActionEvent(finalTextComp, 0, ""));
                 }
             });
         }
 
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             JFindDialog findDialog = 
@@ -279,6 +316,11 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         private static File lastDir_;
         private JTextComponent jtc_;
         
+        /**
+         * Creates a InsertFileAction.
+         * 
+         * @param jtc Text component to insert to.
+         */
         InsertFileAction(JTextComponent jtc)
         {
             super("Insert..", true, false, null);
@@ -286,6 +328,10 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
 
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = null;
@@ -323,6 +369,11 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         private static File lastDir_;
         private JTextComponent jtc_;
         
+        /**
+         * Creates a SaveAsAction.
+         * 
+         * @param jtc Text component with contents to save.
+         */
         SaveAsAction(JTextComponent jtc)
         {
             super("Save As..", true, false, null);
@@ -333,6 +384,10 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
 
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = null;
@@ -368,30 +423,47 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     {
         private JTextComponent jtc_;
         
+        /**
+         * Creates a SearchInitiator.
+         * 
+         * @param jtc Textcomponent to search.
+         */
         public SearchInitiator(JTextComponent jtc)
         {
             jtc_ = jtc;
         }
 
         
+        /**
+         * @see toolbox.util.ui.JFindDialog.SearchInitiator#getFrame()
+         */
         public Frame getFrame()
         {
             return SwingUtil.getFrameAncestor(jtc_);
         }
 
 
+        /**
+         * @see toolbox.util.ui.JFindDialog.SearchInitiator#getSearchString()
+         */
         public String getSearchString()
         {
             return "";
         }
 
 
+        /**
+         * @see toolbox.util.ui.JFindDialog.SearchInitiator#getText()
+         */
         public String getText()
         {
             return jtc_.getText();
         }
 
 
+        /**
+         * @see toolbox.util.ui.JFindDialog.SearchInitiator#selectText(int, int)
+         */
         public void selectText(int start, int end)
         {
             jtc_.setSelectionStart(start);

@@ -56,8 +56,8 @@ public class ImageCache
     /**
      * Retrieves the icon at the given URL.
      * 
-     * @param url URL to load icon from
-     * @return Icon if a valid url, null otherwise
+     * @param url URL to load icon from.
+     * @return Icon if a valid url, null otherwise.
      */
     public static Icon getIcon(String url)
     {
@@ -78,8 +78,8 @@ public class ImageCache
     /**
      * Retrieve the image at the given URL.
      * 
-     * @param url URL to load image from
-     * @return Image if a valid url, null otherwise
+     * @param url URL to load image from.
+     * @return Image if a valid url, null otherwise.
      */
     public static Image getImage(String url)
     {

@@ -311,7 +311,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
                 }
                 else
                 {
-                    File root  = new File(path.substring(0,3));
+                    File root  = new File(path.substring(0, 3));
                     
                     if (ArrayUtil.contains(File.listRoots(), root))
                     {
@@ -336,7 +336,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
                     else
                     {
                         // Root not found in list
-                        throw new IllegalArgumentException( 
+                        throw new IllegalArgumentException(
                             "Root could not be determined in path " + path);
                     }
                 }
@@ -344,7 +344,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     
             logger_.debug("Path Tokens = " + ArrayUtil.toString(pathTokens));
             
-            DefaultTreeModel model = (DefaultTreeModel)tree_.getModel();
+            DefaultTreeModel model = (DefaultTreeModel) tree_.getModel();
             FileNode root = (FileNode) model.getRoot();
     
             // Discover path by iterating over pathTokens and building a 
@@ -355,18 +355,18 @@ public class JFileExplorer extends JPanel implements IPreferenced
                 FileNode current = root;
                 
                 // Starts at 1 to skip over root which is zero
-                for(int i=1; i<pathTokens.length; i++) 
+                for (int i = 1; i < pathTokens.length; i++) 
                 {
                     if (current.getChildCount() == 0)
                     {
                         // Expand node on demand
                         String partialPath = "";
                         
-                        for (int j=0; j< i; j++) 
+                        for (int j = 0; j < i; j++) 
                         {
                             if (pathTokens[j].endsWith(File.separator))
                                 pathTokens[j] = pathTokens[j].substring(0, 
-                                    pathTokens[j].length() -1);
+                                    pathTokens[j].length() - 1);
                                 
                             partialPath = partialPath + 
                                 pathTokens[j] + File.separator;
@@ -493,7 +493,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFileDoubleClicked()
     {
-        for (int i=0; i<fileExplorerListeners_.length; 
+        for (int i = 0; i < fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].fileDoubleClicked(getFilePath()));
     }
 
@@ -503,7 +503,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFileSelected()
     {
-        for (int i=0; i<fileExplorerListeners_.length; 
+        for (int i = 0; i < fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].fileSelected(getFilePath()));
     }
 
@@ -515,7 +515,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderSelected(String folder)
     {
-        for (int i=0; i<fileExplorerListeners_.length; 
+        for (int i = 0; i < fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].folderSelected(folder));
     }
 
@@ -527,7 +527,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderDoubleClicked(String folder)
     {
-        for (int i=0; i<fileExplorerListeners_.length; 
+        for (int i = 0; i < fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].folderDoubleClicked(folder));
     }
 
@@ -546,7 +546,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         rootsComboBox_ = new JSmartComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
         rootsComboBox_.addItemListener(new DriveComboListener());
-        driveIcon_= ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE);
+        driveIcon_ = ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE);
         rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
@@ -840,8 +840,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
             }
             else if (evt.getClickCount() == 1)
             {
-                // No need to fire a fileSelected event. 
-                // FileListSelectionListener has this covered.
+                ; // No need to fire a fileSelected event. 
+                  // FileListSelectionListener has this covered.
             }
             else if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
             {

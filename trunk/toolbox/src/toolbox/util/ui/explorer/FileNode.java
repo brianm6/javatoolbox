@@ -41,7 +41,7 @@ public class FileNode extends DefaultMutableTreeNode
         if (!(obj instanceof DefaultMutableTreeNode))
             return false;
         
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)obj;
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj;
         
         String file1 = (String) getUserObject();
         String file2 = (String) node.getUserObject();

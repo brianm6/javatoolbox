@@ -17,14 +17,14 @@ import toolbox.util.SwingUtil;
  * Convenience class that adds a few creature comforts to the writing of 
  * Actions. Features include: <p>
  * <ul>
- * <li>Built in try/catch handler so you don't have to. All errors are displayed 
+ * <li>Built in try/catch handler so you don't have to. All errors are displayed
  *     via the GUI (including stack trace) and also logged via Log4J.
  * <li>Action can be specified to execute synchronously or asynchronously
  * <li>A wait cursor can automatically be applied to a top level JComponent and
  *     then is reset back to the default after the action has completed 
  *     execution
  * <li>Any <code>Action</code> can be arbitrarily inserted in the execution path
- *     at the following interception points: Before execution, during a failure, 
+ *     at the following interception points: Before execution, during a failure,
  *     or after execution.
  * </ul>  
  * <p>
@@ -159,7 +159,7 @@ public abstract class SmartAction extends AbstractAction
             {
                 try
                 {
-                    for (int i=0, n=preActions_.size(); i<n; i++)
+                    for (int i = 0, n = preActions_.size(); i < n; i++)
                         ((Action) preActions_.get(i)).actionPerformed(e);
 
                     SmartAction.this.runAction(e);
@@ -168,12 +168,12 @@ public abstract class SmartAction extends AbstractAction
                 {
                     caught_ = t;
 
-                    for (int i=0, n=errorActions_.size(); i<n; i++)
+                    for (int i = 0, n = errorActions_.size(); i < n; i++)
                         ((Action) errorActions_.get(i)).actionPerformed(e);
                 }
                 finally
                 {
-                    for (int i=0, n=finallyActions_.size(); i<n; i++)
+                    for (int i = 0, n = finallyActions_.size(); i < n; i++)
                         ((Action) finallyActions_.get(i)).actionPerformed(e);
                 }
             }
@@ -316,7 +316,7 @@ public abstract class SmartAction extends AbstractAction
          */
         public void actionPerformed(ActionEvent e)
         {
-           ExceptionUtil.handleUI(getCaught(), logger_);
+            ExceptionUtil.handleUI(getCaught(), logger_);
         }
     }
 }

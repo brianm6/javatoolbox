@@ -28,6 +28,14 @@ public class JMultiSplitPane extends JPanel
     private static final Logger logger_ =
         Logger.getLogger(JMultiSplitPane.class);
 
+    
+    private static int serial = 0;
+    private static int splitWidth = 10;
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Size in pixels of the divider.
      */
@@ -41,9 +49,6 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-
-    private static int serial = 0;
-    private static int splitWidth = 10;
     
     /**
      * Entrypoint
@@ -417,7 +422,7 @@ public class JMultiSplitPane extends JPanel
         else
         {
             Assert.isTrue(
-                cont instanceof JSplitPane,"container not a splitpane!");
+                cont instanceof JSplitPane, "container not a splitpane!");
             
             JSplitPane split = (JSplitPane) cont;
             Container parent = split.getParent();
@@ -479,11 +484,20 @@ public class JMultiSplitPane extends JPanel
     {
         private JComponent comp_;
                 
+        /**
+         * Creates a AddComponent.
+         * 
+         * @param comp Component to add.
+         */
         AddComponent(JComponent comp)
         {
             comp_ = comp;
         }
         
+        
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             addComponent(comp_);
@@ -502,11 +516,20 @@ public class JMultiSplitPane extends JPanel
     {
         private JComponent comp_;
                 
+        /**
+         * Creates a RemoveComponent.
+         * 
+         * @param comp Component to remove.
+         */
         RemoveComponent(JComponent comp)
         {
             comp_ = comp;
         }
         
+        
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             removeComponent(comp_);

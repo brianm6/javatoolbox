@@ -48,17 +48,17 @@ public class JFileExplorerTest extends UITestCase
     //--------------------------------------------------------------------------
     
     /**
-	 * Presents JFileExplorer in a window so that it can be tested 
+     * Presents JFileExplorer in a window so that it can be tested 
      * interactively.
      * <p>
-	 * <ul>
-	 * <li>The listener can be verified since it prints out messages on event
-	 *     notification.
-	 * <li>selectFolder() can be tested by entering a file path in the
-	 *     textfield and clicking on the Set Folder button.
-	 * <li>Refresh can be tested by clicking on the icon in the infobar
-	 * <ul>
-	 */
+     * <ul>
+     * <li>The listener can be verified since it prints out messages on event
+     *     notification.
+     * <li>selectFolder() can be tested by entering a file path in the
+     *     textfield and clicking on the Set Folder button.
+     * <li>Refresh can be tested by clicking on the icon in the infobar
+     * <ul>
+     */
     public void testJFileExplorer()
     {
         logger_.info("Running testJFileExplorer...");
@@ -78,26 +78,46 @@ public class JFileExplorerTest extends UITestCase
         
         class ExplorerListener implements FileExplorerListener, ActionListener
         {
+            /**
+             * @see toolbox.util.ui.explorer.FileExplorerListener#
+             *      fileDoubleClicked(java.lang.String)
+             */
             public void fileDoubleClicked(String file)
             {
                 logger_.info("file " + file + " double clicked");
             }
             
+            /**
+             * @see toolbox.util.ui.explorer.FileExplorerListener#
+             *      folderSelected(java.lang.String)
+             */
             public void folderSelected(String folder)
             {
                 logger_.info("folder " + folder + " selected");
             }
             
+            /**
+             * @see toolbox.util.ui.explorer.FileExplorerListener#
+             *      folderDoubleClicked(java.lang.String)
+             */
             public void folderDoubleClicked(String folder)
             {
                 logger_.info("folder " + folder + " double clicked");    
             }
             
+            /**
+             * @see toolbox.util.ui.explorer.FileExplorerListener#
+             *      fileSelected(java.lang.String)
+             */
             public void fileSelected(String file)
             {
                 logger_.info("file " + file + " selected");            
             }
             
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 jfe.selectFolder(testField.getText());

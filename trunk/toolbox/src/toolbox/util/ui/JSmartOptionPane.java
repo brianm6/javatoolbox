@@ -356,8 +356,8 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
         Object[] options,
         Object initialValue)
     {
-        forwardIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Forward.gif"); 
-        reverseIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Reverse.gif"); 
+        forwardIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Forward.gif");
+        reverseIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Reverse.gif");
         
         message_ = message;
         details_ = details;
@@ -497,7 +497,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
         String message = exception.getMessage();
         
         if (StringUtil.isNullOrBlank(message))
-            message = StringUtil.getLine(stack,0);
+            message = StringUtil.getLine(stack, 0);
 
         showDetailedMessageDialog(
             parentComponent, 
@@ -816,8 +816,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
             newType != JOptionPane.QUESTION_MESSAGE && 
             newType != JOptionPane.PLAIN_MESSAGE)
             throw new RuntimeException(
-                "JOptionPane: type must be one of JOptionPane.ERROR_MESSAGE, "+
-                "JOptionPane.INFORMATION_MESSAGE, JOptionPane.WARNING_MESSAGE,"+
+                "JOptionPane: type must be one of JOptionPane.ERROR_MESSAGE, " +
+                "JOptionPane.INFORMATION_MESSAGE, " +
+                "JOptionPane.WARNING_MESSAGE," +
                 "JOptionPane.QUESTION_MESSAGE or JOptionPane.PLAIN_MESSAGE");
 
         int oldType = messageType_;
@@ -1171,13 +1172,16 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a dialog
+     * Creates a dialog.
      * 
-     * @param  parentComponent  Parent
-     * @param  title            Dialog title
-     * @param  style            Dialog style
+     * @param parentComponent Parent component.
+     * @param title Dialog title.
+     * @param style Dialog style.
+     * @return JDialog.
      */
-    private JDialog createDialog(Component parentComponent, String title,
+    private JDialog createDialog(
+        Component parentComponent,
+        String title,
         int style)
     {
         final JDialog dialog;
@@ -1218,18 +1222,20 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
         
         dialog.addWindowListener(new WindowAdapter()
         {
-            private boolean gotFocus = false;
+            private boolean gotFocus_ = false;
+            
             public void windowClosing(WindowEvent we)
             {
                 setValue(null);
             }
+            
             public void windowGainedFocus(WindowEvent we)
             {
                 // Once window gets focus, set initial focus
-                if (!gotFocus)
+                if (!gotFocus_)
                 {
                     selectInitialValue();
-                    gotFocus = true;
+                    gotFocus_ = true;
                 }
             }
         });
@@ -1266,7 +1272,10 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
 
 
     /**
-     * Dunno what this is for
+     * Dunno what this is for.
+     * 
+     * @param messageType Message type.
+     * @return int
      */
     private static int styleFromMessageType(int messageType)
     {
@@ -1337,7 +1346,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
     {
         if (detailArea_ == null)
         {
-            detailArea_ = new JSmartTextArea(false, SwingUtil.getDefaultAntiAlias());
+            detailArea_ = new JSmartTextArea(
+                false, SwingUtil.getDefaultAntiAlias());
+            
             detailArea_.setFont(FontUtil.getPreferredMonoFont());
             detailScroller_ = new JScrollPane(detailArea_);
 
@@ -1400,7 +1411,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
             okButton_.addActionListener(this);
 
             detailsButton_ = new JSmartButton(BUTTON_COLLAPSED);
-            detailsButton_.setHorizontalTextPosition(SwingConstants.LEADING);            
+            detailsButton_.setHorizontalTextPosition(SwingConstants.LEADING);
             detailsButton_.setIcon(forwardIcon_);
             detailsButton_.addActionListener(this);
 

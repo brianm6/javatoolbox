@@ -26,9 +26,12 @@ public class JFindDialog extends JDialog
 {
     // TODO: Search from current cursor position
     
-    private static final Logger logger_ =
-        Logger.getLogger(JFindDialog.class);
+    private static final Logger logger_ = Logger.getLogger(JFindDialog.class);
    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Textfield for the user to change/updatee the search string. 
      */     
@@ -105,11 +108,11 @@ public class JFindDialog extends JDialog
         c.add(BorderLayout.SOUTH, status_ = new JStatusBar());
 
         // Bind ESC to the CancelAction
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW ).
-            put(KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 ), "escPressed");
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+            "escPressed");
             
         getRootPane().getActionMap().put("escPressed", new CancelAction());
-        
     }
     
     //--------------------------------------------------------------------------
@@ -123,11 +126,19 @@ public class JFindDialog extends JDialog
      */
     class FindAction extends AbstractAction
     {
+        /**
+         * Creates a FindAction.
+         */
         public FindAction()
         {
             super("Find Next");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String searchFor = findField_.getText();
@@ -139,7 +150,7 @@ public class JFindDialog extends JDialog
                 int start = 0;
                 
                 if (searchFor.equals(lastSearched_))
-                    start = lastFound_+1;
+                    start = lastFound_ + 1;
                 else
                     lastSearched_ = searchFor;
                 
@@ -172,11 +183,19 @@ public class JFindDialog extends JDialog
      */
     class CancelAction extends AbstractAction
     {
+        /**
+         * Creates a CancelAction.
+         */
         public CancelAction()
         {
             super("Cancel");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             dispose();
@@ -197,7 +216,7 @@ public class JFindDialog extends JDialog
          * 
          * @return String
          */
-        public String getSearchString();
+        String getSearchString();
         
         
         /**
@@ -205,16 +224,16 @@ public class JFindDialog extends JDialog
          * 
          * @return String
          */
-        public String getText();
+        String getText();
         
         
         /**
          * Selects the text after it has been found.
          * 
-         * @param start Starting index of selection
-         * @param end Ending index of selection
+         * @param start Starting index of selection.
+         * @param end Ending index of selection.
          */
-        public void selectText(int start, int end);
+        void selectText(int start, int end);
         
         
         /**
@@ -222,6 +241,6 @@ public class JFindDialog extends JDialog
          * 
          * @return Frame
          */
-        public Frame getFrame();
+        Frame getFrame();
     }
 }

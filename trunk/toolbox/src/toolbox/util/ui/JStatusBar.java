@@ -47,11 +47,11 @@ public class JStatusBar extends JPanel implements IStatusBar
         Font f = FontUtil.getPreferredSerifFont();
         
         // TODO: remove once getPreferredSerifFont() gets size from LAF
-        f = f.deriveFont( (float) (f.getSize() - 1));
+        f = f.deriveFont((float) (f.getSize() - 1));
         
         statusLabel_.setFont(f);
         FontMetrics fm = statusLabel_.getFontMetrics(f);
-        Dimension d = new Dimension(100, (int)(fm.getHeight() * 1.1));
+        Dimension d = new Dimension(100, (int) (fm.getHeight() * 1.1));
         statusLabel_.setPreferredSize(d);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));        
@@ -116,17 +116,34 @@ public class JStatusBar extends JPanel implements IStatusBar
     // Protected
     //--------------------------------------------------------------------------
     
+    /**
+     * Sets the text on the status bar.
+     * 
+     * @param state Status bar state.
+     * @param status Status bar text.
+     */
     public void setStatus(int state, String status)
     {
         switch (state)
         {
-            case -1 : break;
-            case IStatusBar.BUSY   : statusLabel_.setIcon(ImageCache.getIcon("")); break;
-            case IStatusBar.ERROR  : statusLabel_.setIcon(ImageCache.getIcon("")); break;
-            case IStatusBar.INFO   : statusLabel_.setIcon(ImageCache.getIcon("")); break;
-            case IStatusBar.WARNING: statusLabel_.setIcon(ImageCache.getIcon("")); break;
+            case -1 : 
+                break;
+                
+            case IStatusBar.BUSY: 
+                statusLabel_.setIcon(ImageCache.getIcon("")); break;
+                
+            case IStatusBar.ERROR: 
+                statusLabel_.setIcon(ImageCache.getIcon("")); break;
+                
+            case IStatusBar.INFO: 
+                statusLabel_.setIcon(ImageCache.getIcon("")); break;
+                
+            case IStatusBar.WARNING:
+                statusLabel_.setIcon(ImageCache.getIcon("")); break;
             
-            default: throw new IllegalArgumentException("Invalid status bar state: " + state);
+            default: 
+                throw new IllegalArgumentException(
+                    "Invalid status bar state: " + state);
         }
         
         statusLabel_.setText(status);

@@ -23,6 +23,10 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartLabel extends JLabel implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+
     /**
      * Antialiased flag.
      */
@@ -58,7 +62,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * Creates a JSmartLabel.
      * 
-     * @param text Label text
+     * @param text Label text.
      */
     public JSmartLabel(String text)
     {
@@ -69,7 +73,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * Creates a JSmartLabel.
      * 
-     * @param image Label image
+     * @param image Label image.
      */
     public JSmartLabel(Icon image)
     {
@@ -80,8 +84,8 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * Creates a JSmartLabel.
      * 
-     * @param image Label image
-     * @param horizontalAlignment Text alignment
+     * @param image Label image.
+     * @param horizontalAlignment Text alignment.
      */
     public JSmartLabel(Icon image, int horizontalAlignment)
     {
@@ -92,9 +96,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * Creates a JSmartLabel.
      * 
-     * @param text Label text
-     * @param icon Label icon
-     * @param horizontalAlignment Text alignment
+     * @param text Label text.
+     * @param icon Label icon.
+     * @param horizontalAlignment Text alignment.
      */
     public JSmartLabel(String text, Icon icon, int horizontalAlignment)
     {
@@ -105,8 +109,8 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * Creates a JSmartLabel.
      * 
-     * @param text Label text
-     * @param horizontalAlignment Text alignment
+     * @param text Label text.
+     * @param horizontalAlignment Text alignment.
      */
     public JSmartLabel(String text, int horizontalAlignment)
     {
@@ -117,9 +121,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * Creates a JSmartLabel with a gradient.
      *
-     * @param text Label text
-     * @param start Gradient start color
-     * @param end Gradient end color
+     * @param text Label text.
+     * @param start Gradient start color.
+     * @param end Gradient end color.
      */
     public JSmartLabel(String text, Color start, Color end) 
     {
@@ -135,6 +139,8 @@ public class JSmartLabel extends JLabel implements AntiAliased
 
     /**
      * Turns the gradient on/off.
+     * 
+     * @param b True to turn on the gradient, false to turn it off.
      */
     public void setGradient(boolean b)
     {
@@ -203,7 +209,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
     {
         if (gradient_)
         {    
-            Insets insets = new Insets(0,0,0,0);
+            Insets insets = new Insets(0, 0, 0, 0);
             g.setColor(startColor_);
             Graphics2D g2d = (Graphics2D) g;
         

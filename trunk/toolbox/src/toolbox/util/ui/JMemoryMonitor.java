@@ -117,7 +117,7 @@ public class JMemoryMonitor extends JComponent
         setBackground(UIManager.getColor("Label.background"));
         setFont(labelFont_);
         
-        FontRenderContext frc = new FontRenderContext(null,false,false);
+        FontRenderContext frc = new FontRenderContext(null, false, false);
         lineMetrics_ = labelFont_.getLineMetrics(TEST_STRING, frc);
 
         progressBackground_ = UIManager.getColor("ScrollBar.thumb");
@@ -131,7 +131,7 @@ public class JMemoryMonitor extends JComponent
             progressForeground_ = getForeground();
         // =====================================================================
         
-        setPreferredSize(new Dimension(75,15));
+        setPreferredSize(new Dimension(75, 15));
     }
 
     //--------------------------------------------------------------------------
@@ -167,8 +167,8 @@ public class JMemoryMonitor extends JComponent
     public String getToolTipText()
     {
         Runtime runtime = Runtime.getRuntime();
-        int freeMemory  = (int)(runtime.freeMemory() / 1024);
-        int totalMemory = (int)(runtime.totalMemory() / 1024);
+        int freeMemory  = (int) (runtime.freeMemory() / 1024);
+        int totalMemory = (int) (runtime.totalMemory() / 1024);
         int usedMemory  = (totalMemory - freeMemory);
         return usedMemory + "M of " + totalMemory + "M";
     }
@@ -189,20 +189,20 @@ public class JMemoryMonitor extends JComponent
     public void paintComponent(Graphics g)
     {
         SwingUtil.makeAntiAliased(g, true);
-        Insets insets = new Insets(0,0,0,0);
+        Insets insets = new Insets(0, 0, 0, 0);
 
         //
         // Calc memory stats
         //
         
         Runtime runtime = Runtime.getRuntime();
-        int freeMemory = (int)(runtime.freeMemory() / 1024);
-        int totalMemory = (int)(runtime.totalMemory() / 1024);
+        int freeMemory = (int) (runtime.freeMemory() / 1024);
+        int totalMemory = (int) (runtime.totalMemory() / 1024);
         int usedMemory = (totalMemory - freeMemory);
 
         int width = getWidth() - insets.left - insets.right;
         int height = getHeight() - insets.top - insets.bottom - 1;
-        float fraction = ((float)usedMemory) / totalMemory;
+        float fraction = ((float) usedMemory) / totalMemory;
 
         g.setColor(progressBackground_);
 
@@ -227,7 +227,7 @@ public class JMemoryMonitor extends JComponent
             new RoundRectangle2D.Double(
                 insets.left, 
                 insets.top, 
-                (int)(width * fraction), 
+                (int) (width * fraction), 
                 height, 
                 1, 
                 1));
@@ -237,34 +237,34 @@ public class JMemoryMonitor extends JComponent
         //
         
         String str = (usedMemory / 1024) + "M of " + (totalMemory / 1024) + "M";
-        FontRenderContext frc = new FontRenderContext(null,false,false);
-        Rectangle2D bounds = g.getFont().getStringBounds(str,frc);
+        FontRenderContext frc = new FontRenderContext(null, false, false);
+        Rectangle2D bounds = g.getFont().getStringBounds(str, frc);
         Graphics g2 = g.create();
         
         g2.setClip(insets.left,
                    insets.top,
-                   (int)(width * fraction),
+                   (int) (width * fraction),
                    height);
 
         g2.setColor(Color.black);
 
         g2.drawString(str,
-                      insets.left + (int)(width - bounds.getWidth()) / 2,
-                      (int)(insets.top + lineMetrics_.getAscent()));
+                      insets.left + (int) (width - bounds.getWidth()) / 2,
+                      (int) (insets.top + lineMetrics_.getAscent()));
 
         g2.dispose();
         g2 = g.create();
 
-        g2.setClip(insets.left + (int)(width * fraction),
+        g2.setClip(insets.left + (int) (width * fraction),
                    insets.top,
-                   getWidth() - insets.left - (int)(width*fraction),
+                   getWidth() - insets.left - (int) (width * fraction),
                    height);
 
         g2.setColor(getForeground());
 
         g2.drawString(str,
-                      insets.left + (int)(width - bounds.getWidth()) / 2,
-                     (int)(insets.top + lineMetrics_.getAscent()));
+                      insets.left + (int) (width - bounds.getWidth()) / 2,
+                     (int) (insets.top + lineMetrics_.getAscent()));
 
         g2.dispose();
     }
@@ -278,6 +278,10 @@ public class JMemoryMonitor extends JComponent
      */
     class RefreshAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent evt)
         {
             repaint();

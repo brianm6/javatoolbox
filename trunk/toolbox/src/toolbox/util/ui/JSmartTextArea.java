@@ -39,7 +39,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     // Constants
     //--------------------------------------------------------------------------
     
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(JSmartTextArea.class);
 
     // XML structure for saving preferences.
@@ -247,13 +247,13 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     public void savePrefs(Element prefs)
     {
         Element root = new Element(NODE_JSMARTTEXTAREA);
-        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll()+""));
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased()+""));
-        root.addAttribute(new Attribute(ATTR_CAPACITY, getCapacity()+""));
-        root.addAttribute(new Attribute(ATTR_WRAPLINES, getLineWrap()+""));
+        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
+        root.addAttribute(new Attribute(ATTR_CAPACITY, getCapacity() + ""));
+        root.addAttribute(new Attribute(ATTR_WRAPLINES, getLineWrap() + ""));
         
         root.addAttribute(
-            new Attribute(ATTR_PRUNING_FACTOR,getPruneFactor()+""));
+            new Attribute(ATTR_PRUNING_FACTOR, getPruneFactor() + ""));
         
         root.appendChild(FontUtil.toElement(getFont()));
         prefs.appendChild(root);
@@ -296,7 +296,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
             // Let the pruning begin...            
             if (len > capacity_)
             {
-                int nlen = (int) ((float) pruningFactor_/100 * len);
+                int nlen = (int) ((float) pruningFactor_ / 100 * len);
                 logger_.debug("Pruning " + len + " to " + nlen);
                 setText(getText().substring(nlen));
             }  
@@ -428,7 +428,8 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     public void setPruneFactor(int f)
     {
-        Assert.isTrue(f>=0 && f<=100,
+        Assert.isTrue(
+            f >= 0 && f <= 100,
             "Pruning factor must be an integer between 0 and 100"); 
                 
         pruningFactor_ = f;
@@ -444,7 +445,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     protected void buildView()
     {
         // Build popup menu and add register with textarea
-        autoScrollCheckBox_ = new JSmartCheckBoxMenuItem(new AutoScrollAction());
+        autoScrollCheckBox_ = 
+            new JSmartCheckBoxMenuItem(new AutoScrollAction());
+        
         antiAliasCheckBox_ = new JSmartCheckBoxMenuItem(new AntiAliasAction());
         wrapLinesCheckBox_ = new JSmartCheckBoxMenuItem(new WrapLinesAction());
         
@@ -464,12 +467,19 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */    
     class AutoScrollAction extends AbstractAction 
     {
+        /**
+         * Creates a AutoScrollAction.
+         */
         public AutoScrollAction()
         {
             super("AutoScroll");
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             if (isAutoScroll())
@@ -486,12 +496,19 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     class AntiAliasAction extends AbstractAction 
     {
+        /**
+         * Creates a AntiAliasAction.
+         */
         public AntiAliasAction()
         {
             super("AntiAlias");
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             repaint();
@@ -507,12 +524,19 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     class WrapLinesAction extends AbstractAction 
     {
+        /**
+         * Creates a WrapLinesAction.
+         */
         public WrapLinesAction()
         {
             super("Wrap Lines");
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             setLineWrap(wrapLinesCheckBox_.isSelected());
@@ -528,12 +552,20 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     public class ClearAction extends AbstractAction
     {
+        /**
+         * Creates a ClearAction.
+         */
         public ClearAction()
         {
             this("Clear");
         }
         
         
+        /**
+         * Creates a ClearAction.
+         * 
+         * @param name Label of the action target.
+         */
         public ClearAction(String name)
         {
             super(name);
@@ -542,6 +574,10 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             setText("");

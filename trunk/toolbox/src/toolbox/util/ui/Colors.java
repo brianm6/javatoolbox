@@ -771,19 +771,19 @@ public class Colors
 
     private static XColor key_ = new XColor("", -1, -1, -1);
     
-    public static final Color BLUE1 = getColor("blue1");
-    public static final Color BLUE4 = getColor("blue4");
+    //public static final Color BLUE1 = getColor("blue1");
+    //public static final Color BLUE4 = getColor("blue4");
     
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
     /**
-	 * Returns the color for the given name.
-	 * 
-	 * @param name Name of the color to retrieve.
-	 * @return Color or null if the name is not found.
-	 */
+     * Returns the color for the given name.
+     * 
+     * @param name Name of the color to retrieve.
+     * @return Color or null if the name is not found.
+     */
     public static Color getColor(String name)
     {
         key_.name_ = name.toLowerCase();
@@ -800,15 +800,23 @@ public class Colors
     //--------------------------------------------------------------------------
 
     /**
-	 * Internal Color Representation.
-	 */
+     * Internal Color Representation.
+     */
     private static class XColor implements Comparable
     {
-        String name_;
-        int red_;
-        int green_;
-        int blue_;
+        private String name_;
+        private int red_;
+        private int green_;
+        private int blue_;
 
+        /**
+         * Creates a XColor.
+         * 
+         * @param name Color name.
+         * @param red Red component.
+         * @param green Green component.
+         * @param blue Blue component.
+         */
         XColor(String name, int red, int green, int blue)
         {
             name_ = name;
@@ -817,11 +825,21 @@ public class Colors
             blue_ = blue;
         }
 
+        
+        /**
+         * Returns this XColor's equivalent Color.
+         * 
+         * @return Color
+         */
         Color toColor()
         {
             return new ColorUIResource(red_, green_, blue_);
         }
 
+        
+        /**
+         * @see java.lang.Comparable#compareTo(java.lang.Object)
+         */
         public int compareTo(Object o)
         {
             XColor other = (XColor) o;

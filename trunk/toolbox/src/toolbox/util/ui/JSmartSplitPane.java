@@ -15,9 +15,13 @@ import toolbox.workspace.IPreferenced;
  */
 public class JSmartSplitPane extends JSplitPane implements IPreferenced
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     // Preferences
-    public static final String NODE_JSPLITPANE = "JSplitPane";
-    public static final String ATTR_DIVIDER_LOCATION = "dividerLocation";
+    private static final String NODE_JSPLITPANE = "JSplitPane";
+    private static final String ATTR_DIVIDER_LOCATION = "dividerLocation";
 
     //--------------------------------------------------------------------------
     // Constructors 
@@ -34,7 +38,7 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
     /**
      * Creates a JSmartSplitPane.
      * 
-     * @param newOrientation Orientation
+     * @param newOrientation Orientation.
      */
     public JSmartSplitPane(int newOrientation)
     {
@@ -45,8 +49,8 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
     /**
      * Creates a JSmartSplitPane.
      * 
-     * @param newOrientation Orientation
-     * @param newContinuousLayout Continuous layout
+     * @param newOrientation Orientation.
+     * @param newContinuousLayout Continuous layout.
      */
     public JSmartSplitPane(int newOrientation, boolean newContinuousLayout)
     {
@@ -57,9 +61,9 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
     /**
      * Creates a JSmartSplitPane.
      * 
-     * @param newOrientation Orientation
-     * @param newLeftComponent Left hand side component
-     * @param newRightComponent Right hand side component
+     * @param newOrientation Orientation.
+     * @param newLeftComponent Left hand side component.
+     * @param newRightComponent Right hand side component.
      */
     public JSmartSplitPane(
         int newOrientation,
@@ -73,10 +77,10 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
     /**
      * Creates a JSmartSplitPane.
      * 
-     * @param newOrientation Orientation
-     * @param newContinuousLayout Continuous layout
-     * @param newLeftComponent Left hand side component
-     * @param newRightComponent Right hand side component
+     * @param newOrientation Orientation.
+     * @param newContinuousLayout Continuous layout.
+     * @param newLeftComponent Left hand side component.
+     * @param newRightComponent Right hand side component.
      */
     public JSmartSplitPane(
         int newOrientation,
@@ -121,7 +125,7 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
         root.addAttribute(
             new Attribute(
                 ATTR_DIVIDER_LOCATION,
-                getDividerLocation()+""));
+                getDividerLocation() + ""));
             
         XOMUtil.insertOrReplace(prefs, root);
     }

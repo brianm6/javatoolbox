@@ -26,8 +26,8 @@ public class JButtonGroup extends ButtonGroup
     //--------------------------------------------------------------------------
     
     /**
-	 * Stores a reference to the currently selected button in the group.
-	 */
+     * Stores a reference to the currently selected button in the group.
+     */
     private AbstractButton selectedButton_;
 
     //--------------------------------------------------------------------------
@@ -35,19 +35,19 @@ public class JButtonGroup extends ButtonGroup
     //--------------------------------------------------------------------------
     
     /**
-	 * Creates an empty <code>JButtonGroup</code>.
-	 */
+     * Creates an empty <code>JButtonGroup</code>.
+     */
     public JButtonGroup()
     {
     }
 
     
     /**
-	 * Creates a <code>JButtonGroup</code> object from an array of buttons
-	 * and adds the buttons to the group No button will be selected initially.
-	 * 
-	 * @param buttons Array of <code>AbstractButton</code>s
-	 */
+     * Creates a <code>JButtonGroup</code> object from an array of buttons
+     * and adds the buttons to the group No button will be selected initially.
+     * 
+     * @param buttons Array of <code>AbstractButton</code>s
+     */
     public JButtonGroup(AbstractButton[] buttons)
     {
         add(buttons);
@@ -58,10 +58,10 @@ public class JButtonGroup extends ButtonGroup
     //--------------------------------------------------------------------------
     
     /**
-	 * Adds a button to the group.
-	 * 
-	 * @param <code>AbstractButton</code> reference.
-	 */
+     * Adds a button to the group.
+     * 
+     * @param button <code>AbstractButton</code> reference.
+     */
     public void add(AbstractButton button)
     {
         if (button == null || buttons.contains(button))
@@ -75,10 +75,10 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Adds an array of buttons to the group.
-	 * 
-	 * @param buttons Array of <code>AbstractButton</code>s
-	 */
+     * Adds an array of buttons to the group.
+     * 
+     * @param buttons Array of <code>AbstractButton</code>s
+     */
     public void add(AbstractButton[] buttons)
     {
         if (buttons == null)
@@ -90,10 +90,10 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Removes a button from the group.
-	 * 
-	 * @param button Button to be removed
-	 */
+     * Removes a button from the group.
+     * 
+     * @param button Button to be removed
+     */
     public void remove(AbstractButton button)
     {
         if (button != null)
@@ -107,10 +107,10 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Removes all the buttons in the array from the group.
-	 * 
-	 * @param buttons Array of <code>AbstractButton</code>s
-	 */
+     * Removes all the buttons in the array from the group.
+     * 
+     * @param buttons Array of <code>AbstractButton</code>s
+     */
     public void remove(AbstractButton[] buttons)
     {
         if (buttons == null)
@@ -122,13 +122,13 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Sets the selected button in the group Only one button in the group can
-	 * be selected.
-	 * 
-	 * @param button <code>AbstractButton</code> reference.
-	 * @param selected <code>boolean</code> representing the selection state of 
+     * Sets the selected button in the group Only one button in the group can
+     * be selected.
+     * 
+     * @param button <code>AbstractButton</code> reference.
+     * @param selected <code>boolean</code> representing the selection state of 
      *        the button.
-	 */
+     */
     public void setSelected(AbstractButton button, boolean selected)
     {
         if (button != null) 
@@ -137,12 +137,12 @@ public class JButtonGroup extends ButtonGroup
     
     
     /**
-	 * Sets the selected button model in the group.
-	 * 
-	 * @param model <code>ButtonModel</code> reference.
-	 * @param selected <code>boolean</code> representing the selection state of 
+     * Sets the selected button model in the group.
+     * 
+     * @param model <code>ButtonModel</code> reference.
+     * @param selected <code>boolean</code> representing the selection state of 
      *        the button
-	 */
+     */
     public void setSelected(ButtonModel model, boolean selected)
     {
         AbstractButton button = getButton(model);
@@ -158,16 +158,16 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Returns the <code>AbstractButton</code> whose <code>ButtonModel</code>
-	 * is given. If the model does not belong to a button in the group, returns
-	 * null.
-	 * 
-	 * @param model <code>ButtonModel</code> that should belong to a button in 
+     * Returns the <code>AbstractButton</code> whose <code>ButtonModel</code>
+     * is given. If the model does not belong to a button in the group, returns
+     * null.
+     * 
+     * @param model <code>ButtonModel</code> that should belong to a button in 
      *        the group
-	 * @return <code>AbstractButton</code> reference whose model is 
+     * @return <code>AbstractButton</code> reference whose model is 
      *         <code>model</code> if the button belongs to the group, 
      *         <code>null</code> otherwise.
-	 */
+     */
     public AbstractButton getButton(ButtonModel model)
     {
         Iterator it = buttons.iterator();
@@ -185,11 +185,11 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Returns the selected button in the group.
-	 * 
-	 * @return Reference to the currently selected button in the group or
-	 *         <code>null</code> if no button is selected.
-	 */
+     * Returns the selected button in the group.
+     * 
+     * @return Reference to the currently selected button in the group or
+     *         <code>null</code> if no button is selected.
+     */
     public AbstractButton getSelected()
     {
         return selectedButton_;
@@ -197,12 +197,12 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Returns whether the button is selected.
-	 * 
-	 * @param button <code>AbstractButton</code> reference.
-	 * @return <code>true</code> if the button is selected, <code>false</code>
-	 *         otherwise.
-	 */
+     * Returns whether the button is selected.
+     * 
+     * @param button <code>AbstractButton</code> reference.
+     * @return <code>true</code> if the button is selected, <code>false</code>
+     *         otherwise.
+     */
     public boolean isSelected(AbstractButton button)
     {
         return button == selectedButton_;
@@ -210,11 +210,11 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Returns the buttons in the group as a <code>List</code>.
-	 * 
-	 * @return <code>List</code> containing the buttons in the group, in the 
+     * Returns the buttons in the group as a <code>List</code>.
+     * 
+     * @return <code>List</code> containing the buttons in the group, in the 
      *         order they were added to the group.
-	 */
+     */
     public List getButtons()
     {
         return Collections.unmodifiableList(buttons);
@@ -222,11 +222,12 @@ public class JButtonGroup extends ButtonGroup
 
     
     /**
-	 * Checks whether the group contains the given button.
-	 * 
-	 * @return <code>True</code> if the button is contained in the group,
-	 *         <code>false</code> otherwise.
-	 */
+     * Checks whether the group contains the given button.
+     * 
+     * @param button Abstract button reference.
+     * @return <code>True</code> if the button is contained in the group,
+     *         <code>false</code> otherwise.
+     */
     public boolean contains(AbstractButton button)
     {
         return buttons.contains(button);
