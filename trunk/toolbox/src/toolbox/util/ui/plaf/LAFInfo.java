@@ -29,13 +29,13 @@ public class LAFInfo implements IPreferenced
     //--------------------------------------------------------------------------
 
     // Node and attribute names used for persistence to XML.
-    public static final String NODE_LOOKANDFEEL  = "LookAndFeel";
-    public static final String   ATTR_NAME       = "name";
-    public static final String   ATTR_CLASS      = "class";
-    public static final String   ATTR_ACTION     = "action";
-    public static final String   NODE_THEME      = "Theme";
-    public static final String     NODE_PROPERTY = "Property";
-    public static final String     ATTR_VALUE    = "value";
+    private static final String NODE_LOOKANDFEEL  = "LookAndFeel";
+    private static final String   ATTR_NAME       = "name";
+    private static final String   ATTR_CLASS      = "class";
+    private static final String   ATTR_ACTION     = "action";
+    private static final String   NODE_THEME      = "Theme";
+    private static final String     NODE_PROPERTY = "Property";
+    private static final String     ATTR_VALUE    = "value";
     
     /**
      * This property is embedded in LookAndFeel.getUIDefaults() so that LAFInfo
@@ -109,11 +109,11 @@ public class LAFInfo implements IPreferenced
 
     
     /**
-	 * Returns the name of the look and feel in a form suitable for a menu or
-	 * other presentation.
-	 * 
-	 * @return String
-	 */
+     * Returns the name of the look and feel in a form suitable for a menu or
+     * other presentation.
+     * 
+     * @return String
+     */
     public String getName()
     {
         return name_;
@@ -121,10 +121,10 @@ public class LAFInfo implements IPreferenced
 
 
     /**
-	 * Returns the name of the class that implements this look and feel.
-	 * 
-	 * @return String
-	 */
+     * Returns the name of the class that implements this look and feel.
+     * 
+     * @return String
+     */
     public String getClassName()
     {
         return className_;
@@ -167,8 +167,8 @@ public class LAFInfo implements IPreferenced
     /**
      * Returns the value of the property with the given name.
      * 
-     * @param name
-     * @return
+     * @param name Property name.
+     * @return String
      */
     public String getProperty(String name)
     {
@@ -207,7 +207,7 @@ public class LAFInfo implements IPreferenced
         
         Elements props = lookAndFeelNode.getChildElements(NODE_PROPERTY);
         
-        for (int i=0; i<props.size(); i++)
+        for (int i = 0; i < props.size(); i++)
         {
             Element prop = props.get(i);
             
@@ -228,7 +228,7 @@ public class LAFInfo implements IPreferenced
         laf.addAttribute(new Attribute(ATTR_CLASS, getClassName()));
         laf.addAttribute(new Attribute(ATTR_ACTION, getAction()));
         
-        for (Iterator i = props_.entrySet().iterator(); i.hasNext(); )
+        for (Iterator i = props_.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             Element prop = new Element(NODE_PROPERTY);
@@ -265,10 +265,10 @@ public class LAFInfo implements IPreferenced
     
       
     /**
-	 * Returns a string that displays and identifies this object's properties.
-	 * 
-	 * @return String
-	 */
+     * Returns a string that displays and identifies this object's properties.
+     * 
+     * @return String
+     */
     public String toString()
     {
         return AsMap.of(this).toString();

@@ -63,24 +63,29 @@ public class LookAndFeelUtilTest extends UITestCase
         p.add(new JSmartButton("Button"));
         p.add(new JSmartTextField("TextField"));
         p.add(new JSmartCheckBox("CheckBox", true));
-        p.add(new JSmartComboBox(new String[] { "Combo", "Box"}));
+        p.add(new JSmartComboBox(new String[] {"Combo", "Box"}));
         p.add(new JSmartLabel("Label"));
         
-        p.add(new JScrollPane(new JSmartList(new String[] 
-            {"List Item 1", "List Item 2", "List Item 3"})));
+        p.add(new JScrollPane(new JSmartList(
+            new String[]{"List Item 1", "List Item 2", "List Item 3"})));
         
         p.add(new JScrollPane(new JTable(
             new String[][] { 
                 new String[] {"Cell A", "Cell B"}, 
                 new String[] {"Cell C", "Cell D"}
             }, 
-            new String[] { "Column 1", "Column 2"})));
+            new String[] {"Column 1", "Column 2"})));
         
         p.add(new JScrollPane(new JSmartTextArea(
             "TextArea line 1\nTextArea line2\nTextArea line3")));
         
-        p.add(new JScrollPane(new JSmartTree(new Object[] 
-                {"Node 1", new String[] { "Node 1.1", "Node 1.2"} , "Node3"})));
+        p.add(new JScrollPane(new JSmartTree(
+            new Object[] 
+            {
+                "Node 1", 
+                new String[] {"Node 1.1", "Node 1.2"} , 
+                "Node3"
+            })));
         
         launchInFrame(p);
     }

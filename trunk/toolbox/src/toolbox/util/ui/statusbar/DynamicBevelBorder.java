@@ -173,8 +173,8 @@ public class DynamicBevelBorder implements Border
         int w,
         int h)
     {
-        Color hi = (type_ == RAISED ? getHighlightColor(c): getShadowColor(c));
-        Color lo = (type_ == RAISED ? getShadowColor(c): getHighlightColor(c));
+        Color hi = (type_ == RAISED ? getHighlightColor(c) : getShadowColor(c));
+        Color lo = (type_ == RAISED ? getShadowColor(c) : getHighlightColor(c));
 
         for (int i = thickness_ - 1; i >= 0; i--)
         {

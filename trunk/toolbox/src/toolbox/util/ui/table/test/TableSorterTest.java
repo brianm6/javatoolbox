@@ -25,7 +25,7 @@ public class TableSorterTest extends UITestCase
     private static final Logger logger_ =
         Logger.getLogger(TableSorterTest.class);
 
-    private boolean DEBUG = true;
+    private static boolean DEBUG = true;
             
     //--------------------------------------------------------------------------
     // Main
@@ -73,12 +73,12 @@ public class TableSorterTest extends UITestCase
      */
     class TestTableModel extends AbstractTableModel
     {
-        final String[] columnNames = 
+        private final String[] columnNames_ = 
         { 
             "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" 
         };
             
-        final Object[][] data =
+        private final Object[][] data_ =
         {
             {
                 "Mary",
@@ -123,7 +123,7 @@ public class TableSorterTest extends UITestCase
          */
         public int getColumnCount()
         {
-            return columnNames.length;
+            return columnNames_.length;
         }
 
         
@@ -132,7 +132,7 @@ public class TableSorterTest extends UITestCase
          */
         public int getRowCount()
         {
-            return data.length;
+            return data_.length;
         }
 
         
@@ -141,7 +141,7 @@ public class TableSorterTest extends UITestCase
          */
         public String getColumnName(int col)
         {
-            return columnNames[col];
+            return columnNames_[col];
         }
 
         
@@ -150,14 +150,17 @@ public class TableSorterTest extends UITestCase
          */
         public Object getValueAt(int row, int col)
         {
-            return data[row][col];
+            return data_[row][col];
         }
 
+        
         /**
          * JTable uses this method to determine the default renderer/
          * editor for each cell.  If we didn't implement this method,
          * then the last column would contain text ("true"/"false"),
          * rather than a check box.
+         * 
+         * @see javax.swing.table.TableModel#getColumnClass(int)
          */
         public Class getColumnClass(int c)
         {
@@ -166,24 +169,26 @@ public class TableSorterTest extends UITestCase
 
         
         /**
-		 * Don't need to implement this method unless your table's editable.
-		 */
+         * Don't need to implement this method unless your table's editable.
+         * 
+         * @see javax.swing.table.TableModel#isCellEditable(int, int)
+         */
         public boolean isCellEditable(int row, int col)
         {
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
             
-            if (col < 2)
-                return false;
-            else
-                return true;
+            return (!(col < 2));
         }
 
         
         /**
-		 * Don't need to implement this method unless your table's data can
-		 * change.
-		 */
+         * Don't need to implement this method unless your table's data can
+         * change.
+         * 
+         * @see javax.swing.table.TableModel#setValueAt(
+         *      java.lang.Object, int, int)
+         */
         public void setValueAt(Object value, int row, int col)
         {
             if (DEBUG)
@@ -193,7 +198,7 @@ public class TableSorterTest extends UITestCase
                         value.getClass() + ")");
             }
 
-            if (data[0][col] instanceof Integer && 
+            if (data_[0][col] instanceof Integer && 
                 !(value instanceof Integer))
             {
                 //With JFC/Swing 1.1 and JDK 1.2, we need to create
@@ -205,7 +210,7 @@ public class TableSorterTest extends UITestCase
                 
                 try
                 {
-                    data[row][col] = new Integer(value.toString());
+                    data_[row][col] = new Integer(value.toString());
                     //fireTableCellUpdated(row, col);
                     fireTableDataChanged();
                 }
@@ -218,7 +223,7 @@ public class TableSorterTest extends UITestCase
             }
             else
             {
-                data[row][col] = value;
+                data_[row][col] = value;
                 //fireTableCellUpdated(row, col);
                 fireTableDataChanged();
             }
@@ -244,7 +249,7 @@ public class TableSorterTest extends UITestCase
                 System.out.print("    row " + i + ":");
                 
                 for (int j = 0; j < numCols; j++)
-                    System.out.print("  " + data[i][j]);
+                    System.out.print("  " + data_[i][j]);
                     
                 System.out.println();
             }

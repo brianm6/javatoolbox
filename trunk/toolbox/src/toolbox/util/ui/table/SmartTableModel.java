@@ -46,7 +46,7 @@ public class SmartTableModel extends DefaultTableModel
      */
     public SmartTableModel()
     {
-        this((Vector)null, 0);
+        this((Vector) null, 0);
     }
 
 
@@ -139,17 +139,17 @@ public class SmartTableModel extends DefaultTableModel
      */
     public void addRows(Object[] rows)
     {
-        if(!SwingUtilities.isEventDispatchThread())
+        if (!SwingUtilities.isEventDispatchThread())
         {
             // If not event dispatch thread, push rows to queue
-            for (int i=0; i<rows.length; i++)
-                addRow((Vector)rows[i]);
+            for (int i = 0; i < rows.length; i++)
+                addRow((Vector) rows[i]);
         }
         else
         {
             // Thread safe..just add rows directly
-            for (int i=0; i<rows.length; i++)
-                super.addRow((Vector)rows[i]);
+            for (int i = 0; i < rows.length; i++)
+                super.addRow((Vector) rows[i]);
         }        
     }
 
@@ -164,9 +164,9 @@ public class SmartTableModel extends DefaultTableModel
     {
         FileWriter filewriter = new FileWriter(s);
         
-        for(int i = 0; i < getRowCount(); i++)
+        for (int i = 0; i < getRowCount(); i++)
         {
-            for(int j = 0; j < getColumnCount(); j++)
+            for (int j = 0; j < getColumnCount(); j++)
                 filewriter.write(getValueAt(i, j) + " ");
             filewriter.write("\n");
         }
@@ -222,7 +222,7 @@ public class SmartTableModel extends DefaultTableModel
         /**
          * Creates a Runnable to add a row to the table model.
          * 
-         * @param rowData Data to add to the table.
+         * @param rows Data to add to the table.
          */
         public AddRows(Object[] rows)
         {

@@ -29,12 +29,12 @@ public class JFontChooserDialogTest extends UITestCase
     /**
      * Entry point.
      * 
-     * @param args None recognized
-     * @throws Exception on LAF error
+     * @param args None recognized.
+     * @throws Exception on LAF error.
      */
     public static void main(String[] args) throws Exception
     {
-    	LookAndFeelUtil.setPreferredLAF();
+        LookAndFeelUtil.setPreferredLAF();
         TestRunner.run(JFontChooserDialogTest.class);
     }
 

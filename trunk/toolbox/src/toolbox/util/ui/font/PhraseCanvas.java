@@ -16,10 +16,14 @@ import javax.swing.JComponent;
  */
 public class PhraseCanvas extends JComponent
 {
-    private Color     color_;        
-    private String    phrase_;
-    private Font      font_;
-    private boolean   antiAlias_;
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private Color color_;        
+    private String phrase_;
+    private Font font_;
+    private boolean antiAlias_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -29,12 +33,15 @@ public class PhraseCanvas extends JComponent
      * Constructs a new PhraseCanvas with the supplied phrase, font, and 
      * color.
      * 
-     * @param phrase Phrase to be displayed in this PhraseCanvas
-     * @param font Font to use when rendering the phrase
-     * @param color Color to use when rendering the phrase
-     * @param antiAlias Antialias fonts
+     * @param phrase Phrase to be displayed in this PhraseCanvas.
+     * @param font Font to use when rendering the phrase.
+     * @param color Color to use when rendering the phrase.
+     * @param antiAlias Antialias fonts.
      */
-    public PhraseCanvas(String phrase, Font font, Color color, 
+    public PhraseCanvas(
+        String phrase,
+        Font font,
+        Color color,
         boolean antiAlias)
     {
         phrase_    = phrase;
@@ -111,12 +118,12 @@ public class PhraseCanvas extends JComponent
     /** 
      * Returns the phrase to be rendered by this PhraseCanvas.
      * 
-     * @return phrase to be rendered by this PhraseCanvas 
+     * @return phrase to be rendered by this PhraseCanvas. 
      */
-     public String getPhrase()
-     {
-         return phrase_;
-     }
+    public String getPhrase()
+    {
+        return phrase_;
+    }
  
         
     /** 
@@ -135,7 +142,7 @@ public class PhraseCanvas extends JComponent
     /** 
      * Returns the font to use when rendering the phrase.
      * 
-     * @return font to use when rendering the phrase 
+     * @return font to use when rendering the phrase. 
      */ 
     public Font getFont()
     {
@@ -148,7 +155,7 @@ public class PhraseCanvas extends JComponent
      * 
      * @param font New font to use when rendering the phrase;
      *        this new value will be used to render the phrase 
-     *        the next time {@link #paint(java.awt.Graphics)} is called 
+     *        the next time {@link #paint(java.awt.Graphics)} is called. 
      */
     public void setFont(Font font)
     {
@@ -159,7 +166,7 @@ public class PhraseCanvas extends JComponent
     /**
      * Returns the color to use when rendering the phrase.
      * 
-     * @return color to use when rendering the phrase 
+     * @return color to use when rendering the phrase.
      */
     public Color getColor()
     {
@@ -172,7 +179,7 @@ public class PhraseCanvas extends JComponent
      * 
      * @param color New color to use when rendering the phrase;
      *        this new value will be used to render the phrase 
-     *        the next time {@link #paint(java.awt.Graphics)} is called 
+     *        the next time {@link #paint(java.awt.Graphics)} is called. 
      */
     public void setColor(Color color)
     {
@@ -184,7 +191,7 @@ public class PhraseCanvas extends JComponent
      * Returns true iff anti-aliasing is used when rendering the phrase.
      * 
      * @return whether or not anti-aliasing is used when rendering the 
-     *         phrase 
+     *         phrase.
      */
     public boolean isAntiAliased()
     {
@@ -198,7 +205,7 @@ public class PhraseCanvas extends JComponent
      * @param antiAlias Whether or not to use anti-aliasing when 
      *        rendering the phrase this new value will be used 
      *        to render the phrase the next time 
-     *        {@link #paint(java.awt.Graphics)} is called 
+     *        {@link #paint(java.awt.Graphics)} is called. 
      */
     public void setAntiAlias(boolean antiAlias)
     {

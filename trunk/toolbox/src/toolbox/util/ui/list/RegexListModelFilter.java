@@ -17,7 +17,7 @@ import toolbox.util.StringUtil;
  */
 public class RegexListModelFilter extends AbstractListModelFilter
 {
-    public static final Logger logger_ =
+    private static final Logger logger_ =
         Logger.getLogger(RegexListModelFilter.class);
 
     /**
@@ -53,7 +53,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Creates a RegexListModelFilter.
      * 
-     * @param delegate List model to filter
+     * @param delegate List model to filter.
      */
     public RegexListModelFilter(ListModel delegate)
     {
@@ -64,8 +64,8 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Creates a RegexListModelFilter.
      * 
-     * @param delegate List model to filter
-     * @param regex Regular expression
+     * @param delegate List model to filter.
+     * @param regex Regular expression.
      */
     public RegexListModelFilter(ListModel delegate, String regex)
     {
@@ -76,9 +76,9 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Creates a RegexListModelFilter.
      * 
-     * @param delegate List model to filter
-     * @param regex Regular expression
-     * @param matchCase Flag to match case
+     * @param delegate List model to filter.
+     * @param regex Regular expression.
+     * @param matchCase Flag to match case.
      */
     public RegexListModelFilter(ListModel delegate, String regex, 
         boolean matchCase)
@@ -95,7 +95,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Sets the regular expression to filter on.   
      * 
-     * @param regex Regular expression
+     * @param regex Regular expression.
      */
     public synchronized void setRegex(String regex)
     {
@@ -141,7 +141,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Returns the regular expression used to filter the list contents.
      * 
-     * @return Regular expression
+     * @return Regular expression.
      */
     public String getRegex()
     {
@@ -167,8 +167,8 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Gets an element at a given zero based index.
      * 
-     * @param index Index of element to retrieve
-     * @return Element at specifiec index
+     * @param index Index of element to retrieve.
+     * @return Element at specifiec index.
      */
     public Object getElementAt(int index)
     {

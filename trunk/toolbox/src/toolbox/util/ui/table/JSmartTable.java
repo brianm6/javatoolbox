@@ -164,7 +164,7 @@ public class JSmartTable extends JTable implements AntiAliased
         if ((header != null) && (header instanceof AntiAliased))
             ((AntiAliased) header).setAntiAliased(b); 
             
-        for (int i=0, c = getColumnCount(); i<c; i++)
+        for (int i = 0, c = getColumnCount(); i < c; i++)
         {
             TableCellRenderer tcr = getCellRenderer(0, i);
             

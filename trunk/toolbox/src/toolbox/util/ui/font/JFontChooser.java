@@ -46,9 +46,12 @@ import toolbox.util.ui.list.JSmartList;
  */
 public class JFontChooser extends JPanel
 {
-	private static final Logger logger_ = 
-		Logger.getLogger(JFontChooser.class);
-	
+    private static final Logger logger_ = Logger.getLogger(JFontChooser.class);
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * JList for font family. 
      */
@@ -111,11 +114,10 @@ public class JFontChooser extends JPanel
      */
     public JFontChooser(Font initialFont)
     {
-        this(initialFont,
-        
         // Don't change the following two values without changing the javadocs
-        new String[] { "Plain", "Bold", "Italic", "Bold Italic" },
-            new int[] { 7, 8, 9, 10, 11, 12, 14, 16, 18, 24, 36}, false);
+        this(initialFont,
+            new String[] {"Plain", "Bold", "Italic", "Bold Italic"},
+            new int[] {7, 8, 9, 10, 11, 12, 14, 16, 18, 24, 36}, false);
     }
 
 
@@ -186,7 +188,7 @@ public class JFontChooser extends JPanel
         boolean  antiAlias)
     {
         setLayout(new GridBagLayout());
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
 
         String[] availableFontFamilyNames = 
@@ -330,6 +332,7 @@ public class JFontChooser extends JPanel
      * @throws IllegalArgumentException thrown if predefinedSizes does not 
      *         contain one or more integer values or if it contains any 
      *         integers with a value of less than 1.
+     * @return Integer Array.
      */
     private Integer[] validateAndConvertPredefinedSizes(int[] predefinedSizes)
     {
@@ -387,7 +390,7 @@ public class JFontChooser extends JPanel
      */
     protected void fireFontSelectionChanged()
     {
-        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+        for (Iterator i = listeners_.iterator(); i.hasNext();)
         {
             IFontChooserListener listener = (IFontChooserListener) i.next();
             listener.fontChanged();
@@ -701,6 +704,10 @@ public class JFontChooser extends JPanel
      */
     protected class FontSelectionListener implements ListSelectionListener
     {
+        /**
+         * @see javax.swing.event.ListSelectionListener#valueChanged(
+         *      javax.swing.event.ListSelectionEvent)
+         */
         public void valueChanged(ListSelectionEvent e)
         {
             fireFontSelectionChanged();
@@ -717,6 +724,9 @@ public class JFontChooser extends JPanel
     protected class PhraseFontSelectionListener implements 
         IFontChooserListener
     {
+        /**
+         * @see toolbox.util.ui.font.IFontChooserListener#fontChanged()
+         */
         public void fontChanged()
         {
             try
@@ -748,6 +758,9 @@ public class JFontChooser extends JPanel
      */
     private class AntiAliasAction extends AbstractAction
     {
+        /**
+         * Creates a AntiAliasAction.
+         */
         public AntiAliasAction()
         {
             super("Anti-alias");
@@ -756,7 +769,12 @@ public class JFontChooser extends JPanel
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK));
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             phraseCanvas_.setAntiAlias(antiAliasCheckBox_.isSelected());

@@ -38,18 +38,6 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
         super("?? Set name ??", false, null, null);
     }
 
-    
-    /**
-     * Creates an ActivateLookAndFeelAction.
-     * 
-     * @param lookAndFeel LookAndFeelInfo of look and feel to activate
-     */
-    //ActivateLookAndFeelAction(LAFInfo info)
-    //{
-    //    super(info.getName(), false, null, null);
-    //    setLookAndFeelInfo(info);
-    //}
-
     //--------------------------------------------------------------------------
     // LookAndFeelActivator Interface
     //--------------------------------------------------------------------------
@@ -80,8 +68,8 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
         //boolean decorate = 
         //    UIManager.getLookAndFeel().getSupportsWindowDecorations();
         //
-        //JFrame.setDefaultLookAndFeelDecorated(decorate);  // to decorate frames
-        //JDialog.setDefaultLookAndFeelDecorated(decorate); // to decorate dialogs
+        //JFrame.setDefaultLookAndFeelDecorated(decorate);// to decorate frames
+        //JDialog.setDefaultLookAndFeelDecorated(decorate);//to decorate dialogs
          
         LookAndFeelUtil.propagateChangeInLAF();
     }

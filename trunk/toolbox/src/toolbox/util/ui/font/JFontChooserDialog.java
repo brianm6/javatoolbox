@@ -28,6 +28,10 @@ import toolbox.util.ui.JSmartCheckBox;
  */
 public class JFontChooserDialog extends JDialog
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * UI component used to perform the font selection.
      */
@@ -242,11 +246,14 @@ public class JFontChooserDialog extends JDialog
      */
     class FontSelectionListener implements IFontChooserListener
     {
+        /**
+         * @see toolbox.util.ui.font.IFontChooserListener#fontChanged()
+         */
         public void fontChanged()
         {
             if (autoApplyCheckBox_.isSelected())
                 new ApplyAction().actionPerformed(
-                    new ActionEvent(this,0,"apply"));
+                    new ActionEvent(this, 0, "apply"));
         }
     }
 
@@ -259,6 +266,9 @@ public class JFontChooserDialog extends JDialog
      */
     class OKAction extends AbstractAction
     {
+        /**
+         * Creates a OKAction.
+         */
         OKAction()
         {
             super("OK");
@@ -266,11 +276,16 @@ public class JFontChooserDialog extends JDialog
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
-            for (Iterator i = listeners_.iterator(); i.hasNext(); )
-                ((IFontChooserDialogListener)i.next()).
+            for (Iterator i = listeners_.iterator(); i.hasNext();)
+                ((IFontChooserDialogListener) i.next()).
                     okButtonPressed(fontChooser_);
             
             dispose();
@@ -286,6 +301,9 @@ public class JFontChooserDialog extends JDialog
      */
     class ApplyAction extends AbstractAction
     {
+        /**
+         * Creates a ApplyAction.
+         */
         ApplyAction()
         {
             super("Apply");
@@ -293,11 +311,16 @@ public class JFontChooserDialog extends JDialog
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, 0));
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
-            for (Iterator i = listeners_.iterator(); i.hasNext(); )
-                ((IFontChooserDialogListener)i.next()).
+            for (Iterator i = listeners_.iterator(); i.hasNext();)
+                ((IFontChooserDialogListener) i.next()).
                     applyButtonPressed(fontChooser_);
         }
     }
@@ -312,6 +335,9 @@ public class JFontChooserDialog extends JDialog
      */
     class CancelAction extends AbstractAction
     {
+        /**
+         * Creates a CancelAction.
+         */
         CancelAction()
         {
             super("Cancel");
@@ -319,11 +345,16 @@ public class JFontChooserDialog extends JDialog
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
-            for (Iterator i = listeners_.iterator(); i.hasNext(); )
-                ((IFontChooserDialogListener)i.next()).
+            for (Iterator i = listeners_.iterator(); i.hasNext();)
+                ((IFontChooserDialogListener) i.next()).
                     cancelButtonPressed(fontChooser_);
 
             dispose();

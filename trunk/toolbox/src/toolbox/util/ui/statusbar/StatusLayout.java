@@ -29,7 +29,7 @@ public class StatusLayout extends AbstractLayout
      */    
     public StatusLayout()
     {
-        this(0,0);
+        this(0, 0);
     }
 
 

@@ -73,22 +73,30 @@ public class JListPopupMenu extends JSmartPopupMenu
      */    
     class CopyAction extends AbstractAction
     {
+        /**
+         * Creates a CopyAction.
+         */
         CopyAction()
         {
             super("Copy");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             Object[] selected = list_.getSelectedValues();
             StringBuffer sb = new StringBuffer();
             
             // Concat selected items into a text string
-            for (int i=0; i<selected.length; i++)
+            for (int i = 0; i < selected.length; i++)
             {
                 sb.append(selected[i].toString());
                 
-                if (i != selected.length -1)
+                if (i != selected.length - 1)
                     sb.append("\n");
             }
             
@@ -107,15 +115,23 @@ public class JListPopupMenu extends JSmartPopupMenu
      */
     class SelectAllAction extends AbstractAction
     {
+        /**
+         * Creates a SelectAllAction.
+         */
         SelectAllAction()
         {
             super("Select All");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             int[] indexes = new int[list_.getModel().getSize()];
-            for(int i=0; i<indexes.length; indexes[i] = i++);
+            for (int i = 0; i < indexes.length; indexes[i] = i++);
             list_.setSelectedIndices(indexes);
         }
     }

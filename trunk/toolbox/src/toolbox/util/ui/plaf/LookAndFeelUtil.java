@@ -34,26 +34,26 @@ import toolbox.util.ui.JSmartMenu;
  * LookAndFeelUtil manages the available Swing Look & Feels and provides
  * convenience methods to generate menus and switch between them.
  */
-public class LookAndFeelUtil
+public final class LookAndFeelUtil
 {
     // TODO: Added themes for Tiny Look and Feel
     // TODO: Fix frame decoration for LAFs that don't support it
-    // TODO: Gracefully fail when toolbox-lookandfeel.jar is not on the classpath
+    // TODO: Gracefully fail when toolbox-lookandfeel.jar is not on the claspath
        
+    private static final Logger logger_ =
+        Logger.getLogger(LookAndFeelUtil.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    private static final Logger logger_ =
-        Logger.getLogger(LookAndFeelUtil.class);
 
     // XML nodes & attributes
-    public static final String NODE_LOOKANDFEEL = "LookAndFeel";
-    public static final String   ATTR_NAME      = "name";
-    public static final String   ATTR_CLASS     = "class";
-    public static final String   ATTR_ACTION    = "action";
-    public static final String   NODE_PROPERTY  = "Property";
-    public static final String     ATTR_VALUE   = "value";
+    private static final String NODE_LOOKANDFEEL = "LookAndFeel";
+    private static final String   ATTR_NAME      = "name";
+    private static final String   ATTR_CLASS     = "class";
+    private static final String   ATTR_ACTION    = "action";
+    private static final String   NODE_PROPERTY  = "Property";
+    private static final String     ATTR_VALUE   = "value";
 
     /**
      * XML configuration file containing the list of look and feels supported
@@ -195,7 +195,7 @@ public class LookAndFeelUtil
                 LAFInfo info = (LAFInfo) i.next();
                 
                 logger_.debug(
-                    "LAF[" + StringUtil.left(i+"",2) + "]: " + 
+                    "LAF[" + StringUtil.left(i + "", 2) + "]: " + 
                     StringUtil.left(info.getName(), 20) + " "  + 
                     info.getClassName());
                 
@@ -270,7 +270,7 @@ public class LookAndFeelUtil
     {
         Frame[] frames = Frame.getFrames();
         
-        for (int i=0; i<frames.length; i++)
+        for (int i = 0; i < frames.length; i++)
             SwingUtilities.updateComponentTreeUI(frames[i]);                    
     }
 
@@ -372,7 +372,7 @@ public class LookAndFeelUtil
             Element root = new Builder().build(is).getRootElement();
             Elements lafs = root.getChildElements(NODE_LOOKANDFEEL);
             
-            for (int i=0; i<lafs.size(); i++)
+            for (int i = 0; i < lafs.size(); i++)
             {    
                 LAFInfo info = new LAFInfo(lafs.get(i));
 

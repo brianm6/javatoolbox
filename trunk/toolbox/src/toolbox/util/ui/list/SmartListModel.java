@@ -28,11 +28,11 @@ public class SmartListModel extends DefaultListModel
     /**
      * Adds an element to the list model.
      * 
-     * @param obj Object to add to the list model
+     * @param obj Object to add to the list model.
      */
     public void addElement(Object obj)
     {
-        if(!SwingUtilities.isEventDispatchThread())
+        if (!SwingUtilities.isEventDispatchThread())
         {
             SwingUtilities.invokeLater(new AddElement(obj));
             return;
@@ -62,7 +62,7 @@ public class SmartListModel extends DefaultListModel
         /**
          * Creates AddElement.
          * 
-         * @param element Element to add to the model
+         * @param element Element to add to the model.
          */
         public AddElement(Object element)
         {

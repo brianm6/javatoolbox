@@ -549,11 +549,21 @@ public class TableSorter extends TableMap
     {
         private final JTable tableView_;
         
+        /**
+         * Creates a SortingMouseListener.
+         * 
+         * @param tableView Table.
+         */
         SortingMouseListener(JTable tableView)
         {
             tableView_ = tableView;
         }
         
+        
+        /**
+         * @see java.awt.event.MouseListener#mouseClicked(
+         *      java.awt.event.MouseEvent)
+         */
         public void mouseClicked(MouseEvent e)
         {
             TableColumnModel columnModel = tableView_.getColumnModel();
@@ -577,6 +587,11 @@ public class TableSorter extends TableMap
      */
     final class TableHeaderCellRenderer extends DefaultTableCellRenderer
     {
+        /**
+         * @see javax.swing.table.TableCellRenderer#
+         *      getTableCellRendererComponent(javax.swing.JTable, 
+         *      java.lang.Object, boolean, boolean, int, int)
+         */
         public Component getTableCellRendererComponent(
             JTable table,
             Object value,

@@ -204,8 +204,8 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
      */
     protected void fireTabClosing(int tabIndex)
     {
-        for (int i=0; 
-             i<listeners_.length; 
+        for (int i = 0; 
+             i < listeners_.length; 
              listeners_[i++].tabClosing(this, tabIndex));        
     }
     
