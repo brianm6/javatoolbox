@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="main" name="PropertyPromptExample">
+
+  <property name="promptTimeout" value="5"/>
+  
+  <taskdef classname="toolbox.ant.PropertyPromptTask" 
+  	name="propertyprompt"
+  	classpath="${basedir}/../../../../classes"/>
+  
+  <target name="main">
+    <property name="propA" value="oldValA"/>
+    <property name="propA" value="oldValA1"/>
+    
+    <echo>value of propA: ${propA}</echo>
+    <echo>value of propB: ${propB}</echo>
+    
+    <propertyprompt promptcharacter=":" 
+      propertyname="propA">
+      Enter value for propA
+    </propertyprompt>
+      
+    <propertyprompt defaultvalue="defvalB" 
+      propertyname="propB">
+      What is the value for propB
+    </propertyprompt>
+    
+    <echo>value of propA: ${propA}</echo>
+    <echo>value of propB: ${propB}</echo>
+    
+  </target>
+  
+</project>

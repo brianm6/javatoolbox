@@ -1,0 +1,201 @@
+================================================================================
+                              HSQLDB
+================================================================================
+
+DROP TABLE "AUCT_SRCE"; 
+
+CREATE DATABASE "hsql_db2";
+
+CREATE TABLE "AUCT_SRCE"(
+    "AUCT_SRCE_ID" VARCHAR(32) NOT NULL,
+    "AUCT_SRCE_NAME_TXT" VARCHAR(255) NOT NULL,
+    "AUCT_SRCE_DESC_TXT" VARCHAR(255) NOT NULL,
+    PRIMARY KEY (AUCT_SRCE_ID));
+
+CREATE TABLE auct (
+  auct_id VARCHAR(32) NOT NULL,
+  auct_srce_id VARCHAR(32) NOT NULL,
+  auct_nme VARCHAR(255) NOT NULL,
+  auct_st_cde VARCHAR(10) NOT NULL,
+  PRIMARY KEY (auct_id));
+
+ALTER TABLE auct 
+  ADD CONSTRAINT FK_AUCT_SRCE 
+  FOREIGN KEY (auct_srce_id)  
+  REFERENCES auct_srce(auct_srce_id);
+
+ALTER TABLE <tablename> 
+  ADD CONSTRAINT <constraintname> 
+  FOREIGN KEY (<column list>) 
+  REFERENCES <exptablename> (<column list>) [ON DELETE CASCADE];
+
+================================================================================
+                              GENERIC SQL
+================================================================================
+
+CREATE TABLE <table name> 
+    ( <column name> <column type> [<attribute constraint>]
+    {, <column name> <column type> [<attribute constraint>] } 
+    [<table constraint> {,<table constraint>}] )
+
+DROP TABLE <table name>
+
+ALTER TABLE <table name> ADD <column name> <column type>
+
+SELECT [DISTINCT] <attribute list (see below)>
+  FROM (<table name> { <alias>} | <joined table> ) {, 
+       (<table name> {<alias>} | <joined table>
+[WHERE <condition>]
+[GROUP BY <grouping attributes> [HAVING <group selection condition> ] ]
+[ORDER BY <column name> [<order>] {, <column name> [<order>] } ]
+
+<attribute list>::= 
+    (* | 
+    (<column name> | 
+     <function>(([DISTINCT)<column name> | *)))
+    {,( <column name> | <function>( ([DISTINCT) <column name> | *))
+
+<grouping attributes>::= 
+    <column name> { , <column name>}
+    <order>::= (ASC | DESC)
+
+INSERT INTO <table name> [( <column name>{, <column name>} ) ]
+    (VALUES ( <constant value> , 
+              { <constant value>} ){,
+              ( <constant value> 
+                  {,<constant value>})} | <select statement> )
+
+DELETE FROM <table name> [WHERE <selection condition>]
+
+UPDATE <table name>
+    SET <column name> = <value expression>
+    [WHERE <selection condition>l
+
+CREATE [UNIQUE] INDEX <index name>
+    ON <table name> ( <column name> [ <order> [CLUSTER]
+
+DROP INDEX <index name>
+
+CREATE VIEW <view name> 
+	[ ( <column name> {, <column name>} ) ]
+	AS <select statement>
+
+DROP VIEW <view name>
+================================================================================
+                              MYSQL SQL
+================================================================================
+The Basics
+
+View databases 	
+
+show databases;
+
+Create a database 	
+
+create database bazdb;
+
+Select a database 	
+
+use bazdb;
+
+Create a simple table 	
+
+create table foo(col1 int not null);
+
+Show table structure 	
+
+describe foo;
+
+Insert data into a table 	
+
+insert into foo values(1);
+
+Select data from a table 	
+
+select * from foo;
+
+Delete a table 	
+
+drop table if exists foo;
+
+More Advanced SQL
+
+Create a table with a primary key 	
+
+create table foo(
+    col1 int not null,
+    primary key(col1)
+);
+
+Create a table with a null column 	
+
+create table foo(
+    col1 int not null,
+    col2 varchar(20) null,
+    primary key(col1)
+);
+
+Create a table with an automatically incrementing key and inserting a value 	
+
+create table foo(
+    col1 int not null auto_increment,
+    col2 varchar(20) null,
+    primary key(col1)
+);
+insert into foo values(null, 'Test');
+
+Create an index on a table column 	
+
+create index foo_idx on foo (col2);
+
+Select specific rows 	
+
+select * from foo where col1 = 26;
+
+Return rows in sorted order 	
+
+select * from foo order by col1 asc;
+
+Limit the number of rows returned 	
+
+select * from foo limit 10;
+
+Select data from two tables matching on a column (inner join) 	
+
+select * from foo, bar where foo.col1 = bar.col2;
+
+Select data from two tables where data may not exist in second table (outer join) 	
+
+select * from foo left outer join bar on foo.col1 = bar.col2;
+
+Cross-database join 	
+
+select * from db1.foo, db2.bar where foo.col1 = bar.col2;
+
+Select matching strings 	
+
+select * from foo where col1 = like '%bar%';
+
+Delete data from a table 	
+
+delete from foo;
+
+or
+
+truncate table foo;
+
+Delete data from a table for selected rows 	
+
+delete from foo where col1 = 17;
+
+Update data in a table 	
+
+update foo set col1 = 5;
+
+Update data in a table for selected rows 	
+
+update foo set col2 = 'xyzzy' where col1 = 5;
+
+Transactions 	
+
+begin, commit, rollback

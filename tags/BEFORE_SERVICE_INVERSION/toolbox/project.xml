@@ -1,0 +1,985 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ======================================================================= -->
+<!--                 Maven POM for the Java Toolbox                          -->
+<!-- ======================================================================= -->
+
+<project>
+
+  <!-- ===================================================================== -->
+  <!-- PROJECT INFO                                                          -->
+  <!-- ===================================================================== -->
+
+  <pomVersion>3</pomVersion>
+  <id>toolbox</id>
+  <name>Java Toolbox</name>
+  <currentVersion>SNAPSHOT</currentVersion>
+
+  <organization>
+    <name>Toolbox</name>
+    <url>http://hemisfear.cjb.net:8080/</url>
+  </organization>
+  
+  <inceptionYear>2002</inceptionYear>
+  <package>toolbox</package>
+  <logo/>
+  <gumpRepositoryId>toolbox</gumpRepositoryId>
+  <description>Java Toolbox</description>
+  <shortDescription>Toolbox that contains various apps and utilities to make java development easier.</shortDescription>
+  <url>http://hemisfear.cjb.net:8080/</url>
+  <issueTrackingUrl>http://hemisfear.cjb.net:8080/</issueTrackingUrl>
+  <siteAddress>hemisfear.cjb.net</siteAddress>
+  <siteDirectory>/www/hemisfear.cjb.net/</siteDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/toolbox/</distributionDirectory>
+
+  <!-- ===================================================================== -->
+  <!-- REPOSITORY                                                            -->
+  <!-- ===================================================================== -->
+
+  <repository>
+    <connection>
+      <!-- scm:cvs:pserver:analogue@hemisfear.cjb.net:/cvs/cvsrep:${pom.artifactId} -->
+      scm:cvs:pserver:analogue@hemisfear.cjb.net:2401/cvs/cvsrep:${pom.artifactId}
+    </connection>
+    
+    <!-- TODO: remove once statcvs does not depend on this -->
+    <url>http://cvs.classworlds.codehaus.org/</url>
+  </repository>
+  
+  <!-- ===================================================================== -->
+  <!-- VERSIONS                                                              -->
+  <!-- ===================================================================== -->
+  
+  <versions>
+    <version>
+      <id>head</id>
+      <name>head</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <!-- ===================================================================== -->
+  <!-- DEVELOPERS                                                            -->
+  <!-- ===================================================================== -->
+  
+  <developers>
+    <developer>
+      <name>S. Patel</name>
+      <id>analogue</id>
+      <email>analogue@yahoo.com</email>
+      <organization>:-)</organization>
+        <roles>
+            <role>Lead Instigator</role>
+        </roles>
+    </developer>
+  </developers>
+      
+  <!-- ===================================================================== -->
+  <!-- DEPENDENCIES                                                          -->
+  <!-- ===================================================================== -->
+
+  <dependencies>
+
+    <!--
+    <dependency>
+      <id>debug</id>
+      <version/>
+      <properties/>
+    </dependency>
+    -->
+
+    <!--======================= UNIT BEGIN ==================================-->
+    <!-- xml-apis has to come before saxon because they both have difference -->
+    <!-- versions of org.w3c.dom apis                                        --> 
+    
+    <!--
+    <dependency>
+      <id>xml-apis</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+    -->
+    
+
+    <!-- 
+    <dependency>
+      <id>saxon</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+    --> 
+    
+    <!--======================= UNIT END ====================================-->
+    
+    
+    <dependency>
+      <id>3dlf</id>
+      <version>LATEST</version>
+      <url>http://www.markus-hillenbrand.de/3dlf</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+          
+    <dependency>
+      <id>acrobat</id>
+      <version>LATEST</version>
+      <url>http://www.adobe.com</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>alloy</id>
+      <version>LATEST</version>
+      <url>http://www.incors.com/lookandfeel</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>ant</id>
+      <version>1.6.1</version>
+      <url>http://ant.apache.org</url>
+      <properties/>
+    </dependency>
+
+    <dependency>
+      <id>ant-launcher</id>
+      <version>1.6.1</version>
+      <url>http://ant.apache.org</url>
+      <properties/>
+    </dependency>
+
+    <dependency>
+      <id>apple-mrj</id>
+      <version>LATEST</version>
+      <url/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>avalon-framework</id>
+      <version>LATEST</version>
+      <url>http://avalon.apache.org/framework</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>batik</id>
+      <version>LATEST</version>
+      <url>http://xml.apache.org/batik</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>bsh</id>
+      <version>LATEST</version>
+      <url>http://www.beanshell.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>calphahtml</id>
+      <version>LATEST</version>
+      <url>http://www.netcomuk.co.uk/~offshore</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>classworlds</id>
+      <version>LATEST</version>
+      <url>http://classworlds.codehaus.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-beanutils</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/beanutils</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+            
+    <dependency>
+      <id>commons-cli</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/cli</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-codec</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/codec</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-collections</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/collections</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-dbcp</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/dbcp</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-io</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/io</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+                          
+    <dependency>
+      <id>commons-lang</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/lang</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-logging</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/logging</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-math</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/math</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-net</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>commons-pool</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/pool</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+            
+    <dependency>
+      <id>concurrent</id>
+      <version>1.3.4</version>
+      <url>http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+            
+    <dependency>
+      <id>cryptix32</id>
+      <version>LATEST</version>
+      <url>http://www.cryptix.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>cryptix32-pgp</id>
+      <version>LATEST</version>
+      <url>http://www.cryptix.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>cvslib</id>
+      <version>LATEST</version>
+      <url>http://javacvs.netbeans.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>fhlaf</id>
+      <version>LATEST</version>
+      <url>http://fhlaf.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+    
+    <dependency>
+      <id>fop</id>
+      <version>LATEST</version>
+      <url>http://xml.apache.org/fop</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>forms</id>
+      <version>LATEST</version>
+      <url>http://forms.dev.java.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+      
+    <dependency>
+      <id>hamsam</id>
+      <version>LATEST</version>
+      <url>http://hamsam.sf.net</url>
+      <properties/>
+    </dependency>
+
+    <dependency>
+      <id>hippolf</id>
+      <version>LATEST</version>
+      <url>http://www.diod.se/product_hippolf.asp</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>hsqldb</id>
+      <version>1.7.2.2</version>
+      <url>http://www.hsqldb.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jakarta-oro</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/oro</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jakarta-regexp</id>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/regexp</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jalopy</id>
+      <version>LATEST</version>
+      <url>http://jalopy.sf.net</url>      
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>janino</id>
+      <version>LATEST</version>
+      <url>http://www.janino.net</url>      
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>javassist</id>
+      <version>LATEST</version>
+      <url>http://www.csg.is.titech.ac.jp/~chiba/javassist</url>      
+      <properties/>
+    </dependency>
+
+    <dependency>
+      <id>jaxen</id>
+      <version>LATEST</version>
+      <url>http://jaxen.codehaus.org</url>      
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jcommon</id>
+      <version>LATEST</version>
+      <url>http://www.jfree.org/jcommon</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jdom</id>
+      <version>LATEST</version>
+      <url>http://www.jdom.org</url>      
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jedit-syntax</id>
+      <version>LATEST</version>
+      <url>http://jedit-syntax.sourceforge.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jemmy</id>
+      <version>LATEST</version>
+      <url>http://jemmy.netbeans.org</url>
+      <properties>
+        <jnlp.jar>false</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jfreechart</id>
+      <version>LATEST</version>
+      <url>http://www.jfree.org/jfreechart</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jode</id>
+      <version>LATEST</version>
+      <url>http://jode.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jreversepro</id>
+      <version>LATEST</version>
+      <url>http://jrevpro.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jsap</id>
+      <version>LATEST</version>
+      <url>http://sourceforge.net/projects/jsap</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jtidy</id>
+      <version>LATEST</version>
+      <url>http://jtidy.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>junit</id>
+      <version>3.8.1</version>
+      <url>http://www.junit.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>junit-addons</id>
+      <version>LATEST</version>
+      <url>http://www.sf.net/projects/junit-addons</url>
+      <properties/>
+    </dependency>
+
+    <dependency>
+      <id>kunststoff</id>
+      <version>LATEST</version>
+      <url>http://www.incors.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>l2fprod-common</id>
+      <version>LATEST</version>
+      <url>http://l2fprod-common.dev.java.net</url> 
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>liquidlf</id>
+      <version>LATEST</version>
+      <url>http://liquidlnf.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>log4j</id>
+      <version>LATEST</version>
+      <url>http://logging.apache.org/log4j</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>looks</id>
+      <version>LATEST</version>
+      <url>http://www.jgoodies.com/freeware/looks</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>matra</id>
+      <version>LATEST</version>
+      <url>http://matra.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+              
+    <dependency>
+      <id>metouia</id>
+      <version>LATEST</version>
+      <url>http://mlf.sf.net/</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>multivalent</id>
+      <version>LATEST</version>
+      <url>http://multivalent.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>napkinlf</id>
+      <version>LATEST</version>
+      <url>http://napkinlaf.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>oyoahalf</id>
+      <version>LATEST</version>
+      <url>http://www.oyoaha.com/lookandfeel</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>pollo</id>
+      <version>LATEST</version>
+      <url>http://pollo.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>qdox</id>
+      <version>LATEST</version>
+      <url>http://qdox.codehaus.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+    
+    <dependency>
+      <id>skinlf</id>
+      <version>LATEST</version>
+      <url>https://skinlf.dev.java.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>squarenesslf</id>
+      <version>LATEST</version>
+      <url>http://squareness.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>statcvs</id>
+      <version>LATEST</version>
+      <url>http://statcvs.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>tinylaf</id>
+      <version>LATEST</version>
+      <url>http://www.muntjak.de/hans/java/tinylaf</url>  
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>toniclf</id>
+      <version>LATEST</version>
+      <url>http://www.geocities.com/shfarr</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>webwindow</id>
+      <version>LATEST</version>
+      <url>http://www.javio.com</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>xercesImpl</id>
+      <version>VERSION</version>
+      <url>http://xml.apache.org/xerces2-j</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>xep</id>
+      <version>LATEST</version>
+      <url>http://www.renderx.com</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>xom</id>
+      <version>LATEST</version>
+      <url>http://xom.dev.java.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>xplookandfeel</id>
+      <version>LATEST</version>
+      <url>http://www.stefan-krause.com/java</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>xt</id>
+      <version>LATEST</version>
+      <url>http://www.jclark.com</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>xslfo</fatjar>
+      </properties>
+    </dependency>
+
+    <!-- Dependencies that support the build process -->
+    <dependency>
+      <id>commons-jelly-tags-beanshell</id>
+      <groupId>commons-jelly</groupId>
+      <version>SNAPSHOT</version>
+      <!--url>http://www.ibiblio.org/maven/commons-jelly/jars/</url-->
+    </dependency>
+
+    <!-- StatCVS plugin -->
+    <dependency>
+      <groupId>statcvs</groupId>
+      <artifactId>maven-statcvs-plugin</artifactId>
+      <version>2.4</version>
+      <type>plugin</type>
+    </dependency>
+      
+  </dependencies>  
+  
+  <!-- ===================================================================== -->
+  <!-- BUILD                                                                 -->
+  <!-- ===================================================================== -->
+  
+  <build>
+    <nagEmailAddress>analogue@yahoo.com</nagEmailAddress>
+    <sourceDirectory>src</sourceDirectory>
+    <unitTestSourceDirectory>test</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+    <aspectSourceDirectory/>
+  
+    <unitTest>
+      <includes>
+        <include>**/PluginWorkspaceTest.java</include>
+        <include>**/JFontChooserDialogTest.java</include>
+        <include>**/JSourceViewPluginTest.java</include>
+        <include>**/*Test.java</include>
+        <!--include>toolbox/junit/CloverTestSuite.java</include-->
+      </includes>
+      
+      <excludes>
+        
+        <exclude>**/RepositoryTest.java</exclude>
+        <exclude>**/ui/**/*Test.java</exclude>
+        <exclude>**/SwingUtilTest.java</exclude>
+        <exclude>**/jedit/**</exclude>
+        <exclude>**/log4j/im/**/*Test.java</exclude>
+        <exclude>**/BannerTaskTest.java</exclude>
+        <exclude>**/DecompilerTest.java</exclude>
+        
+      </excludes>
+      
+      <resources>
+        <resource>
+          <directory>${basedir}/resources</directory>
+          <!--
+          <includes>
+            <include>**/test/**</include>
+          </includes>
+          -->
+        </resource>
+        
+        <!--
+        <resource>
+          <directory>${basedir}/debug</directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+        </resource>
+        -->
+        
+      </resources>
+    </unitTest>
+    
+    <resources>
+      <resource>
+        <directory>${basedir}/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+        <!--
+        <excludes>
+          <exclude>**/test/**</exclude>
+        </excludes>
+        -->
+      </resource>
+    </resources>
+  </build>
+  
+  <!-- ===================================================================== -->
+  <!-- REPORTS                                                               -->
+  <!-- ===================================================================== -->
+    
+  <reports>     
+
+    <report>maven-junit-report-plugin</report>
+    <report>maven-changes-plugin</report>          
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-statcvs-plugin</report>
+    <report>maven-clover-plugin</report>
+          
+    <!--
+    <report>maven-pmd-plugin</report>
+    <report>maven-license-plugin</report>
+    ======================================
+    Uses vdoclet to find tags so will only
+    flag stuff that starts with an @      
+    <report>maven-tasklist-plugin</report>
+    ======================================
+    Sucks up way too much memory > 1GB
+    <report>maven-simian-plugin</report>
+    ======================================
+    -->
+  </reports>
+
+  <!-- ===================================================================== -->
+  <!-- JAVADOC PACKAGE GROUPS                                                -->
+  <!-- ===================================================================== -->
+  
+  <packageGroups>
+
+    <packageGroup>
+      <title>Toolbox Workspace</title>
+      <packages>toolbox.workspace*</packages>
+    </packageGroup>
+  
+    <packageGroup>
+      <title>Toolbox Workspace Plugins</title>
+      <packages>toolbox.plugin*</packages>
+    </packageGroup>
+    
+    <packageGroup>
+      <title>Toolbox Utils</title>
+      <packages>toolbox.util*</packages>
+    </packageGroup>
+    
+    <packageGroup>
+      <title>Toolbox GUI Utils</title>
+      <packages>toolbox.util.ui*</packages>
+    </packageGroup>
+
+    <packageGroup>
+      <title>Toolbox Command Line Tools</title>
+      <packages>
+        toolbox.findclass,
+        toolbox.launcher,
+        toolbox.rtelnet,
+        toolbox.showclasspath,
+        toolbox.showpath,
+        toolbox.tail,
+        toolbox.tree,
+        toolbox.tunnel
+      </packages>
+    </packageGroup>
+    
+  </packageGroups>  
+  
+</project>

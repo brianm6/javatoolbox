@@ -1,0 +1,503 @@
+<!-- ===========================================================================
+
+  Maven Custom Goals for the Java Toolbox
+
+============================================================================ -->
+
+<project
+  default="help"
+  xmlns:maven="jelly:maven"
+  xmlns:j="jelly:core"
+  xmlns:u="jelly:util"
+  xmlns:ant="jelly:ant"
+  xmlns:bsh="jelly:beanshell">
+
+    <!-- =================================================================== -->
+    <!-- BROWSER                                                             -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:browser" description="Launches web browser">
+        <!-- Input: browser.file -->   
+        <exec vmlauncher="false" executable="${browser.file}"/>
+    </goal>
+    
+
+    <!-- =================================================================== -->
+    <!-- JUNIT                                                               -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:junit" description="Runs junit and generates a report">
+        <attainGoal name="maven-junit-report-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.junit.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+      
+    
+    <!-- =================================================================== -->
+    <!-- CHANGELOG                                                           -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:changelog" description="Runs changelog report">
+        <attainGoal name="maven-changelog-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.changelog.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- GENERATE-CVSPASS                                                    -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:generate-cvspass" description="Creates a .cvspass">
+        <attainGoal name="changelog:create-cvspass"/>
+    </goal>
+    
+    
+    <!-- =================================================================== -->
+    <!-- JAVADOC                                                             -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:javadoc" description="Runs javadoc report">
+        <attainGoal name="maven-javadoc-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.javadoc.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- CLOVER                                                              -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:clover" description="Runs clover report">
+        <attainGoal name="maven-clover-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.clover.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    <!-- =================================================================== -->
+    <!-- INSTALL-PLUGINS                                                     -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:install-plugins" 
+          description="Installs plugins that don't ship with the standard Maven distribution">
+
+        <!-- Statcvs plugin -->
+        <j:set var="artifactId" value="maven-statcvs-plugin"/>
+        <j:set var="groupId" value="statcvs"/>
+        <j:set var="version" value="2.4"/>
+        <attainGoal name="plugin:download"/>
+        
+        <!--
+        
+        OR stick this in project.xml
+        
+        <dependency>
+          <groupId>statcvs</groupId>
+          <artifactId>maven-statcvs-plugin</artifactId>
+          <version>2.4</version>
+          <type>plugin</type>
+        </dependency>
+        -->
+    </goal>
+
+
+    
+    <!-- =================================================================== -->
+    <!-- [PRE] JAVA:COMPILE                                                  -->
+    <!-- =================================================================== -->
+    <preGoal name="java:compile">
+
+       <!-- Piggybacks the debug source tree onto the compile goal -->
+       <path id="debug.src" location="${basedir}/debug"/>
+       <maven:addPath id="maven.compile.src.set" refid="debug.src"/>
+
+    </preGoal>
+
+
+    <!-- =================================================================== -->
+    <!-- CVS-UPDATE                                                          -->
+    <!-- =================================================================== -->
+    <goal name="cvs-update" description="Updates the project from CVS">
+
+      <mkdir dir="${basedir}/src"/>
+      <j:set var="dest" value="${basedir}/src"/>
+
+      <!-- Update from CVS -->
+      <cvs command     = "update -d"
+           dest        = "${dest}"
+           failonerror = "false"/>
+           <!-- noexec  = "true" -->
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- JNLP-DEPLOY                                                         -->
+    <!-- =================================================================== -->
+    <goal name="jnlp-deploy" description="Deploys the JNLP distribution to Tomcat">
+
+      <!-- Fix the main jar in the jnlp file to occur before all the 3rd  -->
+      <!-- party jars so that the debug classes will be loaded from the   -->
+      <!-- main jar first.                                                -->
+
+      <!--echoproperties/-->
+
+      <bsh:script><![CDATA[
+        import java.util.*;
+        import java.io.*;
+        import nu.xom.*;
+
+        //print("===== fixjnlp.bsh begin ========");
+
+        String fs = File.separator+"";
+
+        String inputFile = "target" + fs + "jnlp" + fs + "toolbox.jnlp";
+
+        System.out.println("JNLP file = " + inputFile);
+
+        String outputFile = inputFile;
+
+        //which(java.lang.Object.class);
+        //which(System.class);
+        //which("nu.xom.Builder");
+        //print(getClassPath());
+
+        InputStream is = new FileInputStream(new File(inputFile));
+
+        //print(is);
+
+        Builder parser = new Builder();
+        Document doc = parser.build(is);
+        Element root = doc.getRootElement();
+
+        //print(root.toXML());
+
+        Element resources = root.getFirstChildElement("resources");
+        Element firstJar = resources.getFirstChildElement("jar");
+        Elements jars = resources.getChildElements("jar");
+
+        for (int i = 0; i<jars.size(); i++)
+        {
+          Element jar = jars.get(i);
+
+          //print("Iterating..." + jar.toXML());
+
+          Attribute main = jar.getAttribute("main");
+
+          if (main != null)
+          {
+              System.out.println("Fixing jnlp file...");
+              jar.detach();
+              int idx = resources.indexOf(firstJar);
+              //print("index=" + idx);
+              resources.insertChild(jar, idx);
+              break;
+          }
+        }
+
+        //print(resources.toXML());
+
+        is.close();
+
+        Writer w = new FileWriter(outputFile);
+        w.write(root.toXML());
+        w.close();
+
+        //print("===== fixjnlp.bsh end ========");
+
+        ]]>
+      </bsh:script>
+
+      <!-- Copy everything over to the tomcat directory -->
+      <copy todir="${toolbox.jnlp.deploy}"
+            verbose="true"
+            quiet="false"
+            overwrite="false">
+
+        <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
+        <fileset dir="${basedir}/resources/toolbox/util/ui/images"
+                 includes="Toolbox.gif"/>
+      </copy>
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- UPDATE-PROPS                                                        -->
+    <!-- =================================================================== -->
+    <goal name="update-props" description="Copy build.properties to $HOME">
+        <property environment="sysenv"/>
+        <copy todir="${sysenv.USERPROFILE}" verbose="true" overwrite="true">
+            <fileset dir="${basedir}" includes="build.properties"/>
+        </copy>
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- HELP                                                                -->
+    <!-- =================================================================== -->
+    <goal name="help" description="Help for build targets">
+        <echo>
+================================================================================
+                             Project Build Help
+================================================================================
+
+Scope:
+
+  Maven goals for the Java Toolbox
+
+Commands:
+
+  clean         Deletes residual class files, jars, directories generated by
+                the build process.
+  compile       Compiles the project only.
+  cvs-update    Does a cvs update of the project.
+  jar           Compiles, unit tests, and jars the project.
+  jnlp          Creates jnlp distribution in target/jnlp
+  jnlp-deploy   Copies the jnlp distribution to the http server
+  test          Runs unit tests
+  site          Generates project website with reports and all.
+  umlgraph      Generate UML graph
+  update-props  Copies build.properties to $HOME
+
+  fatjar:       Creates an executable jar version of the toolbox.
+    all         Create all fatjars and disttributes them
+    clean       Deletes ./target/fatjar/
+    dist        Distribute the fatjars to the local filesystem
+    laf         Creates toolbox-laf.jar
+    toolbox     Creates toolbox.jar
+    xslfo       Creates toolbox-xslfo.jar
+================================================================================
+        </echo>
+    </goal>
+
+    <!-- =================================================================== -->
+    <!-- UMLGRAPH                                                            -->
+    <!-- =================================================================== -->
+    <goal name="umlgraph" description="Generates UML class diagrams">
+
+        <!-- TODO: This task is unfinished because dot is not implemented    -->
+        <!--       in java. Maybe finish if dot ever gets ported.            -->
+
+        <path id="umlgraph.classpath">
+            <fileset dir="${basedir}/lib">
+                <include name="*.jar"/>
+                <include name="*.zip"/>
+            </fileset>
+        </path>
+
+        <!--
+    <pathconvert
+        targetos="windows"
+        property="umlgraph.classpath"
+        refid="umlgraph.classpath"/>
+
+
+            doclet           = "UmlGraph"
+            docletpath       = "${basedir}/build/lib/umlgraph.jar"
+
+                <param name="-operations" value=""/>
+                <param name="-visibility" value=""/>
+                <param name="-types" value=""/>
+                <param name="-qualify"/>
+
+        <echo>classpath=${umlgraph.classpathy}</echo>
+        -->
+
+        <javadoc
+            sourcepath       = "${basedir}/src"
+            packagenames     = "toolbox.findclass.*"
+            classpathref     = "umlgraph.classpath"
+            verbose          = "false">
+
+            <doclet name="UmlGraph" path="${basedir}/build/lib/umlgraph.jar">
+                <param name="-all"/>
+                <param name="-bgcolor" value="lightgray"/>
+                <param name="-nodefontname" value="lucon"/>
+                <param name="-nodefontabstractname" value="lucon"/>
+                <param name="-edgefontname" value="lucon"/>
+                <param name="-nodefillcolor" value="lightblue"/>
+                <param name="-nodefontcolor" value="blue"/>
+                <param name="-edgecolor" value="white"/>
+
+            </doclet>
+        </javadoc>
+
+    <exec executable="dot">
+        <arg value="-Tgif"/>
+        <arg value="graph.dot"/>
+        <arg value="-ograph.gif"/>
+    </exec>
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:ALL                                                          -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:all"
+          description = "Creates all fatjars from scratch and distributes them.">
+
+        <attainGoal name="fatjar:clean"/>
+        <attainGoal name="fatjar:toolbox"/>
+        <attainGoal name="fatjar:laf"/>
+        <attainGoal name="fatjar:xslfo"/>
+        <attainGoal name="fatjar:dist"/>
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:CLEAN                                                        -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:clean"
+          description = "Cleans the temporary fatjar working directory.">
+        <delete dir="${basedir}/target/fatjar" verbose="false"/>
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:TOOLBOX                                                      -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:toolbox" description = "Creates toolbox.jar.">
+
+        <echo message="Jarring..."/>
+
+        <j:set var="dist" value="${basedir}/target/fatjar"/>
+        <j:set var="stage" value="${basedir}/target/fatjar/toolbox"/>
+        <mkdir dir="${stage}"/>
+        <delete file="${dist}/toolbox.jar" verbose="false" quiet="off"/>
+
+        <!-- Find all jars tagged with "toolbox" and unjar to staging area -->
+		<j:forEach var="lib" items="${pom.artifacts}">
+			<j:set var="dep" value="${lib.dependency}"/>
+			<j:if test="${dep.getProperty('fatjar')=='toolbox'}">
+ 			    <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
+			</j:if>
+		</j:forEach>
+
+        <!-- xml-apis is special because it barfs unit tests if included in  -->
+        <!-- the maven pom as a dependency                                   --> 
+        <unjar dest="${stage}" overwrite="true">
+            <fileset dir="${basedir}/lib">
+                <include name="xml-apis.jar"/>
+            </fileset>
+        </unjar>
+
+        
+        <!-- Copy toolbox class files to staging area -->
+        <copy todir="${stage}" overwrite="yes">
+
+            <fileset
+                dir="${basedir}/classes"
+                includes="**/*.class"
+                excludes="**/MANIFEST.MF,**/test/**"/>
+
+            <fileset
+                dir="${basedir}/resources"
+                excludes="**/test/**,skinlf/**"/>
+        </copy>
+
+
+        <!-- Jar up staging area to produce toolbox.jar -->
+        <jar jarfile="${dist}/toolbox.jar"
+             manifest="${basedir}/src/META-INF/MANIFEST.MF"
+             compress="${toolbox.fatjar.compress}">
+
+            <!-- The INDEX.LIST file from xom.jar somehow confuses the   -->
+            <!-- Class-Path directive in the manifest so it is excluded  -->
+            <!-- for this reason.                                        -->
+            <fileset dir="${stage}" excludes="META-INF/INDEX.LIST"/>
+        </jar>
+
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:LAF                                                          -->
+    <!-- =================================================================== -->
+    <goal name = "fatjar:laf"
+          description = "Creates toolbox-lookandfeel.jar.">
+
+        <j:set var="dist" value="${basedir}/target/fatjar"/>
+        <j:set var="stage" value="${basedir}/target/fatjar/laf"/>
+        <mkdir dir="${stage}"/>
+
+        <delete verbose="true" failonerror="false" >
+            <fileset dir="${dist}" includes="toolbox-lookandfeel.jar"/>
+        </delete>
+
+
+        <!-- Unjar all jars to staging area -->
+		<j:forEach var="lib" items="${pom.artifacts}">
+			<j:set var="dep" value="${lib.dependency}"/>
+			<j:if test="${dep.getProperty('fatjar')=='laf'}">
+	    		<!-- echo>jar=${lib.file}</echo-->
+ 			    <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
+			</j:if>
+		</j:forEach>
+
+
+        <!-- Copy skinlf themepacks -->
+        <copy todir="${stage}" overwrite="yes">
+            <fileset dir="${basedir}/resources" includes="skinlf/*"/>
+        </copy>
+
+
+        <!-- Nuke the META-INF dir cause it just causes problems -->
+        <delete dir="${stage}/META-INF" verbose="true"/>
+
+
+        <!-- Jar up staging area to produce toolbox-lookandfeel.jar -->
+        <jar jarfile ="${dist}/toolbox-lookandfeel.jar"
+             compress="${toolbox.fatjar.compress}"> 
+            <fileset dir="${stage}"/>
+        </jar>
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:XSLFO                                                        -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:xslfo"
+          description = "Creates toolbox-xslfo.jar.">
+
+        <j:set var="dist" value="${basedir}/target/fatjar"/>
+        <j:set var="stage" value="${basedir}/target/fatjar/xslfo"/>
+        <mkdir dir="${stage}"/>
+
+        <delete verbose="true">
+            <fileset dir="${dist}" includes="toolbox-xslfo.jar"/>
+        </delete>
+
+
+        <!-- Find all jars tagged with "xslfo" and unjar to staging area -->
+		<j:forEach var="lib" items="${pom.artifacts}">
+			<j:set var="dep" value="${lib.dependency}"/>
+			<j:if test="${dep.getProperty('fatjar')=='xslfo'}">
+ 			    <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
+			</j:if>
+		</j:forEach>
+
+
+        <!-- Saxon is special because it barfs maven if included as a dep -->
+        <unjar dest="${stage}" overwrite="true">
+            <fileset dir="${basedir}/lib">
+                <include name="saxon.jar"/>
+            </fileset>
+        </unjar>
+
+        
+        <!-- Jar up staging area to produce toolbox-xslfo.jar -->
+        <jar jarfile ="${dist}/toolbox-xslfo.jar" 
+             compress="${toolbox.fatjar.compress}">
+            <fileset dir="${stage}"/>
+        </jar>
+
+    </goal>
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:DIST                                                         -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:dist"
+          description = "Copies the toolbox fatjars to a local directory.">
+
+        <copy todir="${toolbox.fatjar.dist}" overwrite="yes">
+            <fileset dir="${basedir}/target/fatjar/" includes="*.jar"/>
+        </copy>
+    </goal>
+    
+</project>
