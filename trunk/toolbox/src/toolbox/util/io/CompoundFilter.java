@@ -1,43 +1,31 @@
 package toolbox.util.io;
 
-import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A Composite file filter joins two filters so that eithers acceptance 
  * is sufficient criteria for the composite filter to accept.
  */
-public class CompoundFilter implements FilenameFilter
+public abstract class CompoundFilter implements FilenameFilter
 {
-    /** First filter to create composite **/
-    private FilenameFilter firstFilter_;
-    
-    /** Second filter to create composite **/
-    private FilenameFilter secondFilter_;
+    private List filters_ = new ArrayList();
     
     /**
-     * Creates a filter that is the composite of two filters
-     * 
-     * @param  filterOne   First filter
-     * @param  filterTwo   Second filter
-     */   
-    public CompoundFilter(FilenameFilter filterOne, FilenameFilter filterTwo)
+     * Adds a filter
+     */
+    public void addFilter(FilenameFilter filter)
     {
-        firstFilter_  = filterOne;
-        secondFilter_ = filterTwo;
+        filters_.add(filter);        
     }
     
     /**
-     * Filter as a composite  
-     * 
-     * @param    dir   Directory file is contained in
-     * @param    name  Name of file
-     * @return   True if the file matches at least one of two filter,
-     *           false otherwise.
+     * @return Iterator over filters
      */
-    public boolean accept(File dir,String name)
+    protected Iterator iterator()
     {
-        return firstFilter_.accept(dir, name) || 
-               secondFilter_.accept(dir, name);
+        return filters_.iterator();
     }
 }
