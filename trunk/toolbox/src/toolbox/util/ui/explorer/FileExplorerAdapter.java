@@ -1,40 +1,44 @@
-package toolbox.util.ui;
+package toolbox.util.ui.explorer;
 
 /**
- * Adapter class for JFileExplorerListener.
+ * Adapter class for FileExplorerListener.
  */
-public class JFileExplorerAdapter implements JFileExplorerListener
+public class FileExplorerAdapter implements FileExplorerListener
 {
     /**
-     * Constructor for JFileExplorerAdapter.
+     * Constructor for FileExplorerAdapter.
      */
-    public JFileExplorerAdapter()
+    public FileExplorerAdapter()
     {
     }
 
+    
     /**
-     * @see JFileExplorerListener#fileDoubleClicked(String)
+     * @see FileExplorerListener#fileDoubleClicked(String)
      */
     public void fileDoubleClicked(String file)
     {
     }
 
+    
     /**
-     * @see JFileExplorerListener#folderSelected(String)
+     * @see FileExplorerListener#folderSelected(String)
      */
     public void folderSelected(String folder)
     {
     }
 
+    
     /**
-     * @see JFileExplorerListener#folderDoubleClicked(String)
+     * @see FileExplorerListener#folderDoubleClicked(String)
      */
     public void folderDoubleClicked(String folder)
     {
     }
     
+    
     /**
-     * @see toolbox.util.ui.JFileExplorerListener#fileSelected(java.lang.String)
+     * @see FileExplorerListener#fileSelected(java.lang.String)
      */
     public void fileSelected(String file)
     {

@@ -17,8 +17,8 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JFileExplorer;
-import toolbox.util.ui.JFileExplorerListener;
+import toolbox.util.ui.explorer.JFileExplorer;
+import toolbox.util.ui.explorer.FileExplorerListener;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
@@ -78,7 +78,7 @@ public class JFileExplorerTest extends TestCase
      * Test dialog.
      */
     static class TestDialog extends JDialog 
-                            implements JFileExplorerListener, 
+                            implements FileExplorerListener, 
                                        ActionListener
     {
         private JTextField testField_;

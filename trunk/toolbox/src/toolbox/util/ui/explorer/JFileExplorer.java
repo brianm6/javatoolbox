@@ -1,4 +1,4 @@
-package toolbox.util.ui;
+package toolbox.util.ui.explorer;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -52,6 +52,10 @@ import toolbox.util.XOMUtil;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.statusbar.JStatusBar;
 import toolbox.util.ui.tree.JSmartTree;
@@ -93,7 +97,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /** 
      * List of objects interested in file explorer generated events. 
      */ 
-    private JFileExplorerListener[] fileExplorerListeners_;
+    private FileExplorerListener[] fileExplorerListeners_;
 
 	/** 
 	 * Flag to prevent events from triggering new events to be generated while
@@ -134,7 +138,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     public JFileExplorer(boolean verticalSplitter)
     {
-        fileExplorerListeners_ = new JFileExplorerListener[0];
+        fileExplorerListeners_ = new FileExplorerListener[0];
         buildView(verticalSplitter);
     }
 
@@ -389,27 +393,27 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a JFileExplorerListener.
+     * Adds a FileExplorerListener.
      *
      * @param listener Listener to add
      */
-    public void addFileExplorerListener(JFileExplorerListener listener)
+    public void addFileExplorerListener(FileExplorerListener listener)
     {
         fileExplorerListeners_ = 
-            (JFileExplorerListener[]) 
+            (FileExplorerListener[]) 
                 ArrayUtil.add(fileExplorerListeners_, listener);
     }
 
 
     /**
-     * Removes a JFileExplorerListener.
+     * Removes a FileExplorerListener.
      *
      * @param listener Listener to remove
      */
-    public void removeFileExplorerListener(JFileExplorerListener listener)
+    public void removeFileExplorerListener(FileExplorerListener listener)
     {
         fileExplorerListeners_ = 
-            (JFileExplorerListener[]) 
+            (FileExplorerListener[]) 
                 ArrayUtil.remove(fileExplorerListeners_, listener);
     }
 
@@ -985,7 +989,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /** 
      * Updates the infobar with the currently selected file.
      */
-    class InfoBarUpdater extends JFileExplorerAdapter
+    class InfoBarUpdater extends FileExplorerAdapter
     {
         public void fileSelected(String file)
         {

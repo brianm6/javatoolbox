@@ -1,9 +1,9 @@
-package toolbox.util.ui;
+package toolbox.util.ui.explorer;
 
 /**
- * Listener defining all events that the JFileExplorer advertises.
+ * Listener defining all events that the JFileExplorer generates.
  */
-public interface JFileExplorerListener
+public interface FileExplorerListener
 {
     /**
      * Called when a file is selected in the file list.

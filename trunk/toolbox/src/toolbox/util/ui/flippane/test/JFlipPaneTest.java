@@ -17,7 +17,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JFileExplorer;
+import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.flippane.FlipPaneListener;
