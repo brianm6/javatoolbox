@@ -12,12 +12,19 @@ import toolbox.util.ui.ImageCache;
  */    
 public class AutoTailAction extends AbstractAction
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Table to tail.
      */
     private final JSmartTable table_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates an AutoTailAction.
      * 
@@ -31,6 +38,9 @@ public class AutoTailAction extends AbstractAction
         putValue(Action.SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_LOCK));
     }
     
+    //--------------------------------------------------------------------------
+    // ActionPerformed Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see java.awt.event.ActionListener#actionPerformed(
