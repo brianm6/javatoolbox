@@ -3,7 +3,7 @@ package toolbox.util.ui;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
-import toolbox.util.Assert;
+import org.apache.commons.lang.Validate;
 
 /**
  * JMenu that works like a conveyor belt. New items get inserted at the top of
@@ -17,7 +17,8 @@ public class JConveyorMenu extends JSmartMenu
     //--------------------------------------------------------------------------
     
     /** 
-     * Max number of items that can be displayed by the menu. 
+     * Max number of items that can be displayed by the menu. Must be a positive
+     * integer greater than zero. 
      */
     private int capacity_;
     
@@ -29,7 +30,7 @@ public class JConveyorMenu extends JSmartMenu
      * Creates a JConveyorMenu.
      * 
      * @param capacity Max number of menu items allowed in the menu before
-     *        items at the bottom of the menu start getting pushed off.
+     *        items at the bottom of the menu start getting bumped off.
      */
     public JConveyorMenu(int capacity)
     {
@@ -47,7 +48,7 @@ public class JConveyorMenu extends JSmartMenu
     public JConveyorMenu(String title, int capacity)
     {
         super(title);
-        capacity_ = capacity;    
+        setCapacity(capacity);    
     }
     
     //--------------------------------------------------------------------------
@@ -57,11 +58,11 @@ public class JConveyorMenu extends JSmartMenu
     /**
      * Sets the max capacity of the popup menu.
      * 
-     * @param capacity Capacity > 0
+     * @param capacity Max number of items the menu can hold.
      */
     public void setCapacity(int capacity)
     {
-        Assert.isTrue(capacity > 0, "Capacity must be > 0");
+        Validate.isTrue(capacity > 0, "Capacity must be > 0");
         capacity_ = capacity;    
     }
     
@@ -70,6 +71,9 @@ public class JConveyorMenu extends JSmartMenu
     //--------------------------------------------------------------------------
         
     /**
+     * Wraps the given Action in a menuitem and adds via add(JMenuItem).
+     * 
+     * @see #add(JMenuItem)
      * @see javax.swing.JMenu#add(javax.swing.Action)
      */
     public JMenuItem add(Action action)
@@ -79,6 +83,9 @@ public class JConveyorMenu extends JSmartMenu
     
     
     /**
+     * Bump the oldest menu item off if a new one is added and we're at 
+     * capacity.
+     * 
      * @see javax.swing.JMenu#add(javax.swing.JMenuItem)
      */
     public JMenuItem add(JMenuItem menuItem)
