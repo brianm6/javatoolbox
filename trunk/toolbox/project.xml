@@ -92,7 +92,7 @@
     <!-- xml-apis has to come before saxon because they both have difference -->
     <!-- versions of org.w3c.dom apis                                        --> 
     
-    <!--
+
     <dependency>
       <id>xml-apis</id>
       <version/>
@@ -100,7 +100,7 @@
         <jnlp.jar>true</jnlp.jar>
       </properties>
     </dependency>
-    -->
+
     
     <!-- 
     <dependency>
