@@ -160,8 +160,6 @@ Commands:
                 the build process.
   compile       Compiles the project only.
   cvs-update    Does a cvs update of the project.
-  fatjar
-  fatjar-lf
   jar           Compiles, unit tests, and jars the project.
   jnlp          Creates jnlp distribution in target/jnlp
   jnlp-deploy   Copies the jnlp distribution to the http server
@@ -170,6 +168,13 @@ Commands:
   umlgraph      Generate UML graph
   update-props  Copies build.properties to $HOME
 
+  fatjar:       Creates an executable jar version of the toolbox.
+    all         Create all fatjars and disttributes them
+    clean       Deletes ./target/fatjar/
+    dist        Distribute the fatjars to the local filesystem
+    laf         Creates toolbox-laf.jar
+    toolbox     Creates toolbox.jar
+    xslfo       Creates toolbox-xslfo.jar
 ================================================================================
         </echo>
     </goal>
