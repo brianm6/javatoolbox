@@ -336,6 +336,18 @@ public final class ClassUtil
     
     
     /**
+     * Strips the package name from a class.
+     * 
+     * @param clazz Class to string package from.
+     * @return Name of the class only.
+     */
+    public static String stripPackage(Class clazz)
+    {
+        return stripPackage(clazz.getName());
+    }
+    
+    
+    /**
      * Strips the class portion from a fully qualified class name leaving only 
      * the package name.
      * 
