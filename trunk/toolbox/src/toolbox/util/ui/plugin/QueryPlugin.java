@@ -129,7 +129,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JPopupMenu popup = new JTextComponentPopupMenu(outputArea_);
         
         JSplitPane splitPane = 
-            new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 new JScrollPane(inputArea_), 
                 new JScrollPane(outputArea_));
 
@@ -144,7 +144,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         // Root 
         setLayout(new BorderLayout());
-        add(buildConfigView(), BorderLayout.NORTH);
+        add(buildConfigView(), BorderLayout.WEST);
         add(splitPane, BorderLayout.CENTER);                
         add(buttonPanel, BorderLayout.SOUTH);
     }
@@ -158,19 +158,19 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         JPanel cp = new JPanel(new GridLayout(4,2));
         
-        cp.add(new JLabel("Driver"));
-        cp.add(driverField_ = new JTextField(""));
+        cp.add(SwingUtil.wrap(new JLabel("Driver")));
+        cp.add(SwingUtil.wrap(driverField_ = new JTextField(15)));
        
-        cp.add(new JLabel("URL"));
-        cp.add(urlField_ = new JTextField(""));
+        cp.add(SwingUtil.wrap(new JLabel("URL")));
+        cp.add(SwingUtil.wrap(urlField_ = new JTextField(15)));
         
-        cp.add(new JLabel("User"));
-        cp.add(userField_ = new JTextField(""));
+        cp.add(SwingUtil.wrap(new JLabel("User")));
+        cp.add(SwingUtil.wrap(userField_ = new JTextField(15)));
          
-        cp.add(new JLabel("Password"));
-        cp.add(passwordField_ = new JTextField(""));
+        cp.add(SwingUtil.wrap(new JLabel("Password")));
+        cp.add(SwingUtil.wrap(passwordField_ = new JTextField(15)));
 
-        JFlipPane jfp = new JFlipPane(JFlipPane.TOP);
+        JFlipPane jfp = new JFlipPane(JFlipPane.LEFT);
         jfp.addFlipper("JDBC Config", cp);
         jfp.setExpanded(false);
         return jfp;
