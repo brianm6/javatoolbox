@@ -92,17 +92,29 @@ public class QueryPlugin extends JPanel implements IPlugin
     /** Property key for the contents of the SQL text area */
     public static final String PROP_CONTENTS = "query.plugin.contents";
     
-    // SQL query & results stuff
-    private IStatusBar     statusBar_;    
-    private JEditTextArea  sqlArea_;
-    private JTextArea      resultsArea_;
-    private JButton        queryButton_;
-    private JButton        clearButton_;
-    private JFlipPane      leftFlipPane_;
+    /** Status bar of plugin host */
+    private IStatusBar statusBar_;
     
-    // SQL history
+    /** Text area for entering sql statements */    
+    private JEditTextArea sqlArea_;
+    
+    /** Text are for sql execution results */
+    private JTextArea resultsArea_;
+    
+    /** Invokes execution of sql command */
+    private JButton queryButton_;
+    
+    /** Clears the contents of the sql results area */
+    private JButton clearButton_;
+    
+    /** Flippane which houses the jdbc configuration panel */
+    private JFlipPane leftFlipPane_;
+    
+    /** Popup menu that contains a history of recently executed sql */
     private JConveyorPopupMenu sqlPopup_;    
-    private Map                sqlHistory_;
+    
+    /** Maps sqlpopup_ menu items to the actual sql text */
+    private Map sqlHistory_;
     
     // JDBC config stuff 
     private JTextField driverField_;
@@ -111,7 +123,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     private JTextField passwordField_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -122,7 +134,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    //  Protected
+    // Protected
     //--------------------------------------------------------------------------
     
     /** 
@@ -263,7 +275,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    //  IPlugin Interface
+    // IPlugin Interface
     //--------------------------------------------------------------------------
 
     public void init()
@@ -296,7 +308,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 	}
 
 	//--------------------------------------------------------------------------
-	//  IPreferenced Interface
+	// IPreferenced Interface
 	//--------------------------------------------------------------------------
 
     public void applyPrefs(Properties prefs)
