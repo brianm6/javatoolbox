@@ -2,10 +2,10 @@ package toolbox.util.io.filter.test;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.io.filter.ExtensionFilter;
@@ -18,11 +18,6 @@ public class ExtensionFilterTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(ExtensionFilterTest.class);
         
-    /** 
-     * Test directory for filtering files 
-     */
-    private File testDir_;
-    
     /** 
      * Entrypoint
      * 
