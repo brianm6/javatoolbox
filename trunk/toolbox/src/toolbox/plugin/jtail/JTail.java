@@ -1,6 +1,7 @@
 package toolbox.jtail;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,16 +11,19 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
@@ -29,9 +33,11 @@ import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.jtail.config.tinyxml.ConfigManager;
+import toolbox.jtail.config.tinyxml.TailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.PropertiesUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
@@ -41,12 +47,17 @@ import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.xml.XMLParser;
 
 /**
  * JTail is a GUI front end for toolbox.tail.Tail
  */
 public class JTail extends JFrame
 {
+    private int lastNumRecent_;
+
+    private JMenu recentMenu_;
+
     /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JTail.class);
@@ -97,6 +108,7 @@ public class JTail extends JFrame
      */
     private IJTailConfig jtailConfig_;            
         
+    
     /**
      * Entry point 
      * 
@@ -216,6 +228,11 @@ public class JTail extends JFrame
         }
             
         menuBar.add(fileMenu);
+        
+        recentMenu_ = new JMenu("Recent");
+        recentMenu_.add(new ClearRecentAction());
+        menuBar.add(recentMenu_);
+        
         return menuBar;
     }
 
@@ -228,7 +245,7 @@ public class JTail extends JFrame
     {
         try
         {
-            logger_.debug("\n" + config);
+            logger_.debug(config);
             TailPane tailPane = new TailPane(config, statusBar_);
  
             JButton closeButton = tailPane.getCloseButton();
@@ -310,37 +327,81 @@ public class JTail extends JFrame
      */
     protected void saveConfiguration(Properties props)
     {
-        // Size and location
-        jtailConfig_.setSize(getSize());
-        jtailConfig_.setLocation(getLocation());
-        
-        // Last selected directory
-        String path = fileSelectionPane_.getFileExplorer().getCurrentPath();
-        jtailConfig_.setDirectory(path);
-        
-        // Since each of the ITailPaneConfigs are maintained inside the 
-        // TailPane itself, gather them up and update jtailConfig before
-        // saving. Essentially, do the reverse of applyConfiguration(). 
-        
-        ITailPaneConfig configs[] = new ITailPaneConfig[0];
-        
-        for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext(); )
+        try
         {
-            Map.Entry entry = (Map.Entry) i.next();
-            TailPane tailPane = (TailPane)entry.getValue();            
-            ITailPaneConfig config = tailPane.getConfiguration();
-            configs = (ITailPaneConfig[])ArrayUtil.add(configs, config);    
+            // Size and location
+            jtailConfig_.setSize(getSize());
+            jtailConfig_.setLocation(getLocation());
+            
+            // Last selected directory
+            String path = fileSelectionPane_.getFileExplorer().getCurrentPath();
+            jtailConfig_.setDirectory(path);
+            
+            // Since each of the ITailPaneConfigs are maintained inside the 
+            // TailPane itself, gather them up and update jtailConfig before
+            // saving. Essentially, do the reverse of applyConfiguration(). 
+            
+            ITailPaneConfig configs[] = new ITailPaneConfig[0];
+            
+            for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) i.next();
+                TailPane tailPane = (TailPane)entry.getValue();            
+                ITailPaneConfig config = tailPane.getConfiguration();
+                configs = (ITailPaneConfig[])ArrayUtil.add(configs, config);    
+            }
+            
+            jtailConfig_.setTailConfigs(configs);
+            
+            configManager_.save(jtailConfig_);
+            
+            // Save properties that are separate from IJTailConfig/ITailPaneConfig
+            if (props != null)
+            {
+                fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
+                flipPane_.savePrefs(props, "jtail");
+            }
+            
+            // Save recent menu
+            Component[] items = recentMenu_.getMenuComponents();
+            
+            // Sub 1 for the unaccounted "Clear" menuitem
+            PropertiesUtil.setInteger(props, "jtail.recent.num", items.length - 1); 
+            
+            int cnt = 0;
+            
+            // Clear out old properties since the number we're now persisting
+            // may have changed and that will leave dangling properties
+            for (int i=0; i<lastNumRecent_-1; i++)
+                props.remove("jtail.recent.tail." + i++);
+                
+            
+            for (int i=0; i<items.length; i++)
+            {
+                logger_.debug(
+                    "Menuitem " + i + " = " + items[i].getClass().getName());
+                
+                JMenuItem menuItem = (JMenuItem) items[i];
+                
+                Action a = (Action) menuItem.getAction();
+                
+                if (a instanceof TailRecent) 
+                {
+                    TailRecent action = (TailRecent) menuItem.getAction();
+                    
+                    ITailPaneConfig config = 
+                        (ITailPaneConfig) action.getValue("config");
+                        
+                    props.setProperty(
+                        "jtail.recent.tail." + cnt++, config.toString());
+                }
+            }
+            
+            lastNumRecent_ = cnt;
         }
-        
-        jtailConfig_.setTailConfigs(configs);
-        
-        configManager_.save(jtailConfig_);
-        
-        // Save properties that are separate from IJTailConfig/ITailPaneConfig
-        if (props != null)
+        catch (Throwable t)
         {
-            fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
-            flipPane_.savePrefs(props, "jtail");
+            ExceptionUtil.handleUI(t, logger_);
         }
     }
     
@@ -390,10 +451,35 @@ public class JTail extends JFrame
             fileSelectionPane_.getFileExplorer().applyPrefs(props, "jtail");
             flipPane_.applyPrefs(props, "jtail");
         }
+        
+        int numRecent = PropertiesUtil.getInteger(props, "jtail.recent.num", 0);
+
+        XMLParser parser = new XMLParser();
+
+        for (int i=0; i<numRecent; i++)
+        {
+            String xmlConfig = props.getProperty("jtail.recent.tail." + i);
+            TailPaneConfig config = null;
+            
+            try
+            {
+                logger_.debug("tailnum=" + i + " xml=" + xmlConfig);
+                
+                config = TailPaneConfig.unmarshal(
+                    parser.parseXML(new StringReader(xmlConfig)));
+
+                recentMenu_.add(new TailRecent(config));
+            }
+            catch (IOException ioe)
+            {
+                
+                ExceptionUtil.handleUI(ioe, logger_);
+            }
+        }        
     }    
     
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    //  Event Listeners
     //--------------------------------------------------------------------------
     
     /**
@@ -430,7 +516,6 @@ public class JTail extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
-
             ITailPaneConfig config = configManager_.createTailPaneConfig();
             
             config.setFilename(
@@ -441,7 +526,8 @@ public class JTail extends JFrame
             config.setAntiAlias(defaults.isAntiAlias());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
-            
+            config.setCutExpression(defaults.getCutExpression());
+            config.setAutoStart(defaults.isAutoStart());            
             addTail(config);
         }
     }
@@ -466,8 +552,8 @@ public class JTail extends JFrame
             tabbedPane_.remove(pane);        
             tailMap_.remove(closeButton);
             
-            // Save the configuration since the tail is gone
-            saveConfiguration(null);
+            // Add the closed tail to the recent menu
+            recentMenu_.add(new TailRecent(pane.getConfiguration()));
             
             statusBar_.setStatus(
                 "Closed " + pane.getConfiguration().getFilename());
@@ -486,8 +572,53 @@ public class JTail extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  Actions
+    //  GUI Actions
     //--------------------------------------------------------------------------
+    
+    /**
+     * When a file is selectect from the Recent menu, this action tails the 
+     * file and removes that item from the recent menu.
+     */
+    private class TailRecent extends AbstractAction
+    {
+        private ITailPaneConfig config_;
+        
+        public TailRecent(ITailPaneConfig config)
+        {
+            super(config.getFilename());
+            config_ = config;
+            putValue("config", config_);
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            addTail(config_);
+            recentMenu_.remove((Component) e.getSource());
+        }
+    }
+
+    /**
+     * Clears the Recent menu
+     */
+    private class ClearRecentAction extends AbstractAction
+    {
+        public ClearRecentAction()
+        {
+            super("Clear");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            Component[] items = recentMenu_.getMenuComponents();
+        
+            for (int i=items.length-1; i >= 0; i--)
+            {
+                JMenuItem menuItem = (JMenuItem) items[i];
+                if (menuItem.getAction() instanceof TailRecent)
+                    recentMenu_.remove(menuItem);
+            }
+        }
+    }
     
     /**
      * Action to save configurations
