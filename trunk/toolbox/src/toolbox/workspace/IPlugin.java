@@ -7,19 +7,12 @@ import toolbox.util.service.Initializable;
 import toolbox.workspace.prefs.IConfigurator;
 
 /**
- * IPlugin defines the interface for any plugins that can hosted by the 
- * PluginWorkspace.
+ * IPlugin defines the basic interface for a workspace plugin. IPlugins are
+ * managed by a concrete instance of a {@link toolbox.workspace.host.PluginHost}
+ * and contained within the {@link toolbox.workspace.PluginWorkspace}.
  * <p>
- * Plugin writing guidelines:
- * <ul>
- *   <li>Make sure your plugins default constructor does absolutely nothing; 
- *       Instead, move that functionality to the init() method. This is 
- *       necessary so that plugins can be found and identified via 
- *       Class.forname().newInstance() but not necessary loaded into the 
- *       host environment.
- * </ul>
- * 
  * @see toolbox.workspace.PluginWorkspace
+ * @see toolbox.workspace.host.PluginHost
  */
 public interface IPlugin extends Initializable, Destroyable, IPreferenced
 {
@@ -40,7 +33,7 @@ public interface IPlugin extends Initializable, Destroyable, IPreferenced
 
     
     /**
-     * User interface component of this plugin.
+     * Returns the user interface component of this plugin.
      * 
      * @return JComponent
      */
@@ -48,7 +41,12 @@ public interface IPlugin extends Initializable, Destroyable, IPreferenced
     
     
     /**
-     * Returns the configurator for this plugin preferences.  
+     * Returns a configurator for this plugin's preferences. A configurator is 
+     * usually a panel that the plugin host can add to an application wide 
+     * preferences dialog box so that preferences for this plugin can be
+     * viewed and edited.
+     * 
+     * @return ICongifurator   
      */
     IConfigurator getConfigurator();
 }

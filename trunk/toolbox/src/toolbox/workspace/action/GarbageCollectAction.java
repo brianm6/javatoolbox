@@ -9,10 +9,18 @@ import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * Triggers garbage collection.
+ * Triggers garbage collection and displays before and after stats on the
+ * status bar.
  */
 public class GarbageCollectAction extends WorkspaceAction
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Reference to the PluginWorkspace.
+     */
     private final PluginWorkspace workspace_;
 
     //--------------------------------------------------------------------------
@@ -21,11 +29,13 @@ public class GarbageCollectAction extends WorkspaceAction
     
     /**
      * Creates a GarbageCollectAction.
+     * 
+     * @param workspace Plugin workspace.
      */
     public GarbageCollectAction(PluginWorkspace workspace)
     {
         super("Run GC", false, null, null);
-        this.workspace_ = workspace;
+        workspace_ = workspace;
         putValue(Action.MNEMONIC_KEY, new Integer('G'));
     }
 

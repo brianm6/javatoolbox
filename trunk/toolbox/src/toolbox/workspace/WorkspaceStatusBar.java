@@ -63,11 +63,12 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         Logger.getLogger(WorkspaceStatusBar.class);
 
     //--------------------------------------------------------------------------
-    // Defaults
+    // Constants
     //--------------------------------------------------------------------------
 
     /**
-     * Default number of status history to retain.
+     * Max number of status history items to retain in the popup window for
+     * this statusbar.
      */
     private static final int MAX_HISTORY = 100;
 
@@ -82,12 +83,13 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     private JProgressBar progressBar_;
 
     /**
-     * Label for displaying status message.
+     * Label for displaying the status message.
      */
     private JSmartLabel status_;
 
     /**
-     * Keeps a running history of the past x number of status messages.
+     * Keeps a running history of the past <code>MAX_HISTORY</code> number of 
+     * status messages.
      */
     private CircularFifoBuffer history_;
 
@@ -312,13 +314,13 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
             JHeaderPanel hp = new JHeaderPanel("Status History");
             JToolBar tb = JHeaderPanel.createToolBar();
 
-            AbstractAction aa = new DisposeAction(this);
+            AbstractAction disposeAction = new DisposeAction(this);
 
-            aa.putValue(
+            disposeAction.putValue(
                 AbstractAction.SMALL_ICON,
                 ImageCache.getIcon(ImageCache.IMAGE_CROSS));
 
-            tb.add(JHeaderPanel.createButton(aa));
+            tb.add(JHeaderPanel.createButton(disposeAction));
 
             hp.setToolBar(tb);
 

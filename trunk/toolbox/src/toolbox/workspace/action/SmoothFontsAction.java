@@ -13,7 +13,10 @@ import toolbox.util.SwingUtil;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * Toggles smooth fonts.
+ * Toggles font smoothing globally.
+ * 
+ * @see toolbox.util.ui.AntiAliased
+ * @see toolbox.util.ui.action.AntiAliasAction
  */
 public class SmoothFontsAction extends BaseAction
 {
@@ -26,6 +29,8 @@ public class SmoothFontsAction extends BaseAction
     
     /**
      * Creates a SmoothFontAction.
+     * 
+     * @param workspace Plugin workspace.
      */
     public SmoothFontsAction(PluginWorkspace workspace)
     {
@@ -53,8 +58,8 @@ public class SmoothFontsAction extends BaseAction
         for (int i = 0; i < comps.length;
             SwingUtil.setAntiAliased(comps[i++], b));
 
-//            SwingUtil.setAntiAliased(getJMenuBar(), b);
-//
+        //SwingUtil.setAntiAliased(getJMenuBar(), b);
+        
         for (int i = 0, n = getWorkspace().getJMenuBar().getMenuCount(); i < n; 
              i++)
         {

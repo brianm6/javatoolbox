@@ -11,15 +11,18 @@ import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * Saves the preferences for the workspaces in addition to all the active
- * plugins.
+ * Saves the preferences for the workspace, plugins, and various other 
+ * IPreferenced implementors to an XML document. 
  */
 public class SavePreferencesAction extends WorkspaceAction
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+   
+    /**
+     * Reference to the PluginWorkspace.
+     */
     private final PluginWorkspace workspace_;
 
     //--------------------------------------------------------------------------
