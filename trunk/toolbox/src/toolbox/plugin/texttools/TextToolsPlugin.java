@@ -3,46 +3,29 @@ package toolbox.plugin.texttools;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import nu.xom.Element;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.apache.regexp.RESyntaxException;
 
-import org.w3c.tidy.Tidy;
-
-import toolbox.plugin.jtail.filter.RegexLineFilter;
 import toolbox.util.ArrayUtil;
 import toolbox.util.Banner;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.io.StringInputStream;
-import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
@@ -130,7 +113,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /** 
@@ -161,13 +144,13 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         splitter_.setTopComponent(
             new JHeaderPanel(
                 "Input", 
-                null, 
+                JHeaderPanel.createToolBar(inputArea_), 
                 new JScrollPane(inputArea_)));
         
         splitter_.setBottomComponent(
             new JHeaderPanel(
                 "Output",
-                null,
+                JHeaderPanel.createToolBar(outputArea_),
                 new JScrollPane(outputArea_)));
         
         add(splitter_, BorderLayout.CENTER);
@@ -175,10 +158,10 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         
         // Top flip pane
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
-        topFlipPane_.addFlipper("Filter", new FilterFlipper());
-        topFlipPane_.addFlipper("Tokenizer", new TokenizerFlipper());
-        topFlipPane_.addFlipper("Codec", new CodecFlipper());
-        topFlipPane_.addFlipper("Format", new FormatFlipper());
+        topFlipPane_.addFlipper("Filter", new FilterPane(this));
+        topFlipPane_.addFlipper("Tokenizer", new TokenizerPane(this));
+        topFlipPane_.addFlipper("Codec", new CodecPane(this));
+        topFlipPane_.addFlipper("Format", new FormatPane(this));
         add(topFlipPane_, BorderLayout.NORTH);
     }
     
@@ -196,6 +179,28 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         return (StringUtil.isNullOrBlank(selected) 
                     ? inputArea_.getText() 
                     : selected);
+    }
+    
+    
+    /**
+     * Returns the statusBar.
+     * 
+     * @return IStatusBar
+     */
+    public IStatusBar getStatusBar()
+    {
+        return statusBar_;
+    }
+
+    
+    /**
+     * Returns the outputArea.
+     * 
+     * @return JSmartTextArea
+     */
+    public JSmartTextArea getOutputArea()
+    {
+        return outputArea_;
     }
     
     //--------------------------------------------------------------------------
@@ -497,583 +502,6 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             }
             
             outputArea_.append(sb.toString());
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // FilterFlipper
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Flipper that allows filtering of text dynamically i.e. As the regular
-     * expression is typed in, the matching set is updated accordingly with
-     * each keystroke.
-     */
-    class FilterFlipper extends JPanel
-    {
-        //----------------------------------------------------------------------
-        // Fields
-        //----------------------------------------------------------------------
-        
-        private JTextField filterField_;
-        private String[] cache_;
-        private TextChangedListener docListener_;
-        
-        //----------------------------------------------------------------------
-        // Constructors
-        //----------------------------------------------------------------------
-        
-        /**
-         * Creates a FilterFlipper.
-         */
-        FilterFlipper()
-        {
-            buildView();
-        }
-        
-        //----------------------------------------------------------------------
-        // Protected
-        //----------------------------------------------------------------------
-        
-        /**
-         * Constructs the user interface.
-         */
-        protected void buildView()
-        {
-            setLayout(new FlowLayout());
-            
-            add(new JSmartLabel("Filter"));
-            add(filterField_ = new JSmartTextField(20));
-            add(new JSmartLabel("(regular expression)"));
-            filterField_.addKeyListener(new FilterKeyListener());
-            
-            docListener_ = new TextChangedListener();
-        }
-        
-        
-        /**
-         * Filters text based on a regular expression.
-         * 
-         * @param regex Regular expression.
-         */
-        protected void filter(String regex)
-        {
-            statusBar_.setStatus("RE: '" + regex + "'");
-            
-            if (cache_ == null)
-                cache_ = StringUtil.tokenize(getInputText(), StringUtil.NL);
-
-            String[] lines = cache_;                
-            
-            StringBuffer sb = new StringBuffer();
-            RegexLineFilter filter = null;
-            
-            try
-            {
-                filter = new RegexLineFilter(regex);
-                filter.setEnabled(true);
-                
-                for (int i = 0; i < lines.length; i++)
-                {
-                    String passed = filter.filter(lines[i]);
-                
-                    if (passed != null)
-                    {
-                        sb.append(passed);
-                        sb.append(StringUtil.NL);
-                    }
-                }
-                
-                // Want to ignore document change events while the filter is
-                // updating the text area. Just detach and reattach after
-                // mutations are done.
-                
-                outputArea_.getDocument().
-                    removeDocumentListener(docListener_);            
-                    
-                outputArea_.setText(sb.toString());
-                outputArea_.moveCaretPosition(0);
-                
-                outputArea_.getDocument().
-                    addDocumentListener(docListener_);
-                
-            }
-            catch (RESyntaxException e)
-            {
-                // The regular expression is going to be invalid as the user
-                // types it in up just shoot the message to the status bar
-                statusBar_.setStatus(e.getMessage());
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // FilterKeyListener
-        //----------------------------------------------------------------------
-        
-        /**
-         * Enabled dynamic filtering  of regex as it is typed.
-         */    
-        class FilterKeyListener extends KeyAdapter
-        {
-            private String oldValue_ = "";
-        
-            /**
-             * @see java.awt.event.KeyListener#keyReleased(
-             *      java.awt.event.KeyEvent)
-             */
-            public void keyReleased(KeyEvent e)
-            {
-                super.keyReleased(e);
-        
-                String newValue = filterField_.getText().trim();
- 
-                // Only refresh if the filter has changed           
-                if (!newValue.equals(oldValue_))
-                {                
-                    oldValue_ = newValue;
-                    filter(newValue);            
-                }
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // TextChangedListener
-        //----------------------------------------------------------------------
-        
-        /**
-         * Catchs modifications to the original document so that we know when
-         * to throw away our cached copy of the text currently being regex'ed.  
-         */
-        class TextChangedListener implements DocumentListener
-        {
-            /**
-             * @see javax.swing.event.DocumentListener#changedUpdate(
-             *      javax.swing.event.DocumentEvent)
-             */
-            public void changedUpdate(DocumentEvent e)
-            { 
-                crud("changed ");
-            }
-
-            
-            /**
-             * @see javax.swing.event.DocumentListener#insertUpdate(
-             *      javax.swing.event.DocumentEvent)
-             */
-            public void insertUpdate(DocumentEvent e)
-            {
-                crud("insert ");
-            }
-            
-            
-            /**
-             * @see javax.swing.event.DocumentListener#removeUpdate(
-             *      javax.swing.event.DocumentEvent)
-             */
-            public void removeUpdate(DocumentEvent e)
-            {
-                crud("remove ");
-            }
-            
-            
-            /**
-             * @param s String
-             */
-            protected void crud(String s)
-            {
-                s.toString();
-                cache_ = null;
-            }
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // TokenizerFlipper
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Flipper that allows the user to tokenize strings by providing the 
-     * token delimiter. Multiline strings can also be merged into one line. 
-     */
-    class TokenizerFlipper extends JPanel
-    {
-        private JTextField  delimiterField_;
-        
-        /**
-         * Creates a TokenizerFlipper.
-         */
-        TokenizerFlipper()
-        {
-            buildView();
-        }
-
-        
-        /**
-         * Constructs the user interface. 
-         */
-        void buildView()
-        {
-            setLayout(new FlowLayout());
-            
-            add(new JSmartLabel("Token Delimiter"));
-            add(delimiterField_ = new JSmartTextField(20));
-            add(new JSmartButton(new TokenizeAction()));
-            add(new JSmartButton(new SingleLineAction()));
-        }
-    
-        //----------------------------------------------------------------------
-        // TokenizeAction
-        //----------------------------------------------------------------------
-        
-        /** 
-         * Tokenizes the string in the input text area with the entered 
-         * delimiter and dumps the result to the output text area.
-         */
-        class TokenizeAction extends AbstractAction
-        {
-            /**
-             * Creates a TokenizeAction.
-             */
-            TokenizeAction()
-            {
-                super("Tokenize");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                StringTokenizer st = 
-                    new StringTokenizer(getInputText(), 
-                        delimiterField_.getText());
-            
-                while (st.hasMoreElements())
-                    outputArea_.append(st.nextToken() + StringUtil.NL);
-                    
-                statusBar_.setStatus(st.countTokens() + " tokens identified.");
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // SingleLineAction
-        //----------------------------------------------------------------------
-        
-        /** 
-         * Compresses multiple lines in the input text area to a single line
-         * in the output text area.
-         */
-        class SingleLineAction extends AbstractAction
-        {
-            /**
-             * Creates a SingleLineAction.
-             */
-            SingleLineAction()
-            {
-                super("Convert to single line");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                StringTokenizer st = 
-                    new StringTokenizer(getInputText(), StringUtil.NL);
-                
-                StringBuffer sb = new StringBuffer();
-                    
-                while (st.hasMoreElements())
-                    sb.append(st.nextElement());
-                
-                outputArea_.setText(sb.toString());    
-            }
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // CodecFlipper
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Flipper containing common encoding/decoding schemes. 
-     */
-    class CodecFlipper extends JPanel
-    {
-        /**
-         * Creates a CodecFlipper.
-         */
-        CodecFlipper()
-        {
-            buildView();
-        }
-        
-        
-        /**
-         * Constructs the user interface. 
-         */
-        void buildView()
-        {
-            setLayout(new FlowLayout());
-            add(new JSmartButton(new Base64EncodeAction()));
-            add(new JSmartButton(new Base64DecodeAction()));
-            add(new JSmartButton(new HTMLEncodeAction()));
-            add(new JSmartButton(new HTMLDecodeAction()));
-            add(new JSmartButton(new XMLEncodeAction()));
-            add(new JSmartButton(new XMLDecodeAction()));
-        }
-    
-        //----------------------------------------------------------------------
-        // Base64EncodeAction
-        //----------------------------------------------------------------------
-
-        /**
-         * Base64 encodes the current selection.
-         */
-        class Base64EncodeAction extends AbstractAction
-        {
-            /**
-             * Creates a Base64EncodeAction.
-             */
-            Base64EncodeAction()
-            {
-                super("Base64 Encode");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                byte[] b = Base64.encodeBase64(getInputText().getBytes());
-                outputArea_.setText(new String(b));
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // Base64DecodeAction
-        //----------------------------------------------------------------------
-
-        /**
-         * Base64 decodes the current selection.
-         */
-        class Base64DecodeAction extends AbstractAction
-        {
-            /**
-             * Creates a Base64DecodeAction.
-             */
-            Base64DecodeAction()
-            {
-                super("Base64 Decode");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                byte[] b = Base64.decodeBase64(getInputText().getBytes());
-                outputArea_.setText(new String(b));
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // HTMLEncodeAction
-        //----------------------------------------------------------------------
-
-        /**
-         * HTML encodes the current selection.
-         */
-        class HTMLEncodeAction extends AbstractAction
-        {
-            /**
-             * Creates a HTMLEncodeAction.
-             */
-            HTMLEncodeAction()
-            {
-                super("HTML Encode");
-            }
-            
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                outputArea_.setText(
-                    StringEscapeUtils.escapeHtml(getInputText()));
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // HTMLDecodeAction
-        //----------------------------------------------------------------------
-
-        /**
-         * HTML decodes the current selection.
-         */
-        class HTMLDecodeAction extends AbstractAction
-        {
-            /**
-             * Creates a HTMLDecodeAction.
-             */
-            HTMLDecodeAction()
-            {
-                super("HTML Decode");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                outputArea_.setText(
-                    StringEscapeUtils.unescapeHtml(getInputText()));
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // XMLEncodeAction
-        //----------------------------------------------------------------------
-
-        /**
-         * XML encodes the current selection.
-         */
-        class XMLEncodeAction extends AbstractAction
-        {
-            /**
-             * Creates a XMLEncodeAction.
-             */
-            XMLEncodeAction()
-            {
-                super("XML Encode");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                outputArea_.setText(
-                    StringEscapeUtils.escapeXml(getInputText()));
-            }
-        }
-        
-        //----------------------------------------------------------------------
-        // XMLDecodeAction
-        //----------------------------------------------------------------------
-        
-        /**
-         * XML decode the current selection.
-         */
-        class XMLDecodeAction extends AbstractAction
-        {
-            /**
-             * Creates a XMLDecodeAction.
-             */
-            XMLDecodeAction()
-            {
-                super("XML Decode");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                outputArea_.setText(
-                    StringEscapeUtils.unescapeXml(getInputText()));
-            }
-        }
-    }
-    
-    
-    //--------------------------------------------------------------------------
-    // FormatFlipper
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Flipper for formatting various text formats. 
-     */
-    class FormatFlipper extends JPanel
-    {
-        /**
-         * Creates a FormatFlipper.
-         */
-        FormatFlipper()
-        {
-            buildView();
-        }
-        
-        
-        /**
-         * Constructs the user interface. 
-         */
-        void buildView()
-        {
-            setLayout(new FlowLayout());
-            add(new JSmartButton(new FormatHTMLAction()));
-        }
-        
-        //----------------------------------------------------------------------
-        // FormatHTMLAction
-        //----------------------------------------------------------------------
-
-        /**
-         * Formats HTML.
-         */
-        class FormatHTMLAction extends AbstractAction
-        {
-            /**
-             * Creates a FormatHTMLAction.
-             */
-            FormatHTMLAction()
-            {
-                super("Format HTML");
-            }
-
-            
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
-            public void actionPerformed(ActionEvent e)
-            {
-                // TODO: Add UI to manipulate the configuration
-                
-                Tidy tidy = new Tidy();
-                
-                tidy.setIndentContent(true);
-                //tidy.setIndentAttributes(true);
-                tidy.setWrapAttVals(true);
-                tidy.setBreakBeforeBR(true);
-                tidy.setWraplen(100);
-                //tidy.setSpaces(2);
-                //tidy.setTabsize()
-                //tidy.setSmartIndent(true);
-                tidy.setMakeClean(true);
-                tidy.setWrapScriptlets(true);
-                
-                InputStream input = new StringInputStream(getInputText());
-                OutputStream output = new StringOutputStream();
-                tidy.parse(input, output);
-                outputArea_.setText(output.toString());
-            }
         }
     }
 }
