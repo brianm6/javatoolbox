@@ -19,11 +19,26 @@ import toolbox.workspace.IPreferenced;
 
 /**
  * SQLFormatter is a pretty printer for SQL statements.
+ * <p>
  * 
+ * <b>Example:</b>
  * <pre class="snippet">
- * Formatter f = new SQLFormatter();
- * f.setIndent(4);
- * System.out.println(f.format("select * from person where name = 'joe'"));
+ * SQLFormatter fmt = new SQLFormatter();
+ * fmt.setIndent(4);
+ * System.out.println(fmt.format(
+ *     "select name, age from person where name = 'joe' and age > 25"));
+ * </pre>
+ * 
+ * <b>Output:</b>
+ * <pre class="snippet">
+ * select
+ *     name,
+ *     age
+ * from
+ *     person
+ * where
+ *     name = 'joe'
+ *     and age > 25
  * </pre>
  */
 public class SQLFormatter extends AbstractFormatter implements IPreferenced
