@@ -1,4 +1,4 @@
-package toolbox.util.ui;
+package toolbox.util.ui.list;
 
 import java.util.ArrayList;
 import java.util.List;

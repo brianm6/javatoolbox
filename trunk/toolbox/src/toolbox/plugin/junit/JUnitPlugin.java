@@ -34,7 +34,7 @@ import toolbox.util.ui.JListPopupMenu;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartList;
 import toolbox.util.ui.JSmartTextField;
-import toolbox.util.ui.RegexListModelFilter;
+import toolbox.util.ui.list.RegexListModelFilter;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.PluginWorkspace;

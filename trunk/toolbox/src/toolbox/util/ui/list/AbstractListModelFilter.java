@@ -1,4 +1,4 @@
-package toolbox.util.ui;
+package toolbox.util.ui.list;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
