@@ -23,12 +23,12 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
-import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
@@ -42,24 +42,35 @@ import toolbox.util.ui.flippane.JFlipPane;
  * <p>
  * Features:
  * <ul>
- * <li>Sorting text alphabetically</li>
- * <li>Filtering text dynamically using regular expressions</li>
- * <li>Tokenizing strings<li>
+ *   <li>Sorting text alphabetically
+ *   <li>Filtering text dynamically using regular expressions
+ *   <li>Tokenizing strings
+ *   <li>Base64 encoding/decoding
+ *   <li>Banner
  * </ul>
- * 
- * <p>
- * <pre>
- * TODO: Add checkbox/combo to set type of text (xml, java) and syntax hilite
- *       as appropriate
- * </pre>
  */ 
 public class TextPlugin extends JPanel implements IPlugin, Stringz
 { 
+    // TODO: Add checkbox/combo to set type of text (xml, java) and syntax 
+    //       hilite as appropriate.
+    
     public static final Logger logger_ =
         Logger.getLogger(TextPlugin.class);   
     
-    private IStatusBar statusBar_;    
+    /** 
+     * Reference to the workspace status bar 
+     */
+    private IStatusBar statusBar_;
+    
+    /** 
+     * Output text area 
+     */    
     private JSmartTextArea textArea_;
+    
+    /** 
+     * Flippane attached to north wall of the component that houses the
+     * various text tools.
+     */ 
     private JFlipPane topFlipPane_;
    
     //--------------------------------------------------------------------------
@@ -102,6 +113,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
         topFlipPane_.addFlipper("Filter", new RegexFlipper());
         topFlipPane_.addFlipper("Tokenizer", new TokenizerFlipper());
+        topFlipPane_.addFlipper("Codec", new CodecFlipper());
         add(BorderLayout.NORTH, topFlipPane_);
     }
     
@@ -119,7 +131,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
 
     public String getName()
     {
-        return "Text";
+        return "Text Tools";
     }
 
     public JComponent getComponent()
@@ -407,4 +419,55 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
     }
+    
+    /**
+     * Flipper containing common encoding/decoding schemes. 
+     */
+    class CodecFlipper extends JPanel
+    {
+        private JTextField  textField_;
+        
+        CodecFlipper()
+        {
+            buildView();
+        }
+        
+        void buildView()
+        {
+            setLayout(new FlowLayout());
+            
+            add(new JLabel("Text"));
+            add(textField_ = new JTextField(20));
+            add(new JButton(new Base64EncodeAction()));
+            add(new JButton(new Base64DecodeAction()));
+        }
+        
+        class Base64EncodeAction extends AbstractAction
+        {
+            public Base64EncodeAction()
+            {
+                super("Base64 Encode");
+            }
+            
+            public void actionPerformed(ActionEvent e)
+            {
+                byte[] b = Base64.encodeBase64(textField_.getText().getBytes());
+                textArea_.setText(new String(b));
+            }
+        }
+        
+        class Base64DecodeAction extends AbstractAction
+        {
+            public Base64DecodeAction()
+            {
+                super("Base64 Decode");
+            }
+                       
+            public void actionPerformed(ActionEvent e)
+            {
+                byte[] b = Base64.decodeBase64(textField_.getText().getBytes());
+                textArea_.setText(new String(b));
+            }
+        }
+    }    
 }
