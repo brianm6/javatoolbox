@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.apache.log4j.Category;
+
 /**
  * A TcpTunnel object listens on the given port,
  * and once Start is pressed, will forward all bytes
@@ -11,6 +13,9 @@ import java.net.Socket;
  */
 public class TcpTunnel
 {
+    private static final Category logger_ = 
+        Category.getInstance(TcpTunnel.class);
+    
 	/**
 	 * Entrypoint 
      * 
@@ -41,19 +46,22 @@ public class TcpTunnel
         while (true)
         {
             // accept the connection from my client
+            logger_.debug("Waiting to accept...");
             Socket sc = ss.accept();
 
             // connect to the thing I'm tunnelling for
+            logger_.debug("Creating new socket to tunnel " + tunnelhost + ":" + tunnelport);
             Socket st = new Socket(tunnelhost, tunnelport);
 
-            System.out.println("TcpTunnel: tunnelling port " + listenport + 
-                               " to port " + tunnelport + " on host " + 
-                               tunnelhost);
+            logger_.debug("Tunnelling port " + listenport + " to port " + 
+                tunnelport + " on host " + tunnelhost);
 
             // relay the stuff thru
+            logger_.debug("Settup in relays...");
             new Relay(sc.getInputStream(), st.getOutputStream()).start();
             new Relay(st.getInputStream(), sc.getOutputStream()).start();
 
+            logger_.debug("Done!");
             // that's it .. they're off; now I go back to my stuff.
         }
     }
