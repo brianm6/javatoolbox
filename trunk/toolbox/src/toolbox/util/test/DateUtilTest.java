@@ -11,7 +11,7 @@ import toolbox.util.DateTimeUtil;
 import toolbox.util.DateUtil;
 
 /**
- * DateUtil test class
+ * Unit test for DateUtil
  */
 public class DateUtilTest extends TestCase
 {
@@ -255,9 +255,8 @@ public class DateUtilTest extends TestCase
             1,
             DateUtil.roundToWeeks(6));
         assertEquals(
-            "Number of weeks in 7 days should be 1",
-            1,
-            DateUtil.roundToWeeks(7));
+            "Number of weeks in 7 days should be 1", 
+            1, DateUtil.roundToWeeks(7));
         assertEquals(
             "Number of weeks in 10 days should be 1",
             1,
@@ -271,5 +270,32 @@ public class DateUtilTest extends TestCase
             2,
             DateUtil.roundToWeeks(14));
 
+    }
+ 
+    
+    /**
+     * Tests addDays() 
+     */
+    public void testAddDays()
+    {
+        Date today = new Date();
+        Date tomorrow = DateUtil.addDays(new Date(), 1);
+        DateUtil.addDays(tomorrow, -1);
+        assertTrue(DateUtil.equals(today, tomorrow));
+    }
+ 
+    
+    /**
+     * Tests compare()
+     */
+    public void testCompare()
+    {
+        Date today = new Date();
+        Date tomorrow = DateUtil.addDays(new Date(), 1);
+        Date yesterday = DateUtil.addDays(new Date(), -1);
+        
+        assertTrue(DateUtil.compare(today, today) == 0);
+        assertTrue(DateUtil.compare(today, tomorrow) < 0);
+        assertTrue(DateUtil.compare(tomorrow, yesterday) > 0);       
     }
 }
