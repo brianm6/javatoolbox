@@ -1,4 +1,4 @@
-package toolbox.util.ui.test;
+package toolbox.util.ui.explorer.test;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -77,9 +77,8 @@ public class JFileExplorerTest extends TestCase
     /**
      * Test dialog.
      */
-    static class TestDialog extends JDialog 
-                            implements FileExplorerListener, 
-                                       ActionListener
+    static class TestDialog extends JDialog implements FileExplorerListener, 
+                                                       ActionListener
     {
         private JTextField testField_;
         private JButton testButton_;
