@@ -7,6 +7,15 @@ package toolbox.util.service;
 public interface ServiceListener
 {
     /**
+     * Notification that the service has been initialized.
+     * 
+     * @param service Service that been initialized.
+     * @throws ServiceException on error.
+     */
+    void serviceInitialized(Service service) throws ServiceException;
+    
+    
+    /**
      * Notification that the service has started running.
      * 
      * @param service Service that started.
