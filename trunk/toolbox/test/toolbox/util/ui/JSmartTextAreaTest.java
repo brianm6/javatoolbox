@@ -81,7 +81,7 @@ public class JSmartTextAreaTest extends UITestCase
         JSmartTextArea before = new JSmartTextArea("", true, true);
         before.setFont(FontUtil.getPreferredMonoFont());
         before.setCapacity(10000);
-        before.setPruneFactor(50);
+        before.setPruningFactor(50);
         
         //
         // Serialize to XML
@@ -102,9 +102,9 @@ public class JSmartTextAreaTest extends UITestCase
         // Compare the "after" properties to the "before" ones
         //
         assertEquals(before.isAntiAliased(), after.isAntiAliased());
-        assertEquals(before.isAutoScroll(), after.isAutoScroll());
+        assertEquals(before.isAutoTail(), after.isAutoTail());
         assertEquals(before.getCapacity(), after.getCapacity());
-        assertEquals(before.getPruneFactor(), after.getPruneFactor());
+        assertEquals(before.getPruningFactor(), after.getPruningFactor());
         assertEquals(before.getFont().getName(), after.getFont().getName());
         assertEquals(before.getFont().getSize(), after.getFont().getSize());
         assertEquals(before.getFont().getStyle(), after.getFont().getStyle());
