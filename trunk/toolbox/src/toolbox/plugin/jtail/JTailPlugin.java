@@ -10,11 +10,19 @@ import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * Plugin Wrapper for JTail
+ * Plugin wrapper for JTail
  */
 public class JTailPlugin implements IPlugin
 {
+    /**
+     * JTail Delegate
+     */
     private JTail jtail_;
+
+    /**
+     * Hack for out of order initialization by register plugin
+     */
+    private IStatusBar savedStatusBar_;
 
     //--------------------------------------------------------------------------
     // Constructors 
@@ -25,7 +33,6 @@ public class JTailPlugin implements IPlugin
      */
     public JTailPlugin()
     {
-        jtail_ = new JTail();
     }
 
     //--------------------------------------------------------------------------
@@ -69,6 +76,10 @@ public class JTailPlugin implements IPlugin
      */
     public void init()
     {
+        jtail_ = new JTail();
+        
+        if (savedStatusBar_ != null)
+            setStatusBar(savedStatusBar_);
     }
 
     /**
@@ -92,7 +103,10 @@ public class JTailPlugin implements IPlugin
      */
     public void setStatusBar(IStatusBar statusBar)
     {
-        jtail_.setStatusBar(statusBar);
+        if (jtail_ == null)
+            savedStatusBar_ = statusBar;
+        else
+            jtail_.setStatusBar(statusBar);
     }
 
     /**
