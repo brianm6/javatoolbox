@@ -14,12 +14,37 @@ import toolbox.util.service.Nameable;
 /**
  * MonitoredInputStream supports the following features.
  * <ul>
- *   <li>Monitoring of throughput in bytes/interval (observable)
- *   <li>Monitoring of bytes transferred every x number of bytes (observable)
- *   <li>Monitoring of the total bytes read (polling)
- *   <li>Monitoring of significant stream events (close, flush,etc) (observable)
+ *   <li>Access to the total number of bytes read.
+ *   <li>Notification of throughput in bytes per time interval.
+ *   <li>Notification of bytes transferred every set number of bytes.
+ *   <li>Notification of significant stream events (close, flush,etc).
  * </ul>
  * 
+ * <b>Example:</b>
+ * <pre class="snippet">
+ *   MonitoredInputStream mis = new MonitoredInputStream(someInputStream);
+ *   
+ *   // Setup notification of throughput every 1 second...
+ *   mis.getThroughputMonitor().addThroughputListener(myThroughputListener);
+ *   mis.getThroughputMonitor().setSampleInterval(1000) // 1000 ms = 1 sec
+ *   mis.getThrouhgputMonitor().setMonitoringThroughput(true);
+ * 
+ *   // Setup notification every 5000 bytes transferred...
+ *   mis.getTransferredMonitor().addTransferredListener(myTransferredListener);
+ *   mis.getTransferredMonitor().setSampleLength(5000);
+ * 
+ *   // Setup notification of close/flush events...
+ *   mis.addInputStreamListener(myInputStreamListener);
+ * 
+ *   ... read some data from the InputStream ...
+ *  
+ *   // Find out how many bytes transferred so far...
+ *   int total = mis.getTransferredMonitor().getBytesTransferred();
+ * 
+ *   ... shutdown ....
+ * 
+ *   mis.getThroughputMonitor().setMonitoringThroughput(false);
+ * </pre>
  * @see toolbox.util.io.throughput.ThroughputMonitor
  * @see toolbox.util.io.transferred.TransferredMonitor
  * @see toolbox.util.io.MonitoredOutputStream 
