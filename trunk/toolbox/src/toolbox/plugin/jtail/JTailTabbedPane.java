@@ -1,20 +1,18 @@
 package toolbox.plugin.jtail;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
-
-import javax.swing.JTabbedPane;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 
 /**
- * JTailTabbedPane.
+ * Specialization of a JSmartTabbedPane that handles the tabname for aggregated
+ * tails and appends an asterisk to tab with the most recent tail activity.
  */
-public class JTailTabbedPane extends JTabbedPane 
-    implements TailPane.ITailPaneListener
+public class JTailTabbedPane extends JSmartTabbedPane
+    implements TailPaneListener
 {
     private static final Logger logger_ =
         Logger.getLogger(JTailTabbedPane.class);
@@ -34,27 +32,20 @@ public class JTailTabbedPane extends JTabbedPane
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Inits the tabbed pane.
      */
     protected void init()
     {
-        addPropertyChangeListener(new PropertyChangeListener()
-        {
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                logger_.debug(evt);
-            }
-        });
     }
 
     //--------------------------------------------------------------------------
-    // ITailPaneListener Interface
+    // TailPaneListener Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.plugin.jtail.TailPane.ITailPaneListener#newDataAvailable(
+     * @see toolbox.plugin.jtail.TailPaneListener#newDataAvailable(
      *      toolbox.plugin.jtail.TailPane)
      */
     public void newDataAvailable(TailPane tailPane)
@@ -63,9 +54,9 @@ public class JTailTabbedPane extends JTabbedPane
         setTitleAt(index, "* " + getTitleAt(index));
     }
 
-    
+
     /**
-     * @see toolbox.plugin.jtail.TailPane.ITailPaneListener#tailAggregated(
+     * @see toolbox.plugin.jtail.TailPaneListener#tailAggregated(
      *      toolbox.plugin.jtail.TailPane)
      */
     public void tailAggregated(TailPane tailPane)

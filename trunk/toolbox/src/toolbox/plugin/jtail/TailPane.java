@@ -205,7 +205,7 @@ public class TailPane extends JHeaderPanel
     /**
      * List of listeners interested in newData() and tailAggregated().
      */
-    private ITailPaneListener[] tailPaneListeners_;
+    private TailPaneListener[] tailPaneListeners_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -224,7 +224,7 @@ public class TailPane extends JHeaderPanel
     {
         super(config.getFilenames()[0]);
         statusBar_ = statusBar;
-        tailPaneListeners_ = new ITailPaneListener[0];
+        tailPaneListeners_ = new TailPaneListener[0];
         contexts_ = new TailContext[0];
         buildView(config);
         buildFilters();        
@@ -551,29 +551,8 @@ public class TailPane extends JHeaderPanel
     }
 
     //--------------------------------------------------------------------------
-    //  ITailPaneListener Interface & Supporting Event Methods
+    //  TailPaneListener Interface & Supporting Event Methods
     //--------------------------------------------------------------------------
-    
-    /**
-     * Interface to listen to the tail pane.
-     */
-    public interface ITailPaneListener
-    {
-        /**
-         * Notification of new data available.
-         * 
-         * @param tailPane Tailpane.
-         */
-        void newDataAvailable(TailPane tailPane);
-        
-        /**
-         * Notification that an existing tail was aggregated with a new tail.
-         * 
-         * @param tailPane TailPane that houses the aggregate tails.
-         */
-        void tailAggregated(TailPane tailPane);
-    }
-
     
     /**
      * Fires notifications of new tail data available.
@@ -582,6 +561,8 @@ public class TailPane extends JHeaderPanel
      */
     protected void fireNewDataAvailable(TailPane tailPane)
     {
+        // TODO: Nothing is firing this event!
+        
         for (int i = 0; i < tailPaneListeners_.length; i++)
             tailPaneListeners_[i].newDataAvailable(tailPane);        
     }
@@ -602,23 +583,23 @@ public class TailPane extends JHeaderPanel
     /**
      * Adds a listener.
      * 
-     * @param listener ITailPaneListener.
+     * @param listener TailPaneListener.
      */
-    public void addTailPaneListener(ITailPaneListener listener)
+    public void addTailPaneListener(TailPaneListener listener)
     {
         tailPaneListeners_ = 
-            (ITailPaneListener[]) ArrayUtil.add(tailPaneListeners_, listener);
+            (TailPaneListener[]) ArrayUtil.add(tailPaneListeners_, listener);
     }
     
     
     /**
      * Removes a listener.
      * 
-     * @param listener ITailPaneListener.
+     * @param listener TailPaneListener.
      */
-    public void removeTailPaneListener(ITailPaneListener listener)
+    public void removeTailPaneListener(TailPaneListener listener)
     {
-        tailPaneListeners_ = (ITailPaneListener[]) 
+        tailPaneListeners_ = (TailPaneListener[]) 
             ArrayUtil.remove(tailPaneListeners_, listener);
     }
     
