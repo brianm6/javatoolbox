@@ -15,18 +15,18 @@ import toolbox.util.ui.JFileExplorer;
 public class FileSelectionPane extends JPanel
 {
     /**
-     * File explorer used to select the file to tail
+     * File explorer used to select the file to tail.
      */    
     private JFileExplorer fileExplorer_;
     
     /**
-     * Button that will tail the currently selected file in the file explorer
+     * Button that will tail the currently selected file in the file explorer.
      */
     private JButton tailButton_;
     
     /**
      * Button that will tail the currently selected file and aggregate the 
-     * output with the currently active TailPane
+     * output with the currently active TailPane.
      */
     private JButton aggregateButton_;
     
@@ -35,15 +35,16 @@ public class FileSelectionPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FileSelectionPane
+     * Creates a FileSelectionPane.
      */
     public FileSelectionPane()
     {
         this(null);
     }
     
+    
     /**
-     * Creates a FileSelectionPane with the given directory selected
+     * Creates a FileSelectionPane with the given directory selected.
      *
      * @param dir Directory to select by default
      */
@@ -61,7 +62,7 @@ public class FileSelectionPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -92,6 +93,7 @@ public class FileSelectionPane extends JPanel
         return fileExplorer_;
     }
 
+    
     /**
      * Returns the tail button.
      * 
@@ -102,6 +104,7 @@ public class FileSelectionPane extends JPanel
         return tailButton_;
     }
 
+    
     /**
      * Returns the aggregate button.
      * 

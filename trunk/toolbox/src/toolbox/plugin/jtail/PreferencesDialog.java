@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import toolbox.jtail.config.IJTailConfig;
 
 /**
- * JTail preferences dialog
+ * JTail preferences dialog.
  */
 public class PreferencesDialog extends JDialog implements ActionListener
 {
@@ -36,7 +36,7 @@ public class PreferencesDialog extends JDialog implements ActionListener
     private static final String ACTION_CANCEL = "Cancel";
     
     /** 
-     * Preferences will be changed on the config object directly 
+     * Preferences will be changed on the config object directly. 
      */
     private IJTailConfig config_;
     
@@ -63,7 +63,7 @@ public class PreferencesDialog extends JDialog implements ActionListener
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -89,7 +89,7 @@ public class PreferencesDialog extends JDialog implements ActionListener
 
 
     /**
-     * Builds the preferences panel
+     * Builds the preferences panel.
      */    
     protected JPanel buildPreferencesPanel()
     {

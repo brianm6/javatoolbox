@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 
 /**
- * JTailTabbedPane
+ * JTailTabbedPane.
  */
 public class JTailTabbedPane extends JTabbedPane 
     implements TailPane.ITailPaneListener
@@ -24,7 +24,7 @@ public class JTailTabbedPane extends JTabbedPane
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JTailTabbedPane
+     * Creates a JTailTabbedPane.
      */
     public JTailTabbedPane()
     {
@@ -36,7 +36,7 @@ public class JTailTabbedPane extends JTabbedPane
     //--------------------------------------------------------------------------
     
     /**
-     * Inits the tabbed pane
+     * Inits the tabbed pane.
      */
     protected void init()
     {
@@ -63,6 +63,7 @@ public class JTailTabbedPane extends JTabbedPane
         setTitleAt(index, "* " + getTitleAt(index));
     }
 
+    
     /**
      * @see toolbox.jtail.TailPane.ITailPaneListener#tailAggregated(
      *      toolbox.jtail.TailPane)

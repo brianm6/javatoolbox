@@ -99,22 +99,22 @@ public class TailPane extends JPanel
         Logger.getLogger(TailPane.class);
     
     /** 
-     * Special tail type for System.out 
+     * Special tail type for System.out. 
      */
     public static final String LOG_SYSTEM_OUT = "[System.out]";
     
     /** 
-     * Specital tail type for Log4J 
+     * Specital tail type for Log4J. 
      */
     public static final String LOG_LOG4J = "[Log4J]";
 
     /** 
-     * Start button text for dual action button start/stop 
+     * Start button text for dual action button start/stop. 
      */
     private static final String MODE_START = "Start";
     
     /** 
-     * Stop button text for dual action button start/stop 
+     * Stop button text for dual action button start/stop. 
      */
     private static final String MODE_STOP  = "Stop";
 
@@ -123,97 +123,97 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
 
     /** 
-     * Reference to workspace status bar 
+     * Reference to workspace status bar. 
      */
     private IStatusBar statusBar_;
     
     /** 
-     * Tail output is appended into this text area 
+     * Tail output is appended into this text area. 
      */
     private JSmartTextArea tailArea_;
     
     /** 
-     * Dual action button that handles pause/unpause of tail 
+     * Dual action button that handles pause/unpause of tail. 
      */
     private JButton pauseButton_;
     
     /** 
-     * Dual action button that handles start/stop of tail 
+     * Dual action button that handles start/stop of tail. 
      */
     private JButton startButton_;
     
     /** 
-     * Closes the tail (also triggers adding the tail to the recent menu) 
+     * Closes the tail (also triggers adding the tail to the recent menu). 
      */
     private JButton closeButton_;
     
     /** 
-     * Checkbox to toggle auto scrolling of the output text area 
+     * Checkbox to toggle auto scrolling of the output text area. 
      */
     private JCheckBox autoScrollBox_;
     
     /** 
-     * Checkbox to toggles the inclusion of lines numbers in the tail output
+     * Checkbox to toggles the inclusion of lines numbers in the tail output.
      */
     private JCheckBox lineNumbersBox_;
     
     /** 
-     * Regular expression filter field that includes matching lines 
+     * Regular expression filter field that includes matching lines. 
      */ 
     private JTextField regexField_;
     
     /** 
-     * Cut expression filter field that chops columns from a line 
+     * Cut expression filter field that chops columns from a line.
      */
     private JTextField cutField_;
 
     /** 
-     * Lines are places in this queue for the UI component to pick up from 
+     * Lines are places in this queue for the UI component to pick up from. 
      */
     private BlockingQueue queue_;
     
     /** 
-     * Optimization to read lines from the queue in batch instead of one'zies
+     * Optimization to read lines from the queue in batch instead of one'zies.
      */ 
     private BatchingQueueReader queueReader_;
     
     /** 
-     * Listener for queue events 
+     * Listener for queue events.
      */
     private TailQueueListener queueListener_;
     
     /** 
-     * List of filters that are applied to each line 
+     * List of filters that are applied to each line. 
      */
     private ILineFilter[] filters_;
     
     /** 
-     * Filter that includes lines matching a regular expression 
+     * Filter that includes lines matching a regular expression. 
      */ 
     private RegexLineFilter regexFilter_;
     
     /** 
-     * Filter that cuts columns from a line 
+     * Filter that cuts columns from a line.
      */
     private CutLineFilter cutFilter_;
     
     /** 
-     * Filter that adds a line number to the beginning of each line 
+     * Filter that adds a line number to the beginning of each line. 
      */
     private LineNumberDecorator lineNumberDecorator_;
 
     /** 
-     * Contexts for the individual tails that are aggregated by this TailPane
+     * Contexts for the individual tails that are aggregated by this TailPane.
      */
     private TailContext[] contexts_;
 
     /** 
-     * TailPane configuration 
+     * TailPane configuration.
      */
     private ITailPaneConfig config_;
     
     /**
-     * List of listeners interested in newData() and tailAggregated()
+     * List of listeners interested in newData() and tailAggregated().
      */
     private ITailPaneListener[] tailPaneListeners_;
     
@@ -249,7 +249,7 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Initializes the tail
+     * Initializes the tail.
      * 
      * @param file File to tail
      * @throws FileNotFoundException if the file to tail is non-existant
@@ -277,8 +277,9 @@ public class TailPane extends JPanel
         }
     }
     
+    
     /**
-     * Builds the GUI
+     * Builds the GUI.
      * 
      * @param config Tailpane configuration
      */    
@@ -320,8 +321,9 @@ public class TailPane extends JPanel
         add(buttonPanel, BorderLayout.SOUTH);
     }
  
+    
     /**
-     * Sets up appropriate filters based on configuration
+     * Sets up appropriate filters based on configuration.
      */
     protected void buildFilters()
     {
@@ -350,8 +352,9 @@ public class TailPane extends JPanel
         filters_[2] = lineNumberDecorator_;
     }
 
+    
     /**
-     * Returns regular expression filter 
+     * Returns regular expression filter. 
      * 
      * @return Filter text
      */
@@ -360,8 +363,9 @@ public class TailPane extends JPanel
         return regexField_.getText().trim();
     }
         
+    
     /**
-     * Sets the filter text
+     * Sets the filter text.
      * 
      * @param filter Filter text as a regular expression
      */
@@ -379,8 +383,9 @@ public class TailPane extends JPanel
         }
     }
 
+    
     /**
-     * Returns the cut expression
+     * Returns the cut expression.
      * 
      * @return Cut expression
      */
@@ -389,8 +394,9 @@ public class TailPane extends JPanel
         return cutField_.getText().trim();
     }
     
+    
     /**
-     * Sets the cut text
+     * Sets the cut text.
      * 
      * @param cut Cut text. Example: 1-10 cuts columns one through ten.
      */
@@ -413,7 +419,7 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the configuration
+     * Sets the configuration.
      * 
      * @param config Tail configuration
      */
@@ -435,8 +441,9 @@ public class TailPane extends JPanel
         setCutExpression(config_.getCutExpression());
     }
 
+    
     /**
-     * Gets the configuration
+     * Gets the configuration.
      * 
      * @return TailConfig
      */
@@ -469,8 +476,9 @@ public class TailPane extends JPanel
         return config_;
     }    
 
+    
     /**
-     * Returns the close button
+     * Returns the close button.
      * 
      * @return Close button
      */
@@ -479,8 +487,9 @@ public class TailPane extends JPanel
         return closeButton_;
     }
 
+    
     /**
-     * Aggregates a file into an existing tail
+     * Aggregates a file into an existing tail.
      * 
      * @param file File to aggregate
      * @throws IOException on I/O error
@@ -499,12 +508,12 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Interface to listen to the tail pane
+     * Interface to listen to the tail pane.
      */
     public interface ITailPaneListener
     {
         /**
-         * Notification of new data available
+         * Notification of new data available.
          * 
          * @param tailPane Tailpane
          */
@@ -518,8 +527,9 @@ public class TailPane extends JPanel
         public void tailAggregated(TailPane tailPane);
     }
 
+    
     /**
-     * Fires notifications of new tail data available
+     * Fires notifications of new tail data available.
      * 
      * @param tailPane Tailpane
      */
@@ -529,6 +539,7 @@ public class TailPane extends JPanel
             tailPaneListeners_[i].newDataAvailable(tailPane);        
     }
 
+    
     /**
      * Fires notification of a tail being aggregated into an existing tail.
      * 
@@ -540,8 +551,9 @@ public class TailPane extends JPanel
             tailPaneListeners_[i].tailAggregated(tailPane);        
     }
 
+    
     /**
-     * Adds a listener
+     * Adds a listener.
      * 
      * @param listener ITailPaneListener
      */
@@ -551,8 +563,9 @@ public class TailPane extends JPanel
             (ITailPaneListener[]) ArrayUtil.add(tailPaneListeners_, listener);
     }
     
+    
     /**
-     * Removes a listener
+     * Removes a listener.
      * 
      * @param listener ITailPaneListener
      */
@@ -577,12 +590,12 @@ public class TailPane extends JPanel
     public class TailContext
     {
         /**
-         * File to tail
+         * File to tail.
          */
         private String filename_;
         
         /**
-         * Does all the work
+         * Does all the work.
          */
         private Tail tail_;
         
@@ -658,6 +671,7 @@ public class TailPane extends JPanel
             }
         }
         
+        
         /**
          * @return Tail
          */
@@ -669,7 +683,7 @@ public class TailPane extends JPanel
 
     
     /**
-     * Listener for tail
+     * Listener for tail.
      */
     class TailListener extends TailAdapter
     {
@@ -694,9 +708,10 @@ public class TailPane extends JPanel
         }
     }
     
+    
     /**
      * Pops groups of messages off the queue (as many as can be read without 
-     * waiting) and consolidates before sending then to the textarea
+     * waiting) and consolidates before sending then to the textarea.
      */
     class TailQueueListener implements IBatchingQueueListener
     {
@@ -725,6 +740,7 @@ public class TailPane extends JPanel
         }
     }
 
+    
     /**
      * Listens for changes in the regular expression (user must press enter) and
      * applies the new regular expression accordingly.
@@ -745,6 +761,7 @@ public class TailPane extends JPanel
         }
     }
 
+    
     /**
      * Listens for changes in the cut expression (user must press enter) and
      * applies the new cut expression accordingly.
@@ -767,7 +784,7 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Dual mode action that starts/stops the tail
+     * Dual mode action that starts/stops the tail.
      */
     class StartStopAction extends SmartAction
     {
@@ -815,7 +832,7 @@ public class TailPane extends JPanel
     }
 
     /**
-     * Pauses/unpauses the tail
+     * Pauses/unpauses the tail.
      */
     class PauseUnpauseAction extends SmartAction
     {
@@ -854,8 +871,9 @@ public class TailPane extends JPanel
         }
     }
 
+    
     /**
-     * Closes the tail pane
+     * Closes the tail pane.
      */
     class CloseAction extends AbstractAction
     {
@@ -884,8 +902,9 @@ public class TailPane extends JPanel
         }
     }
 
+    
     /**
-     * Toggles autoscroll of the output text area
+     * Toggles autoscroll of the output text area.
      */
     class AutoScrollAction extends AbstractAction
     {
@@ -902,8 +921,9 @@ public class TailPane extends JPanel
         }
     }
 
+    
     /**
-     * Toggles line numbers in the output area
+     * Toggles line numbers in the output area.
      */
     class ShowLineNumbersAction extends AbstractAction
     {

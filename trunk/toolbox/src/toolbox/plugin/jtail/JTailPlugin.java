@@ -11,12 +11,12 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * Plugin wrapper for {@link JTail}
+ * Plugin wrapper for {@link JTail}.
  */
 public class JTailPlugin implements IPlugin
 {
     /** 
-     * JTail delegate 
+     * JTail delegate. 
      */
     private JTail jtail_;
 
@@ -25,7 +25,7 @@ public class JTailPlugin implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor     
+     * Creates a JTailPlugin.     
      */
     public JTailPlugin()
     {
@@ -43,6 +43,7 @@ public class JTailPlugin implements IPlugin
         return "JTail";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -51,6 +52,7 @@ public class JTailPlugin implements IPlugin
         return (JComponent) jtail_.getContentPane();
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -59,6 +61,7 @@ public class JTailPlugin implements IPlugin
         return "Tails files as they grow. Similar to 'tail -f' on Unix";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#startup(java.util.Map)
      */
@@ -73,6 +76,7 @@ public class JTailPlugin implements IPlugin
         jtail_.setStatusBar(statusBar);
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -80,6 +84,7 @@ public class JTailPlugin implements IPlugin
     {
         jtail_.applyPrefs(prefs);
     }
+    
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
@@ -89,6 +94,7 @@ public class JTailPlugin implements IPlugin
         jtail_.savePrefs(prefs);
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */

@@ -74,17 +74,17 @@ public class JTail extends JFrame implements IPreferenced
         Logger.getLogger(JTail.class);
 
     /**
-     * XML: Root node for JTail preferences
+     * XML: Root node for JTail preferences.
      */
     private static final String NODE_JTAIL_PLUGIN = "JTailPlugin";
     
     /**
-     * XML: Node that contains 0..n RecentTail nodes 
+     * XML: Node that contains 0..n RecentTail nodes. 
      */
     private static final String NODE_RECENT = "Recent";
     
     /**
-     * XML: Node that contains all tail information to re-hydrate a given tail
+     * XML: Node that contains all tail information to re-hydrate a given tail.
      */
     private static final String NODE_RECENT_TAIL = "RecentTail";
          
@@ -94,33 +94,33 @@ public class JTail extends JFrame implements IPreferenced
     private JMenu recentMenu_;
 
     /** 
-     * File explorer flipper that allows the user to select a file to tail 
+     * File explorer flipper that allows the user to select a file to tail. 
      */
     private FileSelectionPane fileSelectionPane_;
 
     /** 
-     * Tab panel that contains each tail as a single tab 
+     * Tab panel that contains each tail as a single tab. 
      */
     private JTailTabbedPane tabbedPane_;
 
     /** 
-     * Flip pane that houses the file explorer 
+     * Flip pane that houses the file explorer. 
      */
     private JFlipPane flipPane_;
 
     /** 
-     * Map of each tail that is active 
+     * Map of each tail that is active. 
      */
     private Map tailMap_;
     
     /** 
-     * Reference to the workspace statusbar
+     * Reference to the workspace statusbar.
      */
     private IStatusBar statusBar_;    
     
     /**
      * Puts the application into test mode. An additional menu item is added
-     * to the file menu which creates a running tail for testing purposes
+     * to the file menu which creates a running tail for testing purposes.
      */
     private boolean testMode_ = true;
     
@@ -134,7 +134,7 @@ public class JTail extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JTail
+     * Creates a JTail.
      */
     public JTail()
     {
@@ -147,7 +147,7 @@ public class JTail extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the status bar
+     * Sets the status bar.
      * 
      * @param statusBar Shared status bar
      */
@@ -161,7 +161,7 @@ public class JTail extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /** 
-     * Initializes JTail by building the GUI and wiring the events
+     * Initializes JTail by building the GUI and wiring the events.
      */
     protected void init()
     {
@@ -179,8 +179,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
 
+    
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -197,8 +198,9 @@ public class JTail extends JFrame implements IPreferenced
         getContentPane().add(BorderLayout.NORTH, buildMenuBar());
     }
     
+    
     /**
-     * Builds the menu bar
+     * Builds the menu bar.
      * 
      * @return Menu bar
      */
@@ -228,8 +230,9 @@ public class JTail extends JFrame implements IPreferenced
         return menuBar;
     }
 
+    
     /**
-     * Adds a tail of the given configuration to the output area
+     * Adds a tail of the given configuration to the output area.
      * 
      * @param config Tail configuration
      * @throws IOException on I/O error
@@ -259,8 +262,9 @@ public class JTail extends JFrame implements IPreferenced
         tailPane.addTailPaneListener(tabbedPane_);
     }
     
+    
     /**
-     * Wires event listeners
+     * Wires event listeners.
      */
     protected void wireView()
     {
@@ -274,8 +278,9 @@ public class JTail extends JFrame implements IPreferenced
             addActionListener(new AggregateButtonListener());
     }
     
+    
     /**
-     * Returns the currently selected TailPane 
+     * Returns the currently selected TailPane. 
      * 
      * @return TailPane
      */
@@ -284,8 +289,9 @@ public class JTail extends JFrame implements IPreferenced
         return (TailPane)tabbedPane_.getSelectedComponent();
     }
     
+    
     /**
-     * Returns the configuration of currently selected tail in the tabbed pane
+     * Returns the configuration of currently selected tail in the tabbed pane.
      * 
      * @return ITailPaneConfig  
      */
@@ -294,8 +300,9 @@ public class JTail extends JFrame implements IPreferenced
         return getSelectedTail().getConfiguration();
     }
     
+    
     /**
-     * Makes an easy to read label for the TailPane tab
+     * Makes an easy to read label for the TailPane tab.
      * 
      * @param config TailPane configuration
      * @return Label
@@ -319,8 +326,9 @@ public class JTail extends JFrame implements IPreferenced
         return tabname.toString();
     }    
 
+    
     /**
-     * Makes an easy to read tooltip for the TailPane tab
+     * Makes an easy to read tooltip for the TailPane tab.
      * 
      * @param config TailPane configuration
      * @return String
@@ -387,6 +395,7 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -435,14 +444,13 @@ public class JTail extends JFrame implements IPreferenced
         root.appendChild(recent);
         XOMUtil.insertOrReplace(prefs, root);
     }
-
     
     //--------------------------------------------------------------------------
     //  Event Listeners
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a tail for a file double clicked by the user via the file explorer
+     * Adds a tail for a file double clicked by the user via the file explorer.
      */
     class FileSelectionListener extends JFileExplorerAdapter
     {
@@ -469,8 +477,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    
     /**
-     * Adds a tail for the currently selected file in the file explorer
+     * Adds a tail for the currently selected file in the file explorer.
      */
     class TailButtonListener extends SmartAction
     {
@@ -498,8 +507,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
 
+    
     /**
-     * Aggregates a file to an existing tail
+     * Aggregates a file to an existing tail.
      */
     class AggregateButtonListener extends SmartAction
     {
@@ -518,7 +528,7 @@ public class JTail extends JFrame implements IPreferenced
 
     
     /**
-     * Removes a tail once the close button is clicked on the tail pane
+     * Removes a tail once the close button is clicked on the tail pane.
      */
     class CloseButtonListener extends SmartAction
     {
@@ -576,8 +586,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
 
+    
     /**
-     * Clears the Recent menu
+     * Clears the Recent menu.
      */
     class ClearRecentAction extends AbstractAction
     {
@@ -599,9 +610,10 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    
     /**
      * Generates a file with intermittent output so that the file can be
-     * tailed for testing purposes. The file is created is $user.home
+     * tailed for testing purposes. The file is created is $user.home.
      */
     class CreateFileAction extends AbstractAction
     {
@@ -629,8 +641,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    
     /**
-     * Pops up a font selection dialog to change the font
+     * Pops up a font selection dialog to change the font.
      */
     class SetFontAction extends SmartAction 
         implements IFontChooserDialogListener
@@ -730,8 +743,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    
     /**
-     * Pops up the preferences dialog
+     * Pops up the preferences dialog.
      */
     class PreferencesAction extends AbstractAction 
     {
@@ -759,8 +773,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    
     /**
-     * Adds a tail of the System.out stream
+     * Adds a tail of the System.out stream.
      */
     class TailSystemOutAction extends SmartAction
     {
@@ -790,8 +805,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    
     /**
-     * Adds a tail for Log4J attached to the "toolbox" logger
+     * Adds a tail for Log4J attached to the "toolbox" logger.
      */
     class TailLog4JAction extends SmartAction
     {
