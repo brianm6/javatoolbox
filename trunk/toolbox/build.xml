@@ -201,7 +201,7 @@
         	overwrite="false" />
         
         <unjar 	
-        	src       ="${lib}/jakarta-regexp-1.2.jar" 
+        	src       ="${lib}/jakarta-regexp.jar" 
         	dest      ="${classes}" 
         	overwrite ="false" />
         	
