@@ -93,7 +93,7 @@ public class JSmartTextArea extends JTextArea
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden Methods
+    //  Overridden Component Methods
     //--------------------------------------------------------------------------
     
     /**
@@ -126,6 +126,9 @@ public class JSmartTextArea extends JTextArea
             super.paint(g);
     }
     
+    //--------------------------------------------------------------------------
+    //  Overridden JTextArea Methods
+    //--------------------------------------------------------------------------
     
     /**
      * Appends a string to the textarea
@@ -151,12 +154,12 @@ public class JSmartTextArea extends JTextArea
     protected void buildView()
     {
         // Build popup menu and add register with textarea
-        popup_ = new JPopupMenu("Popup");        
         autoScrollItem_ = new JCheckBoxMenuItem(new AutoScrollAction());
         antiAliasItem_  = new JCheckBoxMenuItem(new AntiAliasAction());
+        popup_ = new JTextComponentPopupMenu(this);    
+        popup_.addSeparator();    
         popup_.add(autoScrollItem_);
         popup_.add(antiAliasItem_);
-        addMouseListener(new PopupListener());
     }    
     
     //--------------------------------------------------------------------------
@@ -219,7 +222,7 @@ public class JSmartTextArea extends JTextArea
     }
     
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    //  Actions
     //--------------------------------------------------------------------------
     
     class AutoScrollAction extends AbstractAction 
@@ -247,29 +250,4 @@ public class JSmartTextArea extends JTextArea
             // NO OP
         }
     }    
-
-    
-    /**
-     * Popup menu listener for RMB on the Classpath list
-     */ 
-    class PopupListener extends MouseAdapter
-    {
-        public void mousePressed(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
-
-        public void mouseReleased(MouseEvent e)
-        {
-            maybeShowPopup(e);
-        }
-
-        private void maybeShowPopup(MouseEvent e)
-        {
-            if (e.isPopupTrigger())
-                popup_.show(e.getComponent(), e.getX(), e.getY());
-        }
-    }
-    
-    
 }
