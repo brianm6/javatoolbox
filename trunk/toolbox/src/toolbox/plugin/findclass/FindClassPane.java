@@ -963,6 +963,8 @@ public class JFindClass extends JFrame implements IPreferenced
                     
                         logger_.debug("JAR URL=" + sb);
                     
+                        // TODO: Also extract all anonymous/innerclasses
+                        
                         URL url = new URL(sb.toString());
                         
                         logger_.debug("URL as file=" + url.getFile());
