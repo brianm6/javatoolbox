@@ -4,10 +4,12 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.UIManager;
 
 import toolbox.util.FontUtil;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.list.SmartListCellRenderer;
 
 /**
@@ -76,8 +78,13 @@ public class FontFamilyCellRenderer extends SmartListCellRenderer
                         
                     if (monospaceEmphasized_ && FontUtil.isMonospaced(fonts[i]))
                     {
-                        setFont(getFont().deriveFont(Font.BOLD));
-                        //setBackground(Colors.getColor("azure"));
+                        //setFont(getFont().deriveFont(Font.BOLD));
+                        //setBackground(Colors.azure);
+                        //setBorder(new EtchedBorder(EtchedBorder.RAISED));
+                        
+                        // TODO: Change lock image to someting else
+                        setIcon(ImageCache.getIcon(ImageCache.IMAGE_LOCK));
+                        setHorizontalTextPosition(JLabel.LEFT); 
                     }
                     
                     break;
