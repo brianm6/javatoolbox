@@ -93,7 +93,7 @@ public class JFontChooser extends JPanel
     private int maxNumCharsInFontSize_ = 3;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -110,7 +110,7 @@ public class JFontChooser extends JPanel
      * except that a default list of styles{"Plain", "Bold", "Italic", 
      * "Bold Italic"} and font sizes {8, 9, 10, 12, 14} will be used.
      * 
-     * @param initialFont Initial font to selected
+     * @param initialFont Initial font to select.
      */
     public JFontChooser(Font initialFont)
     {
@@ -127,29 +127,21 @@ public class JFontChooser extends JPanel
      * the style & size values available will be dictated by the values in
      * styleDisplayNames and predefinedSizes, respectively.
      * 
-     * @param initialFont 
-     * 
-     *      Newly constructed JFontChooser's family, style, and size widgets 
-     *      will be set according to this value. This value may be null, in 
-     *      which case an initial font will be automatically created. This 
-     *      auto-created font will have a family, style, and size corresponding
-     *      to the first avaiable value in the widget form family, style, and 
-     *      size respectively.
-     * 
-     * @param styleDisplayNames
-     *  
-     *      Must contain exactly four members. The members of this array 
-     *      represent the following styles, in order: Font.PLAIN, Font.BOLD, 
-     *      Font.ITALIC, and Font.BOLD+Font.ITALIC
-     * 
-     * @param predefinedSizes  
-     * 
-     *      Must contain one or more predefined font sizes which will be 
-     *      available to the user as a convenience for populating the font 
-     *      size text field; all values must be greater than 0.
-     * 
-     * @param antiAlias  Turns on antialiasing of fonts
-     */    
+     * @param initialFont Newly constructed JFontChooser's family, style, and
+     *        size widgets will be set according to this value. This value may
+     *        be null, in which case an initial font will be automatically
+     *        created. This auto-created font will have a family, style, and
+     *        size corresponding to the first avaiable value in the widget form
+     *        family, style, and size respectively.
+     * @param styleDisplayNames Must contain exactly four members. The members
+     *        of this array represent the following styles, in order:
+     *        Font.PLAIN, Font.BOLD, Font.ITALIC, and Font.BOLD+Font.ITALIC
+     * @param predefinedSizes Must contain one or more predefined font sizes
+     *        which will be available to the user as a convenience for
+     *        populating the font size text field; all values must be greater
+     *        than 0.
+     * @param antiAlias Turns on antialiasing of fonts
+     */
     public JFontChooser(Font initialFont, 
                         String[] styleDisplayNames,
                         int[] predefinedSizes,     
@@ -170,16 +162,16 @@ public class JFontChooser extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
      * Builds the GUI.
      * 
-     * @param initialFont Initial font selected
-     * @param styleDisplayNames Font styles
-     * @param predefinedSizes Default set of font sizes
-     * @param antiAlias Turn on antialias checkbox
+     * @param initialFont Initial font selected.
+     * @param styleDisplayNames Font styles.
+     * @param predefinedSizes Default set of font sizes.
+     * @param antiAlias Turn on antialias checkbox.
      */
     protected void buildView(
         Font     initialFont, 
@@ -293,9 +285,9 @@ public class JFontChooser extends JPanel
     /**
      * Wraps a component in a panel with a heading.
      * 
-     * @param heading Heading
-     * @param component Component to wrap with a heading
-     * @return Wrapped component as a JPanel
+     * @param heading Heading.
+     * @param component Component to wrap with a heading.
+     * @return Wrapped component as a JPanel.
      */
     protected JPanel wrapWithHeading(String heading, JComponent component)
     {
@@ -328,7 +320,7 @@ public class JFontChooser extends JPanel
     /**
      * Validates predefinted font sizes.
      * 
-     * @param predefinedSizes Array of font sizes
+     * @param predefinedSizes Array of font sizes.
      * @throws IllegalArgumentException thrown if predefinedSizes does not 
      *         contain one or more integer values or if it contains any 
      *         integers with a value of less than 1.
@@ -366,7 +358,7 @@ public class JFontChooser extends JPanel
     /**
      * Adds an listener to this JFontChooser.
      * 
-     * @param listener Font selection listener to add
+     * @param listener Font selection listener to add.
      */
     public void addFontSelectionListener(IFontChooserListener listener)
     {
@@ -377,7 +369,7 @@ public class JFontChooser extends JPanel
     /**
      * Removes an listener from this JFontChooser.
      * 
-     * @param listener Font selection listener to remove
+     * @param listener Font selection listener to remove.
      */
     public void removeFontSelectionListener(IFontChooserListener listener)
     {
@@ -404,7 +396,7 @@ public class JFontChooser extends JPanel
     /**
      * Returns true if the antialias check box is selected, false otherwise.
      * 
-     * @return Antialias flag
+     * @return Antialias flag.
      */
     public boolean isAntiAliased()
     {
@@ -415,7 +407,7 @@ public class JFontChooser extends JPanel
     /**
      * Sets the antialias flag.
      * 
-     * @param b True for antialias on, false otherwise
+     * @param b True for antialias on, false otherwise.
      */
     public void setAntiAlias(boolean b)
     {
@@ -429,9 +421,9 @@ public class JFontChooser extends JPanel
     /**
      * Returns the currently selected font family.
      * 
-     * @return Currently selected font family
+     * @return Currently selected font family.
      * @throws FontChooserException thrown if no font family is currently 
-     *         selected
+     *         selected.
      */
     public String getSelectedFontFamily() throws FontChooserException
     {
@@ -448,9 +440,9 @@ public class JFontChooser extends JPanel
      * Returns the currently selected font style.
      * 
      * @return Currently selected font style. This value will correspond to one
-     *         of the font styles specified in {@link java.awt.Font}
-     * @throws FontChooserException thrown if no font style is currently 
-     *         selected
+     *         of the font styles specified in {@link java.awt.Font}.
+     * @throws FontChooserException thrown if no font style is currently
+     *         selected.
      */
     public int getSelectedFontStyle() throws FontChooserException
     {
@@ -463,7 +455,7 @@ public class JFontChooser extends JPanel
      * 
      * @return Currently selected font size.
      * @throws FontChooserException thrown if no font size is currently 
-     *         specified
+     *         specified.
      */
     public int getSelectedFontSize() throws FontChooserException 
     {
@@ -509,9 +501,9 @@ public class JFontChooser extends JPanel
      * Changes the currently selected font by assigning all widget values to 
      * match the family/style/size values of the supplied font.
      * 
-     * @param font Font whose values should be used to set widgets
+     * @param font Font whose values should be used to set widgets.
      * @throws IllegalArgumentException thrown if the family or style of the
-     *         font supplied are not available or invalid
+     *         font supplied are not available or invalid.
      */
     public void setSelectedFont(Font font) throws IllegalArgumentException
     {
@@ -524,9 +516,9 @@ public class JFontChooser extends JPanel
     /**
      * Sets the currently selected font family.
      * 
-     * @param family Family to which selection should change
+     * @param family Family to which selection should change.
      * @throws IllegalArgumentException thrown if the supplied font family is
-     *         not among the list of available font families
+     *         not among the list of available font families.
      */
     public void setSelectedFontFamily(String family) 
         throws IllegalArgumentException
@@ -550,10 +542,10 @@ public class JFontChooser extends JPanel
     /**
      * Sets the currently selected font style.
      * 
-     * @param style Style to which selection should change
+     * @param style Style to which selection should change.
      * @throws IllegalArgumentException thrown if the supplied font style is
-     *          not one of Font.PLAIN, Font.BOLD, Font.ITALIC, or 
-     *          Font.BOLD+Font.ITALIC
+     *         not one of Font.PLAIN, Font.BOLD, Font.ITALIC, or
+     *         Font.BOLD+Font.ITALIC.
      */
     public void setSelectedFontStyle(int style) throws IllegalArgumentException
     {
@@ -564,7 +556,7 @@ public class JFontChooser extends JPanel
     /**
      * Sets the currently selected font size.
      * 
-     * @param size Size to which selection should change
+     * @param size Size to which selection should change.
      */
     public void setSelectedFontSize(int size)
     {
@@ -590,8 +582,8 @@ public class JFontChooser extends JPanel
         /**
          * Creates a FontSizeSynchronizer.
          * 
-         * @param list List containing predefined font sizes 
-         * @param textField Text field in which font size is specified
+         * @param list List containing predefined font sizes. 
+         * @param textField Text field in which font size is specified.
          */
         public FontSizeSynchronizer(JList list, JTextField textField)
         {
@@ -599,10 +591,11 @@ public class JFontChooser extends JPanel
             textField_ = textField;
         }
 
+        
         /** 
          * Called when a value is changed.
          * 
-         * @param e List event that caused change in value
+         * @param e List event that caused change in value.
          * @see javax.swing.event.ListSelectionListener 
          */
         public void valueChanged(ListSelectionEvent e)
@@ -623,6 +616,7 @@ public class JFontChooser extends JPanel
             updating_ = false;
         }
 
+        
         /** 
          * @see javax.swing.event.DocumentListener 
          */
@@ -631,6 +625,7 @@ public class JFontChooser extends JPanel
             handle(e);
         }
        
+        
         /**
          *  @see javax.swing.event.DocumentListener 
          */
@@ -638,6 +633,7 @@ public class JFontChooser extends JPanel
         {
             handle(e);
         }
+        
         
         /** 
          * @see javax.swing.event.DocumentListener 
@@ -647,10 +643,11 @@ public class JFontChooser extends JPanel
             handle(e);
         }
         
+        
         /** 
-         * Handles all DocumentEvents 
+         * Handles all DocumentEvents. 
          * 
-         * @param e Document event
+         * @param e Document event.
          */
         protected void handle(DocumentEvent e)
         {

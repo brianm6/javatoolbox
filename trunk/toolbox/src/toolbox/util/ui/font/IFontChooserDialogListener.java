@@ -8,7 +8,7 @@ public interface IFontChooserDialogListener
     /**
      * Called when the OK button is pressed.
      * 
-     * @param fontChooser Font chooser panel
+     * @param fontChooser Font chooser panel.
      */
     void okButtonPressed(JFontChooser fontChooser);
     
@@ -16,7 +16,7 @@ public interface IFontChooserDialogListener
     /**
      * Called when the cancel button is pressed.
      * 
-     * @param fontChooser Font chooser panel
+     * @param fontChooser Font chooser panel.
      */
     void cancelButtonPressed(JFontChooser fontChooser);
     
@@ -24,7 +24,7 @@ public interface IFontChooserDialogListener
     /**
      * Called when the apply button is pressed.
      * 
-     * @param fontChooser Font chooser panel
+     * @param fontChooser Font chooser panel.
      */
     void applyButtonPressed(JFontChooser fontChooser);
 }
