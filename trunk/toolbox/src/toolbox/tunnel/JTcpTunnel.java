@@ -30,10 +30,9 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
 
 /**
- * A JTcpTunnel object listens on the given port,
- * and once Start is pressed, will forward all bytes
- * to the given host and port. All traffic is displayed in a
- * UI.
+ * JTcpTunnel tunnels TCP traffic between a port on the localhost and a port
+ * on a remote host. All bytes sent/received are displayed in the GUI for
+ * visual inspection.
  */
 public class JTcpTunnel extends JFrame
 {
@@ -106,7 +105,6 @@ public class JTcpTunnel extends JFrame
         public void run()
         {
             ServerSocket ss = null;
-            JLabel status = getStatus();
 
             try
             {
@@ -124,7 +122,7 @@ public class JTcpTunnel extends JFrame
             {
                 try
                 {
-                    status.setText("Listening for connections on port " + 
+                    status_.setText("Listening for connections on port " + 
                         getListenPort());
 
                     // accept the connection from my client
@@ -133,17 +131,17 @@ public class JTcpTunnel extends JFrame
                     // connect to the thing I'm tunnelling for
                     Socket st = new Socket(getTunnelHost(), getTunnelPort());
                     
-                    status.setText("Tunnelling port "+ getListenPort()+ 
-                                   " to port " + getTunnelPort() + 
-                                   " on host " + getTunnelHost() + 
-                                   " ...");
+                    status_.setText("Tunnelling port "+ getListenPort()+ 
+                                    " to port " + getTunnelPort() + 
+                                    " on host " + getTunnelHost() + 
+                                    " ...");
 
                     // relay the stuff thru
                     new Relay(sc.getInputStream(), st.getOutputStream(), 
-                        getListenText()).start();
+                        getListenText(), followCheckBox_.isSelected()).start();
                               
                     new Relay(st.getInputStream(), sc.getOutputStream(), 
-                        getTunnelText()).start();
+                        getTunnelText(), followCheckBox_.isSelected()).start();
 
                     // that's it .. they're off
                 }
@@ -163,36 +161,30 @@ public class JTcpTunnel extends JFrame
     protected void buildView()
     {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle("[Tunnel] localhost:" + listenPort_ +  " ==> " + 
+            tunnelHost_ + ":" + tunnelPort_);
         
-        // show info
-        setTitle("TCP Tunnel/Monitor: Tunneling localhost:" + listenPort_ + 
-            " to " + tunnelHost_ + ":" + tunnelPort_);
-
-        JPanel p;
+        //======================================================================
         
-        // labels
-        p = new JPanel();
-        p.setLayout(new BorderLayout());
-
-        JLabel l1;
-        JLabel l2;
+        JPanel labelPanel = new JPanel(new BorderLayout());
         
-        p.add(BorderLayout.WEST, l1 = 
-            new JLabel("From localhost:" + listenPort_, JLabel.CENTER));
+        JLabel localLabel = new JLabel("From localhost:" + listenPort_, 
+            JLabel.CENTER);
             
-        p.add(BorderLayout.EAST, l2 = 
-            new JLabel("From " + tunnelHost_ + ":" + 
-                tunnelPort_, JLabel.CENTER));
+        JLabel remoteLabel = new JLabel("From " + tunnelHost_ + ":" + 
+            tunnelPort_, JLabel.CENTER);
+        
+        labelPanel.add(BorderLayout.WEST, localLabel);
+        labelPanel.add(BorderLayout.EAST, remoteLabel);
             
-        getContentPane().add(BorderLayout.NORTH, p);
+        getContentPane().add(BorderLayout.NORTH, labelPanel);
 
-        // the monitor part
+        //======================================================================
         
         listenText_ = new JTextArea();
         listenText_.setFont(SwingUtil.getPreferredMonoFont());
         listenText_.setRows(40);
         listenText_.setColumns(80);
-
         
         tunnelText_ = new JTextArea();
         tunnelText_.setFont(SwingUtil.getPreferredMonoFont());
@@ -207,16 +199,18 @@ public class JTcpTunnel extends JFrame
         
         getContentPane().add(BorderLayout.CENTER, splitter_);
 
+        //======================================================================
+        
         // clear and status
-        JPanel p2 = new JPanel();
-        p2.setLayout(new BorderLayout());
-        p = new JPanel();
+        JPanel actionPanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
 
         clearButton_ = new JButton("Clear");
         followCheckBox_ = new JCheckBox("Follow output", true);
-        p.add(clearButton_);
-        p.add(followCheckBox_);
+        buttonPanel.add(clearButton_);
+        buttonPanel.add(followCheckBox_);
         
+        // Clear both textareas
         clearButton_.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e)
@@ -226,7 +220,7 @@ public class JTcpTunnel extends JFrame
             }
         });
 
-        
+        // Allow follow behavior to change in real time
         followCheckBox_.addChangeListener(new ChangeListener()
         {
             /**
@@ -239,12 +233,17 @@ public class JTcpTunnel extends JFrame
             }
         });
         
-        p2.add(BorderLayout.CENTER, p);
-        p2.add(BorderLayout.SOUTH, status_ = new JLabel());
-        getContentPane().add(BorderLayout.SOUTH, p2);
+        actionPanel.add(BorderLayout.CENTER, buttonPanel);
+        actionPanel.add(BorderLayout.SOUTH, status_ = new JLabel());
+        getContentPane().add(BorderLayout.SOUTH, actionPanel);
+        
+        //======================================================================        
+        
         pack();
         SwingUtil.centerWindow(this);
 
+        //======================================================================        
+        
         // Keep divider location in the middle if the window is resized
         addComponentListener(new ComponentAdapter()
         {
@@ -256,12 +255,13 @@ public class JTcpTunnel extends JFrame
                 splitter_.setDividerLocation(0.5);
             }
         });
-        
+
+                
         // Quick death
         addWindowListener(new WindowAdapter()
         {
             /**
-             * @see java.awt.event.WindowListener#windowClosed(WindowEvent)
+             * Window close event
              */
             public void windowClosed(WindowEvent e)
             {
@@ -270,31 +270,46 @@ public class JTcpTunnel extends JFrame
         });
     }
 
+
+    /**
+     * @return  Port to listen
+     */
     public int getListenPort()
     {
         return listenPort_;
     }
 
+
+    /**
+     * @return  Listen text area
+     */
     public JTextArea getListenText()
     {
         return listenText_;
     }
 
-    public JLabel getStatus()
-    {
-        return status_;
-    }
 
+    /**
+     * @return  Host to forward traffic to
+     */
     public String getTunnelHost()
     {
         return tunnelHost_;
     }
 
+
+    /**
+     * @return  Port to forward traffic to
+     */
     public int getTunnelPort()
     {
         return tunnelPort_;
     }
 
+
+    /**
+     * @return Tunnel text area
+     */
     public JTextArea getTunnelText()
     {
         return tunnelText_;
