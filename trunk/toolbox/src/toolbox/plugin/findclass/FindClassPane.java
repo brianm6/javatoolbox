@@ -3,7 +3,6 @@ package toolbox.plugin.findclass;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -22,7 +21,6 @@ import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -52,8 +50,7 @@ import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.ui.explorer.JFileExplorer;
-import toolbox.util.ui.explorer.FileExplorerAdapter;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
@@ -61,6 +58,8 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.table.JSmartTable;
@@ -76,10 +75,8 @@ import toolbox.workspace.WorkspaceAction;
  * UI for finding class files by regular expression from the classpath or any 
  * arbitrary java archive or directory.
  */
-public class FindClassPane extends JFrame implements IPreferenced
+public class FindClassPane extends JPanel implements IPreferenced
 {
-    // TODO: Remove extends from frame
-    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -210,7 +207,6 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     public FindClassPane()
     {
-        super("FindClassPane");
     }
 
     //--------------------------------------------------------------------------
@@ -243,8 +239,7 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     protected void buildView()
     {
-        Container contentPane = getContentPane();
-        contentPane.setLayout(new BorderLayout());
+        setLayout(new BorderLayout());
 
         // Search bar - north
         //buildSearchPanel();
@@ -257,9 +252,6 @@ public class FindClassPane extends JFrame implements IPreferenced
         
         // Left flip pane with file explorer - west
         buildLeftFlipPane();
-
-        // Post tweaks
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     
@@ -363,9 +355,6 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     protected void buildSearchResultsPanel()
     {
-        // Search Results panel        
-        JLabel resultLabel = new JSmartLabel("Results");
-        
         // Setup sortable table
         resultTableModel_  = new ResultsTableModel();
         resultTableSorter_ = new TableSorter(resultTableModel_);
@@ -374,10 +363,9 @@ public class FindClassPane extends JFrame implements IPreferenced
         resultTableSorter_.addMouseListenerToHeaderInTable(resultTable_);
         tweakTable();
         
-        JPanel resultPanel = new JPanel(new BorderLayout());
-        resultPanel.add(resultLabel, BorderLayout.NORTH);
-        resultPanel.add(resultPane_, BorderLayout.CENTER);
-        
+        JHeaderPanel resultPanel = new JHeaderPanel("Results");
+        resultPanel.setContent(resultPane_);
+       
         JPanel glue = new JPanel(new BorderLayout());
         glue.add(BorderLayout.NORTH, buildSearchPanel());
         glue.add(BorderLayout.SOUTH, buildTopFlipPane());
@@ -386,7 +374,7 @@ public class FindClassPane extends JFrame implements IPreferenced
         centerPanel.add(BorderLayout.NORTH, glue);
         centerPanel.add(BorderLayout.CENTER, resultPanel);
         
-        getContentPane().add(BorderLayout.CENTER, centerPanel);
+        add(BorderLayout.CENTER, centerPanel);
     }
 
     
@@ -403,7 +391,7 @@ public class FindClassPane extends JFrame implements IPreferenced
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("File Explorer", fileExplorer_);
         leftFlipPane_.setExpanded(false);
-        getContentPane().add(leftFlipPane_, BorderLayout.WEST);
+        add(leftFlipPane_, BorderLayout.WEST);
     }
 
     
