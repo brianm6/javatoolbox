@@ -24,6 +24,12 @@
   <!-- LOGGERS                                                               -->
   <!-- ===================================================================== -->
   
+  <logger name="org.apache.commons.beanutils" additivity="true">
+    <level value="info"/>
+    <appender-ref ref="console"/>
+    <appender-ref ref="sockethub"/>    
+  </logger>
+  
   <root>
     <level value="debug"/>
     <appender-ref ref="console"/>
