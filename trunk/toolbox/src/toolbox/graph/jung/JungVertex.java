@@ -1,5 +1,9 @@
 package toolbox.graph.jung;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.Vertex;
 import edu.uci.ics.jung.graph.decorators.StringLabeller;
@@ -37,6 +41,8 @@ public class JungVertex implements toolbox.graph.Vertex
     public JungVertex(toolbox.graph.Graph graph, String label)
     {
         vertex_ = new DirectedSparseVertex();
+        
+        // Temporarily add to graph so that StringLabeller will work
         Graph g = (Graph) graph.getDelegate();
         g.addVertex(vertex_);
         
@@ -48,8 +54,31 @@ public class JungVertex implements toolbox.graph.Vertex
         {
             logger_.error(e);
         }
+        
+        g.removeVertex(vertex_);
     }
 
+    //--------------------------------------------------------------------------
+    // Vertex Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.graph.Vertex#getEdges()
+     */
+    public Set getEdges()
+    {
+        Set edges = vertex_.getIncidentEdges();
+        Set result = new HashSet();
+        
+        for (Iterator iter = edges.iterator(); iter.hasNext();)
+        {
+            Vertex element = (Vertex) iter.next();
+            result.add(JungGraphLib.lookupVertex(element));
+        }
+        
+        return result;
+    }
+    
     //--------------------------------------------------------------------------
     // Delegator Interface
     //--------------------------------------------------------------------------
