@@ -103,5 +103,6 @@ public class JungGraphView implements GraphView
     {
         Layout l = (Layout) layout.getDelegate();
         delegate_.setGraphLayout(l);
+        delegate_.repaint();
     }
 }
