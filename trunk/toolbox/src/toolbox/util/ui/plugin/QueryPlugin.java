@@ -32,8 +32,9 @@ import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.ui.TryCatchAction;
+import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JTextComponentPopupMenu;
+import toolbox.util.ui.TryCatchAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
@@ -127,7 +128,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     protected void buildView()
     {
         sqlHistory_ = new HashMap();
-        sqlPopup_ = new JPopupMenu("History");
+        sqlPopup_ = new JConveyorPopupMenu(3);
 
         TextAreaDefaults defaults = new JavaDefaults();
         defaults.popup = sqlPopup_;
