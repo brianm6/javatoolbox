@@ -1,29 +1,20 @@
 package toolbox.util.thread.concurrent;
 
 /**
- * Mutex.java
- *
  * This class implements a recursive mutex.
  */
 public class Mutex
 {
-    int count_ = 0;
-    Thread owner_ = null;
+    private int count_ = 0;
+    private Thread owner_ = null;
 
-    public static class NotOwnerException
-        extends RuntimeException
-    {
-    }
-
-    ;public static class UnderflowException
-        extends RuntimeException
-    {
-    }
-
-    ;
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-    * Constructs a new mutex in the unlocked state. 
-    */
+     * Constructs a new mutex in the unlocked state. 
+     */
     public Mutex()
     {
         this(false);
@@ -31,23 +22,26 @@ public class Mutex
 
 
     /**
-    * Constructs a new mutex in the 'locked' state.
-    *
-    * @param    locked        true if the thread creating this mutex
-    *                should lock it on creation, false otherwise.
-    */
+     * Constructs a new mutex in the 'locked' state.
+     *
+     * @param locked  True if the thread creating this mutex
+     *                should lock it on creation, false otherwise.
+     */
     public Mutex(boolean locked)
     {
         if (locked)
             lock();
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
-    * Attempt to obtain the mutex.  The calling thread will block if a 
-    * different thread already aquires the mutex.  Since this lock is
-    * recursive, the same thread may obtain it multiple times.
-    */
+     * Attempt to obtain the mutex.  The calling thread will block if a 
+     * different thread already aquires the mutex.  Since this lock is
+     * recursive, the same thread may obtain it multiple times.
+     */
     public synchronized void lock()
     {
         if (owner_ != Thread.currentThread())
@@ -60,7 +54,6 @@ public class Mutex
                 }
                 catch (InterruptedException ie)
                 {
-
                     // ignore
                 }
             }
@@ -73,8 +66,8 @@ public class Mutex
 
 
     /**
-    * Alternate call for 'lock'.
-    */
+     * Alternate call for 'lock'.
+     */
     public void obtain()
     {
         lock();
@@ -82,12 +75,13 @@ public class Mutex
 
 
     /**
-    * Attempt to release the mutex.
-    *
-    * @exception    UnderflowException if mutex has not been acquired.
-    * @exception    NotOwnerException if calling thread does not own mutex.
-    */
-    public synchronized void unlock()
+     * Attempt to release the mutex.
+     *
+     * @throws    UnderflowException if mutex has not been acquired.
+     * @throws    NotOwnerException if calling thread does not own mutex.
+     */
+    public synchronized void unlock() throws UnderflowException,
+        NotOwnerException
     {
         if (count_ <= 0)
         {
@@ -106,8 +100,8 @@ public class Mutex
 
 
     /**
-    * Alternate call for 'release'.
-    */
+     * Alternate call for 'release'.
+     */
     public void release()
     {
         unlock();
@@ -115,12 +109,12 @@ public class Mutex
 
 
     /**
-    * Attempt to obtain the mutex.  The calling thread return flase if a 
-    * different thread already aquires the mutex.  Since this lock is
-    * recursive, the same thread may obtain it multiple times.
-    *
-    * @return    true if thread was able to aquire the mutex, false otherwise.
-    */
+     * Attempt to obtain the mutex.  The calling thread return flase if a 
+     * different thread already aquires the mutex.  Since this lock is
+     * recursive, the same thread may obtain it multiple times.
+     *
+     * @return    true if thread was able to aquire the mutex, false otherwise.
+     */
     public synchronized boolean tryLock()
     {
         if (owner_ == null)
@@ -136,4 +130,23 @@ public class Mutex
 
         return true;
     }
+    
+    //--------------------------------------------------------------------------
+    // Exceptions
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Exception when not an owner
+     */
+    public static class NotOwnerException extends RuntimeException
+    {
+    }
+
+    /**
+     * Exception when underflow occurs
+     */
+    public static class UnderflowException extends RuntimeException
+    {
+    }
+    
 }

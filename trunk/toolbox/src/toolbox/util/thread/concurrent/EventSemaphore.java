@@ -1,22 +1,20 @@
 package toolbox.util.thread.concurrent;
 
 /**
- * EventSemaphore.java
- *
  * This class implements an event synchronization semaphore.  Threads will
  * block on this semaphore until the desired condition is fulfilled at which
  * time the semaphore will be 'posted' 
  */
 public class EventSemaphore
 {
-    Mutex mutex_;
-    boolean posted_;
-    ConditionVariable event_;
+    private Mutex mutex_;
+    private boolean posted_;
+    private ConditionVariable event_;
 
 
     /**
-    * Constructs a new event semaphore in the unposted state. 
-    */
+     * Constructs a new event semaphore in the unposted state. 
+     */
     public EventSemaphore()
     {
         this(false);
@@ -24,11 +22,11 @@ public class EventSemaphore
 
 
     /**
-    * Constructs a new event semaphore in the 'posted' state.
-    *
-    * @param    posted        true if this event semaphore should be posted
-    *                on creation, false otherwise.
-    */
+     * Constructs a new event semaphore in the 'posted' state.
+     *
+     * @param  posted  True if this event semaphore should be posted
+     *                 on creation, false otherwise.
+     */
     public EventSemaphore(boolean posted)
     {
         posted_ = posted;
@@ -38,9 +36,9 @@ public class EventSemaphore
 
 
     /**
-    * Clears the event semaphore causing all future waiting threads to block
-    * until the event semaphore is posted again.
-    */
+     * Clears the event semaphore causing all future waiting threads to block
+     * until the event semaphore is posted again.
+     */
     public synchronized void reset()
     {
         posted_ = false;
@@ -48,9 +46,9 @@ public class EventSemaphore
 
 
     /**
-    * Signals the event semaphore unblocking all waiting threads.  All
-    * subsequent waits will proceed until the event semaphore is reset.
-    */
+     * Signals the event semaphore unblocking all waiting threads.  All
+     * subsequent waits will proceed until the event semaphore is reset.
+     */
     public synchronized void post()
     {
         if (!posted_)
@@ -64,9 +62,9 @@ public class EventSemaphore
 
 
     /**
-    * Signals the event semaphore unblocking all waiting threads.  All
-    * subsequent waits will block until the event semaphore is posted again. 
-    */
+     * Signals the event semaphore unblocking all waiting threads.  All
+     * subsequent waits will block until the event semaphore is posted again. 
+     */
     public synchronized void pulse()
     {
         posted_ = false;
@@ -77,8 +75,8 @@ public class EventSemaphore
 
 
     /**
-    * Blocks the calling thread until this event semaphore is posted.
-    */
+     * Blocks the calling thread until this event semaphore is posted.
+     */
     public void waitFor()
     {
         synchronized (this)
@@ -95,14 +93,14 @@ public class EventSemaphore
 
 
     /**
-    * Blocks the calling thread until this event semaphore is posted or
-    * the supplied timeout elapses.
-    *
-    * @exception    InterruptedException if another thread interrupts
-    *            a blocked thread.
-    */
-    public void waitFor(long timeout)
-                 throws InterruptedException
+     * Blocks the calling thread until this event semaphore is posted or
+     * the supplied timeout elapses.
+     *
+     * @param     timeout   Timeout to wait in milliseconds
+     * @throws    InterruptedException if another thread interrupts
+     *            a blocked thread.
+     */
+    public void waitFor(long timeout) throws InterruptedException
     {
         synchronized (this)
         {
@@ -118,13 +116,12 @@ public class EventSemaphore
 
 
     /**
-    * Returns true if this event semaphore is in a posted state.
-    *
-    * @return    true if this event semaphore is in a posted state.
-    */
+     * Returns true if this event semaphore is in a posted state.
+     *
+     * @return    true if this event semaphore is in a posted state.
+     */
     public synchronized boolean posted()
     {
         return posted_;
     }
 }
-;
