@@ -1,9 +1,11 @@
 package toolbox.util.concurrent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
 
 /**
@@ -15,9 +17,9 @@ public class BlockingQueue
     private static final Logger logger_ =
         Logger.getLogger(BlockingQueue.class);
         
-    private ArrayList   queue_      = null;
-    private Semaphore   semaphore_  = null;
-    private Mutex       mutex_      = new Mutex();
+    private List       queue_      = null;
+    private Semaphore  semaphore_  = null;
+    private Mutex      mutex_      = new Mutex();
 
     //--------------------------------------------------------------------------
     // Constuctors
@@ -159,5 +161,14 @@ public class BlockingQueue
         }
 
         return size;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Overridden from java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    public String toString()
+    {
+        return ArrayUtil.toString(queue_.toArray());
     }
 }
