@@ -34,30 +34,33 @@ public class DirTreeSelectionListener extends AbstractListener
     //--------------------------------------------------------------------------
     
     /**
+     * Converts the current selection path into an absolute file path.
+     * 
      * @see javax.swing.event.TreeSelectionListener#valueChanged(
      *      javax.swing.event.TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e)
     {
-        StringBuffer s = new StringBuffer();
-        TreePath path = e.getPath();
-        Object[] o = path.getPath();
+        StringBuffer folderPath = new StringBuffer();
+        TreePath treePath = e.getPath();
+        Object[] pathElements = treePath.getPath();
 
         DefaultMutableTreeNode currentNode =
-            (DefaultMutableTreeNode) (path.getLastPathComponent());
+            (DefaultMutableTreeNode) treePath.getLastPathComponent();
 
-        // Should optimize
-        s.append(o[0]);
+        // First element of the path
+        folderPath.append(pathElements[0]);
         
-        for (int i = 1; i < o.length; i++)
+        // From 2nd element to end
+        for (int i = 1; i < pathElements.length; i++)
         {
-            if (!o[i - 1].toString().endsWith(File.separator))
-                s.append(File.separator);
+            if (!pathElements[i - 1].toString().endsWith(File.separator))
+                folderPath.append(File.separator);
                 
-            s.append(o[i]);
+            folderPath.append(pathElements[i]);
         }
 
-        String folder = s.toString();
+        String folder = folderPath.toString();
         getProxy().setTreeFolders(folder, currentNode);
         getProxy().setFileList(folder);
         getProxy().fireFolderSelected(folder);
