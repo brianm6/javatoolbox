@@ -54,6 +54,8 @@ public class JFileExplorerTest extends TestCase
      */
     public void testJFileExplorer()
     {
+        logger_.info("Running testJFileExplorer...");
+        
         // Just launch the file explorer in a jframe..nuttin else
         JDialog dialog = new TestDialog();
         dialog.pack();
