@@ -42,6 +42,7 @@ package toolbox;
  * TODO: Switch between grid and text view
  * TODO: Add sql formatter preferences to prefsview
  * TODO: Lift more stuff from hsqldb manager
+ * TODO: Move benchmark to its own panel with preferences.
  * =============================================================================
  * 								FindClassPlugin
  * =============================================================================
