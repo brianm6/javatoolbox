@@ -121,4 +121,15 @@ public final class RandomUtil
         int fraction = nextInt(100);
         return (double) (decimal + fraction / 100);
     }
+    
+    
+    /**
+     * Generates a random boolean 
+     * 
+     * @return  boolean
+     */
+    public static boolean nextBoolean()
+    {
+        return (nextInt() %2 == 0);
+    }
 }
