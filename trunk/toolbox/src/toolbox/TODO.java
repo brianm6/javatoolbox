@@ -77,6 +77,7 @@ package toolbox;
  * June 2004
  *  - Updated Jode to 1.1.2-pre1
  *  - Added StringUtil.indent()
+ *  - Imported ThrottledInput/OutputSream
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
