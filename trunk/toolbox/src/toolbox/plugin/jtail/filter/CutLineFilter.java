@@ -6,30 +6,32 @@ import toolbox.util.Assert;
 import toolbox.util.AssertionException;
 import toolbox.util.StringUtil;
 
-
 /**
- * Filter that cuts a specified number of columns from a line
+ * Filter that cuts a specified number of columns from a line base on a simple
+ * cut expression. The expression is as follows: beginColumn-endColumn.
  */
 public class CutLineFilter extends AbstractLineFilter
 {
-    /**
-     * Cut expression
-     */
+    // TODO: Update cut expression to support "x-y,a-b,..."
+    
+    /** Cut expression */
     private String cut_;
     
+    /** Beginning column number */
     private int begin_ = 0;
-    private int end_   = 0;
+    
+    /** Ending column number */
+    private int end_ = 0;
 
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for CutFilter.
+     * Creates a cut filter
      */
     public CutLineFilter()
     {
-        cut_ = null;    
     }
 
     //--------------------------------------------------------------------------
@@ -39,7 +41,7 @@ public class CutLineFilter extends AbstractLineFilter
     /**
      * Filters a line by cutting 
      * 
-     * @param line  Line to cut
+     * @param  line  Line to cut
      * @return Line after cut operation
      */
     public String filter(String line)
@@ -71,7 +73,6 @@ public class CutLineFilter extends AbstractLineFilter
         return sb.toString();
     }
     
-    
     //--------------------------------------------------------------------------
     //  Public
     //--------------------------------------------------------------------------
@@ -86,7 +87,7 @@ public class CutLineFilter extends AbstractLineFilter
     {
         cut_ = cut;
 
-        if (StringUtil.isNullOrEmpty(cut))
+        if (StringUtil.isNullOrEmpty(cut_))
             setEnabled(false);
         else
         {        
@@ -100,7 +101,6 @@ public class CutLineFilter extends AbstractLineFilter
             }
         }
     }
-
     
     //--------------------------------------------------------------------------
     //  Private
@@ -114,16 +114,17 @@ public class CutLineFilter extends AbstractLineFilter
         StringTokenizer st = new StringTokenizer(cut_, "-");        
         
         Assert.equals(st.countTokens(), 2, 
-            "Cut expression should be of form x-y");
+            "Cut expression should be of form x-y. " + cut_);
         
         begin_ = Integer.parseInt((String)st.nextToken()) - 1;
         end_   = Integer.parseInt((String)st.nextToken());
 
         if (begin_ == end_) 
-            throw new IllegalArgumentException("Begin cannot be equal to end");
+            throw new IllegalArgumentException(
+                "Begin cannot be equal to end. " + cut_);
             
         if (begin_ > end_)
             throw new IllegalArgumentException(
-                "Begin cannot be greater than end");            
+                "Begin cannot be greater than end. " + cut_);            
     }
 }
