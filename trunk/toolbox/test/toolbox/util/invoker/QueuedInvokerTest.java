@@ -17,6 +17,8 @@ import toolbox.util.ThreadUtil;
 
 /**
  * Unit test for QueuedInvoker.
+ * 
+ * @see toolbox.util.invoker.QueuedInvoker
  */
 public class QueuedInvokerTest extends TestCase
 {
@@ -93,7 +95,7 @@ public class QueuedInvokerTest extends TestCase
         }
         finally
         {
-            invoker.shutdown();
+            invoker.destroy();
         }
     }
 
@@ -149,7 +151,7 @@ public class QueuedInvokerTest extends TestCase
         }
         finally
         {
-            invoker.shutdown();
+            invoker.destroy();
         }
     }
 
@@ -206,7 +208,7 @@ public class QueuedInvokerTest extends TestCase
         }
         finally
         {
-            invoker.shutdown();
+            invoker.destroy();
         }
     }
 
@@ -232,7 +234,7 @@ public class QueuedInvokerTest extends TestCase
         }
         finally
         {
-            invoker.shutdown();
+            invoker.destroy();
         }
     }
     

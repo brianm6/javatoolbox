@@ -10,6 +10,8 @@ import toolbox.util.ThreadUtil;
 
 /**
  * Unit test for ThreadedInvoker.
+ * 
+ * @see toolbox.util.invoker.ThreadedInvoker
  */
 public class ThreadedInvokerTest extends TestCase
 {
@@ -50,7 +52,7 @@ public class ThreadedInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable);
         time.setEndTime();
-        invoker.shutdown();
+        invoker.destroy();
         
         assertTrue(
             "Method did not execute in expected amount of time",
@@ -78,7 +80,7 @@ public class ThreadedInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable, "run", null);
         time.setEndTime();
-        invoker.shutdown();
+        invoker.destroy();
         
         assertTrue(
             "Method did not execute in expected amount of time",
@@ -121,7 +123,7 @@ public class ThreadedInvokerTest extends TestCase
             assertTrue("Method was not invoked for iteration " + i,
                 invokables[i].wasInvoked());
         
-        invoker.shutdown();
+        invoker.destroy();
     }
     
     
@@ -142,6 +144,6 @@ public class ThreadedInvokerTest extends TestCase
         Invoker invoker = new ThreadedInvoker();
         invoker.invoke(ex, "run", null);
         ThreadUtil.sleep(2000);
-        invoker.shutdown();
+        invoker.destroy();
     }
 }

@@ -9,6 +9,8 @@ import toolbox.util.ElapsedTime;
 
 /**
  * Unit test for BlockingInvoker.
+ * 
+ * @see toolbox.util.invoker.BlockingInvoker
  */
 public class BlockingInvokerTest extends TestCase
 {
@@ -49,7 +51,7 @@ public class BlockingInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable);
         time.setEndTime();
-        invoker.shutdown();
+        invoker.destroy();
 
         assertTrue("Method was not invoked", invokable.wasInvoked());
 
@@ -75,7 +77,7 @@ public class BlockingInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable, "run", null);
         time.setEndTime();
-        invoker.shutdown();
+        invoker.destroy();
         
         assertTrue("Method was not invoked", invokable.wasInvoked());
 
@@ -113,6 +115,6 @@ public class BlockingInvokerTest extends TestCase
             assertTrue("Method was not invoked", invokables[i].wasInvoked());
         }
         
-        invoker.shutdown();
+        invoker.destroy();
     }
 }
