@@ -3,11 +3,11 @@ package toolbox.util.formatter;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
-import toolbox.util.formatter.Formatter;
-import toolbox.util.formatter.XMLFormatter;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
@@ -101,5 +101,26 @@ public class XMLFormatterTest extends TestCase
         out = sos.toString().trim();
         logger_.info(StringUtil.banner(out));
         assertEquals(XML_TEST3_OUT, out);
+    }
+    
+    
+    public void testPreferenced() throws Exception
+    {
+        logger_.info("Running testPreferenced...");
+        
+        XMLFormatter f = new XMLFormatter();
+        f.setIndent(10);
+        f.setLineWidth(200);
+        f.setOmitDeclaration(true);
+        
+        Element prefs = new Element("root");
+        f.savePrefs(prefs);
+        
+        XMLFormatter f2 = new XMLFormatter();
+        f2.applyPrefs(prefs);
+        
+        assertEquals(f.getIndent(), f2.getIndent());
+        assertEquals(f.getLineWidth(), f2.getLineWidth());
+        assertEquals(f.isOmitDeclaration(), f2.isOmitDeclaration());
     }
 }
