@@ -237,7 +237,7 @@ public class XOMUtilTest extends TestCase
         catch (IllegalArgumentException iae)
         {
             // Expected
-            assert(true);
+            assertTrue(true);
         }
         catch (Exception e)
         {
