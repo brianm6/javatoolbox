@@ -23,7 +23,6 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.StreamUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.decompiler.Decompiler;
 import toolbox.util.decompiler.DecompilerException;
 import toolbox.util.decompiler.DecompilerFactory;
