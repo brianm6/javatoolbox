@@ -58,7 +58,6 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class TailPane extends JPanel
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(TailPane.class);
     
@@ -86,19 +85,13 @@ public class TailPane extends JPanel
     
     private IStatusBar  statusBar_;
     
-    /** 
-     * Output for tail 
-     */
+    /** Output for tail */
     private JSmartTextArea tailArea_;
 
-    /** 
-     * The tailer 
-     */    
+    /** The tailer */    
     private Tail tail_;
 
-    /** 
-     * Configuration 
-     */
+    /** Configuration */
     private ITailPaneConfig config_;
     
     
@@ -393,7 +386,7 @@ public class TailPane extends JPanel
          * 
          * @param  line  Next line read
          */
-        public void nextLine(String line)
+        public void nextLine(Tail tail, String line)
         {
             try
             {
@@ -403,6 +396,15 @@ public class TailPane extends JPanel
             {
                 ExceptionUtil.handleUI(ie, logger_);
             }
+        }
+        
+        /*
+         * @see toolbox.tail.TailAdapter#tailReattached(toolbox.tail.Tail)
+         */
+        public void tailReattached(Tail tail)
+        {
+            statusBar_.setStatus(
+                "Tail reattached to " + tail.getFile().getName());
         }
     }
     
