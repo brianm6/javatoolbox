@@ -16,7 +16,6 @@ package toolbox;
  * TODO: Add HTTP proxy support to preferences dialog.
  * TODO: Add history to statusbar.
  * TODO: Add icons to statusbar.
- * TODO: Double click on collapsable panel header should toggle it!
  * TODO: Add way to copy the current selection from the file explorer dir pane.
  * TODO: Really pick apart JSmartTextArea and figure out a good way optimizing
  *       the addition of large sections of text. Unhook model, insert, rehook 
