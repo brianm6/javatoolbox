@@ -277,13 +277,25 @@ public class SwingUtil
 
 
     /**
+     * Sets the Skin LAF
+     * 
+     * @throws Exception on error
+     */
+    public static void setSkinLAF() throws Exception
+    { 
+        UIManager.setLookAndFeel("com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
+    }
+
+
+    /**
      * Sets the preferred Look and Feel
      * 
      * @throws Exception on error
      */
     public static void setPreferredLAF() throws Exception
     { 
-        setMetouiaLAF();
+        setSkinLAF();
+        //setMetouiaLAF();
     }
     
     //--------------------------------------------------------------------------
