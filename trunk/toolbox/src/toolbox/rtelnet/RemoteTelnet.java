@@ -3,7 +3,6 @@ package toolbox.rtelnet;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Iterator;
 
@@ -53,7 +52,8 @@ public class RemoteTelnet
      * @throws IOException on I/O error.
      * @throws ParseException on command line parsing error.
      */
-    public static void main(String[] args) throws IOException, ParseException
+    public static void main(String[] args) 
+        throws IOException, ParseException, InterruptedException
     {
         // Parse args
         CommandLineParser parser = new PosixParser();
@@ -151,37 +151,35 @@ public class RemoteTelnet
      * @throws SocketException on socket communication error.
      * @throws IOException on I/O error.
      */    
-    public void execute() throws SocketException, IOException
+    public void execute() 
+        throws SocketException, IOException, InterruptedException
     {
         System.out.println("Options\n========");
         System.out.println(options_);
         
         RemoteTelnetClient telnet = new RemoteTelnetClient();
+        
+        logger_.debug("Connecting...");
         telnet.connect(options_.getHostname(), options_.getPort());
-       
-        //        telnet.sendCommand("xx\n");
-        //        telnet.waitFor("login");
-        //        telnet.sendCommand("semir");
-        //        telnet.waitFor("Password");
-        //        telnet.sendCommand("semir");
-        //        telnet.waitFor("Last");
-        //        telnet.sendCommand("export DISPLAY=9.90.20.248:0");
-        //        telnet.sendCommand("startkde&");
-
-        telnet.sendCommand("");
+        
+        logger_.debug("Sending AYT...");
+        telnet.sendAYT(10000);
+        
+        //telnet.sendCommand("");
         telnet.waitFor("login");
         telnet.sendCommand(options_.getUsername());
         telnet.waitFor("Password");
         telnet.sendCommand(options_.getPassword());
         telnet.waitFor("Last");
         
-        telnet.sendCommand("export DISPLAY=" + 
-            InetAddress.getLocalHost().getHostAddress() + ":0");
-            
-        telnet.sendCommand(options_.getCommand());
+        //telnet.sendCommand("export DISPLAY=" + 
+        //    InetAddress.getLocalHost().getHostAddress() + ":0");
         
-        //telnet.disconnect();
-        //commandLoop(telnet);
+        telnet.sendCommand(options_.getCommand());
+        logger_.debug("Sending AYT...");
+        telnet.sendAYT(10000);
+        telnet.disconnect();
+        logger_.debug("Disconnected");
     }
     
     
