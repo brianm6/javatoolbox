@@ -11,17 +11,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.commons.io.output.NullOutputStream;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import toolbox.util.RandomUtil;
 
 /**
  * This is a sample implementation of the Transaction Processing Performance
  * Council Benchmark B coded in Java and ANSI SQL2. This version is using one
  * connection per thread to parallellize server operations.
  */
-class DBBenchmark 
+public class DBBenchmark 
 {
     private static final Logger logger_ = Logger.getLogger(DBBenchmark.class);
     
@@ -29,39 +34,114 @@ class DBBenchmark
     // Constants
     //--------------------------------------------------------------------------
     
-    public final static int TELLER              = 0;
-    public final static int BRANCH              = 1;
-    public final static int ACCOUNT             = 2;
+    public final static int TELLER = 0;
+    public final static int BRANCH = 1;
+    public final static int ACCOUNT = 2;
     
     //--------------------------------------------------------------------------
     // Static
     //--------------------------------------------------------------------------
     
     // tpc bm b scaling rules
-    public static int tps_         = 1;      /* the tps scaling factor: here it is 1 */
-    public static int numBranches_ = 1;      /* number of branches in 1 tps db       */
-    public static int numTellers_  = 10;     /* number of tellers in  1 tps db       */
-    public static int numAccounts_ = 100000; /* number of accounts in 1 tps db       */
-    public static int numHistory_  = 864000; /* number of history recs in 1 tps db   */
     
-    static boolean          transactions_    = true;
-    static boolean          preparedStmt_    = false;
-    static String           tableExtension_  = "";
-    static String           createExtension_ = "";
-    static String           shutdownCommand_ = "";
-    static PrintStream      tabFile_         = null;
-    static boolean          verbose_         = false;
-    static int              numClients_      = 10;
-    static int              numTxPerClient_  = 10;
+    /**
+     * the tps scaling factor: here it is 1 
+     */
+    private static int tps_ = 1;      
+    
+    /**
+     * number of branches in 1 tps db       
+     */
+    private static int numBranches_ = 1;
+    
+    /** 
+     * number of tellers in  1 tps db       
+     */
+    private static int numTellers_ = 10;
+    
+    /**
+     * number of accounts in 1 tps db       
+     */
+    private static int numAccounts_ = 100000;
+    
+    /** 
+     * number of history recs in 1 tps db   
+     */
+    private static int numHistory_  = 864000; 
+    
+    /**
+     * Use transactions.
+     */
+    private static boolean transactions_ = true;
+    
+    /**
+     * Use prepared statements.
+     */
+    private static boolean preparedStmt_ = false;
+    
+    /**
+     * Table extension.
+     */
+    private static String tableExtension_ = "";
+    
+    /**
+     * Create extension.
+     */
+    private static String createExtension_ = "";
+    
+    /**
+     * Shutdown command.
+     */
+    private static String shutdownCommand_ = "";
+    
+    /**
+     * Tab file.
+     */
+    private static PrintStream tabFile_ = 
+        new PrintStream(new NullOutputStream());
+    
+    /**
+     * Verbose flag.
+     */
+    private static boolean verbose_ = false;
+    
+    /**
+     * Default number of clients.
+     */
+    private static int numClients_ = 10;
+    
+    /**
+     * Default number of transactions per client.
+     */
+    private static int numTxPerClient_ = 10;
     
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
-    int                     failedTx_        = 0;
-    int                     txCount_         = 0;
-    long                    startTime_       = 0;
-    MemoryWatcherThread     memoryWatcher_;
+    /**
+     * Number of failed transactions.
+     */
+    private int failedTx_ = 0;
+    
+    /**
+     * Transaction count.
+     */
+    private int txCount_ = 0;
+    
+    /**
+     * Start time.
+     */
+    private long startTime_ = 0;
+    
+    /**
+     * Tracks memory usage while the test is running.
+     */
+    private MemoryWatcherThread memoryWatcher_;
+    
+    /**
+     * Reports on the results are sent here.
+     */
     private PrintWriter writer_;
 
     //--------------------------------------------------------------------------
@@ -69,21 +149,23 @@ class DBBenchmark
     //--------------------------------------------------------------------------
     
     /**
-     *  main program,    creates a 1-tps database:  i.e. 1 branch, 10 tellers,...
-     *                    runs one TPC BM B transaction
-     * example command line:
+     * Creates a 1-tps database (1 branch, 10 tellers) and runs one TPC BM B 
+     * transaction. Example command line:
+     * <pre>
+     * java DBBench -driver org.hsqldb.jdbcDriver -url jdbc:hsqldb:/hsql/test33 -user sa -clients 20
+     * </pre>
      * 
-     * @param args -driver org.hsqldb.jdbcDriver -url jdbc:hsqldb:/hsql/test33 -user sa -clients 20
+     * @param args See above. 
      */
-    public static void main(String[] args) {
-
+    public static void main(String[] args) 
+    {
         //DriverManager.setLogWriter(new PrintWriter(new OutputStreamWriter(System.out)));
         
-        String  driverName         = "";
-        String  dbUrl              = "";
-        String  dbUser             = "";
-        String  dbPassword         = "";
-        boolean initializeDataset = false;
+        String  driver   = "";
+        String  url      = "";
+        String  user     = "";
+        String  password = "";
+        boolean initDB   = false;
 
         for (int i = 0; i < args.length; i++)
         {
@@ -100,21 +182,21 @@ class DBBenchmark
                 if (i + 1 < args.length)
                 {
                     i++;
-                    driverName = args[i];
+                    driver = args[i];
 
-                    if (driverName.equals(
+                    if (driver.equals(
                         "org.enhydra.instantdb.jdbc.idbDriver"))
                         shutdownCommand_ = "SHUTDOWN";
 
-                    if (driverName.equals(
+                    if (driver.equals(
                         "com.borland.datastore.jdbc.DataStoreDriver"))
                     {
                     }
 
-                    if (driverName.equals("com.mckoi.JDBCDriver"))
+                    if (driver.equals("com.mckoi.JDBCDriver"))
                         shutdownCommand_ = "SHUTDOWN";
 
-                    if (driverName.equals("org.hsqldb.jdbcDriver"))
+                    if (driver.equals("org.hsqldb.jdbcDriver"))
                     {
                         tableExtension_ = "CREATE CACHED TABLE ";
                         shutdownCommand_ = "SHUTDOWN COMPACT";
@@ -126,7 +208,7 @@ class DBBenchmark
                 if (i + 1 < args.length)
                 {
                     i++;
-                    dbUrl = args[i];
+                    url = args[i];
                 }
             }
             else if (args[i].equals("-user"))
@@ -134,7 +216,7 @@ class DBBenchmark
                 if (i + 1 < args.length)
                 {
                     i++;
-                    dbUser = args[i];
+                    user = args[i];
                 }
             }
             else if (args[i].equals("-tabfile"))
@@ -145,12 +227,12 @@ class DBBenchmark
 
                     try
                     {
-                        FileOutputStream File = new FileOutputStream(args[i]);
-                        tabFile_ = new PrintStream(File);
+                        tabFile_ = new PrintStream(
+                            new FileOutputStream(args[i]));
                     }
                     catch (Exception e)
                     {
-                        tabFile_ = null;
+                        tabFile_ = new PrintStream(new NullOutputStream());
                     }
                 }
             }
@@ -159,7 +241,7 @@ class DBBenchmark
                 if (i + 1 < args.length)
                 {
                     i++;
-                    dbPassword = args[i];
+                    password = args[i];
                 }
             }
             else if (args[i].equals("-tpc"))
@@ -171,7 +253,7 @@ class DBBenchmark
                 }
             }
             else if (args[i].equals("-init"))
-                initializeDataset = true;
+                initDB = true;
             else if (args[i].equals("-tps"))
             {
                 if (i + 1 < args.length)
@@ -184,14 +266,19 @@ class DBBenchmark
                 verbose_ = true;
         }
 
-        if (driverName.length() == 0 || dbUrl.length() == 0) {
+        if (StringUtils.isBlank(driver) || 
+            StringUtils.isBlank(url)) 
+        {
             System.out.println(
-                "usage: java DBBenchmark -driver [driver_class_name] -url [url_to_db] -user [username] -password [password] [-v] [-init] [-tpc n] [-clients]");
+                "Usage: java DBBenchmark -driver [driver_class_name] " +
+                "-url [url_to_db] -user [username] -password [password] [-v] " +
+                "[-init] [-tpc n] [-clients]");
+            
             System.out.println();
-            System.out.println("-v          verbose error messages");
-            System.out.println("-init       initialize the tables");
-            System.out.println("-tpc        transactions per client");
-            System.out.println("-clients    number of simultaneous clients");
+            System.out.println("-v       Verbose error messages");
+            System.out.println("-init    Initialize the tables");
+            System.out.println("-tpc     Transactions per client");
+            System.out.println("-clients Number of simultaneous clients");
             System.exit(-1);
         }
 
@@ -202,21 +289,20 @@ class DBBenchmark
         System.out.println(
             "*********************************************************");
         System.out.println();
-        System.out.println("Driver: " + driverName);
-        System.out.println("URL:" + dbUrl);
+        System.out.println("Driver      : " + driver);
+        System.out.println("URL         : " + url);
         System.out.println();
-        System.out.println("Scale factor value: " + tps_);
-        System.out.println("Number of clients: " + numClients_);
-        System.out.println("Number of transactions per client: "
-            + numTxPerClient_);
+        System.out.println("Scale factor: " + tps_);
+        System.out.println("# Clients   : " + numClients_);
+        System.out.println("# Txn/Client: " + numTxPerClient_);
         System.out.println();
 
         try
         {
-            Class.forName(driverName);
+            Class.forName(driver);
 
             DBBenchmark bench = 
-                new DBBenchmark(dbUrl, dbUser, dbPassword, initializeDataset);
+                new DBBenchmark(url, user, password, initDB);
         }
         catch (Exception ex)
         {
@@ -230,26 +316,27 @@ class DBBenchmark
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a DBBenchmark and sends output to System.out be default.
+     * Creates a DBBenchmark and sends output to System.out by default.
      * 
-     * @param url
-     * @param user
-     * @param password
-     * @param init
+     * @param url JDBC url.
+     * @param user Database username.
+     * @param password Database password.
+     * @param init True to init the tables, false otherwise.
      */
     public DBBenchmark(String url, String user, String password, boolean init)
     {
         this(url, user, password, init, 
             new PrintWriter(new OutputStreamWriter(System.out)));
     }   
+
     
     /**
      * Creates a DBBenchmark.
      * 
-     * @param url
-     * @param user
-     * @param password
-     * @param init
+     * @param url JDBC url.
+     * @param user Database username.
+     * @param password Database password.
+     * @param init True to init the tables, false otherwise.
      * @param writer Destination of benchmark output.
      */
     public DBBenchmark(
@@ -260,9 +347,9 @@ class DBBenchmark
         PrintWriter writer)
     {
         writer_ = writer;
-        Vector vc = new Vector(); // Vector Client
+        List clients = new ArrayList();
         Thread client = null;
-        Enumeration e = null;
+        Iterator it = null;
 
         try
         {
@@ -288,20 +375,20 @@ class DBBenchmark
             {
                 client = new ClientThread(numTxPerClient_, url, user, password);
                 client.start();
-                vc.addElement(client);
+                clients.add(client);
             }
             
             // Barrier to complete this test session
             
-            e = vc.elements();
+            it = clients.iterator();
 
-            while (e.hasMoreElements())
+            while (it.hasNext())
             {
-                client = (Thread) e.nextElement();
+                client = (Thread) it.next();
                 client.join();
             }
 
-            vc.removeAllElements();
+            clients.clear();
             reportDone();
 
             transactions_ = true;
@@ -312,20 +399,20 @@ class DBBenchmark
             {
                 client = new ClientThread(numTxPerClient_, url, user, password);
                 client.start();
-                vc.addElement(client);
+                clients.add(client);
             }
 
             // Barrier to complete this test session
             
-            e = vc.elements();
+            it = clients.iterator();
 
-            while (e.hasMoreElements())
+            while (it.hasNext())
             {
-                client = (Thread) e.nextElement();
+                client = (Thread) it.next();
                 client.join();
             }
 
-            vc.removeAllElements();
+            clients.clear();
             reportDone();
 
             transactions_ = false;
@@ -336,20 +423,20 @@ class DBBenchmark
             {
                 client = new ClientThread(numTxPerClient_, url, user, password);
                 client.start();
-                vc.addElement(client);
+                clients.add(client);
             }
 
             // Barrier to complete this test session
             
-            e = vc.elements();
+            it = clients.iterator();
 
-            while (e.hasMoreElements())
+            while (it.hasNext())
             {
-                client = (Thread) e.nextElement();
+                client = (Thread) it.next();
                 client.join();
             }
 
-            vc.removeAllElements();
+            clients.clear();
             reportDone();
 
             transactions_ = true;
@@ -360,26 +447,26 @@ class DBBenchmark
             {
                 client = new ClientThread(numTxPerClient_, url, user, password);
                 client.start();
-                vc.addElement(client);
+                clients.add(client);
             }
 
             // Barrier to complete this test session
             
-            e = vc.elements();
+            it = clients.iterator();
 
-            while (e.hasMoreElements())
+            while (it.hasNext())
             {
-                client = (Thread) e.nextElement();
+                client = (Thread) it.next();
                 client.join();
             }
 
-            vc.removeAllElements();
+            clients.clear();
             reportDone();
         }
         catch (Exception ex)
         {
             writer_.println(ex.getMessage());
-            ex.printStackTrace();
+            ex.printStackTrace(writer_);
         }
         finally
         {
@@ -405,27 +492,23 @@ class DBBenchmark
             {
             }
 
-            //System.exit(0);
-            
             writer_.flush();
         }
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
      * Report done. 
      */
-    public void reportDone()
+    protected void reportDone()
     {
         long endTime = System.currentTimeMillis();
         double completionTime = ((double) endTime - (double) startTime_) / 1000;
 
-        if (tabFile_ != null)
-            tabFile_.print(
-                tps_ + ";" + numClients_ + ";" + numTxPerClient_ + ";");
+        tabFile_.print(tps_ + ";" + numClients_ + ";" + numTxPerClient_ + ";");
 
         //writer_.println("\n* Benchmark Report *");
         //writer_.print("* Featuring ");
@@ -436,31 +519,23 @@ class DBBenchmark
         if (preparedStmt_)
         {
             writer_.print("Prepared Statements ");
-
-            if (tabFile_ != null)
-                tabFile_.print("<prepared statements>;");
+            tabFile_.print("<prepared statements>;");
         }
         else
         {
             writer_.print("Direct Queries ");
-
-            if (tabFile_ != null)
-                tabFile_.print("<direct queries>;");
+            tabFile_.print("<direct queries>;");
         }
 
         if (transactions_)
         {
             writer_.print("+ Transactions");
-
-            if (tabFile_ != null)
-                tabFile_.print("<transactions>;");
+            tabFile_.print("<transactions>;");
         }
         else
         {
             writer_.print("+ Auto-commit");
-
-            if (tabFile_ != null)
-                tabFile_.print("<auto-commit>;");
+            tabFile_.print("<auto-commit>;");
         }
 
         writer_.println("\n================================================");
@@ -484,26 +559,23 @@ class DBBenchmark
         
         writer_.println(
             "Min memory  " + 
-            DecimalFormat.getIntegerInstance().format(memoryWatcher_.min) +
+            DecimalFormat.getIntegerInstance().format(memoryWatcher_.min_) +
             " KB");
         
         writer_.println(
             "Max memory  " + 
-            DecimalFormat.getIntegerInstance().format(memoryWatcher_.max) +
+            DecimalFormat.getIntegerInstance().format(memoryWatcher_.max_) +
             " KB");
         
         //    + " / " + memoryWatcher_.min + " kb");
         
 
-        if (tabFile_ != null)
-            tabFile_.print(memoryWatcher_.max + ";" + memoryWatcher_.min + ";"
-                + failedTx_ + ";" + rate + "\n");
+        tabFile_.print(memoryWatcher_.max_ + ";" + memoryWatcher_.min_ + ";" + 
+            failedTx_ + ";" + rate + "\n");
 
         txCount_ = 0;
         failedTx_ = 0;
-
         memoryWatcher_.reset();
-        
         writer_.flush();
     }
 
@@ -511,7 +583,7 @@ class DBBenchmark
     /**
      * Bump up tx count.
      */
-    public synchronized void incrementTransactionCount()
+    protected synchronized void incrementTransactionCount()
     {
         txCount_++;
     }
@@ -520,24 +592,21 @@ class DBBenchmark
     /**
      * Bump up failed tx count.
      */
-    public synchronized void incrementFailedTransactionCount()
+    protected synchronized void incrementFailedTransactionCount()
     {
         failedTx_++;
     }
 
-    //--------------------------------------------------------------------------
-    // Package Protected
-    //--------------------------------------------------------------------------
     
     /**
      * Creates the test database.
      * 
-     * @param url
-     * @param user
-     * @param password
-     * @throws Exception
+     * @param url JDBC url.
+     * @param user Username.
+     * @param password Password.
+     * @throws Exception on error.
      */
-    void createDatabase(String url, String user, String password)
+    protected void createDatabase(String url, String user, String password)
         throws Exception
     {
         Connection conn = connect(url, user, password);
@@ -556,7 +625,9 @@ class DBBenchmark
                 transactions_ = false;
             }
         }
-
+        
+        writer_.flush();
+        
         try
         {
             int accountsnb = 0;
@@ -587,7 +658,8 @@ class DBBenchmark
         }
 
         writer_.println("Dropping old tables if they exist...");
-
+        writer_.flush();
+        
         try
         {
             Statement stmt = conn.createStatement();
@@ -619,7 +691,8 @@ class DBBenchmark
         }
 
         writer_.println("Creating tables...");
-
+        writer_.flush();
+        
         try
         {
             Statement stmt = conn.createStatement();
@@ -632,7 +705,7 @@ class DBBenchmark
 
             query += "Bid         INTEGER NOT NULL PRIMARY KEY, ";
             query += "Bbalance    INTEGER,";
-            query += "filler      CHAR(88))"; /* pad to 100 bytes */
+            query += "filler      CHAR(88))"; // pad to 100 bytes
 
             if (createExtension_.length() > 0)
                 query += createExtension_;
@@ -648,7 +721,7 @@ class DBBenchmark
             query += "Tid         INTEGER NOT NULL PRIMARY KEY,";
             query += "Bid         INTEGER,";
             query += "Tbalance    INTEGER,";
-            query += "filler      CHAR(84))"; /* pad to 100 bytes */
+            query += "filler      CHAR(84))"; // pad to 100 bytes 
 
             if (createExtension_.length() > 0)
                 query += createExtension_;
@@ -664,7 +737,7 @@ class DBBenchmark
             query += "Aid         INTEGER NOT NULL PRIMARY KEY, ";
             query += "Bid         INTEGER, ";
             query += "Abalance    INTEGER, ";
-            query += "filler      CHAR(84))"; /* pad to 100 bytes */
+            query += "filler      CHAR(84))"; // pad to 100 bytes 
 
             if (createExtension_.length() > 0)
                 query += createExtension_;
@@ -682,7 +755,7 @@ class DBBenchmark
             query += "Aid         INTEGER, ";
             query += "delta       INTEGER, ";
             query += "tstime        TIMESTAMP, ";
-            query += "filler      CHAR(22))"; /* pad to 50 bytes */
+            query += "filler      CHAR(22))"; // pad to 50 bytes 
 
             if (createExtension_.length() > 0)
                 query += createExtension_;
@@ -700,7 +773,8 @@ class DBBenchmark
         }
 
         writer_.println("Deleting table contents in case Drop didn't work...");
-
+        writer_.flush();
+        
         try
         {
             Statement stmt = conn.createStatement();
@@ -726,9 +800,10 @@ class DBBenchmark
                 conn.commit();
 
             /*
-             * prime database using TPC BM B scaling rules. * Note that for each
-             * branch and teller: * branch_id = teller_id / ntellers * branch_id =
-             * account_id / naccounts
+             * prime database using TPC BM B scaling rules. Note that for each
+             * branch and teller: 
+             * branch_id = teller_id/ntellers 
+             * branch_id = account_id/naccounts
              */
             PreparedStatement pstmt = null;
 
@@ -740,7 +815,7 @@ class DBBenchmark
                 {
                     query = "INSERT INTO branches(Bid,Bbalance) VALUES (?,0)";
                     pstmt = conn.prepareStatement(query);
-                    writer_.println("Using prepared statements");
+                    writer_.println("[Using prepared statements]");
                 }
                 catch (SQLException se)
                 {
@@ -750,7 +825,8 @@ class DBBenchmark
             }
 
             writer_.println("Populating branches table...");
-
+            writer_.flush();
+            
             for (int i = 0; i < numBranches_ * tps_; i++)
             {
                 if (preparedStmt_)
@@ -761,8 +837,8 @@ class DBBenchmark
                 }
                 else
                 {
-                    query = "INSERT INTO branches(Bid,Bbalance) VALUES (" + i
-                        + ",0)";
+                    query = "INSERT INTO branches (Bid,Bbalance) " +
+                            "VALUES (" + i + ",0)";
 
                     stmt.executeUpdate(query);
                 }
@@ -784,7 +860,8 @@ class DBBenchmark
             }
 
             writer_.println("Populating tellers table...");
-
+            writer_.flush();
+            
             for (int i = 0; i < numTellers_ * tps_; i++)
             {
                 if (preparedStmt_)
@@ -819,7 +896,8 @@ class DBBenchmark
             }
 
             writer_.println("Populating accounts table...");
-
+            writer_.flush();
+            
             for (int i = 0; i < numAccounts_ * tps_; i++)
             {
                 if (preparedStmt_)
@@ -858,38 +936,21 @@ class DBBenchmark
         catch (Exception ex)
         {
             writer_.println(ex.getMessage());
-            ex.printStackTrace();
+            ex.printStackTrace(writer_);
         }
 
+        writer_.flush();
         connectClose(conn);
     }
-
+ 
     
     /**
+     * Returns a random ID.
      * 
-     * @param lo
-     * @param hi
-     * @return
+     * @param type ACCOUNT, TELLER, or BRANCH
+     * @return int
      */
-    public static int getRandomInt(int lo, int hi)
-    {
-        // TODO: Replace with randomutils
-        
-        int ret = 0;
-
-        ret = (int) (Math.random() * (hi - lo + 1));
-        ret += lo;
-
-        return ret;
-    }
-
-    
-    /**
-     * 
-     * @param type
-     * @return
-     */
-    public static int getRandomID(int type)
+    protected static int getRandomID(int type)
     {
         int min;
         int max;
@@ -900,12 +961,11 @@ class DBBenchmark
 
         switch (type)
         {
-
             case TELLER:
                 min += numBranches_;
                 num = numTellers_;
 
-            /* FALLTHROUGH */
+            // FALLTHROUGH
             case BRANCH:
                 if (type == BRANCH)
                 {
@@ -914,24 +974,24 @@ class DBBenchmark
 
                 min += numAccounts_;
 
-            /* FALLTHROUGH */
+            // FALLTHROUGH
             case ACCOUNT:
                 max = min + num - 1;
         }
 
-        return (getRandomInt(min, max));
+        return (RandomUtil.nextInt(min, max));
     }
 
     
     /**
      * Gets a connection.
      *  
-     * @param url
-     * @param user
-     * @param password
-     * @return
+     * @param url JDBC url
+     * @param user Username
+     * @param password Password
+     * @return Connection
      */
-    public static Connection connect(String url, String user, String password)
+    protected static Connection connect(String url, String user, String password)
     {
         Connection conn = null;
         
@@ -951,9 +1011,9 @@ class DBBenchmark
     /**
      * Closes a connection.
      * 
-     * @param c
+     * @param c Connection to close
      */
-    public static void connectClose(Connection c)
+    protected static void connectClose(Connection c)
     {
         if (c == null)
             return;
@@ -993,10 +1053,10 @@ class DBBenchmark
         /**
          * Creates a ClientThread.
          * 
-         * @param numOfTx
-         * @param url
-         * @param user
-         * @param password
+         * @param numOfTx Number of transactions.
+         * @param url JDBC url.
+         * @param user Username.
+         * @param password Password.
          */
         public ClientThread(
             int numOfTx, 
@@ -1043,7 +1103,7 @@ class DBBenchmark
             catch (Exception ex)
             {
                 writer_.println(ex.getMessage());
-                ex.printStackTrace();
+                ex.printStackTrace(writer_);
             }
         }
 
@@ -1058,10 +1118,10 @@ class DBBenchmark
         {
             while (numTx_-- > 0)
             {
-                int account = DBBenchmark.getRandomID(ACCOUNT);
-                int branch = DBBenchmark.getRandomID(BRANCH);
-                int teller = DBBenchmark.getRandomID(TELLER);
-                int delta = DBBenchmark.getRandomInt(0, 1000);
+                int account = getRandomID(ACCOUNT);
+                int branch = getRandomID(BRANCH);
+                int teller = getRandomID(TELLER);
+                int delta = RandomUtil.nextInt(0, 1000);
 
                 doOne(branch, teller, account, delta);
                 incrementTransactionCount();
@@ -1089,7 +1149,7 @@ class DBBenchmark
                 catch (Exception ex)
                 {
                     writer_.println(ex.getMessage());
-                    ex.printStackTrace();
+                    ex.printStackTrace(writer_);
                 }
             }
 
@@ -1211,7 +1271,7 @@ class DBBenchmark
                 if (verbose_)
                 {
                     writer_.println("Transaction failed: " + ex.getMessage());
-                    ex.printStackTrace();
+                    ex.printStackTrace(writer_);
                 }
 
                 incrementFailedTransactionCount();
@@ -1238,15 +1298,15 @@ class DBBenchmark
     
     class MemoryWatcherThread extends Thread
     {
-        long min = 0;
-        long max = 0;
-        boolean keep_running = true;
+        private long min_ = 0;
+        private long max_ = 0;
+        private boolean keepRunning_ = true;
 
 
         public MemoryWatcherThread()
         {
-            this.reset();
-            keep_running = true;
+            reset();
+            keepRunning_ = true;
         }
 
 
@@ -1255,29 +1315,29 @@ class DBBenchmark
             System.gc();
             long currentFree = Runtime.getRuntime().freeMemory();
             long currentAlloc = Runtime.getRuntime().totalMemory();
-            min = max = (currentAlloc - currentFree);
+            min_ = max_ = (currentAlloc - currentFree);
         }
 
 
         public void end()
         {
-            keep_running = false;
+            keepRunning_ = false;
         }
 
 
         public void run()
         {
-            while (keep_running)
+            while (keepRunning_)
             {
                 long currentFree = Runtime.getRuntime().freeMemory();
                 long currentAlloc = Runtime.getRuntime().totalMemory();
                 long used = currentAlloc - currentFree;
 
-                if (used < min)
-                    min = used;
+                if (used < min_)
+                    min_ = used;
 
-                if (used > max)
-                    max = used;
+                if (used > max_)
+                    max_ = used;
 
                 try
                 {
