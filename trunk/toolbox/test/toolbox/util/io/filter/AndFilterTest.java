@@ -5,13 +5,15 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
-import toolbox.util.RandomUtil;
 
 /**
  * Unit test for AndFilter.
+ * 
+ * @see toolbox.util.io.filter.AndFilter
  */
 public class AndFilterTest extends TestCase
 {
@@ -83,7 +85,6 @@ public class AndFilterTest extends TestCase
             new AndFilter(new MockFilter(true), new MockFilter(true));
             
         AndFilter filter2 = new AndFilter();
-
         assertNotNull(filter1);
         assertNotNull(filter2);        
     }
@@ -100,7 +101,6 @@ public class AndFilterTest extends TestCase
             new AndFilter(new MockFilter(true), new MockFilter(true));
             
         String matches[] = testDir_.list(filter);
-        
         assertEquals("One match should have been found", 1, matches.length);
     }
     
@@ -116,7 +116,6 @@ public class AndFilterTest extends TestCase
             new AndFilter(new MockFilter(false), new MockFilter(false));
             
         String matches[] = testDir_.list(filter);
-        
         assertEquals("No matches should have been found", 0, matches.length);
     }
 
@@ -132,7 +131,6 @@ public class AndFilterTest extends TestCase
             new AndFilter(new MockFilter(true), new MockFilter(false));
             
         String matches[] = testDir_.list(filter);
-        
         assertEquals("No matches should have been found", 0, matches.length);
     }
     
@@ -147,12 +145,10 @@ public class AndFilterTest extends TestCase
         AndFilter filter = new AndFilter();
         
         for (int i = 0; i < 100; i++)
-            filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
+            filter.addFilter(new MockFilter(RandomUtils.nextBoolean()));
         
         filter.addFilter(new MockFilter(false));
-            
         String matches[] = testDir_.list(filter);
-        
         assertEquals("No matches should have been found", 0, matches.length);
     }    
 }

@@ -4,13 +4,15 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 
 /**
  * Unit test for FileStats.
+ * 
+ * @see toolbox.plugin.jsourceview.FileStats
  */
 public class FileStatsTest extends TestCase
 {
@@ -57,13 +59,13 @@ public class FileStatsTest extends TestCase
         // Make up dummy stats
         for (int i = 0; i < methods.length; i++)
         {
-            for (int j = 0, k = RandomUtil.nextInt(50); j < k; j++)
+            for (int j = 0, k = RandomUtils.nextInt(50) + 1; j < k; j++)
             {
                 MethodUtils.invokeMethod(fs, methods[i], null);
                 MethodUtils.invokeMethod(base, methods[i], null);
             }
 
-            for (int j = 0, k = RandomUtil.nextInt(50); j < k; j++)
+            for (int j = 0, k = RandomUtils.nextInt(50) + 1; j < k; j++)
                 MethodUtils.invokeMethod(fs2, methods[i], null);
         }
         

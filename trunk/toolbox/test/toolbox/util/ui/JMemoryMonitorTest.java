@@ -2,16 +2,18 @@ package toolbox.util.ui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JButton;
+import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
-import toolbox.util.RandomUtil;
 
 /**
  * Unit test for JMemoryMonitor.
@@ -47,11 +49,9 @@ public class JMemoryMonitorTest extends UITestCase
         logger_.info("Running testMemoryMonitor...");
         
         JPanel cp = new JPanel(new BorderLayout());
-        JButton button = new JSmartButton(new EatMemoryAction());
-        
         cp.add(new JMemoryMonitor(), BorderLayout.CENTER);
-        cp.add(button, BorderLayout.SOUTH);        
-        
+        cp.add(new JSmartButton(new EatMemoryAction()), BorderLayout.SOUTH);
+        cp.add(new JSmartButton(new GarbageCollectAction()), BorderLayout.NORTH);
         launchInDialog(cp);
     }
     
@@ -79,10 +79,38 @@ public class JMemoryMonitorTest extends UITestCase
          */
         public void runAction(ActionEvent e)
         {
-            for (int i = 0; i < 2000000; i++)
-            {
-                RandomUtil.nextInt();
-            }
+            List list = new ArrayList();
+            
+            for (int i = 0; i < 200000; i++)
+                list.add(RandomUtils.nextInt() + "");
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // GarbageCollectAction
+    //--------------------------------------------------------------------------
+
+    /**
+     * Triggers garbage collection.
+     */
+    class GarbageCollectAction extends AbstractAction
+    {
+        /**
+         * Creates a GarbageCollectAction.
+         */
+        GarbageCollectAction()
+        {
+            super("Run GC");
+        }
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            System.gc();
         }
     }
 }
