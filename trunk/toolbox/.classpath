@@ -18,5 +18,6 @@
     <classpathentry kind="lib" path="lib/commons-logging.jar"
         rootpath="commons-logging-1.0.2-src/logging/src/java" sourcepath="G:/java/dev/commons-logging-1.0.2/src.zip"/>
     <classpathentry kind="lib" path="lib/commons-collections.jar"/>
+    <classpathentry kind="lib" path="lib/skinlf.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
