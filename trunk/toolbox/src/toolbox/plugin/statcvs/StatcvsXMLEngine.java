@@ -58,7 +58,7 @@ public class StatcvsXMLEngine implements StatcvsEngine
     public String getLaunchURL()
     {
         return
-            "file://" +
+            //"file:/" +
             plugin_.getCVSBaseDir() +
             "statcvs-xml" +
             File.separator +
