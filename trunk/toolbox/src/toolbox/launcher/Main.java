@@ -6,8 +6,10 @@ import java.util.HashMap;
 import toolbox.util.ArrayUtil;
 
 /**
- * Main class referenced by MANIFEST.MF in toolbox.jar. Provides convenient
- * way to run toolbox executables via 
+ * Entrypoint referenced by MANIFEST.MF in toolbox.jar which provides convenient
+ * way to run toolbox executables contained in the jar file.
+ * <p>
+ * Usage:
  * <pre>
  * java -jar toolbox.jar [program name] [program args]
  * </pre>
@@ -20,7 +22,7 @@ public class Main
     static
     {
         // Map program names to class names
-        programMap_ = new HashMap(10);
+        programMap_ = new HashMap(15);
         
         programMap_.put("findclass",  "toolbox.findclass.Main");
         programMap_.put("jfindclass", "toolbox.findclass.JFindClass");
@@ -35,12 +37,18 @@ public class Main
         programMap_.put("sqlviewer",  "toolbox.sqlviewer.SQLViewer");
         programMap_.put("banner",     "toolbox.util.Banner");
         programMap_.put("workspace",  "toolbox.util.ui.plugin.PluginWorkspace");
+        programMap_.put("laflauncher","toolbox.launcher.LAFLauncher");
     }
+    
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entrypoint 
      * 
-     * @param  args  Args
+     * @param  args[0]    Program name
+     *         args[1..n] Program arguments
      */
     public static void main(String[] args)
     {
@@ -118,7 +126,6 @@ public class Main
         }        
     }
     
-    
     /**
      * Prints launcher usage
      */
@@ -142,7 +149,7 @@ public class Main
             "       jtail         => java tailer (GUI)              \n" +
             "       jtcptunnel    => tcp tunnel  (GUI)              \n" +
             "       sqlviewer     => unmangles sql statements       \n" +
+            "       laflauncher   => launches program with look and feel\n" +
             "       workspace     => plugin workspace               \n");
     }
-    
 }
