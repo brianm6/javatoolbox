@@ -25,12 +25,23 @@ public class ClasspathUtil
         super();
     }
 
+    /**
+     * Entry point
+     * 
+     * @param  args  None
+     */
     public static void main(String[] args)
     {
         ClasspathUnwrapper gui = new ClasspathUnwrapper();
         gui.setVisible(true);   
     }
     
+    /**
+     * Unwraps classpath
+     * 
+     * @param  classpath  Classpath
+     * @return String array
+     */
     public static String[] unwrap(String classpath)
     {
         StringTokenizer st = new StringTokenizer(classpath, ";");
@@ -46,11 +57,15 @@ public class ClasspathUtil
         return (String[])cps.toArray(new String[cps.size()]);
     }    
     
-    public static class ClasspathUnwrapper extends JFrame 
+    /**
+     * Frame
+     */
+    static class ClasspathUnwrapper extends JFrame 
         implements ActionListener
     {
-        JTextArea textArea;
-        JButton   unwrapButton;
+        private JTextArea textArea_;
+        private JButton   unwrapButton_;
+        
         
         public ClasspathUnwrapper()
         {
@@ -62,27 +77,27 @@ public class ClasspathUtil
         
         protected void buildView()
         {
-            textArea = new JTextArea();
-            textArea.setFont(SwingUtil.getPreferredMonoFont());
+            textArea_ = new JTextArea();
+            textArea_.setFont(SwingUtil.getPreferredMonoFont());
          
             getContentPane().add(
-                new JScrollPane(textArea), BorderLayout.CENTER);
+                new JScrollPane(textArea_), BorderLayout.CENTER);
                 
-            unwrapButton = new JButton("Unwrap");
-            unwrapButton.addActionListener(this);
-            getContentPane().add(unwrapButton, BorderLayout.SOUTH);
+            unwrapButton_ = new JButton("Unwrap");
+            unwrapButton_.addActionListener(this);
+            getContentPane().add(unwrapButton_, BorderLayout.SOUTH);
             
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
         
         public void actionPerformed(java.awt.event.ActionEvent e)
         {
-            String s = textArea.getText();
+            String s = textArea_.getText();
             String[] cps = unwrap(s);
             
             for(int i=0; i<cps.length; i++)
             {
-                textArea.append("\n" + cps[i]);
+                textArea_.append("\n" + cps[i]);
             }            
         }
     }    

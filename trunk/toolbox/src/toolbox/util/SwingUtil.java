@@ -219,6 +219,8 @@ public class SwingUtil
     
     /**
      * Sets the Look and Feel to Metal
+     * 
+     * @throws Exception on error
      */    
     public static void setMetalLAF() throws Exception
     {
@@ -231,6 +233,8 @@ public class SwingUtil
     
     /**
      * Sets the Look and Feel to Windows
+     * 
+     * @throws Exception on error
      */
     public static void setWindowsLAF() throws Exception
     {
@@ -241,6 +245,8 @@ public class SwingUtil
  
     /**
      * Sets the Look and Feel to Motif/CDE
+     * 
+     * @throws Exception on error
      */   
     public static void setMotifLAF() throws Exception
     {
@@ -251,6 +257,8 @@ public class SwingUtil
  
     /**
      * Sets the Look and Feel to Metouia
+     * 
+     * @throws Exception on error
      */
     public static void setMetouiaLAF() throws Exception
     { 
@@ -260,6 +268,8 @@ public class SwingUtil
 
     /**
      * Sets the preferred Look and Feel
+     * 
+     * @throws Exception on error
      */
     public static void setPreferredLAF() throws Exception
     { 
@@ -324,6 +334,7 @@ public class SwingUtil
                     }
                     catch (PropertyVetoException ex)
                     {
+                        // Ignore
                     }
                 }
 

@@ -1,7 +1,6 @@
 package toolbox.util.concurrent;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -72,6 +71,7 @@ public class BlockingQueue
      * Pulls element off the queue. Blocks until an element is available if the
      * queue is empty
      * 
+     * @param   millis  Timeout in milliseconds
      * @return  Next element
      * @throws  InterruptedException on error
      */

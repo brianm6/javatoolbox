@@ -116,7 +116,7 @@ public class StreamUtil
      * @param   reader  Reader to read characters from
      * @param   len     Number of characters to read
      * @return  String of characters read
-     * @throws  IOException
+     * @throws  IOException on IO error
      */
     public static String readExactly(Reader reader, int len) throws IOException
     {
@@ -159,7 +159,7 @@ public class StreamUtil
      * 
      * @param  is   InputStream to empty
      * @return Number of bytes discarded
-     * @throws IOException
+     * @throws IOException on IO error
      */
     public static int empty(InputStream is) throws IOException
     {

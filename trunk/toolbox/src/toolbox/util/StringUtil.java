@@ -2,12 +2,12 @@ package toolbox.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.io.WrappingWriter;
 
 /**
@@ -468,6 +468,7 @@ public final class StringUtil
      * 
      * @param  s          String to tokenize
      * @param  delimiter  Delimiter used for separate tokens
+     * @return Array of string tokens
      */  
     public static String[] tokenize(String s, String delimiter)
     {
@@ -476,6 +477,7 @@ public final class StringUtil
         for(int i=0; st.hasMoreTokens(); tokens[i++] = st.nextToken());
         return tokens;
     }
+
 
     /**
      * Trims leading and trailing characters from a string

@@ -36,7 +36,9 @@ public class BatchingQueueReader implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for MultiLinePopper.
+     * Constructor for BatchingQueueReader
+     * 
+     * @param  queue  Queue to read in batch mode from
      */
     public BatchingQueueReader(BlockingQueue queue)
     {
@@ -104,14 +106,14 @@ public class BatchingQueueReader implements Runnable
 
     //--------------------------------------------------------------------------
     // Event Notification
-    //-------------------------------------------------------------------------- 
+    //--------------------------------------------------------------------------
  
     /**
      * Fires notification of new elements available
      * 
      * @param  elements  New elements available
      */
-    public void fireNotify(Object[] elements)
+    protected void fireNotify(Object[] elements)
     {
         Iterator i = listeners_.iterator();
         while (i.hasNext())

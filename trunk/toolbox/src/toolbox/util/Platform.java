@@ -8,7 +8,7 @@ import java.io.File;
 public class Platform
 {
     private static final int UNIX = 0x31337;
-    private static final int WINDOWS_9x = 0x640;
+    private static final int WINDOWS_9X = 0x640;
     private static final int WINDOWS_NT = 0x666;
     private static final int OS2 = 0xDEAD;
     private static final int MAC_OS_X = 0xABC;
@@ -25,7 +25,7 @@ public class Platform
         if (osName.indexOf("Windows 9") != -1   || 
             osName.indexOf("Windows ME") != -1)
         {
-            os = WINDOWS_9x;
+            os = WINDOWS_9X;
         }
         else if (osName.indexOf("Windows") != -1)
         {
@@ -66,7 +66,7 @@ public class Platform
      */
     public static final boolean isWindows()
     {
-        return os == WINDOWS_9x || os == WINDOWS_NT;
+        return os == WINDOWS_9X || os == WINDOWS_NT;
     } 
 
 
@@ -75,7 +75,7 @@ public class Platform
      */
     public static final boolean isWindows9x()
     {
-        return os == WINDOWS_9x;
+        return os == WINDOWS_9X;
     } 
 
 

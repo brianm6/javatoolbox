@@ -18,6 +18,9 @@ public class TimeUtil
     }
 
     /**
+     * Formats a date
+     * 
+     * @param   d    Date to format
      * @return  Date in dashed MM-dd-yyyy format
      */
     public static String format(Date d)
