@@ -73,7 +73,8 @@ package toolbox;
  *  - Upgraded to commons-net-1.2.1
  *  - Encoded passwords in JDBC plugin
  *  - StatcvsPlugin cvs project combobox is sorted
- *  - Added connection pooling to JDBCUtil
+ *  - Added connection pooling to JDBCUtil using commons-dbcp
+ *  - Upgraded to commons-io-1.0
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
