@@ -1,13 +1,11 @@
 package toolbox.tail;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -18,19 +16,25 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.Stringz;
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.NullWriter;
 
 /**
- * Tail enables the following of a live stream/reader/file. APIs are exposed to 
- * facilitate start/stop/pause/wait functionality in addition to adding or 
- * removing multiple listeners that report on the lifecycle of the tail. One or 
- * more outputstreams/writers can also be specified as the destination for the 
- * output of the tail.
+ * Tail is similar to the Unix "tail -f" command used to tail or follow the
+ * end of a stream (usually a log file of some sort). In addition to covering
+ * basic functionality, there is an API to facilitate lifecycle management
+ * of a tail process. This includes start/stop/pause/unpause behavior for
+ * easy inclusion in your own applications. Additionally, for those of you 
+ * interested in an event driven interface, ITailListener is available to 
+ * provide notification on the key events occuring in the tail's lifecycle.
  * <p>
  * To tail a file and send the output to System.out:
  * <pre>
  * Tail tail = new Tail();
- * tail.setTailFile("server.log");
- * tail.addOutputStream(System.out);
+ * 
+ * // Tail server.log and send output to stdout
+ * tail.follow(
+ *     new File("server.log"), 
+ *     new OutputStreamWriter(System.out));
  * 
  * // Starts tailer thread; returns immediately
  * tail.start();
@@ -46,31 +50,28 @@ import toolbox.util.ThreadUtil;
  * tail.start();  
  * </pre>
  */
-public class Tail implements Runnable
+public class Tail
 {
     private static final Logger logger_ = 
         Logger.getLogger(Tail.class);
     
     /** Number of line for initial backlog */ 
-    public static final int NUM_LINES_BACKLOG = 20;
+    public static final int BACKLOG = 20;
 
     /** Tail listeners */ 
     private List listeners_;
     
-    /** Streams where tail output will be sent */
-    private List streams_;
-    
     /** Writer where tail output will be sent */ 
-    private List writers_;
+    private Writer sink_;
 
     /** Tailer thread */ 
-    private Thread thread_;
+    private Thread tailer_;
 
     /** Reader which tail will follow */
-    private Reader reader_;
+    private Reader faucet_;
     
     /** File which tail will follow */ 
-    private File file_;
+    private File fileFaucet_;
 
     /** Paused state of the tailer (not thread!) */
     private boolean paused_;
@@ -87,59 +88,36 @@ public class Tail implements Runnable
      */
     public Tail()
     {
-        listeners_ = new ArrayList(1);
-        streams_   = new ArrayList(1);
-        writers_   = new ArrayList(1);
-        
+        listeners_       = new ArrayList(1);
+        sink_            = new NullWriter();
         paused_          = false;
         pendingShutdown_ = false;
-        
     }
 
-    //--------------------------------------------------------------------------
-    //  Public
-    //--------------------------------------------------------------------------
-    
     /**
-     * Tails the given file
+     * Follows the given file sending the tail output to the writer.
      * 
-     * @param   filename  File to tail
+     * @param   readFrom  File to tail
+     * @param   writeTo   Writer to send tail output to
      * @throws  FileNotFoundException if file not found
      */
-    public void setTailFile(String filename) throws FileNotFoundException
+    public void follow(File readFrom, Writer writeTo) 
+        throws FileNotFoundException
     {
-        setTailFile(new File(filename));
+        fileFaucet_ = readFrom;
+        sink_ = writeTo;
     }
 
     /**
-     * Tails the given file
+     * Follows the given reader sending the tail output to the writer.
      * 
-     * @param   f  File to tail
-     * @throws  FileNotFoundException if file not found
+     * @param   readFrom  Reader to follow
+     * @param   writeTo   Writer to send the tail output to
      */
-    public void setTailFile(File f) throws FileNotFoundException
+    public void follow(Reader readFrom, Writer writeTo) 
     {
-        setFile(f);
-    }
-
-    /**
-     * Tails an inputstream
-     * 
-     * @param  stream  Inputstream to tail
-     */
-    public void setTailStream(InputStream stream)
-    {
-        setTailReader(new InputStreamReader(stream));
-    }
-
-    /**
-     * Tails a reader
-     * 
-     * @param  reader  Reader to tail
-     */
-    public void setTailReader(Reader reader)
-    {
-        setReader(reader);
+        faucet_ = readFrom;
+        sink_   = writeTo;
     }
     
     /**
@@ -148,7 +126,7 @@ public class Tail implements Runnable
      */
     public boolean isAlive()
     {
-        return thread_ != null && thread_.isAlive();
+        return (tailer_ != null && tailer_.isAlive());
     }
     
     /**
@@ -161,11 +139,11 @@ public class Tail implements Runnable
         if (!isAlive())
         {
             String name = "Tail-" + 
-                (getFile() != null ? getFile().getName() : "???");
+                (fileFaucet_ != null ? fileFaucet_.getName() : "???");
                  
-            thread_ = new Thread(this, name);
+            tailer_ = new Thread(new Tailer(), name);
             connect();
-            thread_.start();
+            tailer_.start();
             fireTailStarted();
         }
         else
@@ -183,9 +161,9 @@ public class Tail implements Runnable
             {
                 pendingShutdown_ = true;
                 unpause();
-                reader_.close();
-                thread_.interrupt();
-                thread_.join(10000);
+                faucet_.close();
+                tailer_.interrupt();
+                tailer_.join(10000);
             }
             catch (IOException e)
             {
@@ -197,7 +175,7 @@ public class Tail implements Runnable
             }
             finally
             {
-                thread_ = null;
+                tailer_ = null;
                 pendingShutdown_ = false;
                 fireTailStopped();
             }
@@ -223,7 +201,6 @@ public class Tail implements Runnable
         if (isAlive() && isPaused())
             paused_ = false;
     }
-
     
     /**
      * Wait for the tail to reach end of stream
@@ -232,63 +209,13 @@ public class Tail implements Runnable
     {
         try
         {
-            if (thread_.isAlive())
-                thread_.join();
+            if (tailer_.isAlive())
+                tailer_.join();
         }
         catch (InterruptedException e)
         {
             logger_.error("join", e);
         }
-    }
-
-    /**
-     * Adds a writer to the list of tail sinks
-     * 
-     * @param  writer  Writer to add
-     */
-    public void addWriter(Writer writer)
-    {
-        writers_.add(writer);
-    }
-
-    /**
-     * Removes a writer from the list of tail sinks
-     * 
-     * @param  writer  Writer to remove
-     */
-    public void removeWriter(Writer writer)
-    {
-        writers_.remove(writer);
-    }
-    
-    /**
-     * Adds an output stream to the list of tail sinks
-     * 
-     * @param  os  OutputStream to add
-     */
-    public void addOutputStream(OutputStream os)
-    {
-        streams_.add(os);
-    }
-    
-    /**
-     * Removes an outputstream from the list of tail sinks
-     * 
-     * @param  os  Outputstream to remove
-     */
-    public void removeOutputStream(OutputStream os)
-    {
-        streams_.remove(os);
-    }
-    
-    /**
-     * Returns the file.
-     * 
-     * @return File
-     */
-    public File getFile()
-    {
-        return file_;
     }
 
     /**
@@ -308,9 +235,7 @@ public class Tail implements Runnable
      */
     public String toString()
     {
-        return "Listeners = " + listeners_.size() + "\n" + 
-               "Streams   = " + streams_.size() + "\n" + 
-               "Writers   = " + writers_.size() + "\n";
+        return "Listeners = " + listeners_.size() + "\n";
     }
 
     //--------------------------------------------------------------------------
@@ -335,50 +260,16 @@ public class Tail implements Runnable
     }
 
     /**
-     * Sets the tail file
-     * 
-     * @param  file  File to tail
-     */
-    protected void setFile(File file)
-    {
-        file_ = file;
-    }
-
-    /**
-     * Returns the reader.
-     * 
-     * @return Reader
-     */
-    protected Reader getReader()
-    {
-        return reader_;
-    }
-
-    /**
-     * Sets the reader.
-     * 
-     * @param reader The reader to set
-     */
-    protected void setReader(Reader reader)
-    {
-        reader_ = reader;
-    }
-
-    /**
-     * Connects to the provided stream source
+     * Connects to the available source for data. Reader or File
      * 
      * @throws  FileNotFoundException if file not found
      */
     protected void connect() throws FileNotFoundException
     {
-        if (getFile() != null)
-        {
-            reader_ = new LineNumberReader(new FileReader(getFile()));
-        }
+        if (fileFaucet_ != null)
+            faucet_ = new BufferedReader(new FileReader(fileFaucet_));
         else
-        {
-            reader_ = new LineNumberReader(getReader());
-        }
+            faucet_ = new BufferedReader(faucet_);
     }
 
     //--------------------------------------------------------------------------
@@ -408,7 +299,16 @@ public class Tail implements Runnable
      */
     protected void fireNextLine(String line)
     {
-        for (int i = 0; i < listeners_.size(); i++)
+        try
+        {
+            sink_.write(line + Stringz.NL);
+        }
+        catch (Exception e)
+        {
+            logger_.error("fireNextLine", e);
+        }
+        
+        for (int i = 0, n = listeners_.size(); i < n; i++)
         {
             try
             {
@@ -420,34 +320,6 @@ public class Tail implements Runnable
                 logger_.error("fireNextLine", e);
             }
         }
-
-        for (int j = 0; j < streams_.size(); j++)
-        {
-            try
-            {
-                OutputStream os = (OutputStream)streams_.get(j);
-                os.write((line + Stringz.NL).getBytes());
-                os.flush();
-            }
-            catch (IOException e)
-            {
-                logger_.error("fireNextLine", e);
-            }
-        }
-
-        for (int k = 0; k < writers_.size(); k++)
-        {
-            try
-            {
-                Writer w = (Writer)writers_.get(k);
-                w.write(line + Stringz.NL);
-                w.flush();
-            }
-            catch (IOException e)
-            {
-                logger_.error("fireNextLine", e);
-            }
-        }
     }
 
     /**
@@ -455,7 +327,7 @@ public class Tail implements Runnable
      */
     protected void fireTailStopped()
     {
-        for (int i = 0; i < listeners_.size(); i++)
+        for (int i = 0, n = listeners_.size(); i < n; i++)
         {
             try
             {
@@ -474,7 +346,7 @@ public class Tail implements Runnable
      */
     protected void fireTailStarted()
     {
-        for (int i = 0; i < listeners_.size(); i++)
+        for (int i = 0, n = listeners_.size(); i < n; i++)
         {
             try
             {
@@ -493,7 +365,7 @@ public class Tail implements Runnable
      */
     protected void fireTailEnded()
     {
-        for (int i = 0; i < listeners_.size(); i++)
+        for (int i = 0, n =listeners_.size(); i<n; i++)
         {
             try
             {
@@ -512,7 +384,7 @@ public class Tail implements Runnable
      */
     protected void fireTailUnpaused()
     {
-        for (int i = 0; i < listeners_.size(); i++)
+        for (int i = 0, n = listeners_.size(); i < n; i++)
         {
             try
             {
@@ -531,7 +403,7 @@ public class Tail implements Runnable
      */
     protected void fireTailPaused()
     {
-        for (int i = 0; i < listeners_.size(); i++)
+        for (int i = 0, n = listeners_.size(); i < n; i++)
         {
             try
             {
@@ -546,102 +418,101 @@ public class Tail implements Runnable
     }
     
     //--------------------------------------------------------------------------
-    //  Runnable Interface
+    // Tailer Inner Class
     //--------------------------------------------------------------------------
     
-    /**
-     * Runnable interface 
-     */
-    public void run()
+    class Tailer implements Runnable
     {
-        try
+        public void run()
         {
-            LineNumberReader lnr = (LineNumberReader) reader_;
-            int cnt = 0;
-            int estimatedBytesBacklog = NUM_LINES_BACKLOG * 80;
-            //lnr.mark(estimatedBytesBacklog);
-
-            while (lnr.ready())
+            try
             {
-                cnt++;
-
-                if (((cnt + NUM_LINES_BACKLOG) % NUM_LINES_BACKLOG) == 0)
-                    lnr.mark(estimatedBytesBacklog);
-
-                lnr.readLine();
-            }
-
-            lnr.reset();
-            int strikes = 0;
-
-            Date preTimeStamp = null;
-            Date resetTimeStamp = null;
-            int timestampThreshHold = 1000;
-            int resetThreshHold = 5000;
-                            
-            while (!pendingShutdown_)
-            {
-
-                checkPaused();
-                
-
-                String line = lnr.readLine();
-
-                if (line != null)
+                BufferedReader lnr = (BufferedReader) faucet_;
+                int cnt = 0;
+                int estimatedBytesBacklog = BACKLOG * 80;
+                //lnr.mark(estimatedBytesBacklog);
+    
+                while (lnr.ready())
                 {
-                    fireNextLine(line);
-                    strikes = 0;
+                    cnt++;
+    
+                    if (((cnt + BACKLOG) % BACKLOG) == 0)
+                        lnr.mark(estimatedBytesBacklog);
+    
+                    lnr.readLine();
                 }
-                else    
+    
+                lnr.reset();
+                int strikes = 0;
+    
+                Date preTimeStamp = null;
+                Date resetTimeStamp = null;
+                int timestampThreshHold = 1000;
+                int resetThreshHold = 5000;
+                                
+                while (!pendingShutdown_)
                 {
-                    // check if stream was closed and then reactivated
-                    if (strikes == timestampThreshHold && getFile() != null)
+    
+                    checkPaused();
+                    
+    
+                    String line = lnr.readLine();
+    
+                    if (line != null)
                     {
-                        // record timestamp of file
-                        preTimeStamp = new Date(getFile().lastModified());
-                    }
-                    else if (strikes == resetThreshHold && getFile() != null)
-                    {
-                        //logger_.debug(method + "reset threshold met");
-                        
-                        // check timestamps   
-                        resetTimeStamp = new Date(getFile().lastModified());
-                        
-                        // if there wasa activity, the timestamp would be
-                        // newer.
-                        if (resetTimeStamp.after(preTimeStamp))
-                        {
-                            // reset the stream and stop plaing around..
-
-                            lnr = new LineNumberReader(
-                                new FileReader(getFile()));
-                            
-                            //long skipped = lnr.skip(Integer.MAX_VALUE);
-                            //logger_.debug(method + 
-                            //  "Skipped " + skipped + " lines on reset");
-                            
-                            logger_.debug(
-                                "Re-attached to " + getFile().getName());
-                        }
-                        else
-                        {
-                            ;
-                            
-                            //logger_.debug(method + 
-                            //    "Failed criterai for reset");
-                        }
-                            
+                        fireNextLine(line);
                         strikes = 0;
                     }
-                    
-                    ThreadUtil.sleep(1);
-                    strikes++;
+                    else    
+                    {
+                        // check if stream was closed and then reactivated
+                        if (strikes == timestampThreshHold && fileFaucet_ != null)
+                        {
+                            // record timestamp of file
+                            preTimeStamp = new Date(fileFaucet_.lastModified());
+                        }
+                        else if (strikes == resetThreshHold && fileFaucet_ != null)
+                        {
+                            //logger_.debug(method + "reset threshold met");
+                            
+                            // check timestamps   
+                            resetTimeStamp = new Date(fileFaucet_.lastModified());
+                            
+                            // if there wasa activity, the timestamp would be
+                            // newer.
+                            if (resetTimeStamp.after(preTimeStamp))
+                            {
+                                // reset the stream and stop plaing around..
+    
+                                lnr = new BufferedReader(new FileReader(fileFaucet_));
+                                
+                                //long skipped = lnr.skip(Integer.MAX_VALUE);
+                                //logger_.debug(method + 
+                                //  "Skipped " + skipped + " lines on reset");
+                                
+                                logger_.debug(
+                                    "Re-attached to " + fileFaucet_.getName());
+                            }
+                            else
+                            {
+                                ;
+                                
+                                //logger_.debug(method + 
+                                //    "Failed criterai for reset");
+                            }
+                                
+                            strikes = 0;
+                        }
+                        
+                        ThreadUtil.sleep(1);
+                        strikes++;
+                    }
                 }
             }
-        }
-        catch (Exception e)
-        {
-            logger_.error("Tail.run", e);
+            catch (Exception e)
+            {
+                logger_.error("Tail.run", e);
+            }
         }
     }
 }
