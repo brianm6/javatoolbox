@@ -1,5 +1,6 @@
 package toolbox.util;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -359,5 +360,20 @@ public class RandomUtilTest extends TestCase
         
         logger_.info(StringUtil.banner(StringUtil.wrap(sb.toString(), true)));
         logger_.info(StringUtil.banner(StringUtil.wrap(sb2.toString(), true)));
+    }
+    
+    
+    /**
+     * Tests nextColor() 
+     */
+    public void testNextColor()
+    {
+        logger_.info("Running testNextColor...");
+        
+        for (int i = 0; i < 100; i++)
+        {
+            Color c = RandomUtil.nextColor();
+            assertNotNull("Color is null", c);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package toolbox.util;
 
+import java.awt.Color;
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -175,5 +176,21 @@ public final class RandomUtil
         return (list.size() == 0 
             ? null 
             : list.get(RandomUtils.nextInt(list.size())));
+    }
+    
+    
+    /**
+     * Returns a randomly chosen color.
+     * 
+     * @return Color
+     */
+    public static Color nextColor()
+    {
+        Color c = new Color(
+            RandomUtils.nextInt(256), 
+            RandomUtils.nextInt(256), 
+            RandomUtils.nextInt(256)); 
+        
+        return c;
     }
 }
