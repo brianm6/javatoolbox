@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.ThreadUtil;
 
 /**
@@ -28,7 +29,7 @@ import toolbox.util.ThreadUtil;
  */
 public class JSmartTextArea extends JTextArea
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
     
@@ -36,9 +37,9 @@ public class JSmartTextArea extends JTextArea
     private JCheckBoxMenuItem   autoScrollItem_;
     private JCheckBoxMenuItem   antiAliasItem_;
     
-    private Map           renderMap_;
-    private Color         darkblue_   = new Color(63, 64, 124);
-    private Color         darkrose_   = new Color(159, 61, 100);
+    private Map   renderMap_;
+    private Color darkblue_   = new Color(63, 64, 124);
+    private Color darkrose_   = new Color(159, 61, 100);
     
     private GradientPaint myGradient_ = 
         new GradientPaint(0, 0, darkblue_, 0, 50, darkrose_);
@@ -65,7 +66,6 @@ public class JSmartTextArea extends JTextArea
         this(text, false, false);
     }
 
-
     /**
      * Constructor for JSmartTextArea.
      * 
@@ -76,7 +76,6 @@ public class JSmartTextArea extends JTextArea
     {
         this("", autoScroll, antiAlias);
     }
-
 
     /**
      * Constructor for JSmartTextArea.
@@ -94,7 +93,7 @@ public class JSmartTextArea extends JTextArea
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden Component Methods
+    //  Overridden from java.awt.Component
     //--------------------------------------------------------------------------
     
     /**
@@ -130,7 +129,7 @@ public class JSmartTextArea extends JTextArea
     }
     
     //--------------------------------------------------------------------------
-    //  Overridden JTextArea Methods
+    //  Overridden from javax.swing.JTextArea
     //--------------------------------------------------------------------------
     
     /**
@@ -216,7 +215,6 @@ public class JSmartTextArea extends JTextArea
         return autoScrollItem_.isSelected();
     }
 
-
     /**
      * Sets the autoScroll feature
      * 
@@ -226,8 +224,7 @@ public class JSmartTextArea extends JTextArea
     {
         autoScrollItem_.setSelected(autoScroll);
     }
-
-    
+   
     /**
      * Returns the antiAlias.
      * 
@@ -237,7 +234,6 @@ public class JSmartTextArea extends JTextArea
     {
         return antiAliasItem_.isSelected();
     }
-
 
     /**
      * Sets the antiAlias.
