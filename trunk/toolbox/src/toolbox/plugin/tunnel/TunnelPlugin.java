@@ -64,7 +64,7 @@ public class JTcpTunnelPlugin implements IPlugin
     /**
      * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
      */
-    public void applyPrefs(Properties prefs)
+    public void applyPrefs(Properties prefs) throws Exception
     {
         jtcpTunnelPane_.applyPrefs(prefs);
     }
