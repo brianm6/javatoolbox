@@ -23,6 +23,7 @@ package toolbox.util.concurrent;
  * <b>Sample usage.</b> Here is a class that uses a semaphore to
  * help manage access to a pool of items.
  * <pre>
+ * 
  * class Pool 
  * {
  *   static final MAX_AVAILABLE = 100;
@@ -86,6 +87,10 @@ public class Semaphore implements Sync
     /** current number of available permits **/
     private long permits_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /** 
      * Create a Semaphore with the given initial number of permits.
      * Using a seed of one makes the semaphore act as a mutual exclusion lock.
@@ -99,6 +104,10 @@ public class Semaphore implements Sync
         permits_ = initialPermits;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /** 
      * Wait until a permit is available, and take one 
      * 
@@ -130,6 +139,7 @@ public class Semaphore implements Sync
             }
         }
     }
+
 
     /** 
      * Wait at most msecs millisconds for a permit. 
@@ -186,6 +196,7 @@ public class Semaphore implements Sync
         }
     }
 
+
     /** 
      * Release a permit 
      */
@@ -194,6 +205,7 @@ public class Semaphore implements Sync
         ++permits_;
         notify();
     }
+
 
     /** 
      * Release N permits. <code>release(n)</code> is
@@ -218,10 +230,10 @@ public class Semaphore implements Sync
             notify();
     }
 
+
     /**
-     * Return the current number of available permits.
-     * Returns an accurate, but possibly unstable value,
-     * that may change immediately after returning.
+     * Return the current number of available permits. Returns an accurate, 
+     * but possibly unstable value, that may change immediately after returning.
      * 
      * @return  long
      */
