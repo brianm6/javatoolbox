@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -23,10 +24,9 @@ import toolbox.util.ui.JFileExplorerListener;
  */
 public class JFileExplorerTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorerTest.class);
-        
         
     /**
      * Entrypoint
@@ -36,7 +36,6 @@ public class JFileExplorerTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(JFileExplorerTest.class);
-        //new JFileExplorerTest("").testJFileExplorer();
     }
     
     //--------------------------------------------------------------------------
@@ -62,11 +61,10 @@ public class JFileExplorerTest extends TestCase
      */
     public void testJFileExplorer()
     {
-        /* just launch the file explorer in a jframe..nuttin else */
+        // Just launch the file explorer in a jframe..nuttin else
         JFrame testFrame = new TestFrame();
         testFrame.pack();
         testFrame.setVisible(true);
-        //ThreadUtil.join(10000);
     }
     
     //--------------------------------------------------------------------------
@@ -79,13 +77,13 @@ public class JFileExplorerTest extends TestCase
     static class TestFrame extends JFrame implements JFileExplorerListener, 
         ActionListener
     {
-        /** Textfield for testing **/
+        /** Textfield for testing */
         private JTextField testField_;
         
-        /** Button for testing **/
-        private JButton    testButton_;
+        /** Button for testing */
+        private JButton testButton_;
         
-        /** Explorer for testing **/
+        /** Explorer for testing */
         private JFileExplorer jfe_;
         
         /** 
