@@ -18,6 +18,7 @@ import toolbox.util.Assert;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.textarea.AutoScrollAction;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -274,6 +275,8 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     public void append(final String str)
     {
+        //super.append(str);
+        
         if (SwingUtilities.isEventDispatchThread())
         {
             super.append(str);
@@ -455,7 +458,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     {
         // Build popup menu and add register with textarea
         autoScrollCheckBox_ = 
-            new JSmartCheckBoxMenuItem(new AutoScrollAction());
+            new JSmartCheckBoxMenuItem(new AutoScrollAction(this));
         
         antiAliasCheckBox_ = new JSmartCheckBoxMenuItem(new AntiAliasAction());
         wrapLinesCheckBox_ = new JSmartCheckBoxMenuItem(new WrapLinesAction());
@@ -468,38 +471,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     }    
 
     //--------------------------------------------------------------------------
-    // AutoScrollAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Toggles autoscroll.
-     */    
-    class AutoScrollAction extends AbstractAction 
-    {
-        /**
-         * Creates a AutoScrollAction.
-         */
-        public AutoScrollAction()
-        {
-            super("AutoScroll");
-        }
-        
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            if (isAutoScroll())
-                scrollToEnd(); 
-        }
-    }    
-
-    //--------------------------------------------------------------------------
     // AntiAliasAction
     //--------------------------------------------------------------------------
-
+    
     /**
      * Toggles antialiasing.
      */
