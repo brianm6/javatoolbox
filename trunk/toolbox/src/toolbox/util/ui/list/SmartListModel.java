@@ -1,4 +1,4 @@
-package toolbox.util.ui;
+package toolbox.util.ui.list;
 
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
@@ -8,16 +8,16 @@ import javax.swing.SwingUtilities;
  * thread. Updates that are made on an arbitrary thread can cause erratic 
  * repaint behavior and out of sync behavior between the model and view.
  */
-public class ThreadSafeListModel extends DefaultListModel
+public class SmartListModel extends DefaultListModel
 {
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a ThreadSafeListModel
+     * Creates a SmartListModel
      */
-    public ThreadSafeListModel()
+    public SmartListModel()
     {
     }
 
