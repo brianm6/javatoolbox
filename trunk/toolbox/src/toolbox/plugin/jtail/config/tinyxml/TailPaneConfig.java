@@ -233,7 +233,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         return autoScroll_;
     }
 
-
     /**
      * Returns the filename.
      * 
@@ -243,7 +242,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         return filename_;
     }
-    
 
     /**
      * Returns the showLineNumbers.
@@ -255,7 +253,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         return showLineNumbers_;
     }
 
-
     /**
      * Sets the autoScroll.
      * 
@@ -265,7 +262,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         autoScroll_ = autoScroll;
     }
-
 
     /**
      * Sets the filename.
@@ -277,7 +273,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         filename_ = filename;
     }
 
-
     /**
      * Sets the showLineNumbers.
      * 
@@ -287,8 +282,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         showLineNumbers_ = showLineNumbers;
     }
-    
-    
+
     /**
      * Returns the font.
      * 
@@ -299,7 +293,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         return font_;
     }
 
-
     /**
      * Sets the font.
      * 
@@ -309,8 +302,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         font_ = font;
     }
-    
-    
+
     /**
      * Returns the filter.
      * 
@@ -321,7 +313,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         return regularExpression_;
     }
 
-
     /**
      * Sets the filter.
      * 
@@ -331,7 +322,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         regularExpression_ = filter;
     }
-    
+
     /**
      * @see toolbox.jtail.config.ITailPaneConfig#getCutExpression()
      */
@@ -339,7 +330,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         return cutExpression_;
     }
-    
+
     /**
      * @see toolbox.jtail.config.ITailPaneConfig#setCutExpression(String)
      */
@@ -347,8 +338,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         cutExpression_ = cutExpression;
     }
-    
-    
+
     /**
      * Accessor for the antialias flag
      * 
@@ -358,8 +348,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         return antiAlias_;
     }
-    
-    
+
     /**
      * Mutator for the antialias flag
      * 
@@ -369,8 +358,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         antiAlias_ = b;
     }
-    
-    
+
     /**
      * @return boolean
      */
@@ -378,7 +366,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         return autoStart_;
     }
-
 
     /**
      * Sets the autoStart.
