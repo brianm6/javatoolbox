@@ -404,23 +404,26 @@ public class JDBCUtilTest extends TestCase
         String prefix = nextPrefix("JDBCUtilTest_ExecQryAryMany");
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
-
+        int MAX = 100;
+        
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < MAX; i++)
                 JDBCUtil.executeUpdate(
                     "insert into " + table + "(id) values (" + i + ")");
 
             Object[][] results =
                 JDBCUtil.executeQueryArray("select * from " + table);
 
-            assertEquals(1, results.length);
-            assertEquals(100, results[0].length);
+            assertEquals(MAX, results.length);
 
-            for (int i = 0; i < 100; i++)
-                assertEquals(new Integer(i), results[0][i]);
+            for (int i = 0; i < MAX; i++)
+            {
+                assertEquals(1, results[i].length);
+                assertEquals(new Integer(i), results[i][0]);
+            }
         }
         finally
         {
