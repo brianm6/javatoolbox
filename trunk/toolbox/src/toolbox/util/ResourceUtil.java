@@ -1,5 +1,7 @@
 package toolbox.util;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,6 +124,19 @@ public final class ResourceUtil
     public static Icon getResourceAsIcon(String name)
     {
         return new ImageIcon(getResourceAsBytes(name));
+    }
+
+    /**
+     * Convenience method to load a resource as an image.
+     * 
+     * @param   name  Path to the GIF/JPG file
+     * @return  Image of given resource
+     */
+    public static Image getResourceAsImage(String name)
+    {
+        byte[] data = ResourceUtil.getResourceAsBytes(name);
+        Image image = Toolkit.getDefaultToolkit().createImage(data);
+        return image;
     }
 
     //--------------------------------------------------------------------------
