@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+/**
+ * Symbol
+ */
 public class Symbol implements Externalizable
 {
     protected int hashCode;
@@ -82,7 +85,8 @@ public class Symbol implements Externalizable
      * @throws IOException DOCUMENT ME!
      * @throws ClassNotFoundException DOCUMENT ME!
      */
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+    public void readExternal(ObjectInput in) throws IOException, 
+        ClassNotFoundException
     {
         int size = in.readInt();
         byte[] buf = new byte[size];

@@ -27,9 +27,13 @@ public class NumberParamPattern extends ParamPattern
                 if (Modifier.isStatic(methods[i].getModifiers())
                     && methods[i].getName().startsWith("to"))
                 {
-                    Class c = Class.forName("java.lang." + methods[i].getName().substring(2));
+                    Class c = Class.forName(
+                        "java.lang." + methods[i].getName().substring(2));
+                        
                     WrapperNumbers.put(c, methods[i]);
-                    PrimitiveNumbers.put(c.getField("TYPE").get(null), methods[i]);
+                    
+                    PrimitiveNumbers.put(
+                        c.getField("TYPE").get(null), methods[i]);
                 }
         }
         catch (Exception ex)
@@ -73,7 +77,8 @@ public class NumberParamPattern extends ParamPattern
      */
     protected boolean isApplicable(Class aClass)
     {
-        return Number.class.isAssignableFrom(aClass) || PrimitiveNumbers.get(aClass) != null;
+        return Number.class.isAssignableFrom(aClass) || 
+            PrimitiveNumbers.get(aClass) != null;
     }
 
     /**
@@ -108,7 +113,6 @@ public class NumberParamPattern extends ParamPattern
      * 
      * @param object DOCUMENT ME!
      * @return DOCUMENT ME! 
-     * @throws ClassCastException DOCUMENT ME!
      */
     protected Object invoke(Object object)
     {

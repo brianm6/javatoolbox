@@ -32,6 +32,11 @@ public class FindClassCollector implements IFindClassListener
         results_.add(result);            
     }
 
+    /**
+     * Implemenation of IFindClassListener
+     *
+     * @param  target  Target being searched
+     */
     public void searchingTarget(String target)
     {
     }    

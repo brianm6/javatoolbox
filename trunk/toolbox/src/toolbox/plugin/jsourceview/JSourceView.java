@@ -340,7 +340,9 @@ public class JSourceView extends JFrame
         FileStats filestats = new FileStats();
         try
         {
-            LineNumberReader linenumberreader = new LineNumberReader(new BufferedReader(new FileReader(s)));
+            LineNumberReader linenumberreader = 
+                new LineNumberReader(new BufferedReader(new FileReader(s)));
+                
             LineStatus linestatus = new LineStatus();
             String s1;
             while((s1 = linenumberreader.readLine()) != null) 
@@ -401,7 +403,11 @@ public class JSourceView extends JFrame
     {
         if(new File(file, s).isDirectory())
             return true;
-        if(s.toUpperCase().endsWith(".CPP") || s.toUpperCase().endsWith(".C") || s.toUpperCase().endsWith(".H") || s.toUpperCase().endsWith(".JAVA"))
+            
+        if (s.toUpperCase().endsWith(".CPP") || 
+            s.toUpperCase().endsWith(".C")   || 
+            s.toUpperCase().endsWith(".H")   || 
+            s.toUpperCase().endsWith(".JAVA"))
         {
             workQueue.enqueue(file + pathSeparator + s);
             return true;

@@ -41,7 +41,8 @@ public class MethodHolder implements IMethodHolder
      */
     public IMethodHolder addMethod(SmartMethod newMethod)
     {
-        return method.getParameterTypes().length == newMethod.getParameterTypes().length
+        return method.getParameterTypes().length == 
+               newMethod.getParameterTypes().length
             ? (IMethodHolder) new MethodParamTypeHolder(method, newMethod)
             : (IMethodHolder) new MethodParamCountHolder(method, newMethod);
     }

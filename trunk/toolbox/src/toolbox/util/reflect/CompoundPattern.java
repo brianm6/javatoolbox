@@ -39,8 +39,9 @@ public class CompoundPattern extends ParamPattern
     {
         this(pp1.paramType);
 
-        if (pp1 instanceof CompoundPattern
-            && ((CompoundPattern) pp1).pp2.getFactor(paramType) < pp2.getFactor(paramType))
+        if (pp1 instanceof CompoundPattern && 
+            ((CompoundPattern) pp1).pp2.getFactor(paramType) < 
+                pp2.getFactor(paramType))
         {
             CompoundPattern cp1 = (CompoundPattern) pp1;
             this.pp1 = new CompoundPattern(cp1.pp1, pp2);
@@ -90,7 +91,9 @@ public class CompoundPattern extends ParamPattern
      */
     protected Object advancedConvert(Object object)
     {
-        return pp1.isApplicable(object.getClass()) ? pp1.convert(object) : pp2.convert(object);
+        return pp1.isApplicable(object.getClass()) 
+            ? pp1.convert(object) 
+            : pp2.convert(object);
     }
 
     /**
@@ -101,6 +104,7 @@ public class CompoundPattern extends ParamPattern
      */
     protected ParamPattern newPattern(Class aClass)
     {
-        return new CompoundPattern(pp1.newPattern(aClass), pp2.newPattern(aClass));
+        return new CompoundPattern(
+            pp1.newPattern(aClass), pp2.newPattern(aClass));
     }
 }

@@ -18,7 +18,8 @@ public class AssertTest extends TestCase
     
     /**
      * Constructor for AssertTest.
-     * @param arg0
+     * 
+     * @param arg0  Name
      */
     public AssertTest(String arg0)
     {
@@ -27,6 +28,8 @@ public class AssertTest extends TestCase
 
     /**
      * Runs testcase in text mode
+     * 
+     * @param args Args
      */
     public static void main(String[] args)
     {
@@ -37,7 +40,7 @@ public class AssertTest extends TestCase
     /**
      * Tests equals(double)
      */
-    public void testEqualsDouble() throws Exception
+    public void testEqualsDouble() 
     {
         Assert.equals(1.0d, 1.0d, 0.0, "equal");
         
@@ -55,7 +58,7 @@ public class AssertTest extends TestCase
     /**
      * Tests equals(float)
      */
-    public void testEqualsFloat() throws Exception
+    public void testEqualsFloat()
     {
         Assert.equals(1.0f, 1.0f, 0.0, "equal");
         
@@ -73,7 +76,7 @@ public class AssertTest extends TestCase
     /**
      * Tests equals(long)
      */
-    public void testEqualsLong() throws Exception
+    public void testEqualsLong() 
     {
         Assert.equals(111L, 111L, "equal");
         
@@ -91,7 +94,7 @@ public class AssertTest extends TestCase
     /**
      * Tests equals(Object)
      */
-    public void testEqualsObject() throws Exception
+    public void testEqualsObject() 
     {
         Assert.equals("one", "one", "equal");
         
@@ -109,7 +112,7 @@ public class AssertTest extends TestCase
     /**
      * Tests isFalse()
      */
-    public void testIsFalse() throws Exception
+    public void testIsFalse() 
     {
         Assert.isFalse(false, "isFalse");
         
@@ -127,7 +130,7 @@ public class AssertTest extends TestCase
     /**
      * Tests isTrue()
      */
-    public void testIsTrue() throws Exception
+    public void testIsTrue() 
     {
         Assert.isTrue(true, "isTrue");
         
@@ -145,7 +148,7 @@ public class AssertTest extends TestCase
     /**
      * Tests notNull()
      */
-    public void testNotNull() throws Exception
+    public void testNotNull() 
     {
         Assert.notNull("i am not null", "Object is not null");
         

@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
@@ -21,6 +20,8 @@ public class ThreadUtilTest extends TestCase
     
     /**
      * Arg constructor
+     * 
+     * @param  name  Name
      */
     public ThreadUtilTest(String name)
     {
@@ -29,6 +30,8 @@ public class ThreadUtilTest extends TestCase
 
     /**
      * Entrypoint
+     * 
+     * @param  args  Args
      */
     public static void main(String[] args)
     {
@@ -39,7 +42,7 @@ public class ThreadUtilTest extends TestCase
     /**
      * Tests sleep()
      */
-    public void testSleep() throws Exception
+    public void testSleep() 
     {
         /* not much to test */
         ThreadUtil.sleep(1000);
@@ -47,6 +50,8 @@ public class ThreadUtilTest extends TestCase
 
     /**
      * Tests run() on a method with no args
+     * 
+     * @throws Exception on error
      */
     public void testRunSimple() throws Exception
     {
@@ -57,6 +62,8 @@ public class ThreadUtilTest extends TestCase
 
     /**
      * Tests run() on a method with simple args and arrays
+     * 
+     * @throws Exception on error
      */
     public void testRunArgs() throws Exception
     {
@@ -76,6 +83,8 @@ public class ThreadUtilTest extends TestCase
  
     /**
      * Tests run() on a method with complex arg types
+     * 
+     * @throws Exception on error
      */
     public void testRunComplex() throws Exception
     {
@@ -97,6 +106,8 @@ public class ThreadUtilTest extends TestCase
 
     /**
      * Tests run() on a method with primitive args
+     * 
+     * @throws Exception on error
      */
     public void testRunPrimitive() throws Exception
     {
@@ -112,7 +123,8 @@ public class ThreadUtilTest extends TestCase
                 new Float(100.3f)
             }).join();
             
-        assertTrue("pingPrimitive was not executed", target.pingPrimitiveCalled);
+        assertTrue("pingPrimitive was not executed", 
+            target.pingPrimitiveCalled);
     } 
  
     /**

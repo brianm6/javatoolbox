@@ -191,13 +191,16 @@ public class SmartMethod
      * @throws InvocationTargetException DOCUMENT ME!
      */
     public Object invoke(Object object, Object[] parameters)
-        throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
+        throws IllegalAccessException, IllegalArgumentException, 
+            InvocationTargetException
     {
         try
         {
             if (parameters != null)
                 for (int i = 0; i < parameters.length; i++)
-                    parameters[i] = patterns[i] == null ? parameters[i] : patterns[i].convert(parameters[i]);
+                    parameters[i] = patterns[i] == null 
+                        ? parameters[i] 
+                        : patterns[i].convert(parameters[i]);
         }
         catch (Exception ex)
         {

@@ -64,8 +64,13 @@ public class JTcpTunnel extends Frame
 
         Label l1;
         Label l2;
-        p.add("West", l1 = new Label("From localhost:" + listenPort, Label.CENTER));
-        p.add("East", l2 = new Label("From " + tunnelHost + ":" + tunnelPort, Label.CENTER));
+        
+        p.add("West", l1 = 
+            new Label("From localhost:" + listenPort, Label.CENTER));
+            
+        p.add("East", l2 = 
+            new Label("From " + tunnelHost + ":" + tunnelPort, Label.CENTER));
+            
         add("North", p);
 
         // the monitor part
@@ -145,7 +150,8 @@ public class JTcpTunnel extends Frame
         int listenPort = Integer.parseInt(args[0]);
         String tunnelHost = args[1];
         int tunnelPort = Integer.parseInt(args[2]);
-        final JTcpTunnel ttg = new JTcpTunnel(listenPort, tunnelHost, tunnelPort);
+        final JTcpTunnel ttg = 
+            new JTcpTunnel(listenPort, tunnelHost, tunnelPort);
 
         // create the server thread
         Thread server = new Thread() 
@@ -176,9 +182,10 @@ public class JTcpTunnel extends Frame
                         Socket sc = ss.accept();
 
                         // connect to the thing I'm tunnelling for
-                        Socket st = new Socket(ttg.getTunnelHost(), ttg.getTunnelPort());
+                        Socket st = new Socket(ttg.getTunnelHost(), 
+                            ttg.getTunnelPort());
                         
-                        status.setText("Tunnelling port " + ttg.getListenPort() + 
+                        status.setText("Tunnelling port "+ttg.getListenPort()+ 
                                        " to port " + ttg.getTunnelPort() + 
                                        " on host " + ttg.getTunnelHost() + 
                                        " ...");

@@ -44,7 +44,9 @@ public class MethodParamTypeHolder implements IMethodHolder
         // Check if we have the same number of parameters
         if (paramCount != method.getParameterTypes().length
             || method.getParameterTypes().length == 0)
-            return (IMethodHolder) new MethodParamCountHolder(method, this, paramCount);
+            
+            return (IMethodHolder) 
+                new MethodParamCountHolder(method, this, paramCount);
 
         // Add the information
         patterns.add(method.getParameterPatterns());
@@ -60,7 +62,8 @@ public class MethodParamTypeHolder implements IMethodHolder
      * @return DOCUMENT ME! 
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartMethod getMethod(Class[] paramTypes) throws NoSuchMethodException
+    public SmartMethod getMethod(Class[] paramTypes) 
+        throws NoSuchMethodException
     {
         int total = 0;
         TreeMap map = new TreeMap(IntegerComparator.getComparator());
@@ -70,7 +73,8 @@ public class MethodParamTypeHolder implements IMethodHolder
         {
             total = 0;
 
-            ParamPattern[] testPatterns = (ParamPattern[]) patterns.elementAt(i);
+            ParamPattern[] testPatterns = 
+                (ParamPattern[]) patterns.elementAt(i);
 
             for (int j = 0; j < testPatterns.length; j++)
             {
@@ -96,7 +100,9 @@ public class MethodParamTypeHolder implements IMethodHolder
 
         Integer last = (Integer) map.lastKey();
         Integer key = (Integer) map.get(last);
-        IMethodHolder holderRes = (IMethodHolder) holders.elementAt(key.intValue());
+        
+        IMethodHolder holderRes = 
+            (IMethodHolder) holders.elementAt(key.intValue());
 
         return holderRes.getMethod(paramTypes);
     }
@@ -104,7 +110,8 @@ public class MethodParamTypeHolder implements IMethodHolder
     // COMPARATOR
     protected static class IntegerComparator implements Comparator
     {
-        protected static final IntegerComparator defComparator = new IntegerComparator();
+        protected static final IntegerComparator defComparator = 
+            new IntegerComparator();
 
         public int compare(Object obj1, Object obj2)
         {

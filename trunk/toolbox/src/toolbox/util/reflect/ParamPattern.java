@@ -80,8 +80,11 @@ public class ParamPattern
         {
             pattern = new ParamPattern(aClass);
 
-            for (Enumeration enum = RegisteredPatterns.elements(); enum.hasMoreElements();)
-                pattern = ((ParamPattern) enum.nextElement()).applyTo(pattern, aClass);
+            for (Enumeration enum = RegisteredPatterns.elements(); 
+                enum.hasMoreElements();)
+                
+                pattern = ((ParamPattern) 
+                    enum.nextElement()).applyTo(pattern, aClass);
 
             if (pattern != null)
                 CachedPatterns.put(aClass, pattern);
@@ -225,14 +228,14 @@ public class ParamPattern
      * 
      * @param object DOCUMENT ME!
      * @return DOCUMENT ME! 
-     * @throws ClassCastException DOCUMENT ME!
      */
     protected Object advancedConvert(Object object)
     {
         if (validPrimitiveTypes(object))
             return object;
 
-        throw new ClassCastException("Cannot convert " + object.getClass() + " to " + paramType);
+        throw new ClassCastException(
+            "Cannot convert " + object.getClass() + " to " + paramType);
     }
 
     /**
@@ -264,9 +267,11 @@ public class ParamPattern
         try
         {
             if (patternConstructor == null)
-                patternConstructor = getClass().getConstructor(new Class[] { Class.class });
+                patternConstructor = 
+                    getClass().getConstructor(new Class[] { Class.class });
 
-            return (ParamPattern) patternConstructor.newInstance(new Object[] { aClass });
+            return (ParamPattern) 
+                patternConstructor.newInstance(new Object[] { aClass });
         }
         catch (Exception ex)
         {

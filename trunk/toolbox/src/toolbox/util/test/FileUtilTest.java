@@ -17,12 +17,12 @@ import toolbox.util.RandomUtil;
 public class FileUtilTest extends TestCase
 {
     /** Logger **/
-	private static final Category logger_ = 
-	    Category.getInstance(FileUtilTest.class);
+    private static final Category logger_ = 
+        Category.getInstance(FileUtilTest.class);
                 
     /**
      * Constructor for FileUtilTest.
-     * @param arg0
+     * @param arg0  Name
      */
     public FileUtilTest(String arg0)
     {
@@ -31,6 +31,8 @@ public class FileUtilTest extends TestCase
 
     /**
      * Runs the test case in text mode
+     * 
+     * @param  args  Args
      */
     public static void main(String[] args)
     {
@@ -40,6 +42,8 @@ public class FileUtilTest extends TestCase
 
     /**
      * Tests the getTempDir() method 
+     * 
+     * @throws Exception on error
      */    
     public void testGetTempDir() throws Exception
     {
@@ -51,6 +55,8 @@ public class FileUtilTest extends TestCase
 
     /**
      * Tests the getTempFilename() method 
+     * 
+     * @throws Exception on error
      */    
     public void testGetTempFilename() throws Exception
     {
@@ -69,6 +75,8 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests cleanDir() for failure by passing a file instead of a directory
+     * 
+     * @throws Exception on error
      */
     public void testCleanDirFailure1() throws Exception
     {
@@ -94,6 +102,8 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests cleanDir() for failure by passing in a non-existant directory
+     * 
+     * @throws Exception on error
      */
     public void testCleanDirFailure2() throws Exception
     {
@@ -113,6 +123,8 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests cleanDir() for cleaning the contents of a single directory
+     * 
+     * @throws Exception on error
      */
     public void testCleanDirFailure() throws Exception
     {
@@ -128,13 +140,15 @@ public class FileUtilTest extends TestCase
         {
             String filename = i + ".txt";
             File  file = new File(dir, filename);
-            FileUtil.setFileContents(file.getAbsolutePath(), "testing..", false);
+            FileUtil.setFileContents(
+                file.getAbsolutePath(), "testing..", false);
         }
 
         /* verify test files created */
         String[] before = dir.list();
         logger_.info("Contents before: " + ArrayUtil.toString(before));
-        assertEquals("Dir " + dir + " should have files", numFiles, before.length); 
+        assertEquals("Dir " + dir + " should have files", 
+            numFiles, before.length); 
 
         /* nuke the directory */
         try
@@ -154,6 +168,8 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests getFileContents()
+     * 
+     * @throws Exception on error
      */
     public void testGetFileContents() throws Exception
     {
@@ -176,6 +192,8 @@ public class FileUtilTest extends TestCase
 
     /**
      * Tests getFileContents() for a large file
+     * 
+     * @throws Exception on error
      */
     public void testGetFileContentsLargeFile() throws Exception
     {
@@ -205,6 +223,8 @@ public class FileUtilTest extends TestCase
 
     /**
      * Tests setFileContents()
+     * 
+     * @throws Exception on error
      */
     public void testSetFileContents() throws Exception
     {
@@ -227,6 +247,8 @@ public class FileUtilTest extends TestCase
     
     /**
      * Tests moveFile() for simple case
+     * 
+     * @throws Exception on error
      * 
      * <pre>
      * 
@@ -268,7 +290,8 @@ public class FileUtilTest extends TestCase
         logger_.info("Before move: dest=" + ArrayUtil.toString(beforeMoveDest));
         
         assertEquals("should be one file in src dir", 1, beforeMoveSrc.length);
-        assertEquals("should be zero files in dest dir", 0, beforeMoveDest.length);
+        assertEquals("should be zero files in dest dir", 
+            0, beforeMoveDest.length);
 
         /* move file */     
         FileUtil.moveFile(srcFile, destDir);

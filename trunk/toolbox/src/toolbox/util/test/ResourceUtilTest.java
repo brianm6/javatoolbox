@@ -13,17 +13,21 @@ import toolbox.util.ResourceUtil;
  */
 public class ResourceUtilTest extends TestCase
 {
-	/**
-	 * Entrypoint
-	 */
+    /**
+     * Entrypoint
+     * 
+     * @param  args Args
+     */
     public static void main(String[] args)
     {
         BasicConfigurator.configure();        
-    	TestRunner.run(ResourceUtilTest.class);	
+        TestRunner.run(ResourceUtilTest.class);    
     }
-	
+    
     /**
      * Constructor for ResourceUtilTest
+     * 
+     * @param  arg0  Name
      */
     public ResourceUtilTest(String arg0)
     {
@@ -38,19 +42,19 @@ public class ResourceUtilTest extends TestCase
      */
     public void testExportToClass() throws Exception
     {
-		String treeOpen  = "images" + File.separator + "tree_open.gif";
-		String treeClose = "images" + File.separator + "tree_close.gif";
-		String cdrive    = "images" + File.separator + "cdrive.gif";
-		
-		ResourceUtil.exportToClass(treeOpen, "toolbox.util.ui", 
+        String treeOpen  = "images" + File.separator + "tree_open.gif";
+        String treeClose = "images" + File.separator + "tree_close.gif";
+        String cdrive    = "images" + File.separator + "cdrive.gif";
+        
+        ResourceUtil.exportToClass(treeOpen, "toolbox.util.ui", 
             FileUtil.getTempDir().getAbsolutePath() + File.separator + 
-                "TreeOpenGIF");    	
+                "TreeOpenGIF");        
             
-		ResourceUtil.exportToClass(treeClose, "toolbox.util.ui", 
+        ResourceUtil.exportToClass(treeClose, "toolbox.util.ui", 
             FileUtil.getTempDir().getAbsolutePath() + File.separator + 
                 "TreeCloseGIF");
                 
-		ResourceUtil.exportToClass(cdrive, "toolbox.util.ui", 
+        ResourceUtil.exportToClass(cdrive, "toolbox.util.ui", 
             FileUtil.getTempDir().getAbsolutePath() + File.separator + 
                 "HardDriveGIF");
     }

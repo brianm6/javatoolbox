@@ -93,7 +93,8 @@ public class SmartClass
      * @return DOCUMENT ME! 
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartMethod getMethod(String name, Object[] parameters) throws NoSuchMethodException
+    public SmartMethod getMethod(String name, Object[] parameters) 
+        throws NoSuchMethodException
     {
         return getMethod(new Symbol(name), parameters);
     }
@@ -105,11 +106,13 @@ public class SmartClass
      * @return DOCUMENT ME! 
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartConstructor getConstructor(Class[] parameterTypes) throws NoSuchMethodException
+    public SmartConstructor getConstructor(Class[] parameterTypes) 
+        throws NoSuchMethodException
     {
-        return (SmartConstructor) constructors.getMethod(parameterTypes == null ? new Class[] {
-        }
-        : parameterTypes);
+        return (SmartConstructor) 
+            constructors.getMethod(parameterTypes == null 
+                ? new Class[] {}
+                : parameterTypes);
     }
 
     /**
@@ -119,7 +122,8 @@ public class SmartClass
      * @return DOCUMENT ME! 
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartConstructor getConstructor(Object[] parameters) throws NoSuchMethodException
+    public SmartConstructor getConstructor(Object[] parameters) 
+        throws NoSuchMethodException
     {
         if (parameters == null)
             return getConstructor(null);
@@ -173,7 +177,8 @@ public class SmartClass
      * @throws Exception DOCUMENT ME!
      */
     public Object invoke(Object obj, String methodName, Object[] parameters)
-        throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, Exception
+        throws IllegalAccessException, IllegalArgumentException, 
+            InvocationTargetException, Exception
     {
         return invoke(obj, new Symbol(methodName), parameters);
     }
@@ -185,7 +190,6 @@ public class SmartClass
      * @param selector DOCUMENT ME!
      * @param parameters DOCUMENT ME!
      * @return DOCUMENT ME! 
-     * @throws NoSuchMethodError DOCUMENT ME!
      */
     public Object invokeSilent(Object obj, Symbol selector, Object[] parameters)
     {
@@ -209,7 +213,8 @@ public class SmartClass
      * @param parameters DOCUMENT ME!
      * @return DOCUMENT ME! 
      */
-    public Object invokeSilent(Object obj, String methodName, Object[] parameters)
+    public Object invokeSilent(Object obj, String methodName, 
+        Object[] parameters)
     {
         return invokeSilent(obj, new Symbol(methodName), parameters);
     }
@@ -285,7 +290,11 @@ public class SmartClass
             SmartMethod method = new SmartMethod(javaMethods[i]);
             Object selector = method.getSelector();
             IMethodHolder holder = (IMethodHolder) methods.get(selector);
-            holder = holder == null ? new MethodHolder(method) : holder.addMethod(method);
+            
+            holder = holder == null 
+                ? new MethodHolder(method) 
+                : holder.addMethod(method);
+                
             methods.put(selector, holder);
         }
     }

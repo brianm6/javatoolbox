@@ -13,7 +13,8 @@ public interface IMethodHolder
      * @return DOCUMENT ME! 
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartMethod getMethod(Class[] paramType) throws NoSuchMethodException;
+    public SmartMethod getMethod(Class[] paramType) 
+        throws NoSuchMethodException;
 
     /**
      * DOCUMENT ME!

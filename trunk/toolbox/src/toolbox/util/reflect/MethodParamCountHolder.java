@@ -32,7 +32,8 @@ public class MethodParamCountHolder implements IMethodHolder
      * @param holder DOCUMENT ME!
      * @param count DOCUMENT ME!
      */
-    public MethodParamCountHolder(SmartMethod method, IMethodHolder holder, int count)
+    public MethodParamCountHolder(SmartMethod method, IMethodHolder holder, 
+        int count)
     {
         int offset = method.getParameterTypes().length;
         holders = new IMethodHolder[Math.max(offset, count) + 1];
@@ -49,7 +50,8 @@ public class MethodParamCountHolder implements IMethodHolder
      * @return DOCUMENT ME! 
      * @throws NoSuchMethodException DOCUMENT ME!
      */
-    public SmartMethod getMethod(Class[] paramTypes) throws NoSuchMethodException
+    public SmartMethod getMethod(Class[] paramTypes) 
+        throws NoSuchMethodException
     {
         return holders[paramTypes.length].getMethod(paramTypes);
     }
@@ -74,7 +76,11 @@ public class MethodParamCountHolder implements IMethodHolder
         else
         {
             IMethodHolder holder = holders[offset];
-            holder = holder == null ? new MethodHolder(method) : holder.addMethod(method);
+            
+            holder = holder == null 
+                ? new MethodHolder(method) 
+                : holder.addMethod(method);
+                
             holders[offset] = holder;
         }
 

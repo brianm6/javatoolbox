@@ -27,7 +27,8 @@ public class ConsoleTest extends TestCase
     
     /**
      * Constructor for ConsoleTest.
-     * @param name
+     * 
+     * @param name  Test name
      */
     public ConsoleTest(String name)
     {
@@ -47,7 +48,7 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(classpath)
      */
-    public void testHandleCommandClasspath() throws Exception
+    public void testHandleCommandClasspath()
     {
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_CLASSPATH);
@@ -56,7 +57,7 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(help)
      */
-    public void testHandleCommandHelp() throws Exception
+    public void testHandleCommandHelp() 
     {
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_HELP);
@@ -65,7 +66,7 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(mem)
      */
-    public void testHandleCommandMem() throws Exception
+    public void testHandleCommandMem() 
     {
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_MEM);
@@ -74,7 +75,7 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(props)
      */
-    public void testHandleCommandProps() throws Exception
+    public void testHandleCommandProps() 
     {
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_PROPS);
@@ -83,7 +84,7 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(uptime)
      */
-    public void testHandleCommandUptime() throws Exception
+    public void testHandleCommandUptime() 
     {
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_UPTIME);
@@ -92,7 +93,7 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(setprop)
      */
-    public void testHandleCommandSetProp() throws Exception
+    public void testHandleCommandSetProp() 
     {
         TestConsole console = new TestConsole();
 
@@ -108,7 +109,7 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(delprop)
      */
-    public void testHandleCommandDelProp() throws Exception
+    public void testHandleCommandDelProp() 
     {
         TestConsole console = new TestConsole();
 

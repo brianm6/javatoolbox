@@ -89,6 +89,8 @@ public class FindClass
      * @param   classToFind     Regular expression for class to find
      * @param   ignoreCase      Ignores case in search
      * @return  Array of FindClassResults
+     * @throws  IOException on IO error
+     * @throws  RESyntaxException on regular expression error
      */
     public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
         throws RESyntaxException, IOException
@@ -238,7 +240,7 @@ public class FindClass
      * Finds class in a given jar file
      * 
      * @param   jarName     the name of the jar file to search
-     * @throws  Exception on error
+     * @throws  IOException on error
      */
     protected void findInArchive(String jarName) throws IOException
     { 
@@ -342,7 +344,7 @@ public class FindClass
     /**
      * Called when a class is found by the various search methods
      *
-     * @param  whereFound   Where the class was found (dir, zip, etc)
+     * @param  target   The target being searched
      */
     protected void fireSearchingTarget(String target)
     {
@@ -392,7 +394,7 @@ public class FindClass
      * 
      * @param  target  Absolute location of directory or jar/zip file
      */
-    public void addSearchTarget(String string)
+    public void addSearchTarget(String target)
     {
         
     }

@@ -8,7 +8,7 @@ import java.net.SocketException;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.net.SocketServer;
+
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 
@@ -19,7 +19,8 @@ public class SocketUtilTest extends TestCase
 {
     /**
      * Constructor for SocketUtilTest.
-     * @param name
+     * 
+     * @param name  Name
      */
     public SocketUtilTest(String name)
     {
@@ -27,10 +28,10 @@ public class SocketUtilTest extends TestCase
     }
 
     /**
-	 * Entrypoint
-	 *
-	 * @param  args  Arguments
-	 */
+     * Entrypoint
+     *
+     * @param  args  Arguments
+     */
     public static void main(String[] args)
     {
         TestRunner.run(SocketUtilTest.class);
@@ -39,7 +40,7 @@ public class SocketUtilTest extends TestCase
     /**
      * Tests isReasonAcceptTimeout()
      */
-    public void testIsReasonAcceptTimeout() throws Exception
+    public void testIsReasonAcceptTimeout() 
     {
         InterruptedIOException iioe = 
             new InterruptedIOException(SocketUtil.MSG_ACCEPT_TIMEOUT);
@@ -50,7 +51,7 @@ public class SocketUtilTest extends TestCase
     /**
      * Tests isReasonSocketClosed()
      */
-    public void testIsReasonSocketClosed() throws Exception
+    public void testIsReasonSocketClosed() 
     {
         SocketException se  = new SocketException(SocketUtil.MSG_SOCKET_CLOSED);
         assertTrue(SocketUtil.isReasonSocketClosed(se));
@@ -58,6 +59,8 @@ public class SocketUtilTest extends TestCase
     
     /**
      * Tests connectWithRetry() for failure scenario
+     * 
+     * @throws  Exception on error
      */
     public void testConnectWithRetryFailure() throws Exception
     {
@@ -69,6 +72,8 @@ public class SocketUtilTest extends TestCase
     
     /**
      * Tests connectWithRetry() for success scenario
+     * 
+     * @throws Exception on error
      */
     public void testConnectWithRetrySuccess() throws Exception
     {

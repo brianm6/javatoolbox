@@ -8,7 +8,6 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
-import toolbox.util.AssertionException;
 import toolbox.util.StringUtil;
 
 /**
@@ -31,6 +30,8 @@ public class StringUtilTest extends TestCase
 
     /**
      * Entrypoint
+     * 
+     * @param  args  Args
      */
     public static void main(String[] args)
     {
@@ -115,7 +116,7 @@ public class StringUtilTest extends TestCase
     /**
      * Tests static toString( List )
      */
-    public void testToStringForList() throws Exception
+    public void testToStringForList()
     {
         ArrayList theList = new ArrayList();
         theList.add( "ELEM_ONE" );
@@ -135,7 +136,7 @@ public class StringUtilTest extends TestCase
     /**
      * Tests isNullOrEmpty()
      */
-    public void testIsNullOrEmpty() throws Exception
+    public void testIsNullOrEmpty()
     {
         assertTrue("pass in null should return true", 
             StringUtil.isNullOrEmpty(null));
@@ -152,6 +153,8 @@ public class StringUtilTest extends TestCase
     
     /**
      * Tests getStringRuler()
+     * 
+     * @throws Exception on error
      */
     public void testGetStringRuler() throws Exception
     {
@@ -189,7 +192,7 @@ public class StringUtilTest extends TestCase
     /**
      * Tests truncate()
      */ 
-    public void testTruncate() throws Exception
+    public void testTruncate() 
     {
         //======================================
         //      STRING LENGTH = 0 

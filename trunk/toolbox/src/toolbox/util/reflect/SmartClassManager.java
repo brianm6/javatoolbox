@@ -8,7 +8,9 @@ import java.util.Map;
  */
 public class SmartClassManager
 {
-    protected static SmartClassManager DefaultClassManager = new SmartClassManager();
+    protected static SmartClassManager DefaultClassManager = 
+        new SmartClassManager();
+        
     protected Map cache;
 
     // CONSTRUCTORS
@@ -46,7 +48,7 @@ public class SmartClassManager
         if (siClass == null)
         {
 
-            // System.out.println( "SmartClassManager: " + javaClass.getName() );
+            //System.out.println( "SmartClassManager: " + javaClass.getName() );
             cache.put(javaClass.getName(), siClass = new SmartClass(javaClass));
             siClass.constructClass();
         }
@@ -86,7 +88,8 @@ public class SmartClassManager
      * @return DOCUMENT ME! 
      * @throws ClassNotFoundException DOCUMENT ME!
      */
-    public static SmartClass loadClass(String name) throws ClassNotFoundException
+    public static SmartClass loadClass(String name) 
+        throws ClassNotFoundException
     {
         return DefaultClassManager.getClass(name);
     }

@@ -1,17 +1,10 @@
 package toolbox.util.test;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import junit.textui.TestRunner;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
-
 import toolbox.util.ArrayUtil;
-import toolbox.util.StringUtil;
-
 
 /**
  * ArrayUtil unit test class
@@ -48,7 +41,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset() for subset equal to array
      */
-    public void testSubsetDoubleAll() throws Exception
+    public void testSubsetDoubleAll() 
     {
         int len = 10;
         double[] d = new double[len];
@@ -68,7 +61,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset() for empty array
      */
-    public void testSubsetDoubleEmpty() throws Exception
+    public void testSubsetDoubleEmpty() 
     {
         double[] d = new double[0];
         double[] e = ArrayUtil.subset(d, 0, 0);
@@ -79,7 +72,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset() for subset first half of array
      */
-    public void testSubsetDoubleFirstHalf() throws Exception
+    public void testSubsetDoubleFirstHalf() 
     {
         int len = 10;
         double[] d = new double[len];
@@ -99,7 +92,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset() for array of length 1
      */
-    public void testSubsetDoubleOne() throws Exception
+    public void testSubsetDoubleOne() 
     {
         double[] d = new double[]{99};
         double[] e = ArrayUtil.subset(d, 0, 0);
@@ -111,7 +104,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset() for subset second half of the array
      */
-    public void testSubsetDoubleSecondHalf() throws Exception
+    public void testSubsetDoubleSecondHalf()
     {
         int len = 10;
         double[] d = new double[len];
@@ -135,7 +128,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset(Object[]) for all
      */
-    public void testSubsetObjectAll() throws Exception
+    public void testSubsetObjectAll() 
     {
         String method = "[subObj] ";
         
@@ -154,7 +147,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset(Object[]) for empty array of objects
      */
-    public void testSubsetObjectEmpty() throws Exception
+    public void testSubsetObjectEmpty() 
     {
         String[] d = new String[0];
         String[] e = (String[]) ArrayUtil.subset(d, 0, 0);
@@ -165,7 +158,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Test subset(Object[]) for array of length 1
      */
-    public void testSubsetObjectOne() throws Exception
+    public void testSubsetObjectOne() 
     {
         String[] d = new String[] { "a", "b", "c" };
         String[] e = (String[])ArrayUtil.subset(d, 0, 0);
@@ -224,7 +217,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Tests indexOf() for an empty array 
      */
-    public void testIndexOfEmpty() throws Exception
+    public void testIndexOfEmpty() 
     {
         String strArray[] = new String[0];
         String s = "duke";
@@ -237,7 +230,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Tests indexOf() for an array of length 1
      */
-    public void testIndexOfOne() throws Exception
+    public void testIndexOfOne()
     {
         String   s = "duke";
         String[] strArray = new String[] { s };
@@ -251,7 +244,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Tests indexOf() for an array of length 1 where obj not found
      */
-    public void testIndexOfOneNotFound() throws Exception
+    public void testIndexOfOneNotFound()
     {
         String   s = "duke";
         String[] strArray = new String[] { "java" };
@@ -265,7 +258,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Tests indexOf() for an array of length > 1
      */
-    public void testIndexOfMany() throws Exception
+    public void testIndexOfMany()
     {
         String   two = "two";
         
@@ -280,7 +273,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Tests indexOf() for an array of length > 1 where obj not found
      */
-    public void testIndexOfManyNotFound() throws Exception
+    public void testIndexOfManyNotFound()
     {
         String   notFound = "notFound";
         

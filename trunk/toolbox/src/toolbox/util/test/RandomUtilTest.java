@@ -16,6 +16,8 @@ public class RandomUtilTest extends TestCase
     
     /**
      * Constructor for RandomUtilTest
+     * 
+     * @param  arg0  Name
      */
     public RandomUtilTest(String arg0)
     {
@@ -24,6 +26,8 @@ public class RandomUtilTest extends TestCase
 
     /**
      * Entry point
+     * 
+     * @param  args  Args
      */
     public static void main(String[] args)
     {
@@ -33,7 +37,7 @@ public class RandomUtilTest extends TestCase
     /**
      * Tests nextAlpha()
      */
-    public static void testNextAlpha() throws Exception
+    public static void testNextAlpha() 
     {
         StringBuffer sb = new StringBuffer();
         
@@ -55,7 +59,7 @@ public class RandomUtilTest extends TestCase
     /**
      * Tests nextUpperAlpha()
      */
-    public static void testNextUpperAlpha() throws Exception
+    public static void testNextUpperAlpha() 
     {
         StringBuffer sb = new StringBuffer();
         
@@ -66,7 +70,8 @@ public class RandomUtilTest extends TestCase
                 char c = RandomUtil.nextUpperAlpha();
                 sb.append(c);
                 assertTrue(c + " should be an alpha", Character.isLetter(c));
-                assertTrue(c + " should be uppercase", Character.isUpperCase(c));
+                assertTrue(c + " should be uppercase", 
+                    Character.isUpperCase(c));
             }
         }
         finally
@@ -78,7 +83,7 @@ public class RandomUtilTest extends TestCase
     /**
      * Tests nextLowerAlpha()
      */
-    public static void testNextLowerAlpha() throws Exception
+    public static void testNextLowerAlpha() 
     {
         StringBuffer sb = new StringBuffer();
         
@@ -89,7 +94,8 @@ public class RandomUtilTest extends TestCase
                 char c = RandomUtil.nextLowerAlpha();
                 sb.append(c);
                 assertTrue(c + " should be an alpha", Character.isLetter(c));
-                assertTrue(c + " should be lowercase", Character.isLowerCase(c));
+                assertTrue(c + " should be lowercase", 
+                    Character.isLowerCase(c));
             }
         }
         finally

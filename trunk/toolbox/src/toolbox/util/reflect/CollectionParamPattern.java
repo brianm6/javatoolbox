@@ -77,13 +77,13 @@ public class CollectionParamPattern extends ParamPattern
      * 
      * @param object DOCUMENT ME!
      * @return DOCUMENT ME!
-     * @throws ClassCastException DOCUMENT ME!
      */
     protected Object invoke(Object object)
     {
         try
         {
-            return convertMethod.invoke(null, new Object[] { paramType, object });
+            return convertMethod.invoke(
+                null, new Object[] { paramType, object });
         }
         catch (Exception ex)
         {
@@ -98,10 +98,13 @@ public class CollectionParamPattern extends ParamPattern
     {
         try
         {
-            convertMethod =
-                paramType.isArray()
-                    ? getClass().getMethod("toArray", new Class[] { Class.class, Vector.class })
-                    : getClass().getMethod("toVector", new Class[] { Class.class, Object.class });
+            convertMethod = paramType.isArray()
+            
+                ? getClass().getMethod("toArray", 
+                    new Class[] { Class.class, Vector.class })
+                    
+                : getClass().getMethod("toVector", 
+                    new Class[] { Class.class, Object.class });
         }
         catch (Exception ex)
         {
