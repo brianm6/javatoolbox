@@ -11,7 +11,7 @@ import toolbox.util.io.throughput.ThroughputListener;
 /** 
  * Listener used to make sure event notification is working correctly.
  */    
-class MockThroughputListener implements ThroughputListener
+public class MockThroughputListener implements ThroughputListener
 {
     private static final Logger logger_ = 
         Logger.getLogger(MockThroughputListener.class);
