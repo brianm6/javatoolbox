@@ -3,6 +3,8 @@ package toolbox.util.db;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
@@ -332,4 +334,44 @@ public class SQLFormatterTest extends TestCase
                 
         logger_.info(StringUtil.addBars(s));
     }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Unit Tests
+    //--------------------------------------------------------------------------
+    
+    public void testSavePrefs() throws Exception
+    {
+        SQLFormatter sf = new SQLFormatter();
+        
+        Element prefs = new Element("root");
+        sf.savePrefs(prefs);
+        logger_.info(StringUtil.banner(prefs.toXML()));
+    }
+    
+    public void testApplyPrefs() throws Exception
+    {
+        SQLFormatter expected = new SQLFormatter();
+        expected.setIndent(9);
+        expected.setDebug(true);
+        expected.setNewLineBeforeAnd(false);
+        expected.setMajorCapsMode(CapsMode.LOWERCASE);
+        expected.setMinorCapsMode(CapsMode.UPPERCASE);
+        expected.setNamesCapsMode(CapsMode.LOWERCASE);
+        
+        Element prefs = new Element("root");
+        expected.savePrefs(prefs);
+        
+        SQLFormatter actual = new SQLFormatter();
+        actual.applyPrefs(prefs);
+        
+        assertEquals(expected.getIndent(), actual.getIndent());
+        assertEquals(expected.isDebug(), actual.isDebug());
+        assertEquals(expected.isNewLineBeforeAnd(), actual.isNewLineBeforeAnd());
+        assertEquals(expected.getMajorCapsMode(), actual.getMajorCapsMode());
+        assertEquals(expected.getMinorCapsMode(), actual.getMinorCapsMode());
+        assertEquals(expected.getNamesCapsMode(), actual.getNamesCapsMode());
+        
+        logger_.info(StringUtil.banner(prefs.toXML()));
+    }
+
 }
