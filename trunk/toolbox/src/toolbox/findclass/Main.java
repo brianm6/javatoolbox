@@ -265,31 +265,34 @@ public class Main extends FindClassAdapter
      * 
      
 NAME
-    Matra - parse the DTD; display the merged DTD or the DTD Tree if specified.
+    findClass - finds classes in directories, jars, and the CLASSPATH
 
+    Search order:
+    1. Jars and directories in the CLASSPATH
+    2. Current directory
+    3. Jars that exist in the current directory and subdirectories (recursive)
+       
+    The regular expression is evaluated against the fully qualified class name.
+                   
 SYNOPSIS
-    Matra [-v] [-help] [-merge] [-tree] [-f file | -u url | -l file | -s string]
+
+    findclass [-h] [-c] [-t] <regular expression>  
 
 OPTIONS
 
-    -f file     The <file> is a local DTD file.
-    -help       Display this help message.
-    -l file     The <file> is a local file containing a list of DTDs.
-    -merge      Display the merged DTD.
-    -s string   The <string> is the DTD passed as a String.
-    -tree       Display the DTD in a simple Tree format.
-    -u url      The <url> is a URL pointing to a DTD.
-    -v      Verbose mode
+    -h  --help           Displays this help message
+    -c  --caseSensetive  Case sensetive regular expression
+    -t  --targets        List search targets
 
 EXAMPLES
 
-    Example 1: Parse a DTD file to check for syntax errors
+    Example 1: Search for classes matching java.lang.Object
 
-    com.conradroche.matra.Matra -f c:\path\filename.dtd
+        toolbox.findclass.Main java.lang.Object
 
-    Example 2: Parse a DTD file, display the tree and merged dtd
+    Example 2: Search for classes ending in Proxy
 
-    com.conradroche.matra.Matra -merge -tree -f c:\path\filename.dtd
+        toolbox.findclass.Main Proxy$
 
     Example 3: Parse a DTD whose location is specified by a URL.
 
