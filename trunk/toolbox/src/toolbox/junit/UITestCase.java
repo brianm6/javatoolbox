@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JCollapsablePanel;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartTextArea;
@@ -97,6 +96,7 @@ public class UITestCase extends TestCase
         return menuBar_;
     }
 
+    
     /**
      * Sets the menuBar.
      *
@@ -298,11 +298,14 @@ public class UITestCase extends TestCase
         {
             public void propertyChange(PropertyChangeEvent evt)
             {
-                StringBuffer sb = new StringBuffer();
-                sb.append("Prop: " + evt.getPropertyName() + "\n");
-                sb.append("Old : " + evt.getOldValue() + "\n");
-                sb.append("New : " + evt.getNewValue() + "\n");
-                area.append(sb.toString());
+                //if (SwingUtil.getFrameAncestor(area).isDisplayable())
+                {
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("Prop: " + evt.getPropertyName() + "\n");
+                    sb.append("Old : " + evt.getOldValue() + "\n");
+                    sb.append("New : " + evt.getNewValue() + "\n");
+                    area.append(sb.toString());
+                }
             }
         });
         
