@@ -10,6 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 
 
@@ -26,7 +27,7 @@ public class GenericDisplaySpecification implements IDisplaySpecification
     static
     {
         System.out.println(StringUtil.addBars(
-            "Loaded debug GenericDisplaySpecification.class"));
+            "Loaded debug org.outerj.pollo.xmleditor.displayspec.GenericDisplaySpecification.class"));
     }
     
     /** Default color for elements. */
@@ -195,11 +196,18 @@ public class GenericDisplaySpecification implements IDisplaySpecification
             elementSpec.attributesToShow = new ArrayList();
             if (useRandomColors)
             {
-                elementSpec.backgroundColor = colors[colorPointer % numberOfColors];
-                colorPointer++;
+                //elementSpec.backgroundColor = colors[colorPointer % numberOfColors];
+                //colorPointer++;
+                
+                elementSpec.backgroundColor = 
+                    colors[RandomUtil.nextInt(numberOfColors-1)];
+                
+                //System.out.println("Picked color: " + elementSpec.backgroundColor);
             }
             else
             {
+                //System.out.println("** Using default background color **");
+                
                 elementSpec.backgroundColor = defaultColor;
             }
             elementSpec.textColor = Color.black;
