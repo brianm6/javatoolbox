@@ -3,6 +3,7 @@ package toolbox.util.test;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import junit.framework.TestCase;
@@ -46,6 +47,26 @@ public class JDBCUtilTest extends TestCase
     //--------------------------------------------------------------------------
     // Unit Tests 
     //--------------------------------------------------------------------------
+
+    /**
+     * Tests init()
+     * 
+     * @throws Exception
+     */
+    public void testInit()
+    {
+        logger_.info("Running testInit...");
+        
+        try
+        {
+            JDBCUtil.init(DRIVER, URL, USER, PASSWORD);
+            // No exception thrown = test passed
+        }
+        catch (Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
     
     /**
      * Tests getConnection()
@@ -72,46 +93,6 @@ public class JDBCUtilTest extends TestCase
             cleanup(prefix);
         }
         
-    }
-
-    /**
-     * Tests executeUpdate() for INSERT, UPDATE, and DELETE
-     */
-    public void testExecuteUpdate() throws Exception
-    {
-        logger_.info("Running testExecuteUpdate...");
-        
-        String prefix = "JDBCUtilTest_testExecuteUpdate_" + 
-            RandomUtil.nextInt(1000);
-            
-        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
-        String table = "table_execute_update";
-        
-        try
-        {
-            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
-            assertEquals(1, 
-                JDBCUtil.executeUpdate(
-                    "insert into " + table + " (id) values(100)"));
-
-            assertEquals(1, 
-                JDBCUtil.executeUpdate(
-                    "update " + table + " set id=999 where id=100"));
-                    
-            assertEquals(1,
-                JDBCUtil.executeUpdate(
-                    "delete from " + table + " where id=999"));
-                            
-            String results = JDBCUtil.executeQuery("select * from " + table);            
-            assertTrue(results.indexOf("0 rows") >= 0);
-            logger_.info("\n" + results);
-        }
-        finally
-        {
-            JDBCUtil.dropTable(table);
-            cleanup(prefix);
-        }  
     }
 
     /**
@@ -200,23 +181,139 @@ public class JDBCUtilTest extends TestCase
     }
 
     /**
-     * Tests init()
-     * 
-     * @throws Exception
+     * Tests executeQueryArray() on an empty table
      */
-    public void testInit()
+    public void testExecuteQueryArrayZero() throws Exception
     {
-        logger_.info("Running testInit...");
+        logger_.info("Running testExecuteQueryArrayZero...");
+        
+        String prefix = "JDBCUtilTest_testQueryExecuteArrayZero_" + 
+            RandomUtil.nextInt(1000);
+        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        String table = "table_zero";
         
         try
         {
-            JDBCUtil.init(DRIVER, URL, USER, PASSWORD);
-            // No exception thrown = test passed
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            
+            Object[][] results = 
+                JDBCUtil.executeQueryArray("select * from " + table);
+                            
+            // Column headers still occupy one row                            
+            assertEquals(0, results.length);
         }
-        catch (Exception e)
+        finally
         {
-            fail(e.getMessage());
+            JDBCUtil.dropTable(table);
+            cleanup(prefix);
+        }  
+    }
+
+    /**
+     * Tests executeQueryArray() on table with only one row of data
+     */
+    public void testExecuteQueryArrayOne() throws Exception
+    {
+        logger_.info("Running testExecuteQueryArrayOne...");
+        
+        String prefix = "JDBCUtilTest_testQueryExecuteArrayOne_" + 
+            RandomUtil.nextInt(1000);
+        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        String table = "table_one";
+        
+        try
+        {
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            JDBCUtil.executeUpdate("insert into " +table + "(id) values (999)");
+            
+            Object[][] results = 
+                JDBCUtil.executeQueryArray("select * from " + table);
+                            
+            assertEquals(1, results.length);
+            assertEquals(1, results[0].length);
+            assertEquals(new Integer(999), results[0][0]);
         }
+        finally
+        {
+            JDBCUtil.dropTable(table);
+            cleanup(prefix);
+        }  
+    }
+
+    /**
+     * Tests executeQueryArray() on table with many rows of data
+     */
+    public void testExecuteQueryArrayMany() throws Exception
+    {
+        logger_.info("Running testExecuteQueryArrayMany...");
+        
+        String prefix = "JDBCUtilTest_testExecuteQueryArrayMany_" + 
+            RandomUtil.nextInt(1000);
+        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        String table = "table_many";
+        
+        try
+        {
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            
+            for(int i=0; i<100; i++)
+                JDBCUtil.executeUpdate(
+                    "insert into " +table + "(id) values (" + i + ")");
+                    
+            Object[][] results = 
+                JDBCUtil.executeQueryArray("select * from " + table);
+                            
+            assertEquals(1, results.length);
+            assertEquals(100, results[0].length);
+            
+            for (int i=0; i<100; i++)
+                assertEquals(new Integer(i), results[0][i]);
+        }
+        finally
+        {
+            JDBCUtil.dropTable(table);
+            cleanup(prefix);
+        }  
+    }
+
+    /**
+     * Tests executeUpdate() for INSERT, UPDATE, and DELETE
+     */
+    public void testExecuteUpdate() throws Exception
+    {
+        logger_.info("Running testExecuteUpdate...");
+        
+        String prefix = "JDBCUtilTest_testExecuteUpdate_" + 
+            RandomUtil.nextInt(1000);
+            
+        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        String table = "table_execute_update";
+        
+        try
+        {
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            
+            assertEquals(1, 
+                JDBCUtil.executeUpdate(
+                    "insert into " + table + " (id) values(100)"));
+
+            assertEquals(1, 
+                JDBCUtil.executeUpdate(
+                    "update " + table + " set id=999 where id=100"));
+                    
+            assertEquals(1,
+                JDBCUtil.executeUpdate(
+                    "delete from " + table + " where id=999"));
+                            
+            String results = JDBCUtil.executeQuery("select * from " + table);            
+            assertTrue(results.indexOf("0 rows") >= 0);
+            logger_.info("\n" + results);
+        }
+        finally
+        {
+            JDBCUtil.dropTable(table);
+            cleanup(prefix);
+        }  
     }
 
     /**
@@ -348,6 +445,46 @@ public class JDBCUtilTest extends TestCase
         }
     }
 
+    /**
+     * Tests dropTable()
+     */
+    public void testDropTable() throws Exception
+    {
+        logger_.info("Running testDropTable...");
+        
+        String prefix = "JDBCUtilTest_testDropTable_" + RandomUtil.nextInt(999);
+        JDBCUtil.init(DRIVER, URL + prefix, USER, PASSWORD);
+        String table = "user";
+        
+        try
+        {
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            JDBCUtil.executeUpdate("insert into " +table + "(id) values (999)");
+           
+            // Make sure table exists
+            String contents = JDBCUtil.executeQuery("select * from user");
+            //logger_.info("Before drop: " + contents);             
+            assertTrue(contents.indexOf("ID") >=0);
+                                
+            JDBCUtil.dropTable("user");
+
+            // Make sure table does not exist
+            try
+            {
+                JDBCUtil.executeQuery("select * from user");
+                fail("Should not be able to select from dropped table.");
+            }
+            catch (SQLException se)
+            {
+                assertTrue(
+                    se.getLocalizedMessage().indexOf("Table not found") >= 0);
+            }
+        }
+        finally
+        {
+            cleanup(prefix); 
+        }
+    }
 
     //--------------------------------------------------------------------------
     // Helpers
