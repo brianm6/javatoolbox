@@ -10,7 +10,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -31,10 +30,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import org.apache.log4j.Logger;
+
 import nu.xom.Attribute;
 import nu.xom.Element;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
@@ -162,7 +161,7 @@ public class JSourceView extends JPanel implements IPreferenced
 	/**
 	 * Sets the text of the scan status
 	 * 
-	 * @param  status  Status of the scan activity
+	 * @param status Status of the scan activity
 	 */
 	public void setScanStatus(String status)
 	{
@@ -172,7 +171,7 @@ public class JSourceView extends JPanel implements IPreferenced
 	/**
 	 * Sets the text of the parse status
 	 * 
-	 * @param  status  Status of the parse activity
+	 * @param status Status of the parse activity
 	 */
 	public void setParseStatus(String status)
 	{
@@ -182,7 +181,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * Workspace status bar!
      * 
-     * @param statusBar  Workspace statusbar
+     * @param statusBar Workspace statusbar
      */
     public void setStatusBar(IStatusBar statusBar)
     {
@@ -350,7 +349,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * Returns the menubar
      * 
-     * @return  Menubar
+     * @return Menubar
      */
     protected JMenuBar createMenuBar()
     {
@@ -499,7 +498,7 @@ public class JSourceView extends JPanel implements IPreferenced
         /**
          * Creates a scanner
          * 
-         * @param  dir  Directory root to scan
+         * @param dir Directory root to scan
          */
         ScanDirWorker(File dir)
         {
@@ -516,7 +515,7 @@ public class JSourceView extends JPanel implements IPreferenced
          * Finds all java files in the given directory. Called recursively so
          * the directory is passed on each invocation.
          * 
-         * @param  file  Directory to scan for files
+         * @param file Directory to scan for files
          */
         protected void findJavaFiles(File dir)
         {
@@ -599,31 +598,32 @@ public class JSourceView extends JPanel implements IPreferenced
                      
                     // Parse file and add to totals
                     FileStats fileStats = null;
+                    
                     try
                     {
                         fileStats = statsCollector.getStats(filename);
-                    }
-                    catch (IOException ioe)
-                    {
-                        ExceptionUtil.handleUI(ioe, logger_);
-                    }
+                        totals.add(fileStats);
+                        ++fileCount;
 
-                    totals.add(fileStats);
-                    ++fileCount;
-
-                    // Create table row data and append                    
-                    Object tableRow[] = new Object[colNames_.length];
-                    tableRow[0] = new Integer(fileCount);
-                    tableRow[1] = FileUtil.stripFile(filename);
-                    tableRow[2] = FileUtil.stripPath(filename);
-                    tableRow[3] = new Integer(fileStats.getCodeLines());
-                    tableRow[4] = new Integer(fileStats.getCommentLines());
-                    tableRow[5] = new Integer(fileStats.getBlankLines());
-                    tableRow[6] = new Integer(fileStats.getThrownOutLines());
-                    tableRow[7] = new Integer(fileStats.getTotalLines());
-                    tableRow[8] = new Integer(fileStats.getPercent()); // + "%";
+                        // Create table row data and append                    
+                        Object tableRow[] = new Object[colNames_.length];
+                        tableRow[0] = new Integer(fileCount);
+                        tableRow[1] = FileUtil.stripFile(filename);
+                        tableRow[2] = FileUtil.stripPath(filename);
+                        tableRow[3] = new Integer(fileStats.getCodeLines());
+                        tableRow[4] = new Integer(fileStats.getCommentLines());
+                        tableRow[5] = new Integer(fileStats.getBlankLines());
+                        tableRow[6] = new Integer(fileStats.getThrownOutLines());
+                        tableRow[7] = new Integer(fileStats.getTotalLines());
+                        tableRow[8] = new Integer(fileStats.getPercent());
                     
-                    tableModel_.addRow(tableRow);
+                        tableModel_.addRow(tableRow);
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        ExceptionUtil.handleUI(e, logger_);
+                    }
                 }
             }
         
@@ -684,14 +684,13 @@ public class JSourceView extends JPanel implements IPreferenced
         /**
          * Returns the default table cell renderer.
          *
-         * @param   table       JTable
-         * @param   value       Value to assign to the cell at [row, column]
-         * @param   isSelected  True if the cell is selected
-         * @param   hasFocus    True if cell has focus
-         * @param   row         Row of the cell to render
-         * @param   column      Column of the cell to render
-         * 
-         * @return  Default table cell renderer
+         * @param table JTable
+         * @param value Value to assign to the cell at [row, column]
+         * @param isSelected True if the cell is selected
+         * @param hasFocus True if cell has focus
+         * @param row Row of the cell to render
+         * @param column Column of the cell to render
+         * @return Default table cell renderer
          */
         public Component getTableCellRendererComponent(
             JTable  table,
@@ -777,5 +776,4 @@ public class JSourceView extends JPanel implements IPreferenced
             return this;
         }
     }
-    
 }
