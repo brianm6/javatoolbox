@@ -68,12 +68,12 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Node that contains the StatCVS plugin's preferences
+     * Node that contains the StatCVS plugin's preferences.
      */
     private static final String NODE_STATCVS_PLUGIN = "StatCVSPlugin";
     
     /** 
-     * Node that holds a collection of CVSProjects 
+     * Node that holds a collection of CVSProjects. 
      */
     private static final String NODE_CVSPROJECTS = "CVSProjects";
     
@@ -88,52 +88,52 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /** 
-     * Reference to the workspace statusbar 
+     * Reference to the workspace statusbar. 
      */
     private IStatusBar statusBar_;
     
     /** 
-     * Output text area for application activity 
+     * Output text area for application activity. 
      */
     private JSmartTextArea outputArea_;
     
     /** 
-     * Field for the project name (optional) 
+     * Field for the project name (optional). 
      */
     private JSmartComboBox projectCombo_;
     
     /** 
-     * Field for the cvs module name (required) 
+     * Field for the cvs module name (required). 
      */
     private JSmartTextField cvsModuleField_;
     
     /** 
-     * Field for the cvs root (required) 
+     * Field for the cvs root (required). 
      */
     private JSmartTextField cvsRootField_;
     
     /** 
-     * Field for the cvs password (required by empty strings are OK) 
+     * Field for the cvs password (required by empty strings are OK). 
      */
     private JSmartTextField cvsPasswordField_;
     
     /** 
-     * Field for the checkout directory (must already exist) 
+     * Field for the checkout directory (must already exist). 
      */
     private JSmartTextField checkoutDirField_;
     
     /** 
-     * Checkbox to toggle the cvslib.jar debug flag 
+     * Checkbox to toggle the cvslib.jar debug flag. 
      */
     private JCheckBox debugCheckBox_;
     
     /** 
-     * Field that contains the URL to view the generated statcvs report 
+     * Field that contains the URL to view the generated statcvs report. 
      */
     private JSmartTextField launchURLField_;
     
     /** 
-     * Saved user.dir before being overwritten (cvs commands require this) 
+     * Saved user.dir before being overwritten (cvs commands require this). 
      */
     private String originalUserDir_;
     
@@ -144,17 +144,17 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     private PrintStream originalSystemOut_;
 
     /**
-     * Saved System.err
+     * Saved System.err.
      */
     private PrintStream originalSystemErr_;
     
     /**
-     * System.out redirected to the output text area
+     * System.out redirected to the output text area.
      */
     private PrintStream redirectedSystemOut_;
     
     /**
-     * System.err redirected to the output text area
+     * System.err redirected to the output text area.
      */
     private PrintStream redirectedSystemErr_;
 
@@ -163,7 +163,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a project to the existing list displayed in the combobox
+     * Adds a project to the existing list displayed in the combobox.
      * 
      * @param project CVSProject
      */
@@ -183,7 +183,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */        
     protected void buildView()
     {
@@ -192,8 +192,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         add(BorderLayout.NORTH, buildControlPanel());
     }
     
+    
     /**
-     * Builds the control panel
+     * Builds the control panel.
      * 
      * @return JComponent
      */
@@ -250,8 +251,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return base;
     }
 
+    
     /**
-     * Builds the output panel
+     * Builds the output panel.
      * 
      * @return JComponent
      */
@@ -261,6 +263,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return new JScrollPane(outputArea_);
     }
 
+    
     /**
      * Sets debug flags for the external 3rd party cvslib.jar based on the 
      * debugCheckBox's selected state.
@@ -280,8 +283,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    
     /**
-     * Sets the system property user.dir to the given value
+     * Sets the system property user.dir to the given value.
      * 
      * @param dir Directory
      */    
@@ -290,14 +294,16 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         System.setProperty("user.dir", dir);
     }
 
+    
     /**
-     * Restores the value of system property user.dir
+     * Restores the value of system property user.dir.
      */    
     protected void restoreUserDir()
     {
         System.setProperty("user.dir", originalUserDir_);
     }
 
+    
     /**
      * Verifies that all the fields pass simple verification checks.
      */
@@ -308,6 +314,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         checkEmpty(checkoutDirField_, "Check out directory");
         checkTrailer(checkoutDirField_);
     }
+    
     
     /**
      * Checks to make sure that the given field contains some data.
@@ -325,6 +332,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 "Field '" + name + "' must have a value.");        
     }
     
+    
     /**
      * Checks the trailing character on directory fields to make sure then
      * have a terminating File.separator.
@@ -337,6 +345,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         field.setText(FileUtil.trailWithSeparator(text));    
     }
 
+    
     /**
      * Returns a log file name based on the cvs module. Takes into account that
      * the module name may be a hierarchy (a/b/c/b) and replaces file separators
@@ -353,8 +362,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             ".") + ".log";
     }
     
+    
     /**
-     * Returns the absolute path to the cvs generated log file
+     * Returns the absolute path to the cvs generated log file.
      * 
      * @return Path to log file
      */
@@ -366,8 +376,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                moduleToLogFile(cvsModuleField_.getText());
     }
 
+    
     /**
-     * Returns the base CVS checkout directory
+     * Returns the base CVS checkout directory.
      * 
      * @return Base CVS checkout directory
      */
@@ -377,6 +388,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                cvsModuleField_.getText() + 
                File.separator;
     }
+    
     
     /**
      * Examines the cvs log and makes sure the first few lines don't contain
@@ -442,6 +454,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return "StatCVS";    
     }
     
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -450,6 +463,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return this;
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -458,6 +472,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return "Runs Statcvs on a CVS module";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#startup(java.util.Map)
      */
@@ -482,6 +497,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             new PrintStream(new JTextAreaOutputStream(outputArea_));
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
@@ -552,6 +568,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         outputArea_.applyPrefs(root);
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -581,7 +598,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Data object that encapsulates information related to a CVS project
+     * Data object that encapsulates information related to a CVS project.
      */
     class CVSProject 
     {
@@ -595,37 +612,37 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         private static final String   ATTR_LAUNCHURL   = "launchurl";
         
         /** 
-         * Field for the project name (required for saving) 
+         * Field for the project name (required for saving). 
          */
         private String project_;
     
         /** 
-         * Field for the cvs module name (required) 
+         * Field for the cvs module name (required). 
          */
         private String cvsModule_;
     
         /** 
-         * Field for the cvs root (required) 
+         * Field for the cvs root (required). 
          */
         private String cvsRoot_;
     
         /** 
-         * Field for the cvs password (required but empty strings are OK) 
+         * Field for the cvs password (required but empty strings are OK). 
          */
         private String cvsPassword_;
     
         /** 
-         * Field for the checkout directory (must already exist) 
+         * Field for the checkout directory (must already exist). 
          */
         private String checkoutDir_;
     
         /** 
-         * Checkbox to toggle the cvslib.jar debug flag 
+         * Checkbox to toggle the cvslib.jar debug flag. 
          */
         private boolean debug_;
     
         /** 
-         * Field that contains the URL to view the generated statcvs report 
+         * Field that contains the URL to view the generated statcvs report. 
          */
         private String launchURL_;
         
@@ -634,7 +651,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         //----------------------------------------------------------------------
         
         /**
-         * Creates a CVSProject from its XML representation
+         * Creates a CVSProject from its XML representation.
          *
          * @param xml String containing a valid XML persistence of CVSProject
          * @throws Exception on error 
@@ -662,8 +679,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 XOMUtil.getStringAttribute(project, ATTR_LAUNCHURL, ""));
         }
         
+        
         /**
-         * Creates a CVSProject 
+         * Creates a CVSProject. 
          * 
          * @param project Project name
          * @param module CVS module name
@@ -700,6 +718,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return toDOM().toString();
         }
 
+        
         /**
          * Returns a DOM representation of the data contained in this project.
          * 
@@ -725,6 +744,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return project;
         }
 
+        
         /**
          * Returns directory that files will be checked out to.
          * 
@@ -735,6 +755,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return checkoutDir_;
         }
 
+        
         /**
          * Returns the CVS module name that will be analyzed.
          * 
@@ -745,6 +766,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return cvsModule_;
         }
 
+        
         /**
          * Returns the CVS password used for authentication.
          * 
@@ -755,6 +777,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return cvsPassword_;
         }
 
+        
         /**
          * Returns the CVSROOT for the cvs module.
          * 
@@ -765,6 +788,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return cvsRoot_;
         }
 
+        
         /**
          * Returns the debug flag for the CVS library.
          * 
@@ -775,6 +799,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return debug_;
         }
 
+        
         /**
          * Returns the URL that points to the generated statistics in HTML.
          * 
@@ -785,6 +810,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return launchURL_;
         }
 
+        
         /**
          * Returns the project name used to identify the set of configuration
          * values.
@@ -796,6 +822,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             return project_;
         }
 
+        
         /**
          * @param string Path to existing directory that cvs files will be
          *        checked out to.
@@ -813,6 +840,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             cvsModule_ = string;
         }
 
+        
         /**
          * @param string CVS authentication password
          */
@@ -821,6 +849,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             cvsPassword_ = string;
         }
 
+        
         /**
          * @param string CVSROOT 
          */
@@ -829,6 +858,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             cvsRoot_ = string;
         }
 
+        
         /**
          * @param b Debug flag
          */
@@ -837,6 +867,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             debug_ = b;
         }
 
+        
         /**
          * @param string URL to the generated statistics
          */
@@ -845,6 +876,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             launchURL_ = string;
         }
 
+        
         /**
          * @param string Project name
          */
@@ -853,6 +885,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             project_ = string;
         }
 
+        
         /**
          * Returns the project name so it is displayed by the renderer for
          * the comboxbox.
@@ -908,8 +941,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }        
     }
 
+    
     /**
-     * Executes all steps necessary to produce the StatCVS report
+     * Executes all steps necessary to produce the StatCVS report.
      */
     class EverythingAction extends StatcvsAction
     {
@@ -929,7 +963,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
     
     /**
-     * Logs into the cvs server
+     * Logs into the cvs server.
      */
     class LoginAction extends StatcvsAction
     {
@@ -966,8 +1000,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    
     /**
-     * Checks out the module from the cvs server to the local filesystem
+     * Checks out the module from the cvs server to the local filesystem.
      */    
     class CheckoutAction extends StatcvsAction
     {
@@ -1005,8 +1040,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    
     /**
-     * Generates a cvs log file which is later used as input to statcvs
+     * Generates a cvs log file which is later used as input to statcvs.
      */    
     class LogAction extends StatcvsAction
     {
@@ -1051,8 +1087,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    
     /**
-     * Runs statcvs against the generatted cvs log file to create a HTML report
+     * Runs statcvs against the generatted cvs log file to create a HTML report.
      */    
     class GenerateStatsAction extends StatcvsAction
     {
@@ -1098,8 +1135,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
     
+    
     /**
-     * Launches web browser to view the generated Statcvs reports
+     * Launches web browser to view the generated Statcvs reports.
      */
     class LaunchAction extends StatcvsAction
     {
@@ -1113,6 +1151,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             NativeBrowser.displayURL(launchURLField_.getText());
         }
     }
+    
     
     /** 
      * Updates the cvs project fields when the project selection changes.
@@ -1137,6 +1176,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    
     /**
      * Saves the current cvs project. If the project does not already exist,
      * it is created.
@@ -1198,8 +1238,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    
     /**
-     * Deletes the selected cvs project
+     * Deletes the selected cvs project.
      */
     class DeleteAction extends AbstractAction
     {

@@ -42,7 +42,8 @@ import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.workspace.IPlugin;
 
 /**
- * Shows UIDefaults for each widget in Swing's library for a given Look and Feel
+ * Shows UIDefaults for each widget in Swing's library for a given 
+ * Look and Feel.
  * 
  * @author Unascribed
  */
@@ -52,17 +53,17 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         Logger.getLogger(UIDefaultsPlugin.class);
 
     /**
-     * One tab per Swing component
+     * One tab per Swing component.
      */
     private JTabbedPane tabbedPane_;
 
     /**
-     * Special table cell renderer for colors and icons
+     * Special table cell renderer for colors and icons.
      */
     private SampleRenderer sampleRenderer_;
 
     /**
-     * Look and feel information map
+     * Look and feel information map.
      */
     private Map infoMap_;
     
@@ -71,7 +72,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a UIDefaultsPlugin
+     * Creates a UIDefaultsPlugin.
      */    
     public UIDefaultsPlugin()
     {
@@ -89,6 +90,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return "Look & Feel Defaults";
     }
     
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -96,6 +98,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         return this;
     }
+    
     
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
@@ -105,6 +108,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return "Displays UI defaults for the installed Look and Feels.";
     }
     
+    
     /**
      * @see toolbox.workspace.IPlugin#startup(java.util.Map)
      */
@@ -112,6 +116,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         buildView();
     }
+    
     
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -121,6 +126,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -129,6 +135,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
@@ -171,7 +178,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     private void buildView()
     {
@@ -198,6 +205,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         }
     }
      
+    
     /**
      * Returns a component populated tabbed pane.
      *
@@ -229,7 +237,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
     
     /**
-     * Creates a map of the components
+     * Creates a map of the components.
      *
      * @param components Input map
      * @param key Map key
@@ -266,7 +274,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
     
     /**
-     * Adds components as tabs to the given tabbed pane
+     * Adds components as tabs to the given tabbed pane.
      *
      * @param pane Tabbed pane
      * @param components Components to add
@@ -332,7 +340,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
     
     /**
-     * Custom table model so show components characteristics 
+     * Custom table model so show components characteristics. 
      */
     class MyTableModel extends AbstractTableModel
     {
@@ -384,8 +392,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         }
     }
 
+    
     /**
-     * Custom table cell renderer for showing text/colors/icons 
+     * Custom table cell renderer for showing text/colors/icons. 
      */
     class SampleRenderer extends JSmartLabel implements TableCellRenderer
     {

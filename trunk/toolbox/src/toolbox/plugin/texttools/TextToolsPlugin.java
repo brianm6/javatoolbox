@@ -72,17 +72,17 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     private static final String   NODE_OUTPUT_TEXTAREA  = "OutputTextArea";
     
     /** 
-     * Reference to the workspace status bar 
+     * Reference to the workspace status bar. 
      */
     private IStatusBar statusBar_;
 
     /** 
-     * Input text area 
+     * Input text area.
      */    
     private JSmartTextArea inputArea_;
     
     /** 
-     * Output text area 
+     * Output text area. 
      */    
     private JSmartTextArea outputArea_;
     
@@ -93,7 +93,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     private JFlipPane topFlipPane_;
    
     /**
-     * Main splitter between the input and output areas
+     * Main splitter between the input and output areas.
      */
     private JSmartSplitPane splitter_;
    
@@ -102,7 +102,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TextPlugin
+     * Creates a TextPlugin.
      */
     public TextPlugin()
     {
@@ -113,7 +113,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     //--------------------------------------------------------------------------
     
     /** 
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -147,6 +147,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         add(topFlipPane_, BorderLayout.NORTH);
     }
     
+    
     /**
      * Returns text to process. If no text is selected then the entire contents
      * of the input area is returned, otherwise only the selected text is 
@@ -177,6 +178,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         buildView();
     }
     
+    
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
@@ -185,6 +187,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         return "Text Tools";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -193,6 +196,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         return this;
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -202,6 +206,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
                "tokenizing, and regular expression based filtering.";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
@@ -249,6 +254,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
 //        });
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -275,7 +281,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Sorts the contents of the text area
+     * Sorts the contents of the text area.
      */
     class SortAction extends AbstractAction
     {
@@ -311,8 +317,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         }
     }
 
+    
     /**
-     * Creates a banner of the text
+     * Creates a banner of the text.
      */
     class BannerAction extends SmartAction
     {
@@ -414,8 +421,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        
         /**
-         * Enabled dynamic filtering  of regex as it is typed
+         * Enabled dynamic filtering  of regex as it is typed.
          */    
         class FilterKeyListener extends KeyAdapter
         {
@@ -436,9 +444,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        
         /**
          * Catchs modifications to the original document so that we know when
-         * to throw away our cached copy of the text currently being regex'ed  
+         * to throw away our cached copy of the text currently being regex'ed.  
          */
         class TextChangedListener implements DocumentListener
         {
@@ -465,6 +474,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         }
     }
     
+    
     /**
      * Flipper that allows the user to tokenize strings by providing the 
      * token delimiter. Multiline strings can also be merged into one line. 
@@ -487,6 +497,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             add(new JSmartButton(new TokenizeAction()));
             add(new JSmartButton(new SingleLineAction()));
         }
+    
         
         /** 
          * Tokenizes the string in the input text area with the entered 
@@ -512,6 +523,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        
         /** 
          * Compresses multiple lines in the input text area to a single line
          * in the output text area.
@@ -536,6 +548,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         }
     }
     
+    
     /**
      * Flipper containing common encoding/decoding schemes. 
      */
@@ -556,6 +569,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             add(new JSmartButton(new XMLEncodeAction()));
             add(new JSmartButton(new XMLDecodeAction()));
         }
+    
         
         class Base64EncodeAction extends AbstractAction
         {
@@ -571,6 +585,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        
         class Base64DecodeAction extends AbstractAction
         {
             Base64DecodeAction()
@@ -584,6 +599,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
                 outputArea_.setText(new String(b));
             }
         }
+        
         
         class HTMLEncodeAction extends AbstractAction
         {
@@ -599,6 +615,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        
         class HTMLDecodeAction extends AbstractAction
         {
             HTMLDecodeAction()
@@ -613,6 +630,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        
         class XMLEncodeAction extends AbstractAction
         {
             XMLEncodeAction()
@@ -626,6 +644,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
                     StringEscapeUtils.escapeXml(getInputText()));
             }
         }
+        
         
         class XMLDecodeAction extends AbstractAction
         {
