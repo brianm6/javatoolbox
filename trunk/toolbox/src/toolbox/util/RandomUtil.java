@@ -10,9 +10,9 @@ public final class RandomUtil
     /** random number generator **/
     private static Random r = new Random(System.currentTimeMillis());
   
-	/** All alpha characters **/
-	private static String alphaChars = "abcdefghijklmnopqrstuvwxyz";
-	
+    /** All alpha characters **/
+    private static final String alphaChars = "abcdefghijklmnopqrstuvwxyz";
+    
     /**
      * Prevent construction
      */
@@ -23,7 +23,7 @@ public final class RandomUtil
     /**
      * Generates a random integer in the range [0..MAX_INT]
      * 
-     * @return	int
+     * @return    int
      */
     public static int nextInt()
     {
@@ -50,7 +50,7 @@ public final class RandomUtil
      */
     public static int nextInt(int floor, int ceiling)
     {
-    	Assert.isTrue(floor <= ceiling, 
+        Assert.isTrue(floor <= ceiling, 
             "Ceiling " + ceiling + " cannot be less than floor " + floor);
             
         return floor + (nextInt(ceiling - floor));
@@ -59,11 +59,11 @@ public final class RandomUtil
     /**
      * Generates a random lowercase alpha character in the range [a..z]
      * 
-     * @return	char
+     * @return    char
      */
     public static char nextLowerAlpha()
     {
-    	return alphaChars.charAt(nextInt(alphaChars.length()));
+        return alphaChars.charAt(nextInt(alphaChars.length()));
     }
     
     /**
@@ -73,7 +73,7 @@ public final class RandomUtil
      */
     public static char nextUpperAlpha()
     {
-    	return Character.toUpperCase(nextLowerAlpha());
+        return Character.toUpperCase(nextLowerAlpha());
     }
     
     /**
@@ -83,17 +83,17 @@ public final class RandomUtil
      */
     public static char nextAlpha()
     {
-    	char c = nextLowerAlpha();
-    	if(r.nextBoolean())
-    		c = Character.toUpperCase(c);
-    	return c;
+        char c = nextLowerAlpha();
+        if(r.nextBoolean())
+            c = Character.toUpperCase(c);
+        return c;
     }
     
-	/**
-	 * Generates a random double
-	 *  
-	 * @return  double
-	 */
+    /**
+     * Generates a random double
+     *  
+     * @return  double
+     */
     public static double nextDouble()
     {
         int decimal = nextInt();
@@ -103,7 +103,10 @@ public final class RandomUtil
 
 
     /**
-     *  @return A random signed double from 0.0 to ceiling
+     * Generates a random double with a maximum value
+     * 
+     * @param  ceiling  Maximum value of double to generate
+     * @return A random signed double from 0.0 to ceiling
      */
     public static double nextDouble(double ceiling)
     {

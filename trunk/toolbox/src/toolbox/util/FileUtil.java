@@ -11,7 +11,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.LineNumberReader;
 import java.io.OutputStream;
 
 import org.apache.log4j.Category;
@@ -22,7 +21,8 @@ import org.apache.log4j.Category;
 public final class FileUtil
 {
     /** Logger **/
-    private static Category logger_ = Category.getInstance(FileUtil.class);
+    private static final Category logger_ = 
+        Category.getInstance(FileUtil.class);
     
     /**
      * Prevent construction
@@ -64,8 +64,8 @@ public final class FileUtil
      *
      * @param   filename    Name of the file
      * @return  Contents of the file as a string
-     * @throws  FileNotFoundException
-     * @throws  IOException    
+     * @throws  FileNotFoundException if file not found
+     * @throws  IOException on IO error
      */
     public static String getFileContents(String filename) 
         throws FileNotFoundException, IOException
@@ -97,8 +97,8 @@ public final class FileUtil
      * @param   contents    Contents to store in the file
      * @param   append      Specify if you want to append to the file     
      * @return  Contents of the file as a string
-     * @throws  FileNotFoundException
-     * @throws  IOException 
+     * @throws  FileNotFoundException if file not found
+     * @throws  IOException on IO error
      */    
     public static String setFileContents(String filename, String contents, 
         boolean append) throws FileNotFoundException, IOException    
@@ -149,7 +149,7 @@ public final class FileUtil
      * string is absolute in form.
      *
      * @return    Tempory file name
-     * @throws    IOException
+     * @throws    IOException on IO error
      */
     public static String getTempFilename() throws IOException
     {
@@ -161,7 +161,7 @@ public final class FileUtil
      * 
      * @param   dir    Directory to assume the file will be created in
      * @return  Tempory filename in absolute form
-     * @throws  IOException
+     * @throws  IOException on IO error
      */
     public static String getTempFilename(File dir) throws IOException
     {
@@ -176,7 +176,7 @@ public final class FileUtil
      *  Moves a file to a given directory. The destination
      *  directory must exist and be writable.
      *
-     *  @param    file       File to move
+     *  @param    srcFile    File to move
      *  @param    destDir    Destination directory
      */
     public static void moveFile(File srcFile, File destDir)

@@ -53,7 +53,7 @@ public class Main implements IFindClassListener
                 
                 case  1: classToFind = args[0]; 
                          ignoreCase = false;
-                         finder.findClass(classToFind, ignoreCase);                 
+                         finder.findClass(classToFind, ignoreCase);
                          break; 
             }
         }

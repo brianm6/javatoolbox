@@ -36,6 +36,8 @@ public final class StringUtil
      * <P>the string is padded with space characters on the right to given width
      * strings longer than width are returned unaltered
      *
+     * @param  str   String to left
+     * @param  width Max width
      * @return a string of length width containing the given string on the left
      */
     public static String left(String str, int width)
@@ -102,7 +104,9 @@ public final class StringUtil
      * if the string representing the integer is greater than width then 
      * this string is returned
      *
-     * @return a string representation of an integer of length width right justified
+     * @param  num    Number to right
+     * @param  width  Max width
+     * @return a string representation of an int of length width right justified
      */
     public static String right(int num, int width)
     {
@@ -110,12 +114,12 @@ public final class StringUtil
     }
 
     /**
-     *  Right justifies a string to the given width using spaces.
-     *  String longer than the width are returned as is.
+     * Right justifies a string to the given width using spaces.
+     * String longer than the width are returned as is.
      *
-     *  @param    str      String to right justify
-     *  @param    width    Width of justified string
-     *  @return   Right justified string
+     * @param    str      String to right justify
+     * @param    width    Width of justified string
+     * @return   Right justified string
      */
     public static String right(String str, int width)
     {
@@ -123,13 +127,13 @@ public final class StringUtil
     }
 
     /**
-     *  Right justifies a string to the given width and fill character.
-     *  String longer than the width are returned as is.
+     * Right justifies a string to the given width and fill character.
+     * String longer than the width are returned as is.
      *
-     *  @param    str      String to right justify
-     *  @param    width    Width of justified string
-     *  @param    c        Fill character
-     *  @return   Right justified string
+     * @param    str      String to right justify
+     * @param    width    Width of justified string
+     * @param    padChar  Pad character
+     * @return   Right justified string
      */
     public static String right(String str, int width, char padChar )
     {
@@ -176,6 +180,9 @@ public final class StringUtil
 
     /**
      * Return the given list as a debug string
+     * 
+     * @param  theList  The list to convert to a string
+     * @return List converted to a string
      */
     public static String toString( List theList )
     {

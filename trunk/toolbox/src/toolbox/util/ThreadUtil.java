@@ -10,10 +10,10 @@ import org.apache.log4j.Category;
  */
 public final class ThreadUtil
 {
-	/** Logger **/
-	protected static final Category logger = 
+    /** Logger **/
+    protected static final Category logger = 
         Category.getInstance(ThreadUtil.class);
-		
+        
     /**
      * Prevent construction
      */ 
@@ -24,18 +24,18 @@ public final class ThreadUtil
     /**
      * Sleep without all the try/catch business
      * 
-     * @param	millis	Milliseconds for the current thread to sleep
+     * @param    millis    Milliseconds for the current thread to sleep
      */
     public static void sleep(int millis)
     {
-    	try
-    	{
-    		Thread.currentThread().sleep(millis);
-    	}
-    	catch(Exception e)
-    	{
-  			logger.error(e);  		
-    	}
+        try
+        {
+            Thread.currentThread().sleep(millis);
+        }
+        catch(Exception e)
+        {
+              logger.error(e);          
+        }
     }
     
     /**
@@ -61,8 +61,13 @@ public final class ThreadUtil
  */        
 class MethodRunner implements Runnable
 {
+    /** Name of method to execute **/
     private String method;
+    
+    /** Object to execute the method on **/
     private Object target;
+    
+    /** Parameters to pass on the method invocation **/
     private Object[] params;
 
     /**
@@ -92,7 +97,8 @@ class MethodRunner implements Runnable
                 paramTypes[i] = params[i].getClass();
             
             /* get method and invoke */
-            Method m = target.getClass().getMethod(method, paramTypes);                    
+            Method m = 
+                target.getClass().getMethod(method, paramTypes);
             m.invoke(target, params);    
         }
         catch (NoSuchMethodException nsme)
