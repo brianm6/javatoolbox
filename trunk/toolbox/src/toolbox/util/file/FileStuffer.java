@@ -9,6 +9,7 @@ import java.util.Date;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.RandomUtil;
+import toolbox.util.ResourceCloser;
 import toolbox.util.ThreadUtil;
 
 /**
@@ -133,8 +134,7 @@ public class FileStuffer implements Runnable
         }
         finally
         {
-            if (pw != null)
-                pw.close();
+            ResourceCloser.close(pw);
         }
     }
     
