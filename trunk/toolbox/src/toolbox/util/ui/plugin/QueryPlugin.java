@@ -292,15 +292,13 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
-        String method = "[appPrf] ";
-        
         String history = prefs.getProperty(KEY_HISTORY);
         
         if (!StringUtil.isNullOrEmpty(history))
         {            
             String[] historyItems = StringUtil.tokenize(history, "|");
     
-            logger_.debug(method + 
+            logger_.debug(
                 "Restoring " + historyItems.length + "sql stmts to history.");
             
             for (int i=0; i<historyItems.length; i++)

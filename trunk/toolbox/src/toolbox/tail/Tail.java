@@ -516,7 +516,7 @@ public class Tail implements Runnable
     }
     
     /**
-     * Fires an event when tail is paused 
+     * Fires an event when the tail is paused 
      */
     protected void fireTailPaused()
     {
@@ -543,8 +543,6 @@ public class Tail implements Runnable
      */
     public void run()
     {
-        String method = "[run   ] ";
-        
         try
         {
             LineNumberReader lnr = (LineNumberReader) reader_;
@@ -610,8 +608,8 @@ public class Tail implements Runnable
                             //logger_.debug(method + 
                             //  "Skipped " + skipped + " lines on reset");
                             
-                            logger_.debug(method + "Re-attached to " + 
-                                getFile().getName());
+                            logger_.debug(
+                                "Re-attached to " + getFile().getName());
                         }
                         else
                         {
@@ -631,7 +629,7 @@ public class Tail implements Runnable
         }
         catch (Exception e)
         {
-            logger_.error(method, e);
+            logger_.error("Tail.run", e);
         }
     }
 }

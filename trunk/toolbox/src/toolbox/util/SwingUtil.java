@@ -200,8 +200,6 @@ public class SwingUtil
      */
     public static Font getPreferredMonoFont()
     {
-        String method = "[mono  ] ";
-        
         String favoredFont;
         
         if (Platform.isUnix())
@@ -213,7 +211,7 @@ public class SwingUtil
         
         if (monofont_ == null)
         {
-            logger_.debug(method + "Favored Font = " + favoredFont);
+            logger_.debug("Favored Font = " + favoredFont);
             
             GraphicsEnvironment ge = 
                 GraphicsEnvironment.getLocalGraphicsEnvironment();
