@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ReturnValue;
-import toolbox.util.thread.concurrent.BoundedBuffer;
+import toolbox.util.thread.concurrent.IBoundedBuffer;
 import toolbox.util.thread.concurrent.BoundedBufferAdapter;
 
 
@@ -33,7 +33,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     
     private int poolSize_;
     private Runnable runnable_;
-    private BoundedBuffer requestQueue_;
+    private IBoundedBuffer requestQueue_;
 
 
     //--------------------------------------------------------------------------

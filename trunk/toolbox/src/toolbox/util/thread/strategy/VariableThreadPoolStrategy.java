@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ReturnValue;
-import toolbox.util.thread.concurrent.BoundedBuffer;
+import toolbox.util.thread.concurrent.IBoundedBuffer;
 import toolbox.util.thread.concurrent.BoundedBufferAdapter;
 import toolbox.util.thread.concurrent.Timeout;
 
@@ -46,7 +46,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     private int busySize_;
     private int timeout_;
     private Runnable runnable_;
-    private BoundedBuffer requestQueue_;
+    private IBoundedBuffer requestQueue_;
 
     //--------------------------------------------------------------------------
     // Constructors
