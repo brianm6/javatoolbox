@@ -46,4 +46,31 @@ public class LineNumberDecoratorTest extends TestCase
         for (int i = 0; i < 5000; i++)
             assertEquals("[" + (i + 1) + "] Line", decorator.filter("Line"));
     }
+    
+    
+    /**
+     * Tests the filter when disabled.
+     */
+    public void testFilterDisabled()
+    {
+        logger_.info("Running testFilterDisabled...");
+        
+        String s = "12345";
+        LineNumberDecorator d = new LineNumberDecorator();
+        d.setEnabled(false);
+        assertEquals("howdy", d.filter("howdy"));        
+    }
+    
+    
+    /**
+     * Tests the filter for null input.
+     */
+    public void testFilterNull()
+    {
+        logger_.info("Running testFilterNull...");
+        
+        LineNumberDecorator d = new LineNumberDecorator();
+        d.setEnabled(true);
+        assertNull(d.filter(null)); 
+    }
 }
