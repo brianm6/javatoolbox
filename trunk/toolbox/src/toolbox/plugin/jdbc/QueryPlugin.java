@@ -700,7 +700,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             String s = getActiveText();
             
-            System.out.println(StringUtil.bars(s));
+            System.out.println(StringUtil.addBars(s));
         }
     }
     

@@ -625,10 +625,11 @@ public final class StringUtil
      * @param s String to enclose in bars.
      * @return String
      */
-    public static String bars(String s)
+    public static String addBars(String s)
     {
         StringBuffer sb = new StringBuffer();
         String bar = StringUtil.repeat("=", 80);
+        sb.append("\n");
         sb.append(bar);
         sb.append("\n");
         sb.append(s);
