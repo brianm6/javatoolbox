@@ -10,25 +10,25 @@ import toolbox.util.XOMUtil;
 
 /**
  * Data object that encapsulates information related to a CVS project.
+ * 
+ * @see toolbox.plugin.statcvs.StatcvsPlugin
  */
-public class CVSProject
+public class CVSProject implements Comparable
 {
     //--------------------------------------------------------------------------
     // XML Constants
     //--------------------------------------------------------------------------
 
-    /**
-     * Root node of the CVSProject preferences.
-     */
+    // Root node of the CVSProject preferences.
     public  static final String NODE_CVSPROJECT    = "CVSProject";
-    private static final String   ATTR_PROJECT     = "project";
-    private static final String   ATTR_MODULE      = "module";
-    private static final String   ATTR_CVSROOT     = "cvsroot";
-    private static final String   ATTR_PASSWORD    = "password";
-    private static final String   ATTR_CHECKOUTDIR = "checkoutdir";
-    private static final String   ATTR_DEBUG       = "debug";
-    private static final String   ATTR_LAUNCHURL   = "launchurl";
-    private static final String   ATTR_ENGINE      = "engine";
+    private static final String   ATTR_PROJECT     =   "project";
+    private static final String   ATTR_MODULE      =   "module";
+    private static final String   ATTR_CVSROOT     =   "cvsroot";
+    private static final String   ATTR_PASSWORD    =   "password";
+    private static final String   ATTR_CHECKOUTDIR =   "checkoutdir";
+    private static final String   ATTR_DEBUG       =   "debug";
+    private static final String   ATTR_LAUNCHURL   =   "launchurl";
+    private static final String   ATTR_ENGINE      =   "engine";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -134,6 +134,21 @@ public class CVSProject
         setEngine(engine);
     }
 
+    //--------------------------------------------------------------------------
+    // Comparable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * CVSProject implements Comparable so that the SortedComboBoxModel can
+     * maintain its elements in alphabetical order.
+     * 
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object obj)
+    {
+        return getProject().compareToIgnoreCase(obj.toString());
+    }
+    
     //--------------------------------------------------------------------------
     // DOM <--> XML
     //--------------------------------------------------------------------------
@@ -350,7 +365,7 @@ public class CVSProject
     }
     
     //--------------------------------------------------------------------------
-    // Overridees java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
     /**
@@ -363,5 +378,4 @@ public class CVSProject
     {
         return getProject();
     }
-    
 }
