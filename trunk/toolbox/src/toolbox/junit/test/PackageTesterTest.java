@@ -49,7 +49,7 @@ public class PackageTesterTest extends TestCase
     {
         logger_.info("Running testMain...");
         
-        PackageTester.main(new String[] { testPackage_ } );
+        PackageTester.main(new String[] {testPackage_});
     }
     
     

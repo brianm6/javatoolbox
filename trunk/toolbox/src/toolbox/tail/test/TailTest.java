@@ -29,7 +29,7 @@ import toolbox.util.io.NullWriter;
  */
 public class TailTest extends TestCase
 {
-    public static final Logger logger_ = Logger.getLogger(TailTest.class);
+    private static final Logger logger_ = Logger.getLogger(TailTest.class);
 
     //--------------------------------------------------------------------------
     // Fields
@@ -119,7 +119,7 @@ public class TailTest extends TestCase
                  
             String[] paras = StringUtil.tokenize(para, "\n");
                    
-            for (int i=0; i<backlog; i++)
+            for (int i = 0; i < backlog; i++)
             {
                 String line = listener.waitForNextLine();
                 logger_.info("Backlog line " + i + ": " + line);
@@ -185,7 +185,7 @@ public class TailTest extends TestCase
      */
     public void testTailLifeCycle() throws Exception
     {
-       logger_.info("Running testTailLifeCycle...");
+        logger_.info("Running testTailLifeCycle...");
        
         PipedWriter writer = new PipedWriter();
         PipedReader reader = new PipedReader(writer);
@@ -321,7 +321,7 @@ public class TailTest extends TestCase
         
         PrintWriter pw = new PrintWriter(writer);
         
-        for(int i=0; i<iterations; i++)
+        for (int i = 0; i < iterations; i++)
         {
             pw.println(i + " " + value);
             pw.flush();
@@ -341,8 +341,8 @@ public class TailTest extends TestCase
     protected String makeParagraph(int lines)
     {
         StringBuffer sb = new StringBuffer();
-        for (int i=0; i < lines; i++)
-            sb.append(i + " " + makeSentence() + (i+1 == lines ? "" : "\n"));
+        for (int i = 0; i < lines; i++)
+            sb.append(i + " " + makeSentence() + (i + 1 == lines ? "" : "\n"));
         return sb.toString();
     }
     
@@ -355,7 +355,7 @@ public class TailTest extends TestCase
     protected String makeSentence()
     {
         StringBuffer sb = new StringBuffer();
-        for (int i=0, n = RandomUtil.nextInt(6,10); i<n; i++)
+        for (int i = 0, n = RandomUtil.nextInt(6, 10); i < n; i++)
             sb.append(RandomUtil.nextElement(words_) + " ");
         return sb.toString();
     }
@@ -370,7 +370,8 @@ public class TailTest extends TestCase
  */
 class TestTailListener implements TailListener
 {
-    private static final Logger logger_ = TailTest.logger_;
+    private static final Logger logger_ = 
+        Logger.getLogger(TestTailListener.class);
         
     private BlockingQueue startEvents_    = new BlockingQueue();
     private BlockingQueue stopEvents_     = new BlockingQueue();
@@ -397,8 +398,9 @@ class TestTailListener implements TailListener
         
     }
 
+    
     /**
-     * Tail was started
+     * @see toolbox.tail.TailListener#tailStarted(toolbox.tail.Tail)
      */
     public void tailStarted(Tail tail)
     {
@@ -414,8 +416,9 @@ class TestTailListener implements TailListener
         }
     }
     
-    /** 
-     * Tail was stopped
+
+    /**
+     * @see toolbox.tail.TailListener#tailStopped(toolbox.tail.Tail)
      */
     public void tailStopped(Tail tail)
     {
@@ -430,9 +433,10 @@ class TestTailListener implements TailListener
             logger_.error(e);
         }
     }
-  
+
+    
     /**
-     * Tail was ended
+     * @see toolbox.tail.TailListener#tailEnded(toolbox.tail.Tail)
      */
     public void tailEnded(Tail tail)
     {
@@ -448,8 +452,9 @@ class TestTailListener implements TailListener
         }
     }
     
-    /** 
-     * Tail was paused
+    
+    /**
+     * @see toolbox.tail.TailListener#tailPaused(toolbox.tail.Tail)
      */
     public void tailPaused(Tail tail)
     {
@@ -465,8 +470,9 @@ class TestTailListener implements TailListener
         }
     }
     
+
     /**
-     * Tail was unpaused
+     * @see toolbox.tail.TailListener#tailUnpaused(toolbox.tail.Tail)
      */
     public void tailUnpaused(Tail tail)
     {
@@ -490,31 +496,68 @@ class TestTailListener implements TailListener
         logger_.info("Tail re-attached");
     }
 
+    
+    /**
+     * Waits for the start event.
+     * 
+     * @throws InterruptedException on interruption.
+     */
     public void waitForStart() throws InterruptedException
     {
         startEvents_.pull();
     }
     
+    
+    /**
+     * Waits for the stop event.
+     * 
+     * @throws InterruptedException on interruption.
+     */
     public void waitForStop() throws InterruptedException
     {
         stopEvents_.pull();
     }
     
+    
+    /**
+     * Waits for the pause event.
+     * 
+     * @throws InterruptedException on interruption.
+     */
     public void waitForPause() throws InterruptedException
     {
         pauseEvents_.pull();
     }
     
+    
+    /**
+     * Waits for the unpause event.
+     * 
+     * @throws InterruptedException on interruption.
+     */
     public void waitForUnpause() throws InterruptedException
     {
         unpauseEvents_.pull();
     }
     
+    
+    /**
+     * Waits for the end event.
+     * 
+     * @throws InterruptedException on interruption.
+     */
     public void waitForEnded() throws InterruptedException
     {
         endedEvents_.pull();
     }
     
+    
+    /**
+     * Waits for the next line event.
+     * 
+     * @return Next line
+     * @throws InterruptedException on interruption.
+     */
     public String waitForNextLine() throws InterruptedException
     {
         return (String) nextLineEvents_.pull();

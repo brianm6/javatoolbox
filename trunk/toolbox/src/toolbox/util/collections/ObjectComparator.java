@@ -79,7 +79,7 @@ public class ObjectComparator implements Comparator, Serializable
      */
     public ObjectComparator(String propertyName, boolean reverseOrder)
     {
-        this(new Property[] { new Property(propertyName, reverseOrder)});
+        this(new Property[] {new Property(propertyName, reverseOrder)});
     }
 
     
@@ -91,8 +91,8 @@ public class ObjectComparator implements Comparator, Serializable
      */
     public ObjectComparator(String property1, String property2)
     {
-        this(new Property[] 
-            { new Property(property1), new Property(property2)});
+        this(
+            new Property[] {new Property(property1), new Property(property2)});
     }
 
     
@@ -103,9 +103,13 @@ public class ObjectComparator implements Comparator, Serializable
      * @param property2 Property 2
      * @param property3 Property 3
      */
-    public ObjectComparator(String property1,String property2, String property3)
+    public ObjectComparator(
+        String property1,
+        String property2,
+        String property3)
     {
-        this(new Property[] {
+        this(
+            new Property[] {
                 new Property(property1),
                 new Property(property2),
                 new Property(property3)});
@@ -119,7 +123,7 @@ public class ObjectComparator implements Comparator, Serializable
      */
     public ObjectComparator(Property prop)
     {
-        this(new Property[] { prop });
+        this(new Property[] {prop});
     }
 
     
@@ -131,7 +135,7 @@ public class ObjectComparator implements Comparator, Serializable
      */
     public ObjectComparator(Property prop1, Property prop2)
     {
-        this(new Property[] { prop1, prop2 });
+        this(new Property[] {prop1, prop2});
     }
 
     
@@ -302,7 +306,10 @@ public class ObjectComparator implements Comparator, Serializable
          * @param reverseOrder Flip order
          * @param comparator Comparator
          */
-        public Property(String name, boolean reverseOrder,Comparator comparator)
+        public Property(
+            String name,
+            boolean reverseOrder,
+            Comparator comparator)
         {
             name_ = name;
             reverseOrder_ = reverseOrder;

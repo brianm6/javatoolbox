@@ -45,13 +45,14 @@ public class CompleteTestCollectorTest extends TestCase
         
         TestCollector tc = new CompleteTestCollector();
         
-        for(Enumeration e = tc.collectTests(); e.hasMoreElements(); )
+        for (Enumeration e = tc.collectTests(); e.hasMoreElements();)
         {
-            String classname = (String)e.nextElement();
+            String classname = (String) e.nextElement();
 
             logger_.info("Testclass=" + classname);
-                        
-            assertTrue(classname + " should end with Test", 
+
+            assertTrue(
+                classname + " should end with Test",
                 classname.endsWith("Test"));
         }
     }

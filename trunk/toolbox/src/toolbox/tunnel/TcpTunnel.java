@@ -266,10 +266,10 @@ public class TcpTunnel implements TcpTunnelListener
                         Socket cs = ss_.accept();
     
                         // Remote socket
-                        Socket rs = new Socket(remoteHost_,remotePort_);
+                        Socket rs = new Socket(remoteHost_, remotePort_);
                         
                         fireStatusChanged(
-                            "Tunnelling port "+ listenPort_ + 
+                            "Tunnelling port " + listenPort_ + 
                             " to port " + remotePort_ + 
                             " on host " + remoteHost_ + " ...");
     
@@ -367,8 +367,8 @@ public class TcpTunnel implements TcpTunnelListener
      */
     protected void fireStatusChanged(String status)
     {
-        for (Iterator i = listeners_.iterator(); i.hasNext(); )
-            ((TcpTunnelListener) i.next()).statusChanged(this, status);    
+        for (Iterator i = listeners_.iterator(); i.hasNext();)
+             ((TcpTunnelListener) i.next()).statusChanged(this, status);    
     }
 
     
@@ -380,7 +380,7 @@ public class TcpTunnel implements TcpTunnelListener
      */
     protected void fireBytesRead(int connRead)
     {
-        for (Iterator i=listeners_.iterator(); i.hasNext(); )
+        for (Iterator i = listeners_.iterator(); i.hasNext();)
             ((TcpTunnelListener) i.next()).bytesRead(this, connRead, inTotal_);
     }
 
@@ -393,7 +393,7 @@ public class TcpTunnel implements TcpTunnelListener
      */
     protected void fireBytesWritten(int connWritten)
     {
-        for (Iterator i=listeners_.iterator(); i.hasNext(); )
+        for (Iterator i = listeners_.iterator(); i.hasNext();)
             ((TcpTunnelListener) i.next()).bytesWritten(
                 this, connWritten, outTotal_);
     }
@@ -401,12 +401,10 @@ public class TcpTunnel implements TcpTunnelListener
     
     /**
      * Fires notifcation that the tunnel has started.
-     * 
-     * @param status New status.
      */
     protected void fireTunnelStarted()
     {
-        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+        for (Iterator i = listeners_.iterator(); i.hasNext();)
             ((TcpTunnelListener) i.next()).tunnelStarted(this);    
     }
     

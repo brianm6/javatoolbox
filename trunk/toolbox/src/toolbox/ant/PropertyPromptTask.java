@@ -246,7 +246,7 @@ public class PropertyPromptTask extends Task
         if (StringUtil.isNullOrBlank(currentValue) && proposedValue_ != null)
             currentValue = proposedValue_;
         
-        if (!(useExistingValue_ == true && proposedValue_ != null))
+        if (!(useExistingValue_ && proposedValue_ != null))
         {
             if (timeout_ > -1)
             {

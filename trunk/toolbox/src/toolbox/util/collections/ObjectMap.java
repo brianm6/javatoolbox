@@ -49,7 +49,9 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         Collections.synchronizedMap(new WeakHashMap(100));
 
     private static final String[] TRUE_VALUES =
-        { "on", "true", "activate", "yes", "y", "t", "1" };
+    {
+        "on", "true", "activate", "yes", "y", "t", "1"
+    };
 
     private static final Set NUMBER_CLASSES = new HashSet();
 
@@ -309,7 +311,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         int maxLen = 0;
         
         // Find max length of the keys so values can be lined up
-        for(Iterator i = entrySet().iterator(); i.hasNext(); )
+        for (Iterator i = entrySet().iterator(); i.hasNext();)
         {
             Entry e = (Entry) i.next();
             
@@ -425,7 +427,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     /**
      * Returns true if silent, false otherwise.
      * 
-     * @param boolean 
+     * @return boolean
      */
     protected boolean isSilent()
     {
@@ -436,7 +438,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     /**
      * Returns true if weak ref, false otherwise.
      * 
-     * @param boolean 
+     * @return boolean 
      */
     protected boolean isBeanReferenceWeak()
     {
@@ -610,6 +612,11 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         private PropertyDescriptor[] pds_;
         private MapEntry[] mapEntries_;
 
+        /**
+         * Creates a ObjectEntrySet.
+         * 
+         * @throws IntrospectionException on reflection error.
+         */
         public ObjectEntrySet() throws IntrospectionException
         {
             pds_ = getPropertyDescriptors(getBean().getClass());
@@ -620,32 +627,50 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         }
 
         
+        /**
+         * @see java.util.Collection#size()
+         */
         public int size()
         {
             return pds_.length;
         }
 
         
+        /**
+         * @see java.util.Collection#iterator()
+         */
         public Iterator iterator()
         {
             return new EntryIterator();
         }
 
         
+        /**
+         * EntryIterator
+         */
         class EntryIterator implements Iterator
         {
             private int i_ = 0;
 
+            /**
+             * @see java.util.Iterator#hasNext()
+             */
             public boolean hasNext()
             {
                 return i_ < pds_.length;
             }
 
+            /**
+             * @see java.util.Iterator#next()
+             */
             public Object next()
             {
                 return mapEntries_[i_++];
             }
 
+            /**
+             * @see java.util.Iterator#remove()
+             */
             public void remove()
             {
                 throw new UnsupportedOperationException();
@@ -653,16 +678,27 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         }
 
         
+        /**
+         * MapEntry
+         */
         class MapEntry implements java.util.Map.Entry
         {
             private int index_;
 
+            /**
+             * Creates a MapEntry.
+             * 
+             * @param newIndex Index.
+             */
             public MapEntry(int newIndex)
             {
                 index_ = newIndex;
             }
 
             
+            /**
+             * @see java.util.Map.Entry#getKey()
+             */
             public Object getKey()
             {
                 return pds_[index_].getName();
@@ -670,8 +706,11 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 
             
             /**
+             * Returns value.
+             * 
              * @throws MapInvocationTargetException if an exception is thrown 
              *         while calling the method.
+             * @return Object
              */
             public Object getValue() throws MapInvocationTargetException
             {
@@ -705,6 +744,9 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
             }
 
             
+            /**
+             * @see java.lang.Object#hashCode()
+             */
             public int hashCode()
             {
                 return getKey().hashCode();
@@ -712,6 +754,8 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 
             
             /**
+             * @param value Value
+             * @return Object
              * @throws UnsupportedOperationException if a set method is not 
              *         found.
              * @throws MapInvocationTargetException if an exception is thrown 
@@ -744,7 +788,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                             value = convertString(value.toString(), parmType);
                     }
 
-                    setMethod.invoke(getBean(), new Object[] { value });
+                    setMethod.invoke(getBean(), new Object[] {value});
                 }
                 catch (RuntimeException e)
                 {

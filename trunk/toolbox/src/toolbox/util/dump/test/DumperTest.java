@@ -66,7 +66,7 @@ public class DumperTest extends TestCase
     public void testDumpNestedObject()
     {
         logger_.info("Running testDumpNestedObject...");
-        logger_.debug(StringUtil.addBars(Dumper.dump(new Employee())));            
+        logger_.debug(StringUtil.addBars(Dumper.dump(new Employee())));
     }
     
     
@@ -86,7 +86,8 @@ public class DumperTest extends TestCase
     public void testDumpMultipleReferences()
     {
         logger_.info("Running testDumpMultipleReferences...");
-        logger_.debug(StringUtil.addBars(Dumper.dump(new MultipleReferences())));        
+        logger_.debug(
+            StringUtil.addBars(Dumper.dump(new MultipleReferences())));        
     }
     
     
@@ -128,6 +129,9 @@ public class DumperTest extends TestCase
             private Collection collection_;
             private Collection clone_;
                         
+            /**
+             * Creates a CollectionDump.
+             */
             public CollectionDump()
             {
                 collection_ = new ArrayList();
@@ -136,7 +140,13 @@ public class DumperTest extends TestCase
                 collection_.add(new Employee());
                 clone_ = collection_;
             }
+
             
+            /**
+             * Creates a CollectionDump.
+             * 
+             * @param c Collection
+             */
             public CollectionDump(Collection c)
             {
                 collection_ = c;
@@ -205,6 +215,9 @@ public class DumperTest extends TestCase
         private Address address_;
         private Status  status_;
             
+        /**
+         * Creates a Employee.
+         */
         public Employee()
         {
             firstName_ = "Daffy";
@@ -232,6 +245,9 @@ public class DumperTest extends TestCase
         private String zipCode_;
         private Country country_;
                 
+        /**
+         * Creates a Address.
+         */
         public Address()
         {
             street_ = "1010 Main St";
@@ -284,27 +300,38 @@ public class DumperTest extends TestCase
     // Legacy Test Objects
     //--------------------------------------------------------------------------
     
+    /**
+     * A
+     */
     class A
     {
         private int anAVariable;
         private int xDeclaredInAandB = 5;
     }
     
+    /**
+     * B
+     */
     class B extends A
     {
         protected transient int aBVariable;
         private int xDeclaredInAandB = 8;
     }
 
+    /**
+     * C
+     */
     class C extends B
     {
         volatile boolean aCVariable = false;
     }
 
+    /**
+     * D
+     */
     class D extends C
     {
         //  protected Object aDVariable = new Object();
-        //  private String myString1 = "asdfsadfsadf\nasdfsadf\njasdfs\ndafsadfsadfdsaasdfasdf";
         //  private String myString2 = "aaaa\nbbbb\n\n\ncccc\n\n";
         //  Object differentType = new C();
         //private volatile static Integer synchInteger = new Integer(9);
@@ -314,20 +341,33 @@ public class DumperTest extends TestCase
         //  public javax.swing.JLabel jLabel= new javax.swing.JLabel();
     }
 
+    /**
+     * Fun
+     */
     class Fun extends Object
     {
         private Integer funInteger = new Integer(13);
     }
 
+    /**
+     * MegaFun
+     */
     class MegaFun extends Fun
     {
         private Integer megaFunInteger = new Integer(14);
+        
+        /**
+         * @see java.lang.Object#toString()
+         */
         public String toString()
         {
             return "this is what you get from calling \"toString()\" !!!";
         }
     }
 
+    /**
+     * TestObject2
+     */
     class TestObject2
     {
 

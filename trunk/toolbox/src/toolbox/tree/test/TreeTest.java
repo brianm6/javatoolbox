@@ -54,7 +54,7 @@ public class TreeTest extends TestCase
      */
     public void setUp() throws IOException
     {
-        System.out.println(StringUtil.repeat("=",80));
+        System.out.println(StringUtil.repeat("=", 80));
         rootDir_ = FileUtil.createTempDir();
     }
 
@@ -99,7 +99,8 @@ public class TreeTest extends TestCase
         assertNotNull(t6);
 
         Tree t7 = 
-        new Tree(FileUtil.getTempDir(), true, true, true, Tree.SORT_NAME);
+            new Tree(FileUtil.getTempDir(), true, true, true, Tree.SORT_NAME);
+        
         assertNotNull(t7);
         
     }
@@ -364,7 +365,7 @@ public class TreeTest extends TestCase
         logger_.info("Running testPrintUsage...");
         
         // Send in an invalid flag so usage information is shown
-        Tree.main(new String[] { "-xyz"});
+        Tree.main(new String[] {"-xyz"});
     }
     
     
@@ -391,6 +392,7 @@ public class TreeTest extends TestCase
      * Creates a temp file in the given directory.
      * 
      * @param dir Dir to create file in.
+     * @return Temp file.
      * @throws IOException on I/O error.
      */
     protected File createFile(File dir) throws IOException

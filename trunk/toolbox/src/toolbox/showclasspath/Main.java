@@ -119,7 +119,9 @@ public final class Main
 
         max++;
 
-        st=new StringTokenizer(classPath, System.getProperty("path.separator"));
+        st = new StringTokenizer(
+                classPath,
+                System.getProperty("path.separator"));
 
         // Header row
         if (st.countTokens() > 0)
@@ -168,11 +170,13 @@ public final class Main
                     if (!f.exists())
                         pout.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
                     else if (!f.isFile())
-                        pout.print(StringUtil.right("[Not File]",MAX_SIZE_LEN));
+                        pout.print(
+                            StringUtil.right("[Not File]", MAX_SIZE_LEN));
                     else if (!f.canRead())
-                        pout.print(StringUtil.right("[ReadOnly]",MAX_SIZE_LEN));
+                        pout.print(
+                            StringUtil.right("[ReadOnly]", MAX_SIZE_LEN));
                     else
-                        pout.print(StringUtil.right("[Error]",MAX_SIZE_LEN));
+                        pout.print(StringUtil.right("[Error]", MAX_SIZE_LEN));
                 }
             }
             else if (f.isDirectory())

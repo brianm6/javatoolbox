@@ -259,7 +259,7 @@ public class Tree
     
         CommandLine cmdLine = parser.parse(options, args, true);
     
-        for (Iterator i = cmdLine.iterator(); i.hasNext(); )
+        for (Iterator i = cmdLine.iterator(); i.hasNext();)
         {
             Option option = (Option) i.next();
             String opt = option.getOpt();
@@ -429,6 +429,7 @@ public class Tree
      * @param rootDir Root directory of the tree.
      * @param showFiles Set to true if you want file info in the tree, false 
      *        otherwise.
+     * @param showDate Set to true to print out the files timestamp.
      * @param showSize Set to true to print out the size of the file next to the
      *        filename.
      * @param sortBy Set to any of SORT_[NAME|SIZE|NONE] to specify sort order.
@@ -524,6 +525,7 @@ public class Tree
      * 
      * @param rootDir Root directory.
      * @param level Current level of decorated indentation.
+     * @return boolean True
      */
     protected boolean showTree(File rootDir, String level)
     {
@@ -598,10 +600,14 @@ public class Tree
                 //String header = StringUtil.repeat(" ", alotted - tlen); 
                 
                 //writer_.println(level + filler + header + dashy);
-                //writer_.println(level + filler + header.substring(1) + "." + total + ".");
+                //writer_.println(level + filler + 
+                //          header.substring(1) + "." + total + ".");
                 
                 String s = files.length + " file(s) ";
-                String gap = StringUtil.repeat(" ", alotted - s.length() - tlen);
+                
+                String gap =
+                    StringUtil.repeat(" ", alotted - s.length() - tlen);
+                
                 writer_.println(level + filler + s + gap + total);
             }
             
@@ -625,7 +631,7 @@ public class Tree
             writer_.println(BAR);
             
         // Process each directory    
-        for (int i=0; i<len; i++)
+        for (int i = 0; i < len; i++)
         {
             File current = dirs[i];
 
@@ -636,7 +642,7 @@ public class Tree
             writer_.println();
             
             // Recurse            
-            if (i == len-1 && len > 1)  
+            if (i == len - 1 && len > 1)  
             {
                 // At end and more then one dir
                 showTree(current, level + SPACER);
