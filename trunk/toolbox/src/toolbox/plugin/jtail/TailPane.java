@@ -223,9 +223,14 @@ public class TailPane extends JHeaderPanel
     public TailPane(ITailPaneConfig config, IStatusBar statusBar) 
         throws IOException, FileNotFoundException
     {
-        super(config.getFilenames()[0]);
+        super("");
+        
+        if (config.getFilenames().length > 0)
+            setTitle(config.getFilenames()[0]);
+        
         statusBar_ = statusBar;
         tailPaneListeners_ = new ITailPaneListener[0];
+        contexts_ = new TailContext[0];
         buildView(config);
         buildFilters();        
         setConfiguration(config);                
@@ -264,7 +269,7 @@ public class TailPane extends JHeaderPanel
         queueReader_.start();
         
         String[] filenames = config_.getFilenames();
-        contexts_ = new TailContext[0];
+        //contexts_ = new TailContext[0];
         
         for (int i = 0; i < filenames.length; i++)
         {
