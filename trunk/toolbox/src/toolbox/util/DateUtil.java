@@ -115,7 +115,7 @@ public class DateUtil
      */
     public static Date getBeginningOfMonth()
     {
-        Date d = today();
+        Date d = getToday();
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         c.set(Calendar.DAY_OF_MONTH, 1);
@@ -150,7 +150,7 @@ public class DateUtil
      * 
      * @return  Todays date
      */
-    public static Date today()
+    public static Date getToday()
     {
         return zeroTime(new Date());
     }
@@ -165,7 +165,7 @@ public class DateUtil
      */
     public static Date getNextDay(int day)
     {
-        return getNextDay(today(), day);
+        return getNextDay(getToday(), day);
     }
 
 
@@ -206,7 +206,7 @@ public class DateUtil
      */
     public static Date getPreviousDay(int day)
     {
-        return getPreviousDay(today(), day);
+        return getPreviousDay(getToday(), day);
     }
 
 
