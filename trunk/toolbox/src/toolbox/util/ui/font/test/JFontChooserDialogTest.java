@@ -3,20 +3,20 @@ package toolbox.util.ui.font.test;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
-
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
+import toolbox.junit.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
 
 /**
- * Unit test for JFontChooserDialog
+ * Unit test for JFontChooserDialog.
  */
-public class JFontChooserDialogTest extends TestCase
+public class JFontChooserDialogTest extends UITestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(JFontChooserDialogTest.class);
@@ -26,7 +26,7 @@ public class JFontChooserDialogTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      * @throws Exception on LAF error
@@ -74,6 +74,6 @@ public class JFontChooserDialogTest extends TestCase
         });
 
         SwingUtil.centerWindow(fsd);
-        fsd.setVisible(true);            
+        fsd.setVisible(true);
     }
 }
