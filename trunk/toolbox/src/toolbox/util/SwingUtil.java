@@ -49,7 +49,7 @@ public final class SwingUtil
     /**
      * Global antialias flag that all 'smart' components are aware of
      */
-    private static boolean antiAliased_ = true;
+    private static boolean antiAliased_ = false;
     
     //--------------------------------------------------------------------------
     // Static Block
