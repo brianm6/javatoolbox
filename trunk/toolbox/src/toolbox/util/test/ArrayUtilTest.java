@@ -180,6 +180,47 @@ public class ArrayUtilTest extends TestCase
         assertEquals("values don't match", "c", e[0]);
     }
 
+    /**
+     * Tests subset(Object,int,int) for boundary conditions
+     */
+    public void testSubsetOutOfBounds()
+    {
+        logger_.info("Running testSubetOutOfBounds...");
+        
+        String[] a = new String[] { "zero", "one", "two" };
+        
+        // Subset bounds which are invalid
+        int[][] bounds = new int[][] 
+        { 
+            {-1, -1 },
+            {-1,  0  },
+            {-1,  1  },
+            {-1,  2  },
+            {-1,  3  },
+            { 0,  3  },
+            { 1,  3  },
+            { 2,  3  }, 
+            { 3,  3  }     
+        };
+        
+        // Run each set of bounds through and make sure it fails.
+        for (int i=0; i<bounds.length; i++)
+        {
+            try
+            {
+                int lower = bounds[i][0];
+                int upper = bounds[i][1];
+                ArrayUtil.subset(a, lower, upper);                
+                fail("Bounds (" +lower+ ", " + upper + ") should have failed");
+            }
+            catch (IllegalArgumentException iae)
+            {
+                // Passed
+                logger_.debug("Error message: " + iae.getMessage());
+            }
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Unit Tests: toString()
     //--------------------------------------------------------------------------
