@@ -14,13 +14,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import nu.xom.Builder;
 import nu.xom.Element;
+import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.ResourceUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
@@ -38,13 +41,32 @@ import toolbox.workspace.PluginWorkspace;
  */ 
 public class DocumentViewerPlugin extends JPanel implements IPlugin
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(DocumentViewerPlugin.class);
-    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-
+    
+    private static final Logger logger_ = 
+        Logger.getLogger(DocumentViewerPlugin.class);
+    
+    /**
+     * File containing hard coded list of doc viewers just in case runtime
+     * introspection doesn't work under Webstart.
+     * <pre>
+     *  
+     * <docviewers>
+     *   <docviewer name="Widget Viewer" class="org.viewer.WidgetViewer"/>
+     *   <docviewer ... />
+     * </docviewers>
+     * 
+     * </pre>
+     */
+    private static final String FILE_DOCVIEWERS = 
+        "/toolbox/plugin/docviewer/docviewers.xml";
+    
+    private static final String NODE_DOCVIEWER = "docviewer";
+    private static final String     ATTR_NAME  = "name";
+    private static final String     ATTR_CLASS = "class";
+    
     /** 
      * Root preferences node for this plugin.
      */
@@ -183,12 +205,15 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     protected void buildViewerList()
     {
+        // The blessed list of doc viewer classes
+        List classList = new ArrayList();
+        
         String[] classes = 
             ClassUtil.getClassesInPackage(
                 ClassUtil.stripClass(getClass().getName()));
        
         logger_.info("Viewers: " + ArrayUtil.toString(classes, true)); 
-                
+        
         for (int i=0; i<classes.length; i++)
         {
             String fqcn = classes[i];
@@ -201,18 +226,58 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
                     
                     if (!c.isInterface())
                         if (DocumentViewer.class.isAssignableFrom(c))
-                        {
-                            logger_.info("fcqn is a doc viewer: " + fqcn);
-                            
-                            DocumentViewer viewer = (DocumentViewer) c.newInstance();
-                            viewer.startup(new HashMap());
-                            viewers_.add(viewer);
-                        }
+                            classList.add(c);
                 }
                 catch (Exception e)
                 {
                     logger_.warn(e);
                 }
+            }
+        }
+        
+        // If no viewers were found, then we're probably running as a WebStart
+        // app in which case ClassUtil.getClassesInPackage() is not going to
+        // work. Have to use the hardcoded list of viewers instead.
+        
+        if (classList.isEmpty())
+        {
+            try
+            {
+                Element root = new Builder().build(
+                    ResourceUtil.getResource(FILE_DOCVIEWERS)).getRootElement();
+                
+                logger_.debug(XOMUtil.toXML(root));
+                
+                Elements docviewers = root.getChildElements(NODE_DOCVIEWER);
+                
+                for (int i=0, s=docviewers.size(); i<s; i++)
+                {
+                    Element docviewer = docviewers.get(i);
+                    String clazz = docviewer.getAttributeValue(ATTR_CLASS);
+                    classList.add(Class.forName(clazz));    
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                ExceptionUtil.handleUI(ex, logger_);
+            }
+        }
+        
+        // Take the class list and turn them into doc viewers
+        
+        for (int i=0, j=classList.size(); i<j; i++)
+        {
+            try
+            {
+                Class c = (Class) classList.get(i);
+                DocumentViewer viewer = (DocumentViewer) c.newInstance();
+                viewer.startup(new HashMap());
+                viewers_.add(viewer);
+            }
+            catch (Exception e)
+            {
+                ExceptionUtil.handleUI(e, logger_);
             }
         }
     }
