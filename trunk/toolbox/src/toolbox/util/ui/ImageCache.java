@@ -24,32 +24,36 @@ public class ImageCache
     private static final String ROOT = "/toolbox/util/ui/images/";
     
     // Images
-    public static final String IMAGE_TOOLBOX  = ROOT + "Toolbox.gif";
-    public static final String IMAGE_COPY     = ROOT + "Copy.gif";
-    public static final String IMAGE_PASTE    = ROOT + "Paste.gif";
-    public static final String IMAGE_SAVE     = ROOT + "Save.gif";
-    public static final String IMAGE_SAVEAS   = ROOT + "SaveAs.gif";
-    public static final String IMAGE_FIND     = ROOT + "Search.gif";
-    public static final String IMAGE_DELETE   = ROOT + "Delete.gif";
-    public static final String IMAGE_CROSS    = ROOT + "Cross.gif";
-    public static final String IMAGE_TRIANGLE = ROOT + "Triangle.gif";
-    public static final String IMAGE_REFRESH  = ROOT + "Refresh.gif";
-    public static final String IMAGE_TRASHCAN = ROOT + "TrashCan.png";
-    
-    public static final String IMAGE_SORT_ASCENDING = 
-        ROOT + "SortAscending.gif";
-    
-    public static final String IMAGE_SORT_DESCENDING = 
-        ROOT + "SortDescending.gif";
-    
-    public static final String IMAGE_TREE_OPEN   = ROOT + "TreeOpen.gif";
-    public static final String IMAGE_TREE_CLOSED = ROOT + "TreeClosed.gif";
-    public static final String IMAGE_HARD_DRIVE  = ROOT + "HardDrive.gif";
-    
-    public static final String IMAGE_DATASOURCE  = ROOT + "Datasource.gif";
+    public static final String IMAGE_BRACES        = ROOT + "Braces.png";
+    public static final String IMAGE_CLEAR         = ROOT + "Clear.png";
+    public static final String IMAGE_COLUMNS       = ROOT + "Columns.png";
+    public static final String IMAGE_CONFIG        = ROOT + "Config.png";
+    public static final String IMAGE_COPY          = ROOT + "Copy.gif";
+    public static final String IMAGE_CROSS         = ROOT + "Cross.gif";
+    public static final String IMAGE_DATASOURCE    = ROOT + "Datasource.gif";
+    public static final String IMAGE_DELETE        = ROOT + "Delete.gif";
+    public static final String IMAGE_FIND          = ROOT + "Search.gif";
+    public static final String IMAGE_HARD_DRIVE    = ROOT + "HardDrive.gif";
+    public static final String IMAGE_LOCK          = ROOT + "Lock.png";
+    public static final String IMAGE_PASTE         = ROOT + "Paste.gif";
+    public static final String IMAGE_PLAY          = ROOT + "Play.png";
     public static final String IMAGE_QUESTION_MARK = ROOT + "QuestionMark.png";
-    public static final String IMAGE_CLEAR = ROOT + "Clear.png";
+    public static final String IMAGE_REFRESH       = ROOT + "Refresh.gif";
+    public static final String IMAGE_SAVE          = ROOT + "Save.gif";
+    public static final String IMAGE_SAVEAS        = ROOT + "SaveAs.gif";
+    public static final String IMAGE_SPANNER       = ROOT + "Spanner.png";
+    public static final String IMAGE_TABLES        = ROOT + "Tables.png";
+    public static final String IMAGE_TOOLBOX       = ROOT + "Toolbox.gif";
+    public static final String IMAGE_TRASHCAN      = ROOT + "TrashCan.png";
+    public static final String IMAGE_TREE_CLOSED   = ROOT + "TreeClosed.gif";
+    public static final String IMAGE_TREE_OPEN     = ROOT + "TreeOpen.gif";
+    public static final String IMAGE_TRIANGLE      = ROOT + "Triangle.gif";
     
+    public static final String IMAGE_SORT_ASCENDING  = ROOT + 
+                                                       "SortAscending.gif";
+    
+    public static final String IMAGE_SORT_DESCENDING = ROOT + 
+                                                       "SortDescending.gif";
     
     /**
      * Map for cached icons.
