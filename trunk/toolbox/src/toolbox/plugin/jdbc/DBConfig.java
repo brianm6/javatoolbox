@@ -25,6 +25,7 @@ import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
@@ -38,7 +39,7 @@ import toolbox.workspace.WorkspaceAction;
 /**
  * JDBC driver and connection settings configuration panel.
  */    
-public class DBConfig extends JPanel implements IPreferenced
+public class DBConfig extends JHeaderPanel implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(DBConfig.class);
     
@@ -116,6 +117,7 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     public DBConfig(QueryPlugin plugin)
     {
+        super(ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE), "Databases");
         plugin_ = plugin;
         statusBar_ = plugin.getStatusBar();
         buildView();
@@ -150,10 +152,11 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     protected void buildView()
     {
-        setLayout(new ParagraphLayout());
+        JPanel content = new JPanel(new ParagraphLayout());
 
-        add(new JSmartLabel("Profile"), ParagraphLayout.NEW_PARAGRAPH);
-        add(profileCombo_ = new JSmartComboBox());
+        content.add(new JSmartLabel("Profile"), ParagraphLayout.NEW_PARAGRAPH);
+        content.add(profileCombo_ = new JSmartComboBox());
+        
         profileCombo_.setEditable(true);
         profileCombo_.setAction(new ProfileChangedAction());
         
@@ -162,7 +165,7 @@ public class DBConfig extends JPanel implements IPreferenced
         tb.setBorderPainted(false);
         tb.add(new SaveAction());
         tb.add(new DeleteAction());
-        add(tb);
+        content.add(tb);
 
         // Create a jar text field with a "..." button to choose the jar file
         // attached to its right side
@@ -191,24 +194,26 @@ public class DBConfig extends JPanel implements IPreferenced
         gbc.weightx = 1;
         jarPanel.add(jarChooserButton, gbc);
 
-        add(new JSmartLabel("Jar"), ParagraphLayout.NEW_PARAGRAPH);
-        add(jarPanel);
+        content.add(new JSmartLabel("Jar"), ParagraphLayout.NEW_PARAGRAPH);
+        content.add(jarPanel);
 
-        add(new JSmartLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
-        add(driverField_ = new JSmartTextField(20));
+        content.add(new JSmartLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
+        content.add(driverField_ = new JSmartTextField(20));
         
-        add(new JSmartLabel("URL"), ParagraphLayout.NEW_PARAGRAPH);
-        add(urlField_ = new JSmartTextField(20));
+        content.add(new JSmartLabel("URL"), ParagraphLayout.NEW_PARAGRAPH);
+        content.add(urlField_ = new JSmartTextField(20));
     
-        add(new JSmartLabel("User"), ParagraphLayout.NEW_PARAGRAPH);
-        add(userField_ = new JSmartTextField(15));
+        content.add(new JSmartLabel("User"), ParagraphLayout.NEW_PARAGRAPH);
+        content.add(userField_ = new JSmartTextField(15));
      
-        add(new JSmartLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
-        add(passwordField_ = new JSmartTextField(15));
+        content.add(new JSmartLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
+        content.add(passwordField_ = new JSmartTextField(15));
 
-        add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
-        add(new JSmartButton(new ConnectAction()));
-        add(new JSmartButton(new DisconnectAction()));
+        content.add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
+        content.add(new JSmartButton(new ConnectAction()));
+        content.add(new JSmartButton(new DisconnectAction()));
+        
+        setContent(content);
     }
 
     //--------------------------------------------------------------------------

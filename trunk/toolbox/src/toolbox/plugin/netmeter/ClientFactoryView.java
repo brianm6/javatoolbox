@@ -1,17 +1,15 @@
 package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import toolbox.util.FontUtil;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
@@ -27,7 +25,7 @@ import toolbox.util.ui.layout.ParagraphLayout;
  *     NetMeterPlugin.
  * </ul>
  */
-public class ClientFactoryView extends JPanel
+public class ClientFactoryView extends JHeaderPanel
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -59,6 +57,7 @@ public class ClientFactoryView extends JPanel
      */
     public ClientFactoryView(NetMeterPlugin plugin)
     {
+        super(ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE), "Client Factory");
         plugin_ = plugin;
         buildView();
     }
@@ -72,40 +71,33 @@ public class ClientFactoryView extends JPanel
      */
     protected void buildView()
     {
-        setBorder(BorderFactory.createEtchedBorder());
-        setLayout(new BorderLayout());
+        JPanel content = new JPanel(new BorderLayout());
         
-        JLabel title = new JSmartLabel(
-                "  Client Factory", 
-                Color.LIGHT_GRAY, 
-                Color.WHITE); 
-        
-        FontUtil.setBold(title);
-
         JPanel inputPanel = new JPanel(new ParagraphLayout());
+        
         inputPanel.add(new JSmartLabel("Server Hostname"), 
             ParagraphLayout.NEW_PARAGRAPH);
         
         serverHostnameField_ = new JSmartTextField(12);
         serverHostnameField_.setText(NetMeterPlugin.DEFAULT_HOSTNAME);
-        inputPanel.add(serverHostnameField_);
-        
-        inputPanel.add(new JSmartLabel("Server Port"), 
-            ParagraphLayout.NEW_PARAGRAPH);
         
         serverPortField_ = new JSmartTextField(6);
         serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT + "");
+        
+        inputPanel.add(serverHostnameField_);
+        
+        inputPanel.add(
+            new JSmartLabel("Server Port"), 
+            ParagraphLayout.NEW_PARAGRAPH);
+        
         inputPanel.add(serverPortField_);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(new JSmartButton(new CreateAction()));
         
-        JPanel pp = new JPanel(new BorderLayout());
-        pp.add(title, BorderLayout.CENTER);
-        
-        add(title, BorderLayout.NORTH);
-        add(inputPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        content.add(inputPanel, BorderLayout.CENTER);
+        content.add(buttonPanel, BorderLayout.SOUTH);
+        setContent(content);
     }
     
     //--------------------------------------------------------------------------
