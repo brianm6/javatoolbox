@@ -233,7 +233,7 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     class ConnectAction extends WorkspaceAction
     {
-        public ConnectAction()  
+        ConnectAction()  
         {
             super("Connect", true, plugin_.getComponent(), statusBar_);
             putValue(SHORT_DESCRIPTION, "Connects to the database");
@@ -281,9 +281,8 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         SaveAction()
         {
-            super("", ImageCache.getIcon("/toolbox/util/ui/images/Save.gif"));
+            super("", ImageCache.getIcon(ImageCache.IMAGE_SAVE));
             putValue(SHORT_DESCRIPTION, "Saves the profile");
-            
         }
         
         public void actionPerformed(ActionEvent e)
@@ -331,7 +330,7 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         public DeleteAction()  
         {
-            super("", ImageCache.getIcon("/toolbox/util/ui/images/Delete.gif"));
+            super("", ImageCache.getIcon(ImageCache.IMAGE_DELETE));
             putValue(SHORT_DESCRIPTION, "Deletes the profile");
         }
     
