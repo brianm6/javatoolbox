@@ -792,7 +792,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
             }
             else if (evt.getClickCount() == 1)
             {
-                fireFileSelected();
+                // No need to fire a fileSelected event. 
+                // FileListSelectionListener has this covered.
             }
             else if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
             {
