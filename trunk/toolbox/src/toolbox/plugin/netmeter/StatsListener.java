@@ -1,6 +1,6 @@
 package toolbox.plugin.netmeter;
 
-import toolbox.util.service.*;
+import toolbox.util.service.ServiceListener;
 
 /**
  * StatsListener provides notification related to collected statistics based on 

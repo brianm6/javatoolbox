@@ -28,6 +28,10 @@ import toolbox.util.ui.JSmartButton;
  */
 public class MultivalentViewer extends JPanel implements DocumentViewer
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * PDF browser component.
      */
@@ -126,8 +130,8 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-	 * Builds the GUI.
-	 */
+     * Constructs the user interface.
+     */
     protected void buildView()
     {
         browser_ = Multivalent.getInstance().getBrowser("name", "Basic");
@@ -140,7 +144,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
         JButton button = new JSmartButton("Back");
         buttonPanel.add(button);
         button.addActionListener(
-            new SemanticSender(browser_,ForwardBack.MSG_BACKWARD, null));
+            new SemanticSender(browser_, ForwardBack.MSG_BACKWARD, null));
 
         button = new JSmartButton("Forward");
         button.addActionListener(
@@ -165,19 +169,29 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
         doc.setScrollbarShowPolicy(VScrollbar.SHOW_AS_NEEDED);
         
         // then after loading new document, determine page dimensions from
-		// doc.bbox and set Swing scrollbars accordingly
+        // doc.bbox and set Swing scrollbars accordingly
     }
 
     //--------------------------------------------------------------------------
     // Inner Classes
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * SemanticSender queues up events on the browsers event queue.
+     */
     class SemanticSender implements ActionListener
     {
-        Browser br_;
-        String cmd_;
-        Object arg_;
+        private Browser br_;
+        private String cmd_;
+        private Object arg_;
 
+        /**
+         * Creates a SemanticSender.
+         * 
+         * @param br Browser.
+         * @param cmd Command.
+         * @param arg Arguments.
+         */
         SemanticSender(Browser br, String cmd, Object arg)
         {
             br_ = br;
@@ -185,6 +199,11 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
             arg_ = arg;
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             br_.eventq(cmd_, arg_);

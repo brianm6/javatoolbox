@@ -94,7 +94,7 @@ public class ClientFactoryView extends JPanel
             ParagraphLayout.NEW_PARAGRAPH);
         
         serverPortField_ = new JSmartTextField(6);
-        serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT+"");
+        serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT + "");
         inputPanel.add(serverPortField_);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());

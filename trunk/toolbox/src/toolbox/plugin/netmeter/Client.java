@@ -205,8 +205,8 @@ public class Client extends AbstractService
      */
     protected void fireThroughput(int throughput)
     {
-        for (int i=0; 
-             i<listeners_.length; 
+        for (int i = 0; 
+             i < listeners_.length; 
              listeners_[i++].throughput(throughput));
     }
     
@@ -234,7 +234,7 @@ public class Client extends AbstractService
                     timer_ = new Timer();
                     timer_.schedule(new ThroughputCollector(), 1000, 1000);
             
-                    byte[] b = "hoooooooooopppppppppppppppppptrtttttttttttttttt".getBytes();
+                    byte[] b = "abcdefghijklmnopqrstuvwxyz123456789".getBytes();
             
                     while (!stopped_)
                         os_.write(b);
@@ -311,7 +311,7 @@ public class Client extends AbstractService
      */
     class ThroughputCollector extends TimerTask
     {
-        int lastCount_ = 0;
+        private int lastCount_ = 0;
         
         /**
          * @see java.lang.Runnable#run()
@@ -323,8 +323,10 @@ public class Client extends AbstractService
             lastCount_ = current;
             
             NumberFormat nf = NumberFormat.getIntegerInstance();
-            logger_.info("Client thruput: " + nf.format(delta/1000) + " kb/s");
-            fireThroughput(delta/1000);
+            logger_.info(
+                "Client thruput: " + nf.format(delta / 1000) + " kb/s");
+
+            fireThroughput(delta / 1000);
         }
     }
 }

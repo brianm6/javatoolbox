@@ -18,6 +18,10 @@ public class CVSProject
     //--------------------------------------------------------------------------
     
     // XML nodes and attributes for saving of preferences.
+    
+    /**
+     * Root node of the CVSProject preferences.
+     */
     public  static final String NODE_CVSPROJECT    = "CVSProject";
     private static final String   ATTR_PROJECT     = "project";
     private static final String   ATTR_MODULE      = "module";
@@ -66,9 +70,9 @@ public class CVSProject
      */
     private String launchURL_;
     
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Constructors
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a CVSProject from its XML representation.

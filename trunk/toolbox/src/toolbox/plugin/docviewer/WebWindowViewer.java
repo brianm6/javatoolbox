@@ -39,6 +39,10 @@ public class WebWindowViewer implements DocumentViewer
     private static final Logger logger_ = 
         Logger.getLogger(WebWindowViewer.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Base pane that houses the browser and button panel.
      */
@@ -164,7 +168,7 @@ public class WebWindowViewer implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] { "html", "htm" };
+        return new String[] {"html", "htm"};
     }
 
     
@@ -204,17 +208,15 @@ public class WebWindowViewer implements DocumentViewer
      */
     class LocationPanel extends JPanel implements KeyListener, ActionListener
     {
-//        static
-//        {
-//            System.out.println(StringUtil.addBars("Loaded Locatino pantelll"));
-//        }
-        
-        //private static final Logger logger_ = Logger.getLogger(LocationPanel.class);
-        
-        protected JTextField textField_;
-        protected JButton goButton_;
-        protected HTMLPane htmlPane_;
+        private JTextField textField_;
+        private JButton goButton_;
+        private HTMLPane htmlPane_;
 
+        /**
+         * Creates a LocationPanel.
+         * 
+         * @param pane HTML pane.
+         */
         LocationPanel(HTMLPane pane)
         {
             htmlPane_ = pane;
@@ -242,7 +244,7 @@ public class WebWindowViewer implements DocumentViewer
             add(textField_);
             
 //        Helper.addComponent(this, textField_,
-//                            GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+//                       GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
 //                            1, 0,
 //                            1, 1,
 //                            new Insets(5,0,5,5),
@@ -262,7 +264,7 @@ public class WebWindowViewer implements DocumentViewer
             JToolBar tb = new JToolBar();
             
             tb.add(new AbstractAction("Back") 
-                    {
+            {
                 public void actionPerformed(ActionEvent e)
                 {
                     htmlPane_.back();
@@ -270,7 +272,7 @@ public class WebWindowViewer implements DocumentViewer
             });
             
             tb.add(new AbstractAction("Forward") 
-                    {
+            {
                 public void actionPerformed(ActionEvent e)
                 {
                     htmlPane_.forward();
@@ -281,6 +283,9 @@ public class WebWindowViewer implements DocumentViewer
             
         }
 
+        /**
+         * Loads the page. 
+         */
         void loadPage()
         {
             String urlStr = textField_.getText();
@@ -303,29 +308,48 @@ public class WebWindowViewer implements DocumentViewer
                 htmlPane_.loadPage(u);
         }
 
-        //--------------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // ActionListener Interface 
-        //--------------------------------------------------------------------------
+        //----------------------------------------------------------------------
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             loadPage();
         }
 
-        //--------------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // KeyListener Interface 
-        //--------------------------------------------------------------------------
+        //----------------------------------------------------------------------
         
+        /**
+         * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+         */
         public void keyPressed(KeyEvent e)
         {
             if (e.getKeyCode() == KeyEvent.VK_ENTER)
-               {
+            {
                 loadPage();
             }
         }
+
         
-        public void keyReleased(KeyEvent e){}
+        /**
+         * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+         */
+        public void keyReleased(KeyEvent e)
+        {
+        }
         
-        public void keyTyped(KeyEvent e){}
+        
+        /**
+         * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+         */
+        public void keyTyped(KeyEvent e)
+        {
+        }
     }
 }

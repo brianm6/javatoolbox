@@ -6,7 +6,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import toolbox.util.service.*;
+import toolbox.util.service.Service;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceListener;
+import toolbox.util.service.ServiceView;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;

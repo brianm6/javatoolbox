@@ -62,7 +62,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     // TODO: Add checkbox/combo to set type of text (xml, java) and syntax 
     //       hilite as appropriate.
     
-    public static final Logger logger_ = 
+    private static final Logger logger_ = 
         Logger.getLogger(TextToolsPlugin.class);
     
     //--------------------------------------------------------------------------
@@ -188,7 +188,8 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     public void startup(Map params)
     {
         if (params != null)
-            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar_ = (IStatusBar) 
+                params.get(PluginWorkspace.PROP_STATUSBAR);
         
         buildView();
     }
@@ -259,7 +260,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
 
         splitter_.applyPrefs(root);
                
-        // This may not have to be invoked later..investigate later...            
+        // This may not have to be invoked later..investigate later... 
 //        SwingUtilities.invokeLater(new Runnable()
 //        {
 //            public void run()
@@ -329,12 +330,12 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                 Object[] lines = StringUtil.tokenize(text, StringUtil.NL);
                 List linez = new ArrayList();
                 
-                for (int i=0; i<lines.length; i++)
+                for (int i = 0; i < lines.length; i++)
                     linez.add(lines[i]);
                 
                 Collections.sort(linez);
                 
-                for (Iterator i = linez.iterator(); i.hasNext(); )
+                for (Iterator i = linez.iterator(); i.hasNext();)
                     outputArea_.append(i.next() + StringUtil.NL);
             }
         }
@@ -368,7 +369,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         {
             String[] lines = StringUtil.tokenize(getInputText(), StringUtil.NL);
             
-            for (int i=0; i<lines.length; i++)
+            for (int i = 0; i < lines.length; i++)
                 outputArea_.append(StringUtil.NL + Banner.getBanner(lines[i]));
         }
     }
@@ -403,7 +404,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             String[] lines = StringUtil.tokenize(text, StringUtil.NL);
             StringBuffer sb = new StringBuffer();
             
-            for (int i=0; i<lines.length; i++)
+            for (int i = 0; i < lines.length; i++)
             {
                 // Escape embedded quotes
                 String line = StringUtil.replace(lines[i], "\"", "\\\"");
@@ -455,7 +456,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             String[] lines = StringUtil.tokenize(wrapped, StringUtil.NL);
             StringBuffer sb = new StringBuffer();
             
-            for (int i=0; i<lines.length; i++)
+            for (int i = 0; i < lines.length; i++)
             {
                 // Escape embedded quotes
                 String line = StringUtil.replace(lines[i], "\"", "\\\"");
@@ -496,6 +497,9 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // Constructors
         //----------------------------------------------------------------------
         
+        /**
+         * Creates a FilterFlipper.
+         */
         FilterFlipper()
         {
             buildView();
@@ -543,7 +547,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                 filter = new RegexLineFilter(regex);
                 filter.setEnabled(true);
                 
-                for (int i=0; i<lines.length; i++)
+                for (int i = 0; i < lines.length; i++)
                 {
                     String passed = filter.filter(lines[i]);
                 
@@ -720,7 +724,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                     new StringTokenizer(getInputText(), 
                         delimiterField_.getText());
             
-                while(st.hasMoreElements())
+                while (st.hasMoreElements())
                     outputArea_.append(st.nextToken() + StringUtil.NL);
                     
                 statusBar_.setStatus(st.countTokens() + " tokens identified.");

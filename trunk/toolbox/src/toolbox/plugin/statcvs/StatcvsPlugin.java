@@ -51,7 +51,7 @@ import toolbox.workspace.WorkspaceAction;
  * <a href=http://statcvs.sourceforge.net>StatCVS</a> command line application. 
  * The plugin also does all the upfront work that is not apparent in StatCVS to
  * generate a report. This includes checking out the module from cvs, 
- * generating a cvs log file and then running StatCVS to generate a HTML report. 
+ * generating a cvs log file and then running StatCVS to generate a HTML report.
  * This is all 100% java and does not rely on a native cvs executable to run 
  * (thanks to the <a href=http://javacvs.netbeans.org/>javacvs</a> module from 
  * <a href=http://www.netbeans.org>Netbeans</a>).
@@ -201,7 +201,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     protected JComponent buildControlPanel()
     {
-        JPanel p = new JPanel(new ParagraphLayout(5,5,5,5,5,5));
+        JPanel p = new JPanel(new ParagraphLayout(5, 5, 5, 5, 5, 5));
  
         p.add(new JSmartLabel("Project"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(projectCombo_ = new JSmartComboBox());
@@ -224,18 +224,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         p.add(new JSmartLabel("CVS Password"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(cvsPasswordField_ = new JSmartTextField(20));
         
-        p.add(new JSmartLabel("Checkout Directory"), ParagraphLayout.NEW_PARAGRAPH);
+        p.add(new JSmartLabel("Checkout Directory"), 
+                ParagraphLayout.NEW_PARAGRAPH);
         p.add(checkoutDirField_ = new JSmartTextField(30));
         
         p.add(new JSmartLabel("Debug output"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(debugCheckBox_ = new JSmartCheckBox());
         
-        p.add(new JSmartLabel("Launch URL"), ParagraphLayout.NEW_PARAGRAPH);        
+        p.add(new JSmartLabel("Launch URL"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(launchURLField_ = new JSmartTextField(30));
 
         launchURLField_.setEditable(false);
                 
-        JPanel b = new JPanel(new GridLayoutPlus(4,1,5,5,5,5));
+        JPanel b = new JPanel(new GridLayoutPlus(4, 1, 5, 5, 5, 5));
         
         b.add(new JSmartButton(new EverythingAction()));
         b.add(new JSmartButton(new LoginAction()));
@@ -429,7 +430,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         if (tossFirst)
         {
             int i = contents.indexOf("\n");
-            contents = contents.substring(i+1);    
+            contents = contents.substring(i + 1);    
             logger_.debug("Tossed first line from log file");
         }
         else if (addFirst)
@@ -480,7 +481,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     public void startup(Map params)
     {
         if (params != null)
-            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar_ = (IStatusBar) 
+                params.get(PluginWorkspace.PROP_STATUSBAR);
 
         buildView();
         
@@ -555,7 +557,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             Elements projectList = 
                 projects.getChildElements(CVSProject.NODE_CVSPROJECT);
              
-            for(int i=0, n=projectList.size(); i<n; i++)
+            for (int i = 0, n = projectList.size(); i < n; i++)
             {
                 Element projectNode = projectList.get(i);
                 CVSProject project = new CVSProject(projectNode.toXML());
@@ -578,10 +580,11 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         Element root = new Element(NODE_STATCVS_PLUGIN);
         Element projects = new Element(NODE_CVSPROJECTS);
         
-        projects.addAttribute(
-            new Attribute(ATTR_SELECTED, projectCombo_.getSelectedIndex()+""));
+        projects.addAttribute(new Attribute(
+                ATTR_SELECTED, 
+                projectCombo_.getSelectedIndex() + ""));
         
-        for (int i=0, n=projectCombo_.getItemCount(); i<n; i++)
+        for (int i = 0, n = projectCombo_.getItemCount(); i < n; i++)
         {
             CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
             projects.appendChild(project.toDOM());
@@ -599,10 +602,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-	 * Abstract base class for all actions that takes care of settin/restoring
-	 * the stdout and stderr streams before and after the action completes
-	 * execution.
-	 */ 
+     * Abstract base class for all actions that takes care of settin/restoring
+     * the stdout and stderr streams before and after the action completes
+     * execution.
+     */ 
     abstract class StatcvsAction extends WorkspaceAction
     {
         /**
@@ -719,7 +722,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 cvspass.delete();
 
             String[] args = 
-                new String[] { "-d", cvsRootField_.getText(), "login"};            
+                new String[] {"-d", cvsRootField_.getText(), "login"};
             
             CVSCommand.main(args);
             
@@ -942,7 +945,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             
             if (obj instanceof CVSProject)
             {
-                CVSProject project=(CVSProject) projectCombo_.getSelectedItem();
+                CVSProject project = 
+                    (CVSProject) projectCombo_.getSelectedItem();
                 
                 cvsModuleField_.setText(project.getCVSModule());
                 cvsRootField_.setText(project.getCVSRoot());
@@ -990,9 +994,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             {
                 boolean found = false;
                 
-                for (int i=0; i< projectCombo_.getItemCount(); i++)
+                for (int i = 0; i < projectCombo_.getItemCount(); i++)
                 {
-                    CVSProject project = (CVSProject)projectCombo_.getItemAt(i);
+                    CVSProject project = 
+                        (CVSProject) projectCombo_.getItemAt(i);
                     
                     if (project.getProject().equals(current))
                     {
@@ -1056,7 +1061,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             
             boolean found = false;
             
-            for (int i=0; i< projectCombo_.getItemCount(); i++)
+            for (int i = 0; i < projectCombo_.getItemCount(); i++)
             {
                 CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
                 
@@ -1068,7 +1073,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                     if (projectCombo_.getItemCount() > 0)
                         projectCombo_.setSelectedIndex(0);
                     
-                    statusBar_.setStatus("Project " + current + " deleted.");    
+                    statusBar_.setStatus("Project " + current + " deleted.");
                     found |= true;
                     break;
                 }

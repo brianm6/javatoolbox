@@ -197,7 +197,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         buttons.setLayout(new GridLayout(1, info.length));
         add(buttons, BorderLayout.SOUTH);
 
-        for (int i=0; i<info.length; i++)
+        for (int i = 0; i < info.length; i++)
         {
             JButton button = new JSmartButton(info[i].getName());
             button.addActionListener(this);    
@@ -284,7 +284,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         sampleRenderer_ = new SampleRenderer();
 
-        String[] colName = { "Key", "Value", "Sample" };
+        String[] colName = {"Key", "Value", "Sample"};
         Set c = components.keySet();
 
         for (Iterator ci = c.iterator(); ci.hasNext();)
@@ -360,26 +360,46 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             columnNames_ = columnNames;
         }
 
+        
+        /**
+         * @see javax.swing.table.TableModel#getColumnCount()
+         */
         public int getColumnCount()
         {
             return columnNames_.length;
         }
 
+        
+        /**
+         * @see javax.swing.table.TableModel#getRowCount()
+         */
         public int getRowCount()
         {
             return rowData_.length;
         }
 
+        
+        /**
+         * @see javax.swing.table.TableModel#getColumnName(int)
+         */
         public String getColumnName(int col)
         {
             return columnNames_[col];
         }
 
+        
+        /**
+         * @see javax.swing.table.TableModel#getValueAt(int, int)
+         */
         public Object getValueAt(int row, int col)
         {
             return rowData_[row][col];
         }
 
+        
+        /**
+         * @see javax.swing.table.TableModel#getColumnClass(int)
+         */
         public Class getColumnClass(int c)
         {
             Object o;
@@ -392,6 +412,11 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             return o.getClass();
         }
 
+        
+        /**
+         * @see javax.swing.table.TableModel#setValueAt(
+         *      java.lang.Object, int, int)
+         */
         public void setValueAt(Object value, int row, int col)
         {
             rowData_[row][col] = value;
@@ -457,6 +482,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             //
             else if (Modifier.isPrivate(sample.getClass().getModifiers()))
             {
+                ;
             }
             
             //

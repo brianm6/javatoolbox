@@ -27,7 +27,18 @@ public class BeanShellPlugin extends JPanel implements IPlugin
     private static final Logger logger_ = 
         Logger.getLogger(BeanShellPlugin.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Output area.
+     */
     private JSmartTextArea output_;
+    
+    /**
+     * Input area.
+     */
     private JConsole console_;
         
     //--------------------------------------------------------------------------
@@ -101,6 +112,9 @@ public class BeanShellPlugin extends JPanel implements IPlugin
     // Protected
     //--------------------------------------------------------------------------
     
+    /**
+     * Constructs the user interface.
+     */
     protected void buildView()
     {
         

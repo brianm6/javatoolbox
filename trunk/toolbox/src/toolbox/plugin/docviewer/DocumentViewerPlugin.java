@@ -63,6 +63,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     private static final String FILE_DOCVIEWERS = 
         "/toolbox/plugin/docviewer/docviewers.xml";
     
+    // XML Preferences nodes and attributes. 
     private static final String NODE_DOCVIEWER = "docviewer";
     private static final String     ATTR_NAME  = "name";
     private static final String     ATTR_CLASS = "class";
@@ -157,15 +158,16 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     /**
      * Views a PDF using an embedded java pdf viewer.
      * 
-     * @param file File to view with the embedded PDF viewer
+     * @param file File to view with the embedded PDF viewer.
+     * @param dv Document viewer.
      * @throws Exception on error
      */
-    protected void viewDocument(DocumentViewer dv, File f) throws Exception
+    protected void viewDocument(DocumentViewer dv, File file) throws Exception
     {
         if (lastActive_ != null)
             outputPanel_.remove(lastActive_);
        
-        dv.view(f);
+        dv.view(file);
         lastActive_ = dv.getComponent();
         
         outputPanel_.add(BorderLayout.CENTER, lastActive_);
@@ -183,7 +185,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     {
         viewerPane_.removeAll();
         
-        for (Iterator i = viewers_.iterator(); i.hasNext(); )
+        for (Iterator i = viewers_.iterator(); i.hasNext();)
         {
             DocumentViewer dv = (DocumentViewer) i.next();
             
@@ -214,7 +216,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
        
         logger_.info("Viewers: " + ArrayUtil.toString(classes, true)); 
         
-        for (int i=0; i<classes.length; i++)
+        for (int i = 0; i < classes.length; i++)
         {
             String fqcn = classes[i];
             
@@ -250,7 +252,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
                 
                 Elements docviewers = root.getChildElements(NODE_DOCVIEWER);
                 
-                for (int i=0, s=docviewers.size(); i<s; i++)
+                for (int i = 0, s = docviewers.size(); i < s; i++)
                 {
                     Element docviewer = docviewers.get(i);
                     String clazz = docviewer.getAttributeValue(ATTR_CLASS);
@@ -266,7 +268,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         
         // Take the class list and turn them into doc viewers
         
-        for (int i=0, j=classList.size(); i<j; i++)
+        for (int i = 0, j = classList.size(); i < j; i++)
         {
             try
             {
@@ -292,7 +294,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     public void startup(Map params)
     {
         if (params != null)
-            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar_ = (IStatusBar) 
+                params.get(PluginWorkspace.PROP_STATUSBAR);
         
         viewers_ = new ArrayList();
         buildView();
@@ -332,7 +335,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     public void shutdown()
     {
-        for (Iterator i = viewers_.iterator(); i.hasNext(); )
+        for (Iterator i = viewers_.iterator(); i.hasNext();)
         {
             try
             {
@@ -390,9 +393,22 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     class ViewAction extends SmartAction
     {
-        DocumentViewer viewer_;
-        File file_;
+        /**
+         * Document viewer.
+         */
+        private DocumentViewer viewer_;
         
+        /**
+         * File to view.
+         */
+        private File file_;
+        
+        /**
+         * Creates a ViewAction.
+         * 
+         * @param viewer Document viewer.
+         * @param file File to view.
+         */
         public ViewAction(DocumentViewer viewer, File file)
         {
             super(viewer.getName(), true, false, null);
@@ -401,6 +417,10 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         }
                 
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             viewDocument(viewer_, file_);

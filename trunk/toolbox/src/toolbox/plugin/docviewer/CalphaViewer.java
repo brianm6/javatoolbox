@@ -29,6 +29,10 @@ import toolbox.util.ui.JSmartButton;
  */
 public class CalphaViewer implements DocumentViewer
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Base pane that houses the browser and button panel.
      */
@@ -88,7 +92,7 @@ public class CalphaViewer implements DocumentViewer
         //create a panel, add buttons, and add a listener to the buttons
         JPanel buttonPane = new JPanel();
         ButtonListener ml = new ButtonListener(htmlPane_);
-        String[] s = { "Reload", "Back", "Forward", "Stop" };
+        String[] s = {"Reload", "Back", "Forward", "Stop"};
         
         for (int i = 0; i < s.length; i++)
         {
@@ -141,7 +145,7 @@ public class CalphaViewer implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] { "html", "htm" };
+        return new String[] {"html", "htm"};
     }
 
     
@@ -176,9 +180,9 @@ public class CalphaViewer implements DocumentViewer
     
     class SmartHTMLPane extends CalHTMLPane
     {
-        //--------------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Overrides JComponent
-        //--------------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         /**
          * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
@@ -208,13 +212,23 @@ public class CalphaViewer implements DocumentViewer
      */
     private static class ButtonListener implements ActionListener
     {
-        CalHTMLPane pane_;
+        private CalHTMLPane pane_;
 
+        /**
+         * Creates a ButtonListener.
+         * 
+         * @param pane Html pane.
+         */
         public ButtonListener(CalHTMLPane pane)
         {
             pane_ = pane;
         }
 
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String s = e.getActionCommand();

@@ -11,12 +11,12 @@ import javax.swing.JComponent;
  */
 public interface DocumentViewer
 {
-	/**
-	 * Starts up or initializes the document viewer.
-	 * 
-	 * @param init Initialization properties.
-	 * @throws DocumentViewerException on error.
-	 */
+    /**
+     * Starts up or initializes the document viewer.
+     * 
+     * @param init Initialization properties.
+     * @throws DocumentViewerException on error.
+     */
     void startup(Map init) throws DocumentViewerException;
     
     
@@ -37,14 +37,14 @@ public interface DocumentViewer
      */
     void view(InputStream is) throws DocumentViewerException;
 
-	
-	/**
-	 * Determines if a given file type extension is viewable by this document
-	 * viewer.
-	 * 
-	 * @param file File to test if this viewer is capable of viewing it.
-	 * @return True if the file is viewable by the plugin, false 
- 	 */    
+    
+    /**
+     * Determines if a given file type extension is viewable by this document
+     * viewer.
+     * 
+     * @param file File to test if this viewer is capable of viewing it.
+     * @return True if the file is viewable by the plugin, false. 
+      */    
     boolean canView(File file);
     
     

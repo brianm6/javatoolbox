@@ -41,7 +41,7 @@ public class ServerConnectionHandler implements IConnectionHandler
             
             //byte[] buffer = new byte[30000];
             
-            while(is.read() != -1 );
+            while (is.read() != -1);
             
             //time.setEndTime();
             
@@ -49,7 +49,8 @@ public class ServerConnectionHandler implements IConnectionHandler
             //int count = is.getCount();
             //double thruput = count/secs;
             
-            //logger_.info("Server throughput: " + count + "/" + secs + " ==> " + thruput + "KBytes/sec");
+            //logger_.info("Server throughput: " + count + "/" + secs + " ==> "
+            // + thruput + "KBytes/sec");
             
             is.close();
         }

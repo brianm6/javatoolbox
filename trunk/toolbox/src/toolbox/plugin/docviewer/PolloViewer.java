@@ -21,7 +21,18 @@ import toolbox.util.FontUtil;
  */
 public class PolloViewer implements DocumentViewer
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * XML UI widget.
+     */
     private XmlEditor editor_;
+    
+    /**
+     * Scrollpane wrapping the XmlEditor.
+     */
     private JScrollPane scroller_;
     
     //--------------------------------------------------------------------------
@@ -84,7 +95,7 @@ public class PolloViewer implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] { "xml", "xsl", "fo", "jnlp" };
+        return new String[] {"xml", "xsl", "fo", "jnlp"};
     }
     
     

@@ -86,11 +86,11 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         JComponent clientFactory = new ClientFactoryView(this);
         JComponent serverFactory = new ServerFactoryView(this);
         
-        JComponent factoryPanel = new JPanel(new GridLayoutPlus(2,1));
+        JComponent factoryPanel = new JPanel(new GridLayoutPlus(2, 1));
         factoryPanel.add(clientFactory);
         factoryPanel.add(serverFactory);
         
-        grid_ = new JPanel(new GridLayoutPlus(2,2));
+        grid_ = new JPanel(new GridLayoutPlus(2, 2));
         
         add(factoryPanel, BorderLayout.WEST);
         add(grid_, BorderLayout.CENTER);

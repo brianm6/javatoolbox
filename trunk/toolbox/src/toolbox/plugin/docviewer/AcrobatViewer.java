@@ -18,13 +18,13 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 
 /**
- * AcrobatViewer is a wrapper for the Acrobat JavaBean which is used to 
- * render and view PDF documents.
+ * AcrobatViewer is a wrapper for the Acrobat JavaBean which is used to render
+ * and view PDF documents.
  */
 public class AcrobatViewer extends JPanel implements DocumentViewer
 {
     private static final Logger logger_ = 
-    	Logger.getLogger(AcrobatViewer.class);
+        Logger.getLogger(AcrobatViewer.class);
     
     /**
      * Acrobat viewer component.
@@ -76,9 +76,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     
     
     /**
-     * Opens a file for viewing.
-     * 
-     * @param file File to view
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
     public void view(File file) throws DocumentViewerException
     {
@@ -116,7 +114,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
 //                {
 //                    invalidate();
 //                    repaint();
-//                    setSize(viewer_.getSize().width+1, viewer_.getSize().height+1);
+//               setSize(viewer_.getSize().width+1, viewer_.getSize().height+1);
 //                }
 //            });
             

@@ -144,9 +144,9 @@ public class TunnelPane extends JPanel implements IPreferenced
     {
         buildView();
                 
-        listenPortField_.setText(listenPort+"");
+        listenPortField_.setText(listenPort + "");
         remoteHostField_.setText(remoteHost);
-        remotePortField_.setText(remotePort+"");
+        remotePortField_.setText(remotePort + "");
     }
 
     //--------------------------------------------------------------------------
@@ -233,7 +233,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         JPanel outputPane = new JPanel(new BorderLayout());
         
             // North
-            JPanel labelPanel = new JPanel(new GridLayout(1,2));
+            JPanel labelPanel = new JPanel(new GridLayout(1, 2));
     
             localLabel_ = 
                 new JSmartLabel("Sent to Remote Host", JLabel.CENTER);
@@ -342,7 +342,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         incomingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
             root, NODE_INCOMING, new Element(NODE_INCOMING)));
 
-        capacityField_.setText(incomingTextArea_.getCapacity()+"");
+        capacityField_.setText(incomingTextArea_.getCapacity() + "");
             
         outgoingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
             root, NODE_OUTGOING, new Element(NODE_OUTGOING)));
@@ -441,9 +441,9 @@ public class TunnelPane extends JPanel implements IPreferenced
         //----------------------------------------------------------------------
         
         /**
-		 * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
+         * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
          *      toolbox.tunnel.TcpTunnel, java.lang.String)
-		 */
+         */
         public void statusChanged(TcpTunnel tunnel, String status)
         {
             statusBar_.setStatus(status);
@@ -451,12 +451,12 @@ public class TunnelPane extends JPanel implements IPreferenced
 
         
         /**
-		 * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
+         * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
          *      toolbox.tunnel.TcpTunnel, int, int)
-		 */
+         */
         public void bytesRead(TcpTunnel tunnel, 
                               int connBytesRead, 
-							  int totalBytesRead)
+                              int totalBytesRead)
         {
             localLabel_.setText("Sent to Remote Host: " + connBytesRead + 
                                 " conn  " + totalBytesRead + " total");
@@ -469,7 +469,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         public void bytesWritten(TcpTunnel tunnel, 
                                  int connBytesWritten,
-								 int totalBytesWritten)
+                                 int totalBytesWritten)
         {
             remoteLabel_.setText("Received from Remote Host: " + 
                 connBytesWritten + " conn  " + totalBytesWritten + " total");

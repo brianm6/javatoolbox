@@ -7,7 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import toolbox.util.StringUtil;
-import toolbox.util.service.*;
+import toolbox.util.service.Service;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceListener;
+import toolbox.util.service.ServiceView;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -92,7 +95,7 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
             else
                 serverHostnameField_.setText(client_.getHostname());
 
-            if (client_.getPort() == 0 )
+            if (client_.getPort() == 0)
                 serverPortField_.setText("9999");
             else
                 serverPortField_.setText(client_.getPort() + "");
