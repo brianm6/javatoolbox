@@ -13,17 +13,17 @@ import toolbox.plugin.xslfo.FOProcessorFactory;
  */
 public class FOProcessorFactoryTest extends TestCase
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(FOProcessorFactoryTest.class);
-        
+
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-    
+
     /**
      * Entrypoint.
-     * 
-     * @param args None recognized
+     *
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -36,13 +36,13 @@ public class FOProcessorFactoryTest extends TestCase
 
     /**
      * Simple case: create processor for Apache FOP.
-     * 
-     * @throws Exception on error
+     *
+     * @throws Exception on error.
      */
     public void testCreateProcessorFOP() throws Exception
     {
         logger_.info("Running testCreateProcessorFOP...");
-        
+
         FOProcessor fop =
             FOProcessorFactory.createProcessor(
                 FOProcessorFactory.FO_IMPL_APACHE);
@@ -50,16 +50,16 @@ public class FOProcessorFactoryTest extends TestCase
         assertNotNull(fop);
     }
 
-    
+
     /**
      * Simple case: create processor for RenderX XEP.
-     * 
-     * @throws Exception on error
+     *
+     * @throws Exception on error.
      */
     public void testCreateProcessorXEP() throws Exception
     {
         logger_.info("Running testCreateProcessorXEP...");
-                
+
         FOProcessor fop =
             FOProcessorFactory.createProcessor(
                 FOProcessorFactory.FO_IMPL_RENDERX);
@@ -67,16 +67,16 @@ public class FOProcessorFactoryTest extends TestCase
         assertNotNull(fop);
     }
 
-    
+
     /**
      * Test fault generation on unknown FO implementation.
-     * 
-     * @throws Exception on error
+     *
+     * @throws Exception on error.
      */
     public void testCreateProcessorBogus() throws Exception
     {
         logger_.info("Running testCreateProcessorBogus...");
-        
+
         try
         {
             FOProcessorFactory.createProcessor("FO_IMPL_BOGUS");
