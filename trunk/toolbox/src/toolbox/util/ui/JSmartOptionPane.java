@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -1178,17 +1181,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
 
     /**
-     * Switches dialog box mode to hide the details
-     */
-    protected void hideDetail()
-    {
-        remove(detailScroller_);
-        expanded_ = false;
-        detailsButton_.setText(BUTTON_COLLAPSED);
-    }
-    
-    
-    /**
      * Dunno what this is for
      */
     private static int styleFromMessageType(int messageType)
@@ -1224,8 +1216,32 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         else
             showDetail();
 
-        getEnclosingDialog().pack();
-        SwingUtil.centerWindow(getEnclosingDialog());
+        Window w = getEnclosingDialog();
+        
+        w.pack();
+        
+        Point     loc = w.getLocationOnScreen();
+        Dimension dim = w.getSize(); 
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        boolean update = false;
+        
+        if (loc.x + dim.width > screen.width)
+        {
+            dim.width = screen.width - loc.x; // - 10;
+            update = true;
+        }
+            
+        if (loc.y + dim.height > screen.height)
+        {
+            dim.height = screen.height - loc.y - 100;
+            update = true;
+        }
+        
+        if (update)
+            w.setSize(dim);
+        
+        //SwingUtil.centerWindow(getEnclosingDialog());
     }
 
 
@@ -1253,8 +1269,37 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         add(detailScroller_, BorderLayout.SOUTH);
         expanded_ = true;
         detailsButton_.setText(BUTTON_EXPANDED);
+        
+        
+        
+//        Dimension collapsed = getEnclosingDialog().getSize();
+//        Dimension expanded  = 
+//            new Dimension(
+//                collapsed.height + 200,
+//                collapsed.width + 200);
+//                
+//        getEnclosingDialog().setSize(expanded); 
     }
 
+
+    /**
+     * Switches dialog box mode to hide the details
+     */
+    protected void hideDetail()
+    {
+        remove(detailScroller_);
+        expanded_ = false;
+        detailsButton_.setText(BUTTON_COLLAPSED);
+        
+//        Dimension expanded = getEnclosingDialog().getSize();
+//        Dimension collapsed  = 
+//            new Dimension(
+//                expanded.height - 200,
+//                expanded.width - 200);
+//                
+//        getEnclosingDialog().setSize(collapsed); 
+    }
+    
 
     /**
      * @return  Array of buttons for dialog box
