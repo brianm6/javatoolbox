@@ -22,6 +22,7 @@ package toolbox;
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
+ * TODO: Figure out how to put separators on the main javadocs page
  * =============================================================================
  * 
  * =============================================================================
