@@ -476,4 +476,18 @@
 	  </ftp>	
 	  
  	</target>
+    
+    
+    <!--=============================--> 
+    <!--    BACKUP SRC               -->
+    <!--=============================-->
+	<target name="backup-src" depends="init" description="Backs up source code to tmp dir">    
+
+        <property name="backup.dir" value="${java.io.tmpdir}/toolbox-backup"/>
+        <mkdir dir="${backup.dir}"/>        
+        <copy todir="${backup.dir}" >
+            <fileset dir="${src}"/>
+        </copy>
+        
+ 	</target>
 </project>
