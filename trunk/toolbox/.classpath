@@ -43,7 +43,7 @@
 	<classpathentry sourcepath="lib/src/l2fprod-common-src.zip" kind="lib" path="lib/l2fprod-common.jar"/>
 	<classpathentry kind="lib" path="lib/liquidlf.jar"/>
 	<classpathentry sourcepath="lib/src/log4j-src.zip" kind="lib" path="lib/log4j.jar"/>
-	<classpathentry kind="lib" path="lib/looks.jar"/>
+	<classpathentry sourcepath="lib/src/looks-src.zip" kind="lib" path="lib/looks.jar"/>
 	<classpathentry kind="lib" path="lib/metouia.jar"/>
 	<classpathentry sourcepath="lib/src/multivalent-src.zip" kind="lib" path="lib/multivalent.jar"/>
 	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
