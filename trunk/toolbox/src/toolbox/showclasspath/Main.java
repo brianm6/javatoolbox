@@ -1,11 +1,14 @@
 package toolbox.showclasspath;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import toolbox.util.DateUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.TimeUtil;
 
 /**
  * Shows the current classpath along with detailed info as reported by 
@@ -30,7 +33,6 @@ import toolbox.util.StringUtil;
  */
 public class Main
 {
-
     /** max length for size column **/
     private static final int MAX_SIZE_LEN = 12;
     
@@ -52,7 +54,11 @@ public class Main
     /** column heading for time **/    
     private static final String COL_TIME = "Time";
 
-
+    /** length format **/
+    private static final 
+        DecimalFormat LENGTH_FORMAT = new DecimalFormat("###,###,###");
+        
+    
     /**
      * Entry point
      * 
@@ -60,16 +66,25 @@ public class Main
      */
     public static void main(String[] args)
     {
+        Main m = new Main();
+        PrintWriter pw = new PrintWriter(System.out);
+        m.showClasspath(pw);
+    }
 
-        // stuffed everything info main()
+
+    /**
+     * Shows the classpath
+     */
+    public void showClasspath(PrintWriter pw)
+    {
         String classPath = System.getProperty("java.class.path");
-        
+         
         StringTokenizer st = 
             new StringTokenizer(classPath,System.getProperty("path.separator"));
             
         int max = 0;
 
-        // find longest for formatting
+        // Find longest classpath entry for formatting
         while (st.hasMoreElements())
         {
             String path = st.nextToken();
@@ -83,99 +98,86 @@ public class Main
         st = new StringTokenizer(
             classPath, System.getProperty("path.separator"));
 
-        // header row
+        // Header row
         if (st.countTokens() > 0)
         {
             int rowLength = max + MAX_SIZE_LEN + 
                             MAX_DATE_LEN + MAX_TIME_LEN;
                             
-            System.out.println(StringUtil.repeat("=", rowLength));
-            System.out.print(COL_ARCHIVE);
-            System.out.print(repeatSpace(max - COL_ARCHIVE.length()));
-            System.out.print(repeatSpace(MAX_SIZE_LEN - COL_SIZE.length()));
-            System.out.print(COL_SIZE);
-            System.out.print(repeatSpace(MAX_DATE_LEN - COL_DATE.length()));
-            System.out.print(COL_DATE);
-            System.out.print(repeatSpace(MAX_TIME_LEN - COL_TIME.length()));
-            System.out.print(COL_TIME);
-            System.out.println();
-            System.out.println(StringUtil.repeat("=", rowLength));
+            pw.println(StringUtil.repeat("=", rowLength));
+            pw.print(COL_ARCHIVE);
+            pw.print(repeatSpace(max - COL_ARCHIVE.length()));
+            pw.print(repeatSpace(MAX_SIZE_LEN - COL_SIZE.length()));
+            pw.print(COL_SIZE);
+            pw.print(repeatSpace(MAX_DATE_LEN - COL_DATE.length()));
+            pw.print(COL_DATE);
+            pw.print(repeatSpace(MAX_TIME_LEN - COL_TIME.length()));
+            pw.print(COL_TIME);
+            pw.println();
+            pw.println(StringUtil.repeat("=", rowLength));
         }
 
-        // loop through classpath
+        // Loop through classpath
         while (st.hasMoreElements())
         {
             String path = st.nextToken();
-            System.out.print(path);
+            pw.print(path);
 
             for (int i = 0; i < (max - path.length()); i++)
-                System.out.print(" ");
+                pw.print(" ");
 
             File f = new File(path);
 
-            // if archive, get more info
+            // If archive, get more info
             if (isArchive(path))
             {
                 if (f.exists() && f.isFile() && f.canRead())
                 {
                     Date lastModified = new Date(f.lastModified());
-                    String date = formatDate(lastModified);
-                    String time = formatTime(lastModified);
+                    String date = DateUtil.format(lastModified);
+                    String time = TimeUtil.format(lastModified);
                     String length = formatLength(f.length());
                     
-                    System.out.print(
-                        repeatSpace(MAX_SIZE_LEN - length.length()));
+                    pw.print(repeatSpace(MAX_SIZE_LEN - length.length()));
                         
-                    System.out.print(length);
-                    System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                    System.out.print(date);
-                    System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                    System.out.print(time);
+                    pw.print(length);
+                    pw.print(repeatSpace(MAX_DATE_LEN - date.length()));
+                    pw.print(date);
+                    pw.print(repeatSpace(MAX_TIME_LEN - time.length()));
+                    pw.print(time);
                 }
                 else
                 {
                     if (!f.exists())
-                        System.out.print("Does not exist!");
+                        pw.print("Does not exist!");
                     else if (!f.isFile())
-                        System.out.print("Is not a file!");
+                        pw.print("Is not a file!");
                     else if (!f.canRead())
-                        System.out.print("Cannot open file!");
+                        pw.print("Cannot open file!");
                     else
-                        System.out.print("Unknown error opening file!");
+                        pw.print("Unknown error opening file!");
                 }
             }
             else if (f.isDirectory())
             {
                 Date lastModified = new Date(f.lastModified());
-                String date = formatDate(lastModified);
-                String time = formatTime(lastModified);
-                System.out.print(repeatSpace(MAX_SIZE_LEN));
-                System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                System.out.print(date);
-                System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                System.out.print(time);
+                String date = DateUtil.format(lastModified);
+                String time = TimeUtil.format(lastModified);
+                pw.print(repeatSpace(MAX_SIZE_LEN));
+                pw.print(repeatSpace(MAX_DATE_LEN - date.length()));
+                pw.print(date);
+                pw.print(repeatSpace(MAX_TIME_LEN - time.length()));
+                pw.print(time);
             }
             else if (!f.exists())
             {
-                System.out.print("Does not exist!");
+                pw.print("Does not exist!");
             }
 
-            System.out.println();
+            pw.println();
         }
-    }
-
-
-    /**
-     * Formats date to specific format: 01/01/1980  12/31/1999
-     * 
-     * @param   d   Date to format
-     * @return      Formatted date
-     */
-    static String formatDate(Date d)
-    {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-
-        return dateFormat.format(d);
+        
+        pw.flush();
     }
 
 
@@ -185,35 +187,9 @@ public class Main
      * @param   l   file length
      * @return      formatted length
      */
-    static String formatLength(long l)
+    protected String formatLength(long length)
     {
-        StringBuffer sbuf = new StringBuffer(l + "");
-
-        for (int i = sbuf.length() - 3; i > 0; i -= 3)
-            sbuf.insert(i, ",");
-
-        return new String(sbuf);
-    }
-
-
-    /**
-     * Formats time to specific format:  12:47a  01:07p
-     * 
-     * @param   t   Date to format
-     * @return      Formatted time
-     */
-    static String formatTime(Date t)
-    {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
-        SimpleDateFormat timeFormat2 = new SimpleDateFormat("hh:mm");
-        String timeString = timeFormat.format(t);
-
-        if (timeString.endsWith("AM"))
-            timeString = timeFormat2.format(t) + "a";
-        else
-            timeString = timeFormat2.format(t) + "p";
-
-        return timeString;
+        return LENGTH_FORMAT.format(length);
     }
 
 
@@ -223,7 +199,7 @@ public class Main
      * @param   s   absolute name of file
      * @return  true if file is a java archive, false otherwise
      */
-    static boolean isArchive(String s)
+    protected boolean isArchive(String s)
     {
         s = s.toUpperCase();
 
@@ -240,7 +216,7 @@ public class Main
      * @param   l   number of spaces
      * @return      string containing given number of spaces
      */
-    static String repeatSpace(int l)
+    protected String repeatSpace(int l)
     {
         return StringUtil.repeat(" ", l);
     }
