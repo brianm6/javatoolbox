@@ -35,6 +35,7 @@ public class ImageCache
     public static final String IMAGE_DELETE        = ROOT + "Delete.png";
     public static final String IMAGE_DUKE          = ROOT + "Duke.png";
     public static final String IMAGE_FIND          = ROOT + "Search.png";
+    public static final String IMAGE_FORWARD       = ROOT + "Forward.png";
     public static final String IMAGE_FUNNEL        = ROOT + "Funnel.png";
     public static final String IMAGE_HARD_DRIVE    = ROOT + "HardDrive.png";
     public static final String IMAGE_INFO          = ROOT + "Info.png";
@@ -46,6 +47,7 @@ public class ImageCache
     public static final String IMAGE_PLAY          = ROOT + "Play.png";
     public static final String IMAGE_QUESTION_MARK = ROOT + "QuestionMark.png";
     public static final String IMAGE_REFRESH       = ROOT + "Refresh.png";
+    public static final String IMAGE_REVERSE       = ROOT + "Reverse.png";    
     public static final String IMAGE_SAVE          = ROOT + "Save.png";
     public static final String IMAGE_SAVEAS        = ROOT + "SaveAs.png";
     public static final String IMAGE_SPANNER       = ROOT + "Spanner.png";
