@@ -423,4 +423,26 @@ public final class FileUtil
         int i = file.lastIndexOf(File.separatorChar);
         return (i >= 0 ? file.substring(i+1) : file); 
     }
+    
+    /**
+     * Strips the file portion away from an absolute or relative file path
+     * leaving only the path. The resulting path does not have a trailing
+     * file separator.
+     * <pre>
+     * 
+     * Examples:
+     * 
+     * c:\data\work\tmp\orders.txt  => c:\data\work\tmp
+     * /usr/home/user/orders.xml    => /usr/home/user
+     * 
+     * </pre>
+ 
+     * @param   filepath  Path including filename
+     * @return  Just the path portion of the filepath
+     */
+    public static String stripFile(String filepath)
+    {
+        int i = filepath.lastIndexOf(File.separatorChar);
+        return (i >= 0 ? filepath.substring(0, i) : "");
+    }    
 }
