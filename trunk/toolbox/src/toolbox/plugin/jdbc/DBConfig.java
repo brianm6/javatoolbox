@@ -52,7 +52,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     private static final Logger logger_ = Logger.getLogger(DBConfig.class);
     
     //--------------------------------------------------------------------------
-    // Icons
+    // Icon Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -62,7 +62,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE);
     
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -80,6 +80,11 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      */
     private static final String NODE_DBPROFILE = "DBProfile";
 
+    /**
+     * Persisted javabean properties.
+     */
+    private static final String[] SAVED_PROPS = {"jarChooserDir"};
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -124,6 +129,11 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      * Reference to the workspace statusbar.
      */
     private IStatusBar statusBar_;
+    
+    /**
+     * Last directory that the jar file chooser was opened in.
+     */
+    private String jarChooserDir_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -182,6 +192,28 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     public String getSession()
     {
         return getCurrentProfile().getProfileName();
+    }
+    
+    
+    /**
+     * Returns the jarChooserDir.
+     * 
+     * @return String
+     */
+    public String getJarChooserDir()
+    {
+        return jarChooserDir_;
+    }
+
+    
+    /**
+     * Sets the jarChooserDir.
+     * 
+     * @param jarChooserDir The jarChooserDir to set.
+     */
+    public void setJarChooserDir(String jarChooserDir)
+    {
+        jarChooserDir_ = jarChooserDir;
     }
     
     //--------------------------------------------------------------------------
@@ -652,6 +684,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             //putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_FIND));
         }
 
+        // TODO: Left off here adding last dir as a propertyy
         
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
@@ -659,7 +692,12 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            JFileChooser chooser = new JFileChooser();
+            JFileChooser chooser = null;
+            if (getJarChooserDir() != null)
+                chooser = new JFileChooser(getJarChooserDir());
+            else
+                chooser = new JFileChooser();
+            
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             
             if (chooser.showDialog(DBConfig.this, 
