@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 
@@ -88,6 +89,12 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final String ATTR_HISTORY_MAX = "maxHistory";
 
     /**
+     * XML: Location of the splitpane divider separating the sql input area
+     *      and the results output area.
+     */
+    public static final String ATTR_DIVIDER_LOCATION = "dividerLocation";
+    
+    /**
      * XML: Child of QueryPlugin that contains a single "remembered" SQL stmt
      */
     public static final String NODE_HISTORY_ITEM = "HistoryItem";
@@ -106,6 +113,11 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     private IStatusBar statusBar_;
     
+    /**
+     * Splitpane separating the sqlArea_ and the resultsArea_.
+     */
+    private JSplitPane areaSplitPane_;
+        
     /** 
      * Text area for entering sql statements 
      */    
@@ -203,7 +215,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         resultsArea_ = new JSmartTextArea();
         resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
         
-        JSplitPane splitPane = 
+        areaSplitPane_ = 
             new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 new JScrollPane(sqlArea_), 
                 new JScrollPane(resultsArea_));
@@ -228,7 +240,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         leftFlipPane_.addFlipper("JDBC Drivers", dbConfigPane_);
 
         add(leftFlipPane_, BorderLayout.WEST);
-        add(splitPane, BorderLayout.CENTER);                
+        add(areaSplitPane_, BorderLayout.CENTER);                
         add(buttonPanel, BorderLayout.SOUTH);
     }
     
@@ -351,6 +363,12 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         sqlPopup_.setCapacity(XOMUtil.getInteger(
             root.getFirstChildElement(ATTR_HISTORY_MAX), 10));
+            
+        areaSplitPane_.setDividerLocation(
+            XOMUtil.getIntegerAttribute(
+                root, 
+                ATTR_DIVIDER_LOCATION, 
+                areaSplitPane_.getDividerLocation()));
         
         Elements historyItems = root.getChildElements(NODE_HISTORY_ITEM);
                 
@@ -387,6 +405,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         contents.appendChild(sqlArea_.getText().trim());
         root.appendChild(contents);
         
+        root.addAttribute(new Attribute(ATTR_DIVIDER_LOCATION,
+            areaSplitPane_.getDividerLocation()+""));
+            
         leftFlipPane_.savePrefs(root);
         dbConfigPane_.savePrefs(root);
         resultsArea_.savePrefs(root);
