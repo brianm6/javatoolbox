@@ -221,7 +221,7 @@ public class TailPane extends JPanel
     private ITailPaneConfig config_;
     
     /**
-     * List of interested listeners
+     * List of listeners interested in newData() and tailAggregated()
      */
     private ITailPaneListener[] tailPaneListeners_;
     
@@ -230,12 +230,12 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
         
     /** 
-     * Creates a TailPane with the given configuration
+     * Creates a TailPane with the given configuration.
      * 
-     * @param   config      Details of the tail configuration
-     * @param   statusBar   Status bar
-     * @throws  IOException if an IO error occurs
-     * @throws  FileNotFoundException if file not found
+     * @param config Details of the tail configuration
+     * @param statusBar Status bar
+     * @throws IOException if an IO error occurs
+     * @throws FileNotFoundException if file not found
      */
     public TailPane(ITailPaneConfig config, IStatusBar statusBar) 
         throws IOException, FileNotFoundException
@@ -259,7 +259,7 @@ public class TailPane extends JPanel
     /**
      * Initializes the tail
      * 
-     * @param  file  File to tail
+     * @param file File to tail
      * @throws FileNotFoundException if the file to tail is non-existant
      * @throws IOException if problems occur tailed System.out
      */
@@ -288,7 +288,7 @@ public class TailPane extends JPanel
     /**
      * Builds the GUI
      * 
-     * @param  config  Tailpane configuration
+     * @param config Tailpane configuration
      */    
     protected void buildView(ITailPaneConfig config)
     {
@@ -371,7 +371,7 @@ public class TailPane extends JPanel
     /**
      * Sets the filter text
      * 
-     * @param  filter  Filter text as a regular expression
+     * @param filter Filter text as a regular expression
      */
     protected void setRegularExpression(String filter)
     {
@@ -400,7 +400,7 @@ public class TailPane extends JPanel
     /**
      * Sets the cut text
      * 
-     * @param  cut  Cut text. Example: 1-10 cuts columns one through ten.
+     * @param cut Cut text. Example: 1-10 cuts columns one through ten.
      */
     protected void setCutExpression(String cut)
     {
@@ -423,7 +423,7 @@ public class TailPane extends JPanel
     /**
      * Sets the configuration
      * 
-     * @param  config  Tail configuration
+     * @param config Tail configuration
      */
     public void setConfiguration(ITailPaneConfig config)
     {
@@ -485,7 +485,7 @@ public class TailPane extends JPanel
     /**
      * Aggregates a file into an existing tail
      * 
-     * @param  file  File to aggregate
+     * @param file File to aggregate
      * @throws IOException on I/O error
      */
     public void aggregate(String file) throws IOException
@@ -498,7 +498,7 @@ public class TailPane extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  Interfaces & Supporting Classes
+    //  ITailPaneListener Interface & Supporting Event Methods
     //--------------------------------------------------------------------------
     
     /**
@@ -509,7 +509,7 @@ public class TailPane extends JPanel
         /**
          * Notification of new data available
          * 
-         * @param  tailPane  Tailpane
+         * @param tailPane Tailpane
          */
         public void newDataAvailable(TailPane tailPane);
         
@@ -521,24 +521,44 @@ public class TailPane extends JPanel
         public void tailAggregated(TailPane tailPane);
     }
 
-    public void fireNewDataAvailable(TailPane tailPane)
+    /**
+     * Fires notifications of new tail data available
+     * 
+     * @param tailPane Tailpane
+     */
+    protected void fireNewDataAvailable(TailPane tailPane)
     {
         for (int i=0; i<tailPaneListeners_.length; i++)
             tailPaneListeners_[i].newDataAvailable(tailPane);        
     }
 
+    /**
+     * Fires notification of a tail being aggregated into an existing tail.
+     * 
+     * @param tailPane Tailpane
+     */
     public void fireTailAggregated(TailPane tailPane)
     {
         for (int i=0; i<tailPaneListeners_.length; i++)
             tailPaneListeners_[i].tailAggregated(tailPane);        
     }
 
+    /**
+     * Adds a listener
+     * 
+     * @param listener ITailPaneListener
+     */
     public void addTailPaneListener(ITailPaneListener listener)
     {
         tailPaneListeners_ = 
             (ITailPaneListener[]) ArrayUtil.add(tailPaneListeners_, listener);
     }
     
+    /**
+     * Removes a listener
+     * 
+     * @param listener ITailPaneListener
+     */
     public void removeTailPaneListener(ITailPaneListener listener)
     {
         tailPaneListeners_ = 
@@ -644,7 +664,7 @@ public class TailPane extends JPanel
          * Called when next line of input is available. When a new line is
          * available, just push it on the shared queue.
          * 
-         * @param  line  Next line read
+         * @param line Next line read
          */
         public void nextLine(Tail tail, String line)
         {
