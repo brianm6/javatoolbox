@@ -111,6 +111,7 @@
       <action type="update">Updated flippanes with icons in various plugins</action>
       <action type="add"   >Added rotate(Image) method to SwingUtil</action>
       <action type="add"   >Added Window menu to DesktopPluginHost so plugin frames can be tiled or cascaded</action>
+      <action type="add"   >Added FH Look and Feel</action>
     </release>
 
     <release version="2.0" date="June 2004">
