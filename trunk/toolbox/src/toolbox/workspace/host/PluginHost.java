@@ -100,12 +100,20 @@ public interface PluginHost
     
     
     /**
-     * Selects the given plugin. The interpretation of select is left to the
+     * Selects the given plugin. The interpretation of "select" is left to the
      * PluginHost implementor.
      * 
      * @param plugin Plugin to select.
      */
-    void selectPlugin(IPlugin plugin);
+    void setSelectedPlugin(IPlugin plugin);
+    
+    
+    /**
+     * Returns the currently selected plugin.
+     * 
+     * @return IPlugin
+     */
+    IPlugin getSelectedPlugin();
     
     
     /**
