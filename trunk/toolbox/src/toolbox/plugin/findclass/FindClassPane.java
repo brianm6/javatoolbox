@@ -83,6 +83,7 @@ public class JFindClass extends JFrame
     private JFileExplorer        fileExplorer_;
     
     // Top flip pane
+    private JFlipPane            topFlipPane_;
     private JList                searchList_;
     private DefaultListModel     searchListModel_;
     private JPopupMenu           searchPopupMenu_;
@@ -98,8 +99,9 @@ public class JFindClass extends JFrame
     // Status
     private IStatusBar statusBar_ = new JStatusPane();
     
-    
-    /** Result table columns */    
+    /** 
+     * Result table column headers 
+     */    
     private String[] resultColumns_ = new String[] 
     {
         "Num", 
@@ -114,6 +116,12 @@ public class JFindClass extends JFrame
     private static final int COL_CLASS     = 2;
     //private static final int COL_SIZE      = 3;
     //private static final int COL_TIMESTAMP = 4;
+
+    /** 
+     * Prefix tacked onto the beginning of all properties associated with JTail
+     */ 
+    private static final String PROP_PREFIX = 
+        ClassUtil.stripPackage(JFindClass.class.getName()).toLowerCase();
     
     /**
      * Entrypoint
@@ -157,6 +165,18 @@ public class JFindClass extends JFrame
     }
 
     //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
+     */
+    public void setStatusBar(IStatusBar statusBar)
+    {
+        statusBar_ = statusBar;
+    }
+
+    //--------------------------------------------------------------------------
     // Preferences Support
     //--------------------------------------------------------------------------
     
@@ -165,12 +185,9 @@ public class JFindClass extends JFrame
      */
     public void savePrefs(Properties prefs)
     {
-        fileExplorer_.savePrefs(prefs, 
-            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
-            
-        leftFlipPane_.savePrefs(prefs, 
-            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
-        
+        fileExplorer_.savePrefs(prefs, PROP_PREFIX);
+        leftFlipPane_.savePrefs(prefs, PROP_PREFIX + ".left");
+        topFlipPane_.savePrefs(prefs, PROP_PREFIX + ".top");
     }
 
     /**
@@ -178,20 +195,9 @@ public class JFindClass extends JFrame
      */
     public void applyPrefs(Properties prefs)
     {
-        fileExplorer_.applyPrefs(prefs, 
-            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
-            
-        leftFlipPane_.applyPrefs(prefs, 
-            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
-         
-    }
-
-    /**
-     * @param statusBar
-     */
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        statusBar_ = statusBar;
+        fileExplorer_.applyPrefs(prefs, PROP_PREFIX);
+        leftFlipPane_.applyPrefs(prefs, PROP_PREFIX + ".left");
+        topFlipPane_.applyPrefs(prefs, PROP_PREFIX + ".top");
     }
 
     //--------------------------------------------------------------------------
@@ -325,11 +331,11 @@ public class JFindClass extends JFrame
         JPanel decompilerPanel = buildDecompilerPanel();
                 
         // Top flip pane
-        JFlipPane topFlipPane = new JFlipPane(JFlipPane.TOP);
-        topFlipPane.addFlipper("Classpath", pathPanel);
-        topFlipPane.addFlipper("Decompiler", decompilerPanel);
-        topFlipPane.setSelectedFlipper(pathPanel);
-        return topFlipPane;
+        topFlipPane_ = new JFlipPane(JFlipPane.TOP);
+        topFlipPane_.addFlipper("Classpath", pathPanel);
+        topFlipPane_.addFlipper("Decompiler", decompilerPanel);
+        topFlipPane_.setActiveFlipper(pathPanel);
+        return topFlipPane_;
     }
     
     /**
