@@ -57,6 +57,18 @@ public abstract class AbstractPlugin implements IPlugin, ObservableService
     }
     
     //--------------------------------------------------------------------------
+    // ObservableService Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.ObservableService#getStateMachine()
+     */
+    public StateMachine getStateMachine()
+    {
+        return machine_;
+    }
+    
+    //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------
     
