@@ -21,8 +21,6 @@ import multivalent.gui.VScrollbar;
 import multivalent.std.ui.ForwardBack;
 import multivalent.std.ui.Multipage;
 
-import toolbox.util.ArrayUtil;
-import toolbox.util.FileUtil;
 import toolbox.util.ui.JSmartButton;
 
 /**
@@ -76,10 +74,6 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     public void view(File file)
     {
         browser_.eventq(Document.MSG_OPEN, file.toURI());
-
-        // TODO: figure out how to get the browser to show without manual 
-        //       stimulation.       
-        
     }
     
     
@@ -97,7 +91,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] {"pdf"};
+        return new String[] {"pdf", "xml"};
     }    
 
 
@@ -106,9 +100,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public boolean canView(File file)
     {
-        return ArrayUtil.contains(
-                getViewableFileTypes(),
-                FileUtil.getExtension(file));
+        return true;
     }
     
     
@@ -126,6 +118,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public void shutdown()
     {
+        browser_ = null;
     }
     
     //--------------------------------------------------------------------------
@@ -169,7 +162,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
         // Appendix A: handle scrollbars in Swing turn off internal scrollbars
         INode root = browser_.getRoot();
         Document doc = (Document) root.findBFS("content");
-        doc.setScrollbarShowPolicy(VScrollbar.SHOW_NEVER);
+        doc.setScrollbarShowPolicy(VScrollbar.SHOW_AS_NEEDED);
         
         // then after loading new document, determine page dimensions from
 		// doc.bbox and set Swing scrollbars accordingly
