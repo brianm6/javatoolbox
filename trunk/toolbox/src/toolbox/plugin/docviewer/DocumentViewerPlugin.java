@@ -1,7 +1,6 @@
 package toolbox.plugin.pdf;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.io.File;
 import java.util.Map;
 
@@ -96,16 +95,11 @@ public class PDFPlugin extends JPanel implements IPlugin
         setLayout(new BorderLayout());
         explorer_ = new JFileExplorer(false);
         explorer_.addJFileExplorerListener(new FileSelectionListener());
-                
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper("File Explorer", explorer_);
-
         outputPanel_ = new JPanel(new BorderLayout());
-        
-        JPanel buttonPane = new JPanel(new FlowLayout());
         add(BorderLayout.WEST, flipPane_);
         add(BorderLayout.CENTER, outputPanel_);
-        add(BorderLayout.SOUTH, buttonPane);
     }
 
     /**
@@ -120,25 +114,14 @@ public class PDFPlugin extends JPanel implements IPlugin
         
         if (viewer_ == null)
         {
-            //viewer_ = new MultivalentViewer();
-            viewer_ = new AcrobatViewer();
+            viewer_ = new MultivalentViewer();
+            //viewer_ = new AcrobatViewer();
             viewer_.startup(null);
             outputPanel_.add(BorderLayout.CENTER, viewer_.getComponent());
         }
 
         viewer_.view(file);
     }
-
-    /**
-     * Views a PDF using an embedded java pdf viewer
-     * 
-     * @param inputStream Stream to read PDF bytes from
-     * @throws Exception on error
-     */
-//    private void viewPDFEmbedded(InputStream inputStream) throws Exception
-//    {
-//        
-//    }
 
     //--------------------------------------------------------------------------
     // IPlugin Interface
