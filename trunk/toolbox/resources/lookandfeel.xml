@@ -75,6 +75,17 @@
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
   </LookAndFeel>
 
+  <LookAndFeel 
+      name="Alloy" 
+      class="com.incors.plaf.alloy.AlloyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateAlloyLookAndFeelAction">
+
+      <Property	name="theme.name"    value="Glass"/>
+      <Property	name="theme.class"   value="com.incors.plaf.alloy.themes.glass.GlassTheme"/>
+      <Property	name="theme.license" value="2#Horst_Heistermann#1w2sca#5qzosw"/>
+  </LookAndFeel>  
+
+
   <!-- ==================================================================== -->
   <!-- JGoodies Look and Feels                                              -->
   <!-- ==================================================================== -->

@@ -58,5 +58,6 @@
 	<classpathentry kind="lib" path="lib/looks.jar"/>
 	<classpathentry kind="lib" path="lib/hippolf.jar"/>
 	<classpathentry kind="lib" path="lib/webwindow.jar"/>
+	<classpathentry kind="lib" path="lib/alloy.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
