@@ -225,6 +225,8 @@ public class DBBenchmark implements Startable, IPreferenced
         plugin_ = plugin;
         initDB_ = initDB;
         writer_ = writer;
+        
+        
     }
 
     //--------------------------------------------------------------------------
@@ -553,7 +555,7 @@ public class DBBenchmark implements Startable, IPreferenced
      * @param password Password.
      * @throws Exception on error.
      */
-    protected void createDatabase()throws Exception
+    protected void createDatabase() throws Exception
     {
         DBProfile profile = plugin_.getCurrentProfile();
         
@@ -601,6 +603,7 @@ public class DBBenchmark implements Startable, IPreferenced
         }
         catch (Exception ex)
         {
+            logger_.error(ex);
         }
 
         writer_.println("Dropping old tables if they exist...");
@@ -631,8 +634,9 @@ public class DBBenchmark implements Startable, IPreferenced
 
             JDBCUtil.close(stmt);
         }
-        finally
+        catch (Exception ex)
         {
+            logger_.error(ex);
         }
 
         writer_.println("Creating tables...");
@@ -714,6 +718,7 @@ public class DBBenchmark implements Startable, IPreferenced
         }
         catch (Exception ex2)
         {
+            logger_.error(ex2);
         }
 
         writer_.println("Deleting table contents in case Drop didn't work...");
@@ -916,12 +921,9 @@ public class DBBenchmark implements Startable, IPreferenced
      */
     protected int getRandomID(int type)
     {
-        int min;
-        int max;
-        int num;
-
-        max = min = 0;
-        num = numAccounts_;
+        int min = 0;
+        int max = 0;
+        int num = numAccounts_;
 
         switch (type)
         {
@@ -951,6 +953,7 @@ public class DBBenchmark implements Startable, IPreferenced
      * Gets a database connection.
      * 
      * @return Connection
+     * @throws SQLException on db error.
      */
     protected Connection connect() throws SQLException
     {
