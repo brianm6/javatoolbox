@@ -1,5 +1,7 @@
 package toolbox.util.dump.test;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Stack;
 
 import javax.swing.JFrame;
@@ -117,6 +119,30 @@ public class DumperTest extends TestCase
         logger_.info("Running testDumpMaxDepth...");
         logger_.info("\n\n" + Dumper.dump(new Employee(), 3));        
     }
+    
+    /**
+     * Tests dumping of collection classes
+     */    
+    public void testDumpCollection()
+    {
+        class CollectionDump
+        {
+            private Collection coll_;
+            
+            public CollectionDump()
+            {
+                coll_ = new ArrayList();
+                coll_.add("one");
+                coll_.add(new Country());
+                coll_.add(new Employee());
+            }
+        }
+        
+        logger_.info("Running testDumpCollection...");
+        logger_.info("\n\n" + Dumper.dump(new CollectionDump()));
+    }
+
+    // TODO: Update dumper to handle collections/arrays/vectors/etc!
      
     /**
      * Tests legacy version 
@@ -231,7 +257,9 @@ class D extends C
     //  static D loop = new D();
     public Stack stack = new Stack();
     //  public javax.swing.JLabel jLabel= new javax.swing.JLabel();
-}class FUN extends Object
+}
+
+class FUN extends Object
 {
     private Integer funInteger = new Integer(13);
 }
