@@ -1,3 +1,7 @@
+// =============================================================================
+// Acrobat - prevent user license dialog from popping up
+// =============================================================================
+
 package com.adobe.acrobat.gui;
 
 import java.awt.BorderLayout;
@@ -17,7 +21,7 @@ public class LicAgreement extends BasicDialog
     static
     {
         System.out.println(StringUtil.addBars(
-            "Loaded debug com.adobee.acrobat.gui.LicAgreement v1"));
+            "Loaded debug com.adobe.acrobat.gui.LicAgreement"));
     }
     
     public LicAgreement(Frame frame)
@@ -82,7 +86,11 @@ public class LicAgreement extends BasicDialog
      */
     public void setVisible(boolean flag)
     {
+        // =====================================================================
+        // OVERRIDE: Prevent dlg from ever being visible.
+        
         if (!flag)
             super.setVisible(flag);
+        // =====================================================================
     }
 }

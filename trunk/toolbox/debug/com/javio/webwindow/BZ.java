@@ -1,3 +1,7 @@
+// =============================================================================
+// WebWindow - bypass expiration timer
+// =============================================================================
+
 package com.javio.webwindow;
 
 import toolbox.util.StringUtil;

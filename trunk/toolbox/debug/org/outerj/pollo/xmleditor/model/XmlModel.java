@@ -1,3 +1,7 @@
+// =============================================================================
+// Pollo - workaround for encodings that are not understood. 
+// =============================================================================
+
 package org.outerj.pollo.xmleditor.model;
 
 import org.apache.xml.serialize.OutputFormat;
@@ -43,7 +47,7 @@ public class XmlModel
     static
     {
         System.out.println(StringUtil.addBars(
-            "Loaded debug org.outerj.pollo.xmleditor.model.XmlModel.class"));
+            "Loaded debug org.outerj.pollo.xmleditor.model.XmlModel"));
     }
     
     public static final int PARSED_MODE = 1;

@@ -1,3 +1,7 @@
+// =============================================================================
+// Pollo - removed dependence on DOM3
+// =============================================================================
+
 package org.outerj.pollo.xmleditor.view;
 
 import org.outerj.pollo.xmleditor.NodeClickedEvent;

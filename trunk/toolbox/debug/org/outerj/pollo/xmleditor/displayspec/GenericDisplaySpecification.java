@@ -1,3 +1,7 @@
+// =============================================================================
+// Pollo - Increases variation in selection of colors for tags
+// =============================================================================
+
 package org.outerj.pollo.xmleditor.displayspec;
 
 import org.outerj.pollo.xmleditor.ElementColorIcon;
@@ -196,6 +200,9 @@ public class GenericDisplaySpecification implements IDisplaySpecification
             elementSpec.attributesToShow = new ArrayList();
             if (useRandomColors)
             {
+                // =============================================================
+                // OVERRIDE: Randomizes colors more
+                
                 //elementSpec.backgroundColor = colors[colorPointer % numberOfColors];
                 //colorPointer++;
                 
@@ -203,6 +210,7 @@ public class GenericDisplaySpecification implements IDisplaySpecification
                     colors[RandomUtil.nextInt(numberOfColors-1)];
                 
                 //System.out.println("Picked color: " + elementSpec.backgroundColor);
+                // =============================================================
             }
             else
             {

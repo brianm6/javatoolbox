@@ -1,3 +1,7 @@
+// =============================================================================
+// Log4J - adds RELATIVE support for format string 
+// =============================================================================
+
 /*
  * Copyright (C) The Apache Software Foundation. All rights reserved.
  *
@@ -260,9 +264,13 @@ public class PatternParser {
       else if(dateFormatStr.equalsIgnoreCase(
                               AbsoluteTimeDateFormat.DATE_AND_TIME_DATE_FORMAT))
     df = new DateTimeDateFormat();
-      else if (dateFormatStr.equalsIgnoreCase("RELATIVE"))
-    df = new RelativeTimeDateFormat();
     
+    // =========================================================================
+    // OVERRIDE: Add RELATIVE time option to format string.
+    //
+    else if (dateFormatStr.equalsIgnoreCase("RELATIVE"))
+        df = new RelativeTimeDateFormat();
+    // =========================================================================
       else {
     try {
       df = new SimpleDateFormat(dateFormatStr);

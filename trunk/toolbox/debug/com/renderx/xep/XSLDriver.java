@@ -1,3 +1,7 @@
+// =============================================================================
+// XEP - prevents program from exiting the JVM when called from main()
+// =============================================================================
+
 package com.renderx.xep;
 
 import java.io.File;
@@ -109,8 +113,10 @@ label0:
                         String s3 = args2.tokens[j].s0.toLowerCase();
                         if (s3.equals("help") || s3.equals("h"))
                         {
+                            // =================================================
                             printUsage();
                             System.out.println("Hack..not exiting " + 0);
+                            // =================================================
                         }
                     }
                     j--;
@@ -157,8 +163,12 @@ label0:
                         if (s5.equals("version"))
                         {
                             Conf.err.println("XEP 3.3.1 Trial");
+                            
+                            // =================================================
                             if (args2.tokens.length == 1)
                                 System.out.println("Hack..not exiting " + 0);
+                            //==================================================
+                            
                             break label0;
                         }
                         if (s5.equals("quiet"))
@@ -319,8 +329,10 @@ label0:
         }
         catch (ArrayIndexOutOfBoundsException arrayindexoutofboundsexception)
         {
+            // =================================================================
             Conf.err.println("error: too few command line arguments");
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         if (byte0 == 0)
             byte0 = 2;
@@ -340,9 +352,11 @@ label0:
         String s12 = args1[1];
         if (s12 == null)
         {
+            // =================================================================
             Conf.err.println("Generation of " + args1[0] + " not supported");
             enumerateFormats();
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         try
         {
@@ -359,9 +373,11 @@ label0:
         }
         catch (Exception exception)
         {
+            // =================================================================
             Conf.err.println("Formatter initialization failed: the formatter has thrown an exception.");
             Conf.err.println(exception.toString());
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         H4base h4base = null;
         try
@@ -372,8 +388,10 @@ label0:
         }
         catch (Exception exception1)
         {
+            // =================================================================
             Conf.err.println("error: cannot load output producer '" + args1[1] + "' for '" + args1[0] + "'.");
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         Object obj = null;
         Object obj1 = null;
@@ -398,13 +416,17 @@ label0:
         }
         catch (IOException ioexception)
         {
+            // =================================================================
             Conf.err.println("error: cannot open file " + s2 + " for writing: " + ioexception.getMessage());
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         catch (Exception exception2)
         {
+            // =================================================================
             Conf.err.println("error: problem accessing file '" + s2 + "': " + exception2.toString());
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         try
         {
@@ -477,15 +499,19 @@ label0:
         }
         catch (IOException ioexception1)
         {
+            // =================================================================
             Conf.err.println("error: I/O error: " + ioexception1.getMessage());
             ((File) (obj)).delete();
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         catch (SAXException saxexception)
         {
+            // =================================================================
             Conf.err.println("error: SAX parsing error: " + saxexception.getMessage());
             ((File) (obj)).delete();
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
         catch (Exception exception3)
         {
@@ -493,9 +519,15 @@ label0:
             if (!Conf.VALIDATE)
                 Conf.err.println("XEP has been run in non-validating mode. Check your input for possible XSL FO errors.");
             ((File) (obj)).delete();
+            
+            // =================================================================
             System.out.println("Hack..not exiting " + 1);
+            // =================================================================
         }
+        
+        // =====================================================================
         System.out.println("Hack..not exiting " + 0);
+        // =====================================================================
     }
 
     private static String makeSystemId(String s)
@@ -508,7 +540,11 @@ label0:
         {
             Conf.err.println(exception.getMessage());
         }
+        
+        // =====================================================================
         System.out.println("Hack..not exiting " + 1);
+        // =====================================================================
+        
         return null;
     }
 

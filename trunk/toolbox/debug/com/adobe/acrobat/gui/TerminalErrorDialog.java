@@ -1,7 +1,10 @@
+// =============================================================================
+// Acrobat - prevent exit if running embedded
+// =============================================================================
+
 package com.adobe.acrobat.gui;
 
 import toolbox.util.StringUtil;
-
 
 public class TerminalErrorDialog extends ErrorDialog
 {

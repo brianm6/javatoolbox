@@ -1,3 +1,7 @@
+// =============================================================================
+// Multivalent - Fixed URL to URI conversion for spaces and absolute form.
+// =============================================================================
+
 package phelps.net;
 
 import java.net.URL;
