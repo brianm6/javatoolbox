@@ -297,4 +297,28 @@ public class ArrayUtil
         
         return result;
     } 
+    
+    
+    /**
+     * Adds an element to an existing array and returns the new array.
+     * 
+     * @param   array       An array to add the element to
+     * @param   element     Element to append
+     */
+    public static Object addElement(Object[] array, Object element)
+    {
+        int length = array.length;
+        
+        // Create a new array of length + 1
+        Object[] newArray = (Object[])
+            Array.newInstance(array.getClass().getComponentType(), length + 1);
+        
+        // Copy everything over    
+        System.arraycopy(array, 0, newArray, 0, length);
+        
+        // Set the last index of the array to the new element
+        newArray[length] = element;
+        
+        return newArray;
+    }
 }
