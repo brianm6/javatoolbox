@@ -11,7 +11,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.io.filter.ExtensionFilter;
 
 /**
- * Unit test for ExtensionFilter
+ * Unit test for ExtensionFilter.
  */
 public class ExtensionFilterTest extends TestCase
 {
@@ -23,9 +23,9 @@ public class ExtensionFilterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /** 
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -37,7 +37,7 @@ public class ExtensionFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests accept() for a file with a matching extension
+     * Tests accept() for a file with a matching extension.
      * 
      * @throws Exception on error
      */
@@ -55,9 +55,10 @@ public class ExtensionFilterTest extends TestCase
         assertTrue(filter.accept(dummyDir, ".txT"));
     }
     
+    
     /**
      * Tests accept() for a files with a matching extension with a dot
-     * included in the extension
+     * included in the extension.
      * 
      * @throws Exception on error
      */
@@ -75,8 +76,9 @@ public class ExtensionFilterTest extends TestCase
         assertTrue(filter.accept(dummyDir, ".txT"));
     }  
     
+    
     /**
-     * Tests accept() for a file which don't match
+     * Tests accept() for a file which don't match.
      * 
      * @throws Exception on error
      */

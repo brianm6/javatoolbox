@@ -12,7 +12,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.io.WrappingWriter;
 
 /**
- * Unit test for WrappingWriter
+ * Unit test for WrappingWriter.
  */
 public class WrappingWriterTest extends TestCase
 {
@@ -24,7 +24,7 @@ public class WrappingWriterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */    
@@ -38,7 +38,7 @@ public class WrappingWriterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests WrappingWriter
+     * Tests WrappingWriter.
      * 
      * @throws IOException on error
      */
@@ -58,8 +58,9 @@ public class WrappingWriterTest extends TestCase
         logger_.info("\n" + sw.toString());
     }
     
+    
     /**
-     * Tests WrappingWriter
+     * Tests WrappingWriter.
      * 
      * @throws IOException on error
      */
@@ -81,7 +82,7 @@ public class WrappingWriterTest extends TestCase
     
     
     /**
-     * Tests writer with zero characters
+     * Tests writer with zero characters.
      * 
      * @throws IOException on error
      */
@@ -102,7 +103,7 @@ public class WrappingWriterTest extends TestCase
 
 
     /**
-     * Tests writer with one character
+     * Tests writer with one character.
      * 
      * @throws IOException on error
      */
@@ -123,7 +124,7 @@ public class WrappingWriterTest extends TestCase
     
     
     /**
-     * Tests exactly one line
+     * Tests exactly one line.
      * 
      * @throws Exception on error
      */
@@ -144,7 +145,7 @@ public class WrappingWriterTest extends TestCase
 
 
     /**
-     * Tests exactly one line and one char
+     * Tests exactly one line and one char.
      * 
      * @throws Exception on error
      */
@@ -165,7 +166,7 @@ public class WrappingWriterTest extends TestCase
     
     
     /**
-     * Tests exactly one line and two char
+     * Tests exactly one line and two char.
      * 
      * @throws Exception on error
      */
@@ -186,7 +187,7 @@ public class WrappingWriterTest extends TestCase
     
     
     /**
-     * Tests wrapper for a width of 1
+     * Tests wrapper for a width of 1.
      * 
      * @throws Exception on error
      */
@@ -207,7 +208,7 @@ public class WrappingWriterTest extends TestCase
     
 
     /**
-     * Tests writer with zero characters
+     * Tests writer with zero characters.
      * 
      * @throws IOException on error
      */
@@ -227,7 +228,7 @@ public class WrappingWriterTest extends TestCase
 
 
     /**
-     * Tests writer with one character
+     * Tests writer with one character.
      * 
      * @throws IOException on error
      */
@@ -249,7 +250,7 @@ public class WrappingWriterTest extends TestCase
     
     
     /**
-     * Tests exactly one line
+     * Tests exactly one line.
      * 
      * @throws Exception on error
      */
@@ -270,7 +271,7 @@ public class WrappingWriterTest extends TestCase
 
 
     /**
-     * Tests exactly one line and one char
+     * Tests exactly one line and one char.
      * 
      * @throws Exception on error
      */
@@ -291,7 +292,7 @@ public class WrappingWriterTest extends TestCase
 
     
     /**
-     * Tests exactly one line and two char
+     * Tests exactly one line and two char.
      * 
      * @throws Exception on error
      */
@@ -312,7 +313,7 @@ public class WrappingWriterTest extends TestCase
     
     
     /**
-     * Tests wrapper for a width of 1
+     * Tests wrapper for a width of 1.
      * 
      * @throws Exception on error
      */
@@ -332,7 +333,7 @@ public class WrappingWriterTest extends TestCase
     }
     
     /**
-     * Tests toString()
+     * Tests toString().
      * 
      * @throws Exception on error
      */

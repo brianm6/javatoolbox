@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.FixedWidthWriter;
 
 /**
- * Unit test for FixedWidthWriter
+ * Unit test for FixedWidthWriter.
  */
 public class FixedWidthWriterTest extends TestCase
 {
@@ -23,7 +23,7 @@ public class FixedWidthWriterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      */
@@ -37,7 +37,7 @@ public class FixedWidthWriterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests writeLPad(String, int)
+     * Tests writeLPad(String, int).
      * 
      * @throws IOException on error
      */
@@ -76,8 +76,9 @@ public class FixedWidthWriterTest extends TestCase
         assertEquals("    h", sw.getBuffer().toString());
     }
 
+    
     /**
-     * Tests writeLPad(String, int, char)
+     * Tests writeLPad(String, int, char).
      * 
      * @throws IOException on error
      */
@@ -116,8 +117,9 @@ public class FixedWidthWriterTest extends TestCase
         assertEquals("....h", sw.getBuffer().toString());
     }
 
+    
     /**
-     * Tests writeRPad(String, int)
+     * Tests writeRPad(String, int).
      * 
      * @throws IOException on error
      */
@@ -156,8 +158,9 @@ public class FixedWidthWriterTest extends TestCase
         assertEquals("h    ", sw.getBuffer().toString());
     }
 
+    
     /**
-     * Tests writeRPad(String, int, char)
+     * Tests writeRPad(String, int, char).
      * 
      * @throws IOException on error
      */
@@ -196,8 +199,9 @@ public class FixedWidthWriterTest extends TestCase
         assertEquals("h....", sw.getBuffer().toString());
     }
     
+    
     /**
-     * Tests the write() method
+     * Tests the write() method.
      * 
      * @throws IOException on error
      */

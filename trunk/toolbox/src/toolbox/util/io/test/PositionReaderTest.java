@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.PositionReader;
 
 /**
- * Unit test for PositionReader
+ * Unit test for PositionReader.
  */
 public class PositionReaderTest extends TestCase
 {
@@ -22,9 +22,9 @@ public class PositionReaderTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -36,7 +36,7 @@ public class PositionReaderTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Test readUntil()
+     * Test readUntil().
      * 
      * @throws Exception on error
      */    

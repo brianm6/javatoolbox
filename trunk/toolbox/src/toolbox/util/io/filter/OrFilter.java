@@ -5,7 +5,7 @@ import java.io.FilenameFilter;
 import java.util.Iterator;
 
 /**
- * Filename filter that behaves as a logical OR for one or more given filters
+ * Filename filter that behaves as a logical OR for one or more given filters.
  */
 public class OrFilter extends CompoundFilter implements FilenameFilter
 {
@@ -14,14 +14,15 @@ public class OrFilter extends CompoundFilter implements FilenameFilter
     //--------------------------------------------------------------------------
      
     /**
-     * Creates an OrFilter
+     * Creates an OrFilter.
      */
     public OrFilter()
     {
     } 
         
+    
     /**
-     * Creates a filter that ORs the given filters
+     * Creates a filter that ORs the given filters.
      * 
      * @param filterOne First filter
      * @param filterTwo Second filter
@@ -37,7 +38,7 @@ public class OrFilter extends CompoundFilter implements FilenameFilter
     //--------------------------------------------------------------------------
         
     /**
-     * Accepts files based on the logical OR of the added filters
+     * Accepts files based on the logical OR of the added filters.
      * 
      * @param dir Directory file is contained in
      * @param name Name of file

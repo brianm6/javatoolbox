@@ -10,7 +10,7 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.io.StringInputStream;
 
 /**
- * Unit test for StringInputStream 
+ * Unit test for StringInputStream. 
  */
 public class StringInputStreamTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class StringInputStreamTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -36,7 +36,7 @@ public class StringInputStreamTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests the read() method
+     * Tests the read() method.
      * 
      * @throws Exception on error
      */
@@ -53,8 +53,9 @@ public class StringInputStreamTest extends TestCase
         assertEquals("String read from stream doesn't match", str, compare);
     }
     
+    
     /**
-     * Tests the read() method when stream is empty
+     * Tests the read() method when stream is empty.
      * 
      * @throws Exception on error
      */
@@ -70,8 +71,9 @@ public class StringInputStreamTest extends TestCase
         assertEquals("read() should return -1", -1, sis.read());
     }
     
+    
     /**
-     * Tests available() method
+     * Tests available() method.
      * 
      * @throws Exception on error
      */
@@ -93,8 +95,9 @@ public class StringInputStreamTest extends TestCase
         assertEquals("available is incorrect", many.length(), sis.available());
     }
     
+    
     /** 
-     * Tests read on an empty stream with ignore EOF set to true
+     * Tests read on an empty stream with ignore EOF set to true.
      * 
      * @throws Exception on error
      */
@@ -123,8 +126,9 @@ public class StringInputStreamTest extends TestCase
         assertEquals(-1, sis.read());
     }   
  
+    
     /**
-     * Tests append()
+     * Tests append().
      * 
      * @throws Exception on error
      */
@@ -151,7 +155,7 @@ public class StringInputStreamTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Stuffs a stream
+     * Stuffs a stream.
      * 
      * @param sis Stream to stuff
      * @param delay Delay in ms

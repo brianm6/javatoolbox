@@ -11,7 +11,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.io.filter.NotFilter;
 
 /**
- * Unit test for NotFilter
+ * Unit test for NotFilter.
  */
 public class NotFilterTest extends TestCase
 {
@@ -19,7 +19,7 @@ public class NotFilterTest extends TestCase
         Logger.getLogger(NotFilterTest.class);
      
     /** 
-     * Directory for files used by the filtering tests 
+     * Directory for files used by the filtering tests. 
      */
     private File testDir_;
      
@@ -28,7 +28,7 @@ public class NotFilterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /** 
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -42,7 +42,7 @@ public class NotFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Creates a temporary directory with files to use for testing
+     * Creates a temporary directory with files to use for testing.
      * 
      * @throws Exception on error
      */
@@ -55,8 +55,9 @@ public class NotFilterTest extends TestCase
         super.setUp();
     }
 
+    
     /**
-     * Cleans up the temporary directory
+     * Cleans up the temporary directory.
      * 
      * @throws Exception on error 
      */
@@ -72,7 +73,7 @@ public class NotFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the constructors
+     * Tests the constructors.
      */
     public void testConstructors()
     {
@@ -82,8 +83,9 @@ public class NotFilterTest extends TestCase
         assertNotNull(filter1);
     }
     
+    
     /**
-     * Tests accept() for (&#33;true)
+     * Tests accept() for (&#33;true).
      */
     public void testAcceptNotTrue()
     {
@@ -95,6 +97,7 @@ public class NotFilterTest extends TestCase
         
         assertEquals("No matches should have been found", 0, matches.length);
     }
+    
     
     /**
      * Tests accept() for (&#33;false)

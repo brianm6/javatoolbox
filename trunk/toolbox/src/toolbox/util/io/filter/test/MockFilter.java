@@ -10,7 +10,7 @@ import java.io.FilenameFilter;
 public class MockFilter implements FilenameFilter
 {
     /**
-     * Value the mock filter to return on calls to accept()
+     * Value the mock filter to return on calls to accept().
      */
     private boolean accept_;
 
@@ -19,7 +19,7 @@ public class MockFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a MockFilter
+     * Creates a MockFilter.
      * 
      * @param accept Static accept criteria
      */
@@ -33,7 +33,7 @@ public class MockFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Returns accept_
+     * Returns accept_.
      * 
      * @param dir Directory file is contained in
      * @param name Name of file

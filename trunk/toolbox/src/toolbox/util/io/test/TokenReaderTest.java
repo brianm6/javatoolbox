@@ -11,7 +11,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.io.TokenReader;
 
 /**
- * Unit test for TokenReader
+ * Unit test for TokenReader.
  */
 public class TokenReaderTest extends TestCase
 {
@@ -23,7 +23,7 @@ public class TokenReaderTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -37,7 +37,7 @@ public class TokenReaderTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests an empty reader
+     * Tests an empty reader.
      * 
      * @throws Exception on error
      */    
@@ -50,8 +50,9 @@ public class TokenReaderTest extends TestCase
         assertNull("tokens should be null", tokens);
     }
     
+    
     /**
-     * Tests a reader with a single line of data
+     * Tests a reader with a single line of data.
      * 
      * @throws Exception on error
      */
@@ -67,8 +68,9 @@ public class TokenReaderTest extends TestCase
         assertNull("next line should be null", tokens);
     }
     
+    
     /**
-     * Tests a reader with multiple lines of multiple tokens
+     * Tests a reader with multiple lines of multiple tokens.
      * 
      * @throws Exception on error
      */

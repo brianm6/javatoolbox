@@ -13,17 +13,17 @@ import org.apache.regexp.RESyntaxException;
 public class RegexFilter implements FilenameFilter
 {
     /** 
-     * Regular expression as a string 
+     * Regular expression as a string. 
      */
     private String strRegExp_;
     
     /** 
-     * Flag to match case 
+     * Flag to match case.
      */
     private boolean matchCase_;
     
     /** 
-     * Regular expression 
+     * Regular expression. 
      */
     private RE regExp_;
 

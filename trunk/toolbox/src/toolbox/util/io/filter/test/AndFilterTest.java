@@ -12,7 +12,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.io.filter.AndFilter;
 
 /**
- * Unit test for AndFilter
+ * Unit test for AndFilter.
  */
 public class AndFilterTest extends TestCase
 {
@@ -20,7 +20,7 @@ public class AndFilterTest extends TestCase
         Logger.getLogger(AndFilterTest.class);
      
     /** 
-     * Test directory for filtering files 
+     * Test directory for filtering files. 
      */
     private File testDir_;
         
@@ -29,9 +29,9 @@ public class AndFilterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /** 
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -43,7 +43,7 @@ public class AndFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Create a temporary directory with files to use for testing
+     * Create a temporary directory with files to use for testing.
      */
     protected void setUp() throws Exception
     {
@@ -53,8 +53,9 @@ public class AndFilterTest extends TestCase
         FileUtil.setFileContents(base + "AndFilterTest.txt", "testing", false);
     }
 
+    
     /**
-     * Clean up temporary directory 
+     * Clean up temporary directory. 
      */
     protected void tearDown() throws Exception
     {
@@ -67,7 +68,7 @@ public class AndFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the constructors
+     * Tests the constructors.
      */
     public void testConstructors()
     {
@@ -82,8 +83,9 @@ public class AndFilterTest extends TestCase
         assertNotNull(filter2);        
     }
     
+    
     /**
-     * Tests accept() for (true & true)
+     * Tests accept() for (true & true).
      */
     public void testAcceptTrueTrue()
     {
@@ -97,8 +99,9 @@ public class AndFilterTest extends TestCase
         assertEquals("One match should have been found", 1, matches.length);
     }
     
+    
     /**
-     * Tests accept() for (false & false)
+     * Tests accept() for (false & false).
      */
     public void testAcceptFalseFalse()
     {
@@ -112,8 +115,9 @@ public class AndFilterTest extends TestCase
         assertEquals("No matches should have been found", 0, matches.length);
     }
 
+    
     /**
-     * Tests accept() for (true & false)
+     * Tests accept() for (true & false).
      */
     public void testAcceptTrueFalse()
     {
@@ -127,8 +131,9 @@ public class AndFilterTest extends TestCase
         assertEquals("No matches should have been found", 0, matches.length);
     }
     
+    
     /**
-     * Tests accept() for compound expressions
+     * Tests accept() for compound expressions.
      */
     public void testAcceptCompound()
     {

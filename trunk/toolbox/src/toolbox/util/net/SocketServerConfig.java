@@ -16,9 +16,13 @@ import toolbox.util.collections.AsMap;
  */
 public class SocketServerConfig
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final Logger logger_ = 
         Logger.getLogger(SocketServerConfig.class);
-
+    
     /** 
      * Property for server socket port number.
      */
@@ -63,6 +67,10 @@ public class SocketServerConfig
     public static final String PROP_SERVER_NAME = 
         "socketserver.name";
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Optional name of socket server for identification purposes.
      */

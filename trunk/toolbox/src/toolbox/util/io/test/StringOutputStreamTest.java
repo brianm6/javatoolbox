@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for StringOutputStream
+ * Unit test for StringOutputStream.
  */
 public class StringOutputStreamTest extends TestCase
 {
@@ -20,7 +20,7 @@ public class StringOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint   
+     * Entrypoint.   
      * 
      * @param args None recognized
      */
@@ -34,7 +34,7 @@ public class StringOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
        
     /**
-     * Tests the constructors
+     * Tests the constructors.
      */
     public void testConstructors()
     {
@@ -44,8 +44,9 @@ public class StringOutputStreamTest extends TestCase
         assertNotNull(sos);
     }
         
+    
     /**
-     * Tests the write() method
+     * Tests the write() method.
      * 
      * @throws Exception on error
      */
@@ -60,8 +61,9 @@ public class StringOutputStreamTest extends TestCase
         assertEquals("strings don't match", testString, sos.toString());
     }
     
+    
     /**
-     * Tests the close() method
+     * Tests the close() method.
      * 
      * @throws Exception on error
      */

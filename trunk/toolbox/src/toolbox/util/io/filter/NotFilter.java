@@ -10,7 +10,7 @@ import java.io.FilenameFilter;
 public class NotFilter implements FilenameFilter
 {
     /**
-     * Filter to negate
+     * Filter to negate.
      */
     private FilenameFilter filter_;
     
@@ -19,7 +19,7 @@ public class NotFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a NotFilter
+     * Creates a NotFilter.
      * 
      * @param filter Filter to negate
      */   
@@ -33,7 +33,7 @@ public class NotFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Negates a filter's accept() method
+     * Negates a filter's accept() method.
      * 
      * @param dir Directory file is contained in
      * @param name Name of file

@@ -10,7 +10,7 @@ import junit.textui.TestRunner;
 import toolbox.util.io.NullWriter;
 
 /**
- * Unit test for NullWriter
+ * Unit test for NullWriter.
  */
 public class NullWriterTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class NullWriterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None
      */
@@ -36,7 +36,7 @@ public class NullWriterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the NullWriter
+     * Tests the NullWriter.
      * 
      * @throws IOException on error
      */

@@ -18,7 +18,7 @@ import toolbox.util.io.EventOutputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for EventOutputStream
+ * Unit test for EventOutputStream.
  */
 public class EventOutputStreamTest extends TestCase
 {
@@ -30,7 +30,7 @@ public class EventOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint   
+     * Entrypoint.   
      * 
      * @param args None recognized
      */
@@ -44,7 +44,7 @@ public class EventOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
        
     /**
-     * Tests the constructors
+     * Tests the constructors.
      */
     public void testConstructors()
     {
@@ -57,8 +57,9 @@ public class EventOutputStreamTest extends TestCase
         assertEquals(0, cos.getCount());
     }
         
+    
     /**
-     * Tests the write(byte) method
+     * Tests the write(byte) method.
      * 
      * @throws Exception on error
      */
@@ -76,8 +77,9 @@ public class EventOutputStreamTest extends TestCase
         assertEquals(1, cos.getCount());
     }
     
+    
     /**
-     * Tests the write(byte[]) method
+     * Tests the write(byte[]) method.
      * 
      * @throws Exception on error
      */
@@ -95,8 +97,9 @@ public class EventOutputStreamTest extends TestCase
         assertEquals("hello".length(), cos.getCount());
     }
     
+    
     /**
-     * Tests the write(byte[], begin, len) method
+     * Tests the write(byte[], begin, len) method.
      * 
      * @throws Exception on error
      */
@@ -114,8 +117,9 @@ public class EventOutputStreamTest extends TestCase
         assertEquals(2, cos.getCount());
     }
     
+    
     /**
-     * Tests the event generation and listener notification
+     * Tests the event generation and listener notification.
      *
      * @throws Exception on error
      */
@@ -138,8 +142,9 @@ public class EventOutputStreamTest extends TestCase
         assertNotNull(listener.waitForClose());
     }
 
+    
     /**
-     * Tests the streamThroughput() method on the EventOutputStream.Listener
+     * Tests the streamThroughput() method on the EventOutputStream.Listener.
      * 
      * @throws Exception on error
      */
@@ -215,7 +220,7 @@ public class EventOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
    
     /** 
-     * Listener used to make sure event notification is working correctly
+     * Listener used to make sure event notification is working correctly.
      */    
     class OutputStreamListener implements EventOutputStream.Listener
     {
@@ -267,8 +272,9 @@ public class EventOutputStreamTest extends TestCase
         }
     }
     
+    
     /** 
-     * Listener used to make sure event notification is working correctly
+     * Listener used to make sure event notification is working correctly.
      */    
     class ThroughputListener implements EventOutputStream.Listener
     {

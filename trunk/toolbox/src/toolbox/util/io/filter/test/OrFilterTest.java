@@ -11,7 +11,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.io.filter.OrFilter;
 
 /**
- * Unit test for OrFilter
+ * Unit test for OrFilter.
  */
 public class OrFilterTest extends TestCase
 {
@@ -19,7 +19,7 @@ public class OrFilterTest extends TestCase
         Logger.getLogger(OrFilterTest.class);
      
     /** 
-     * Test directory for filtering files 
+     * Test directory for filtering files. 
      */
     private File testDir_;
      
@@ -28,7 +28,7 @@ public class OrFilterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /** 
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -42,7 +42,7 @@ public class OrFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Create a temporary directory with files to use for testing
+     * Create a temporary directory with files to use for testing.
      * 
      * @throws Exception on error
      */
@@ -55,8 +55,9 @@ public class OrFilterTest extends TestCase
         super.setUp();
     }
 
+    
     /**
-     * Clean up temporary directory
+     * Clean up temporary directory.
      * 
      * @throws Exception on error 
      */
@@ -72,7 +73,7 @@ public class OrFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the constructors
+     * Tests the constructors.
      */
     public void testConstructors()
     {
@@ -87,8 +88,9 @@ public class OrFilterTest extends TestCase
         assertNotNull(filter2);        
     }
     
+    
     /**
-     * Tests accept() for (true || true)
+     * Tests accept() for (true || true).
      */
     public void testAcceptTrueTrue()
     {
@@ -102,8 +104,9 @@ public class OrFilterTest extends TestCase
         assertEquals("One match should have been found", 1, matches.length);
     }
     
+    
     /**
-     * Tests accept() for (false | false)
+     * Tests accept() for (false | false).
      */
     public void testAcceptFalseFalse()
     {
@@ -117,8 +120,9 @@ public class OrFilterTest extends TestCase
         assertEquals("No matches should have been found", 0, matches.length);
     }
 
+    
     /**
-     * Tests accept() for (true | false)
+     * Tests accept() for (true | false).
      */
     public void testAcceptTrueFalse()
     {
@@ -132,8 +136,9 @@ public class OrFilterTest extends TestCase
         assertEquals("One match should have been found", 1, matches.length);
     }
     
+    
     /**
-     * Tests accept() for compound expressions
+     * Tests accept() for compound expressions.
      */
     public void testAcceptCompound()
     {

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 /**
- * Filters files only
+ * Filters files only.
  */
 public class FileFilter implements FilenameFilter
 {
@@ -13,7 +13,7 @@ public class FileFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Filter out files only
+     * Filter out files only.
      * 
      * @param dir Directory file is contained in
      * @param name Name of file

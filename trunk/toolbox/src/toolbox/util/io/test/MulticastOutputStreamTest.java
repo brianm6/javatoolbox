@@ -9,7 +9,7 @@ import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for MulticastOutputStream
+ * Unit test for MulticastOutputStream.
  */
 public class MulticastOutputStreamTest extends TestCase
 {
@@ -21,7 +21,7 @@ public class MulticastOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -35,7 +35,7 @@ public class MulticastOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the constructors
+     * Tests the constructors.
      */
     public void testConstructors()
     {
@@ -51,8 +51,9 @@ public class MulticastOutputStreamTest extends TestCase
         assertNotNull(mos2);
     }
     
+    
     /**
-     * Tests write(byte[])
+     * Tests write(byte[]).
      * 
      * @throws Exception on error
      */
@@ -78,8 +79,9 @@ public class MulticastOutputStreamTest extends TestCase
             assertEquals(testString, streams[i].getBuffer().toString());
     }
 
+    
     /**
-     * Tests write(byte[], offset, length)
+     * Tests write(byte[], offset, length).
      * 
      * @throws Exception on error
      */
@@ -108,8 +110,9 @@ public class MulticastOutputStreamTest extends TestCase
         }
     }
 
+    
     /**
-     * Tests write(int)
+     * Tests write(int).
      * 
      * @throws Exception on error
      */
@@ -129,8 +132,9 @@ public class MulticastOutputStreamTest extends TestCase
         mos.write(0);
     }
     
+    
     /**
-     * Tests close()
+     * Tests close().
      * 
      * @throws Exception on error
      */
@@ -150,8 +154,9 @@ public class MulticastOutputStreamTest extends TestCase
         mos.close();
     }
     
+    
     /**
-     * Tests flush()
+     * Tests flush().
      * 
      * @throws Exception on error
      */

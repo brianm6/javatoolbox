@@ -10,7 +10,7 @@ import junit.textui.TestRunner;
 import toolbox.util.io.RegexFilterReader;
 
 /** 
- * Unit test for RegexFilterReader
+ * Unit test for RegexFilterReader.
  */
 public class RegexFilterReaderTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class RegexFilterReaderTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      *
      * @param args None recognized
      */
@@ -36,7 +36,7 @@ public class RegexFilterReaderTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the constructors
+     * Tests the constructors.
      * 
      * @throws Exception on error
      */
@@ -56,8 +56,9 @@ public class RegexFilterReaderTest extends TestCase
         assertNotNull(rfr2);
     }
         
+    
     /**
-     * Tests readLine() for a simple test case
+     * Tests readLine() for a simple test case.
      * 
      * @throws Exception on error
      */

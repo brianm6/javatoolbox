@@ -11,7 +11,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.io.filter.RegexFilter;
 
 /**
- * Unit test for RegexFilter
+ * Unit test for RegexFilter.
  */
 public class RegexFilterTest extends TestCase
 {
@@ -19,7 +19,7 @@ public class RegexFilterTest extends TestCase
         Logger.getLogger(RegexFilterTest.class);
         
     /** 
-     * Test directory for filtering files 
+     * Test directory for filtering files. 
      */
     private File testDir_;
     
@@ -28,7 +28,7 @@ public class RegexFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -38,11 +38,11 @@ public class RegexFilterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from TestCase
+    // Overrides TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Create a temporary directory with files to use for testing
+     * Create a temporary directory with files to use for testing.
      * 
      * @throws Exception on error
      */
@@ -59,8 +59,9 @@ public class RegexFilterTest extends TestCase
         super.setUp();
     }
 
+    
     /**
-     * Clean up temporary directory
+     * Clean up temporary directory.
      * 
      * @throws Exception on error 
      */
@@ -76,7 +77,7 @@ public class RegexFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests accept() for not matching any files
+     * Tests accept() for not matching any files.
      * 
      * @throws Exception on error
      */
@@ -89,8 +90,9 @@ public class RegexFilterTest extends TestCase
         assertEquals("No matches should have been found", 0, matches.length);
     } 
 
+    
     /**
-     * Tests accept() for not matching one file
+     * Tests accept() for not matching one file.
      * 
      * @throws Exception on error
      */
@@ -104,8 +106,9 @@ public class RegexFilterTest extends TestCase
         assertEquals("One match should have been found", "b2b.xml", matches[0]);
     } 
     
+    
     /**
-     * Tests accept() for matching many files
+     * Tests accept() for matching many files.
      * 
      * @throws Exception on error
      */
@@ -123,8 +126,9 @@ public class RegexFilterTest extends TestCase
                 matches[i].endsWith("java"));
     }
     
+    
     /**
-     * Tests accept() for case sensetivity
+     * Tests accept() for case sensetivity.
      * 
      * @throws Exception on error
      */

@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 /**
  * A file filter that logically ANDs two existing filters so that the 
- * acceptance is sufficient to satisfy both filters
+ * acceptance is sufficient to satisfy both filters.
  */
 public class AndFilter extends CompoundFilter implements FilenameFilter
 {
@@ -15,14 +15,15 @@ public class AndFilter extends CompoundFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an AndFilter
+     * Creates an AndFilter.
      */
     public AndFilter()
     {
     }
     
+    
     /**
-     * Creates an AndFilter with the two given filters
+     * Creates an AndFilter with the two given filters.
      * 
      * @param filterOne First filter
      * @param filterTwo Second filter
@@ -38,7 +39,7 @@ public class AndFilter extends CompoundFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Accepts files that that meet the criteria of filterOne AND filterTwo
+     * Accepts files that that meet the criteria of filterOne AND filterTwo.
      * 
      * @param dir Directory file is contained in
      * @param name Name of file

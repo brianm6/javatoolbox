@@ -12,7 +12,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.io.ReverseFileReader;
 
 /**
- * Unit Test for ReverseFileReader
+ * Unit test for ReverseFileReader.
  */
 public class ReverseFileReaderTest extends TestCase
 {
@@ -24,7 +24,7 @@ public class ReverseFileReaderTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -38,7 +38,7 @@ public class ReverseFileReaderTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests readLine() on a zero byte file
+     * Tests readLine() on a zero byte file.
      * 
      * @throws Exception on error
      */
@@ -60,8 +60,9 @@ public class ReverseFileReaderTest extends TestCase
         }
     }
     
+    
     /**
-     * Tests readLine() on a 1 byte file
+     * Tests readLine() on a 1 byte file.
      * 
      * @throws Exception on error
      */
@@ -84,8 +85,9 @@ public class ReverseFileReaderTest extends TestCase
         }
     }
     
+    
     /**
-     * Test readLine() on a one line file
+     * Test readLine() on a one line file.
      * 
      * @throws Exception on error
      */
@@ -109,8 +111,9 @@ public class ReverseFileReaderTest extends TestCase
         }
     }
 
+    
     /**
-     * Tests readLine() on a file with multiple lines
+     * Tests readLine() on a file with multiple lines.
      * 
      * @throws Exception on error
      */
@@ -138,8 +141,9 @@ public class ReverseFileReaderTest extends TestCase
         }
     }
 
+    
     /**
-     * Tests readLine() on a file with multiple lines
+     * Tests readLine() on a file with multiple lines.
      * 
      * @throws Exception on error
      */
@@ -172,7 +176,7 @@ public class ReverseFileReaderTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests read() on a zero byte file
+     * Tests read() on a zero byte file.
      * 
      * @throws Exception on error
      */
@@ -194,8 +198,9 @@ public class ReverseFileReaderTest extends TestCase
         }
     }
 
+    
     /**
-     * Tests read() on a one byte file
+     * Tests read() on a one byte file.
      * 
      * @throws Exception on error
      */
