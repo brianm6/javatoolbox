@@ -4,10 +4,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import toolbox.util.ExceptionUtil;
+
+import org.apache.log4j.Category;
+
+import toolbox.util.concurrent.BatchingQueueReader;
+import toolbox.util.concurrent.BlockingQueue;
+import toolbox.util.concurrent.IBatchingQueueListener;
 
 /**
  * A thread safe table model that adds elements to the model on the 
@@ -15,8 +19,20 @@ import toolbox.util.ExceptionUtil;
  * cause erratic repaint behavior and out of sync behavior between the 
  * model and view.
  */
-public class ThreadSafeTableModel extends DefaultTableModel
+public class ThreadSafeTableModel extends DefaultTableModel 
+    implements IBatchingQueueListener
 {
+    /** Logger **/
+    private static final Category logger_ = 
+        Category.getInstance(ThreadSafeTableModel.class);
+        
+    private BlockingQueue queue_;
+    private BatchingQueueReader queueReader_;
+    
+
+    //
+    //  CONSTRUCTORS
+    //
     
     /**
      * Creates a table model 
@@ -33,6 +49,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
     public ThreadSafeTableModel(int i, int j)
     {
         super(i, j);
+        init();
     }
 
 
@@ -42,6 +59,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
     public ThreadSafeTableModel(Vector vector, int i)
     {
         super(vector, i);
+        init();
     }
 
 
@@ -60,6 +78,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
     public ThreadSafeTableModel(Vector vector, Vector vector1)
     {
         setDataVector(vector, vector1);
+        init();
     }
 
 
@@ -69,47 +88,70 @@ public class ThreadSafeTableModel extends DefaultTableModel
     public ThreadSafeTableModel(Object aobj[][], Object aobj1[])
     {
         setDataVector(aobj, aobj1);
+        init();
     }
-
-
+    
     
     /**
-     * Runnable that adds a row to the table model
+     * Inits table model
      */
-    class AddRow implements Runnable
+    protected void init()
     {
-        /** Row data **/
-        Vector rowData_;
-
-        /**
-         * Creates a Runnable to add a row to the table model
-         * 
-         * @param  rowData  Data to add to the table
-         */
-        public AddRow(Vector rowData)
-        {
-            rowData_ = rowData;
-        }
-                
-        /**
-         * Adds a row to the table model 
-         */
-        public void run()
-        {
-            addRow(rowData_);
-        }
+        queue_ = new BlockingQueue();
+        queueReader_ = new BatchingQueueReader(queue_);
+        queueReader_.addBatchQueueListener(this);
+        Thread t = new Thread(queueReader_);
+        t.start();
     }
-
+    
+    
     /**
      * Adds a vector of data as a row to the table
      */
     public void addRow(Vector vector)
     {
-        if(!SwingUtilities.isEventDispatchThread())
-            SwingUtilities.invokeLater(new AddRow(vector));
+        String method = "[addRow] ";
+        
+        if (!SwingUtilities.isEventDispatchThread())
+        {
+            // If not event dispatch thread, push to queue         
+            try
+            {
+                queue_.push(vector);
+            }
+            catch (InterruptedException ioe)
+            {
+            }
+        }
         else
+        {
+            // Thread safe..just add directly
             super.addRow(vector);
+        }
     }
+
+
+    /**
+     * Adds an array of rows to the table
+     */
+    public void addRows(Object[] rows)
+    {
+        String method = "[addRws] ";
+                
+        if(!SwingUtilities.isEventDispatchThread())
+        {
+            // If not event dispatch thread, push rows to queue
+            for (int i=0; i<rows.length; i++)
+                addRow((Vector)rows[i]);
+        }
+        else
+        {
+            // Thread safe..just add rows directly
+            for (int i=0; i<rows.length; i++)
+                super.addRow((Vector)rows[i]);
+        }        
+    }
+
 
     /**
      * Saves the contents of the table model to a file
@@ -128,5 +170,49 @@ public class ThreadSafeTableModel extends DefaultTableModel
         }
 
         filewriter.close();
+    }
+
+    //
+    //  INTERFACES
+    //
+    
+    /**
+     * Interface for IBatchQueueListner
+     */
+    public void notify(Object[] elements)
+    {
+        // Elements just popped off the queue. Add on event dispatch thread
+        SwingUtilities.invokeLater(new AddRows(elements));
+    }
+
+    //
+    //  INNER CLASSES
+    //
+    
+    /**
+     * Runnable that adds a row to the table model
+     */
+    class AddRows implements Runnable
+    {
+        /** Row data **/
+        Object[] rows_;
+
+        /**
+         * Creates a Runnable to add a row to the table model
+         * 
+         * @param  rowData  Data to add to the table
+         */
+        public AddRows(Object[] rows)
+        {
+            rows_ = rows;
+        }
+                
+        /**
+         * Adds a row to the table model 
+         */
+        public void run()
+        {
+            addRows(rows_);
+        }
     }
 }
