@@ -55,7 +55,6 @@ public class LineNumberDecoratorTest extends TestCase
     {
         logger_.info("Running testFilterDisabled...");
         
-        String s = "12345";
         LineNumberDecorator d = new LineNumberDecorator();
         d.setEnabled(false);
         assertEquals("howdy", d.filter("howdy"));        
