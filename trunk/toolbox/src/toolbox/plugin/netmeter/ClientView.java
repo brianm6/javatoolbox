@@ -7,6 +7,8 @@ import javax.swing.JTextField;
 
 import org.apache.commons.lang.StringUtils;
 
+import toolbox.util.io.throughput.ThroughputEvent;
+import toolbox.util.io.throughput.ThroughputListener;
 import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -28,7 +30,7 @@ import toolbox.util.ui.layout.ParagraphLayout;
  * </ul>
  */
 public class ClientView extends JHeaderPanel implements ServiceListener, 
-                                                        StatsListener
+                                                        ThroughputListener
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -73,7 +75,7 @@ public class ClientView extends JHeaderPanel implements ServiceListener,
         super("Client");
         client_ = client;
         client_.addServiceListener(this);
-        client_.addStatsListener(this);
+        client_.addThroughputListener(this);
         buildView();
     }
     
@@ -146,15 +148,16 @@ public class ClientView extends JHeaderPanel implements ServiceListener,
     }
 
     //--------------------------------------------------------------------------
-    // StatusListener Interface
+    // ThroughputListener Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.netmeter.StatsListener#throughput(int)
+     * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(
+     *      toolbox.util.io.throughput.ThroughputEvent)
      */
-    public void throughput(int kbs)
+    public void currentThroughput(ThroughputEvent event)
     {
-        throughputField_.setText(kbs + " KB/s");
+        throughputField_.setText(event.getThroughput() + " bytes/s");
     }
     
     //--------------------------------------------------------------------------
