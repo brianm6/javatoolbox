@@ -30,6 +30,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -47,6 +48,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.PropertiesUtil;
 import toolbox.util.ResourceUtil;
 
 /**
@@ -62,6 +64,11 @@ public class JFlipPane extends JPanel
     /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JFlipPane.class);
+
+    // Property keys for storing/retreiving preferences
+    private static final String PROP_COLLAPSED = ".jflippane.collapsed";
+    private static final String PROP_HEIGHT    = ".jflippane.height";
+    private static final String PROP_WIDTH     = ".jflippane.width";
     
     // Positions
     
@@ -433,13 +440,13 @@ public class JFlipPane extends JPanel
         // might need later
         int origX = x;
 
-        if(p.x + size.width > screen.width && size.width < screen.width)
+        if (p.x + size.width > screen.width && size.width < screen.width)
         {
             x += (screen.width - p.x - size.width);
             horiz = true;
         }
 
-        if(p.y + size.height > screen.height && size.height < screen.height)
+        if (p.y + size.height > screen.height && size.height < screen.height)
         {
             y += (screen.height - p.y - size.height);
             vert = true;
@@ -450,7 +457,7 @@ public class JFlipPane extends JPanel
         // menu item, which will be invoked when the mouse is
         // released. This is bad, so move popup to a different
         // location.
-        if(horiz && vert)
+        if (horiz && vert)
         {
             x = origX - size.width - 2;
         }
@@ -458,7 +465,50 @@ public class JFlipPane extends JPanel
         popup.show(comp,x,y);
     } 
 
-
+    /**
+     * Saves flippane properties for later retrieval
+     * 
+     * @param  prefs   Properties object to save prefs in
+     * @param  prefix  Unique prefix specified by the client/user of the pane
+     */
+    public void savePrefs(Properties prefs, String prefix)
+    {
+        Dimension size = getSize();
+        
+        PropertiesUtil.setBoolean(
+            prefs, prefix + PROP_COLLAPSED, isCollapsed());
+        
+        PropertiesUtil.setInteger(
+            prefs, prefix + PROP_WIDTH, size.width);
+            
+        PropertiesUtil.setInteger(
+            prefs, prefix + PROP_HEIGHT, size.height);
+    }
+    
+    /**
+     * Restores flippane properties and applies them to the current instance
+     * 
+     * @param prefs   Properties to retrieve preferences from
+     * @param prefix  Unique prefix by which to identify the set of prefs
+     */
+    public void applyPrefs(Properties prefs, String prefix)
+    {
+        boolean collapsed = PropertiesUtil.getBoolean(
+            prefs, prefix + PROP_COLLAPSED, false); 
+        
+        if (collapsed != isCollapsed())
+            toggleFlipper();
+        
+        Dimension size = new Dimension();
+        
+        size.width = PropertiesUtil.getInteger(
+            prefs, prefix + PROP_WIDTH, 100);
+            
+        size.height = PropertiesUtil.getInteger(
+            prefs, prefix + PROP_HEIGHT, 100);
+            
+        setPreferredSize(size);
+    }
 
     //--------------------------------------------------------------------------
     //  Private
@@ -613,8 +663,6 @@ public class JFlipPane extends JPanel
         return !ArrayUtil.contains(getComponents(), flipCardPanel_);
     }
     
-
-    
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
@@ -630,10 +678,10 @@ public class JFlipPane extends JPanel
                 setSelectedFlipper(null);
             else
             {
-                JComponent button = (JComponent)evt.getSource();
+                JComponent button = (JComponent) evt.getSource();
                 String name = button.getName();
                 logger_.debug("Flipper " + name + " selected");
-                JComponent flipper = (JComponent)flippers_.get(name);
+                JComponent flipper = (JComponent) flippers_.get(name);
                 
                 if (isFlipperSelected(flipper))
                 {
@@ -659,7 +707,7 @@ public class JFlipPane extends JPanel
     } 
 
     /**
-     * Mouse handle to show popup menu
+     * Mouse handler to show popup menu
      */
     class MouseHandler extends MouseAdapter
     {
@@ -812,7 +860,7 @@ public class JFlipPane extends JPanel
                 g2d.drawGlyphVector(glyphs_,(height_ - width_) / 2,
                     (width_ - height_) / 2 + ascent_);
             } 
-            else if(rotate_ == RotatedTextIcon.CCW)
+            else if (rotate_ == RotatedTextIcon.CCW)
             {
                 // Counterclockwise rotation
                 AffineTransform trans = new AffineTransform();
@@ -862,12 +910,12 @@ public class JFlipPane extends JPanel
         /**
          * Paints the border
          * 
-         * @param  c        Component to paint
-         * @param  g        Graphics device
-         * @param  x        X coord
-         * @param  y        Y coord
-         * @param  width    Width
-         * @param  height   Height
+         * @param  c       Component to paint
+         * @param  g       Graphics device
+         * @param  x       X coord
+         * @param  y       Y coord
+         * @param  width   Width
+         * @param  height  Height
          */
         public void paintBorder(Component c, Graphics g, int x, int y, 
             int width, int height)
@@ -1121,7 +1169,7 @@ public class JFlipPane extends JPanel
                             closeBoxSizeSet = true;
                         }
     
-                        if(noMore || pos + size.height > parentSize.height - 
+                        if (noMore || pos + size.height > parentSize.height - 
                             (i == comp.length - 1 ? 0 : 
                             flipPane_.getCloseButton().getHeight()))
                         {
@@ -1195,7 +1243,7 @@ public class JFlipPane extends JPanel
         {
             Dimension pref;
             
-            if(flipPane_ == null)
+            if (flipPane_ == null)
             {
                 pref = new Dimension(0,0);
             }
@@ -1246,7 +1294,6 @@ public class JFlipPane extends JPanel
                 dragStartDimension_ = flipPane_.getDimension();
                 dragStart_ = evt.getPoint();
             } 
-    
             
             /** 
              * Changes mouse cursor based on location over the draggable part
@@ -1255,6 +1302,7 @@ public class JFlipPane extends JPanel
             public void mouseMoved(MouseEvent evt)
             {
                 Border border = getBorder();
+                
                 if (border == null)
                 {
                     // collapsed
