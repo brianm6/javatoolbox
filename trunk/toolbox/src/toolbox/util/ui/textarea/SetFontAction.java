@@ -19,20 +19,26 @@ import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
 
-
 /**
  * Pops up a font chooser dialog box and sets the font for a component.
  */
 public class SetFontAction extends AbstractAction
 {
     private static final Logger logger_ = Logger.getLogger(SetFontAction.class);
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /**
      * Component to set the font for.
      */
     private final Component component_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a SetFontAction.
      */
@@ -42,6 +48,9 @@ public class SetFontAction extends AbstractAction
         component_ = component;
     }
     
+    //--------------------------------------------------------------------------
+    // ActionListener Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see java.awt.event.ActionListener#actionPerformed(
