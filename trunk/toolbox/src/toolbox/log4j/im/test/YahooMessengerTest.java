@@ -9,6 +9,7 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import toolbox.junit.StandaloneTestCase;
 import toolbox.log4j.im.InstantMessenger;
 import toolbox.log4j.im.YahooMessenger;
 import toolbox.util.ResourceUtil;
@@ -18,7 +19,7 @@ import toolbox.util.XMLUtil;
 /**
  * Unit test for YahooMessenger.
  */
-public class YahooMessengerTest extends TestCase
+public class YahooMessengerTest extends TestCase implements StandaloneTestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(YahooMessengerTest.class);

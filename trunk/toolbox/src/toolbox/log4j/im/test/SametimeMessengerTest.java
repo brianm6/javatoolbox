@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import toolbox.junit.StandaloneTestCase;
 import toolbox.log4j.im.InstantMessenger;
 import toolbox.log4j.im.SametimeMessenger;
 import toolbox.util.ResourceUtil;
@@ -18,7 +19,8 @@ import toolbox.util.XMLUtil;
 /**
  * Unit test for SametimeMessenger.
  */
-public class SametimeMessengerTest extends TestCase
+public class SametimeMessengerTest extends TestCase 
+    implements StandaloneTestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(SametimeMessengerTest.class);

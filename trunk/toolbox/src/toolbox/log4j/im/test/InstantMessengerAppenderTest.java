@@ -7,6 +7,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
+import toolbox.junit.StandaloneTestCase;
 import toolbox.log4j.im.InstantMessengerAppender;
 import toolbox.util.ThreadUtil;
 
@@ -14,6 +15,7 @@ import toolbox.util.ThreadUtil;
  * Unit test for InstantMessengerAppender.
  */
 public class InstantMessengerAppenderTest extends TestCase
+    implements StandaloneTestCase
 {
     //--------------------------------------------------------------------------
     // Main

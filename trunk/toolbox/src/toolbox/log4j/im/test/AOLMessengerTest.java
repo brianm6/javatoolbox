@@ -8,6 +8,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import toolbox.junit.StandaloneTestCase;
 import toolbox.log4j.im.AOLMessenger;
 import toolbox.log4j.im.InstantMessenger;
 import toolbox.util.ResourceUtil;
@@ -15,25 +16,25 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.XMLUtil;
 
 /**
- * Unit test for AOLMessenger
+ * Unit test for AOLMessenger.
  */
-public class AOLMessengerTest extends TestCase
+public class AOLMessengerTest extends TestCase implements StandaloneTestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(AOLMessengerTest.class);
         
     /**
-     * Yahoo user that will receive all test messages
+     * Yahoo user that will receive all test messages.
      */
     private static final String TO_USER = "analogue";
     
     /**
-     * Yahoo user that the messages will originate from
+     * Yahoo user that the messages will originate from.
      */
     private static final String FROM_USER = "supahfuzzy";
     
     /**
-     * Password of the FROM_USER
+     * Password of the FROM_USER.
      */
     private static final String FROM_PASSWORD = "techno"; 
         
@@ -43,7 +44,7 @@ public class AOLMessengerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -57,7 +58,7 @@ public class AOLMessengerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests full lifecycle of typical usage
+     * Tests full lifecycle of typical usage.
      * 
      * @throws Exception on error
      */    
@@ -90,7 +91,7 @@ public class AOLMessengerTest extends TestCase
     }
     
     /**
-     * Tests sending a whole slew of messages
+     * Tests sending a whole slew of messages.
      * 
      * @throws Exception on error
      */    

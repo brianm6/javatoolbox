@@ -7,6 +7,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.junit.StandaloneTestCase;
 import toolbox.log4j.im.AIMMessenger;
 import toolbox.log4j.im.InstantMessenger;
 import toolbox.util.ThreadUtil;
@@ -14,7 +15,7 @@ import toolbox.util.ThreadUtil;
 /**
  * Unit tests for AIMMessenger.
  */
-public class AIMMessengerTest extends TestCase
+public class AIMMessengerTest extends TestCase implements StandaloneTestCase
 {
 	// TODO: Still broken...
 
@@ -22,17 +23,17 @@ public class AIMMessengerTest extends TestCase
         Logger.getLogger(AIMMessengerTest.class);
 
     /**
-     * Yahoo user that will receive all test messages
+     * Yahoo user that will receive all test messages.
      */
     private static final String recipient_ = "analogue";
     
     /**
-     * Yahoo user that the messages will originate from
+     * Yahoo user that the messages will originate from.
      */
     private static final String FROM_USER = "supahfuzzy";
     
     /**
-     * Password of the FROM_USER
+     * Password of the FROM_USER.
      */
     private static final String FROM_PASSWORD = "techno"; 
     
@@ -42,7 +43,7 @@ public class AIMMessengerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -56,7 +57,7 @@ public class AIMMessengerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests full lifecycle of typical usage
+     * Tests full lifecycle of typical usage.
      * 
      * @throws Exception on error
      */    
