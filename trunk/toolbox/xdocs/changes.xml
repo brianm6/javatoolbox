@@ -104,6 +104,8 @@
       <action type="update">Replaced NativeBrowser with BrowserLauncher which is more consistent</action>
       <action type="add"   >Added non-repeating random number generators as implementors of RandomSequence</action>
       <action type="update">DBBenchmark in QueryPlugin can now be configured and persist its preferences</action>
+      <action type="update">Removed overlap between toolbox.util.RandomUtil and commons-lang RandomUtils</action>
+      <action type="add"   >Added unit test for BeanUtil</action>
     </release>
 
     <release version="2.0" date="June 2004">
