@@ -35,6 +35,7 @@ public class SimpleStatusBar extends JStatusBar
     //--------------------------------------------------------------------------
     
     /**
+     * @param status Status text.
      * @see toolbox.workspace.IStatusBar#setStatus(String)
      */
     public void setStatus(String status)
@@ -44,6 +45,7 @@ public class SimpleStatusBar extends JStatusBar
     
     
     /**
+     * @return String
      * @see toolbox.workspace.IStatusBar#getStatus()
      */
     public String getStatus()
