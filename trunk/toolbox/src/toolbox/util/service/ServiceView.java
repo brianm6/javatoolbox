@@ -1,5 +1,6 @@
 package toolbox.util.service;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JPanel;
@@ -9,8 +10,8 @@ import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.GridLayoutPlus;
 
 /**
- * ServiceView associated a UI component with a service so that it can be
- * manipulated.
+ * ServiceView is basically a component that contains a bunch of buttons 
+ * tied to the lifecycle methods on a Service. 
  */
 public class ServiceView extends JPanel
 {
@@ -43,7 +44,7 @@ public class ServiceView extends JPanel
      */
     protected void buildView()
     {
-        setLayout(new GridLayoutPlus(1, 4));
+        setLayout(new FlowLayout());
         add(new JSmartButton(new StartAction()));
         add(new JSmartButton(new PauseAction()));
         add(new JSmartButton(new ResumeAction()));
