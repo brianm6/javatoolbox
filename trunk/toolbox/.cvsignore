@@ -9,3 +9,5 @@ debug
 incubator
 System.out
 target
+junit*.properties
+*.log
