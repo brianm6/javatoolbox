@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import toolbox.util.SocketUtil;
 
 /**
- * Concrete implementaion of a connection that wraps a Socket
+ * Concrete implementation of an IConnection that wraps a socket
  */
 public class SocketConnection extends AbstractConnection implements IConnection
 {
@@ -34,7 +34,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     private int port_;
 
     /**
-     * Connect will retry indefinitely
+     * Flag for indefinite retry in case of connection failure
      */
     private boolean forceConnect_;    
 
@@ -59,11 +59,13 @@ public class SocketConnection extends AbstractConnection implements IConnection
     {
         addConnectionListener(new InternalSocketConnectionListener());
     }
+
     
     /**
-     * Creates a SocketConnection with the given Socket endpoint
+     * Creates a SocketConnection with an existing Socket by wrapping the
+     * socket. Assumes the socket is already connected to an endpoint.
      * 
-     * @param    s    Socket
+     * @param    s    Existing socket endpoint
      */
     public SocketConnection(Socket s)
     {
@@ -73,6 +75,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
         addConnectionListener(new InternalSocketConnectionListener());
         connected_ = true;
     }
+
 
     /**
      * Creates a SocketConnection with the given host and port. Connects 
@@ -89,6 +92,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
         this(host, port, false);
     }
 
+
     /**
      * Creates a SocketConnection with given connection parameters. Connects by
      * default
@@ -104,8 +108,8 @@ public class SocketConnection extends AbstractConnection implements IConnection
         throws IOException, UnknownHostException
     {
         this(host, port, forceConnect, DEFAULT_RETRY_INTERVAL);
-        
     }
+
 
     /**
      * Creates a SocketConnection with the given connection parameters. Connects
@@ -191,6 +195,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
         return socket_.getOutputStream();
     }
 
+
     /**
      * @return True if connected
      */
@@ -273,6 +278,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     
     /**
      * Returns the forceConnect.
+     * 
      * @return boolean
      */
     public boolean isForceConnect()
@@ -282,6 +288,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
 
     /**
      * Returns the retryInterval.
+     * 
      * @return int
      */
     public int getRetryInterval()
@@ -291,6 +298,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
 
     /**
      * Sets the forceConnect.
+     * 
      * @param forceConnect The forceConnect to set
      */
     public void setForceConnect(boolean forceConnect)
@@ -300,6 +308,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
 
     /**
      * Sets the retryInterval.
+     * 
      * @param retryInterval The retryInterval to set
      */
     public void setRetryInterval(int retryInterval)
