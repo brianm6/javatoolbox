@@ -505,6 +505,7 @@ public class JHeaderPanel extends JPanel
         }
     }
     
+    // Customizations ==========================================================
     
     /**
      * Creates a toolbox specifically to be added to a JHeaderPanel.
