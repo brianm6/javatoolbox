@@ -17,6 +17,7 @@ import java.util.Enumeration;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
@@ -37,10 +38,19 @@ public final class SwingUtil
 {
     private static final Logger logger_ = Logger.getLogger(SwingUtil.class);
 
+    //--------------------------------------------------------------------------
+    // Static Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Global antialias flag that all 'smart' components are aware of.
      */
     private static boolean defaultAntiAlias_ = true;
+    
+    /**
+     * Phantom frame which is invisible.
+     */
+    private static JFrame phantomFrame_;
     
     //--------------------------------------------------------------------------
     // Static Block
@@ -555,5 +565,38 @@ public final class SwingUtil
         {
             tree.collapsePath(parent);
         }
-    }    
+    }
+    
+    //--------------------------------------------------------------------------
+    // Phantom Frame
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a component to an invisible frame for the purposes of a LAF change
+     * propagating to the component before the compnent is made visible.
+     * 
+     * @param c Component to temporarily associate with an invisible frame.
+     */
+    public static void attachPhantom(Component c)
+    {
+        if (phantomFrame_ == null)
+            phantomFrame_ = new JFrame();
+        
+        phantomFrame_.getContentPane().add(c);
+    }
+    
+    
+    /**
+     * Adds a component to an invisible frame for the purposes of a LAF change
+     * propagating to the component before the compnent is made visible.
+     * 
+     * @param c Component to temporarily associate with an invisible frame.
+     */
+    public static void detachPhantom(Component c)
+    {
+        if (phantomFrame_ == null)
+            phantomFrame_ = new JFrame();
+        
+        phantomFrame_.getContentPane().remove(c);
+    }
 }
