@@ -18,6 +18,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.SocketUtil;
 import toolbox.util.io.EventOutputStream;
 import toolbox.util.io.MulticastOutputStream;
+import toolbox.util.io.PrintableOutputStream;
 
 /**
  * Tunnels TCP traffic through a local proxy port before it is forwarded to
@@ -150,7 +151,15 @@ public class TcpTunnel implements TcpTunnelListener
      * Sink for outgoing data to the remote host. 
      */
     private OutputStream outgoingSink_;
+    
+    /**
+     * Flag for supressing binary data. 
+     */
+    private boolean supressBinary_;
         
+    private PrintableOutputStream printableIncomingSink_;
+    private PrintableOutputStream printableOutgoingSink_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -204,9 +213,10 @@ public class TcpTunnel implements TcpTunnelListener
         listeners_  = new ArrayList();
         inTotal_    = 0;
         outTotal_   = 0;
+        supressBinary_ = false;
         
-        incomingSink_ = System.out;
-        outgoingSink_ = System.out;
+        incomingSink_   = System.out;
+        outgoingSink_   = System.out;
     }    
        
     //--------------------------------------------------------------------------
@@ -233,7 +243,31 @@ public class TcpTunnel implements TcpTunnelListener
     {
         outgoingSink_ = stream;
     }
-        
+    
+    
+    /**
+     * Returns the supressBinary.
+     * 
+     * @return boolean
+     */
+    public boolean isSupressBinary()
+    {
+        return supressBinary_;
+    }
+    
+    
+    /**
+     * Sets the supressBinary.
+     * 
+     * @param supressBinary The supressBinary to set.
+     */
+    public void setSupressBinary(boolean supressBinary)
+    {
+        supressBinary_ = supressBinary;
+        printableIncomingSink_.setEnabled(supressBinary_);
+        printableOutgoingSink_.setEnabled(supressBinary_);
+    }
+    
     
     /**
      * Starts the tunnel.
@@ -300,7 +334,12 @@ public class TcpTunnel implements TcpTunnelListener
                         eos.addListener(new OutputStreamListener());
                             
                         outStreams.addStream(eos);
-                        outStreams.addStream(outgoingSink_);
+                        
+                        printableOutgoingSink_ = 
+                            new PrintableOutputStream(
+                                outgoingSink_, supressBinary_, ".");
+                            
+                        outStreams.addStream(printableOutgoingSink_);
                         
                         MulticastOutputStream inStreams = 
                             new MulticastOutputStream();
@@ -314,7 +353,12 @@ public class TcpTunnel implements TcpTunnelListener
                         eis.addListener(new OutputStreamListener());    
                         
                         inStreams.addStream(eis);
-                        inStreams.addStream(incomingSink_);    
+
+                        printableIncomingSink_ =
+                            new PrintableOutputStream(
+                                incomingSink_, supressBinary_, ".");
+
+                        inStreams.addStream(printableIncomingSink_);    
 
                         new Thread(new Relay(
                             new BufferedInputStream(cs.getInputStream()), 
