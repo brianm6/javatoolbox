@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.apache.log4j.Category;
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
+import toolbox.jtail.config.ITailPaneConfig;
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
 
 import electric.xml.Document;
@@ -63,11 +65,22 @@ public class ConfigManager implements IConfigManager
         String filename = userHome + File.separator + CONFIG_FILE;
         File    xmlFile = new File(filename);
         
-        IJTailConfig jtailConfig = null;
+        IJTailConfig jtailConfig = new JTailConfig();
+        ITailPaneConfig defaultConfig = new TailPaneConfig();
         
         if (!xmlFile.exists())
         {
-            // create a new configuration
+            TailPaneConfig crap = new TailPaneConfig(
+                null,
+                ITailPaneConfig.DEFAULT_AUTOSCROLL,
+                ITailPaneConfig.DEFAULT_LINENUMBERS,
+                ITailPaneConfig.DEFAULT_ANTIALIAS,
+                SwingUtil.getPreferredMonoFont(),
+                ITailPaneConfig.DEFAULT_FILTER);
+
+            jtailConfig.setDefaultConfig(defaultConfig);            
+            jtailConfig.setTailConfigs(new TailPaneConfig[0]);
+
         }
         else if (!xmlFile.canRead())
         {
