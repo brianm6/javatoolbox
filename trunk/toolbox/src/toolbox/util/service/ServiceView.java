@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.layout.GridLayoutPlus;
 
 /**
  * ServiceView is basically a component that contains a bunch of buttons 
