@@ -87,7 +87,12 @@ public final class SwingUtil
         UIManager.installLookAndFeel("TinyLookAndFeel", 
             "de.muntjak.tinylookandfeel.TinyLookAndFeel");
         
-        
+        UIManager.installLookAndFeel("Tonic L&F", 
+            "com.digitprop.tonic.TonicLookAndFeel");
+
+        UIManager.installLookAndFeel("Liquid L&F", 
+            "com.birosoft.liquid.LiquidLookAndFeel");
+
         //UIManager.installLookAndFeel("FH Look & Feel",
         //    "com.shfarr.ui.plaf.fh.FhLookAndFeel");
         
