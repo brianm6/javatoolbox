@@ -21,7 +21,7 @@ public interface PluginHost
      * 
      * @return JComponent
      */
-    public JComponent getComponent();
+    JComponent getComponent();
     
     
     /**
@@ -29,7 +29,7 @@ public interface PluginHost
      * 
      * @return String
      */
-    public String getName();
+    String getName();
     
     
     /**
@@ -37,7 +37,7 @@ public interface PluginHost
      * 
      * @param props Map of initialization properties 
      */
-    public void startup(Map props);
+    void startup(Map props);
     
     
     /**
@@ -45,7 +45,7 @@ public interface PluginHost
      * 
      * @param plugin Plugin to add
      */
-    public void addPlugin(IPlugin plugin);
+    void addPlugin(IPlugin plugin);
     
     
     /**
@@ -53,7 +53,7 @@ public interface PluginHost
      * 
      * @param plugin Plugin to remove
      */
-    public void removePlugin(IPlugin plugin);
+    void removePlugin(IPlugin plugin);
     
     
     /**
@@ -61,7 +61,7 @@ public interface PluginHost
      * 
      * @param plugin Plugin to import
      */
-    public void importPlugin(IPlugin plugin);
+    void importPlugin(IPlugin plugin);
     
     
     /**
@@ -70,7 +70,7 @@ public interface PluginHost
      * 
      * @param plugin Plugin to export
      */
-    public void exportPlugin(IPlugin plugin);
+    void exportPlugin(IPlugin plugin);
     
     
     /**
@@ -79,7 +79,7 @@ public interface PluginHost
      * @param pluginClass FQCN of the plugin to check
      * @return True if the plugin exists, false otherwise
      */
-    public boolean hasPlugin(String pluginClass);
+    boolean hasPlugin(String pluginClass);
     
     
     /**
@@ -88,7 +88,7 @@ public interface PluginHost
      * @param pluginClass FCQN of the plugin to retrieve
      * @return Plugin if found, null otherwise
      */
-    public IPlugin getPlugin(String pluginClass);
+    IPlugin getPlugin(String pluginClass);
     
     
     /**
@@ -96,7 +96,7 @@ public interface PluginHost
      * 
      * @return An iterator which can be used to traverse over the plugins.
      */
-    public IPlugin[] getPlugins();
+    IPlugin[] getPlugins();
     
     
     /**
@@ -104,12 +104,12 @@ public interface PluginHost
      * 
      * @return Map containing the startup parameters
      */
-    public Map getStartupConfig();
+    Map getStartupConfig();
     
     
     /**
      * Shuts the plugin host down. A plugin host should be reusable by
      * simply calling startup() after shutdown().
      */
-    public void shutdown();
+    void shutdown();
 }
