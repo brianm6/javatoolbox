@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 import toolbox.util.DateTimeUtil;
-import toolbox.util.DateUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.RandomUtil;
 import toolbox.util.ThreadUtil;
 
 /**
@@ -57,7 +57,7 @@ public class FileStuffer implements Runnable
      */ 
     protected static void printUsage()
     {
-        System.out.println("FileStuffer writes data to a file as given intervals");
+        System.out.println("FileStuffer writes data to a file at given intervals");
         System.out.println("Usage: FileStuffer <output file> <delay in millis>");
     } 
         
@@ -118,6 +118,10 @@ public class FileStuffer implements Runnable
             while (!stop_)
             {
                 pw.println("[" + c++ + "]" + DateTimeUtil.format(new Date()));
+                
+//                if(RandomUtil.nextBoolean())
+                    pw.println("");
+                
                 pw.flush();
                 ThreadUtil.sleep(delay_);
             }                
