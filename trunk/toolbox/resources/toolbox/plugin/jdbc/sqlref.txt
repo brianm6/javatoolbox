@@ -1,49 +1,85 @@
-SQL Quick Reference Syntax
+================================================================================
+                              HSQLDB
+================================================================================
 
-------------------------------------------------------------------------
-CREATE TABLE <table name> ( <column name> <column type> [<attribute
-constraint>]
-{, <column name> <column type> [<attribute constraint>] } [<table
-constraint> {,<table constraint>}] )
+DROP TABLE "AUCT_SRCE"; 
+
+CREATE DATABASE "hsql_db2";
+
+CREATE TABLE "AUCT_SRCE"(
+    "AUCT_SRCE_ID" VARCHAR(32) NOT NULL,
+    "AUCT_SRCE_NAME_TXT" VARCHAR(255) NOT NULL,
+    "AUCT_SRCE_DESC_TXT" VARCHAR(255) NOT NULL,
+    PRIMARY KEY (AUCT_SRCE_ID));
+
+CREATE TABLE auct (
+  auct_id VARCHAR(32) NOT NULL,
+  auct_srce_id VARCHAR(32) NOT NULL,
+  auct_nme VARCHAR(255) NOT NULL,
+  auct_st_cde VARCHAR(10) NOT NULL,
+  PRIMARY KEY (auct_id));
+
+ALTER TABLE auct 
+  ADD CONSTRAINT FK_AUCT_SRCE 
+  FOREIGN KEY (auct_srce_id)  
+  REFERENCES auct_srce(auct_srce_id);
+
+ALTER TABLE <tablename> 
+  ADD CONSTRAINT <constraintname> 
+  FOREIGN KEY (<column list>) 
+  REFERENCES <exptablename> (<column list>) [ON DELETE CASCADE];
+
+================================================================================
+                              GENERIC SQL
+================================================================================
+
+CREATE TABLE <table name> 
+    ( <column name> <column type> [<attribute constraint>]
+    {, <column name> <column type> [<attribute constraint>] } 
+    [<table constraint> {,<table constraint>}] )
 
 DROP TABLE <table name>
 
 ALTER TABLE <table name> ADD <column name> <column type>
 
-SELECT [DISTINCT] <attribute list>
-FROM ( <table name> { <alias>} | <joined table> ) {, ( <table name> {
-<alias>} | <joined table>
+SELECT [DISTINCT] <attribute list (see below)>
+  FROM (<table name> { <alias>} | <joined table> ) {, 
+       (<table name> {<alias>} | <joined table>
 [WHERE <condition>]
 [GROUP BY <grouping attributes> [HAVING <group selection condition> ] ]
 [ORDER BY <column name> [<order>] {, <column name> [<order>] } ]
 
-<attribute list>::= (* | ( <column name> | <function>(
-([DISTINCT)<column name> | *)))
-{,( <column name> | <function>( ([DISTINCT) <column name> | *))
+<attribute list>::= 
+    (* | 
+    (<column name> | 
+     <function>(([DISTINCT)<column name> | *)))
+    {,( <column name> | <function>( ([DISTINCT) <column name> | *))
 
-<grouping attributes>::= <column name> { , <column name>}
-<order>::= (ASC | DESC)
+<grouping attributes>::= 
+    <column name> { , <column name>}
+    <order>::= (ASC | DESC)
 
 INSERT INTO <table name> [( <column name>{, <column name>} ) ]
-(VALUES ( <constant value> , { <constant value>} ){,( <constant
-value>{,<constant value>})} | <select statement> )
+    (VALUES ( <constant value> , 
+              { <constant value>} ){,
+              ( <constant value> 
+                  {,<constant value>})} | <select statement> )
 
-DELETE FROM <table name>
-[WHERE <selection condition>]
+DELETE FROM <table name> [WHERE <selection condition>]
 
 UPDATE <table name>
-SET <column name>=<value expression>
-[WHERE <selection condition>l
+    SET <column name> = <value expression>
+    [WHERE <selection condition>l
 
 CREATE [UNIQUE] INDEX <index name>
-ON <table name> ( <column name> [ <order> [CLUSTER]
+    ON <table name> ( <column name> [ <order> [CLUSTER]
 
 DROP INDEX <index name>
 
-CREATE VIEW <view name> [ ( <column name> {, <column name>} ) ]
-AS <select statement>
+CREATE VIEW <view name> 
+	[ ( <column name> {, <column name>} ) ]
+	AS <select statement>
 
 DROP VIEW <view name>
-
-------------------------------------------------------------------------
+================================================================================
 
