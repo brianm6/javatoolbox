@@ -31,7 +31,7 @@ import toolbox.util.ui.list.SmartListCellRenderer;
 import toolbox.util.ui.list.SortedListModel;
 
 /**
- * A java source file viewer with list box that contains method names. Uses
+ * A java source file viewer with flipper that contains method names. Uses
  * the QDOX library for parsing java source and extracting line numbers.
  */
 public class JavaViewer extends JEditViewer
@@ -219,15 +219,14 @@ public class JavaViewer extends JEditViewer
             JSmartList list = (JSmartList) e.getSource();
             String method = list.getSelectedValue().toString();
             int lineNumber = ((Integer) lineNumbers_.get(method)).intValue();
-            
-            logger_.debug("line number = " + lineNumber);
+            lineNumber--;  // Zero offset
             
             JEditTextArea ta = getTextArea();
-            ta.scrollTo(lineNumber, 1);
-            ta.setSelectionStart(ta.getLineStartOffset(lineNumber));
-            ta.setSelectionEnd(ta.getLineEndOffset(lineNumber));
+            ta.scrollTo(lineNumber, 0);
             
-            // TODO: QDox doesn't support line numbers for methods yet.
+            ta.select(
+                ta.getLineStartOffset(lineNumber), 
+                ta.getLineEndOffset(lineNumber));
         }
     }
 }
