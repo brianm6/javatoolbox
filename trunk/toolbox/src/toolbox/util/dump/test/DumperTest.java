@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
-import javax.swing.JFrame;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -29,7 +27,7 @@ public class DumperTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -76,7 +74,9 @@ public class DumperTest extends TestCase
     public void testDumpJFrame()
     {
         logger_.info("Running testDumpJFrame...");
-        logger_.debug(StringUtil.addBars(Dumper.dump(new JFrame())));
+        
+        // Too much output
+        //logger_.debug(StringUtil.addBars(Dumper.dump(new JPanel())));
     }
     
     
