@@ -14,19 +14,21 @@ import java.util.List;
  */
 public class MulticastOutputStream extends FilterOutputStream
 {
-    /** Members fo the multicast group of streams */
-    private List streams_ = new ArrayList();
+    /** 
+     * Members of the multicast group of streams 
+     */
+    private List streams_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates an empty MulticastOutputStream
      */
     public MulticastOutputStream()
     {
-        super(null);
+        this(null);
     }
     
     /**
@@ -37,11 +39,12 @@ public class MulticastOutputStream extends FilterOutputStream
     public MulticastOutputStream(OutputStream out)
     {
         super(out);
+        streams_ = new ArrayList();
         addStream(out);
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
     
     /**
@@ -65,7 +68,7 @@ public class MulticastOutputStream extends FilterOutputStream
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.io.InputStream
+    // Overrides java.io.InputStream
     //--------------------------------------------------------------------------
 
     /**
