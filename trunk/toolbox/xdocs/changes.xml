@@ -104,6 +104,7 @@
       <action type="update">Misc - Converting all implementors of IPreferenced to use the javabean method for passivation/hydration</action>
       <action type="add"   >Lib - Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</action>
       <action type="add"   >Lib - Added jalopy.jar, jakarta-oro.jar, and jdom.jar to support toolbox.util.formatter.JavaFormatter</action>
+      <action type="add"   >Util - Created concrete instances of toolbox.util.formatter.Formatter to handle Java, XML, and HTML</action>
     </release>
     
     <release version="2.0" date="July 2004">
