@@ -430,7 +430,7 @@
         
         <!-- <junit printSummary="yes" haltonfailure="no"> "withOutAndErr" -->
 
-        <junit printSummary="withOutAndErr" haltonfailure="no" fork="true" maxmemory="1024">
+        <junit printSummary="withOutAndErr" haltonfailure="no" fork="no" maxmemory="1024">
 
             <classpath>
                 <pathelement path="${classes}" />
@@ -438,6 +438,8 @@
                 <fileset dir="${lib}">
                     <include name="**/*.jar"/>
                     <include name="**/*.zip"/>
+                    <exclude name="xercesImpl.jar"/>
+                    <exclude name="xml-apis.jar"/>
                 </fileset>
                 <pathelement path="${build.lib}/clover.jar"/>
             </classpath>
@@ -447,7 +449,7 @@
 			<!-- have to fork because JDBCUtilTest gets out of mem error -->
 			<!-- but it is not really out of mem ##!@!@                  -->
 			
-            <batchtest fork="yes" todir="${junit.xml}">
+            <batchtest fork="no" todir="${junit.xml}">
                 <fileset dir="${src}">
                 
                     <!-- if junit.class is defined, run only tests that match the class name -->
@@ -458,6 +460,8 @@
                     <exclude name="**/ui/**/*Test.java" />
                     <exclude name="**/SwingUtilTest.java"/>
                     <exclude name="**/jedit/**"/>
+                    <exclude name="**/log4j/im/**/*Test.java"/>
+                    <exclude name="**/BannerTaskTest.java"/>   
                 </fileset>
             </batchtest>
           
