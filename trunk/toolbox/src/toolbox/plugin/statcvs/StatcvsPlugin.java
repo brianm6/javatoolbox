@@ -69,7 +69,7 @@ public class StatcvsPlugin extends AbstractPlugin
     private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     /**
