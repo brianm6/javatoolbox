@@ -148,6 +148,8 @@ public class JTail extends JFrame
     {
         try
         {
+            SwingUtil.setPreferredLAF();
+            
             // Init variables
             tailMap_  = new HashMap();
             
@@ -396,6 +398,8 @@ public class JTail extends JFrame
                 
             addTail(config);
         }
+        
+        
     }
     
     

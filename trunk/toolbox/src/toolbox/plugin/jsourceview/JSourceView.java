@@ -104,8 +104,10 @@ public class JSourceView extends JFrame implements ActionListener
      * 
      * @param  args  None recognized 
      */
-    public static void main(String args[])
+    public static void main(String args[]) throws Exception
     {
+        SwingUtil.setPreferredLAF();
+        
         new JSourceView().setVisible(true);
     }
 
