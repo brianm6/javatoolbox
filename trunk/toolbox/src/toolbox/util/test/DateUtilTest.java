@@ -30,14 +30,18 @@ public class DateUtilTest extends TestCase
         TestRunner.run(DateUtilTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * DateUtilTest constructor
      * 
-     * @param aName String
+     * @param name  Test name
      */
-    public DateUtilTest(String aName)
+    public DateUtilTest(String name)
     {
-        super(aName);
+        super(name);
     }
 
 
