@@ -16,7 +16,7 @@ import toolbox.util.ThreadUtil;
  */
 public class ThreadUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ThreadUtilTest.class);
 
@@ -59,6 +59,45 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.sleep(1000);
     }
 
+    
+    /**
+     * Tests join(Thread)
+     */
+    public void testJoinThread()
+    {
+        logger_.info("Running testJoinThread...");
+        
+        Thread t = new Thread(new DelayedRunner(2000));
+        t.start();
+        ThreadUtil.join(t);
+    }
+
+
+    /**
+     * Tests join(Thread, millis)
+     */
+    public void testJoinThreadTimed()
+    {
+        logger_.info("Running testJoinThreadTimed...");
+        
+        Thread t = new Thread(new DelayedRunner(4000));
+        t.start();
+        ThreadUtil.join(t, 1000);
+        assertTrue("Thread should still be alive", t.isAlive());
+    }
+
+
+    /**
+     * Tests join()
+     */
+    public void testJoin()
+    {
+        logger_.info("Running testJoin...");
+        
+        ThreadUtil.join(1000);
+    }
+
+
     /**
      * Tests run() on a method with no args
      * 
@@ -72,6 +111,7 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.run(target, "pingSimple", null).join();
         assertTrue("ping was not executed", target.pingSimpleCalled_);
     }
+
 
     /**
      * Tests run() on a method with simple args and arrays
@@ -120,6 +160,7 @@ public class ThreadUtilTest extends TestCase
             
         assertTrue("pingComplex was not executed", target.pingComplexCalled_);
     } 
+
 
     /**
      * Tests run() on a method with primitive args
@@ -244,6 +285,7 @@ public class ThreadUtilTest extends TestCase
         
         /**
          * Returns the pingArgsCalled.
+         * 
          * @return boolean
          */
         public boolean isPingArgsCalled()
@@ -253,6 +295,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Returns the pingComplexCalled.
+         * 
          * @return boolean
          */
         public boolean isPingComplexCalled()
@@ -262,6 +305,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Returns the pingInnerCalled.
+         * 
          * @return boolean
          */
         public boolean isPingInnerCalled()
@@ -271,6 +315,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Returns the pingPrimitiveCalled.
+         * 
          * @return boolean
          */
         public boolean isPingPrimitiveCalled()
@@ -280,6 +325,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Returns the pingSimpleCalled.
+         * 
          * @return boolean
          */
         public boolean isPingSimpleCalled()
@@ -289,6 +335,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Sets the pingArgsCalled.
+         * 
          * @param pingArgsCalled The pingArgsCalled to set
          */
         public void setPingArgsCalled(boolean pingArgsCalled)
@@ -298,6 +345,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Sets the pingComplexCalled.
+         * 
          * @param pingComplexCalled The pingComplexCalled to set
          */
         public void setPingComplexCalled(boolean pingComplexCalled)
@@ -307,6 +355,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Sets the pingInnerCalled.
+         * 
          * @param pingInnerCalled The pingInnerCalled to set
          */
         public void setPingInnerCalled(boolean pingInnerCalled)
@@ -316,6 +365,7 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Sets the pingPrimitiveCalled.
+         * 
          * @param pingPrimitiveCalled The pingPrimitiveCalled to set
          */
         public void setPingPrimitiveCalled(boolean pingPrimitiveCalled)
@@ -325,12 +375,30 @@ public class ThreadUtilTest extends TestCase
 
         /**
          * Sets the pingSimpleCalled.
+         * 
          * @param pingSimpleCalled The pingSimpleCalled to set
          */
         public void setPingSimpleCalled(boolean pingSimpleCalled)
         {
             this.pingSimpleCalled_ = pingSimpleCalled;
         }
-
+    }
+    
+    class DelayedRunner implements Runnable
+    {
+        private int delay_;
+        
+        public DelayedRunner(int delay)
+        {
+            delay_ = delay;           
+        }
+     
+        /**
+         * Just goes to sleep for delay_ milliseconds 
+         */   
+        public void run()
+        {
+            ThreadUtil.sleep(delay_);
+        }
     }
 }
