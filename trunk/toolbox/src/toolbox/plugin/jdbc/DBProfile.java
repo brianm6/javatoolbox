@@ -8,11 +8,17 @@ import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.ParseException;
 
+import toolbox.util.XOMUtil;
+
 /**
  * Database connection profile for JDBC
  */
 public class DBProfile
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * XML element name for a DBProfile
      */
@@ -22,7 +28,13 @@ public class DBProfile
      * XML attribute name for the profile name
      */
     private static final String ATTR_PROFILE_NAME = "profilename";
-    
+
+    /**
+     * XML attribute name for the JDBC driver jar file. This field is optional
+     * if the jar file is already on the classpath. 
+     */
+    private static final String ATTR_JARFILE = "jarfile";
+
     /**
      * XML attribute name for the JDBC driver 
      */
@@ -43,10 +55,19 @@ public class DBProfile
      */
     private static final String ATTR_PASSWORD = "password";
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Profile name is a user friendly term used to uniquely identify a profile 
      */
     private String profileName_;
+    
+    /**
+     * JDBC driver jar file name
+     */
+    private String jarFile_;
     
     /**
      * JDBC driver class name. Must be a FQCN!
@@ -85,29 +106,33 @@ public class DBProfile
             new Builder().build(new StringReader(xml)).getRootElement();
         
         setProfileName(profile.getAttributeValue(ATTR_PROFILE_NAME));
+        setJarFile(XOMUtil.getStringAttribute(profile,ATTR_JARFILE,""));
         setDriver(profile.getAttributeValue(ATTR_DRIVER));
         setUrl(profile.getAttributeValue(ATTR_URL));
         setUsername(profile.getAttributeValue(ATTR_USERNAME));
-        setPassword(profile.getAttributeValue(ATTR_PASSWORD));   
+        setPassword(profile.getAttributeValue(ATTR_PASSWORD));
     }
 
     /**
      * Creates a DBProfile.
      *
      * @param profileName Friendly name of the profile
+     * @param jarFile JDBC driver jar file
      * @param driver JDBC driver class
      * @param url JDBC access url
      * @param username Username
      * @param password Password in clear text       
      */
     public DBProfile(
-        String profileName, 
+        String profileName,
+        String jarFile,
         String driver, 
         String url, 
         String username,
         String password)
     {
         profileName_ = profileName;
+        jarFile_ = jarFile;
         driver_ = driver;
         url_ = url;
         username_ = username;
@@ -137,6 +162,7 @@ public class DBProfile
     {
         Element profile = new Element(ELEMENT_PROFILE);
         profile.addAttribute(new Attribute(ATTR_PROFILE_NAME, profileName_));
+        profile.addAttribute(new Attribute(ATTR_JARFILE, jarFile_));
         profile.addAttribute(new Attribute(ATTR_DRIVER, driver_));
         profile.addAttribute(new Attribute(ATTR_URL, url_));
         profile.addAttribute(new Attribute(ATTR_USERNAME, username_));
@@ -168,6 +194,16 @@ public class DBProfile
         return driver_;
     }
 
+    /**
+     * Returns the path and name of the jar file containing the JDBC driver
+     * 
+     * @return String
+     */
+    public String getJarFile()
+    {
+        return jarFile_;
+    }
+    
     /**
      * Returns the JDBC password.
      * 
@@ -246,6 +282,16 @@ public class DBProfile
     public void setUsername(String string)
     {
         username_ = string;
+    }
+
+    /**
+     * Sets the name of the jar file containing the JDBC driver
+     * 
+     * @param jarFile Path and name of jdbc driver jar file.
+     */
+    public void setJarFile(String jarFile)
+    {
+        jarFile_ = jarFile;
     }
     
     //--------------------------------------------------------------------------
