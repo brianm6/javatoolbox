@@ -25,6 +25,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
+import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
 
@@ -45,8 +46,9 @@ public class TailPane extends JPanel
     private JCheckBox      lineNumbersBox_;
     private JTextField     filterField_;
 
-    private BlockingQueue    queue_;
-    private TailQueueReader  queueReader_;
+    private BlockingQueue       queue_;
+    private BatchingQueueReader queueReader_;
+    private TailQueueListener   queueListener_;
     
     /** Output for tail **/
 	private JSmartTextArea tailArea_;
@@ -89,11 +91,27 @@ public class TailPane extends JPanel
      */
     protected void init() throws FileNotFoundException
     {
-        // Setup queue
-        queue_ = new BlockingQueue();
-        queueReader_ = new TailQueueReader(queue_);
-        Thread consumer = new Thread(queueReader_);
-        consumer.start();
+        //
+        //                      Queue 
+        //                        ^
+        //                        |  
+        //                        |   pops lines from (individually)
+        //                        |
+        //                BatchingQueueReader
+        //                        |
+        //                        |
+        //                        |   provides lines to (batched)
+        //                        |
+        //                        v
+        //                TailQueueListener
+        //
+        
+        queue_          = new BlockingQueue();
+        queueListener_  = new TailQueueListener();        
+        queueReader_    = new BatchingQueueReader(queue_);        
+        queueReader_.addBatchQueueListener(queueListener_);
+        Thread queueReaderThread = new Thread(queueReader_);
+        queueReaderThread.start();
         
         // Setup tail
         tail_ = new Tail();
@@ -152,6 +170,7 @@ public class TailPane extends JPanel
         tailArea_.setAutoScroll(config_.isAutoScroll());
         lineNumbersBox_.setSelected(config_.isShowLineNumbers());
         tailArea_.setFont(config_.getFont());
+        tailArea_.setAntiAlias(config.isAntiAlias());
         setFilter(config_.getFilter());
     }
 
@@ -167,12 +186,13 @@ public class TailPane extends JPanel
         config_.setAutoScroll(autoScrollBox_.isSelected());
         config_.setShowLineNumbers(lineNumbersBox_.isSelected());
         config_.setFont(tailArea_.getFont());
+        config_.setAntiAlias(tailArea_.isAntiAlias());
         config_.setFilter(getFilter());
         return config_;
     }    
 
     //--------------------------------------------------------------------------
-    //  ACCESSORS/MUTATORS
+    //  Accessors/Mutators
     //--------------------------------------------------------------------------
     
     /**
@@ -183,32 +203,11 @@ public class TailPane extends JPanel
         return closeButton_;
     }
 
- 
-    /**
-     * @return  Font for the tail output area
-     */   
-    public Font getTailFont()
-    {
-        return tailArea_.getFont();
-    }
- 
-    
-    /**
-     * Sets the tail output area's font
-     * 
-     * @param  font  Font to set for tail output
-     */
-    public void setTailFont(Font font)
-    {
-        tailArea_.setFont(font);
-        config_.setFont(font);
-    }
-    
     
     /**
      * @return Filter text
      */
-    public String getFilter()
+    protected String getFilter()
     {
         return filterField_.getText().trim();
     }
@@ -219,13 +218,13 @@ public class TailPane extends JPanel
      * 
      * @param  filter  Filter text as a regular expression
      */
-    public void setFilter(String filter)
+    protected void setFilter(String filter)
     {
         filterField_.setText(filter);
     }
 
     //--------------------------------------------------------------------------
-    //  INTERFACES
+    //  Interfaces
     //--------------------------------------------------------------------------
     
     public interface ITailPaneListener
@@ -234,7 +233,7 @@ public class TailPane extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  INNER CLASSES
+    //  Inner Classes
     //--------------------------------------------------------------------------
     
     /**
@@ -265,31 +264,32 @@ public class TailPane extends JPanel
      * Pops groups of messages off the queue (as many as can be read without 
      * waiting) and consolidates before sending then to the textarea
      */
-    private class TailQueueReader extends BatchingQueueReader
+    private class TailQueueListener implements IBatchingQueueListener
     {
-        int lineNumber_ = 0;
-        RE regExp_;
-        String oldFilter_ = "";
-        
+        private int     lineNumber_ = 0;
+        private String  oldFilter_ = "";
+        private RE      regExp_;
+                
+                
         /**
-         * Creates a queue consumer for the given queue
+         * Creates a TailQueueListener
          * 
          * @param  queue  Queue to consume messages from
          */        
-        public TailQueueReader(BlockingQueue queue)
+        public TailQueueListener()
         {
-            super(queue);
         }
 
         
         /**
-         * Adds contents of queue to the output
+         * Adds next batch of lines from the queue to the output area
+         * in a one shot dilly-o
          *
-         * @see toolbox.util.concurrent.BatchQueueReader#execute()
+         * @param  objs  Next batch of lines
          */
-        public void execute(Object[] objs)
+        public void nextBatch(Object[] objs)
         {
-            String method = "[execut] ";
+            String method = "[nxtBat] ";
             
             if (objs.length > 50)
                 logger_.debug(method + "Lines popped: " + objs.length);
@@ -353,6 +353,7 @@ public class TailPane extends JPanel
         }
     }
 
+
     //--------------------------------------------------------------------------
     //  ACTIONS
     //--------------------------------------------------------------------------    
@@ -394,7 +395,7 @@ public class TailPane extends JPanel
                     mode = MODE_STOP;
                     putValue(Action.NAME, mode);
                     pauseButton_.setEnabled(true);
-                    queueReader_.resetLines();
+                    queueListener_.resetLines();
                     logger_.debug(method + "Started tail: " + tail_.getFile());                                                     
                 }
                 catch(FileNotFoundException fnfe)
@@ -484,7 +485,7 @@ public class TailPane extends JPanel
             if (tail_.isAlive())
                 tail_.stop();
                 
-            queueReader_.shutdown();
+
         }
     }
 
