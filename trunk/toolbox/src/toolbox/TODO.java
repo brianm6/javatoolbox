@@ -21,6 +21,8 @@ package toolbox;
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
+ * TODO: Updated JFreeChart to 0.9.18
+ * TODO: Update to latest Multivalent
  * TODO: Figure out how to use forms
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
