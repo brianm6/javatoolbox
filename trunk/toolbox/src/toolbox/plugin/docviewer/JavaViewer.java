@@ -84,6 +84,7 @@ public class JavaViewer extends JEditViewer
      */
     public JavaViewer()
     {
+        super("Java Viewer");
     }
 
     //--------------------------------------------------------------------------
@@ -123,6 +124,10 @@ public class JavaViewer extends JEditViewer
     // Overrides JEditViewer
     //--------------------------------------------------------------------------
     
+    /**
+     * @see toolbox.plugin.docviewer.JEditViewer#createTextArea(
+     *      java.lang.String)
+     */
     protected void createTextArea(String fileExtension) 
     {
         super.createTextArea("java");
@@ -190,15 +195,6 @@ public class JavaViewer extends JEditViewer
     public String[] getViewableFileTypes()
     {
         return new String[] {"java"};
-    }
-
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
-     */
-    public String getName()
-    {
-        return "Java Viewer";
     }
 
     //--------------------------------------------------------------------------

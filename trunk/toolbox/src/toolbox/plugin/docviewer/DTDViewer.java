@@ -35,6 +35,7 @@ public class DTDViewer extends JEditViewer
      */
     public DTDViewer()
     {
+        super("DTD Viewer");
     }
 
     //--------------------------------------------------------------------------
@@ -107,14 +108,5 @@ public class DTDViewer extends JEditViewer
     public String[] getViewableFileTypes()
     {
         return new String[] {"dtd"};
-    }
-
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
-     */
-    public String getName()
-    {
-        return "DTD Viewer";
     }
 }

@@ -31,7 +31,7 @@ import toolbox.util.ui.JSmartButton;
 /**
  * A  Viewer is a wrapper for the multivalent pdf viewer component.
  */
-public class MultivalentViewer extends JPanel implements DocumentViewer
+public class MultivalentViewer extends AbstractViewer
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -47,6 +47,11 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     private Set extensions_; 
     
+    /**
+     * Viewer component.
+     */
+    private JPanel panel_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -56,15 +61,15 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public MultivalentViewer()
     {
-        //buildView();
+        super("Multivalent");
     }
     
     //--------------------------------------------------------------------------
-    // DocumentViewer Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#initialize(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map init)
     {
@@ -90,15 +95,9 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
             }));
     }
     
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
-     */
-    public String getName()
-    {
-        return "Multivalent";
-    }
-    
+    //--------------------------------------------------------------------------
+    // DocumentViewer Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
@@ -143,16 +142,20 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     public JComponent getComponent()
     {
         lazyLoad();
-        return this;
+        return panel_;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#destroy()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy()
     {
         browser_ = null;
+        panel_ = null;
     }
     
     //--------------------------------------------------------------------------
@@ -165,9 +168,8 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     protected void buildView()
     {
         browser_ = Multivalent.getInstance().getBrowser("name", "Basic", false);
-
-        setLayout(new BorderLayout());
-        add(new JScrollPane(browser_), BorderLayout.CENTER);
+        panel_ = new JPanel(new BorderLayout());
+        panel_.add(new JScrollPane(browser_), BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
         
@@ -191,7 +193,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
             new SemanticSender(browser_, Multipage.MSG_NEXTPAGE, null));
         buttonPanel.add(button);
 
-        add(buttonPanel, BorderLayout.NORTH);
+        panel_.add(buttonPanel, BorderLayout.NORTH);
 
         // Appendix A: handle scrollbars in Swing turn off internal scrollbars
         INode root = browser_.getRoot();

@@ -98,7 +98,18 @@ public class JEditViewer extends AbstractViewer
      */
     public JEditViewer()
     {
-        super("JEdit Viewer");
+        this("JEdit Viewer");
+    }
+
+    
+    /**
+     * Creates a JEditViewer.
+     * 
+     * @param name Viewer name.
+     */
+    public JEditViewer(String name)
+    {
+        super(name);
     }
 
     //--------------------------------------------------------------------------
