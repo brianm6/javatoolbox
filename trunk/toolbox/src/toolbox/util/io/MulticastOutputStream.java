@@ -8,9 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * OutptuStream that has multicast behavior. Multiple streams can be added
- * to a MulticastOutputStream to write a single byte of data to each and
- * every stream in the group.
+ * MulticastOutputStream is an OutputStream that has multicast behavior. 
+ * Multiple streams can be added to a MulticastOutputStream group so that
+ * writes to the MulticastOutputStream will be channeled to each stream in
+ * the group.
  */
 public class MulticastOutputStream extends FilterOutputStream
 {
@@ -28,7 +29,7 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public MulticastOutputStream()
     {
-        this(null);
+        super(null);
     }
     
     /**
@@ -67,7 +68,7 @@ public class MulticastOutputStream extends FilterOutputStream
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden Methods from InputStream
+    //  Overridden from java.io.InputStream
     //--------------------------------------------------------------------------
 
     /**
