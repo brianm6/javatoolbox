@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import toolbox.tail.ITailListener;
 import toolbox.tail.Tail;
@@ -42,7 +41,6 @@ public class TailTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
         TestRunner.run(TailTest.class);
     }
     

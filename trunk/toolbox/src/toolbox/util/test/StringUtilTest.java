@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import toolbox.util.StringUtil;
 
@@ -35,7 +34,6 @@ public class StringUtilTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
         TestRunner.run(StringUtilTest.class);
     }
 

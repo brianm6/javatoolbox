@@ -2,7 +2,6 @@ package toolbox.findclass.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
 import toolbox.findclass.Main;
 
 /**
@@ -17,7 +16,6 @@ public class MainTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
         TestRunner.run(MainTest.class);
     }
 

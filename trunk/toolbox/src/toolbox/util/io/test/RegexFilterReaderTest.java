@@ -4,7 +4,6 @@ import java.io.StringReader;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import toolbox.util.io.RegexFilterReader;
 
@@ -34,7 +33,6 @@ public class RegexFilterReaderTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
         TestRunner.run(RegexFilterReaderTest.class);
     }
     

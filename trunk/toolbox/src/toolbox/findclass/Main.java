@@ -2,7 +2,6 @@ package toolbox.findclass;
 
 import java.io.IOException;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import org.apache.regexp.RESyntaxException;
 import toolbox.util.ArrayUtil;
@@ -73,9 +72,6 @@ public class Main extends FindClassAdapter
             }
             else
                 classToFind = otherArgs[0];
-            
-            /* init log4j */
-            BasicConfigurator.configure();
             
             FindClass finder = new FindClass();
             finder.addFindClassListener(new Main());

@@ -2,7 +2,6 @@ package toolbox.findclass.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
 import toolbox.findclass.FindClass;
 import toolbox.findclass.FindClassResult;
 import toolbox.util.ArrayUtil;
@@ -19,7 +18,6 @@ public class FindClassTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
         TestRunner.run(FindClassTest.class);
     }
 

@@ -49,8 +49,10 @@ public class JTcpTunnel extends JFrame
      * 
      * @args    args   Args
      */
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws Exception
     {
+        SwingUtil.setPreferredLAF();
+        
         if (args.length != 3)
         {
             System.err.println("Usage: java " + JTcpTunnel.class.getName() + 

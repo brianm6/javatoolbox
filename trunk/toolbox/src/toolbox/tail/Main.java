@@ -2,7 +2,6 @@ package toolbox.tail;
 
 import java.io.FileNotFoundException;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 
 /**

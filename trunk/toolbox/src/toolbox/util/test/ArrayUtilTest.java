@@ -2,7 +2,6 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
 import toolbox.util.StringUtil;

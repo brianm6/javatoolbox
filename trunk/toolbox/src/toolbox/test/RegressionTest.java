@@ -4,8 +4,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.swingui.TestRunner;
 
-import org.apache.log4j.BasicConfigurator;
-
 import toolbox.util.io.test.StringInputStreamTest;
 import toolbox.util.io.test.StringOutputStreamTest;
 import toolbox.util.test.ArrayUtilTest;
