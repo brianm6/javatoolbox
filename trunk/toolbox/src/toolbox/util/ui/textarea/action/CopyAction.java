@@ -8,7 +8,7 @@ import javax.swing.text.JTextComponent;
 import toolbox.util.ui.ImageCache;
 
 /**
- * Copies the contents of the currently selected indices to the clipboard.
+ * Copies the contents of the currently selected text to the clipboard.
  */    
 public class CopyAction extends AbstractTextComponentAction
 {

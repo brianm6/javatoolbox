@@ -8,15 +8,14 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.plaf.LookAndFeelConfigurator;
 import toolbox.workspace.IPreferenced;
 
 /**
- * PreferencesManager is the single point of reference used by the
- * workspace to manage workspace preferences (not plugins..yet).
+ * PreferencesManager is the single point of contact used by the workspace to 
+ * manage workspace and plugin preferences.
  */
 public class PreferencesManager implements IPreferenced
 {
@@ -24,9 +23,14 @@ public class PreferencesManager implements IPreferenced
         Logger.getLogger(PreferencesManager.class);
     
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
+    /**
+     * Root node for PreferencesManager's preferences. Preferences manager
+     * plugins are preferences which are not tied explicity to the plugin
+     * workspace or a plugin.
+     */
     public static final String NODE_PREFS = "Preferences";
 
     //--------------------------------------------------------------------------
@@ -48,6 +52,9 @@ public class PreferencesManager implements IPreferenced
     public PreferencesManager()
     {
         nodeMap_ = new HashMap();
+        
+        // Register non-plugin configurators. Plugins will be picked up at 
+        // runtime.
         
         IConfigurator proxy = new HttpProxyConfigurator();
         nodeMap_.put(HttpProxyConfigurator.NODE_HTTP_PROXY, proxy);
@@ -88,11 +95,9 @@ public class PreferencesManager implements IPreferenced
                 NODE_PREFS, 
                 new Element(NODE_PREFS));
         
-        //
         // Iterate over the child nodes (each one represents a Preferences).
         // Reassosciate by the node's name, instantiate the class and read in 
         // read/apply the prefs.
-        //
         
         for (Iterator i = nodeMap_.keySet().iterator(); i.hasNext();)
         {
@@ -125,7 +130,5 @@ public class PreferencesManager implements IPreferenced
         }
         
         XOMUtil.insertOrReplace(prefs, root);
-        
-        logger_.debug(StringUtil.banner(root.toXML()));
     }
 }

@@ -41,11 +41,11 @@ public class AutoTailAction extends AbstractAction
     }
     
     //--------------------------------------------------------------------------
-    // ActionPerformed Interface
+    // ActionListener Interface
     //--------------------------------------------------------------------------
     
     /**
-     * Basically toggle the autotail flag.
+     * Basically toggles the autotail flag.
      * 
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)

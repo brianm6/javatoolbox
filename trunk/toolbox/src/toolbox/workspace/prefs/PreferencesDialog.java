@@ -26,12 +26,10 @@ import toolbox.workspace.IPlugin;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * The PreferencesDialog is invoked by the PluginWorkspace to allow the user 
- * to change various preferences supported by the program. Preferences are
- * grouped together on different panels and can be switched between be selecting
- * that panel's node on the configuration tree. New panels can easily be
- * added by implementing the Preferences interface and providing the 
- * necessary information.
+ * The PreferencesDialog allow the user to edit various preferences supported 
+ * by the PluginWorkspace and its plugins. A simple button bar groups the
+ * preferences by domain or plugin. Clicking on the buttons switches between
+ * the views used to edit the corresponding preferences.
  * 
  * @see toolbox.workspace.PluginWorkspace
  * @see toolbox.workspace.prefs.PreferencesManager
@@ -105,19 +103,20 @@ public class PreferencesDialog extends JSmartDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a PreferenceView as a node in the tree and adds it to the stack of
-     * cards in the card layout.
+     * Adds a configurators view as a button in the nav button bar.
      * 
-     * @param prefs Preferences view to add to the prefs tree.
+     * @param configurator Configurator to add to the configurator list.
      */
-    public void registerView(IConfigurator prefs)
+    public void registerView(IConfigurator configurator)
     {
-        logger_.debug("Registering prefs view = " + prefs.getLabel());
+        logger_.debug("Registering prefs view = " + configurator.getLabel());
 
-        JSmartToggleButton b = new JSmartToggleButton(new ButtonAction(prefs));
+        JSmartToggleButton b = 
+            new JSmartToggleButton(new ButtonAction(configurator));
+        
         navButtonGroup_.add(b);
         navButtonBar_.add(b);
-        cardPanel_.add(prefs.getView(), prefs.getLabel());
+        cardPanel_.add(configurator.getView(), configurator.getLabel());
     }
 
     //--------------------------------------------------------------------------
@@ -137,11 +136,11 @@ public class PreferencesDialog extends JSmartDialog
 
         navButtonGroup_ = new JButtonGroup();
         
-        // Non-plugin based preferences
+        // Non-plugin based configurators
         IConfigurator[] prefs = preferencesManager_.getConfigurators();
         for (int i = 0; i < prefs.length; registerView(prefs[i++]));
 
-        // Plugin based preferences
+        // Plugin based configurators
         IPlugin[] plugins = workspace_.getPluginHost().getPlugins();
         
         for (int i = 0; i < plugins.length; i++)
@@ -160,7 +159,7 @@ public class PreferencesDialog extends JSmartDialog
 
     /**
      * Builds the card panel that switches out panels based on the currently
-     * selected Preferences button.
+     * selected configurator button.
      */
     protected JComponent buildCardPanel()
     {
@@ -225,7 +224,8 @@ public class PreferencesDialog extends JSmartDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Propagates the OK event to all the views and dismisses the dialog box.
+     * Propagates the OK event to all the configurators and dismisses this 
+     * dialog box.
      */
     class OKAction extends AbstractAction
     {
@@ -248,7 +248,7 @@ public class PreferencesDialog extends JSmartDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Propagates the Apply event to all the views.
+     * Propagates the Apply event to all the configurators.
      */
     class ApplyAction extends AbstractAction
     {
@@ -270,7 +270,7 @@ public class PreferencesDialog extends JSmartDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Propagates the Cancel event to all the views and disposes of the 
+     * Propagates the Cancel event to all the configurators and disposes of this 
      * dialog box.
      */
     class CancelAction extends AbstractAction

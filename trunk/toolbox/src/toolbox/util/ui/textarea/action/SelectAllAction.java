@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.text.JTextComponent;
 
-
 /**
  * Selects the entire contents of a text area.
  */

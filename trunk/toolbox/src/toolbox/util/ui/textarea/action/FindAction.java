@@ -13,7 +13,7 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JFindDialog;
 
 /**
- * Triggers activation of the Find Dialog box.
+ * Launches the Find dialog used to search for text.
  */    
 public class FindAction extends AbstractTextComponentAction
 {

@@ -5,7 +5,7 @@ import javax.swing.Icon;
 import javax.swing.text.JTextComponent;
 
 /**
- * Abstract base clas for textcomponent actions. Just provides a convenient
+ * Abstract base class for textcomponent actions. Just provides a convenient
  * setter/getter for the textcomponent at this point.
  */
 public abstract class AbstractTextComponentAction extends AbstractAction
@@ -64,7 +64,6 @@ public abstract class AbstractTextComponentAction extends AbstractAction
         super(name, icon);
         setTextComponent(textComponent);
     }
-    
 
     //--------------------------------------------------------------------------
     // Protected
