@@ -1,6 +1,7 @@
 package toolbox.util.service;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * Event notification implementation for ObservableService implementors.
@@ -34,10 +35,11 @@ public class ServiceNotifier implements ObservableService
     public ServiceNotifier(Service service)
     {
         service_ = service;
+        listeners_ = new ServiceListener[0];
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // ObservableService Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -57,6 +59,15 @@ public class ServiceNotifier implements ObservableService
     public void removeServiceListener(ServiceListener listener)
     {
         listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
+    }
+    
+    
+    /**
+     * @see toolbox.util.service.ObservableService#getStateMachine()
+     */
+    public StateMachine getStateMachine()
+    {
+        return null;
     }
     
     //--------------------------------------------------------------------------
