@@ -74,9 +74,10 @@ public class ServerConnectionHandler implements IConnectionHandler
             mis = new MonitoredInputStream(conn.getInputStream());
             monitor = mis.getThroughputMonitor();
             
-            logger_.debug(StringUtil.banner("getServerViewCalled"));
+            //logger_.debug(StringUtil.banner("getServerViewCalled"));
         
-            synchronized(this) {
+            synchronized(this) 
+            {
                 wait();
             }
             

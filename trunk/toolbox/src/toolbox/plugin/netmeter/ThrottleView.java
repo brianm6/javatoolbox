@@ -10,7 +10,7 @@ import javax.swing.event.ChangeListener;
 import toolbox.util.io.Bandwidth;
 
 /**
- * ThrottleView is a UI pasted on top of Bandwidth.
+ * ThrottleView is a UI component that uses Bandwidth as the model.
  */
 public class ThrottleView extends JPanel
 {
