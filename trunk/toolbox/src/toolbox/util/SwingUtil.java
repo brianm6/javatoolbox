@@ -7,17 +7,25 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Window;
 import java.awt.font.TextAttribute;
+import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
-import javax.swing.text.TextAction;
+
+import org.apache.log4j.Category;
 
 /**
  * Swing Utility Class
  */
 public class SwingUtil
 {
+    /** Logger **/
+    private static final Category logger_ =
+        Category.getInstance(SwingUtil.class);
+    
     /** Monospaced font **/
     private static Font monofont_;
     
@@ -193,5 +201,69 @@ public class SwingUtil
     {
         UIManager.setLookAndFeel(
             "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+    }
+    
+    /**
+     * Tiles windows on a desktop
+     *
+     * @param  desktop  JDesktop
+     */
+    public static void tile(JDesktopPane desktop)
+    {
+        // How many frames do we have?
+        JInternalFrame[] allframes = desktop.getAllFrames();
+        int count = allframes.length;
+        
+        if (count == 0)
+            return;
+
+        // Determine the necessary grid size
+        int sqrt = (int) Math.sqrt(count);
+        int rows = sqrt;
+        int cols = sqrt;
+        
+        if (rows * cols < count)
+        {
+            cols++;
+            
+            if (rows * cols < count)
+                rows++;
+        }
+
+        // Define some initial values for size & location
+        Dimension size = desktop.getSize();
+        logger_.debug("Desktop size: " + size);
+        
+        int w = size.width / cols;
+        int h = size.height / rows;
+        int x = 0;
+        int y = 0;
+
+        // Iterate over the frames, deiconifying any iconified frames and then
+        // relocating & resizing each
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols && ((i * cols) + j < count); j++)
+            {
+                JInternalFrame f = allframes[(i * cols) + j];
+
+                if ((f.isClosed() == false) && (f.isIcon() == true))
+                {
+                    try
+                    {
+                        f.setIcon(false);
+                    }
+                    catch (PropertyVetoException ex)
+                    {
+                    }
+                }
+
+                desktop.getDesktopManager().resizeFrame(f, x, y, w, h);
+                x += w;
+            }
+            
+            y += h; // start the next row
+            x = 0;
+        }
     }
 }
