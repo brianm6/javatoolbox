@@ -97,7 +97,7 @@ public class JSmartTextAreaTest extends TestCase
         //
         // Compare the "after" properties to the "before" ones
         //
-        assertEquals(before.isAntiAlias(), after.isAntiAlias());
+        assertEquals(before.isAntiAliased(), after.isAntiAliased());
         assertEquals(before.isAutoScroll(), after.isAutoScroll());
         assertEquals(before.getCapacity(), after.getCapacity());
         assertEquals(before.getPruneFactor(), after.getPruneFactor());

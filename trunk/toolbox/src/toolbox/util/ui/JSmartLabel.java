@@ -13,7 +13,7 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartLabel extends JLabel implements AntiAliased
 {
-    private boolean antialiased_ = SwingUtil.isAntiAliasGlobal();
+    private boolean antialiased_ = SwingUtil.isAntiAliased();
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -77,7 +77,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAlias()
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
         return antialiased_;
     }
@@ -85,7 +85,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */
-    public void setAntiAlias(boolean b)
+    public void setAntiAliased(boolean b)
     {
         antialiased_ = b;
     }
@@ -116,7 +116,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
      */
     public void paintComponent(Graphics gc)
     {
-        SwingUtil.setAntiAlias(gc, antialiased_);
+        SwingUtil.makeAntiAliased(gc, antialiased_);
         super.paintComponent(gc);
     }
 }

@@ -11,12 +11,12 @@ public interface AntiAliased
      * 
      * @return boolean
      */
-    public boolean isAntiAlias();
+    public boolean isAntiAliased();
     
     /**
      * Sets the components antialiasing flag
      * 
      * @param  b  Set to true to turn on antialiasing, false otherwise
      */
-    public void setAntiAlias(boolean b);
+    public void setAntiAliased(boolean b);
 }

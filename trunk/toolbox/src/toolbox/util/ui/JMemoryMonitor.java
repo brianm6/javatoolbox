@@ -133,7 +133,7 @@ public class JMemoryMonitor extends JComponent
      */
     public void paintComponent(Graphics g)
     {
-        SwingUtil.setAntiAlias(g, true);
+        SwingUtil.makeAntiAliased(g, true);
         Insets insets = new Insets(0,0,0,0);
 
         //

@@ -194,7 +194,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */
-    public void setAntiAlias(boolean b)
+    public void setAntiAliased(boolean b)
     {
         antiAlias_ = b;
     }
@@ -202,7 +202,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAlias()
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
         // The modified TextAreaPainter in the 'debug' tree makes a callback to 
         // this method to toggle antialiasing in its paint() method.
@@ -222,7 +222,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JEDITTEXTAREA, new Element(NODE_JEDITTEXTAREA));
                 
-        setAntiAlias(XOMUtil.getBooleanAttribute(root, ATTR_ANTIALIAS, true));
+        setAntiAliased(XOMUtil.getBooleanAttribute(root, ATTR_ANTIALIAS, true));
         setTabSize(XOMUtil.getIntegerAttribute(root, ATTR_TABSIZE, 4));
         setMouseWheelUnit(XOMUtil.getIntegerAttribute(root, ATTR_WHEELUNIT, 3));
                         
@@ -238,7 +238,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     {
         Element root = new Element(NODE_JEDITTEXTAREA);
         root.addAttribute(new Attribute(ATTR_TABSIZE, getTabSize() + ""));
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias()+""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased()+""));
         root.addAttribute(new Attribute(ATTR_WHEELUNIT, mouseWheelUnit_+""));
         root.appendChild(FontUtil.toElement(getPainter().getFont()));
         prefs.appendChild(root);

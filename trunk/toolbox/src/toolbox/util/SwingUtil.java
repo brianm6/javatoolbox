@@ -46,6 +46,11 @@ public final class SwingUtil
      */
     private static Font serifFont_;
 
+    /**
+     * Global antialias flag that all 'smart' components are aware of
+     */
+    private static boolean antiAliased_ = true;
+    
     //--------------------------------------------------------------------------
     // Static Block
     //--------------------------------------------------------------------------
@@ -622,10 +627,11 @@ public final class SwingUtil
      * Turns on antialiasing for a graphics context
      * 
      * @param graphics Graphics context
-     * @param antiAlias Set to true to turn antialiasing on for the graphics
-     * context; false to turn it off.
+     * @param antiAliased Set to true to turn antialiasing on for the graphics
+     *        context; false to turn it off.
      */
-    public static final void setAntiAlias(Graphics graphics, boolean antiAlias)
+    public static final void makeAntiAliased(Graphics graphics, 
+        boolean antiAliased)
     {    
         //((Graphics2D)g).setRenderingHint
         //  (RenderingHints.KEY_ANTIALIASING,
@@ -633,12 +639,28 @@ public final class SwingUtil
     
         ((Graphics2D)graphics).setRenderingHint(
             RenderingHints.KEY_TEXT_ANTIALIASING,
-            (antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
+            (antiAliased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
                        : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     }
     
-    public static final boolean isAntiAliasGlobal()
+    /**
+     * Returns true if antialiasing for all 'smart' components is enabled, false
+     * otherwise.
+     * 
+     * @return boolean
+     */
+    public static final boolean isAntiAliased()
     {
-        return true;
+        return antiAliased_;
+    }
+    
+    /**
+     * Sets the flag for antialiasing all 'smart' components.
+     * 
+     * @param b Antialias flag
+     */
+    public static final void setAntiAliased(boolean b)
+    {
+        antiAliased_ = b; 
     }
 }

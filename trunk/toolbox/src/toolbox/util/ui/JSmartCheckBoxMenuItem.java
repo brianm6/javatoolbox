@@ -83,7 +83,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public boolean isAntiAlias()
     {
-        return SwingUtil.isAntiAliasGlobal();
+        return SwingUtil.isAntiAliased();
     }
 
     /**
@@ -102,7 +102,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public void paintComponent(Graphics gc)
     {
-        SwingUtil.setAntiAlias(gc, isAntiAlias());
+        SwingUtil.makeAntiAliased(gc, isAntiAlias());
         super.paintComponent(gc);
     }
 

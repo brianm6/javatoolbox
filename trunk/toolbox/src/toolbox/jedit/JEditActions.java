@@ -192,11 +192,11 @@ public final class JEditActions
                         
             if (w instanceof Frame)
                 fontChooser = new JFontChooserDialog(
-                    (Frame)w, false, originalFont, area_.isAntiAlias());
+                    (Frame)w, false, originalFont, area_.isAntiAliased());
                     
             else if (w instanceof Dialog)
                 fontChooser = new JFontChooserDialog(
-                    (Dialog)w, false, originalFont, area_.isAntiAlias());
+                    (Dialog)w, false, originalFont, area_.isAntiAliased());
             
             /* Listener for font chooser dialog events */
                 
@@ -209,7 +209,7 @@ public final class JEditActions
                         area_.getPainter().setFont(
                             fontChooser.getSelectedFont());
                             
-                        area_.setAntiAlias(fontChooser.isAntiAlias());    
+                        area_.setAntiAliased(fontChooser.isAntiAlias());    
                     }
                     catch (FontChooserException fce)
                     {

@@ -161,7 +161,7 @@ public class JTextComponentPopupMenu extends JPopupMenu
             
             boolean antialias = 
                 textComponent_ instanceof AntiAliased ? 
-                    ((AntiAliased) textComponent_).isAntiAlias():false;
+                    ((AntiAliased) textComponent_).isAntiAliased():false;
 
             JFontChooserDialog fontChooser =
                 new JFontChooserDialog(
@@ -178,7 +178,7 @@ public class JTextComponentPopupMenu extends JPopupMenu
 
                         if (textComponent_ instanceof AntiAliased)
                         {
-                            ((AntiAliased) textComponent_).setAntiAlias(
+                            ((AntiAliased) textComponent_).setAntiAliased(
                                 fontChooser.isAntiAlias());
                         }
                     }

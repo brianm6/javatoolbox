@@ -71,15 +71,15 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAlias()
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
-        return SwingUtil.isAntiAliasGlobal();
+        return SwingUtil.isAntiAliased();
     }
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */
-    public void setAntiAlias(boolean b)
+    public void setAntiAliased(boolean b)
     {
     }
     
@@ -92,7 +92,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
      */
     public void paintComponent(Graphics gc)
     {
-        SwingUtil.setAntiAlias(gc, isAntiAlias());
+        SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
 }

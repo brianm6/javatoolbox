@@ -115,7 +115,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         super(text);
         buildView();
         setAutoScroll(autoScroll);
-        setAntiAlias(antiAlias);
+        setAntiAliased(antiAlias);
         setCapacity(Integer.MAX_VALUE);
         setPruneFactor(0);
     }
@@ -135,7 +135,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         setAutoScroll(XOMUtil.getBooleanAttribute(
             root, ATTR_AUTOSCROLL, true));
                 
-        setAntiAlias(XOMUtil.getBooleanAttribute(
+        setAntiAliased(XOMUtil.getBooleanAttribute(
             root, ATTR_ANTIALIAS, true));
         
         setCapacity(XOMUtil.getIntegerAttribute(
@@ -155,7 +155,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     {
         Element root = new Element(NODE_JSMARTTEXTAREA);
         root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll()+""));
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias()+""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased()+""));
         root.addAttribute(new Attribute(ATTR_CAPACITY, getCapacity()+""));
         
         root.addAttribute(
@@ -176,7 +176,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      */
     public void paint(Graphics g) 
     {
-        SwingUtil.setAntiAlias(g, isAntiAlias());
+        SwingUtil.makeAntiAliased(g, isAntiAliased());
         super.paint(g);
     }
     
@@ -260,7 +260,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      * 
      * @return boolean
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
         return antiAliasCheckBox_.isSelected();
     }
@@ -270,7 +270,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      * 
      * @param antiAlias True turns antialiasing on; false turns it off
      */
-    public void setAntiAlias(boolean antiAlias)
+    public void setAntiAliased(boolean antiAlias)
     {
         antiAliasCheckBox_.setSelected(antiAlias);
     }

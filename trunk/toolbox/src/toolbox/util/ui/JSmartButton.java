@@ -13,7 +13,7 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartButton extends JButton
 {
-    private boolean antialiased_ = SwingUtil.isAntiAliasGlobal();
+    private boolean antialiased_ = SwingUtil.isAntiAliased();
     
     /**
      * 
@@ -85,7 +85,7 @@ public class JSmartButton extends JButton
      */
     public void paintComponent(Graphics gc)
     {
-        SwingUtil.setAntiAlias(gc, antialiased_);
+        SwingUtil.makeAntiAliased(gc, antialiased_);
         super.paintComponent(gc);
     }
 
