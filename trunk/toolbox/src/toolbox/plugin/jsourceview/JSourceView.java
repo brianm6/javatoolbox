@@ -1,16 +1,49 @@
 package toolbox.jsourceview;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.EventObject;
-import java.util.Vector;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.LineNumberReader;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class JSourceView extends JFrame implements ActionListener, FilenameFilter, Runnable
 {
+    JTextField dirField;
+    JButton goButton;
+    JPanel topPanel;
+    JLabel scanStatusLabel;
+    JLabel parseStatusLabel;
+    JMenuBar menuBar;
+    JMenuItem saveMenuItem;
+    JMenuItem exitMenuItem;
+    JMenuItem aboutMenuItem;
+    JTable table;
+    ThreadSafeTableModel model;
+    Queue workQueue;
+    String colNames[] = {
+        "Directory", "File", "Code", "Comments", "Blank", "Total", "Percentage"
+    };
+    Thread scanDirThread;
+    String pathSeparator;
+    
     class ScanDirWorker implements Runnable
     {
 
@@ -290,22 +323,4 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
             return false;
         }
     }
-
-    JTextField dirField;
-    JButton goButton;
-    JPanel topPanel;
-    JLabel scanStatusLabel;
-    JLabel parseStatusLabel;
-    JMenuBar menuBar;
-    JMenuItem saveMenuItem;
-    JMenuItem exitMenuItem;
-    JMenuItem aboutMenuItem;
-    JTable table;
-    ThreadSafeTableModel model;
-    Queue workQueue;
-    String colNames[] = {
-        "Directory", "File", "Code", "Comments", "Blank", "Total", "Percentage"
-    };
-    Thread scanDirThread;
-    String pathSeparator;
 }
