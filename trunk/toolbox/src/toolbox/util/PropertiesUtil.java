@@ -79,13 +79,11 @@ public final class PropertiesUtil
      * 
      * @param  props         Properties to retrieve integer from
      * @param  name          Name of the property
-     * @param  defaultValue  Default value if property is not present 
-     *                       or invalid
+     * @param  defaultValue  Default value if property is not present or invalid
      * @return Integer if property exists and is a valid integer, default
      *         value otherwise. 
      */
-    public static int getInteger(
-        Properties props, String name, int defaultValue)
+    public static int getInteger(Properties props, String name,int defaultValue)
     {
         int i = defaultValue;
         String value = props.getProperty(name);
@@ -95,6 +93,35 @@ public final class PropertiesUtil
             try
             {
                 i = Integer.parseInt(value);
+            }
+            catch (NumberFormatException nfe)
+            {
+                ; // return default value
+            }
+        }
+        
+        return i;
+    }   
+
+    /**
+     * Gets an signed long value from a properties object.
+     * 
+     * @param  props         Properties to retrieve long from
+     * @param  name          Name of the property
+     * @param  defaultValue  Default value if property is not present or invalid
+     * @return Long if property exists and is a valid long, default value 
+     *         otherwise. 
+     */
+    public static long getLong(Properties props, String name, long defaultValue)
+    {
+        long i = defaultValue;
+        String value = props.getProperty(name);
+        
+        if (value != null)
+        {
+            try
+            {
+                i = Long.parseLong(value);
             }
             catch (NumberFormatException nfe)
             {
