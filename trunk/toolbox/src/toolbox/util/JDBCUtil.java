@@ -469,13 +469,14 @@ public final class JDBCUtil
 
         for (int i = 0; i < colWidth.length; colWidth[i] = colWidth[i++] + 2);
 
-        String[] dashes = new String[numCols];
+        String[] divider = new String[numCols];
         
         for (int i = 0; i < numCols; i++)
-            dashes[i] = StringUtils.repeat("-", colWidth[i]);
+            divider[i] = StringUtils.repeat("=", colWidth[i]);
 
-        rows.add(1, dashes);
-
+        rows.add(0, divider);
+        rows.add(2, divider);
+        
         StringBuffer sb = new StringBuffer();            
         
         for (Iterator i = rows.iterator(); i.hasNext();) 
@@ -490,7 +491,6 @@ public final class JDBCUtil
 
         sb.append("\n");
         sb.append(numRows + " rows\n");
-        
         return sb.toString();
     }
 
