@@ -136,6 +136,9 @@ public class BatchingQueueReaderTest extends TestCase
         
         bqr.start();
         
+        ThreadUtil.sleep(1000);
+        logger_.info(q);        
+        
         Object[] batch2 = (Object[]) batches_.pull();
         
         assertEquals(batch2[0], "three");
