@@ -73,6 +73,7 @@ public class Relay extends Thread
         }
         catch (IOException e)
         {
+            // Ignore
         }
         finally
         {
@@ -83,6 +84,7 @@ public class Relay extends Thread
             }
             catch (IOException e)
             {
+                // Ignore
             }
         }
     }

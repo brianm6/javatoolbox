@@ -5,7 +5,7 @@ package toolbox.jsourceview;
  */
 public class LineScanner implements MachineConstants
 {
-    static boolean DEBUG;
+    private static boolean debug_;
     
     /** 
      * Line of source code 
@@ -19,7 +19,7 @@ public class LineScanner implements MachineConstants
     
     //--------------------------------------------------------------------------
     //  Constructors
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a LineScanner
@@ -44,19 +44,19 @@ public class LineScanner implements MachineConstants
     {
         String posStr = "pos=" + position_;
         
-        if(DEBUG)
+        if(debug_)
             System.out.println(posStr);
             
         if (line_.length() == 0)
         {
-            if(DEBUG)
+            if(debug_)
                 System.out.println("EOL");
             return 1;
         }
         
         if (position_ == line_.length())
         {
-            if(DEBUG)
+            if(debug_)
                 System.out.println("EOL");
             return 1;
         }
@@ -71,32 +71,32 @@ public class LineScanner implements MachineConstants
             
             if (comment.equals("//"))
             {
-                if (DEBUG)
+                if (debug_)
                     System.out.println("LINE_COMMENT");
                 return 2;
             }
             
             if (comment.equals("/*"))
             {
-                if (DEBUG)
+                if (debug_)
                     System.out.println("COMMENT_BEGIN");
                 return 3;
             }
             
             if (comment.equals("*/"))
             {
-                if (DEBUG)
+                if (debug_)
                     System.out.println("COMMENT_END");
                 return 4;
             }
             
-            if (DEBUG)
+            if (debug_)
                 System.out.println("ANY_CHAR");
                 
             return 0;
         }
         
-        if(DEBUG)
+        if(debug_)
             System.out.println("ANY_CHAR");
             
         return 0;

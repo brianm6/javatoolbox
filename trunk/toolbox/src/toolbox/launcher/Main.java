@@ -150,12 +150,12 @@ public class Main
             "       where program is:                               \n" +
             "                                                       \n" +
             "       findclass     => find a java class file         \n" + 
-            "       showclasspath => show detailed classpath info   \n" +            
-            "       showpath      => show detailed path info        \n" +            
+            "       showclasspath => show detailed classpath info   \n" +
+            "       showpath      => show detailed path info        \n" +
             "       tail          => tails a file with follow       \n" +
             "       tcptunnel     => tcp tunnel                     \n" +
             "       tree          => prints directory as tree       \n" +
-            "                                                       \n" +                        
+            "                                                       \n" +
             "       jfindclass    => gui version of findclass       \n" +
             "       jsourceview   => java code counter              \n" +
             "       jtail         => java tailer (GUI)              \n" +

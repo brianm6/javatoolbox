@@ -42,12 +42,12 @@ import toolbox.util.ui.JSmartTextArea;
 public class TailPane extends JPanel
 {
     /** Logger **/
-	private static final Logger logger_ = 
-		Logger.getLogger(TailPane.class);
-	
-	private JButton        clearButton_;
-	private JButton        pauseButton_;
-	private JButton        startButton_;
+    private static final Logger logger_ = 
+        Logger.getLogger(TailPane.class);
+    
+    private JButton        clearButton_;
+    private JButton        pauseButton_;
+    private JButton        startButton_;
     private JButton        closeButton_;
     
     private JCheckBox      autoScrollBox_;
@@ -70,7 +70,7 @@ public class TailPane extends JPanel
     /** 
      * Output for tail 
      */
-	private JSmartTextArea tailArea_;
+    private JSmartTextArea tailArea_;
 
     /** 
      * The tailer 
@@ -85,7 +85,7 @@ public class TailPane extends JPanel
     
     //--------------------------------------------------------------------------
     //  Constructors
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
         
     /** 
      * Creates a TAilPane with the given configuration
@@ -103,7 +103,7 @@ public class TailPane extends JPanel
     
     //--------------------------------------------------------------------------
     //  Private
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Initializes the tail
@@ -146,18 +146,18 @@ public class TailPane extends JPanel
     }
 
     
-	/**
-	 * Builds the GUI
-	 */	
-	protected void buildView()
-	{
-		tailArea_ = new JSmartTextArea("");
+    /**
+     * Builds the GUI
+     */    
+    protected void buildView()
+    {
+        tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
         //tailArea_.setDoubleBuffered(false);
         
-		clearButton_    = new JButton(new ClearAction());
-		pauseButton_    = new JButton(new PauseUnpauseAction());
-		startButton_    = new JButton(new StartStopAction());
+        clearButton_    = new JButton(new ClearAction());
+        pauseButton_    = new JButton(new PauseUnpauseAction());
+        startButton_    = new JButton(new StartStopAction());
         closeButton_    = new JButton(new CloseAction());
         autoScrollBox_  = new JCheckBox(new AutoScrollAction());
         lineNumbersBox_ = new JCheckBox(new ShowLineNumbersAction());
@@ -170,10 +170,10 @@ public class TailPane extends JPanel
         regexField_.addActionListener(new RegexActionListener());
         cutField_.addActionListener(new CutActionListener());
         
-		JPanel buttonPanel = new JPanel(new FlowLayout());
-		buttonPanel.add(startButton_);
-		buttonPanel.add(pauseButton_);
-		buttonPanel.add(clearButton_);
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(startButton_);
+        buttonPanel.add(pauseButton_);
+        buttonPanel.add(clearButton_);
         buttonPanel.add(closeButton_);
         buttonPanel.add(autoScrollBox_);
         buttonPanel.add(lineNumbersBox_);
@@ -181,11 +181,11 @@ public class TailPane extends JPanel
         buttonPanel.add(regexField_);
         buttonPanel.add(new JLabel("Cut"));
         buttonPanel.add(cutField_);
-		
-		setLayout(new BorderLayout());
-		add(new JScrollPane(tailArea_), BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
-	}
+        
+        setLayout(new BorderLayout());
+        add(new JScrollPane(tailArea_), BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
  
     /**
      * Sets up appropriate filters based on configuration
@@ -331,8 +331,16 @@ public class TailPane extends JPanel
     //  Interfaces
     //--------------------------------------------------------------------------
     
+    /**
+     * Interface to listen to the tail pane
+     */
     public interface ITailPaneListener
     {
+        /**
+         * Notification of new data available
+         * 
+         * @param  tailPane  Tailpane
+         */
         public void newDataAvailable(TailPane tailPane);
     }
 
@@ -453,6 +461,9 @@ public class TailPane extends JPanel
      */    
     public class RegexActionListener implements ActionListener
     {
+        /**
+         * @param e  ActionEvent
+         */
         public void actionPerformed(ActionEvent e)
         {
             String s = getRegularExpression();
@@ -470,6 +481,9 @@ public class TailPane extends JPanel
      */    
     public class CutActionListener implements ActionListener
     {
+        /**
+         * @param e  ActionEvent
+         */
         public void actionPerformed(ActionEvent e)
         {
             String s = getCutExpression();
@@ -483,7 +497,7 @@ public class TailPane extends JPanel
 
     //--------------------------------------------------------------------------
     //  Actions
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Starts/stops the tail
@@ -493,7 +507,7 @@ public class TailPane extends JPanel
         private static final String MODE_START = "Start";
         private static final String MODE_STOP  = "Stop";
         
-        private String mode = MODE_START;
+        private String mode_ = MODE_START;
             
         /**
          * Default constructor
@@ -514,16 +528,16 @@ public class TailPane extends JPanel
         { 
             String method = "[actPrf] ";
             
-            if (mode.equals(MODE_START))
+            if (mode_.equals(MODE_START))
             {
                 try
                 {
                     tail_.start();
-                    mode = MODE_STOP;
-                    putValue(Action.NAME, mode);
+                    mode_ = MODE_STOP;
+                    putValue(Action.NAME, mode_);
                     pauseButton_.setEnabled(true);
                     //queueListener_.resetLines();
-                    logger_.debug(method + "Started tail: " + tail_.getFile());                                                     
+                    logger_.debug(method + "Started tail: " + tail_.getFile());
                 }
                 catch(FileNotFoundException fnfe)
                 {
@@ -533,10 +547,10 @@ public class TailPane extends JPanel
             else
             {
                 tail_.stop();
-                mode = MODE_START;
-                putValue(Action.NAME, mode);                
+                mode_ = MODE_START;
+                putValue(Action.NAME, mode_);                
                 pauseButton_.setEnabled(false);
-                logger_.debug(method + "Stopped tail: " + tail_.getFile());                
+                logger_.debug(method + "Stopped tail: " + tail_.getFile());
             }
         }
     }
@@ -576,7 +590,7 @@ public class TailPane extends JPanel
             else
             {
                 tail_.pause();
-                putValue(Action.NAME, MODE_UNPAUSE);                                
+                putValue(Action.NAME, MODE_UNPAUSE);
             }
         }
     }

@@ -89,7 +89,7 @@ public interface ITailPaneConfig
     /**
      * Sets the filter (regular expression) used to include/exclude lines
      * 
-     * @param filter The filter to set
+     * @param regex The filter to set
      */
     public void setRegularExpression(String regex);
 

@@ -45,7 +45,8 @@ public class PreferencesDialog extends JDialog implements ActionListener
     /**
      * Constructor for PreferencesDialog.
      * 
-     * @param owner
+     * @param owner     Parent frame
+     * @param config    Configuration 
      */
     public PreferencesDialog(Frame owner, IJTailConfig config)
     {
@@ -110,7 +111,8 @@ public class PreferencesDialog extends JDialog implements ActionListener
         
         gbc.gridy++;
         gbc.gridx--;
-        prefPanel.add(new JLabel("Show Line Numbers", SwingConstants.RIGHT), gbc);
+        prefPanel.add(
+            new JLabel("Show Line Numbers", SwingConstants.RIGHT), gbc);
         
         gbc.gridx++;
         prefPanel.add(new JCheckBox(), gbc);

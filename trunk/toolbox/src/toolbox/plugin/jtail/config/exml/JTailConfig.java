@@ -56,7 +56,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      * Marshals from IJTailConfig -> XML
      * 
      * @return  JTail XML node
-     * @throws  IOExcetion on IO error
+     * @throws  IOException on IO error
      */
     public Element marshal()  throws IOException 
     {
@@ -78,7 +78,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             jtailNode.setAttribute(ATTR_DIR, getDirectory());
 
         // Defaults
-        Element defaultTailNode = ((TailPaneConfig) defaultConfig_).marshal();        
+        Element defaultTailNode = ((TailPaneConfig) defaultConfig_).marshal();
         Element defaultsNode = new Element(ELEMENT_DEFAULTS);
         defaultsNode.addElement(defaultTailNode);
         
@@ -90,7 +90,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
 
         for (int i=0; i<tailPaneConfigs_.length;
             jtailNode.addElement((
-                (TailPaneConfig)tailPaneConfigs_[i++]).marshal()));                
+                (TailPaneConfig)tailPaneConfigs_[i++]).marshal()));
             
         return jtailNode;
     }    
@@ -99,7 +99,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     /**
      * Converts XML -> IJTailConfig
      * 
-     * @param   tail  Element representing a IJTailConfig
+     * @param   jtailNode  Element representing a IJTailConfig
      * @return  Fully populated IJTailConfig
      * @throws  IOException on IO error
      */
@@ -125,7 +125,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // TODO: set default location
+            // Set default location
         }
         
         // Read optional window size
@@ -145,7 +145,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // TODO: set default size
+            // Set default size
         }
         
         // Read optional directory
@@ -155,7 +155,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // TODO: set default directory
+            // Set default directory
         }
         
         Element defaultsNode = jtailNode.getElement(ELEMENT_DEFAULTS);
@@ -171,7 +171,9 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             }
             else
             {
-                logger_.warn(method + "Expected XML node JTail->Defaults->Tail");
+                logger_.warn(method + 
+                    "Expected XML node JTail->Defaults->Tail");
+                    
                 jtailConfig.setDefaultConfig(new TailPaneConfig());
             }
         }
@@ -191,7 +193,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
              tails.hasMoreElements();)
         {
             Element tail = tails.next();
-            ITailPaneConfig tailPaneConfig = TailPaneConfig.unmarshal(tail);                    
+            ITailPaneConfig tailPaneConfig = TailPaneConfig.unmarshal(tail);
             
             tailPaneConfigs = (ITailPaneConfig[])
                 ArrayUtil.addElement(tailPaneConfigs, tailPaneConfig);

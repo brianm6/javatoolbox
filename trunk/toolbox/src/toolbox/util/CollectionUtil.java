@@ -39,7 +39,8 @@ public final class CollectionUtil
      * @param   set2  Second set
      * @return  Collection containing the intersection of set1 and set2
      */    
-    public static final Collection intersection(Collection set1, Collection set2)
+    public static final Collection 
+        intersection(Collection set1, Collection set2)
     {
         Collection intersection = new HashSet(set1);
         intersection.retainAll(set2);

@@ -69,7 +69,7 @@ public final class ResourceCloser
     /**
      * Closes a context quietly
      * 
-     * @param  Context  Context to close
+     * @param  context  Context to close
      */
     public static void close(Context context)
     {
@@ -101,7 +101,8 @@ public final class ResourceCloser
             }
             catch (IOException e)
             {
-                logger_.warn("An error occurred while closing an InputStream.", e);
+                logger_.warn(
+                    "An error occurred while closing an InputStream.", e);
             }
         }
     }
@@ -121,7 +122,8 @@ public final class ResourceCloser
             }
             catch (IOException e)
             {
-                logger_.warn("An error occurred while closing an OutputStream.", e);
+                logger_.warn(
+                    "An error occurred while closing an OutputStream.", e);
             }
         }
     }
@@ -202,11 +204,13 @@ public final class ResourceCloser
 //            }
 //            catch (RemoteException e)
 //            {
-//                logger_.warn("An error occurred while removing an EJBObject.", e);
+//                logger_.warn(
+//                  "An error occurred while removing an EJBObject.", e);
 //            }
 //            catch (RemoveException e)
 //            {
-//                logger_.warn("An error occurred while removing an EJBObject.", e);
+//                logger_.warn(
+//                      "An error occurred while removing an EJBObject.", e);
 //            }
 //        }
 //    }
@@ -226,7 +230,8 @@ public final class ResourceCloser
             }
             catch (IOException e)
             {
-                logger_.warn("An error occurred while closing an IConnection.", e);
+                logger_.warn(
+                    "An error occurred while closing an IConnection.", e);
             }
         }        
     }
@@ -247,7 +252,8 @@ public final class ResourceCloser
 //            }
 //            catch (JMSException e)
 //            {
-//                logger_.warn("An error occurred while closing a QueueReceiver.", e);
+//                logger_.warn(
+//                      "An error occurred while closing a QueueReceiver.", e);
 //            }
 //        }        
 //    }

@@ -68,7 +68,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 
     //--------------------------------------------------------------------------
     //  Public
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * XML -> TailConfig
@@ -94,7 +94,8 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         // Optional show line numbers
         String showLineNumbers = tail.getAttr(ATTR_LINENUMBERS);
         if (showLineNumbers != null)
-            config.setShowLineNumbers(new Boolean(showLineNumbers).booleanValue());
+            config.setShowLineNumbers(
+                new Boolean(showLineNumbers).booleanValue());
         else
             config.setShowLineNumbers(DEFAULT_LINENUMBERS);
         
@@ -161,7 +162,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * </pre>
      * 
      * @return  Tail XML node
-     * @throws  IOExcetion on IO error
+     * @throws  IOException on IO error
      */
     public XMLNode marshal() throws IOException 
     {

@@ -68,7 +68,8 @@ public final class PropertiesUtil
      * @return Integer if property exists and is a valid integer, default
      *         value otherwise. 
      */
-    public static int getInteger(Properties props, String name, int defaultValue)
+    public static int getInteger(
+        Properties props, String name, int defaultValue)
     {
         int i = defaultValue;
         String value = props.getProperty(name);

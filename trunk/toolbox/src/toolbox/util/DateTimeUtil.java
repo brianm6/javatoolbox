@@ -14,13 +14,12 @@ public class DateTimeUtil
     /**
      * Constructor for DateTimeUtil.
      */
-    public DateTimeUtil()
+    private DateTimeUtil()
     {
-        super();
     }
 
-
     /**
+     * @param   d  Date to format
      * @return  Date/time in dashed MM-dd-yyyy format
      */
     public static String format(Date d)

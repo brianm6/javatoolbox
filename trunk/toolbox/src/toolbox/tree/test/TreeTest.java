@@ -56,6 +56,8 @@ public class TreeTest extends TestCase
     
     /**
      * Create a temp directory to play around in
+     * 
+     * @throws IOException on IO error
      */
     public void setUp() throws IOException
     {
@@ -78,6 +80,8 @@ public class TreeTest extends TestCase
         
     /**
      * Tests for a simple cascading structure
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeSimpleCascade() throws Exception
     {
@@ -103,6 +107,8 @@ public class TreeTest extends TestCase
 
     /**
      * Tests for a simple flat structure
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeSimpleFlat() throws Exception
     {
@@ -128,6 +134,8 @@ public class TreeTest extends TestCase
 
     /**
      * Tests for an extension bar
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeExtensionBar() throws Exception
     {
@@ -165,6 +173,8 @@ public class TreeTest extends TestCase
      *       +---d
      *
      * </pre>
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeManyInRoot() throws Exception
     {
@@ -195,6 +205,8 @@ public class TreeTest extends TestCase
      *   rootDir_
      *
      * </pre>
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeEmptyRoot() throws Exception
     {
@@ -215,6 +227,8 @@ public class TreeTest extends TestCase
      *   +---a
      *
      * </pre>
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeOneDir() throws Exception
     {
@@ -232,6 +246,8 @@ public class TreeTest extends TestCase
 
     /**
      * Tests for a large directory structure
+     * 
+     * @throws Exception on error
      */
     public void xtestShowTreeLargeTree() throws Exception
     {
@@ -244,6 +260,8 @@ public class TreeTest extends TestCase
 
     /**
      * Tests for a simple cascading structure with one file
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeSimpleCascadeFile() throws Exception
     {
@@ -276,6 +294,8 @@ public class TreeTest extends TestCase
 
     /**
      * Tests for an empty tree with files in the root only
+     * 
+     * @throws Exception on error
      */
     public void testShowTreeRootFiles() throws Exception
     {
@@ -312,28 +332,44 @@ public class TreeTest extends TestCase
 
     /**
      * Executes the native version of tree to use as a comparison
+     * 
+     * @param  dir  Directory
+     * @throws IOException on error
      */
     public void printNativeTree(File dir) throws IOException
     {
         /*
-        Process p = Runtime.getRuntime().exec("tree.com /a " + dir.getAbsolutePath());
+        Process p = Runtime.getRuntime().exec(
+            "tree.com /a " + dir.getAbsolutePath());
+            
         InputStream is = p.getInputStream();
         String output = StreamUtil.asString(is);
-        output = output.substring(output.indexOf("\n", output.indexOf("\n") + 1));
+        
+        output = output.substring(
+            output.indexOf("\n", output.indexOf("\n") + 1));
+            
         System.out.println(output);
         */
     }
 
     /**
      * Executes the native version of tree to use as a comparison
+     * 
+     * @param dir Directory
+     * @throws IOException on IO error
      */
     public void printNativeFileTree(File dir) throws IOException
     {
         /*
-        Process p = Runtime.getRuntime().exec("tree.com /a /f " + dir.getAbsolutePath());
+        Process p = Runtime.getRuntime().exec(
+            "tree.com /a /f " + dir.getAbsolutePath());
+            
         InputStream is = p.getInputStream();
         String output = StreamUtil.asString(is);
-        output = output.substring(output.indexOf("\n", output.indexOf("\n") + 1));
+        
+        output = output.substring(
+            output.indexOf("\n", output.indexOf("\n") + 1));
+            
         System.out.println(output);
         */
     }

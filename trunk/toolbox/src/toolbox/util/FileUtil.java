@@ -40,7 +40,7 @@ public final class FileUtil
      * Deletes the contents of a directory including nested directories. The
      * directory itself is not deleted.
      *
-     * @param  directory  Directory to clean
+     * @param  dir  Directory to clean
      */
     public static void cleanDir(File dir)
     {
@@ -153,6 +153,7 @@ public final class FileUtil
      * Creates a temporary directory in the System temporary directory
      * 
      * @return  Created temporary directory
+     * @throws  IOException on IO error
      */
     public static File createTempDir() throws IOException
     {
@@ -316,6 +317,7 @@ public final class FileUtil
     /**
      * Chops the extension off of a file's name
      * 
+     * @param  file  File name
      * @return File name without the extension
      */
     public static String dropExtension(String file)

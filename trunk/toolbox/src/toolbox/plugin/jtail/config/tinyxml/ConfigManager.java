@@ -93,7 +93,8 @@ public class ConfigManager implements IConfigManager
                 
         if (!xmlFile.exists())
         {
-            logger_.debug(method + "No XML configuration present. Using defaults.");
+            logger_.debug(method + 
+                "No XML configuration present. Using defaults.");
         }
         else if (!xmlFile.canRead())
         {

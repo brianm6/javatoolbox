@@ -21,8 +21,8 @@ import org.apache.regexp.RESyntaxException;
  */
 public class Main extends FindClassAdapter
 { 
-    /** Logger **/
-    private static final Logger logger_ = Logger.getLogger(Main.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(Main.class);
 
     private PrintWriter writer_;    
     private int         numFound_;
@@ -43,10 +43,14 @@ public class Main extends FindClassAdapter
             Options options = new Options();
 
             // Valid options            
-            Option  caseOption    = new Option("c", "caseSensetive", false, "Case sensetive search");
-            Option  targetsOption = new Option("t", "targets", false, "Lists the search targets");
-            Option  helpOption    = new Option("h", "help", false, "Print usage");
-            Option  helpOption2   = new Option("?", "/?", false, "Print Usage");
+            Option caseOption = 
+                new Option("c","caseSensetive", false, "Case sensetive search");
+                
+            Option targetsOption = 
+                new Option("t", "targets", false, "Lists the search targets");
+                
+            Option helpOption = new Option("h", "help", false, "Print usage");
+            Option helpOption2 = new Option("?", "/?", false, "Print Usage");
             
             options.addOption(helpOption2);
             options.addOption(helpOption);
@@ -84,7 +88,7 @@ public class Main extends FindClassAdapter
             // Make sure class to find is the only arg
             switch (cmdLine.getArgs().length)
             {
-                // Start the search...                                            
+                // Start the search...
                 case 1:
                     mainClass.setClassToFind(cmdLine.getArgs()[0]);
                     mainClass.search();
@@ -129,6 +133,9 @@ public class Main extends FindClassAdapter
 
     /**
      * Starts the search
+     * 
+     * @throws RESyntaxException on invalid regular expression
+     * @throws IOException on IO error
      */
     public void search() throws RESyntaxException, IOException
     {
@@ -157,7 +164,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for case sensetive flag
      * 
-     * @return  True if case sensetive, false otherwise
+     * @param   b  Case sensetive flag
      */    
     public void setCaseSensetive(boolean b)
     {
@@ -167,7 +174,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the show targets flag
      * 
-     * @return  True if targets are to be printed out, false otherwise
+     * @param  b Show targets flag
      */    
     public void setShowTargets(boolean b)
     {
@@ -177,7 +184,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the class to find
      * 
-     * @param  Class to find
+     * @param  find Class to find
      */
     public void setClassToFind(String find)
     {
@@ -222,7 +229,7 @@ public class Main extends FindClassAdapter
  
     //--------------------------------------------------------------------------
     //  Overridden from FindClassAdapter
-    //-------------------------------------------------------------------------- 
+    //--------------------------------------------------------------------------
  
     /**
      * Implemenation of IFindClassListener

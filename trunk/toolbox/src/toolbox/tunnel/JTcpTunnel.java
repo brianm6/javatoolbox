@@ -12,15 +12,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
@@ -49,7 +46,8 @@ public class JTcpTunnel extends JFrame
     /**
      * Entry point
      * 
-     * @args    args   Args
+     * @param   args   Args
+     * @throws  Exception on error
      */
     public static void main(String[] args) throws Exception
     {
@@ -215,12 +213,12 @@ public class JTcpTunnel extends JFrame
         actionPanel.add(BorderLayout.SOUTH, status_ = new JLabel());
         getContentPane().add(BorderLayout.SOUTH, actionPanel);
         
-        //======================================================================        
+        //======================================================================
         
         pack();
         SwingUtil.centerWindow(this);
 
-        //======================================================================        
+        //======================================================================
         
         // Keep divider location in the middle if the window is resized
         addComponentListener(new ComponentAdapter()

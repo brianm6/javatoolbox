@@ -50,7 +50,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      * Marshals from IJTailConfig -> XML
      * 
      * @return  JTail XML node
-     * @throws  IOExcetion on IO error
+     * @throws  IOException on IO error
      */
     public XMLNode marshal()  throws IOException 
     {
@@ -72,7 +72,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             jtailNode.addAttr(ATTR_DIR, getDirectory());
 
         // Defaults
-        XMLNode defaultTailNode = ((TailPaneConfig) defaultConfig_).marshal();        
+        XMLNode defaultTailNode = ((TailPaneConfig) defaultConfig_).marshal();
         XMLNode defaultsNode = new XMLNode(ELEMENT_DEFAULTS);
         defaultsNode.addNode(defaultTailNode);
         
@@ -125,8 +125,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         
         if (height != null && width != null)
         {
-            jtailConfig.setSize(
-                new Dimension(Integer.parseInt(width),Integer.parseInt(height)));
+            jtailConfig.setSize(new Dimension(
+                Integer.parseInt(width),Integer.parseInt(height)));
         }
         else
         {
@@ -158,7 +158,9 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             }
             else
             {
-                logger_.warn(method + "Expected XML node JTail->Defaults->Tail");
+                logger_.warn(method + 
+                    "Expected XML node JTail->Defaults->Tail");
+                    
                 jtailConfig.setDefaultConfig(new TailPaneConfig());
             }
         }
@@ -180,7 +182,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             
             if (tail.getTagName().equals(TailPaneConfig.ELEMENT_TAIL))
             {
-                ITailPaneConfig tailPaneConfig = TailPaneConfig.unmarshal(tail);                    
+                ITailPaneConfig tailPaneConfig = TailPaneConfig.unmarshal(tail);
                 
                 tailPaneConfigs = (ITailPaneConfig[])
                     ArrayUtil.add(tailPaneConfigs, tailPaneConfig);

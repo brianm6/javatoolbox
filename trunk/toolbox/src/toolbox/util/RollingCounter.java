@@ -39,7 +39,7 @@ public class RollingCounter
     /**
      * Increments the counter by 1
      *
-     * @param  Counter value after increment
+     * @return  Counter value after increment
      */
     public int increment()
     {   
@@ -119,7 +119,7 @@ public class RollingCounter
 
     
     /**
-     * Dumps to string
+     * @return Dumps to string
      */
     public String toString()
     {

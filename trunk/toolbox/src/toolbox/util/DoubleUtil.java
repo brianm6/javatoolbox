@@ -17,7 +17,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Determines if the contents of a string can be expressed as a double
      * 
      * @param   s   String to inspect
@@ -46,7 +46,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Computes the average of a double array
      * 
      * @param   d   Array of doubles
@@ -67,7 +67,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Calculates difference of two arrays of doubles
      * 
      * @param  subtractFrom  Array to subtract from
@@ -88,7 +88,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Determines the number of occurrences of a given value in an array
      *
      * @param  value   Value to match
@@ -105,7 +105,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Calculates the median value
      * 
      * @param   array   Array of values
@@ -145,7 +145,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Calculates the sum of an array of doubles
      *
      * @param   d   Array of doubles
@@ -166,7 +166,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Rounds a double using the given Decimal format
      * 
      * @param   d       Double to round
@@ -192,7 +192,7 @@ public class DoubleUtil
     }
 
 
-	/**
+    /**
      * Rounds a string that contains a double value 
      * 
      * @param   s       Double value as a string

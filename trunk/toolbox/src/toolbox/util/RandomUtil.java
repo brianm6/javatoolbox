@@ -11,12 +11,12 @@ public final class RandomUtil
     /** 
      * Random number generator 
      */
-    private static Random r = new Random(System.currentTimeMillis());
+    private static Random random_ = new Random(System.currentTimeMillis());
   
     /** 
      * All alpha characters 
      */
-    private static final String alphaChars = "abcdefghijklmnopqrstuvwxyz";
+    private static final String alphaChars_ = "abcdefghijklmnopqrstuvwxyz";
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -40,7 +40,7 @@ public final class RandomUtil
      */
     public static int nextInt()
     {
-        return Math.abs(r.nextInt());
+        return Math.abs(random_.nextInt());
     }
 
 
@@ -79,7 +79,7 @@ public final class RandomUtil
      */
     public static char nextLowerAlpha()
     {
-        return alphaChars.charAt(nextInt(alphaChars.length()-1));
+        return alphaChars_.charAt(nextInt(alphaChars_.length()-1));
     }
 
     
@@ -102,7 +102,7 @@ public final class RandomUtil
     public static char nextAlpha()
     {
         char c = nextLowerAlpha();
-        if(r.nextBoolean())
+        if(random_.nextBoolean())
             c = Character.toUpperCase(c);
         return c;
     }
@@ -155,7 +155,8 @@ public final class RandomUtil
      */
     public static Object nextElement(Object[] pickList)
     {
-        return (pickList.length == 0 ? null : pickList[nextInt(pickList.length-1)]);        
+        return (pickList.length == 0 ? null : 
+            pickList[nextInt(pickList.length-1)]);        
     }    
 
 
@@ -167,6 +168,6 @@ public final class RandomUtil
      */
     public static Object nextElement(List list)
     {
-        return (list.size() == 0 ? null : list.get(nextInt(list.size()-1)));        
+        return (list.size() == 0 ? null : list.get(nextInt(list.size()-1)));
     }    
 }

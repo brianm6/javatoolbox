@@ -75,7 +75,7 @@ public class JSourceView extends JFrame implements ActionListener
     /** 
      * Table column names 
      */    
-    private String colNames[] = 
+    private String colNames_[] = 
     {
         "Num",
         "Directory", 
@@ -103,6 +103,7 @@ public class JSourceView extends JFrame implements ActionListener
      * Entrypoint
      * 
      * @param  args  None recognized 
+     * @throws Exception on error
      */
     public static void main(String args[]) throws Exception
     {
@@ -112,7 +113,7 @@ public class JSourceView extends JFrame implements ActionListener
 
     //--------------------------------------------------------------------------
     //  Constructors
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Constructs JSourceview
@@ -138,7 +139,7 @@ public class JSourceView extends JFrame implements ActionListener
         topPanel.add(goButton_);
         
         goButton_.addActionListener(this);
-        tableModel_ = new ThreadSafeTableModel(colNames, 0);
+        tableModel_ = new ThreadSafeTableModel(colNames_, 0);
         table_ = new JTable(tableModel_);
         table_.setFont(SwingUtil.getPreferredSerifFont());
         
@@ -272,7 +273,9 @@ public class JSourceView extends JFrame implements ActionListener
             goButton_.setText(TEXT_CANCEL);
             String s = dirField_.getText();
             workQueue_ = new Queue();
-            table_.setModel(tableModel_ = new ThreadSafeTableModel(colNames, 0));
+            
+            table_.setModel(
+                tableModel_ = new ThreadSafeTableModel(colNames_, 0));
             
             scanDirWorker_ = new ScanDirWorker(new File(s));
             scanDirThread_ = new Thread(scanDirWorker_);
@@ -295,6 +298,7 @@ public class JSourceView extends JFrame implements ActionListener
             }
             catch (InterruptedException ie)
             {
+                // Ignore
             }
             
             setScanStatus("Operation canceled");
@@ -356,10 +360,10 @@ public class JSourceView extends JFrame implements ActionListener
     private class ScanDirWorker implements Runnable
     {
         /** Directory to scan **/
-        private File file;
+        private File file_;
 
         /** Cancel flag **/
-        private boolean cancel = false;
+        private boolean cancel_ = false;
         
         /**
          * Creates a scanner
@@ -368,7 +372,7 @@ public class JSourceView extends JFrame implements ActionListener
          */
         public ScanDirWorker(File dir)
         {
-            file = dir;
+            file_ = dir;
         }
 
                 
@@ -377,7 +381,7 @@ public class JSourceView extends JFrame implements ActionListener
          */
         public void run()
         {
-            findJavaFiles(file);
+            findJavaFiles(file_);
             setScanStatus("Done scanning.");
         }
         
@@ -390,7 +394,7 @@ public class JSourceView extends JFrame implements ActionListener
         protected void findJavaFiles(File file)
         {
             // Short circuit if operation canceled
-            if (cancel)
+            if (cancel_)
                 return;
                 
             Thread.currentThread().yield();
@@ -401,7 +405,7 @@ public class JSourceView extends JFrame implements ActionListener
             if (!ArrayUtil.isNullOrEmpty(srcFiles))
             {
                 for (int i = 0; i < srcFiles.length; i++)
-                    workQueue_.enqueue(srcFiles[i].getAbsolutePath());                                        
+                    workQueue_.enqueue(srcFiles[i].getAbsolutePath());
             }
             
             // Process dirs in current directory
@@ -422,7 +426,7 @@ public class JSourceView extends JFrame implements ActionListener
          */
         public void cancel()
         {
-            cancel = true;
+            cancel_ = true;
         }
     }
 
@@ -432,7 +436,7 @@ public class JSourceView extends JFrame implements ActionListener
      */
     class ParserWorker implements Runnable
     {
-        boolean cancel = false;
+        private boolean cancel_ = false;
         
         /**
          * Parses each file on the workqueue and adds the statistics to the
@@ -445,7 +449,7 @@ public class JSourceView extends JFrame implements ActionListener
             
             while (!workQueue_.isEmpty() || scanDirThread_.isAlive()) 
             {
-                if (cancel)
+                if (cancel_)
                     break;
                     
                 // Pop file of the queue
@@ -462,7 +466,7 @@ public class JSourceView extends JFrame implements ActionListener
                     ++fileCount;
 
                     // Create table row data and append                    
-                    String tableRow[] = new String[colNames.length];
+                    String tableRow[] = new String[colNames_.length];
                     tableRow[0] = fileCount+"";
                     tableRow[1] = getDirectoryOnly(filename);
                     tableRow[2] = getFileOnly(filename);
@@ -479,13 +483,13 @@ public class JSourceView extends JFrame implements ActionListener
             }
         
             // Make separator row
-            String rulerRow[] = new String[colNames.length];
+            String rulerRow[] = new String[colNames_.length];
             for(int i = 0; i < rulerRow.length; i++)
                 rulerRow[i] =  "========";
             tableModel_.addRow(rulerRow);
             
      
-            String totalRow[] = new String[colNames.length];       
+            String totalRow[] = new String[colNames_.length];       
             totalRow[0] = "";
             totalRow[1] = "Grand";
             totalRow[2] = "Total";
@@ -562,8 +566,8 @@ public class JSourceView extends JFrame implements ActionListener
          */
         public void cancel()
         {
-            cancel = true;
-            logger_.debug("Cancel called : " + cancel);            
+            cancel_ = true;
+            logger_.debug("Cancel called : " + cancel_);            
         }
     }
 }

@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 public final class ResourceUtil
 {
     /** Logger **/
-    public static final Logger logger = 
+    public static final Logger logger_ = 
         Logger.getLogger(ResourceUtil.class);
 
     /**
@@ -56,7 +56,7 @@ public final class ResourceUtil
                 }
                 catch(IOException eee)
                 {
-                    logger.debug("Resource " + name + " not found");
+                    logger_.debug("Resource " + name + " not found");
                     is = null;
                 }
             }
@@ -74,7 +74,7 @@ public final class ResourceUtil
      */
     public static InputStream getURLResource(String url) throws IOException
     {
-        logger.debug("getURLResource(" + url + ")");
+        logger_.debug("getURLResource(" + url + ")");
         URL u = getResourceURL(url);
         return (u != null) ? u.openStream() : null;
     }
@@ -89,7 +89,7 @@ public final class ResourceUtil
     public static InputStream getFileResource(String filename) 
         throws IOException
     {
-        logger.debug("getFileResource(" + filename + ")");
+        logger_.debug("getFileResource(" + filename + ")");
         URL url = getFileResourceURL(filename);
         return (url != null) ? url.openStream() : null;
     }
@@ -104,7 +104,7 @@ public final class ResourceUtil
     public static InputStream getClassResource(String resource) 
         throws IOException
     {
-        logger.debug("getClassResource(" + resource + ")");
+        logger_.debug("getClassResource(" + resource + ")");
         URL url = getClassResourceURL(resource);
         return (url != null) ? url.openStream() : null;
     }
@@ -120,7 +120,7 @@ public final class ResourceUtil
     public static InputStream getClassResource(Class context, String resource)
         throws IOException
     {
-        logger.debug(
+        logger_.debug(
             "getClassResource(" + context.getName() + ", " + resource + ")");
             
         URL url = getClassResourceURL(context, resource);
@@ -139,7 +139,7 @@ public final class ResourceUtil
     public static InputStream getPackageResource(Class context, String resource)
         throws IOException
     {
-        logger.debug(
+        logger_.debug(
             "getPackageResource(" + context.getName() + ", " + resource + ")");
             
         URL url = getPackageResourceURL(context, resource);
@@ -156,7 +156,7 @@ public final class ResourceUtil
     public static URL getResourceURL(String url)
         throws IOException
     {
-        logger.debug("getURLResource(" + url + ")");
+        logger_.debug("getURLResource(" + url + ")");
 
         URL u = new URL(url);
 
@@ -179,7 +179,7 @@ public final class ResourceUtil
     public static URL getFileResourceURL(String filename)
         throws IOException
     {
-        logger.debug("getFileResource(" + filename + ")");
+        logger_.debug("getFileResource(" + filename + ")");
 
         File file = new File(filename);
 
@@ -202,7 +202,7 @@ public final class ResourceUtil
     public static URL getClassResourceURL(String resource)
         throws IOException
     {
-        logger.debug("getClassResource(" + resource + ")");
+        logger_.debug("getClassResource(" + resource + ")");
         return getClassResourceURL(ResourceUtil.class, resource);
     }
 
@@ -218,7 +218,7 @@ public final class ResourceUtil
         throws IOException
     
     {
-        logger.debug(
+        logger_.debug(
             "getClassResource(" + context.getName() + ", " + resource + ")");
 
         if (context == null)
@@ -243,7 +243,7 @@ public final class ResourceUtil
     public static URL getPackageResourceURL(Class context, String resource)
         throws IOException
     {
-        logger.debug(
+        logger_.debug(
             "getPackageResource(" + context.getName() + ", " + resource + ")");
 
         if (context == null || resource.startsWith("/"))

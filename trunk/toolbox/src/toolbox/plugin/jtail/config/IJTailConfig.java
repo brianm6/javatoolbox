@@ -1,7 +1,6 @@
 package toolbox.jtail.config;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 
 /**
@@ -47,7 +46,7 @@ public interface IJTailConfig
     /**
      * Sets the default tail pane configuration
      * 
-     * @param defaultTailPaneConfig  The default tail pane configuration
+     * @param config  The default tail pane configuration
      */
     public void setDefaultConfig(ITailPaneConfig config);
 

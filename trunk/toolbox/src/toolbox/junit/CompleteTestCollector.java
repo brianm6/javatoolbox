@@ -30,12 +30,12 @@ public class CompleteTestCollector implements TestCollector
     /** 
      * Introspects jars for unit tests 
      */
-    TestCollector jarCollector;
+    private TestCollector jarCollector_;
     
     /** 
      * Scans directories for unit tests 
      */
-    TestCollector dirCollector;
+    private TestCollector dirCollector_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -46,8 +46,8 @@ public class CompleteTestCollector implements TestCollector
      */
     public CompleteTestCollector()
     {
-        jarCollector = new JarTestCollector();
-        dirCollector = new SimpleTestCollector();
+        jarCollector_ = new JarTestCollector();
+        dirCollector_ = new SimpleTestCollector();
     }
 
     //--------------------------------------------------------------------------
@@ -65,10 +65,10 @@ public class CompleteTestCollector implements TestCollector
         Vector results = new Vector();
 
         // Merge the two result sets        
-        for(Enumeration e = jarCollector.collectTests();e.hasMoreElements();)
+        for(Enumeration e = jarCollector_.collectTests();e.hasMoreElements();)
             results.add(e.nextElement());    
 
-        for(Enumeration e = dirCollector.collectTests();e.hasMoreElements();)
+        for(Enumeration e = dirCollector_.collectTests();e.hasMoreElements();)
             results.add(e.nextElement());    
         
         return results.elements();

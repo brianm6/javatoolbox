@@ -32,6 +32,8 @@ public abstract class AbstractLineFilter implements ILineFilter
 
     /**
      * Enables/disables
+     * 
+     * @param b Set enabled flag
      */
     public void setEnabled(boolean b)
     {

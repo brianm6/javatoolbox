@@ -38,6 +38,9 @@ public class CutLineFilter extends AbstractLineFilter
     
     /**
      * Filters a line by cutting 
+     * 
+     * @param line  Line to cut
+     * @return Line after cut operation
      */
     public String filter(String line)
     {
@@ -75,6 +78,9 @@ public class CutLineFilter extends AbstractLineFilter
     
     /**
      * Sets the cut expression
+     * 
+     * @param  cut  Cut expression
+     * @throws IllegalArgumentException on bad cut expression
      */
     public void setCut(String cut) throws IllegalArgumentException
     {
@@ -107,7 +113,8 @@ public class CutLineFilter extends AbstractLineFilter
     {
         StringTokenizer st = new StringTokenizer(cut_, "-");        
         
-        Assert.equals(st.countTokens(), 2, "Cut expression should be of form x-y");
+        Assert.equals(st.countTokens(), 2, 
+            "Cut expression should be of form x-y");
         
         begin_ = Integer.parseInt((String)st.nextToken()) - 1;
         end_   = Integer.parseInt((String)st.nextToken());
@@ -116,6 +123,7 @@ public class CutLineFilter extends AbstractLineFilter
             throw new IllegalArgumentException("Begin cannot be equal to end");
             
         if (begin_ > end_)
-            throw new IllegalArgumentException("Begin cannot be greater than end");            
+            throw new IllegalArgumentException(
+                "Begin cannot be greater than end");            
     }
 }

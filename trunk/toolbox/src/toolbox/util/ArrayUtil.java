@@ -275,6 +275,7 @@ public class ArrayUtil
     /**
      * Determines if an array is null or empty
      * 
+     * @param  array   Array to check for null or empty
      * @return True if an array is null or has a size of length zero,
      *         false otherwise
      */
@@ -288,9 +289,9 @@ public class ArrayUtil
      * Concats two arrays (one right after the other) with homogenous content.
      * Arrays must contain elements of the same type!
      * 
-     * @param   head  Array at front
-     * @param   tail  Array at back
-     * @result  Concatenated array
+     * @param    head  Array at front
+     * @param    tail  Array at back
+     * @return   Concatenated array
      */
     public static Object[] concat(Object[] head, Object[] tail)
     {
@@ -311,6 +312,7 @@ public class ArrayUtil
      * 
      * @param   array       An array to add the element to
      * @param   element     Element to append
+     * @return  New array with element
      */
     public static Object add(Object[] array, Object element)
     {
@@ -336,6 +338,7 @@ public class ArrayUtil
      * 
      * @param   array   An array
      * @param   element The element to insert.
+     * @return  New array with element
      */
     public static Object[] insert(Object[] array, Object element)
     {
@@ -347,9 +350,10 @@ public class ArrayUtil
      * Inserts an element into the given position of an array. The component 
      * type of the array must be the same as that type of the element.
      * 
-     * @param array     An array
-     * @param element   The element to insert.
-     * @param index     The index to insert the element before.
+     * @param  array     An array
+     * @param  element   The element to insert.
+     * @param  index     The index to insert the element before.
+     * @return New array with element
      */
     public static Object[] insertAt(Object array[], Object element, int index)
     {

@@ -29,8 +29,6 @@ public class ElapsedTime
     /**
      * Creates an elapsed time with the start and end times 
      * equal to the current time
-     * 
-     * @param   startTime   Starting time
      */
     public ElapsedTime()
     {
@@ -259,7 +257,7 @@ public class ElapsedTime
     }
     
     /**
-     * Returns total time elapsed in milliseconds
+     * @return Total time elapsed in milliseconds
      */
     public long getTotalMillis()
     {

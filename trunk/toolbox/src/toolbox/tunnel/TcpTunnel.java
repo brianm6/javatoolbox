@@ -16,14 +16,14 @@ public class TcpTunnel
     private static final Logger logger_ = 
         Logger.getLogger(TcpTunnel.class);
     
-	/**
-	 * Entrypoint 
+    /**
+     * Entrypoint 
      * 
      * @param  args  [0] = listenport
      *               [1] = host to tunnel to
      *               [2] = port to tunnel to
      * @throws IOException on IO error
-	 */
+     */
     public static void main(String args[]) throws IOException
     {
         String method = "[main  ] ";

@@ -76,9 +76,10 @@ public class Tree
      * Entrypoint
      *
      * @param   args  [-f, rootDir]
+     * @throws  Exception on error
      */
-	public static void main(String args[]) throws Exception
-	{
+    public static void main(String args[]) throws Exception
+    {
         // command line options and arguments
         String rootDir = null;
         boolean showFiles = false;
@@ -133,7 +134,7 @@ public class Tree
         {
             System.err.println("ERROR: " + e.getMessage());
         }
-	}
+    }
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -181,7 +182,6 @@ public class Tree
      * @param  showFiles  Set to true if you want file info in the tree,
      *                    false otherwise
      * @param  writer     Output destination
-     * @throws IllegalArgumentException if rootDir invalid
      */
     public Tree(File rootDir, boolean showFiles, Writer writer)
     {
@@ -242,15 +242,15 @@ public class Tree
      * @param  rootDir   Root diretory
      * @param  level     Current level of decorated indentation
      */
-	protected boolean showTree(File rootDir, String level)
-	{
+    protected boolean showTree(File rootDir, String level)
+    {
         boolean atRoot = (level.length() == 0);
         
         if (atRoot)
             writer_.println(rootDir.getAbsolutePath());
             
         // Get list of directories in root
-		File[] dirs = rootDir.listFiles(dirFilter_);
+        File[] dirs = rootDir.listFiles(dirFilter_);
 
         // Print files
         if (showFiles_)
@@ -269,7 +269,7 @@ public class Tree
         }
         
         // Bow out if nothing todo
-		if (ArrayUtil.isNullOrEmpty(dirs))
+        if (ArrayUtil.isNullOrEmpty(dirs))
         {
             if (atRoot)
                 writer_.println("No subfolders exist");
@@ -283,14 +283,14 @@ public class Tree
             writer_.println(BAR);
             
         // Process each directory    
-		for (int i=0; i<len; i++)
-		{
-			File current = dirs[i];
+        for (int i=0; i<len; i++)
+        {
+            File current = dirs[i];
 
-			writer_.print(level);
-			writer_.print(JUNCTION);
-			writer_.print(ARM);
-  			writer_.print(current.getName());
+            writer_.print(level);
+            writer_.print(JUNCTION);
+            writer_.print(ARM);
+              writer_.print(current.getName());
             writer_.println();
             
             // Recurse            
@@ -310,8 +310,8 @@ public class Tree
                 // Not at end                
                 showTree(current, level + SPACER);
             }
-		}
+        }
         
         return true;
-	}
+    }
 }

@@ -1,8 +1,5 @@
 package toolbox.util;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-
 /**
  * Math Utility Class
  */
@@ -61,7 +58,8 @@ public final class MathUtil
      *  @param  p   Any number between 0 and 1
      *  @return Inverse normal cumulative distribution
      */
-    public static double invNormalCumDist(double p) {
+    public static double invNormalCumDist(double p) 
+    {
 
         double c[] = new double[3];
         double d[] = new double[3];
@@ -76,7 +74,8 @@ public final class MathUtil
         d[1] = .189269;
         d[2] = .001308;
 
-        if (p <= .5) {
+        if (p <= .5) 
+        {
 
             arg = -2.0 * Math.log(p);
             t = Math.sqrt(arg);
@@ -91,7 +90,8 @@ public final class MathUtil
             return x;
 
         }
-        else {
+        else 
+        {
 
             pc = 1.0 - p;
             arg = -2.0 * Math.log(pc);
@@ -114,7 +114,8 @@ public final class MathUtil
      *  @param  d   Array of integers
      *  @return Sum of elements in d
      */
-    public static int sum(int[] d) {
+    public static int sum(int[] d) 
+    {
 
         if( d.length == 0)
             return 0;

@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
 public abstract class Console
 {
     /** Logger **/
-    private static final Logger logger = 
+    private static final Logger logger_ = 
         Logger.getLogger(Console.class);
 
     /** Command to show help **/
@@ -75,13 +75,13 @@ public abstract class Console
     public static final String CMD_UPTIME    = "uptime";
     
     /** Source of commands **/    
-    private LineNumberReader lnr;
+    private LineNumberReader lnr_;
     
     /** Output of command results **/
-    private PrintStream ps;
+    private PrintStream ps_;
 
     /** Time console was created **/
-    private long startTime;
+    private long startTime_;
     
     /**
      * Create an InteractiveConsole with System.in and 
@@ -100,10 +100,10 @@ public abstract class Console
      */
     public Console(InputStream is, PrintStream os)
     {
-        startTime = Calendar.getInstance().getTime().getTime();
+        startTime_ = Calendar.getInstance().getTime().getTime();
         
-        ps  = os;
-        lnr = new LineNumberReader(new InputStreamReader(is));                 
+        ps_  = os;
+        lnr_ = new LineNumberReader(new InputStreamReader(is));                 
     }
  
      /**
@@ -127,7 +127,7 @@ public abstract class Console
       */
      public PrintStream getPrintStream()
      {
-         return ps;
+         return ps_;
      }
      
      /**
@@ -142,7 +142,7 @@ public abstract class Console
         try
         {
             getPrintStream().print(getPrompt());
-            cmd = lnr.readLine();        
+            cmd = lnr_.readLine();        
         }
         catch(IOException io)
         {
@@ -189,7 +189,7 @@ public abstract class Console
         else if (cmd.equals(CMD_UPTIME))
             commandUptime();
         else
-            ps.println("Unknown command: " + cmd);
+            ps_.println("Unknown command: " + cmd);
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class Console
     {
         StringTokenizer st = new StringTokenizer(cmd," ");
         if(st.countTokens() != 3)
-            ps.println("setprop <property name> <value>");
+            ps_.println("setprop <property name> <value>");
         else
         {
             st.nextToken();
@@ -218,7 +218,7 @@ public abstract class Console
     {
         StringTokenizer st = new StringTokenizer(cmd," ");
         if(st.countTokens() != 2)
-            ps.println("delprop <property name>");
+            ps_.println("delprop <property name>");
         else
         {
             st.nextToken();
@@ -245,8 +245,8 @@ public abstract class Console
          */
         int numSecs = 10000;
         
-        getPrintStream().println("Detaching from inputstream for " 
-            + numSecs/1000 + " secs...");
+        getPrintStream().println("Detaching from inputstream for " + 
+            numSecs/1000 + " secs...");
             
         ThreadUtil.sleep(10000);
         getPrintStream().println("Re-attached to inputstream.");
@@ -335,7 +335,7 @@ public abstract class Console
     protected void commandUptime()
     {
         long currentTime = Calendar.getInstance().getTime().getTime();
-        long delta = currentTime - startTime;
+        long delta = currentTime - startTime_;
         
         long milli  = 1;
         long second = 1000 * milli;

@@ -19,6 +19,8 @@ public class PackageTester
 
     /**
      * Runs tests cases in one or more given package names
+     * 
+     * @param  args  List of packages to test
      */            
     public static void main(String args[])
     {
@@ -46,6 +48,8 @@ public class PackageTester
     
     /**
      * Constructor for PackageTester.
+     * 
+     * @param  packageName  Package name
      */
     public PackageTester(String packageName)
     {
@@ -59,6 +63,8 @@ public class PackageTester
 
     /**
      * Adds a package to the list of packages to be tested
+     * 
+     * @param  packageName  Package name to add
      */
     public void addPackage(String packageName)
     {
@@ -67,6 +73,8 @@ public class PackageTester
 
     /**
      * Returns the number of packages to be tested
+     * 
+     * @return Number of packages
      */
     public int getPackageCount()
     {
@@ -93,7 +101,9 @@ public class PackageTester
                 {
                     if (classes[i].endsWith("Test"))
                     {
-                        Class clazz = Class.forName(packageName + "." + classes[i]);
+                        Class clazz = 
+                            Class.forName(packageName + "." + classes[i]);
+                            
                         testSuite.addTestSuite(clazz);
                     }
                 }

@@ -171,6 +171,7 @@ public class JDBCUtil
             } 
             catch(SQLException e) 
             {
+                // Ignore
             }
         }
     }

@@ -1,11 +1,9 @@
 package toolbox.util;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Utility class that deals only with the DATE portions of the 
@@ -28,6 +26,7 @@ public class DateUtil
     }
 
     /**
+     * @param   d  Date to format
      * @return  Time in hh:mma format. ex: 3:43pm
      */
     public static String format(Date d)
@@ -367,6 +366,7 @@ public class DateUtil
      * Zeros out the time portion of the given date
      * Returns original date for chaining
      * 
+     * @param  d  Date to zero out
      * @return Date with zeroed out time
      */
     public static Date zeroTime(Date d)

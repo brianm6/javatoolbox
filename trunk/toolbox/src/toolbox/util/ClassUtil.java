@@ -59,7 +59,8 @@ public class ClassUtil
         String[] classpathEntries = 
             StringUtil.tokenize(getClasspath(), File.pathSeparator);
        
-        // logger_.info("Classpath: " + ArrayUtil.toString(classpathEntries, false));
+        // logger_.info("Classpath: " + 
+        //      ArrayUtil.toString(classpathEntries, false));
         
         for (int i=0; i<classpathEntries.length; i++)
         {
@@ -86,12 +87,13 @@ public class ClassUtil
                              filename.startsWith(packageForward)) &&
                             (isClassFile(filename)))
                         {
-                            // Replace slashes and trunc .class                                
+                            // Replace slashes and trunc .class
                             filename = pathToPackage(filename);
                             filename = FileUtil.dropExtension(filename);
                                     
                             // Add to collector    
-                            //logger_.info("Added " + filename + "from zip " + pathElement);    
+                            //logger_.info("Added " + filename + "from zip " + 
+                            //      pathElement);    
                             collector.add(filename);
                         }
                     }
@@ -107,22 +109,28 @@ public class ClassUtil
             {
                 pathElement = FileUtil.trailWithSeparator(pathElement);
                 
-                // Build expected dir based on pathElement and package directory    
+                // Build expected dir based on pathElement and package directory
                 File file = new File(pathElement + packageDir);
                 
                 // If directory exists
                 if (file.exists() && file.isDirectory())
                 {
                     // Filter out only the class files
-                    File[] classnames = file.listFiles(new ExtensionFilter(".class"));
+                    File[] classnames = 
+                        file.listFiles(new ExtensionFilter(".class"));
                     
                     for (int j = 0; j < classnames.length; j++)
                     {
-                        // Replace slashes and trunc .class                                                            
-                        String classname = packageName + "." + classnames[j].getName();
+                        // Replace slashes and trunc .class 
+                        String classname = 
+                            packageName + "." + classnames[j].getName();
+                            
                         classname = pathToPackage(classname);
                         classname = FileUtil.dropExtension(classname);
-                        //logger_.info("Added " + classname + "from path " + pathElement);                                
+                        
+                        //logger_.info(
+                        //  "Added " + classname + "from path " + pathElement);
+                        
                         collector.add(classname);
                     }
                 }
@@ -171,7 +179,9 @@ public class ClassUtil
                         // Find classfiles and then tag parent dir as a package
                         if (!zipEntry.isDirectory() && isClassFile(entryName))
                         {
-                            String packageName = FileUtil.dropExtension(entryName);
+                            String packageName = 
+                                FileUtil.dropExtension(entryName);
+                                
                             packageName = pathToPackage(packageName);
                             
                             // Chop off the filename to get just the package
@@ -233,6 +243,7 @@ public class ClassUtil
     /**
      * Converts a file path into a package name
      * 
+     * @param  path  File path
      * @return Fully qualified package name
      */
     public static String pathToPackage(String path)
@@ -248,6 +259,7 @@ public class ClassUtil
     /**
      * Converts a package name into a file path
      * 
+     * @param  packageName  Package name
      * @return File path
      */
     public static String packageToPath(String packageName)
@@ -259,6 +271,7 @@ public class ClassUtil
      * Determines if a files name indicates a java archive. This includes
      * zip and jar file types.
      * 
+     * @param   filename  File to examine
      * @return  True if the name is a valid java archive, false otherwise
      */
     public static boolean isArchive(String filename)
@@ -269,6 +282,9 @@ public class ClassUtil
 
     /**
      * Returns true if the filename indicates a java class file
+     * 
+     * @param  filename  File to examine
+     * @return True if a class file, false otherwise
      */
     public static boolean isClassFile(String filename)
     {
@@ -276,7 +292,7 @@ public class ClassUtil
     }
     
     /**
-     * Returns the complete system classpath
+     * @return  The complete system classpath
      */
     public static String getClasspath()
     {

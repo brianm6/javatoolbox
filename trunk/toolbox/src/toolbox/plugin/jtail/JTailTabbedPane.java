@@ -28,7 +28,8 @@ public class JTailTabbedPane extends JTabbedPane
         addPropertyChangeListener( new PropertyChangeListener()
         {
             /**
-             * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+             * @see java.beans.PropertyChangeListener#
+             *      propertyChange(PropertyChangeEvent)
              */
             public void propertyChange(PropertyChangeEvent evt)
             {
@@ -37,11 +38,14 @@ public class JTailTabbedPane extends JTabbedPane
         });
     }
    
-    
+    /**
+     * Tail pane listener
+     */
     public class TailPaneListener implements TailPane.ITailPaneListener
     {
         /**
-         * @see toolbox.jtail.TailPane.ITailPaneListener#newDataAvailable(TailPane)
+         * @see toolbox.jtail.TailPane.ITailPaneListener#
+         *      newDataAvailable(TailPane)
          */
         public void newDataAvailable(TailPane tailPane)
         {

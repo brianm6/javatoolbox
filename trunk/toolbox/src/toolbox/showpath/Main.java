@@ -12,7 +12,7 @@ public class Main
     /** 
      * List of paths 
      */
-    private static Vector checkList = new Vector();
+    private static Vector checkList_ = new Vector();
 
     /**
      * Entrypoint for showclasspath
@@ -34,7 +34,7 @@ public class Main
             if (isDupe(path))
                 System.out.print("\t** DUPLICATE **");
             else
-                checkList.addElement(path);
+                checkList_.addElement(path);
 
             System.out.println();
         }
@@ -49,7 +49,7 @@ public class Main
      */
     public static boolean isDupe(String dupe)
     {
-        for (Enumeration e = checkList.elements(); e.hasMoreElements();)
+        for (Enumeration e = checkList_.elements(); e.hasMoreElements();)
         {
             String check = (String)e.nextElement();
 

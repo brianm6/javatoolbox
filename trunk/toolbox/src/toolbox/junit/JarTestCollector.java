@@ -60,8 +60,8 @@ public class JarTestCollector implements TestCollector
     {
         List result = new ArrayList();
         
-        StringTokenizer tokenizer = 
-            new StringTokenizer(classPath, System.getProperty("path.separator"));
+        StringTokenizer tokenizer = new StringTokenizer(classPath, 
+            System.getProperty("path.separator"));
         
         while (tokenizer.hasMoreTokens()) 
         {   

@@ -66,7 +66,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 
     //--------------------------------------------------------------------------
     //  Public
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Unmarshals an XML element representing a TailConfig object
@@ -153,7 +153,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * </pre>
      * 
      * @return  Tail XML node
-     * @throws  IOExcetion on IO error
+     * @throws  IOException on IO error
      */
     public Element marshal()  throws IOException 
     {

@@ -18,23 +18,23 @@ import toolbox.util.ui.JFileExplorer;
 public class FileSelectionPane extends JPanel implements ActionListener
 {
     /** Logger */
-	private static final Logger logger_ =
-		Logger.getLogger(FileSelectionPane.class);
-	
-	private JFileExplorer  fileExplorer_;
-	private JButton        tailButton_;
-	
+    private static final Logger logger_ =
+        Logger.getLogger(FileSelectionPane.class);
+    
+    private JFileExplorer  fileExplorer_;
+    private JButton        tailButton_;
+    
     //--------------------------------------------------------------------------
     //  Constructors
-    //--------------------------------------------------------------------------    	
+    //--------------------------------------------------------------------------
     
-	/**
-	 * Default constructor
-	 */
-	public FileSelectionPane()
-	{
+    /**
+     * Default constructor
+     */
+    public FileSelectionPane()
+    {
         this(null);
-	}
+    }
 
     
     /**
@@ -53,24 +53,24 @@ public class FileSelectionPane extends JPanel implements ActionListener
     
     //--------------------------------------------------------------------------
     // Private
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
-	/**
-	 * Builds the GUI
-	 */
-	protected void buildView()
-	{
+    /**
+     * Builds the GUI
+     */
+    protected void buildView()
+    {
         // File explorer         
-		fileExplorer_ = new JFileExplorer(false);
-		add(fileExplorer_, BorderLayout.CENTER);
+        fileExplorer_ = new JFileExplorer(false);
+        add(fileExplorer_, BorderLayout.CENTER);
         
-        // Button panel	
-		JPanel buttonPanel = new JPanel(new FlowLayout());
-		tailButton_ = new JButton("Tail");
-		tailButton_.addActionListener(this);
-		buttonPanel.add(tailButton_);
-		add(buttonPanel, BorderLayout.SOUTH);
-	}
+        // Button panel    
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        tailButton_ = new JButton("Tail");
+        tailButton_.addActionListener(this);
+        buttonPanel.add(tailButton_);
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
 
     
     /**
@@ -85,20 +85,22 @@ public class FileSelectionPane extends JPanel implements ActionListener
     //--------------------------------------------------------------------------
     // ActionListener Interface
     //--------------------------------------------------------------------------
-    	
-	/**
-	 * ActionListener interface
-	 */
-	public void actionPerformed(ActionEvent e)
-	{
-		Object obj = e.getSource();
-		
-		if(obj == tailButton_)
-			tailButtonClicked();
-		else
-			logger_.warn("No handler for " + e);
-	}
-	
+        
+    /**
+     * ActionListener interface
+     * 
+     * @param  e Action event
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+        Object obj = e.getSource();
+        
+        if(obj == tailButton_)
+            tailButtonClicked();
+        else
+            logger_.warn("No handler for " + e);
+    }
+    
     
     //--------------------------------------------------------------------------
     //  Accessors/Mutators

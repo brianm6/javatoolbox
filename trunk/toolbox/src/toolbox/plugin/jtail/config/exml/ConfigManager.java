@@ -94,13 +94,15 @@ public class ConfigManager implements IConfigManager
         }
         else if (!xmlFile.canRead())
         {
-            throw new IllegalArgumentException("Cannot read configuration from " 
-                + filename + ". " + "Using defaults.");
+            throw new IllegalArgumentException(
+                "Cannot read configuration from " + filename + ". " + 
+                "Using defaults.");
         }
         else if (!xmlFile.isFile())
         {
-            throw new IllegalArgumentException("Configuration file " + filename 
-                + " cannot be a directory. Using defaults.");
+            throw new IllegalArgumentException(
+                "Configuration file " + filename + 
+                " cannot be a directory. Using defaults.");
         }
         else
         {

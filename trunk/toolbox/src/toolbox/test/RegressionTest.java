@@ -4,19 +4,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.swingui.TestRunner;
 
-import toolbox.util.io.test.StringInputStreamTest;
-import toolbox.util.io.test.StringOutputStreamTest;
-import toolbox.util.test.ArrayUtilTest;
-import toolbox.util.test.AssertTest;
-import toolbox.util.test.ConsoleTest;
-import toolbox.util.test.FileUtilTest;
-import toolbox.util.test.RandomUtilTest;
-import toolbox.util.test.ResourceUtilTest;
-import toolbox.util.test.SocketUtilTest;
-import toolbox.util.test.StreamUtilTest;
-import toolbox.util.test.StringUtilTest;
-import toolbox.util.test.ThreadUtilTest;
-
 /**
  * Regression test suite for toolbox library
  */

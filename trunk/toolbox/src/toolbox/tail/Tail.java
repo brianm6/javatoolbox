@@ -94,7 +94,7 @@ public class Tail implements Runnable
 
     //--------------------------------------------------------------------------
     //  Public
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Tails the given file
@@ -112,7 +112,7 @@ public class Tail implements Runnable
     /**
      * Tails the given file
      * 
-     * @param  filename  File to tail
+     * @param  f  File to tail
      * @throws FileNotFoundException if file not found
      */
     public void setTailFile(File f) throws FileNotFoundException
@@ -156,7 +156,7 @@ public class Tail implements Runnable
     /**
      * Starts tail
      * 
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException on file error
      */
     public void start() throws FileNotFoundException
     {
@@ -616,16 +616,21 @@ public class Tail implements Runnable
                         {
                             // reset the stream and stop plaing around..
 
-                            lnr = new LineNumberReader(new FileReader(getFile()));
+                            lnr = new LineNumberReader(
+                                new FileReader(getFile()));
                             
-                            //long skipped = lnr.skip(Integer.MAX_VALUE);                                
-                            //logger_.debug(method + "Skipped " + skipped + " lines on reset");
+                            //long skipped = lnr.skip(Integer.MAX_VALUE);
+                            //logger_.debug(method + 
+                            //  "Skipped " + skipped + " lines on reset");
                             
                             logger_.debug(method + "Re-attached to " + 
                                 getFile().getName());
                         }
                         else
-                            ;//logger_.debug(method + "Failed criterai for reset");
+                        {
+                            //logger_.debug(method + 
+                            //    "Failed criterai for reset");
+                        }
                             
                         strikes = 0;
                     }

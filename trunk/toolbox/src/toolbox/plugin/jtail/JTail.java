@@ -139,7 +139,7 @@ public class JTail extends JFrame
 
     //--------------------------------------------------------------------------
     //  Private
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /** 
      * Initializes program
@@ -416,7 +416,10 @@ public class JTail extends JFrame
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
 
             ITailPaneConfig config = configManager_.createTailPaneConfig();
-            config.setFilename(fileSelectionPane_.getFileExplorer().getFilePath());
+            
+            config.setFilename(
+                fileSelectionPane_.getFileExplorer().getFilePath());
+                
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
             config.setAntiAlias(defaults.isAntiAlias());
