@@ -285,4 +285,48 @@ public class ArrayUtilTest extends TestCase
         assertEquals("Should not have found a match", -1, idx);
     }
     
+    /**
+     * Tests contains() for an empty array
+     */
+    public void testContainsEmpty()
+    {
+        assertTrue("Should not be found in an empty array",
+            !ArrayUtil.contains(new String[0], "blah"));
+    }
+    
+    /**
+     * Tests contains() for object not found in an array of size one
+     */
+    public void testContainsOneNotFound()
+    {
+        assertTrue("Should not be found in an array of size one", 
+            !ArrayUtil.contains(new String[] {"this"}, "dont match"));
+    }
+    
+    /**
+     * Tests contains() for object not found in an array of size > one
+     */
+    public void testContainsManyNotFound()
+    {
+        assertTrue("Should not be found in an array with size > one", 
+            !ArrayUtil.contains(new String[] {"one", "two", "three" }, "zero"));
+    }    
+    
+    /**
+     * Tests contains() for object found in an array of size one
+     */
+    public void testContainsOne()
+    {
+        assertTrue("Should have found in an array of size one", 
+            ArrayUtil.contains(new String[] {"this"}, "this"));
+    }
+    
+    /**
+     * Tests contains() for object found in an array of size > one
+     */
+    public void testContainsMany()
+    {
+        assertTrue("Should have found in an array with size > one", 
+            ArrayUtil.contains(new String[] {"one", "two", "three" }, "two"));
+    }    
 }
