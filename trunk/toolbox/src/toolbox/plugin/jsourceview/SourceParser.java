@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
 import toolbox.util.FileUtil;
+import toolbox.util.ui.JSmartOptionPane;
 
 /**
  * Pops files off of the work queue and parses them to gather stats.
@@ -140,5 +141,9 @@ class SourceParser implements Runnable
         
         elapsed.setEndTime();
         sourceView_.setScanStatus("Elapsed time: " + elapsed.toString());
+        
+        
+        PieChart pieChart = new PieChart(totals);
+        JSmartOptionPane.showMessageDialog(sourceView_, pieChart);
     }
 }
