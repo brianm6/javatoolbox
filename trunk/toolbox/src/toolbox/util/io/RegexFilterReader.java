@@ -28,6 +28,9 @@ public class RegexFilterReader extends LineNumberReader
     
     /** Flag to match case **/
     private boolean matchCase_;
+
+    /** Inverse match flag **/
+    private boolean matchInverse_;
     
     /** Regular expression */
     private RE regExp_;
@@ -53,9 +56,25 @@ public class RegexFilterReader extends LineNumberReader
      */
     public RegexFilterReader(Reader in, String regExp, boolean matchCase)
     {
+        this(in, regExp, matchCase, false);
+    }
+
+    /**
+     * Creates a RegexFilterReader
+     * 
+     * @param  in           Reader to wrap
+     * @param  regExp       Regular expression to match
+     * @param  matchCase    Set to true to observe case sensetivity
+     * @param  matchInverse Match all lines that do not satisty the regular
+     *                      expression
+     */
+    public RegexFilterReader(Reader in, String regExp, boolean matchCase, 
+        boolean matchInverse)
+    {
         super(in);
-        strRegExp_ = regExp;
-        matchCase_ = matchCase;
+        strRegExp_    = regExp;
+        matchCase_    = matchCase;
+        matchInverse_ = matchInverse;
 
         try
         {
@@ -88,10 +107,13 @@ public class RegexFilterReader extends LineNumberReader
             
             if (line == null)
                 return null;
-            else if(regExp_.match(line))
+                
+            boolean matches = regExp_.match(line);
+
+            if(matches && !matchInverse_)
                 return line;
-            else
-                logger_.debug("failed match: " + line);
+            else if(!matches && matchInverse_)
+                return line;
         }
     }
 }
