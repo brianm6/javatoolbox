@@ -9,11 +9,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Category;
+
+import toolbox.util.io.filter.DirectoryFilter;
 
 /**
  * File Utility Class
@@ -81,8 +86,7 @@ public final class FileUtil
         }
         finally 
         {
-            if (br != null)
-                br.close();
+            ResourceCloser.close(br);
         }
 
         return text.toString();
@@ -180,7 +184,7 @@ public final class FileUtil
      */
     public static String getTempFilename(File dir) throws IOException
     {
-        /* create temp file, delete it, and return the name */
+        // Create temp file, delete it, and return the name 
         File tmpFile = File.createTempFile("temp","", dir);
         String filename = tmpFile.getAbsolutePath();
         tmpFile.delete();
@@ -216,15 +220,15 @@ public final class FileUtil
             
             int c;
             
-            /* copy contents */
+            // copy contents
             while(is.available()>0)
                 os.write(is.read());
                 
-            /* close streams */
+            // close streams
             is.close();
             os.close();           
             
-            /* delete original */    
+            // delete original
             srcFile.delete();
         }
         catch(IOException e)
@@ -233,7 +237,94 @@ public final class FileUtil
         }
         finally
         {
-            /* cleanup */
+            // cleanup
         }
     }
+    
+    /**
+     * Finds files recursively from a given starting directory using the
+     * passed in filter as selection criteria.
+     * 
+     * @param    startingDir Start directory for the search
+     * @param    filter      Filename filter criteria
+     * @return   List of filesnames as strings that match the filter 
+     *           from the start dir
+     */    
+    public static List findFilesRecursively(String startingDir, 
+        FilenameFilter filter)
+    {
+        File f = new File(startingDir);
+        ArrayList basket = new ArrayList(20);
+
+        if (f.exists() && f.isDirectory()) 
+        { 
+            // smack a trailing / on the start dir 
+            if (!startingDir.endsWith(File.separator))
+                startingDir += File.separator;
+            
+            // process files
+            String[] files = f.list(filter);
+            
+            for (int i=0; i<files.length; i++) 
+                basket.add(startingDir + files[i]);
+            
+            // process directories
+            String[] dirs  = f.list(new DirectoryFilter());
+                        
+            for(int i=0; i<dirs.length; i++)
+            {
+                List subBasket = 
+                    findFilesRecursively(startingDir + dirs[i], filter);
+                    
+                basket.addAll(subBasket);
+            }
+        }
+        
+        return basket;
+    }
+    
+    
+    /**
+     * Appends the file separator char to the end of a path if it already
+     * doesn't exist.
+     * 
+     * @param  path    Path to append file separator
+     * @return Path with suffixed file separator
+     */    
+    public static String trailWithSeparator(String path)
+    {
+        if (!path.endsWith(File.separator))
+            path = path + File.separator;
+            
+        return path;
+    }
+ 
+    /**
+     * For a given file path, the file separator characters are changed to
+     * match the File.separator for the current platform
+     * 
+     * @param  path  Path to change
+     * @return Changed path
+     */    
+    public static String matchPlatformSeparator(String path)
+    {
+        String newPath = path.replace('\\', File.separatorChar);
+        newPath = newPath.replace('/', File.separatorChar);
+        return newPath;    
+    }
+ 
+    /**
+     * Chops the extension off of a file's name
+     * 
+     * @return File name without the extension
+     */
+    public static String dropExtension(String file)
+    {
+        int dot = file.lastIndexOf(".");
+        
+        if (dot == -1)
+            return file;
+        else
+            return file.substring(0, dot);
+     }
 }
