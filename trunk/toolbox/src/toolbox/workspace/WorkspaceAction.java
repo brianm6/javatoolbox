@@ -1,9 +1,9 @@
 package toolbox.util.ui.plugin;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
@@ -22,10 +22,24 @@ public abstract class WorkspaceAction extends SmartAction
     // Constructors
     //--------------------------------------------------------------------------
 
+    /**
+     * Creates a workspace action with exception handling turned on by default.
+     * 
+     * @param name      Name of the action
+     * @param async     Set to true if the action is to be executes 
+     *                  asynchronously
+     * @param scope     Component that demarcates the scope of this action.
+     *                  This scope is used to set the wait/default cursor
+     *                  accordingly. Set to null if you do not want the 
+     *                  busy cursor to be set.
+     * @param statusBar Workspace status bar on with the progress bar busy
+     *                  state will be set. Set to null if you do not want the
+     *                  progress bar to indicate the action is executing.
+     */
     public WorkspaceAction(
         String name,
         boolean async,
-        JComponent scope,
+        Component scope,
         IStatusBar statusBar)
     {
         this(name, true, async, scope, statusBar);
@@ -51,7 +65,7 @@ public abstract class WorkspaceAction extends SmartAction
         String name,
         boolean tryCatch,
         boolean async,
-        JComponent scope,
+        Component scope,
         IStatusBar statusBar)
     {
         super(name, tryCatch, async, scope);
@@ -72,6 +86,9 @@ public abstract class WorkspaceAction extends SmartAction
     // Actions
     //--------------------------------------------------------------------------
     
+    /**
+     * Sets the progress bar to busy 
+     */
     public class BusyProgressBarAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
@@ -79,7 +96,10 @@ public abstract class WorkspaceAction extends SmartAction
             statusBar_.setBusy(true);    
         }
     }
-    
+
+    /**
+     * Sets the progress bar to not busy  
+     */    
     public class DoneProgressBarAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
@@ -87,7 +107,10 @@ public abstract class WorkspaceAction extends SmartAction
             statusBar_.setBusy(false);    
         }
     }
-    
+
+    /**
+     * Displays error message on the status bar
+     */    
     public class DisplayErrorOnStatusBarAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
