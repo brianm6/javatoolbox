@@ -3,7 +3,6 @@ package toolbox.util.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.InputEvent;
@@ -21,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -40,14 +39,12 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
+import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.io.filter.DirectoryFilter;
-import toolbox.util.ui.images.HardDriveGIF;
-import toolbox.util.ui.images.TreeCloseGIF;
-import toolbox.util.ui.images.TreeOpenGIF;
 
 /**
  * Tree based file browser widget based on an open-source project and heavily 
@@ -70,7 +67,7 @@ public class JFileExplorer extends JPanel
     private DefaultTreeModel treeModel_;
     private String           root_;
     private String           currentPath_;
-    private ImageIcon        driveIcon_;
+    private Icon             driveIcon_;
 
 
     /**
@@ -373,17 +370,26 @@ public class JFileExplorer extends JPanel
         fileList_.addMouseListener(new JFEMouseHandler());
         setFileList(getDefaultRoot());
         fileList_.setFixedCellHeight(15);
-        fileList_.setFont(SwingUtil.getPreferredSerifFont());
+        //fileList_.setFont(SwingUtil.getPreferredSerifFont());
         JScrollPane filesScrollPane = new JScrollPane(fileList_);
 
         // Set up our Tree
         setTreeRoot(getDefaultRoot());
 
         // Load tree icons        
-        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(); 
-        renderer.setClosedIcon(new ImageIcon(TreeOpenGIF.getBytes()));
-        renderer.setLeafIcon(new ImageIcon(TreeCloseGIF.getBytes()));
-        renderer.setOpenIcon(new ImageIcon(TreeOpenGIF.getBytes()));
+        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+         
+        renderer.setClosedIcon(
+            ResourceUtil.getResourceAsIcon(
+                "/toolbox/util/ui/images/TreeOpen.gif"));
+
+        renderer.setOpenIcon(
+            ResourceUtil.getResourceAsIcon(
+                "/toolbox/util/ui/images/TreeOpen.gif"));
+
+        renderer.setLeafIcon(
+            ResourceUtil.getResourceAsIcon(
+                "/toolbox/util/ui/images/TreeClosed.gif"));
 
         // Directory tree
         treeModel_ = new DefaultTreeModel(rootNode_);
@@ -393,7 +399,7 @@ public class JFileExplorer extends JPanel
             TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree_.setRootVisible(true);
         tree_.setScrollsOnExpand(true);
-        tree_.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        //tree_.setFont(new Font("Tahoma", Font.PLAIN, 12));
         tree_.addTreeSelectionListener(new TreeFolderAdapter());
         tree_.addMouseListener(new TreeMouseHandler());
         tree_.setCellRenderer(renderer);
@@ -591,10 +597,12 @@ public class JFileExplorer extends JPanel
      * @return  ImageIcon of the drive
      * @throws  IOException on IO error
      */
-    protected ImageIcon getDriveIcon() throws IOException
+    protected Icon getDriveIcon() throws IOException
     {
         if (driveIcon_ == null)
-            driveIcon_ = new ImageIcon(HardDriveGIF.getBytes());
+            driveIcon_ = 
+                ResourceUtil.getResourceAsIcon(
+                    "/toolbox/util/ui/images/HardDrive.gif");
             
         return driveIcon_;
     }
