@@ -189,28 +189,48 @@
     <!--=============================-->
     <target name="jar" 
             depends="compile" 
-            description="Creates a jar launchable with the java -jar flag">
+            description="Creates an executable jar">
 
         <delete verbose="true">
             <fileset dir="${dist}" includes="**/*.jar"/>
         </delete>
 
-        <unjar src="${lib}/log4j.jar" dest="${classes}" overwrite="false"/>
-        <unjar src="${lib}/junit.jar" dest="${classes}" overwrite="false"/>
-        <unjar src="${lib}/jakarta-regexp-1.2.jar" dest="${classes}" overwrite="false"/>
+        <unjar 	
+        	src		 ="${lib}/log4j.jar" 
+        	dest	 ="${classes}" 
+        	overwrite="false" />
+        		
+        <!--unjar 
+        	src      ="${lib}/junit.jar" 
+        	dest     ="${classes}" 
+        	overwrite="false"/-->
+        
+        <unjar 	
+        	src       ="${lib}/jakarta-regexp-1.2.jar" 
+        	dest      ="${classes}" 
+        	overwrite ="false" />
+        	
+        <unjar 
+        	src       ="${lib}/EXML.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/dom.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
                              
-        <jar jarfile="${dist}/toolbox.jar" 
-             manifest="${src}/META-INF/MANIFEST.MF">
+        <jar 
+        	jarfile ="${dist}/toolbox.jar" 
+            manifest="${src}/META-INF/MANIFEST.MF">
 
             <fileset dir="${classes}" excludes="**/MANIFEST.MF"/>
             
             <!-- fileset dir="${top}" includes="lib/*.jar"/-->
             
-            <fileset dir="${resources}"/>
-
-            <!-- don't exclude tests -->
-            <!-- excludes="**/test/**" -->
-
+            <fileset 
+            	dir="${resources}"
+				excludes="**/test/**"/>
         </jar>
 
     </target>
