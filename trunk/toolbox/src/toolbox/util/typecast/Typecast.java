@@ -7,13 +7,13 @@ import java.util.Map;
 
 /**
  * Can perform a typecast on any object so that it can aquire new behavior at
- * runtime without coupling it to the implementation.
- * Most of the work is done within <code>ClassFinder</code>.<p>
- * 
+ * runtime without coupling it to the implementation. Most of the work is done 
+ * within <code>ClassFinder</code>.
+ * <p>
  * Example:
  * <pre>
- * Typecast typecast = new Typecast( java.util.Map.class );
- * Map map = typecast.coerce( new com.some.Object() );
+ * Typecast typecast = new Typecast(java.util.Map.class);
+ * Map map = typecast.coerce(new com.some.Object());
  * </pre>
  *
  * @see toolbox.util.collections.AsMap
@@ -27,7 +27,9 @@ public class Typecast
      *       which would combine them all )
      */
     
-    // INSTANCE VARIABLES
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
 
     private Class toClass_;
     private ClassFinder finder_;
@@ -44,9 +46,9 @@ public class Typecast
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor
+     * Creates a TypeCast.
      * 
-     * @param  toClass  Typecast destination class
+     * @param toClass Typecast destination class.
      */
     public Typecast(Class toClass)
     {
@@ -54,22 +56,23 @@ public class Typecast
     }
 
     /**
-     * Constructor
+     * Creates a TypeCast.
      * 
-     * @param  toClass  Typecast destination class
-     * @param  finder   ClassFinder to use
+     * @param toClass Typecast destination class.
+     * @param finder ClassFinder to use.
      */
     public Typecast(Class toClass, ClassFinder finder)
     {
         this(toClass, finder, WeakIdentityCache.class);
     }
 
+    
     /**
-     * Constructor
+     * Creates a TypeCast.
      * 
-     * @param  toClass              Typecast destination class
-     * @param  finder               ClassFinder to use
-     * @param  identityCacheClass   Class to use for identity in cache
+     * @param toClass Typecast destination class.
+     * @param finder ClassFinder to use.
+     * @param identityCacheClass Class to use for identity in cache.
      */
     public Typecast(Class toClass, ClassFinder finder, Class identityCacheClass)
     {
@@ -83,6 +86,8 @@ public class Typecast
     //--------------------------------------------------------------------------
 
     /**
+     * Returns the ClassFinder.
+     * 
      * @return ClassFinder
      */    
     public ClassFinder getClassFinder()
@@ -90,47 +95,51 @@ public class Typecast
         return finder_;
     }
 
+    
     /**
-     * Adds package name to search
+     * Adds package name to search.
      * 
-     * @param  pckgName  Package name
+     * @param pckgName Package name.
      */
     public void addSearchPackage(String pckgName)
     {
         getClassFinder().addSearchPackage(pckgName);
     }
 
+    
     /**
-     * Adds a classes package name to the search
+     * Adds a classes package name to the search.
      * 
-     * @param  classInPckg  Class in package to search
+     * @param classInPckg Class in package to search.
      */
     public void addSearchPackage(Class classInPckg)
     {
         getClassFinder().addSearchPackage(classInPckg);
     }
 
+    
     /**
-     * Coerces an identity using the given policy
+     * Coerces an identity using the given policy.
      * 
-     * @param  identity  Identity
-     * @param  policy    Policy
-     * @return Coerced object
+     * @param identity Identity.
+     * @param policy Policy.
+     * @return Coerced object.
      */
     public Object coerce(Object identity, String policy)
     {
         return coerce(identity, policy, null);
     }
 
+    
     /**
      * Tries to convert the given <code>identity</code> to <code>toClass</code>.
      * The cachedCasts are first checked, and then a newInstance is created if
      * needed.
      * 
-     * @param  identity  Identity
-     * @param  policy    Policy
-     * @param  loader    Classloader to use
-     * @return Coerced object
+     * @param identity Identity.
+     * @param policy Policy.
+     * @param loader Classloader to use.
+     * @return Coerced object.
      */
     public Object coerce(Object identity, String policy, ClassLoader loader)
     {
@@ -162,8 +171,8 @@ public class Typecast
     /**
      * Gets cache given a policy.
      * 
-     * @param policy Policy
-     * @return Cache
+     * @param policy Policy.
+     * @return Cache.
      */
     private IdentityCache getCache(String policy)
     {

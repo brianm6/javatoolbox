@@ -11,39 +11,37 @@ import java.util.Set;
 import toolbox.util.collections.LRUMap;
 
 /**
- * A class used for seaching finding other classes based on the 
- * a FROM class, a TO class, and prefix.
+ * A class used for seaching finding other classes based on the a FROM class, a
+ * TO class, and prefix. The packages and class names of the FROM and TO
+ * classes are combined to search for a corresponding class with the provided
+ * prefix. As an example:
  * 
- * The packages and class names of the FROM and TO classes are combined
- * to search for a corresponding class with the provided prefix.
- * 
- * As an example:
  * <pre>
  * // Define Transposition of app and view
- * ClassFinder finder = new ClassFinder( "app", "view" );
- *
+ * ClassFinder finder = new ClassFinder(&quot;app&quot;, &quot;view&quot;);
+ * 
  * // Find a Class which is a RequestReader for a CustomList with the prefix UE
- * Class aClass = finder.findClass( com.xyz.app.testing.CustomList.class,
- *                           com.xyz.common.view.RequestReader.class, "UE" );
- *
+ * Class aClass = finder.findClass( 
+ *     com.xyz.app.testing.CustomList.class,
+ *     com.xyz.common.view.RequestReader.class, 
+ *     &quot;UE&quot; );
+ * 
  * // The finder will look for the following classes
- * // NOTE:  looking in FROM class packages ( app -> view )
- * //    com.xyz.view.testing.UECustomListRequestReader
- * //    com.xyz.view.testing.UEAbstractListRequestReader
- * //    com.xyz.view.testing.UEAbstractCollectionRequestReader
- * //    com.xyz.view.testing.UEObjectRequestReader
+ * // NOTE: looking in FROM class packages ( app -&gt; view )
+ * // com.xyz.view.testing.UECustomListRequestReader
+ * // com.xyz.view.testing.UEAbstractListRequestReader
+ * // com.xyz.view.testing.UEAbstractCollectionRequestReader
+ * // com.xyz.view.testing.UEObjectRequestReader
  * // NOTE: looking in TO classes package
- * //    com.xyz.common.view.UECustomListRequestReader
- * //    com.xyz.common.view.UEAbstractListRequestReader
- * //    com.xyz.common.view.UEAbstractCollectionRequestReader
- * //    com.xyz.common.view.UEObjectRequestReader
- * 
+ * // com.xyz.common.view.UECustomListRequestReader
+ * // com.xyz.common.view.UEAbstractListRequestReader
+ * // com.xyz.common.view.UEAbstractCollectionRequestReader
+ * // com.xyz.common.view.UEObjectRequestReader
  * // NOTE: look again with no prefix
- * 
  * </pre>
- *
- * If a class in not found then ClassNotFoundException will be thrown
- * within the <tt>findClass()</tt>.
+ * 
+ * If a class in not found then ClassNotFoundException will be thrown within
+ * the <tt>findClass()</tt>.
  */
 public class ClassFinder
 {
@@ -148,9 +146,10 @@ public class ClassFinder
      * @return Class if found.
      * @throws ClassNotFoundException when no class found.
      */
-    public Class findClass(Class fromClass, 
-                           Class toClass, 
-                           String prefix) throws ClassNotFoundException
+    public Class findClass(
+        Class fromClass, 
+        Class toClass, 
+        String prefix) throws ClassNotFoundException
     {
 
         return findClass(
@@ -171,10 +170,11 @@ public class ClassFinder
      * @return Class if found.
      * @throws ClassNotFoundException when no class found.
      */
-    public Class findClass(Class fromClass, 
-                           Class toClass, 
-                           String prefix,
-                           ClassLoader loader) throws ClassNotFoundException
+    public Class findClass(
+        Class fromClass, 
+        Class toClass, 
+        String prefix,
+        ClassLoader loader) throws ClassNotFoundException
     {
         // Check Cache
         Class fClass = checkCache(fromClass, toClass, prefix, loader);

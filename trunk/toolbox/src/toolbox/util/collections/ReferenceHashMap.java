@@ -19,6 +19,10 @@ import java.util.Set;
  */
 public class ReferenceHashMap extends AbstractMap implements Map
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Hash table mapping WeakKeys to values. 
      */
@@ -44,11 +48,11 @@ public class ReferenceHashMap extends AbstractMap implements Map
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor.
+     * Creates a ReferenceHashMap.
      * 
-     * @param factory Factory
-     * @param initialCapacity Initial capacity
-     * @param loadFactor Load factor
+     * @param factory Factory.
+     * @param initialCapacity Initial capacity.
+     * @param loadFactor Load factor.
      */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity,
         float loadFactor)
@@ -59,10 +63,10 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-     * Constructor.
+     * Creates a ReferenceHashMap.
      * 
-     * @param factory Factory
-     * @param initialCapacity Initial capacity
+     * @param factory Factory.
+     * @param initialCapacity Initial capacity.
      */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity)
     {
@@ -72,9 +76,9 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-     * Constructor.
+     * Creates a ReferenceHashMap.
      * 
-     * @param factory Factory
+     * @param factory Factory.
      */
     public ReferenceHashMap(ReferenceFactory factory)
     {
@@ -111,8 +115,8 @@ public class ReferenceHashMap extends AbstractMap implements Map
     /**
      * Checks if key is in the map.
      * 
-     * @param key Key to check for existence
-     * @return True if the map contains the key, false otherwise
+     * @param key Key to check for existence.
+     * @return True if the map contains the key, false otherwise.
      */
     public boolean containsKey(Object key)
     {
@@ -123,8 +127,8 @@ public class ReferenceHashMap extends AbstractMap implements Map
     /**
      * Retrieves an object from the map.
      * 
-     * @param key Key of object to retrieve
-     * @return Object matching key, null if not found
+     * @param key Key of object to retrieve.
+     * @return Object matching key, null if not found.
      */
     public Object get(Object key)
     {
@@ -135,9 +139,9 @@ public class ReferenceHashMap extends AbstractMap implements Map
     /**
      * Puts an object in the map.
      * 
-     * @param key Key of object
-     * @param value Value of object
-     * @return Object
+     * @param key Key of object.
+     * @param value Value of object.
+     * @return Object.
      */
     public Object put(Object key, Object value)
     {
@@ -149,8 +153,8 @@ public class ReferenceHashMap extends AbstractMap implements Map
     /**
      * Removes an object from the map.
      * 
-     * @param key Key of object to remove
-     * @return Removed object
+     * @param key Key of object to remove.
+     * @return Removed object.
      */
     public Object remove(Object key)
     {
@@ -172,7 +176,7 @@ public class ReferenceHashMap extends AbstractMap implements Map
     /**
      * Returns set view of the mappings in this map.
      * 
-     * @return Set
+     * @return Set.
      */
     public Set entrySet()
     {
@@ -257,9 +261,9 @@ public class ReferenceHashMap extends AbstractMap implements Map
         /**
          * Value equals.
          * 
-         * @param o1 Object 1
-         * @param o2 Object 2
-         * @return boolean
+         * @param o1 Object 1.
+         * @param o2 Object 2.
+         * @return boolean.
          */
         private static boolean valEquals(Object o1, Object o2)
         {
@@ -435,6 +439,5 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
             return h;
         }
-
     }
 }

@@ -13,23 +13,22 @@ import java.lang.ref.ReferenceQueue;
 public interface ReferenceFactory
 {
     /**
-     * Creates a Reference key for searching in 
-     * a ReferenceHashMap.  This key is not stored
-     * within the ReferenceHashMap.
+     * Creates a Reference key for searching in a ReferenceHashMap. This key is
+     * not stored within the ReferenceHashMap.
      * 
-     * @param key Key
-     * @return Reference
+     * @param key Key.
+     * @return Reference.
      */
     Reference create(Object key);
 
-    
+
     /**
      * Create a Reference key which is stored in a ReferenceHashMap. This
      * returned valued is stored within the ReferenceHashMap.
      * 
-     * @param key Key
-     * @param q Reference queue
-     * @return Reference
+     * @param key Key.
+     * @param q Reference queue.
+     * @return Reference.
      */
     Reference create(Object key, ReferenceQueue q);
 }
