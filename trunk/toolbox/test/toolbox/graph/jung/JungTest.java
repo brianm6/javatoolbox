@@ -35,4 +35,17 @@ public class JungTest extends AbstractGraphTest
     {
         return GraphLibFactory.create(GraphLibFactory.TYPE_JUNG);
     }
+    
+    //--------------------------------------------------------------------------
+    // Overrides AbstractGraphTest
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.graph.AbstractGraphTest#testLayouts()
+     */
+    public void testLayouts() throws Exception
+    {
+        super.testLayouts();
+    }
+    
 }
