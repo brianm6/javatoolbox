@@ -16,15 +16,27 @@ import java.lang.ref.WeakReference;
  */
 public class IdentityWeakReference extends WeakReference
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Hash value.
+     */
     private int hash_;
 
+    //--------------------------------------------------------------------------
+    // Static
+    //--------------------------------------------------------------------------
+    
     /**
      * Used within a ReferenceMap to create keys of IdentityWeakReference(s).
      * <p>
      * Example:
+     * 
      * <pre>
      * // Create a map who's keys are based on IdentityWeakReference 
-     * Map map = new ReferenceMap( IdentityWeakReference.REFERENCE_FACTORY );
+     * Map map = new ReferenceMap(IdentityWeakReference.REFERENCE_FACTORY);
      * </pre>
      */
     public static final ReferenceFactory REFERENCE_FACTORY =

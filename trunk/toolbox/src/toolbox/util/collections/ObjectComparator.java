@@ -8,36 +8,40 @@ import java.util.Comparator;
  * A Comparator which compares a properties of objects.
  * <p>
  * The property returned from each bean must implement Comparable
- * or have a custom Comparator for that object.<p>
- * 
+ * or have a custom Comparator for that object.
+ * <p>
  * Example:
+ * 
  * <pre>
- *   Comparator oc;
- *   List people = ...;
+ * Comparator oc;
+ * List people = ...;
  * 
- *   // Sort people with lastName and then firstName
- *   oc = new ObjectComparator( "lastName", "firstName" );
- *   Collections.sort( people, oc );
+ * // Sort people with lastName and then firstName
+ * oc = new ObjectComparator( "lastName", "firstName" );
+ * Collections.sort( people, oc );
  * 
- *   // Do a case insentive sort on lastName, firstName
- *   oc = new ObjectComparator( "lastName", String.CASE_INSENSITIVE_ORDER );
- *   Collections.sort( people, oc );
+ * // Do a case insentive sort on lastName, firstName
+ * oc = new ObjectComparator( "lastName", String.CASE_INSENSITIVE_ORDER );
+ * Collections.sort( people, oc );
  * 
- *   // Do a case insentive sort on lastName ascending, firstName descending
- *   oc = new ObjectComparator(
- *      new ObjectComparator.Property( 
- *          "lastName", false, String.CASE_INSENSITIVE_ORDER ),
- *      new ObjectComparator.Property( 
- *          "firstName", true, String.CASE_INSENSITIVE_ORDER ) );
+ * // Do a case insentive sort on lastName ascending, firstName descending
+ * oc = new ObjectComparator(
+ *          new ObjectComparator.Property( 
+ *              "lastName", false, String.CASE_INSENSITIVE_ORDER ),
+ *          new ObjectComparator.Property( 
+ *              "firstName", true, String.CASE_INSENSITIVE_ORDER ) );
  * 
- *   Collections.sort( people, oc );
+ * Collections.sort( people, oc );
  * </pre>
  * 
  * @see ObjectMap
- * @author Steven Lee
  */
 public class ObjectComparator implements Comparator, Serializable
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Properties to use for comparison.
      */

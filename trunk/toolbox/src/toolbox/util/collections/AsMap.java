@@ -6,28 +6,39 @@ import toolbox.util.typecast.Typecast;
 
 /**
  * Used to convert an object into a Map.
- * <pre>
+ * <p>
+ * Example:
  * 
- * Example: Map map = AsMap.of(someObject);
+ * <pre>
+ *  Map map = AsMap.of(someObject);
+ * 
+ *  // The toString() implementation dumps the objects attributes.
+ *  // Very nice for debugging.
+ *  System.out.println(map.toString());
  * 
  * </pre>
  */
 public final class AsMap
 {
-    /** 
-     * Instance. 
+    //--------------------------------------------------------------------------
+    // Static
+    //--------------------------------------------------------------------------
+
+    /**
+     * Instance.
      */
     public static final Typecast TYPECAST = new Typecast(Map.class);
 
-    static 
+    static
     {
         TYPECAST.addSearchPackage(AsMap.class);
     }
 
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Maps an object.
      * 

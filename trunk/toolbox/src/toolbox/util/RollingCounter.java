@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Counter that wraps around given a finite range [a..b].
+ * Counter that wraps around given a finite range [a..b] and also emits events
+ * when wrapping around.
  */
 public class RollingCounter
 {
@@ -12,23 +13,23 @@ public class RollingCounter
     // Fields
     //--------------------------------------------------------------------------
     
-    /** 
-     * Start of range. 
+    /**
+     * Start of range.
      */
-    private int  start_;
-    
-    /** 
-     * End of range. 
+    private int start_;
+
+    /**
+     * End of range.
      */
-    private int  end_;
-    
-    /** 
-     * Current position in range. 
+    private int end_;
+
+    /**
+     * Current position in range.
      */
-    private int  cnt_; 
-    
-    /** 
-     * List of counter listeners. 
+    private int cnt_;
+
+    /**
+     * List of counter listeners.
      */
     private List listeners_;
     
@@ -169,7 +170,7 @@ public class RollingCounter
         /**
          * Called before a roll is about to happen.
          * 
-         * @param rc Counter 
+         * @param rc Counter. 
          */
         void beforeRoll(RollingCounter rc);
         
@@ -177,7 +178,7 @@ public class RollingCounter
         /**
          * Called after a roll has happened.
          * 
-         * @param rc Counter
+         * @param rc Counter.
          */
         void afterRoll(RollingCounter rc);
     }

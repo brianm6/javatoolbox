@@ -31,6 +31,10 @@ import org.apache.commons.collections.set.AbstractSetDecorator;
  */
 public class CaseInsensetiveSet extends AbstractSetDecorator
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a CaseInsensetiveSet.
      * 
@@ -41,6 +45,9 @@ public class CaseInsensetiveSet extends AbstractSetDecorator
         super(set);
     }
     
+    //--------------------------------------------------------------------------
+    // Overrides java.util.Set
+    //--------------------------------------------------------------------------
     
     /**
      * Adds the objects string representation to the set only if a

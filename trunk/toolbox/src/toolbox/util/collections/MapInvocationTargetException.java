@@ -4,16 +4,21 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
- * A RuntimeException which can be thrown by ObjectMap
- * when the underlying call to get/set methods throw
- * an exception.  It is a RuntimeException so that
- * the Map interface will not be violoated by throwing
- * a caught exception.
+ * A RuntimeException which can be thrown by ObjectMap when the underlying call
+ * to get/set methods throw an exception. It is a RuntimeException so that the
+ * Map interface will not be violoated by throwing a caught exception.
  * 
  * @see ObjectMap
  */
 public class MapInvocationTargetException extends RuntimeException
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Target exception.
+     */
     private Throwable target_;
 
     //--------------------------------------------------------------------------
@@ -21,16 +26,17 @@ public class MapInvocationTargetException extends RuntimeException
     //--------------------------------------------------------------------------
 
     /**
-     * Protected
+     * Protected constructor.
      */    
     protected MapInvocationTargetException()
     {
     }
 
+    
     /**
-     * Creates MapInvocationTargetException
+     * Creates MapInvocationTargetException.
      * 
-     * @param target Target throwable
+     * @param target Target throwable.
      */
     public MapInvocationTargetException(Throwable target)
     {
@@ -40,10 +46,10 @@ public class MapInvocationTargetException extends RuntimeException
 
     
     /**
-     * Creates MapInvocationTargetException
+     * Creates MapInvocationTargetException.
      * 
-     * @param target Target throwable
-     * @param s Reason
+     * @param target Target throwable.
+     * @param s Reason.
      */
     public MapInvocationTargetException(Throwable target, String s)
     {
@@ -56,25 +62,29 @@ public class MapInvocationTargetException extends RuntimeException
     //--------------------------------------------------------------------------
     
     /**
-     * @return Target exception
+     * Returns the target exception.
+     * 
+     * @return Throwable.
      */
     public Throwable getTargetException()
     {
         return target_;
     }
 
+    
     /**
-     * Prints stack trace
+     * Prints the stack trace.
      */
     public void printStackTrace()
     {
         printStackTrace(System.err);
     }
 
+    
     /**
-     * Prints stack trace to print stream
+     * Prints stack trace to a print stream.
      * 
-     * @param  ps  Print stream
+     * @param ps Print stream.
      */
     public void printStackTrace(PrintStream ps)
     {
@@ -92,10 +102,11 @@ public class MapInvocationTargetException extends RuntimeException
         }
     }
 
+    
     /**
-     * Prints stacktrace to print writer
+     * Prints stacktrace to print writer.
      * 
-     * @param  pw  Print writer
+     * @param pw Print writer.
      */
     public void printStackTrace(PrintWriter pw)
     {

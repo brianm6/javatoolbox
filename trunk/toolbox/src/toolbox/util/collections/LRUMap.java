@@ -15,33 +15,56 @@ import java.util.Set;
  * changed.  A key value pair's timestamp is considered "new" when:
  * 
  * <ol>
- *   <li>the key value pair is added (e.g. put() )
- *   <li>the key is found (e.g. containsKey(), get() )
- *   <li>the value is specifically accessed by
- *   <ol>
- *       <li><tt>Entry.getValue()</tt> when
- *                iterating over <tt>entrySet()</tt>.  
- *       <li>calling <tt>containsValue()</tt> and there is a match
- *   </ol>
+ *  <li>the key value pair is added (e.g. put() )
+ *  <li>the key is found (e.g. containsKey(), get() )
+ *  <li>the value is specifically accessed by
+ *  <ol>
+ *   <li><tt>Entry.getValue()</tt> when
+ *       iterating over <tt>entrySet()</tt>.  
+ *   <li>calling <tt>containsValue()</tt> and there is a match
+ *  </ol>
  * </ol>
- * 
- * to do   Use an ObjectPool for LRUKey
- * 
- * @author Steven Lee
  */
 public class LRUMap implements Map, Serializable
 {
+    // TODO: Use an ObjectPool for LRUKey
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
-     * No time limit
+     * No time limit.
      */
     public static final int NO_TIME_LIMIT = 0;
 
+    /**
+     * Default for the max size of the map.
+     */
     protected static final int DEFAULT_MAX_SIZE = 1000;
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Internal map.
+     */
     private Map map_;
+    
+    /**
+     * List of keys.
+     */
     private List keys_;
 
+    /**
+     * Max size of the map.
+     */
     private int maxSize_;
+    
+    /**
+     * Time limit.
+     */
     private long timeLimit_;
 
     //--------------------------------------------------------------------------
@@ -497,6 +520,27 @@ public class LRUMap implements Map, Serializable
 
     
     /**
+     * Updates the given key.
+     * 
+     * @param key Key.
+     */
+    protected void updateKey(LRUKey key)
+    {
+        if (map_.containsKey(key))
+        {
+            // get reference to key and remove
+            key = (LRUKey) keys_.remove(keys_.indexOf(key));
+            key.update();
+            keys_.add(key);
+        }
+    }
+
+    
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
      * Returns a String that represents the value of this object.
      * 
      * @return a string representation of the receiver
@@ -507,6 +551,7 @@ public class LRUMap implements Map, Serializable
         return map_.toString();
     }
 
+    
     /**
      * @param o Object to test for equality
      * @return True if equal, false otherwise
@@ -539,26 +584,9 @@ public class LRUMap implements Map, Serializable
     {
         return map_.hashCode();
     }
-
     
-    /**
-     * Updates the given key.
-     * 
-     * @param key Key.
-     */
-    protected void updateKey(LRUKey key)
-    {
-        if (map_.containsKey(key))
-        {
-            // get reference to key and remove
-            key = (LRUKey) keys_.remove(keys_.indexOf(key));
-            key.update();
-            keys_.add(key);
-        }
-    }
-
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // LRUKey
     //--------------------------------------------------------------------------
     
     /**
@@ -649,6 +677,10 @@ public class LRUMap implements Map, Serializable
 
     }
 
+    //--------------------------------------------------------------------------
+    // Entry
+    //--------------------------------------------------------------------------
+    
     /**
      * Map entry
      */
@@ -696,6 +728,9 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    //--------------------------------------------------------------------------
+    // EntrySet
+    //--------------------------------------------------------------------------
     
     /**
      * Entry set.
@@ -758,6 +793,9 @@ public class LRUMap implements Map, Serializable
         }
     }
 
+    //--------------------------------------------------------------------------
+    // KeySet
+    //--------------------------------------------------------------------------
     
     /**
      * Key set.
@@ -769,7 +807,7 @@ public class LRUMap implements Map, Serializable
         /**
          * @see java.util.Collection#iterator()
          */
-        public java.util.Iterator iterator()
+        public Iterator iterator()
         {
             return new Iterator()
             {
