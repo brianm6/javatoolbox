@@ -15,11 +15,14 @@ public class ImageCache
 {
     private static final String ROOT = "/toolbox/util/ui/images/";
     
-    public static final String IMAGE_COPY   = ROOT + "Copy.gif";
-    public static final String IMAGE_PASTE  = ROOT + "Paste.gif";
-    public static final String IMAGE_SAVE   = ROOT + "Save.gif";
-    public static final String IMAGE_SAVEAS = ROOT + "SaveAs.gif";
-    public static final String IMAGE_FIND   = ROOT + "Search.gif";
+    public static final String IMAGE_TOOLBOX = ROOT + "Toolbox.gif";
+    public static final String IMAGE_COPY    = ROOT + "Copy.gif";
+    public static final String IMAGE_PASTE   = ROOT + "Paste.gif";
+    public static final String IMAGE_SAVE    = ROOT + "Save.gif";
+    public static final String IMAGE_SAVEAS  = ROOT + "SaveAs.gif";
+    public static final String IMAGE_FIND    = ROOT + "Search.gif";
+    public static final String IMAGE_DELETE  = ROOT + "Delete.gif";
+    public static final String IMAGE_CROSS   = ROOT + "Cross.gif";
     
     public static final String IMAGE_SORT_ASCENDING = ROOT+"SortAscending.gif";
     public static final String IMAGE_SORT_DESCENDING= ROOT+"SortDescending.gif";
@@ -27,6 +30,7 @@ public class ImageCache
     public static final String IMAGE_TREE_OPEN   = ROOT + "TreeOpen.gif";
     public static final String IMAGE_TREE_CLOSED = ROOT + "TreeClosed.gif";
     public static final String IMAGE_HARD_DRIVE  = ROOT + "HardDrive.gif";
+    
     
     /**
      * Hashmap for cached icons
