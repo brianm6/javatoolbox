@@ -32,7 +32,6 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.table.JSmartTable;
-import toolbox.util.ui.table.JSmartTableHeader;
 import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
 import toolbox.workspace.IPreferenced;
@@ -454,8 +453,6 @@ public class JSourceView extends JPanel implements IPreferenced
         column.setMinWidth(min);
         column.setPreferredWidth(pref);
         column.setMaxWidth(max);
-        
-        table_.setTableHeader(new JSmartTableHeader(columnModel));
     }
     
     //--------------------------------------------------------------------------
@@ -493,7 +490,7 @@ public class JSourceView extends JPanel implements IPreferenced
                 // To avoid a whole mess of sorting going on while the table is
                 // being populated, just disable the sorter temporarily. This
                 // is turned back on when the parser thread completes.
-                tableSorter_.setEnabled(false);
+                 tableSorter_.setEnabled(false);
             
                 scanDirWorker_ = 
                     new SourceScanner(JSourceView.this, new File(dir));
