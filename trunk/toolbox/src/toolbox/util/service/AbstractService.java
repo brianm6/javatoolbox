@@ -121,24 +121,6 @@ public abstract class AbstractService implements Service
      */
     private static final boolean DEFAULT_STRICT = false;
     
-    /**
-     * Mapping of the strict set of transitions.
-     * <pre>  
-     * Key   = (ServiceState beginState, ServiceActivity activity)
-     * Value = (ServiceState endState)
-     * </pre>
-     */
-    //private static final Map TRANSITIONS_STRICT;
-    
-    /**
-     * Mapping of the relaxed or unchecked set of transitions.
-     * <pre>  
-     * Key   = (ServiceActivity activity)
-     * Value = (ServiceState endState)
-     * </pre>
-     */
-    //private static final Map TRANSITIONS_RELAXED;
-    
     //--------------------------------------------------------------------------
     // Static Initializers
     //--------------------------------------------------------------------------
@@ -240,6 +222,10 @@ public abstract class AbstractService implements Service
     // Fields
     //--------------------------------------------------------------------------
 
+    /**
+     * State machine that simulates transitions between the various service 
+     * states.
+     */
     private StateMachine machine_;
     
     /**
@@ -257,15 +243,6 @@ public abstract class AbstractService implements Service
      */
     private ServiceListener[] listeners_;
      
-    /**
-     * If true, this service will observe strict state transitions, otherwise
-     * relaxed state transitions will apply.
-     * 
-     * @see #TRANSITIONS_RELAXED
-     * @see #TRANSITIONS_STRICT
-     */
-    //private boolean strict_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -280,22 +257,7 @@ public abstract class AbstractService implements Service
     {
         machine_ = createStateMachine(this);
     }
-
     
-    /**
-     * Creates an AbstractService.
-     * 
-     * @param strict True for strict state transitions, false otherwise.
-     */
-//    protected AbstractService(boolean strict)
-//    {
-//        setStrict(strict);
-//        //setPreviousState(ServiceState.UNINITIALIZED);
-//        //setState(ServiceState.UNINITIALIZED);
-//        //listeners_ = new ServiceListener[0];
-//        
-//    }
-
     
     /**
      * Creates an AbstractService.
@@ -304,10 +266,6 @@ public abstract class AbstractService implements Service
      */
     protected AbstractService(Class[] natures)
     {
-        //setPreviousState(ServiceState.UNINITIALIZED);
-        //setState(ServiceState.UNINITIALIZED);
-        //listeners_ = new ServiceListener[0];
-        
         machine_ = createStateMachine(natures);
     }
 
@@ -331,35 +289,22 @@ public abstract class AbstractService implements Service
      * 
      * @param state The state to set.
      */
-    public void setState(ServiceState state)
+    public void forceState(ServiceState state)
     {
         machine_.setBeginState(state);
         machine_.reset();
-        
-        //setPreviousState(getState());
-        //state_ = state;
     }
 
     
     /**
-     * Returns the previousState.
+     * Returns the previousState or null if a change in state has not occurred
+     * yet.
      * 
      * @return ServiceState
      */
     public ServiceState getPreviousState()
     {
         return (ServiceState) machine_.getPreviousState();
-    }
-    
-    
-    /**
-     * Sets the previousState.
-     * 
-     * @param previousState The previousState to set.
-     */
-    public void setPreviousState(ServiceState previousState)
-    {
-        // previousState_ = previousState;
     }
     
     //--------------------------------------------------------------------------
@@ -457,26 +402,6 @@ public abstract class AbstractService implements Service
         //listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
     }
     
-    
-    /**
-     * @see toolbox.util.service.Service#isStrict()
-     */
-    public boolean isStrict() 
-    {
-        // TODO: remove
-        return true; //strict_;
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.Service#setStrict(boolean)
-     */
-    public void setStrict(boolean b) 
-    {
-        // TODO: remove
-        //strict_ = b;
-    }
-
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -502,11 +427,10 @@ public abstract class AbstractService implements Service
      * @throws IllegalStateException if the activity is not a valid from the 
      *         current state.
      */
-    protected void checkTransition(ServiceTransition activity) throws 
-        IllegalStateException 
+    public void checkTransition(ServiceTransition activity) 
+        throws IllegalStateException 
     {
-        if (isStrict()) 
-            machine_.checkTransition(activity); 
+        machine_.checkTransition(activity); 
     }
     
     
@@ -517,7 +441,8 @@ public abstract class AbstractService implements Service
      * @param activity Service activity.
      * @throws ServiceException if the state transition is invalid.
      */
-    protected void transition(ServiceTransition activity) throws ServiceException
+    public void transition(ServiceTransition activity) 
+        throws ServiceException
     {
         machine_.transition(activity);
     }
