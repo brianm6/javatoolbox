@@ -55,6 +55,11 @@ public class XOMUtilTest extends TestCase
 
         // Test node is null
         assertEquals(-1, XOMUtil.getInteger(null, -1));
+
+        // Test invalid integer        
+        node.removeChildren();
+        node.appendChild("bad int");
+        assertEquals(-1, XOMUtil.getInteger(node, -1));
     }
 
     public void testGetString()
@@ -99,11 +104,14 @@ public class XOMUtilTest extends TestCase
         
         Element node = new Element("Foo");
         node.addAttribute(new Attribute("value", "123"));
-        
+        node.addAttribute(new Attribute("badInt", "xxx"));
         assertEquals(123, XOMUtil.getIntegerAttribute(node, "value", -1));
         assertEquals(-1, XOMUtil.getIntegerAttribute(null, "value", -1));
         assertEquals(-1, XOMUtil.getIntegerAttribute(node, "blah", -1));
         assertEquals(-1, XOMUtil.getIntegerAttribute(null, null, -1));
+        assertEquals(-1, XOMUtil.getIntegerAttribute(node, "badInt", -1));
+        
+        
     }
 
     public void testGetBooleanAttribute()
