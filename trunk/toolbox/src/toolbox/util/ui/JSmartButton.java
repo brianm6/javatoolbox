@@ -9,22 +9,30 @@ import javax.swing.JButton;
 import toolbox.util.SwingUtil;
 
 /**
- * 
+ * JSmartButton adds the following behavior.
+ * <p>
+ * <ul>
+ *   <li>Support for antialised text
+ * </ul>
+ 
  */
-public class JSmartButton extends JButton
+public class JSmartButton extends JButton implements AntiAliased
 {
-    private boolean antialiased_ = SwingUtil.isAntiAliased();
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
-     * 
+     * Creates a JSmartButton
      */
     public JSmartButton()
     {
-        super();
     }
 
     /**
-     * @param text
+     * Creates a JSmartButton
+     * 
+     * @param text Button label
      */
     public JSmartButton(String text)
     {
@@ -32,7 +40,9 @@ public class JSmartButton extends JButton
     }
 
     /**
-     * @param a
+     * Creates a JSmartButton
+     * 
+     * @param a Action activated by the button
      */
     public JSmartButton(Action a)
     {
@@ -40,7 +50,9 @@ public class JSmartButton extends JButton
     }
 
     /**
-     * @param icon
+     * Creates a JSmartButton
+     * 
+     * @param icon Button icon
      */
     public JSmartButton(Icon icon)
     {
@@ -48,8 +60,10 @@ public class JSmartButton extends JButton
     }
 
     /**
-     * @param text
-     * @param icon
+     * Creates a JSmartButton
+     * 
+     * @param text Button label
+     * @param icon Button icon
      */
     public JSmartButton(String text, Icon icon)
     {
@@ -63,17 +77,16 @@ public class JSmartButton extends JButton
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAlias()
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
-        return antialiased_;
+        return SwingUtil.isAntiAliased();
     }
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */
-    public void setAntiAlias(boolean b)
+    public void setAntiAliased(boolean b)
     {
-        antialiased_ = b;
     }
     
     //--------------------------------------------------------------------------
@@ -85,8 +98,7 @@ public class JSmartButton extends JButton
      */
     public void paintComponent(Graphics gc)
     {
-        SwingUtil.makeAntiAliased(gc, antialiased_);
+        SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
-
 }
