@@ -85,6 +85,17 @@ public class ArgumentParser
         return values.get(o.longForm());
     }
 
+    public final boolean getBooleanValue(Option opt, boolean def)
+    {
+        Object obj = getOptionValue(opt);
+        
+        if(obj == null)
+            return def;
+        else
+            return ((Boolean) obj).booleanValue();
+                
+    }
+    
     /**
      * @return the non-option arguments
      */
