@@ -16,6 +16,10 @@ import toolbox.util.SwingUtil;
  */
 public class JStatusBar extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Statusbar component that size is adjusted relative to the contents and
      * space availability on the status bar.
