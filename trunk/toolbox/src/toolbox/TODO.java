@@ -11,6 +11,7 @@ package toolbox;
  * TODO: "Recent" menu type component
  * TODO: Add package.html to all packages
  * TODO: Add src jar for hsqldb.jar
+ * TODO: Add support to minimize to system tray - systray4j
  * </pre>
  */
 public class TODO
