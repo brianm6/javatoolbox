@@ -7,14 +7,13 @@ import org.apache.log4j.Logger;
 
 import org.w3c.tidy.Tidy;
 
-import toolbox.util.io.StringInputStream;
-import toolbox.util.io.StringOutputStream;
-
 /**
  * Formatter for HTML.
  */
 public class HTMLFormatter extends AbstractFormatter
 {
+    // TODO: Implement IPreferenced
+    
     private static final Logger logger_ = Logger.getLogger(HTMLFormatter.class);
 
     //--------------------------------------------------------------------------
@@ -55,14 +54,13 @@ public class HTMLFormatter extends AbstractFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.formatter.Formatter#format(java.lang.String)
+     * @see toolbox.util.formatter.Formatter#format(java.io.InputStream, 
+     *      java.io.OutputStream)
      */
-    public String format(String input) throws Exception
+    public void format(InputStream input, OutputStream output) throws Exception
     {
-        InputStream is = new StringInputStream(input);
-        OutputStream os = new StringOutputStream();
-        tidy_.parse(is, os);
-        return os.toString();
+        tidy_.parse(input, output);
+        output.flush();
     }
     
     //--------------------------------------------------------------------------

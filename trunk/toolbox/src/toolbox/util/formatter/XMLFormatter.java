@@ -1,5 +1,9 @@
 package toolbox.util.formatter;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.XMLUtil;
@@ -9,6 +13,8 @@ import toolbox.util.XMLUtil;
  */
 public class XMLFormatter extends AbstractFormatter
 {
+    // TODO: Implement IPreferenced
+    
     private static final Logger logger_ = Logger.getLogger(XMLFormatter.class);
 
     //--------------------------------------------------------------------------
@@ -50,12 +56,18 @@ public class XMLFormatter extends AbstractFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.formatter.Formatter#format(java.lang.String)
+     * @see toolbox.util.formatter.Formatter#format(
+     *      java.io.InputStream, java.io.OutputStream)
      */
-    public String format(String input) throws Exception
+    public void format(InputStream input, OutputStream output) throws Exception
     {
-        return XMLUtil.format(
-            input, getIndent(), getLineWidth(), isOmitDeclaration());
+        String in = IOUtils.toString(input);
+        
+        String out = XMLUtil.format(
+            in, getIndent(), getLineWidth(), isOmitDeclaration());
+        
+        output.write(out.getBytes());
+        output.flush();
     }
     
     //--------------------------------------------------------------------------

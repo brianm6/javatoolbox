@@ -1,5 +1,10 @@
 package toolbox.util.formatter;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
 import de.hunsicker.jalopy.Jalopy;
 
 import org.apache.log4j.Logger;
@@ -11,7 +16,18 @@ import toolbox.util.FileUtil;
  */
 public class JavaFormatter extends AbstractFormatter
 {
+    // TODO: Implement IPreferenced
+    
     private static final Logger logger_ = Logger.getLogger(JavaFormatter.class);
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Java source code formatter.
+     */
+    private Jalopy jalopy_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -23,6 +39,7 @@ public class JavaFormatter extends AbstractFormatter
     public JavaFormatter()
     {
         super("Java Formatter");
+        jalopy_ = new Jalopy();
     }
 
     //--------------------------------------------------------------------------
@@ -30,28 +47,28 @@ public class JavaFormatter extends AbstractFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.formatter.Formatter#format(java.lang.String)
+     * @see toolbox.util.formatter.Formatter#format(java.io.InputStream, 
+     *      java.io.OutputStream)
      */
-    public String format(String input) throws Exception
+    public void format(InputStream input, OutputStream output) throws Exception
     {
-        Jalopy jalopy = new Jalopy();
-
         // specify input and output target
-        StringBuffer output = new StringBuffer();
-        String fakeInputFile = FileUtil.createTempFilename();
-        jalopy.setInput(input, fakeInputFile);
-        jalopy.setOutput(output);
+        File fakeInputFile = FileUtil.createTempFile();
+        FileUtil.setFileContents(fakeInputFile, "delete me", false);
+        jalopy_.setInput(input, fakeInputFile.getCanonicalPath());
+        jalopy_.setOutput(new OutputStreamWriter(output));
 
         // format and overwrite the given input file
-        boolean formatted = jalopy.format();
+        boolean formatted = jalopy_.format();
 
-        if (jalopy.getState() == Jalopy.State.OK)
+        if (jalopy_.getState() == Jalopy.State.OK)
             logger_.info("Java formatted successfully formatted");
-        else if (jalopy.getState() == Jalopy.State.WARN)
+        else if (jalopy_.getState() == Jalopy.State.WARN)
             logger_.warn("Java formatted with warnings");
-        else if (jalopy.getState() == Jalopy.State.ERROR)
+        else if (jalopy_.getState() == Jalopy.State.ERROR)
             logger_.error("Java could not be formatted");
         
-        return output.toString();
+        FileUtil.delete(fakeInputFile);
+        output.flush();
     }
 }
