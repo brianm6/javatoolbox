@@ -401,6 +401,15 @@ public class Client implements Initializable, Startable, Destroyable,
         notifier_.removeServiceListener(listener);
     }
     
+    
+    /**
+     * @see toolbox.util.service.ObservableService#getStateMachine()
+     */
+    public StateMachine getStateMachine()
+    {
+        return machine_;
+    }
+    
     //--------------------------------------------------------------------------
     // ThroughputCollector
     //--------------------------------------------------------------------------
