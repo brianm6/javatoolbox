@@ -10,10 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -35,8 +35,9 @@ public class ParagraphLayoutTest extends TestCase
      * 
      * @param  args  None recognized
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
+    	SwingUtil.setPreferredLAF();
         TestRunner.run(ParagraphLayoutTest.class);
     }
 
