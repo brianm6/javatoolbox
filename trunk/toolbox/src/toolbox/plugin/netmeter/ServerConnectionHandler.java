@@ -1,11 +1,12 @@
 package toolbox.plugin.netmeter;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.StringUtil;
+import toolbox.util.ThreadUtil;
+import toolbox.util.io.MonitoredInputStream;
+import toolbox.util.io.throughput.ThroughputMonitor;
 import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
 
@@ -21,6 +22,34 @@ public class ServerConnectionHandler implements IConnectionHandler
         Logger.getLogger(ServerConnectionHandler.class);
     
     //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private ServerView serverView_;
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @param serverView
+     */
+    public void setServerView(ServerView serverView) 
+    {
+        logger_.debug(StringUtil.addBars("setServerView called"));
+        serverView_ = serverView;
+    }
+    
+    
+    /**
+     * @return
+     */
+    public ServerView getServerView() 
+    {
+        return serverView_;
+    }
+    
+    //--------------------------------------------------------------------------
     // IConnectionHandler Interface 
     //--------------------------------------------------------------------------
         
@@ -30,35 +59,43 @@ public class ServerConnectionHandler implements IConnectionHandler
      */
     public Object handle(IConnection conn)
     {
+        MonitoredInputStream mis = null;
+        ThroughputMonitor monitor = null;
+        
         try
         {
-            //EventInputStream is = 
-            //  new EventInputStream("ServerConnectionHandler",
-
-            //CountingInputStream is = 
-            //    new CountingInputStream(
-            InputStream is = new BufferedInputStream(conn.getInputStream());
-                
-            //ElapsedTime time = new ElapsedTime();
+            mis = new MonitoredInputStream(conn.getInputStream());
+            monitor = mis.getThroughputMonitor();
             
-            //byte[] buffer = new byte[30000];
+            logger_.debug(StringUtil.addBars("getServerViewCalled"));
+        
+            synchronized(this) {
+                wait();
+            }
             
-            while (is.read() != -1);
+            monitor.addThroughputListener(getServerView());
+            monitor.setMonitoringThroughput(true);
             
-            //time.setEndTime();
-            
-            //int secs = time.getSeconds();
-            //int count = is.getCount();
-            //double thruput = count/secs;
-            
-            //logger_.info("Server throughput: " + count + "/" + secs + " ==> "
-            // + thruput + "KBytes/sec");
-            
-            is.close();
+            while (mis.read() != -1) 
+            {
+                ThreadUtil.sleep(0);
+            }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             logger_.error(e);
+        }
+        finally 
+        {
+            // Clean up
+            
+            if (monitor != null) 
+            {
+                monitor.setMonitoringThroughput(false);
+                monitor.removeThroughputListener(getServerView());
+            }
+            
+            IOUtils.closeQuietly(mis);
         }
         
         return null;
