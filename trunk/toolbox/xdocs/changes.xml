@@ -44,6 +44,7 @@
  * TODO: Beef up junit plugin with junitx classes
  * TODO: Upgrade to Maven 1.0
  * TODO: Tunnel is wacked cuz of JSMartTextArea updates are on event dispatch thread.
+ * TODO: Updated JDBCPlugin to use JDBCSession
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
