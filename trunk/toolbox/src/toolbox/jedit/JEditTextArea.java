@@ -3,6 +3,7 @@ package toolbox.jedit;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import javax.swing.JPopupMenu;
 import javax.swing.text.PlainDocument;
 
 import nu.xom.Attribute;
@@ -56,15 +57,15 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     private static final Logger logger_ = Logger.getLogger(JEditTextArea.class);
 
     //--------------------------------------------------------------------------
-    // Constants 
+    // XML Constants 
     //--------------------------------------------------------------------------
     
     // Preferences
-    private static final String NODE_JEDITTEXTAREA = "JEditTextArea";
-    private static final String   ATTR_ANTIALIAS   = "antialias";
-    private static final String   ATTR_WHEELUNIT   = "mousewheelunit";
-    private static final String   ATTR_TABSIZE     = "tabsize";
-    private static final String NODE_FONT          = "Font";
+    public static final String NODE_JEDITTEXTAREA = "JEditTextArea";
+    public static final String   ATTR_ANTIALIAS   = "antialias";
+    public static final String   ATTR_WHEELUNIT   = "mousewheelunit";
+    public static final String   ATTR_TABSIZE     = "tabsize";
+    public static final String NODE_FONT          = "Font";
     
     //--------------------------------------------------------------------------
     // Fields 
@@ -133,7 +134,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     }
     
     //--------------------------------------------------------------------------
-    // Public 
+    // Accessors/Mutators 
     //--------------------------------------------------------------------------
     
     /**
@@ -157,6 +158,9 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         mouseWheelUnit_ = mouseWheelUnit;
     }
 
+    //--------------------------------------------------------------------------
+    // Convenience Methods
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the width of the tab character.
@@ -169,6 +173,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
             PlainDocument.tabSizeAttribute, new Integer(tabSize));
     }
 
+    
     /**
      * Returns the width of the tab character.
      * 
@@ -178,6 +183,31 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     {
         return ((Integer) getDocument().getProperty(
                 PlainDocument.tabSizeAttribute)).intValue();
+    }
+
+    //--------------------------------------------------------------------------
+    // Provides access to protected fields in the superclass
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the pooup menu for the text area.
+     * 
+     * @return JPopupMenu
+     */
+    public JPopupMenu getPopupMenu()
+    {
+        return popup;
+    }
+    
+    
+    /**
+     * Sets the popup menu for the text area.
+     * 
+     * @param popupMenu Popup menu to set.
+     */
+    public void setPopupMenu(JPopupMenu popupMenu)
+    {
+        popup = popupMenu;
     }
 
     //--------------------------------------------------------------------------
