@@ -2,13 +2,15 @@ package toolbox.workspace.host;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
+
+import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
 
 import toolbox.util.SwingUtil;
 import toolbox.workspace.IPlugin;
@@ -31,7 +33,12 @@ public class DesktopPluginHost extends AbstractPluginHost
     /**
      * Maps IPlugin -> JInternalFrame.
      */
-    private Map pluginToFrameMap_;
+    private BidiMap pluginToFrameMap_;
+    
+    /**
+     * Maps JInternalFrame -> IPlugin. 
+     */
+    private BidiMap frameToPluginMap_;
     
     //--------------------------------------------------------------------------
     // PluginHost Interface
@@ -45,7 +52,8 @@ public class DesktopPluginHost extends AbstractPluginHost
         super.startup(props);
         
         desktop_ = new JDesktopPane();
-        pluginToFrameMap_ = new HashMap();
+        pluginToFrameMap_ = new DualHashBidiMap();
+        frameToPluginMap_ = pluginToFrameMap_.inverseBidiMap();
         
         SwingUtilities.invokeLater(new Runnable() 
         {
@@ -147,10 +155,19 @@ public class DesktopPluginHost extends AbstractPluginHost
      * @see toolbox.workspace.host.PluginHost#selectPlugin(
      *      toolbox.workspace.IPlugin)
      */
-    public void selectPlugin(IPlugin plugin)
+    public void setSelectedPlugin(IPlugin plugin)
     {
         JInternalFrame jif = (JInternalFrame) pluginToFrameMap_.get(plugin);
         jif.moveToFront();
+    }
+    
+    
+    /**
+     * @see toolbox.workspace.host.PluginHost#getSelectedPlugin()
+     */
+    public IPlugin getSelectedPlugin()
+    {
+        return (IPlugin) frameToPluginMap_.get(desktop_.getSelectedFrame());
     }
     
     

@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.collections.bidimap.BidiMap;
+import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.log4j.Logger;
 
@@ -17,7 +17,7 @@ import toolbox.workspace.IPlugin;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * Plugin host that arranges plugins in a tab panel. One plugin per tab.
+ * Plugin host that arranges plugins in a JTabbedPane. One plugin per tab.
  */
 public class TabbedPluginHost extends AbstractPluginHost
 {
@@ -79,7 +79,6 @@ public class TabbedPluginHost extends AbstractPluginHost
                 if (tabPanel_.getTabCount() > 0)
                     tabPanel_.setSelectedIndex(0);
             }
-            
         });
     }
 
@@ -115,7 +114,7 @@ public class TabbedPluginHost extends AbstractPluginHost
         JComponent comp = plugin.getComponent();
         tabPanel_.addTab(plugin.getPluginName(), comp);
         comp2plugin_.put(comp, plugin);
-        selectPlugin(plugin);
+        setSelectedPlugin(plugin);
     }    
 
     
@@ -145,9 +144,18 @@ public class TabbedPluginHost extends AbstractPluginHost
      * @see toolbox.workspace.host.PluginHost#selectPlugin(
      *      toolbox.workspace.IPlugin)
      */
-    public void selectPlugin(IPlugin plugin)
+    public void setSelectedPlugin(IPlugin plugin)
     {
         tabPanel_.setSelectedComponent((Component) plugin2comp_.get(plugin));
+    }
+    
+    
+    /**
+     * @see toolbox.workspace.host.PluginHost#getSelectedPlugin()
+     */
+    public IPlugin getSelectedPlugin()
+    {
+        return (IPlugin) comp2plugin_.get(tabPanel_.getSelectedComponent());
     }
     
     
