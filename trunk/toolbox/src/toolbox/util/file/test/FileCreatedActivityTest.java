@@ -2,10 +2,10 @@ package toolbox.util.file.test;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
@@ -79,7 +79,8 @@ public class FileCreatedActivityTest extends TestCase
             
             // Run the activity again..should report 1  new file
             File[] secondRun = activity.getFiles(dir);
-            assertEquals("second run should contain one file", 1, secondRun.length);
+            assertEquals("second run should contain one file", 
+                1, secondRun.length);
             
             logger_.info("New file activity: " + ArrayUtil.toString(secondRun));
         }

@@ -1,7 +1,5 @@
 package toolbox.util.io.test;
 
-import java.io.OutputStream;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
