@@ -197,9 +197,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the default tail pane configuration
-     * 
-     * @param defaultConfig  The default tail pane configuration
+     * @see toolbox.jtail.config.IJTailConfig#
+     *          setDefaultConfig(toolbox.jtail.config.ITailPaneConfig)
      */
     public void setDefaultConfig(ITailPaneConfig defaultConfig)
     {
@@ -207,9 +206,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
     
     /**
-     * Returns the default tail pane configuration
-     * 
-     * @return  ITailPaneConfig
+     * @see toolbox.jtail.config.IJTailConfig#getDefaultConfig()
      */
     public ITailPaneConfig getDefaultConfig()
     {
@@ -217,9 +214,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     /**
-     * Sets the location.
-     * 
-     * @param location The location to set
+     * @see toolbox.jtail.config.IJTailConfig#setLocation(java.awt.Point)
      */
     public void setLocation(Point location)
     {
@@ -227,9 +222,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     /**
-     * Returns the location.
-     * 
-     * @return Point
+     * @see toolbox.jtail.config.IJTailConfig#getLocation()
      */
     public Point getLocation()
     {
@@ -237,8 +230,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     /**
-     * Sets the size.
-     * @param size The size to set
+     * @see toolbox.jtail.config.IJTailConfig#setSize(java.awt.Dimension)
      */
     public void setSize(Dimension size)
     {
@@ -246,8 +238,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     /**
-     * Returns the size.
-     * @return Dimension
+     * @see toolbox.jtail.config.IJTailConfig#getSize()
      */
     public Dimension getSize()
     {
@@ -255,8 +246,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
     
     /**
-     * Returns the tailPaneConfigs.
-     * @return ITailPaneConfig[]
+     * @see toolbox.jtail.config.IJTailConfig#getTailConfigs()
      */
     public ITailPaneConfig[] getTailConfigs()
     {
@@ -264,8 +254,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     /**
-     * Sets the tailPaneConfigs.
-     * @param tailPaneConfigs The tailPaneConfigs to set
+     * @see toolbox.jtail.config.IJTailConfig#
+     *          setTailConfigs(toolbox.jtail.config.ITailPaneConfig[])
      */
     public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs)
     {
@@ -273,9 +263,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     /**
-     * Returns the last directory selecting in the file explorer pane
-     *
-     * @return  String
+     * @see toolbox.jtail.config.IJTailConfig#getDirectory()
      */
     public String getDirectory()
     {
@@ -283,9 +271,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     /**
-     * Sets the last directory selected in the file explorer pane
-     * 
-     * @param directory  Directory selected
+     * @see toolbox.jtail.config.IJTailConfig#setDirectory(java.lang.String)
      */
     public void setDirectory(String directory)
     {
