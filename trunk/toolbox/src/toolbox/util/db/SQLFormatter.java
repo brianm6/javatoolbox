@@ -93,8 +93,17 @@ public class SQLFormatter
     /**
      * Flag to capitalize major sql keywords.
      */
-    private boolean capitalizeMajor_;
-    
+    //private boolean capitalizeMajor_;
+
+    /**
+     * Caps mode for major sql keywords.
+     */
+    private CapsMode majorCapsMode_;
+
+    private CapsMode minorCapsMode_;
+
+    private CapsMode namesCapsMode_;
+
     /**
      * Flag to capitalize minor sql keywords.
      */
@@ -135,6 +144,7 @@ public class SQLFormatter
     private static final String ESCAPE_TYPE_DOUBLE_QUOTE = "";
     private static final String ESCAPE_TYPE_SINGLE_LINE_COMMENT = "2";
     private static final String ESCAPE_TYPE_COMMENT = "1";
+
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -155,9 +165,9 @@ public class SQLFormatter
     {
         setNewLine("\n");
         setIndent(4);
-        setCapitalizeMajor(false);
-        setCapitalizeMinor(false);
-        setCapitalizeNames(false);
+        setMajorCapsMode(CapsMode.LOWERCASE);
+        setMinorCapsMode(CapsMode.UPPERCASE);
+        setNamesCapsMode(CapsMode.PRESERVE);
         setNewLineBeforeAnd(true);
         setDebug(false);
     }
@@ -173,10 +183,10 @@ public class SQLFormatter
      * 
      * @return boolean
      */
-    public boolean isCapitalizeMajor()
-    {
-        return capitalizeMajor_;
-    }
+//    public boolean isCapitalizeMajor()
+//    {
+//        return capitalizeMajor_;
+//    }
     
     
     /**
@@ -185,10 +195,10 @@ public class SQLFormatter
      * 
      * @return boolean
      */
-    public boolean isCapitalizeMinor()
-    {
-        return capitalizeMinor_;
-    }
+//    public boolean isCapitalizeMinor()
+//    {
+//        return capitalizeMinor_;
+//    }
     
     
     /**
@@ -197,10 +207,10 @@ public class SQLFormatter
      * 
      * @return boolean
      */
-    public boolean isCapitalizeNames()
-    {
-        return capitalizeNames_;
-    }
+//    public boolean isCapitalizeNames()
+//    {
+//        return capitalizeNames_;
+//    }
     
     
     /**
@@ -233,10 +243,10 @@ public class SQLFormatter
      * 
      * @param flag True to capitalize, false otherwise.
      */
-    public void setCapitalizeMajor(boolean flag)
-    {
-        capitalizeMajor_ = flag;
-    }
+//    public void setCapitalizeMajor(boolean flag)
+//    {
+//        capitalizeMajor_ = flag;
+//    }
     
     
     /**
@@ -244,10 +254,10 @@ public class SQLFormatter
      * 
      * @param flag True to capitalize, false otherwise.
      */
-    public void setCapitalizeMinor(boolean flag)
-    {
-        capitalizeMinor_ = flag;
-    }
+//    public void setCapitalizeMinor(boolean flag)
+//    {
+//        capitalizeMinor_ = flag;
+//    }
 
     
     /**
@@ -255,10 +265,10 @@ public class SQLFormatter
      * 
      * @param flag True to capitalize, false otherwise.
      */
-    public void setCapitalizeNames(boolean flag)
-    {
-        capitalizeNames_ = flag;
-    }
+//    public void setCapitalizeNames(boolean flag)
+//    {
+//        capitalizeNames_ = flag;
+//    }
     
     
     /**
@@ -314,7 +324,47 @@ public class SQLFormatter
     {
         debug_ = flag;
     }
+
+    /**
+     * Returns the minorCapsMode.
+     * 
+     * @return CapsMode
+     */
+    public CapsMode getMinorCapsMode()
+    {
+        return minorCapsMode_;
+    }
     
+    /**
+     * Sets the value of minorCapsMode.
+     * 
+     * @param minorCapsMode The minorCapsMode to set.
+     */
+    public void setMinorCapsMode(CapsMode minorCapsMode)
+    {
+        minorCapsMode_ = minorCapsMode;
+    }
+    
+    /**
+     * Returns the namesCapsMode.
+     * 
+     * @return CapsMode
+     */
+    public CapsMode getNamesCapsMode()
+    {
+        return namesCapsMode_;
+    }
+    
+    /**
+     * Sets the value of namesCapsMode.
+     * 
+     * @param namesCapsMode The namesCapsMode to set.
+     */
+    public void setNamesCapsMode(CapsMode namesCapsMode)
+    {
+        namesCapsMode_ = namesCapsMode;
+    }
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -473,19 +523,26 @@ public class SQLFormatter
         
         for (int keywordIndex = 0; keywordIndex < l; keywordIndex++)
         {
-            boolean capitalize = false;
+            CapsMode capsMode = CapsMode.PRESERVE;
             
             if (isMajor(keywords[keywordIndex]))
-                capitalize = capitalizeMajor_;
+                capsMode = majorCapsMode_;
             
             if (isMinor(keywords[keywordIndex]))
-                capitalize = capitalizeMinor_;
+                capsMode = minorCapsMode_;
             
             if (isName(keywords[keywordIndex]))
-                capitalize = capitalizeNames_;
-            
-            if (capitalize)
+                capsMode = namesCapsMode_;
+           
+            if (capsMode == CapsMode.LOWERCASE)
+                keywords[keywordIndex] = keywords[keywordIndex].toLowerCase();
+            else if (capsMode == CapsMode.UPPERCASE)
                 keywords[keywordIndex] = keywords[keywordIndex].toUpperCase();
+            else if (capsMode == CapsMode.PRESERVE)
+                ; // No op
+            else
+                throw new IllegalArgumentException(
+                    "Unsupported caps mode " + capsMode);
         }
 
         for (int i2 = 1; i2 < l - 1; i2++)
@@ -681,5 +738,27 @@ public class SQLFormatter
     protected static boolean isMajor(String s)
     {
         return isIn(s, MAJOR_WORDS);
+    }
+    
+    
+    /**
+     * Returns the majorCapsMode.
+     * 
+     * @return CapsMode
+     */
+    public CapsMode getMajorCapsMode()
+    {
+        return majorCapsMode_;
+    }
+    
+    
+    /**
+     * Sets the value of majorCapsMode.
+     * 
+     * @param majorCapsMode The majorCapsMode to set.
+     */
+    public void setMajorCapsMode(CapsMode majorCapsMode)
+    {
+        majorCapsMode_ = majorCapsMode;
     }
 }
