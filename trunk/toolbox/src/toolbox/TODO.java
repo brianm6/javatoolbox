@@ -25,6 +25,7 @@ package toolbox;
  * TODO: Update to latest Multivalent
  * TODO: Figure out how to use forms
  * TODO: Add tile and cascade to Desktop plugin host
+ * TODO: JDBC Plugin : icons for execute all, execute selected, execute current
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
