@@ -448,10 +448,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JFILEEXPLORER, new Element(NODE_JFILEEXPLORER));
         
-        // Restore expanded directory
+        // Restore expanded directory or just select the root if this is the
+        // first time.
         selectFolder(
-            XOMUtil.getStringAttribute(
-                root, ATTR_PATH, System.getProperty("user.dir")));
+            XOMUtil.getStringAttribute(root, ATTR_PATH, getDefaultRoot()));
         
         // Restore selected file    
         String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
