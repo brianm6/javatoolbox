@@ -6,7 +6,6 @@ package toolbox;
  * TODO: Upgrade to checkstyle 3.0
  * TODO: Figure out how to launch web browser consistently for build.xml
  * TODO: Add vizant for visualization of build dependencies
- * TODO: Look at using Sorted tables from jrefinery: JCommon LGPL lib
  * TODO: "Recent" menu type component
  */
 public class TODO
