@@ -8,7 +8,7 @@ import java.io.Writer;
 public class NullWriter extends Writer
 {
     //--------------------------------------------------------------------------
-    //  Overridden from java.io.Writer
+    // Overrides java.io.Writer
     //--------------------------------------------------------------------------
     
     /**
