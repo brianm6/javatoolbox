@@ -32,8 +32,8 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.IPreferenced;
 
 /**
- * Log4J specific logging menu that allows easy changing of the log level and
- * also the logging output to console, file, or window.
+ * Log4J specific logging menu that allows easy changing of the log level. The
+ * log output can also be redirected to a gui console, standard out, or a file.
  */
 public class LoggingMenu extends JSmartMenu implements IPreferenced
 {
@@ -53,12 +53,12 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     private static final boolean DEFAULT_LOG_TO_WINDOW = false;
     
     /**
-     * Name of the toolbox logger.
+     * Name of the toolbox logger in /resources/log4j.xml.
      */
     private static final String LOGGER_TOOLBOX = "toolbox";
     
     /**
-     * Name of the console appender.
+     * Name of the console appender in /resources/log4j.xml.
      */
     private static final String APPENDER_CONSOLE = "console";
 
@@ -250,7 +250,11 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
      */
     class SetLogLevelAction extends AbstractAction
     {
+        /**
+         * Current logging level.
+         */
         private Level level_;
+        
         
         /**
          * Creates a SetLogLevelAction.
@@ -283,7 +287,11 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
      */
     class LogToConsoleAction extends AbstractAction
     {
+        /**
+         * Reference to the console appender.
+         */
         private ConsoleAppender appender_;
+        
         
         /**
          * Creates a LogToConsoleAction.
@@ -369,8 +377,16 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
          */
         class LoggingWindow extends JSmartFrame
         {
+            /**
+             * Logging output sent to this text area.
+             */
             private JSmartTextArea area_;
+            
+            /**
+             * Bridges a LOG4J appender and the text area.
+             */
             private JTextAreaAppender appender_;
+            
             
             /**
              * Creates a LoggingWindow.
