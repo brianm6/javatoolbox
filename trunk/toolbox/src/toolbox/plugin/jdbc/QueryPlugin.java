@@ -411,19 +411,20 @@ public class QueryPlugin extends JPanel implements IPlugin
     protected void setActiveText(String active)
     {
         String all = sqlArea_.getText();
+        int len = all.length();
         IntRange range = getActiveRange();
         int min = range.getMinimumInteger();
         int max = range.getMaximumInteger();
         
         logger_.debug("Range: " + range);
-        logger_.debug("JETA: " + sqlArea_.getText().length());
+        logger_.debug("JETA: " + len);
         
         StringBuffer sb = new StringBuffer();
-        sb.append(all.substring(0, range.getMinimumInteger()));
+        sb.append(all.substring(0, min));
         sb.append("\n");
         sb.append(active);
         sb.append("\n");
-        sb.append(all.substring(max, all.length()));
+        sb.append(all.substring(max, len));
         
         sqlArea_.setText(sb.toString());
     }
