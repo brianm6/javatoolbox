@@ -25,7 +25,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
 import java.awt.geom.AffineTransform;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -34,7 +33,6 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -49,6 +47,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ResourceUtil;
 
 /**
  * JFlipPane is a panel with flipper like behavior to hide a and show any
@@ -128,7 +127,10 @@ public class JFlipPane extends JPanel
         buttonPanel_.addMouseListener(new MouseHandler());
         
         // Close button
-        closeButton_ = new JButton(loadIcon("closebox.gif"));
+        closeButton_ = new JButton(
+            ResourceUtil.getResourceAsIcon(
+                "toolbox/util/ui/images/Cross.gif"));
+                
         closeButton_.setToolTipText("Close");
         
         int left;
@@ -143,7 +145,10 @@ public class JFlipPane extends JPanel
         closeButton_.addActionListener(new ActionHandler());
 
         // Popup button
-        popupButton_ = new JButton(loadIcon("ToolbarMenu.gif"));
+        popupButton_ = new JButton(
+            ResourceUtil.getResourceAsIcon(
+                "toolbox/util/ui/images/Triangle.gif"));
+            
         popupButton_.setRequestFocusEnabled(false);
         popupButton_.setToolTipText("Popup menu");
         popupButton_.addMouseListener(new MouseHandler());
@@ -546,7 +551,6 @@ public class JFlipPane extends JPanel
             toggleFlipper();   
         }
     }
-        
 
 
     /**
@@ -557,38 +561,6 @@ public class JFlipPane extends JPanel
         return !ArrayUtil.contains(getComponents(), flipCardPanel_);
     }
     
-
-    /**
-     * Loads an icon.
-     * 
-     * @param   iconName    The icon name
-     * @return  Icon
-     */
-    public static Icon loadIcon(String iconName)
-    {
-        Icon icon = null;
-        
-        if(iconName.startsWith("file:"))
-        {
-            icon = new ImageIcon(iconName.substring(5));
-        }
-        else
-        {
-            URL url = JFlipPane.class.getClass().getResource(
-                "/toolbox/util/ui/" + iconName);
-
-            if(url == null)
-            {
-                logger_.error("Icon not found: " + iconName);
-                return null;
-            }
-
-            icon = new ImageIcon(url);
-        }
-        
-        return icon;
-    }     
-
 
     /**
      * Returns if the specified event is the popup trigger event.
