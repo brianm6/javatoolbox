@@ -299,29 +299,35 @@ public final class StringUtil
     
     /** 
      * Wraps a string to a default width of 80. The beginnning of line and
-     * end of line are decorated with brackets to create a box effect
+     * end of line are decorated with brackets to create a box effect if
+     * the border flag is set.
      * 
+     * <pre>
      * [some text here]
      * [more text here]
+     * </pre>
      * 
-     * @param   s  String to wrap
+     * @param   s        String to wrap
+     * @param   border   True to enclose wrapped text in brackets
      * @return  Wrapped string with box decoration
      */
-    public static String wrapInBox(String s)
+    public static String wrap(String s, boolean border)
     {
-        return wrapInBox(s, 80);
+        return wrap(s, 80, true);
     }
 
     
     /**
      * Wraps a string to a given width. The beginning of line and end of line
-     * are decorated with brackets to create a box effect
+     * are decorated with brackets to create a box effect if the border flag
+     * is set.
      * 
-     * @param   s      String to wrap
-     * @param   width  Width to wrap the string
+     * @param   s       String to wrap
+     * @param   width   Width to wrap the string
+     * @param   border  Should the wrapped text be decorated with a border?
      * @return  Wrapped string
      */
-    public static String wrapInBox(String s, int width)
+    public static String wrap(String s, int width, boolean border)
     {
         return wrap(s, width, "[", "]");    
     }
