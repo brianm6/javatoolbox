@@ -402,21 +402,6 @@ public final class FileUtil
 
     
     /**
-     * For a given file path, the file separator characters are changed to
-     * match the File.separator for the current platform.
-     * 
-     * @param path Path to change.
-     * @return Changed path.
-     */
-    public static String matchPlatformSeparator(String path)
-    {
-        String newPath = path.replace('\\', File.separatorChar);
-        newPath = newPath.replace('/', File.separatorChar);
-        return newPath;
-    }
-
-    
-    /**
      * Deletes a file quietly. If the file can be deleted, ok. If not, 
      * does not cause a fuss.
      * 

@@ -642,19 +642,6 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests matchPlatformSeparator().
-     */
-    public void testMatchPlatformSeparator()
-    {
-        logger_.info("Running testMatchPlatformSeparator...");
-        
-        String match = File.separator + "a" + File.separator + "b";
-        assertEquals(match, FileUtil.matchPlatformSeparator("\\a\\b"));
-        assertEquals(match, FileUtil.matchPlatformSeparator("/a/b"));
-    }
-    
-    
-    /**
      * Tests createTempDir().
      * 
      * @throws Exception on error

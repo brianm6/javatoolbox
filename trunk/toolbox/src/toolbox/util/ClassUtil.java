@@ -226,7 +226,7 @@ public final class ClassUtil
             else
             {
                 // Normalize path
-                pathElement = FileUtil.matchPlatformSeparator(pathElement);
+                pathElement = FilenameUtils.separatorsToSystem(pathElement);
                 pathElement = FileUtil.trailWithSeparator(pathElement);
                 
                 // Get all class files       

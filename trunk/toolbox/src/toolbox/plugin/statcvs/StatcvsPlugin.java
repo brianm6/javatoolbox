@@ -23,6 +23,7 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -482,7 +483,7 @@ public class StatcvsPlugin extends AbstractPlugin
     protected String moduleToLogFile(String module)
     {
         return StringUtils.replace(
-            FileUtil.matchPlatformSeparator(module),
+            FilenameUtils.separatorsToSystem(module),
                 File.separator,
                 ".")
             + ".log";
