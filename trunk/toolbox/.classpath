@@ -37,7 +37,7 @@
     <classpathentry kind="lib" path="lib/hamsam.jar"/>
     <classpathentry kind="lib" path="lib/commons-codec.jar" sourcepath="/toolbox/lib/src/commons-codec-src.zip"/>
     <classpathentry kind="lib" path="lib/statcvs.jar" sourcepath="K:/workspaces/workspace-lib/statcvs/src"/>
-    <classpathentry kind="lib" path="lib/tinylaf.jar"/>
+    <classpathentry kind="lib" path="lib/tinylaf.jar" sourcepath="/toolbox/lib/src/tinylaf-src.zip"/>
     <classpathentry kind="lib" path="lib/xercesImpl.jar" sourcepath="/toolbox/lib/src/xercesImpl-src.zip"/>
     <classpathentry kind="lib" path="lib/xml-apis.jar" sourcepath="/toolbox/lib/src/xml-apis-src.zip"/>
     <classpathentry kind="lib" path="lib/xom.jar" sourcepath="/toolbox/lib/src/xom-src.zip"/>
