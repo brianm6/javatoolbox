@@ -43,14 +43,39 @@ public class ManagePluginsDialog extends JDialog
     public static final Logger logger_ =
         Logger.getLogger(ManagePluginsDialog.class);
     
+    /**
+     * Button to remove a plugin from the workspace
+     */
     private JButton removeButton_;
+    
+    /**
+     * Button to add a plugin to the workspace
+     */
     private JButton addButton_;
+    
+    /**
+     * Workspace that is the parent of this dialog box
+     */
     private PluginWorkspace parent_;
     
+    /**
+     * List of active (loaded) plugins in the workspace
+     */
     private JList activeList_;
+    
+    /**
+     * List of inactive plugins that can be added to the workspace 
+     */
     private JList inactiveList_;
     
+    /**
+     * List model for the list of active plugins
+     */
     private DefaultListModel activeModel_;
+    
+    /**
+     * List model for the list of inactive plugins
+     */
     private DefaultListModel inactiveModel_;
 
     //--------------------------------------------------------------------------
@@ -492,25 +517,21 @@ public class ManagePluginsDialog extends JDialog
     /**
      * Finds plugins on the classpath and populates the inactive plugins list
      */
-    class FindPluginsAction extends AbstractAction
+    class FindPluginsAction extends WorkspaceAction
     {
         public FindPluginsAction()
         {
-            super("Find Plugins");
+            super("Find Plugins", 
+                  true, 
+                  ManagePluginsDialog.this, 
+                  parent_.getStatusBar());
+                
             putValue(Action.MNEMONIC_KEY, new Integer('F')); 
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e)
         {
-            try
-            {
-                SwingUtil.setWaitCursor(ManagePluginsDialog.this);
-                populateInactive(); 
-            }
-            finally
-            {
-                SwingUtil.setDefaultCursor(ManagePluginsDialog.this);
-            }
+            populateInactive(); 
         }
     }
 }
