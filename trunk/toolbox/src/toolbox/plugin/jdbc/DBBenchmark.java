@@ -10,25 +10,33 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import nu.xom.Element;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.DateTimeUtil;
 import toolbox.util.JDBCSession;
 import toolbox.util.JDBCUtil;
 import toolbox.util.MemoryWatcher;
+import toolbox.util.PreferencedUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.Startable;
+import toolbox.workspace.IPreferenced;
 
 /**
  * This is a sample implementation of the Transaction Processing Performance
  * Council Benchmark B coded in Java and ANSI SQL2. This version is using one
  * connection per thread to parallellize server operations.
  */
-public class DBBenchmark 
+public class DBBenchmark implements Startable, IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(DBBenchmark.class);
     
@@ -52,9 +60,14 @@ public class DBBenchmark
     public static final int ACCOUNT = 2;
     
     /**
-     * Number format used during report generation.
+     * Number formatter used during report generation.
      */
     private static final NumberFormat FMT = DecimalFormat.getNumberInstance();
+
+    /**
+     * XML node for dbbenchmark preferences.
+     */
+    private static final String NODE_DBBENCHMARK = "DBBenchmark";
     
     //--------------------------------------------------------------------------
     // Static
@@ -156,65 +169,87 @@ public class DBBenchmark
      */
     private PrintWriter writer_;
 
+    /**
+     * Reference to the parent plugin.
+     */
+    private QueryPlugin plugin_;
+    
+    /**
+     * Flag to initialize the database (create tables and populate data).
+     */
+    private boolean initDB_;
+    
+    /**
+     * Flag to shutdown the database after the benchmarks have completed.
+     */
+    private boolean shutdownDB_;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
-    public DBBenchmark()
+    /**
+     * Creates a DBBenchmark.
+     * 
+     * @param plugin Reference to the query plugin.
+     */
+    public DBBenchmark(QueryPlugin plugin)
     {
+        this(plugin, true);
     }
     
     
     /**
      * Creates a DBBenchmark and sends output to System.out by default.
-     * 
-     * @param url JDBC url.
-     * @param user Database username.
-     * @param password Database password.
+     *
+     * @param plugin Reference to the query plugin.
      * @param init True to init the tables, false otherwise.
      */
-    public DBBenchmark(String url, String user, String password, boolean init)
+    public DBBenchmark(QueryPlugin plugin, boolean initDB)
     {
-        this(url, user, password, init, 
-            new PrintWriter(new OutputStreamWriter(System.out), true));
+        this(plugin, 
+             initDB, 
+             new PrintWriter(new OutputStreamWriter(System.out), true));
     }   
 
     
     /**
      * Creates a DBBenchmark.
-     * 
-     * @param url JDBC url.
-     * @param user Database username.
-     * @param password Database password.
-     * @param init True to init the tables, false otherwise.
+     *
+     * @param plugin Reference to the query plugin. 
+     * @param initDB True to init the tables, false otherwise.
      * @param writer Destination of benchmark output.
      */
-    public DBBenchmark(
-        String url, 
-        String user, 
-        String password, 
-        boolean init,
-        PrintWriter writer)
+    public DBBenchmark(QueryPlugin plugin, boolean initDB, PrintWriter writer)
     {
+        plugin_ = plugin;
+        initDB_ = initDB;
         writer_ = writer;
-        
+    }
+
+    //--------------------------------------------------------------------------
+    // Startable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Startable#start()
+     */
+    public void start() throws ServiceException
+    {
         try
         {
-            if (init)
-            {
-                writer_.println("Start: " + new java.util.Date());
-                writer_.print("Initializing dataset...");
-                createDatabase(url, user, password);
-                writer_.println("done.\n");
-                writer_.println("Complete: " + new java.util.Date());
-            }
+            if (initDB_)
+                initDB();
 
             writer_.println("* Starting Benchmark Run *");
 
-            runBenchmark(false, false, url, user, password);
-            runBenchmark(true, false, url, user, password);
-            runBenchmark(false, true, url, user, password);
-            runBenchmark(true, true, url, user, password);
+            // Run benchmarks for each combination of 
+            // (transaction, prepared statements)
+            
+            runBenchmark(false, false);
+            runBenchmark(true, false);
+            runBenchmark(false, true);
+            runBenchmark(true, true);
         }
         catch (Exception ex)
         {
@@ -223,28 +258,66 @@ public class DBBenchmark
         }
         finally
         {
-            try
-            {
-                /*
-                 * Skip shutdown sequence
-                 * 
-                if (shutdownCommand_.length() > 0)
-                {
-                    Connection conn = connect(url, user, password);
-                    Statement stmt = conn.createStatement();
-                    stmt.execute(shutdownCommand_);
-                    JDBCUtil.close(stmt);
-                    JDBCUtil.releaseConnection(conn);
-                }
-                */
-            }
-            catch (Exception ex2)
-            {
-                logger_.error(ex2);
-            }
+            if (shutdownDB_)
+                shutdownDB();
         }
     }
+    
 
+    /**
+     * @see toolbox.util.service.Startable#stop()
+     */
+    public void stop() throws ServiceException
+    {
+        try
+        {
+            JDBCSession.shutdown(plugin_.getCurrentProfile().toString());
+        }
+        catch (SQLException e)
+        {
+            throw new ServiceException(e);
+        }
+    }
+    
+    
+    /**
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return false;
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, 
+                NODE_DBBENCHMARK,
+                new Element(NODE_DBBENCHMARK));
+     
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_DBBENCHMARK);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        XOMUtil.insertOrReplace(prefs, root);
+    }
+    
+    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -317,23 +390,41 @@ public class DBBenchmark
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
+
+    /**
+     * Initializes the database by creating the necessary tables and data to
+     * run the benchmark.
+     * 
+     * @throws Exception on error.
+     */
+    protected void initDB() throws Exception
+    {
+        writer_.println(
+            "DB init started = " + DateTimeUtil.formatToSecond(new Date()));
+        
+        writer_.print("Initializing dataset...");
+        
+        createDatabase();
+        
+        writer_.println("Done.\n");
+        
+        writer_.println(
+            "DB init complete = " + DateTimeUtil.formatToSecond(new Date()));
+    }
+
     
     /**
      * Runs the benchmark.
      * 
      * @param useTransactions Use transactions in the benchmark.
      * @param usePreparedStatements Use prepared statements in the benchmark.
-     * @param url URL of the JDBC driver.
-     * @param user User to login to the database.
-     * @param password Password to login to the database.
      * @throws InterruptedException on interruption.
+     * @throws ServiceException on service error.
+     * @throws SQLException on db error.
      */
     protected void runBenchmark(
         boolean useTransactions, 
-        boolean usePreparedStatements, 
-        String url, 
-        String user, 
-        String password) 
+        boolean usePreparedStatements) 
         throws InterruptedException, ServiceException, SQLException
     {
         memoryWatcher_ = new MemoryWatcher();
@@ -351,7 +442,7 @@ public class DBBenchmark
     
             for (int i = 0; i < numClients_; i++)
             {
-                client = new ClientThread(numTxPerClient_, url, user, password);
+                client = new ClientThread(numTxPerClient_);
                 client.start();
                 clients.add(client);
             }
@@ -462,10 +553,11 @@ public class DBBenchmark
      * @param password Password.
      * @throws Exception on error.
      */
-    protected void createDatabase(String url, String user, String password)
-        throws Exception
+    protected void createDatabase()throws Exception
     {
-        Connection conn = connect(url, user, password);
+        DBProfile profile = plugin_.getCurrentProfile();
+        
+        Connection conn = connect();
         writer_.println(conn.getMetaData().getDatabaseProductName());
         transactions_ = true;
 
@@ -518,19 +610,19 @@ public class DBBenchmark
             Statement stmt = conn.createStatement();
             String query;
 
-            query = "DROP TABLE history";
+            query = "DROP TABLE history if exists";
             stmt.execute(query);
             stmt.clearWarnings();
 
-            query = "DROP TABLE accounts";
+            query = "DROP TABLE accounts if exists";
             stmt.execute(query);
             stmt.clearWarnings();
 
-            query = "DROP TABLE tellers";
+            query = "DROP TABLE tellers if exists";
             stmt.execute(query);
             stmt.clearWarnings();
 
-            query = "DROP TABLE branches";
+            query = "DROP TABLE branches if exists";
             stmt.execute(query);
             stmt.clearWarnings();
 
@@ -789,7 +881,32 @@ public class DBBenchmark
 
         JDBCUtil.releaseConnection(conn);
     }
- 
+
+    
+    /**
+     * Shuts down the database.
+     */
+    protected void shutdownDB()
+    {
+        try
+        {
+            if (shutdownCommand_.length() > 0)
+            {
+                Connection conn = connect();
+                Statement stmt = conn.createStatement();
+                stmt.execute(shutdownCommand_);
+                JDBCUtil.close(stmt);
+                JDBCUtil.releaseConnection(conn);
+            }
+            else
+                writer_.println("No shutdown command specified.");
+        }
+        catch (Exception ex2)
+        {
+            logger_.error(ex2);
+        }
+    }
+
     
     /**
      * Returns a random ID.
@@ -831,17 +948,13 @@ public class DBBenchmark
 
     
     /**
-     * Gets a connection.
-     *  
-     * @param url JDBC url
-     * @param user Username
-     * @param password Password
+     * Gets a database connection.
+     * 
      * @return Connection
      */
-    protected Connection connect(String url, String user, String password)
-        throws SQLException
+    protected Connection connect() throws SQLException
     {
-        String name = "bench";
+        String name = plugin_.getCurrentProfile().toString();
         
         try
         {
@@ -853,10 +966,10 @@ public class DBBenchmark
             {
                 JDBCSession.init(
                     name, 
-                    "org.hsqldb.jdbcDriver", 
-                    url, 
-                    user, 
-                    password);
+                    plugin_.getCurrentProfile().getDriver(), 
+                    plugin_.getCurrentProfile().getUrl(), 
+                    plugin_.getCurrentProfile().getUsername(), 
+                    plugin_.getCurrentProfile().getPassword());
             }
             catch (Exception e)
             {
@@ -893,20 +1006,12 @@ public class DBBenchmark
          * Creates a ClientThread.
          * 
          * @param numOfTx Number of transactions.
-         * @param url JDBC url.
-         * @param user Username.
-         * @param password Password.
          * @throws SQLException on connection error.
          */
-        public ClientThread(
-            int numOfTx, 
-            String url, 
-            String user,
-            String password)
-            throws SQLException
+        public ClientThread(int numOfTx) throws SQLException
         {
             numTx_ = numOfTx;
-            conn_ = connect(url, user, password);
+            conn_ = connect();
 
             if (conn_ == null)
                 return;
@@ -924,18 +1029,22 @@ public class DBBenchmark
                     Query += "SET     Abalance = Abalance + ? ";
                     Query += "WHERE   Aid = ?";
                     pstmt1_ = conn_.prepareStatement(Query);
+                    
                     Query = "SELECT Abalance ";
                     Query += "FROM   accounts ";
                     Query += "WHERE  Aid = ?";
                     pstmt2_ = conn_.prepareStatement(Query);
+                    
                     Query = "UPDATE tellers ";
                     Query += "SET    Tbalance = Tbalance + ? ";
                     Query += "WHERE  Tid = ?";
                     pstmt3_ = conn_.prepareStatement(Query);
+                    
                     Query = "UPDATE branches ";
                     Query += "SET    Bbalance = Bbalance + ? ";
                     Query += "WHERE  Bid = ?";
                     pstmt4_ = conn_.prepareStatement(Query);
+                    
                     Query = "INSERT INTO history(Tid, Bid, Aid, delta) ";
                     Query += "VALUES (?,?,?,?)";
                     pstmt5_ = conn_.prepareStatement(Query);
