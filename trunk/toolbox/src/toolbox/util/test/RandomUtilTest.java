@@ -59,7 +59,7 @@ public class RandomUtilTest extends TestCase
         finally
         { 
             logger_.debug("Random alphas:\n" + 
-                StringUtil.wrapInBox(sb.toString()));
+                StringUtil.wrap(sb.toString(), true));
         }
     }
 
@@ -85,7 +85,7 @@ public class RandomUtilTest extends TestCase
         finally
         {
             logger_.debug("Random upper alphas:\n " + 
-                StringUtil.wrapInBox(sb.toString()));
+                StringUtil.wrap(sb.toString(),true));
         }
     }
 
@@ -111,7 +111,7 @@ public class RandomUtilTest extends TestCase
         finally
         {
             logger_.debug("Random lower alphas:\n " + 
-                StringUtil.wrapInBox(sb.toString()));
+                StringUtil.wrap(sb.toString(), true));
         }
     }       
 
@@ -130,7 +130,7 @@ public class RandomUtilTest extends TestCase
             assertTrue("int should be >= 0", i >= 0);            
         }
         
-        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
     
     
@@ -165,7 +165,7 @@ public class RandomUtilTest extends TestCase
             
         }
         
-        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
     
     
@@ -200,7 +200,7 @@ public class RandomUtilTest extends TestCase
             
         }
         
-        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
 
 
@@ -236,7 +236,7 @@ public class RandomUtilTest extends TestCase
             assertTrue("int should be less than ceiling", i<=ceiling);            
         }
         
-        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
    
     
@@ -273,7 +273,7 @@ public class RandomUtilTest extends TestCase
             assertTrue("int should be less than ceiling", i<=ceiling);            
         }
         
-        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
 }
 
