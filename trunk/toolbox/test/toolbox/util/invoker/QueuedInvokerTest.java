@@ -179,8 +179,16 @@ public class QueuedInvokerTest extends TestCase
             }
 
             // Wait for everything to finish + overhead..
-            // would be nice to have invoker.join()
-            Thread.sleep((numIterations * delay) + 1000);
+            // would be nice to have invoker.join() 
+            // However linux thred impl takes ALOT longer so polling for an 
+            // empty queue will have to do.
+            
+            while (!invoker.isEmpty()) {
+                Thread.sleep(1);
+                
+                if (invoker.getSize() % 100 == 0)
+                    logger_.debug("Queue size = " + invoker.getSize());
+            }
 
             // Verify
             for (int i = 0; i < invokables.length; i++)
