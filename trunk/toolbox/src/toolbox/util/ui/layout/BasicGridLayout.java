@@ -1,7 +1,7 @@
 package toolbox.util.ui.layout;
 
 import java.awt.Component;
-import java.awt.Container;
+import java.awt.Container;  
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -11,13 +11,12 @@ import java.awt.Rectangle;
  */
 public class BasicGridLayout extends ConstraintLayout
 {
-
-    protected int hGap, vGap;
-    protected int rows, cols, reqRows, reqCols;
-    protected int[] rowHeights, colWidths;
-    protected int alignment = Alignment.NORTHWEST;
-    protected int fill = Alignment.FILL_BOTH;
-    protected int colWeight = 0;
+    protected int hGap_, vGap_;
+    protected int rows_, cols_, reqRows_, reqCols_;
+    protected int[] rowHeights_, colWidths_;
+    protected int alignment_ = Alignment.NORTHWEST;
+    protected int fill_ = Alignment.FILL_BOTH;
+    protected int colWeight_ = 0;
     protected int rowWeight = 0;
 
     //--------------------------------------------------------------------------
@@ -47,12 +46,12 @@ public class BasicGridLayout extends ConstraintLayout
         int hMargin,
         int vMargin)
     {
-        this.reqRows = rows;
-        this.reqCols = cols;
-        this.hGap = hGap;
-        this.vGap = vGap;
-        this.hMargin = hMargin;
-        this.vMargin = vMargin;
+        reqRows_ = rows;
+        reqCols_ = cols;
+        hGap_ = hGap;
+        vGap_ = vGap;
+        hMargin_ = hMargin;
+        vMargin_ = vMargin;
     }
 
     //--------------------------------------------------------------------------
@@ -63,54 +62,54 @@ public class BasicGridLayout extends ConstraintLayout
     {
         if (cols < 1)
             cols = 1;
-        this.cols = cols;
+        this.cols_ = cols;
     }
 
     public void setRows(int rows)
     {
         if (rows < 1)
             rows = 1;
-        this.rows = rows;
+        this.rows_ = rows;
     }
 
     public int getRows()
     {
-        return rows;
+        return rows_;
     }
 
     public int getColumns()
     {
-        return cols;
+        return cols_;
     }
 
     public void setAlignment(int a)
     {
-        alignment = a;
+        alignment_ = a;
     }
 
     public int getAlignment()
     {
-        return alignment;
+        return alignment_;
     }
 
     public void setFill(int f)
     {
-        fill = f;
+        fill_ = f;
     }
 
     public int getFill()
     {
-        return fill;
+        return fill_;
     }
 
     public void setColWeight(int colWeight)
     {
-        this.colWeight = colWeight;
+        this.colWeight_ = colWeight;
     }
 
     public int getColWeight()
     {
-        return colWeight;
+        return colWeight_;
     }
 
     public void setRowWeight(int rowWeight)
@@ -132,7 +131,7 @@ public class BasicGridLayout extends ConstraintLayout
      */
     protected int alignmentFor(Component c, int row, int col)
     {
-        return alignment;
+        return alignment_;
     }
 
     /**
@@ -140,7 +139,7 @@ public class BasicGridLayout extends ConstraintLayout
      */
     protected int fillFor(Component c, int row, int col)
     {
-        return fill;
+        return fill_;
     }
 
     /**
@@ -175,23 +174,23 @@ public class BasicGridLayout extends ConstraintLayout
         int i;
         int count = target.getComponentCount();
 
-        if (reqCols <= 0)
+        if (reqCols_ <= 0)
         {
-            rows = reqRows;
-            cols = (count + reqRows - 1) / reqRows;
+            rows_ = reqRows_;
+            cols_ = (count + reqRows_ - 1) / reqRows_;
         }
         else
         {
-            rows = (count + reqCols - 1) / reqCols;
-            cols = reqCols;
+            rows_ = (count + reqCols_ - 1) / reqCols_;
+            cols_ = reqCols_;
         }
 
-        colWidths = new int[cols];
-        for (i = 0; i < cols; i++)
-            colWidths[i] = 0;
-        rowHeights = new int[rows];
-        for (i = 0; i < rows; i++)
-            rowHeights[i] = 0;
+        colWidths_ = new int[cols_];
+        for (i = 0; i < cols_; i++)
+            colWidths_[i] = 0;
+        rowHeights_ = new int[rows_];
+        for (i = 0; i < rows_; i++)
+            rowHeights_[i] = 0;
 
         int index = 0;
         for (i = 0; i < count; i++)
@@ -200,12 +199,12 @@ public class BasicGridLayout extends ConstraintLayout
             if (includeComponent(c))
             {
                 Dimension size = getComponentSize(c, type);
-                int row = index / cols;
-                int col = index % cols;
-                if (colWidths[col] < size.width)
-                    colWidths[col] = size.width;
-                if (rowHeights[row] < size.height)
-                    rowHeights[row] = size.height;
+                int row = index / cols_;
+                int col = index % cols_;
+                if (colWidths_[col] < size.width)
+                    colWidths_[col] = size.width;
+                if (rowHeights_[row] < size.height)
+                    rowHeights_[row] = size.height;
                 index++;
             }
         }
@@ -214,36 +213,36 @@ public class BasicGridLayout extends ConstraintLayout
         Insets insets = target.getInsets();
         int totalWeight, totalSize, remainder;
 
-        size.width -= insets.left + insets.right + 2 * hMargin;
-        size.height -= insets.top + insets.bottom + 2 * vMargin;
+        size.width -= insets.left + insets.right + 2 * hMargin_;
+        size.height -= insets.top + insets.bottom + 2 * vMargin_;
         totalWeight = totalSize = 0;
-        for (i = 0; i < cols; i++)
+        for (i = 0; i < cols_; i++)
         {
             totalWeight += getColWeight(i);
-            totalSize += colWidths[i];
+            totalSize += colWidths_[i];
             if (i != 0)
-                totalSize += hGap;
+                totalSize += hGap_;
         }
         if (totalWeight != 0 && totalSize < size.width)
         {
             remainder = size.width - totalSize;
-            for (i = 0; i < cols; i++)
-                colWidths[i] += remainder * getColWeight(i) / totalWeight;
+            for (i = 0; i < cols_; i++)
+                colWidths_[i] += remainder * getColWeight(i) / totalWeight;
         }
 
         totalWeight = totalSize = 0;
-        for (i = 0; i < rows; i++)
+        for (i = 0; i < rows_; i++)
         {
             totalWeight += getRowWeight(i);
-            totalSize += rowHeights[i];
+            totalSize += rowHeights_[i];
             if (i != 0)
-                totalSize += vGap;
+                totalSize += vGap_;
         }
         if (totalWeight != 0 && totalSize < size.height)
         {
             remainder = size.height - totalSize;
-            for (i = 0; i < rows; i++)
-                rowHeights[i] += remainder * getRowWeight(i) / totalWeight;
+            for (i = 0; i < rows_; i++)
+                rowHeights_[i] += remainder * getRowWeight(i) / totalWeight;
         }
     }
 
@@ -252,9 +251,9 @@ public class BasicGridLayout extends ConstraintLayout
         if (dimension != null)
         {
             calcCellSizes(target, type);
-            dimension.width = sumArray(colWidths, hGap, cols);
-            dimension.height = sumArray(rowHeights, vGap, rows);
-            rowHeights = colWidths = null;
+            dimension.width = sumArray(colWidths_, hGap_, cols_);
+            dimension.height = sumArray(rowHeights_, vGap_, rows_);
+            rowHeights_ = colWidths_ = null;
         }
         else
         {
@@ -274,28 +273,28 @@ public class BasicGridLayout extends ConstraintLayout
                     {
                         Dimension d = getComponentSize(c, type);
                         Rectangle r = new Rectangle(0, 0, d.width, d.height);
-                        int row = index / cols;
-                        int col = index % cols;
+                        int row = index / cols_;
+                        int col = index % cols_;
                         int x, y;
 
                         x =
                             insets.left
-                                + sumArray(colWidths, hGap, col)
-                                + hMargin;
+                                + sumArray(colWidths_, hGap_, col)
+                                + hMargin_;
                         y =
                             insets.top
-                                + sumArray(rowHeights, vGap, row)
-                                + vMargin;
+                                + sumArray(rowHeights_, vGap_, row)
+                                + vMargin_;
                         if (col > 0)
-                            x += hGap;
+                            x += hGap_;
                         if (row > 0)
-                            y += vGap;
+                            y += vGap_;
                         Rectangle cell =
                             new Rectangle(
                                 x,
                                 y,
-                                colWidths[col],
-                                rowHeights[row]);
+                                colWidths_[col],
+                                rowHeights_[row]);
                         Alignment.alignInCell(
                             r,
                             cell,
@@ -306,7 +305,7 @@ public class BasicGridLayout extends ConstraintLayout
                     }
                 }
             }
-            rowHeights = colWidths = null;
+            rowHeights_ = colWidths_ = null;
         }
     }
 }
