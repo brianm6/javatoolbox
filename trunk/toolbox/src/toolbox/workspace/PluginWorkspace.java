@@ -49,6 +49,7 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.ResourceCloser;
+import toolbox.util.StreamUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
@@ -613,7 +614,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
         finally
         {
-            ResourceCloser.close(writer);
+            StreamUtil.close(writer);
         }
         
         SmartLogger.debug(logger_, xml);
