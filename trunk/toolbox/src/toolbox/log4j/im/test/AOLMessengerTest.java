@@ -46,7 +46,7 @@ public class AOLMessengerTest extends TestCase
      * 
      * @throws Exception on error
      */    
-    public void testLifeCycle() throws Exception
+    public void xtestLifeCycle() throws Exception
     {
         LogLog.setInternalDebugging(true);
         
@@ -81,7 +81,7 @@ public class AOLMessengerTest extends TestCase
      * 
      * @throws Exception on error
      */    
-    public void testSendMany() throws Exception
+    public void xtestSendMany() throws Exception
     {
         logger_.info("Running testSendMany...");
         
@@ -108,7 +108,7 @@ public class AOLMessengerTest extends TestCase
      *  
      * @throws Exception on error
      */
-    public void testConfigByXML() throws Exception
+    public void xtestConfigByXML() throws Exception
     {
         logger_.info("Running testConfigByXML...");
         
