@@ -10,16 +10,20 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.AntiAliased;
 
 /**
- * JSmartList adds the following behavior.
+ * JSmartList extends JList by adding the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
- *   <li>Scroll to the end of the list
- *   <li>Scroll to the beginning of the list
+ *   <li>Antialised text
+ *   <li>Ability to scroll to the top of the list - scrollToTop()
+ *   <li>Ability to scroll to the bottom of the list - scrollToBottom()
  * </ul>
  */
 public class JSmartList extends JList implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -40,7 +44,7 @@ public class JSmartList extends JList implements AntiAliased
     /**
      * Creates a JSmartList.
      * 
-     * @param listData List entries
+     * @param listData List entries.
      */
     public JSmartList(Object[] listData)
     {
@@ -51,7 +55,7 @@ public class JSmartList extends JList implements AntiAliased
     /**
      * Creates a JSmartList.
      * 
-     * @param listData List entries
+     * @param listData List entries.
      */
     public JSmartList(Vector listData)
     {
@@ -62,7 +66,7 @@ public class JSmartList extends JList implements AntiAliased
     /**
      * Creates a JSmartList.
      * 
-     * @param dataModel List model
+     * @param dataModel List model.
      */
     public JSmartList(ListModel dataModel)
     {
@@ -116,6 +120,8 @@ public class JSmartList extends JList implements AntiAliased
     //--------------------------------------------------------------------------
 
     /**
+     * Activates antialiasing.
+     * 
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
     public void paintComponent(Graphics gc)

@@ -8,15 +8,20 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.AntiAliased;
 
 /**
- * SmartListCellRenderer adds the following behavior.
+ * SmartListCellRenderer extends DefaultListCellRenderer by adding the
+ * following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Antialised text
  * </ul>
  */
 public class SmartListCellRenderer extends DefaultListCellRenderer
     implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+
     /**
      * Antialiased flag.
      */
@@ -25,18 +30,18 @@ public class SmartListCellRenderer extends DefaultListCellRenderer
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Creates a SmartListCellRenderer. 
+     * Creates a SmartListCellRenderer.
      */
     public SmartListCellRenderer()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -59,6 +64,8 @@ public class SmartListCellRenderer extends DefaultListCellRenderer
     //--------------------------------------------------------------------------
 
     /**
+     * Activates antialiasing if enabled.
+     *
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
     public void paintComponent(Graphics gc)

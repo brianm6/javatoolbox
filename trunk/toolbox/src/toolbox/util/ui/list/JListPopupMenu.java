@@ -13,10 +13,18 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 
 /**
- * PopupMenu for a JList.
+ * PopupMenu for a JList that contains default implemenations of the Copy and
+ * Select All operations.
+ * 
+ * @see javax.swing.JList
+ * @see javax.swing.JPopupMenu
  */
 public class JListPopupMenu extends JSmartPopupMenu
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * List that the popup menu is associated with.
      */
@@ -29,7 +37,7 @@ public class JListPopupMenu extends JSmartPopupMenu
     /**
      * Creates a JListPopupMenu.
      * 
-     * @param list JList to add popup to
+     * @param list JList to add popup to.
      */
     public JListPopupMenu(JList list)
     {
@@ -40,8 +48,8 @@ public class JListPopupMenu extends JSmartPopupMenu
     /**
      * Creates a JListPopupMenu.
      * 
-     * @param label Popupmenu label
-     * @param list JList to add popup to
+     * @param label Popupmenu label.
+     * @param list JList to add popup to.
      */
     public JListPopupMenu(String label, JList list)
     {
@@ -55,7 +63,8 @@ public class JListPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * Builds popupmenu and adds mouse listener to listbox.
+     * Builds this popupmenu and adds a mouse listener to listbox so the
+     * popup can be activated on a right mouse button click.
      */
     protected void buildView()
     {
@@ -69,7 +78,8 @@ public class JListPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * Copies the contents of the currently selected indices to the clipboard.
+     * Copies the contents of the currently selected indices to the clipboard
+     * as toString() results separated by newlines.
      */    
     class CopyAction extends AbstractAction
     {
