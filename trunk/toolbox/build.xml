@@ -21,6 +21,9 @@
         <property name="targets"    location="${top}/targets"/>
         <property name="lib"        location="${top}/lib"/>
         <property name="test"       location="${top}/test"/>
+        <property name="build"      location="${top}/build"/>
+        <property name="build.lib"  location="${build}/lib"/>
+        <property name="doc"        location="${top}/doc"/>
         
         <property name="project.init.message" 
                   value="${ant.project.name} project initialized"/>
@@ -234,6 +237,35 @@
         
     </target>
 
+    <!--=============================-->
+    <!--          JAVADOC            -->
+    <!--=============================-->
+    <target name="javadoc" 
+    	    depends="init"
+    	    description="Generates javadocs">
+    
+    	<delete>
+            <fileset dir="${doc}" includes="**/**"/>
+    	</delete>
+    	
+        <javadoc 
+            access="private" 
+            author="true"
+            classpath="${common.classpath}"
+            destdir="${doc}"
+            doctitle="Toolbox" 
+            nodeprecated="false"
+            nodeprecatedlist="false" 
+            noindex="false" 
+            nonavbar="false"
+            notree="false"
+            packagenames="toolbox.util.ui,toolbox.util.reflect,toolbox.findclass.test,toolbox.showpath,toolbox.util,toolbox.test,toolbox.jtail.test,toolbox.util.args,toolbox.util.io.test,toolbox.util.ui.test,toolbox.launcher,toolbox.tunnel,toolbox.util.io,toolbox.util.test,toolbox.jsourceview,toolbox.tail.test,toolbox.util.sync,toolbox.jtail,toolbox.util.thread,toolbox.tail,toolbox.showclasspath,toolbox.util.ui.images,toolbox.findclass"
+            sourcepath="${src}"
+            splitindex="false" 
+            use="true" 
+            version="true"/>
+            
+    </target>
 
     <!--=============================-->
     <!--            TEST             -->
@@ -307,7 +339,7 @@
             depends="init"
             description="Initalizes clover environment">
 
-        <property name="clover.preserve" value="true"/>
+        <property name="clover.preserve" value="false"/>
         <property name="clover.dir" location="${test}/clover"/>
         
         <mkdir dir="${clover.dir}"/>
@@ -316,8 +348,8 @@
                   value="${clover.dir}\toolbox_coverage.db"/>
                   
         <path id="clover.classpath">
-            <pathelement path="${lib}\clover.jar"/>
-            <pathelement path="${lib}\velocity.jar"/>
+            <pathelement path="${build.lib}\clover.jar"/>
+            <pathelement path="${build.lib}\velocity.jar"/>
         </path>
 
     </target>
