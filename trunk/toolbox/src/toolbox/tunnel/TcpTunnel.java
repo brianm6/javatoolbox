@@ -22,41 +22,41 @@ import toolbox.util.io.PrintableOutputStream;
 
 /**
  * Tunnels TCP traffic through a local proxy port before it is forwarded to
- * the intended recipient. This allows a view into a "real time" window 
- * of the data being sent back and forth. Very useful for socket level 
+ * the intended recipient. This allows a view into a "real time" window
+ * of the data being sent back and forth. Very useful for socket level
  * degugging.
  * <pre>
- * 
+ *
  * Without Tunnel:
- * 
+ *
  *              Client                Server:80
  *             --------              --------
  *                 |                     |
  *                 |        read         |
  *                 |-------------------->|
  *                 |                     |--.
- *                 |                     |  | do something 
+ *                 |                     |  | do something
  *                 |                     |<-'
  *                 |        write        |
  *                 |<--------------------|
  *                 |                     |
- * 
+ *
  * With Tunnel:
- * 
+ *
  *              Client        Tunnel         Server
  *            [localhost]  [localhost:80]  [server:80]
  *            -----------  --------------  -----------
  *                 |              |            |
- *                 |     write    |            |  
+ *                 |     write    |            |
  *                 |------------->|            |
  *                 |              |--.         |
  *                 |              |  |out sink |
  *                 |              |<-'         |
- *                 |              |            | 
+ *                 |              |            |
  *                 |              |   write    |
- *                 |              |----------->| 
+ *                 |              |----------->|
  *                 |              |            |--.
- *                 |              |            |  | do something 
+ *                 |              |            |  | do something
  *                 |              |            |<-'
  *                 |              |    write   |
  *                 |              |<-----------|
@@ -67,10 +67,10 @@ import toolbox.util.io.PrintableOutputStream;
  *                 |     write    |            |
  *                 |<-------------|            |
  *                 |              |            |
- * 
- * 
+ *
+ *
  * Sequence of events:
- * 
+ *
  * 1. socket client connects to TcpTunnel (localhost:port)
  * 2. TcpTunnel connects to remote host (remotehost:remoteport)
  * 3. socket client sends request to TcpTunnel
@@ -83,90 +83,97 @@ import toolbox.util.io.PrintableOutputStream;
 public class TcpTunnel implements TcpTunnelListener
 {
     private static final Logger logger_ = Logger.getLogger(TcpTunnel.class);
-    
+
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
 
-    /** 
-     * Stream name for event inputstream. 
+    /**
+     * Stream name for event inputstream.
      */
     private static final String STREAM_IN = "client <-- tunnel";
-    
-    /** 
-     * Stream name for event outputstream. 
+
+    /**
+     * Stream name for event outputstream.
      */
     private static final String STREAM_OUT = "tunnel --> server";
 
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
-    /** 
-     * Server socket for tunnel port on localhost. 
+
+    /**
+     * Server socket for tunnel port on localhost.
      */
     private ServerSocket ss_;
 
-    /** 
-     * Tunnel port on localhost. 
+    /**
+     * Tunnel port on localhost.
      */
     private int listenPort_;
-    
-    /** 
-     * Flag to shutdown. 
+
+    /**
+     * Flag to shutdown.
      */
     private boolean stopped_;
 
-    /** 
-     * Intended recipient hostname. 
-     */    
+    /**
+     * Intended recipient hostname.
+     */
     private String remoteHost_;
-    
-    /** 
-     * Intended recipient port. 
+
+    /**
+     * Intended recipient port.
      */
     private int remotePort_;
-    
-    /** 
-     * Listeners of tunnel events. 
+
+    /**
+     * Listeners of tunnel events.
      */
     private List listeners_;
-    
-    /** 
-     * Total number of incoming bytes. 
+
+    /**
+     * Total number of incoming bytes.
      */
     private int inTotal_;
-    
-    /** 
-     * Total number of outgoing bytes. 
+
+    /**
+     * Total number of outgoing bytes.
      */
     private int outTotal_;
 
-    /** 
-     * Sink for incoming data from the remote host. 
+    /**
+     * Sink for incoming data from the remote host.
      */
     private OutputStream incomingSink_;
-    
-    /** 
-     * Sink for outgoing data to the remote host. 
+
+    /**
+     * Sink for outgoing data to the remote host.
      */
     private OutputStream outgoingSink_;
-    
+
     /**
-     * Flag for supressing binary data. 
+     * Flag for supressing binary data.
      */
     private boolean supressBinary_;
-        
+
+    /**
+     * Stream that suppresses incoming binary data.
+     */
     private PrintableOutputStream printableIncomingSink_;
+
+    /**
+     * Stream that suppresses outgoing binary data.
+     */
     private PrintableOutputStream printableOutgoingSink_;
-    
+
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Entrypoint. 
-     * 
+     * Entrypoint.
+     *
      * @param args [0] = listenport
      *             [1] = host to tunnel to
      *             [2] = port to tunnel to
@@ -175,7 +182,7 @@ public class TcpTunnel implements TcpTunnelListener
     {
         if (args.length != 3)
         {
-            System.err.println("Usage: java " + TcpTunnel.class.getName() + 
+            System.err.println("Usage: java " + TcpTunnel.class.getName() +
                                " listenport tunnelhost tunnelport");
             System.exit(1);
         }
@@ -195,12 +202,12 @@ public class TcpTunnel implements TcpTunnelListener
     }
 
     //--------------------------------------------------------------------------
-    // Constructors 
+    // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a TcpTunnel with incoming/outgoing data echoed to System.out.
-     * 
+     *
      * @param listenPort Local port to listen on.
      * @param remoteHost Remote host to connect to.
      * @param remotePort Remote port to connect to.
@@ -213,19 +220,19 @@ public class TcpTunnel implements TcpTunnelListener
         listeners_  = new ArrayList();
         inTotal_    = 0;
         outTotal_   = 0;
-        
+
         setSupressBinary(false);
         setIncomingSink(System.out);
         setOutgoingSink(System.out);
-    }    
-       
+    }
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
     /**
      * Sets the sink for incoming data.
-     * 
+     *
      * @param stream Sink for incoming data.
      */
     public void setIncomingSink(OutputStream stream)
@@ -233,58 +240,62 @@ public class TcpTunnel implements TcpTunnelListener
         incomingSink_ = stream;
     }
 
-    
+
     /**
      * Sets the sink for outgoing data.
-     * 
+     *
      * @param stream Sink for outgoing data.
      */
     public void setOutgoingSink(OutputStream stream)
     {
         outgoingSink_ = stream;
     }
-    
-    
+
+
     /**
      * Returns the supressBinary.
-     * 
+     *
      * @return boolean
      */
     public boolean isSupressBinary()
     {
         return supressBinary_;
     }
-    
-    
+
+
     /**
      * Sets the supressBinary.
-     * 
+     *
      * @param supressBinary The supressBinary to set.
      */
     public void setSupressBinary(boolean supressBinary)
     {
         supressBinary_ = supressBinary;
-        printableIncomingSink_.setEnabled(supressBinary_);
-        printableOutgoingSink_.setEnabled(supressBinary_);
+
+        if (printableIncomingSink_ != null)
+            printableIncomingSink_.setEnabled(supressBinary_);
+
+        if (printableOutgoingSink_ != null)
+            printableOutgoingSink_.setEnabled(supressBinary_);
     }
-    
-    
+
+
     /**
      * Starts the tunnel.
      */
     public void start()
     {
         boolean alreadyListened = false;
-        
+
         try
         {
             // Server socket on listenPort
             ss_ = new ServerSocket(listenPort_);
             ss_.setSoTimeout(5000);
             stopped_ = false;
-            
+
             fireTunnelStarted();
-            
+
             while (!stopped_)
             {
                 try
@@ -293,25 +304,25 @@ public class TcpTunnel implements TcpTunnelListener
                     {
                         if (!alreadyListened)
                             fireStatusChanged(
-                                "Listening for connections on port " + 
+                                "Listening for connections on port " +
                                     listenPort_);
 
                         // Client socket
                         Socket cs = ss_.accept();
-    
+
                         // Remote socket
                         Socket rs = new Socket(remoteHost_, remotePort_);
-                        
+
                         fireStatusChanged(
-                            "Tunnelling port " + listenPort_ + 
-                            " to port " + remotePort_ + 
+                            "Tunnelling port " + listenPort_ +
+                            " to port " + remotePort_ +
                             " on host " + remoteHost_ + " ...");
-    
+
 //                                                          +--------> outgoingSink_
-//                                                          | 
+//                                                          |
 //                                                          +--------> eos (event output stream)
 //                                             |outStreams  |
-//    cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()  
+//    cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()
 //                                    |        |
 //                        instreams   | tunnel |
 //                                    |        |
@@ -322,52 +333,52 @@ public class TcpTunnel implements TcpTunnelListener
 // incomingSink_<-------+
 //
 
-                        MulticastOutputStream outStreams = 
+                        MulticastOutputStream outStreams =
                             new MulticastOutputStream();
-                            
+
                         outStreams.addStream(rs.getOutputStream());
-                        
-                        EventOutputStream eos = 
+
+                        EventOutputStream eos =
                             new EventOutputStream(
                                 STREAM_OUT, new NullOutputStream());
-                                
+
                         eos.addListener(new OutputStreamListener());
-                            
+
                         outStreams.addStream(eos);
-                        
-                        printableOutgoingSink_ = 
+
+                        printableOutgoingSink_ =
                             new PrintableOutputStream(
                                 outgoingSink_, supressBinary_, ".");
-                            
+
                         outStreams.addStream(printableOutgoingSink_);
-                        
-                        MulticastOutputStream inStreams = 
+
+                        MulticastOutputStream inStreams =
                             new MulticastOutputStream();
-                            
+
                         inStreams.addStream(cs.getOutputStream());
-                        
-                        EventOutputStream eis = 
+
+                        EventOutputStream eis =
                             new EventOutputStream(
                                 STREAM_IN, new NullOutputStream());
-                        
-                        eis.addListener(new OutputStreamListener());    
-                        
+
+                        eis.addListener(new OutputStreamListener());
+
                         inStreams.addStream(eis);
 
                         printableIncomingSink_ =
                             new PrintableOutputStream(
                                 incomingSink_, supressBinary_, ".");
 
-                        inStreams.addStream(printableIncomingSink_);    
+                        inStreams.addStream(printableIncomingSink_);
 
                         new Thread(new Relay(
-                            new BufferedInputStream(cs.getInputStream()), 
+                            new BufferedInputStream(cs.getInputStream()),
                             new BufferedOutputStream(outStreams)),
                             "TcpTunnel:incomingSink").start();
-                            
+
                         new Thread(new Relay(
-                            new BufferedInputStream(rs.getInputStream()), 
-                            new BufferedOutputStream(inStreams)), 
+                            new BufferedInputStream(rs.getInputStream()),
+                            new BufferedOutputStream(inStreams)),
                             "TcpTunnel:outgoingSink").start();
                     }
                 }
@@ -387,50 +398,50 @@ public class TcpTunnel implements TcpTunnelListener
             ExceptionUtil.handleUI(ioe, logger_);
         }
     }
-    
-    
+
+
     /**
      * Stops the tunnel.
-     */              
+     */
     public void stop()
     {
         stopped_ = true;
-        SocketUtil.close(ss_);    
+        SocketUtil.close(ss_);
         fireStatusChanged("Tunnel stopped");
     }
-    
+
     //--------------------------------------------------------------------------
     // Event listener support
     //--------------------------------------------------------------------------
-    
+
     /**
      * Adds a TcpTunnelListener.
-     * 
+     *
      * @param listener TcpTunnelListener to add.
      */
     public void addTcpTunnelListener(TcpTunnelListener listener)
     {
         listeners_.add(listener);
     }
-    
-    
+
+
     /**
      * Fires notifcation that the status of the tunnel has changed to all
      * registered listeners.
-     * 
+     *
      * @param status New status
      */
     protected void fireStatusChanged(String status)
     {
         for (Iterator i = listeners_.iterator(); i.hasNext();)
-             ((TcpTunnelListener) i.next()).statusChanged(this, status);    
+             ((TcpTunnelListener) i.next()).statusChanged(this, status);
     }
 
-    
+
     /**
      * Fires notifcation that the number of bytes read has changed to all
      * registered listeners.
-     * 
+     *
      * @param connRead Bytes read during the life of the last connection.
      */
     protected void fireBytesRead(int connRead)
@@ -439,11 +450,11 @@ public class TcpTunnel implements TcpTunnelListener
             ((TcpTunnelListener) i.next()).bytesRead(this, connRead, inTotal_);
     }
 
-    
+
     /**
      * Fires notifcation that the number of bytes written has changed to all
      * registered listeners.
-     * 
+     *
      * @param connWritten Bytes written during the life of the last connection.
      */
     protected void fireBytesWritten(int connWritten)
@@ -453,20 +464,20 @@ public class TcpTunnel implements TcpTunnelListener
                 this, connWritten, outTotal_);
     }
 
-    
+
     /**
      * Fires notifcation that the tunnel has started.
      */
     protected void fireTunnelStarted()
     {
         for (Iterator i = listeners_.iterator(); i.hasNext();)
-            ((TcpTunnelListener) i.next()).tunnelStarted(this);    
+            ((TcpTunnelListener) i.next()).tunnelStarted(this);
     }
-    
+
     //--------------------------------------------------------------------------
     // Interface TcpTunnelListener
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
      *      toolbox.tunnel.TcpTunnel, java.lang.String)
@@ -475,30 +486,30 @@ public class TcpTunnel implements TcpTunnelListener
     {
         System.out.println(status);
     }
-    
-    
+
+
     /**
      * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
      *      toolbox.tunnel.TcpTunnel, int, int)
      */
-    public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
+    public void bytesRead(TcpTunnel tunnel, int connBytesRead,
                           int totalBytesRead)
     {
         System.out.println("[Bytes read: " + connBytesRead + "]");
     }
 
-    
+
     /**
      * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
      *      toolbox.tunnel.TcpTunnel, int, int)
      */
-    public void bytesWritten(TcpTunnel tunnel, int connBytesWritten, 
+    public void bytesWritten(TcpTunnel tunnel, int connBytesWritten,
                              int totalBytesWritten)
     {
         System.out.println("[Bytes written: " + connBytesWritten + "]");
     }
-    
-    
+
+
     /**
      * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(
      *      toolbox.tunnel.TcpTunnel)
@@ -507,11 +518,11 @@ public class TcpTunnel implements TcpTunnelListener
     {
         System.out.println("Tunnel started");
     }
-    
+
     //--------------------------------------------------------------------------
     // OutputStreamListener
     //--------------------------------------------------------------------------
-    
+
     /**
      * Listener that reports totla number of bytes written/read from the tunnel
      * after the connection is closed.
@@ -521,19 +532,19 @@ public class TcpTunnel implements TcpTunnelListener
         /**
          * Tallies up counts and generates bytesRead/Written events when the
          * stream is closed.
-         * 
+         *
          * @param stream Stream that was closed.
          */
         public void streamClosed(EventOutputStream stream)
         {
             String name = stream.getName();
             int count = stream.getCount();
-            
+
             if (name.equals(STREAM_IN))
             {
                 //logger_.debug(
                 //  "Tallying bytes on stream close event: " +stream.getName());
-                
+
                 inTotal_ += count;
                 fireBytesRead(count);
             }
@@ -541,7 +552,7 @@ public class TcpTunnel implements TcpTunnelListener
             {
                 //logger_.debug(
                 //  "Tallying bytes on stream close event: " +stream.getName());
-                
+
                 outTotal_ += count;
                 fireBytesWritten(count);
             }
@@ -549,19 +560,19 @@ public class TcpTunnel implements TcpTunnelListener
             {
                 throw new IllegalArgumentException(
                     "Invalid stream name:" + name);
-            } 
+            }
         }
 
-        
+
         /**
          * @see toolbox.util.io.EventOutputStream.Listener#byteWritten(
          *      toolbox.util.io.EventOutputStream, int)
          */
         public void byteWritten(EventOutputStream stream, int b)
-        { 
+        {
         }
-        
-        
+
+
         /**
          * @see toolbox.util.io.EventOutputStream.Listener#streamFlushed(
          *      toolbox.util.io.EventOutputStream)
@@ -569,14 +580,14 @@ public class TcpTunnel implements TcpTunnelListener
         public void streamFlushed(EventOutputStream stream)
         {
         }
-        
-        
+
+
         /**
          * @see toolbox.util.io.EventOutputStream.Listener#streamThroughput(
          *      toolbox.util.io.EventOutputStream, float)
          */
         public void streamThroughput(
-            EventOutputStream stream, 
+            EventOutputStream stream,
             float bytesPerPeriod)
         {
         }
