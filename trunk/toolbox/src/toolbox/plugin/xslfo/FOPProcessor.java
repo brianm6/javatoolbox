@@ -61,6 +61,7 @@ public class FOPProcessor implements FOProcessor
     {
         try
         {
+            driver_.reset();
             driver_.setOutputStream(pdfStream);
             Reader reader = new InputStreamReader(foStream, "UTF-8");
             driver_.setInputSource(new InputSource(reader));
