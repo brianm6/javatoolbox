@@ -36,7 +36,7 @@ public class MonitoredInputStream extends FilterInputStream
     /**
      * List of registered listeners interested in stream events.
      */
-    private Listener[] listeners_;
+    private InputStreamListener[] listeners_;
     
     /**
      * Bandwidth usage monitor.
@@ -75,7 +75,7 @@ public class MonitoredInputStream extends FilterInputStream
         setName(name);
         setThroughputMonitor(new DefaultThroughputMonitor());
         setTransferredMonitor(new DefaultTransferredMonitor());
-        listeners_ = new Listener[0];
+        listeners_ = new InputStreamListener[0];
      }
     
     //--------------------------------------------------------------------------
@@ -89,13 +89,10 @@ public class MonitoredInputStream extends FilterInputStream
     {
         int c = super.read();
         
-        if (c != -1) {
-            //count_++;
+        if (c != -1) 
+        {
             getThroughputMonitor().newBytesTransferred(1);
             getTransferredMonitor().newBytesTransferred(1);
-            
-            if (listeners_.length > 0)
-                fireBytesRead(new byte[] {(byte) c});
         }
         
         return c;
@@ -111,11 +108,6 @@ public class MonitoredInputStream extends FilterInputStream
         
         if (read > 0) 
         {
-            //count_ += read;
-            
-            if (listeners_.length > 0)
-                fireBytesRead(ArrayUtil.subset(b, off, off + len - 1));
-            
             getThroughputMonitor().newBytesTransferred(read);
             getTransferredMonitor().newBytesTransferred(read);
         }
@@ -132,7 +124,6 @@ public class MonitoredInputStream extends FilterInputStream
         super.close();
         fireStreamClosed();
     }
-
     
     //--------------------------------------------------------------------------
     // Event Listener Support
@@ -143,9 +134,9 @@ public class MonitoredInputStream extends FilterInputStream
      * 
      * @param listener Listener to register.
      */
-    public void addListener(Listener listener)
+    public void addInputStreamListener(InputStreamListener listener)
     {
-        listeners_ = (Listener[]) ArrayUtil.add(listeners_, listener);
+        listeners_ = (InputStreamListener[]) ArrayUtil.add(listeners_, listener);
     }
     
     
@@ -154,9 +145,9 @@ public class MonitoredInputStream extends FilterInputStream
      * 
      * @param listener Listener to remove.
      */
-    public void removeListener(Listener listener)
+    public void removeInputStreamListener(InputStreamListener listener)
     {
-        listeners_ = (Listener[]) ArrayUtil.remove(listeners_, listener);
+        listeners_ = (InputStreamListener[]) ArrayUtil.remove(listeners_, listener);
     }
     
     
@@ -168,18 +159,7 @@ public class MonitoredInputStream extends FilterInputStream
         for (int i = 0; i < listeners_.length; i++)
             listeners_[i].streamClosed(this);               
     }
-
     
-    /** 
-     * Fires notification that a byte was read from the stream.
-     * 
-     * @param bytes Bytes that was read.
-     */
-    protected void fireBytesRead(byte[] bytes)
-    {
-        for (int i = 0; i < listeners_.length; i++)
-            listeners_[i].bytesRead(this, bytes);               
-    }
 
     //--------------------------------------------------------------------------
     // Public
@@ -248,7 +228,7 @@ public class MonitoredInputStream extends FilterInputStream
      * Listener interface used to notify implementers of activity within the
      * stream.
      */
-    public interface Listener
+    public interface InputStreamListener
     {
         /**
          * Notification that the stream has been closed.
@@ -256,15 +236,5 @@ public class MonitoredInputStream extends FilterInputStream
          * @param stream Stream that was closed.
          */
         void streamClosed(MonitoredInputStream stream);
-        
-        
-        /**
-         * Notification that data was read from the stream.
-         * 
-         * @param stream Stream data was read from.
-         * @param bytes Bytes read from the stream.
-         */
-        void bytesRead(MonitoredInputStream stream, byte[] bytes);
     }
-    
 }
