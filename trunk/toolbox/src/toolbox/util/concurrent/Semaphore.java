@@ -23,16 +23,21 @@ package toolbox.util.concurrent;
  * <b>Sample usage.</b> Here is a class that uses a semaphore to
  * help manage access to a pool of items.
  * <pre>
- * class Pool {
+ * class Pool 
+ * {
  *   static final MAX_AVAILABLE = 100;
  *   private final Semaphore available = new Semaphore(MAX_AVAILABLE);
  *   
- *   public Object getItem() throws InterruptedException { // no synch
+ *   public Object getItem() throws InterruptedException 
+ *   { 
+ *     // no synch
  *     available.acquire();
  *     return getNextAvailableItem();
  *   }
  *
- *   public void putItem(Object x) { // no synch
+ *   public void putItem(Object x) 
+ *   { 
+ *     // no synch
  *     if (markAsUnused(x))
  *       available.release();
  *   }
@@ -42,9 +47,12 @@ package toolbox.util.concurrent;
  *   protected Object[] items = ... whatever kinds of items being managed
  *   protected boolean[] used = new boolean[MAX_AVAILABLE];
  *
- *   protected synchronized Object getNextAvailableItem() { 
- *     for (int i = 0; i < MAX_AVAILABLE; ++i) {
- *       if (!used[i]) {
+ *   protected synchronized Object getNextAvailableItem() 
+ *   { 
+ *     for (int i = 0; i < MAX_AVAILABLE; ++i) 
+ *     {
+ *       if (!used[i]) 
+ *       {
  *          used[i] = true;
  *          return items[i];
  *       }
@@ -52,10 +60,14 @@ package toolbox.util.concurrent;
  *     return null; // not reached 
  *   }
  *
- *   protected synchronized boolean markAsUnused(Object item) { 
- *     for (int i = 0; i < MAX_AVAILABLE; ++i) {
- *       if (item == items[i]) {
- *          if (used[i]) {
+ *   protected synchronized boolean markAsUnused(Object item) 
+ *   { 
+ *     for (int i = 0; i < MAX_AVAILABLE; ++i) 
+ *     {
+ *       if (item == items[i]) 
+ *       {
+ *          if (used[i]) 
+ *          {
  *            used[i] = false;
  *            return true;
  *          }
@@ -65,33 +77,38 @@ package toolbox.util.concurrent;
  *     }
  *     return false;
  *   }
- *
  * }
- *</pre>
+ * </pre>
  * <p>
-**/
-
+ */
 public class Semaphore implements Sync
 {
     /** current number of available permits **/
-    protected long permits_;
+    private long permits_;
 
     /** 
      * Create a Semaphore with the given initial number of permits.
      * Using a seed of one makes the semaphore act as a mutual exclusion lock.
      * Negative seeds are also allowed, in which case no acquires will proceed
      * until the number of releases has pushed the number of permits past 0.
-    **/
+     * 
+     * @param  initialPermits  Initial permits
+     */
     public Semaphore(long initialPermits)
     {
         permits_ = initialPermits;
     }
 
-    /** Wait until a permit is available, and take one **/
+    /** 
+     * Wait until a permit is available, and take one 
+     * 
+     * @throws InterruptedException on interruption
+     */
     public void acquire() throws InterruptedException
     {
         if (Thread.interrupted())
             throw new InterruptedException();
+            
         synchronized (this)
         {
             try
@@ -114,7 +131,13 @@ public class Semaphore implements Sync
         }
     }
 
-    /** Wait at most msecs millisconds for a permit. **/
+    /** 
+     * Wait at most msecs millisconds for a permit. 
+     * 
+     * @param  msecs  Timeout in millis
+     * @return True if successful, false otherwise
+     * @throws InterruptedException on interruption
+     */
     public boolean attempt(long msecs) throws InterruptedException
     {
         if (Thread.interrupted())
@@ -146,9 +169,9 @@ public class Semaphore implements Sync
                         }
                         else
                         {
-                            waitTime =
-                                msecs
-                                    - (System.currentTimeMillis() - startTime);
+                            waitTime = msecs - 
+                                (System.currentTimeMillis() - startTime);
+                                
                             if (waitTime <= 0)
                                 return false;
                         }
@@ -163,14 +186,13 @@ public class Semaphore implements Sync
         }
     }
 
-    /** Release a permit **/
+    /** 
+     * Release a permit 
+     */
     public synchronized void release()
     {
-
         ++permits_;
-
         notify();
-
     }
 
     /** 
@@ -181,9 +203,11 @@ public class Semaphore implements Sync
      * </pre>
      * <p>
      * But may be more efficient in some semaphore implementations.
+     * 
+     * @param     n   Time in millis
      * @exception IllegalArgumentException if n is negative.
-     **/
-    public synchronized void release(long n)
+     */
+    public synchronized void release(long n) throws IllegalArgumentException
     {
         if (n < 0)
             throw new IllegalArgumentException("Negative argument");
@@ -197,10 +221,11 @@ public class Semaphore implements Sync
      * Return the current number of available permits.
      * Returns an accurate, but possibly unstable value,
      * that may change immediately after returning.
-     **/
+     * 
+     * @return  long
+     */
     public synchronized long permits()
     {
         return permits_;
     }
-
 }
