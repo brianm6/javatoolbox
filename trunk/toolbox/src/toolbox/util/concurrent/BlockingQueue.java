@@ -36,7 +36,7 @@ public class BlockingQueue
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a BlockingQueue
      */
     public BlockingQueue()
     {
@@ -171,7 +171,7 @@ public class BlockingQueue
     }
     
     //--------------------------------------------------------------------------
-    // Overridden from java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
     /**
