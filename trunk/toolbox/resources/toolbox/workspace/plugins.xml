@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Hard coded list of plugins for use under WebStart -->
 <Plugins>
+  <Plugin class="toolbox.plugin.jardeps.JarDepsPlugin"/>
   <Plugin class="toolbox.plugin.jsourceview.JSourceViewPlugin"/>
   <Plugin class="toolbox.plugin.jtail.JTailPlugin"/>
   <Plugin class="toolbox.plugin.junit.JUnitPlugin"/>
