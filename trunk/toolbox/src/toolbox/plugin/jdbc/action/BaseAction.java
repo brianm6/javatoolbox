@@ -18,7 +18,7 @@ public abstract class BaseAction extends WorkspaceAction
     //--------------------------------------------------------------------------
     
     /**
-     * Query plugin.
+     * Reference to the Query plugin which invoked this action.
      */
     private QueryPlugin plugin_;
 
@@ -29,7 +29,7 @@ public abstract class BaseAction extends WorkspaceAction
     /**
      * Creates a BaseAction.
      * 
-     * @param plugin Query plugin.
+     * @param plugin Query plugin which invoked this action.
      * @param name Action name.
      * @param async True to run asynchrously.
      * @param scope Scope of the busy cursor.
