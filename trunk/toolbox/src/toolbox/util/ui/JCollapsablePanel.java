@@ -12,16 +12,26 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
+
+import toolbox.workspace.IPreferenced;
 
 /**
  * Extension of JHeaderPanel that allows the panels contents to be collapsed
  * using a button in the header.
  */
-public class JCollapsablePanel extends JHeaderPanel
+public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
 {
     private static final Logger logger_ = 
         Logger.getLogger(JCollapsablePanel.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String PROPERTY_COLLAPSED = "collapsed";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -125,6 +135,8 @@ public class JCollapsablePanel extends JHeaderPanel
     {
         if (collapsed != isCollapsed())
             toggle(); 
+        
+        firePropertyChange(PROPERTY_COLLAPSED, !collapsed, collapsed);
     }
 
     
@@ -150,7 +162,6 @@ public class JCollapsablePanel extends JHeaderPanel
         revalidate();
         ((JComponent) getParent()).revalidate();
     }
-    
     
     //--------------------------------------------------------------------------
     // Protected
@@ -198,6 +209,24 @@ public class JCollapsablePanel extends JHeaderPanel
         
     }
 
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+    }
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+    }
+    
     //--------------------------------------------------------------------------
     // CollapseAction
     //--------------------------------------------------------------------------
