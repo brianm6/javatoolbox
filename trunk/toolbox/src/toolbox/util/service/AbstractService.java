@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
+import org.apache.commons.lang.ClassUtils;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.statemachine.StateMachine;
@@ -14,26 +15,86 @@ import toolbox.util.statemachine.StateMachineFactory;
  */
 public abstract class AbstractService implements Service
 {
-    static
+    // TODO: Left off here!
+    
+    public static StateMachine createStateMachine(Object serviceable)
     {
         StateMachine machine = 
-            StateMachineFactory.createStateMachine("start-stop");
+            StateMachineFactory.createStateMachine(
+                ClassUtils.getShortClassName(
+                    serviceable, "ServiceStateMachine"));
+
         
-        machine.addState(ServiceState.RUNNING);
-        machine.addState(ServiceState.STOPPED);
-        machine.setBeginState(ServiceState.STOPPED);
+        if (serviceable instanceof Startable)
+        {
+            machine.addState(ServiceState.RUNNING);
+            machine.addState(ServiceState.STOPPED);
+            machine.setBeginState(ServiceState.STOPPED);
+            
+            machine.addTransition(
+                ServiceTransition.START, 
+                ServiceState.STOPPED, 
+                ServiceState.RUNNING);
+            
+            machine.addTransition(
+                ServiceTransition.STOP, 
+                ServiceState.RUNNING,
+                ServiceState.STOPPED);
+        }
         
-        machine.addTransition(
-            ServiceTransition.START, 
-            ServiceState.STOPPED, 
-            ServiceState.RUNNING);
+        if (serviceable instanceof Suspendable)
+        {
+            machine.addState(ServiceState.SUSPENDED);
+            
+            machine.addTransition(
+                ServiceTransition.SUSPEND, 
+                ServiceState.RUNNING, 
+                ServiceState.SUSPENDED);
+            
+            machine.addTransition(
+                ServiceTransition.RESUME, 
+                ServiceState.SUSPENDED,
+                ServiceState.RUNNING);
+        }
         
-        machine.addTransition(
-            ServiceTransition.STOP, 
-            ServiceState.RUNNING,
-            ServiceState.STOPPED); 
+        if (serviceable instanceof Initializable)
+        {
+            machine.addState(ServiceState.UNINITIALIZED);
+            machine.addState(ServiceState.INITIALIZED);
+            machine.setBeginState(ServiceState.UNINITIALIZED);
+            
+            machine.addTransition(
+                ServiceTransition.INITIALIZE, 
+                ServiceState.UNINITIALIZED, 
+                ServiceState.INITIALIZED);
+            
+            machine.addTransition(
+                ServiceTransition.START, 
+                ServiceState.INITIALIZED,
+                ServiceState.RUNNING);
+        }
+        
+        if (serviceable instanceof Destroyable)
+        {
+            machine.addState(ServiceState.DESTROYED);
+            
+            machine.addTransition(
+                ServiceTransition.DESTROY, 
+                ServiceState.STOPPED, 
+                ServiceState.DESTROYED);
+            
+            if (serviceable instanceof Initializable)
+            {
+                machine.addTransition(
+                    ServiceTransition.DESTROY, 
+                    ServiceState.INITIALIZED, 
+                    ServiceState.DESTROYED);
+            }
+        }
+        
+        machine.reset();
+        return machine;
     }
-    
     
     //--------------------------------------------------------------------------
     // Constants
@@ -163,6 +224,8 @@ public abstract class AbstractService implements Service
     // Fields
     //--------------------------------------------------------------------------
 
+    private StateMachine machine_;
+    
     /**
      * State of this service.
      */
