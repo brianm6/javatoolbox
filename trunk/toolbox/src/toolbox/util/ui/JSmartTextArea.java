@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import toolbox.util.ThreadUtil;
 
 /**
  * Extends the functionality of JTextArea by adding
@@ -151,17 +152,23 @@ public class JSmartTextArea extends JTextArea
         }
         else
         {
-            final String s = str;
+//            final String s = str;
+//            
+//            SwingUtilities.invokeLater(
+//            
+//                new Runnable()
+//                {
+//                    public void run()
+//                    {
+//                        append(s);
+//                    }
+//                });
             
-            SwingUtilities.invokeLater(
+            ThreadUtil.MethodRunner runner = new ThreadUtil.MethodRunner(
+                this, "append", new String[] { str } );    
+                
+            SwingUtilities.invokeLater(runner);
             
-                new Runnable()
-                {
-                    public void run()
-                    {
-                        append(s);
-                    }
-                });
         }
     }
     
