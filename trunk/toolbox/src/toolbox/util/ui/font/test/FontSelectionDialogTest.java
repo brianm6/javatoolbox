@@ -5,12 +5,12 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Category;
-import toolbox.util.ui.font.FontSelectionDialog;
-import toolbox.util.ui.font.FontSelectionPane;
-import toolbox.util.ui.font.IFontDialogListener;
+import toolbox.util.ui.font.JFontChooserDialog;
+import toolbox.util.ui.font.JFontChooser;
+import toolbox.util.ui.font.IFontChooserDialogListener;
 
 /**
- * Unit test for FontSelectionDialog
+ * Unit test for JFontChooserDialog
  */
 public class FontSelectionDialogTest extends TestCase
 {
@@ -38,30 +38,30 @@ public class FontSelectionDialogTest extends TestCase
     }
 
     /**
-     * Test for void FontSelectionPane()
+     * Test for void JFontChooser()
      */
     public void testFontSelectionPanel()
     {
-        IFontDialogListener fsdListener = new IFontDialogListener()
+        IFontChooserDialogListener fsdListener = new IFontChooserDialogListener()
         {
-            public void okButtonPressed(FontSelectionPane fontPanel)
+            public void okButtonPressed(JFontChooser fontPanel)
             {
                 logger_.info("OK button pressed");                
             }
 
-            public void cancelButtonPressed(FontSelectionPane fontPanel)
+            public void cancelButtonPressed(JFontChooser fontPanel)
             {
                 logger_.info("Cancel button pressed");                
             }
 
-            public void applyButtonPressed(FontSelectionPane fontPanel)
+            public void applyButtonPressed(JFontChooser fontPanel)
             {
                 logger_.info("Apply button pressed");
             }
         };
         
-        FontSelectionDialog fsd = 
-            new FontSelectionDialog(new JFrame(), "Select font", false);
+        JFontChooserDialog fsd = 
+            new JFontChooserDialog(new JFrame(), "Select font", false);
             
         fsd.addFontDialogListener(fsdListener);
         

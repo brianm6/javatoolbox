@@ -5,10 +5,10 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import junit.framework.TestCase;
 
-import toolbox.util.ui.font.FontSelectionPane;
+import toolbox.util.ui.font.JFontChooser;
 
 /**
- * Unit test for FontSelectionPane
+ * Unit test for JFontChooser
  */
 public class FontSelectionPanelTest extends TestCase
 {
@@ -33,12 +33,12 @@ public class FontSelectionPanelTest extends TestCase
     }
 
     /*
-     * Test for void FontSelectionPane()
+     * Test for void JFontChooser()
      */
     public void testFontSelectionPanel()
     {
         JFrame f = new JFrame();
-        FontSelectionPane fsp = new FontSelectionPane();
+        JFontChooser fsp = new JFontChooser();
         f.getContentPane().add(BorderLayout.CENTER, fsp);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
@@ -46,14 +46,14 @@ public class FontSelectionPanelTest extends TestCase
     }
 
     /*
-     * Test for void FontSelectionPane(Font)
+     * Test for void JFontChooser(Font)
      */
     public void testFontSelectionPanelFont()
     {
     }
 
     /*
-     * Test for void FontSelectionPane(Font, String[], int[])
+     * Test for void JFontChooser(Font, String[], int[])
      */
     public void testFontSelectionPanelFontStringArrayIArray()
     {
