@@ -17,6 +17,8 @@ import javax.swing.Icon;
  */
 public class FlipIcon implements Icon
 {
+    // TODO: Refactor to RotatedTextIcon and move to toolbox.util.ui
+    
     //--------------------------------------------------------------------------
     // Constants 
     //--------------------------------------------------------------------------
