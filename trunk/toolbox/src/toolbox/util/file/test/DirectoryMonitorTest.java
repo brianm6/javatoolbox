@@ -41,7 +41,7 @@ public class DirectoryMonitorTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the DirectoryMonitor. 
+     * Tests a full lifecycle of the DirectoryMonitor. 
      * 
      * @throws Exception on IO error
      */
@@ -88,6 +88,44 @@ public class DirectoryMonitorTest extends TestCase
         }
         finally
         {
+            FileUtil.removeDir(dir);
+        }
+    }
+    
+    
+    /**
+     * Tests failure of an attempt to start an already running directory 
+     * monitor. 
+     * 
+     * @throws Exception on I/O error
+     */
+    public void testDirectoryMonitorFalseStart() throws Exception
+    {
+        logger_.info("Running testDirectoryMonitorFalseStart...");
+        
+        File dir = FileUtil.createTempDir();
+        
+        DirectoryMonitor dm = new DirectoryMonitor(dir);
+        dm.setDelay(500);
+        
+        dm.start();
+        
+        try
+        {
+            dm.start();
+            fail("Expected failure on attempt to start twice");
+        }
+        catch (IllegalStateException ise)
+        {
+            ; // Success
+        }
+        catch (Exception e)
+        {
+            fail("Expected IllegalStateException");
+        }
+        finally
+        {
+            dm.stop();
             FileUtil.removeDir(dir);
         }
     }
