@@ -1,10 +1,12 @@
 package toolbox.util.ui;
 
+import java.awt.Rectangle;
+
 import javax.swing.JInternalFrame;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
+import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
@@ -18,21 +20,18 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
     // XML Constants
     //--------------------------------------------------------------------------
 
-    private static final String NODE_JFRAME    = "JInternalFrame";
-    private static final String ATTR_MAXIMIZED = "maximized";
-    private static final String ATTR_WIDTH     = "w";
-    private static final String ATTR_HEIGHT    = "h";
-    private static final String ATTR_X         = "x";
-    private static final String ATTR_Y         = "y";
+    private static final String NODE_JFRAME = "JInternalFrame";
 
     //--------------------------------------------------------------------------
     // Defaults Constants
     //--------------------------------------------------------------------------
 
-    private static final boolean DEFAULT_MAXIMIZED = false;
-    private static final int DEFAULT_WIDTH = 300;
-    private static final int DEFAULT_HEIGHT = 200;
-
+    /**
+     * Default size and location of frames which don't specify any bounds.
+     */
+    private static final Rectangle DEFAULT_BOUNDS = 
+        new Rectangle(0, 0, 300, 200);
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -80,42 +79,26 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * Restores this frames size and location.
+     * 
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
     {
         Element root = prefs.getFirstChildElement(NODE_JFRAME);
-
-        setBounds(
-            XOMUtil.getIntegerAttribute(root, ATTR_X, 0),
-            XOMUtil.getIntegerAttribute(root, ATTR_Y, 0),
-            XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, DEFAULT_WIDTH),
-            XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, DEFAULT_HEIGHT));
-
-        boolean maximized =
-            XOMUtil.getBooleanAttribute(
-                root, ATTR_MAXIMIZED, DEFAULT_MAXIMIZED);
+        PreferencedUtil.applyPrefs(root, this, DEFAULT_BOUNDS); 
     }
 
 
     /**
+     * Saves this frames size and location.
+     * 
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JFRAME);
-        boolean maximized = false;
-        root.addAttribute(new Attribute(ATTR_MAXIMIZED, maximized + ""));
-
-        if (!maximized)
-        {
-            root.addAttribute(new Attribute(ATTR_X, getLocation().x + ""));
-            root.addAttribute(new Attribute(ATTR_Y, getLocation().y + ""));
-            root.addAttribute(new Attribute(ATTR_WIDTH, getSize().width + ""));
-            root.addAttribute(new Attribute(ATTR_HEIGHT,
-                getSize().height + ""));
-        }
-
+        PreferencedUtil.savePrefs(root, this);
         XOMUtil.insertOrReplace(prefs, root);
     }
 }

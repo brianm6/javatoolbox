@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
@@ -27,18 +28,15 @@ public class JSmartFrame extends JFrame implements IPreferenced
 
     private static final String NODE_JFRAME    = "JFrame";
     private static final String ATTR_MAXIMIZED = "maximized";
-    private static final String ATTR_WIDTH     = "w";
-    private static final String ATTR_HEIGHT    = "h";
-    private static final String ATTR_X         = "x";
-    private static final String ATTR_Y         = "y";
 
     //--------------------------------------------------------------------------
     // Defaults Constants
     //--------------------------------------------------------------------------
 
+    /**
+     * Not maximized by default.
+     */
     private static final boolean DEFAULT_MAXIMIZED = false;
-    private static final int DEFAULT_WIDTH = 800;
-    private static final int DEFAULT_HEIGHT = 600;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -93,20 +91,17 @@ public class JSmartFrame extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * Restores this frames location and size or maximized state.
+     * 
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
     {
         Element root = prefs.getFirstChildElement(NODE_JFRAME);
 
-        setLocation(
-            XOMUtil.getIntegerAttribute(root, ATTR_X, 0),
-            XOMUtil.getIntegerAttribute(root, ATTR_Y, 0));
-
-        setSize(
-            XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, DEFAULT_WIDTH),
-            XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, DEFAULT_HEIGHT));
-
+        // Takes care of the bounds only
+        PreferencedUtil.applyPrefs(root, this);
+        
         boolean maximized =
             XOMUtil.getBooleanAttribute(
                 root, ATTR_MAXIMIZED, DEFAULT_MAXIMIZED);
@@ -127,25 +122,22 @@ public class JSmartFrame extends JFrame implements IPreferenced
 
 
     /**
+     * Saves this frames location and size or maximized state.
+     * 
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JFRAME);
 
-        boolean maximized = (getExtendedState() & Frame.MAXIMIZED_BOTH) ==
-            Frame.MAXIMIZED_BOTH;
+        boolean maximized = 
+            (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
 
         root.addAttribute(new Attribute(ATTR_MAXIMIZED, maximized + ""));
 
+        // Only if not maximized, save the bounds
         if (!maximized)
-        {
-            root.addAttribute(new Attribute(ATTR_X, getLocation().x + ""));
-            root.addAttribute(new Attribute(ATTR_Y, getLocation().y + ""));
-            root.addAttribute(new Attribute(ATTR_WIDTH, getSize().width + ""));
-            root.addAttribute(new Attribute(ATTR_HEIGHT,
-                getSize().height + ""));
-        }
+            PreferencedUtil.savePrefs(root, this);
 
         XOMUtil.insertOrReplace(prefs, root);
     }

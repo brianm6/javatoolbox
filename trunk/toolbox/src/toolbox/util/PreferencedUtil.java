@@ -1,5 +1,7 @@
 package toolbox.util;
 
+import java.awt.Component;
+import java.awt.Rectangle;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -19,6 +21,30 @@ import org.apache.commons.beanutils.BeanUtils;
 public class PreferencedUtil
 {
     //--------------------------------------------------------------------------
+    // XML Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Attribute for the width of a component.
+     */
+    private static final String ATTR_WIDTH = "w";
+    
+    /**
+     * Attribute for the height of a component.
+     */
+    private static final String ATTR_HEIGHT = "h";
+    
+    /**
+     * Attribute for the x-axis location of a component.
+     */
+    private static final String ATTR_X = "x";
+    
+    /**
+     * Attribute for the y-axis location of a component.
+     */
+    private static final String ATTR_Y = "y";
+    
+    //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
@@ -30,7 +56,7 @@ public class PreferencedUtil
     }
     
     //--------------------------------------------------------------------------
-    // Public
+    // JavaBean Helpers
     //--------------------------------------------------------------------------
     
     /**
@@ -102,5 +128,57 @@ public class PreferencedUtil
                     BeanUtils.setProperty(bean, propName, attr.getValue());
             }
         }
+    }
+    
+    //--------------------------------------------------------------------------
+    // Component Helpers
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Convenience method to apply preferences to a Component. Supported 
+     * properties include size and location.
+     * 
+     * @param node Node containing valid attributes for size and location.
+     * @param c Component to apply the preferences to.
+     */
+    public static void applyPrefs(Element node, Component c)
+    {
+        applyPrefs(node, c, new Rectangle(0, 0, 800, 600));
+    }
+
+    
+    /**
+     * Convenience method to apply preferences to a Component. Supported 
+     * properties include size and location.
+     * 
+     * @param node Node containing valid attributes for size and location.
+     * @param c Component to apply the preferences to.
+     * @param defaults If any of the attributes are not found, a default value
+     *        is used from this default.
+     */
+    public static void applyPrefs(Element node, Component c, Rectangle defaults)
+    {
+        c.setBounds(
+            XOMUtil.getIntegerAttribute(node, ATTR_X, defaults.x),
+            XOMUtil.getIntegerAttribute(node, ATTR_Y, defaults.y),
+            XOMUtil.getIntegerAttribute(node, ATTR_WIDTH, defaults.width),
+            XOMUtil.getIntegerAttribute(node, ATTR_HEIGHT, defaults.height));
+    }
+
+    
+    /**
+     * Convenience method to save a Components preferences to node. Supported 
+     * properties include size and location.
+     * 
+     * @param node Node to append attributes to.
+     * @param c Component to read size and location from.
+     */
+    public static void savePrefs(Element node, Component c)
+    {
+        Rectangle r = c.getBounds();
+        node.addAttribute(new Attribute(ATTR_X, r.x + ""));
+        node.addAttribute(new Attribute(ATTR_Y, r.y + ""));
+        node.addAttribute(new Attribute(ATTR_WIDTH, r.width + ""));
+        node.addAttribute(new Attribute(ATTR_HEIGHT, r.height + ""));
     }
 }
