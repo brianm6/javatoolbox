@@ -90,7 +90,7 @@ public class JTail extends JFrame implements IPreferenced
     private static final String NODE_RECENT_TAIL = "RecentTail";
          
     /** 
-     * Menu of recently tailed files. A tail becomes 'recent' when it is closed. 
+     * Menu of recently tailed files. A tail becomes 'recent' when it is closed.
      */
     private JMenu recentMenu_;
 
@@ -253,7 +253,7 @@ public class JTail extends JFrame implements IPreferenced
         tabbedPane_.addTab(makeTabLabel(config), tailPane);
         
         tabbedPane_.setToolTipTextAt(
-            tabbedPane_.getTabCount()-1, makeTabToolTip(config));
+            tabbedPane_.getTabCount() - 1, makeTabToolTip(config));
             
         tabbedPane_.setSelectedComponent(tailPane);
         
@@ -287,14 +287,15 @@ public class JTail extends JFrame implements IPreferenced
      */
     protected TailPane getSelectedTail()
     {
-        return (TailPane)tabbedPane_.getSelectedComponent();
+        return (TailPane) tabbedPane_.getSelectedComponent();
     }
     
     
     /**
      * Returns the configuration of currently selected tail in the tabbed pane.
      * 
-     * @return ITailPaneConfig  
+     * @return ITailPaneConfig.
+     * @throws IOException on I/O error.  
      */
     protected ITailPaneConfig getSelectedConfig() throws IOException
     {
@@ -305,7 +306,7 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Makes an easy to read label for the TailPane tab.
      * 
-     * @param config TailPane configuration
+     * @param config TailPane configuration.
      * @return Label
      */
     public static String makeTabLabel(ITailPaneConfig config)
@@ -314,11 +315,11 @@ public class JTail extends JFrame implements IPreferenced
         String[] filenames = config.getFilenames();
         tabname.append("<html><center>");
         
-        for (int i=0; i<filenames.length; i++)
+        for (int i = 0; i < filenames.length; i++)
         {
             tabname.append(FileUtil.stripPath(filenames[i]));
             
-            if (i+1 < filenames.length)
+            if (i + 1 < filenames.length)
                 tabname.append("<br>");
         }
         
@@ -331,7 +332,7 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Makes an easy to read tooltip for the TailPane tab.
      * 
-     * @param config TailPane configuration
+     * @param config TailPane configuration.
      * @return String
      */
     public static String makeTabToolTip(ITailPaneConfig config)
@@ -340,11 +341,11 @@ public class JTail extends JFrame implements IPreferenced
         String[] filenames = config.getFilenames();
         tabname.append("<html><center>");
         
-        for (int i=0; i<filenames.length; i++)
+        for (int i = 0; i < filenames.length; i++)
         {
             tabname.append(filenames[i]);
             
-            if (i+1 < filenames.length)
+            if (i + 1 < filenames.length)
                 tabname.append("<br>");
         }
         
@@ -355,7 +356,7 @@ public class JTail extends JFrame implements IPreferenced
     
     //--------------------------------------------------------------------------
     // IPreferenced Interface
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -370,7 +371,7 @@ public class JTail extends JFrame implements IPreferenced
         // Tails left running since last save
         ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
         
-        for (int i=0; i< tailPaneConfigs.length; i++)
+        for (int i = 0; i < tailPaneConfigs.length; i++)
         {
             ITailPaneConfig config = tailPaneConfigs[i];
             
@@ -390,7 +391,7 @@ public class JTail extends JFrame implements IPreferenced
         
         Elements recentTails = recent.getChildElements(NODE_RECENT_TAIL);
             
-        for (int i=0, n=recentTails.size(); i<n; i++)
+        for (int i = 0, n = recentTails.size(); i < n; i++)
         {
             Element recentTail = recentTails.get(i);
             TailPaneConfig config = new TailPaneConfig();
@@ -409,7 +410,7 @@ public class JTail extends JFrame implements IPreferenced
         
         ITailPaneConfig configs[] = new ITailPaneConfig[0];
         
-        for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext(); )
+        for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             TailPane tailPane = (TailPane) entry.getValue();            
@@ -429,7 +430,7 @@ public class JTail extends JFrame implements IPreferenced
         Element recent = new Element(NODE_RECENT);
         Component[] items = recentMenu_.getMenuComponents();
        
-        for (int i=0; i<items.length; i++)
+        for (int i = 0; i < items.length; i++)
         {
             JMenuItem menuItem = (JMenuItem) items[i];
             Action action = menuItem.getAction();
@@ -458,12 +459,16 @@ public class JTail extends JFrame implements IPreferenced
      */
     class FileSelectionListener extends FileExplorerAdapter
     {
+        /**
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(
+         *      java.lang.String)
+         */
         public void fileDoubleClicked(String file)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
             
             ITailPaneConfig config = new TailPaneConfig();
-            config.setFilenames(new String[] { file } );
+            config.setFilenames(new String[] {file});
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
             config.setAntiAlias(defaults.isAntiAliased());
@@ -487,18 +492,28 @@ public class JTail extends JFrame implements IPreferenced
      */
     class TailButtonListener extends SmartAction
     {
+        /**
+         * Creates a TailButtonListener.
+         */
         TailButtonListener()
         {
             super("Tail", true, false, null);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
             ITailPaneConfig config = new TailPaneConfig();
             
             config.setFilenames(new String[] 
-                {fileSelectionPane_.getFileExplorer().getFilePath() } );
+            {
+                fileSelectionPane_.getFileExplorer().getFilePath()
+            });
                 
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
@@ -517,11 +532,19 @@ public class JTail extends JFrame implements IPreferenced
      */
     class AggregateButtonListener extends SmartAction
     {
+        /**
+         * Creates a AggregateButtonListener.
+         */
         AggregateButtonListener()
         {
             super("Aggregate", true, false, null);    
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             String file = fileSelectionPane_.getFileExplorer().getFilePath();
@@ -536,21 +559,28 @@ public class JTail extends JFrame implements IPreferenced
      */
     class CloseButtonListener extends SmartAction
     {
+        /**
+         * Creates a CloseButtonListener.
+         */
         CloseButtonListener()
         {
             super("Close", true, false, null);
         }
+
         
         /**
          * The source is the closeButton on the tail pane. 
          * Get the tailPane from the tailMap using the button as
          * the key and then temove the tail pane from the tabbed pane
          * and them remove the tailpane from the tailmap itself.
+         * 
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
             Object closeButton = e.getSource();
-            TailPane pane = (TailPane)tailMap_.get(closeButton);
+            TailPane pane = (TailPane) tailMap_.get(closeButton);
             pane.removeTailPaneListener(tabbedPane_);
             tabbedPane_.remove(pane);        
             tailMap_.remove(closeButton);
@@ -565,7 +595,7 @@ public class JTail extends JFrame implements IPreferenced
 
 
     //--------------------------------------------------------------------------
-    //  GUI Actions
+    //  TailRecentAction
     //--------------------------------------------------------------------------
     
     /**
@@ -576,6 +606,11 @@ public class JTail extends JFrame implements IPreferenced
     {
         private ITailPaneConfig config_;
         
+        /**
+         * Creates a TailRecentAction.
+         * 
+         * @param config Configuration.
+         */
         TailRecentAction(ITailPaneConfig config)
         {
             super(config.getFilenames()[0], true, false, null);
@@ -583,6 +618,11 @@ public class JTail extends JFrame implements IPreferenced
             putValue("config", config_);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             addTail(config_);
@@ -590,22 +630,33 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ClearRecentAction
+    //--------------------------------------------------------------------------
     
     /**
      * Clears the Recent menu.
      */
     class ClearRecentAction extends AbstractAction
     {
+        /**
+         * Creates a ClearRecentAction.
+         */
         ClearRecentAction()
         {
             super("Clear");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             Component[] items = recentMenu_.getMenuComponents();
         
-            for (int i=items.length-1; i >= 0; i--)
+            for (int i = items.length - 1; i >= 0; i--)
             {
                 JMenuItem menuItem = (JMenuItem) items[i];
                 if (menuItem.getAction() instanceof TailRecentAction)
@@ -614,6 +665,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // CreateFileAction
+    //--------------------------------------------------------------------------
     
     /**
      * Generates a file with intermittent output so that the file can be
@@ -621,6 +675,9 @@ public class JTail extends JFrame implements IPreferenced
      */
     class CreateFileAction extends AbstractAction
     {
+        /**
+         * Creates a CreateFileAction.
+         */
         CreateFileAction()
         {
             super("Create test file");
@@ -633,7 +690,12 @@ public class JTail extends JFrame implements IPreferenced
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String file = FileUtil.trailWithSeparator(
@@ -645,6 +707,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // SetFontAction
+    //--------------------------------------------------------------------------
     
     /**
      * Pops up a font selection dialog to change the font.
@@ -655,6 +720,9 @@ public class JTail extends JFrame implements IPreferenced
         private Font lastFont_;
         private boolean lastAntiAlias_;
         
+        /**
+         * Creates a SetFontAction.
+         */
         SetFontAction()
         {
             super("Set font ..", true, false, null);
@@ -667,6 +735,11 @@ public class JTail extends JFrame implements IPreferenced
                 KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
         }
     
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             // Remember state just in case user cancels operation
@@ -689,6 +762,10 @@ public class JTail extends JFrame implements IPreferenced
         // Interface IFontChooserDialogListener
         //----------------------------------------------------------------------
         
+        /**
+         * @see toolbox.util.ui.font.IFontChooserDialogListener#
+         *      applyButtonPressed(toolbox.util.ui.font.JFontChooser)
+         */
         public void applyButtonPressed(JFontChooser fontChooser)
         {
             try
@@ -709,6 +786,11 @@ public class JTail extends JFrame implements IPreferenced
             }
         }
 
+        
+        /**
+         * @see toolbox.util.ui.font.IFontChooserDialogListener#
+         *      cancelButtonPressed(toolbox.util.ui.font.JFontChooser)
+         */
         public void cancelButtonPressed(JFontChooser fontChooser)
         {
             // Restore saved state
@@ -726,6 +808,11 @@ public class JTail extends JFrame implements IPreferenced
             }
         }
         
+        
+        /**
+         * @see toolbox.util.ui.font.IFontChooserDialogListener#okButtonPressed(
+         *      toolbox.util.ui.font.JFontChooser)
+         */
         public void okButtonPressed(JFontChooser fontChooser)
         {
             try
@@ -747,12 +834,18 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // PreferencesAction
+    //--------------------------------------------------------------------------
     
     /**
      * Pops up the preferences dialog.
      */
     class PreferencesAction extends AbstractAction 
     {
+        /**
+         * Creates a PreferencesAction.
+         */
         PreferencesAction()
         {
             super("Preferences ..");
@@ -764,7 +857,12 @@ public class JTail extends JFrame implements IPreferenced
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             // Show font selection dialog with font from the current
@@ -777,12 +875,18 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // TailSystemOutAction
+    //--------------------------------------------------------------------------
     
     /**
      * Adds a tail of the System.out stream.
      */
     class TailSystemOutAction extends SmartAction
     {
+        /**
+         * Creates a TailSystemOutAction.
+         */
         TailSystemOutAction()
         {
             super("Tail System.out", true, false, null);
@@ -793,7 +897,12 @@ public class JTail extends JFrame implements IPreferenced
                     KeyEvent.VK_O, 
                     Event.CTRL_MASK));
         }
-                
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig config = new TailPaneConfig();
@@ -809,12 +918,18 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // TailLog4JAction
+    //--------------------------------------------------------------------------
     
     /**
      * Adds a tail for Log4J attached to the "toolbox" logger.
      */
     class TailLog4JAction extends SmartAction
     {
+        /**
+         * Creates a TailLog4JAction.
+         */
         TailLog4JAction()
         {
             super("Tail Log4J", true, false, null);
@@ -823,7 +938,12 @@ public class JTail extends JFrame implements IPreferenced
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_J, Event.CTRL_MASK));
         }
-                
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig config = new TailPaneConfig();

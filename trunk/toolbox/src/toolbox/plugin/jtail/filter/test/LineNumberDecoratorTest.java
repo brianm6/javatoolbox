@@ -43,7 +43,7 @@ public class LineNumberDecoratorTest extends TestCase
         LineNumberDecorator decorator = new LineNumberDecorator();
         decorator.setEnabled(true);
         
-        for (int i=0; i<5000; i++)
-            assertEquals("[" + (i+1) + "] Line", decorator.filter("Line"));
+        for (int i = 0; i < 5000; i++)
+            assertEquals("[" + (i + 1) + "] Line", decorator.filter("Line"));
     }
 }

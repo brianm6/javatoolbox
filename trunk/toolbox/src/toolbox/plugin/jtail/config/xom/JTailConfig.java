@@ -28,7 +28,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JTailConfig
+     * Creates a JTailConfig.
      */
     public JTailConfig()
     {
@@ -97,7 +97,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
             ITailPaneConfig[] tailPaneConfigs = new ITailPaneConfig[0];
             Elements tails = root.getChildElements(NODE_TAIL);
             
-            for (int i=0; i<tails.size(); i++)
+            for (int i = 0; i < tails.size(); i++)
             {
                 TailPaneConfig tpc = new TailPaneConfig();
                 Element tail = tails.get(i);
@@ -122,9 +122,9 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
         root.appendChild(defaultsNode);
         defaultConfig_.savePrefs(defaultsNode);
 
-        for (int i=0; i<tailPaneConfigs_.length; i++)
+        for (int i = 0; i < tailPaneConfigs_.length; i++)
         { 
-            Element tail = new Element(NODE_TAIL) ;
+            Element tail = new Element(NODE_TAIL);
             tailPaneConfigs_[i].savePrefs(tail);
             root.appendChild(tail);
         }

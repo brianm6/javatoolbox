@@ -25,6 +25,10 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     private static final Logger logger_ =
         Logger.getLogger(TailPaneConfig.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+
     private String[]  filenames_;
     private boolean autoScroll_;
     private boolean showLineNumbers_;
@@ -35,36 +39,37 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     private String  cutExpression_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TailPaneConfig
+     * Creates a TailPaneConfig.
      */
     public TailPaneConfig()
     {
-        this(   new String[0], // file
-                true,       // autoscroll
-                false,      // show linenumbers
-                false,      // antialias
-                FontUtil.getPreferredMonoFont(), // font
-                "",         // Regular exp
-                "",         // Cut exp
-                true );     // autostart
+        this(new String[0], // file
+             true,          // autoscroll
+             false,         // show linenumbers
+             false,         // antialias
+             FontUtil.getPreferredMonoFont(), // font
+             "",            // Regular exp
+             "",            // Cut exp
+             true);         // autostart
     }
+
 
     /**
      * Creates TailConfig with given parameters
      * 
-     * @param files Files to tail
-     * @param autoScroll Turn on autoscroll
-     * @param showLineNumbers Shows line numbers in output
-     * @param antiAlias Antialias text in output area
-     * @param font Font of display text area
+     * @param files Files to tail.
+     * @param autoScroll Turn on autoscroll.
+     * @param showLineNumbers Shows line numbers in output.
+     * @param antiAlias Antialias text in output area.
+     * @param font Font of display text area.
      * @param regularExpression Optional filter (regular expression) for 
-     *        weeding out junk
-     * @param cutExpression Optional expression for removing columns
-     * @param autoStart Autostarts tailing (starts it)
+     *        weeding out junk.
+     * @param cutExpression Optional expression for removing columns.
+     * @param autoStart Autostarts tailing (starts it).
      */
     public TailPaneConfig(
         String[] files, 
@@ -117,22 +122,25 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         {
             List filenames = new ArrayList();
             Elements files = root.getChildElements(NODE_FILE);
-            for (int i=0; i<files.size(); i++)
+
+            for (int i = 0; i < files.size(); i++)
                 filenames.add(files.get(i).getAttributeValue(ATTR_FILENAME));
+
             setFilenames((String[]) filenames.toArray(new String[0]));
 
             setFont(
                 FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
             
-            setRegularExpression( 
+            setRegularExpression(
                 XOMUtil.getString(root.getFirstChildElement(
                     NODE_REGULAR_EXPRESSION), DEFAULT_REGEX));
 
-            setCutExpression( 
+            setCutExpression(
                 XOMUtil.getString(root.getFirstChildElement(
                     NODE_CUT_EXPRESSION), DEFAULT_CUT_EXPRESSION));
         }
     }
+
 
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
@@ -142,13 +150,13 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         Element root = new Element(NODE_TAIL);
 
         root.addAttribute(
-            new Attribute(ATTR_LINENUMBERS,isShowLineNumbers()+""));
+            new Attribute(ATTR_LINENUMBERS, isShowLineNumbers() + ""));
         
-        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));    
+        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));
         root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
         root.addAttribute(new Attribute(ATTR_AUTOSTART, isAutoStart() + ""));
 
-        for (int i=0; i<filenames_.length; i++)
+        for (int i = 0; i < filenames_.length; i++)
         {
             Element file = new Element(NODE_FILE);
             file.addAttribute(new Attribute(ATTR_FILENAME, filenames_[i]));
@@ -173,7 +181,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         
         XOMUtil.insertOrReplace(prefs, root);
     }
-
 
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object 

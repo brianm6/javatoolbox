@@ -61,24 +61,24 @@ import toolbox.workspace.IStatusBar;
  *          (1)          Tail         (3)
  *      TailListener   Listener  TailListener
  *                  \     |     / 
- *                   \    |    /                pushes lines (originating from Tail)
+ *                   \    |    /            pushes lines (originating from Tail)
  *                    \   |   /
  *                     v  v  v
- *                      Queue                   (concentrator for our purposes)
+ *                      Queue               (concentrator for our purposes)
  *                        ^
  *                        |  
- *                        |                     pops lines one at a time
+ *                        |                 pops lines one at a time
  *                        |
- *                BatchingQueueReader           (aggregates lines)
+ *                BatchingQueueReader       (aggregates lines)
  *                        |
  *                        |
- *                        |                     provides block of lines to (batched)
+ *                        |                 provides block of lines to (batched)
  *                        |
  *                        v
  *                TailQueueListener
  *                        |
  *                        |
- *                        |                     append block of lines
+ *                        |                 append block of lines
  *                        |
  *                        v
  *                    TextArea
@@ -98,8 +98,7 @@ public class TailPane extends JPanel
     // Constants
     //--------------------------------------------------------------------------
          
-    private static final Logger logger_ = 
-        Logger.getLogger(TailPane.class);
+    private static final Logger logger_ = Logger.getLogger(TailPane.class);
     
     /** 
      * Special tail type for System.out. 
@@ -227,10 +226,10 @@ public class TailPane extends JPanel
     /** 
      * Creates a TailPane with the given configuration.
      * 
-     * @param config Details of the tail configuration
-     * @param statusBar Status bar
-     * @throws IOException if an IO error occurs
-     * @throws FileNotFoundException if file not found
+     * @param config Details of the tail configuration.
+     * @param statusBar Status bar.
+     * @throws IOException if an I/O error occurs.
+     * @throws FileNotFoundException if file not found.
      */
     public TailPane(ITailPaneConfig config, IStatusBar statusBar) 
         throws IOException, FileNotFoundException
@@ -254,8 +253,6 @@ public class TailPane extends JPanel
     /**
      * Initializes the tail.
      * 
-     * @param file File to tail
-     * @throws FileNotFoundException if the file to tail is non-existant
      * @throws IOException if problems occur tailed System.out
      */
     protected void init() throws IOException
@@ -272,7 +269,7 @@ public class TailPane extends JPanel
         String[] filenames = config_.getFilenames();
         contexts_ = new TailContext[0];
         
-        for (int i=0; i<filenames.length; i++)
+        for (int i = 0; i < filenames.length; i++)
         {
             TailContext tc = new TailContext(filenames[i]);
             contexts_ = (TailContext[]) ArrayUtil.add(contexts_, tc);
@@ -291,7 +288,7 @@ public class TailPane extends JPanel
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(FontUtil.getPreferredMonoFont());
         
-        JButton clearButton_ = new JSmartButton(tailArea_.new ClearAction());
+        JButton clearButton = new JSmartButton(tailArea_.new ClearAction());
         pauseButton_ = new JSmartButton(new PauseUnpauseAction());
         
         String startMode =  
@@ -310,7 +307,7 @@ public class TailPane extends JPanel
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(startButton_);
         buttonPanel.add(pauseButton_);
-        buttonPanel.add(clearButton_);
+        buttonPanel.add(clearButton);
         buttonPanel.add(closeButton_);
         buttonPanel.add(autoScrollBox_);
         buttonPanel.add(lineNumbersBox_);
@@ -449,6 +446,7 @@ public class TailPane extends JPanel
      * Gets the configuration.
      * 
      * @return TailConfig
+     * @throws IOException on I/O error.
      */
     public ITailPaneConfig getConfiguration() throws IOException
     {
@@ -462,7 +460,7 @@ public class TailPane extends JPanel
         
         String files[] = new String[0];
         
-        for (int i=0; i<contexts_.length; i++)
+        for (int i = 0; i < contexts_.length; i++)
         {    
             File f = contexts_[i].getTail().getFile();
             
@@ -538,7 +536,7 @@ public class TailPane extends JPanel
      */
     protected void fireNewDataAvailable(TailPane tailPane)
     {
-        for (int i=0; i<tailPaneListeners_.length; i++)
+        for (int i = 0; i < tailPaneListeners_.length; i++)
             tailPaneListeners_[i].newDataAvailable(tailPane);        
     }
 
@@ -550,7 +548,7 @@ public class TailPane extends JPanel
      */
     public void fireTailAggregated(TailPane tailPane)
     {
-        for (int i=0; i<tailPaneListeners_.length; i++)
+        for (int i = 0; i < tailPaneListeners_.length; i++)
             tailPaneListeners_[i].tailAggregated(tailPane);        
     }
 
@@ -574,8 +572,8 @@ public class TailPane extends JPanel
      */
     public void removeTailPaneListener(ITailPaneListener listener)
     {
-        tailPaneListeners_ = 
-            (ITailPaneListener[]) ArrayUtil.remove(tailPaneListeners_,listener);
+        tailPaneListeners_ = (ITailPaneListener[]) 
+            ArrayUtil.remove(tailPaneListeners_, listener);
     }
     
     //--------------------------------------------------------------------------
@@ -606,6 +604,11 @@ public class TailPane extends JPanel
         // Constructors
         //----------------------------------------------------------------------
             
+        /**
+         * Creates a TailContext.
+         * 
+         * @param filename File to tail.
+         */
         public TailContext(String filename)
         {
             filename_ = filename;
@@ -615,6 +618,11 @@ public class TailPane extends JPanel
         // Public
         //----------------------------------------------------------------------
         
+        /**
+         * Initializes the context.
+         * 
+         * @throws IOException on I/O error.
+         */
         public void init() throws IOException
         {
             // Figure out what type of tail we're dealing with and let 'er rip
@@ -659,7 +667,9 @@ public class TailPane extends JPanel
                     { 
                         try
                         {
-                            logger_.info("Testing tailing of log4j from another thread...");
+                            logger_.info(
+                                "Testing tailing of log4j from another" +
+                                "thread...");
                         }
                         catch (Exception e)
                         {
@@ -697,14 +707,16 @@ public class TailPane extends JPanel
          * Called when next line of input is available. When a new line is
          * available, just push it on the shared queue.
          * 
-         * @param line Next line read
+         * @param tail Origin of event.
+         * @param line Next line read.
          */
         public void nextLine(Tail tail, String line)
         {
             queue_.push(line);
         }
         
-        /*
+        
+        /**
          * @see toolbox.tail.TailAdapter#tailReattached(toolbox.tail.Tail)
          */
         public void tailReattached(Tail tail)
@@ -735,12 +747,12 @@ public class TailPane extends JPanel
         public void nextBatch(Object[] objs)
         {
             // Iterate over each line delivered            
-            for (int i=0; i<objs.length; i++)
+            for (int i = 0; i < objs.length; i++)
             {
                 String line = (String) objs[i];
 
                 // Apply filters
-                for (int j=0; j<filters_.length; j++)
+                for (int j = 0; j < filters_.length; j++)
                     line = filters_[j].filter(line);
 
                 if (line != null)
@@ -759,6 +771,10 @@ public class TailPane extends JPanel
      */    
     class RegexActionListener implements ActionListener
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String s = getRegularExpression();
@@ -783,6 +799,10 @@ public class TailPane extends JPanel
      */    
     class CutActionListener implements ActionListener
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String s = getCutExpression();
@@ -805,6 +825,11 @@ public class TailPane extends JPanel
     {
         private String mode_;
             
+        /**
+         * Creates a StartStopAction.
+         * 
+         * @param mode Label of the button.
+         */
         StartStopAction(String mode)
         {
             super(mode, true, false, null);
@@ -813,6 +838,11 @@ public class TailPane extends JPanel
             putValue(SHORT_DESCRIPTION, "Starts/Stops the tail");
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         { 
             if (mode_.equals(MODE_START))
@@ -822,7 +852,11 @@ public class TailPane extends JPanel
                 //
                 
                 init();
-                for(int i=0;i<contexts_.length;contexts_[i++].getTail().start());
+                
+                for (int i = 0;
+                    i < contexts_.length;
+                    contexts_[i++].getTail().start());
+                
                 mode_ = MODE_STOP;
                 putValue(Action.NAME, mode_);
                 pauseButton_.setEnabled(true);
@@ -836,7 +870,11 @@ public class TailPane extends JPanel
                 //
                 
                 queueReader_.stop();
-                for(int i=0;i<contexts_.length;contexts_[i++].getTail().stop());
+                
+                for (int i = 0;
+                    i < contexts_.length;
+                    contexts_[i++].getTail().stop());
+                
                 mode_ = MODE_START;
                 putValue(Action.NAME, mode_);                
                 pauseButton_.setEnabled(false);
@@ -858,16 +896,24 @@ public class TailPane extends JPanel
         private static final String MODE_PAUSE   = "Pause";
         private static final String MODE_UNPAUSE = "Unpause";
             
+        /**
+         * Creates a PauseUnpauseAction.
+         */
         PauseUnpauseAction()
         {
             super(MODE_PAUSE, true, false, null);
             putValue(MNEMONIC_KEY, new Integer('P'));
             putValue(SHORT_DESCRIPTION, "Pause/Unpauses the tail");
         }
-    
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
-            for (int i=0; i<contexts_.length; i++)
+            for (int i = 0; i < contexts_.length; i++)
             {
                 Tail tail = contexts_[i].getTail();
             
@@ -899,16 +945,24 @@ public class TailPane extends JPanel
      */
     class CloseAction extends AbstractAction
     {
+        /**
+         * Creates a CloseAction.
+         */
         CloseAction()
         {
             super("Close");
             putValue(MNEMONIC_KEY, new Integer('e'));
             putValue(SHORT_DESCRIPTION, "Closes the tail pane");
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         { 
-            for (int i=0; i<contexts_.length; i++)
+            for (int i = 0; i < contexts_.length; i++)
             {
                 Tail tail = contexts_[i].getTail();
                 
@@ -919,8 +973,8 @@ public class TailPane extends JPanel
                     tail.stop();
             }
             
-            statusBar_.setStatus(
-                "Closed tail for "+ ArrayUtil.toString(config_.getFilenames()));
+            statusBar_.setStatus("Closed tail for " + 
+                ArrayUtil.toString(config_.getFilenames()));
         }
     }
 
@@ -933,13 +987,21 @@ public class TailPane extends JPanel
      */
     class AutoScrollAction extends AbstractAction
     {
+        /**
+         * Creates a AutoScrollAction.
+         */
         AutoScrollAction()
         {
             super("Autoscroll");
             putValue(MNEMONIC_KEY, new Integer('a'));
             putValue(SHORT_DESCRIPTION, "Toggles autoscroll");
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         { 
             tailArea_.setAutoScroll(autoScrollBox_.isSelected()); 
@@ -955,6 +1017,9 @@ public class TailPane extends JPanel
      */
     class ShowLineNumbersAction extends AbstractAction
     {
+        /**
+         * Creates a ShowLineNumbersAction.
+         */
         ShowLineNumbersAction()
         {
             super("Line numbers");
@@ -963,6 +1028,11 @@ public class TailPane extends JPanel
                 "Toggles display of line numbers in the output");
         }
 
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         { 
             lineNumberDecorator_.setEnabled(!lineNumberDecorator_.isEnabled());

@@ -9,41 +9,48 @@ import toolbox.workspace.IPreferenced;
  */
 public interface ITailPaneConfig extends IPreferenced
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Default antialis is false. 
      */
-    public static final boolean DEFAULT_ANTIALIAS = false;    
+    boolean DEFAULT_ANTIALIAS = false;    
     
     /** 
      * Default autoscroll is true.
      */
-    public static final boolean DEFAULT_AUTOSCROLL = true;
+    boolean DEFAULT_AUTOSCROLL = true;
     
     /** 
      * Default show line number is false. 
      */
-    public static final boolean DEFAULT_LINENUMBERS = false;
+    boolean DEFAULT_LINENUMBERS = false;
     
     /** 
      * Default autostart is true.
      */
-    public static final boolean DEFAULT_AUTOSTART = true;
+    boolean DEFAULT_AUTOSTART = true;
     
     /** 
      * Default regular expression is empty string. 
      */
-    public static final String  DEFAULT_REGEX = "";
+    String  DEFAULT_REGEX = "";
     
     /**
      * Default match case on regular expression is false.
      */
-    public static final boolean DEFAULT_REGEX_MATCHCASE = false;
+    boolean DEFAULT_REGEX_MATCHCASE = false;
     
     /** 
      * Default cut expression is empty string. 
      */
-    public static final String  DEFAULT_CUT_EXPRESSION = "";
+    String  DEFAULT_CUT_EXPRESSION = "";
 
+    //--------------------------------------------------------------------------
+    // Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the autoScroll nature of the text area.

@@ -91,6 +91,8 @@ public class PreferencesDialog extends JDialog implements ActionListener
 
     /**
      * Builds the preferences panel.
+     * 
+     * @return Preferences panel.
      */    
     protected JPanel buildPreferencesPanel()
     {
@@ -105,7 +107,7 @@ public class PreferencesDialog extends JDialog implements ActionListener
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0,4,7,4);
+        gbc.insets = new Insets(0, 4, 7, 4);
         
         prefPanel.add(new JSmartLabel("AutoScroll", SwingConstants.RIGHT), gbc);
         
@@ -144,11 +146,11 @@ public class PreferencesDialog extends JDialog implements ActionListener
         
         if (action.equals(ACTION_OK))
         {
-            
+            ;
         }
         else if (action.equals(ACTION_CANCEL))
         {
-            
+            ;
         }
         else
         {

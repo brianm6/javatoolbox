@@ -15,6 +15,10 @@ import toolbox.util.ui.explorer.JFileExplorer;
  */
 public class FileSelectionPane extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+
     /**
      * File explorer used to select the file to tail.
      */    
