@@ -450,10 +450,13 @@ public final class StringUtil
     
     
     /**
-     * Returns array of individual tokens from a string.
+     * Returns array of individual tokens from a string. <br>
+     * Note, this differs from commons-lang split() in that split supports a set
+     * of single character delimiters specified as a single string and tokenize
+     * supports a single delimiter that can have a length > 1.
      * 
      * @param s String to tokenize.
-     * @param delimiter Delimiter used for separate tokens.
+     * @param delimiter Delimiter used to separate tokens.
      * @return Array of string tokens.
      */  
     public static String[] tokenize(String s, String delimiter)
@@ -463,7 +466,7 @@ public final class StringUtil
 
     
     /**
-     * Returns arary of individual tokens from a string.
+     * Returns an arry of individual tokens from a string.
      * 
      * @param s String to tokenize.
      * @param delimiter Delimiter used for separate tokens.
