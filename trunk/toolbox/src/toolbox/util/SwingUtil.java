@@ -22,7 +22,9 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -667,24 +669,27 @@ public final class SwingUtil
 
 
     /**
-     * Turns on antialiasing for a graphics context.
+     * Converts a JPopupMenu into its equivalent JMenu. The components are
+     * cannibalized from the JPopupMenu so it is no longer valid after this
+     * call.
      * 
-     * @param graphics Graphics context
-     * @param antiAliased Set to true to turn antialiasing on for the graphics
-     *        context; false to turn it off.
+     * @param popup Popupmenu to convert
+     * @return JMenu
      */
-    public static final void makeAntiAliased(Graphics graphics, 
-        boolean antiAliased)
-    {    
-        //((Graphics2D)g).setRenderingHint
-        //  (RenderingHints.KEY_ANTIALIASING,
-        //   RenderingHints.VALUE_ANTIALIAS_ON);
-    
-        ((Graphics2D)graphics).setRenderingHint(
-            RenderingHints.KEY_TEXT_ANTIALIASING,
-            (antiAliased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
-                       : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
+    public static JMenu popupToMenu(JPopupMenu popup)
+    {
+        JMenu menu = new JMenu(popup.getLabel());
+        
+        while (popup.getComponentCount() > 0)
+        {
+            Component c = popup.getComponent(0);
+            menu.add(c);
+            menu.validate();
+        }
+        
+        return menu;
     }
+    
     
     //--------------------------------------------------------------------------
     // AntiAliased
@@ -735,5 +740,26 @@ public final class SwingUtil
             Component[] comps = ((Container) c).getComponents();
             for (int i=0; i<comps.length; setAntiAliased(comps[i++],b));
         }
+    }
+
+    
+    /**
+     * Turns on antialiasing for a graphics context.
+     * 
+     * @param graphics Graphics context
+     * @param antiAliased Set to true to turn antialiasing on for the graphics
+     *        context; false to turn it off.
+     */
+    public static final void makeAntiAliased(Graphics graphics, 
+        boolean antiAliased)
+    {    
+        //((Graphics2D)g).setRenderingHint
+        //  (RenderingHints.KEY_ANTIALIASING,
+        //   RenderingHints.VALUE_ANTIALIAS_ON);
+    
+        ((Graphics2D)graphics).setRenderingHint(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            (antiAliased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
+                       : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     }
 }
