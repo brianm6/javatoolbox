@@ -25,6 +25,22 @@ public interface IAuditResult
 
     
     /**
+     * Returns only the filename portion of the file (without path).
+     * 
+     * @return String
+     */
+    String getFileOnly();
+    
+    
+    /**
+     * Returns only the path portion of the absolute filename.
+     * 
+     * @return String
+     */
+    String getPathOnly();
+    
+    
+    /**
      * Returns the results of the audit operation.
      * 
      * @return String
