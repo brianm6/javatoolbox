@@ -199,11 +199,6 @@
         	src		 ="${lib}/log4j.jar" 
         	dest	 ="${classes}" 
         	overwrite="false" />
-        		
-        <!--unjar 
-        	src      ="${lib}/junit.jar" 
-        	dest     ="${classes}" 
-        	overwrite="false"/-->
         
         <unjar 	
         	src       ="${lib}/jakarta-regexp-1.2.jar" 
@@ -299,13 +294,10 @@
             
     </target>
 
-
-	<!-- packagenames="toolbox.util.ui,toolbox.util.reflect,toolbox.findclass.test,toolbox.showpath,toolbox.util,toolbox.test,toolbox.jtail.test,toolbox.util.args,toolbox.util.io.test,toolbox.util.ui.test,toolbox.launcher,toolbox.tunnel,toolbox.util.io,toolbox.util.test,toolbox.jsourceview,toolbox.tail.test,toolbox.util.sync,toolbox.jtail,toolbox.util.thread,toolbox.tail,toolbox.showclasspath,toolbox.util.ui.images,toolbox.findclass" -->
-
     <!--=============================-->
     <!--            JUNIT            -->
     <!--=============================-->
-    <target name="junit" 
+    <target name="junit" depends="init"
             description="Executes JUnit tests and generates report">
 
         <mkdir dir="${junit}"/>
@@ -333,9 +325,14 @@
             
             <batchtest fork="no" todir="${junit.xml}">
                 <fileset dir="${src}">
-                    <include name="**/*Test.java" />
-                    <exclude name="**/RegressionTest.java" />
-                    <exclude name="**/ui/test/*Test.java" />
+                
+                    <!-- if junit.class is defined, run only tests that match the class name -->
+                    <include name="**/*Test.java" unless="junit.class"/>                
+		 			<include name="**/test/*${junit.class}Test.java"/>
+		 			
+		 			<!-- exclude the GUI tests -->
+                    <exclude name="**/ui/**/*Test.java" />
+                    
                 </fileset>
             </batchtest>
           
@@ -347,7 +344,7 @@
     <!--=============================-->
     <!--        JUNIT.REPORT         -->
     <!--=============================-->
-    <target name="junit.report"
+    <target name="junit.report" depends="init"
             description="Launches report containing results of the JUnit test cases">
 
         <junitreport todir="${junit.xml}">
@@ -460,4 +457,23 @@
         <delete dir="${clover}" verbose="false" quiet="off"/>
         <delete dir="${clover}"/>
     </target>
+    
+    
+    <!--=============================-->
+    <!--    UPLOAD TO UXSDEV05       -->
+    <!--=============================-->
+	<target name="upload" depends="init" description="Uploads toolbox.jar to uxsdev05">    
+	
+	  <ftp server="uxsdev05"
+	       userid="spatel"
+	       password="jell0zone"
+	       remotedir="/export/home/spatel/bin"
+	       verbose="yes">
+	       
+		<fileset dir="${dist}">
+	    	<include name="toolbox.jar"/>
+    	</fileset>		   
+	  </ftp>	
+	  
+ 	</target>
 </project>
