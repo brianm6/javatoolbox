@@ -16,7 +16,7 @@ public class PluginMeta
     //--------------------------------------------------------------------------
     
     /**
-     * Name of the plugin class.
+     * Display friendly plugin name.
      */
     private String className_;
     
@@ -69,7 +69,7 @@ public class PluginMeta
     
     
     /**
-     * Returns the plugin friendly name.
+     * Returns the display friendly plugin name.
      * 
      * @return String
      */
@@ -91,13 +91,10 @@ public class PluginMeta
             if (plugin_ == null)
             {
                 if (className_ != null)
-                {
-                    plugin_ = (IPlugin) 
-                        Class.forName(className_).newInstance();    
-                }
+                    plugin_ = (IPlugin) Class.forName(className_).newInstance();    
                 else
                     throw new IllegalArgumentException(
-                        "Classname not provided"); 
+                        "Classname not provided");
             }
         }
         catch (Exception e)
