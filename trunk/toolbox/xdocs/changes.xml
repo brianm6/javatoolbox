@@ -32,8 +32,6 @@
  * TODO: Add Swing preferences (window drag, resize outline, etc)
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Save db profiles to a separate file.
- * TODO: Expose xml formatter properties in TextToolsPlugin
- * TODO: Expose html formatter properties in TextToolsPlugin
  * TODO: Add undo to TextToolsPlugin
  * TODO: Beef up junit plugin with junitx classes
  * TODO: apache geronimo twiddle = Console
@@ -42,8 +40,8 @@
  * TODO: StatCVS: Create output directory if it doesn't already exist
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
- * TODO: Add a way to change the lookand feel font globally
- * TODO: http://pdfdoclet.sourceforge.net/examples.html
+ * TODO: *Add a way to change the lookand feel font globally
+ * TODO: *http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
  * TODO: Checkout FlexDock on java.net
  * TODO: Include Askkelon in maven build
@@ -106,6 +104,15 @@
           <tr>
             <td width="20%">Workspace</td>
             <td>Added color as a visual cue to the workspace status bar for errors and warnings</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">TextToolsPlugin</td>
+            <td>Added property sheets to configure the XML, Java, and HTML formatters to the preferences dialog</td>
           </tr>
         </table>
       </action>
