@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
@@ -23,7 +24,6 @@ import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.decompiler.Decompiler;
 import toolbox.util.decompiler.DecompilerException;
 import toolbox.util.decompiler.DecompilerFactory;
@@ -229,7 +229,7 @@ public class DecompilerPanel extends JHeaderPanel
                             url.openConnection().getContentLength());
                     
                         // Extract the class file as an array of bytes
-                        byte[] bytecode = StreamUtil.toBytes(
+                        byte[] bytecode = IOUtils.toByteArray(
                             url.openConnection().getInputStream());
                     
                         // Write out class file to the temp dir on disk 

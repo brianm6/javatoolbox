@@ -7,8 +7,9 @@ import java.util.Properties;
 
 import com.renderx.xep.XSLDriver;
 
+import org.apache.commons.io.IOUtils;
+
 import toolbox.util.FileUtil;
-import toolbox.util.StreamUtil;
 
 /**
  * FOPProcessor is a concrete implementation of a {@link FOProcessor} specific
@@ -39,7 +40,7 @@ public class XEPProcessor implements FOProcessor
         throws Exception
     {
         String foFile = FileUtil.createTempFilename() + ".xml";
-        FileUtil.setFileContents(foFile, StreamUtil.toBytes(foStream), false);
+        FileUtil.setFileContents(foFile, IOUtils.toByteArray(foStream), false);
         String pdfFile = foFile + ".pdf";
         renderPDF(new File(foFile), new File(pdfFile));
         byte[] pdfBytes = FileUtil.getFileAsBytes(pdfFile);

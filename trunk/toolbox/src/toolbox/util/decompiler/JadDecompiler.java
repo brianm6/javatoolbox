@@ -2,9 +2,8 @@ package toolbox.util.decompiler;
 
 import java.io.File;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.StreamUtil;
 
 /**
  * Decompiler bridge to the windows only JAD decompiler.
@@ -46,7 +45,7 @@ public class JadDecompiler extends AbstractDecompiler
             
             Process process = Runtime.getRuntime().exec(cmdLine);
             
-            javaSource = StreamUtil.asString(process.getInputStream());
+            javaSource = IOUtils.toString(process.getInputStream());
             
         }
         catch (Exception e)

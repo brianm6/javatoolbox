@@ -156,7 +156,7 @@ public final class ResourceUtil
         try
         {
             InputStream stream = getResource(name);
-            resource = (stream != null ? StreamUtil.toBytes(stream) : null);
+            resource = (stream != null ? IOUtils.toByteArray(stream) : null);
         }
         catch (IOException e)
         {
@@ -498,7 +498,7 @@ public final class ResourceUtil
         if (is == null)
             throw new IOException("Could not locate resource " + resource);
             
-        byte[] data = StreamUtil.toBytes(is);
+        byte[] data = IOUtils.toByteArray(is);
         StringBuffer javaData = new StringBuffer();
         
         for (int i = 0; i < data.length - 1; i++)

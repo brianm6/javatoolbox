@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -32,47 +30,34 @@ public final class StreamUtil
     // Public
     //--------------------------------------------------------------------------
     
-    /**
-     * Converts the contents of an character input stream to a string.
-     * 
-     * @param inputStream Input stream to read from.
-     * @return String representation of the input stream contents.
-     * @throws IOException on I/O error.
-     */
-    public static String asString(InputStream inputStream) throws IOException
-    {
-        return new String(toBytes(inputStream));
-    }
-
-    
-    /**
-     * Converts the remaining contents of an InputStream to a byte array.
-     * 
-     * @param is InputStream to convert.
-     * @return Contents of the stream as a byte array.
-     * @throws IOException on I/O error.
-     */    
-    public static byte[] toBytes(InputStream is) throws IOException
-    {
-        List buffer = new ArrayList();
-        int c;
-        
-        while ((c = is.read()) != -1)
-        {
-            Byte b = new Byte((byte) c);
-            buffer.add(b);
-        }
-        
-        byte[] byteArray = new byte[buffer.size()];
-        
-        for (int i = 0; i < buffer.size(); i++)
-        {
-            Byte b = (Byte) buffer.get(i);
-            byteArray[i] = b.byteValue();
-        }
-        
-        return byteArray;
-    }
+//    /**
+//     * Converts the contents of an character input stream to a string.
+//     * 
+//     * @param inputStream Input stream to read from.
+//     * @return String representation of the input stream contents.
+//     * @throws IOException on I/O error.
+//     */
+//    public static String toString(InputStream inputStream) throws IOException
+//    {
+//        // TODO: Remove method
+//        
+//        return IOUtils.toString(inputStream);
+//    }
+//
+//    
+//    /**
+//     * Converts the remaining contents of an InputStream to a byte array.
+//     * 
+//     * @param is InputStream to convert.
+//     * @return Contents of the stream as a byte array.
+//     * @throws IOException on I/O error.
+//     */    
+//    public static byte[] toByteArray(InputStream is) throws IOException
+//    {
+//        // TODO: Remove method
+//        
+//        return IOUtils.toByteArray(is);
+//    }
 
     
     /**

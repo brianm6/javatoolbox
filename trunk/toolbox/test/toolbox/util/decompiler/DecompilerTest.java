@@ -6,12 +6,12 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 
 /**
@@ -85,7 +85,7 @@ public class DecompilerTest extends TestCase
                 tmpClass = FileUtil.createTempFilename() + ".class";
                 
                 FileUtil.setFileContents(
-                    tmpClass, StreamUtil.toBytes(is), false);
+                    tmpClass, IOUtils.toByteArray(is), false);
                 
                 String source = d.decompile(new File(tmpClass));
                 logger_.debug(StringUtil.banner("// " + d + "\n" + source));

@@ -12,13 +12,8 @@ import javax.swing.JPanel;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.FileUtil;
-import toolbox.util.RandomUtil;
-import toolbox.util.ResourceUtil;
-import toolbox.util.StreamUtil;
-import toolbox.util.StringUtil;
 
 /**
  * Unit test for ResourceUtilTest.
@@ -89,7 +84,7 @@ public class ResourceUtilTest extends TestCase
         
         InputStream is = ResourceUtil.getResource(FILE_TEXT);
         assertNotNull("stream is null", is);        
-        String contents = StreamUtil.asString(is);
+        String contents = IOUtils.toString(is);
         logger_.info("Resource: " + contents);
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
     }
@@ -122,7 +117,7 @@ public class ResourceUtilTest extends TestCase
             InputStream is = ResourceUtil.getResource(absolutePath);
             assertNotNull("stream is null", is);        
             
-            String newContents = StreamUtil.asString(is);
+            String newContents = IOUtils.toString(is);
             logger_.info("Contents: " + newContents);
             assertEquals("File contents don't match", contents, newContents);
         }
@@ -144,7 +139,7 @@ public class ResourceUtilTest extends TestCase
         
         InputStream is =  ResourceUtil.getResource(TEST_URL);
         assertNotNull("stream is null", is);
-        String contents = StreamUtil.asString(is);
+        String contents = IOUtils.toString(is);
         logger_.info("Resource length: " + contents.length());
         assertTrue(contents.length() > 0);
     }

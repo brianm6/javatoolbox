@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.BatchFileTokenMarker;
@@ -28,7 +29,6 @@ import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.service.ServiceException;
 
 /**
@@ -218,7 +218,7 @@ public class JEditViewer extends AbstractViewer
         
         try
         {
-            text = StreamUtil.asString(is);
+            text = IOUtils.toString(is);
         }
         catch (IOException e)
         {

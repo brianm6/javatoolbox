@@ -36,38 +36,6 @@ public class StreamUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests the asString() method.
-     * 
-     * @throws Exception on error
-     */
-    public void testAsString() throws Exception
-    {
-        logger_.info("Running testAsString...");
-        
-        String testString = "this is a test string for asString()";
-        StringInputStream sis = new StringInputStream(testString);
-        String asString = StreamUtil.asString(sis);
-        assertEquals(testString, asString);
-    }
-
-    
-    /**
-     * Tests toBytes()
-     * 
-     * @throws Exception on error
-     */
-    public void testToBytes() throws Exception
-    {
-        logger_.info("Running testToBytes...");
-        
-        String testString = "this is a test string for toBytes()";
-        StringInputStream sis = new StringInputStream(testString);
-        byte[] bytes = StreamUtil.toBytes(sis);
-        assertEquals(testString, new String(bytes));
-    }
-    
-    
-    /**
      * Tests empty()
      * 
      * @throws Exception on error
