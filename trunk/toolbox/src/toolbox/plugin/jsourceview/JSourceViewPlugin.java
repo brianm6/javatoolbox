@@ -59,7 +59,7 @@ public class JSourceViewPlugin implements IPlugin
         IStatusBar statusBar = null;
         
         if (params != null)
-            statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
         
         delegate_ = new JSourceView();
         delegate_.setStatusBar(statusBar);

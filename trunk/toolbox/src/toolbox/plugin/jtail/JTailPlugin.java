@@ -70,7 +70,7 @@ public class JTailPlugin implements IPlugin
         IStatusBar statusBar = null;
         
         if (params != null)
-            statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
         
         jtail_ = new JTail();
         jtail_.setStatusBar(statusBar);

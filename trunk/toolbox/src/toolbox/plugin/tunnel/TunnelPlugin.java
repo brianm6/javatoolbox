@@ -32,7 +32,7 @@ public class TunnelPlugin implements IPlugin
         IStatusBar statusBar = null;
         
         if (params != null)
-            statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
 
         delegate_ = new TunnelPane();
         delegate_.setStatusBar(statusBar);    

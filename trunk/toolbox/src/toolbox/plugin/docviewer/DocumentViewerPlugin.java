@@ -301,7 +301,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     {
         if (params != null)
             statusBar_ = (IStatusBar) 
-                params.get(PluginWorkspace.PROP_STATUSBAR);
+                params.get(PluginWorkspace.KEY_STATUSBAR);
         
         viewers_ = new ArrayList();
         lastViewedWith_ = new HashMap();

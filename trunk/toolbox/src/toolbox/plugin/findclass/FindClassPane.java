@@ -226,7 +226,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     {
         if (params != null)
             statusBar_ = (IStatusBar) 
-                params.get(PluginWorkspace.PROP_STATUSBAR);
+                params.get(PluginWorkspace.KEY_STATUSBAR);
             
         buildView();
         findClass_ = new FindClass();
