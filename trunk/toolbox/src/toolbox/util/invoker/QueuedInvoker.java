@@ -25,7 +25,7 @@ public class QueuedInvoker implements Invoker
     /**
      * Thread that pulls Runnables off of the queue_
      */
-    private Thread puller_;
+    private Thread consumer_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -40,7 +40,7 @@ public class QueuedInvoker implements Invoker
     }    
 
     /**
-     * Creates a queued invoker
+     * Creates a queued invoker that start consumption immediately
      * 
      * @param  millis  Delay in milliseconds between invocations
      */
@@ -49,7 +49,7 @@ public class QueuedInvoker implements Invoker
         queue_ = new BlockingQueue();
 
         // Creates the consumer thread and starts it    
-        puller_ = new Thread(new Runnable()
+        consumer_ = new Thread(new Runnable()
         {
             public void run()
             {
@@ -66,7 +66,7 @@ public class QueuedInvoker implements Invoker
                     catch (InterruptedException ie)
                     {
                         shutdown = true;
-                        logger_.debug("Thread " + puller_.getName() + 
+                        logger_.debug("Thread " + consumer_.getName() + 
                             " was interrupted(). Shutting down...");
                     }
                 }
@@ -74,18 +74,51 @@ public class QueuedInvoker implements Invoker
         }, Thread.currentThread().getName() + "->QueuedInvoker");
 
         // Start the consumer
-        puller_.start();
+        consumer_.start();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns true if the invocation queue is empty, false otherwise. Use to 
+     * check if it is safe to shutdown invoker.
+     * 
+     * @return boolean
+     */
+    public boolean isEmpty()
+    {
+        return queue_.size() == 0;
     }
 
+    /**
+     * Returns the number of invocation requests in the queue. Use to monitor
+     * throughput of the queue.
+     * 
+     * @return int
+     */
+    public int getSize()
+    {
+        return queue_.size();
+    }
+    
     //--------------------------------------------------------------------------
     // Invoker Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.util.invoker.Invoker#invoke(java.lang.Runnable)
+     */
     public void invoke(Runnable invokable) throws Exception
     {
         queue_.push(invokable);
     }
 
+    /**
+     * @see toolbox.util.invoker.Invoker#invoke(
+     *      java.lang.Object, java.lang.String, java.lang.Object[])
+     */
     public void invoke(        
         final Object target, 
         final String method, 
@@ -108,8 +141,11 @@ public class QueuedInvoker implements Invoker
         });
     }
     
+    /**
+     * @see toolbox.util.invoker.Invoker#shutdown()
+     */
     public void shutdown() throws Exception
     {
-        ThreadUtil.stop(puller_);
+        ThreadUtil.stop(consumer_);
     }
 }
