@@ -70,7 +70,7 @@
 	<classpathentry sourcepath="lib/src/saxon-src.zip" kind="lib" path="lib/saxon.jar"/>
 	<classpathentry sourcepath="lib/src/skinlf-src.zip" kind="lib" path="lib/skinlf.jar"/>
 	<classpathentry sourcepath="lib/src/squarenesslf-src.zip" kind="lib" path="lib/squarenesslf.jar"/>
-	<classpathentry kind="lib" path="lib/statcvs.jar"/>
+	<classpathentry sourcepath="lib/src/statcvs-src.zip" kind="lib" path="lib/statcvs.jar"/>
 	<classpathentry sourcepath="lib/src/tinylaf-src.zip" kind="lib" path="lib/tinylaf.jar"/>
 	<classpathentry sourcepath="lib/src/toniclf-src.zip" kind="lib" path="lib/toniclf.jar"/>
 	<classpathentry sourcepath="lib/src/util-concurrent-src.zip" kind="lib" path="lib/util-concurrent.jar"/>
