@@ -139,11 +139,9 @@ public class JTail extends JFrame
         getContentPane().setLayout(new BorderLayout());
         
         fileSelectionPane_ = new FileSelectionPane();
-        SettingsPane settingsPane_ = new SettingsPane(null, null);
         
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper("File Explorer", fileSelectionPane_);
-        flipPane_.addFlipper("Settings", settingsPane_);
         tabbedPane_ = new JTailTabbedPane();
 
         getContentPane().add(BorderLayout.WEST, flipPane_);
