@@ -168,15 +168,23 @@ public final class Main
                 else
                 {
                     if (!f.exists())
+                    {    
                         pout.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
+                    }
                     else if (!f.isFile())
-                        pout.print(
-                            StringUtil.right("[Not File]", MAX_SIZE_LEN));
+                    {    
+                        pout.print(StringUtil.right(
+                            "[Not File]", MAX_SIZE_LEN));
+                    }
                     else if (!f.canRead())
-                        pout.print(
-                            StringUtil.right("[ReadOnly]", MAX_SIZE_LEN));
+                    {    
+                        pout.print(StringUtil.right(
+                            "[ReadOnly]", MAX_SIZE_LEN));
+                    }
                     else
+                    {    
                         pout.print(StringUtil.right("[Error]", MAX_SIZE_LEN));
+                    }
                 }
             }
             else if (f.isDirectory())
@@ -206,8 +214,8 @@ public final class Main
     /**
      * Formats time to specific format:  12:47a  01:07p
      * 
-     * @param t Date to format
-     * @return Formatted time
+     * @param t Date to format.
+     * @return Formatted time.
      */
     static String formatTime(Date t)
     {
@@ -221,17 +229,5 @@ public final class Main
             timeString = timeFormat2.format(t) + "p";
 
         return timeString;
-    }
-
-
-    /**
-     * Builds a string with a given number of spaces.
-     * 
-     * @param l Number of spaces
-     * @return String containing given number of spaces
-     */
-    static String repeatSpace(int l)
-    {
-        return StringUtil.repeat(" ", l);
     }
 }
