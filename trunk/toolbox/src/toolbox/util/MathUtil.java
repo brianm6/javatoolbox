@@ -5,15 +5,12 @@ package toolbox.util;
  */
 public final class MathUtil 
 {
-    // Clover private constructor workaround
-    static { new MathUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private MathUtil() 
     {

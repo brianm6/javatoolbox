@@ -43,7 +43,8 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Global antialias flag that all 'smart' components are aware of.
+     * Global antialias flag that all 'smart' components are aware of (toolbox
+     * java classes that begin with JSmart..
      */
     private static boolean defaultAntiAlias_ = true;
 
@@ -51,13 +52,6 @@ public final class SwingUtil
      * Phantom frame which is invisible.
      */
     private static JFrame phantomFrame_;
-
-    //--------------------------------------------------------------------------
-    // Static Block
-    //--------------------------------------------------------------------------
-
-    // Clover private constructor workaround
-    static { new SwingUtil(); }
 
     //--------------------------------------------------------------------------
     // Constructors

@@ -13,15 +13,12 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class PropertiesUtil
 {
-    // Clover private constructor workaround
-    static { new PropertiesUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Prevent construction.
+     * Prevent construction of this static singleton.
      */
     private PropertiesUtil()
     {

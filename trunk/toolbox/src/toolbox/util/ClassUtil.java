@@ -31,15 +31,12 @@ public final class ClassUtil
 {
     private static final Logger logger_ = Logger.getLogger(ClassUtil.class);
 
-    // Clover private constructor workaround
-    static { new ClassUtil(); }
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private ClassUtil()
     {
@@ -289,7 +286,11 @@ public final class ClassUtil
     public static boolean isArchive(String filename)
     {
         String f = filename.toLowerCase().trim();
-        return (f.endsWith(".zip") || f.endsWith(".jar"));        
+        
+        return 
+            (f.endsWith(".zip") || 
+             f.endsWith(".jar") || 
+             f.endsWith(".ear"));        
     }
 
     

@@ -17,9 +17,6 @@ public final class SocketUtil
 {
     private static final Logger logger_ = Logger.getLogger(SocketUtil.class);
 
-    // Clover private constructor workaround
-    static { new SocketUtil(); }
-
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------

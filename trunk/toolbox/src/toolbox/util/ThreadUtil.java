@@ -11,14 +11,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.collections.AsMap;
 
 /**
- * Utility class for thread related stuff.
+ * Utility class for Threads.
  */
 public final class ThreadUtil
 {
     protected static final Logger logger_ = Logger.getLogger(ThreadUtil.class);
-
-    // Clover private constructor workaround
-    static { new ThreadUtil(); }
 
     //--------------------------------------------------------------------------
     // Constructors

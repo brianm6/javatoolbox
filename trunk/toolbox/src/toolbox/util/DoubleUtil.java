@@ -7,19 +7,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
 /**
- * Utility class for doubles.
+ * Utility class for primitive doubles.
  */
 public final class DoubleUtil
 {
-    // Clover private constructor workaround
-    static { new DoubleUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private DoubleUtil()
     {

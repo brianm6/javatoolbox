@@ -10,9 +10,6 @@ import java.util.Date;
  */
 public final class TimeUtil
 {
-    // Clover private constructor workaround
-    static { new TimeUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

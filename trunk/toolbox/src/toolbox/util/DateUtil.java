@@ -21,15 +21,12 @@ import org.apache.commons.lang.Validate;
  */
 public final class DateUtil
 {
-    // Clover private constructor workaround
-    static { new DateUtil(); }
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private DateUtil()
     {

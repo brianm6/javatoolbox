@@ -11,17 +11,12 @@ import java.util.Date;
  */
 public final class DateTimeUtil
 {
-    // TODO: Revisit chaining vs. confusing
-    
-    // Clover private constructor workaround
-    static { new DateTimeUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private DateTimeUtil()
     {

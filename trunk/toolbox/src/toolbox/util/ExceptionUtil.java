@@ -14,15 +14,12 @@ import toolbox.util.ui.JSmartOptionPane;
  */
 public final class ExceptionUtil
 {
-    // Clover private constructor workaround
-    static { new ExceptionUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private ExceptionUtil()
     {
@@ -33,7 +30,7 @@ public final class ExceptionUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Converts a <code>Throwable</code>'s stack trace to a string.
+     * Converts a Throwable's stack trace to a string.
      *
      * @param t Throwable to extrace stack trace from.
      * @return Stack trace of the throwable as a string.
