@@ -116,8 +116,33 @@
       <action type="Build">Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</action>
       <action type="Util">Added javabean property to JSmartTextArea to control updates on the event dispatch thread</action>
       <action type="Build">Added custom stylesheet for jxr plugin (decrease code font size and made Verdana the default font)</action>
-      <action type="Util">Added simple implemenation of a finite state machine to toolbox.util.statemachine</action>
-      <action type="QueryPlugin">Updated to execute multiple sql statements within a selection on ExecuteAll</action>
+
+      <action type="add">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Added simple implemenation of a finite state machine to toolbox.util.statemachine</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">QueryPlugin</td>
+            <td>Updated to execute multiple sql statements within a selection on ExecuteAll</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">QueryPlugin</td>
+            <td>Added file explorer to access sql scripts quickly</td>
+          </tr>
+        </table>
+      </action>
 
     </release>
     
