@@ -25,13 +25,13 @@ public class FontFamilyCellRenderer extends SmartListCellRenderer
     /**
      * Flag to use the actual font to render the cell in the listbox.
      */
-    private boolean renderUsingFont_;
+    private boolean renderedUsingFont_;
     
     /**
      * Flag to make monospaced fonts in the listbox stand out by setting
      * them to BOLD.
      */
-    private boolean showMonospaced_;
+    private boolean monospaceEmphasized_;
 
     //--------------------------------------------------------------------------
     // Overrides DefaultListCellRenderer
@@ -59,7 +59,7 @@ public class FontFamilyCellRenderer extends SmartListCellRenderer
             isSelected,
             cellHasFocus);
         
-        if (renderUsingFont_ || showMonospaced_)
+        if (renderedUsingFont_ || monospaceEmphasized_)
         {
             String fontName = value.toString();
             
@@ -70,12 +70,15 @@ public class FontFamilyCellRenderer extends SmartListCellRenderer
             {
                 if (fonts[i].getFamily().equals(fontName)) 
                 {
-                    if (renderUsingFont_)
-                        setFont(fonts[i].deriveFont(
+                    if (renderedUsingFont_)
+                        setFont(fonts[i].deriveFont((float)
                             UIManager.getFont("List.font").getSize()));
                         
-                    if (showMonospaced_ && FontUtil.isMonospaced(fonts[i]))
+                    if (monospaceEmphasized_ && FontUtil.isMonospaced(fonts[i]))
+                    {
                         setFont(getFont().deriveFont(Font.BOLD));
+                        //setBackground(Colors.getColor("azure"));
+                    }
                     
                     break;
                 }
@@ -90,26 +93,52 @@ public class FontFamilyCellRenderer extends SmartListCellRenderer
     // Public
     //----------------------------------------------------------------------
     
-    public boolean isRenderUsingFont()
+    /**
+     * Returns true if a font family cell is rendered using the font name 
+     * occupying that cell. False otherwise.
+     *   
+     * @return boolean
+     */
+    public boolean isRenderedUsingFont()
     {
-        return renderUsingFont_;
+        return renderedUsingFont_;
+    }
+
+    
+    /**
+     * Sets the flag to render a font family cell using the font name occupying
+     * that cell.
+     * 
+     * @param renderedUsingFont True to use the font, false to use the default
+     *        font.
+     */
+    public void setRenderedUsingFont(boolean renderedUsingFont)
+    {
+        renderedUsingFont_ = renderedUsingFont;
+    }
+
+    
+    /**
+     * Returns true if monospaced fonts are emphasized in the font family list
+     * box by being made bold. False otherwise.
+     * 
+     * @return booelean
+     */
+    public boolean isMonospacedEmphasized()
+    {
+        return monospaceEmphasized_;
     }
 
 
-    public void setRenderUsingFont(boolean renderUsingFont)
+    /**
+     * Sets the flag to emphasize monospaced fonts in the font family list box
+     * by making them bold. 
+     * 
+     * @param monospaceEmphasized True to emphasize monospaced fonts, false
+     *        otherwise.
+     */
+    public void setMonospacedEmphasized(boolean monospaceEmphasized)
     {
-        renderUsingFont_ = renderUsingFont;
-    }
-
-
-    public boolean isShowMonospaced()
-    {
-        return showMonospaced_;
-    }
-
-
-    public void setShowMonospaced(boolean showMonospaced)
-    {
-        showMonospaced_ = showMonospaced;
+        monospaceEmphasized_ = monospaceEmphasized;
     }
 }
