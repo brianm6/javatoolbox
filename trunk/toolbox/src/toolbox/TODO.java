@@ -37,6 +37,7 @@ package toolbox;
  * TODO: Add Swing preferences (window drag, resize outline, etc)
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Customize SQLFormatter formatting options
+ *       Change formatter to leave "select *" on the same line. Apply to all
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -94,7 +95,7 @@ package toolbox;
  *  - Revamped Service interface
  *  - Service state transitions can be strict or relaxed
  *  - Updated InstantMessenger to the Service interface
- *  
+ *  - Added capitalization modes to SQLFormatter and sliced up format()
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
