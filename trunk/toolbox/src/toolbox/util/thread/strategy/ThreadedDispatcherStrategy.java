@@ -35,8 +35,8 @@ public abstract class ThreadedDispatcherStrategy
      * Publishes the request in an alternate thread and returns a future
      * object that can interrogate the result.
      *
-     * @param   request    Request to publish.
-     * @return  Future object encapsualting the request result
+     * @param request Request to publish.
+     * @return Future object encapsualting the request result
      */
     public ReturnValue dispatch(IThreadable request)
     {
@@ -51,8 +51,8 @@ public abstract class ThreadedDispatcherStrategy
      * Publish the request in an alternate thread using the supplied
      * callback to supply status information about the response.
      *
-     * @param  request   Request to publish.
-     * @param  callback  Callback to receive status.
+     * @param request Request to publish.
+     * @param callback Callback to receive status.
      */
     public void dispatchAsync(IThreadable request,ReturnValue.Listener callback)
     {
@@ -103,8 +103,8 @@ public abstract class ThreadedDispatcherStrategy
     /**
      * Services the request in an alternate thread and records the result.
      *
-     * @param    request        the request to publish.
-     * @param    result            holds the request result.
+     * @param request Request to publish.
+     * @param result Holds the request result.
      */
     protected abstract void service(IThreadable request, ReturnValue result);
 
@@ -116,8 +116,8 @@ public abstract class ThreadedDispatcherStrategy
     /**
      * Services the request and manages the set of active requests.
      *
-     * @param  request  Request to publish.
-     * @param  result   Holds the request result
+     * @param request Request to publish.
+     * @param result Holds the request result
      */
     protected void serviceRequest(IThreadable request, ReturnValue result)
     {
@@ -135,7 +135,7 @@ public abstract class ThreadedDispatcherStrategy
      * This is made protected so only publication strategies or classes in 
      * this package can update the state.
      *
-     * @param  returnValue  Return value to update state for.
+     * @param returnValue Return value to update state for.
      */
     protected void setStarted(ReturnValue returnValue)
     {
@@ -148,8 +148,8 @@ public abstract class ThreadedDispatcherStrategy
      * protected so only publication strategies or classes in this package
      * can set the value.
      *
-     * @param  result  Return value to contain the value
-     * @param  value   Value to assign to the return value
+     * @param result Return value to contain the value
+     * @param value Value to assign to the return value
      */
     protected void setResult(ReturnValue result, Object value)
     {
@@ -166,8 +166,8 @@ public abstract class ThreadedDispatcherStrategy
     /**
      * Creates and starts a new thread encapsualting the runnable.
      *
-     * @param   runnable  Runnable to run in the thread.
-     * @return  Newly created thread.
+     * @param runnable Runnable to run in the thread.
+     * @return Newly created thread.
      */
     protected Thread createThread(Runnable runnable)
     {
@@ -182,9 +182,9 @@ public abstract class ThreadedDispatcherStrategy
     /**
      * Creates and starts howMany new threads encapsualting the runnable.
      *
-     * @param    howMany   Number of threads to create.
-     * @param    runnable  Runnable to run in the thread.
-     * @return   Array of newly created threads.
+     * @param howMany Number of threads to create.
+     * @param runnable Runnable to run in the thread.
+     * @return Array of newly created threads.
      */
     protected Thread[] createThreads(int howMany, Runnable runnable)
     {
@@ -201,7 +201,7 @@ public abstract class ThreadedDispatcherStrategy
      * Returns true if the threads created by this strategy should be made 
      * daemon threads.
      *
-     * @return  True if threads should be daemon.
+     * @return True if threads should be daemon.
      */
     protected boolean makeDaemon()
     {

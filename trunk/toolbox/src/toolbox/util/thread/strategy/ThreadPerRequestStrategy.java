@@ -18,8 +18,8 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
     /**
      * Services the request in new thread and records the result
      *
-     * @param  request  Request to publish.
-     * @param  result   Holds the request result.
+     * @param request Request to publish.
+     * @param result Holds the request result.
      */
     public void service(IThreadable request, ReturnValue result)
     {
@@ -41,8 +41,8 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
         /**
          * Creates a new runnable that will process request.
          *
-         * @param    request   Request to process.
-         * @param    result    Holder for the return value.
+         * @param request Request to process.
+         * @param result Holder for the return value.
          */
         public ThreadPerRequestRunnable(IThreadable request, ReturnValue result)
         {

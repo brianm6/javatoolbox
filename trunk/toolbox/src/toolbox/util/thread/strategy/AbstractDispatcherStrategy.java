@@ -18,8 +18,8 @@ public abstract class AbstractDispatcherStrategy
     /**
      * Publish the request by processing it in the current thread.
      *
-     * @param    request    Request to publish.
-     * @return   ReturnValue encapsualting the request result.
+     * @param request Request to publish.
+     * @return ReturnValue encapsualting the request result.
      */
     public ReturnValue dispatch(IThreadable request)
     {
@@ -31,8 +31,8 @@ public abstract class AbstractDispatcherStrategy
      * Publish the request by processing it in the current thread and
      * block until the request is completed.
      *
-     * @param    request   Request to publish.
-     * @return   Request result.
+     * @param request Request to publish.
+     * @return Request result.
      */
     public final Object dispatchAndWait(IThreadable request)
     {
@@ -43,8 +43,8 @@ public abstract class AbstractDispatcherStrategy
     /**
      * Processes the request in the current thread.
      *
-     * @param    request   Request to process
-     * @return   Result of the request or null if no result. 
+     * @param request Request to process
+     * @return Result of the request or null if no result. 
      */
     public Object process(IThreadable request)
     {

@@ -33,7 +33,6 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     private Runnable runnable_;
     private IBoundedBuffer requestQueue_;
 
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -51,8 +50,8 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      * Creates a thread pool consisting of poolSize threads and a queue
      * of queueSize.
      *
-     * @param  poolSize   Number of threads in the pool.
-     * @param  queueSize  Maximum number of buffered requests.
+     * @param poolSize Number of threads in the pool.
+     * @param queueSize Maximum number of buffered requests.
      */
     public ThreadPoolStrategy(int poolSize, int queueSize)
     {
@@ -71,8 +70,8 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      * queue is full, the calling thread is blocked until a slot becomes
      * available.
      *
-     * @param   request  Request to publish.
-     * @param   result   Holds the request result.
+     * @param request Request to publish.
+     * @param result Holds the request result.
      */
     public void service(IThreadable request, ReturnValue result)
     {
@@ -93,6 +92,9 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     // Inner Classes
     //--------------------------------------------------------------------------
         
+    /**
+     * A Task encapsulates a request and its result.
+     */    
     static class Task
     {
         private IThreadable request_;
@@ -105,6 +107,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
         }
     }
 
+    
     /**
      * Strategy specific runnable for thread-pool strategy.
      */

@@ -21,19 +21,29 @@ import toolbox.util.thread.concurrent.Timeout;
  */
 public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
-    /** Default initial size */
+    /** 
+     * Default initial size 
+     */
     public static final int DEFAULT_INIT_SIZE = 0;
     
-    /** Default grow size */
+    /** 
+     * Default grow size 
+     */
     public static final int DEFAULT_GROW_SIZE = 5;
     
-    /** Default pool size */
+    /** 
+     * Default pool size 
+     */
     public static final int DEFAULT_POOL_SIZE = 100;
     
-    /** Default queue size */
+    /** 
+     * Default queue size 
+     */
     public static final int DEFAULT_QUEUE_SIZE = 100;
     
-    /** Default timeout in millis */
+    /** 
+     * Default timeout in millis 
+     */
     public static final int DEFAULT_TIMEOUT = 5000;
     
     private int initSize_;
@@ -63,7 +73,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Creates a default variable thread pool consisting of initSize threads.
      * 
-     * @param  initSize  Initial number of threads
+     * @param initSize Initial number of threads
      */
     public VariableThreadPoolStrategy(int initSize)
     {
@@ -76,11 +86,11 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      * Creates a variable thread pool of capacity poolSize, increment 
      * growSize, queueSize and thread timeout period.
      *
-     * @param  initSize   Number of threads initially created.
-     * @param  growSize   Number of threads per increment.
-     * @param  poolSize   Maximum number threads createable.
-     * @param  queueSize  Maximum number of buffered requests.
-     * @param  timeout    Timeout period to pickup pending requests.
+     * @param initSize Number of threads initially created.
+     * @param growSize Number of threads per increment.
+     * @param poolSize Maximum number threads createable.
+     * @param queueSize Maximum number of buffered requests.
+     * @param timeout Timeout period to pickup pending requests.
      */
     public VariableThreadPoolStrategy(int initSize, int growSize, int poolSize, 
                                       int queueSize, int timeout)
@@ -109,8 +119,8 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      * no threads are available to process this request, create additional 
      * threads.
      *
-     * @param  request  Request to publish.
-     * @param  result   Holds the request result.
+     * @param request Request to publish.
+     * @param result Holds the request result.
      */
     public synchronized void service(IThreadable request, ReturnValue result)
     {
@@ -148,7 +158,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         /**
          * Returns the next request or times out.
          *
-         * @return  Next request to proecess.
+         * @return Next request to proecess.
          */
         protected Object take()
                        throws Timeout, InterruptedException
@@ -209,15 +219,18 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         /**
          * Returns the next request.
          *
-         * @return  Next request to proecess.
+         * @return Next request to proecess.
          */
         protected Object take() throws Timeout, InterruptedException
         {
             return requestQueue_.take();
         }
     }
+ 
     
-    
+    /**
+     * A Task encapsulates a request and its result.
+     */
     static class Task
     {
         private IThreadable request_;
