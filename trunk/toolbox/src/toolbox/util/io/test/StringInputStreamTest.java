@@ -159,7 +159,15 @@ public class StringInputStreamTest extends TestCase
     //  Helper Methods
     //--------------------------------------------------------------------------
     
-    protected void stuffStream(StringInputStream sis, int delay, String s, 
+    /**
+     * Stuffs a stream
+     * 
+     * @param  sis          Stream to stuff
+     * @param  delay        Delay in ms
+     * @param  s            String being stuffed
+     * @param  iterations   Number of iterations
+     */
+    public void stuffStream(StringInputStream sis, int delay, String s, 
         int iterations) 
     {
         for (int i=0; i<iterations; i++)
