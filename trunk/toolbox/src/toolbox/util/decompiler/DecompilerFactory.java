@@ -4,6 +4,8 @@ import toolbox.util.ArrayUtil;
 
 /**
  * Factory class for creating Decompilers.
+ * 
+ * @see toolbox.util.decompiler.Decompiler
  */
 public final class DecompilerFactory
 {
@@ -28,6 +30,11 @@ public final class DecompilerFactory
      */
     public static final String DECOMPILER_JREVERSEPRO = 
         "toolbox.util.decompiler.JReverseProDecompiler";
+
+    /**
+     * Decompiler enumeration for the default decompiler.
+     */
+    public static final String DECOMPILER_DEFAULT = DECOMPILER_JODE; 
 
     /**
      * List of decompiler FQCN.
@@ -108,7 +115,7 @@ public final class DecompilerFactory
          * 
          */
         
-        return create(DECOMPILER_JODE);
+        return create(DECOMPILER_DEFAULT);
     }
     
     
