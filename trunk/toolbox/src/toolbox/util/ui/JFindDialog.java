@@ -5,13 +5,16 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 
@@ -19,11 +22,10 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 
 /**
- * Simple text search find dialog that is tied to a TextComponent
+ * Simple text search find dialog that is tied to a SearchInitiator
  */
 public class JFindDialog extends JDialog
 {
-    /** TODO: Wire ESC key to dismiss dialog box */
     /** TODO: Search from current cursor position */
     
     private static final Logger logger_ =
@@ -95,6 +97,14 @@ public class JFindDialog extends JDialog
         c.add(BorderLayout.CENTER, buttonPanel);
         
         c.add(BorderLayout.SOUTH, status_ = new JStatusBar());
+
+
+        // Bind ESC to the CancelAction
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW ).
+            put(KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 ), "escPressed");
+            
+        getRootPane().getActionMap().put("escPressed", new CancelAction());
+        
     }
     
     //--------------------------------------------------------------------------
