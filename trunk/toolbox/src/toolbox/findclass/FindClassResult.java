@@ -75,8 +75,9 @@ public class FindClassResult
         classFQN_      = classFQN;    
         fileSize_      = fileSize;
         timestamp_     = timestamp;
-        matchBegin_    = matchBegin;
-        matchEnd_      = matchEnd;
+        
+        setMatchBegin(matchBegin);
+        setMatchEnd(matchEnd);
     }
 
     //--------------------------------------------------------------------------
