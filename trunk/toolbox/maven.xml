@@ -17,6 +17,11 @@
     <!-- =================================================================== -->
     <goal name="toolbox:browser" description="Launches web browser">
         <!-- Input: browser.file -->   
+        
+        <j:if test="${context.getVariable('browser.file') == null}">
+        	<j:set var="browser.file" value="firefox"/>
+        </j:if>
+        
         <exec vmlauncher="false" executable="${browser.file}"/>
     </goal>
     
@@ -81,7 +86,13 @@
         <!-- Statcvs plugin -->
         <j:set var="artifactId" value="maven-statcvs-plugin"/>
         <j:set var="groupId" value="statcvs"/>
-        <j:set var="version" value="2.4"/>
+        <j:set var="version" value="2.5"/>
+        <attainGoal name="plugin:download"/>
+
+        <!-- JBlanket plugin -->
+        <j:set var="artifactId" value="maven-jblanket-plugin"/>
+        <j:set var="groupId" value="jblanket"/>
+        <j:set var="version" value="1.0.0503"/>
         <attainGoal name="plugin:download"/>
         
         <!--
@@ -91,12 +102,18 @@
         <dependency>
           <groupId>statcvs</groupId>
           <artifactId>maven-statcvs-plugin</artifactId>
-          <version>2.4</version>
+          <version>2.5</version>
+          <type>plugin</type>
+        </dependency>
+        
+        <dependency>
+          <groupId>jblanket</groupId>
+          <artifactId>maven-jblanket-plugin</artifactId>
+          <version>1.0.0503</version>
           <type>plugin</type>
         </dependency>
         -->
     </goal>
-
 
     
     <!-- =================================================================== -->
@@ -362,12 +379,12 @@ Commands:
         <delete file="${dist}/toolbox.jar" verbose="false" quiet="off"/>
 
         <!-- Find all jars tagged with "toolbox" and unjar to staging area -->
-		<j:forEach var="lib" items="${pom.artifacts}">
-			<j:set var="dep" value="${lib.dependency}"/>
-			<j:if test="${dep.getProperty('fatjar')=='toolbox'}">
- 			    <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
-			</j:if>
-		</j:forEach>
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <j:set var="dep" value="${lib.dependency}"/>
+            <j:if test="${dep.getProperty('fatjar')=='toolbox'}">
+                 <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
+            </j:if>
+        </j:forEach>
 
         <!-- xml-apis is special because it barfs unit tests if included in  -->
         <!-- the maven pom as a dependency                                   --> 
@@ -422,13 +439,13 @@ Commands:
 
 
         <!-- Unjar all jars to staging area -->
-		<j:forEach var="lib" items="${pom.artifacts}">
-			<j:set var="dep" value="${lib.dependency}"/>
-			<j:if test="${dep.getProperty('fatjar')=='laf'}">
-	    		<!-- echo>jar=${lib.file}</echo-->
- 			    <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
-			</j:if>
-		</j:forEach>
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <j:set var="dep" value="${lib.dependency}"/>
+            <j:if test="${dep.getProperty('fatjar')=='laf'}">
+                <!-- echo>jar=${lib.file}</echo-->
+                 <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
+            </j:if>
+        </j:forEach>
 
 
         <!-- Copy skinlf themepacks -->
@@ -465,12 +482,12 @@ Commands:
 
 
         <!-- Find all jars tagged with "xslfo" and unjar to staging area -->
-		<j:forEach var="lib" items="${pom.artifacts}">
-			<j:set var="dep" value="${lib.dependency}"/>
-			<j:if test="${dep.getProperty('fatjar')=='xslfo'}">
- 			    <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
-			</j:if>
-		</j:forEach>
+        <j:forEach var="lib" items="${pom.artifacts}">
+            <j:set var="dep" value="${lib.dependency}"/>
+            <j:if test="${dep.getProperty('fatjar')=='xslfo'}">
+                 <unjar src="${lib.file}" dest="${stage}" overwrite="true"/>
+            </j:if>
+        </j:forEach>
 
 
         <!-- Saxon is special because it barfs maven if included as a dep -->
