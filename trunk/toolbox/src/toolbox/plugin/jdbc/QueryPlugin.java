@@ -3,6 +3,8 @@ package toolbox.plugin.jdbc;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -54,6 +56,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.db.SQLFormatter;
 import toolbox.util.db.SQLFormatterView;
+import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JHeaderPanel;
@@ -431,13 +434,24 @@ public class QueryPlugin extends JPanel implements IPlugin
     protected void buildView()
     {
         setLayout(new BorderLayout());
+
+        // pw depends on the results text area
+        JHeaderPanel resultsPanel = buildResultsArea();
         
+        PrintWriter pw = 
+            new PrintWriter(
+                new OutputStreamWriter(
+                    new JTextAreaOutputStream(getResultsArea())), true);
+        
+        // buildSQLEditor() depends on a non-null benchmark_
+        benchmark_ = new DBBenchmark(this, true, pw);
+
         // Split SQL editor and results panel
         areaSplitPane_ =
             new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
                 buildSQLEditor(),
-                buildResultsArea());
+                resultsPanel);
         
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         
@@ -451,7 +465,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         prefsView_ = new DBPrefsView(this);
         leftFlipPane_.addFlipper("Preferences", prefsView_);
         
-        benchmark_ = new DBBenchmark();
         benchmarkView_ = new DBBenchmarkView(benchmark_);
         leftFlipPane_.addFlipper("Benchmark", benchmarkView_);
         
@@ -556,7 +569,8 @@ public class QueryPlugin extends JPanel implements IPlugin
             "SQL Reference",
             new SQLReferenceAction(this));
         
-        JButton bench = JHeaderPanel.createButton(new BenchmarkAction(this));
+        JButton bench = 
+            JHeaderPanel.createButton(new BenchmarkAction(this, benchmark_));
         
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(executeAll);
@@ -772,10 +786,14 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlEditor_.applyPrefs(root);
         areaSplitPane_.applyPrefs(root);
         
-        // Update the view
+        // Update the sql formatter configuration view
         formatter_.applyPrefs(root);
         formatterView_.setFormatter(formatter_);
-                
+               
+        // Update the db benchmark configuration view
+        benchmark_.applyPrefs(root);
+        benchmarkView_.setBenchmark(benchmark_);
+        
         PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
     }
 
@@ -811,6 +829,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         areaSplitPane_.savePrefs(root);
         formatter_.savePrefs(root);
+        benchmark_.savePrefs(root);
         
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
 
