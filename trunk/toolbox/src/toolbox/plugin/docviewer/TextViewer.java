@@ -14,7 +14,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
- * A viewer to for text documents.
+ * A viewer for plain text documents.
  */
 public class TextViewer extends AbstractViewer
 {

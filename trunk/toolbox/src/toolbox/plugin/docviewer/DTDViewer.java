@@ -20,7 +20,8 @@ import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 
 /**
- * A tree viewer for DTDs makes use of Matra @ http://matra.sf.net.
+ * A tree viewer for DTDs that makes use of 
+ * <a href=http://matra.sf.net>Matra</a>.
  */
 public class DTDViewer extends JEditViewer
 {
@@ -53,16 +54,21 @@ public class DTDViewer extends JEditViewer
             JEditTextArea textArea = getTextArea();
             String text = FileUtil.getFileContents(file.getCanonicalPath());
             
-            if (StringUtil.getLine(text, 0).startsWith("<?xml")) {
-                logger_.debug("nuking first line");
+            if (StringUtil.getLine(text, 0).startsWith("<?xml")) 
+            {
+                logger_.debug("nuking xml decl from first line of dtd");
                 int eol = text.indexOf('\n');
                 text = text.substring(eol);
             }
 
+            // Matra insists on writing the results to System.out so we have to
+            // temporarily hijack it.
+            
             PrintStream original = System.out;
             OutputStream os = new JEditTextAreaOutputStream(textArea);
             
-            try {
+            try 
+            {
                 System.setOut(new PrintStream(os));
                 DTDParser parser = new DTDParser();
                 parser.parse(text);
@@ -71,7 +77,8 @@ public class DTDViewer extends JEditViewer
                 textArea.setCaretPosition(0);
                 textArea.scrollToCaret();
             }
-            finally {
+            finally 
+            {
                 IOUtils.closeQuietly(os);
                 System.setOut(original);
             }
