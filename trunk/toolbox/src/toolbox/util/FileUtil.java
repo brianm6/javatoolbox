@@ -433,28 +433,6 @@ public final class FileUtil
 
     
     /**
-     * Strips the path portion away from the relative or absolulte file path
-     * leaving only the filename.
-     * <pre>
-     * 
-     * Examples:
-     * 
-     * c:\data\work\tmp\orders.txt  => orders.txt
-     * /usr/home/user/orders.xml    => orders.xml
-     * 
-     * </pre>
-     * 
-     * @param file Relative or absolute path reference to a file.
-     * @return Just the name of the file.
-     */
-    public static String stripPath(String file)
-    {
-        int i = file.lastIndexOf(File.separatorChar);
-        return (i >= 0 ? file.substring(i + 1) : file); 
-    }
-    
-    
-    /**
      * Strips the file portion away from an absolute or relative file path
      * leaving only the path. The resulting path does not have a trailing
      * file separator.
