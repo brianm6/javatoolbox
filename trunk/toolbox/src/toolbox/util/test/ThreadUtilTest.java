@@ -146,6 +146,12 @@ public class ThreadUtilTest extends TestCase
             target.pingPrimitiveCalled);
     } 
  
+ 
+    /**
+     * Tests from an inner class
+     * 
+     * @throws  Exception on error
+     */
     public void testInner() throws Exception
     {
         logger_.info("Running testInner...");
@@ -161,7 +167,7 @@ public class ThreadUtilTest extends TestCase
     /**
      * Test class for testRun()
      */   
-    public class Tester
+    protected class Tester
     {
         public boolean pingSimpleCalled;
         public boolean pingArgsCalled;

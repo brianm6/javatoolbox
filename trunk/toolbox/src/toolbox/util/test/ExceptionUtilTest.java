@@ -19,6 +19,8 @@ public class ExceptionUtilTest extends TestCase
 
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -30,7 +32,9 @@ public class ExceptionUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Create
+     * Constructor
+     * 
+     * @param  name  Name
      */
     public ExceptionUtilTest(String name)
     {

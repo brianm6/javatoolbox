@@ -17,7 +17,10 @@ public class DoubleUtilTest extends TestCase
     /** Logger **/
     private static final Logger logger_ =
         Logger.getLogger(DoubleUtilTest.class);
-        
+    
+    /** 
+     * Format 
+     */
     public static final DecimalFormat TWO_DIGIT_FORMAT = 
         new DecimalFormat("#########.##");
         
@@ -51,6 +54,8 @@ public class DoubleUtilTest extends TestCase
     
     /**
      * Tests isDouble() for scenarios where the result is true
+     * 
+     * @throws  Exception on error
      */
     public void testIsDoubleTrue() throws Exception
     {
@@ -70,6 +75,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests isDouble() for scenarios where the result is false
+     * 
+     * @throws  Exception on error
      */
     public void testIsDoubleFalse() throws Exception
     {
@@ -93,6 +100,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Test median() for an empty set
+     * 
+     * @throws  Exception on error
      */
     public void testMedianEmpty() throws Exception
     {
@@ -114,6 +123,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests median() for even set
+     * 
+     * @throws  Exception on error
      */
     public void testMedianEven() throws Exception
     {
@@ -133,6 +144,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests median() for an odd set
+     * 
+     * @throws  Exception on error
      */
     public void testMedianOdd() throws Exception
     {
@@ -153,6 +166,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests median for a set of 1
+     * 
+     * @throws  Exception on error
      */
     public void testMedianOne() throws Exception
     {
@@ -166,6 +181,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests round() for rounding a number down
+     * 
+     * @throws  Exception on error
      */
     public void testRoundDown() throws Exception
     {
@@ -179,6 +196,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests round() for a big ugly number
+     * 
+     * @throws  Exception on error
      */
     public void testRoundMax() throws Exception
     {
@@ -192,6 +211,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests round() with one decimal number
+     * 
+     * @throws  Exception on error
      */
     public void testRoundOneDecimal() throws Exception
     {
@@ -205,6 +226,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests round() with a two decimal number
+     * 
+     * @throws  Exception on error
      */
     public void testRoundTwoDecimal() throws Exception
     {
@@ -222,6 +245,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests round() for rounding a number up
+     * 
+     * @throws  Exception on error
      */
     public void testRoundUp() throws Exception
     {
@@ -235,6 +260,8 @@ public class DoubleUtilTest extends TestCase
 
     /**
      * Tests round() with a whole number
+     * 
+     * @throws  Exception on error
      */
     public void testRoundWholeNumber() throws Exception
     {

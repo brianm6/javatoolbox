@@ -21,6 +21,8 @@ public class DateTimeUtilTest extends TestCase
         
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -34,7 +36,7 @@ public class DateTimeUtilTest extends TestCase
     /**
      * Constructor for DateTimeUtilTest.
      * 
-     * @param arg0
+     * @param arg0  Name
      */
     public DateTimeUtilTest(String arg0)
     {
@@ -47,6 +49,8 @@ public class DateTimeUtilTest extends TestCase
         
     /**
      * Tests getBeginningOfDay()
+     * 
+     * @throws  Exception on error
      */
     public void testGetBeginningOfDay() throws Exception
     {

@@ -210,7 +210,9 @@ public class ArrayUtilTest extends TestCase
             "nine", "ten"
         };
         
-        String expected = "[10]{one, two, three, four, five, six, seven, eight, nine, ten}";
+        String expected = 
+            "[10]{one, two, three, four, five, six, seven, eight, nine, ten}";
+            
         String result   = ArrayUtil.toString(s, false);
         logger_.info("[toStrn] " + result);
         assertEquals("strings don't match", expected, result);
@@ -589,7 +591,7 @@ public class ArrayUtilTest extends TestCase
         
         String[] concatted = (String[])ArrayUtil.concat(head, tail);
         
-        assertEquals("concatted array len incorrect", head.length + tail.length, 
+        assertEquals("concatted array len incorrect", head.length + tail.length,
             concatted.length);
             
         assertEquals("concatted array class type should string", String.class,
@@ -618,7 +620,7 @@ public class ArrayUtilTest extends TestCase
         
         String[] concatted = (String[])ArrayUtil.concat(head, tail);
         
-        assertEquals("concatted array len incorrect", head.length + tail.length, 
+        assertEquals("concatted array len incorrect", head.length + tail.length,
             concatted.length);
             
         assertEquals("concatted array class type should string", String.class,
@@ -646,7 +648,7 @@ public class ArrayUtilTest extends TestCase
         
         String[] concatted = (String[])ArrayUtil.concat(head, tail);
         
-        assertEquals("concatted array len incorrect", head.length + tail.length, 
+        assertEquals("concatted array len incorrect", head.length + tail.length,
             concatted.length);
             
         assertEquals("concatted array class type should string", String.class,

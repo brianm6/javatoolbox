@@ -21,6 +21,8 @@ public class StreamUtilTest extends TestCase
         
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -33,6 +35,8 @@ public class StreamUtilTest extends TestCase
     
     /**
      * Constructor for StreamUtilTest
+     * 
+     * @param  arg0  Name
      */
     public StreamUtilTest(String arg0)
     {
@@ -45,6 +49,8 @@ public class StreamUtilTest extends TestCase
         
     /**
      * Tests the toString() method
+     * 
+     * @throws  Exception on error
      */
     public void testToString() throws Exception
     {
@@ -61,6 +67,8 @@ public class StreamUtilTest extends TestCase
     
     /**
      * Tests empty()
+     * 
+     * @throws  Exception on error
      */
     public void testEmpty() throws Exception
     {
@@ -84,6 +92,8 @@ public class StreamUtilTest extends TestCase
     
     /**
      * Tests readExactly() for a stream
+     * 
+     * @throws  Exception on error
      */
     public void testReadExactlyStream() throws Exception
     {
@@ -104,6 +114,8 @@ public class StreamUtilTest extends TestCase
     
     /**
      * Tests readExactly() for a reader
+     * 
+     * @throws  Exception on error
      */
     public void testReadExactlyReader() throws Exception
     {
@@ -122,5 +134,3 @@ public class StreamUtilTest extends TestCase
         assertEquals("second pass does not match", "ing", pass2);
     }
 }
-
-

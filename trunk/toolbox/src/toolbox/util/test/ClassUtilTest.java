@@ -21,6 +21,8 @@ public class ClassUtilTest extends TestCase
     
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -34,7 +36,7 @@ public class ClassUtilTest extends TestCase
     /**
      * Constructor for ClassUtilTest.
      * 
-     * @param arg0
+     * @param arg0  Name
      */
     public ClassUtilTest(String arg0)
     {

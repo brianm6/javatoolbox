@@ -114,7 +114,7 @@ public class ConsoleTest extends TestCase
         console.handleCommand(
             Console.CMD_SETPROP + " " + prop + " " + value);
             
-        assertEquals("property should be set", value, System.getProperty(prop));    
+        assertEquals("property should be set", value, System.getProperty(prop));
     }
     
     /**

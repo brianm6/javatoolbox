@@ -123,6 +123,8 @@ public class SocketUtilTest extends TestCase
     
     /**
      * Tests getFreePort()
+     * 
+     * @throws  Exception on error
      */ 
     public void testGetFreePort() throws Exception
     {

@@ -255,7 +255,7 @@ public class RandomUtilTest extends TestCase
             
             sb.append(i + " ");       
             assertTrue("int should be greater than floor", i>= floor);
-            assertTrue("int should be less than ceiling", i<=ceiling);            
+            assertTrue("int should be less than ceiling", i<=ceiling);
         }
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
@@ -294,7 +294,7 @@ public class RandomUtilTest extends TestCase
             }
             
             assertTrue("int should be greater than floor", i>= floor);
-            assertTrue("int should be less than ceiling", i<=ceiling);            
+            assertTrue("int should be less than ceiling", i<=ceiling);
         }
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
@@ -342,7 +342,8 @@ public class RandomUtilTest extends TestCase
     {
         logger_.info("Running testNextElementArrayMany...");
         
-        String[] s = new String[] { "zero", "one", "two", "three", "four", "five" };
+        String[] s = new String[] 
+            { "zero", "one", "two", "three", "four", "five" };
         
         StringBuffer  sb = new StringBuffer();
         

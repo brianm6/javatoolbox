@@ -20,6 +20,8 @@ public class PropertiesUtilTest extends TestCase
         
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -33,7 +35,7 @@ public class PropertiesUtilTest extends TestCase
     /**
      * Constructor for PropertiesUtilTest.
      * 
-     * @param arg0
+     * @param arg0  Name
      */
     public PropertiesUtilTest(String arg0)
     {
@@ -83,7 +85,7 @@ public class PropertiesUtilTest extends TestCase
         assertTrue(!PropertiesUtil.getBoolean(props, "8", false));
         assertTrue(PropertiesUtil.getBoolean(props,  "9", true));
         assertTrue(!PropertiesUtil.getBoolean(props, "10", false));
-        assertTrue(PropertiesUtil.getBoolean(props,  "bad key", true));              
+        assertTrue(PropertiesUtil.getBoolean(props,  "bad key", true));
     }
 
     /**
@@ -118,8 +120,8 @@ public class PropertiesUtilTest extends TestCase
         props.setProperty("5", "");
         
         assertEquals(100, PropertiesUtil.getInteger(props, "1", -1));
-        assertEquals(-100, PropertiesUtil.getInteger(props, "2", -1));               
-        assertEquals(0, PropertiesUtil.getInteger(props, "3", -1));                       
+        assertEquals(-100, PropertiesUtil.getInteger(props, "2", -1));
+        assertEquals(0, PropertiesUtil.getInteger(props, "3", -1));
         assertEquals(-1, PropertiesUtil.getInteger(props, "4", -1));
         assertEquals(-1, PropertiesUtil.getInteger(props, "5", -1));
     }   
@@ -142,7 +144,11 @@ public class PropertiesUtilTest extends TestCase
         assertEquals(0, new Integer(props.getProperty("0")).intValue());
         assertEquals(100, new Integer(props.getProperty("1")).intValue());
         assertEquals(-100, new Integer(props.getProperty("2")).intValue());
-        assertEquals(Integer.MAX_VALUE, new Integer(props.getProperty("3")).intValue());
-        assertEquals(Integer.MIN_VALUE, new Integer(props.getProperty("4")).intValue());
+        
+        assertEquals(Integer.MAX_VALUE, 
+            new Integer(props.getProperty("3")).intValue());
+            
+        assertEquals(Integer.MIN_VALUE, 
+            new Integer(props.getProperty("4")).intValue());
     }
 }

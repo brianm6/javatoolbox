@@ -13,7 +13,8 @@ import toolbox.util.MathUtil;
 public class MathUtilTest extends TestCase
 {
     /** Logger **/
-    private static final Logger logger_ = Logger.getLogger(MathUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(MathUtilTest.class);
     
     /**
      * Starts the test case and runs the entire suite.
@@ -45,6 +46,8 @@ public class MathUtilTest extends TestCase
         
     /**
      * Tests isEven()
+     * 
+     * @throws  Exception on error
      */
     public void testIsEven() throws Exception
     {
@@ -61,6 +64,8 @@ public class MathUtilTest extends TestCase
     
     /**
      * Tests isOdd()
+     * 
+     * @throws  Exception on error
      */
     public void testIsOdd() throws Exception
     {

@@ -116,6 +116,8 @@ public class DateUtilTest extends TestCase
 
     /**
      * Tests isBefore()
+     * 
+     * @throws  Exception on error
      */
     public void testIsBefore() throws Exception
     {
@@ -195,6 +197,8 @@ public class DateUtilTest extends TestCase
 
     /**
      * Tests the roundToWeeks() method
+     * 
+     * @throws  Exception on error
      */
     public void testRoundToWeeks() throws Exception
     {
@@ -466,7 +470,8 @@ public class DateUtilTest extends TestCase
         // If today is monday, check for previous sunday. Should be yesterday!
         assertEquals(dayYesterday, cpreviousday.get(Calendar.DAY_OF_WEEK)); 
         
-        // If today is monday, check for previous monday, should be a week in the past!
+        // If today is monday, check for previous monday, 
+        // should be a week in the past!
         assertTrue(DateUtil.equals(
             DateUtil.addWeeks(DateUtil.getToday(), -1), 
                 DateUtil.getPreviousDay(dayToday)));

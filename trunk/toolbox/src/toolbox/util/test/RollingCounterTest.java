@@ -16,6 +16,8 @@ public class RollingCounterTest extends TestCase
         
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {

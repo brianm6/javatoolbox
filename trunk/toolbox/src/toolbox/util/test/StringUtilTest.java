@@ -358,7 +358,7 @@ public class StringUtilTest extends TestCase
         logger_.info("Running testTrimPrefixOnly...");
         
         String s = ".......aaaaaa";
-        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));            
+        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));
     }
 
     /**
@@ -369,6 +369,6 @@ public class StringUtilTest extends TestCase
         logger_.info("Running testTrimSuffixOnly...");
         
         String s = "aaaaaa........";
-        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));            
+        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));
     }
 }
