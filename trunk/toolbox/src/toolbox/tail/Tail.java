@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.Stringz;
 import toolbox.util.ThreadUtil;
+import toolbox.util.file.ReverseFileReader;
 import toolbox.util.io.NullWriter;
 
 /**
@@ -68,10 +68,10 @@ public class Tail
     private Thread tailer_;
 
     /** Reader which tail will follow */
-    private Reader faucet_;
+    private Reader reader_;
     
     /** File which tail will follow */ 
-    private File fileFaucet_;
+    private File file_;
 
     /** Paused state of the tailer (not thread!) */
     private boolean paused_;
@@ -104,7 +104,7 @@ public class Tail
     public void follow(File readFrom, Writer writeTo) 
         throws FileNotFoundException
     {
-        fileFaucet_ = readFrom;
+        file_ = readFrom;
         sink_ = writeTo;
     }
 
@@ -116,7 +116,7 @@ public class Tail
      */
     public void follow(Reader readFrom, Writer writeTo) 
     {
-        faucet_ = readFrom;
+        reader_ = readFrom;
         sink_   = writeTo;
     }
     
@@ -139,7 +139,7 @@ public class Tail
         if (!isAlive())
         {
             String name = "Tail-" + 
-                (fileFaucet_ != null ? fileFaucet_.getName() : "???");
+                (file_ != null ? file_.getName() : "???");
                  
             tailer_ = new Thread(new Tailer(), name);
             connect();
@@ -161,7 +161,7 @@ public class Tail
             {
                 pendingShutdown_ = true;
                 unpause();
-                faucet_.close();
+                reader_.close();
                 tailer_.interrupt();
                 tailer_.join(10000);
             }
@@ -266,10 +266,10 @@ public class Tail
      */
     protected void connect() throws FileNotFoundException
     {
-        if (fileFaucet_ != null)
-            faucet_ = new BufferedReader(new FileReader(fileFaucet_));
+        if (file_ != null)
+            reader_ = new BufferedReader(new FileReader(file_));
         else
-            faucet_ = new BufferedReader(faucet_);
+            reader_ = new BufferedReader(reader_);
     }
 
     //--------------------------------------------------------------------------
@@ -417,17 +417,37 @@ public class Tail
         }
     }
     
-    //--------------------------------------------------------------------------
-    // Tailer Inner Class
-    //--------------------------------------------------------------------------
-    
     class Tailer implements Runnable
     {
+        protected void readBackLog()
+        {
+            try
+            {
+                // Only do back if source is a file. 
+                // Not possible to do it for reader. 
+                if (file_ == null)
+                    return;
+                    
+                ReverseFileReader reverser = new ReverseFileReader(file_);
+                
+                for (int i=0; i<BACKLOG; i++)
+                {
+                    logger_.info("Reverser: " + reverser.readPreviousLine());
+                }
+            }
+            catch (Exception e)
+            {
+                logger_.error("readBackLog", e);
+            }
+        }
+        
         public void run()
         {
             try
             {
-                BufferedReader lnr = (BufferedReader) faucet_;
+                readBackLog();
+                
+                BufferedReader lnr = (BufferedReader) reader_;
                 int cnt = 0;
                 int estimatedBytesBacklog = BACKLOG * 80;
                 //lnr.mark(estimatedBytesBacklog);
@@ -466,17 +486,17 @@ public class Tail
                     else    
                     {
                         // check if stream was closed and then reactivated
-                        if (strikes == timestampThreshHold && fileFaucet_ != null)
+                        if (strikes == timestampThreshHold && file_ != null)
                         {
                             // record timestamp of file
-                            preTimeStamp = new Date(fileFaucet_.lastModified());
+                            preTimeStamp = new Date(file_.lastModified());
                         }
-                        else if (strikes == resetThreshHold && fileFaucet_ != null)
+                        else if (strikes == resetThreshHold && file_ != null)
                         {
                             //logger_.debug(method + "reset threshold met");
                             
                             // check timestamps   
-                            resetTimeStamp = new Date(fileFaucet_.lastModified());
+                            resetTimeStamp = new Date(file_.lastModified());
                             
                             // if there wasa activity, the timestamp would be
                             // newer.
@@ -484,14 +504,14 @@ public class Tail
                             {
                                 // reset the stream and stop plaing around..
     
-                                lnr = new BufferedReader(new FileReader(fileFaucet_));
+                                lnr = new BufferedReader(new FileReader(file_));
                                 
                                 //long skipped = lnr.skip(Integer.MAX_VALUE);
                                 //logger_.debug(method + 
                                 //  "Skipped " + skipped + " lines on reset");
                                 
                                 logger_.debug(
-                                    "Re-attached to " + fileFaucet_.getName());
+                                    "Re-attached to " + file_.getName());
                             }
                             else
                             {
