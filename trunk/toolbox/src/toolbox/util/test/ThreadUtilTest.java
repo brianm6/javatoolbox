@@ -9,6 +9,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ElapsedTime;
 import toolbox.util.ThreadUtil;
 
 /**
@@ -45,7 +46,7 @@ public class ThreadUtilTest extends TestCase
         logger_.info("Running testSleep...");
         
         // Not much to test
-        ThreadUtil.sleep(1000);
+        ThreadUtil.sleep(500);
     }
     
     /**
@@ -58,6 +59,9 @@ public class ThreadUtilTest extends TestCase
         Thread t = new Thread(new DelayedRunner(2000));
         t.start();
         ThreadUtil.join(t);
+        
+        // Negative
+        ThreadUtil.join(null);
     }
 
     /**
@@ -71,6 +75,9 @@ public class ThreadUtilTest extends TestCase
         t.start();
         ThreadUtil.join(t, 1000);
         assertTrue("Thread should still be alive", t.isAlive());
+        
+        // Negative
+        ThreadUtil.join(null, 1000);
     }
 
     /**
@@ -206,6 +213,70 @@ public class ThreadUtilTest extends TestCase
         assertTrue("pingPrimitive was not executed", 
             target.pingPrimitiveCalled_);
     } 
+
+    /**
+     * Tests run() with a bogus method
+     * 
+     * @throws Exception on error
+     */
+    public void testRunBogusMethod() throws Exception
+    {
+        logger_.info("Running testRunBogusMethod...");
+        
+        Tester target = new Tester();
+        
+        try
+        {
+            ThreadUtil.run(target, "bogusMethod", null).join();
+            fail("Should have throw exception on bogus method");
+        }
+        catch (IllegalArgumentException iea)
+        {
+            ; // Behaves as expected
+        }
+    } 
+
+    /**
+     * Tests run() with a bogus parameter
+     * 
+     * @throws Exception on error
+     */
+    public void testRunBogusParameter() throws Exception
+    {
+        logger_.info("Running testRunBogusParameter...");
+        
+        Tester target = new Tester();
+        
+        try
+        {
+            ThreadUtil.run(target, "pingSimple", "bogusParam").join();
+            fail("Should have throw exception on bogus parameter");
+        }
+        catch (IllegalArgumentException iea)
+        {
+            ; // Behaves as expected
+        }
+    } 
+
+    /**
+     * Tests run() with a bogus target
+     * 
+     * @throws Exception on error
+     */
+    public void testRunBogusTarget() throws Exception
+    {
+        logger_.info("Running testRunBogusTarget...");
+        
+        try
+        {
+            ThreadUtil.run("bogusTarget", "dontMatter", "dontMatter").join();
+            fail("Should have throw exception on bogus target");
+        }
+        catch (IllegalArgumentException iea)
+        {
+            ; // Behaves as expected            
+        }
+    } 
  
     /**
      * Tests from an inner class
@@ -219,6 +290,40 @@ public class ThreadUtilTest extends TestCase
         Tester target = new Tester();
         target.testFromInnerClass();
     }  
+
+    /**
+     * Tests stop() 
+     * 
+     * @throws Exception
+     */
+    public void testStop() throws Exception
+    {
+        logger_.info("Running testStop...");
+        
+        ElapsedTime et = new ElapsedTime();
+        Thread t = new Thread(new DelayedRunner(10000));
+        ThreadUtil.stop(t);
+        et.setEndTime();
+        assertTrue(!t.isAlive());
+        logger_.info(et);
+    }
+
+    /**
+     * Tests stop() with a timeout 
+     * 
+     * @throws Exception
+     */
+    public void testStopTimeout() throws Exception
+    {
+        logger_.info("Running testStopTimeout...");
+        
+        ElapsedTime et = new ElapsedTime();
+        Thread t = new Thread(new DelayedRunner(10000));
+        ThreadUtil.stop(t, 5000);
+        et.setEndTime();
+        assertTrue(!t.isAlive());
+        logger_.info(et);
+    }
 
     //--------------------------------------------------------------------------
     //  Inner Classes
