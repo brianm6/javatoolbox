@@ -54,7 +54,7 @@
 	<classpathentry sourcepath="lib/src/jreversepro-src.zip" kind="lib" path="lib/jreversepro.jar"/>
 	<classpathentry sourcepath="lib/src/jsap-src.zip" kind="lib" path="lib/jsap.jar"/>
 	<classpathentry sourcepath="lib/src/jtidy-src.zip" kind="lib" path="lib/jtidy.jar"/>
-	<classpathentry kind="lib" path="lib/jung.jar"/>
+	<classpathentry sourcepath="lib/src/jung-src.zip" kind="lib" path="lib/jung.jar"/>
 	<classpathentry sourcepath="lib/src/junit-src.zip" kind="lib" path="lib/junit.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
 	<classpathentry kind="lib" path="lib/kunststoff.jar"/>
