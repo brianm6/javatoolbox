@@ -31,6 +31,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.Queue;
+import toolbox.util.ResourceCloser;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.io.filter.DirectoryFilter;
@@ -540,33 +541,31 @@ public class JSourceView extends JFrame implements ActionListener
                     new LineNumberReader(
                         new BufferedReader(
                             new FileReader(filename)));
-                    
-                LineStatus linestatus = new LineStatus();
                 
+                LineStatus linestatus = new LineStatus();
                 String line;
                 
                 while ((line = lineReader.readLine()) != null) 
                 {
-                    filestats.setTotalLines(filestats.getTotalLines()+1);
+                    filestats.incrementTotalLines();
+                    line = line.replace('\t',' ');
                     
-                    if (line.trim().length() == 0)
+                    if (line.trim().length() == 0)  
                     {
-                        filestats.setBlankLines(filestats.getBlankLines() + 1);
+                        filestats.incrementBlankLines();
                     }
                     else
                     {
                         Machine.scanLine(new LineScanner(line), linestatus);
                         
-                        if (linestatus.getCountLine())
-                            filestats.setCodeLines(
-                                filestats.getCodeLines() + 1);
+                        if (linestatus.isRealCode())
+                            filestats.incrementCodeLines();
                         else
-                            filestats.setCommentLines(
-                                filestats.getCommentLines() + 1);
+                            filestats.incrementCommentLines();
                     }
                 }
-        
-                lineReader.close();
+                
+                ResourceCloser.close(lineReader);
             }
             catch (Exception e)
             {
@@ -579,13 +578,13 @@ public class JSourceView extends JFrame implements ActionListener
         }
         
         /** 
-         * Cancels the operation
+         * Cancels the search operation
          */
         public void cancel()
         {
             cancel_ = true;
             tableSorter_.setEnabled(true);
-            logger_.debug("Search canceled: " + cancel_);            
+            setParseStatus("Search canceled!");            
         }
     }
 }
