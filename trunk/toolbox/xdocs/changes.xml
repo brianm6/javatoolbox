@@ -150,6 +150,24 @@
         </table>
       </action>
 
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">Workspace</td>
+            <td>Added Help->About to show version, build number and date</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">QueryPlugin</td>
+            <td>SQL statements are now displayed along with a SQLException's error message and stacktrace</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
 
     
