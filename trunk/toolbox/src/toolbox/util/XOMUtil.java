@@ -1,7 +1,13 @@
 package toolbox.util;
 
+import java.io.IOException;
+
+import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
+import nu.xom.Serializer;
+
+import toolbox.util.io.StringOutputStream;
 
 /**
  * 
@@ -90,4 +96,14 @@ public class XOMUtil
                 child.getLocalName());
         }
     }
+
+    public static String toString(Element node) throws IOException
+    {    
+        StringOutputStream sos = new StringOutputStream();
+        Serializer serializer = new Serializer(sos);
+        serializer.setIndent(3);
+        serializer.setLineSeparator("\n");
+        serializer.write(new Document(node));
+        return sos.toString();
+    }    
 }
