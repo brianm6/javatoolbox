@@ -20,10 +20,10 @@ public class EvictingListTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-	 * Entrypoint.
-	 * 
-	 * @param args None recognized
-	 */
+     * Entrypoint.
+     * 
+     * @param args None recognized
+     */
     public static void main(String[] args)
     {
         TestRunner.run(EvictingListTest.class);

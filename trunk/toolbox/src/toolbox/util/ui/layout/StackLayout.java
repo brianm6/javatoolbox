@@ -106,8 +106,8 @@ public class StackLayout implements LayoutManager
     }
 
     /**
-	 * Create a StackLayout with the given orientation and space.
-	 */
+     * Create a StackLayout with the given orientation and space.
+     */
     public StackLayout(int orientation, int margin)
     {
         orientation_ = orientation;

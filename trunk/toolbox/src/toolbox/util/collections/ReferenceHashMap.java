@@ -44,12 +44,12 @@ public class ReferenceHashMap extends AbstractMap implements Map
     //--------------------------------------------------------------------------
     
     /**
-	 * Constructor.
-	 * 
-	 * @param factory Factory
-	 * @param initialCapacity Initial capacity
-	 * @param loadFactor Load factor
-	 */
+     * Constructor.
+     * 
+     * @param factory Factory
+     * @param initialCapacity Initial capacity
+     * @param loadFactor Load factor
+     */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity,
         float loadFactor)
     {
@@ -59,11 +59,11 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-	 * Constructor.
-	 * 
-	 * @param factory Factory
-	 * @param initialCapacity Initial capacity
-	 */
+     * Constructor.
+     * 
+     * @param factory Factory
+     * @param initialCapacity Initial capacity
+     */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity)
     {
         hash_ = new HashMap(initialCapacity);
@@ -72,10 +72,10 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-	 * Constructor.
-	 * 
-	 * @param factory Factory
-	 */
+     * Constructor.
+     * 
+     * @param factory Factory
+     */
     public ReferenceHashMap(ReferenceFactory factory)
     {
         hash_ = new HashMap();
@@ -87,10 +87,10 @@ public class ReferenceHashMap extends AbstractMap implements Map
     //--------------------------------------------------------------------------
 
     /**
-	 * Returns the size of the map.
+     * Returns the size of the map.
      * 
      * @return int
-	 */ 
+     */ 
     public int size()
     {
         return entrySet().size();
@@ -109,11 +109,11 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-	 * Checks if key is in the map.
-	 * 
-	 * @param key Key to check for existence
-	 * @return True if the map contains the key, false otherwise
-	 */
+     * Checks if key is in the map.
+     * 
+     * @param key Key to check for existence
+     * @return True if the map contains the key, false otherwise
+     */
     public boolean containsKey(Object key)
     {
         return hash_.containsKey(factory_.create(key));
@@ -121,11 +121,11 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-	 * Retrieves an object from the map.
-	 * 
-	 * @param key Key of object to retrieve
-	 * @return Object matching key, null if not found
-	 */
+     * Retrieves an object from the map.
+     * 
+     * @param key Key of object to retrieve
+     * @return Object matching key, null if not found
+     */
     public Object get(Object key)
     {
         return hash_.get(factory_.create(key));
@@ -133,12 +133,12 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-	 * Puts an object in the map.
-	 * 
-	 * @param key Key of object
-	 * @param value Value of object
-	 * @return Object
-	 */
+     * Puts an object in the map.
+     * 
+     * @param key Key of object
+     * @param value Value of object
+     * @return Object
+     */
     public Object put(Object key, Object value)
     {
         processQueue();
@@ -147,11 +147,11 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
     
     /**
-	 * Removes an object from the map.
-	 * 
-	 * @param key Key of object to remove
-	 * @return Removed object
-	 */
+     * Removes an object from the map.
+     * 
+     * @param key Key of object to remove
+     * @return Removed object
+     */
     public Object remove(Object key)
     {
         processQueue();
@@ -187,12 +187,12 @@ public class ReferenceHashMap extends AbstractMap implements Map
     //--------------------------------------------------------------------------
     
     /**
-	 * Remove all invalidated entries from the map, that is, remove all entries
-	 * whose keys have been discarded. This method should be invoked once by
-	 * each public mutator in this class. We don't invoke this method in public
-	 * accessors because that can lead to surprising
-	 * ConcurrentModificationExceptions.
-	 */
+     * Remove all invalidated entries from the map, that is, remove all entries
+     * whose keys have been discarded. This method should be invoked once by
+     * each public mutator in this class. We don't invoke this method in public
+     * accessors because that can lead to surprising
+     * ConcurrentModificationExceptions.
+     */
     private void processQueue()
     {
         Object key;
@@ -214,9 +214,9 @@ public class ReferenceHashMap extends AbstractMap implements Map
         private Object key_;
 
         /**
-		 * Strong reference to key, so that the GC will leave it alone as long
-		 * as this Entry exists.
-		 */
+         * Strong reference to key, so that the GC will leave it alone as long
+         * as this Entry exists.
+         */
         Entry(Map.Entry ent, Object key)
         {
             ent_ = ent;

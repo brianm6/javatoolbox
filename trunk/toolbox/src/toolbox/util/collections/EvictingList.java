@@ -24,11 +24,11 @@ public class EvictingList
     //--------------------------------------------------------------------------
     
     /**
-	 * Creates an EvictingList.
-	 * 
-	 * @param max Maximum size of the list before elements start getting bumped
-	 *        off. Must be > 0.
-	 */
+     * Creates an EvictingList.
+     * 
+     * @param max Maximum size of the list before elements start getting bumped
+     *        off. Must be > 0.
+     */
     public EvictingList(int max)
     {
         if (max <=0)

@@ -19,14 +19,14 @@ public class IdentityWeakReference extends WeakReference
     private int hash_;
 
     /**
-	 * Used within a ReferenceMap to create keys of IdentityWeakReference(s).
-	 * <p>
-	 * Example:
-	 * <pre>
-	 * // Create a map who's keys are based on IdentityWeakReference 
+     * Used within a ReferenceMap to create keys of IdentityWeakReference(s).
+     * <p>
+     * Example:
+     * <pre>
+     * // Create a map who's keys are based on IdentityWeakReference 
      * Map map = new ReferenceMap( IdentityWeakReference.REFERENCE_FACTORY );
-	 * </pre>
-	 */
+     * </pre>
+     */
     public static final ReferenceFactory REFERENCE_FACTORY =
         new ReferenceFactory()
     {
@@ -46,10 +46,10 @@ public class IdentityWeakReference extends WeakReference
     //--------------------------------------------------------------------------
 
     /**
-	 * Hashcode of key, stored here since the key may be tossed by the GC.
-	 * 
-	 * @param k Key
-	 */
+     * Hashcode of key, stored here since the key may be tossed by the GC.
+     * 
+     * @param k Key
+     */
     public IdentityWeakReference(Object k)
     {
         super(k);
@@ -58,11 +58,11 @@ public class IdentityWeakReference extends WeakReference
 
     
     /**
-	 * Creates a new IdentityWeakReference.
-	 * 
-	 * @param k Key
-	 * @param q Reference queue
-	 */
+     * Creates a new IdentityWeakReference.
+     * 
+     * @param k Key
+     * @param q Reference queue
+     */
     public IdentityWeakReference(Object k, ReferenceQueue q)
     {
         super(k, q);
@@ -74,15 +74,15 @@ public class IdentityWeakReference extends WeakReference
     //--------------------------------------------------------------------------
 
     /**
-	 * Determines equality by the object references pointed to by each 
+     * Determines equality by the object references pointed to by each 
      * <tt>Reference</tt>.<p>
-	 * <pre>
-	 *  return this.get() == ((IdentityWeakReference) o2).get();
-	 * </pre>
-	 * 
-	 * @param o2 Object to compare
-	 * @return True if equals, false otherwise
-	 */
+     * <pre>
+     *  return this.get() == ((IdentityWeakReference) o2).get();
+     * </pre>
+     * 
+     * @param o2 Object to compare
+     * @return True if equals, false otherwise
+     */
     public boolean equals(Object o2)
     {
         if (this == o2)
@@ -97,10 +97,10 @@ public class IdentityWeakReference extends WeakReference
 
     
     /**
-	 * The System.identityHashCode(..) of the object referenced.
-	 * 
-	 * @return hashCode
-	 */
+     * The System.identityHashCode(..) of the object referenced.
+     * 
+     * @return hashCode
+     */
     public int hashCode()
     {
         return hash_;

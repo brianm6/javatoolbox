@@ -20,9 +20,9 @@ public class NullMessenger implements InstantMessenger
 
     
     /**
-	 * @see toolbox.log4j.im.InstantMessenger#login(java.lang.String,
-	 *      java.lang.String)
-	 */
+     * @see toolbox.log4j.im.InstantMessenger#login(java.lang.String,
+     *      java.lang.String)
+     */
     public void login(String username, String password)
         throws InstantMessengerException
     {
@@ -30,9 +30,9 @@ public class NullMessenger implements InstantMessenger
 
     
     /**
-	 * @see toolbox.log4j.im.InstantMessenger#send(java.lang.String,
-	 *      java.lang.String)
-	 */
+     * @see toolbox.log4j.im.InstantMessenger#send(java.lang.String,
+     *      java.lang.String)
+     */
     public void send(String recipient, String message)
         throws InstantMessengerException
     {

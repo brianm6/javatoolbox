@@ -65,11 +65,11 @@ public class BasicDumpFormatter implements DumpFormatter
     //--------------------------------------------------------------------------
     
     /**
-	 * Excludes a class from the object dump.
-	 * 
-	 * @param clazz Class to exclude.
-	 * @throws RESyntaxException on regular expression error.
-	 */
+     * Excludes a class from the object dump.
+     * 
+     * @param clazz Class to exclude.
+     * @throws RESyntaxException on regular expression error.
+     */
     public void excludeClass(Class clazz) throws RESyntaxException
     {
         excludedClasses_.add(new RE("^" + clazz.getName() + "$"));
@@ -77,12 +77,12 @@ public class BasicDumpFormatter implements DumpFormatter
 
     
     /**
-	 * Excludes one or more classes matching a regular expression from the
-	 * object dump.
-	 * 
-	 * @param classFilter Regular expression representing classes to exclude.
-	 * @throws RESyntaxException on regular expression error.
-	 */
+     * Excludes one or more classes matching a regular expression from the
+     * object dump.
+     * 
+     * @param classFilter Regular expression representing classes to exclude.
+     * @throws RESyntaxException on regular expression error.
+     */
     public void excludeClasses(String classFilter) throws RESyntaxException
     {
         excludedClasses_.add(new RE(classFilter));
@@ -90,13 +90,13 @@ public class BasicDumpFormatter implements DumpFormatter
 
     
     /**
-	 * Excludes one or more fields matching a regular expression from the
-	 * object dump.
-	 * 
-	 * @param fieldFilter Regular expression represeting fields names to
-	 *        exclude.
-	 * @throws RESyntaxException on regular expression error.
-	 */
+     * Excludes one or more fields matching a regular expression from the
+     * object dump.
+     * 
+     * @param fieldFilter Regular expression represeting fields names to
+     *        exclude.
+     * @throws RESyntaxException on regular expression error.
+     */
     public void excludeFields(String fieldFilter) throws RESyntaxException
     {
         excludedFields_.add(new RE(fieldFilter));
@@ -104,12 +104,12 @@ public class BasicDumpFormatter implements DumpFormatter
 
     
     /**
-	 * Allows stripping of the package name when printing out a classes fully
-	 * qualified name.
-	 * 
-	 * @param b If true, package will be choped from a class name, otherwise
-	 *        the FQN will be used.
-	 */
+     * Allows stripping of the package name when printing out a classes fully
+     * qualified name.
+     * 
+     * @param b If true, package will be choped from a class name, otherwise
+     *        the FQN will be used.
+     */
     public void setStripPackage(boolean b)
     {
         stripPackage_ = b;
@@ -117,11 +117,11 @@ public class BasicDumpFormatter implements DumpFormatter
     
     
     /**
-	 * Flag to set the display of the class inheritance hierarchy.
-	 * 
-	 * @param b If true, show inheritance hierarchy, otherwise just print the
-	 *        name of the current class in the hierarchy.
-	 */
+     * Flag to set the display of the class inheritance hierarchy.
+     * 
+     * @param b If true, show inheritance hierarchy, otherwise just print the
+     *        name of the current class in the hierarchy.
+     */
     public void setShowInheritance(boolean b)
     {
         showInheritance_ = b;
@@ -151,9 +151,9 @@ public class BasicDumpFormatter implements DumpFormatter
 
     
     /**
-	 * @see toolbox.util.dump.DumpFormatter#shouldInclude(
+     * @see toolbox.util.dump.DumpFormatter#shouldInclude(
      *      java.lang.reflect.Field)
-	 */
+     */
     public boolean shouldInclude(Field field)
     {
         String name = field.getName();

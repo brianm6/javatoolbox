@@ -12,9 +12,9 @@ public class BlockingInvoker implements Invoker
     // Invoker Interface
     //--------------------------------------------------------------------------
 
-	/**
-	 * @see toolbox.util.invoker.Invoker#invoke(java.lang.Runnable)
-	 */
+    /**
+     * @see toolbox.util.invoker.Invoker#invoke(java.lang.Runnable)
+     */
     public void invoke(Runnable invokable) throws Exception
     {
         invokable.run();

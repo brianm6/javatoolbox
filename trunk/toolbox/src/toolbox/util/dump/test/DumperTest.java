@@ -149,12 +149,12 @@ public class DumperTest extends TestCase
 
     
     /**
-	 * Tests dump(obj, depth, formatter). Creates a new formatter and adds
-	 * lastName_ to the list of fields to be excluded. Verifies lastName_ does
-	 * not show up in the dump!
-	 * 
-	 * @throws Exception on error
-	 */ 
+     * Tests dump(obj, depth, formatter). Creates a new formatter and adds
+     * lastName_ to the list of fields to be excluded. Verifies lastName_ does
+     * not show up in the dump!
+     * 
+     * @throws Exception on error
+     */ 
     public void testDumpObjectDepthFormatter() throws Exception
     {
         logger_.info("Running testDumpObjectDepthFormatter...");

@@ -83,9 +83,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String     ATTR_LOADED     = "loaded";
     
     /**
-	 * This is a wrapper for NODE_WORKSPACE so we can treat it as an arbitrary
-	 * element and not the document root.
-	 */
+     * This is a wrapper for NODE_WORKSPACE so we can treat it as an arbitrary
+     * element and not the document root.
+     */
     private static final String NODE_ROOT = "Root";
 
     /**
@@ -750,9 +750,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     class CloseWindowListener extends WindowAdapter
     {
         /**
-		 * @see java.awt.event.WindowListener#windowClosing(
+         * @see java.awt.event.WindowListener#windowClosing(
          *      java.awt.event.WindowEvent)
-		 */
+         */
         public void windowClosing(WindowEvent e)
         {
             try
@@ -837,9 +837,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-	 * Saves the preferences for the workspaces in addition to all the active
-	 * plugins.
-	 */
+     * Saves the preferences for the workspaces in addition to all the active
+     * plugins.
+     */
     class SavePreferencesAction extends WorkspaceAction
     {
         /**

@@ -81,13 +81,13 @@ public class BlockingQueue
 
     
     /**
-	 * Pulls element off the queue. Blocks until an element is available if the
-	 * queue is empty.
-	 * 
-	 * @param millis Timeout in milliseconds
-	 * @return Next element
-	 * @throws InterruptedException on error
-	 */
+     * Pulls element off the queue. Blocks until an element is available if the
+     * queue is empty.
+     * 
+     * @param millis Timeout in milliseconds
+     * @return Next element
+     * @throws InterruptedException on error
+     */
     public Object pull(long millis) throws InterruptedException
     {
         try
@@ -125,10 +125,10 @@ public class BlockingQueue
 
     
     /**
-	 * Pushes an element onto the queue.
-	 * 
-	 * @param obj Object to push onto the queue
-	 */
+     * Pushes an element onto the queue.
+     * 
+     * @param obj Object to push onto the queue
+     */
     public void push(Object obj)
     {
         try

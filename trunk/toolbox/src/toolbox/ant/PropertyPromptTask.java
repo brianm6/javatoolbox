@@ -349,14 +349,14 @@ public class PropertyPromptTask extends Task
     //--------------------------------------------------------------------------
         
     /**
-	 * Provides a BufferedReader with a readLine method that blocks for only a
-	 * specified number of seconds. If no input is read in that time, a
-	 * specified default string is returned. Otherwise, the input read is
-	 * returned. Thanks to <a href=mailto:doc@drjava.de>Stefan Reich</a> for
-	 * suggesting this implementation.
-	 * 
-	 * @author <a href=mailto:ajyoung@alum.mit.edu>Anthony J. Young-Garner</a>
-	 */
+     * Provides a BufferedReader with a readLine method that blocks for only a
+     * specified number of seconds. If no input is read in that time, a
+     * specified default string is returned. Otherwise, the input read is
+     * returned. Thanks to <a href=mailto:doc@drjava.de>Stefan Reich</a> for
+     * suggesting this implementation.
+     * 
+     * @author <a href=mailto:ajyoung@alum.mit.edu>Anthony J. Young-Garner</a>
+     */
     private class TimedBufferedReader extends BufferedReader
     {
         /**

@@ -203,11 +203,11 @@ public class DirectoryMonitor
 
     
     /**
-	 * Removes a listener from the list that is notified each time a file
-	 * becomes available.
-	 * 
-	 * @param listener Listener to remove from the notification list
-	 */
+     * Removes a listener from the list that is notified each time a file
+     * becomes available.
+     * 
+     * @param listener Listener to remove from the notification list
+     */
     public void removeDirectoryListener(IDirectoryListener listener)
     {
         listeners_.remove(listener);

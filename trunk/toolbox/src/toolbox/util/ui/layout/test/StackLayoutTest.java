@@ -30,10 +30,10 @@ public class StackLayoutTest extends UITestCase
     //--------------------------------------------------------------------------
 
     /**
-	 * Entrypoint.
-	 * 
-	 * @param args None recognized
-	 */
+     * Entrypoint.
+     * 
+     * @param args None recognized
+     */
     public static void main(String[] args)
     {
         TestRunner.run(StackLayoutTest.class);
@@ -44,8 +44,8 @@ public class StackLayoutTest extends UITestCase
     //--------------------------------------------------------------------------
 
     /**
-	 * Tests Stack layout.
-	 */
+     * Tests Stack layout.
+     */
     public void testStackLayout()
     {
         logger_.info("Running testStackLayout...");

@@ -22,10 +22,10 @@ public class TypecastException extends RuntimeException
     //--------------------------------------------------------------------------
     
     /**
-	 * Creates a TypecastException.
-	 * 
-	 * @param message Exception message.
-	 */
+     * Creates a TypecastException.
+     * 
+     * @param message Exception message.
+     */
     public TypecastException(String message)
     {
         super(message);
@@ -33,11 +33,11 @@ public class TypecastException extends RuntimeException
 
     
     /**
-	 * Creates a TypecastException.
-	 * 
-	 * @param message Exception message.
-	 * @param rootCause Exception at root cause.
-	 */
+     * Creates a TypecastException.
+     * 
+     * @param message Exception message.
+     * @param rootCause Exception at root cause.
+     */
     public TypecastException(String message, Throwable rootCause)
     {
         super(message);
@@ -49,8 +49,8 @@ public class TypecastException extends RuntimeException
     //--------------------------------------------------------------------------
     
     /**
-	 * Prints stack trace to system.out.
-	 */
+     * Prints stack trace to system.out.
+     */
     public void printStackTrace()
     {
         printStackTrace(System.out);
@@ -58,10 +58,10 @@ public class TypecastException extends RuntimeException
 
     
     /**
-	 * Prints stack trace to a print stream.
-	 * 
-	 * @param s PrintStream.
-	 */
+     * Prints stack trace to a print stream.
+     * 
+     * @param s PrintStream.
+     */
     public void printStackTrace(PrintStream s)
     {
         if (rootCause_ != null)
@@ -72,10 +72,10 @@ public class TypecastException extends RuntimeException
 
     
     /**
-	 * Prints stack trace to a Writer.
-	 * 
-	 * @param s PrintWriter.
-	 */
+     * Prints stack trace to a Writer.
+     * 
+     * @param s PrintWriter.
+     */
     public void printStackTrace(PrintWriter s)
     {
         if (rootCause_ != null)

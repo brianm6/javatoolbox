@@ -101,10 +101,10 @@ public class ClassFinder
     //--------------------------------------------------------------------------
 
     /**
-	 * Adds package to search.
-	 * 
-	 * @param pkgName Package name.
-	 */
+     * Adds package to search.
+     * 
+     * @param pkgName Package name.
+     */
     public void addSearchPackage(String pkgName)
     {
         additionalSearchPackages_.add(pkgName);
@@ -112,10 +112,10 @@ public class ClassFinder
 
     
     /**
-	 * Adds a classes package to the search.
-	 * 
-	 * @param aClassInPackage Class with package to add.
-	 */
+     * Adds a classes package to the search.
+     * 
+     * @param aClassInPackage Class with package to add.
+     */
     public void addSearchPackage(Class aClassInPackage)
     {
         additionalSearchPackages_.add(getPackageName(aClassInPackage));
@@ -123,13 +123,13 @@ public class ClassFinder
 
     
     /**
-	 * Finds a class.
-	 * 
-	 * @param fromClass From a class.
-	 * @param toClass To a class.
-	 * @return Class found.
-	 * @throws ClassNotFoundException when no class found.
-	 */
+     * Finds a class.
+     * 
+     * @param fromClass From a class.
+     * @param toClass To a class.
+     * @return Class found.
+     * @throws ClassNotFoundException when no class found.
+     */
     public Class findClass(Class fromClass, Class toClass)
         throws ClassNotFoundException
     {
@@ -138,14 +138,14 @@ public class ClassFinder
 
     
     /**
-	 * Finds a class.
-	 * 
-	 * @param fromClass From a class.
-	 * @param toClass To a class.
-	 * @param prefix Prefix.
-	 * @return Class if found.
-	 * @throws ClassNotFoundException when no class found.
-	 */
+     * Finds a class.
+     * 
+     * @param fromClass From a class.
+     * @param toClass To a class.
+     * @param prefix Prefix.
+     * @return Class if found.
+     * @throws ClassNotFoundException when no class found.
+     */
     public Class findClass(Class fromClass, 
                            Class toClass, 
                            String prefix) throws ClassNotFoundException
@@ -160,19 +160,19 @@ public class ClassFinder
 
     
     /**
-	 * Finds a class.
-	 * 
-	 * @param fromClass From a class.
-	 * @param toClass To a class.
-	 * @param prefix Prefix.
-	 * @param loader Classloader to search.
-	 * @return Class if found.
-	 * @throws ClassNotFoundException when no class found.
-	 */
+     * Finds a class.
+     * 
+     * @param fromClass From a class.
+     * @param toClass To a class.
+     * @param prefix Prefix.
+     * @param loader Classloader to search.
+     * @return Class if found.
+     * @throws ClassNotFoundException when no class found.
+     */
     public Class findClass(Class fromClass, 
                            Class toClass, 
                            String prefix,
-						   ClassLoader loader) throws ClassNotFoundException
+                           ClassLoader loader) throws ClassNotFoundException
     {
         // Check Cache
         Class fClass = checkCache(fromClass, toClass, prefix, loader);
@@ -222,15 +222,15 @@ public class ClassFinder
     //--------------------------------------------------------------------------
 
     /**
-	 * Checks the cache for a class.
-	 * 
-	 * @param fromClass From a class.
-	 * @param toClass To a class.
-	 * @param prefix Prefix.
-	 * @param loader Classloader to search.
-	 * @return Class if found.
-	 * @throws ClassNotFoundException when no class found.
-	 */
+     * Checks the cache for a class.
+     * 
+     * @param fromClass From a class.
+     * @param toClass To a class.
+     * @param prefix Prefix.
+     * @param loader Classloader to search.
+     * @return Class if found.
+     * @throws ClassNotFoundException when no class found.
+     */
     protected Class checkCache(
         Class fromClass,
         Class toClass,
@@ -249,14 +249,14 @@ public class ClassFinder
 
     
     /**
-	 * Checks the cache for a class.
-	 * 
-	 * @param fromClass From a class.
-	 * @param toClass To a class.
-	 * @param prefix Prefix.
-	 * @param loader Classloader to search.
-	 * @return Key
-	 */
+     * Checks the cache for a class.
+     * 
+     * @param fromClass From a class.
+     * @param toClass To a class.
+     * @param prefix Prefix.
+     * @param loader Classloader to search.
+     * @return Key
+     */
     protected Object getCacheKey(
         Class fromClass,
         Class toClass,
@@ -269,14 +269,14 @@ public class ClassFinder
 
     
     /**
-	 * Puts to the cache.
-	 * 
-	 * @param fromClass From a class.
-	 * @param toClass To a class.
-	 * @param prefix Prefix.
-	 * @param loader Classloader to search.
-	 * @param classname Name of class.
-	 */
+     * Puts to the cache.
+     * 
+     * @param fromClass From a class.
+     * @param toClass To a class.
+     * @param prefix Prefix.
+     * @param loader Classloader to search.
+     * @param classname Name of class.
+     */
     protected void putCache(
         Class fromClass,
         Class toClass,
@@ -289,13 +289,13 @@ public class ClassFinder
 
     
     /**
-	 * Combine all of the fromClass packages and their heirarchy along with the
-	 * toClass heirarchy.
-	 * 
-	 * @param fromClass From class.
-	 * @param toClass To class.
-	 * @return List of packages.
-	 */
+     * Combine all of the fromClass packages and their heirarchy along with the
+     * toClass heirarchy.
+     * 
+     * @param fromClass From class.
+     * @param toClass To class.
+     * @return List of packages.
+     */
     protected List getAllPackages(Class fromClass, Class toClass)
     {
         List allPackages = getPackageNames(getClassHierarchy(fromClass));
@@ -310,11 +310,11 @@ public class ClassFinder
 
     
     /**
-	 * Gets a classes' hierarchy.
-	 * 
-	 * @param aClass Class.
-	 * @return List of classes in hierarchy.
-	 */
+     * Gets a classes' hierarchy.
+     * 
+     * @param aClass Class.
+     * @return List of classes in hierarchy.
+     */
     protected static List getClassHierarchy(Class aClass)
     {
         List classes = new ArrayList(20);
@@ -329,14 +329,14 @@ public class ClassFinder
 
     
     /**
-	 * Gets list of classes combinations.
-	 * 
-	 * @param packages List of packages.
-	 * @param fromClassNames List of names for from classes.
-	 * @param toClassName Name of To class.
-	 * @param prefix Prefix.
-	 * @return List of classes matching combination.
-	 */
+     * Gets list of classes combinations.
+     * 
+     * @param packages List of packages.
+     * @param fromClassNames List of names for from classes.
+     * @param toClassName Name of To class.
+     * @param prefix Prefix.
+     * @return List of classes matching combination.
+     */
     protected List getCombinations(
         List packages,
         List fromClassNames,
@@ -372,11 +372,11 @@ public class ClassFinder
 
     
     /**
-	 * Gets list of package names given a list of classes.
-	 * 
-	 * @param classes List of classes.
-	 * @return List of package names for those classes.
-	 */
+     * Gets list of package names given a list of classes.
+     * 
+     * @param classes List of classes.
+     * @return List of package names for those classes.
+     */
     protected List getPackageNames(List classes)
     {
         List pckgs = new ArrayList(classes.size());
@@ -394,10 +394,10 @@ public class ClassFinder
 
     
     /**
-	 * Transposes a stringbuffer.
-	 * 
-	 * @param name Name to transpose.
-	 */
+     * Transposes a stringbuffer.
+     * 
+     * @param name Name to transpose.
+     */
     protected void transpose(StringBuffer name)
     {
         if (search_ == null || replace_ == null)
@@ -414,11 +414,11 @@ public class ClassFinder
     //--------------------------------------------------------------------------
 
     /**
-	 * Retrieves classes package name.
-	 * 
-	 * @param aClass Class to get package name of.
-	 * @return Classes packagename.
-	 */
+     * Retrieves classes package name.
+     * 
+     * @param aClass Class to get package name of.
+     * @return Classes packagename.
+     */
     public static String getPackageName(Class aClass)
     {
         Package pckg = aClass.getPackage();
@@ -427,11 +427,11 @@ public class ClassFinder
 
     
     /**
-	 * Capitalizes class name.
-	 * 
-	 * @param name Name to capitalize.
-	 * @return Capitalized name.
-	 */
+     * Capitalizes class name.
+     * 
+     * @param name Name to capitalize.
+     * @return Capitalized name.
+     */
     public static String capitalize(String name)
     {
         return Character.toUpperCase(name.charAt(0)) + name.substring(1);
@@ -439,11 +439,11 @@ public class ClassFinder
 
     
     /**
-	 * Gets a classes class name.
-	 * 
-	 * @param aClass Class to get name of.
-	 * @return Class name without the package qualifier.
-	 */
+     * Gets a classes class name.
+     * 
+     * @param aClass Class to get name of.
+     * @return Class name without the package qualifier.
+     */
     public static String getClassName(Class aClass)
     {
         String name = aClass.getName();
@@ -454,11 +454,11 @@ public class ClassFinder
 
     
     /**
-	 * Removes the package from a name.
-	 * 
-	 * @param name Name to remove package from.
-	 * @return Name with package removed.
-	 */
+     * Removes the package from a name.
+     * 
+     * @param name Name to remove package from.
+     * @return Name with package removed.
+     */
     protected static String removePackage(String name)
     {
         int index = name.lastIndexOf('.');
@@ -468,11 +468,11 @@ public class ClassFinder
 
     
     /**
-	 * Gets list of class names in a classes hierarchy.
-	 * 
-	 * @param aClass Class to get hierarchy names from.
-	 * @return List of class names in hierarchy.
-	 */
+     * Gets list of class names in a classes hierarchy.
+     * 
+     * @param aClass Class to get hierarchy names from.
+     * @return List of class names in hierarchy.
+     */
     protected static List getClassNames(Class aClass)
     {
         List classes = getClassHierarchy(aClass);

@@ -24,12 +24,12 @@ public interface ReferenceFactory
 
     
     /**
-	 * Create a Reference key which is stored in a ReferenceHashMap. This
-	 * returned valued is stored within the ReferenceHashMap.
-	 * 
-	 * @param key Key
-	 * @param q Reference queue
-	 * @return Reference
-	 */
+     * Create a Reference key which is stored in a ReferenceHashMap. This
+     * returned valued is stored within the ReferenceHashMap.
+     * 
+     * @param key Key
+     * @param q Reference queue
+     * @return Reference
+     */
     Reference create(Object key, ReferenceQueue q);
 }

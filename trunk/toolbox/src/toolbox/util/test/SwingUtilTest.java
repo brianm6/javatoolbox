@@ -48,7 +48,7 @@ public class SwingUtilTest extends UITestCase
      */
     public static void main(String[] args) throws Exception
     {
-    	LookAndFeelUtil.setPreferredLAF();
+        LookAndFeelUtil.setPreferredLAF();
         TestRunner.run(SwingUtilTest.class);
     }
 

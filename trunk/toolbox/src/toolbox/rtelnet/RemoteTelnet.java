@@ -121,7 +121,7 @@ public class RemoteTelnet
             String hostname, 
             int port, 
             String username,
-			String password, 
+            String password, 
             String command) throws IOException
     {
         this(new RemoteTelnetInfo(hostname, port, username, password, command));

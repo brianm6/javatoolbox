@@ -139,10 +139,10 @@ public class Tree
      */
     private static final boolean DEFAULT_SHOWSIZE = false;
 
-	/** 
-	 * File date/times are not shown by default. 
-	 */
-	private static final boolean DEFAULT_SHOWDATE = false;
+    /** 
+     * File date/times are not shown by default. 
+     */
+    private static final boolean DEFAULT_SHOWDATE = false;
 
     /** 
      * Output is sent to System.out by default. 
@@ -184,10 +184,10 @@ public class Tree
      */
     private boolean showSize_;
 
-	/** 
-	 * Flag to toggle the showing of a file's timestamp. 
-	 */
-	private boolean showDate_;
+    /** 
+     * Flag to toggle the showing of a file's timestamp. 
+     */
+    private boolean showDate_;
 
     /** 
      * Root directory of the tree. 
@@ -199,10 +199,10 @@ public class Tree
      */
     private String sortBy_;
 
-	/**
-	 * Maps from SORT_* option to a Comparator
-	 */
-	private Map sortByMap_;
+    /**
+     * Maps from SORT_* option to a Comparator
+     */
+    private Map sortByMap_;
     
     /**
      * Formatter for file sizes, etc.
@@ -237,8 +237,8 @@ public class Tree
         Option sizeOption = new Option(
             "s", "size", false, "Includes file sizes in the output");
        
-		Option dateOption = new Option(
-			"d", "date/time", false, "Includes file date/time in the output");
+        Option dateOption = new Option(
+            "d", "date/time", false, "Includes file date/time in the output");
         
         Option sortOption = new Option("o", "sort", true, "Sort order");
         sortOption.setArgs(1);
@@ -272,14 +272,14 @@ public class Tree
             {
                 showSize = true;
             }
-			else if (opt.equals(dateOption.getOpt()))
-			{
-				showDate = true;
-			}
-			else if (opt.equals(sortOption.getOpt()))
-			{
-				sortBy = sortOption.getValue(DEFAULT_SORT);
-			}
+            else if (opt.equals(dateOption.getOpt()))
+            {
+                showDate = true;
+            }
+            else if (opt.equals(sortOption.getOpt()))
+            {
+                sortBy = sortOption.getValue(DEFAULT_SORT);
+            }
             else if (opt.equals(helpOption.getOpt())  ||
                      opt.equals(helpOption2.getOpt()))
             {
@@ -316,7 +316,7 @@ public class Tree
                 Tree t = new Tree(new File(rootDir), 
                                   showFiles, 
                                   showSize,
-                        		  showDate,
+                                  showDate,
                                   sortBy);
                 t.showTree();
                 StreamUtil.close(t.writer_);
@@ -406,23 +406,23 @@ public class Tree
     }
 
     
-	/**
-	 * Creates a tree with the given root directory and flag to show files.
-	 * 
-	 * @param rootDir Root directory.
-	 * @param showFiles If true, includes files (as opposed to just directories)
-	 *        in the output.
-	 * @param showSize If true, shows the size of the file.
-	 * @param showDate If true, shows the date/time of the file.
-	 * @param sortBy File attribute to use for sorting.
-	 */
-	public Tree(File rootDir, boolean showFiles, boolean showSize, 
-				boolean showDate, String sortBy)
-	{
-		this(rootDir, showFiles, showSize, showDate, sortBy, DEFAULT_WRITER);
-	}
+    /**
+     * Creates a tree with the given root directory and flag to show files.
+     * 
+     * @param rootDir Root directory.
+     * @param showFiles If true, includes files (as opposed to just directories)
+     *        in the output.
+     * @param showSize If true, shows the size of the file.
+     * @param showDate If true, shows the date/time of the file.
+     * @param sortBy File attribute to use for sorting.
+     */
+    public Tree(File rootDir, boolean showFiles, boolean showSize, 
+                boolean showDate, String sortBy)
+    {
+        this(rootDir, showFiles, showSize, showDate, sortBy, DEFAULT_WRITER);
+    }
    
-	
+    
     /**
      * Creates a tree with the given criteria.
      * 
@@ -437,7 +437,7 @@ public class Tree
     public Tree(File rootDir, 
                 boolean showFiles, 
                 boolean showSize,
-				boolean showDate,
+                boolean showDate,
                 String sortBy,
                 Writer writer)
     {
@@ -465,17 +465,17 @@ public class Tree
         if (showFiles_)
             fileFilter_ = new FileFilter();
 
-		sortByMap_ = new HashMap();
-		sortByMap_.put(SORT_NONE, null);
+        sortByMap_ = new HashMap();
+        sortByMap_.put(SORT_NONE, null);
         
-		sortByMap_.put(SORT_NAME, 
-			new FileComparator(FileComparator.COMPARE_NAME));
+        sortByMap_.put(SORT_NAME, 
+            new FileComparator(FileComparator.COMPARE_NAME));
         
-		sortByMap_.put(SORT_SIZE,
-			new FileComparator(FileComparator.COMPARE_SIZE));
+        sortByMap_.put(SORT_SIZE,
+            new FileComparator(FileComparator.COMPARE_SIZE));
         
-		sortByMap_.put(SORT_DATE,
-			new FileComparator(FileComparator.COMPARE_DATE));
+        sortByMap_.put(SORT_DATE,
+            new FileComparator(FileComparator.COMPARE_DATE));
         
         sortBy_ = sortBy;
         
@@ -519,12 +519,12 @@ public class Tree
     
     
     /**
-	 * Recurses the directory structure of the given rootDir and generates a
-	 * hierarchical text representation.
-	 * 
-	 * @param rootDir Root directory.
-	 * @param level Current level of decorated indentation.
-	 */
+     * Recurses the directory structure of the given rootDir and generates a
+     * hierarchical text representation.
+     * 
+     * @param rootDir Root directory.
+     * @param level Current level of decorated indentation.
+     */
     protected boolean showTree(File rootDir, String level)
     {
         boolean atRoot = (level.length() == 0);
@@ -534,7 +534,7 @@ public class Tree
             
         // Get list of directories in root
         File[] dirs = rootDir.listFiles(dirFilter_);
-		Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
+        Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
 
         String filler = (dirs.length == 0 ? SPACER : BAR);
         
@@ -542,8 +542,8 @@ public class Tree
         if (showFiles_)
         {
             File[] files = rootDir.listFiles(fileFilter_);
-			Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
-			
+            Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
+            
             int longestName = -1; // Number of spaces occupied by longest fname 
             int largestFile = -1; // Number of spaces occupied by largest fsize
             long dirSize = 0;     // Running total of a directory's size

@@ -24,12 +24,12 @@ package toolbox.util.service;
 
 public interface Service
 {
-	/**
-	 * Starts the service. Once a service it started, it may either be paused or
-	 * stopped.
-	 * 
-	 * @throws ServiceException if the service encounters problems starting up.
-	 */
+    /**
+     * Starts the service. Once a service it started, it may either be paused or
+     * stopped.
+     * 
+     * @throws ServiceException if the service encounters problems starting up.
+     */
     void start() throws ServiceException;
     
     

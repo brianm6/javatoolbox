@@ -109,9 +109,9 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * @throws UnknownHostException on invalid hostname
      */
     public SocketConnection(
-    	String host, 
-    	int port, 
-    	boolean forceConnect) 
+        String host, 
+        int port, 
+        boolean forceConnect) 
         throws IOException, UnknownHostException
     {
         this(host, port, forceConnect, DEFAULT_RETRY_INTERVAL);

@@ -26,7 +26,7 @@ public class UITestCase extends TestCase
     // Constants 
     //--------------------------------------------------------------------------
     
-	// Window/Frame/Dialog dimensions relative to the size of the desktop.
+    // Window/Frame/Dialog dimensions relative to the size of the desktop.
     public static final int SCREEN_PACK           = 0;
     public static final int SCREEN_FULL           = 1;
     public static final int SCREEN_ONE_HALF       = 2;

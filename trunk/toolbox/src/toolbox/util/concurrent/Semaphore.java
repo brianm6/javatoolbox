@@ -94,13 +94,13 @@ public class Semaphore implements Sync
     //--------------------------------------------------------------------------
     
     /**
-	 * Create a Semaphore with the given initial number of permits. Using a
-	 * seed of one makes the semaphore act as a mutual exclusion lock. Negative
-	 * seeds are also allowed, in which case no acquires will proceed until the
-	 * number of releases has pushed the number of permits past 0.
-	 * 
-	 * @param initialPermits Initial permits
-	 */
+     * Create a Semaphore with the given initial number of permits. Using a
+     * seed of one makes the semaphore act as a mutual exclusion lock. Negative
+     * seeds are also allowed, in which case no acquires will proceed until the
+     * number of releases has pushed the number of permits past 0.
+     * 
+     * @param initialPermits Initial permits
+     */
     public Semaphore(long initialPermits)
     {
         permits_ = initialPermits;
@@ -208,18 +208,18 @@ public class Semaphore implements Sync
 
 
     /**
-	 * Release N permits. <code>release(n)</code> is equivalent in effect to:
-	 * 
-	 * <pre>
-	 *  for (int i = 0; i < n; ++i) release();
-	 * </pre>
-	 * 
-	 * <p>
-	 * But may be more efficient in some semaphore implementations.
-	 * 
-	 * @param n Time in millis
-	 * @exception IllegalArgumentException if n is negative.
-	 */
+     * Release N permits. <code>release(n)</code> is equivalent in effect to:
+     * 
+     * <pre>
+     *  for (int i = 0; i < n; ++i) release();
+     * </pre>
+     * 
+     * <p>
+     * But may be more efficient in some semaphore implementations.
+     * 
+     * @param n Time in millis
+     * @exception IllegalArgumentException if n is negative.
+     */
     public synchronized void release(long n) throws IllegalArgumentException
     {
         if (n < 0)

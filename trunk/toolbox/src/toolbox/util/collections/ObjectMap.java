@@ -79,14 +79,14 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
 
     /**
-	 * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
-	 * thrown by the bean, then a MapInvocationException can be thrown by most
-	 * of the <tt>Map</tt> methods. The <tt>bean</tt> is held onto by a
-	 * strong reference.
-	 * 
-	 * @param bean Object to convert to a <tt>Map</tt>.
-	 * @throws IntrospectionException on error
-	 */
+     * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
+     * thrown by the bean, then a MapInvocationException can be thrown by most
+     * of the <tt>Map</tt> methods. The <tt>bean</tt> is held onto by a
+     * strong reference.
+     * 
+     * @param bean Object to convert to a <tt>Map</tt>.
+     * @throws IntrospectionException on error
+     */
     public ObjectMap(Object bean) throws IntrospectionException
     {
         this(bean, false);
@@ -94,17 +94,17 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 
     
     /**
-	 * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
-	 * thrown by the bean, then a MapInvocationException can be thrown by most
-	 * of the <tt>Map</tt> methods when silent is false. The <tt>bean</tt>
-	 * is held onto by a strong reference.
-	 * 
-	 * @param bean Object to convert to a <tt>Map</tt>.
-	 * @param silent true - exceptions thrown by bean are ignored<br>
+     * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
+     * thrown by the bean, then a MapInvocationException can be thrown by most
+     * of the <tt>Map</tt> methods when silent is false. The <tt>bean</tt>
+     * is held onto by a strong reference.
+     * 
+     * @param bean Object to convert to a <tt>Map</tt>.
+     * @param silent true - exceptions thrown by bean are ignored<br>
      *               false - MapInvocationTargetException will be thrown if 
      *                       the bean throws an exception
-	 * @throws IntrospectionException on error
-	 */
+     * @throws IntrospectionException on error
+     */
     public ObjectMap(Object bean, boolean silent) throws IntrospectionException
     {
         this(bean, silent, true);
@@ -112,19 +112,19 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 
     
     /**
-	 * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
-	 * thrown by the bean, then a MapInvocationException can be thrown by most
-	 * of the <tt>Map</tt> methods when silent is false. The <tt>bean</tt>
-	 * is held onto by a strong reference if <tt>useWeakRef</tt> is false.
-	 * 
-	 * @param bean the object to convert to a <tt>Map</tt>.
-	 * @param silent true - exceptions thrown by bean are ignored <br>
+     * Constructs a Map which wraps a <tt>bean</tt>. If an exception is
+     * thrown by the bean, then a MapInvocationException can be thrown by most
+     * of the <tt>Map</tt> methods when silent is false. The <tt>bean</tt>
+     * is held onto by a strong reference if <tt>useWeakRef</tt> is false.
+     * 
+     * @param bean the object to convert to a <tt>Map</tt>.
+     * @param silent true - exceptions thrown by bean are ignored <br>
      *               false - MapInvocationTargetException will be thrown if the 
      *                       bean throws an exception.
-	 * @param useWeakRef true - holds onto the bean using a WeakReference<br> 
+     * @param useWeakRef true - holds onto the bean using a WeakReference<br> 
      *                   false - holds onto the bean using a strong reference
-	 * @throws IntrospectionException on error
-	 */
+     * @throws IntrospectionException on error
+     */
     public ObjectMap(Object bean, boolean silent, boolean useWeakRef)
         throws IntrospectionException
     {
@@ -366,12 +366,12 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
 
     /**
-	 * After Serialization the ObjectMap will not use WeakReferences if
-	 * previously used.
-	 * 
-	 * @param s Stream to write serialzed form.
-	 * @throws IOException on I/O error.
-	 */
+     * After Serialization the ObjectMap will not use WeakReferences if
+     * previously used.
+     * 
+     * @param s Stream to write serialzed form.
+     * @throws IOException on I/O error.
+     */
     private void writeObject(ObjectOutputStream s) throws IOException
     {
         WeakReference wBeanSave = wBean_;
@@ -577,12 +577,12 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 
     
     /**
-	 * Uses a cache of <tt>WeakReference</tt> s to hold onto a <tt>Class</tt>
-	 * and <tt>PropertyDescriptor</tt> (s).
-	 * 
-	 * <tt>WeakReference</tt> s are used so that the garbage collector can
-	 * collect a Class and/or it's descriptors when they are no longer used.
-	 */
+     * Uses a cache of <tt>WeakReference</tt> s to hold onto a <tt>Class</tt>
+     * and <tt>PropertyDescriptor</tt> (s).
+     * 
+     * <tt>WeakReference</tt> s are used so that the garbage collector can
+     * collect a Class and/or it's descriptors when they are no longer used.
+     */
     protected static PropertyDescriptor[] getPropertyDescriptors(Class aClass)
         throws IntrospectionException
     {

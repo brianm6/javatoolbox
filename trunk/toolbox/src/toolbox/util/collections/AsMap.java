@@ -29,11 +29,11 @@ public final class AsMap
     //--------------------------------------------------------------------------
     
     /**
-	 * Maps an object.
-	 * 
-	 * @param object Object to map
-	 * @return Map of object
-	 */
+     * Maps an object.
+     * 
+     * @param object Object to map
+     * @return Map of object
+     */
     public static Map of(Object object)
     {
         return of(object, null);
@@ -41,12 +41,12 @@ public final class AsMap
 
 
     /**
-	 * Maps an object.
-	 * 
-	 * @param object Object to map
-	 * @param policy Mapping policy
-	 * @return Map of object
-	 */
+     * Maps an object.
+     * 
+     * @param object Object to map
+     * @param policy Mapping policy
+     * @return Map of object
+     */
     public static Map of(Object object, String policy)
     {
         return (Map) TYPECAST.coerce(object, policy);

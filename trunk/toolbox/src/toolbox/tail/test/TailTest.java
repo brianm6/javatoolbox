@@ -314,7 +314,7 @@ public class TailTest extends TestCase
     public void writeDelayed(
             PipedWriter writer, 
             int iterations, 
-			int delay, 
+            int delay, 
             String value)
     {
         logger_.info("Running writeDelayed...");

@@ -48,11 +48,11 @@ public class ObjectComparator implements Comparator, Serializable
     //--------------------------------------------------------------------------
     
     /**
-	 * Creates an ObjectComparator.
-	 * 
-	 * @param propertyName The property to compare or a period separated list
-	 *        of properties (e.g. address.line1 )
-	 */
+     * Creates an ObjectComparator.
+     * 
+     * @param propertyName The property to compare or a period separated list
+     *        of properties (e.g. address.line1 )
+     */
     public ObjectComparator(String propertyName)
     {
         this(new Property(propertyName));
@@ -236,9 +236,9 @@ public class ObjectComparator implements Comparator, Serializable
     //--------------------------------------------------------------------------
 
     /**
-	 * A description of the property to compare. If a Comparator is not
-	 * provided, the property should implement Comparable.
-	 */
+     * A description of the property to compare. If a Comparator is not
+     * provided, the property should implement Comparable.
+     */
     public static class Property implements Serializable
     {
         /**

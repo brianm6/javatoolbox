@@ -153,12 +153,12 @@ public class Mutex implements Sync
 
     
     /**
-	 * Attempts to acquire the mutex in a given time frame.
-	 * 
-	 * @param msecs Milliseconds to attempt
-	 * @return If attempt was successful
-	 * @throws InterruptedException on interruption
-	 */
+     * Attempts to acquire the mutex in a given time frame.
+     * 
+     * @param msecs Milliseconds to attempt
+     * @return If attempt was successful
+     * @throws InterruptedException on interruption
+     */
     public boolean attempt(long msecs) throws InterruptedException
     {
         if (Thread.interrupted())

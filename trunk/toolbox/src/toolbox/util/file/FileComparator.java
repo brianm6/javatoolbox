@@ -52,9 +52,9 @@ public class FileComparator implements Comparator
     // Fields
     //--------------------------------------------------------------------------
     
-	/**
-	 * Field to compare by.
-	 */    
+    /**
+     * Field to compare by.
+     */    
     private int compareBy_;
     
     //--------------------------------------------------------------------------
@@ -142,11 +142,11 @@ public class FileComparator implements Comparator
     //--------------------------------------------------------------------------
     
     /**
-	 * Does a byte by byte comparison of the two files.
-	 * 
-	 * @param f1 File object 1
-	 * @param f2 File object 2
-	 */
+     * Does a byte by byte comparison of the two files.
+     * 
+     * @param f1 File object 1
+     * @param f2 File object 2
+     */
     protected int compareByContents(File f1, File f2)
     {
 

@@ -27,9 +27,9 @@ public class ObjectInfo
     private Field field_;
     
     /**
-	 * Unique sequence number for referring back to multiple references in the
-	 * object graph.
-	 */
+     * Unique sequence number for referring back to multiple references in the
+     * object graph.
+     */
     private String seqNum_;
     
     //--------------------------------------------------------------------------
@@ -37,11 +37,11 @@ public class ObjectInfo
     //--------------------------------------------------------------------------
     
     /**
-	 * Creates an ObjectInfo.
-	 * 
-	 * @param object Object to store traversal information on.
-	 * @param seqNum Assigned sequence number.
-	 */
+     * Creates an ObjectInfo.
+     * 
+     * @param object Object to store traversal information on.
+     * @param seqNum Assigned sequence number.
+     */
     public ObjectInfo(Object object, String seqNum)
     {
         this(object, seqNum, null);
@@ -49,12 +49,12 @@ public class ObjectInfo
 
     
     /**
-	 * Creates an ObjectInfo.
-	 * 
-	 * @param object Object to store traversal information on.
-	 * @param seqNum Assigned sequence number.
-	 * @param field Field associated with the object.
-	 */
+     * Creates an ObjectInfo.
+     * 
+     * @param object Object to store traversal information on.
+     * @param seqNum Assigned sequence number.
+     * @param field Field associated with the object.
+     */
     public ObjectInfo(Object object, String seqNum, Field field)
     {
         object_ = object;

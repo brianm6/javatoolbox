@@ -247,8 +247,8 @@ public class FindClassTest extends TestCase
         }
         
         /**
-		 * @see toolbox.findclass.FindClassListener#searchCancelled()
-		 */
+         * @see toolbox.findclass.FindClassListener#searchCancelled()
+         */
         public void searchCancelled()
         {
             logger_.info("SearchCanceled");
@@ -256,27 +256,27 @@ public class FindClassTest extends TestCase
         }
 
         /**
-		 * @see toolbox.findclass.FindClassListener#searchCompleted(
+         * @see toolbox.findclass.FindClassListener#searchCompleted(
          *      java.lang.String)
-		 */
+         */
         public void searchCompleted(String search)
         {
             logger_.info("SearchCompleted " + search);
         }
 
         /**
-		 * @see toolbox.findclass.FindClassListener#classFound(
+         * @see toolbox.findclass.FindClassListener#classFound(
          *      toolbox.findclass.FindClassResult)
-		 */
+         */
         public void classFound(FindClassResult searchResult)
         {
             logger_.info("ClassFound " + searchResult.getClassFQN());
         }
 
         /**
-		 * @see toolbox.findclass.FindClassListener#searchingTarget(
+         * @see toolbox.findclass.FindClassListener#searchingTarget(
          *      java.lang.String)
-		 */
+         */
         public void searchingTarget(String target)
         {
             logger_.info("SearchingTarget " + target);

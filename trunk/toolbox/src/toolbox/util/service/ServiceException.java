@@ -5,10 +5,10 @@ package toolbox.util.service;
  */
 public class ServiceException extends Exception
 {
-	/**
-	 * Creates a ServiceException.
-	 *
-	 */
+    /**
+     * Creates a ServiceException.
+     *
+     */
     public ServiceException()
     {
     }
