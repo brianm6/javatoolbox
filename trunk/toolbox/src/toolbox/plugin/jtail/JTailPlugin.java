@@ -114,6 +114,5 @@ public class JTailPlugin implements IPlugin
      */
     public void shutdown()
     {
-        jtail_.saveConfiguration(null);
     }
 }
