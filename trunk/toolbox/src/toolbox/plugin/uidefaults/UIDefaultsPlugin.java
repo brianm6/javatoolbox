@@ -2,13 +2,11 @@ package toolbox.plugin.uidefaults;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,8 +25,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import nu.xom.Element;
 
@@ -37,13 +33,12 @@ import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartButton;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.workspace.IPlugin;
 
 /**
- * Shows UIDefaults for each widget in Swing's library for a given Look and
- * Feel.
+ * Shows UIDefaults for each widget in Swing's library for all currently
+ * installed Look and Feels.
  *
  * @author Unascribed
  */
@@ -62,9 +57,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     private JTabbedPane tabbedPane_;
 
     /**
-     * Special table cell renderer for colors and icons.
+     * Table cell renderer for look and feel resources like fonts and colors.
      */
-    private SampleRenderer sampleRenderer_;
+    private UIDefaultsTableCellRenderer tableCellRenderer_;
 
     /**
      * Look and feel information map.
@@ -176,13 +171,13 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
      * Constructs the user interface.
      */
-    private void buildView()
+    protected void buildView()
     {
         setLayout(new BorderLayout());
         tabbedPane_ = getTabbedPane();
@@ -210,7 +205,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      *
      * @return JTabbedPane
      */
-    private JTabbedPane getTabbedPane()
+    protected JTabbedPane getTabbedPane()
     {
         Map components = new TreeMap();
         UIDefaults defaults = UIManager.getDefaults();
@@ -242,7 +237,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      * @param key Map key.
      * @return Map
      */
-    private Map getComponentMap(Map components, String key)
+    protected Map getComponentMap(Map components, String key)
     {
         if (key.startsWith("class") | key.startsWith("javax"))
             return null;
@@ -278,9 +273,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      * @param pane Tabbed pane.
      * @param components Components to add.
      */
-    private void addComponentTabs(JTabbedPane pane, Map components)
+    protected void addComponentTabs(JTabbedPane pane, Map components)
     {
-        sampleRenderer_ = new SampleRenderer();
+        tableCellRenderer_ = new UIDefaultsTableCellRenderer();
 
         String[] colName = {"Key", "Value", "Sample"};
         Set c = components.keySet();
@@ -320,200 +315,19 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
                 }
             }
 
-            MyTableModel myModel = new MyTableModel(rowData, colName);
+            UIDefaultsTableModel myModel = 
+                new UIDefaultsTableModel(tableCellRenderer_, rowData, colName);
+            
             JTable table = new JTable(myModel);
 
             table.setDefaultRenderer(
-                sampleRenderer_.getClass(), sampleRenderer_);
+                tableCellRenderer_.getClass(), tableCellRenderer_);
 
             table.getColumnModel().getColumn(0).setPreferredWidth(250);
             table.getColumnModel().getColumn(1).setPreferredWidth(500);
             table.getColumnModel().getColumn(2).setPreferredWidth(50);
 
             pane.addTab(component, new JScrollPane(table));
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // MyTableModel
-    //--------------------------------------------------------------------------
-
-    /**
-     * Custom table model so show components characteristics.
-     */
-    class MyTableModel extends AbstractTableModel
-    {
-        /**
-         * Column names.
-         */
-        private String[] columnNames_;
-        
-        /**
-         * Row data.
-         */
-        private Object[][] rowData_;
-
-        
-        /**
-         * Creates a MyTableModel.
-         *
-         * @param rowData Row data.
-         * @param columnNames Column names.
-         */
-        public MyTableModel(Object[][] rowData, String[] columnNames)
-        {
-            rowData_ = rowData;
-            columnNames_ = columnNames;
-        }
-
-
-        /**
-         * @see javax.swing.table.TableModel#getColumnCount()
-         */
-        public int getColumnCount()
-        {
-            return columnNames_.length;
-        }
-
-
-        /**
-         * @see javax.swing.table.TableModel#getRowCount()
-         */
-        public int getRowCount()
-        {
-            return rowData_.length;
-        }
-
-
-        /**
-         * @see javax.swing.table.TableModel#getColumnName(int)
-         */
-        public String getColumnName(int col)
-        {
-            return columnNames_[col];
-        }
-
-
-        /**
-         * @see javax.swing.table.TableModel#getValueAt(int, int)
-         */
-        public Object getValueAt(int row, int col)
-        {
-            return rowData_[row][col];
-        }
-
-
-        /**
-         * @see javax.swing.table.TableModel#getColumnClass(int)
-         */
-        public Class getColumnClass(int c)
-        {
-            Object o;
-
-            if (c == 2)
-                o = sampleRenderer_;
-            else
-                o = getValueAt(0, c);
-
-            return o.getClass();
-        }
-
-
-        /**
-         * @see javax.swing.table.TableModel#setValueAt(
-         *      java.lang.Object, int, int)
-         */
-        public void setValueAt(Object value, int row, int col)
-        {
-            rowData_[row][col] = value;
-            fireTableCellUpdated(row, col);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // SampleRenderer
-    //--------------------------------------------------------------------------
-
-    /**
-     * Custom table cell renderer for showing text/colors/icons.
-     */
-    class SampleRenderer extends JSmartLabel implements TableCellRenderer
-    {
-        /**
-         * Creates a SampleRenderer.
-         */
-        public SampleRenderer()
-        {
-            setHorizontalAlignment(SwingConstants.CENTER);
-            setOpaque(true); // MUST do this for background to show up.
-        }
-
-
-        /**
-         * @see javax.swing.table.TableCellRenderer
-         *      #getTableCellRendererComponent(javax.swing.JTable,
-         *      java.lang.Object, boolean, boolean, int, int)
-         */
-        public Component getTableCellRendererComponent(
-            JTable table,
-            Object sample,
-            boolean isSelected,
-            boolean hasFocus,
-            int row,
-            int column)
-        {
-            setBackground(null);
-            setIcon(null);
-            setText("");
-            String sampleName = sample.getClass().getName();
-
-            //
-            // Handle colors
-            //
-            if (sample instanceof Color)
-            {
-                setBackground((Color) sample);
-            }
-
-            //
-            // Handle fonts
-            //
-            else if (sample instanceof Font)
-            {
-                setText("Sample");
-                setFont((Font) sample);
-            }
-
-            //
-            // Skip over private classes
-            //
-            else if (Modifier.isPrivate(sample.getClass().getModifiers()))
-            {
-                ;
-            }
-
-            //
-            // Some Icons just don't play nice
-            //
-            else if ((sampleName.indexOf("CheckBox") >= 0) ||
-                (sampleName.indexOf("RadioButton") >= 0)   ||
-                (sampleName.indexOf("InternalFrame") >= 0) ||
-                (sampleName.indexOf("PaletteCloseIcon") >= 0))
-            {
-                ; // No op
-            }
-
-            //
-            //  Handle icons
-            //
-            else if (sample instanceof Icon)
-            {
-                Icon icon = (Icon) sample;
-                setIcon(icon);
-                setText(icon.getIconWidth() + "x" + icon.getIconHeight());
-            }
-
-            return this;
         }
     }
 }
