@@ -7,14 +7,17 @@ import javax.swing.UIManager;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
- * Specialization of the default JStatusBar with pre-assembled components.
- * This includes a status text, progress bar for long running operations, and
- * a display for memory usage statistics.
+ * Specialization of JStatusBar with pre-assembled components including a 
+ * status text compartment and a progress bar compartment for long running 
+ * operations.
  */
 public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
 {
+    /** Progress bar for indicating execution is in progress */
     private JProgressBar progressBar_;
-    private JLabel       status_;
+    
+    /** Label for displaying status text */
+    private JLabel status_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -39,9 +42,18 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     {
         progressBar_ = new JProgressBar();
         status_ = new JLabel("Howdy pardner!");
-        
+
         addStatusComponent(status_, RELATIVE, 1);
         addStatusComponent(progressBar_, FIXED, 100);    
+        
+        // Repaint interval.
+        UIManager.put("ProgressBar.repaintInterval", new Integer(100));
+        
+        // Cycle time.
+        UIManager.put("ProgressBar.cycleTime", new Integer(1500));
+        
+        //UIManager.put("ProgressBar.cellLength", new Integer(75));
+        //UIManager.put("ProgressBar.cellSpacing", new Integer(5));
     }
     
     //--------------------------------------------------------------------------
@@ -54,24 +66,14 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     public void setStatus(String status)
     {
         status_.setText(status);
-        progressBar_.setIndeterminate(false);
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#setBusy(java.lang.String)
+     * @see toolbox.util.ui.plugin.IStatusBar#setBusy(boolean)
      */
-    public void setBusy(String status)
+    public void setBusy(boolean busy)
     {
-        setStatus(status);
-        
-        // Repaint interval.
-        UIManager.put("ProgressBar.repaintInterval", new Integer(25));
-        
-        // Cycle time.
-        UIManager.put("ProgressBar.cycleTime", new Integer(1500));
-        
-        
-        progressBar_.setIndeterminate(true);
+        progressBar_.setIndeterminate(busy);
     }
 
     /**
@@ -80,8 +82,6 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     public void setError(String status)
     {
         setStatus(status);
-        progressBar_.setIndeterminate(false);
-
     }
 
     /**
@@ -90,8 +90,6 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     public void setInfo(String status)
     {
         setStatus(status);
-        progressBar_.setIndeterminate(false);
-
     }
 
     /**
@@ -100,8 +98,6 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     public void setWarning(String status)
     {
         setStatus(status);
-        progressBar_.setIndeterminate(false);
-
     }
 
     /**
@@ -111,6 +107,4 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     {
         return status_.getText();
     }
-    
-    
 }
