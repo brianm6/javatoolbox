@@ -281,7 +281,8 @@ public class JEditTextAreaPopupMenu extends JPopupMenu
         {
             ExceptionUtil.handleUI(
                 new IllegalArgumentException("Not supported"), logger_);
-                
+            
+            // TODO: Add search capability    
             //JFindDialog findDialog = new JFindDialog(textArea_);
             //findDialog.setVisible(true);
         }
