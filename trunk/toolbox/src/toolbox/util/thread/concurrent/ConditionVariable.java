@@ -2,8 +2,8 @@ package toolbox.util.thread.concurrent;
 
 /**
  * This class implements a synchronization semaphore that blocks calling
- * threads until a particular condition is met.  It is used in conjuction 
- * with a mutex to ensure condition integrity.
+ * threads until a particular condition is met. It is used in conjuction with a
+ * mutex to ensure condition integrity.
  */
 public class ConditionVariable
 {
@@ -20,8 +20,8 @@ public class ConditionVariable
      *         mutex.
      * @throws Mutex.UnderflowException if the mutex has not been acquired.
      */
-    public void condWait(Mutex mutex)
-        throws Mutex.NotOwnerException, Mutex.UnderflowException
+    public void condWait(Mutex mutex) throws 
+        Mutex.NotOwnerException, Mutex.UnderflowException
     {
         try
         {

@@ -7,8 +7,23 @@ package toolbox.util.thread.concurrent;
  */
 public class EventSemaphore
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Mutex.
+     */
     private Mutex mutex_;
+    
+    /**
+     * Semaphore posted flag.
+     */
     private boolean posted_;
+    
+    /**
+     * Event causing semaphore to be posted.
+     */
     private ConditionVariable event_;
 
     //--------------------------------------------------------------------------
@@ -124,7 +139,7 @@ public class EventSemaphore
     /**
      * Returns true if this event semaphore is in a posted state.
      *
-     * @return True if this event semaphore is in a posted state.
+     * @return boolean
      */
     public synchronized boolean posted()
     {

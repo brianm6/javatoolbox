@@ -105,7 +105,7 @@ public final class ReturnValue
     /**
      * Returns true if the result value is available for reading.
      *
-     * @return True if the result value is available for reading.
+     * @return boolean
      */
     public boolean isAvailable()
     {
@@ -118,7 +118,7 @@ public final class ReturnValue
     /**
      * Returns the return value, blocking until it is available.
      *
-     * @return Returns the return value, blocking until it is available.
+     * @return Object
      */
     public Object getValue()
     {
@@ -186,7 +186,7 @@ public final class ReturnValue
     /**
      * Gets the current state of the corresponding request.
      *
-     * @return Current state of the corresponding request.
+     * @return int
      */
     int getState()
     {
@@ -194,7 +194,7 @@ public final class ReturnValue
     } 
 
     //--------------------------------------------------------------------------
-    // Interfaces
+    // Interface Listener
     //--------------------------------------------------------------------------
         
     /**

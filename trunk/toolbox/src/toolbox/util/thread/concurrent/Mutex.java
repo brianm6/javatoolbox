@@ -5,7 +5,18 @@ package toolbox.util.thread.concurrent;
  */
 public class Mutex
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Number of locks.
+     */
     private int count_ = 0;
+    
+    /**
+     * Owner of the mutex.
+     */
     private Thread owner_ = null;
 
     //--------------------------------------------------------------------------
@@ -38,8 +49,8 @@ public class Mutex
     //--------------------------------------------------------------------------
     
     /**
-     * Attempt to obtain the mutex.  The calling thread will block if a 
-     * different thread already aquires the mutex.  Since this lock is
+     * Attempt to obtain the mutex. The calling thread will block if a
+     * different thread already aquires the mutex. Since this lock is
      * recursive, the same thread may obtain it multiple times.
      */
     public synchronized void lock()

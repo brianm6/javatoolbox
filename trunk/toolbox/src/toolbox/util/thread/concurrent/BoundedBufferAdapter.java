@@ -8,10 +8,33 @@ import java.util.List;
  */
 public class BoundedBufferAdapter implements IBoundedBuffer
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Mutex for exclusivity.
+     */
     private Mutex mutex_;
+    
+    /**
+     * Backing buffer.
+     */
     private List buffer_;
+    
+    /**
+     * Max buffer capacity.
+     */
     private int capacity_;
+    
+    /**
+     * Buffer not full.
+     */
     private ConditionVariable notFull_;
+    
+    /**
+     * Buffer not empty.
+     */
     private ConditionVariable notEmpty_;
 
     //--------------------------------------------------------------------------
@@ -41,7 +64,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns the number of elements in this buffer.
      *
-     * @return Number of elements in this buffer.
+     * @return int
      */
     public int count()
     {
@@ -61,7 +84,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns the maximum number of elements containable in this buffer.
      *
-     * @return Maximum number of elements containable in this buffer.
+     * @return int
      */
     public int capacity()
     {
@@ -72,7 +95,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns true if this buffer is full.
      *
-     * @return True if this buffer is full.
+     * @return boolean
      */
     public boolean isFull()
     {
@@ -92,7 +115,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns true if this buffer is empty.
      *
-     * @return True if this buffer is empty.
+     * @return boolean
      */
     public boolean isEmpty()
     {
@@ -172,7 +195,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      * Return the next element in this buffer or block the calling thread until
      * one is available.
      * 
-     * @return Object Taken
+     * @return Object Taken.
      */
     public Object take()
     {
@@ -200,7 +223,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      * one is available or the timeout period elapses.
      * 
      * @param timeout Maximum time to wait in milliseconds.
-     * @return Object taken from buffer
+     * @return Object taken from buffer.
      * @throws InterruptedException on interruption
      * @throws Timeout if the timeout period elapsed.
      */

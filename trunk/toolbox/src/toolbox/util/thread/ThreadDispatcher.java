@@ -63,8 +63,8 @@ public class ThreadDispatcher extends AbstractDispatcher
      * Blocks the current thread until all pending requests are complete or
      * the timeout has elapsed.
      *
-     * @param timeout Timeout value in milliseconds.  If 0, the join will 
-     *        wait indefinitely.
+     * @param timeout Timeout value in milliseconds.  If 0, the join will wait 
+     *        indefinitely.
      */
     public void join(long timeout)
     {

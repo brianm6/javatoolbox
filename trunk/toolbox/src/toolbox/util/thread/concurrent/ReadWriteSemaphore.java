@@ -6,10 +6,33 @@ package toolbox.util.thread.concurrent;
  */
 public class ReadWriteSemaphore
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Read mutex.
+     */
     private Mutex mutex_;
+    
+    /**
+     * Write mutex.
+     */
     private Mutex write_;
+    
+    /**
+     * Number of read locks.
+     */
     private int readLocks_;
+    
+    /**
+     * Number of write locks.
+     */
     private int writeLocks_;
+    
+    /**
+     * Condition variable.
+     */
     private ConditionVariable condition_;
 
     //--------------------------------------------------------------------------

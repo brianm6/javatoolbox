@@ -5,6 +5,10 @@ package toolbox.util.thread.concurrent;
  */
 public class CountingSemaphore
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Current count.
      */
@@ -36,7 +40,7 @@ public class CountingSemaphore
     /**
      * Creates a CountingSemaphore with an initial count.
      * 
-     * @param initial Initial count
+     * @param initial Initial count.
      */
     public CountingSemaphore(int initial)
     {
@@ -47,8 +51,8 @@ public class CountingSemaphore
     /**
      * Creates a CountingSemaphore with the given options.
      * 
-     * @param initial Initial count
-     * @param maximum Max count
+     * @param initial Initial count.
+     * @param maximum Max count.
      */
     public CountingSemaphore(int initial, int maximum)
     {
@@ -101,7 +105,7 @@ public class CountingSemaphore
      * Tries to obtain a lock.
      * 
      * @param howMany Count to obtain
-     * @return True if lock obtained, false otherwise
+     * @return True if lock obtained, false otherwise.
      */
     public synchronized boolean tryLock(int howMany)
     {
@@ -119,7 +123,7 @@ public class CountingSemaphore
     /**
      * Tries to obtain the lock.
      * 
-     * @return True if successful, false otherwise
+     * @return True if successful, false otherwise.
      */
     public boolean tryLock()
     {
@@ -130,7 +134,7 @@ public class CountingSemaphore
     /**
      * Releases the lock.
      * 
-     * @param howMany Count to unlock
+     * @param howMany Count to unlock.
      */
     public synchronized void unlock(int howMany)
     {
@@ -155,7 +159,7 @@ public class CountingSemaphore
     /**
      * Releases lock.
      * 
-     * @param howMany Count of how many to release
+     * @param howMany Count of how many to release.
      */
     public void release(int howMany)
     {

@@ -9,6 +9,10 @@ import toolbox.util.thread.strategy.AbstractDispatcherStrategy;
  */
 public abstract class AbstractDispatcher
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Flag for the current run state of the dispatcher.
      */
@@ -42,7 +46,7 @@ public abstract class AbstractDispatcher
     /**
      * Returns the associated strategy.
      *
-     * @return Associated strategy.
+     * @return AbstractDispatcherStrategy.
      */
     public AbstractDispatcherStrategy strategy()
     {
