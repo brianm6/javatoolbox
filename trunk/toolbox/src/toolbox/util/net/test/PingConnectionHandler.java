@@ -38,8 +38,9 @@ public class PingConnectionHandler implements IConnectionHandler
     /**
      * Implemenation of IConnectionHandler interface
      * 
-     * @param  conn  Connection to handle
-     * @see    AsyncConnectionHandler#handle(IConnection)
+     * @param   conn  Connection to handle
+     * @return  Object
+     * @see     AsyncConnectionHandler#handle(IConnection)
      */
     public Object handle(IConnection conn)
     {
@@ -51,7 +52,9 @@ public class PingConnectionHandler implements IConnectionHandler
                 new InputStreamReader(conn.getInputStream()));
                 
             String request = br.readLine();
-            logger_.info("Server received ping:" + request + " at " + new Date());
+            
+            logger_.info(
+                "Server received ping:" + request + " at " + new Date());
             
             PrintWriter pw = new PrintWriter(conn.getOutputStream());
             logger_.info("Server sent pong at " + new Date());

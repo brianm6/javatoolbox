@@ -30,6 +30,8 @@ public class NullConnectionHandler implements IConnectionHandler
         }
         catch (Exception e)
         {
+            
+            // Ignore
         }
         return null;        
     }

@@ -33,6 +33,7 @@ public class EchoSocketClient
      * Create socket client on localhost with given port
      * 
      * @param   port    Socket port
+     * @throws  UnknownHostException when host not found
      */
     public EchoSocketClient(int port) throws UnknownHostException
     {
@@ -71,7 +72,7 @@ public class EchoSocketClient
      * 
      * @param   request  Message to send
      * @return  Response from server
-     * @throws  IOException
+     * @throws  IOException on IO error
      */
     public String send(String request) throws IOException
     {
@@ -86,7 +87,7 @@ public class EchoSocketClient
      * 
      * @param   request  Message to send
      * @param   num      Number of times to send the message
-     * @throws  IOException
+     * @throws  IOException on IO error
      */
     public void sendMany(String request, int num) throws IOException 
     {
@@ -96,6 +97,8 @@ public class EchoSocketClient
     
     /**
      * Termines the connection by sending the TERMINATE token
+     * 
+     * @throws IOException on IO error
      */
     public void close() throws IOException
     {

@@ -18,10 +18,12 @@ import toolbox.util.net.IConnectionHandler;
 public class EchoConnectionHandler implements IConnectionHandler
 {
     /** Logger **/
-    private static final Logger logger = 
+    private static final Logger logger_ = 
         Logger.getLogger(EchoConnectionHandler.class);
     
-    /** Terminate token **/
+    /** 
+     * Terminate token 
+     */
     public static final String TOKEN_TERMINATE = "terminate";
     
     /**
@@ -50,7 +52,7 @@ public class EchoConnectionHandler implements IConnectionHandler
             while(!terminate) 
             {
                 String request = br.readLine();
-                logger.info("Echo: " + request);
+                logger_.info("Echo: " + request);
                 pw.println(request);
                 pw.flush();
                 
@@ -62,7 +64,7 @@ public class EchoConnectionHandler implements IConnectionHandler
         }
         catch(IOException e)
         {
-            logger.error(e.getMessage(), e);
+            logger_.error(e.getMessage(), e);
         }
         finally
         {
