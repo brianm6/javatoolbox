@@ -10,15 +10,13 @@ import javax.swing.JScrollPane;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import nu.xom.Builder;
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Serializer;
-
 import toolbox.util.SwingUtil;
-import toolbox.util.io.StringOutputStream;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
@@ -60,7 +58,7 @@ public class JSmartTextAreaTest extends TestCase
         Container cp = frame.getContentPane();
         cp.setLayout(new BorderLayout());
         cp.add(new JScrollPane(new JSmartTextArea("hello")));
-        frame.pack();
+        frame.setSize(150,150);
         frame.setVisible(true);
         SwingUtil.centerWindow(frame);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,32 +73,31 @@ public class JSmartTextAreaTest extends TestCase
         
         JSmartTextArea before = new JSmartTextArea("", true, true);
         before.setFont(SwingUtil.getPreferredMonoFont());
+        before.setCapacity(10000);
+        before.setPruneFactor(50);
         
         //
         // Serialize to XML
         //
         Element root = new Element("root");
         before.savePrefs(root);
-        StringOutputStream sos = new StringOutputStream();
-        Serializer serializer = new Serializer(sos, "UTF-8");
-        serializer.setIndent(4);
-        serializer.write(new Document(root));
-        String xml = sos.toString();
+        String xml = XOMUtil.toXML(root);
         logger_.info("\n" + xml);
         
         // 
         // Hydrate from XML
         //
-        Builder builder = new Builder();
-        Element prefs = builder.build(new StringReader(xml)).getRootElement();
         JSmartTextArea after = new JSmartTextArea();
-        after.applyPrefs(prefs);
+        after.applyPrefs(
+            new Builder().build(new StringReader(xml)).getRootElement());
         
         //
         // Compare the "after" properties to the "before" ones
         //
         assertEquals(before.isAntiAlias(), after.isAntiAlias());
         assertEquals(before.isAutoScroll(), after.isAutoScroll());
+        assertEquals(before.getCapacity(), after.getCapacity());
+        assertEquals(before.getPruneFactor(), after.getPruneFactor());
         assertEquals(before.getFont().getName(), after.getFont().getName());
         assertEquals(before.getFont().getSize(), after.getFont().getSize());
         assertEquals(before.getFont().getStyle(), after.getFont().getStyle());
