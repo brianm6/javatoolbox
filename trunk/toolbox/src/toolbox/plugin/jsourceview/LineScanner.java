@@ -15,6 +15,9 @@ public class LineScanner implements MachineConstants
     /** current position **/
     private int position_;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------    
     
     /**
      * Creates a LineScanner
@@ -26,6 +29,9 @@ public class LineScanner implements MachineConstants
         line_ = line.trim().replace('\t', ' ');
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /**
      * Peeks to next token in the line

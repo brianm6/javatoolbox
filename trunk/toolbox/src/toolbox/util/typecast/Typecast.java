@@ -14,7 +14,7 @@ import java.util.*;
  * Map map = typecast.coerce( new com.some.Object() );
  * </pre>
  *
- * @see com.swa.turbo.util.collection.AsMap
+ * @see toolbox.util.collection.AsMap
  * @see ClassFinder
  * 
  * @todo improve cache to have several alternatives to a WeakIdentityCache

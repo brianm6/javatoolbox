@@ -60,6 +60,9 @@ public class Tail implements Runnable
     /** Flag to signify a shutdown is pending **/
     private boolean pendingShutdown_ = false;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for Tail.
@@ -68,6 +71,9 @@ public class Tail implements Runnable
     {
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------    
     
     /**
      * Tails the given file
@@ -251,102 +257,6 @@ public class Tail implements Runnable
             fireTailUnpaused();
         }
     }
-
-
-    /**
-     * Runnable interface 
-     */
-    public void run()
-    {
-        String method = "[run   ] ";
-        
-        try
-        {
-            LineNumberReader lnr = (LineNumberReader) reader_;
-            int cnt = 0;
-            lnr.mark(1000);
-
-            while (lnr.ready())
-            {
-                cnt++;
-
-                if ((cnt % NUM_LINES_BACKLOG) == 0)
-                    lnr.mark(1000);
-
-                lnr.readLine();
-            }
-
-            lnr.reset();
-
-            boolean atEnd = false;
-
-            int strikes = 0;
-
-            Date preTimeStamp = null;
-            Date resetTimeStamp = null;
-            int timestampThreshHold = 1000;
-            int resetThreshHold = 5000;
-                            
-            while (!pendingShutdown_)
-            {
-
-                checkPaused();
-                
-
-                String line = lnr.readLine();
-
-                if (line != null)
-                {
-                    fireNextLine(line);
-                    strikes = 0;
-                }
-                else    
-                {
-                    // check if stream was closed and then reactivated
-                    if (strikes == timestampThreshHold && getFile() != null)
-                    {
-                        // record timestamp of file
-                        preTimeStamp = new Date(getFile().lastModified());
-                    }
-                    else if (strikes == resetThreshHold && getFile() != null)
-                    {
-                        //logger_.debug(method + "reset threshold met");
-                        
-                        // check timestamps   
-                        resetTimeStamp = new Date(getFile().lastModified());
-                        
-                        // if there wasa activity, the timestamp would be
-                        // newer.
-                        if (resetTimeStamp.after(preTimeStamp))
-                        {
-                            // reset the stream and stop plaing around..
-
-                            lnr = new LineNumberReader(new FileReader(getFile()));
-                            
-                            //long skipped = lnr.skip(Integer.MAX_VALUE);                                
-                            //logger_.debug(method + "Skipped " + skipped + " lines on reset");
-                            
-                            logger_.debug(method + "Re-attached to " + 
-                                getFile().getName());
-                        }
-                        else
-                            ;//logger_.debug(method + "Failed criterai for reset");
-                            
-                        strikes = 0;
-                    }
-                    
-                    ThreadUtil.sleep(1);
-                    strikes++;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            logger_.error(method, e);
-        }
-    }
-
-
 
     /**
      * @param  listener   Listener to add
@@ -604,5 +514,102 @@ public class Tail implements Runnable
     protected void setReader(Reader reader)
     {
         reader_ = reader;
+    }
+    
+    //--------------------------------------------------------------------------
+    //  Interface Runnable
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Runnable interface 
+     */
+    public void run()
+    {
+        String method = "[run   ] ";
+        
+        try
+        {
+            LineNumberReader lnr = (LineNumberReader) reader_;
+            int cnt = 0;
+            lnr.mark(1000);
+
+            while (lnr.ready())
+            {
+                cnt++;
+
+                if ((cnt % NUM_LINES_BACKLOG) == 0)
+                    lnr.mark(1000);
+
+                lnr.readLine();
+            }
+
+            lnr.reset();
+
+            boolean atEnd = false;
+
+            int strikes = 0;
+
+            Date preTimeStamp = null;
+            Date resetTimeStamp = null;
+            int timestampThreshHold = 1000;
+            int resetThreshHold = 5000;
+                            
+            while (!pendingShutdown_)
+            {
+
+                checkPaused();
+                
+
+                String line = lnr.readLine();
+
+                if (line != null)
+                {
+                    fireNextLine(line);
+                    strikes = 0;
+                }
+                else    
+                {
+                    // check if stream was closed and then reactivated
+                    if (strikes == timestampThreshHold && getFile() != null)
+                    {
+                        // record timestamp of file
+                        preTimeStamp = new Date(getFile().lastModified());
+                    }
+                    else if (strikes == resetThreshHold && getFile() != null)
+                    {
+                        //logger_.debug(method + "reset threshold met");
+                        
+                        // check timestamps   
+                        resetTimeStamp = new Date(getFile().lastModified());
+                        
+                        // if there wasa activity, the timestamp would be
+                        // newer.
+                        if (resetTimeStamp.after(preTimeStamp))
+                        {
+                            // reset the stream and stop plaing around..
+
+                            lnr = new LineNumberReader(new FileReader(getFile()));
+                            
+                            //long skipped = lnr.skip(Integer.MAX_VALUE);                                
+                            //logger_.debug(method + "Skipped " + skipped + " lines on reset");
+                            
+                            logger_.debug(method + "Re-attached to " + 
+                                getFile().getName());
+                        }
+                        else
+                            ;//logger_.debug(method + "Failed criterai for reset");
+                            
+                        strikes = 0;
+                    }
+                    
+                    ThreadUtil.sleep(1);
+                    strikes++;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger_.error(method, e);
+        }
     }
 }

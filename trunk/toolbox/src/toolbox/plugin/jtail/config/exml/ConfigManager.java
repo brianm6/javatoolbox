@@ -22,6 +22,10 @@ public class ConfigManager implements IConfigManager
         
     private static final String CONFIG_FILE = ".jtail.xml";
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for ConfigManager.
      */
@@ -29,6 +33,10 @@ public class ConfigManager implements IConfigManager
     {
         super();
     }
+
+    //--------------------------------------------------------------------------
+    //  Interface IConfigManager
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.jtail.IConfigManager#save(IJTailConfig)
@@ -117,5 +125,4 @@ public class ConfigManager implements IConfigManager
     {
         return new TailPaneConfig();
     }
-   
 }

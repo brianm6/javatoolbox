@@ -188,7 +188,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     //--------------------------------------------------------------------------
-    //  Accessors/Mutators
+    //  Interface ITailPaneConfig
     //--------------------------------------------------------------------------
 
     /**

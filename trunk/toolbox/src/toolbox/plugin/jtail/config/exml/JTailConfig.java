@@ -35,6 +35,10 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     private ITailPaneConfig[] tailPaneConfigs_;
     private ITailPaneConfig   defaultConfig_;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for JTailConfig.
      */
@@ -43,8 +47,11 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         defaultConfig_ = new TailPaneConfig();
         tailPaneConfigs_ = new TailPaneConfig[0];
     }
-
-
+    
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
+    
     /**
      * Marshals from IJTailConfig -> XML
      * 
@@ -207,6 +214,9 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         defaultConfig_ = defaultConfig;
     }
 
+    //--------------------------------------------------------------------------
+    //  Interface IJTailConfig
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the default tail pane configuration

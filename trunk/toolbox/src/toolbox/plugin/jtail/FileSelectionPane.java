@@ -23,7 +23,10 @@ public class FileSelectionPane extends JPanel implements ActionListener
 	private JFileExplorer  fileExplorer_;
 	private JButton        tailButton_;
 	
-    	
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------    	
+    
 	/**
 	 * Default constructor
 	 */
@@ -47,6 +50,9 @@ public class FileSelectionPane extends JPanel implements ActionListener
             fileExplorer_.selectFolder(dir);        
     }
     
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------    
     
 	/**
 	 * Builds the GUI
@@ -88,7 +94,10 @@ public class FileSelectionPane extends JPanel implements ActionListener
 		logger_.info("tail");
 	}
     
-    
+    //--------------------------------------------------------------------------
+    //  Accessors/Mutators
+    //--------------------------------------------------------------------------
+        
     /**
      * Returns the file explorer component
      * 

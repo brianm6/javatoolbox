@@ -7,17 +7,34 @@ import java.util.Date;
  */
 public class FindClassResult
 {
-    /** Search string used to find this result **/
+    /** 
+     * Search string used to find this result 
+     */
     private String searchString_;
-    /** Location of the class file **/
+    
+    /** 
+     * Location of the class file
+     */
     private String classLocation_;
-    /** Fully qualified name of the found class file **/
+    
+    /** 
+     * Fully qualified name of the found class file
+     */
     private String classFQN_;
-    /** Size of the class file**/
+    
+    /** 
+     * Size of the class file
+     */
     private long fileSize_;
-    /** File timestamp **/
+    
+    /** 
+     * File timestamp 
+     */
     private Date timestamp_;
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a FindClassResult
@@ -35,6 +52,10 @@ public class FindClassResult
         fileSize_ = fileSize;
         timestamp_ = timestamp;
     }
+
+    //--------------------------------------------------------------------------
+    //  Accessors/Mutators
+    //--------------------------------------------------------------------------
 
     /**
      * @return Search string 

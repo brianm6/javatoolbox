@@ -21,6 +21,10 @@ public class Relay extends Thread
     private JTextArea     textArea_;
     private boolean       follow_;
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Creates a new relay
      * 
@@ -49,7 +53,10 @@ public class Relay extends Thread
         follow_ = follow;
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Implements Runnable
+    //--------------------------------------------------------------------------
+    
     /**
      * Starts the relay
      */

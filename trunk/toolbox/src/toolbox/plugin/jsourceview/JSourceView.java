@@ -90,7 +90,7 @@ public class JSourceView extends JFrame implements ActionListener
 
     static
     {
-        /* create filter to flesh out source files */
+        // create filter to flesh out source files
         sourceFilter_ = new OrFilter();
         sourceFilter_.addFilter(new ExtensionFilter("c"));
         sourceFilter_.addFilter(new ExtensionFilter("cpp"));
@@ -107,12 +107,11 @@ public class JSourceView extends JFrame implements ActionListener
     public static void main(String args[]) throws Exception
     {
         SwingUtil.setPreferredLAF();
-        
         new JSourceView().setVisible(true);
     }
 
     //--------------------------------------------------------------------------
-    //  CONSTRUCTORS
+    //  Constructors
     //--------------------------------------------------------------------------    
     
     /**
@@ -161,40 +160,8 @@ public class JSourceView extends JFrame implements ActionListener
     }
 
     //--------------------------------------------------------------------------
-    //  IMPLEMENTATION
+    //  ActionListener Interface
     //--------------------------------------------------------------------------
-    
-    /**
-     * Creates the menu bar 
-     * 
-     * @return  Menubar
-     */
-    protected JMenuBar createMenuBar()
-    {
-        JMenu jmenu = new JMenu("File");
-        JMenu jmenu1 = new JMenu("Help");
-        
-        saveMenuItem_ = new JMenuItem("Save");
-        saveMenuItem_.addActionListener(this);
-        
-        exitMenuItem_ = new JMenuItem("Exit");
-        exitMenuItem_.addActionListener(this);
-        
-        jmenu.add(saveMenuItem_);
-        jmenu.addSeparator();
-        jmenu.add(exitMenuItem_);
-        
-        aboutMenuItem_ = new JMenuItem("About");
-        aboutMenuItem_.addActionListener(this);
-        
-        jmenu1.add(aboutMenuItem_);
-        
-        menuBar_.add(jmenu);
-        menuBar_.add(jmenu1);
-        
-        return menuBar_;
-    }
-
 
     /**
      * Handles actions from the GUI
@@ -227,6 +194,41 @@ public class JSourceView extends JFrame implements ActionListener
         }
     }
 
+
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates the menu bar 
+     * 
+     * @return  Menubar
+     */
+    protected JMenuBar createMenuBar()
+    {
+        JMenu jmenu = new JMenu("File");
+        JMenu jmenu1 = new JMenu("Help");
+        
+        saveMenuItem_ = new JMenuItem("Save");
+        saveMenuItem_.addActionListener(this);
+        
+        exitMenuItem_ = new JMenuItem("Exit");
+        exitMenuItem_.addActionListener(this);
+        
+        jmenu.add(saveMenuItem_);
+        jmenu.addSeparator();
+        jmenu.add(exitMenuItem_);
+        
+        aboutMenuItem_ = new JMenuItem("About");
+        aboutMenuItem_.addActionListener(this);
+        
+        jmenu1.add(aboutMenuItem_);
+        
+        menuBar_.add(jmenu);
+        menuBar_.add(jmenu1);
+        
+        return menuBar_;
+    }
 
     /**
      * Saves the results to a file
@@ -345,7 +347,7 @@ public class JSourceView extends JFrame implements ActionListener
     }
 
     //--------------------------------------------------------------------------
-    //  INNER CLASSES
+    //  Inner Classes
     //--------------------------------------------------------------------------
     
     /** 
@@ -393,7 +395,7 @@ public class JSourceView extends JFrame implements ActionListener
                 
             Thread.currentThread().yield();
             
-            /* process files in current directory */
+            // Process files in current directory
             File srcFiles[] = file.listFiles(sourceFilter_);
             
             if (!ArrayUtil.isNullOrEmpty(srcFiles))
@@ -402,7 +404,7 @@ public class JSourceView extends JFrame implements ActionListener
                     workQueue_.enqueue(srcFiles[i].getAbsolutePath());                                        
             }
             
-            /* process dirs in current directory */
+            // Process dirs in current directory
             File dirs[] = file.listFiles(new DirectoryFilter());
             if (!ArrayUtil.isNullOrEmpty(dirs))
             {
@@ -426,7 +428,7 @@ public class JSourceView extends JFrame implements ActionListener
 
 
     /**
-     * Parser that implements runnable
+     * Pops files off of the work queue and parses them to gather stats
      */
     class ParserWorker implements Runnable
     {
@@ -443,13 +445,10 @@ public class JSourceView extends JFrame implements ActionListener
             
             while (!workQueue_.isEmpty() || scanDirThread_.isAlive()) 
             {
-        
-                System.out.println(cancel + " ");                
-                
                 if (cancel)
                     break;
                     
-                /* pop file of the queue */
+                // Pop file of the queue
                 String filename = (String)workQueue_.dequeue();
                 
                 if(filename != null)
@@ -457,11 +456,12 @@ public class JSourceView extends JFrame implements ActionListener
                     setParseStatus("Parsing [" + workQueue_.size() + "] " + 
                         filename + " ...");
                      
-                    /* parse file and add to totals */
+                    // Parse file and add to totals
                     FileStats fileStats = scanFile(filename);
                     totalStats.add(fileStats);
                     ++fileCount;
-                    
+
+                    // Create table row data and append                    
                     String tableRow[] = new String[colNames.length];
                     tableRow[0] = fileCount+"";
                     tableRow[1] = getDirectoryOnly(filename);
@@ -478,7 +478,7 @@ public class JSourceView extends JFrame implements ActionListener
                 Thread.currentThread().yield();
             }
         
-            /* make separator row */
+            // Make separator row
             String rulerRow[] = new String[colNames.length];
             for(int i = 0; i < rulerRow.length; i++)
                 rulerRow[i] =  "========";
@@ -563,7 +563,7 @@ public class JSourceView extends JFrame implements ActionListener
         public void cancel()
         {
             cancel = true;
-            System.out.println("Cancel called : " + cancel);            
+            logger_.debug("Cancel called : " + cancel);            
         }
     }
 }

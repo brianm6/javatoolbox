@@ -17,7 +17,10 @@ public class FileStats
     /** Number of blank lines in file **/
     private int blankLines_;
     
-    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Constructor
      */
@@ -25,6 +28,9 @@ public class FileStats
     {
     }
     
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
     
     /**
      * Gets percentage of source code lines to total lines
@@ -54,7 +60,10 @@ public class FileStats
         codeLines_    += filestats.getCodeLines();
         blankLines_   += filestats.getBlankLines();
     }
-    
+
+    //--------------------------------------------------------------------------
+    //  Accessors/Mutators
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the blankLines.

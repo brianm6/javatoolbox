@@ -20,7 +20,7 @@ import junit.runner.TestCollector;
  * 
  * junit.properties
  * ---Begin---
- * TestCollectorClass=com.swa.turbo.util.junit.CompleteTestCollector
+ * TestCollectorClass=toolbox.util.junit.CompleteTestCollector
  * ---End---
  * 
  * </pre>
@@ -33,6 +33,10 @@ public class CompleteTestCollector implements TestCollector
     /** Scans directories for unit tests **/
     TestCollector dirCollector;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for CompleteTestCollector.
      */
@@ -42,6 +46,10 @@ public class CompleteTestCollector implements TestCollector
         dirCollector = new SimpleTestCollector();
     }
 
+    //--------------------------------------------------------------------------
+    //  Interface TestCollector
+    //--------------------------------------------------------------------------
+    
     /**
      * Merge the results of the JarTestCollector and the SimpleTestCollector
      * 

@@ -19,7 +19,7 @@ public class SmartClass
     /**
      * Creates a new SmartClass object.
      * 
-     * @param aClass DOCUMENT ME!
+     * @param aClass 
      */
     protected SmartClass(Class aClass)
     {
@@ -29,12 +29,12 @@ public class SmartClass
     // ACCESSING
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param selector DOCUMENT ME!
-     * @param parameterTypes DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * 
+     * @param selector 
+     * @param parameterTypes 
+     * @return  
+     * @throws NoSuchMethodException 
      */
     public SmartMethod getMethod(Symbol selector, Class[] parameterTypes)
         throws NoSuchMethodException
@@ -50,12 +50,12 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param selector DOCUMENT ME!
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * 
+     * @param selector 
+     * @param parameters 
+     * @return  
+     * @throws NoSuchMethodException 
      */
     public SmartMethod getMethod(Symbol selector, Object[] parameters)
         throws NoSuchMethodException
@@ -72,12 +72,12 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param name DOCUMENT ME!
-     * @param parameterTypes DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * 
+     * @param name 
+     * @param parameterTypes 
+     * @return  
+     * @throws NoSuchMethodException 
      */
     public SmartMethod getMethod(String name, Class[] parameterTypes)
         throws NoSuchMethodException
@@ -86,12 +86,12 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param name DOCUMENT ME!
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * 
+     * @param name 
+     * @param parameters 
+     * @return  
+     * @throws NoSuchMethodException 
      */
     public SmartMethod getMethod(String name, Object[] parameters) 
         throws NoSuchMethodException
@@ -100,11 +100,11 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param parameterTypes DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * 
+     * @param parameterTypes 
+     * @return  
+     * @throws NoSuchMethodException 
      */
     public SmartConstructor getConstructor(Class[] parameterTypes) 
         throws NoSuchMethodException
@@ -116,11 +116,11 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
+     * 
+     * @param parameters 
+     * @return  
+     * @throws NoSuchMethodException 
      */
     public SmartConstructor getConstructor(Object[] parameters) 
         throws NoSuchMethodException
@@ -139,17 +139,17 @@ public class SmartClass
     // INVOKATION METHODS
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param obj DOCUMENT ME!
-     * @param selector DOCUMENT ME!
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
-     * @throws IllegalAccessException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws InvocationTargetException DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
+     * 
+     * @param obj 
+     * @param selector 
+     * @param parameters 
+     * @return  
+     * @throws NoSuchMethodException 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws InvocationTargetException 
+     * @throws Exception 
      */
     public Object invoke(Object obj, Symbol selector, Object[] parameters)
         throws
@@ -165,16 +165,16 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param obj DOCUMENT ME!
-     * @param methodName DOCUMENT ME!
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws IllegalAccessException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws InvocationTargetException DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
+     * 
+     * @param obj 
+     * @param methodName 
+     * @param parameters 
+     * @return  
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws InvocationTargetException 
+     * @throws Exception 
      */
     public Object invoke(Object obj, String methodName, Object[] parameters)
         throws IllegalAccessException, IllegalArgumentException, 
@@ -184,12 +184,12 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param obj DOCUMENT ME!
-     * @param selector DOCUMENT ME!
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * 
+     * @param obj 
+     * @param selector 
+     * @param parameters 
+     * @return  
      */
     public Object invokeSilent(Object obj, Symbol selector, Object[] parameters)
     {
@@ -206,12 +206,12 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param obj DOCUMENT ME!
-     * @param methodName DOCUMENT ME!
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
+     * 
+     * @param obj 
+     * @param methodName 
+     * @param parameters 
+     * @return  
      */
     public Object invokeSilent(Object obj, String methodName, 
         Object[] parameters)
@@ -222,14 +222,14 @@ public class SmartClass
     // INSTATIONATION METHODS
 
     /**
-     * DOCUMENT ME!
      * 
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
-     * @throws InstantiationException DOCUMENT ME!
-     * @throws IllegalAccessException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws InvocationTargetException DOCUMENT ME!
+     * 
+     * @return  
+     * @throws NoSuchMethodException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws InvocationTargetException 
      */
     public Object newInstance()
         throws
@@ -243,15 +243,15 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
      * 
-     * @param parameters DOCUMENT ME!
-     * @return DOCUMENT ME! 
-     * @throws NoSuchMethodException DOCUMENT ME!
-     * @throws InstantiationException DOCUMENT ME!
-     * @throws IllegalAccessException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws InvocationTargetException DOCUMENT ME!
+     * 
+     * @param parameters 
+     * @return  
+     * @throws NoSuchMethodException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
+     * @throws InvocationTargetException 
      */
     public Object newInstance(Object[] parameters)
         throws
@@ -269,7 +269,7 @@ public class SmartClass
     // SUPPORT METHODS
 
     /**
-     * DOCUMENT ME!
+     * 
      */
     public void constructClass()
     {
@@ -278,7 +278,7 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
+     * 
      */
     protected void cacheMethods()
     {
@@ -300,7 +300,7 @@ public class SmartClass
     }
 
     /**
-     * DOCUMENT ME!
+     * 
      */
     protected void cacheConstructors()
     {

@@ -19,6 +19,10 @@ import junit.runner.TestCollector;
 public class JarTestCollector implements TestCollector
 {
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /** 
      * Default constructor 
      */
@@ -26,7 +30,10 @@ public class JarTestCollector implements TestCollector
     {
     }
 
-
+    //--------------------------------------------------------------------------
+    //  Interface TestCollector
+    //--------------------------------------------------------------------------
+    
     /**
      * @return Enumeration of classnames identified as JUnit tests
      */
@@ -39,6 +46,9 @@ public class JarTestCollector implements TestCollector
         return result.elements();
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /**
      * Retrieves list of classpath path entries that are jars

@@ -11,6 +11,10 @@ public class FindClassCollector extends FindClassAdapter
     /** Storage for search results **/
     private List results_ = new ArrayList();
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Default constructor
      */
@@ -18,7 +22,10 @@ public class FindClassCollector extends FindClassAdapter
     {
     }
 
-    
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
+        
     /**
      * Implemenation of IFindClassListener.
      * Class has been found
