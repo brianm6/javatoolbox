@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
     <classpathentry kind="src" path="src"/>
     <classpathentry kind="lib" path="resources"/>
     <classpathentry kind="lib" path="lib/junit.jar"/>
@@ -11,5 +10,8 @@
     <classpathentry kind="lib" path="lib/jode.jar"/>
     <classpathentry kind="lib" path="lib/java2html.jar"/>
     <classpathentry kind="lib" path="lib/metouia.jar"/>
+    <classpathentry kind="lib" path="lib/commons-cli.jar"/>
+    <classpathentry kind="lib" path="lib/commons-lang-1.0-rc1.jar"/>
+    <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
