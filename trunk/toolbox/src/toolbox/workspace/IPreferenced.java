@@ -1,4 +1,4 @@
-package toolbox.util.ui.plugin;
+package toolbox.workspace;
 
 import nu.xom.Element;
 

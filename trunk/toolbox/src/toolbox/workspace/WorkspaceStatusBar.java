@@ -1,4 +1,4 @@
-package toolbox.util.ui.plugin;
+package toolbox.workspace;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

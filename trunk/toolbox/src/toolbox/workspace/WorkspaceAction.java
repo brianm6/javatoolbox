@@ -1,4 +1,4 @@
-package toolbox.util.ui.plugin;
+package toolbox.workspace;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
