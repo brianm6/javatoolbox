@@ -36,8 +36,8 @@ public class StatusLayout extends AbstractLayout
     /**
      * Creates a StatusLayout with the given gaps.
      * 
-     * @param hgap Horizontal gap
-     * @param vgap Vertical gap
+     * @param hgap Horizontal gap.
+     * @param vgap Vertical gap..
      */
     public StatusLayout(int hgap, int vgap)
     {

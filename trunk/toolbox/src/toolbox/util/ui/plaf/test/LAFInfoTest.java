@@ -39,6 +39,8 @@ public class LAFInfoTest extends TestCase
     
     /**
      * Tests the default constructor.
+     * 
+     * @throws Exception on error.
      */
     public void testConstructorDefault() throws Exception
     {
@@ -51,6 +53,8 @@ public class LAFInfoTest extends TestCase
     
     /**
      * Tests the Element constructor.
+     * 
+     * @throws Exception on error. 
      */
     public void testConstructorElement() throws Exception
     {

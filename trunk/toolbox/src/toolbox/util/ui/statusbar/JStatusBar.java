@@ -79,6 +79,7 @@ public class JStatusBar extends JPanel
         add(wrapBorder(component), new StatusConstraint(relative));
     }
 
+    
     /**
      * Adds a component to the status bar.
      * 
@@ -99,7 +100,7 @@ public class JStatusBar extends JPanel
     /**
      * Wraps a component with a border if one does not already exist.
      * 
-     * @param c Component to wrap with a border
+     * @param c Component to wrap with a border,
      * @return Component wrapped with border (not necessarily the input 
      *         component).
      */        

@@ -84,8 +84,8 @@ public class LAFInfo implements IPreferenced
     /**
      * Creates a LAFInfo.
      *
-     * @param lookAndFeelNode
-     * @throws Exception
+     * @param lookAndFeelNode Look and feel preferences in XML.
+     * @throws Exception on error.
      */
     public LAFInfo(Element lookAndFeelNode) throws Exception
     {
