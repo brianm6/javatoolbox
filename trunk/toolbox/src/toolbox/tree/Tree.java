@@ -15,7 +15,7 @@ import org.apache.commons.cli.PosixParser;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.io.filter.DirectoryFilter;
-import toolbox.util.io.filter.FileFilter; 
+import toolbox.util.io.filter.FileFilter;
 
 /**
  * Generates a text representation of a directory tree with the option to
@@ -94,7 +94,6 @@ public class Tree
         options.addOption(helpOption);
         options.addOption(fileOption);        
 
-
         CommandLine cmdLine = parser.parse(options, args, true);
     
         for (Iterator i = cmdLine.iterator(); i.hasNext(); )
@@ -110,7 +109,6 @@ public class Tree
                      opt.equals(helpOption2.getOpt()))
             {
                 printUsage();
-                System.exit(0);
             }
         }
         
@@ -120,15 +118,18 @@ public class Tree
             case 0  :  rootDir = System.getProperty("user.dir"); break;
             case 1  :  rootDir = cmdLine.getArgs()[0]; break;
             default :  System.err.println("ERROR: Invalid arguments");
-                       printUsage(); System.exit(2);
+                       printUsage(); 
                        break;
         }
         
         // Create us a tree and let it ride..
         try
         {
-            Tree t = new Tree(new File(rootDir), showFiles);
-            t.showTree();
+        	if (rootDir != null)
+        	{
+	            Tree t = new Tree(new File(rootDir), showFiles);
+	            t.showTree();
+        	}
         }
         catch (IllegalArgumentException e)
         {
