@@ -46,7 +46,8 @@ public class StringConnectionTest extends TestCase
     {
         logger_.info("Running testGetInputStream...");
         
-        IConnection conn = new StringConnection("abcd");
+        StringConnection conn = new StringConnection("abcd");
+        conn.setName("StringConnection1");
         InputStream is = conn.getInputStream();
         assertNotNull(is);
     }
