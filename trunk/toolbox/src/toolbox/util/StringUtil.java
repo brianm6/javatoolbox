@@ -2,11 +2,12 @@ package toolbox.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Category;
-
 import toolbox.util.io.WrappingWriter;
 
 /**
@@ -459,5 +460,20 @@ public final class StringUtil
         
         buf.append(text.substring(start));
         return buf.toString();
+    }
+
+    
+    /**
+     * Returns arary of individual tokens from a string
+     * 
+     * @param  s          String to tokenize
+     * @param  delimiter  Delimiter used for separate tokens
+     */  
+    public static String[] tokenize(String s, String delimiter)
+    {
+        StringTokenizer st = new StringTokenizer(s, delimiter);
+        String[] tokens = new String[st.countTokens()];   
+        for(int i=0; st.hasMoreTokens(); tokens[i++] = st.nextToken());
+        return tokens;
     }
 }
