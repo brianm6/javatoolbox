@@ -220,6 +220,16 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     private boolean sendErrorToConsole_;
 
+    /**
+     * Database benchmark.
+     */
+    private DBBenchmark benchmark_;
+    
+    /**
+     * View for configuring the database benchmark.
+     */
+    private DBBenchmarkView benchmarkView_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -420,25 +430,32 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
+        setLayout(new BorderLayout());
+        
         // Split SQL editor and results panel
         areaSplitPane_ =
             new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
                 buildSQLEditor(),
                 buildResultsArea());
-
-        setLayout(new BorderLayout());
-        
-        dbConfigPane_ = new DBConfig(this);
-        formatter_ = new SQLFormatter();
-        formatterView_ = new SQLFormatterView(formatter_);
-        prefsView_ = new DBPrefsView(this);
         
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
+        
+        dbConfigPane_ = new DBConfig(this);
         leftFlipPane_.addFlipper("Databases", dbConfigPane_);
-        leftFlipPane_.addFlipper("Reference", buildSQLReferencePane());
+        
+        formatter_ = new SQLFormatter();
+        formatterView_ = new SQLFormatterView(formatter_);
         leftFlipPane_.addFlipper("Formatter", formatterView_);
+        
+        prefsView_ = new DBPrefsView(this);
         leftFlipPane_.addFlipper("Preferences", prefsView_);
+        
+        benchmark_ = new DBBenchmark();
+        benchmarkView_ = new DBBenchmarkView(benchmark_);
+        leftFlipPane_.addFlipper("Benchmark", benchmarkView_);
+        
+        leftFlipPane_.addFlipper("Reference", buildSQLReferencePane());
         
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);
