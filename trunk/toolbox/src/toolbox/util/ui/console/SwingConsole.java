@@ -6,35 +6,34 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
+import javax.swing.JTextArea;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.Keymap;
-import javax.swing.text.TextAction;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.StringUtil;
 import toolbox.util.io.MulticastOutputStream;
+import toolbox.util.io.StringInputStream;
+import toolbox.util.io.TextAreaInputStream;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
-import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.event.DebugPropertyChangeListener;
 
 /**
  * UIConsoleArea exhibit basic behavior necessary for a simple text based 
@@ -47,15 +46,6 @@ public class SwingConsole extends JComponent implements Console
     private static final Logger logger_ = Logger.getLogger(SwingConsole.class);
     
     //--------------------------------------------------------------------------
-    // Constrants
-    //--------------------------------------------------------------------------
-
-    /**
-     * Name of the default keymap.
-     */
-    private static final String DEFAULT_KEYMAP = "JConsoleAreaKeyMap";
-        
-    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
@@ -67,35 +57,33 @@ public class SwingConsole extends JComponent implements Console
     /**
      * Composite textarea.
      */
-    protected JSmartTextArea textArea_;
-    
+    protected JTextArea textArea_;
     
     /**
-     *  The length of the static text displayed, excludes the prompt and the
-     *   current input line.
+     * The length of the static text displayed, excludes the prompt and the
+     * current input line.
      */
     private int historyLength = 0;
     
     /**
-     *  Length of the prompt.
-     **/
+     * Length of the prompt.
+     */
     private int promptLength = 0;
     
     /**
-     *  Length of the current input line.
-     **/
+     * Length of the current input line.
+     */
     private int lineLength = 0;
     
     /**
-     *  Location of the insertion point within the current input line
-     **/
+     * Location of the insertion point within the current input line
+     */
     private int insertionPoint = 0;
     
     /**
-     *  Lines of console input awaiting shell processing.
-     **/
+     * Lines of console input awaiting shell processing.
+     */
     private List lines = new ArrayList();
-    
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -193,161 +181,126 @@ public class SwingConsole extends JComponent implements Console
                     insertionPoint++;
                     break;
             }
+            
+            logger_.debug(SwingConsole.this.toString());
         }
+    }
+    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("historyLength = " + historyLength);
+        sb.append("\npromptLength = " + promptLength);
+        sb.append("\nlineLength = " + lineLength);
+        sb.append("\ninsertionPoing = " + insertionPoint);
+        return StringUtil.banner(sb.toString());
     }
     
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
 
+    class MyTextArea extends JTextArea
+    {
+        public MyTextArea(int rows, int cols)
+        {
+            super(rows, cols);
+            addPropertyChangeListener(new DebugPropertyChangeListener());
+            
+            addCaretListener(new CaretListener()
+            {
+                public void caretUpdate(CaretEvent e)
+                {
+                    logger_.debug("Caret = " + e.getDot()); 
+                }
+            });
+            
+            KeyListener[] kl = getKeyListeners();
+            logger_.debug("Removing " + kl.length + " key listeners");
+            for (int i = 0; i < kl.length; removeKeyListener(kl[i++]));
+            
+            Keymap keyMap = getKeymap();
+            
+            if (keyMap != null)
+            {
+                logger_.debug("Removing keymap " + keyMap.getName());
+                removeKeymap(keyMap.getName());
+            }
+            
+        }
+
+        
+        /**
+         * @see javax.swing.JTextArea#insert(java.lang.String, int)
+         */
+        public void insert(String str, int pos)
+        {
+            logger_.debug("inserting: '" + str + "'");
+            super.insert(str, pos);
+        }
+        
+        /**
+         * @see javax.swing.JTextArea#append(java.lang.String)
+         */
+        public void append(String str)
+        {
+            logger_.debug("appending: '" + str + "'");
+            super.append(str);
+        }
+        
+        /**
+         * @see javax.swing.JTextArea#replaceRange(java.lang.String, int, int)
+         */
+        public void replaceRange(String str, int start, int end)
+        {
+            logger_.debug("replace range: '" + str + "'");
+            super.replaceRange(str, start, end);
+        }
+        
+        /**
+         * @see javax.swing.text.JTextComponent#setText(java.lang.String)
+         */
+        public void setText(String t)
+        {
+            logger_.debug("setText: '" + t + "'");
+            super.setText(t);
+        }
+    }
+    
+    
     /**
      * Constructs the user interface.
      */
     protected void buildView(int rows, int columns)
     {
         setLayout(new BorderLayout());
-        textArea_ = new JSmartTextArea(rows, columns);
+        textArea_ = new MyTextArea(rows, columns);
         add(new JScrollPane(textArea_), BorderLayout.CENTER);
         
         // Create the stream for I/O in the consoles
-        //InputStream is = new LineInputStream(new TextAreaInputStream());
-        InputStream is = new TextAreaInputStream();
+        InputStream is = new StringInputStream(); //new TextAreaInputStream();
         
         MulticastOutputStream os = new MulticastOutputStream();
-        os.addStream(new JTextAreaOutputStream(textArea_));
-        os.addStream(new TrackerOutputstream());
+        //os.addStream(new JTextAreaOutputStream(textArea_));
+        //os.addStream(new TrackerOutputstream());
         
         delegate_ = new MyConsole(is, os);
+
+        Keymap keyMap = textArea_.getKeymap();
+        
+        if (keyMap != null)
+        {
+            
+            logger_.debug("Removing keymap " + keyMap.getName());
+            textArea_.removeKeymap(keyMap.getName());
+            Keymap keyMap2 = textArea_.getKeymap();
+            logger_.debug("Removed keymap " + keyMap2.getName());
+        }
+        
+        
         textArea_.addKeyListener(new KeyHandler());
     }
-    
-    
-    /**
-     * Move caret to the end.
-     */
-    protected void atEnd()
-    {
-        Document doc = textArea_.getDocument();
-        int dot = doc.getLength();
-        textArea_.setCaretPosition(dot);
-    }
 
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Binds a keystroke to an action.
-     * 
-     * @param keyStroke Keystroke to bind to an action.
-     * @param action Action to bind a keystroke.
-     */
-    public void registerShortcut(KeyStroke keyStroke, Action action)
-    {
-        Keymap keys = JTextComponent.getKeymap(DEFAULT_KEYMAP);
-        keys.addActionForKeyStroke(keyStroke, action);
-    }
-
-    //--------------------------------------------------------------------------
-    // DefaultKeyTypedAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Cuts the selected region and place its contents into the system
-     * clipboard.
-     * 
-     * @see DefaultEditorKit#cutAction
-     * @see DefaultEditorKit#getActions
-     */
-    public static class CutAction extends TextAction
-    {
-        public CutAction()
-        {
-            super(DefaultEditorKit.cutAction);
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            JTextComponent target = getTextComponent(e);
-            if (target != null)
-            {
-                target.cut();
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // CopyAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Copies the selected region and place its contents into the system
-     * clipboard.
-     * 
-     * @see DefaultEditorKit#copyAction
-     * @see DefaultEditorKit#getActions
-     */
-    public static class CopyAction extends TextAction
-    {
-        public CopyAction()
-        {
-            super(DefaultEditorKit.copyAction);
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            JTextComponent target = getTextComponent(e);
-            if (target != null)
-            {
-                target.copy();
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // PasteAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Pastes the contents of the system clipboard at the end of the text area.
-     * Mark the first input location if needed.
-     * 
-     * @see DefaultEditorKit#pasteAction
-     * @see DefaultEditorKit#getActions
-     */
-    public static class PasteAction extends TextAction
-    {
-        private SwingConsole console;
-
-        public PasteAction(SwingConsole console)
-        {
-            super(DefaultEditorKit.pasteAction);
-            this.console = console;
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            JTextComponent target = getTextComponent(e);
-            if (target != null)
-            {
-                target.paste();
-            }
-        }
-    }
-    
     /**
      * @see toolbox.util.ui.console.Console#clear()
      */
@@ -472,6 +425,7 @@ public class SwingConsole extends JComponent implements Console
          */
         public void send(String text) throws IOException
         {
+            logger_.debug("[MyConsole::send] " + text);
             getOutputStream().write(text.getBytes());
             getOutputStream().flush();
         }
@@ -529,6 +483,7 @@ public class SwingConsole extends JComponent implements Console
                     
                     // consume the event so that it doesn't get processed by 
                     // the TextArea control.
+                    
                     e.consume();
                 }
             } 
@@ -728,8 +683,9 @@ public class SwingConsole extends JComponent implements Console
                 return true;
                 
             default :
-                textArea_.insert( Character.toString( ch ), historyLength + promptLength + insertionPoint++ );
+                //textArea_.insert( Character.toString( ch ), historyLength + promptLength + insertionPoint++ );
                 lineLength++;
+                logger_.debug(this);
                 return true;
         }
     }
@@ -811,6 +767,7 @@ public class SwingConsole extends JComponent implements Console
         }
         while (current < cbText.length());
     }
+
     
     /**
      * Finishes an input line and provides it as input to the console reader.
@@ -851,6 +808,8 @@ public class SwingConsole extends JComponent implements Console
     
     public synchronized void setCommandLine(String cmd)
     {
+        logger_.debug("[setCommandLine] " + cmd);
+        
         try
         {
             textArea_.replaceRange(cmd, historyLength + promptLength, historyLength
@@ -867,5 +826,111 @@ public class SwingConsole extends JComponent implements Console
                 + textArea_.getText().length(), ohno);
         }
     }
-    
 }
+
+///**
+//* Move caret to the end.
+//*/
+//protected void atEnd()
+//{
+// Document doc = textArea_.getDocument();
+// int dot = doc.getLength();
+// textArea_.setCaretPosition(dot);
+//}
+
+///**
+//* Cuts the selected region and place its contents into the system
+//* clipboard.
+//* 
+//* @see DefaultEditorKit#cutAction
+//* @see DefaultEditorKit#getActions
+//*/
+//public static class CutAction extends TextAction
+//{
+// public CutAction()
+// {
+//     super(DefaultEditorKit.cutAction);
+// }
+//
+//
+// /**
+//  * @see java.awt.event.ActionListener#actionPerformed(
+//  *      java.awt.event.ActionEvent)
+//  */
+// public void actionPerformed(ActionEvent e)
+// {
+//     JTextComponent target = getTextComponent(e);
+//     if (target != null)
+//     {
+//         target.cut();
+//     }
+// }
+//}
+
+////--------------------------------------------------------------------------
+//// CopyAction
+////--------------------------------------------------------------------------
+//
+///**
+//* Copies the selected region and place its contents into the system
+//* clipboard.
+//* 
+//* @see DefaultEditorKit#copyAction
+//* @see DefaultEditorKit#getActions
+//*/
+//public static class CopyAction extends TextAction
+//{
+//  public CopyAction()
+//  {
+//      super(DefaultEditorKit.copyAction);
+//  }
+//
+//  /**
+//   * @see java.awt.event.ActionListener#actionPerformed(
+//   *      java.awt.event.ActionEvent)
+//   */
+//  public void actionPerformed(ActionEvent e)
+//  {
+//      JTextComponent target = getTextComponent(e);
+//      if (target != null)
+//      {
+//          target.copy();
+//      }
+//  }
+//}
+//
+////--------------------------------------------------------------------------
+//// PasteAction
+////--------------------------------------------------------------------------
+//
+///**
+//* Pastes the contents of the system clipboard at the end of the text area.
+//* Mark the first input location if needed.
+//* 
+//* @see DefaultEditorKit#pasteAction
+//* @see DefaultEditorKit#getActions
+//*/
+//public static class PasteAction extends TextAction
+//{
+//  private SwingConsole console;
+//
+//  public PasteAction(SwingConsole console)
+//  {
+//      super(DefaultEditorKit.pasteAction);
+//      this.console = console;
+//  }
+//
+//  /**
+//   * @see java.awt.event.ActionListener#actionPerformed(
+//   *      java.awt.event.ActionEvent)
+//   */
+//  public void actionPerformed(ActionEvent e)
+//  {
+//      JTextComponent target = getTextComponent(e);
+//      if (target != null)
+//      {
+//          target.paste();
+//      }
+//  }
+//}
+
