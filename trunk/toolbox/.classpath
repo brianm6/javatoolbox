@@ -68,6 +68,7 @@
 	<classpathentry kind="lib" path="lib/napkinlf.jar"/>
 	<classpathentry kind="lib" path="lib/officelf.jar"/>
 	<classpathentry sourcepath="lib/src/oyoahalf-src.zip" kind="lib" path="lib/oyoahalf.jar"/>
+	<classpathentry kind="lib" path="lib/pagosoftlf.jar"/>
 	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
 	<classpathentry kind="lib" path="lib/prefuse.jar"/>
 	<classpathentry sourcepath="lib/src/qdox-src.zip" kind="lib" path="lib/qdox.jar"/>

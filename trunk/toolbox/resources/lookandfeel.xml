@@ -124,6 +124,13 @@
       <Property name="group.name" value="Others"/>
   </LookAndFeel>
 
+  <LookAndFeel
+      name="Pagosoft"
+      class="com.pagosoft.plaf.PgsLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>
+  </LookAndFeel>
+
   <!--
   <LookAndFeel
       name="JellyBeans"
