@@ -17,18 +17,39 @@ import toolbox.util.ThreadUtil;
  */
 public class FileStuffer implements Runnable
 {
-    /** The output file **/
-    private File    file_;
+    /** 
+     * The output file 
+     */
+    private File file_;
     
-    /** The delay between each write **/
-    private int     delay_;
+    /** 
+     * The delay between each write 
+     */
+    private int delay_;
     
-    /** The thread that the stuffer runs on **/
-    private Thread  thread_;
+    /** 
+     * The thread that the stuffer runs on 
+     */
+    private Thread thread_;
     
-    /** Flag to stop the stuffer **/
+    /** 
+     * Flag to stop the stuffer 
+     */
     private boolean stop_;
+    
+    /**
+     * Flag to open/close file instead of append/flush
+     */
+    private boolean openClose_ = false;
 
+    /**
+     * File stuffer
+     */
+    private IStuffProvider stuffer_;
+    
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
 
     /**
      * FileStuffer entrypoint
@@ -44,11 +65,14 @@ public class FileStuffer implements Runnable
     public static void main(String args[])
     {
         if (args.length != 2)
+        {
             printUsage();
+        }
         else    
         {        
-            FileStuffer fs = new FileStuffer(new File(args[0]), 
-               Integer.parseInt(args[1]));    
+            FileStuffer fs = new FileStuffer(
+                new File(args[0]), Integer.parseInt(args[1])); 
+                  
             fs.start();
         }
     }
@@ -65,24 +89,99 @@ public class FileStuffer implements Runnable
      */
     public FileStuffer(File file, int delay)
     {
-        setFile(file);
-        setDelay(delay);
+        this(file, delay, false);
     }
 
-     
+
     /**
-     * Prints program usage
-     */ 
-    protected static void printUsage()
+     * Creates a FileStuffer
+     * 
+     * @param  file         File to send output to
+     * @param  delay        Delay between each write
+     * @param  openClose    Flag to open/close file between each successive
+     *                      write instead of the default behavior to just
+     *                      applend/flush.
+     */
+    public FileStuffer(File file, int delay, boolean openClose)
     {
-        System.out.println(
-            "FileStuffer writes data to a file at given intervals");
-            
-        System.out.println(
-            "Usage: FileStuffer <output file> <delay in millis>");
-    } 
+        this(file, delay, new DefaultStuffProvider(), openClose);
+    }
 
 
+    /**
+     * Creates a FileStuffer
+     * 
+     * @param  file         File to send output to
+     * @param  delay        Delay between each write
+     * @param  stuffer      Provides contents to stuff file with
+     * @param  openClose    Flag to open/close file between each successive
+     *                      write instead of the default behavior to just
+     *                      applend/flush.
+     */
+    public FileStuffer(File file, int delay, IStuffProvider stuffer,
+        boolean openClose)
+    {
+        setFile(file);
+        setDelay(delay);
+        stuffer_   = stuffer;        
+        openClose_ = openClose;
+    }
+
+
+    //--------------------------------------------------------------------------
+    // Runnable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Writes out to the file at specified intervals
+     */
+    public void run()
+    {
+        PrintWriter pw = null;
+        
+        try
+        {
+            if (!openClose_)
+            {
+                pw = new PrintWriter(new BufferedWriter(
+                        new FileWriter(getFile())));
+                        
+                int c = 1;
+                
+                while (!stop_)
+                {
+                    pw.println(stuffer_.getStuff());
+                    pw.flush();
+                    ThreadUtil.sleep(delay_);
+                }                
+            }
+            else
+            {
+                 int c = 1;
+                 
+                 while (!stop_)
+                 {
+                    pw = new PrintWriter(new FileWriter(getFile(), true));
+                    pw.println(stuffer_.getStuff());
+                    pw.close();
+                    ThreadUtil.sleep(delay_);
+                 }   
+            }
+        }
+        catch(Exception e)
+        {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        finally
+        {
+            ResourceCloser.close(pw);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Starts the stuffer
      */    
@@ -108,41 +207,6 @@ public class FileStuffer implements Runnable
         {
             System.err.println(ie);
             System.err.println(ExceptionUtil.getStackTrace(ie));        
-        }
-    }
-
-    
-    /**
-     * Writes out to the file at specified intervals
-     */
-    public void run()
-    {
-        PrintWriter pw = null;
-        
-        try
-        {
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(getFile())));
-            int c = 1;
-            
-            while (!stop_)
-            {
-                pw.println("[" + c++ + "]" + DateTimeUtil.format(new Date()));
-                
-//                if(RandomUtil.nextBoolean())
-                    pw.println("");
-                
-                pw.flush();
-                ThreadUtil.sleep(delay_);
-            }                
-            
-        }
-        catch(Exception e)
-        {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        finally
-        {
-            ResourceCloser.close(pw);
         }
     }
     
@@ -189,4 +253,48 @@ public class FileStuffer implements Runnable
     {
         delay_ = delay;
     }
+    
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+         
+    /**
+     * Prints program usage
+     */ 
+    protected static void printUsage()
+    {
+        System.out.println(
+            "FileStuffer writes data to a file at given intervals");
+            
+        System.out.println(
+            "Usage: FileStuffer <output file> <delay in millis>");
+    } 
+
+    //--------------------------------------------------------------------------
+    // Interfaces
+    //--------------------------------------------------------------------------
+    
+    public interface IStuffProvider
+    {
+        public Object getStuff();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+ 
+    static class DefaultStuffProvider implements IStuffProvider
+    {
+        private int cnt_ = 0;
+        
+        /**
+         * Default stuff provider
+         * 
+         * @return  Line number plus time
+         */
+        public Object getStuff()
+        {
+            return "[" + cnt_++ + "]" + DateTimeUtil.format(new Date());
+        }
+    }   
 }
