@@ -177,6 +177,11 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
      */
     private int autoScrollThreshold_;
     
+    /**
+     * Flag to show the executed sql statement in the results window.
+     */
+    private boolean showSqlInResults_;
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -280,6 +285,7 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         setMaxHistory(10);
         setSqlTerminator(";");
         setAutoScrollThreshold(50);
+        setShowSqlInResults(false);
     }
 
     //--------------------------------------------------------------------------
@@ -410,7 +416,8 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
      * @throws SQLException on SQL error.
      * @see JDBCUtil#format(ResultSet)
      */
-    public String executeSQL(String sql) throws SQLException
+    public String executeSQL(String sql, IResultFormatter formatter) 
+        throws SQLException
     {
         String metaResults = null;
         String lower = sql.trim().toLowerCase();
@@ -419,21 +426,21 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         if (lower.startsWith("select"))
         {
             // Execute select statement
-            String formattedResults = null;
-            Object[][] tableResults = null;
-            Connection conn = null;
-            PreparedStatement stmt = null;
-            ResultSet resultSet = null;
+            
+            String            formattedResults = null;
+            Object[][]        tableResults     = null;
+            Connection        conn             = null;
+            PreparedStatement stmt             = null;
+            ResultSet         resultSet        = null;
             
             try
             {
                 conn = JDBCSession.getConnection(session);
                 
-                stmt = 
-                    conn.prepareStatement(
-                        JDBCSession.prepSQL(sql), 
-                        ResultSet.TYPE_SCROLL_INSENSITIVE, 
-                        ResultSet.CONCUR_READ_ONLY);
+                stmt = conn.prepareStatement(
+                    JDBCSession.prepSQL(sql), 
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_READ_ONLY);
                 
                 resultSet = stmt.executeQuery();
                 formattedResults = JDBCUtil.format(resultSet);
@@ -441,6 +448,11 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
                 tableResults = JDBCUtil.toArray(resultSet, false);
                 
                 // Output to textarea
+                formattedResults = 
+                    formatter.preFormat(sql, formattedResults) 
+                    + formattedResults 
+                    + formatter.postFormat(sql, formattedResults);
+                
                 resultsArea_.append(formattedResults);
                 
                 // Output to table
@@ -471,7 +483,10 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             metaResults = 
                 JDBCSession.executeUpdate(session, sql) + " rows affected.";
             
-            resultsArea_.append(metaResults);
+            resultsArea_.append(
+                formatter.preFormat(sql, metaResults)
+                + metaResults
+                + formatter.postFormat(sql, metaResults));
         }
         else
         {
@@ -479,7 +494,10 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             metaResults = 
                 JDBCSession.executeUpdate(session, sql) + " rows affected.";
             
-            resultsArea_.append(metaResults);
+            resultsArea_.append(
+                formatter.preFormat(sql, metaResults)
+                + metaResults
+                + formatter.postFormat(sql, metaResults));
         }
 
         addToHistory(sql);
@@ -951,8 +969,10 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     {
         Element root = new Element(NODE_QUERY_PLUGIN);
 
+        // Prefs from the plugin properties flippane...
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
         
+        // SQL history
         for (Iterator i = new ArrayIterator(sqlMenu_.getMenuComponents()); 
             i.hasNext();)
         {
@@ -1095,7 +1115,29 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     {
         sqlTerminator_ = sqlTerminator;
     }
+
     
+    /**
+     * Returns true to show sql in the results window, false otherwise.
+     * 
+     * @return boolean
+     */
+    public boolean isShowSqlInResults()
+    {
+        return showSqlInResults_;
+    }
+    
+    
+    /**
+     * Sets the flag to show sql in the results window.
+     * 
+     * @param showSqlInResults True to show results, false otherwise.
+     */
+    public void setShowSqlInResults(boolean showSqlInResults)
+    {
+        showSqlInResults_ = showSqlInResults;
+    }
+
     //--------------------------------------------------------------------------
     // CtrlUpAction
     //--------------------------------------------------------------------------
@@ -1218,5 +1260,15 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             getSQLEditor().scrollToCaret();
             getStatusBar().setInfo("Loaded " + values.length + " files.");
         }
+    }
+    
+    //--------------------------------------------------------------------------
+    // IResultFormatter
+    //--------------------------------------------------------------------------
+    
+    public interface IResultFormatter 
+    {
+        String preFormat(String sql, String results);
+        String postFormat(String sql, String results);
     }
 }
