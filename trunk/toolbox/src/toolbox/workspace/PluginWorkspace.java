@@ -32,9 +32,6 @@ import javax.swing.UIManager;
 import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.PlasticTheme;
 
-import org.apache.commons.collections.SequencedHashMap;
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -44,11 +41,13 @@ import nu.xom.Node;
 import nu.xom.ParseException;
 import nu.xom.Serializer;
 
+import org.apache.commons.collections.SequencedHashMap;
+import org.apache.log4j.Logger;
+
 import toolbox.log4j.SmartLogger;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.ResourceCloser;
 import toolbox.util.StreamUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
@@ -160,7 +159,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Starts up the workspace 
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String args[])
     {
@@ -201,7 +200,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Registers a plugin with the GUI. Must be called prior buildView()
      * 
-     * @param  plugin  Plugin to add to the GUI
+     * @param plugin Plugin to add to the GUI
      * @throws Exception on error
      */
     public void registerPlugin(IPlugin plugin) throws Exception
@@ -277,8 +276,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Registers a plugin given its FQN
      * 
-     * @param  pluginClass  Name of plugin class that implements the IPlugin 
-     *                      interface
+     * @param pluginClass Name of plugin class that implements the IPlugin 
+     *        interface
      * @throws Exception on instantiation error
      */
     public void registerPlugin(String pluginClass) throws Exception
@@ -296,7 +295,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Registers a plugin given its FQN and preferences 
      * 
      * @param pluginClass Name of plugin class that implements the IPlugin 
-     *                    interface
+     *        interface
      * @param prefs Plugin preferences DOM
      * @throws Exception on instantiation error
      */
@@ -318,8 +317,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Deregisters a plugin given its fully qualified name
      * 
-     * @param   pluginClass  Class name of plugin to remove
-     * @throws  Exception on error
+     * @param pluginClass Class name of plugin to remove
+     * @throws Exception on error
      */
     public void deregisterPlugin(String pluginClass) throws Exception
     {
@@ -350,7 +349,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Returns the workspace status bar
      * 
-     * @return  Status bar
+     * @return Status bar
      */
     IStatusBar getStatusBar()
     {
@@ -389,7 +388,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Creates and configures the menu bar
      * 
-     * @return  JMenuBar
+     * @return JMenuBar
      */
     protected JMenuBar createMenuBar()
     {
@@ -437,7 +436,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Creates a themes menu for the plastic jgoodies.com look and feels
      * 
-     * @return  Menu with all the themes 
+     * @return Menu with all the themes 
      */
     protected JMenu createThemesMenu()
     {
@@ -453,7 +452,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Determines if a plugin is active given its FQN
      * 
-     * @param  pluginClass  FQN of plugin class
+     * @param pluginClass FQN of plugin class
      * @return True if plugin is registered, false otherwise
      */
     protected boolean hasPlugin(String pluginClass) 
@@ -527,10 +526,13 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * <pre>
+     * 
      * Workspace
      *  |
      *  +--Plugin
      * 
+     * </pre>
      * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
