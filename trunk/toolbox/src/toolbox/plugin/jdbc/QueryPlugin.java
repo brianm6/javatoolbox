@@ -3,8 +3,6 @@ package toolbox.plugin.jdbc;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,6 +36,7 @@ import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
+import toolbox.plugin.jdbc.action.ListTablesAction;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
@@ -385,7 +384,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JButton listTables = JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_TABLES),
                 "List tables",
-                new ListTablesAction());
+                new ListTablesAction(this));
 
         JButton listColumns = JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_COLUMNS),
@@ -1049,39 +1048,6 @@ public class QueryPlugin extends JPanel implements IPlugin
             String s = getActiveText();
 
             System.out.println(StringUtil.addBars(s));
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // ListTablesAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Queries the DB metadata and dumps a list of the tables.
-     */
-    class ListTablesAction extends WorkspaceAction
-    {
-        /**
-         * Creates a ListTablesAction.
-         */
-        public ListTablesAction()
-        {
-            super("List Tables", true, true, null, statusBar_);
-        }
-
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            Connection conn = JDBCUtil.getConnection();
-            DatabaseMetaData meta = conn.getMetaData();
-            ResultSet rs = meta.getTables(null, null, null, null);
-            String tables = JDBCUtil.format(rs);
-            resultsArea_.append(tables);
-            JDBCUtil.releaseConnection(conn);
         }
     }
 }
