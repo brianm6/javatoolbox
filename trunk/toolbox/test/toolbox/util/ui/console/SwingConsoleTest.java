@@ -10,9 +10,8 @@ import org.apache.log4j.Logger;
 
 import toolbox.junit.testcase.UITestCase;
 
-
 /**
- * Unit test for SwingConsole.
+ * Unit test for {@link toolbox.util.ui.console.SwingConsole}.
  */
 public class SwingConsoleTest extends UITestCase
 {
@@ -23,6 +22,11 @@ public class SwingConsoleTest extends UITestCase
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     * 
+     * @param args None.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(SwingConsoleTest.class);
@@ -32,7 +36,10 @@ public class SwingConsoleTest extends UITestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-    public void testSwingShellConsole1()
+    /**
+     * Simple interactive test of the SwingConsole.
+     */
+    public void testSwingShellConsole1() throws Exception
     {
         logger_.info("Running testSwingShellConsole1...");
 
@@ -41,19 +48,23 @@ public class SwingConsoleTest extends UITestCase
         try
         {
             cons.start();
+            cons.setPrompt("Hit me, baby! >");
+            cons.getCommandHandler().handleCommand(cons, "help");
             launchInDialog(cons.getView());
         }
         finally
         {
             cons.stop();
+            assertTrue(!cons.isRunning());
         }
     }
     
+    // Disregard...
     
     public static void shell1()
     {
         SwingConsole cons = new SwingConsole("console", 25, 80);
-        cons.setPrompt("howdy>");
+        cons.setPrompt("Howdy! ");
         JFrame f= new JFrame("console");
         f.getContentPane().setLayout(new BorderLayout());
         f.getContentPane().add(cons.getView(), BorderLayout.CENTER);
