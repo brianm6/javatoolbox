@@ -5,12 +5,8 @@ import toolbox.util.statemachine.impl.DefaultStateMachine;
 import toolbox.util.statemachine.impl.DefaultTransition;
 
 /**
- * StateMachineFactory returns default implemenations of a StateMachine and its
- * associated State and Transition components.
- * 
- * @see toolbox.util.statemachine.StateMachine
- * @see toolbox.util.statemachine.State
- * @see toolbox.util.statemachine.Transition
+ * StateMachineFactory is able to create default implementations of 
+ * {@link StateMachine}, {@link State}, and {@link Transition}.
  */
 public class StateMachineFactory
 {

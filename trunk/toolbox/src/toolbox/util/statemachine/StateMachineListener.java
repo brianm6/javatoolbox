@@ -4,9 +4,7 @@ import toolbox.util.statemachine.impl.DefaultStateMachine;
 
 /**
  * StateMachineListener provides a notification interface for events generated
- * by a StateMachine.
- * 
- * @see toolbox.util.statemachine.StateMachine
+ * by a {@link StateMachine}.
  */
 public interface StateMachineListener
 {

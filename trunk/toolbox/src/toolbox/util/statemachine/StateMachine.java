@@ -4,8 +4,56 @@ package toolbox.util.statemachine;
 import toolbox.util.service.Nameable;
 
 /**
- * A StateMachine adheres to the behavior of a deterministic finite state 
- * automata.
+ * A StateMachine simulates the activity of a deterministic finite state 
+ * automata with anynumber of {@link State}s and the {@link Transition}s between
+ * them. Instances can be created via the {@link StateMachineFactory} and 
+ * activity can be monitored by implementing the {@link StateMachineListener}
+ * interface.
+ * <p>
+ * <b>Example:</b>
+ * <pre class="snippet">
+ *   
+ *   // Lets simulate a rice cooker..
+ *   StateMachine cooker  = StateMachineFactory.createStateMachine("MyCooker");
+ *   State raw            = StateMachineFactory.createState("raw");
+ *   State cooked         = StateMachineFactory.createState("cooked");
+ *   Transition cookFood  = StateMachineFactory.createTransition("cookFood");
+ *   Transition buyFood   = StateMachineFactory.createSTate("buyFood");
+ *   CookerListener listener = new StateMachineListener() { ... };  
+ * 
+ *   cooker.addState(raw);
+ *   cooker.addState(cooked);
+ *   cooker.addTransition(cookFood, raw, cooked);
+ *   cooker.addStateMachineListener(listener);
+ *   cooker.setBeginState(raw);
+ * 
+ *   // Start from the beginning
+ *   cooker.reset();  
+ * 
+ *   // Get cookin'
+ *   cooker.transition(cookFood);
+ *  
+ *   // Ready to eat...
+ *   System.out.println("Food should be cooked: " + cooker.getState());
+ * 
+ *   // Actively check transitions..
+ *   if (!cooker.canTransition(buyFood))
+ *      System.out.println("Bingo..buy comes before cooking!");
+ *  
+ *   // Passively check transitions..
+ *   try
+ *   {
+ *       cooker.checkTransition(buyFood);     
+ *   }
+ *   catch (IllegalStateException ise)
+ *   {
+ *       System.out.println("Bingo..buy comes before cooking!");
+ *   }
+ * 
+ *   // Do something with those events...
+ *   System.out.println("Meal cooked in " + listener.getCookingTime());
+ *   
+ * </pre>
  */
 public interface StateMachine extends Nameable
 {
@@ -79,7 +127,7 @@ public interface StateMachine extends Nameable
     
 
     /**
-     * Resets the state machine to the begin state.
+     * Resets this state machine to the begin state.
      */
     void reset();
 
@@ -87,14 +135,26 @@ public interface StateMachine extends Nameable
     /**
      * Returns true if the given transition exists from the current state to a 
      * new state, false otherwise.
+     * 
+     * @return boolean
      */
     boolean canTransition(Transition transition);
 
     
     /**
+     * Checks if a transition from the current state to the given state is
+     * is valid.
+     *  
+     * @param transition Transition to check.
+     * @throws IllegalStateException if the transition is not valid.
+     */
+    void checkTransition(Transition transition) throws IllegalStateException;
+    
+    
+    /**
      * Adds a listener to this state machine.
      * 
-     * @param listener Implementor of StateMachineListener to add as a listener.
+     * @param listener StateMachineListener to add.
      */
     void addStateMachineListener(StateMachineListener listener);
 
@@ -102,14 +162,7 @@ public interface StateMachine extends Nameable
     /**
      * Removes a listener from this state machine.
      * 
-     * @param listener Implementor of StateMachineListener to remove.
+     * @param listener StateMachineListener to remove.
      */
     void removeStateMachineListener(StateMachineListener listener);
-
-
-    /**
-     * @param transition
-     */
-    void checkTransition(Transition transition) throws IllegalStateException;
-    
 }
