@@ -33,7 +33,7 @@
     <classpathentry kind="lib" path="lib/hsqldb.jar" sourcepath="/toolbox/lib/src/hsqldb-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-io.jar" sourcepath="/toolbox/lib/src/commons-io-src.zip"/>
     <classpathentry kind="lib" path="lib/cvslib.jar"/>
-    <classpathentry kind="lib" path="lib/ant.jar"/>
+    <classpathentry kind="lib" path="lib/ant.jar" sourcepath="/toolbox/lib/src/ant-src.zip"/>
     <classpathentry kind="lib" path="lib/hamsam.jar"/>
     <classpathentry kind="lib" path="lib/commons-codec.jar" sourcepath="/toolbox/lib/src/commons-codec-src.zip"/>
     <classpathentry kind="lib" path="lib/statcvs.jar" sourcepath="K:/workspaces/workspace-lib/statcvs/src"/>
