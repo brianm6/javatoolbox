@@ -17,6 +17,7 @@ import toolbox.util.Assert;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.plugin.IPreferenced;
 
 /**
  * Extends the functionality of JTextArea by adding the following features.
@@ -28,7 +29,8 @@ import toolbox.util.XOMUtil;
  *   <li>Support to save/restore preferences to XML
  * </ul>
  */
-public class JSmartTextArea extends JTextArea implements AntiAliased
+public class JSmartTextArea extends JTextArea implements AntiAliased, 
+    IPreferenced
 {
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
@@ -43,17 +45,17 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     /** 
      * Popup menu for this component 
      */
-    private JTextComponentPopupMenu popup_;
+    private JTextComponentPopupMenu popupMenu_;
     
     /**
      * Check box that toggles autoscroll
      */
-    private JCheckBoxMenuItem autoScrollItem_;
+    private JCheckBoxMenuItem autoScrollCheckBox_;
     
     /** 
      * Check box that toggles antialiasing of text
      */
-    private JCheckBoxMenuItem antiAliasItem_;
+    private JCheckBoxMenuItem antiAliasCheckBox_;
     
     /**
      * Maximum number of characters allowable in the text area before the text
@@ -84,7 +86,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
      * Creates a JSmartTextArea with the given text and autoscroll and antialias
      * turned off by default.
      * 
-     * @param text  Initial text of textarea
+     * @param text Initial text of textarea
      */
     public JSmartTextArea(String text)
     {
@@ -94,8 +96,8 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     /**
      * Creates a JSmartTextArea with the given options
      * 
-     * @param  autoScroll  Turns on autoscroll of output
-     * @param  antiAlias   Turns on antialiasing of the text
+     * @param autoScroll Turns on autoscroll of output
+     * @param antiAlias Turns on antialiasing of the text
      */
     public JSmartTextArea(boolean autoScroll, boolean antiAlias)
     {
@@ -105,9 +107,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     /**
      * Creates a JSmartTextArea with the given text and options
      * 
-     * @param  text        Initial text
-     * @param  autoScroll  Turns on autoscroll of output
-     * @param  antiAlias   Turns on antialiasing of the text
+     * @param text Initial text
+     * @param autoScroll Turns on autoscroll of output
+     * @param antiAlias Turns on antialiasing of the text
      */
     public JSmartTextArea(String text, boolean autoScroll, boolean antiAlias)
     {
@@ -122,10 +124,12 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     //--------------------------------------------------------------------------
     // IPreferenced Interface 
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
     public void applyPrefs(Element prefs)
     {
-    
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JSMARTTEXTAREA, new Element(NODE_JSMARTTEXTAREA));
         
@@ -145,6 +149,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
             setFont(FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
     }
     
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
     public void savePrefs(Element prefs)
     {
         Element root = new Element(NODE_JSMARTTEXTAREA);
@@ -166,7 +173,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     /**
      * Overrides paint to enable antialiasing
      * 
-     * @param  g  Graphics context
+     * @param g Graphics context
      */    
     public void paint(Graphics g) 
     {
@@ -183,8 +190,8 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
      * event dispatch thread, then it is queued up on the event dispatch
      * thread.
      * 
-     * @param   str  String to append
-     * @see     javax.swing.JTextArea#append(String)
+     * @param str String to append
+     * @see javax.swing.JTextArea#append(String)
      */
     public void append(final String str)
     {
@@ -236,7 +243,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
      */
     public boolean isAutoScroll()
     {
-        return autoScrollItem_.isSelected();
+        return autoScrollCheckBox_.isSelected();
     }
 
     /**
@@ -246,7 +253,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
      */
     public void setAutoScroll(boolean autoScroll)
     {
-        autoScrollItem_.setSelected(autoScroll);
+        autoScrollCheckBox_.setSelected(autoScroll);
     }
    
     /**
@@ -256,7 +263,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
      */
     public boolean isAntiAlias()
     {
-        return antiAliasItem_.isSelected();
+        return antiAliasCheckBox_.isSelected();
     }
 
     /**
@@ -266,7 +273,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
      */
     public void setAntiAlias(boolean antiAlias)
     {
-        antiAliasItem_.setSelected(antiAlias);
+        antiAliasCheckBox_.setSelected(antiAlias);
     }
 
     /**
@@ -324,12 +331,12 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
     protected void buildView()
     {
         // Build popup menu and add register with textarea
-        autoScrollItem_ = new JCheckBoxMenuItem(new AutoScrollAction());
-        antiAliasItem_  = new JCheckBoxMenuItem(new AntiAliasAction());
-        popup_ = new JTextComponentPopupMenu(this);
-        popup_.addSeparator();
-        popup_.add(autoScrollItem_);
-        popup_.add(antiAliasItem_);
+        autoScrollCheckBox_ = new JCheckBoxMenuItem(new AutoScrollAction());
+        antiAliasCheckBox_  = new JCheckBoxMenuItem(new AntiAliasAction());
+        popupMenu_ = new JTextComponentPopupMenu(this);
+        popupMenu_.addSeparator();
+        popupMenu_.add(autoScrollCheckBox_);
+        popupMenu_.add(antiAliasCheckBox_);
     }    
 
     //--------------------------------------------------------------------------
@@ -348,7 +355,8 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
         
         public void actionPerformed(ActionEvent e)
         {
-            // NO OP
+            if (isAutoScroll())
+                scrollToEnd(); 
         }
     }    
 
