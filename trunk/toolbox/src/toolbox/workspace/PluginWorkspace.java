@@ -192,12 +192,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      */
     private PluginHostManager pluginHostManager_;
 
-    /**
-     * Initialization map for plugins passed via IPlugin.startup(Map). See
-     * Key Constants.
-     */
-    private Map initMap_;
-
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -514,9 +508,9 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         statusBar_ = new WorkspaceStatusBar();
         statusBar_.setInfo("Howdy pardner!");
 
-        initMap_ = new HashMap(2);
-        initMap_.put(KEY_STATUSBAR, statusBar_);
-        initMap_.put(KEY_WORKSPACE, this);
+        Map initMap = new HashMap(2);
+        initMap.put(KEY_STATUSBAR, statusBar_);
+        initMap.put(KEY_WORKSPACE, this);
 
         //
         // The plugin host needs to be set before calling applyPrefs() because
@@ -530,7 +524,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
                     new Element(NODE_WORKSPACE)),
                 ATTR_PLUGINHOST,
                 PluginHostManager.PLUGIN_HOST_TABBED),
-            initMap_);
+            initMap);
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
