@@ -56,8 +56,7 @@ public class FOPProcessorTest extends TestCase
     {
         logger_.info("Running testRenderPDFInParallel...");
         
-        String foXML = new String(
-            ResourceUtil.getResourceAsBytes(FILE_TEST_XSLFO));
+        String foXML = ResourceUtil.getResourceAsString(FILE_TEST_XSLFO);
 
         int iterations = 10;
         Thread threads[] = new Thread[iterations];
@@ -88,8 +87,7 @@ public class FOPProcessorTest extends TestCase
         
         int iterations = 10;
         
-        String foXML = 
-            new String(ResourceUtil.getResourceAsBytes(FILE_TEST_XSLFO));
+        String foXML = ResourceUtil.getResourceAsString(FILE_TEST_XSLFO);
 
         for (int i = 0; i < iterations; i++)
             new RenderRequest(i, foXML).run();
@@ -105,8 +103,7 @@ public class FOPProcessorTest extends TestCase
     {
         logger_.info("Running testRenderPostscript...");
         
-        String foXML = new String(
-            ResourceUtil.getResourceAsBytes(FILE_TEST_XSLFO));
+        String foXML = ResourceUtil.getResourceAsString(FILE_TEST_XSLFO);
 
         logger_.info("Rendering...");
          
