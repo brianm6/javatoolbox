@@ -12,12 +12,14 @@ import javax.swing.JMenu;
  */
 public interface IPlugin
 {
+    
     /**
      * Name of the plugin
      * 
      * @return Name of the plugin (tab text)
      */
     public String getName();
+
     
     /**
      * GUI component of the plugin
@@ -25,6 +27,7 @@ public interface IPlugin
      * @return GUI component of the plugin
      */
     public Component getComponent();
+
     
     /**
      * Optional menu items
@@ -32,11 +35,13 @@ public interface IPlugin
      * @return Plugin specific menu that is added to the application menubar
      */
     public JMenu getMenu();
+
     
     /**
      * Initializes the plugin
      */
     public void init();
+
     
     /**
      * Provides an opportunity from the plugin to save its persistent
@@ -45,6 +50,7 @@ public interface IPlugin
      * @param  prefs  Properties object to save plugin specific preferences to.
      */
     public void savePrefs(Properties prefs);
+
     
     /**
      * The plugin can read saved persistent properties to initialize itself
@@ -54,6 +60,7 @@ public interface IPlugin
      *                properties.
      */
     public void applyPrefs(Properties prefs);
+
     
     /**
      * Sets the status bar. The plugin can use the passed object as a
@@ -62,6 +69,7 @@ public interface IPlugin
      * @param  statusBar  Interface exposing methods to set status text
      */
     public void setStatusBar(IStatusBar statusBar);
+
     
     /**
      * Cleans up resources before the plugin is shutdown
