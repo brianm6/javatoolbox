@@ -13,6 +13,10 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
     private static final Logger logger_ =
         Logger.getLogger(DefaultTcpTunnelListener.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Queue for started events.
      */    

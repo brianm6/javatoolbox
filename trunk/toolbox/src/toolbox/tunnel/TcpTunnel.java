@@ -81,12 +81,11 @@ import toolbox.util.io.MulticastOutputStream;
  */
 public class TcpTunnel implements TcpTunnelListener
 {
+    private static final Logger logger_ = Logger.getLogger(TcpTunnel.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    private static final Logger logger_ = 
-        Logger.getLogger(TcpTunnel.class);
 
     /** 
      * Stream name for event inputstream. 
@@ -193,9 +192,9 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Creates a TcpTunnel with incoming/outgoing data echoed to System.out.
      * 
-     * @param listenPort Local port to listen on
-     * @param remoteHost Remote host to connect to
-     * @param remotePort Remote port to connect to
+     * @param listenPort Local port to listen on.
+     * @param remoteHost Remote host to connect to.
+     * @param remotePort Remote port to connect to.
      */
     public TcpTunnel(int listenPort, String remoteHost, int remotePort)
     {
@@ -403,7 +402,7 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Fires notifcation that the tunnel has started.
      * 
-     * @param status New status
+     * @param status New status.
      */
     protected void fireTunnelStarted()
     {
@@ -457,7 +456,7 @@ public class TcpTunnel implements TcpTunnelListener
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // OutputStreamListener
     //--------------------------------------------------------------------------
     
     /**

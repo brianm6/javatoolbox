@@ -10,8 +10,7 @@ import org.apache.log4j.Logger;
  */
 public final class ArrayUtil
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ArrayUtil.class);
+    private static final Logger logger_ = Logger.getLogger(ArrayUtil.class);
     
     // Clover private constructor workaround
     static { new ArrayUtil(); }
@@ -34,9 +33,9 @@ public final class ArrayUtil
     /**
      * Initializes an array of double with a given value.
      * 
-     * @param d Array of doubles
-     * @param value Initialization value
-     * @return Initialized array of doubles
+     * @param d Array of doubles.
+     * @param value Initialization value.
+     * @return Initialized array of doubles.
      */
     public static double[] init(double[] d, double value)
     {
@@ -48,9 +47,9 @@ public final class ArrayUtil
     /**
      * Initializes an array of ints with a given value.
      * 
-     * @param d Array of ints
-     * @param value Initialization value
-     * @return Initialized array of ints
+     * @param d Array of ints.
+     * @param value Initialization value.
+     * @return Initialized array of ints.
      */
     public static int[] init(int[] d, int value)
     {
@@ -62,10 +61,10 @@ public final class ArrayUtil
     /**
      * Returns subset of a given double array.
      *
-     * @param array The array to get subset of
-     * @param startIndex The starting index (inclusive)
-     * @param endIndex The ending index (inclusive)
-     * @return Subset of array
+     * @param array The array to get subset of.
+     * @param startIndex The starting index (inclusive).
+     * @param endIndex The ending index (inclusive).
+     * @return Subset of the array.
      */
     public static double[] subset(double[] array, int startIndex, int endIndex)
     {
@@ -99,16 +98,16 @@ public final class ArrayUtil
     /**
      * Returns the subset of an array of objects.
      * 
-     * @param array Array to extract subset from
-     * @param startIndex Starting index of the subset (zero based)
-     * @param endIndex Ending index (inclusive)
+     * @param array Array to extract subset from.
+     * @param startIndex Starting index of the subset (zero based).
+     * @param endIndex Ending index (inclusive).
      * @return Subset of the array
      * @throws IllegalArgumentException if indices are out of bounds.
      */
     public static Object[] subset(Object[] array, int startIndex, int endIndex)
     {
-        int      len    = array.length;
-        Class    clazz  = array.getClass().getComponentType();                
+        int   len   = array.length;
+        Class clazz = array.getClass().getComponentType();                
 
         if (len == 0)
         {
@@ -136,8 +135,8 @@ public final class ArrayUtil
     /**
      * Converts an array of doubles to a string. Good for debug output.
      * 
-     * @param array Array of doubles
-     * @return String representing contents of array
+     * @param array Array of doubles.
+     * @return String representing contents of array.
      */
     public static String toString(double[] array)
     {
@@ -153,8 +152,8 @@ public final class ArrayUtil
     /**
      * Converts an array of ints to a string. Good for debug output.
      * 
-     * @param array Array of ints
-     * @return String representing contents of array
+     * @param array Array of ints.
+     * @return String representing contents of array.
      */
     public static String toString(int[] array)
     {
@@ -171,8 +170,8 @@ public final class ArrayUtil
      * Converts an array of objects into a comma delimited single line 
      * string of each elements toString().
      *
-     * @param array Array of objects to stringify
-     * @return String of comma delimited array elements toString()
+     * @param array Array of objects to stringify.
+     * @return String of comma delimited array elements toString().
      */
     public static String toString(Object[] array)
     {
@@ -184,11 +183,11 @@ public final class ArrayUtil
      * Converts an object array into a comma delimited string of 
      * each elements toString().
      *
-     * @param array Array of objects to stringify
+     * @param array Array of objects to stringify.
      * @param onePerLine If true, the entire contents are represented on a 
      *        single line. If false, the string will contain one element per 
      *        line.
-     * @return String representation of array of objects
+     * @return String representation of array of objects.
      */
     public static String toString(Object[] array, boolean onePerLine)
     {
@@ -232,10 +231,10 @@ public final class ArrayUtil
      * Determines if an object exists in a given array of objects. Uses equals() 
      * for comparison.
      * 
-     * @param array Array of objects to search
-     * @param obj Object to search for
+     * @param array Array of objects to search.
+     * @param obj Object to search for.
      * @return -1 if the object is not found, otherwise the index of the first 
-     *         matching object
+     *         matching object.
      */
     public static int indexOf(Object[] array, Object obj)
     {
@@ -259,9 +258,9 @@ public final class ArrayUtil
     /**
      * Determines if an array of objects contains an object.
      * 
-     * @param array Array of objects to search
-     * @param obj Object to search for
-     * @return True if the object is found in the array, false otherwise
+     * @param array Array of objects to search.
+     * @param obj Object to search for.
+     * @return True if the object is found in the array, false otherwise.
      */
     public static boolean contains(Object[] array, Object obj)
     {
@@ -272,9 +271,9 @@ public final class ArrayUtil
     /**
      * Determines if an array is null or empty.
      * 
-     * @param array Array to check for null or empty
+     * @param array Array to check for null or empty.
      * @return True if an array is null or has a size of length zero, false 
-     *         otherwise
+     *         otherwise.
      */
     public static boolean isNullOrEmpty(Object[] array)
     {
@@ -286,9 +285,9 @@ public final class ArrayUtil
      * Concats two arrays (one right after the other) with homogenous content.
      * Arrays must contain elements of the same type!
      * 
-     * @param head Array at the head of the resulting array
-     * @param tail Array at the tail of the resulting array
-     * @return Concatenated array
+     * @param head Array at the head of the resulting array.
+     * @param tail Array at the tail of the resulting array.
+     * @return Concatenated array.
      */
     public static Object[] concat(Object[] head, Object[] tail)
     {
@@ -304,12 +303,12 @@ public final class ArrayUtil
     
     
     /**
-     * Adds an element to the end of an existing array 
-     * and returns the new array.
+     * Adds an element to the end of an existing array and returns the new 
+     * array.
      * 
-     * @param array An array to add the element to
-     * @param element Element to append
-     * @return New array with element
+     * @param array An array to add the element to.
+     * @param element Element to append.
+     * @return New array with element.
      */
     public static Object add(Object[] array, Object element)
     {
@@ -333,9 +332,9 @@ public final class ArrayUtil
      * Inserts an element to the beginning of an array. The component type of 
      * the array must be the same as that type of the element.
      * 
-     * @param array An array
+     * @param array An array.
      * @param element The element to insert.
-     * @return New array with element
+     * @return New array with element.
      */
     public static Object[] insert(Object[] array, Object element)
     {
@@ -347,10 +346,10 @@ public final class ArrayUtil
      * Inserts an element into the given position of an array. The component 
      * type of the array must be the same as that type of the element.
      * 
-     * @param array An array
+     * @param array An array.
      * @param element The element to insert.
      * @param index The index to insert the element before.
-     * @return New array with element
+     * @return New array with element.
      */
     public static Object[] insertAt(Object[] array, Object element, int index)
     {
@@ -371,8 +370,8 @@ public final class ArrayUtil
     /**
      * Determines if two given arrays are equal in length and content.
      * 
-     * @param array1 First array 
-     * @param array2 Second array
+     * @param array1 First array. 
+     * @param array2 Second array.
      * @return True if the two arrays are equal by reference or equality and
      *         each of the indices values are also equal by reference or 
      *         equality, false otherwise.
@@ -399,10 +398,10 @@ public final class ArrayUtil
     /**
      * Removes the first occurence of an object from an array.
      * 
-     * @param array Array to remove object from
-     * @param element Object to remove
+     * @param array Array to remove object from.
+     * @param element Object to remove.
      * @return New array with the object removed, or the original array if
-     *         the object was not a memver of the array
+     *         the object was not a memver of the array.
      */    
     public static Object[] remove(Object[] array, Object element)
     {
@@ -439,9 +438,9 @@ public final class ArrayUtil
     /**
      * Invokes a method on each element of an array.
      * 
-     * @param array Array of objects 
-     * @param method Method to invoke on each object
-     * @param params Parameters to pass to each method invocation
+     * @param array Array of objects. 
+     * @param method Method to invoke on each object.
+     * @param params Parameters to pass to each method invocation.
      */    
     public static void invoke(Object[] array, String method, Object[] params)
     {

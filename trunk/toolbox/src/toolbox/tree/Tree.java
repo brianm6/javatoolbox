@@ -101,8 +101,12 @@ public class Tree
      */
     private static final String ARM = "---";
 
+    //--------------------------------------------------------------------------
+    // Constants : Sort Options
+    //--------------------------------------------------------------------------
+    
     /**
-     * Do not sort.
+     * Do not sort the results.
      */
     public static final String SORT_NONE = "x";
 
@@ -122,7 +126,7 @@ public class Tree
     public static final String SORT_DATE = "d";
 
     //--------------------------------------------------------------------------
-    // Default Constants
+    // Constants : Defaults
     //--------------------------------------------------------------------------
 
     /** 
@@ -333,7 +337,7 @@ public class Tree
      * Creates a Tree that will show files and send the output to System.out
      * with the given root directory.
      * 
-     * @param rootDir Root directory
+     * @param rootDir Root directory.
      */
     public Tree(File rootDir)
     {
@@ -346,8 +350,8 @@ public class Tree
      * Creates a tree that will show files with the given root directory and
      * send output to the given writer.
      * 
-     * @param rootDir Root directory
-     * @param writer Output destination    
+     * @param rootDir Root directory.
+     * @param writer Output destination.    
      */
     public Tree(File rootDir, Writer writer)
     {
@@ -359,9 +363,9 @@ public class Tree
     /**
      * Creates a tree with the given root directory and flag to show files.
      * 
-     * @param rootDir Root directory
+     * @param rootDir Root directory.
      * @param showFiles Set to true if you want file info in the tree, false 
-     *        otherwise
+     *        otherwise.
      */
     public Tree(File rootDir, boolean showFiles)
     {
@@ -373,10 +377,10 @@ public class Tree
     /**
      * Creates a tree with the given root directory and flag to show files.
      * 
-     * @param rootDir Root directory
+     * @param rootDir Root directory.
      * @param showFiles If true, includes files (as opposed to just directories)
-     *        in the output 
-     * @param showSize If true, shows the size of the file
+     *        in the output.
+     * @param showSize If true, shows the size of the file.
      */
     public Tree(File rootDir, boolean showFiles, boolean showSize)
     {
@@ -388,13 +392,14 @@ public class Tree
     /**
      * Creates a tree with the given root directory and flag to show files.
      * 
-     * @param rootDir Root directory
+     * @param rootDir Root directory.
      * @param showFiles If true, includes files (as opposed to just directories)
-     *        in the output 
-     * @param showSize If true, shows the size of the file
-     * @param sortBy File attribute to use for sorting
+     *        in the output.
+     * @param showSize If true, shows the size of the file.
+     * @param sortBy File attribute to use for sorting.
      */
-    public Tree(File rootDir, boolean showFiles, boolean showSize, String sortBy)
+    public Tree(File rootDir, boolean showFiles, boolean showSize, 
+                String sortBy)
     {
         this(rootDir, showFiles, showSize, DEFAULT_SHOWDATE, sortBy, 
              DEFAULT_WRITER);
@@ -404,12 +409,12 @@ public class Tree
 	/**
 	 * Creates a tree with the given root directory and flag to show files.
 	 * 
-	 * @param rootDir Root directory
+	 * @param rootDir Root directory.
 	 * @param showFiles If true, includes files (as opposed to just directories)
-	 *        in the output 
-	 * @param showSize If true, shows the size of the file
-	 * @param showDate If true, shows the date/time of the file
-	 * @param sortBy File attribute to use for sorting
+	 *        in the output.
+	 * @param showSize If true, shows the size of the file.
+	 * @param showDate If true, shows the date/time of the file.
+	 * @param sortBy File attribute to use for sorting.
 	 */
 	public Tree(File rootDir, boolean showFiles, boolean showSize, 
 				boolean showDate, String sortBy)
@@ -421,13 +426,13 @@ public class Tree
     /**
      * Creates a tree with the given criteria.
      * 
-     * @param rootDir Root directory of the tree
+     * @param rootDir Root directory of the tree.
      * @param showFiles Set to true if you want file info in the tree, false 
-     *        otherwise
+     *        otherwise.
      * @param showSize Set to true to print out the size of the file next to the
-     *        filename
+     *        filename.
      * @param sortBy Set to any of SORT_[NAME|SIZE|NONE] to specify sort order.
-     * @param writer Output destination
+     * @param writer Output destination.
      */
     public Tree(File rootDir, 
                 boolean showFiles, 
@@ -500,7 +505,7 @@ public class Tree
     /**
      * Prints program usage.
      * 
-     * @param options Command line options
+     * @param options Command line options.
      */
     protected static void printUsage(Options options)
     {
@@ -514,12 +519,12 @@ public class Tree
     
     
     /**
-     * Recurses the directory structure of the given rootDir and generates
-     * a hierarchical text representation.
-     * 
-     * @param rootDir Root diretory
-     * @param level Current level of decorated indentation
-     */
+	 * Recurses the directory structure of the given rootDir and generates a
+	 * hierarchical text representation.
+	 * 
+	 * @param rootDir Root directory.
+	 * @param level Current level of decorated indentation.
+	 */
     protected boolean showTree(File rootDir, String level)
     {
         boolean atRoot = (level.length() == 0);

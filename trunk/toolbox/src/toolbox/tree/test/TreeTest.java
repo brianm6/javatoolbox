@@ -20,6 +20,10 @@ public class TreeTest extends TestCase
 {
     private static final Logger logger_ = Logger.getLogger(TreeTest.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Temporary directory that will serve as the root dir for tests. 
      */
@@ -32,7 +36,7 @@ public class TreeTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -46,7 +50,7 @@ public class TreeTest extends TestCase
     /**
      * Create a temp directory to play around in.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void setUp() throws IOException
     {
@@ -70,7 +74,7 @@ public class TreeTest extends TestCase
     /**
      * Tests the constructors.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testConstructors() throws Exception
     {
@@ -104,7 +108,7 @@ public class TreeTest extends TestCase
     /**
      * Tests for a simple cascading structure.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeSimpleCascade() throws Exception
     {
@@ -133,7 +137,7 @@ public class TreeTest extends TestCase
     /**
      * Tests for a simple flat structure.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeSimpleFlat() throws Exception
     {
@@ -162,7 +166,7 @@ public class TreeTest extends TestCase
     /**
      * Tests for an extension bar.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeExtensionBar() throws Exception
     {
@@ -203,7 +207,7 @@ public class TreeTest extends TestCase
      *
      * </pre>
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeManyInRoot() throws Exception
     {
@@ -237,7 +241,7 @@ public class TreeTest extends TestCase
      *
      * </pre>
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeEmptyRoot() throws Exception
     {
@@ -260,7 +264,7 @@ public class TreeTest extends TestCase
      *
      * </pre>
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeOneDir() throws Exception
     {
@@ -280,7 +284,7 @@ public class TreeTest extends TestCase
     /**
      * Tests for a large directory structure.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void xtestShowTreeLargeTree() throws Exception
     {
@@ -295,7 +299,7 @@ public class TreeTest extends TestCase
     /**
      * Tests for a simple cascading structure with one file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeSimpleCascadeFile() throws Exception
     {
@@ -330,7 +334,7 @@ public class TreeTest extends TestCase
     /**
      * Tests for an empty tree with files in the root only.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowTreeRootFiles() throws Exception
     {
@@ -353,7 +357,7 @@ public class TreeTest extends TestCase
     /**
      * Tests printing the help/usage information.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testPrintUsage() throws Exception
     {
@@ -367,7 +371,7 @@ public class TreeTest extends TestCase
     /**
      * Tests execution via main().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testMain() throws Exception
     {
@@ -386,8 +390,8 @@ public class TreeTest extends TestCase
     /**
      * Creates a temp file in the given directory.
      * 
-     * @param dir Dir to create file in
-     * @throws IOException on error
+     * @param dir Dir to create file in.
+     * @throws IOException on I/O error.
      */
     protected File createFile(File dir) throws IOException
     {
@@ -400,8 +404,8 @@ public class TreeTest extends TestCase
     /**
      * Executes the native version of tree to use as a comparison.
      * 
-     * @param dir Directory
-     * @throws IOException on error
+     * @param dir Directory.
+     * @throws IOException on error.
      */
     public void printNativeTree(File dir) throws IOException
     {
@@ -423,8 +427,8 @@ public class TreeTest extends TestCase
     /**
      * Executes the native version of tree to use as a comparison.
      * 
-     * @param dir Directory
-     * @throws IOException on IO error
+     * @param dir Directory.
+     * @throws IOException on IO error.
      */
     public void printNativeFileTree(File dir) throws IOException
     {
