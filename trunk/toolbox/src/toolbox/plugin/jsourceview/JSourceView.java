@@ -24,6 +24,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Category;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.Queue;
 import toolbox.util.SwingUtil;
@@ -39,21 +41,37 @@ import toolbox.util.ui.ThreadSafeTableModel;
  */
 public class JSourceView extends JFrame implements ActionListener
 {
+    private static final Category logger_ = 
+        Category.getInstance(JSourceView.class);
+        
+    
     private static FilenameFilter sourceFilter_;
+
+    private static final String TEXT_GO = "Go!";
+    private static final String TEXT_CANCEL = "Cancel";
     
-    private JTextField dirField_;
-    private JButton goButton_;
-    private JLabel scanStatusLabel_;
-    private JLabel parseStatusLabel_;
+    private JTextField  dirField_;
+    private JButton     goButton_;
+    private JLabel      scanStatusLabel_;
+    private JLabel      parseStatusLabel_;
     
-    private JMenuBar menuBar_;
-    private JMenuItem saveMenuItem_;
-    private JMenuItem exitMenuItem_;
-    private JMenuItem aboutMenuItem_;
+    private JMenuBar    menuBar_;
+    private JMenuItem   saveMenuItem_;
+    private JMenuItem   exitMenuItem_;
+    private JMenuItem   aboutMenuItem_;
     
-    private JTable table_;
+    private JTable               table_;
     private ThreadSafeTableModel tableModel_;
-    private Queue workQueue_;
+    private Queue                workQueue_;
+
+    private Thread        scanDirThread_;
+    private ScanDirWorker scanDirWorker_;
+    
+    private Thread       parserThread_;
+    private ParserWorker parserWorker_;
+    
+    /** Platform path separator **/
+    private String pathSeparator_;
 
     /** Table column names **/    
     private String colNames[] = 
@@ -68,11 +86,6 @@ public class JSourceView extends JFrame implements ActionListener
         "Percentage"
     };
     
-    /** Thread to scan directories **/
-    private Thread scanDirThread_;
-    
-    /** Platform path separator **/
-    private String pathSeparator_;
 
     static
     {
@@ -97,7 +110,10 @@ public class JSourceView extends JFrame implements ActionListener
         new JSourceView().setVisible(true);
     }
 
-
+    //
+    //  CONSTRUCTORS
+    //
+    
     /**
      * Constructs JSourceview
      */    
@@ -114,7 +130,6 @@ public class JSourceView extends JFrame implements ActionListener
         scanStatusLabel_ = new JLabel(" ");
         parseStatusLabel_ = new JLabel(" ");
         menuBar_ = new JMenuBar();
-        workQueue_ = new Queue();
         pathSeparator_ = System.getProperty("file.separator");
         
         topPanel.setLayout(new FlowLayout());
@@ -136,7 +151,7 @@ public class JSourceView extends JFrame implements ActionListener
         jpanel.add(parseStatusLabel_, BorderLayout.SOUTH);
         getContentPane().add(jpanel, BorderLayout.SOUTH);
         
-        setJMenuBar(makeMenuBar());
+        setJMenuBar(createMenuBar());
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -144,45 +159,16 @@ public class JSourceView extends JFrame implements ActionListener
         SwingUtil.centerWindow(this);
     }
 
+    //
+    //  IMPLEMENTATION
+    //
     
-    /** 
-     * Scans directory
-     */
-    private class ScanDirWorker implements Runnable
-    {
-        /** Directory to scan **/
-        private File file;
-
-        /**
-         * Creates a scanner
-         * 
-         * @param  file1  Directory to scann
-         */
-        public ScanDirWorker(File file1)
-        {
-            file = file1;
-        }
-
-                
-        /**
-         * Starts scanning directory on a separate thread
-         */
-        public void run()
-        {
-            Thread thread = new Thread(new ParserWorker());
-            thread.start();
-            findJavaFiles(file);
-            setScanStatus("Done scanning.");
-        }
-    }
-
-
     /**
      * Creates the menu bar 
      * 
      * @return  Menubar
      */
-    protected JMenuBar makeMenuBar()
+    protected JMenuBar createMenuBar()
     {
         JMenu jmenu = new JMenu("File");
         JMenu jmenu1 = new JMenu("Help");
@@ -208,7 +194,7 @@ public class JSourceView extends JFrame implements ActionListener
         return menuBar_;
     }
 
-    
+
     /**
      * Handles actions from the GUI
      *
@@ -277,12 +263,39 @@ public class JSourceView extends JFrame implements ActionListener
      */
     protected void goButtonPressed()
     {
-        goButton_.setEnabled(false);
-        String s = dirField_.getText();
-        workQueue_ = new Queue();
-        table_.setModel(tableModel_ = new ThreadSafeTableModel(colNames, 0));
-        scanDirThread_ = new Thread(new ScanDirWorker(new File(s)));
-        scanDirThread_.start();
+        if (goButton_.getText().equals(TEXT_GO))
+        {
+            goButton_.setText(TEXT_CANCEL);
+            String s = dirField_.getText();
+            workQueue_ = new Queue();
+            table_.setModel(tableModel_ = new ThreadSafeTableModel(colNames, 0));
+            
+            scanDirWorker_ = new ScanDirWorker(new File(s));
+            scanDirThread_ = new Thread(scanDirWorker_);
+            scanDirThread_.start();
+            
+            parserWorker_  = new ParserWorker();
+            parserThread_  = new Thread(parserWorker_);
+            parserThread_.start();
+        }
+        else
+        {
+            goButton_.setText(TEXT_GO);
+            scanDirWorker_.cancel();
+            parserWorker_.cancel();
+            
+            try
+            {
+                scanDirThread_.join();
+                parserThread_.join();
+            }
+            catch (InterruptedException ie)
+            {
+            }
+            
+            setScanStatus("Operation canceled");
+            setParseStatus("");
+        }
     }
 
     /**
@@ -307,10 +320,116 @@ public class JSourceView extends JFrame implements ActionListener
     }
 
     /**
+     * Returns directory portion only of a path
+     * 
+     * @param  s  Path 
+     * @return Directory portion of the path
+     */
+    protected String getDirectoryOnly(String s)
+    {
+        return s.substring(0, s.lastIndexOf(pathSeparator_));
+    }
+
+
+    /**
+     * Returns the file portion of a path
+     * 
+     * @param  s  Path
+     * @return File portion of a path
+     */
+    protected String getFileOnly(String s)
+    {
+        return s.substring(s.lastIndexOf(pathSeparator_) + 1, s.length());
+    }
+
+    //
+    //  INNER CLASSES
+    //
+    
+    /** 
+     * Scans directory
+     */
+    private class ScanDirWorker implements Runnable
+    {
+        /** Directory to scan **/
+        private File file;
+
+        /** Cancel flag **/
+        private boolean cancel = false;
+        
+        /**
+         * Creates a scanner
+         * 
+         * @param  file1  Directory to scann
+         */
+        public ScanDirWorker(File dir)
+        {
+            file = dir;
+        }
+
+                
+        /**
+         * Starts scanning directory on a separate thread
+         */
+        public void run()
+        {
+            findJavaFiles(file);
+            setScanStatus("Done scanning.");
+        }
+        
+        
+        /**
+         * Finds all java files in the given directory
+         * 
+         * @param  file  Directory to scan for files
+         */
+        protected void findJavaFiles(File file)
+        {
+            // Short circuit if operation canceled
+            if (cancel)
+                return;
+                
+            Thread.currentThread().yield();
+            
+            /* process files in current directory */
+            File srcFiles[] = file.listFiles(sourceFilter_);
+            
+            if (!ArrayUtil.isNullOrEmpty(srcFiles))
+            {
+                for (int i = 0; i < srcFiles.length; i++)
+                    workQueue_.enqueue(srcFiles[i].getAbsolutePath());                                        
+            }
+            
+            /* process dirs in current directory */
+            File dirs[] = file.listFiles(new DirectoryFilter());
+            if (!ArrayUtil.isNullOrEmpty(dirs))
+            {
+                for (int i=0; i<dirs.length; i++)
+                {
+                    setScanStatus("Scanning " + dirs[i] + " ...");
+                    findJavaFiles(dirs[i]);
+                }    
+            }
+        }
+        
+        
+        /** 
+         * Cancels the operation
+         */
+        public void cancel()
+        {
+            cancel = true;
+        }
+    }
+
+
+    /**
      * Parser that implements runnable
      */
     class ParserWorker implements Runnable
     {
+        boolean cancel = false;
+        
         /**
          * Parses each file on the workqueue and adds the statistics to the
          * table.
@@ -320,8 +439,14 @@ public class JSourceView extends JFrame implements ActionListener
             FileStats totalStats = new FileStats();
             int fileCount = 0;
             
-            while(!workQueue_.isEmpty() || scanDirThread_.isAlive()) 
+            while (!workQueue_.isEmpty() || scanDirThread_.isAlive()) 
             {
+        
+                System.out.println(cancel + " ");                
+                
+                if (cancel)
+                    break;
+                    
                 /* pop file of the queue */
                 String filename = (String)workQueue_.dequeue();
                 
@@ -370,113 +495,70 @@ public class JSourceView extends JFrame implements ActionListener
             tableModel_.addRow(totalRow);
             
             setParseStatus("Done parsing.");
-            goButton_.setEnabled(true);
+            goButton_.setText(TEXT_GO);
         }
-    }
-
-    /**
-     * Returns directory portion only of a path
-     * 
-     * @param  s  Path 
-     * @return Directory portion of the path
-     */
-    protected String getDirectoryOnly(String s)
-    {
-        return s.substring(0, s.lastIndexOf(pathSeparator_));
-    }
-
-
-    /**
-     * Returns the file portion of a path
-     * 
-     * @param  s  Path
-     * @return File portion of a path
-     */
-    protected String getFileOnly(String s)
-    {
-        return s.substring(s.lastIndexOf(pathSeparator_) + 1, s.length());
-    }
-
-    
-    /**
-     * Scans a given file and generates statistics
-     * 
-     * @param   filename  Name of the file
-     * @return  Stats of the file
-     */
-    protected FileStats scanFile(String filename)
-    {
-        FileStats filestats = new FileStats();
         
-        try
+        
+        /**
+         * Scans a given file and generates statistics
+         * 
+         * @param   filename  Name of the file
+         * @return  Stats of the file
+         */
+        protected FileStats scanFile(String filename)
         {
-            LineNumberReader lineReader = 
-                new LineNumberReader(
-                    new BufferedReader(
-                        new FileReader(filename)));
-                
-            LineStatus linestatus = new LineStatus();
+            FileStats filestats = new FileStats();
             
-            String line;
-            
-            while((line = lineReader.readLine()) != null) 
+            try
             {
-                filestats.setTotalLines(filestats.getTotalLines()+1);
-                
-                if (line.trim().length() == 0)
-                {
-                    filestats.setBlankLines(filestats.getBlankLines()+1);
-                }
-                else
-                {
-                    Machine.scanLine(new LineScanner(line), linestatus);
+                LineNumberReader lineReader = 
+                    new LineNumberReader(
+                        new BufferedReader(
+                            new FileReader(filename)));
                     
-                    if(linestatus.getCountLine())
-                        filestats.setCodeLines(filestats.getCodeLines() + 1);
+                LineStatus linestatus = new LineStatus();
+                
+                String line;
+                
+                while((line = lineReader.readLine()) != null) 
+                {
+                    filestats.setTotalLines(filestats.getTotalLines()+1);
+                    
+                    if (line.trim().length() == 0)
+                    {
+                        filestats.setBlankLines(filestats.getBlankLines()+1);
+                    }
                     else
-                        filestats.setCommentLines(filestats.getCommentLines()+1);
+                    {
+                        Machine.scanLine(new LineScanner(line), linestatus);
+                        
+                        if(linestatus.getCountLine())
+                            filestats.setCodeLines(filestats.getCodeLines() + 1);
+                        else
+                            filestats.setCommentLines(filestats.getCommentLines()+1);
+                    }
                 }
+        
+                lineReader.close();
             }
-    
-            lineReader.close();
-        }
-        catch (Exception e)
-        {
-            JSmartOptionPane.showExceptionMessageDialog(this, e);
-        }
-        finally
-        {
-            return filestats;
-        }
-    }
-
-
-    /**
-     * Finds all java files in the given directory
-     * 
-     * @param  file  Directory to scan for files
-     */
-    protected void findJavaFiles(File file)
-    {
-        Thread.currentThread().yield();
-        
-        /* process files in current directory */
-        File srcFiles[] = file.listFiles(sourceFilter_);
-        if (!ArrayUtil.isNullOrEmpty(srcFiles))
-        {
-            for (int i = 0; i < srcFiles.length; i++)
-                workQueue_.enqueue(srcFiles[i].getAbsolutePath());                                        
-        }
-        
-        /* process dirs in current directory */
-        File dirs[] = file.listFiles(new DirectoryFilter());
-        if (!ArrayUtil.isNullOrEmpty(dirs))
-        {
-            for (int i=0; i<dirs.length; i++)
+            catch (Exception e)
             {
-                setScanStatus("Scanning " + dirs[i] + " ...");
-                findJavaFiles(dirs[i]);
-            }    
+                JSmartOptionPane.showExceptionMessageDialog(JSourceView.this, e);
+            }
+            finally
+            {
+                return filestats;
+            }
+        }
+
+        
+        /** 
+         * Cancels the operation
+         */
+        public void cancel()
+        {
+            cancel = true;
+            System.out.println("Cancel called : " + cancel);            
         }
     }
 }
