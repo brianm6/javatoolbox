@@ -1,5 +1,7 @@
 package toolbox.util.statemachine.impl;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -12,9 +14,7 @@ import toolbox.util.statemachine.StateMachineListener;
 import toolbox.util.statemachine.Transition;
 
 /**
- * Unit test for DefaultStateMachine.
- * 
- * @see toolbox.util.statemachine.impl.DefaultStateMachine
+ * Unit test for {@link toolbox.util.statemachine.impl.DefaultStateMachine}.
  */
 public class DefaultStateMachineTest extends TestCase
 {
@@ -298,5 +298,286 @@ public class DefaultStateMachineTest extends TestCase
         assertTrue(machine.canTransition(tran1));
         machine.transition(tran1);
         assertFalse(machine.canTransition(tran1));
+    }
+    
+    //--------------------------------------------------------------------------
+    // getTransitions()
+    //--------------------------------------------------------------------------
+
+    /**
+     * Tests getTransitions() for an empty state machine.
+     */
+    public void testGetTransitionsZero()
+    {
+        logger_.info("Running testGetTransitionsZero..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransitions0");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        machine.addState(state1);
+        machine.setBeginState(state1);
+        machine.reset();
+
+        List trans = machine.getTransitions();
+        assertEquals(0, trans.size());
+    }
+    
+    
+    /**
+     * Tests getTransitions() for a state machine with only one transition.
+     */
+    public void testGetTransitionsOne()
+    {
+        logger_.info("Running testGetTransitionsOne..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransitions1");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        Transition tran1 = StateMachineFactory.createTransition("tran1");
+        
+        machine.addState(state1);
+        machine.addState(state2);
+        machine.addTransition(tran1, state1, state2);
+        machine.setBeginState(state1);
+        machine.reset();
+
+        List trans = machine.getTransitions();
+        assertEquals(1, trans.size());
+        assertEquals(tran1, trans.iterator().next());
+    }
+    
+    
+    /**
+     * Tests getTransitions() for a state machine with many transitions.
+     */
+    public void testGetTransitionsMany()
+    {
+        logger_.info("Running testGetTransitionsMany..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransitionsN");
+        
+        int max = 10;
+        State[] states = new State[max];
+        Transition[] trans = new Transition[max-1];
+        
+        for (int i = 0; i < max; i++)
+        {
+            states[i] = StateMachineFactory.createState("state" + i);
+            machine.addState(states[i]);
+            
+            if (i >=1)
+            {
+                Transition t= StateMachineFactory.createTransition("t" + i);
+                machine.addTransition(t, states[i-1], states[i]);
+                trans[i-1] = t;
+            }
+        }
+                
+        machine.setBeginState(states[0]);
+        machine.reset();
+
+        List tx = machine.getTransitions();
+        assertEquals(max - 1, tx.size());
+        
+        for (int i = 0 ; i < max - 1; i++)
+            assertTrue(tx.contains(trans[i]));
+    }
+    
+
+    /**
+     * Tests getTransitions() a single transition that occurs in the state 
+     * machine more than once between 2 unique states.
+     */
+    public void testGetTransitionsMultipleOccurences()
+    {
+        logger_.info("Running testGetTransitionsMultipleOccurences..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransitionsX");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        State state3 = StateMachineFactory.createState("state3");
+        State state4 = StateMachineFactory.createState("state4");
+        
+        Transition tran1 = StateMachineFactory.createTransition("tran1");
+        Transition tran2 = StateMachineFactory.createTransition("tran2");
+        
+        machine.addState(state1);
+        machine.addState(state2);
+        machine.addState(state3);
+        machine.addState(state4);
+
+        machine.addTransition(tran1, state1, state2);
+        machine.addTransition(tran1, state3, state4);
+        machine.addTransition(tran2, state2, state3);
+        
+        machine.setBeginState(state1);
+        machine.reset();
+
+        machine.transition(tran1);
+        machine.transition(tran2);
+        machine.transition(tran1);
+        
+        List trans = machine.getTransitions();
+        assertEquals(2, trans.size());
+        assertTrue(trans.contains(tran1));
+        assertTrue(trans.contains(tran2));
+    }
+    
+    //--------------------------------------------------------------------------
+    // getTransitionsFrom()
+    //--------------------------------------------------------------------------
+
+    /**
+     * Tests getTransitionsFrom() for a state with none.
+     */
+    public void testGetTransitionsFromZero()
+    {
+        logger_.info("Running testGetTransitionsFromZero..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransFrom0");
+        State state1 = StateMachineFactory.createState("state1");
+        machine.addState(state1);
+        machine.setBeginState(state1);
+        machine.reset();
+
+        List trans = machine.getTransitionsFrom(state1);
+        assertEquals(0, trans.size());
+    }
+
+    
+    /**
+     * Tests getTransitionsFrom() for a state with only one transition.
+     */
+    public void testGetTransitionsFromOne()
+    {
+        logger_.info("Running testGetTransitionsFromOne..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransFrom1");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        Transition tran1 = StateMachineFactory.createTransition("tran1");
+        
+        machine.addState(state1);
+        machine.addState(state2);
+        machine.addTransition(tran1, state1, state2);
+        machine.setBeginState(state1);
+        machine.reset();
+
+        List trans = machine.getTransitionsFrom(state1);
+        assertEquals(1, trans.size());
+        assertEquals(tran1, trans.iterator().next());
+    }
+    
+    
+    /**
+     * Tests getTransitionsFrom() for a state with many transitions.
+     */
+    public void testGetTransitionsFromMany()
+    {
+        logger_.info("Running testGetTransitionsFromMany..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransFromN");
+        State from = StateMachineFactory.createState("from");
+        machine.addState(from);
+        
+        int max = 10;
+        State[] states = new State[max];
+        Transition[] trans = new Transition[max];
+        
+        for (int i = 0; i < max; i++)
+        {
+            states[i] = StateMachineFactory.createState("to" + i);
+            machine.addState(states[i]);
+            trans[i] = StateMachineFactory.createTransition("t" + i);
+            machine.addTransition(trans[i], from, states[i]);
+        }
+                
+        machine.setBeginState(states[0]);
+        machine.reset();
+
+        List tx = machine.getTransitionsFrom(from);
+        assertEquals(max, tx.size());
+        
+        for (int i = 0 ; i < max; i++)
+            assertTrue(tx.contains(trans[i]));
+    }
+    
+    //--------------------------------------------------------------------------
+    // getTransitionsTo()
+    //--------------------------------------------------------------------------
+
+    /**
+     * Tests getTransitionsTo() for a state with none.
+     */
+    public void testGetTransitionsToZero()
+    {
+        logger_.info("Running testGetTransitionsToZero..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransTo0");
+        State state1 = StateMachineFactory.createState("state1");
+        machine.addState(state1);
+        machine.setBeginState(state1);
+        machine.reset();
+
+        List trans = machine.getTransitionsTo(state1);
+        assertEquals(0, trans.size());
+    }
+
+    
+    /**
+     * Tests getTransitionsTo() for a state with only one transition.
+     */
+    public void testGetTransitionsToOne()
+    {
+        logger_.info("Running testGetTransitionsToOne..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTransTo1");
+        State state1 = StateMachineFactory.createState("state1");
+        State state2 = StateMachineFactory.createState("state2");
+        Transition tran1 = StateMachineFactory.createTransition("tran1");
+        
+        machine.addState(state1);
+        machine.addState(state2);
+        machine.addTransition(tran1, state1, state2);
+        machine.setBeginState(state1);
+        machine.reset();
+
+        List trans = machine.getTransitionsTo(state2);
+        assertEquals(1, trans.size());
+        assertEquals(tran1, trans.iterator().next());
+    }
+
+    
+    /**
+     * Tests getTransitionsTo() for a state with many transitions.
+     */
+    public void testGetTransitionsToMany()
+    {
+        logger_.info("Running testGetTransitionsToMany..."); 
+
+        StateMachine machine = new DefaultStateMachine("testGetTranToN");
+        State to = StateMachineFactory.createState("to");
+        machine.addState(to);
+        
+        int max = 10;
+        State[] states = new State[max];
+        Transition[] trans = new Transition[max];
+        
+        for (int i = 0; i < max; i++)
+        {
+            states[i] = StateMachineFactory.createState("from" + i);
+            machine.addState(states[i]);
+            trans[i] = StateMachineFactory.createTransition("t" + i);
+            machine.addTransition(trans[i], states[i], to);
+        }
+                
+        machine.setBeginState(states[0]);
+        machine.reset();
+
+        List tx = machine.getTransitionsTo(to);
+        assertEquals(max, tx.size());
+        
+        for (int i = 0 ; i < max; i++)
+            assertTrue(tx.contains(trans[i]));
     }
 }
