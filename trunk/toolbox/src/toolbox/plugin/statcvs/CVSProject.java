@@ -6,32 +6,56 @@ import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Element;
 
+import org.apache.commons.codec.binary.Base64;
+
+import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Data object that encapsulates information related to a CVS project.
  * 
  * @see toolbox.plugin.statcvs.StatcvsPlugin
  */
-public class CVSProject implements Comparable
+public class CVSProject implements Comparable, IPreferenced
 {
-    // TODO: Convert IPreferenced interface to use bean properties
+    //--------------------------------------------------------------------------
+    // JavaBean Property Names
+    //--------------------------------------------------------------------------
+    
+    public static final String PROP_PROJECT      = "project";
+    public static final String PROP_MODULE       = "CVSModule";
+    public static final String PROP_CVSROOT      = "CVSRoot";
+    public static final String PROP_PASSWORD     = "password";
+    public static final String PROP_CHECKOUT_DIR = "checkoutDir";
+    public static final String PROP_DEBUG        = "debug";
+    public static final String PROP_LAUNCH_URL   = "launchURL";
+    public static final String PROP_ENGINE       = "engine";
     
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
-    // Root node of the CVSProject preferences.
-    public  static final String NODE_CVSPROJECT    = "CVSProject";
-    private static final String   ATTR_PROJECT     =   "project";
-    private static final String   ATTR_MODULE      =   "module";
-    private static final String   ATTR_CVSROOT     =   "cvsroot";
-    private static final String   ATTR_PASSWORD    =   "password";
-    private static final String   ATTR_CHECKOUTDIR =   "checkoutdir";
-    private static final String   ATTR_DEBUG       =   "debug";
-    private static final String   ATTR_LAUNCHURL   =   "launchurl";
-    private static final String   ATTR_ENGINE      =   "engine";
-
+    /**
+     * Root node of the CVSProject preferences.
+     */
+    public static final String NODE_CVSPROJECT = "CVSProject";
+    
+    /**
+     * Names of all the javabean properties that will be persisted by the 
+     * IPreferenced interface. Password is left out since in has to be 
+     * encrypted.
+     */
+    public static final String[] SAVED_PROPS = {
+        PROP_PROJECT,
+        PROP_MODULE,     
+        PROP_CVSROOT,
+        PROP_CHECKOUT_DIR,
+        PROP_DEBUG,
+        PROP_LAUNCH_URL,
+        PROP_ENGINE     
+    };
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -81,6 +105,10 @@ public class CVSProject implements Comparable
     // Constructors
     //--------------------------------------------------------------------------
 
+    public CVSProject()
+    {
+    }
+    
     /**
      * Creates a CVSProject from its XML representation.
      *
@@ -89,18 +117,18 @@ public class CVSProject implements Comparable
      */
     public CVSProject(String xml) throws Exception
     {
-        StringReader sr = new StringReader(xml);
-        Element p = new Builder().build(sr).getRootElement();
+        StringReader rdr = new StringReader(xml);
+        Element e = new Builder().build(rdr).getRootElement();
 
-        setProject(XOMUtil.getStringAttribute(p, ATTR_PROJECT, "???"));
-        setCVSModule(XOMUtil.getStringAttribute(p, ATTR_MODULE, ""));
-        setCVSRoot(XOMUtil.getStringAttribute(p, ATTR_CVSROOT, ""));
-        setCVSPassword(XOMUtil.getStringAttribute(p, ATTR_PASSWORD, ""));
-        setCheckoutDir(XOMUtil.getStringAttribute(p, ATTR_CHECKOUTDIR, ""));
-        setDebug(XOMUtil.getBooleanAttribute(p, ATTR_DEBUG, false));
-        setLaunchURL(XOMUtil.getStringAttribute(p, ATTR_LAUNCHURL, ""));
-        setEngine(XOMUtil.getStringAttribute(
-            p, ATTR_ENGINE, StatcvsPlugin.CLASS_STATCVS_XML_ENGINE));
+        setProject(XOMUtil.getStringAttribute(e, PROP_PROJECT, "???"));
+        setCVSModule(XOMUtil.getStringAttribute(e, PROP_MODULE, ""));
+        setCVSRoot(XOMUtil.getStringAttribute(e, PROP_CVSROOT, ""));
+        setCVSPassword(XOMUtil.getStringAttribute(e, PROP_PASSWORD, ""));
+        setCheckoutDir(XOMUtil.getStringAttribute(e, PROP_CHECKOUT_DIR, ""));
+        setDebug(XOMUtil.getBooleanAttribute(e, PROP_DEBUG, false));
+        setLaunchURL(XOMUtil.getStringAttribute(e, PROP_LAUNCH_URL, ""));
+        setEngine(XOMUtil.getStringAttribute(e, PROP_ENGINE, 
+            StatcvsPlugin.CLASS_STATCVS_XML_ENGINE));
     }
 
 
@@ -152,6 +180,39 @@ public class CVSProject implements Comparable
     }
     
     //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_CVSPROJECT, new Element(NODE_CVSPROJECT));
+        
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+        String scrambled = XOMUtil.getStringAttribute(root, PROP_PASSWORD, "");
+        setCVSPassword(new String(Base64.decodeBase64(scrambled.getBytes())));
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_CVSPROJECT);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+
+        // Password has to be done explicitly because of encoding
+        root.addAttribute(new Attribute(PROP_PASSWORD, 
+            new String(Base64.encodeBase64(cvsPassword_.getBytes()))));
+        
+        XOMUtil.insertOrReplace(prefs, root);
+    }
+    
+    //--------------------------------------------------------------------------
     // DOM <--> XML
     //--------------------------------------------------------------------------
 
@@ -174,14 +235,14 @@ public class CVSProject implements Comparable
     public Element toDOM()
     {
         Element p = new Element(NODE_CVSPROJECT);
-        p.addAttribute(new Attribute(ATTR_PROJECT, getProject()));
-        p.addAttribute(new Attribute(ATTR_MODULE, getCVSModule()));
-        p.addAttribute(new Attribute(ATTR_CVSROOT, getCVSRoot()));
-        p.addAttribute(new Attribute(ATTR_PASSWORD, getCVSPassword()));
-        p.addAttribute(new Attribute(ATTR_CHECKOUTDIR, getCheckoutDir()));
-        p.addAttribute(new Attribute(ATTR_DEBUG, isDebug() ? "true" : "false"));
-        p.addAttribute(new Attribute(ATTR_LAUNCHURL, getLaunchURL()));
-        p.addAttribute(new Attribute(ATTR_ENGINE, getEngine()));
+        p.addAttribute(new Attribute(PROP_PROJECT, getProject()));
+        p.addAttribute(new Attribute(PROP_MODULE, getCVSModule()));
+        p.addAttribute(new Attribute(PROP_CVSROOT, getCVSRoot()));
+        p.addAttribute(new Attribute(PROP_PASSWORD, getCVSPassword()));
+        p.addAttribute(new Attribute(PROP_CHECKOUT_DIR, getCheckoutDir()));
+        p.addAttribute(new Attribute(PROP_DEBUG, isDebug() ? "true" : "false"));
+        p.addAttribute(new Attribute(PROP_LAUNCH_URL, getLaunchURL()));
+        p.addAttribute(new Attribute(PROP_ENGINE, getEngine()));
         return p;
     }
 

@@ -689,7 +689,14 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         for (int i = 0, n = projectCombo_.getItemCount(); i < n; i++)
         {
             CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
-            projects.appendChild(project.toDOM());
+            Element wrapper = new Element("wrapper");
+            project.savePrefs(wrapper);
+            
+            Element cvsProject = 
+                wrapper.getFirstChildElement(CVSProject.NODE_CVSPROJECT);
+            
+            cvsProject.detach();
+            projects.appendChild(cvsProject);
         }
 
         root.appendChild(projects);
