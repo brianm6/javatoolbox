@@ -7,17 +7,26 @@ import java.io.OutputStream;
 import toolbox.util.StreamUtil;
 
 /**
- * A Relay object is used by TcpTunnel and JTcpTunnel to relay bytes from an
- * InputStream to a OutputStream.
+ * A Relay transfers bytes from an InputStream to an OutputStream.
+ * 
+ * @see TcpTunnel
  */
 public class Relay implements Runnable
 {
+    /** Size of data window */
     private static final int BUFFER_SIZE = 1024;
+
+    /** InputStream data is read from */    
+    private InputStream in_;
     
-    private InputStream   in_;
-    private OutputStream  out_;
-    private int           count_;    
-    private byte[]        buffer_;
+    /** OutputStream data is forwarded to */
+    private OutputStream out_;
+    
+    /** Number of bytes transferred */
+    private int count_;
+    
+    /** Copy buffer */    
+    private byte[] buffer_;
 
     //--------------------------------------------------------------------------
     //  Constructors

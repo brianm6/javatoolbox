@@ -84,8 +84,10 @@ public class TcpTunnel implements TcpTunnelListener
     private static final Logger logger_ = 
         Logger.getLogger(TcpTunnel.class);
 
-    // Stream names used with EventOutputStream
+    /** Stream name for event inputstream */
     private static final String STREAM_IN  = "in";
+    
+    /** Stream name for event outputstream */
     private static final String STREAM_OUT = "out";
 
     /** Server socket for tunnel port on localhost */
@@ -117,7 +119,6 @@ public class TcpTunnel implements TcpTunnelListener
     
     /** Sink for outgoing data to the remote host */
     private OutputStream outgoingSink_;
-     
         
     //--------------------------------------------------------------------------
     // Main
@@ -183,7 +184,9 @@ public class TcpTunnel implements TcpTunnelListener
     //--------------------------------------------------------------------------
 
     /**
-     * @param stream
+     * Sets the sink for incoming data
+     * 
+     * @param stream  Sink for incoming data
      */
     public void setIncomingSink(OutputStream stream)
     {
@@ -191,7 +194,9 @@ public class TcpTunnel implements TcpTunnelListener
     }
 
     /**
-     * @param stream
+     * Sets the sink for outgoing data
+     * 
+     * @param stream Sink for outgoing data
      */
     public void setOutgoingSink(OutputStream stream)
     {
