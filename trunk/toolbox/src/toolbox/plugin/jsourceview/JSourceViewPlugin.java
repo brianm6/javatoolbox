@@ -1,8 +1,9 @@
 package toolbox.jsourceview;
 
-import java.awt.Component;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.swing.JComponent;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -31,9 +32,9 @@ public class JSourceViewPlugin implements IPlugin
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getComponent()
      */
-    public Component getComponent()
+    public JComponent getComponent()
     {
-        return sourceView_.getContentPane();
+        return (JComponent) sourceView_.getContentPane();
     }
 
     /**

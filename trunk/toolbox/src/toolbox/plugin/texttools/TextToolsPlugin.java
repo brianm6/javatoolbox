@@ -1,7 +1,6 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -16,6 +15,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -122,7 +122,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         return "Text";
     }
 
-    public Component getComponent()
+    public JComponent getComponent()
     {
         return this;
     }

@@ -1,8 +1,9 @@
 package toolbox.jtail;
 
-import java.awt.Component;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.swing.JComponent;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -36,9 +37,9 @@ public class JTailPlugin implements IPlugin
         return "JTail";
     }
 
-    public Component getComponent()
+    public JComponent getComponent()
     {
-        return jtail_.getContentPane();
+        return (JComponent) jtail_.getContentPane();
     }
 
     public String getDescription()

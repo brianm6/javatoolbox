@@ -1,7 +1,6 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -18,12 +17,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
-
 import net.sf.statcvs.Main;
 import net.sf.statcvs.output.CommandLineParser;
 
+import org.apache.log4j.Logger;
+
+import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
@@ -287,7 +286,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     protected String moduleToLogFile(String module)
     {
         return StringUtil.replace(
-            FileUtil.matchPlatformSeparator(cvsModuleField_.getText()),
+            FileUtil.matchPlatformSeparator(module),
             File.separator,
             ".") + ".log";
     }
@@ -381,7 +380,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return "StatCVS";    
     }
     
-    public Component getComponent()
+    public JComponent getComponent()
     {
         return this;
     }

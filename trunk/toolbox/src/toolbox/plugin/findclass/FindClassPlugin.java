@@ -1,8 +1,9 @@
 package toolbox.findclass;
 
-import java.awt.Component;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
 
@@ -47,9 +48,9 @@ public class JFindClassPlugin implements IPlugin
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getComponent()
      */
-    public Component getComponent()
+    public JComponent getComponent()
     {
-        return jfindClass_.getContentPane();
+        return (JComponent) jfindClass_.getContentPane();
     }
 
     /**

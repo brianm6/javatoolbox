@@ -1,7 +1,6 @@
 package toolbox.junit;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -15,6 +14,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -154,7 +154,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getComponent()
      */
-    public Component getComponent()
+    public JComponent getComponent()
     {
         return this;
     }

@@ -2,7 +2,6 @@ package toolbox.util.xslfo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.ByteArrayInputStream;
@@ -17,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -25,6 +25,7 @@ import com.adobe.acrobat.Viewer;
 
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
@@ -343,7 +344,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         return "XSL-FO";
     }
 
-    public Component getComponent()
+    public JComponent getComponent()
     {
         return this;
     }

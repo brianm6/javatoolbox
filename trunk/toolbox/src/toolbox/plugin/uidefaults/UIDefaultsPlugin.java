@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -71,7 +72,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return "UIDefaults Viewer";
     }
     
-    public Component getComponent()
+    public JComponent getComponent()
     {
         return this;
     }
