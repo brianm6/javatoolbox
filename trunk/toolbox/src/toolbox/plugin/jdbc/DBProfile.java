@@ -98,7 +98,7 @@ public class DBProfile
      *
      * @param xml String containing a valid XML persistence of DBProfile.
      * @throws IOException on I/O error.
-     * @throws ParseException on XML parsing error. 
+     * @throws ParsingException on XML parsing error. 
      */
     public DBProfile(String xml) throws IOException, ParsingException 
     {

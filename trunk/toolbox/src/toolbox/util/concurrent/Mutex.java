@@ -102,7 +102,6 @@ package toolbox.util.concurrent;
  * </pre>
  * <p>
  * @see Semaphore
- * <p>
  */
 public class Mutex implements Sync
 {

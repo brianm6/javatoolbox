@@ -11,9 +11,9 @@ import toolbox.util.FileUtil;
 import toolbox.util.StreamUtil;
 
 /**
- * FOPProcessor is a concrete implementation of a 
- * {@link FOProcessor <b>FO</b>Processor} specific to the RenderX implementation
- * of formatting objects called  <a href=http://www.renderx.com>XEP</a>. 
+ * FOPProcessor is a concrete implementation of a {@link FOProcessor} specific
+ * to the RenderX implementation of formatting objects called <a
+ * href=http://www.renderx.com>XEP </a>.
  */
 public class XEPProcessor implements FOProcessor
 {

@@ -226,7 +226,7 @@ public class XOMUtil
      * 
      * @param xml Valid XML string.
      * @return Element
-     * @throws ParseException if XML is invalid or not well-formed.
+     * @throws ParsingException if XML is invalid or not well-formed.
      * @throws IOException if an I/O error occurs.
      */
     public static Element toElement(String xml) 
