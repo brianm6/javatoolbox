@@ -21,10 +21,6 @@ import org.apache.log4j.Logger;
  */
 public final class JDBCUtil
 {
-    /*
-     * TODO: Write unit tests using HSQLDB    
-     */
-     
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
