@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -28,11 +30,15 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
+import org.w3c.tidy.Tidy;
+
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.io.StringInputStream;
+import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
@@ -159,6 +165,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         topFlipPane_.addFlipper("Filter", new FilterFlipper());
         topFlipPane_.addFlipper("Tokenizer", new TokenizerFlipper());
         topFlipPane_.addFlipper("Codec", new CodecFlipper());
+        topFlipPane_.addFlipper("Format", new FormatFlipper());
         add(topFlipPane_, BorderLayout.NORTH);
     }
     
@@ -974,5 +981,80 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                     StringEscapeUtils.unescapeXml(getInputText()));
             }
         }
-    }    
+    }
+    
+    
+    //--------------------------------------------------------------------------
+    // FormatFlipper
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Flipper for formatting various text formats. 
+     */
+    class FormatFlipper extends JPanel
+    {
+        /**
+         * Creates a FormatFlipper.
+         */
+        FormatFlipper()
+        {
+            buildView();
+        }
+        
+        
+        /**
+         * Constructs the user interface. 
+         */
+        void buildView()
+        {
+            setLayout(new FlowLayout());
+            add(new JSmartButton(new FormatHTMLAction()));
+        }
+        
+        //----------------------------------------------------------------------
+        // FormatHTMLAction
+        //----------------------------------------------------------------------
+
+        /**
+         * Formats HTML.
+         */
+        class FormatHTMLAction extends AbstractAction
+        {
+            /**
+             * Creates a FormatHTMLAction.
+             */
+            FormatHTMLAction()
+            {
+                super("Format HTML");
+            }
+
+            
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
+            public void actionPerformed(ActionEvent e)
+            {
+                // TODO: Add UI to manipulate the configuration
+                
+                Tidy tidy = new Tidy();
+                
+                tidy.setIndentContent(true);
+                //tidy.setIndentAttributes(true);
+                tidy.setWrapAttVals(true);
+                tidy.setBreakBeforeBR(true);
+                tidy.setWraplen(100);
+                //tidy.setSpaces(2);
+                //tidy.setTabsize()
+                //tidy.setSmartIndent(true);
+                tidy.setMakeClean(true);
+                tidy.setWrapScriptlets(true);
+                
+                InputStream input = new StringInputStream(getInputText());
+                OutputStream output = new StringOutputStream();
+                tidy.parse(input, output);
+                outputArea_.setText(output.toString());
+            }
+        }
+    }
 }
