@@ -47,6 +47,10 @@
  * TODO: Upate code snippets to use <pre class="snippet">
  * TODO: http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
+ * TODO: Checkout FlexDock on java.net
+ * TODO: Include Askkelon in maven build
+ * TODO: Rename StringUtil.addBars to banner
+ * TODO: Rename Banner.java to Figlet
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
