@@ -1,8 +1,14 @@
 package toolbox.util;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.DriverPropertyInfo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -59,7 +65,9 @@ public final class JDBCUtil
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
-    // Clover private constructor workaround
+    /**
+     * Clover private constructor workaround
+     */
     static { new JDBCUtil(); }
 
     /** 
@@ -72,7 +80,7 @@ public final class JDBCUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Private constructor
+     * Prevent construction
      */
     private JDBCUtil()
     {
@@ -99,24 +107,66 @@ public final class JDBCUtil
         String user, 
         String password) throws ClassNotFoundException, SQLException
     {
-        // Will force DriverManager.register() to get called
         Class.forName(driver);
-        connProps_ = new Properties();
-        connProps_.put("user"     , user);
-        connProps_.put("password" , password);
-        connProps_.put("url"      , url);
         
-        // Get meta data 
+        connProps_ = new Properties();
+        connProps_.put("user", user);
+        connProps_.put("password", password);
+        connProps_.put("url", url);
+        
         Connection conn = getConnection();
         DatabaseMetaData meta = conn.getMetaData();
         
         logger_.debug("DB Connect: " + 
-            meta.getDatabaseProductName() + meta.getDatabaseProductVersion());
+            meta.getDatabaseProductName() + 
+                meta.getDatabaseProductVersion());
             
         releaseConnection(conn);
     }
 
-
+    
+    /**
+     * Initialzies the JDBC properties using a specific jdbc driver jar file.
+     * Must be called before any of the other methods are use.
+     * 
+     * @param jarFile Jar file containing jdbc drivers
+     * @param driver JDBC driver to use
+     * @param url URL to database resource
+     * @param user Username used for authentication
+     * @param password Password used for authentication
+     * @throws SQLException on SQL error
+     * @throws ClassNotFoundException if the JDBC driver is not found
+     */    
+    public static void init(
+        String jarFile,
+        String driver, 
+        String url, 
+        String user, 
+        String password) 
+        throws ClassNotFoundException, SQLException, MalformedURLException,
+               IllegalAccessException, InstantiationException
+    {
+        URL jarURL = new File(jarFile).toURL();
+        URLClassLoader ucl = new URLClassLoader(new URL[]{jarURL});
+        Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
+        DriverManager.registerDriver(new JDBCUtil.DriverProxy(d));
+        
+        connProps_ = new Properties();
+        connProps_.put("user", user);
+        connProps_.put("password", password);
+        connProps_.put("url", url);
+        
+        Connection conn = getConnection();
+        DatabaseMetaData meta = conn.getMetaData();
+        
+        logger_.debug("DB Connect: " + 
+            meta.getDatabaseProductName() + 
+                meta.getDatabaseProductVersion());
+            
+        releaseConnection(conn);
+    }
+    
+    
     /**
      * Returns a connection to the database
      * 
@@ -192,6 +242,7 @@ public final class JDBCUtil
         return formattedResults;
     } 
 
+    
     /**
      * Executes a SQL query statement and returns the result in a formatted
      * string.
@@ -493,4 +544,49 @@ public final class JDBCUtil
             }
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    static class DriverProxy implements Driver
+    {
+        private Driver driver_;
+    
+        public DriverProxy(Driver d)
+        {
+            driver_ = d;
+        }
+    
+        public boolean acceptsURL(String u) throws SQLException
+        {
+            return driver_.acceptsURL(u);
+        }
+    
+        public Connection connect(String u, Properties p) throws SQLException
+        {
+            return driver_.connect(u, p);
+        }
+    
+        public int getMajorVersion()
+        {
+            return driver_.getMajorVersion();
+        }
+    
+        public int getMinorVersion()
+        {
+            return driver_.getMinorVersion();
+        }
+    
+        public DriverPropertyInfo[] getPropertyInfo(String u, Properties p)
+            throws SQLException
+        {
+            return driver_.getPropertyInfo(u, p);
+        }
+    
+        public boolean jdbcCompliant()
+        {
+            return driver_.jdbcCompliant();
+        }
+    }    
 }
