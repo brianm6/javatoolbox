@@ -53,17 +53,18 @@
     <!-- =================================================================== -->
     <!-- PRE:TEST                                                            -->
     <!-- =================================================================== -->
-    <preGoal name="test:test">
+    
+    <!--
+    <preGoal name="test:crap">
 
-        <!--
+       
        <ant:pathconvert targetos="windows" property="crap" refid="${maven.dependency.classpath}"/>
-       -->
+       
        
        <property name="crap" refid="maven.dependency.classpath"/>
        <set var="crap" value="${basedir};${crap}"/>
        <set var="maven.dependency.classpath" value="${crap}"/>
-       <!--path id="maven.dependency.classpath" location="${basedir}"/>
-        -->
+       <path id="maven.dependency.classpath" location="${basedir}"/>
        
        <echo message="crap=${crap}"/>
        <echo message="Before Pregoal Test: ${maven.dependency.classpath}"/>
@@ -78,6 +79,7 @@
        <echo message=""/>
        
     </preGoal> 
+    -->
 
 
     <!-- =================================================================== -->
@@ -156,10 +158,10 @@ Commands:
                 the build process.
   compile       Compiles the project only.
   cvs-update    Does a cvs update of the project.
-  jar           Compiles, unit tests, and jars the project. It them exports 
-                the jar to the local maven repository.
+  jar           Compiles, unit tests, and jars the project.
   jnlp          Creates jnlp distribution in target/jnlp
   jnlp-deploy   Copies the jnlp distribution to the http server
+  test          Runs unit tests
   site          Generates project website with reports and all.
   update-props  Copies build.properties to $HOME
 
