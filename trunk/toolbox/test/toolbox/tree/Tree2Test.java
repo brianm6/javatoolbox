@@ -13,7 +13,9 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for Tree.
+ * Unit test for Tree2.
+ * 
+ * @see toolbox.tree.Tree2
  */
 public class Tree2Test extends TestCase
 {
@@ -26,7 +28,7 @@ public class Tree2Test extends TestCase
     /** 
      * Temporary directory that will serve as the root dir for tests. 
      */
-    private File rootDir_;
+    private File rootTestDir_;
 
     //--------------------------------------------------------------------------
     // Main
@@ -47,23 +49,23 @@ public class Tree2Test extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Create a temp directory to play around in.
+     * Create a test directory n the System temp dir to play around in.
      * 
      * @throws IOException on I/O error.
      */
     public void setUp() throws IOException
     {
         System.out.println(StringUtils.repeat("=", 80));
-        rootDir_ = FileUtil.createTempDir();
+        rootTestDir_ = FileUtil.createTempDir();
     }
 
     
     /**
-     * Removes the temp directory.
+     * Removes the test directory.
      */
     public void tearDown()
     {
-        FileUtil.removeDir(rootDir_);
+        FileUtil.removeDir(rootTestDir_);
     }
 
     //--------------------------------------------------------------------------
@@ -98,10 +100,9 @@ public class Tree2Test extends TestCase
         assertNotNull(t6);
 
         Tree2 t7 = new Tree2(
-            FileUtil.getTempDir(), true, true, true, Tree2.SORT_NAME, ".*");
+            FileUtil.getTempDir(), true, true, true, Tree2.SORT_NAME, 5, ".*");
         
         assertNotNull(t7);
-        
     }
 
     
@@ -115,7 +116,7 @@ public class Tree2Test extends TestCase
         logger_.info("Running testShowTreeSimpleCascade...");
         logger_.info("Tree with cascading dirs: \n");
         
-        File a = new File(rootDir_, "a");
+        File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -127,10 +128,10 @@ public class Tree2Test extends TestCase
         File d = new File(c, "d");
         assertTrue(d.mkdir());
         
-        Tree2 tree = new Tree2(rootDir_);
+        Tree2 tree = new Tree2(rootTestDir_);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootTestDir_);
     }
 
     
@@ -144,7 +145,7 @@ public class Tree2Test extends TestCase
         logger_.info("Running testShowTreeSimpleFlat...");
         logger_.info("Tree with flat struct at level 2: \n");
         
-        File a = new File(rootDir_, "a");
+        File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -156,10 +157,10 @@ public class Tree2Test extends TestCase
         File d = new File(a, "d");
         assertTrue(d.mkdir());
         
-        Tree2 tree = new Tree2(rootDir_);
+        Tree2 tree = new Tree2(rootTestDir_);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootTestDir_);
     }
 
     
@@ -174,7 +175,7 @@ public class Tree2Test extends TestCase
         logger_.info("Tree with an extension bar: \n");
                 
         // Create rootDir_\a\b\c\d 
-        File a = new File(rootDir_, "a");
+        File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -186,10 +187,10 @@ public class Tree2Test extends TestCase
         File d = new File(a, "d");
         assertTrue(d.mkdir());
         
-        Tree2 tree = new Tree2(rootDir_);
+        Tree2 tree = new Tree2(rootTestDir_);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootTestDir_);
     }
 
     
@@ -214,22 +215,22 @@ public class Tree2Test extends TestCase
         logger_.info("Running testShowTreeManyInRoot...");
         logger_.info("Tree with > 1 dir in root: \n");
                 
-        File a = new File(rootDir_, "a");
+        File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
         assertTrue(b.mkdir());
         
-        File c = new File (rootDir_, "c");
+        File c = new File (rootTestDir_, "c");
         assertTrue(c.mkdir());
         
         File d = new File(c, "d");
         assertTrue(d.mkdir());
         
-        Tree2 tree = new Tree2(rootDir_);
+        Tree2 tree = new Tree2(rootTestDir_);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootTestDir_);
     }
 
     
@@ -247,10 +248,10 @@ public class Tree2Test extends TestCase
     {
         logger_.info("Running testShowTreeEmptyRoot...");
         logger_.info("Tree with an empty root: \n");
-        Tree2 tree = new Tree2(rootDir_);
+        Tree2 tree = new Tree2(rootTestDir_);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootTestDir_);
     }
 
     
@@ -271,13 +272,13 @@ public class Tree2Test extends TestCase
         logger_.info("Running testShowTreeOneDir...");
         logger_.info("Tree with a single directory: \n");
 
-        File a = new File(rootDir_, "a");
+        File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
         
-        Tree2 tree = new Tree2(rootDir_);
+        Tree2 tree = new Tree2(rootTestDir_);
         tree.showTree();
         
-        printNativeTree(rootDir_);
+        printNativeTree(rootTestDir_);
     }
 
     
@@ -306,9 +307,9 @@ public class Tree2Test extends TestCase
         logger_.info("Running testShowTreeSimpleCascadeFile...");
         logger_.info("Tree2 with cascading dirs and one file: \n");
         
-        createFile(rootDir_);
+        createFile(rootTestDir_);
         
-        File a = new File(rootDir_, "a");
+        File a = new File(rootTestDir_, "a");
         assertTrue(a.mkdir());
         createFile(a);
                 
@@ -324,10 +325,10 @@ public class Tree2Test extends TestCase
         assertTrue(d.mkdir());
         createFile(d);
                
-        Tree2 tree = new Tree2(rootDir_, true);
+        Tree2 tree = new Tree2(rootTestDir_, true);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootTestDir_);
     }
 
     
@@ -341,16 +342,16 @@ public class Tree2Test extends TestCase
         logger_.info("Running testShowTreeRootFiles...");
         logger_.info("Tree with cascading dirs and one file: \n");
         
-        createFile(rootDir_);
-        createFile(rootDir_);
-        createFile(rootDir_);
-        createFile(rootDir_);
-        createFile(rootDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
+        createFile(rootTestDir_);
                
-        Tree2 tree = new Tree2(rootDir_, true);
+        Tree2 tree = new Tree2(rootTestDir_, true);
         tree.showTree();
         
-        printNativeFileTree(rootDir_);
+        printNativeFileTree(rootTestDir_);
     }
 
     
@@ -382,7 +383,67 @@ public class Tree2Test extends TestCase
         Tree2.main(new String[] {FileUtil.getTempDir().getAbsolutePath()});
     }
     
+
+    /**
+     * Tests the max depth switch.
+     * 
+     * @throws Exception on error.
+     */
+    public void testMaxDepth() throws Exception
+    {
+        logger_.info("Running testMaxDepth...");
+        
+        // Setup ===============================================================
+        File depth1 = new File(rootTestDir_, "depth1");
+        assertTrue(depth1.mkdir());
+
+        File depth2 = new File(depth1, "depth2");
+        assertTrue(depth2.mkdir());
+
+        File depth3 = new File(depth2, "depth3");
+        assertTrue(depth3.mkdir());
+
+        // Depth = 1 ===========================================================
+        StringWriter sw = new StringWriter();
+        
+        Tree2 tree = new Tree2(
+            rootTestDir_, false, false, false, Tree2.SORT_NONE, "", 1, sw);
+        
+        tree.showTree();
+        
+        logger_.info("\nMax depth should be 1: \n" + sw);
+        assertTrue(sw.toString().indexOf("depth1") >= 0);
+        assertTrue(sw.toString().indexOf("depth2") < 0);
+        assertTrue(sw.toString().indexOf("depth3") < 0);
+
+        // Depth = 2 ===========================================================
+        sw = new StringWriter();
+        
+        tree = new Tree2(
+            rootTestDir_, false, false, false, Tree2.SORT_NONE, "", 2, sw);
+        
+        tree.showTree();
+        
+        logger_.info("\nMax depth should be 2: \n" + sw);        
+        assertTrue(sw.toString().indexOf("depth1") >= 0);
+        assertTrue(sw.toString().indexOf("depth2") >= 0);
+        assertTrue(sw.toString().indexOf("depth3") < 0);
+        
+        // Depth = unlimited ===================================================
+        sw = new StringWriter();
+        
+        tree = new Tree2(
+            rootTestDir_, false, false, false, Tree2.SORT_NONE, "", 99, sw);
+        
+        tree.showTree();
+        
+        logger_.info("\nMax depth should be unlimited: \n" + sw);        
+        assertTrue(sw.toString().indexOf("depth1") >= 0);
+        assertTrue(sw.toString().indexOf("depth2") >= 0);
+        assertTrue(sw.toString().indexOf("depth3") >= 0);
+    }
     
+
     //--------------------------------------------------------------------------
     // Helper Methods
     //--------------------------------------------------------------------------
