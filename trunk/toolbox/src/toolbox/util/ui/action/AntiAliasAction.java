@@ -10,6 +10,8 @@ import toolbox.util.ui.AntiAliased;
 /**
  * Action that toggles antialiasing on a Component that implements the
  * Antialiased interface.
+ * 
+ * @see toolbox.util.ui.AntiAliased
  */
 public class AntiAliasAction extends AbstractAction
 {
