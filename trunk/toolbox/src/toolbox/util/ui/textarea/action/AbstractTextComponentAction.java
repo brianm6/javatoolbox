@@ -5,7 +5,8 @@ import javax.swing.Icon;
 import javax.swing.text.JTextComponent;
 
 /**
- * Clears the contents of a text component.
+ * Abstract base clas for textcomponent actions. Just provides a convenient
+ * setter/getter for the textcomponent at this point.
  */
 public abstract class AbstractTextComponentAction extends AbstractAction
 {
