@@ -5,17 +5,22 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringReader;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.AbstractAction;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
@@ -24,15 +29,18 @@ import net.sf.statcvs.Main;
 import net.sf.statcvs.output.CommandLineParser;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.io.StringOutputStream;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.NativeBrowser;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.util.xml.XMLNode;
+import toolbox.util.xml.XMLParser;
 
 /**
  * StatcvsPlugin is a GUI wrapper for the 
@@ -52,23 +60,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     
     private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
     
-    /** Property key for the unique project name */
-    private static final String PROP_PROJECT = "statcvs.plugin.project";
-    
-    /** Property key for the checkout directory */
-    private static final String PROP_BASEDIR = "statcvs.plugin.co.directory";
-    
-    /** Property key for the debug flag for the cvslib.jar library */
-    private static final String PROP_DEBUG = "statcvs.plugin.debug";
-    
-    /** Property key for the cvs module name */        
-    private static final String PROP_CVSMODULE = "statcvs.plugin.cvsmodule";
-    
-    /** Property key for the cvs root */
-    private static final String PROP_CVSROOT = "statcvs.plugin.cvsroot";
-    
-    /** Property key for the cvs password */
-    private static final String PROP_CVSPASSWORD = "statcvs.plugin.cvspassword";
+    private static final String PROP_CVSPROJECTS = "statcvs.plugin.cvsprojects";
+
+    private static final String ELEMENT_CVSPROJECTS = "CVSProjects";
     
     /** Reference to the workspace statusbar */
     private IStatusBar statusBar_;
@@ -77,7 +71,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     private JSmartTextArea outputArea_;
     
     /** Field for the project name (optional) */
-    private JTextField projectField_;
+    private JComboBox projectCombo_;
     
     /** Field for the cvs module name (required) */
     private JTextField cvsModuleField_;
@@ -143,17 +137,32 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         JPanel p = new JPanel(new ParagraphLayout(5,5,5,5,5,5));
  
         p.add(new JLabel("Project"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(projectField_ = new JTextField(20));
+        p.add(projectCombo_ = new JComboBox());
+        projectCombo_.setEditable(true);
+        projectCombo_.setAction(new ProjectChangedAction());
+        
+        JToolBar tb = new JToolBar();
+        tb.setFloatable(false);
+        tb.setBorderPainted(false);
+        tb.add(new SaveAction());
+        tb.add(new DeleteAction());
+        p.add(tb);
+        
         p.add(new JLabel("CVS Module"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(cvsModuleField_ = new JTextField(20));
+        
         p.add(new JLabel("CVS Root"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(cvsRootField_ = new JTextField(50));
+        
         p.add(new JLabel("CVS Password"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(cvsPasswordField_ = new JTextField(20));
+        
         p.add(new JLabel("Checkout Directory"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(checkoutDirField_ = new JTextField(30));
+        
         p.add(new JLabel("Debug output"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(debugCheckBox_ = new JCheckBox());
+        
         p.add(new JLabel("Launch URL"), ParagraphLayout.NEW_PARAGRAPH);        
         p.add(launchURLField_ = new JTextField(30));
 
@@ -355,7 +364,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                                 
         return contents;    
     }
-    
+
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
@@ -406,37 +415,288 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     
     public void savePrefs(Properties prefs)
     {
-        prefs.setProperty(PROP_BASEDIR,  checkoutDirField_.getText());
-        prefs.setProperty(PROP_CVSROOT,  cvsRootField_.getText());
-        prefs.setProperty(PROP_CVSMODULE,   cvsModuleField_.getText());
-        prefs.setProperty(PROP_CVSPASSWORD, cvsPasswordField_.getText());
-        prefs.setProperty(PROP_PROJECT,  projectField_.getText());
-        
-        PropertiesUtil.setBoolean(prefs, 
-            PROP_DEBUG, debugCheckBox_.isSelected());
+        prefs.setProperty(PROP_CVSPROJECTS, toXML());            
     }
 
     public void applyPrefs(Properties prefs)
     {
+        String xmlProjects = prefs.getProperty(PROP_CVSPROJECTS, "");
+
         try
         {
-            checkoutDirField_.setText(prefs.getProperty(
-                PROP_BASEDIR, FileUtil.getTempDir().getCanonicalPath()));
+            if (StringUtil.isNullOrBlank(xmlProjects) || 
+                xmlProjects.trim().equals("<CVSProjects/>"))
+            {
+                projectCombo_.addItem(new CVSProject(
+                    "Sourceforge",
+                    "<module>",
+                    ":pserver:anonymous@cvs.sourceforge.net:/cvsroot/",
+                    "",
+                    FileUtil.getTempDir().getCanonicalPath(), 
+                    false,
+                    ""));
+    
+                projectCombo_.addItem(new CVSProject(
+                    "Apache",
+                    "<module>",
+                    ":pserver:anoncvs@cvs.apache.org:/home/cvspublic",
+                    "",
+                    FileUtil.getTempDir().getCanonicalPath(), 
+                    false,
+                    ""));
+                    
+                projectCombo_.addItem(new CVSProject(
+                    "Statcvs",
+                    "statcvs",
+                    ":pserver:anonymous@cvs.sourceforge.net:/cvsroot/statcvs",
+                    "",
+                    FileUtil.getTempDir().getCanonicalPath(), 
+                    false,
+                    ""));
+            }
+            else
+            {
+                XMLNode projects = 
+                    new XMLParser().parseXML(new StringReader(xmlProjects));
+                    
+                for(Enumeration e=projects.enumerateNode();e.hasMoreElements();)
+                {
+                    XMLNode projectNode = (XMLNode) e.nextElement();
+                    CVSProject project = new CVSProject(projectNode.toString());
+                    addProject(project);
+                }
+            }
         }
-        catch (IOException e)
+        catch (IOException ioe)
         {
-            logger_.error(e);
+            ExceptionUtil.handleUI(ioe, logger_);
+        }
+    }
+ 
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    class CVSProject 
+    {
+        private static final String ELEMENT_CVSPROJECT  = "CVSProject";
+        private static final String ATTR_PROJECT = "project";
+        private static final String ATTR_MODULE  = "module";
+        private static final String ATTR_CVSROOT = "cvsroot";
+        private static final String ATTR_PASSWORD = "password";
+        private static final String ATTR_CHECKOUTDIR = "checkoutdir";
+        private static final String ATTR_DEBUG="debug";
+        private static final String ATTR_LAUNCHURL = "launchurl";
+        
+        /** Field for the project name (optional) */
+        private String project_;
+    
+        /** Field for the cvs module name (required) */
+        private String cvsModule_;
+    
+        /** Field for the cvs root (required) */
+        private String cvsRoot_;
+    
+        /** Field for the cvs password (required by empty strings are OK) */
+        private String cvsPassword_;
+    
+        /** Field for the checkout directory (must already exist) */
+        private String checkoutDir_;
+    
+        /** Checkbox to toggle the cvslib.jar debug flag */
+        private boolean debug_;
+    
+        /** Field that contains the URL to view the generated statcvs report */
+        private String launchURL_;
+        
+        /**
+         * Creates a CVSProject from XML
+         *
+         * @param  xml  String containing a valid XML persistence of CVSProject
+         * @throws IOException on I/O error 
+         */
+        public CVSProject(String xml) throws IOException
+        {
+            XMLNode project = new XMLParser().parseXML(new StringReader(xml));
+            setProject(project.getAttr(ATTR_PROJECT));
+            setCVSModule(project.getAttr(ATTR_MODULE));
+            setCVSRoot(project.getAttr(ATTR_CVSROOT));
+            setCVSPassword(project.getAttr(ATTR_PASSWORD));
+            setCheckoutDir(project.getAttr(ATTR_CHECKOUTDIR));
+            setDebug(project.getAttr(ATTR_DEBUG).equalsIgnoreCase("true"));
+            setLaunchURL(project.getAttr(ATTR_LAUNCHURL));
         }
         
-        cvsRootField_.setText(prefs.getProperty(
-            PROP_CVSROOT, ":pserver:user@host:/some/path"));
+        /**
+         * Arg constructor 
+         * 
+         * @param project
+         * @param module
+         * @param cvsRoot
+         * @param password
+         * @param checkOutDir
+         * @param debug
+         * @param launchURL
+         */
+        public CVSProject(String project, String module, String cvsRoot, 
+            String password, String checkOutDir, boolean debug, 
+            String launchURL)
+        {
+            setProject(project);
+            setCVSModule(module);
+            setCVSRoot(cvsRoot);
+            setCVSPassword(password);
+            setCheckoutDir(checkOutDir);
+            setDebug(debug);
+            setLaunchURL(launchURL);
+        }
+
+        /**
+         * Returns an XML representation of the data contained in this project.
+         * 
+         * @return  XML string
+         */
+        public String toXML()
+        {
+            return toDOM().toString();
+        }
+
+        /**
+         * Returns a DOM representation of the data contained in this project.
+         * 
+         * @return  DOM tree
+         */    
+        public XMLNode toDOM()
+        {
+            XMLNode project = new XMLNode(ELEMENT_CVSPROJECT);
             
-        cvsModuleField_.setText(prefs.getProperty(PROP_CVSMODULE, ""));
-        cvsPasswordField_.setText(prefs.getProperty(PROP_CVSPASSWORD, ""));
-        projectField_.setText(prefs.getProperty(PROP_PROJECT, ""));
-        
-        debugCheckBox_.setSelected(
-            PropertiesUtil.getBoolean(prefs, PROP_DEBUG, false));
+            project.addAttr(ATTR_PROJECT, getProject());
+            project.addAttr(ATTR_MODULE, getCVSModule());
+            project.addAttr(ATTR_CVSROOT, getCVSRoot());
+            project.addAttr(ATTR_PASSWORD, getCVSPassword());
+            project.addAttr(ATTR_CHECKOUTDIR, getCheckoutDir());
+            project.addAttr(ATTR_DEBUG, isDebug() ? "true" : "false");
+            project.addAttr(ATTR_LAUNCHURL, getLaunchURL());
+            return project;
+        }
+
+
+        /**
+         * @return
+         */
+        public String getCheckoutDir()
+        {
+            return checkoutDir_;
+        }
+
+        /**
+         * @return
+         */
+        public String getCVSModule()
+        {
+            return cvsModule_;
+        }
+
+        /**
+         * @return
+         */
+        public String getCVSPassword()
+        {
+            return cvsPassword_;
+        }
+
+        /**
+         * @return
+         */
+        public String getCVSRoot()
+        {
+            return cvsRoot_;
+        }
+
+        /**
+         * @return
+         */
+        public boolean isDebug()
+        {
+            return debug_;
+        }
+
+        /**
+         * @return
+         */
+        public String getLaunchURL()
+        {
+            return launchURL_;
+        }
+
+        /**
+         * @return
+         */
+        public String getProject()
+        {
+            return project_;
+        }
+
+        /**
+         * @param string
+         */
+        public void setCheckoutDir(String string)
+        {
+            checkoutDir_ = string;
+        }
+
+        /**
+         * @param string
+         */
+        public void setCVSModule(String string)
+        {
+            cvsModule_ = string;
+        }
+
+        /**
+         * @param string
+         */
+        public void setCVSPassword(String string)
+        {
+            cvsPassword_ = string;
+        }
+
+        /**
+         * @param string
+         */
+        public void setCVSRoot(String string)
+        {
+            cvsRoot_ = string;
+        }
+
+        /**
+         * @param b
+         */
+        public void setDebug(boolean b)
+        {
+            debug_ = b;
+        }
+
+        /**
+         * @param string
+         */
+        public void setLaunchURL(String string)
+        {
+            launchURL_ = string;
+        }
+
+        /**
+         * @param string
+         */
+        public void setProject(String string)
+        {
+            project_ = string;
+        }
+
+        public String toString()
+        {
+            return getProject();
+        }
     }
     
     //--------------------------------------------------------------------------
@@ -688,4 +948,174 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             NativeBrowser.displayURL(launchURLField_.getText());
         }
     }
+    
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a project to the existing list displayed in the combobox
+     * 
+     * @param  project  CVSProject
+     */
+    public void addProject(CVSProject project)
+    {
+        DefaultComboBoxModel model = 
+            (DefaultComboBoxModel) projectCombo_.getModel();
+        
+        if (model.getIndexOf(project) > 0)
+            return;
+        else
+            projectCombo_.addItem(project);
+    }
+
+    /**
+     * Returns an XML representation of the data making up the configuration.
+     *  
+     * @return XML string
+     */
+    public String toXML()
+    {
+        XMLNode projects = new XMLNode(ELEMENT_CVSPROJECTS);
+        
+        for (int i=0, n=projectCombo_.getItemCount(); i<n; i++)
+        {
+            CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
+            projects.addNode(project.toDOM());
+        }
+        
+        return projects.toString();
+    }
+    
+    /** 
+     * Updates the cvs project fields when the project selection changes.
+     */
+    class ProjectChangedAction extends AbstractAction
+    {
+        public void actionPerformed(ActionEvent e)
+        { 
+            Object obj = projectCombo_.getSelectedItem();
+            
+            if (obj instanceof CVSProject)
+            {
+                CVSProject project=(CVSProject) projectCombo_.getSelectedItem();
+                
+                cvsModuleField_.setText(project.getCVSModule());
+                cvsRootField_.setText(project.getCVSRoot());
+                cvsPasswordField_.setText(project.getCVSPassword());
+                checkoutDirField_.setText(project.getCheckoutDir());
+                debugCheckBox_.setSelected(project.isDebug());
+                launchURLField_.setText(project.getLaunchURL());
+            }
+        }
+    }
+
+    /**
+     * Saves the current cvs project. If the project does not already exist,
+     * it is created.
+     */
+    class SaveAction extends AbstractAction
+    {
+        SaveAction()
+        {
+            super("", ImageCache.getIcon("/toolbox/util/ui/images/Save.gif"));
+            putValue(SHORT_DESCRIPTION, "Saves the project");
+            
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            String current = projectCombo_.getEditor().getItem().toString();
+            
+            if (StringUtil.isNullOrBlank(current))
+            {
+                statusBar_.setStatus("Project name cannot be empty");
+            }
+            else
+            {
+                boolean found = false;
+                
+                for (int i=0; i< projectCombo_.getItemCount(); i++)
+                {
+                    CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
+                    
+                    if (project.getProject().equals(current))
+                    {
+                        project.setCVSModule(cvsModuleField_.getText());
+                        project.setCVSRoot(cvsRootField_.getText());
+                        project.setCVSPassword(cvsPasswordField_.getText());
+                        project.setCheckoutDir(checkoutDirField_.getText());
+                        project.setDebug(debugCheckBox_.isSelected());
+                        project.setLaunchURL(launchURLField_.getText());
+                        found |= true;
+                        break;
+                    }
+                }
+                
+                if (!found)
+                {
+                    CVSProject project = new CVSProject(
+                        current,
+                        cvsModuleField_.getText(),
+                        cvsRootField_.getText(),
+                        cvsPasswordField_.getText(),
+                        checkoutDirField_.getText(),
+                        debugCheckBox_.isSelected(),
+                        launchURLField_.getText());
+                        
+                    projectCombo_.addItem(project);
+                    projectCombo_.setSelectedItem(project);    
+                }
+                
+                statusBar_.setStatus("Project " + current + " saved.");
+            }               
+        }
+    }
+
+    /**
+     * Deletes the selected cvs project
+     */
+    class DeleteAction extends AbstractAction
+    {
+        public DeleteAction()  
+        {
+            super("", ImageCache.getIcon("/toolbox/util/ui/images/Delete.gif"));
+            putValue(SHORT_DESCRIPTION, "Deletes the project");
+        }
+    
+        public void actionPerformed(ActionEvent e)
+        {
+            String current = projectCombo_.getEditor().getItem().toString();
+            
+            boolean found = false;
+            
+            for (int i=0; i< projectCombo_.getItemCount(); i++)
+            {
+                CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
+                
+                if (project.getProject().equals(current))
+                {
+                    logger_.debug("Removing " + i);
+                    projectCombo_.removeItemAt(i);                    
+                    
+                    if (projectCombo_.getItemCount() > 0)
+                        projectCombo_.setSelectedIndex(0);
+                    
+                    statusBar_.setStatus("Project " + current + " deleted.");    
+                    found |= true;
+                    break;
+                }
+            }
+            
+            if (!found)
+            {
+                if (StringUtil.isNullOrBlank(current))
+                    statusBar_.setStatus("Select a project to delete.");
+                else
+                    statusBar_.setStatus(
+                        "Project " + current + " does not exist.");    
+            }   
+        }
+    }    
 }
