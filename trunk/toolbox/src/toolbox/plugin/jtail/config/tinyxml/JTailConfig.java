@@ -89,7 +89,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             
         return jtailNode;
     }    
-    
 
     /**
      * Converts XML -> IJTailConfig
@@ -115,7 +114,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // TODO: set default location
+            ; // TODO: set default location
         }
         
         // Read optional window size
@@ -129,7 +128,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // TODO: set default size
+            ; // TODO: set default size
         }
         
         // Read optional directory
@@ -141,7 +140,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // TODO: set default directory
+            ; // TODO: set default directory
         }
         
         XMLNode defaultsNode = jtailNode.getNode(ELEMENT_DEFAULTS);
@@ -206,7 +205,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         defaultConfig_ = defaultConfig;
     }
-
     
     /**
      * Returns the default tail pane configuration
@@ -218,7 +216,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         return defaultConfig_;
     }
 
-
     /**
      * Sets the location.
      * 
@@ -229,7 +226,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         location_ = location;
     }
 
-
     /**
      * Returns the location.
      * 
@@ -239,7 +235,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         return location_;
     }
-
 
     /**
      * Sets the size.
@@ -276,7 +271,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         tailPaneConfigs_ = tailPaneConfigs;
     }
-    
 
     /**
      * Returns the last directory selecting in the file explorer pane

@@ -114,73 +114,8 @@ public class JFlipPane extends JPanel
     } 
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Public
     //--------------------------------------------------------------------------
-
-    /**
-     * Builds the GUI
-     */
-    protected void buildView()
-    {
-        // Button panel
-        buttonPanel_ = new JPanel(new FlipButtonLayout(this));
-        buttonPanel_.addMouseListener(new MouseHandler());
-        
-        // Close button
-        closeButton_ = new JButton(
-            ResourceUtil.getResourceAsIcon(
-                "toolbox/util/ui/images/Cross.gif"));
-                
-        closeButton_.setToolTipText("Close");
-        
-        int left;
-        if (position_.equals(JFlipPane.RIGHT) || 
-            position_.equals(JFlipPane.LEFT))
-            left = 1;
-        else
-            left = 0;
-
-        closeButton_.setMargin(new Insets(0,left,0,0));
-        buttonPanel_.add(closeButton_);
-        closeButton_.addActionListener(new ActionHandler());
-
-        // Popup button
-        popupButton_ = new JButton(
-            ResourceUtil.getResourceAsIcon(
-                "toolbox/util/ui/images/Triangle.gif"));
-            
-        popupButton_.setRequestFocusEnabled(false);
-        popupButton_.setToolTipText("Popup menu");
-        popupButton_.addMouseListener(new MouseHandler());
-        buttonPanel_.add(popupButton_);        
-                
-        // Adds buttons to mutually exclusive button group
-        popup_ = new JPopupMenu();
-        buttonGroup_ = new ButtonGroup();
-
-        // JDK 1.4 workaround
-        buttonGroup_.add(nullButton_ = new JToggleButton());
-
-        flipCardPanel_ = new FlipCardPanel(this);
-
-        // Add to borderlayout        
-        setLayout(new BorderLayout());
-        
-        String bpos = null;
-        
-        if (position_.equals(LEFT))
-            bpos = BorderLayout.WEST;
-        else if (position_.equals(RIGHT))
-            bpos = BorderLayout.EAST;
-        else if (position_.equals(TOP))
-            bpos = BorderLayout.NORTH;
-        else if (position_.equals(BOTTOM))
-            bpos = BorderLayout.SOUTH;
-        
-        add(bpos, buttonPanel_);
-        add(BorderLayout.CENTER, flipCardPanel_);
-    }
-
 
     /**
      * Adds the given flipper to the JFlipPane
@@ -252,7 +187,6 @@ public class JFlipPane extends JPanel
         repaint();
     } 
 
-
     /**
      * Removes the given flipper from the flipPane
      * 
@@ -273,7 +207,6 @@ public class JFlipPane extends JPanel
         // TODO: find proper way to do this               
         revalidate();
     } 
-
 
     /**
      * Sets the currently selected flipper
@@ -310,7 +243,6 @@ public class JFlipPane extends JPanel
         flipCardPanel_.repaint();
     } 
 
-
     /**
      * Returns the button wired to the given flipper
      * 
@@ -343,37 +275,6 @@ public class JFlipPane extends JPanel
         return null;
     }
 
-
-    /**
-     * Fires notification that the flippane was expanded
-     */
-    protected void fireFlipperExpanded()
-    {
-        Iterator i = listeners_.iterator();
-        
-        while (i.hasNext())
-        {
-            JFlipPaneListener l = (JFlipPaneListener)i.next();
-            l.expanded(this);
-        }
-    }
-
-    
-    /**
-     * Fires notification that the flippane was collapsed
-     */
-    protected void fireFlipperCollapsed()
-    {
-        Iterator i = listeners_.iterator();
-        
-        while (i.hasNext())
-        {
-            JFlipPaneListener l = (JFlipPaneListener)i.next();
-            l.collapsed(this);
-        }
-    }
-
-    
     /**
      * @return Dimension that reflects the preferred size of the flip pane.
      *         The preferred size varies based on whether the flip pane is
@@ -422,7 +323,6 @@ public class JFlipPane extends JPanel
 //        return getPreferredSize();
 //    }
 
-
     /**
      * Adds a flip pane listener
      * 
@@ -432,7 +332,6 @@ public class JFlipPane extends JPanel
     {
         listeners_.add(l);
     }
-
 
     /**
      * Removes a flip pane listener
@@ -444,7 +343,6 @@ public class JFlipPane extends JPanel
         listeners_.remove(l);
     }
 
-
     /**
      * Determines if a flipper is selected
      * 
@@ -455,60 +353,6 @@ public class JFlipPane extends JPanel
     {
         return current_ == flipper;
     } 
-
-
-    /**
-     * Mutator for the dimension
-     * 
-     * @param  dimension  New dimension
-     */
-    protected void setDimension(int dimension)
-    {
-        if(dimension != 0)
-        {
-            dimension_ = dimension - SPLITTER_WIDTH - 3;
-            //logger_.debug("[setDim] dim = " + dimension + 
-            //                      " pref = " + getPreferredSize());
-        }
-            
-    } 
-
-
-    /**
-     * @return  Dimension (width if position is left/right  or height if 
-     *          position is top/bottom)
-     */
-    protected int getDimension()
-    {
-        return dimension_;
-    }
-
-
-    /**
-     * @return  Position (left, right, top, bottom)
-     */            
-    protected String getPosition()
-    {
-        return position_;
-    }            
-
-
-    /**
-     * @return Popup button
-     */
-    protected JButton getPopupButton()
-    {
-        return popupButton_;
-    }
-
-    /**
-     * @return  Close button
-     */
-    protected JButton getCloseButton()
-    {
-        return closeButton_;
-    }
-
 
     /**
      * Toggles the flipper from its current state to the opposite state.
@@ -534,7 +378,6 @@ public class JFlipPane extends JPanel
         }
     }
 
-
     /**
      * Sets the flip pane to its expanded state
      * 
@@ -551,16 +394,6 @@ public class JFlipPane extends JPanel
             toggleFlipper();   
         }
     }
-
-
-    /**
-     * @return  True if the flipPane is collapsed, false otherwise
-     */    
-    protected boolean isCollapsed()
-    {
-        return !ArrayUtil.contains(getComponents(), flipCardPanel_);
-    }
-    
 
     /**
      * Returns if the specified event is the popup trigger event.
@@ -625,6 +458,162 @@ public class JFlipPane extends JPanel
 
         popup.show(comp,x,y);
     } 
+
+
+
+    //--------------------------------------------------------------------------
+    //  Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Builds the GUI
+     */
+    protected void buildView()
+    {
+        // Button panel
+        buttonPanel_ = new JPanel(new FlipButtonLayout(this));
+        buttonPanel_.addMouseListener(new MouseHandler());
+        
+        // Close button
+        closeButton_ = new JButton(
+            ResourceUtil.getResourceAsIcon(
+                "toolbox/util/ui/images/Cross.gif"));
+                
+        closeButton_.setToolTipText("Close");
+        
+        int left;
+        if (position_.equals(JFlipPane.RIGHT) || 
+            position_.equals(JFlipPane.LEFT))
+            left = 1;
+        else
+            left = 0;
+
+        closeButton_.setMargin(new Insets(0,left,0,0));
+        buttonPanel_.add(closeButton_);
+        closeButton_.addActionListener(new ActionHandler());
+
+        // Popup button
+        popupButton_ = new JButton(
+            ResourceUtil.getResourceAsIcon(
+                "toolbox/util/ui/images/Triangle.gif"));
+            
+        popupButton_.setRequestFocusEnabled(false);
+        popupButton_.setToolTipText("Popup menu");
+        popupButton_.addMouseListener(new MouseHandler());
+        buttonPanel_.add(popupButton_);        
+                
+        // Adds buttons to mutually exclusive button group
+        popup_ = new JPopupMenu();
+        buttonGroup_ = new ButtonGroup();
+
+        // JDK 1.4 workaround
+        buttonGroup_.add(nullButton_ = new JToggleButton());
+
+        flipCardPanel_ = new FlipCardPanel(this);
+
+        // Add to borderlayout        
+        setLayout(new BorderLayout());
+        
+        String bpos = null;
+        
+        if (position_.equals(LEFT))
+            bpos = BorderLayout.WEST;
+        else if (position_.equals(RIGHT))
+            bpos = BorderLayout.EAST;
+        else if (position_.equals(TOP))
+            bpos = BorderLayout.NORTH;
+        else if (position_.equals(BOTTOM))
+            bpos = BorderLayout.SOUTH;
+        
+        add(bpos, buttonPanel_);
+        add(BorderLayout.CENTER, flipCardPanel_);
+    }
+
+    /**
+     * Fires notification that the flippane was expanded
+     */
+    protected void fireFlipperExpanded()
+    {
+        Iterator i = listeners_.iterator();
+        
+        while (i.hasNext())
+        {
+            JFlipPaneListener l = (JFlipPaneListener)i.next();
+            l.expanded(this);
+        }
+    }
+    
+    /**
+     * Fires notification that the flippane was collapsed
+     */
+    protected void fireFlipperCollapsed()
+    {
+        Iterator i = listeners_.iterator();
+        
+        while (i.hasNext())
+        {
+            JFlipPaneListener l = (JFlipPaneListener)i.next();
+            l.collapsed(this);
+        }
+    }
+
+    /**
+     * Mutator for the dimension
+     * 
+     * @param  dimension  New dimension
+     */
+    protected void setDimension(int dimension)
+    {
+        if(dimension != 0)
+        {
+            dimension_ = dimension - SPLITTER_WIDTH - 3;
+            //logger_.debug("[setDim] dim = " + dimension + 
+            //                      " pref = " + getPreferredSize());
+        }
+            
+    } 
+
+    /**
+     * @return  Dimension (width if position is left/right  or height if 
+     *          position is top/bottom)
+     */
+    protected int getDimension()
+    {
+        return dimension_;
+    }
+
+    /**
+     * @return  Position (left, right, top, bottom)
+     */            
+    protected String getPosition()
+    {
+        return position_;
+    }            
+
+    /**
+     * @return Popup button
+     */
+    protected JButton getPopupButton()
+    {
+        return popupButton_;
+    }
+
+    /**
+     * @return  Close button
+     */
+    protected JButton getCloseButton()
+    {
+        return closeButton_;
+    }
+
+    /**
+     * @return  True if the flipPane is collapsed, false otherwise
+     */    
+    protected boolean isCollapsed()
+    {
+        return !ArrayUtil.contains(getComponents(), flipCardPanel_);
+    }
+    
 
     
     //--------------------------------------------------------------------------
@@ -739,7 +728,6 @@ public class JFlipPane extends JPanel
         private float ascent_;
         private RenderingHints renderHints_;
     
-    
         /**
          * Creates a RotatedTextIcon
          * 
@@ -776,7 +764,6 @@ public class JFlipPane extends JPanel
                 RenderingHints.VALUE_RENDER_QUALITY);
         } 
     
-    
         /**
          * @return Icon width
          */
@@ -786,7 +773,6 @@ public class JFlipPane extends JPanel
                          rotate_ == RotatedTextIcon.CCW ? height_ : width_);
         } 
     
-    
         /**
          * @return  Icon height
          */
@@ -795,7 +781,6 @@ public class JFlipPane extends JPanel
             return (int)(rotate_ == RotatedTextIcon.CW ||
                          rotate_ == RotatedTextIcon.CCW ? width_ : height_);
         } 
-    
     
         /**
          * Renders the icon on the graphics
@@ -879,7 +864,6 @@ public class JFlipPane extends JPanel
                 position.equals(JFlipPane.LEFT)  ?JFlipPane.SPLITTER_WIDTH : 0);
         } 
     
-    
         /**
          * Paints the border
          * 
@@ -910,7 +894,6 @@ public class JFlipPane extends JPanel
                     height);
         } 
     
-    
         /**
          * Retrieves border insets
          * 
@@ -921,7 +904,6 @@ public class JFlipPane extends JPanel
         {
             return insets_;
         } 
-    
         
         /**
          * @return True if border is opaque, false otherwise
@@ -930,7 +912,6 @@ public class JFlipPane extends JPanel
         {
             return false;
         } 
-    
         
         /**
          * Paints horizontal border
@@ -952,7 +933,6 @@ public class JFlipPane extends JPanel
                 g.drawLine(x + i * 4 + 5,y + 6, x + i * 4 + 5,y + 6);
             }
         } 
-    
         
         /**
          * Paints vertical border
@@ -974,7 +954,6 @@ public class JFlipPane extends JPanel
                 g.drawLine(x + 6,y + i * 4 + 5, x + 6,y + i * 4 + 5);
             }
         } 
-    
     
         /**
          * Updates colors
@@ -1014,7 +993,6 @@ public class JFlipPane extends JPanel
         {
             flipPane_ = flipPane;
         }
-    
         
         /**
          * Adds component to be layed out
@@ -1026,7 +1004,6 @@ public class JFlipPane extends JPanel
         {
         } 
     
-    
         /**
          * Removes component to be layed out
          * 
@@ -1035,7 +1012,6 @@ public class JFlipPane extends JPanel
         public void removeLayoutComponent(Component comp) 
         {
         } 
-    
         
         /**
          * Gets preferred layout size
@@ -1061,7 +1037,6 @@ public class JFlipPane extends JPanel
                     return new Dimension(comp[2].getPreferredSize().width,0);
             }
         } 
-    
         
         /**
          * Retrieves min layout size
@@ -1086,7 +1061,6 @@ public class JFlipPane extends JPanel
                     return new Dimension(comp[2].getMinimumSize().width,0);
             }
         } 
-    
         
         /**
          * Lays out the container
@@ -1185,9 +1159,6 @@ public class JFlipPane extends JPanel
      */
     public static class FlipCardPanel extends JPanel
     {
-        private static final Logger fcpLogger_ = 
-            Logger.getLogger(FlipCardPanel.class);
-        
         private JFlipPane flipPane_;
         
         /**
@@ -1214,7 +1185,6 @@ public class JFlipPane extends JPanel
             ((CardLayout)getLayout()).show(this,name);
         } 
     
-    
         /**
          * @return  Minimum size
          */
@@ -1222,7 +1192,6 @@ public class JFlipPane extends JPanel
         {
             return new Dimension(0,0);
         } 
-    
         
         /**
          * @return  Preferred size
@@ -1266,7 +1235,6 @@ public class JFlipPane extends JPanel
             
             return pref;
         } 
-    
     
         /**
          * Mouse handler for resizing of the pane
@@ -1344,8 +1312,7 @@ public class JFlipPane extends JPanel
     
                 setCursor(Cursor.getPredefinedCursor(cursor));
             } 
-    
-        
+            
             /**
              * Sets dimension on flippane if the mouse is dragged. This causes
              * the flippane to resize dynamically with the drag
@@ -1396,7 +1363,6 @@ public class JFlipPane extends JPanel
                 //invalidate();
                 //validate();
             } 
-    
             
             /**
              * Reset the mouse cursor to the normal cursor 

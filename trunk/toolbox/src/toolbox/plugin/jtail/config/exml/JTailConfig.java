@@ -20,7 +20,7 @@ import toolbox.jtail.config.ITailPaneConfig;
  */
 public class JTailConfig implements IJTailConfig, XMLConstants
 { 
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JTailConfig.class);
         
@@ -105,8 +105,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      */
     public static IJTailConfig unmarshal(Element jtailNode) throws IOException 
     {
-        String method = "[unmars] ";
-        
         IJTailConfig jtailConfig = new JTailConfig();
         
         // Read optional window location
@@ -125,7 +123,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // Set default location
+            ; // Set default location
         }
         
         // Read optional window size
@@ -145,7 +143,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // Set default size
+            ; // Set default size
         }
         
         // Read optional directory
@@ -155,7 +153,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            // Set default directory
+            ; // Set default directory
         }
         
         Element defaultsNode = jtailNode.getElement(ELEMENT_DEFAULTS);
@@ -171,18 +169,15 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             }
             else
             {
-                logger_.warn(method + 
-                    "Expected XML node JTail->Defaults->Tail");
-                    
+                logger_.warn("Expected XML node JTail->Defaults->Tail");
                 jtailConfig.setDefaultConfig(new TailPaneConfig());
             }
         }
         else
         {
-            logger_.warn(method + "Expected XML node JTail->Defaults");
+            logger_.warn("Expected XML node JTail->Defaults");
             jtailConfig.setDefaultConfig(new TailPaneConfig());            
         }
-         
                         
         // Iterate through each "tail" element and delegate the 
         // hydration to the TailPaneConfig object
@@ -228,7 +223,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         return defaultConfig_;
     }
 
-
     /**
      * Sets the location.
      * 
@@ -239,7 +233,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         location_ = location;
     }
 
-
     /**
      * Returns the location.
      * 
@@ -249,7 +242,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         return location_;
     }
-
 
     /**
      * Sets the size.
@@ -286,7 +278,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         tailPaneConfigs_ = tailPaneConfigs;
     }
-    
 
     /**
      * Returns the last directory selecting in the file explorer pane

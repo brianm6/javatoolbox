@@ -21,6 +21,8 @@ import toolbox.util.concurrent.IBatchingQueueListener;
  * are added to the table in a batch like manned (=>1 rows) per invocation
  * based on however many rows are availble to add. A blocking queue is used as
  * the bridge between the table row producer and the table row consumer.
+ * 
+ * TODO: Replace Vector with Array
  */
 public class ThreadSafeTableModel extends DefaultTableModel 
     implements IBatchingQueueListener
@@ -44,7 +46,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
         this((Vector)null, 0);
     }
 
-
     /**
      * Creates a ThreadSafeTableModel
      * 
@@ -56,7 +57,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
         super(i, j);
         init();
     }
-
 
     /**
      * Creates a ThreadSafeTableModel
@@ -70,7 +70,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
         init();
     }
 
-
     /**
      * Creates a ThreadSafeTableModel
      * 
@@ -81,7 +80,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
     {
         this(DefaultTableModel.convertToVector(aobj), i);
     }
-
 
     /**
      * Creates a ThreadSafeTableModel
@@ -94,7 +92,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
         setDataVector(vector, vector1);
         init();
     }
-
 
     /**
      * Creates a ThreadSafeTableModel
@@ -128,7 +125,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
             }
             catch (InterruptedException ioe)
             {
-                // Ignore
+                ; // Ignore
             }
         }
         else
@@ -137,7 +134,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
             super.addRow(vector);
         }
     }
-
 
     /**
      * Adds an array of rows to the table
@@ -159,7 +155,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
                 super.addRow((Vector)rows[i]);
         }        
     }
-
 
     /**
      * Saves the contents of the table model to a file
@@ -195,10 +190,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
         queueReader_.addBatchingQueueListener(this);
         queueReader_.start();
     }
-    
 
     //--------------------------------------------------------------------------
-    //  IBatchingQueueListener Interface
+    //  Interface IBatchingQueueListener
     //--------------------------------------------------------------------------
     
     /**
@@ -221,7 +215,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
      */
     class AddRows implements Runnable
     {
-        /** Row data **/
+        /** Row data */
         private Object[] rows_;
 
         /**

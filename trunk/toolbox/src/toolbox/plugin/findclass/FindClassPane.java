@@ -16,6 +16,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java2html.Java2Html;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
@@ -37,11 +38,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
-
 import net.sf.jode.decompiler.Decompiler;
 
-import java2html.Java2Html;
+import org.apache.log4j.Logger;
 
 import toolbox.util.DateTimeUtil;
 import toolbox.util.MathUtil;
@@ -76,7 +75,6 @@ public class JFindClass extends JFrame
     private JFileExplorer        fileExplorer_;
     
     // Top flip pane
-    private JFlipPane            topFlipPane_;
     private JList                searchList_;
     private DefaultListModel     searchListModel_;
     private JPopupMenu           searchPopupMenu_;
@@ -103,11 +101,11 @@ public class JFindClass extends JFrame
         "Timestamp"
     };
 
-    private static final int COL_NUM       = 0;
+    //private static final int COL_NUM       = 0;
     private static final int COL_SOURCE    = 1;
     private static final int COL_CLASS     = 2;
-    private static final int COL_SIZE      = 3;
-    private static final int COL_TIMESTAMP = 4;
+    //private static final int COL_SIZE      = 3;
+    //private static final int COL_TIMESTAMP = 4;
     
     /**
      * Entrypoint
@@ -135,7 +133,6 @@ public class JFindClass extends JFrame
     {
         this("JFindClass");
     }
-
     
     /**
      * Constructor for JFindClass
@@ -157,7 +154,7 @@ public class JFindClass extends JFrame
     //--------------------------------------------------------------------------
  
     /**
-     * Initiailizes 
+     * Initiailizes the GUI
      */
     protected void init()
     {
@@ -168,7 +165,6 @@ public class JFindClass extends JFrame
         for (Iterator i = targets.iterator(); i.hasNext(); 
             searchListModel_.addElement(i.next()));
     }
-
 
     /**
      * Builds the GUI and adds it to the contentPane
@@ -245,7 +241,6 @@ public class JFindClass extends JFrame
         return decompilerPanel;
     }
 
-
     /**
      * Builds the Classpath panel which shows all paths/archives that have been
      * targeted for the current search
@@ -273,7 +268,6 @@ public class JFindClass extends JFrame
         return pathPanel;
     }
 
-
     /**
      * Builds the flippane at the top of the application which contains the
      * Classpath and Decompiler panels
@@ -292,7 +286,6 @@ public class JFindClass extends JFrame
         topFlipPane.setSelectedFlipper(pathPanel);
         return topFlipPane;
     }
-
     
     /**
      * Builds the Search Results panel which lists the results of the search in
@@ -320,7 +313,6 @@ public class JFindClass extends JFrame
         getContentPane().add(BorderLayout.CENTER, centerPanel);
     }
 
-
     /**
      * Builds the status bar 
      */
@@ -331,7 +323,6 @@ public class JFindClass extends JFrame
         statusBar_.setStatus("Enter a regular expression and hit Find!");
         getContentPane().add(statusBar_, BorderLayout.SOUTH);
     }
-
 
     /**
      * Builds the left flip pane which contains the file explorer. The file
@@ -392,7 +383,6 @@ public class JFindClass extends JFrame
         resultTable_.setDefaultRenderer(resultTable_.getColumnClass(4) , 
             new AlternatingCellRenderer());
     }
-
 
     /**
      * Generic error handler for GUI exceptions
@@ -464,7 +454,6 @@ public class JFindClass extends JFrame
             statusBar_.setStatus("Search cancelled");
         }    
     }
-
     
     /**
      * Handler class for the file explorer
@@ -485,13 +474,12 @@ public class JFindClass extends JFrame
          */
         public void folderDoubleClicked(String folder)
         {
-            System.out.println("Hellp!");
-            
             List targets = findClass_.getArchivesInDir(new File(folder));
             
             logger_.info("Found " + targets.size() + " targets to add");
             
             Iterator i = targets.iterator();
+            
             while (i.hasNext())
             {
                 String target = (String) i.next();
@@ -512,7 +500,6 @@ public class JFindClass extends JFrame
                 statusBar_.setStatus(file + " is not a valid archive.");
         }
     }
-
  
     /**
      * Alternating color cell renderer to make the results table easier on
@@ -655,7 +642,6 @@ public class JFindClass extends JFrame
         }
         
     }
-
     
     /**
      * Searches for a class in the displayed classpaths
@@ -762,7 +748,6 @@ public class JFindClass extends JFrame
             searchListModel_.removeAllElements();
         }
     }
-    
     
     /**
      * Adds the current classpath to the search list

@@ -85,7 +85,6 @@ public class JSourceView extends JFrame implements ActionListener
         "Total", 
         "Percentage"
     };
-    
 
     static
     {
@@ -96,7 +95,6 @@ public class JSourceView extends JFrame implements ActionListener
         sourceFilter_.addFilter(new ExtensionFilter("java"));
         sourceFilter_.addFilter(new ExtensionFilter("h"));
     }
-
 
     /**
      * Entrypoint
@@ -208,7 +206,6 @@ public class JSourceView extends JFrame implements ActionListener
         scanStatusLabel_.setText(s);
     }
 
-
     /**
      * Sets the text of the parse status
      * 
@@ -254,7 +251,6 @@ public class JSourceView extends JFrame implements ActionListener
         return menuBar_;
     }
 
-
     /**
      * Saves the results to a file
      * 
@@ -267,7 +263,6 @@ public class JSourceView extends JFrame implements ActionListener
         if(s.length() > 0)
             tableModel_.saveToFile(s);
     }
-
     
     /**
      * Shows About dialog box
@@ -285,7 +280,6 @@ public class JSourceView extends JFrame implements ActionListener
             "Use at your own risk.", 
             "About JSourceView", 1);
     }
-
     
     /** 
      * Starts the scanning
@@ -322,7 +316,7 @@ public class JSourceView extends JFrame implements ActionListener
             }
             catch (InterruptedException ie)
             {
-                // Ignore
+                ; // Ignore
             }
             
             setScanStatus("Operation canceled");
@@ -340,7 +334,6 @@ public class JSourceView extends JFrame implements ActionListener
     {
         return s.substring(0, s.lastIndexOf(pathSeparator_));
     }
-
 
     /**
      * Returns the file portion of a path
@@ -388,7 +381,6 @@ public class JSourceView extends JFrame implements ActionListener
             setScanStatus("Done scanning.");
         }
         
-        
         /**
          * Finds all java files in the given directory
          * 
@@ -424,7 +416,6 @@ public class JSourceView extends JFrame implements ActionListener
             }
         }
         
-        
         /** 
          * Cancels the operation
          */
@@ -433,7 +424,6 @@ public class JSourceView extends JFrame implements ActionListener
             cancel_ = true;
         }
     }
-
 
     /**
      * Pops files off of the work queue and parses them to gather stats
@@ -508,7 +498,6 @@ public class JSourceView extends JFrame implements ActionListener
             goButton_.setText(TEXT_GO);
         }
         
-        
         /**
          * Scans a given file and generates statistics
          * 
@@ -563,7 +552,6 @@ public class JSourceView extends JFrame implements ActionListener
                 return filestats;
             }
         }
-
         
         /** 
          * Cancels the operation
