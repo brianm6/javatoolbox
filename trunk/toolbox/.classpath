@@ -5,7 +5,7 @@
     <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="lib/junit.jar" sourcepath="lib/src/junit-src.zip"/>
     <classpathentry kind="lib" path="lib/log4j.jar" sourcepath="lib/src/log4j-src.zip"/>
-    <classpathentry kind="lib" path="lib/jode.jar"/>
+    <classpathentry kind="lib" path="lib/jode.jar" sourcepath="lib/src/jode-src.zip"/>
     <classpathentry kind="lib" path="lib/metouia.jar"/>
     <classpathentry kind="lib" path="lib/commons-beanutils.jar" sourcepath="lib/src/commons-beanutils-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-logging.jar" sourcepath="lib/src/commons-logging-src.zip"/>
@@ -29,7 +29,6 @@
     <classpathentry kind="lib" path="lib/xt.jar" sourcepath="lib/src/xt-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-cli.jar" sourcepath="lib/src/commons-cli-src.zip"/>
     <classpathentry kind="lib" path="build/lib/clover.jar"/>
-    <classpathentry kind="lib" path="lib/hsqldb.jar" sourcepath="lib/src/hsqldb-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-io.jar" sourcepath="lib/src/commons-io-src.zip"/>
     <classpathentry kind="lib" path="lib/cvslib.jar"/>
     <classpathentry kind="lib" path="lib/ant.jar" sourcepath="lib/src/ant-src.zip"/>
@@ -47,5 +46,6 @@
     <classpathentry kind="lib" path="lib/skinlf.jar" sourcepath="lib/src/skinlf-src.zip"/>
     <classpathentry kind="var" path="TOOLBOX_RESOURCES"/>
     <classpathentry kind="lib" path="lib/multivalent.jar"/>
+    <classpathentry kind="lib" path="lib/jreversepro.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
