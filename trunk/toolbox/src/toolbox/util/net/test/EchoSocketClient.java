@@ -20,11 +20,14 @@ public class EchoSocketClient
     public static final Logger logger_ = 
         Logger.getLogger(EchoSocketClient.class);
     
-    /** Wrapped socket **/
-    private Socket socket;
+    /** 
+     * Wrapped socket 
+     */
+    private Socket socket_;
     
-    private PrintWriter writer;
-    private LineNumberReader reader;
+    private PrintWriter writer_;
+    
+    private LineNumberReader reader_;
     
     /**
      * Create socket client on localhost with given port
@@ -46,9 +49,15 @@ public class EchoSocketClient
     {
         try
         {
-            socket = new Socket(hostname, port);
-            writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-            reader = new LineNumberReader(new InputStreamReader(socket.getInputStream()));
+            socket_ = new Socket(hostname, port);
+            
+            writer_ = 
+                new PrintWriter(
+                    new OutputStreamWriter(socket_.getOutputStream()));
+            
+            reader_ = 
+                new LineNumberReader(
+                    new InputStreamReader(socket_.getInputStream()));
             
         }
         catch(Exception e)
@@ -66,9 +75,9 @@ public class EchoSocketClient
      */
     public String send(String request) throws IOException
     {
-        writer.println(request);
-        writer.flush();
-        String response = reader.readLine();
+        writer_.println(request);
+        writer_.flush();
+        String response = reader_.readLine();
         return response;
     }
     
@@ -90,9 +99,9 @@ public class EchoSocketClient
      */
     public void close() throws IOException
     {
-        writer.println(EchoConnectionHandler.TOKEN_TERMINATE);
-        writer.flush();
-        socket.close();
+        writer_.println(EchoConnectionHandler.TOKEN_TERMINATE);
+        writer_.flush();
+        socket_.close();
     }       
 }
 

@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
 
-
 /**
  * Sample connection handler that echoes all messages that come in on the
  * input stream back to the output stream. The secret token to terminate
@@ -19,7 +18,7 @@ import toolbox.util.net.IConnectionHandler;
 public class EchoConnectionHandler implements IConnectionHandler
 {
     /** Logger **/
-    private static final Logger logger_ = 
+    private static final Logger logger = 
         Logger.getLogger(EchoConnectionHandler.class);
     
     /** Terminate token **/
@@ -51,7 +50,7 @@ public class EchoConnectionHandler implements IConnectionHandler
             while(!terminate) 
             {
                 String request = br.readLine();
-                logger_.info("Echo: " + request);
+                logger.info("Echo: " + request);
                 pw.println(request);
                 pw.flush();
                 
@@ -63,7 +62,7 @@ public class EchoConnectionHandler implements IConnectionHandler
         }
         catch(IOException e)
         {
-            logger_.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         finally
         {

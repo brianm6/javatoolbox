@@ -1,3 +1,7 @@
+/**
+ * Copyright 2002, Southwest Airlines
+ * All Rights Reserved
+ */
 package toolbox.util.net.test;
 
 import java.io.IOException;
@@ -10,6 +14,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
+import toolbox.util.net.AbstractConnection;
 import toolbox.util.net.AsyncConnectionHandler;
 import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
@@ -56,7 +61,7 @@ public class AsyncConnectionHandlerTest extends TestCase
         {
             public Object handle(IConnection conn)
             {
-                /* simulates long lived async activity */
+                // Simulates long lived async activity
                 ThreadUtil.sleep(5000);
                 String result = helloWorld;
                 logger_.debug(result);
@@ -67,12 +72,12 @@ public class AsyncConnectionHandlerTest extends TestCase
         /**
          * Dummy connection 
          */
-        class TestConnection implements IConnection
+        class TestConnection extends AbstractConnection implements IConnection
         {
             /**
              * Opens the connection
              */
-            public void open(){};
+            public void connect(){};
             
             /**
              * Closes the connection 
@@ -93,6 +98,13 @@ public class AsyncConnectionHandlerTest extends TestCase
              */
             public OutputStream getOutputStream() throws IOException { return null;};
             
+            /**
+             * @see com.swa.turbo.util.comm.IConnection#isConnected()
+             */
+            public boolean isConnected()
+            {
+                return false;
+            }
         }
         
         IConnectionHandler handler = 
@@ -114,10 +126,10 @@ public class AsyncConnectionHandlerTest extends TestCase
          */
         assertTrue("return should not be available", !rv.isAvailable());    
 
-        /* sleep longer than the delay in handle() to guarantee (ahem) completion */        
+        // sleep longer than the delay in handle() to guarantee (ahem) completion
         ThreadUtil.sleep(10000);
 
-        /* now the result should definitely be abailable */     
+        // now the result should definitely be abailable
         assertTrue("return should be available", rv.isAvailable());
         assertEquals("return values not same", rv.getValue(), helloWorld);      
         
