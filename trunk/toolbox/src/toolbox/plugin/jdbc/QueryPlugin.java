@@ -32,7 +32,6 @@ import org.apache.commons.lang.math.IntRange;
 import org.apache.log4j.Logger;
 
 import org.jedit.syntax.TSQLTokenMarker;
-import org.jedit.syntax.TextAreaDefaults;
 
 import toolbox.jedit.JEditActions;
 import toolbox.jedit.JEditPopupMenu;
@@ -133,17 +132,6 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public static final String NODE_HISTORY_ITEM = "HistoryItem";
 
-    /**
-     * Child of QueryPlugin that contains contents of the SQL text area.
-     */
-    public static final String NODE_CONTENTS = "SQLContents";
-
-    /**
-     * Child of SQLContents that contains a single line of content (since XOM
-     * conveniently left out support for CDATA)
-     */
-    public static final String NODE_LINE = "Line";
-
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -230,7 +218,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // Protected
+    // Build UI
     //--------------------------------------------------------------------------
 
     /**
@@ -249,13 +237,18 @@ public class QueryPlugin extends JPanel implements IPlugin
         dbConfigPane_ = new DBConfig(this);
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("Databases", dbConfigPane_);
-        leftFlipPane_.addFlipper("Reference", buildReferencePane());
+        leftFlipPane_.addFlipper("Reference", buildSQLReferencePane());
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);
     }
 
-
-    protected JHeaderPanel buildReferencePane()
+    
+    /**
+     * Constructs the flipper panel that contains SQL reference information.
+     * 
+     * @return JHeaderPanel
+     */
+    protected JHeaderPanel buildSQLReferencePane()
     {
         JHeaderPanel refPane = new JHeaderPanel("SQL Reference");
 
@@ -268,7 +261,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         sqlRef = sqlRef.replace(File.separatorChar, '/');
 
-        JEditTextArea area =
+        JEditTextArea area = 
             new JEditTextArea(new TSQLTokenMarker(), new SQLDefaults());
 
         area.getPainter().setFont(FontUtil.getPreferredMonoFont());
@@ -295,10 +288,10 @@ public class QueryPlugin extends JPanel implements IPlugin
         JPopupMenu rootPopup = new JSmartPopupMenu("Root menu");
         rootPopup.add(sqlMenu_);
 
-        TextAreaDefaults defaults = new SQLDefaults();
-        defaults.popup = rootPopup;
-
-        sqlEditor_ = new JEditTextArea(new TSQLTokenMarker(), defaults);
+        sqlEditor_ = 
+            new JEditTextArea(new TSQLTokenMarker(), new SQLDefaults());
+        
+        sqlEditor_.setPopupMenu(rootPopup);  
 
         editMenu.setTextArea(sqlEditor_);
         editMenu.buildView();
@@ -306,7 +299,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         rootPopup.add(SwingUtil.popupToMenu(editMenu));
 
         sqlEditor_.setFont(FontUtil.getPreferredMonoFont());
-
+        sqlEditor_.setSaveContents(true);
+        
         sqlEditor_.getInputHandler().addKeyBinding(
             "C+ENTER", new ExecuteAllAction());
 
@@ -392,7 +386,10 @@ public class QueryPlugin extends JPanel implements IPlugin
                 "Results", toolbar, new JScrollPane(resultsArea_));
     }
 
-
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
     /**
      * Runs a query against the database and returns the results as a nicely
      * formatted string.
@@ -410,20 +407,27 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             if (lower.startsWith("select"))
             {
+                //
                 // Execute select statement
+                //
+                
                 metaResults = JDBCUtil.executeQuery(sql);
             }
             else if (lower.startsWith("insert") ||
                      lower.startsWith("delete") ||
                      lower.startsWith("update") ||
                      lower.startsWith("create") ||
-                     lower.startsWith("drop"))
+                     lower.startsWith("drop")   ||
+                     lower.startsWith("alter"))
             {
                 metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
             }
             else
             {
+                //
                 // Everything else is processed as an update
+                //
+                
                 metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
             }
 
@@ -642,16 +646,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         resultsArea_.applyPrefs(root);
         sqlEditor_.applyPrefs(root);
         areaSplitPane_.applyPrefs(root);
-
-
-        Element contents =
-            XOMUtil.getFirstChildElement(
-                root,
-                NODE_CONTENTS,
-                new Element(NODE_CONTENTS));
-
-        sqlEditor_.setText(XOMUtil.decodeBlankLines(contents.getValue()));
-        sqlEditor_.scrollTo(0, 0);
     }
 
 
@@ -669,19 +663,19 @@ public class QueryPlugin extends JPanel implements IPlugin
             root.appendChild(historyItem);
         }
 
-        Element contents = new Element(NODE_CONTENTS);
-        contents.appendChild(XOMUtil.encodeBlankLines(sqlEditor_.getText()));
-        root.appendChild(contents);
-
         leftFlipPane_.savePrefs(root);
         dbConfigPane_.savePrefs(root);
         resultsArea_.savePrefs(root);
+        
+        // Hardcode to always be true!
+        sqlEditor_.setSaveContents(true);
         sqlEditor_.savePrefs(root);
+        
         areaSplitPane_.savePrefs(root);
 
         XOMUtil.insertOrReplace(prefs, root);
     }
-
+    
     //--------------------------------------------------------------------------
     // SQLReferenceAction
     //--------------------------------------------------------------------------
