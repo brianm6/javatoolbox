@@ -295,9 +295,7 @@ public class XMLNode
     }
 
     /**
-     * Is this a normal tag? That is, not plaintext, not comment and not a pi.
-     * 
-     * @return  True of this node is a tag
+     * @return  True of this node is a normal tag (not plaintext, comment or pi) 
      */
     public boolean isTag()
     {
