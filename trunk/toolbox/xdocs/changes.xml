@@ -115,6 +115,8 @@
       <action type="add"   >Util - Added Create and Delete directory to the JFileExplorer popup menu</action>
       <action type="update">FindClassPlugin - Updated Jad decompiler to support decompilation of inner classes</action>
       <action type="update">Util - Updated the default StateMachine interface to support retrieval of transitions to and from a given state</action>
+      <action type="update">Util - Replaced toolbox.util.io.filter.DirectoryFilter with the equivalent class from commons-io</action>
+      <action type="update">Util - Consolidated FileUtils.findFiles() and FindClass.findFilesRecurseively() into FileUtils.find()</action>
       
 	</release>
 
