@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.jtail.filter.RegexLineFilter;
 
 /**
- * Unit test for RegexLineFilter
+ * Unit test for RegexLineFilter.
  */
 public class RegexLineFilterTest extends TestCase
 {
@@ -18,7 +18,12 @@ public class RegexLineFilterTest extends TestCase
     //--------------------------------------------------------------------------
     // Main 
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Entrypoint
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(RegexLineFilterTest.class);
@@ -28,6 +33,11 @@ public class RegexLineFilterTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests filter()
+     * 
+     * @throws Exception on error.
+     */
     public void testFilter() throws Exception
     {
         logger_.info("Running testFilter...");

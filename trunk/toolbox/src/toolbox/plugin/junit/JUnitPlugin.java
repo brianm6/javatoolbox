@@ -41,19 +41,26 @@ import toolbox.workspace.IPlugin;
  */
 public class JUnitPlugin extends JPanel implements IPlugin
 {
-    public static final Logger logger_ =
-        Logger.getLogger(JUnitPlugin.class);
+    public static final Logger logger_ = Logger.getLogger(JUnitPlugin.class);
 
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
     private static final String NODE_JUNIT_PLUGIN = "JUnitPlugin";
     private static final String ATTR_FILTER       = "filter";
 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     private JTextField              filterField_;
     private JList                   packageList_;
     private DefaultListModel        packageModel_;
     private RegexListModelFilter    filterModel_;
            
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
@@ -64,11 +71,11 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Private
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -130,7 +137,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    //  IPlugin interface
+    // IPlugin interface
     //--------------------------------------------------------------------------
     
     /**
@@ -201,7 +208,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    //  GUI Actions
+    // GetPackageListAcion
     //--------------------------------------------------------------------------
     
     /**
@@ -210,6 +217,9 @@ public class JUnitPlugin extends JPanel implements IPlugin
      */
     class GetPackageListAction extends AbstractAction
     {
+        /**
+         * Creates a GetPackageListAction.
+         */
         public GetPackageListAction()
         {
             super("Get Packages");
@@ -217,7 +227,12 @@ public class JUnitPlugin extends JPanel implements IPlugin
             putValue(SHORT_DESCRIPTION, 
                 "Retrives the list of all know packages on the classpath");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String[] packages = ClassUtil.getPackagesInClasspath();
@@ -235,11 +250,18 @@ public class JUnitPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // TestPackagesAction 
+    //--------------------------------------------------------------------------
+    
     /**
      * Runs the unit tests in the selected packges in the package list box.
      */
     class TestPackagesAction extends AbstractAction
     {
+        /**
+         * Creates a TestPackagesAction. 
+         */
         public TestPackagesAction()
         {
             super("Test Packages");
@@ -248,8 +270,13 @@ public class JUnitPlugin extends JPanel implements IPlugin
                 "Runs JUnit tests in the selected packages");
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
-        {
+        { 
             Object[] selected = packageList_.getSelectedValues();
             PackageTester pt = new PackageTester();
             
@@ -263,7 +290,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    //  FilterKeyListener
     //--------------------------------------------------------------------------
 
     /**
@@ -271,8 +298,14 @@ public class JUnitPlugin extends JPanel implements IPlugin
      */    
     class FilterKeyListener extends KeyAdapter
     {
+        /**
+         * Last known value.
+         */
         private String oldValue_ = "";
         
+        /**
+         * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+         */
         public void keyReleased(KeyEvent e)
         {
             super.keyReleased(e);

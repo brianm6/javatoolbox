@@ -14,6 +14,10 @@ public class CutLineFilter extends AbstractLineFilter
 {
     // TODO: Update cut expression to support "x-y,a-b,..."
     
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Cut expression.
      */
@@ -22,7 +26,7 @@ public class CutLineFilter extends AbstractLineFilter
     /** 
      * Beginning column number. 
      */
-    private int begin_ = 0;
+    private int begin_;
     
     /** 
      * Ending column number.
@@ -38,6 +42,8 @@ public class CutLineFilter extends AbstractLineFilter
      */
     public CutLineFilter()
     {
+        begin_ = 0;
+        end_ = 0;
     }
 
     //--------------------------------------------------------------------------
@@ -47,8 +53,8 @@ public class CutLineFilter extends AbstractLineFilter
     /**
      * Filters a line by cutting. 
      * 
-     * @param line Line to cut
-     * @return Line after cut operation
+     * @param line Line to cut.
+     * @return Line after cut operation.
      */
     public String filter(String line)
     {
@@ -86,8 +92,8 @@ public class CutLineFilter extends AbstractLineFilter
     /**
      * Sets the cut expression.
      * 
-     * @param cut Cut expression
-     * @throws IllegalArgumentException on bad cut expression
+     * @param cut Cut expression.
+     * @throws IllegalArgumentException on bad cut expression.
      */
     public void setCut(String cut) throws IllegalArgumentException
     {

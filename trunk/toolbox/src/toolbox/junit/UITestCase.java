@@ -22,6 +22,10 @@ public class UITestCase extends TestCase
 {
     private static final Logger logger_ = Logger.getLogger(UITestCase.class);
     
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
 	// Window/Frame/Dialog dimensions relative to the size of the desktop.
     public static final int SCREEN_PACK           = 0;
     public static final int SCREEN_FULL           = 1;
@@ -29,7 +33,11 @@ public class UITestCase extends TestCase
     public static final int SCREEN_ONE_THIRD      = 3;
     public static final int SCREEN_TWO_THIRDS     = 4;
     public static final int SCREEN_THREE_QUARTERS = 5;
-     
+    
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     private JMenuBar menuBar_;
 
     //--------------------------------------------------------------------------

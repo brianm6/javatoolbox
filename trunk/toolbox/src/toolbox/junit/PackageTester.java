@@ -17,8 +17,11 @@ import toolbox.util.ClassUtil;
  */
 public class PackageTester
 {
-    public static final Logger logger_ = 
-        Logger.getLogger(PackageTester.class);
+    public static final Logger logger_ = Logger.getLogger(PackageTester.class);
+ 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
     
     /**
      * List of packages to test.
@@ -32,7 +35,7 @@ public class PackageTester
     /**
      * Runs tests cases in one or more given package names.
      * 
-     * @param args List of packages to test
+     * @param args List of packages to test.
      */            
     public static void main(String args[])
     {
@@ -63,7 +66,7 @@ public class PackageTester
     /**
      * Creates a PackageTester.
      * 
-     * @param packageName Package name
+     * @param packageName Package name.
      */
     public PackageTester(String packageName)
     {
@@ -78,7 +81,7 @@ public class PackageTester
     /**
      * Adds a package to the list of packages to be tested.
      * 
-     * @param packageName Package name to add
+     * @param packageName Package name to add.
      */
     public void addPackage(String packageName)
     {
@@ -89,7 +92,7 @@ public class PackageTester
     /**
      * Returns the number of packages to be tested.
      * 
-     * @return Number of packages
+     * @return Number of packages.
      */
     public int getPackageCount()
     {

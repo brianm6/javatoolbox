@@ -6,6 +6,10 @@ package toolbox.jtail.filter;
  */
 public abstract class AbstractLineFilter implements ILineFilter
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Tracks enabled state of the filter. 
      */

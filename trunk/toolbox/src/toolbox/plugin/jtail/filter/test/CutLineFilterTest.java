@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.jtail.filter.CutLineFilter;
 
 /**
- * Unit test for CutLineFilter
+ * Unit test for CutLineFilter.
  */
 public class CutLineFilterTest extends TestCase
 {
@@ -19,6 +19,11 @@ public class CutLineFilterTest extends TestCase
     // Main 
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(CutLineFilterTest.class);
@@ -28,6 +33,9 @@ public class CutLineFilterTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests filter()
+     */
     public void testFilter()
     {
         logger_.info("Running testFilter...");

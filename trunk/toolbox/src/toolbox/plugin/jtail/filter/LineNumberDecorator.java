@@ -29,8 +29,8 @@ public class LineNumberDecorator extends AbstractLineFilter
     /**
      * Adds a line number to the beginning of a string.
      * 
-     * @param line String to decorate with a line number
-     * @return String decorated with a line number
+     * @param line String to decorate with a line number.
+     * @return String decorated with a line number.
      */
     public String filter(String line)
     {

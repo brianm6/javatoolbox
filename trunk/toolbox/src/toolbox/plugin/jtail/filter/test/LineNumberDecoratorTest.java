@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.jtail.filter.LineNumberDecorator;
 
 /**
- * Unit test for LineNumberDecorator
+ * Unit test for LineNumberDecorator.
  */
 public class LineNumberDecoratorTest extends TestCase
 {
@@ -19,6 +19,11 @@ public class LineNumberDecoratorTest extends TestCase
     // Main 
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(LineNumberDecoratorTest.class);
@@ -28,6 +33,9 @@ public class LineNumberDecoratorTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests filter()
+     */
     public void testFilter()
     {
         logger_.info("Running testFilter...");
