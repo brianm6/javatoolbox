@@ -271,10 +271,11 @@ public class ManagePluginsDialog extends JDialog
             boolean skip = false;
                 
             // Exclude the plugins that are already loaded                
-            for (int j=0; i<workspace_.getPluginHost().getPlugins().length; j++)
+            for (int j=0; j<workspace_.getPluginHost().getPlugins().length; j++)
             {
                 String pluginClass = 
-                    workspace_.getPluginHost().getPlugins()[j].getClass().getName();
+                    workspace_.getPluginHost().
+                        getPlugins()[j].getClass().getName();
                 
                 if (pluginClass.equals(clazz))
                 {
