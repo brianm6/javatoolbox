@@ -15,24 +15,28 @@
       name="Metal"
       class="javax.swing.plaf.metal.MetalLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Sun"/>
   </LookAndFeel>
   
   <LookAndFeel 
       name="Motif"
       class="com.sun.java.swing.plaf.motif.MotifLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Sun"/>      
   </LookAndFeel>
   
   <LookAndFeel 
       name="Windows" 
       class="com.sun.java.swing.plaf.windows.WindowsLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Sun"/>      
   </LookAndFeel>  
   
   <LookAndFeel 
       name="GTK" 
       class="com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Sun"/>      
   </LookAndFeel>  
   
   <!-- ==================================================================== -->
@@ -43,36 +47,42 @@
       name="Metouia" 
       class="net.sourceforge.mlf.metouia.MetouiaLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
   <LookAndFeel 
       name="Kunststoff"
       class="com.incors.plaf.kunststoff.KunststoffLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
   <LookAndFeel 
       name="Tiny"
       class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
   <LookAndFeel 
       name="Tonic"
       class="com.digitprop.tonic.TonicLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
   <LookAndFeel 
       name="Liquid"
       class="com.birosoft.liquid.LiquidLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
   <LookAndFeel 
       name="Hippo"
       class="se.diod.hippo.plaf.HippoLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
   <!-- ==================================================================== -->
@@ -127,28 +137,34 @@
       name="JGoodies Windows" 
       class="com.jgoodies.plaf.windows.ExtWindowsLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      
+      <Property name="group.name"  value="JGoodies"/>      
   </LookAndFeel>  
 
   <LookAndFeel 
-      name="JGoodies Plastic" 
+      name="Plastic" 
       class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      
+      <Property name="group.name"  value="JGoodies"/>
   </LookAndFeel>  
   
   <LookAndFeel 
-      name="JGoodies Plastic" 
+      name="Plastic" 
       class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
   
+      <Property name="group.name"  value="JGoodies"/>        
       <Property name="theme.name"  value="Dark Star"/>
       <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
   </LookAndFeel>  
 
   <LookAndFeel 
-      name="JGoodies Plastic" 
+      name="Plastic"
       class="com.jgoodies.plaf.plastic.PlasticLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
+      <Property name="group.name"  value="JGoodies"/>      
       <Property	name="theme.name"  value="Desert Red"/>
       <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
   </LookAndFeel>  
@@ -156,25 +172,29 @@
   <!-- -->
   
   <LookAndFeel 
-      name="JGoodies Plastic 3D" 
+      name="Plastic 3D" 
       class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      
+      <Property name="group.name"  value="JGoodies"/>            
   </LookAndFeel>  
   
   <LookAndFeel 
-      name="JGoodies Plastic 3D" 
+      name="Plastic 3D" 
       class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
-  
+      
+      <Property name="group.name"  value="JGoodies"/>      
       <Property name="theme.name"  value="Dark Star"/>
       <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
   </LookAndFeel>  
 
   <LookAndFeel 
-      name="JGoodies Plastic 3D" 
+      name="Plastic 3D" 
       class="com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
 
+      <Property name="group.name"  value="JGoodies"/>      
       <Property	name="theme.name"  value="Desert Red"/>
       <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
   </LookAndFeel>  
@@ -182,25 +202,29 @@
   <!-- -->
   
   <LookAndFeel 
-      name="JGoodies Plastic XP" 
+      name="Plastic XP" 
       class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      
+      <Property name="group.name"  value="JGoodies"/>            
   </LookAndFeel>  
   
   <LookAndFeel 
-      name="JGoodies Plastic XP" 
+      name="Plastic XP" 
       class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
-  
+      
+      <Property name="group.name"  value="JGoodies"/>        
       <Property name="theme.name"  value="Dark Star"/>
       <Property name="theme.class" value="com.jgoodies.plaf.plastic.theme.DarkStar"/>
   </LookAndFeel>  
 
   <LookAndFeel 
-      name="JGoodies Plastic XP" 
+      name="Plastic XP" 
       class="com.jgoodies.plaf.plastic.PlasticXPLookAndFeel"
       action="toolbox.util.ui.plaf.ActivatePlasticLookAndFeelAction">
-
+      
+      <Property name="group.name"  value="JGoodies"/>      
       <Property	name="theme.name"  value="Desert Red"/>
       <Property	name="theme.class" value="com.jgoodies.plaf.plastic.theme.DesertRed"/>
   </LookAndFeel>  
@@ -209,7 +233,6 @@
   <!-- Skin Look and Feels                                                  -->
   <!-- ==================================================================== -->
 
-  <!--
   <LookAndFeel 
       name="SkinLF" 
       class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
@@ -236,7 +259,6 @@
       <Property name="theme.name" value="Beos"/>
       <Property name="theme.path" value="skinlf/beos.zip"/>
   </LookAndFeel>
-  -->
     
   <LookAndFeel 
       name="SkinLF" 
@@ -247,7 +269,6 @@
       <Property name="theme.path" value="skinlf/cellshaded.zip"/>
   </LookAndFeel>
 
-  <!--
   <LookAndFeel 
       name="SkinLF" 
       class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
@@ -256,7 +277,6 @@
       <Property name="theme.name" value="Mac"/>
       <Property name="theme.path" value="skinlf/macos.zip"/>
   </LookAndFeel>
-  -->
     
   <LookAndFeel 
       name="SkinLF" 
@@ -266,7 +286,6 @@
       <Property name="theme.name" value="Modern"/>
       <Property name="theme.path" value="skinlf/modern.zip"/>
   </LookAndFeel>
-
   
   <LookAndFeel 
       name="SkinLF" 
@@ -277,7 +296,6 @@
       <Property name="theme.path" value="skinlf/toxic.zip"/>
   </LookAndFeel>
   
-  <!--
   <LookAndFeel 
       name="SkinLF" 
       class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
@@ -295,7 +313,6 @@
       <Property name="theme.name" value="XP Luna"/>
       <Property name="theme.path" value="skinlf/xpluna.zip"/>
   </LookAndFeel>
-  -->
 
   <!-- ==================================================================== -->
   <!-- Jide Look and Feels                                                  -->
@@ -333,6 +350,14 @@
       <Property	name="theme.name"    value="Alloy"/>
       <Property	name="theme.class"   value="com.incors.plaf.alloy.DefaultAlloyTheme"/>
       <Property	name="theme.license" value="2#Horst_Heistermann#1w2sca#5qzosw"/>
+  </LookAndFeel>
+  -->
+
+  <!--
+  <LookAndFeel 
+      name="Borland"
+      class="com.borland.plaf.borland.BorlandLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
   </LookAndFeel>
   -->
   
