@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.berkeley.guir.prefuse.graph.Node;
+import edu.berkeley.guir.prefusex.layout.CircleLayout;
+import edu.berkeley.guir.prefusex.layout.RandomLayout;
 
 import toolbox.graph.Edge;
 import toolbox.graph.Graph;
@@ -18,6 +20,15 @@ import toolbox.graph.Vertex;
  */
 public class PrefuseGraphLib implements GraphLib
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Reverse lookup table for graph objects.
+     */
+    private static final Map lookup_ = new HashMap();
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -80,14 +91,9 @@ public class PrefuseGraphLib implements GraphLib
      */
     public List getLayouts(Graph graph)
     {
-        edu.berkeley.guir.prefuse.graph.Graph g = 
-            (edu.berkeley.guir.prefuse.graph.Graph) graph.getDelegate();
-        
         List layouts = new ArrayList();
-        
-        // TODO
-        //layouts.add(new PrefuseLayout(new CircleLayout(g))); 
-        //layouts.add(new PrefuseLayout(new SpringLayout(g)));
+        layouts.add(new PrefuseLayout("Circle", new CircleLayout())); 
+        layouts.add(new PrefuseLayout("Random", new RandomLayout()));
         return layouts;
     }
     
@@ -96,8 +102,10 @@ public class PrefuseGraphLib implements GraphLib
     //--------------------------------------------------------------------------
     
     /**
-     * @param dest
-     * @return
+     * Looks up a vertex given its delegate.
+     * 
+     * @param dest Node to lookup.
+     * @return Vertex
      */
     public static Vertex lookupVertex(Node dest)
     {
@@ -107,15 +115,14 @@ public class PrefuseGraphLib implements GraphLib
 
     
     /**
-     * @param dest
-     * @return
+     * Looks up an edge.
+     * 
+     * @param dest Edge to lookup.
+     * @return Edge
      */
     public static Edge lookupEdge(edu.berkeley.guir.prefuse.graph.Edge edge)
     {
         Edge e = (Edge) lookup_.get(edge);
         return e;
     }
-
-    private static final Map lookup_ = new HashMap();
-    
 }
