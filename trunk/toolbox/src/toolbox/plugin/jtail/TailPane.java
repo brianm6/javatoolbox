@@ -57,8 +57,8 @@ public class TailPane extends JPanel implements ActionListener
      */
     public TailPane(TailConfig config) throws FileNotFoundException
     {
+        buildView();        
         setConfiguration(config);                
-        buildView();
         init();
     }
     
@@ -112,7 +112,8 @@ public class TailPane extends JPanel implements ActionListener
          */
         public void execute(Object[] objs)
         {
-            logger_.debug("Lines popped: " + objs.length);
+            if (objs.length > 1)
+                logger_.debug("Lines popped: " + objs.length);
             
             StringBuffer sb = new StringBuffer();
 
@@ -123,8 +124,6 @@ public class TailPane extends JPanel implements ActionListener
                     sb.append("[" + lineNumber_ + "] ");
                     
                 sb.append(objs[i] + "\n");
-                
-  
             }
             
             tailArea_.append(sb.toString()); 
@@ -221,7 +220,7 @@ public class TailPane extends JPanel implements ActionListener
 	 */	
 	protected void buildView()
 	{
-		tailArea_ = new JSmartTextArea(config_.isAutoScroll());
+		tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
         tailArea_.setDoubleBuffered(false);
         
@@ -229,11 +228,8 @@ public class TailPane extends JPanel implements ActionListener
 		pauseButton_    = new JButton("Pause");
 		startButton_    = new JButton("Start");
         closeButton_    = new JButton("Close");
-        autoScrollBox_  = new JCheckBox("Autoscroll", config_.isAutoScroll());
-        
-        lineNumbersBox_ = 
-            new JCheckBox("Line Numbers", config_.isShowLineNumbers());
-        
+        autoScrollBox_  = new JCheckBox("Autoscroll");
+        lineNumbersBox_ = new JCheckBox("Line Numbers");
         
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(startButton_);
@@ -349,7 +345,7 @@ public class TailPane extends JPanel implements ActionListener
      */
     protected void firePaneClosing()
     {
-                
+        // TODO:                
     }    
 
     
@@ -389,12 +385,10 @@ public class TailPane extends JPanel implements ActionListener
     {
         config_ = config;
 
-        // Buildview comes after setConfigutation in the constructor        
-        if (autoScrollBox_ != null)
-            autoScrollBox_.setSelected(config_.isAutoScroll());
+        autoScrollBox_.setSelected(config_.isAutoScroll());
+        tailArea_.setAutoScroll(config_.isAutoScroll());
             
-        if (lineNumbersBox_ != null)
-            lineNumbersBox_.setSelected(config_.isShowLineNumbers());
+        lineNumbersBox_.setSelected(config_.isShowLineNumbers());
     }
 
 
