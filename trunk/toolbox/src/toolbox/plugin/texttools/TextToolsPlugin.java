@@ -183,17 +183,17 @@ public class TextToolsPlugin extends AbstractPlugin
         topFlipPane_.addFlipper(
             ImageCache.getIcon(ImageCache.IMAGE_FUNNEL), 
             "Filter", 
-            new FilterPane(this));
+            new FilterView(this));
         
         topFlipPane_.addFlipper(
             ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP),
             "Tokenizer", 
-            new TokenizerPane(this));
+            new TokenizerView(this));
         
         topFlipPane_.addFlipper(
             ImageCache.getIcon(ImageCache.IMAGE_PLAY),
             "Codec", 
-            new CodecPane(this));
+            new CodecView(this));
         
         topFlipPane_.addFlipper(
             ImageCache.getIcon(ImageCache.IMAGE_BRACES),

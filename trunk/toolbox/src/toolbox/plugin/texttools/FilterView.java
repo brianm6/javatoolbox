@@ -22,7 +22,7 @@ import toolbox.util.ui.JSmartTextField;
  * expression is typed in, the matching set is updated accordingly with
  * each keystroke.
  */
-public class FilterPane extends JPanel
+public class FilterView extends JPanel
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -54,11 +54,11 @@ public class FilterPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a FilterPane.
+     * Creates a FilterView.
      *
      * @param plugin Parent TextToolsPlugin.
      */
-    FilterPane(TextToolsPlugin plugin)
+    FilterView(TextToolsPlugin plugin)
     {
         plugin_ = plugin;
         buildView();

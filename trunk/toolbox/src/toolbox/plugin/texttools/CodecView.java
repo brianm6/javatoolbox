@@ -16,7 +16,7 @@ import toolbox.util.ui.JSmartButton;
 /**
  * Flipper containing common encoding/decoding schemes.
  */
-public class CodecPane extends JPanel
+public class CodecView extends JPanel
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -32,11 +32,11 @@ public class CodecPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a CodecPane.
+     * Creates a CodecView.
      *
      * @param plugin Parent plugin.
      */
-    CodecPane(TextToolsPlugin plugin)
+    CodecView(TextToolsPlugin plugin)
     {
         buildView();
         plugin_ = plugin;

@@ -17,7 +17,7 @@ import toolbox.util.ui.JSmartTextField;
  * Flipper that allows the user to tokenize strings by providing the token
  * delimiter. Multiline strings can also be merged into one line.
  */
-public class TokenizerPane extends JPanel
+public class TokenizerView extends JPanel
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -38,11 +38,11 @@ public class TokenizerPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a TokenizerPane.
+     * Creates a TokenizerView.
      *
      * @param plugin TextTools plugin parent.
      */
-    TokenizerPane(TextToolsPlugin plugin)
+    TokenizerView(TextToolsPlugin plugin)
     {
         buildView();
         plugin_ = plugin;
