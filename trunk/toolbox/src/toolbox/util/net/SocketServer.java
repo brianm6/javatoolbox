@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import EDU.oswego.cs.dl.util.concurrent.Mutex;
+import edu.emory.mathcs.util.concurrent.Semaphore;
 
 import org.apache.log4j.Logger;
 
@@ -59,7 +59,7 @@ public class SocketServer implements Runnable
     /**
      * Mutex used at startup to reduce likelyhood of a race condition.
      */
-    private Mutex startedMutex_;
+    private Semaphore startedMutex_;
 
     /**
      * Shutdown flag.
@@ -111,7 +111,7 @@ public class SocketServer implements Runnable
              * chance of a client immediately getting refused a connection to
              * the server socket right after start() returns.
              */
-            startedMutex_ = new Mutex();
+            startedMutex_ = new Semaphore(1);
             startedMutex_.acquire();
 
             // Create the socket with listening port and queue size

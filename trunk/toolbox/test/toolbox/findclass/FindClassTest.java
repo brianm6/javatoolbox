@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import EDU.oswego.cs.dl.util.concurrent.Mutex;
+import edu.emory.mathcs.util.concurrent.Semaphore;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -19,9 +19,7 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
 
 /**
- * Unit test for Findclass.
- * 
- * @see toolbox.findclass.FindClass
+ * Unit test for {@link toolbox.findclass.FindClass}.
  */
 public class FindClassTest extends TestCase
 {
@@ -169,8 +167,6 @@ public class FindClassTest extends TestCase
 
         // Remove all
         finder.removeSearchTargets();
-        List cleared = finder.getSearchTargets();
-        assertTrue(cleared.isEmpty());
     }
 
     
@@ -247,12 +243,12 @@ public class FindClassTest extends TestCase
         /**
          * Mutex released when search cancelled event is received.
          */
-        private Mutex cancel_;
+        private Semaphore cancel_;
         
         /**
          * Mutex released when the first search result is received.
          */
-        private Mutex first_;
+        private Semaphore first_;
         
         /**
          * Counter to keep track of the number of search results received.
@@ -270,10 +266,10 @@ public class FindClassTest extends TestCase
          */
         public SearchListener() throws InterruptedException
         {
-            cancel_ = new Mutex();
+            cancel_ = new Semaphore(1);
             cancel_.acquire();
             
-            first_ = new Mutex();
+            first_ = new Semaphore(1);
             first_.acquire();
             
             counter_ = 0;

@@ -3,8 +3,8 @@ package toolbox.util.concurrent;
 import java.util.ArrayList;
 import java.util.List;
 
-import EDU.oswego.cs.dl.util.concurrent.Mutex;
-import EDU.oswego.cs.dl.util.concurrent.Semaphore;
+import edu.emory.mathcs.util.concurrent.Semaphore;
+import edu.emory.mathcs.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -35,7 +35,7 @@ public class BlockingQueue
     /**
      * Mutex.
      */
-    private Mutex mutex_;
+    private Semaphore mutex_;
 
     //--------------------------------------------------------------------------
     // Constuctors
@@ -48,7 +48,7 @@ public class BlockingQueue
     {
         semaphore_ = new Semaphore(0);
         queue_     = new ArrayList(50);
-        mutex_     = new Mutex();
+        mutex_     = new Semaphore(1);
     }
 
     //--------------------------------------------------------------------------
@@ -102,12 +102,12 @@ public class BlockingQueue
             {
                 ElapsedTime timeUsed = new ElapsedTime();
                 
-                if (semaphore_.attempt(millis))
+                if (semaphore_.tryAcquire(millis, TimeUnit.MILLISECONDS))
                 {
                     timeUsed.setEndTime();
                     millis -= timeUsed.getTotalMillis();
                     
-                    if (mutex_.attempt(millis))
+                    if (mutex_.tryAcquire(millis, TimeUnit.MILLISECONDS))
                     {
                         Object obj = queue_.remove(0);
                         return obj;
