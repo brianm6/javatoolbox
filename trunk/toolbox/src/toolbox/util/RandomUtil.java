@@ -153,6 +153,46 @@ public final class RandomUtil
 
     
     /**
+     * Generates a random byte in the range [0..255].
+     * 
+     * @return byte
+     */
+    public static byte nextByte()
+    {
+        return (byte) nextInt(255);
+    }
+    
+    
+    /**
+     * Generates a random string of max length 80 made up of arbitrary 
+     * alphanumberic characters.
+     * 
+     * @return String
+     */
+    public static String nextString()
+    {
+        return nextString(nextInt(80));
+    }
+
+
+    /**
+     * Generates a random string of the given length makde up of arbitrary
+     * alphanumberic characters.
+     * 
+     * @return String
+     */
+    public static String nextString(int length)
+    {
+        StringBuffer sb = new StringBuffer();
+        
+        for (int i = 0; i < length; i++)
+            sb.append(nextAlpha());
+        
+        return sb.toString();
+    }
+    
+    
+    /**
      * Returns a randomly chosen element from the passed in array.
      * 
      * @param pickList Array of objects to pick from.
