@@ -13,7 +13,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
- * I/O Stream Utility Class
+ * I/O Stream Utility Class.
  */
 public class StreamUtil
 {
@@ -28,7 +28,7 @@ public class StreamUtil
     //--------------------------------------------------------------------------
            
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private StreamUtil()
     {
@@ -39,24 +39,25 @@ public class StreamUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Converts the contents of an character input stream to a string.
-     *
-     * @param   inputStream     Input stream to read from
-     * @return  String representation of the input stream contents.
-     * @throws  IOException on IO error
-     */
+	 * Converts the contents of an character input stream to a string.
+	 * 
+	 * @param inputStream Input stream to read from
+	 * @return String representation of the input stream contents.
+	 * @throws IOException on IO error
+	 */
     public static String asString(InputStream inputStream) throws IOException
     {
         return new String(toBytes(inputStream));
     }
 
+    
     /**
-     * Converts the remaining contents of an InputStream to a byte array
-     * 
-     * @param   is   InputStream to convert
-     * @return  Contents of the stream as a byte array
-     * @throws  IOException on IO error
-     */    
+	 * Converts the remaining contents of an InputStream to a byte array.
+	 * 
+	 * @param is InputStream to convert
+	 * @return Contents of the stream as a byte array
+	 * @throws IOException on IO error
+	 */    
     public static byte[] toBytes(InputStream is) throws IOException
     {
         List buffer = new ArrayList();
@@ -78,17 +79,18 @@ public class StreamUtil
         
         return byteArray;
     }
+
     
     /**
-     * Reads an exact number of characters from a stream and returns them as a
-     * String. If the given number of characters is not availble, the method
-     * blocks until the entire length is satisfied.
-     * 
-     * @param   is     InputStream to read characters from
-     * @param   len    Number of characters to read
-     * @return  String containing len characters read from input stream
-     * @throws  IOException if underlying stream times out or IO error occurs
-     */
+	 * Reads an exact number of characters from a stream and returns them as a
+	 * String. If the given number of characters is not availble, the method
+	 * blocks until the entire length is satisfied.
+	 * 
+	 * @param is InputStream to read characters from
+	 * @param len Number of characters to read
+	 * @return String containing len characters read from input stream
+	 * @throws IOException if underlying stream times out or IO error occurs
+	 */
     public static byte[] readExactly(InputStream is, int len) 
         throws IOException
     {
@@ -128,16 +130,17 @@ public class StreamUtil
         return buffer;
     }
 
+    
     /**
-     * Reads an exact number of characters from a reader and returns them as a
-     * String. If the given number of characters is not availble, the method
-     * blocks until the entire length is satisfied.
-     * 
-     * @param   reader  Reader to read characters from
-     * @param   len     Number of characters to read
-     * @return  String of characters read
-     * @throws  IOException on IO error
-     */
+	 * Reads an exact number of characters from a reader and returns them as a
+	 * String. If the given number of characters is not availble, the method
+	 * blocks until the entire length is satisfied.
+	 * 
+	 * @param reader Reader to read characters from
+	 * @param len Number of characters to read
+	 * @return String of characters read
+	 * @throws IOException on IO error
+	 */
     public static String readExactly(Reader reader, int len) 
         throws IOException
     {
@@ -176,14 +179,15 @@ public class StreamUtil
         return sb.toString();
     }
 
+    
     /**
-     * Empties the contents of an inputstream based on the currently available
-     * contents.
-     * 
-     * @param  is   InputStream to empty
-     * @return Number of bytes discarded
-     * @throws IOException on IO error
-     */
+	 * Empties the contents of an inputstream based on the currently available
+	 * contents.
+	 * 
+	 * @param is InputStream to empty
+	 * @return Number of bytes discarded
+	 * @throws IOException on IO error
+	 */
     public static int empty(InputStream is) throws IOException
     {
         int avl = is.available();
@@ -192,11 +196,12 @@ public class StreamUtil
         return avl;
     }
 
+    
     /**
-     * Closes an inputstream quitely
-     * 
-     * @param  inputStream  Inputstraem to close
-     */    
+	 * Closes an inputstream quitely.
+	 * 
+	 * @param inputStream Inputstraem to close
+	 */    
     public static void close(InputStream inputStream)
     {
         if (inputStream != null)
@@ -213,11 +218,12 @@ public class StreamUtil
         }
     }
 
+    
     /**
-     * Closes an outputstream quitely
-     * 
-     * @param  outputStream  Output stream to close
-     */    
+	 * Closes an outputstream quitely.
+	 * 
+	 * @param outputStream Output stream to close
+	 */    
     public static void close(OutputStream outputStream)
     {
         if (outputStream != null)
@@ -234,11 +240,12 @@ public class StreamUtil
         }
     }
 
+    
     /**
-     * Closes a writer quietly
-     * 
-     * @param  writer  Writer to close
-     */    
+	 * Closes a writer quietly.
+	 * 
+	 * @param writer Writer to close
+	 */    
     public static void close(Writer writer)
     {
         if (writer != null)
@@ -254,11 +261,12 @@ public class StreamUtil
         }
     }
 
+    
     /**
-     * Closes a reader quietly
-     * 
-     * @param  reader  Reader to close
-     */    
+	 * Closes a reader quietly.
+	 * 
+	 * @param reader Reader to close
+	 */    
     public static void close(Reader reader)
     {
         if (reader != null)

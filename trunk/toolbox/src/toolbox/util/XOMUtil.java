@@ -11,7 +11,7 @@ import nu.xom.Serializer;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * XOM Utility Class
+ * XOM Utility Class.
  */
 public class XOMUtil
 {
@@ -24,9 +24,9 @@ public class XOMUtil
      *   <li>Node value is not a valid integer
      * </ul>
      * 
-     * @param node Node containing value
+     * @param node Node containing value.
      * @param defaultValue Value to return if the node is null or does not
-     * contain a value
+     *        contain a value.
      * @return int
      */
     public static int getInteger(Element node, int defaultValue)
@@ -50,11 +50,12 @@ public class XOMUtil
     
     
     /**
-     * Gets the string value from a node.
+     * Gets the string value from a node. If the node is null, a default is
+     * returned instead.
      * 
-     * @param node Node containing value
+     * @param node Node containing value.
      * @param defaultValue Value to return if the node is null or does not
-     * contain a value
+     *        contain a value.
      * @return String
      */
     public static String getString(Element node, String defaultValue)
@@ -71,9 +72,9 @@ public class XOMUtil
     /**
      * Gets the boolean value from a node.
      * 
-     * @param node Node containing a boolean value
+     * @param node Node containing a boolean value.
      * @param defaultValue Value to return if the node is null or does not
-     * contain a value
+     *        contain a value.
      * @return boolean
      */
     public static boolean getBoolean(Element node, boolean defaultValue)
@@ -100,7 +101,7 @@ public class XOMUtil
      * @param node Node containing the attribute
      * @param attribute Name of the attribute
      * @param defaultValue Value to return if the attribute does not exist or 
-     * does not contain a value
+     *        does not contain a value.
      * @return int
      */
     public static int getIntegerAttribute(
@@ -129,7 +130,7 @@ public class XOMUtil
      * @param node Node containing the attribute
      * @param attribute Name of the attribute
      * @param defaultValue Value to return if the attribute does not exist
-     * or does not contain a value
+     *        or does not contain a value
      * @return boolean
      */
     public static boolean getBooleanAttribute(
@@ -151,7 +152,7 @@ public class XOMUtil
      * @param node Node containing the attribute
      * @param attribute Name of the attribute
      * @param defaultValue Value to return if the attribute does not exist
-     * or does not contain a value
+     *        or does not contain a value.
      * @return String
      */
     public static String getStringAttribute(

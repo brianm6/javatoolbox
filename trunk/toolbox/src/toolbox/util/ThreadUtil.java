@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.collections.AsMap;
 
 /**
- * Utility class for thread related stuff
+ * Utility class for thread related stuff.
  */
 public final class ThreadUtil
 {
@@ -24,7 +24,7 @@ public final class ThreadUtil
     //--------------------------------------------------------------------------
             
     /**
-     * Prevent construction
+     * Private constructor.
      */ 
     private ThreadUtil()
     {
@@ -35,7 +35,7 @@ public final class ThreadUtil
     //--------------------------------------------------------------------------
         
     /**
-     * Sleep without all the try/catch business
+     * Sleep without all the try/catch business.
      * 
      * @param millis Milliseconds for the current thread to sleep
      */
@@ -51,16 +51,18 @@ public final class ThreadUtil
         }
     }
     
+    
     /**
-     * Joins the current thread without try/catch business
+     * Joins the current thread without try/catch business.
      */
     public static void join()
     {
         join(Thread.currentThread(), 0);
     }
 
+    
     /**
-     * Joins the current thread without try/catch business
+     * Joins the current thread without try/catch business.
      * 
      * @param millis Max number of millis to wait
      */
@@ -69,8 +71,9 @@ public final class ThreadUtil
         join(Thread.currentThread(), millis);
     }
 
+    
     /**
-     * Joins the given thread
+     * Joins the given thread.
      * 
      * @param thread Thread to join
      */
@@ -89,8 +92,9 @@ public final class ThreadUtil
         }
     }
 
+    
     /**
-     * Joins the given thread
+     * Joins the given thread.
      * 
      * @param thread Thread to join
      * @param millis Timeout
@@ -110,9 +114,10 @@ public final class ThreadUtil
         }
     }
 
+    
     /**
      * Stops a thread as gracefully as possible with a default max wait of 
-     * 1 second
+     * 1 second.
      * 
      * @param t Thread to stop
      */
@@ -121,6 +126,7 @@ public final class ThreadUtil
         stop(t, 1000);
     }
 
+    
     /**
      * Stops a thread as gracefully as possible within a given amount of time.
      * If the thread is stopped successfully, the thread is set equal to null
@@ -147,6 +153,7 @@ public final class ThreadUtil
             t = null;                    
     }
 
+    
     /**
      * Dumps a threads public information to a string for printing/debug
      * purposes.
@@ -167,8 +174,9 @@ public final class ThreadUtil
         return sb.toString();
     }
 
+    
     /**
-     * Runs an objects method in a separate thread 
+     * Runs an objects method in a separate thread. 
      * 
      * @param target Object which contains method to run
      * @param methodName Name of the method to execute
@@ -180,8 +188,9 @@ public final class ThreadUtil
         return run(target, methodName, new Object[] {param});
     }
     
+    
     /**
-     * Runs an objects method in a separate thread 
+     * Runs an objects method in a separate thread. 
      * 
      * @param target Object which contains method to run
      * @param methodName Name of the method to execute
@@ -201,8 +210,9 @@ public final class ThreadUtil
         return thread; 
     }
 
+    
     /**
-     * Runs an object's method in a separate thread 
+     * Runs an object's method in a separate thread. 
      * 
      * @param target Object to invoke method upon
      * @param method Name of the method to execute
@@ -236,22 +246,22 @@ public final class ThreadUtil
     public static class MethodRunner implements Runnable
     {
         /** 
-         * Name of method to execute 
+         * Name of method to execute.
          */
         private String method_;
         
         /** 
-         * Object to execute the method on 
+         * Object to execute the method on. 
          */
         private Object target_;
         
         /** 
-         * Parameters to pass on the method invocation 
+         * Parameters to pass on the method invocation. 
          */
         private Object[] params_;
 
         /** 
-         * Parameter types 
+         * Parameter types. 
          */
         private Class[] clazzes_;
 
@@ -260,7 +270,7 @@ public final class ThreadUtil
         //----------------------------------------------------------------------
                     
         /**
-         * Creates a MethodRunner
+         * Creates a MethodRunner.
          * 
          * @param target Target object of method invocation
          * @param method Method name on target object
@@ -271,8 +281,9 @@ public final class ThreadUtil
             this(target, method, params, ClassUtil.getMatchingClasses(params));
         }
 
+        
         /**
-         * Creates a MethodRunner
+         * Creates a MethodRunner.
          * 
          * @param target Target object of method invocation
          * @param method Method name on target object
@@ -310,7 +321,7 @@ public final class ThreadUtil
         //----------------------------------------------------------------------
         
         /**
-         * Executes the method provided at time of construction
+         * Executes the method provided at time of construction.
          */
         public void run()
         {
@@ -337,7 +348,7 @@ public final class ThreadUtil
         //----------------------------------------------------------------------
         
         /**
-         * Dump to string
+         * Dump to string.
          * 
          * @return Object state as a string
          */

@@ -16,7 +16,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * XML Utility Class
+ * XML Utility Class.
  */
 public class XMLUtil
 {
@@ -42,8 +42,9 @@ public class XMLUtil
         return format(xml, 2, -1, false);
     }
 
+    
     /**
-     * Formats and indents XML to make it easy to read
+     * Formats and indents XML to make it easy to read.
      * 
      * @param xml XML string to format
      * @param indent Number of spaces per indentation 
@@ -53,8 +54,12 @@ public class XMLUtil
      * @throws SAXException on parsing error
      * @throws IOException on I/O error
      */
-    public static String format(String xml, int indent, int lineWidth, 
-        boolean omitDeclaration) throws SAXException, IOException
+    public static String format(
+        String xml, 
+        int indent, 
+        int lineWidth, 
+        boolean omitDeclaration) 
+        throws SAXException, IOException
     {
         String formattedXML = null;
 
@@ -77,15 +82,16 @@ public class XMLUtil
         return formattedXML;
     }
 
+    
     /**
-     * Converts a string XML element into its DOM counterpart
+     * Converts a string XML element into its DOM counterpart.
      * 
      * @param xml XML to load into a DOM element
      * @return DOM Element representing xml string
      * @throws IOException on I/O error
      * @throws SAXException on XML parsing error
      */
-    public static Element loadElement(String xml)
+    public static Element loadElement(String xml) 
         throws IOException, SAXException
     {
         DOMParser parser = new DOMParser();
