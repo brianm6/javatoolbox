@@ -3,14 +3,16 @@ package toolbox.util.ui.console;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
 import org.apache.log4j.Logger;
 
 /**
- * TextConsole is a character based console.
+ * TextConsole is a character based implementation of a {@link Console}.
  */
 public class TextConsole extends AbstractConsole
 {
@@ -30,25 +32,36 @@ public class TextConsole extends AbstractConsole
      */
     private BufferedWriter stdout_;
 
-    /**
-     * Command prompt
-     */
-    private String prompt_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
+
+    /**
+     * Creates a new console using stdin and stdout.
+     * 
+     * @param name Console name.
+     */
+    public TextConsole(String name)
+    {
+        this(
+            name, 
+            new InputStreamReader(System.in), 
+            new OutputStreamWriter(System.out));
+    }
+
     
     /**
-     * Creates a new console
+     * Creates a new console.
      * 
-     * @param useName Console name.
+     * @param name Console name.
      * @param in Reader to read input from.
      * @param out Writer to write output to.
      */
-    public TextConsole(String useName, Reader in, Writer out)
+    public TextConsole(String name, Reader in, Writer out)
     {
-        super(useName);
+        super(name);
+        
+        // TODO: Figure out if already buffered so we're not buffering twice.
         stdin_ = new BufferedReader(in);
         stdout_ = new BufferedWriter(out);
     }
@@ -58,11 +71,14 @@ public class TextConsole extends AbstractConsole
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.console.AbstractConsole#setCommandLine(java.lang.String)
+     * Not supported since we don't have the ability to position the cursor.
+     * 
+     * @see toolbox.util.ui.console.AbstractConsole#setCommandLine(
+     *      java.lang.String)
      */
     public void setCommandLine(String cmd)
     {
-        // Not supported
+        // NO-OP
     }
 
     
@@ -71,7 +87,7 @@ public class TextConsole extends AbstractConsole
      */
     public String getCursorDownName()
     {
-        return "";
+        return "Fix me";
     }
 
     
@@ -80,7 +96,7 @@ public class TextConsole extends AbstractConsole
      */
     public String getCursorUpName()
     {
-        return "";
+        return "Fix me";
     }
 
     //--------------------------------------------------------------------------
@@ -88,15 +104,20 @@ public class TextConsole extends AbstractConsole
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.console.Console#setPrompt(java.lang.String)
+     * Writes the prompt to the console.
+     * 
+     * @see toolbox.util.ui.console.Console#renderPrompt()
      */
-    public void setPrompt(String newPrompt)
+    public void renderPrompt()
     {
-        prompt_ = newPrompt;
+        write(getPrompt());
     }
 
+    
 
     /**
+     * Sends '\u000c' to clear the console.
+     * 
      * @see toolbox.util.ui.console.Console#clear()
      */
     public synchronized void clear()
@@ -104,20 +125,14 @@ public class TextConsole extends AbstractConsole
         write("\u000c");
     }
 
-
  
     /**
+     * Reads an entire line of text from the console.
+     * 
      * @see toolbox.util.ui.console.Console#read()
      */
     public String read() throws InterruptedIOException
     {
-
-        if (null != prompt_)
-        {
-            write(prompt_);
-            prompt_ = "";
-        }
-
         try
         {
             return stdin_.readLine();
@@ -131,6 +146,8 @@ public class TextConsole extends AbstractConsole
 
 
     /**
+     * Writes a message to the console and flushes the stream.
+     * 
      * @see toolbox.util.ui.console.Console#write(java.lang.String)
      */
     public void write(String msg)
