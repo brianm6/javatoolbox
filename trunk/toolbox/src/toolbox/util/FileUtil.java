@@ -48,6 +48,24 @@ public final class FileUtil
     //--------------------------------------------------------------------------
 
     /**
+     * Removes a directory.
+     * 
+     * @param dir Directory to remove.
+     */
+    public static void removeDir(File dir)
+    {
+        if (dir != null)
+        {        
+            cleanDir(dir);
+            dir.delete();
+        }
+        else
+        {
+            // warn??
+        }
+    }
+
+    /**
      * Deletes the contents of a directory including nested directories. The
      * directory itself is not deleted.
      *
@@ -100,7 +118,7 @@ public final class FileUtil
         }
         finally
         {
-            ResourceCloser.close(br);
+            StreamUtil.close(br);
         }
 
         return text.toString();
