@@ -351,7 +351,8 @@ public class QueryPlugin extends JPanel implements IPlugin
                 String results = executeSQL(sqlArea_.getText());
                 resultsArea_.append(results);
                 
-                if (StringUtil.tokenize(results, Stringz.NL).length < 50)
+                if ((!StringUtil.isNullOrBlank(results)) &&
+                    (StringUtil.tokenize(results, Stringz.NL).length < 50))
                     resultsArea_.scrollToEnd();
                     
                 statusBar_.setStatus("Done");
@@ -384,7 +385,8 @@ public class QueryPlugin extends JPanel implements IPlugin
                 String results = executeSQL(sql);        
                 resultsArea_.append(results);
                 
-                if (StringUtil.tokenize(results, Stringz.NL).length < 50)
+                if ((!StringUtil.isNullOrBlank(results)) &&
+                    (StringUtil.tokenize(results, Stringz.NL).length < 50))
                     resultsArea_.scrollToEnd();
 
                 statusBar_.setInfo("Done");
