@@ -3,6 +3,7 @@ package toolbox.showclasspath;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -20,10 +21,10 @@ import toolbox.util.StringUtil;
  * <pre>
  * 
  * ========================================================================
- * JAR/Directory                             Size          Date    Time
+ * JAR/Directory                               Size          Date    Time
  * ========================================================================
- * \toolbox\classes                                    06-25-2002  12:32a
- * \toolbox\resources                                  05-15-2002  11:54p
+ * \toolbox\classes                           [DIR]    06-25-2002  12:32a
+ * \toolbox\resources                         [DIR]    05-15-2002  11:54p
  * \toolbox\lib\junit.jar                   117,522    04-21-2002  05:57p
  * \toolbox\lib\log4j.jar                   158,892    04-21-2002  05:57p
  * \toolbox\lib\jakarta-regexp-1.2.jar       29,871    05-14-2002  06:58p
@@ -37,40 +38,46 @@ public final class Main
     //--------------------------------------------------------------------------
 
     /** 
-     * Max length for size column.
+     * Max length for the jar file size column.
      */
     private static final int MAX_SIZE_LEN = 12;
     
     /** 
-     * Max length for date column.
+     * Max length for the jar file/directory date column.
      */
     private static final int MAX_DATE_LEN = 14;
     
     /** 
-     * Max length for time column.
+     * Max length for the jar file/directory time column.
      */
     private static final int MAX_TIME_LEN = 8;
 
     /** 
-     * Column heading for archive.
+     * Column heading for the archive/path classpath elements.
      */
     private static final String COL_ARCHIVE = "JAR/Directory";
     
     /** 
-     * Column heading for date. 
+     * Column heading for the jar file/direcotry date. 
      */
     private static final String COL_DATE = "Date";
     
     /** 
-     * Column heading for size. 
+     * Column heading for the jar file size. 
      */
     private static final String COL_SIZE = "Size";
     
     /** 
-     * Column heading for time.
+     * Column heading for the jar file/directory time.
      */    
     private static final String COL_TIME = "Time";
 
+    /**
+     * Formatter for dates.
+     */
+    private static final SimpleDateFormat dateFormat_ = 
+        new SimpleDateFormat("MM-dd-yyyy");    
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -92,49 +99,42 @@ public final class Main
     /**
      * Writes the classpath to the given output stream.
      * 
-     * @param output OutputStream to send classpath listing to.
+     * @param out OutputStream to send classpath listing to.
      */
     public static void showPath(OutputStream out)
     {
         PrintStream pout = new PrintStream(out, true);
-        
-        // stuffed everything info main()
-        String classPath = System.getProperty("java.class.path");
+        String classPath = ClassUtil.getClasspath();
         
         StringTokenizer st = 
-            new StringTokenizer(classPath,System.getProperty("path.separator"));
+            new StringTokenizer(
+                classPath,
+                System.getProperty("path.separator"));
             
         int max = 0;
 
-        // find longest for formatting
+        // Find longest path/archive for formatting
         while (st.hasMoreElements())
-        {
-            String path = st.nextToken();
-
-            if (path.length() > max)
-                max = path.length();
-        }
+            max = Math.max(st.nextToken().length(), max);
 
         max++;
-        
-        st = new StringTokenizer(
-            classPath, System.getProperty("path.separator"));
 
-        // header row
+        st=new StringTokenizer(classPath, System.getProperty("path.separator"));
+
+        // Header row
         if (st.countTokens() > 0)
         {
-            int rowLength = max + MAX_SIZE_LEN + 
-                            MAX_DATE_LEN + MAX_TIME_LEN;
+            int rowLength = 
+                max + 
+                MAX_SIZE_LEN + 
+                MAX_DATE_LEN + 
+                MAX_TIME_LEN;
                             
             pout.println(StringUtil.repeat("=", rowLength));
-            pout.print(COL_ARCHIVE);
-            pout.print(repeatSpace(max - COL_ARCHIVE.length()));
-            pout.print(repeatSpace(MAX_SIZE_LEN - COL_SIZE.length()));
-            pout.print(COL_SIZE);
-            pout.print(repeatSpace(MAX_DATE_LEN - COL_DATE.length()));
-            pout.print(COL_DATE);
-            pout.print(repeatSpace(MAX_TIME_LEN - COL_TIME.length()));
-            pout.print(COL_TIME);
+            pout.print(StringUtil.left(COL_ARCHIVE, max));
+            pout.print(StringUtil.right(COL_SIZE, MAX_SIZE_LEN));
+            pout.print(StringUtil.right(COL_DATE, MAX_DATE_LEN));
+            pout.print(StringUtil.right(COL_TIME, MAX_TIME_LEN));
             pout.println();
             pout.println(StringUtil.repeat("=", rowLength));
         }
@@ -143,58 +143,52 @@ public final class Main
         while (st.hasMoreElements())
         {
             String path = st.nextToken();
-            pout.print(path);
-
-            for (int i = 0; i < (max - path.length()); i++)
-                pout.print(" ");
-
+            pout.print(StringUtil.left(path, max));
             File f = new File(path);
 
-            // if archive, get more info
+            // If archive, get more info
             if (ClassUtil.isArchive(path))
             {
                 if (f.exists() && f.isFile() && f.canRead())
                 {
                     Date lastModified = new Date(f.lastModified());
-                    String date = formatDate(lastModified);
-                    String time = formatTime(lastModified);
-                    String length = formatLength(f.length());
                     
-                    pout.print(
-                        repeatSpace(MAX_SIZE_LEN - length.length()));
-                        
-                    pout.print(length);
-                    pout.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                    pout.print(date);
-                    pout.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                    pout.print(time);
+                    pout.print(StringUtil.right(
+                        NumberFormat.getIntegerInstance().format(f.length()), 
+                        MAX_SIZE_LEN));
+                    
+                    pout.print(StringUtil.right(
+                        dateFormat_.format(lastModified), MAX_DATE_LEN));
+                    
+                    pout.print(StringUtil.right(
+                        formatTime(lastModified), MAX_TIME_LEN));
                 }
                 else
                 {
                     if (!f.exists())
-                        pout.print("Does not exist!");
+                        pout.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
                     else if (!f.isFile())
-                        pout.print("Is not a file!");
+                        pout.print(StringUtil.right("[Not File]",MAX_SIZE_LEN));
                     else if (!f.canRead())
-                        pout.print("Cannot open file!");
+                        pout.print(StringUtil.right("[ReadOnly]",MAX_SIZE_LEN));
                     else
-                        pout.print("Unknown error opening file!");
+                        pout.print(StringUtil.right("[Error]",MAX_SIZE_LEN));
                 }
             }
             else if (f.isDirectory())
             {
                 Date lastModified = new Date(f.lastModified());
-                String date = formatDate(lastModified);
-                String time = formatTime(lastModified);
-                pout.print(repeatSpace(MAX_SIZE_LEN));
-                pout.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                pout.print(date);
-                pout.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                pout.print(time);
+                pout.print(StringUtil.right("[DIR]", MAX_SIZE_LEN));
+                
+                pout.print(StringUtil.right(
+                    dateFormat_.format(lastModified), MAX_DATE_LEN));
+                
+                pout.print(StringUtil.right(
+                    formatTime(lastModified), MAX_TIME_LEN));
             }
             else if (!f.exists())
             {
-                pout.print("Does not exist!");
+                pout.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
             }
 
             pout.println();
@@ -204,37 +198,6 @@ public final class Main
     //--------------------------------------------------------------------------
     // Package Protected
     //--------------------------------------------------------------------------
-
-    /**
-     * Formats date to specific format: 01/01/1980  12/31/1999
-     * 
-     * @param d Date to format
-     * @return Formatted date
-     */
-    static String formatDate(Date d)
-    {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-
-        return dateFormat.format(d);
-    }
-
-
-    /**
-     * Formats the file size length to include commas: 1,233,276
-     * 
-     * @param l file length
-     * @return formatted length
-     */
-    static String formatLength(long l)
-    {
-        StringBuffer sbuf = new StringBuffer(l + "");
-
-        for (int i = sbuf.length() - 3; i > 0; i -= 3)
-            sbuf.insert(i, ",");
-
-        return new String(sbuf);
-    }
-
 
     /**
      * Formats time to specific format:  12:47a  01:07p
@@ -260,8 +223,8 @@ public final class Main
     /**
      * Builds a string with a given number of spaces.
      * 
-     * @param l number of spaces
-     * @return string containing given number of spaces
+     * @param l Number of spaces
+     * @return String containing given number of spaces
      */
     static String repeatSpace(int l)
     {
