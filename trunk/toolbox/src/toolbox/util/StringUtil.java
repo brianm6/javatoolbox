@@ -554,7 +554,7 @@ public final class StringUtil
         }
         finally
         {
-            ResourceCloser.close(lnr);
+            StreamUtil.close(lnr);
         }
         
         return lineString;
