@@ -370,7 +370,7 @@ public class JFileExplorer extends JPanel
      *
      * @return String
      */
-    private String getCurrentPath()
+    public String getCurrentPath()
     {
         return currentPath_;
     }
@@ -572,13 +572,17 @@ public class JFileExplorer extends JPanel
             else
             {
                 // Root drive a possibility
-                File   root  = new File(path.substring(0,3));
+                File root  = new File(path.substring(0,3));
                 
                 if (ArrayUtil.contains(File.listRoots(), root))
                 {
                     // Update the root since the path separator was stripped
                     // by the tokenizer
                     pathTokens[0] = root.toString();
+                    
+                    // Switch to different drive if necessary
+                    rootsComboBox_.setSelectedItem(new File(pathTokens[0]));                    
+                    logger_.debug(method + "new root: " + rootsComboBox_.getSelectedItem());
                 }
                 else
                 {
