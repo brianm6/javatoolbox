@@ -425,6 +425,7 @@ public class XMLNode
         }
 
         Enumeration enum = enumerateAttr();
+        
         while (enum.hasMoreElements())
         {
             tmp.append(" ");
@@ -483,6 +484,10 @@ public class XMLNode
         }
         return tmp.toString();
     }
+
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
 
     /**
      * A null implementation of an Enumeration. It contains nothing.
