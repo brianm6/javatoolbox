@@ -1,6 +1,8 @@
 
 package toolbox.util.statemachine;
 
+import java.util.List;
+
 import toolbox.util.service.Nameable;
 
 /**
@@ -103,6 +105,31 @@ public interface StateMachine extends Nameable
 
     
     /**
+     * Returns a list of all the Transitions registered with this StateMachine
+     * in no particular order.
+     *  
+     * @return List<Transition>
+     */
+    List getTransitions();
+
+    
+    /**
+     * Returns a list of all the Transitions from the given state.
+     *  
+     * @return List<Transition>
+     */
+    List getTransitionsFrom(State state);
+    
+    
+    /**
+     * Returns a list of all the Transitions to the given state.
+     *  
+     * @return List<Transition>
+     */
+    List getTransitionsTo(State state);
+    
+    
+    /**
      * Returns the current state of this state machine.
      * 
      * @return State
@@ -110,6 +137,14 @@ public interface StateMachine extends Nameable
     State getState();
 
 
+    /**
+     * Returns a list of all States this state machine.
+     * 
+     * @return List<State>
+     */
+    List getStates();
+
+    
     /**
      * Returns the last known transition that affected this state machine.
      * 
