@@ -42,8 +42,25 @@ public final class StringUtil
      * Break with newline. 
      */
     public static final String BRNL = BR + NL;
+
+    /**
+     * Default wrap length is 80.
+     */
+    public static final int DEFAULT_WRAP_LENGTH = 80;
     
-    // Clover private constructor workaround
+    /**
+     * Default indentation character is a space.
+     */
+    public static final String DEFAULT_INDENT_CHAR = " ";
+    
+    /**
+     * Default indentation length is 2 characters.
+     */
+    public static final int DEFAULT_INDENT_LENGTH = 2;
+    
+    /**
+     * Clover private constructor workaround
+     */
     static { new StringUtil(); }
     
     //--------------------------------------------------------------------------
@@ -58,7 +75,7 @@ public final class StringUtil
     }
     
     //--------------------------------------------------------------------------
-    // Public
+    // Left
     //--------------------------------------------------------------------------
     
     /**
@@ -147,6 +164,9 @@ public final class StringUtil
         return justStr;
     }
 
+    //--------------------------------------------------------------------------
+    // Right
+    //--------------------------------------------------------------------------
     
     /**
      * Right justifies a string representing an integer within the given width.
@@ -233,6 +253,207 @@ public final class StringUtil
         return justStr;
     }
 
+    //--------------------------------------------------------------------------
+    // Wrap
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Wraps a string to a default width of 80.
+     * 
+     * @param s String to wrap.
+     * @return Wrapped string.
+     */    
+    public static String wrap(String s)
+    {
+        return wrap(s, DEFAULT_WRAP_LENGTH);
+    }
+    
+    
+    /**
+     * Wraps a string to a default width of 80. The beginnning of line and end
+     * of line are decorated with brackets to create a box effect if the border
+     * flag is set.
+     * 
+     * <pre>
+     *  [some text here] [more text here]
+       </pre>
+     * 
+     * @param s String to wrap.
+     * @param border True to enclose wrapped text in brackets.
+     * @return Wrapped string with box decoration.
+     */
+    public static String wrap(String s, boolean border)
+    {
+        return wrap(s, DEFAULT_WRAP_LENGTH, border);
+    }
+    
+    
+    /**
+     * Wraps a string to a given width. The beginning of line and end of line
+     * are decorated with brackets to create a box effect if the border flag is
+     * set.
+     * 
+     * @param s String to wrap.
+     * @param width Width to wrap the string.
+     * @param border Should the wrapped text be decorated with a border?
+     * @return Wrapped string.
+     */
+    public static String wrap(String s, int width, boolean border)
+    {
+        if (border)
+            return wrap(s, width, "[", "]");    
+        else
+            return wrap(s, width, "", "");
+    }
+
+    
+    /**
+     * Wraps a string to a given width.
+     * 
+     * @param s String to wrap.
+     * @param width Width to wrap the string.
+     * @return Wrapped string.
+     */
+    public static String wrap(String s, int width)
+    {
+        return wrap(s, width, "", "");    
+    }
+
+    
+    /**
+     * Wraps a string to the specified criteria.
+     * 
+     * @param s String to wrap.
+     * @param width Width to wrap the string.
+     * @param prefix Prefix before each line.
+     * @param suffix Suffix after each line.
+     * @return Wrapped string.
+     */
+    public static String wrap(String s, int width, String prefix, 
+        String suffix)
+    {
+        String wrapped = null;
+        
+        try
+        {
+            StringWriter sw = new StringWriter();
+            WrappingWriter w = new WrappingWriter(sw, width, prefix, suffix);
+            w.write(s);
+            w.close();
+            wrapped = sw.toString();
+        }
+        catch (IOException e)
+        {
+            logger_.error(e);
+        }
+        
+        return wrapped;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Indent
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns an indented string using the default indentation string (two
+     * spaces).
+     * 
+     * @param s String to indent.
+     * @return If the input string is non-null, the indented string.  
+     *         If the input string is null, the default indent string.
+     */   
+    public static String indent(String s) {
+        return indent(s, DEFAULT_INDENT_LENGTH);
+    }
+
+
+    /**
+     * Returns an indented string using a space character repeated the given 
+     * number of times. 
+     * 
+     * @param s String to indent.
+     * @param numChars The number of times to repeat the default indent 
+     *        character.
+     * @return If the input string is non-null, the indented string.  
+     *         If the input string is null, indentString.
+     */   
+    public static String indent(String s, int numChars) {
+        return indent(s, numChars, DEFAULT_INDENT_CHAR);
+    }
+
+    
+    /**
+     * Returns an indented string.
+     * 
+     * @param s String to indent.
+     * @param numChars The number of times to repeat the indentChar.
+     * @param indentChar The character to use for indentation.
+     * @return If the input string is non-null, the indented string.  
+     *         If the input string is null, indentString.
+     */   
+    public static String indent(String s, int numChars, String indentChar) {
+        return indent(s, StringUtils.repeat(indentChar, numChars));
+    }
+ 
+ 
+    /**
+     * Returns an indented string.
+     * 
+     * @param s String to indent.
+     * @param indentString String to use as the indentation.
+     * @return If the input string is non-null, the indented string. If the
+     *         input string is null, indentString.
+     */
+    public static String indent(String s, String indentString)
+    {
+        // Null short circuit
+        if (s == null)
+            return indentString;
+
+        // Single line short circuit
+        if (!StringUtil.isMultiline(s))
+            return indentString + s;
+
+        // Result buffer
+        StringBuffer sb = new StringBuffer();
+
+        // Tokenize preserving new lines (contiguous newlines would otherwise
+        // be lost).
+        StringTokenizer st = new StringTokenizer(s, "\n", true);
+
+        // Flag to recognize consecutive newline chars
+        boolean prevWasNewline = false;
+
+        // Flag for the first line of the string
+        boolean isFirst = true;
+
+        while (st.hasMoreTokens())
+        {
+            String token = st.nextToken();
+
+            if (token.equals("\n"))
+            {
+                if (prevWasNewline || isFirst)
+                    sb.append(indentString + token);
+                else
+                    sb.append(token);
+                prevWasNewline = true;
+            }
+            else
+            {
+                sb.append(indentString + token);
+                prevWasNewline = false;
+            }
+
+            isFirst = false;
+        }
+
+        return sb.toString();
+    }    
+
+    //--------------------------------------------------------------------------
+    // Misc
+    //--------------------------------------------------------------------------
     
     /**
      * Return the given list as a debug string.
@@ -311,100 +532,6 @@ public final class StringUtil
         else
             return s.substring(0, n);    
     }  
-
-    
-    /**
-     * Wraps a string to a default width of 80.
-     * 
-     * @param s String to wrap.
-     * @return Wrapped string.
-     */    
-    public static String wrap(String s)
-    {
-        return wrap(s, 80);
-    }
-    
-    
-    /**
-     * Wraps a string to a default width of 80. The beginnning of line and end
-     * of line are decorated with brackets to create a box effect if the border
-     * flag is set.
-     * 
-     * <pre>
-     *  [some text here] [more text here]
-       </pre>
-     * 
-     * @param s String to wrap.
-     * @param border True to enclose wrapped text in brackets.
-     * @return Wrapped string with box decoration.
-     */
-    public static String wrap(String s, boolean border)
-    {
-        return wrap(s, 80, border);
-    }
-    
-    
-    /**
-     * Wraps a string to a given width. The beginning of line and end of line
-     * are decorated with brackets to create a box effect if the border flag is
-     * set.
-     * 
-     * @param s String to wrap.
-     * @param width Width to wrap the string.
-     * @param border Should the wrapped text be decorated with a border?
-     * @return Wrapped string.
-     */
-    public static String wrap(String s, int width, boolean border)
-    {
-        if (border)
-            return wrap(s, width, "[", "]");    
-        else
-            return wrap(s, width, "", "");
-    }
-
-    
-    /**
-     * Wraps a string to a given width.
-     * 
-     * @param s String to wrap.
-     * @param width Width to wrap the string.
-     * @return Wrapped string.
-     */
-    public static String wrap(String s, int width)
-    {
-        return wrap(s, width, "", "");    
-    }
-
-    
-    /**
-     * Wraps a string to the specified criteria.
-     * 
-     * @param s String to wrap.
-     * @param width Width to wrap the string.
-     * @param prefix Prefix before each line.
-     * @param suffix Suffix after each line.
-     * @return Wrapped string.
-     */
-    public static String wrap(String s, int width, String prefix, 
-        String suffix)
-    {
-        String wrapped = null;
-        
-        try
-        {
-            StringWriter sw = new StringWriter();
-            WrappingWriter w = new WrappingWriter(sw, width, prefix, suffix);
-            w.write(s);
-            w.close();
-            wrapped = sw.toString();
-        }
-        catch (IOException e)
-        {
-            logger_.error(e);
-        }
-        
-        return wrapped;
-    }
 
     
     /**
