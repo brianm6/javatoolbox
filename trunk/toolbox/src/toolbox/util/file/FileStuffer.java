@@ -8,7 +8,6 @@ import java.util.Date;
 
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
-import toolbox.util.RandomUtil;
 import toolbox.util.ResourceCloser;
 import toolbox.util.ThreadUtil;
 
@@ -39,6 +38,8 @@ public class FileStuffer implements Runnable
      * arg[1] = delay in milliseconds
      * 
      * </pre>
+     * 
+     * @param  args  Filename, delay in millis
      */
     public static void main(String args[])
     {
@@ -74,10 +75,12 @@ public class FileStuffer implements Runnable
      */ 
     protected static void printUsage()
     {
-        System.out.println("FileStuffer writes data to a file at given intervals");
-        System.out.println("Usage: FileStuffer <output file> <delay in millis>");
+        System.out.println(
+            "FileStuffer writes data to a file at given intervals");
+            
+        System.out.println(
+            "Usage: FileStuffer <output file> <delay in millis>");
     } 
-        
 
 
     /**

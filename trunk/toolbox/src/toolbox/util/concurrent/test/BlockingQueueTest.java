@@ -19,6 +19,8 @@ public class BlockingQueueTest extends TestCase
 
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */    
     public static void main(String[] args)
     {
@@ -32,7 +34,7 @@ public class BlockingQueueTest extends TestCase
     /**
      * Constructor for BlockingQueueTest.
      * 
-     * @param arg0
+     * @param arg0  Name
      */
     public BlockingQueueTest(String arg0)
     {
@@ -45,6 +47,8 @@ public class BlockingQueueTest extends TestCase
     
     /**
      * Test pull() when the timeout expires
+     * 
+     * @throws Exception on error
      */
     public void testPullTimeoutExpired() throws Exception 
     {
@@ -65,6 +69,8 @@ public class BlockingQueueTest extends TestCase
     
     /**
      * Test pull() when item is popped before the timeout
+     * 
+     * @throws Exception on error
      */
     public void testPullTimeoutMet() throws Exception 
     {
@@ -83,7 +89,10 @@ public class BlockingQueueTest extends TestCase
                 {
                     obj = q.pull(10000);
                 }
-                catch(InterruptedException e) {}
+                catch(InterruptedException e) 
+                {
+                    // Ignore
+                }
                 
                 time.setEndTime();
                 

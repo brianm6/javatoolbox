@@ -50,6 +50,8 @@ public class FileCreatedActivityTest extends TestCase
         
     /**
      * Tests getFiles()
+     * 
+     * @throws  Exception on error
      */
     public void testGetFiles() throws Exception
     {

@@ -58,8 +58,7 @@ public class DirectoryMonitor
     /**
      *  Creates a DirectoryMonitor with the given directory and selection policy
      *
-     *  @param    directory    Directory to monitor for files
-     *  @param    policy       File selection policy
+     *  @param    dir    Directory to monitor for files
      */
     public DirectoryMonitor(File dir)
     {
@@ -89,7 +88,7 @@ public class DirectoryMonitor
      * Requests termination of the monitor. Does not block on termination
      * nor does it guarantee termination.
      * 
-     * @throws InterruptedException
+     * @throws InterruptedException when interrupted
      */
     public void stop() throws InterruptedException
     {
@@ -145,6 +144,8 @@ public class DirectoryMonitor
 
     /**
      * Adds an activity to monitor
+     * 
+     * @param activity  Activity to monitor
      */
     public void addFileActivity(IFileActivity activity)
     {
@@ -152,7 +153,9 @@ public class DirectoryMonitor
     }
 
     /**
-     * Removes an activity from the list of monitored activities_
+     * Removes an activity from the list of monitored activities
+     * 
+     * @param  activity  Activity to remove
      */
     public void removeFileActivity(IFileActivity activity)
     {
@@ -193,7 +196,8 @@ public class DirectoryMonitor
     }
 
     /**
-     * Adds a listener to the list that's notified each time a new file is available.
+     * Adds a listener to the list that's notified each time a 
+     * new file is available.
      *
      * @param    listener    Listener to add to notification list
      */
@@ -242,14 +246,13 @@ public class DirectoryMonitor
                         // Eat exceptions so rest of listeners get serviced
                         try
                         {
-                            fireFileActivity(activity, activeFiles);                    
+                            fireFileActivity(activity, activeFiles);
                         }
                         catch(Exception e)
                         {
                             logger_.error(method + e.getMessage(), e);
                         }
                     }
- 
                     
                     ThreadUtil.sleep(getDelay());
                 }

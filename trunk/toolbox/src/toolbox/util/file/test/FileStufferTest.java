@@ -49,6 +49,8 @@ public class FileStufferTest extends TestCase
     
     /**
      * Tests running the filestuffer
+     * 
+     * @throws  Exception on error
      */
     public void testFileStuffer() throws Exception
     {

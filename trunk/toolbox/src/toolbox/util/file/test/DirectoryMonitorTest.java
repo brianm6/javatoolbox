@@ -10,6 +10,8 @@ public class DirectoryMonitorTest extends TestCase
 {
     /**
      * Entrypoint
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -19,7 +21,8 @@ public class DirectoryMonitorTest extends TestCase
     
     /**
      * Constructor for DirectoryMonitorTest.
-     * @param arg0
+     * 
+     * @param arg0 Name
      */
     public DirectoryMonitorTest(String arg0)
     {
