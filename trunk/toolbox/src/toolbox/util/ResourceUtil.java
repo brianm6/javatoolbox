@@ -274,10 +274,12 @@ public final class ResourceUtil
      * @param  resource     Name of resource
      * @param  packageName  Name of package to create object in
      * @param  className    Name of class to assign to created object
+     * @param  destDir      Directory that generated file should be placed in
+     * @return Generated java file as a string
      * @throws IOException if an error occurs
      */
-    public static void exportToClass(String resource, String packageName, 
-        String className) throws IOException
+    public static String exportToClass(String resource, String packageName, 
+        String className, File destDir) throws IOException
     {
         InputStream is = getResource(resource);
         
@@ -291,13 +293,17 @@ public final class ResourceUtil
             javaData.append(data[i] + ", ");
         javaData.append(data[data.length-1] + " ");
         
+        String arraySrc = 
+            StringUtil.wrap(
+                javaData.toString(), 72, "        ", "");
+        
         String template = 
             "package " + packageName + ";         \n" +
             "                                     \n" +
-            "public class " + className +       "\n" +
-            "{                                   \n" +
-            "    private static byte[] data = new byte[] {" + 
-            javaData.toString() + "};\n"  +
+            "public class " + className +        "\n" +
+            "{                                    \n" +
+            "    private static byte[] data = new byte[] {\n" + 
+            arraySrc + "\n    };\n" +
             "                                    \n" +    
             "    private " + className + "()     \n" +
             "    {                               \n" +
@@ -305,12 +311,14 @@ public final class ResourceUtil
             "                                    \n" +
             "    public static byte[] getBytes() \n" +
             "    {                               \n" +
-            "         return data;                \n" +
+            "        return data;                \n" +
             "    }                               \n" +
             "}                                   \n" ;
 
-        System.out.println(template);
+        FileUtil.setFileContents(
+            destDir.getAbsolutePath() + File.separator + className + ".java",
+                template, false);
         
-        FileUtil.setFileContents(className+".java",template, false);
+        return template;
     }
 }
