@@ -10,7 +10,6 @@ package toolbox;
  * TODO: Add vizant for visualization of build dependencies
  * TODO: Add package.html to all packages
  * TODO: Add support to minimize to system tray - systray4j
- * TODO: Upgrade to ant 1.5.3
  * TODO: Integrate automatic build number generation into the build process.
  * </pre>
  */
