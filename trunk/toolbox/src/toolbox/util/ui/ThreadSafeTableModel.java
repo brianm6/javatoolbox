@@ -25,7 +25,7 @@ import toolbox.util.concurrent.IBatchingQueueListener;
 public class ThreadSafeTableModel extends DefaultTableModel 
     implements IBatchingQueueListener
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ThreadSafeTableModel.class);
         
@@ -196,14 +196,13 @@ public class ThreadSafeTableModel extends DefaultTableModel
     {
         queue_ = new BlockingQueue();
         queueReader_ = new BatchingQueueReader(queue_);
-        queueReader_.addBatchQueueListener(this);
-        Thread t = new Thread(queueReader_);
-        t.start();
+        queueReader_.addBatchingQueueListener(this);
+        queueReader_.start();
     }
     
 
     //--------------------------------------------------------------------------
-    //  IBatchQueueListener Interface
+    //  IBatchingQueueListener Interface
     //--------------------------------------------------------------------------
     
     /**
