@@ -16,6 +16,10 @@ import toolbox.util.ui.JSmartTextArea;
 public class JTextAreaAppender extends AppenderSkeleton
     implements DocumentListener
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Text area that logging statements are directed to. 
      */ 
@@ -47,7 +51,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     /**
      * Returns the text area.
      *  
-     * @return Text area
+     * @return JTextArea
      */
     public JTextArea getTextArea()
     {
@@ -58,10 +62,9 @@ public class JTextAreaAppender extends AppenderSkeleton
     // Overrides org.apache.log4j.AppenderSkeleton
     //--------------------------------------------------------------------------
     
-    /** 
-     * Appends the logging event information to the text area.
-     * 
-     * @param loggingEvent  Logging event
+    /**
+     * @see org.apache.log4j.AppenderSkeleton#append(
+     *      org.apache.log4j.spi.LoggingEvent)
      */
     public void append(LoggingEvent loggingEvent)
     {
@@ -69,10 +72,8 @@ public class JTextAreaAppender extends AppenderSkeleton
     }
 
 
-    /** 
-     * Returns whether we need a layout.
-     * 
-     * @return false
+    /**
+     * @see org.apache.log4j.Appender#requiresLayout()
      */
     public boolean requiresLayout()
     {
@@ -80,8 +81,8 @@ public class JTextAreaAppender extends AppenderSkeleton
     }
 
 
-    /** 
-     * Closes this appender (does nothing).
+    /**
+     * @see org.apache.log4j.Appender#close()
      */
     public void close()
     {
@@ -91,30 +92,30 @@ public class JTextAreaAppender extends AppenderSkeleton
     // javax.swing.event.DocumentListener Interface
     //--------------------------------------------------------------------------
     
-    /** 
-     * Does nothing.
-     * 
-     * @param event  Document event.
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(
+     *      javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(DocumentEvent event)
     {
     }
 
 
-    /** 
-     * Does nothing.
-     * 
-     * @param event  Document event.
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(
+     *      javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(DocumentEvent event)
     {
     }
 
 
-    /** 
-     * Sets the caret position to the end of the text in the text component.
+    /**
+     * Sets the caret position to the end of the text in the text component
+     * whenever it is updated.
      * 
-     * @param  event  Document event.
+     * @see javax.swing.event.DocumentListener#insertUpdate(
+     *      javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent event)
     {

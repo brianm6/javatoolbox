@@ -14,7 +14,14 @@ public class PackageTesterTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(PackageTesterTest.class);
-        
+    
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Package to use for testing purposes.
+     */
     private static final String testPackage_ = "toolbox.showpath.test";    
     
     //--------------------------------------------------------------------------
@@ -24,7 +31,7 @@ public class PackageTesterTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -58,6 +65,7 @@ public class PackageTesterTest extends TestCase
         assertEquals(1, t.getPackageCount());
         t.run();
     }
+    
     
     /**
      * Tests constructor PackageTester(String)
