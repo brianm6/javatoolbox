@@ -26,14 +26,14 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-// Referenced classes of package com.renderx.xep:
-//            JAXPDriver, Driver
+import toolbox.util.StringUtil;
 
 public class XSLDriver
 {
     static
     {
-        System.out.println("\n\n\t\tModified XSLDriver v1\n\n");
+        System.out.println(StringUtil.addBars(
+            "Loaded debug com.renderx.xep.XSLDriver"));
     }
     
     static class QuietLogger extends DefaultHandler

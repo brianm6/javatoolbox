@@ -22,7 +22,7 @@ public class DocumentBlockView extends ChildrenBlockView
     static
     {
         System.out.println(StringUtil.addBars(
-            "Loaded debug org.outerj.pollo.xmleditor.view.DocumentBlockView.class"));
+            "Loaded debug org.outerj.pollo.xmleditor.view.DocumentBlockView"));
     }
     
     protected int titleHeight = 10;
