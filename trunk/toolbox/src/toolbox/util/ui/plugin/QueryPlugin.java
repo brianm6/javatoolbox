@@ -33,7 +33,6 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JTextComponentPopupMenu;
-import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
@@ -63,6 +62,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      * TODO: create SQLDefaults for syntax hiliting
      * TODO: Ctrl-Up/Down should scroll through query history
      * TODO: Move num rows to top of display and stop scrolling down to bottom
+     * TODO: Remberber database profiles and make them user selectable
      */
      
     public static final Logger logger_ =
@@ -349,11 +349,11 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteAction extends SmartAction
+    private class ExecuteAction extends WorkspaceAction
     {
         public ExecuteAction()
         {
-            super("Execute SQL", true, QueryPlugin.this);
+            super("Execute SQL", true, QueryPlugin.this, statusBar_);
             putValue(MNEMONIC_KEY, new Integer('E'));
             putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
         }
@@ -366,23 +366,23 @@ public class QueryPlugin extends JPanel implements IPlugin
                 statusBar_.setStatus("Enter SQL to execute");
             else
             {
-                statusBar_.setBusy("Executing...");
+                statusBar_.setStatus("Executing...");
                 String results = executeSQL(sqlArea_.getText());        
                 resultsArea_.append(results);
                 statusBar_.setStatus("Done");
             }
-                
         }
     }
 
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteCurrentAction extends SmartAction
+    private class ExecuteCurrentAction extends WorkspaceAction
     {
         public ExecuteCurrentAction()
         {
-            super("Execute Current Statement", true, QueryPlugin.this);
+            super("Execute Current Statement", true, QueryPlugin.this, 
+                statusBar_);
         }
     
         public void runAction(ActionEvent e) throws Exception
@@ -395,10 +395,10 @@ public class QueryPlugin extends JPanel implements IPlugin
             }
             else
             {   
-                statusBar_.setBusy("Executing...");
+                statusBar_.setInfo("Executing...");
                 String results = executeSQL(sql);        
                 resultsArea_.append(results);
-                statusBar_.setStatus("Done");
+                statusBar_.setInfo("Done");
             }
         }
     }
@@ -461,32 +461,24 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Connects to the database
      */
-    class ConnectAction extends SmartAction
+    class ConnectAction extends WorkspaceAction
     {
         public ConnectAction()
         {
-            super("Connect", true, QueryPlugin.this);
+            super("Connect", true, QueryPlugin.this, statusBar_);
         }
 
         public void runAction(ActionEvent e) throws Exception
         {
-            try
-            {
-                statusBar_.setBusy("Connecting to database...");
-                
-                JDBCUtil.init(
-                    driverField_.getText(),
-                    urlField_.getText(),
-                    userField_.getText(),
-                    passwordField_.getText());
-             
-                statusBar_.setInfo("Connected to database!");
-            }
-            catch (Exception se)
-            {
-                statusBar_.setError("Connect failed: " + se.getMessage());
-                throw se;
-            }
+            statusBar_.setInfo("Connecting to the database...");
+            
+            JDBCUtil.init(
+                driverField_.getText(),
+                urlField_.getText(),
+                userField_.getText(),
+                passwordField_.getText());
+         
+            statusBar_.setInfo("Connected to the database!");
         }
     }
 }
