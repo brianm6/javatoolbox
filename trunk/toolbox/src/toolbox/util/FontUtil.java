@@ -145,10 +145,36 @@ public final class FontUtil
      * @param units The number of units to increase the size.
      * @return Font with the increased size.
      */
-    public static Font increaseSize(Font font, int units)
+    public static Font grow(final Font font, int units)
     {
-        Font f = font.deriveFont(font.getSize() + units);
+        Font f = font.deriveFont((float)(font.getSize() + units));
         return f;
+    }
+
+    
+    /**
+     * Decreases a fonts size by the given number of units.
+     * 
+     * @param font Font to base decreased size on.
+     * @param units The number of units to decrease the size.
+     * @return Font with the decreased size.
+     */
+    public static Font shrink(final Font font, int units)
+    {
+        return grow(font, -units);
+    }
+    
+    
+    /**
+     * Returns a new font with the given size based on the passed in font.
+     * 
+     * @param font Original font.
+     * @param size Desired size.
+     * @return Font
+     */
+    public static Font setSize(final Font font, int size) 
+    {
+        return grow(font, size - font.getSize());
     }
     
     //--------------------------------------------------------------------------
