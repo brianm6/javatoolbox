@@ -47,6 +47,14 @@ public class JSmartTextArea extends JTextArea
     //--------------------------------------------------------------------------
 
     /**
+     * Default constructor
+     */
+    public JSmartTextArea()
+    {
+        this("");
+    }
+
+    /**
      * Constructor for JSmartTextArea.
      * 
      * @param text  Initial text of textarea
