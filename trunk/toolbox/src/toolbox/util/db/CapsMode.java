@@ -3,7 +3,9 @@ package toolbox.util.db;
 import toolbox.util.AbstractConstant;
 
 /**
- * CapsMode.
+ * Capitalization modes for the SQLFormatter.
+ * 
+ * @see toolbox.util.db.SQLFormatter
  */
 public class CapsMode extends AbstractConstant
 {
@@ -14,17 +16,17 @@ public class CapsMode extends AbstractConstant
     /**
      * Uppercase mode.
      */
-    public static final CapsMode UPPERCASE = new CapsMode("upper");
+    public static final CapsMode UPPERCASE = new CapsMode("Upper case");
     
     /**
      * Lowercase mode.
      */
-    public static final CapsMode LOWERCASE = new CapsMode("lower");
+    public static final CapsMode LOWERCASE = new CapsMode("Lower case");
         
     /**
      * Preserve case mode.
      */
-    public static final CapsMode PRESERVE = new CapsMode("preserve");
+    public static final CapsMode PRESERVE = new CapsMode("Preserve case");
     
     //--------------------------------------------------------------------------
     // Fields
