@@ -118,8 +118,10 @@ public class Dumper implements Stringz
         }
         finally
         {
-            return result;
+            
         }
+        
+        return result;
     }
     
     /**
