@@ -89,7 +89,7 @@ public class BatchingQueueReader
         if (!started_)
         {
             started_  = true;
-            worker_ = new Thread(new Worker());
+            worker_ = new Thread(new Worker(), "BatchingQueueReader");
             worker_.start(); 
         }
         else
