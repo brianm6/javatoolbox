@@ -15,8 +15,10 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Paint;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -497,5 +499,39 @@ public class JHeaderPanel extends JPanel
             g2.fillRect(0, 0, width, height);
             g2.setPaint(storedPaint);
         }
+    }
+    
+    
+    /**
+     * Creates a toolbox specifically to be added to a JHeaderPanel.
+     * 
+     * @return JToolBar
+     */
+    public static JToolBar createToolBar()
+    {
+        JToolBar tb = new JToolBar();
+        tb.setRollover(true);
+        return tb;
+    }
+    
+    /**
+     * Creates a button specifically for a toolbar to be placed in a 
+     * JHeaderPanel.
+     * 
+     * @param icon Button's icon.
+     * @param tooltip Buttons tooltip.
+     * @param action Action to execute.
+     * @return JButton
+     */
+    public static JButton createButton(Icon icon, String tooltip, Action action)
+    {
+        JButton jb = new JSmartButton(action);
+        jb.setIcon(icon);
+        jb.setFocusPainted(false);
+        jb.setToolTipText(tooltip);
+        jb.setRolloverIcon(icon);
+        jb.setMargin(new Insets(0,0,0,0));
+        jb.setText(null);
+        return jb;
     }
 }
