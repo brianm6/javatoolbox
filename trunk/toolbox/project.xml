@@ -274,12 +274,6 @@
     </dependency>
 
     <dependency>
-      <id>jaimlib</id>
-      <version/>
-      <properties/>
-    </dependency>
-
-    <dependency>
       <id>jakarta-regexp</id>
       <version/>
       <properties>
