@@ -11,4 +11,11 @@ public interface IFindClassListener
      * @param  searchResult  Results on class that was found
      */
     public void classFound(FindClassResult searchResult);
+    
+    /**
+     * Notification that a given target is being searched
+     * 
+     * @param  target  Name of the target directory or archive
+     */
+    public void searchingTarget(String target);
 }
