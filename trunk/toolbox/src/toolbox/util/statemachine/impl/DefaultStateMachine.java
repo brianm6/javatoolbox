@@ -1,14 +1,10 @@
 package toolbox.util.statemachine.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -40,6 +36,11 @@ public class DefaultStateMachine implements StateMachine
     private String name_;
     
     /**
+     * Begin state of this state machine.
+     */
+    private State beginState_;
+    
+    /**
      * Current state of this state machine.
      */
     private State currentState_;
@@ -62,12 +63,14 @@ public class DefaultStateMachine implements StateMachine
     /**
      * Maps original state -> Collection(transitions)
      */
-    private MultiMap fromStates_;
+    //private MultiMap fromStates_;
     
     /**
      * Maps transition -> target state
      */
-    private Map toStates_;
+    //private MultiMap toStates_;
+    
+    private MultiKeyMap stateMap_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -92,8 +95,9 @@ public class DefaultStateMachine implements StateMachine
         setName(name);
         listeners_  = new ArrayList(1);
         states_     = new ArrayList();
-        fromStates_ = new MultiHashMap();
-        toStates_   = new HashMap();
+        //fromStates_ = new MultiHashMap();
+        //toStates_   = new MultiHashMap();
+        stateMap_   = new MultiKeyMap();
     }
     
     //--------------------------------------------------------------------------
@@ -113,8 +117,8 @@ public class DefaultStateMachine implements StateMachine
             + "' does not exist in state machine '" 
             + getName() 
             + "'.");
-        
-        currentState_ = state;
+    
+        beginState_ = state;
     }
     
     
@@ -143,6 +147,8 @@ public class DefaultStateMachine implements StateMachine
     public void addTransition(
         Transition transition, State fromState, State toState)
     {
+        // Verify fromState exists
+        
         Validate.isTrue(states_.contains(fromState), 
             "Adding transition '"
             + transition.getName() 
@@ -152,6 +158,7 @@ public class DefaultStateMachine implements StateMachine
             + getName() 
             + "'.");
 
+        // Verify toState exists
         Validate.isTrue(states_.contains(toState),
             "Adding transition '"
             + transition.getName() 
@@ -161,8 +168,19 @@ public class DefaultStateMachine implements StateMachine
             + getName() 
             + "'.");
         
-        fromStates_.put(fromState, transition);
-        toStates_.put(transition, toState);
+        // Verify transition between the two states doesn't already exist.
+        Validate.isTrue(!stateMap_.containsKey(fromState, transition),
+            "Transition '"
+            + transition.getName() 
+            + "' from state '"
+            + fromState.getName()
+            + "' to state '"
+            + toState.getName() 
+            + "' already exists.");
+        
+        stateMap_.put(fromState, transition, toState);
+        //fromStates_.put(fromState, transition);
+        //toStates_.put(transition, toState);
     }
 
     
@@ -172,16 +190,11 @@ public class DefaultStateMachine implements StateMachine
      */
     public State transition(Transition stimulus)
     {
-        Collection transitions = (Collection) fromStates_.get(currentState_);
-        
-        // No transitions found, period
-        Validate.notNull(transitions, 
-            "No transitions exist for state '" 
-            + currentState_.getName() + "'");
-        
+        State targetState = (State) stateMap_.get(currentState_, stimulus); 
+       
         // No transitions found for the given stimulus
-        Validate.isTrue(transitions.contains(stimulus),
-            "No transitions exist for state '" 
+        Validate.notNull(targetState,
+            "No transitions exist from state '" 
             + currentState_.getName() 
             + "' using transition '"
             + stimulus
@@ -189,13 +202,33 @@ public class DefaultStateMachine implements StateMachine
  
         // We have a state change!!
         previousState_ = currentState_;
-        currentState_ = (State) toStates_.get(stimulus);
+        currentState_ = targetState;
         lastTransition_ = stimulus;
         fireStateChanged();
         return currentState_;
     }
 
-
+    
+    /**
+     * @see toolbox.util.statemachine.StateMachine#canTransition(
+     *      toolbox.util.statemachine.Transition)
+     */
+    public boolean canTransition(Transition transition)
+    {
+        return stateMap_.containsKey(currentState_, transition);
+    }
+    
+    
+    /**
+     * @see toolbox.util.statemachine.StateMachine#reset()
+     */
+    public void reset()
+    {
+        currentState_ = beginState_;
+        lastTransition_ = null;
+        previousState_ = null;
+    }
+    
     /**
      * @see toolbox.util.statemachine.StateMachine#getState()
      */
