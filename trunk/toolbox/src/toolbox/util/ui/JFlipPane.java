@@ -785,8 +785,8 @@ public class JFlipPane extends JPanel
          */
         public RotatedTextIcon(int rotate, Font font, String text)
         {
-            this.rotate_ = rotate;
-            this.font_ = font;
+            rotate_ = rotate;
+            font_ = font;
     
             FontRenderContext fontRenderContext = 
                 new FontRenderContext(null,true,true);
@@ -910,7 +910,7 @@ public class JFlipPane extends JPanel
          */
         FlipPaneBorder(String position)
         {
-            this.position_ = position;
+            position_ = position;
             insets_ = new Insets(
                 position.equals(JFlipPane.BOTTOM)?JFlipPane.SPLITTER_WIDTH : 0,
                 position.equals(JFlipPane.RIGHT) ?JFlipPane.SPLITTER_WIDTH : 0,
