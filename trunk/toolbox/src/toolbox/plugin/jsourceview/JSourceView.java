@@ -24,7 +24,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-public class JSourceView extends JFrame implements ActionListener, FilenameFilter, Runnable
+/**
+ * JSourceView
+ */
+public class JSourceView extends JFrame 
+    implements ActionListener, FilenameFilter, Runnable
 {
     JTextField dirField;
     JButton goButton;
@@ -41,12 +45,46 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
     String colNames[] = {
         "Directory", "File", "Code", "Comments", "Blank", "Total", "Percentage"
     };
-    Thread scanDirThread;
-    String pathSeparator;
     
-    class ScanDirWorker implements Runnable
-    {
+    /** Thread to scan directories **/
+    private Thread scanDirThread;
+    
+    /** Platform path separator **/
+    private String pathSeparator;
 
+    /**
+     * Entrypoint
+     * 
+     * @param  args  None recognized 
+     */
+    public static void main(String args[])
+    {
+        new JSourceView().setVisible(true);
+    }
+
+    
+    /** 
+     * Scans directory
+     */
+    private class ScanDirWorker implements Runnable
+    {
+        /** Directory to scan **/
+        private File file;
+
+        /**
+         * Creates a scanner
+         * 
+         * @param  file1  Directory to scann
+         */
+        public ScanDirWorker(File file1)
+        {
+            file = file1;
+        }
+
+                
+        /**
+         * Starts scanning directory on a separate thread
+         */
         public void run()
         {
             Thread thread = new Thread(JSourceView.this);
@@ -54,21 +92,11 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
             findJavaFiles(file);
             setScanStatus("Done scanning.");
         }
-
-        File file;
-
-        public ScanDirWorker(File file1)
-        {
-            file = file1;
-        }
     }
 
-
-    public static void main(String args[])
-    {
-        new JSourceView().setVisible(true);
-    }
-
+    /**
+     * Constructs JSourceview
+     */    
     public JSourceView()
     {
         super("JSourceView v1.1");
@@ -108,7 +136,12 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
         });
     }
 
-    JMenuBar makeMenuBar()
+    /**
+     * Creates the menu bar 
+     * 
+     * @return  Menubar
+     */
+    private JMenuBar makeMenuBar()
     {
         JMenu jmenu = new JMenu("File");
         JMenu jmenu1 = new JMenu("Help");
@@ -127,6 +160,12 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
         return menuBar;
     }
 
+    
+    /**
+     * Handles actions from the GUI
+     *
+     * @param  actionevent  Action to handle
+     */
     public void actionPerformed(ActionEvent actionevent)
     {
         Object obj = actionevent.getSource();
@@ -150,6 +189,10 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
             showAbout();
     }
 
+
+    /**
+     * Saves the results to a file
+     */
     void saveResults()
     {
         String s = JOptionPane.showInputDialog("Save to file");
@@ -157,6 +200,10 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
             model.saveToFile(s);
     }
 
+    
+    /**
+     * Shows About dialog box
+     */
     void showAbout()
     {
         JOptionPane.showMessageDialog(null, 
@@ -166,10 +213,15 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
             "Program will recurse through all subdirs and count lines\n" + 
             "in all .java, .cpp, .c, and .h files.\n\n" +
             "Comments/bugs/etc appreciated.\n\n" + 
-            "Disclaimer: This thing was hacked together over a few hours. Use at your own risk.", 
+            "Disclaimer: This thing was hacked together over a few hours. " +
+            "Use at your own risk.", 
             "About JSourceView", 1);
     }
 
+    
+    /** 
+     * Starts the scanning
+     */
     void goButtonPressed()
     {
         goButton.setEnabled(false);
@@ -180,16 +232,31 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
         scanDirThread.start();
     }
 
+    /**
+     * Sets the text of the scan status
+     * 
+     * @param  s  Status text
+     */
     public void setScanStatus(String s)
     {
         scanStatusLabel.setText(s);
     }
 
+
+    /**
+     * Sets the text of the parse status
+     * 
+     * @param  s  Parse status text
+     */
     public void setParseStatus(String s)
     {
         parseStatusLabel.setText(s);
     }
 
+
+    /**
+     * Runs the doohickey
+     */
     public void run()
     {
         FileStats filestats = new FileStats();
@@ -236,16 +303,37 @@ public class JSourceView extends JFrame implements ActionListener, FilenameFilte
         goButton.setEnabled(true);
     }
 
+
+    /**
+     * Returns directory portion only of a path
+     * 
+     * @param  s  Path 
+     * @return Directory portion of the path
+     */
     public String getDirectoryOnly(String s)
     {
         return s.substring(0, s.lastIndexOf(pathSeparator));
     }
 
+
+    /**
+     * Returns the file portion of a path
+     * 
+     * @param  s  Path
+     * @return File portion of a path
+     */
     public String getFileOnly(String s)
     {
         return s.substring(s.lastIndexOf(pathSeparator) + 1, s.length());
     }
 
+    
+    /**
+     * Scans a given file and generates statistics
+     * 
+     * @param   s  Name of the file
+     * @return  Stats of the file
+     */
     public FileStats scanFile(String s)
     {
         Object obj = null;
