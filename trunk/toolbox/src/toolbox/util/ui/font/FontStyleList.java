@@ -2,7 +2,7 @@ package toolbox.util.ui.font;
 
 import java.awt.Font;
 
-import toolbox.util.ui.JSmartList;
+import toolbox.util.ui.list.JSmartList;
 
 /**
  * Represents a list of the four font styles: plain, bold, italic, and bold 

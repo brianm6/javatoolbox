@@ -37,8 +37,8 @@ import toolbox.util.Assert;
 import toolbox.util.Banner;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
-import toolbox.util.ui.JSmartList;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.list.JSmartList;
 
 /**
  * JFontChooser is a UI component that provides the ability to select a font

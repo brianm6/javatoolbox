@@ -52,10 +52,11 @@ import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
+import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.statusbar.JStatusBar;
-import toolbox.util.ui.tree.*;
 import toolbox.util.ui.tree.JSmartTree;
+import toolbox.util.ui.tree.SmartTreeCellRenderer;
 
 /**
  * Explorer like tree based file browser component.

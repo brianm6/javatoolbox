@@ -39,7 +39,7 @@ import toolbox.util.collections.ObjectComparator;
 import toolbox.util.ui.JListPopupMenu;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
-import toolbox.util.ui.JSmartList;
+import toolbox.util.ui.list.JSmartList;
 
 /**
  * Dialog that allows user to add/remove/find plugins

@@ -1,4 +1,4 @@
-package toolbox.util.ui;
+package toolbox.util.ui.list;
 
 import java.awt.Graphics;
 import java.util.Vector;
@@ -7,6 +7,7 @@ import javax.swing.JList;
 import javax.swing.ListModel;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.AntiAliased;
 
 /**
  * JSmartList adds the following behavior.
