@@ -15,15 +15,41 @@ import toolbox.findclass.FindClassResult;
  */
 public class ResultsTableModel extends AbstractTableModel
 {
-    // Table columns
-    public static final int COL_NUM       = 0;
-    public static final int COL_SOURCE    = 1;
-    public static final int COL_CLASS     = 2;
-    public static final int COL_SIZE      = 3;
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Result number column.
+     */
+    public static final int COL_NUM = 0;
+    
+    /**
+     * Source file directory/jar column.
+     */
+    public static final int COL_SOURCE = 1;
+    
+    /**
+     * Class file name column.
+     */
+    public static final int COL_CLASS = 2;
+    
+    /**
+     * Class file size column.
+     */
+    public static final int COL_SIZE = 3;
+    
+    /**
+     * Class file timestamp column.
+     */
     public static final int COL_TIMESTAMP = 4;
-
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * Result table column headers 
+     * Result table column headers. 
      */    
     private String[] resultColumns_ = new String[] 
     {
@@ -64,13 +90,13 @@ public class ResultsTableModel extends AbstractTableModel
     /**
      * Adds a search result to the end of the table.
      * 
-     * @param results Search result
+     * @param result Search result.
      */        
     public void addResult(FindClassResult result)
     {
         results_.add(result);
-        resultsMap_.put(results_.size()-1+"", result);
-        fireTableRowsInserted(results_.size()-1, results_.size());
+        resultsMap_.put(results_.size() - 1 + "", result);
+        fireTableRowsInserted(results_.size() - 1, results_.size());
     }
     
     
@@ -88,8 +114,8 @@ public class ResultsTableModel extends AbstractTableModel
     /**
      * Retrieves the FindClassResult for the given result number.
      * 
-     * @param number Result number (not row number)
-     * @return FindClassResult or null if not found
+     * @param number Result number (not row number).
+     * @return FindClassResult or null if not found.
      */
     public FindClassResult getResult(String number)
     {

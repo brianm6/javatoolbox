@@ -83,9 +83,8 @@ public class FindClassPane extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    	
-    private static final Logger logger_ = 
-        Logger.getLogger(FindClassPane.class);
+
+    private static final Logger logger_ = Logger.getLogger(FindClassPane.class);
 
     // XML stuff for preferences
     private static final String NODE_JFINDCLASS_PLUGIN = "JFindClassPlugin";
@@ -226,7 +225,8 @@ public class FindClassPane extends JFrame implements IPreferenced
     protected void init(Map params)
     {
         if (params != null)
-            statusBar_ = (IStatusBar)params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar_ = (IStatusBar) 
+                params.get(PluginWorkspace.PROP_STATUSBAR);
             
         buildView();
         findClass_ = new FindClass();
@@ -267,6 +267,8 @@ public class FindClassPane extends JFrame implements IPreferenced
      * Builds the search panel at the top of the GUI with the ignore case box.
      * Allows the user to enter a regular expression into the search field
      * and initiate a search.
+     * 
+     * @return Search panel.
      */    
     protected JPanel buildSearchPanel()
     {
@@ -322,7 +324,8 @@ public class FindClassPane extends JFrame implements IPreferenced
         searchPopupMenu_ = new JSmartPopupMenu();
         searchPopupMenu_.add(new JSmartMenuItem(new ClearTargetsAction()));
         searchPopupMenu_.add(new JSmartMenuItem(new RemoveTargetsAction()));
-        searchPopupMenu_.add(new JSmartMenuItem(new AddClasspathTargetAction()));
+        searchPopupMenu_.add(
+            new JSmartMenuItem(new AddClasspathTargetAction()));
                     
         searchList_.addMouseListener(new JPopupListener(searchPopupMenu_));
         
@@ -435,7 +438,7 @@ public class FindClassPane extends JFrame implements IPreferenced
         column.setMaxWidth(300);
 
         // Set alternating row renderer
-        for (int i=0; i < resultTableModel_.getColumnCount(); i++)
+        for (int i = 0; i < resultTableModel_.getColumnCount(); i++)
             resultTable_.setDefaultRenderer(resultTable_.getColumnClass(i), 
                 new ResultsTableCellRenderer());
     }
@@ -475,7 +478,7 @@ public class FindClassPane extends JFrame implements IPreferenced
             
         fileExplorer_.applyPrefs(root);
 
-		// TODO: Integrate preferences for DecompilerPanel
+        // TODO: Integrate preferences for DecompilerPanel
     }
     
     
@@ -488,7 +491,7 @@ public class FindClassPane extends JFrame implements IPreferenced
         
         fileExplorer_.savePrefs(root);
 
-		// TODO: Integrate preferences for DecompilerPanel
+        // TODO: Integrate preferences for DecompilerPanel
         
         Element topFlipPane = new Element(NODE_TOP_FLIPPANE);
         topFlipPane_.savePrefs(topFlipPane);
@@ -499,13 +502,13 @@ public class FindClassPane extends JFrame implements IPreferenced
         root.appendChild(leftFlipPane);
         
         root.addAttribute(new Attribute(
-            ATTR_IGNORECASE, ignoreCaseCheckBox_.isSelected()+""));
+            ATTR_IGNORECASE, ignoreCaseCheckBox_.isSelected() + ""));
 
         root.addAttribute(new Attribute(
-            ATTR_SHOWPATH, showPathCheckBox_.isSelected()+""));
+            ATTR_SHOWPATH, showPathCheckBox_.isSelected() + ""));
 
         root.addAttribute(new Attribute(
-            ATTR_HILITE_MATCHES, hiliteMatchesCheckBox_.isSelected()+""));
+            ATTR_HILITE_MATCHES, hiliteMatchesCheckBox_.isSelected() + ""));
 
         root.addAttribute(new Attribute(
             ATTR_SEARCH, searchField_.getText().trim()));
@@ -617,16 +620,30 @@ public class FindClassPane extends JFrame implements IPreferenced
          */
         private Map dupes_;
         
+        /**
+         * Creates a FindDupesListener.
+         */
         public FindDupesListener()
         {
             dupes_ = new HashMap();
         }
+
         
+        /**
+         * Adds the results to the table.
+         * 
+         * @param result Search results.
+         */
         protected void addResults(FindClassResult result)
         {        
             resultTableModel_.addResult(result);
         }
 
+        
+        /**
+         * Re-enables the table sorter and updates the status bar with the total
+         * number of duplicates found. 
+         */
         protected void runFinally()
         {
             SwingUtilities.invokeLater(new Runnable()
@@ -634,8 +651,10 @@ public class FindClassPane extends JFrame implements IPreferenced
                 public void run()
                 {
                     resultTableSorter_.setEnabled(true);
+                    
                     statusBar_.setStatus(
-                        resultTableModel_.getRowCount() +" duplicates  found.");
+                        resultTableModel_.getRowCount() + 
+                        " duplicates  found.");
                 }
             });
         }
@@ -658,7 +677,7 @@ public class FindClassPane extends JFrame implements IPreferenced
                 List dupesList = (List) dupes_.get(className);
                 
                 if (dupesList.size() == 1)
-                    addResults( (FindClassResult) dupesList.get(0));
+                    addResults((FindClassResult) dupesList.get(0));
                  
                 dupesList.add(searchResult);
                 addResults(searchResult);
@@ -766,8 +785,18 @@ public class FindClassPane extends JFrame implements IPreferenced
      */   
     class ResultsTableCellRenderer extends SmartTableCellRenderer
     {
+        /**
+         * Formatter.
+         */
         private DecimalFormat decimalFormatter_;
         
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
+        /**
+         * Creates a ResultsTableCellRenderer.
+         */
         public ResultsTableCellRenderer()
         {
             decimalFormatter_ = new DecimalFormat("###,###");    
@@ -780,13 +809,13 @@ public class FindClassPane extends JFrame implements IPreferenced
         /**
          * Returns the default table cell renderer.
          *
-         * @param table JTable
-         * @param value Value to assign to the cell at [row, column]
-         * @param isSelected True if the cell is selected
-         * @param hasFocus True if cell has focus
-         * @param row Row of the cell to render
-         * @param column Column of the cell to render
-         * @return Default table cell renderer
+         * @param table JTable.
+         * @param value Value to assign to the cell at [row, column].
+         * @param isSelected True if the cell is selected.
+         * @param hasFocus True if cell has focus.
+         * @param row Row of the cell to render.
+         * @param column Column of the cell to render.
+         * @return Default table cell renderer.
          */
         public Component getTableCellRendererComponent(
             JTable  table,
@@ -812,7 +841,7 @@ public class FindClassPane extends JFrame implements IPreferenced
                 if (MathUtil.isEven(row))
                     setBackground(table.getBackground());
                 else
-                    setBackground(new Color(240,240,240));
+                    setBackground(new Color(240, 240, 240));
             }
 
             if (hasFocus)
@@ -845,7 +874,7 @@ public class FindClassPane extends JFrame implements IPreferenced
                     break;
                     
                 case ResultsTableModel.COL_TIMESTAMP:
-                    setValue(DateTimeUtil.format((Date)value));                    
+                    setValue(DateTimeUtil.format((Date) value));
                     break;
                     
                 case ResultsTableModel.COL_SOURCE:
@@ -857,14 +886,15 @@ public class FindClassPane extends JFrame implements IPreferenced
 
                 case ResultsTableModel.COL_CLASS:
                 
-                    // Hilight search string match in the entire classes' FQCN                
+                    // Hilight search string match in the entire classes' FQCN
                     if (hiliteMatchesCheckBox_.isSelected())
                     {
                         // Apparently, the number value has to pulled from the 
                         // sorted model instead of the base model while 
                         // rendering the cells.
                 
-                        String number = resultTableSorter_.getValueAt(row,0)+"";
+                        String number = 
+                            resultTableSorter_.getValueAt(row, 0) + "";
                         
                         FindClassResult result = 
                             resultTableModel_.getResult(number);
@@ -905,6 +935,9 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     class FindDupesAction extends WorkspaceAction
     {
+        /**
+         * Creates a FindDupesAction.
+         */
         FindDupesAction()
         {
             super("Find Duplicates", true, null, statusBar_);
@@ -924,6 +957,12 @@ public class FindClassPane extends JFrame implements IPreferenced
         }
         
         
+        /**
+         * Finds duplicates classes.
+         * 
+         * @throws RESyntaxException on regular expression error.
+         * @throws IOException on I/O error.
+         */
         void findDupes() throws RESyntaxException, IOException 
         {
             logger_.debug("Finding duplicates");
@@ -938,8 +977,8 @@ public class FindClassPane extends JFrame implements IPreferenced
             findClass_.addSearchListener(new FindDupesListener());
                         
             // Copy targets from GUI --> findClass_
-            for (int i = 0, n = searchListModel_.size(); i<n; i++)
-                findClass_.addSearchTarget(""+searchListModel_.elementAt(i));
+            for (int i = 0, n = searchListModel_.size(); i < n; i++)
+                findClass_.addSearchTarget("" + searchListModel_.elementAt(i));
             
             Object results[] = findClass_.findClass(".*", false);             
             
@@ -964,6 +1003,9 @@ public class FindClassPane extends JFrame implements IPreferenced
         private Thread searchThread_;
         private String search_;
 
+        /**
+         * Creates a SearchAction.
+         */
         SearchAction()
         {
             super(SEARCH, true, null, statusBar_);
@@ -974,6 +1016,9 @@ public class FindClassPane extends JFrame implements IPreferenced
         
         /**
          * Branch on whether we're searching of canceling an existing search.
+         * 
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
         {
@@ -995,7 +1040,7 @@ public class FindClassPane extends JFrame implements IPreferenced
                 statusBar_.setStatus("Canceling search...");
                 findClass_.cancelSearch();
                 
-                if (searchThread_!= null)
+                if (searchThread_ != null)
                     ThreadUtil.join(searchThread_, 60000);
                     
                 putValue(NAME, SEARCH);
@@ -1008,8 +1053,8 @@ public class FindClassPane extends JFrame implements IPreferenced
         /**
          * Do the search. 
          * 
-         * @throws RESyntaxException on regular expression error 
-         * @throws IOException on I/O error
+         * @throws RESyntaxException on regular expression error. 
+         * @throws IOException on I/O error.
          */
         void doSearch() throws RESyntaxException, IOException 
         {
@@ -1029,11 +1074,11 @@ public class FindClassPane extends JFrame implements IPreferenced
             findClass_.addSearchListener(new SearchListener());
             
             // Copy 1-1 from the seach list model to FindClass
-            for (int i=0, n=searchListModel_.size(); i<n; i++) 
-                findClass_.addSearchTarget(""+searchListModel_.elementAt(i));
+            for (int i = 0, n = searchListModel_.size(); i < n; i++)
+                findClass_.addSearchTarget("" + searchListModel_.elementAt(i));
             
             // Execute the search
-            findClass_.findClass(search_, ignoreCaseCheckBox_.isSelected());             
+            findClass_.findClass(search_, ignoreCaseCheckBox_.isSelected());
             
             //statusBar_.setStatus(results.length + " matches found.");
             
@@ -1051,6 +1096,9 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     class ClearTargetsAction extends AbstractAction
     {
+        /**
+         * Creates a ClearTargetsAction.
+         */
         ClearTargetsAction()
         {
             super("Clear");
@@ -1059,6 +1107,10 @@ public class FindClassPane extends JFrame implements IPreferenced
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             searchListModel_.removeAllElements();
@@ -1074,6 +1126,9 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     class AddClasspathTargetAction extends AbstractAction
     {
+        /**
+         * Creates a AddClasspathTargetAction.
+         */
         AddClasspathTargetAction()
         {
             super("Add Classpath");
@@ -1083,11 +1138,16 @@ public class FindClassPane extends JFrame implements IPreferenced
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             List targets = findClass_.getClassPathTargets();
             
             Iterator i = targets.iterator();
+            
             while (i.hasNext())
             {
                 String target = (String) i.next();
@@ -1105,6 +1165,9 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     class RemoveTargetsAction extends AbstractAction
     {
+        /**
+         * Creates a RemoveTargetsAction.
+         */
         RemoveTargetsAction()
         {
             super("Remove");
@@ -1113,11 +1176,15 @@ public class FindClassPane extends JFrame implements IPreferenced
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             Object[] selected = searchList_.getSelectedValues();
             
-            for (int i=0; i<selected.length; i++)
+            for (int i = 0; i < selected.length; i++)
                 searchListModel_.removeElement(selected[i]);
         }
     }
@@ -1131,6 +1198,10 @@ public class FindClassPane extends JFrame implements IPreferenced
      */
     class TableRepaintAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             resultTable_.repaint();

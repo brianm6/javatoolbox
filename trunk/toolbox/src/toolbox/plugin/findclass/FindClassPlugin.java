@@ -16,7 +16,7 @@ import toolbox.workspace.IPlugin;
  */
 public class FindClassPlugin implements IPlugin
 {
-    public static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(FindClassPlugin.class);
         
     /** 
@@ -63,9 +63,10 @@ public class FindClassPlugin implements IPlugin
      */
     public String getDescription()
     {
-        return "Searches the classpath in addition to arbitrary archives and " +
-               "directories for one or more classes. The search string can be "+
-               "regular expression for added flexbility.";
+        return 
+          "Searches the classpath in addition to arbitrary archives and " +
+          "directories for one or more classes. The search string can be " +
+          "regular expression for added flexbility.";
     }
 
     
