@@ -8,6 +8,8 @@ import java.util.Date;
  */
 public class AdjustableClock implements Clock
 {
+    // TODO: Write unit test
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
