@@ -111,5 +111,6 @@ public class JSourceViewPlugin extends AbstractPlugin
      */
     public void destroy()
     {
+        delegate_.destroy();
     }
 }
