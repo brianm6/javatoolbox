@@ -5,6 +5,10 @@ package toolbox.plugin.jtail.filter;
  */
 public class LineNumberDecorator extends AbstractLineFilter
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Current line number.
      */

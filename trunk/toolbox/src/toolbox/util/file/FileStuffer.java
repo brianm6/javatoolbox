@@ -20,6 +20,10 @@ public class FileStuffer implements Runnable
 {
     // TODO: Refactor as a Service.
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * The output file.
      */
@@ -63,7 +67,7 @@ public class FileStuffer implements Runnable
      * 
      * </pre>
      * 
-     * @param args Filename, delay in millis
+     * @param args Filename, delay in millis.
      */
     public static void main(String args[])
     {
@@ -87,8 +91,8 @@ public class FileStuffer implements Runnable
     /**
      * Creates a FileStuffer.
      * 
-     * @param file File to send output to
-     * @param delay Delay between each write
+     * @param file File to send output to.
+     * @param delay Delay between each write.
      */
     public FileStuffer(File file, int delay)
     {
@@ -99,8 +103,8 @@ public class FileStuffer implements Runnable
     /**
      * Creates a FileStuffer.
      * 
-     * @param file File to send output to
-     * @param delay Delay between each write
+     * @param file File to send output to.
+     * @param delay Delay between each write.
      * @param openClose Flag to open/close file between each successive write 
      *        instead of the default behavior to just applend/flush.
      */
@@ -113,9 +117,9 @@ public class FileStuffer implements Runnable
     /**
      * Creates a FileStuffer.
      * 
-     * @param file File to send output to
-     * @param delay Delay between each write
-     * @param stuffer Provides contents to stuff file with
+     * @param file File to send output to.
+     * @param delay Delay between each write.
+     * @param stuffer Provides contents to stuff file with.
      * @param openClose Flag to open/close file between each successive write 
      *        instead of the default behavior to just applend/flush.
      */
@@ -221,7 +225,7 @@ public class FileStuffer implements Runnable
     /**
      * Sets the file.
      * 
-     * @param file The file to set
+     * @param file The file to set.
      */
     public void setFile(File file)
     {
@@ -243,7 +247,7 @@ public class FileStuffer implements Runnable
     /**
      * Sets the delay.
      * 
-     * @param delay The delay to set
+     * @param delay The delay to set.
      */
     public void setDelay(int delay)
     {
@@ -290,6 +294,9 @@ public class FileStuffer implements Runnable
      */
     static class DefaultStuffProvider implements IStuffProvider
     {
+        /**
+         * Current count.
+         */
         private int cnt_ = 0;
         
         /**

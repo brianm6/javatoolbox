@@ -14,6 +14,10 @@ import java.util.TreeSet;
  */
 public class FileCreatedActivity implements IFileActivity
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Map of directories with their associated snapshot. 
      */   
@@ -39,8 +43,8 @@ public class FileCreatedActivity implements IFileActivity
      * Determines new files in a directory since the last time a snapshot was
      * taken.
      * 
-     * @param dir Directory to analyze
-     * @return List of new files
+     * @param dir Directory to analyze.
+     * @return List of new files.
      */
     public File[] getFiles(File dir)
     {
