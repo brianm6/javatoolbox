@@ -1,7 +1,20 @@
 package toolbox.plugin.xslfo;
 
 /**
- * Factory class that creates implementations of the FOProcessor interface.
+ * Factory that is responsible for creating concrete {@link FOProcessor}s.
+ * <p>
+ * <b>Example</b>
+ * 
+ * <pre class="snippet">
+ * 
+ * // Create Apache FOP processor
+ * FOProcessor processor = 
+ *     FOProcessorFactory.create(FOProcessorFactory.FO_IMPL_APACHE);
+ * 
+ * // Create PDF
+ * processor.renderPDF(in, out);
+ * 
+ * </pre>
  */
 public final class FOProcessorFactory
 {
@@ -37,8 +50,10 @@ public final class FOProcessorFactory
     /**
      * Creates a FOProcessor.
      * 
-     * @param foImpl Implementation to create. See FO_* constants.
+     * @param foImpl Implementation to create.
      * @return FOProcessor
+     * @see #FO_IMPL_APACHE
+     * @see #FO_IMPL_RENDERX
      */
     public static FOProcessor create(String foImpl)
     {
