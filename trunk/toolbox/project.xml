@@ -203,13 +203,6 @@
         </properties>
       </dependency>
 
-      <!--
-      <dependency>
-        <id>db2java</id>
-        <version/>
-      </dependency>
-      -->
-    
       <dependency>
         <id>fop</id>
         <version/>
@@ -291,6 +284,14 @@
       </dependency>
     
       <dependency>
+        <id>liquidlf</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
         <id>log4j</id>
         <version/>
         <properties>
@@ -358,6 +359,14 @@
     
       <dependency>
         <id>tinylaf</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+
+      <dependency>
+        <id>toniclf</id>
         <version/>
         <properties>
           <jnlp.jar>true</jnlp.jar>
