@@ -28,12 +28,12 @@
 
   <repository>
     <connection>
-      scm|cvs|pserver|analogue@hemisfear.cjb.net|/cvs/cvsrep|${pom.artifactId}
+      <!-- scm:cvs:pserver:analogue@hemisfear.cjb.net:/cvs/cvsrep:${pom.artifactId} -->
+      scm:cvs:pserver:analogue@hemisfear.cjb.net:/cvs/cvsrep:${pom.artifactId}
     </connection>
     
     <!-- TODO: remove once statcvs does not depend on this -->
     <url>http://cvs.classworlds.codehaus.org/</url>
-    
   </repository>
   
   <versions>
@@ -270,9 +270,7 @@
       <dependency>
         <id>javassist</id>
         <version/>
-        <properties>
-          <jnlp.jar>true</jnlp.jar>
-        </properties>
+        <properties/>
       </dependency>
     
       <dependency>
@@ -560,6 +558,7 @@
   
  
     <reports>     
+      <!--
       <report>maven-junit-report-plugin</report>
       <report>maven-jdepend-plugin</report>
       <report>maven-changes-plugin</report>
@@ -571,9 +570,10 @@
       <report>maven-pmd-plugin</report>
       <report>maven-jdepend-plugin</report>
       <report>maven-statcvs-plugin</report>
-
+      -->
+      
       <!-- <report>maven-checkstyle-plugin</report> -->      
-      <!-- <report>maven-clover-plugin</report> -->
+      <report>maven-clover-plugin</report>
       <!-- <report>maven-tasklist-plugin</report> -->
       <!-- <report>maven-simian-plugin</report> -->
       
