@@ -23,6 +23,8 @@ package toolbox;
  * TODO: Writer a proper multisplit pane.
  * TODO: Figure out how to use forms
  * TODO: Add tile and cascade to Desktop plugin host
+ * TODO: Integrate new icons from 
+ *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
  * 
  * ========================= JDBC Plugin =======================================
  * TODO: icons for execute all, execute selected, execute current
