@@ -62,6 +62,7 @@ public class ServiceView extends JPanel
     public ServiceView(ObservableService service)
     {
         myServiceListener_ = new MyServiceListener();
+        service.addServiceListener(myServiceListener_);
         setService(service);
         actions_ = new HashMap(4);
         buildView();
