@@ -29,6 +29,8 @@ package toolbox;
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Investigate JModalWindow
  * TODO: Update banner with more external fonts.
+ * TODO: Add Matra as a DTD doc viewer plugin.
+ * TODO: Fix JTail recent menu
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -75,6 +77,7 @@ package toolbox;
  *  - StatcvsPlugin cvs project combobox is sorted
  *  - Added connection pooling to JDBCUtil using commons-dbcp
  *  - Upgraded to commons-io-1.0
+ *  - Added 3D look and feel
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
