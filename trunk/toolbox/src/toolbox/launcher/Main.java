@@ -21,6 +21,7 @@ public class Main
         programMap = new HashMap(10);
         
         programMap.put("findclass",     "toolbox.findclass.Main");
+        programMap.put("jfindclass",    "toolbox.findclass.JFindClass");
         programMap.put("showclasspath", "toolbox.showclasspath.Main");
         programMap.put("showpath",      "toolbox.showpath.Main");
         programMap.put("jsourceview",   "toolbox.jsourceview.JSourceView");
@@ -137,6 +138,7 @@ public class Main
             "       where program is:                               \n" +
             "                                                       \n" +
             "       findclass     => find a java class file         \n" + 
+            "       jfindclass    => gui version of findclass       \n" +
             "       showclasspath => show detailed classpath info   \n" +
             "       showpath      => show detailed path info        \n" +
             "       jsourceview   => java code counter              \n" +
