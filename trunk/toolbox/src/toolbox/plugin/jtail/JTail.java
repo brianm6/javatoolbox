@@ -383,7 +383,10 @@ public class JTail extends JFrame implements IPreferenced
         fileSelectionPane_.getFileExplorer().applyPrefs(root);
         flipPane_.applyPrefs(root);
 
-        Element recent = root.getFirstChildElement(NODE_RECENT);
+        Element recent = 
+            XOMUtil.getFirstChildElement(
+                root, NODE_RECENT, new Element(NODE_RECENT));
+        
         Elements recentTails = recent.getChildElements(NODE_RECENT_TAIL);
             
         for (int i=0, n=recentTails.size(); i<n; i++)
