@@ -3,6 +3,7 @@ package toolbox.util;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -12,8 +13,10 @@ import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import net.sourceforge.mlf.metouia.MetouiaLookAndFeel;
@@ -345,5 +348,16 @@ public class SwingUtil
             y += h; // start the next row
             x = 0;
         }
+    }
+    
+    //--------------------------------------------------------------------------
+	//  Widget/Layout Stuff
+	//--------------------------------------------------------------------------
+    
+    public static JPanel wrap(JComponent component)
+    {
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(component);
+        return panel;    
     }
 }
