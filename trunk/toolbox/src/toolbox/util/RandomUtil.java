@@ -7,15 +7,13 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
 
 /**
- * Utility class for generating commonly used random elements.
+ * Utility class for generating commonly used random elements that are not
+ * covered by the commons-lang library.
  * 
  * @see org.apache.commons.lang.math.RandomUtils
  */
 public final class RandomUtil
 {
-    // Clover private constructor workaround
-    static { new RandomUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -32,29 +30,6 @@ public final class RandomUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Generates an unsigned random integer in the range [0..MAX_INT].
-     * 
-     * @return Random int.
-     */
-    public static int nextInt()
-    {
-        return RandomUtils.nextInt();
-    }
-
-    
-    /**
-     * Generates a random integer in the range [0..ceiling].
-     * 
-     * @param ceiling Maximum value of the random number.
-     * @return Random int <= ceiling.
-     */
-    public static int nextInt(int ceiling)
-    {
-        return RandomUtils.nextInt(ceiling + 1);
-    }
-
-    
-    /**
      * Generates a random integer in the range [floor..ceiling].
      * 
      * @param floor Lower boundary.
@@ -68,7 +43,7 @@ public final class RandomUtil
             floor <= ceiling,
             "Ceiling " + ceiling + " cannot be less than floor " + floor);
 
-        return floor + (nextInt(ceiling - floor));
+        return floor + (RandomUtils.nextInt(ceiling - floor + 1));
     }
 
     
@@ -103,7 +78,7 @@ public final class RandomUtil
     {
         char c = nextLowerAlpha();
         
-        if (nextBoolean())
+        if (RandomUtils.nextBoolean())
             c = Character.toUpperCase(c);
 
         return c;
@@ -117,8 +92,8 @@ public final class RandomUtil
      */
     public static double nextDouble()
     {
-        int decimal = nextInt();
-        int fraction = nextInt(99);
+        int decimal = RandomUtils.nextInt();
+        int fraction = RandomUtils.nextInt(100);
         return (double) (decimal + fraction / 100);
     }
 
@@ -131,20 +106,9 @@ public final class RandomUtil
      */
     public static double nextDouble(double ceiling)
     {
-        int decimal = nextInt((int) ceiling - 1);
-        int fraction = nextInt(99);
+        int decimal = RandomUtils.nextInt((int) ceiling);
+        int fraction = RandomUtils.nextInt(100);
         return (double) (decimal + fraction / 100);
-    }
-
-    
-    /**
-     * Generates a random boolean.
-     * 
-     * @return Random boolean.
-     */
-    public static boolean nextBoolean()
-    {
-        return RandomUtils.nextBoolean();
     }
 
     
@@ -155,7 +119,7 @@ public final class RandomUtil
      */
     public static byte nextByte()
     {
-        return (byte) nextInt(255);
+        return (byte) RandomUtils.nextInt(256);
     }
     
     
@@ -167,7 +131,7 @@ public final class RandomUtil
      */
     public static String nextString()
     {
-        return nextString(nextInt(80));
+        return nextString(RandomUtils.nextInt(81));
     }
 
 
@@ -196,7 +160,7 @@ public final class RandomUtil
         return (
             pickList.length == 0
                 ? null
-                : pickList[nextInt(pickList.length - 1)]);
+                : pickList[RandomUtils.nextInt(pickList.length)]);
     }
     
 
@@ -208,6 +172,8 @@ public final class RandomUtil
      */
     public static Object nextElement(List list)
     {
-        return (list.size() == 0 ? null : list.get(nextInt(list.size() - 1)));
+        return (list.size() == 0 
+            ? null 
+            : list.get(RandomUtils.nextInt(list.size())));
     }
 }

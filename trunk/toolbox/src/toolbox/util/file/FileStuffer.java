@@ -7,10 +7,10 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.math.RandomUtils;
 
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
-import toolbox.util.RandomUtil;
 import toolbox.util.ThreadUtil;
 
 /**
@@ -310,7 +310,7 @@ public class FileStuffer implements Runnable
         {
             return "[" + cnt_++ + "]" + 
                 DateTimeUtil.formatToSecond(new Date()) + " " +
-                RandomUtil.nextInt(50000);
+                RandomUtils.nextInt(50000);
         }
     }   
 }

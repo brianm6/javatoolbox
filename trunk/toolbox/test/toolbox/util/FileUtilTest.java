@@ -2,24 +2,23 @@ package toolbox.util;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
+import org.apache.log4j.Logger;
+
 import toolbox.tree.Tree;
-import toolbox.util.ArrayUtil;
-import toolbox.util.FileUtil;
-import toolbox.util.RandomUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 
 /**
  * Unit test for FileUtil.
+ * 
+ * @see FileUtilTest
  */
 public class FileUtilTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(FileUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(FileUtilTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -867,8 +866,8 @@ public class FileUtilTest extends TestCase
             
             FileUtil.setFileContents(
                 newDir.getAbsolutePath() + File.separator + "file-" + 
-                RandomUtil.nextInt(50),
-                RandomUtil.nextString(RandomUtil.nextInt(5000)).toLowerCase(), 
+                RandomUtils.nextInt(50),
+                RandomUtil.nextString(RandomUtils.nextInt(5000)).toLowerCase(), 
                 false);
             
             current = newDir;

@@ -6,13 +6,13 @@ import java.util.List;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.ArrayUtil;
-import toolbox.util.RandomUtil;
 
 /**
  * Unit test for ArrayUtil.
+ * 
+ * @see toolbox.util.ArrayUtil
  */
 public class ArrayUtilTest extends TestCase
 {
@@ -47,7 +47,7 @@ public class ArrayUtilTest extends TestCase
         byte[] d = new byte[len];
 
         for (int i = 0; i < d.length; i++)
-            d[i] = (byte) RandomUtil.nextInt(255);
+            d[i] = (byte) RandomUtils.nextInt(255);
 
         byte[] e = ArrayUtil.subset(d, 0, d.length - 1);
         assertEquals("subset should be same size as original", d.length, 
@@ -81,7 +81,7 @@ public class ArrayUtilTest extends TestCase
         byte[] d = new byte[len];
 
         for (int i = 0; i < d.length; i++)
-            d[i] = (byte) RandomUtil.nextInt(255);
+            d[i] = (byte) RandomUtils.nextInt(255);
 
         byte[] e = ArrayUtil.subset(d, 0, (d.length / 2) - 1);
         assertEquals("subset should be half size of original", d.length / 2, 
@@ -117,7 +117,7 @@ public class ArrayUtilTest extends TestCase
         byte[] d = new byte[len];
 
         for (int i = 0; i < d.length; i++)
-            d[i] = (byte) RandomUtil.nextInt(255);
+            d[i] = (byte) RandomUtils.nextInt(255);
 
         byte[] e = ArrayUtil.subset(d, d.length / 2, d.length - 1);
         assertEquals("subset should be half size of original", d.length / 2, 

@@ -4,17 +4,18 @@
 
 package org.outerj.pollo.xmleditor.displayspec;
 
-import org.outerj.pollo.xmleditor.ElementColorIcon;
-import org.outerj.pollo.xmleditor.exception.PolloException;
-import org.outerj.pollo.xmleditor.util.NestedNodeMap;
-import org.outerj.pollo.util.ColorFormat;
-import org.w3c.dom.Element;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import toolbox.util.RandomUtil;
+import org.apache.commons.lang.math.RandomUtils;
+
+import org.outerj.pollo.util.ColorFormat;
+import org.outerj.pollo.xmleditor.ElementColorIcon;
+import org.outerj.pollo.xmleditor.exception.PolloException;
+import org.outerj.pollo.xmleditor.util.NestedNodeMap;
+import org.w3c.dom.Element;
+
 import toolbox.util.StringUtil;
 
 
@@ -207,7 +208,7 @@ public class GenericDisplaySpecification implements IDisplaySpecification
                 //colorPointer++;
                 
                 elementSpec.backgroundColor = 
-                    colors[RandomUtil.nextInt(numberOfColors-1)];
+                    colors[RandomUtils.nextInt(numberOfColors)];
                 
                 //System.out.println("Picked color: " + elementSpec.backgroundColor);
                 // =============================================================

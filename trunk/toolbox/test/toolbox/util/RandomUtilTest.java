@@ -8,13 +8,13 @@ import java.util.Set;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.RandomUtil;
-import toolbox.util.StringUtil;
 
 /**
  * Unit test for RandomUtil.
+ * 
+ * @see toolbox.util.RandomUtil
  */
 public class RandomUtilTest extends TestCase
 {
@@ -122,100 +122,6 @@ public class RandomUtilTest extends TestCase
 
     
     /**
-     * Tests nextInt() with no upper boundary.
-     */
-    public void testNextInt()
-    {
-        logger_.info("Running testNextInt...");
-        
-        StringBuffer sb = new StringBuffer();
-        
-        for (int j = 0; j < 300; j++)
-        {
-            int i = RandomUtil.nextInt();    
-            sb.append(i + " ");       
-            assertTrue("int should be >= 0", i >= 0);            
-        }
-        
-        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
-    }
-    
-    
-    /**
-     * Tests nextInt() with a ceiling boundary
-     */
-    public void testNextIntCeiling()
-    {
-        logger_.info("Running testNextIntCeiling...");
-        
-        StringBuffer sb = new StringBuffer();
-        int ceiling = 500;
-        boolean maxHit = false;
-        boolean minHit = false;
-        
-        while (!maxHit || !minHit)
-        {
-            int i = RandomUtil.nextInt(ceiling); 
-            
-            if (i == ceiling)
-            {
-                sb.append("**");
-                maxHit = true;
-            }
-    
-            if (i == 0)
-            {
-                sb.append("**");
-                minHit = true;                
-            }
-            
-            sb.append(i + " ");       
-            assertTrue("int should be 0..100", i <= ceiling);            
-            
-        }
-        
-        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
-    }
-    
-    
-    /**
-     * Tests nextInt() with a small ceiling boundary.
-     */
-    public void testNextIntCeilingSmall()
-    {   
-        logger_.info("Running testNextIntCeilingSmall...");
-        
-        StringBuffer sb = new StringBuffer();
-        int ceiling = 1;
-        boolean maxHit = false;
-        boolean minHit = false;
-        
-        while (!maxHit || !minHit)
-        {
-            int i = RandomUtil.nextInt(ceiling); 
-            
-            if (i == ceiling)
-            {
-                sb.append("**");
-                maxHit = true;
-            }
-    
-            if (i == 0)
-            {
-                sb.append("**");
-                minHit = true;                
-            }
-            
-            sb.append(i + " ");       
-            assertTrue("int should be in range", i <= ceiling);            
-            
-        }
-        
-        logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
-    }
-
-
-    /**
      * Tests nextInt() with a floor and ceiling boundary.
      */
     public void testNextIntFloorCeiling()
@@ -290,18 +196,6 @@ public class RandomUtilTest extends TestCase
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
-
-    
-    /**
-     * Tests nextBoolean().
-     */
-    public void testNextBoolean()
-    {
-        logger_.info("Running testNextBoolean...");
-        
-        for (int i = 0; i < 10; i++)
-            logger_.info(RandomUtil.nextBoolean() + "");
-    }    
     
     
     /**
@@ -459,7 +353,7 @@ public class RandomUtilTest extends TestCase
         
         for (int i = 0; i < 30; i++) 
         {    
-            sb.append(RandomUtil.nextString(RandomUtil.nextInt(20)) + " ");
+            sb.append(RandomUtil.nextString(RandomUtils.nextInt(20)) + " ");
             sb2.append(RandomUtil.nextString() + " ");
         }
         
