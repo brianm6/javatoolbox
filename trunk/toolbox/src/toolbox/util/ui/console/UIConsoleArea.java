@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -15,6 +14,7 @@ import javax.swing.text.TextAction;
 
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.console.action.DefaultKeyTypedAction;
+import toolbox.util.ui.console.action.ReturnKeyTypedAction;
 
 /**
  * UIConsoleArea exhibit basic behavior necessary for a simple text based 
@@ -57,7 +57,7 @@ public class UIConsoleArea extends JSmartTextArea
     /**
      * The calling console
      */ 
-    protected Console mainConsole_; 
+    protected Console console_; 
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -70,10 +70,10 @@ public class UIConsoleArea extends JSmartTextArea
      * @param rows Number of displayable rows.
      * @param columns Number of displayable columns.
      */
-    public UIConsoleArea(Console mainConsole, int rows, int columns)
+    public UIConsoleArea(UIConsole console, int rows, int columns)
     {
         super(rows, columns);
-        mainConsole_ = mainConsole;
+        console_ = console;
         
         //setFont(new Font("Lucida Console", Font.PLAIN, 12));
 
@@ -93,7 +93,7 @@ public class UIConsoleArea extends JSmartTextArea
             keys_.setDefaultAction(new DefaultKeyTypedAction(this));
 
             keys_.addActionForKeyStroke(KeyStroke.getKeyStroke(
-                KeyEvent.VK_ENTER, 0), new ReturnKeyTypedAction(this));
+                KeyEvent.VK_ENTER, 0), new ReturnKeyTypedAction(console));
 
             keys_.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_C,
                 InputEvent.CTRL_MASK), new CopyAction());
@@ -108,36 +108,11 @@ public class UIConsoleArea extends JSmartTextArea
         setKeymap(keys_);
     }
 
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
     
-    /**
-     * Reset the first input location to none.
-     */
-    protected void resetFirstInputLocation()
-    {
-        firstInputLocation_ = -1;
-    }
-
-
-    /**
-     * Returns the first input location.
-     * 
-     * @return location or -1 if none defined.
-     */
-    protected int getFirstInputLocation()
-    {
-        if (firstInputLocation_ == -1 && lastOutputLocation_ != -1)
-        {
-            // May be first input location si not set as JDK 1.2
-            // do not pass the default event
-            return lastOutputLocation_;
-        }
-        return firstInputLocation_;
-    }
-
-
     /**
      * Move caret to the end.
      */
@@ -151,6 +126,15 @@ public class UIConsoleArea extends JSmartTextArea
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+    
+    /**
+     * Reset the first input location to none.
+     */
+    public void resetFirstInputLocation()
+    {
+        firstInputLocation_ = -1;
+    }
+
 
     /**
      * Keep track of first input location (only!)
@@ -161,6 +145,23 @@ public class UIConsoleArea extends JSmartTextArea
     {
         if (firstInputLocation_ == -1)
             firstInputLocation_ = loc;
+    }
+
+    
+    /**
+     * Returns the first input location.
+     * 
+     * @return location or -1 if none defined.
+     */
+    public int getFirstInputLocation()
+    {
+        if (firstInputLocation_ == -1 && lastOutputLocation_ != -1)
+        {
+            // May be first input location si not set as JDK 1.2
+            // do not pass the default event
+            return lastOutputLocation_;
+        }
+        return firstInputLocation_;
     }
 
 
@@ -213,37 +214,20 @@ public class UIConsoleArea extends JSmartTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * Action for RETURN - send text to console.
-     * <P>
-     * The text from the first input location to the end (where the RETURN was
-     * typed) is send to the caller. The first input location is reset to none.
+     * Cuts the selected region and place its contents into the system
+     * clipboard.
+     * 
+     * @see DefaultEditorKit#cutAction
+     * @see DefaultEditorKit#getActions
      */
-    public static class ReturnKeyTypedAction extends TextAction
+    public static class CutAction extends TextAction
     {
-        /**
-         * Console text area.
-         */
-        private UIConsoleArea console_;
-
-        //----------------------------------------------------------------------
-        // Constructors
-        //----------------------------------------------------------------------
-        
-        /**
-         * Creates this object with the appropriate identifier.
-         * 
-         * @param console UI console text area.
-         */
-        public ReturnKeyTypedAction(UIConsoleArea console)
+        public CutAction()
         {
-            super("return");
-            console_ = console;
+            super(DefaultEditorKit.cutAction);
         }
 
-        //----------------------------------------------------------------------
-        // ActionListener Interface
-        //----------------------------------------------------------------------
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -251,78 +235,8 @@ public class UIConsoleArea extends JSmartTextArea
         public void actionPerformed(ActionEvent e)
         {
             JTextComponent target = getTextComponent(e);
-
-            if ((target != null) && (e != null))
+            if (target != null)
             {
-                // Set caret at end
-                Document doc = target.getDocument();
-                int dot = doc.getLength();
-                target.setCaretPosition(dot);
-
-                // Insert return
-                target.replaceSelection("\n");
-
-                // Get data
-                String inputText = null;
-                int start = console_.getFirstInputLocation();
-                int length = dot - start + 1;
-                
-                // System.err.println("\nRET star="+start+", l="+length); //
-                // *************
-
-                if (start != -1 && length > 0)
-                {
-                    try
-                    {
-                        inputText = doc.getText(start, length);
-                    }
-                    catch (BadLocationException ex)
-                    {
-                        throw new RuntimeException("Unexpected exception: "
-                            + ex.toString());
-                    }
-
-                    console_.mainConsole_.send(inputText);
-
-                    // Mark data sent
-                    console_.resetFirstInputLocation();
-                }
-
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // CutAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Cuts the selected region and place its contents into the system
-     * clipboard.
-     * <p>
-     * Warning: serialized objects of this class will not be compatible with
-     * future swing releases. The current serialization support is appropriate
-     * for short term storage or RMI between Swing1.0 applications. It will not
-     * be possible to load serialized Swing1.0 objects with future releases of
-     * Swing. The JDK1.2 release of Swing will be the compatibility baseline for
-     * the serialized form of Swing objects.
-     * 
-     * @see DefaultEditorKit#cutAction
-     * @see DefaultEditorKit#getActions
-     */
-    public static class CutAction extends TextAction {
-
-        public CutAction() {
-            super(DefaultEditorKit.cutAction);
-        }
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) { 
-            JTextComponent target = getTextComponent(e);
-            if (target != null) {
                 target.cut();
             }
         }
@@ -335,20 +249,14 @@ public class UIConsoleArea extends JSmartTextArea
     /**
      * Copies the selected region and place its contents into the system
      * clipboard.
-     * <p>
-     * Warning: serialized objects of this class will not be compatible with
-     * future swing releases. The current serialization support is appropriate
-     * for short term storage or RMI between Swing1.0 applications. It will not
-     * be possible to load serialized Swing1.0 objects with future releases of
-     * Swing. The JDK1.2 release of Swing will be the compatibility baseline for
-     * the serialized form of Swing objects.
      * 
      * @see DefaultEditorKit#copyAction
      * @see DefaultEditorKit#getActions
      */
-    public static class CopyAction extends TextAction {
-
-        public CopyAction() {
+    public static class CopyAction extends TextAction
+    {
+        public CopyAction()
+        {
             super(DefaultEditorKit.copyAction);
         }
 
@@ -356,9 +264,11 @@ public class UIConsoleArea extends JSmartTextArea
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             JTextComponent target = getTextComponent(e);
-            if (target != null) {
+            if (target != null)
+            {
                 target.copy();
             }
         }
@@ -371,22 +281,16 @@ public class UIConsoleArea extends JSmartTextArea
     /**
      * Pastes the contents of the system clipboard at the end of the text area.
      * Mark the first input location if needed.
-     * <p>
-     * Warning: serialized objects of this class will not be compatible with
-     * future swing releases. The current serialization support is appropriate
-     * for short term storage or RMI between Swing1.0 applications. It will not
-     * be possible to load serialized Swing1.0 objects with future releases of
-     * Swing. The JDK1.2 release of Swing will be the compatibility baseline for
-     * the serialized form of Swing objects.
      * 
      * @see DefaultEditorKit#pasteAction
      * @see DefaultEditorKit#getActions
      */
-    public static class PasteAction extends TextAction {
-
+    public static class PasteAction extends TextAction
+    {
         private UIConsoleArea console;
 
-        public PasteAction(UIConsoleArea console) {
+        public PasteAction(UIConsoleArea console)
+        {
             super(DefaultEditorKit.pasteAction);
             this.console = console;
         }
@@ -395,9 +299,11 @@ public class UIConsoleArea extends JSmartTextArea
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e)
+        {
             JTextComponent target = getTextComponent(e);
-            if (target != null) {
+            if (target != null)
+            {
                 target.paste();
             }
         }
