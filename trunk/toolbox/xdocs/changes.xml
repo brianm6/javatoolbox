@@ -114,6 +114,16 @@
     <body>
 
         <!-- =================================================================== -->
+        <!-- December 2004                                                       -->
+        <!-- =================================================================== -->
+
+        <release version="2.0" date="December 2004">
+            <action type="update">FindClass - Replaced toolbox.io.filter classes with commion-io equivalents</action>
+            <action type="add"   >Util - Added Cancelable interface</action>
+            <action type="update">FindClass - Now implements the Cancelable interface</action>
+        </release>
+
+        <!-- =================================================================== -->
         <!-- November 2004                                                       -->
         <!-- =================================================================== -->
 
