@@ -914,4 +914,16 @@ public class FileUtilTest extends TestCase
         // TODO: Readonly files.
         //       Files current in use/locked.
     }
+    
+    
+    /**
+     * Tests getInfo()
+     */
+    public void testGetInfo() throws Exception
+    {
+        logger_.info("Running testGetFileInfo...");
+        String s = FileUtil.getInfo(new File(System.getProperty("user.dir")));
+        logger_.info(StringUtil.banner(s));
+        assertNotNull(s);
+    }
 }
