@@ -42,6 +42,20 @@ public class TableSorterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default constructor
+     * 
+     * @throws Exception on error
+     */
+    public TableSorterTest() throws Exception
+    {
+        SwingUtil.setPreferredLAF();    
+    }
+    
+    //--------------------------------------------------------------------------
     // Unit Tests 
     //--------------------------------------------------------------------------
     
