@@ -125,10 +125,18 @@ public class PreferencesView extends JDialog implements ActionListener
             Object value, boolean selected, boolean expanded, boolean leaf,
             int row, boolean hasFocus)
         {
+            super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+            
             DefaultMutableTreeNode d = (DefaultMutableTreeNode) value;
-            JComponent c = (JComponent) d.getUserObject();
-            setText(c.getName());
-            return this;
+            
+            if (leaf)
+            {
+                JComponent c = (JComponent) d.getUserObject();
+                System.out.println("Name = " + c.getName());
+                setText(c.getName());
+            }
+            
+            return this; 
             
         }
     };
@@ -145,6 +153,7 @@ public class PreferencesView extends JDialog implements ActionListener
         DefaultMutableTreeNode root_ = new DefaultMutableTreeNode();
         DefaultTreeModel treeModel_ = new DefaultTreeModel(root_);
         tree_ = new JSmartTree(root_);
+        tree_.setCellRenderer(new DefaultTreeCellRenderer());
         
         root_.add(new DefaultMutableTreeNode(buildPreferencesPanel()));
         JSmartLabel jl = new JSmartLabel("Peekaboo");
@@ -158,7 +167,7 @@ public class PreferencesView extends JDialog implements ActionListener
                 null,
                 new JScrollPane(tree_));
         
-        tree_.setCellRenderer(new MyTreeCellRenderer());
+        
         return p;
     }
     
