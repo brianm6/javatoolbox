@@ -308,7 +308,9 @@ public class FindClassPane extends JPanel implements IPreferenced
                 "Automatically tail output",
                 new AutoTailAction(resultTable_));
 
-        autoTailButton.toggleOnProperty(resultTable_, "autotail");
+        autoTailButton.toggleOnProperty(
+            resultTable_, 
+            JSmartTable.PROP_AUTOTAIL);
 
         JToolBar tb = JHeaderPanel.createToolBar();
         tb.add(showPathToggleButton_);
@@ -425,7 +427,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JFINDCLASS_PLUGIN);
 
