@@ -14,6 +14,8 @@ package toolbox;
  * TODO: Fix tailing of Log4j in JTail
  * TODO: Fix SkinLF resource loading
  * TODO: Add detach notification to tail.
+ * TODO: Upgrade to CLI2
+ * TODO: Finish netmeter plugin
  * </pre>
  */
 public class TODO
