@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -634,14 +635,25 @@ public class JSourceView extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            String s = JOptionPane.showInputDialog(
-                JSourceView.this,
-                "Save to file",
-                "Save to file",
-                JOptionPane.QUESTION_MESSAGE);
-        
-            if (!StringUtil.isNullOrBlank(s))
-                tableModel_.saveToFile(s);
+            if (getTableModel().getRowCount() == 0)
+            {
+                JSmartOptionPane.showMessageDialog(
+                    JSourceView.this,
+                    "Nothing to save.",
+                    (String) getValue(AbstractAction.NAME),
+                    JOptionPane.WARNING_MESSAGE);
+            }
+            else
+            {
+                String s = JOptionPane.showInputDialog(
+                    JSourceView.this,
+                    "Save to file",
+                    "Save to file",
+                    JOptionPane.QUESTION_MESSAGE);
+            
+                if (!StringUtil.isNullOrBlank(s))
+                    tableModel_.saveToFile(s);
+            }
         }
     }
     
@@ -666,8 +678,19 @@ public class JSourceView extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            PieChart pieChart = new PieChart(parserWorker_.getTotals());
-            JSmartOptionPane.showMessageDialog(JSourceView.this, pieChart);
+            if (getTableModel().getRowCount() == 0)
+            {
+                JSmartOptionPane.showMessageDialog(
+                    JSourceView.this,
+                    "No statistics availble",
+                    (String) getValue(AbstractAction.NAME),
+                    JOptionPane.WARNING_MESSAGE);
+            }
+            else
+            {
+                PieChart pieChart = new PieChart(parserWorker_.getTotals());
+                JSmartOptionPane.showMessageDialog(JSourceView.this, pieChart);
+            }
         }
     }
 }
