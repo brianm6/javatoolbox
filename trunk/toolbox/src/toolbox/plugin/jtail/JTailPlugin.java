@@ -40,7 +40,7 @@ public class JTailPlugin implements IPlugin
      */
     public JMenu getMenu()
     {
-        return null;
+        return jtail_.getJMenuBar().getMenu(0);
     }
 
     /**
@@ -56,6 +56,7 @@ public class JTailPlugin implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
+    	jtail_.saveConfiguration();
     }
 
     /**
@@ -63,6 +64,7 @@ public class JTailPlugin implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
+    	jtail_.applyConfiguration();
     }
 
     /**
@@ -77,5 +79,6 @@ public class JTailPlugin implements IPlugin
      */
     public void shutdown()
     {
+		jtail_.saveConfiguration();
     }
 }
