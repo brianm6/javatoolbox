@@ -2,6 +2,7 @@ package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -52,7 +53,6 @@ import toolbox.util.SwingUtil;
  * TODO: Make plugins detachable
  * TODO: Make webstart enabled
  * TODO: Added close icon to plugin tabs
- * TODO: Add differentiation between maximized and sized frame 
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Abstraction for concrete regular expression engine implementation
  * TODO: Convert project build and layout to Maven
@@ -61,11 +61,11 @@ import toolbox.util.SwingUtil;
  */
 public class PluginWorkspace extends JFrame implements IStatusBar
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
-    private static final String FILE_PREFS   = ".toolbox.properties";
+    private static final String FILE_PREFS    = ".toolbox.properties";
+    private static final String PROP_MAXXED   = "workspace.maximized";
     private static final String PROP_WIDTH    = "workspace.width";
     private static final String PROP_HEIGHT   = "workspace.height";
     private static final String PROP_XCOORD   = "workspace.xcoord";
@@ -351,13 +351,28 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     protected void savePrefs()
     {
-        // Save window location
-        PropertiesUtil.setInteger(prefs_, PROP_XCOORD, getLocation().x);
-        PropertiesUtil.setInteger(prefs_, PROP_YCOORD, getLocation().y);
+        boolean maxxed = 
+            (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+            
+        PropertiesUtil.setBoolean(prefs_, PROP_MAXXED, maxxed);
         
-        // Save window size
-        PropertiesUtil.setInteger(prefs_, PROP_WIDTH, getSize().width);
-        PropertiesUtil.setInteger(prefs_, PROP_HEIGHT, getSize().height); 
+        if (!maxxed)
+        {
+            // Save window location
+            PropertiesUtil.setInteger(prefs_, PROP_XCOORD, getLocation().x);
+            PropertiesUtil.setInteger(prefs_, PROP_YCOORD, getLocation().y);
+        
+            // Save window size
+            PropertiesUtil.setInteger(prefs_, PROP_WIDTH, getSize().width);
+            PropertiesUtil.setInteger(prefs_, PROP_HEIGHT, getSize().height); 
+        }
+        else
+        {
+            prefs_.remove(PROP_XCOORD);
+            prefs_.remove(PROP_YCOORD);
+            prefs_.remove(PROP_WIDTH);
+            prefs_.remove(PROP_HEIGHT);
+        }
 
         // Save look and feel
         prefs_.setProperty(PROP_LAF, 
@@ -411,6 +426,25 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     protected void applyPrefs()
     {
+        boolean maxxed = PropertiesUtil.getBoolean(prefs_, PROP_MAXXED, false);
+        
+        // Frame has to be visible before it can be maximized so just queue
+        // this bad boy up on the event queue 
+        if (maxxed)
+        {
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    setExtendedState(Frame.MAXIMIZED_BOTH);
+                }
+            });
+            
+        }
+        
+        // Set size/loc regardless of maximized state since this will be used
+        // as the restored state
+        
         // Restore window location
         setLocation(
             PropertiesUtil.getInteger(prefs_, PROP_XCOORD, 0),
@@ -419,7 +453,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         // Restore window size
         setSize(
             PropertiesUtil.getInteger(prefs_, PROP_WIDTH, 800),
-            PropertiesUtil.getInteger(prefs_, PROP_HEIGHT, 600)); 
+            PropertiesUtil.getInteger(prefs_, PROP_HEIGHT, 600));
             
         // Reload Plugins that were saved
         String pluginLine = prefs_.getProperty(PROP_LOADED ,"");
