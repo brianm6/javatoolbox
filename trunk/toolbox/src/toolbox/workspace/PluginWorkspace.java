@@ -56,7 +56,8 @@ import toolbox.util.SwingUtil;
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Abstraction for concrete regular expression engine implementation
  * TODO: Convert project build and layout to Maven
- * TODO: Use Quilt for JUnit Test coverage instead of Clover 
+ * TODO: Use Quilt for JUnit Test coverage instead of Clover
+ * TODO: Add support for selecting Plastic Look & Feel color themes 
  * </pre>
  */
 public class PluginWorkspace extends JFrame implements IStatusBar
