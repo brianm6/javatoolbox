@@ -28,9 +28,12 @@ public class JMultiSplitPane extends JPanel
     private static final Logger logger_ =
         Logger.getLogger(JMultiSplitPane.class);
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
-    private static int serial = 0;
-    private static int splitWidth = 10;
+    private static int SERIAL = 0;
+    private static int SPLIT_WIDTH = 10;
     
     //--------------------------------------------------------------------------
     // Fields
@@ -51,9 +54,9 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -61,7 +64,7 @@ public class JMultiSplitPane extends JPanel
         f.getContentPane().setLayout(new GridLayout());
         
         final JMultiSplitPane msp =
-            new JMultiSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitWidth);
+            new JMultiSplitPane(JSplitPane.HORIZONTAL_SPLIT, SPLIT_WIDTH);
             
         f.getContentPane().add(msp);
 
@@ -75,7 +78,7 @@ public class JMultiSplitPane extends JPanel
         {
             public void actionPerformed(ActionEvent ect)
             {
-                JButton but = new JButton("remove" + (serial++));
+                JButton but = new JButton("remove" + (SERIAL++));
                 msp.add(but);
                 msp.revalidate();
                 
@@ -95,7 +98,7 @@ public class JMultiSplitPane extends JPanel
         {
             public void actionPerformed(ActionEvent evt)
             {
-                msp.setDividerSize(--splitWidth);
+                msp.setDividerSize(--SPLIT_WIDTH);
             }
         });
         
@@ -107,7 +110,7 @@ public class JMultiSplitPane extends JPanel
         {
             public void actionPerformed(ActionEvent evt)
             {
-                msp.setDividerSize(++splitWidth);
+                msp.setDividerSize(++SPLIT_WIDTH);
             }
         });
         
@@ -123,8 +126,8 @@ public class JMultiSplitPane extends JPanel
     /**
      * Create a multiplitpane with the given orientation and dividerSize.
      * 
-     * @param orientation JSplitPane.[HORIZONTAL|VERTICAL]_SPLIT
-     * @param dividerSize Size of the splitpane dividers
+     * @param orientation JSplitPane.[HORIZONTAL|VERTICAL]_SPLIT.
+     * @param dividerSize Size of the splitpane dividers.
      */
     public JMultiSplitPane(int orientation, int dividerSize)
     {
@@ -154,7 +157,7 @@ public class JMultiSplitPane extends JPanel
      * component. The adding of the component will be deferred using 
      * {@link javax.swing.SwingUtilities#invokeLater}.
      *
-     * @param comp Component to add
+     * @param comp Component to add.
      */
     public void add(JComponent comp)
     {
@@ -166,7 +169,7 @@ public class JMultiSplitPane extends JPanel
      * Removes a component from the multisplitpane. Removal is be deferred 
      * using {@link javax.swing.SwingUtilities#invokeLater}.
      *
-     * @param comp Component to remove
+     * @param comp Component to remove.
      */
     public void remove(JComponent comp)
     {
@@ -261,7 +264,7 @@ public class JMultiSplitPane extends JPanel
     /**
      * Set the divider locations.
      * 
-     * @param locs  Array of divider locations
+     * @param locs Array of divider locations.
      */
     public void setDividerLocations(final int[] locs)
     {
@@ -282,8 +285,8 @@ public class JMultiSplitPane extends JPanel
     /**
      * Gets divider locations.
      * 
-     * @param ivec Vector of divider locations (populated on exit)
-     * @param splitpane JSplitPane
+     * @param ivec Vector of divider locations (populated on exit).
+     * @param splitpane JSplitPane.
      */
     private void doGetDividerLocations(IntVector ivec, Component splitpane)
     {
@@ -300,10 +303,10 @@ public class JMultiSplitPane extends JPanel
     /**
      * Sets divider locations.
      * 
-     * @param locs Divider locations to set
-     * @param index Index
-     * @param splitpane JSplitPane
-     * @return Index
+     * @param locs Divider locations to set.
+     * @param index Index.
+     * @param splitpane JSplitPane.
+     * @return Index.
      */
     private int doSetDividerLocations(int[] locs, int index, 
         Component splitpane)
@@ -332,8 +335,8 @@ public class JMultiSplitPane extends JPanel
     /**
      * Gets the components.
      * 
-     * @param vec Vector
-     * @param splitpane JSplitPane
+     * @param vec Vector.
+     * @param splitpane JSplitPane.
      */
     private void doGetComponents(Vector vec, Component splitpane)
     {
@@ -353,7 +356,7 @@ public class JMultiSplitPane extends JPanel
     /**
      * Sets the split width.
      * 
-     * @param splitpane JSplitPane
+     * @param splitpane JSplitPane.
      */
     private void doSetSplitWidth(Component splitpane)
     {
@@ -370,7 +373,7 @@ public class JMultiSplitPane extends JPanel
     /**
      * Adds a component.
      * 
-     * @param comp Component to add
+     * @param comp Component to add.
      */
     private void addComponent(JComponent comp)
     {
@@ -406,7 +409,7 @@ public class JMultiSplitPane extends JPanel
     /**
      * Remove a component.
      * 
-     * @param comp Component to remove
+     * @param comp Component to remove.
      */
     private void removeComponent(JComponent comp)
     {
@@ -445,9 +448,9 @@ public class JMultiSplitPane extends JPanel
     /**
      * Replaces a component in its parent.
      * 
-     * @param parent Parent container
-     * @param split Splitpane
-     * @param comp Component to replace
+     * @param parent Parent container.
+     * @param split Splitpane.
+     * @param comp Component to replace.
      */
     private void replaceInParent(Container parent, JSplitPane split, 
         Component comp)
@@ -567,7 +570,7 @@ public class JMultiSplitPane extends JPanel
         /**
          * Creates an IntVector with an initial size.
          * 
-         * @param initialSize Initial size
+         * @param initialSize Initial size.
          */
         public IntVector(int initialSize)
         {

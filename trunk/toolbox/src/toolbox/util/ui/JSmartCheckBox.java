@@ -97,6 +97,7 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
         super(icon, selected);
     }
 
+    
     /**
      * Creates a JSmartCheckBox.
      * 
@@ -108,6 +109,7 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
         super(text, icon);
     }
 
+    
     /**
      * Creates a JSmartCheckBox.
      * 

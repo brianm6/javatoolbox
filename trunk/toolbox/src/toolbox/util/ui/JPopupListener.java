@@ -38,7 +38,7 @@ public class JPopupListener extends MouseAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * @param e Mouse event
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e)
     {
@@ -47,7 +47,8 @@ public class JPopupListener extends MouseAdapter
 
 
     /**
-     * @param e Mouse event
+     * @see java.awt.event.MouseListener#mouseReleased(
+     *      java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent e)
     {

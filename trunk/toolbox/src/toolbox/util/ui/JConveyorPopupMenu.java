@@ -12,6 +12,10 @@ import toolbox.util.Assert;
  */
 public class JConveyorPopupMenu extends JSmartPopupMenu
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Max number of items that can be displayed by the popup menu.
      */
