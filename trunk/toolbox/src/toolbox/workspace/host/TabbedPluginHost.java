@@ -7,13 +7,12 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
 import toolbox.workspace.IPlugin;
 
 /**
- * Plugin host that arranges plugins in a tab panel
+ * Plugin host that arranges plugins in a tab panel. One plugin per tab.
  */
 public class TabbedPluginHost extends AbstractPluginHost
 {
@@ -25,7 +24,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     //--------------------------------------------------------------------------
     
     /**
-     * One plugin per tab
+     * One plugin per tab.
      */
     private JSmartTabbedPane tabPanel_;
     
@@ -39,7 +38,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     public void startup(Map props)
     {
         super.startup(props);
-        tabPanel_ = new JSmartTabbedPane();     
+        tabPanel_ = new JSmartTabbedPane(true);     
         tabPanel_.addSmartTabbedPaneListener(new TabPanelListener());
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -81,10 +80,7 @@ public class TabbedPluginHost extends AbstractPluginHost
         super.importPlugin(plugin);
 
         // Create tab
-        tabPanel_.addTab(
-            plugin.getPluginName(), 
-            plugin.getComponent(), 
-            ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        tabPanel_.addTab(plugin.getPluginName(), plugin.getComponent());
     }    
 
     
@@ -142,6 +138,9 @@ public class TabbedPluginHost extends AbstractPluginHost
          */
         public void tabClosing(JSmartTabbedPane tabbedPane, int tabIndex)
         {
+	
+            // TODO: Fix tab closing reference cleanup.
+
             //            String name = tabbedPane.getTitleAt(tabIndex);
             //            //IPlugin plugin = (IPlugin) plugins_.get(name);
             //            IPlugin plugin = (IPlugin) pluginHost_.getPlugin(name);
