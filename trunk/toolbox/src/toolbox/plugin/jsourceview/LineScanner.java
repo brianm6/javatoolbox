@@ -1,4 +1,4 @@
-package toolbox.jsourceview;
+package toolbox.plugin.jsourceview;
 
 /**
  * LineScanner tokenizes a line of source code.

@@ -1,4 +1,4 @@
-package toolbox.jsourceview;
+package toolbox.plugin.jsourceview;
 
 /**
  * Source code parser state machine constants.

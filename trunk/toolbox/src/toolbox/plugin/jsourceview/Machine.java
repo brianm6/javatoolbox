@@ -1,4 +1,4 @@
-package toolbox.jsourceview;
+package toolbox.plugin.jsourceview;
 
 /**
  * Finite state machine to parse a line of source code. The original source 

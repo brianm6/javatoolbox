@@ -1,4 +1,4 @@
-package toolbox.jsourceview;
+package toolbox.plugin.jsourceview;
 
 /**
  * LineStatus represents the current status of a line of source while it is 

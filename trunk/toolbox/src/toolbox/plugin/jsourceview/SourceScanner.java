@@ -1,4 +1,4 @@
-package toolbox.jsourceview;
+package toolbox.plugin.jsourceview;
 
 import java.io.File;
 import java.io.FilenameFilter;

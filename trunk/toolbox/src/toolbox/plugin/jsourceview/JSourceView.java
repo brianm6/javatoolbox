@@ -1,4 +1,4 @@
-package toolbox.jsourceview;
+package toolbox.plugin.jsourceview;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

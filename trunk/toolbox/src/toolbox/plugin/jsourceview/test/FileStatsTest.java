@@ -1,4 +1,4 @@
-package toolbox.jsourceview.test;
+package toolbox.plugin.jsourceview.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.jsourceview.FileStats;
+import toolbox.plugin.jsourceview.FileStats;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 

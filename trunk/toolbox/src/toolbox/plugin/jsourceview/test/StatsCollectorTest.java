@@ -1,4 +1,4 @@
-package toolbox.jsourceview.test;
+package toolbox.plugin.jsourceview.test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,8 +9,8 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.jsourceview.FileStats;
-import toolbox.jsourceview.StatsCollector;
+import toolbox.plugin.jsourceview.FileStats;
+import toolbox.plugin.jsourceview.StatsCollector;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 

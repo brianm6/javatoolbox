@@ -1,4 +1,4 @@
-package toolbox.jsourceview;
+package toolbox.plugin.jsourceview;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
