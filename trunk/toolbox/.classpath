@@ -10,5 +10,6 @@
     <classpathentry kind="lib" path="lib/EXML.jar"/>
     <classpathentry kind="lib" path="lib/jode.jar"/>
     <classpathentry kind="lib" path="lib/java2html.jar"/>
+    <classpathentry kind="lib" path="lib/metouia.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
