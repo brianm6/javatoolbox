@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import nu.xom.Element;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import toolbox.util.PreferencedUtil;
+import toolbox.util.XOMUtil;
+import toolbox.workspace.IPreferenced;
 
 /**
  * SQLFormatter is a pretty printer for SQL statements.
  */
-public class SQLFormatter
+public class SQLFormatter implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(SQLFormatter.class);
     
@@ -167,7 +173,29 @@ public class SQLFormatter
      * Flag to send debug output to the logger.
      */
     private boolean debug_;
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Constants
+    //--------------------------------------------------------------------------
     
+    /**
+     * Root preferences node.
+     */
+    private static final String NODE_SQLFORMATTER = "SQLFormatter";
+
+    /**
+     * Attributes of NODE_SQLFORMATTER.
+     */
+    public static final String[] SAVED_PROPERTIES = new String[] {
+        "debug", 
+        "indent", 
+        "newLineBeforeAnd", 
+        //"newLine",
+        "majorCapsMode",
+        "minorCapsMode", 
+        "namesCapsMode"
+    };
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -208,7 +236,18 @@ public class SQLFormatter
         return indent_.length();
     }
     
+
+    /**
+     * Returns newline string.
+     * 
+     * @return String
+     */
+    public String getNewLine()
+    {
+        return newLine_;
+    }
     
+
     /**
      * Returns true if debugging is turned on, false otherwise.
      * 
@@ -908,5 +947,34 @@ public class SQLFormatter
     protected static boolean isMajor(String s)
     {
         return isIn(s, MAJOR_WORDS);
+    }
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, 
+                NODE_SQLFORMATTER,
+                new Element(NODE_SQLFORMATTER));
+     
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPERTIES);
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_SQLFORMATTER);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPERTIES);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 }
