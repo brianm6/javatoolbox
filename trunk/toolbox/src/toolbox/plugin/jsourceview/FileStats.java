@@ -56,7 +56,7 @@ public class FileStats
     /**
      * Returns percentage of source code lines to total lines.
      * 
-     * @return Percent of source to total
+     * @return Percent of source to total.
      */
     public int getPercent()
     {
@@ -72,7 +72,7 @@ public class FileStats
     /**
      * Adds file stat to existing statistics.
      * 
-     * @param filestats Filestats to add
+     * @param filestats Filestats to add.
      */
     public void add(FileStats filestats)
     {
@@ -191,9 +191,7 @@ public class FileStats
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the stringified state of this object.
-     * 
-     * @return String
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {

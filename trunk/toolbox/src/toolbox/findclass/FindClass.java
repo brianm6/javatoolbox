@@ -198,7 +198,7 @@ public class FindClass
      * Returns a list of all search targets (archives and directories) on the 
      * classpath.
      * 
-     * @return List of strings
+     * @return List of strings.
      */
     public List getClassPathTargets()
     {
@@ -227,7 +227,7 @@ public class FindClass
      * Adds a search target to the front of the search target list.  A search 
      * target is a valid directory or java archive.
      * 
-     * @param searchTarget Absolute location of directory or jar/zip file
+     * @param searchTarget Absolute location of directory or jar/zip file.
      */
     public void addSearchTarget(String searchTarget)
     {
@@ -241,7 +241,7 @@ public class FindClass
      * targets. If a file, then that single archive file is added as a search
      * target.
      * 
-     * @param target File or directory
+     * @param target File or directory.
      */
     public void addSearchTarget(File target)
     {
@@ -260,7 +260,7 @@ public class FindClass
     /**
      * Removes a search target from the list of search targets.
      *
-     * @param searchTarget Search target to remove
+     * @param searchTarget Search target to remove.
      */
     public void removeSearchTarget(String searchTarget)
     {
@@ -281,8 +281,8 @@ public class FindClass
      * Returns a list of archives that exist in a given directory. The 
      * directory is searched recursively.
      * 
-     * @param dir Directory to find targets in
-     * @return List of String filenames
+     * @param dir Directory to find targets in.
+     * @return List of String filenames.
      */
     public List getArchivesInDir(File dir)
     {
@@ -317,7 +317,7 @@ public class FindClass
      * Returns a list of all archives that are contained in the current
      * directory and all child directories.
      * 
-     * @return List of strings
+     * @return List of strings.
      */
     protected List getArchiveTargets()
     {
@@ -329,9 +329,9 @@ public class FindClass
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
      * 
-     * @param startingDir Start directory for the search
-     * @param filter Filename filter criteria
-     * @return List of files that match the filter from the start dir
+     * @param startingDir Start directory for the search.
+     * @param filter Filename filter criteria.
+     * @return List of files that match the filter from the start dir.
      */    
     protected List findFilesRecursively(String startingDir, 
         FilenameFilter filter)
@@ -368,8 +368,8 @@ public class FindClass
     /**
      * Finds a class in a given jar file.
      * 
-     * @param jarName Name of the jar file to search
-     * @throws IOException on I/O error
+     * @param jarName Name of the jar file to search.
+     * @throws IOException on I/O error.
      */
     protected void findInArchive(String jarName) throws IOException
     { 
@@ -420,7 +420,7 @@ public class FindClass
     /**
      * Finds a class in a given directory including child directories.
      * 
-     * @param dirPath Absolute name of the directory to start searching from
+     * @param dirPath Absolute name of the directory to start searching from.
      */    
     protected void findInPath(String dirPath) 
     { 
@@ -491,7 +491,7 @@ public class FindClass
     /**
      * Called when a search target is about to be searched.
      *
-     * @param target Target being searched
+     * @param target Target being searched.
      */
     protected void fireSearchingTarget(String target)
     {
@@ -513,7 +513,7 @@ public class FindClass
     /**
      * Adds a search listener to the list of interested listeners. 
      * 
-     * @param listener Listener to add
+     * @param listener Listener to add.
      */   
     public void addSearchListener(FindClassListener listener)
     {
@@ -525,7 +525,7 @@ public class FindClass
     /**
      * Removes a search listener from the list of interested listeners. 
      * 
-     * @param listener Listener to remove
+     * @param listener Listener to remove.
      */
     public void removeSearchListener(FindClassListener listener)
     {

@@ -17,7 +17,7 @@ import toolbox.util.ResourceUtil;
  */
 public class StatsCollector
 {
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(StatsCollector.class);
     
     //--------------------------------------------------------------------------
@@ -139,9 +139,9 @@ public class StatsCollector
         /**
          * Identify a category to which a line of souce code belongs
          * 
-         * @param stats Increments category counter here
-         * @param line Line of source code
-         * @return True if the line was categorized, false otherwise
+         * @param stats Increments category counter here.
+         * @param line Line of source code.
+         * @return True if the line was categorized, false otherwise.
          */
         boolean identify(FileStats stats, String line);
     }

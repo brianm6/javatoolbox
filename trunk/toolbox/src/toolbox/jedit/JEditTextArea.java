@@ -97,8 +97,8 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * Creates a JEditTextArea with the given defaults.
      * 
-     * @param marker Token marker to use for syntax hiliting
-     * @param defaults Text area defaults
+     * @param marker Token marker to use for syntax hiliting.
+     * @param defaults Text area defaults.
      */
     public JEditTextArea(TokenMarker marker, TextAreaDefaults defaults)
     {
@@ -150,7 +150,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * Sets the number of lines to scroll on mouse wheel activity.
      * 
-     * @param mouseWheelUnit  Number of lines
+     * @param mouseWheelUnit Number of lines.
      */
     public void setMouseWheelUnit(int mouseWheelUnit)
     {
@@ -161,7 +161,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * Sets the width of the tab character.
      * 
-     * @param tabSize Tab width
+     * @param tabSize Tab width.
      */
     public void setTabSize(int tabSize)
     {

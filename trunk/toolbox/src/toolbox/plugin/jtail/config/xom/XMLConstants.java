@@ -1,7 +1,7 @@
 package toolbox.jtail.config.xom;
 
 /**
- * XML configuration constants
+ * XML configuration constants.
  */
 public interface XMLConstants
 {

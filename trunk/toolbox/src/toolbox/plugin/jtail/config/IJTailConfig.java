@@ -10,7 +10,7 @@ public interface IJTailConfig extends IPreferenced
     /**
      * Returns the default tail pane configuration.
      * 
-     * @return Default configuration
+     * @return Default configuration.
      */
     ITailPaneConfig getDefaultConfig();
 
@@ -18,7 +18,7 @@ public interface IJTailConfig extends IPreferenced
     /**
      * Sets the default tail pane configuration.
      * 
-     * @param config Default tail pane configuration
+     * @param config Default tail pane configuration.
      */
     void setDefaultConfig(ITailPaneConfig config);
 
@@ -26,7 +26,7 @@ public interface IJTailConfig extends IPreferenced
     /**
      * Returns the tailPaneConfigs.
      * 
-     * @return Array of tail pain configurations
+     * @return Array of tail pain configurations.
      */
     ITailPaneConfig[] getTailConfigs();
 
@@ -34,7 +34,7 @@ public interface IJTailConfig extends IPreferenced
     /**
      * Sets the list of tail pane configurations.
      * 
-     * @param tailPaneConfigs Tail pane configurations
+     * @param tailPaneConfigs Tail pane configurations.
      */
     void setTailConfigs(ITailPaneConfig[] tailPaneConfigs);
 }

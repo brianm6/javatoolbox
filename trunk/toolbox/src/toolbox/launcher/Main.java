@@ -62,7 +62,7 @@ public class Main
      * Creates the launcher with the given arguments.
      * 
      * @param args First index is program name, remaining args are passed on
-     *        to the program that is launched
+     *        to the program that is launched.
      */
     public Main(String[] args)
     {
@@ -101,8 +101,8 @@ public class Main
     /**
      * Launches a toolbox executable with the given classname and arguments.
      * 
-     * @param className Name of class to launch
-     * @param args Arguments
+     * @param className Name of class to launch.
+     * @param args Arguments.
      */
     protected void launch(String className, String[] args)
     {

@@ -23,8 +23,7 @@ import toolbox.util.concurrent.Mutex;
  */
 public class FindClassTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(FindClassTest.class);
+    private static final Logger logger_ = Logger.getLogger(FindClassTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -33,7 +32,7 @@ public class FindClassTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -47,7 +46,7 @@ public class FindClassTest extends TestCase
     /**
      * Test finding a system class.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFindClassSystem() throws Exception
     {
@@ -69,7 +68,7 @@ public class FindClassTest extends TestCase
     /**
      * Test class not found.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFindClassNotFound() throws Exception
     {
@@ -85,7 +84,7 @@ public class FindClassTest extends TestCase
     /**
      * Test case sensetivity.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFindClassCaseSensetivity() throws Exception
     {
@@ -104,7 +103,7 @@ public class FindClassTest extends TestCase
     /**
      * Test finding an archive class.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void xtestFindClassInArchive() throws Exception
     {
@@ -122,7 +121,7 @@ public class FindClassTest extends TestCase
     /**
      * Test adding/removing search targets.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSearchTargets() throws Exception
     {
@@ -175,7 +174,7 @@ public class FindClassTest extends TestCase
     /**
      * Test getArchivesInDir()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testGetArchivesInDir() throws Exception
     {
@@ -191,7 +190,7 @@ public class FindClassTest extends TestCase
     /**
      * Test canceling a search.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testCancelSearch() throws Exception
     {

@@ -11,9 +11,13 @@ import toolbox.util.ui.JSmartPopupMenu;
  */
 public class JEditPopupMenu extends JSmartPopupMenu
 {
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(JEditPopupMenu.class); 
-        
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Text component to associate this popup menu with. 
      */
@@ -34,7 +38,7 @@ public class JEditPopupMenu extends JSmartPopupMenu
     /**
      * Creates a JEditTextAreaPopupMenu for the given textarea.
      * 
-     * @param textArea JEditTextArea to add popup to
+     * @param textArea JEditTextArea to add popup to.
      */
     public JEditPopupMenu(JEditTextArea textArea)
     {
@@ -50,7 +54,7 @@ public class JEditPopupMenu extends JSmartPopupMenu
     /**
      * Sets the textarea.
      * 
-     * @param area Textarea
+     * @param area Textarea.
      */
     public void setTextArea(JEditTextArea area)
     {

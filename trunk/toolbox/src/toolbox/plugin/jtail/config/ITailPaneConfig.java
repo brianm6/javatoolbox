@@ -79,7 +79,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Sets the autoScroll flag.
      * 
-     * @param autoScroll The autoScroll to set
+     * @param autoScroll The autoScroll to set.
      */
     void setAutoScroll(boolean autoScroll);
 
@@ -87,7 +87,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Sets the names of the file being tailed.
      * 
-     * @param filenames Filenames 
+     * @param filenames Filenames.
      */
     void setFilenames(String[] filenames);
 
@@ -95,7 +95,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Sets the showLineNumbers flag.
      * 
-     * @param showLineNumbers The showLineNumbers to set
+     * @param showLineNumbers The showLineNumbers to set.
      */
     void setShowLineNumbers(boolean showLineNumbers);
 
@@ -127,7 +127,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Sets the filter (regular expression) used to include/exclude lines.
      * 
-     * @param regex The filter to set
+     * @param regex The filter to set.
      */
     void setRegularExpression(String regex);
 
@@ -143,7 +143,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Sets the cut expression used to exclude columns.
      * 
-     * @param cutExpression Cut expression
+     * @param cutExpression Cut expression.
      */
     void setCutExpression(String cutExpression);
     
@@ -151,7 +151,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Accessor for the antialias flag.
      * 
-     * @return True if antialias is on, false otherwise
+     * @return True if antialias is on, false otherwise.
      */
     boolean isAntiAliased();
     
@@ -159,7 +159,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Mutator for the antialias flag.
      * 
-     * @param b True to turn antialias on, false otherwise
+     * @param b True to turn antialias on, false otherwise.
      */
     void setAntiAlias(boolean b);
     
@@ -167,7 +167,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Mutator for the autostart flag.
      * 
-     * @param autoStart True to turn autostart on, false otherwise
+     * @param autoStart True to turn autostart on, false otherwise.
      */
     void setAutoStart(boolean autoStart);
     
@@ -175,7 +175,7 @@ public interface ITailPaneConfig extends IPreferenced
     /**
      * Accessor for the autostart flag.
      * 
-     * @return Autostart flag
+     * @return Autostart flag.
      */
     boolean isAutoStart();
 }

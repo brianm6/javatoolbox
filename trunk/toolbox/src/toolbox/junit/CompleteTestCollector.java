@@ -26,6 +26,10 @@ import junit.runner.TestCollector;
  */
 public class CompleteTestCollector implements TestCollector
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Introspects jars for unit tests.
      */
@@ -56,7 +60,7 @@ public class CompleteTestCollector implements TestCollector
     /**
      * Merges the results of the JarTestCollector and the FileTestCollector.
      * 
-     * @return Enumeration of class names
+     * @return Enumeration of class names.
      * @see TestCollector#collectTests()
      */
     public Enumeration collectTests()

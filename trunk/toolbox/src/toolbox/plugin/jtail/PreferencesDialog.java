@@ -32,9 +32,17 @@ public class PreferencesDialog extends JDialog implements ActionListener
     
     private static final Logger logger_ =
         Logger.getLogger(PreferencesDialog.class);
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
     private static final String ACTION_OK     = "OK";
     private static final String ACTION_CANCEL = "Cancel";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Preferences will be changed on the config object directly. 
@@ -46,11 +54,11 @@ public class PreferencesDialog extends JDialog implements ActionListener
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for PreferencesDialog.
-     * 
-     * @param owner     Parent frame
-     * @param config    Configuration 
-     */
+	 * Constructor for PreferencesDialog.
+	 * 
+	 * @param owner Parent frame.
+	 * @param config Configuration.
+	 */
     public PreferencesDialog(Frame owner, IJTailConfig config)
     {
         super(owner, "JTail Preferences", true);
@@ -138,7 +146,8 @@ public class PreferencesDialog extends JDialog implements ActionListener
     //--------------------------------------------------------------------------
     
     /**
-     * @param e ActionEvent
+     * @see java.awt.event.ActionListener#actionPerformed(
+     *      java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e)
     {

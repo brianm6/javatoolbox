@@ -23,7 +23,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -37,7 +37,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     /**
      * Tests main() with no args for the target class.
      * 
-     * @throws Exception on error 
+     * @throws Exception on error. 
      */
     public void testMainNoArgs() throws Exception
     {
@@ -51,7 +51,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     /**
      * Tests main() with one args for the target class.
      * 
-     * @throws Exception on error 
+     * @throws Exception on error.
      */
     public void testMainOneArg() throws Exception
     {
@@ -65,7 +65,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     /**
      * Tests main() with > 1 args.
      * 
-     * @throws Exception on error 
+     * @throws Exception on error. 
      */
     public void testMainManyArgs() throws Exception
     {
@@ -80,7 +80,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
     /**
      * Tests printUsage()
      * 
-     * @throws Exception on error 
+     * @throws Exception on error. 
      */
     public void testPrintUsage() throws Exception
     {

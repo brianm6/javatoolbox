@@ -53,13 +53,13 @@ public class FindClassResult
     /**
      * Creates a FindClassResult with the given attributes.
      * 
-     * @param searchString Original search string
-     * @param classLocation Location where class was found (jar/path)
-     * @param classFQN Fully qualified name of the class found
-     * @param fileSize Size of the class file in bytes
-     * @param timestamp Timestamp on classfile
-     * @param matchBegin Beginning index into classFQN of the match
-     * @param matchEnd Ending index into classFQN of the match
+     * @param searchString Original search string.
+     * @param classLocation Location where class was found (jar/path).
+     * @param classFQN Fully qualified name of the class found.
+     * @param fileSize Size of the class file in bytes.
+     * @param timestamp Timestamp on classfile.
+     * @param matchBegin Beginning index into classFQN of the match.
+     * @param matchEnd Ending index into classFQN of the match.
      */
     public FindClassResult(
         String searchString, 
@@ -87,7 +87,7 @@ public class FindClassResult
     /**
      * Returns the search string.
      * 
-     * @return Search string 
+     * @return Search string. 
      */    
     public String getSearchString()
     {
@@ -98,7 +98,7 @@ public class FindClassResult
     /**
      * Returns the class location.
      * 
-     * @return Class location
+     * @return Class location.
      */    
     public String getClassLocation()
     {
@@ -109,7 +109,7 @@ public class FindClassResult
     /**
      * Returns the fully qualified class name.
      * 
-     * @return Fully qualified class name
+     * @return Fully qualified class name.
      */    
     public String getClassFQN()
     {
@@ -120,7 +120,7 @@ public class FindClassResult
     /**
      * Returns the size of the class file.
      * 
-     * @return Size of the class file
+     * @return Size of the class file.
      */
     public long getFileSize()
     {
@@ -131,7 +131,7 @@ public class FindClassResult
     /**
      * Returns the timestamp of the class file.
      * 
-     * @return Timestamp of the class file
+     * @return Timestamp of the class file.
      */
     public Date getTimestamp()
     {
@@ -142,7 +142,7 @@ public class FindClassResult
     /**
      * Returns the index into the FQCN at which the match starts.
      * 
-     * @return Zero based index
+     * @return Zero based index.
      */
     public int getMatchBegin()
     {
@@ -153,7 +153,7 @@ public class FindClassResult
     /**
      * Returns the index into the FQCN at which the match ends.
      * 
-     * @return Zero based index
+     * @return Zero based index.
      */
     public int getMatchEnd()
     {
@@ -164,7 +164,7 @@ public class FindClassResult
     /**
      * Sets the starting index at which the match begins.
      * 
-     * @param i Zero based starting index
+     * @param i Zero based starting index.
      */
     public void setMatchBegin(int i)
     {
@@ -175,7 +175,7 @@ public class FindClassResult
     /**
      * Sets the ending index at which the match ends.
      * 
-     * @param i Zero based ending index
+     * @param i Zero based ending index.
      */
     public void setMatchEnd(int i)
     {

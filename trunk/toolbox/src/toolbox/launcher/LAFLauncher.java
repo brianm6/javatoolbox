@@ -23,8 +23,8 @@ public class LAFLauncher
      * Entrypoint.
      * 
      * @param args [0] = Name of class to launch
-     *            [1..n] = Command line arguments
-     * @throws Exception on error
+     *             [1..n] = Command line arguments
+     * @throws Exception on error.
      */
     public static void main(String args[]) throws Exception
     {
@@ -68,9 +68,9 @@ public class LAFLauncher
     /**
      * Launches target class.
      * 
-     * @param target Name of class with main() to launch 
-     * @param args Array of arguments
-     * @throws Exception on error
+     * @param target Name of class with main() to launch. 
+     * @param args Array of arguments.
+     * @throws Exception on error.
      */
     private static void launch(String target, String[] args) throws Exception
     {
@@ -85,6 +85,13 @@ public class LAFLauncher
     }
 }
 
+//--------------------------------------------------------------------------
+// LAFRunner
+//--------------------------------------------------------------------------
+
+/**
+ * Look and feel runner.
+ */
 class LAFRunner implements Runnable
 {
     /**

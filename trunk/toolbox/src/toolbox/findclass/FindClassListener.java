@@ -8,7 +8,7 @@ public interface FindClassListener
     /**
      * Notification that a class matching the search criteria has been found.
      * 
-     * @param searchResult Results on class that was found
+     * @param searchResult Results on class that was found.
      */
     void classFound(FindClassResult searchResult);
     
@@ -16,7 +16,7 @@ public interface FindClassListener
     /**
      * Notification that a search completed.
      * 
-     * @param search Search text
+     * @param search Search text.
      */
     void searchCompleted(String search);
     
@@ -24,7 +24,7 @@ public interface FindClassListener
     /**
      * Notification that a given target is being searched.
      * 
-     * @param target Name of the target directory or archive
+     * @param target Name of the target directory or archive.
      */
     void searchingTarget(String target);
     

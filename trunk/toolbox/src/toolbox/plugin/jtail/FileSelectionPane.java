@@ -51,7 +51,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Creates a FileSelectionPane with the given directory selected.
      *
-     * @param dir Directory to select by default
+     * @param dir Directory to select by default.
      */
     public FileSelectionPane(String dir)
     {
@@ -91,7 +91,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Returns the file explorer.
      * 
-     * @return File explorer
+     * @return File explorer.
      */
     public JFileExplorer getFileExplorer()
     {
@@ -102,7 +102,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Returns the tail button.
      * 
-     * @return Tail button
+     * @return Tail button.
      */
     public JButton getTailButton()
     {
@@ -113,7 +113,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Returns the aggregate button.
      * 
-     * @return Aggregate button
+     * @return Aggregate button.
      */
     public JButton getAggregateButton()
     {

@@ -22,7 +22,7 @@ import toolbox.workspace.IPreferenced;
 public class TailPaneConfig implements ITailPaneConfig, XMLConstants, 
     IPreferenced
 {
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(TailPaneConfig.class);
     
     //--------------------------------------------------------------------------
@@ -187,9 +187,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     //--------------------------------------------------------------------------
     
     /**
-     * Returns string
-     * 
-     * @return String representation
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {

@@ -47,6 +47,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     // Constants 
     //--------------------------------------------------------------------------
     
+    // XML Preferences nodes and attributes. 
     private static final String NODE_JUNIT_PLUGIN = "JUnitPlugin";
     private static final String ATTR_FILTER       = "filter";
 
@@ -208,7 +209,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // GetPackageListAcion
+    // GetPackageListAction
     //--------------------------------------------------------------------------
     
     /**

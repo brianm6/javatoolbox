@@ -32,7 +32,7 @@ public abstract class AbstractLineFilter implements ILineFilter
      * Creates an AbstractLineFilter with the given state.
      * 
      * @param enabled Set to true to enable the filter or false to disable the 
-     *         filter.
+     *        filter.
      */
     public AbstractLineFilter(boolean enabled)
     {
@@ -57,7 +57,7 @@ public abstract class AbstractLineFilter implements ILineFilter
     /**
      * Enables/disables.
      * 
-     * @param b Set enabled flag
+     * @param b Set enabled flag.
      */
     public void setEnabled(boolean b)
     {

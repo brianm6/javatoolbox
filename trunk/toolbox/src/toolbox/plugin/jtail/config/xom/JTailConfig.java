@@ -17,10 +17,20 @@ import toolbox.workspace.IPreferenced;
  */
 public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 { 
-    private static final Logger logger_ = 
-        Logger.getLogger(JTailConfig.class);
+    private static final Logger logger_ = Logger.getLogger(JTailConfig.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tail pane configurations.
+     */
     private ITailPaneConfig[] tailPaneConfigs_;
+    
+    /**
+     * Default tail pane configuration.
+     */
     private ITailPaneConfig defaultConfig_;
     
     //--------------------------------------------------------------------------

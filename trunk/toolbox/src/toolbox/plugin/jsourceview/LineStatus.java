@@ -6,6 +6,10 @@ package toolbox.jsourceview;
  */
 public class LineStatus
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Is the line part of a comment?
      */
@@ -36,7 +40,7 @@ public class LineStatus
     /**
      * Mutator for in comment flag.
      * 
-     * @param inComment True if the line is in a comment, false otherwise
+     * @param inComment True if the line is in a comment, false otherwise.
      */    
     public void setInComment(boolean inComment)
     {
@@ -47,7 +51,7 @@ public class LineStatus
     /**
      * Returns true if the line is in a comment, false otherwise.
      * 
-     * @return Is line in a comment
+     * @return Is line in a comment.
      */    
     public boolean getInComment()
     {
@@ -58,7 +62,7 @@ public class LineStatus
     /**
      * Mutator for countLine flag.
      * 
-     * @param countLine Should the line be counted
+     * @param countLine Should the line be counted.
      */
     public void setCountLine(boolean countLine)
     {
@@ -70,7 +74,7 @@ public class LineStatus
      * Returns true if the line is considered a real line of code, false
      * otherwise.
      * 
-     * @return Count the line flag
+     * @return Count the line flag.
      */
     public boolean isRealCode()
     {

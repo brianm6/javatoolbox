@@ -281,7 +281,7 @@ public class TailPane extends JPanel
     /**
      * Builds the GUI.
      * 
-     * @param config Tailpane configuration
+     * @param config Tailpane configuration.
      */    
     protected void buildView(ITailPaneConfig config)
     {
@@ -356,7 +356,7 @@ public class TailPane extends JPanel
     /**
      * Returns regular expression filter. 
      * 
-     * @return Filter text
+     * @return Filter text.
      */
     protected String getRegularExpression()
     {
@@ -367,7 +367,7 @@ public class TailPane extends JPanel
     /**
      * Sets the filter text.
      * 
-     * @param filter Filter text as a regular expression
+     * @param filter Filter text as a regular expression.
      */
     protected void setRegularExpression(String filter)
     {
@@ -387,7 +387,7 @@ public class TailPane extends JPanel
     /**
      * Returns the cut expression.
      * 
-     * @return Cut expression
+     * @return Cut expression.
      */
     protected String getCutExpression()
     {
@@ -421,7 +421,7 @@ public class TailPane extends JPanel
     /**
      * Sets the configuration.
      * 
-     * @param config Tail configuration
+     * @param config Tail configuration.
      */
     public void setConfiguration(ITailPaneConfig config)
     {
@@ -445,7 +445,7 @@ public class TailPane extends JPanel
     /**
      * Gets the configuration.
      * 
-     * @return TailConfig
+     * @return TailConfig.
      * @throws IOException on I/O error.
      */
     public ITailPaneConfig getConfiguration() throws IOException
@@ -481,7 +481,7 @@ public class TailPane extends JPanel
     /**
      * Returns the close button.
      * 
-     * @return Close button
+     * @return Close button.
      */
     public JButton getCloseButton()
     {
@@ -492,8 +492,8 @@ public class TailPane extends JPanel
     /**
      * Aggregates a file into an existing tail.
      * 
-     * @param file File to aggregate
-     * @throws IOException on I/O error
+     * @param file File to aggregate.
+     * @throws IOException on I/O error.
      */
     public void aggregate(String file) throws IOException
     {
@@ -516,7 +516,7 @@ public class TailPane extends JPanel
         /**
          * Notification of new data available.
          * 
-         * @param tailPane Tailpane
+         * @param tailPane Tailpane.
          */
         void newDataAvailable(TailPane tailPane);
         
@@ -532,7 +532,7 @@ public class TailPane extends JPanel
     /**
      * Fires notifications of new tail data available.
      * 
-     * @param tailPane Tailpane
+     * @param tailPane Tailpane.
      */
     protected void fireNewDataAvailable(TailPane tailPane)
     {
@@ -544,7 +544,7 @@ public class TailPane extends JPanel
     /**
      * Fires notification of a tail being aggregated into an existing tail.
      * 
-     * @param tailPane Tailpane
+     * @param tailPane Tailpane.
      */
     public void fireTailAggregated(TailPane tailPane)
     {
@@ -556,7 +556,7 @@ public class TailPane extends JPanel
     /**
      * Adds a listener.
      * 
-     * @param listener ITailPaneListener
+     * @param listener ITailPaneListener.
      */
     public void addTailPaneListener(ITailPaneListener listener)
     {
@@ -568,7 +568,7 @@ public class TailPane extends JPanel
     /**
      * Removes a listener.
      * 
-     * @param listener ITailPaneListener
+     * @param listener ITailPaneListener.
      */
     public void removeTailPaneListener(ITailPaneListener listener)
     {

@@ -31,8 +31,8 @@ public final class SmartLogger
      * Logs each individual line of a string (delimited by a newline character)
      * separately.
      * 
-     * @param logger Logger to use
-     * @param msg Multiline object to log
+     * @param logger Logger to use.
+     * @param msg Multiline object to log.
      */
     public static void debug(Logger logger, Object msg)
     {
@@ -44,8 +44,8 @@ public final class SmartLogger
      * Logs each individual line of a string (delimited by a newline character)
      * separately.
      * 
-     * @param logger Logger to use
-     * @param msg Multiline object to log
+     * @param logger Logger to use.
+     * @param msg Multiline object to log.
      */
     public static void info(Logger logger, Object msg)
     {
@@ -59,7 +59,7 @@ public final class SmartLogger
      * 
      * @param logger Logger to use.
      * @param priority Message priority.
-     * @param msg Multiline object to log
+     * @param msg Multiline object to log.
      */
     public static void log(Logger logger, Priority priority, Object msg)
     {

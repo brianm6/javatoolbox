@@ -71,8 +71,11 @@ import toolbox.workspace.IStatusBar;
  */
 public class JTail extends JFrame implements IPreferenced
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(JTail.class);
+    private static final Logger logger_ = Logger.getLogger(JTail.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
 
     /**
      * XML: Root node for JTail preferences.
@@ -88,7 +91,11 @@ public class JTail extends JFrame implements IPreferenced
      * XML: Node that contains all tail information to re-hydrate a given tail.
      */
     private static final String NODE_RECENT_TAIL = "RecentTail";
-         
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Menu of recently tailed files. A tail becomes 'recent' when it is closed.
      */
@@ -131,7 +138,7 @@ public class JTail extends JFrame implements IPreferenced
     private IJTailConfig jtailConfig_;            
         
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -150,7 +157,7 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Sets the status bar.
      * 
-     * @param statusBar Shared status bar
+     * @param statusBar Shared status bar.
      */
     public void setStatusBar(IStatusBar statusBar)
     {
@@ -158,7 +165,62 @@ public class JTail extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Public Static
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Makes an easy to read label for the TailPane tab.
+     * 
+     * @param config TailPane configuration.
+     * @return Label
+     */
+    public static String makeTabLabel(ITailPaneConfig config)
+    {
+        StringBuffer tabname = new StringBuffer();
+        String[] filenames = config.getFilenames();
+        tabname.append("<html><center>");
+        
+        for (int i = 0; i < filenames.length; i++)
+           {
+            tabname.append(FileUtil.stripPath(filenames[i]));
+            
+            if (i + 1 < filenames.length)
+                tabname.append("<br>");
+        }
+        
+        tabname.append("</center></html>");
+        
+        return tabname.toString();
+    }    
+
+    
+    /**
+     * Makes an easy to read tooltip for the TailPane tab.
+     * 
+     * @param config TailPane configuration.
+     * @return String
+     */
+    public static String makeTabToolTip(ITailPaneConfig config)
+    {
+        StringBuffer tabname = new StringBuffer();
+        String[] filenames = config.getFilenames();
+        tabname.append("<html><center>");
+        
+        for (int i = 0; i < filenames.length; i++)
+           {
+            tabname.append(filenames[i]);
+            
+            if (i + 1 < filenames.length)
+                tabname.append("<br>");
+        }
+        
+        tabname.append("</center></html>");
+        
+        return tabname.toString();
+    }    
+    
+    //--------------------------------------------------------------------------
+    // Protected
     //--------------------------------------------------------------------------
     
     /** 
@@ -203,7 +265,7 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Builds the menu bar.
      * 
-     * @return Menu bar
+     * @return Menu bar.
      */
     protected JMenuBar buildMenuBar()
     {
@@ -235,8 +297,8 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Adds a tail of the given configuration to the output area.
      * 
-     * @param config Tail configuration
-     * @throws IOException on I/O error
+     * @param config Tail configuration.
+     * @throws IOException on I/O error.
      */     
     protected void addTail(ITailPaneConfig config) throws IOException
     {
@@ -301,58 +363,6 @@ public class JTail extends JFrame implements IPreferenced
     {
         return getSelectedTail().getConfiguration();
     }
-    
-    
-    /**
-     * Makes an easy to read label for the TailPane tab.
-     * 
-     * @param config TailPane configuration.
-     * @return Label
-     */
-    public static String makeTabLabel(ITailPaneConfig config)
-    {
-        StringBuffer tabname = new StringBuffer();
-        String[] filenames = config.getFilenames();
-        tabname.append("<html><center>");
-        
-        for (int i = 0; i < filenames.length; i++)
-        {
-            tabname.append(FileUtil.stripPath(filenames[i]));
-            
-            if (i + 1 < filenames.length)
-                tabname.append("<br>");
-        }
-        
-        tabname.append("</center></html>");
-        
-        return tabname.toString();
-    }    
-
-    
-    /**
-     * Makes an easy to read tooltip for the TailPane tab.
-     * 
-     * @param config TailPane configuration.
-     * @return String
-     */
-    public static String makeTabToolTip(ITailPaneConfig config)
-    {
-        StringBuffer tabname = new StringBuffer();
-        String[] filenames = config.getFilenames();
-        tabname.append("<html><center>");
-        
-        for (int i = 0; i < filenames.length; i++)
-        {
-            tabname.append(filenames[i]);
-            
-            if (i + 1 < filenames.length)
-                tabname.append("<br>");
-        }
-        
-        tabname.append("</center></html>");
-        
-        return tabname.toString();
-    }    
     
     //--------------------------------------------------------------------------
     // IPreferenced Interface
@@ -451,7 +461,7 @@ public class JTail extends JFrame implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    //  Event Listeners
+    // FileSelectionListener
     //--------------------------------------------------------------------------
     
     /**
@@ -486,6 +496,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // TailButtonListener
+    //--------------------------------------------------------------------------
     
     /**
      * Adds a tail for the currently selected file in the file explorer.
@@ -526,6 +539,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // AggregateButtonListener
+    //--------------------------------------------------------------------------
     
     /**
      * Aggregates a file to an existing tail.
@@ -553,6 +569,9 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // CloseButtonListener
+    //--------------------------------------------------------------------------
     
     /**
      * Removes a tail once the close button is clicked on the tail pane.

@@ -26,7 +26,7 @@ import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
 
 /**
- * UI Actions for the JEditTextArea
+ * UI Actions for the JEditTextArea.
  */
 public final class JEditActions
 {
