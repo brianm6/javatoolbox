@@ -21,7 +21,6 @@ package toolbox;
  *       model is a possiblity.
  * TODO: Separate unit tests from main source branch + reconfig maven.
  * TODO: Add a filled bar mode to JSourceView
- * TODO: Add Plugin menu
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -44,6 +43,9 @@ package toolbox;
  * TODO: TCPTunnel: Add option just to monitor the count and not output data.
  * TODO: TCPTunnel: Figure out why it freezes up
  * =============================================================================
+ * 
+ * COMPLETED: Add Plugin menu
+ * 
  * </pre>
  */
 public class TODO
