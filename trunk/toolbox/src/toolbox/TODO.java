@@ -42,6 +42,7 @@ package toolbox;
  * TODO: Add sql formatter preferences to prefsview
  * TODO: Lift more stuff from hsqldb manager
  * TODO: Move benchmark to its own panel with preferences.
+ * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
  * =============================================================================
  * 								FindClassPlugin
  * =============================================================================
@@ -65,6 +66,10 @@ package toolbox;
  * 
  * =============================== COMPLETED ===================================
  *
+ * May 2004
+ *  - Added JDBC benchmark to JDBC plugin
+ *  - Added NapkinLookAndFeel to the Look and Feel menu
+ * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
  * 	- Updated to the latest Sun TableSorter
