@@ -16,6 +16,8 @@ import toolbox.workspace.WorkspaceAction;
  * Queries the DB metadata and dumps a list of all columns. If a table name is
  * selected in the results area, then only the columns for the selected table
  * are returned.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ListColumnsAction extends WorkspaceAction
 {

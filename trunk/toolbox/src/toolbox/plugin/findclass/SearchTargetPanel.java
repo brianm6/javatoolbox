@@ -18,7 +18,17 @@ import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 
 /**
- * Search targets panel.
+ * Presents the list of jars, zips, and directories that will be searched once
+ * the search is initiated. The user has the ability to right-click on the 
+ * list and execute one of the following: 
+ * <p>
+ * <ul>
+ *  <li>Add the contents of the classpath to the list
+ *  <li>Clear the entire list of search targets
+ *  <li>Remove only selected targets
+ * </ul>
+ * 
+ * @see toolbox.plugin.findclass.FindClassPane
  */
 public class SearchTargetPanel extends JHeaderPanel
 {
@@ -40,6 +50,9 @@ public class SearchTargetPanel extends JHeaderPanel
     // Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Creates a SearchTargetPanel.
+     */
     public SearchTargetPanel()
     {
         super("Search Targets");

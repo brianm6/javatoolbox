@@ -15,6 +15,10 @@ import toolbox.workspace.PluginWorkspace;
  */
 public class JTailPlugin implements IPlugin
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * JTail delegate. 
      */

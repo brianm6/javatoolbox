@@ -68,6 +68,8 @@ import toolbox.workspace.WorkspaceAction;
 /**
  * UI for finding class files by regular expression from the classpath or any
  * arbitrary java archive or directory.
+ * 
+ * @see toolbox.plugin.findclass.FindClassPlugin
  */
 public class FindClassPane extends JPanel implements IPreferenced
 {
@@ -78,12 +80,12 @@ public class FindClassPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     private static final String NODE_JFINDCLASS_PLUGIN = "JFindClassPlugin";
-    private static final String   ATTR_IGNORECASE      = "ignorecase";
-    private static final String   ATTR_SEARCH          = "search";
-    private static final String   ATTR_SHOWPATH        = "showpath";
-    private static final String   ATTR_HILITE_MATCHES  = "highlightmatches";
-    private static final String NODE_TOP_FLIPPANE      = "TopFlipPane";
-    private static final String NODE_LEFT_FLIPPANE     = "LeftFlipPane";
+    private static final String   ATTR_IGNORECASE      =   "ignorecase";
+    private static final String   ATTR_SEARCH          =   "search";
+    private static final String   ATTR_SHOWPATH        =   "showpath";
+    private static final String   ATTR_HILITE_MATCHES  =   "highlightmatches";
+    private static final String NODE_TOP_FLIPPANE      =   "TopFlipPane";
+    private static final String NODE_LEFT_FLIPPANE     =   "LeftFlipPane";
 
     //--------------------------------------------------------------------------
     // Fields

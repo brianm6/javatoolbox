@@ -40,6 +40,8 @@ import toolbox.workspace.IPlugin;
 
 /**
  * Simple plugin that allows running of JUnit tests by package.
+ * 
+ * @see toolbox.junit.PackageTester
  */
 public class JUnitPlugin extends JPanel implements IPlugin
 {
@@ -51,7 +53,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     
     // XML Preferences nodes and attributes. 
     private static final String NODE_JUNIT_PLUGIN = "JUnitPlugin";
-    private static final String ATTR_FILTER       = "filter";
+    private static final String ATTR_FILTER       =   "filter";
 
     //--------------------------------------------------------------------------
     // Fields 

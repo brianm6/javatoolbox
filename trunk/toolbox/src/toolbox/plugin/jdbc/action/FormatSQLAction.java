@@ -11,6 +11,8 @@ import toolbox.workspace.WorkspaceAction;
 
 /**
  * Formats the current or selected sql statements.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class FormatSQLAction extends WorkspaceAction
 {

@@ -11,6 +11,8 @@ import toolbox.workspace.WorkspaceAction;
 
 /**
  * Runs the query and appends the results to the output text area.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ExecuteCurrentAction extends WorkspaceAction
 {

@@ -114,6 +114,8 @@ import toolbox.workspace.WorkspaceAction;
  *      <td>Scroll down in SQL history</td>
  *   </tr>
  * </table>
+ * 
+ * @see toolbox.util.JDBCUtil
  */
 public class QueryPlugin extends JPanel implements IPlugin
 {

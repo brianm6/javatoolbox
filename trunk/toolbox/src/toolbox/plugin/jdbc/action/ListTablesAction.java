@@ -11,6 +11,8 @@ import toolbox.workspace.WorkspaceAction;
 
 /**
  * Queries the DB metadata and dumps a list of the tables.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ListTablesAction extends WorkspaceAction
 {

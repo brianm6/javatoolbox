@@ -37,11 +37,12 @@ import toolbox.workspace.WorkspaceAction;
  * identified by the JFindClass plugin.
  * <p>
  * Supports:
- * <br>
  * <ul>
  *   <li>User selectable decompiler.
  *   <li>Decompiled files are stacked on a tabbed pane.
  * </ul>
+ * 
+ * @see toolbox.plugin.findclass.FindClassPlugin
  */
 public class DecompilerPanel extends JHeaderPanel
 {

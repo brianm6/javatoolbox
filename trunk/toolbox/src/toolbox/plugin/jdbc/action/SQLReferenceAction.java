@@ -12,6 +12,8 @@ import toolbox.util.ResourceUtil;
 
 /**
  * Dumps a short SQL reference text to the SQL editor.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class SQLReferenceAction extends AbstractAction
 {

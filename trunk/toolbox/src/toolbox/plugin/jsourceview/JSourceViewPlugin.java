@@ -15,6 +15,10 @@ import toolbox.workspace.PluginWorkspace;
  */
 public class JSourceViewPlugin implements IPlugin
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Delegate. 
      */
