@@ -9,7 +9,10 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
- * Toggles linewrapping in a JSmartTextArea.
+ * Toggles linewrapping in a JSmartTextArea. Comes with an icon associated with
+ * the action.
+ * 
+ * @see toolbox.util.ui.JSmartTextArea
  */    
 public class LineWrapAction extends AbstractTextComponentAction 
 {
@@ -18,7 +21,7 @@ public class LineWrapAction extends AbstractTextComponentAction
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a AutoScrollAction.
+     * Creates a LineWrapAction.
      * 
      * @param area Text area that supports line wrap.
      */
@@ -35,6 +38,8 @@ public class LineWrapAction extends AbstractTextComponentAction
     //--------------------------------------------------------------------------
     
     /**
+     * Just flips the linewrap flag.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
      */

@@ -14,7 +14,9 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.SmartAction;
 
 /**
- * Inserts the text of a file at the current cursor location.
+ * Saves the contents of the textarea to a file after the user makes a file
+ * selection via a file chooser dialog. The action comes prewired with an
+ * icon and a shortcut (Alt-A). 
  */
 public class SaveAsAction extends SmartAction
 {
@@ -58,6 +60,9 @@ public class SaveAsAction extends SmartAction
     //--------------------------------------------------------------------------
 
     /**
+     * Pops up a file chooser dialog and saves the text area contents to the
+     * selected file.
+     * 
      * @see toolbox.util.ui.SmartAction#runAction(
      *      java.awt.event.ActionEvent)
      */

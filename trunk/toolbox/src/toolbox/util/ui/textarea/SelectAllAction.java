@@ -7,7 +7,7 @@ import javax.swing.text.JTextComponent;
 import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
- * Selects all items in the list box.
+ * Selects the entire contents of a text area.
  */
 public class SelectAllAction extends AbstractTextComponentAction
 {
@@ -30,6 +30,8 @@ public class SelectAllAction extends AbstractTextComponentAction
     //--------------------------------------------------------------------------
     
     /**
+     * One liner to select all text.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
      */

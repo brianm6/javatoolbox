@@ -9,7 +9,10 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
- * Pastes the contents of the clipboard into the text component.
+ * Pastes the contents of the clipboard into the text component as the current
+ * cursor location.
+ * 
+ * @see toolbox.util.ui.textarea.CopyAction
  */    
 public class PasteAction extends AbstractTextComponentAction
 {
@@ -34,6 +37,8 @@ public class PasteAction extends AbstractTextComponentAction
     //--------------------------------------------------------------------------
     
     /**
+     * Just pastes the contents of the clipboard.
+     * 
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
      */

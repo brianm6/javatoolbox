@@ -10,7 +10,9 @@ import toolbox.util.FileUtil;
 import toolbox.util.ui.SmartAction;
 
 /**
- * Inserts the text of a file at the currnet cursor location.
+ * Inserts the text of a file into a textarea at the current cursor location.
+ * 
+ * @see toolbox.util.ui.textarea.SaveAsAction
  */
 public class InsertFileAction extends SmartAction
 {
@@ -19,12 +21,14 @@ public class InsertFileAction extends SmartAction
     //--------------------------------------------------------------------------
 
     /**
-     * Last selected directory in the FileChooser.
+     * Remembers the last selected directory in the FileChooser because its
+     * always annoyed me when software doesn't implement this simple usability
+     * feature!
      */
     private static File lastDir_;
     
     /**
-     * Text component to insert the files contents into.
+     * Text component to insert the selected file's contents into.
      */
     private JTextComponent textComponent_;
     
@@ -48,6 +52,9 @@ public class InsertFileAction extends SmartAction
     //--------------------------------------------------------------------------
 
     /**
+     * Inserts the selected file into the text area. Keeps track of the last
+     * selected directory.
+     * 
      * @see toolbox.util.ui.SmartAction#runAction(
      *      java.awt.event.ActionEvent)
      */
@@ -67,9 +74,7 @@ public class InsertFileAction extends SmartAction
                 chooser.getSelectedFile().getCanonicalPath());
             
             int curPos = textComponent_.getCaretPosition();    
-            
-            textComponent_.getDocument().
-                insertString(curPos, txt, null);                        
+            textComponent_.getDocument().insertString(curPos, txt, null);                        
         }
         
         lastDir_ = chooser.getCurrentDirectory();
