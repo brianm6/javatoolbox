@@ -106,9 +106,9 @@ public final class JDBCUtil
     private static Driver driver_;
 
     /**
-     * Clover private constructor workaround.
+     * Flag to used the pooled jdbc drviers.
      */
-    static { new JDBCUtil(); }
+    private static boolean pooled_ = false;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -178,7 +178,9 @@ public final class JDBCUtil
                IllegalAccessException,
                InstantiationException 
     {
-        if (!pooled)
+        pooled_ = pooled;
+        
+        if (!pooled_)
         {
             driver_ = (Driver) Class.forName(driver).newInstance();
             
@@ -254,7 +256,7 @@ public final class JDBCUtil
                IllegalAccessException, 
                InstantiationException
     {
-        init(new String[] {jarFile}, driver, url, user, password);
+        init(new String[] {jarFile}, driver, url, user, password, false);
     }
     
     
@@ -278,13 +280,16 @@ public final class JDBCUtil
         String driver, 
         String url, 
         String user, 
-        String password) 
+        String password,
+        boolean pooled) 
         throws ClassNotFoundException,
                SQLException, 
                MalformedURLException, 
                IllegalAccessException,
                InstantiationException
     {
+        pooled_ = pooled;
+        
         // jarFiles[] -> jarURLs[]
         URL[] jarURLs = new URL[jarFiles.length];
         for (int i = 0; i< jarFiles.length; i++)
@@ -748,24 +753,22 @@ public final class JDBCUtil
      * 
      * @throws SQLException on SQL error.
      */
-    public static void shutdown() throws SQLException {
-        
-        /*
-        if (usePool_) {
+    public static void shutdown() throws SQLException 
+    {
+        if (pooled_) 
+        {
             PoolingDriver pd = (PoolingDriver) driver_;
             
-            try {
-                pd.getPool(CONN_POOL_NAME).close();
+            try 
+            {
+                pd.closePool(CONN_POOL_NAME);
             }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-                throw new SQLException(e.getMessage());
+            catch (Exception e) 
+            {
+                logger_.error(e);
             }
         }
-        */
-            
-        //DriverManager.deregisterDriver(driver_);
+        
         driver_ = null;
         connProps_ = null;        
     }
