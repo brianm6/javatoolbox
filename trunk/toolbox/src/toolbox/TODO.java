@@ -13,19 +13,9 @@ package toolbox;
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Upgrade to ant 1.5.3
  * TODO: Create a nice UI to run statcvs
+ * TODO: Integrate automatic build number generation into the build process.
  * </pre>
  */
 public class TODO
 {
-    // blah blah blah
 }
-
-/**
- * $Log$
- * Revision 1.19  2003-05-15 03:34:19  analogue
- * Testing log again
- *
- * Revision 1.18  2003/05/15 03:33:33  analogue
- * Testing log
- *
- */
