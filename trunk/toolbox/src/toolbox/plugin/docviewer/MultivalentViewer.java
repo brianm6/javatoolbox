@@ -134,7 +134,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     protected void buildView()
     {
-        browser_ = Multivalent.getInstance().getBrowser("name", "Basic");
+        browser_ = Multivalent.getInstance().getBrowser("name", "Basic", false);
 
         setLayout(new BorderLayout());
         add(new JScrollPane(browser_), BorderLayout.CENTER);
@@ -193,10 +193,22 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     class SemanticSender implements ActionListener
     {
+        /**
+         * Destination.
+         */
         private Browser br_;
+        
+        /**
+         * Command.
+         */
         private String cmd_;
+        
+        /**
+         * Argument.
+         */
         private Object arg_;
 
+        
         /**
          * Creates a SemanticSender.
          * 
