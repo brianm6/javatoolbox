@@ -482,7 +482,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      * 
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_XSLFO_PLUGIN);
         
