@@ -53,8 +53,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      */
     public XMLNode marshal()  throws IOException 
     {
-        String method = "[marshl] ";
-        
         // Root config node
         XMLNode jtailNode = new XMLNode(ELEMENT_JTAIL);
         
@@ -78,7 +76,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         jtailNode.addNode(defaultsNode);
         
         // Save child ITailPaneConfigs
-        logger_.debug(method + 
+        logger_.debug(
             "Saving " + tailPaneConfigs_.length + " configurations");
 
         for (int i=0; i<tailPaneConfigs_.length; i++)
@@ -99,8 +97,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      */
     public static IJTailConfig unmarshal(XMLNode jtailNode) throws IOException 
     {
-        String method = "[unmars] ";
-        
         IJTailConfig jtailConfig = new JTailConfig();
         
         // Read optional window location
@@ -156,7 +152,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             }
             else
             {
-                logger_.warn(method + 
+                logger_.warn(
                     "Expected XML node JTail->Defaults->Tail");
                     
                 jtailConfig.setDefaultConfig(new TailPaneConfig());
@@ -164,7 +160,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            logger_.warn(method + "Expected XML node JTail->Defaults");
+            logger_.warn("Expected XML node JTail->Defaults");
             jtailConfig.setDefaultConfig(new TailPaneConfig());            
         }
          
