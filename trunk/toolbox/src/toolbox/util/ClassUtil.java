@@ -258,7 +258,7 @@ public final class ClassUtil
     public static String pathToPackage(String path)
     {
         String packageName = 
-            StringUtil.trim(path.replace('/', '.').replace('\\', '.'), '.');
+            StringUtils.strip(path.replace('/', '.').replace('\\', '.'), ".");
             
         return packageName;
     }

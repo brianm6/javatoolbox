@@ -15,7 +15,9 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.WrappingWriter;
 
 /**
- * String utility methods.
+ * Most commonly used String utility methods are already available in
+ * {@link org.apache.commons.lang.StringUtils}. For those that aren't, this is
+ * where you'll find them.
  */
 public final class StringUtil
 {
@@ -440,39 +442,6 @@ public final class StringUtil
         return tokens;
     }
 
-    
-    /**
-     * Trims leading and trailing characters from a string.
-     * 
-     * @param s String to trim.
-     * @param ch Character to trim from string.
-     * @return Trimmed string.
-     */     
-    public static String trim(String s, char ch)
-    {
-        int len = s.length();
-        
-        // empty string
-        if (len == 0)
-            return s;
-        
-        // nothing to trim
-        if (!s.startsWith(ch + "") && !s.endsWith(ch + ""))
-            return s;
-
-        // trim on both sides        
-        int startPos = 0;
-        int endPos   = len - 1;
-        
-        while (startPos < len && s.charAt(startPos) == ch)
-            startPos++;                
-        
-        while (endPos >= startPos && s.charAt(endPos) == ch)
-            endPos--;
-        
-        return s.substring(startPos, endPos + 1);
-    }
-    
     
     /**
      * Determines if a string is multiline (contains one or more carriage

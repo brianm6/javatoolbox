@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 import toolbox.util.ClassUtil;
-import toolbox.util.StringUtil;
 
 /**
  * Basic implementation of the {@link DumpFormatter} interface.
@@ -219,6 +219,6 @@ public class BasicDumpFormatter implements DumpFormatter
         // Strip leading and trailing underscores
         //
         
-        return StringUtil.trim(fieldName, '_');
+        return StringUtils.strip(fieldName, "_");
     }
 }
