@@ -49,7 +49,6 @@
  * TODO: Add dbcopy functionality from dbunit
  * TODO: Replace invoker with executor
  * TODO: Write ndoc maven plugin
- * TODO: Write FramePluginHost
  * =============================================================================
  *                              Build
  * =============================================================================
@@ -130,6 +129,7 @@
             <action type="add"   >Build - Added Findbugs plugin to the Maven site goal</action>
             <action type="add"   >Build - Add NDoc goal in maven.xml to generate javadocs that look like .NET</action>
             <action type="add"   >Util - Added hotkeys to JFileExplorer for rename (F2), up one level (Backspace), refresh (F5), and delete (DEL).</action>
+            <action type="add"   >Workspace - Implemented FramePluginHost which starts each plugin in its own JFrame instance</action>
         </release>
 
         <!-- =================================================================== -->
