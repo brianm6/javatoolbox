@@ -2,6 +2,7 @@ package toolbox.launcher;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Map;
 
 import toolbox.util.ArrayUtil;
 
@@ -16,8 +17,10 @@ import toolbox.util.ArrayUtil;
  */
 public class Main
 {
-    /** Program name to class file map */
-    private static HashMap programMap_;
+    /** 
+     * Program name to class file map 
+     */
+    private static Map programMap_;
     
     static
     {
@@ -65,43 +68,40 @@ public class Main
         switch (args.length)
         {
             case 0 :
+            
                 printUsage();    
                 break;
+            
                 
             default :
-                
+            
                 if (!programMap_.containsKey(args[0]))
-                {
-                    // Program not recognized
                     printUsage();
-                }
                 else
                 {
                     // Get new arg list minus the first element
                     String[] newArgs = new String[0];
                     
                     if (args.length > 1)
-                    {
                         newArgs = (String[]) 
                             ArrayUtil.subset(args, 1, args.length-1);
-                    }
                   
                     // Launch program      
                     launch((String)programMap_.get(args[0]), newArgs);
-                } 
-                break;
+                }
+                break; 
         }    
     }
     
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
      * Launches a toolbox executable with the given classname and arguments
      * 
-     * @param  className   Name of class to launch
-     * @param  args        Arguments
+     * @param className Name of class to launch
+     * @param args Arguments
      */
     protected void launch(String className, String[] args)
     {
