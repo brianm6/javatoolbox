@@ -4,24 +4,18 @@ import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Regular expression filter. Applies a regular expression to a string of text. 
- * If there is a match, the line is returned, otherwise a null is returned.
+ * RegexLineFilter applies a regular expression to a string of text. If there 
+ * is a match, the text is returned, otherwise a null is returned.
  */
 public class RegexLineFilter extends AbstractLineFilter
 {
-    /** 
-     * Regular expression as a string 
-     */
+    /** Regular expression */
     private String strRegExp_;
     
-    /** 
-     * Flag to match case 
-     */
+    /** Flag to match case */
     private boolean matchCase_;
     
-    /**
-     * Regular expression 
-     */
+    /** Regular expression engine */
     private RE regExp_;
     
     //--------------------------------------------------------------------------
@@ -29,7 +23,7 @@ public class RegexLineFilter extends AbstractLineFilter
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor that matches everything
+     * Default constructor that matches everything.
      * 
      * @throws  RESyntaxException on an invalid regular expression
      */
@@ -39,7 +33,8 @@ public class RegexLineFilter extends AbstractLineFilter
     }
 
     /**
-     * Creates a RegexLineFilter with the given regular expression
+     * Creates a RegexLineFilter with the given regular expression. The match
+     * is case insensetive by default. 
      * 
      * @param   regularExpression   Regular expression to match against
      * @throws  RESyntaxException on an invalid regular expression
@@ -50,8 +45,8 @@ public class RegexLineFilter extends AbstractLineFilter
     }
         
     /**
-     * Creates a line filter that applies a regular expression to the contents
-     * of a string
+     * Creates a RegexLineFilter with the given regular expression and case
+     * matching flag.
      * 
      * @param   regularExpression     Regular expression to match
      * @param   matchCase             Set to true to observe case sensetivity
