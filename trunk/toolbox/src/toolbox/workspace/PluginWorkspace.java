@@ -41,7 +41,7 @@ import toolbox.util.PropertiesUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.AbstractSecuredAction;
+import toolbox.util.ui.TryCatchAction;
 import toolbox.util.ui.ImageCache;
 
 /**
@@ -670,14 +670,14 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     /**
      * Triggers garbage collection
      */
-    class GarbageCollectAction extends AbstractSecuredAction
+    class GarbageCollectAction extends TryCatchAction
     {
         public GarbageCollectAction()
         {
             super("Run GC");
         }
         
-        public void actionSecured(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e)
         {
             ElapsedTime time = new ElapsedTime();
             System.gc();
