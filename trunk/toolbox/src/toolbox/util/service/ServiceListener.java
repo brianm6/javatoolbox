@@ -6,47 +6,51 @@ package toolbox.util.service;
  */
 public interface ServiceListener
 {
-    /**
-     * Notification that the service has been initialized.
-     * 
-     * @param service Service that been initialized.
-     * @throws ServiceException on error.
-     */
-    void serviceInitialized(Service service) throws ServiceException;
+//    /**
+//     * Notification that the service has been initialized.
+//     * 
+//     * @param service Service that been initialized.
+//     * @throws ServiceException on error.
+//     */
+//    void serviceInitialized(Initializable service) throws ServiceException;
+//    
+//    
+//    /**
+//     * Notification that the service has started running.
+//     * 
+//     * @param service Service that started.
+//     * @throws ServiceException on error.
+//     */
+//    void serviceStarted(Service service) throws ServiceException;
+//    
+//    
+//    /**
+//     * Notification that the service has stopped running.
+//     *  
+//     * @param service Service that stopped.
+//     * @throws ServiceException on error.
+//     */
+//    void serviceStopped(Service service) throws ServiceException;
+//    
+//    
+//    /**
+//     * Notification that the server has been paused.
+//     * 
+//     * @param service Service that was paused.
+//     * @throws ServiceException on error.
+//     */
+//    void servicePaused(Service service) throws ServiceException;
+//    
+//    
+//    /**
+//     * Notification that the service has resumed.
+//     * 
+//     * @param service Service that was resumed.
+//     * @throws ServiceException on error.
+//     */
+//    void serviceResumed(Service service) throws ServiceException;
     
     
-    /**
-     * Notification that the service has started running.
-     * 
-     * @param service Service that started.
-     * @throws ServiceException on error.
-     */
-    void serviceStarted(Service service) throws ServiceException;
+    void serviceChanged(Service service) throws ServiceException;
     
-    
-    /**
-     * Notification that the service has stopped running.
-     *  
-     * @param service Service that stopped.
-     * @throws ServiceException on error.
-     */
-    void serviceStopped(Service service) throws ServiceException;
-    
-    
-    /**
-     * Notification that the server has been paused.
-     * 
-     * @param service Service that was paused.
-     * @throws ServiceException on error.
-     */
-    void servicePaused(Service service) throws ServiceException;
-    
-    
-    /**
-     * Notification that the service has resumed.
-     * 
-     * @param service Service that was resumed.
-     * @throws ServiceException on error.
-     */
-    void serviceResumed(Service service) throws ServiceException;
 }

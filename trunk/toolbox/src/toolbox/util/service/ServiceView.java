@@ -105,40 +105,20 @@ public class ServiceView extends JPanel
     class MyServiceListener implements ServiceListener {
         
         /**
-         * @see toolbox.util.service.ServiceListener#serviceInitialized(toolbox.util.service.Service)
+         * @see toolbox.util.service.ServiceListener#serviceChanged(toolbox.util.service.Service)
          */
-        public void serviceInitialized(Service service) throws ServiceException
+        public void serviceChanged(Service service) throws ServiceException
         {
-            ((AbstractAction) actions_.get("start")).setEnabled(true);
-            ((AbstractAction) actions_.get("stop")).setEnabled(false);
-            ((AbstractAction) actions_.get("pause")).setEnabled(false);
-            ((AbstractAction) actions_.get("resume")).setEnabled(false);
-        }
-        
-        
-        /**
-         * @see toolbox.util.service.ServiceListener#servicePaused(toolbox.util.service.Service)
-         */
-        public void servicePaused(Service service) throws ServiceException
-        {
-        }
-        /**
-         * @see toolbox.util.service.ServiceListener#serviceResumed(toolbox.util.service.Service)
-         */
-        public void serviceResumed(Service service) throws ServiceException
-        {
-        }
-        /**
-         * @see toolbox.util.service.ServiceListener#serviceStarted(toolbox.util.service.Service)
-         */
-        public void serviceStarted(Service service) throws ServiceException
-        {
-        }
-        /**
-         * @see toolbox.util.service.ServiceListener#serviceStopped(toolbox.util.service.Service)
-         */
-        public void serviceStopped(Service service) throws ServiceException
-        {
+            ServiceState state = service.getState();
+            
+            if (state == ServiceState.INITIALIZED)
+            {
+                ((AbstractAction) actions_.get("start")).setEnabled(true);
+                ((AbstractAction) actions_.get("stop")).setEnabled(false);
+                ((AbstractAction) actions_.get("pause")).setEnabled(false);
+                ((AbstractAction) actions_.get("resume")).setEnabled(false);
+            }
+            
         }
     }
     

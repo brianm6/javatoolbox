@@ -11,25 +11,25 @@ public abstract class AbstractService implements Service
     // Constants
     //--------------------------------------------------------------------------
     
-    private static final int STATE_NONE     = -1;
-    private static final int STATE_INIT     = 0;
-    private static final int STATE_RUNNING  = 1;
-    private static final int STATE_STOPPED  = 2;
-    private static final int STATE_PAUSED   = 3;
-    private static final int STATE_SHUTDOWN = 4;
-    private static final int STATE_MAX      = 5;
-    
-    private static final String[] STATES; 
-
-    static
-    {
-        STATES = new String[STATE_MAX];
-        STATES[STATE_INIT]     = "initialized";
-        STATES[STATE_RUNNING]  = "running";
-        STATES[STATE_STOPPED]  = "stopped";
-        STATES[STATE_PAUSED]   = "paused";
-        STATES[STATE_SHUTDOWN] = "shutdown";
-    }
+//    private static final int STATE_NONE     = -1;
+//    private static final int STATE_INIT     = 0;
+//    private static final int STATE_RUNNING  = 1;
+//    private static final int STATE_STOPPED  = 2;
+//    private static final int STATE_PAUSED   = 3;
+//    private static final int STATE_SHUTDOWN = 4;
+//    private static final int STATE_MAX      = 5;
+//    
+//    private static final String[] STATES; 
+//
+//    static
+//    {
+//        STATES = new String[STATE_MAX];
+//        STATES[STATE_INIT]     = "initialized";
+//        STATES[STATE_RUNNING]  = "running";
+//        STATES[STATE_STOPPED]  = "stopped";
+//        STATES[STATE_PAUSED]   = "paused";
+//        STATES[STATE_SHUTDOWN] = "shutdown";
+//    }
 
     //--------------------------------------------------------------------------
     // Fields
@@ -38,7 +38,7 @@ public abstract class AbstractService implements Service
     /**
      * State of the service.
      */
-    private int state_;
+    private ServiceState state_;
     
     /**
      * Array of listeners interested in events that this service generates.
@@ -54,10 +54,34 @@ public abstract class AbstractService implements Service
      */
     public AbstractService()
     {
-        state_ = STATE_NONE;
+        setState(ServiceState.UNINITIALIZED);
         listeners_ = new ServiceListener[0];
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the state.
+     * 
+     * @return ServiceState
+     */
+    public ServiceState getState()
+    {
+        return state_;
+    }
+    
+    /**
+     * Sets the value of state.
+     * 
+     * @param state The state to set.
+     */
+    public void setState(ServiceState state)
+    {
+        state_ = state;
+    }
+    
     //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------
@@ -67,8 +91,8 @@ public abstract class AbstractService implements Service
      */
     public void initialize() throws ServiceException
     {
-        state_ = STATE_INIT;
-        fireServiceInitialized();
+        setState(ServiceState.INITIALIZED);
+        fireServiceChanged();
     }
     
     
@@ -77,14 +101,15 @@ public abstract class AbstractService implements Service
      */
     public void start() throws ServiceException
     {
-        if (state_ == STATE_INIT || state_ == STATE_STOPPED)
+        if (getState() == ServiceState.INITIALIZED || 
+            getState() == ServiceState.STOPPED)
         {    
-            state_ = STATE_RUNNING;
-            fireServiceStarted();
+            setState(ServiceState.RUNNING);
+            fireServiceChanged();
         }
         else
             throw new IllegalStateException(
-                "Cannot start from current state of " + STATES[state_]);
+                "Cannot start service from the current state of " + getState());
     }
 
     
@@ -93,30 +118,30 @@ public abstract class AbstractService implements Service
      */
     public void stop() throws ServiceException
     {
-        if (state_ == STATE_RUNNING)
+        if (getState() == ServiceState.RUNNING)
         {
-            state_ = STATE_STOPPED;
-            fireServiceStopped();
+            setState(ServiceState.STOPPED);
+            fireServiceChanged();
         }
         else
             throw new IllegalStateException(
-                "Cannot stop from current state of " + STATES[state_]);
+                "Cannot stop service from the current state of " + getState());
     }
 
     
     /**
-     * @see toolbox.util.service.Service#pause()
+     * @see toolbox.util.service.Service#suspend()
      */
-    public void pause() throws ServiceException
+    public void suspend() throws ServiceException
     {
-        if (state_ == STATE_RUNNING)
+        if (getState() == ServiceState.RUNNING)
         {
-            state_ = STATE_PAUSED;
-            fireServicePaused();
+            setState(ServiceState.SUSPENDED);
+            fireServiceChanged();
         }
         else
             throw new IllegalStateException(
-                "Cannot pause from current state of " + STATES[state_]);
+                "Cannot suspend from the current state of " + getState());
     }
 
     
@@ -125,14 +150,14 @@ public abstract class AbstractService implements Service
      */
     public void resume() throws ServiceException
     {
-        if (state_ == STATE_PAUSED)
+        if (getState() == ServiceState.SUSPENDED)
         {
-            state_ = STATE_RUNNING;
-            fireServiceResumed();
+            setState(ServiceState.RUNNING);
+            fireServiceChanged();
         }
         else
             throw new IllegalStateException(
-                "Cannot resume from current state of " + STATES[state_]);
+                "Cannot resume service from the current state of " + getState());
     }
 
     
@@ -141,16 +166,16 @@ public abstract class AbstractService implements Service
      */
     public boolean isRunning()
     {
-        return state_ == STATE_RUNNING;
+        return getState() == ServiceState.RUNNING;
     }
 
     
     /**
-     * @see toolbox.util.service.Service#isPaused()
+     * @see toolbox.util.service.Service#isSuspended()
      */
-    public boolean isPaused()
+    public boolean isSuspended()
     {
-        return state_ == STATE_PAUSED;
+        return state_ == ServiceState.SUSPENDED;
     }
 
     
@@ -182,57 +207,58 @@ public abstract class AbstractService implements Service
      * 
      * @throws ServiceException on service related error.
      */
-    protected void fireServiceInitialized() throws ServiceException
+    protected void fireServiceChanged() throws ServiceException
     {
         for (int i = 0; i < listeners_.length; 
-            listeners_[i++].serviceInitialized(this));
+            listeners_[i++].serviceChanged(this));
     }
 
     
-    /**
-     * Notifies registered listeners that the service has started.
-     * 
-     * @throws ServiceException on service related error.
-     */
-    protected void fireServiceStarted() throws ServiceException
-    {
-        for (int i = 0; i < listeners_.length; 
-            listeners_[i++].serviceStarted(this));
-    }
+//    /**
+//     * Notifies registered listeners that the service has started.
+//     * 
+//     * @throws ServiceException on service related error.
+//     */
+//    protected void fireServiceStarted() throws ServiceException
+//    {
+//        for (int i = 0; i < listeners_.length; 
+//            listeners_[i++].serviceStarted(this));
+//    }
+//
+//    
+//    /**
+//     * Notifies registered listeners that the service has stopped.
+//     * 
+//     * @throws ServiceException on service related error.
+//     */
+//    protected void fireServiceStopped() throws ServiceException
+//    {
+//        for (int i = 0; i < listeners_.length;
+//            listeners_[i++].serviceStopped(this));
+//    }
+//
+//    
+//    /**
+//     * Notifies registered listeners that the service has been paused.
+//     * 
+//     * @throws ServiceException on service related error.
+//     */
+//    protected void fireServicePaused() throws ServiceException
+//    {
+//        for (int i = 0; i < listeners_.length;
+//            listeners_[i++].servicePaused(this));
+//    }
+//
+//    
+//    /**
+//     * Notifies registered listeners that the service has been resumed.
+//     * 
+//     * @throws ServiceException on service related error.
+//     */
+//    protected void fireServiceResumed() throws ServiceException
+//    {
+//        for (int i = 0; i < listeners_.length;
+//            listeners_[i++].serviceResumed(this));
+//    }
 
-    
-    /**
-     * Notifies registered listeners that the service has stopped.
-     * 
-     * @throws ServiceException on service related error.
-     */
-    protected void fireServiceStopped() throws ServiceException
-    {
-        for (int i = 0; i < listeners_.length;
-            listeners_[i++].serviceStopped(this));
-    }
-
-    
-    /**
-     * Notifies registered listeners that the service has been paused.
-     * 
-     * @throws ServiceException on service related error.
-     */
-    protected void fireServicePaused() throws ServiceException
-    {
-        for (int i = 0; i < listeners_.length;
-            listeners_[i++].servicePaused(this));
-    }
-
-    
-    /**
-     * Notifies registered listeners that the service has been resumed.
-     * 
-     * @throws ServiceException on service related error.
-     */
-    protected void fireServiceResumed() throws ServiceException
-    {
-        for (int i = 0; i < listeners_.length;
-            listeners_[i++].serviceResumed(this));
-    }
 }

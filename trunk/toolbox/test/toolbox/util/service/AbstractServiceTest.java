@@ -126,7 +126,7 @@ public class AbstractServiceTest extends TestCase
          * @see toolbox.util.service.ServiceListener#serviceInitialized(
          *      toolbox.util.service.Service)
          */
-        public void serviceInitialized(Service service) 
+        public void serviceInitialized(Initializable service) 
             throws ServiceException
         {
             logger_.info("Event: service initialized");

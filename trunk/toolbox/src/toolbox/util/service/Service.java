@@ -2,73 +2,47 @@ package toolbox.util.service;
 
 /**
  * An object that implements the Service interface adheres to basic lifecycle
- * management and (start/stop/resume) and a query interface expose current
+ * states and the deterministic transitions between states according to well
+ * defined events.
+ * 
  * state.
-   <pre>
-     
-                             init
-         +-----------------------------------------+
-         |                                         |
-         |                  [PAUSED]           [SHUTDOWN]
-         |                   ^   |                 ^
-         |              pause|   |resume           |  
-         |                   |   |                 |shutdown
-         v        start      |   v     stop        |
-  [INITIALIZED]----------->[RUNNING]---------->[STOPPED]
-                               ^                   |
-                               |                   |
-                               +-------------------+
-                                      start
-  </pre>                                      
+ * <pre>
+ *                    Service Finite State Machine
+ *                    ============================
+ *             
+ *                                      
+ *  (UNINITIALIZED)        [SUSPENDED]          (DESTROYED)
+ *         |                  ^     |                ^
+ *         |                  |     |                |
+ *    init |          suspend |     | resume         | destroy
+ *         |                  |     |                |
+ *         |                  |     |                |       
+ *         v        start     |     v     stop       |
+ *  [INITIALIZED]----------->[RUNNING]---------->[STOPPED]
+ *                               ^                   |
+ *                               |                   |
+ *                               +-------------------+
+ *                                    start
+ *</pre>                                      
  */              
 
-public interface Service extends Resumable
+public interface Service extends Initializable, Startable, Suspendable, 
+    Destroyable
 {
     //--------------------------------------------------------------------------
     // LifeCycle
     //--------------------------------------------------------------------------
     
     /**
-     * Initializes the service.
+     * Returns the current state of this service.
      * 
-     * @throws ServiceException if the service encounters problems initializing.
+     * @return ServiceState
      */
-    void initialize() throws ServiceException;
-
-    
-    /**
-     * Starts the service. Once a service it started, it may either be paused or
-     * stopped.
-     * 
-     * @throws ServiceException if the service encounters problems starting up.
-     */
-    void start() throws ServiceException;
+    public ServiceState getState();
     
     
     /**
-     * Stops the service. One a service is stopped, it may be restarted safely.
-     * 
-     * @throws ServiceException if the service encounters problems stopping.
-     */
-    void stop() throws ServiceException;
-
-    //--------------------------------------------------------------------------
-    // Monitoring
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Returns true if the service is running, false otherwise.
-     * 
-     * @return boolean
-     */
-    boolean isRunning();
-    
-    //--------------------------------------------------------------------------
-    // Notification
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Adds a listener to the list of observers.
+     * Adds a listener to the list of observers for this service.
      *  
      * @param listener Listener to add.
      */
@@ -76,7 +50,7 @@ public interface Service extends Resumable
 
     
     /**
-     * Removes a listener from the list of observers.
+     * Removes a listener from the list of observers for this service.
      *  
      * @param listener Listener to remove.
      */

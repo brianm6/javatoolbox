@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
+import toolbox.util.service.Initializable;
 import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -183,7 +184,7 @@ public class ClientView extends JHeaderPanel
      * @see toolbox.util.service.ServiceListener#serviceInitialized(
      *      toolbox.util.service.Service)
      */
-    public void serviceInitialized(Service service) throws ServiceException
+    public void serviceInitialized(Initializable service) throws ServiceException
     {
         statusField_.setText("Initialized");
     }

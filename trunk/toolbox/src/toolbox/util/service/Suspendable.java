@@ -3,7 +3,7 @@ package toolbox.util.service;
 /**
  * A service that can be paused/resumed.
  */              
-public interface Resumable
+public interface Suspendable
 {
     /**
      * Pauses the service indefinitely. Once a service is paused, it may only

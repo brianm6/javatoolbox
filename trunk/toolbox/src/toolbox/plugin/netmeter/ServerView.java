@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import toolbox.util.service.Initializable;
 import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -123,7 +124,7 @@ public class ServerView extends JHeaderPanel implements ServiceListener
      * @see toolbox.util.service.ServiceListener#serviceInitialized(
      *      toolbox.util.service.Service)
      */
-    public void serviceInitialized(Service service) throws ServiceException
+    public void serviceInitialized(Initializable service) throws ServiceException
     {
         statusField_.setText("Initialized");
     }
