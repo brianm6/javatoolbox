@@ -693,9 +693,16 @@ public class Tree2
             File[] files = rootDir.listFiles(fileFilter_);
             Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
             
-            int longestName = -1; // Number of spaces occupied by longest fname 
-            int largestFile = -1; // Number of spaces occupied by largest fsize
-            long dirSize = 0;     // Running total of a directory's size
+            // Number of spaces occupied by longest filename. A value of -1 
+            // means that it hasn't been lazily computed yet.
+            int longestName = -1;  
+            
+            // Number of spaces occupied by largest file size. A value of -1
+            // means that it hasn't been lazily computed yet.
+            int largestFile = -1; 
+            
+            // Running total size of all the files in a directory.
+            long dirSize = 0;     
             
             for (int i = 0; i < files.length; i++)
             {
