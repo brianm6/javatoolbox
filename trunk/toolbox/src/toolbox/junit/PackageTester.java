@@ -13,14 +13,17 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 
 /**
- *  Runs unit tests by java package
+ * Runs unit tests by java package
  */
 public class PackageTester
 {
     public static final Logger logger_ = 
         Logger.getLogger(PackageTester.class);
     
-    private List packages_ = new ArrayList();
+    /**
+     * List of packages to test
+     */
+    private List packages_; 
 
     //--------------------------------------------------------------------------
     // Main
@@ -53,15 +56,17 @@ public class PackageTester
      */
     public PackageTester() 
     {
+        packages_ = new ArrayList();
     }
     
     /**
      * Creates a PackageTester
      * 
-     * @param  packageName  Package name
+     * @param packageName Package name
      */
     public PackageTester(String packageName)
     {
+        this();
         addPackage(packageName);
     }
 
