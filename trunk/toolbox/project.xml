@@ -459,6 +459,14 @@
     </dependency>
 
     <dependency>
+      <id>squarenesslf</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>statcvs</id>
       <version/>
       <properties>
