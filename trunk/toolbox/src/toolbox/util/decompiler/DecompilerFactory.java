@@ -101,21 +101,18 @@ public final class DecompilerFactory
 
     
     /**
-     * Creates the preferred decompiler. Right now, its JODE. 
+     * Creates the preferred decompiler. Jad is preferrred if found, otherwise
+     * Jode is returned. 
      * 
      * @return Instance of the preferred decompiler.
      * @throws DecompilerException if instantiation error occur.
      */
     public static Decompiler createPreferred() throws DecompilerException
     {
-        /*
-         * TODO: This should in fact create the preferred decompiler given the 
-         *       current context. For example, use Jad if on the windows 
-         *       platform and jad.exe is available or use Jode otherwise.
-         * 
-         */
-        
-        return create(DECOMPILER_DEFAULT);
+        if (JadDecompiler.isFound())
+            return create(DECOMPILER_JAD);
+        else
+            return create(DECOMPILER_JODE);
     }
     
     
