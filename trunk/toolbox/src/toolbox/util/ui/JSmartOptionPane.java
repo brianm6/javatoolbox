@@ -297,7 +297,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     }
 
     //--------------------------------------------------------------------------
-    //  Implemenation
+    //  Public
     //--------------------------------------------------------------------------
 
     /**
@@ -520,31 +520,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
 
     /**
-     * Dunno what this is for
-     */
-    private static int styleFromMessageType(int messageType)
-    {
-        return messageType;
-        
-        /*
-        switch (messageType)
-        {
-            case JOptionPane.ERROR_MESSAGE :
-                return JRootPane.ERROR_DIALOG;
-            case JOptionPane.QUESTION_MESSAGE :
-                return JRootPane.QUESTION_DIALOG;
-            case JOptionPane.WARNING_MESSAGE :
-                return JRootPane.WARNING_DIALOG;
-            case JOptionPane.INFORMATION_MESSAGE :
-                return JRootPane.INFORMATION_DIALOG;
-            case JOptionPane.PLAIN_MESSAGE :
-            default :
-                return JRootPane.PLAIN_DIALOG;
-        }
-        */
-    }
-
-    /**
      * Creates and returns a new <code>JDialog</code> wrapping
      * <code>this</code> centered on the <code>parentComponent</code>
      * in the <code>parentComponent</code>'s frame.
@@ -570,94 +545,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     {
         int style = styleFromMessageType(getMessageType());
         return createDialog(parentComponent, title, style);
-    }
-
-
-    /**
-     * Creates a dialog
-     */
-    private JDialog createDialog(Component parentComponent, String title,
-        int style)
-    {
-
-        final JDialog dialog;
-
-        Window window = 
-            JSmartOptionPane.getWindowForComponent2(parentComponent);
-            
-        if (window instanceof Frame)
-        {
-            dialog = new JDialog((Frame) window, title, true);
-        }
-        else
-        {
-            dialog = new JDialog((Dialog) window, title, true);
-        }
-        Container contentPane = dialog.getContentPane();
-
-        contentPane.setLayout(new BorderLayout());
-        contentPane.add(this, BorderLayout.CENTER);
-
-        //dialog.setResizable(false);
-        /*
-        if (JDialog.isDefaultLookAndFeelDecorated())
-        {
-            boolean supportsWindowDecorations =
-                UIManager.getLookAndFeel().getSupportsWindowDecorations();
-            if (supportsWindowDecorations)
-            {
-                dialog.setUndecorated(true);
-                getRootPane().setWindowDecorationStyle(style);
-            }
-        }
-        */
-
-        dialog.pack();
-        dialog.setLocationRelativeTo(parentComponent);
-        dialog.addWindowListener(new WindowAdapter()
-        {
-            private boolean gotFocus = false;
-            public void windowClosing(WindowEvent we)
-            {
-                setValue(null);
-            }
-            public void windowGainedFocus(WindowEvent we)
-            {
-                // Once window gets focus, set initial focus
-                if (!gotFocus)
-                {
-                    selectInitialValue();
-                    gotFocus = true;
-                }
-            }
-        });
-        dialog.addComponentListener(new ComponentAdapter()
-        {
-            public void componentShown(ComponentEvent ce)
-            {
-                // reset value to ensure closing works properly
-                setValue(JOptionPane.UNINITIALIZED_VALUE);
-            }
-        });
-        addPropertyChangeListener(new PropertyChangeListener()
-        {
-            public void propertyChange(PropertyChangeEvent event)
-            {
-                // Let the defaultCloseOperation handle the closing
-                // if the user closed the window without selecting a button
-                // (newValue = null in that case).  Otherwise, close the dialog.
-                if (dialog.isVisible() && 
-                    event.getSource() == JSmartOptionPane.this && 
-                    (event.getPropertyName().
-                        equals(JOptionPane.VALUE_PROPERTY))    && 
-                    event.getNewValue() != null                && 
-                    event.getNewValue() != JOptionPane.UNINITIALIZED_VALUE)
-                {
-                    dialog.setVisible(false);
-                }
-            }
-        });
-        return dialog;
     }
 
 
@@ -1132,14 +1019,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
 
     /**
-     * Builds the GUI
-     */
-    protected void buildView()
-    {
-    }
-
-
-    /**
      * Handles actions 
      *
      * @param  e  Actionevent
@@ -1156,59 +1035,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
 
     /**
-     * Called when the details button is clicked
-     */
-    protected void detailsButtonClicked()
-    {
-        if (expanded_)
-            hideDetail();
-        else
-            showDetail();
-
-        getEnclosingDialog().pack();
-        SwingUtil.centerWindow(getEnclosingDialog());
-    }
-
-
-    /**
-     * Switches dialog box mode to show details
-     */
-    protected void showDetail()
-    {
-        if (detailArea_ == null)
-        {
-            detailArea_ = new JSmartTextArea();
-            detailArea_.setFont(SwingUtil.getPreferredMonoFont());
-            detailScroller_ = new JScrollPane(detailArea_);
-
-            Border topFiller = new EmptyBorder(10, 0, 0, 0);
-            Border existing = detailScroller_.getBorder();
-
-            if (existing != null)
-                existing = new CompoundBorder(topFiller, existing);
-
-            detailScroller_.setBorder(existing);
-        }
-
-        detailArea_.setText(details_.toString());
-        add(detailScroller_, BorderLayout.SOUTH);
-        expanded_ = true;
-        detailsButton_.setText(BUTTON_EXPANDED);
-    }
-
-
-    /**
-     * Switches dialog box mode to hide the details
-     */
-    protected void hideDetail()
-    {
-        remove(detailScroller_);
-        expanded_ = false;
-        detailsButton_.setText(BUTTON_COLLAPSED);
-    }
-
-
-    /**
      * Wraps a component in a flow layout
      * 
      * @param   c  Component to wrap
@@ -1219,28 +1045,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         JPanel p = new JPanel(new FlowLayout());
         p.add(c);
         return p;
-    }
-
-
-    /**
-     * @return  Array of buttons for dialog box
-     */
-    protected JButton[] getButtons()
-    {
-        if (buttons_ == null)
-        {
-            okButton_ = new JButton("OK");
-            okButton_.addActionListener(this);
-
-            detailsButton_ = new JButton(BUTTON_COLLAPSED);
-            detailsButton_.addActionListener(this);
-
-            buttons_ = new JButton[2];
-            buttons_[0] = okButton_;
-            buttons_[1] = detailsButton_;
-        }
-
-        return buttons_;
     }
 
 
@@ -1280,4 +1084,196 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
         return c;
     }
+    
+    //--------------------------------------------------------------------------
+    // Private 
+    //--------------------------------------------------------------------------
+    
+	/**
+	 * Creates a dialog
+	 */
+	private JDialog createDialog(Component parentComponent, String title,
+		int style)
+	{
+    
+		final JDialog dialog;
+    
+		Window window = 
+			JSmartOptionPane.getWindowForComponent2(parentComponent);
+            
+		if (window instanceof Frame)
+		{
+			dialog = new JDialog((Frame) window, title, true);
+		}
+		else
+		{
+			dialog = new JDialog((Dialog) window, title, true);
+		}
+		Container contentPane = dialog.getContentPane();
+    
+		contentPane.setLayout(new BorderLayout());
+		contentPane.add(this, BorderLayout.CENTER);
+    
+		//dialog.setResizable(false);
+		/*
+		if (JDialog.isDefaultLookAndFeelDecorated())
+		{
+			boolean supportsWindowDecorations =
+				UIManager.getLookAndFeel().getSupportsWindowDecorations();
+			if (supportsWindowDecorations)
+			{
+				dialog.setUndecorated(true);
+				getRootPane().setWindowDecorationStyle(style);
+			}
+		}
+		*/
+    
+		dialog.pack();
+		dialog.setLocationRelativeTo(parentComponent);
+		dialog.addWindowListener(new WindowAdapter()
+		{
+			private boolean gotFocus = false;
+			public void windowClosing(WindowEvent we)
+			{
+				setValue(null);
+			}
+			public void windowGainedFocus(WindowEvent we)
+			{
+				// Once window gets focus, set initial focus
+				if (!gotFocus)
+				{
+					selectInitialValue();
+					gotFocus = true;
+				}
+			}
+		});
+		dialog.addComponentListener(new ComponentAdapter()
+		{
+			public void componentShown(ComponentEvent ce)
+			{
+				// reset value to ensure closing works properly
+				setValue(JOptionPane.UNINITIALIZED_VALUE);
+			}
+		});
+		addPropertyChangeListener(new PropertyChangeListener()
+		{
+			public void propertyChange(PropertyChangeEvent event)
+			{
+				// Let the defaultCloseOperation handle the closing
+				// if the user closed the window without selecting a button
+				// (newValue = null in that case).  Otherwise, close the dialog.
+				if (dialog.isVisible() && 
+					event.getSource() == JSmartOptionPane.this && 
+					(event.getPropertyName().
+						equals(JOptionPane.VALUE_PROPERTY))    && 
+					event.getNewValue() != null                && 
+					event.getNewValue() != JOptionPane.UNINITIALIZED_VALUE)
+				{
+					dialog.setVisible(false);
+				}
+			}
+		});
+		return dialog;
+	}
+
+
+	/**
+	 * Switches dialog box mode to hide the details
+	 */
+	protected void hideDetail()
+	{
+		remove(detailScroller_);
+		expanded_ = false;
+		detailsButton_.setText(BUTTON_COLLAPSED);
+	}
+	
+	
+	/**
+	 * Dunno what this is for
+	 */
+	private static int styleFromMessageType(int messageType)
+	{
+		return messageType;
+        
+		/*
+		switch (messageType)
+		{
+			case JOptionPane.ERROR_MESSAGE :
+				return JRootPane.ERROR_DIALOG;
+			case JOptionPane.QUESTION_MESSAGE :
+				return JRootPane.QUESTION_DIALOG;
+			case JOptionPane.WARNING_MESSAGE :
+				return JRootPane.WARNING_DIALOG;
+			case JOptionPane.INFORMATION_MESSAGE :
+				return JRootPane.INFORMATION_DIALOG;
+			case JOptionPane.PLAIN_MESSAGE :
+			default :
+				return JRootPane.PLAIN_DIALOG;
+		}
+		*/
+	}
+
+
+	/**
+	 * Called when the details button is clicked
+	 */
+	protected void detailsButtonClicked()
+	{
+		if (expanded_)
+			hideDetail();
+		else
+			showDetail();
+
+		getEnclosingDialog().pack();
+		SwingUtil.centerWindow(getEnclosingDialog());
+	}
+
+
+	/**
+	 * Switches dialog box mode to show details
+	 */
+	protected void showDetail()
+	{
+		if (detailArea_ == null)
+		{
+			detailArea_ = new JSmartTextArea();
+			detailArea_.setFont(SwingUtil.getPreferredMonoFont());
+			detailScroller_ = new JScrollPane(detailArea_);
+
+			Border topFiller = new EmptyBorder(10, 0, 0, 0);
+			Border existing = detailScroller_.getBorder();
+
+			if (existing != null)
+				existing = new CompoundBorder(topFiller, existing);
+
+			detailScroller_.setBorder(existing);
+		}
+
+		detailArea_.setText(details_.toString());
+		add(detailScroller_, BorderLayout.SOUTH);
+		expanded_ = true;
+		detailsButton_.setText(BUTTON_EXPANDED);
+	}
+
+
+	/**
+	 * @return  Array of buttons for dialog box
+	 */
+	protected JButton[] getButtons()
+	{
+		if (buttons_ == null)
+		{
+			okButton_ = new JButton("OK");
+			okButton_.addActionListener(this);
+
+			detailsButton_ = new JButton(BUTTON_COLLAPSED);
+			detailsButton_.addActionListener(this);
+
+			buttons_ = new JButton[2];
+			buttons_[0] = okButton_;
+			buttons_[1] = detailsButton_;
+		}
+
+		return buttons_;
+	}
 }

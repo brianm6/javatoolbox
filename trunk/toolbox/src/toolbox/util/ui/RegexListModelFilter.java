@@ -12,12 +12,12 @@ import org.apache.regexp.RESyntaxException;
 import toolbox.util.StringUtil;
 
 /**
- * A ListModel that filters the text contents based on matching a 
- * regular expression
+ * A ListModel that filters the text contents based on matching a regular 
+ * expression
  */
 public class RegexListModelFilter extends AbstractListModelFilter
 {
-    /** Logger **/
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(RegexListModelFilter.class);
 
@@ -75,9 +75,9 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Creates a list model
      * 
-     * @param  delegate  List model to filter
-     * @param  regex     Regular expression
-     * @param  matchCase Flag to match case
+     * @param  delegate   List model to filter
+     * @param  regex      Regular expression
+     * @param  matchCase  Flag to match case
      */
     public RegexListModelFilter(ListModel delegate, String regex, 
         boolean matchCase)
@@ -87,9 +87,8 @@ public class RegexListModelFilter extends AbstractListModelFilter
         setRegex(MATCH_ALL);
     }
 
-
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
     
     /**
@@ -146,7 +145,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden behavior
+    //  Overridden from AbstractListModelFilter
     //--------------------------------------------------------------------------
 
     /**

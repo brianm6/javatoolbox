@@ -22,7 +22,7 @@ public class ThreadSafeListModel extends DefaultListModel
     }
 
     //--------------------------------------------------------------------------
-    // Overridden Methods from DefaultListModel
+    // Overridden from javax.swing.DefaultListModel
     //--------------------------------------------------------------------------
     
     /**

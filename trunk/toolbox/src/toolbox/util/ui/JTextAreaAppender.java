@@ -47,7 +47,7 @@ public class JTextAreaAppender  extends AppenderSkeleton
     }
 
     //--------------------------------------------------------------------------
-    //  Overriden Methods from AppenderSkeleton
+    //  Overriden from  org.apache.log4j.AppenderSkeleton;
     //--------------------------------------------------------------------------
     
     /** 
