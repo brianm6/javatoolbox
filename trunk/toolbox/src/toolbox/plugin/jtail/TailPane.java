@@ -48,7 +48,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.AutoTailAction;
 import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IStatusBar;
@@ -321,7 +321,7 @@ public class TailPane extends JHeaderPanel
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
                 "Autoscroll",
-                new AutoScrollAction(tailArea_),
+                new AutoTailAction(tailArea_),
                 tailArea_,
                 "autoscroll");
 
@@ -481,7 +481,7 @@ public class TailPane extends JHeaderPanel
     public void setConfiguration(ITailPaneConfig config)
     {
         config_ = config;
-        tailArea_.setAutoScroll(config_.isAutoScroll());
+        tailArea_.setAutoTail(config_.isAutoScroll());
         lineNumberDecorator_.setEnabled(config_.isShowLineNumbers());
         tailArea_.setFont(config_.getFont());
         tailArea_.setAntiAliased(config.isAntiAliased());
@@ -499,7 +499,7 @@ public class TailPane extends JHeaderPanel
     public ITailPaneConfig getConfiguration() throws IOException
     {
         // Make sure configuration up to date
-        config_.setAutoScroll(tailArea_.isAutoScroll());
+        config_.setAutoScroll(tailArea_.isAutoTail());
         config_.setShowLineNumbers(lineNumberDecorator_.isEnabled());
         config_.setFont(tailArea_.getFont());
         config_.setAntiAlias(tailArea_.isAntiAliased());
