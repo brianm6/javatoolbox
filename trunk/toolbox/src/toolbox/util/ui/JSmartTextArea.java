@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
@@ -132,17 +133,36 @@ public class JSmartTextArea extends JTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * Appends a string to the textarea
+     * Appends a string to the textarea. If the current thread is not the
+     * event dispatch thread, then it is queued up on the event dispatch
+     * thread.
      * 
      * @param   str  String to append
      * @see     javax.swing.JTextArea#append(String)
      */
     public void append(String str)
     {
-        super.append(str);
-        
-        if (isAutoScroll())
-            scrollToEnd();
+        if (SwingUtilities.isEventDispatchThread())
+        {
+            super.append(str);
+            
+            if (isAutoScroll())
+                scrollToEnd();
+        }
+        else
+        {
+            final String s = str;
+            
+            SwingUtilities.invokeLater(
+            
+                new Runnable()
+                {
+                    public void run()
+                    {
+                        append(s);
+                    }
+                });
+        }
     }
     
     //--------------------------------------------------------------------------
