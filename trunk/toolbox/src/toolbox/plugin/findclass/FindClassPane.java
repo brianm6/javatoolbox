@@ -119,7 +119,6 @@ public class JFindClass extends JFrame implements IPreferenced
     private ResultsTableModel    resultTableModel_;
     private TableSorter          resultTableSorter_;    
     private JScrollPane          resultPane_;
-    private int                  resultCount_;
     private FindClass            findClass_;
 
     // Status
@@ -853,7 +852,6 @@ public class JFindClass extends JFrame implements IPreferenced
             
             // Empty results table
             resultTableModel_.clear();
-            resultCount_ = 0;
             resultTableSorter_.setEnabled(false);
             
             // Refresh search targets in case of change
@@ -945,7 +943,6 @@ public class JFindClass extends JFrame implements IPreferenced
             
             // Empty results table
             resultTableModel_.clear();
-            resultCount_ = 0;
             resultTableSorter_.setEnabled(false);
             
             // Clear out from previous runs
