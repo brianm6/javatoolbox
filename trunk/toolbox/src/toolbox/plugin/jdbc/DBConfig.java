@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
@@ -45,7 +46,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     private static final Logger logger_ = Logger.getLogger(DBConfig.class);
     
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -212,8 +213,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         content.add(passwordField_ = new JSmartTextField(15));
 
         content.add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(new JSmartButton(new ConnectAction()));
-        content.add(new JSmartButton(new DisconnectAction()));
+        content.add(new JSmartButton(
+            new ConnectDisconnectAction(ConnectDisconnectAction.MODE_CONNECT)));
         
         setContent(content);
     }
@@ -245,7 +246,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                 "HSQL",
                 "",
                 "org.hsqldb.jdbcDriver",
-                "jdbc:hsqldb:<database>",
+                "jdbc:hsqldb:[hsql://<host> || <file>]",
                 "SA",
                 ""));
             
@@ -319,21 +320,28 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    // ConnectAction
+    // ConnectDisconnectAction
     //--------------------------------------------------------------------------
 
     /**
-     * Connects to the database.
+     * Connects/Disconnects from the database.
      */
-    class ConnectAction extends WorkspaceAction
+    class ConnectDisconnectAction extends WorkspaceAction
     {
+        public static final String MODE_CONNECT    = "Connect";
+        public static final String MODE_DISCONNECT = "Disconnect";
+        
         /**
-         * Creates a ConnectAction.
+         * Creates a ConnectDisconnectAction.
+         * 
+         * @param mode MODE_CONNECT | MODE_DISCONNECT
          */
-        ConnectAction()  
+        ConnectDisconnectAction(String mode)  
         {
-            super("Connect", false, plugin_.getComponent(), statusBar_);
-            putValue(SHORT_DESCRIPTION, "Connects to the database");
+            super(mode, false, plugin_.getComponent(), statusBar_);
+            
+            putValue(SHORT_DESCRIPTION, 
+                "Connects/disconnects from the database");
         }
 
         
@@ -342,6 +350,47 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
          *      java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
+        {
+            try
+            {
+	            if (getValue(NAME).equals(MODE_CONNECT))
+	            {
+	                connect();
+	                putValue(NAME, MODE_DISCONNECT);
+	            }
+	            else
+	            {
+	                disconnect();
+	                putValue(NAME, MODE_CONNECT);
+	            }
+	            
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        /**
+         * Disconnects from the database.
+         * 
+         * @throws SQLException on error.
+         */
+        private void disconnect() throws SQLException
+        {
+            statusBar_.setInfo("Disconnecting from the database...");
+            JDBCUtil.shutdown();
+            statusBar_.setInfo("Disconnected from the database.");
+        }
+
+
+        /**
+         * Connects to the database.
+         *
+         * @throws Exception on error. 
+         */
+        private void connect() throws Exception
         {
             statusBar_.setInfo("Connecting to the database...");
             
@@ -362,39 +411,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     userField_.getText(),
                     passwordField_.getText());
             }
-         
+       
             statusBar_.setInfo("Connected to the database!");
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // DisconnectAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Disconnects from the database.
-     */
-    class DisconnectAction extends WorkspaceAction
-    {
-        /**
-         * Creates a DisconnectAction.
-         */
-        DisconnectAction()  
-        {
-            super("Disconnect", false, plugin_.getComponent(), statusBar_);
-            putValue(SHORT_DESCRIPTION, "Disconnects from the database.");
-        }
-
-        
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            statusBar_.setInfo("Disconnecting from the database...");
-            JDBCUtil.shutdown();
-            statusBar_.setInfo("Disconnected from the database.");
         }
     }
 
