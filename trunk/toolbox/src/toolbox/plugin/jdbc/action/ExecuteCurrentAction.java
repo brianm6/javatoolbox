@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.plugin.jdbc.QueryPlugin;
+import toolbox.util.StringUtil;
 import toolbox.workspace.IStatusBar;
 
 /**
@@ -123,23 +124,23 @@ public class ExecuteCurrentAction extends BaseAction
         
         plugin.getResultsArea().setText(sql);
         
-//        if (StringUtils.isBlank(sql))
-//        {
-//            statusBar.setInfo("Enter SQL to execute");
-//        }
-//        else
-//        {
-//            statusBar.setInfo("Executing...");
-//            String results = plugin.executeSQL(sql);
-//            
-//            //plugin.getResultsArea().append(results + "\n");
-//
-//            if ((!StringUtils.isBlank(results)) &&
-//                (StringUtil.tokenize(results, StringUtil.NL).length 
-//                    < plugin.getAutoScrollThreshold()))
-//                plugin.getResultsArea().scrollToEnd();
-//
-//            statusBar.setInfo("Done");
-//        }
+        if (StringUtils.isBlank(sql))
+        {
+            statusBar.setInfo("Enter SQL to execute");
+        }
+        else
+        {
+            statusBar.setInfo("Executing...");
+            String results = plugin.executeSQL(sql);
+            
+            //plugin.getResultsArea().append(results + "\n");
+
+            if ((!StringUtils.isBlank(results)) &&
+                (StringUtil.tokenize(results, StringUtil.NL).length 
+                    < plugin.getAutoScrollThreshold()))
+                plugin.getResultsArea().scrollToEnd();
+
+            statusBar.setInfo("Done");
+        }
     }
 }
