@@ -17,7 +17,7 @@ public interface DocumentViewer
 	 * @param init Initialization properties.
 	 * @throws DocumentViewerException on error.
 	 */
-    public void startup(Map init) throws DocumentViewerException;
+    void startup(Map init) throws DocumentViewerException;
     
     
     /**
@@ -26,7 +26,7 @@ public interface DocumentViewer
      * @param file File containing document to view.
      * @throws DocumentViewerException on error.
      */
-    public void view(File file) throws DocumentViewerException;
+    void view(File file) throws DocumentViewerException;
     
     
     /**
@@ -35,7 +35,7 @@ public interface DocumentViewer
      * @param is InputStream to read the document from.
      * @throws DocumentViewerException on error.
      */
-    public void view(InputStream is) throws DocumentViewerException;
+    void view(InputStream is) throws DocumentViewerException;
 
 	
 	/**
@@ -45,7 +45,7 @@ public interface DocumentViewer
 	 * @param fileType File extension for the file type.
 	 * @return True if the file type is viewable or false otherwise.
  	 */    
-    public boolean isViewable(String fileType);
+    boolean isViewable(String fileType);
     
     
     /**
@@ -53,7 +53,7 @@ public interface DocumentViewer
      * 
      * @return String array of file types.
      */
-    public String[] getViewableFileTypes();
+    String[] getViewableFileTypes();
     
     
     /**
@@ -61,11 +61,11 @@ public interface DocumentViewer
      * 
      * @return JComponent
      */
-    public JComponent getComponent();
+    JComponent getComponent();
     
     
     /**
      * Shuts down the document viewer.
      */
-    public void shutdown();
+    void shutdown();
 }
