@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -41,8 +41,8 @@ import org.apache.log4j.Category;
 public abstract class Console
 {
     /** Logger **/
-    private static final Category logger = 
-        Category.getInstance(Console.class);
+    private static final Logger logger = 
+        Logger.getLogger(Console.class);
 
     /** Command to show help **/
     public static final String CMD_HELP      = "help";

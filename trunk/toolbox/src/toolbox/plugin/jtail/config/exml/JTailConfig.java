@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.io.IOException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.SwingUtil;
@@ -21,8 +21,8 @@ import electric.xml.Elements;
 public class JTailConfig implements IJTailConfig, XMLConstants
 { 
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(JTailConfig.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JTailConfig.class);
         
     
     private Font      defaultFont_;

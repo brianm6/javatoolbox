@@ -7,7 +7,7 @@ import java.util.Vector;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
@@ -26,8 +26,8 @@ public class ThreadSafeTableModel extends DefaultTableModel
     implements IBatchingQueueListener
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(ThreadSafeTableModel.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ThreadSafeTableModel.class);
         
     private BlockingQueue       queue_;
     private BatchingQueueReader queueReader_;

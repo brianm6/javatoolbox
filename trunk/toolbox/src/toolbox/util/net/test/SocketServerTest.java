@@ -12,7 +12,7 @@ import java.net.Socket;
 import junit.framework.TestCase;
 import junit.swingui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.net.SocketConnection;
@@ -26,8 +26,8 @@ import toolbox.util.net.SocketServerConfig;
 public class SocketServerTest extends TestCase
 {
     /** Logger **/
-    public static final Category logger_ = 
-        Category.getInstance(SocketServerTest.class);
+    public static final Logger logger_ = 
+        Logger.getLogger(SocketServerTest.class);
     
     /**
      * Entry point

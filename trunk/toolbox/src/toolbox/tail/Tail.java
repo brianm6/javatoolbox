@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ThreadUtil;
 
 /**
@@ -27,8 +27,8 @@ import toolbox.util.ThreadUtil;
 public class Tail implements Runnable
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(Tail.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(Tail.class);
     
     /** Number of line for initial backlog **/
     public static final int NUM_LINES_BACKLOG = 10;

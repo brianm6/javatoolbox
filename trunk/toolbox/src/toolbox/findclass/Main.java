@@ -12,7 +12,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 /**
@@ -22,7 +22,7 @@ import org.apache.regexp.RESyntaxException;
 public class Main extends FindClassAdapter
 { 
     /** Logger **/
-    private static final Category logger_ = Category.getInstance(Main.class);
+    private static final Logger logger_ = Logger.getLogger(Main.class);
 
     private PrintWriter writer_;    
     private int         numFound_;

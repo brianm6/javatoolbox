@@ -2,7 +2,7 @@ package toolbox.util.file.test;
 
 import java.io.File;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -17,8 +17,8 @@ import toolbox.util.file.FileCreatedActivity;
 public class FileCreatedActivityTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(FileCreatedActivityTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(FileCreatedActivityTest.class);
         
     /**
      * Entrypoint

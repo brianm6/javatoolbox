@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Reads as much content off a queue as possible (batch mode) and delivers 
@@ -12,8 +12,8 @@ import org.apache.log4j.Category;
  */
 public class BatchingQueueReader implements Runnable
 {
-    private static final Category logger_ = 
-        Category.getInstance(BatchingQueueReader.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(BatchingQueueReader.class);
         
     /** 
      * Queue to read elements from

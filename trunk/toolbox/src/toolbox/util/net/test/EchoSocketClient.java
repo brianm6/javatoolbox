@@ -9,7 +9,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Simple socket client for the EchoConnectionHandler
@@ -17,8 +17,8 @@ import org.apache.log4j.Category;
 public class EchoSocketClient
 {
     /** Logger **/
-    public static final Category logger_ = 
-        Category.getInstance(EchoSocketClient.class);
+    public static final Logger logger_ = 
+        Logger.getLogger(EchoSocketClient.class);
     
     /** Wrapped socket **/
     private Socket socket;

@@ -5,7 +5,7 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.collections.AsMap;
@@ -23,8 +23,8 @@ import electric.xml.Element;
 public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 {
     /** Logger **/
-    private static final Category logger_ =
-        Category.getInstance(TailPaneConfig.class);
+    private static final Logger logger_ =
+        Logger.getLogger(TailPaneConfig.class);
     
 
     private String  filename_;

@@ -10,7 +10,7 @@ import java.net.Socket;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.net.IConnection;
 
@@ -55,8 +55,8 @@ import toolbox.util.net.IConnection;
  */
 public final class ResourceCloser
 {
-    private static Category logger_ =
-        Category.getInstance(ResourceCloser.class);
+    private static Logger logger_ =
+        Logger.getLogger(ResourceCloser.class);
 
     /**
      * Hidden constructor for ResourceCloser, because this is used like

@@ -2,7 +2,7 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
@@ -14,8 +14,8 @@ import toolbox.util.io.WrappingWriter;
 public class RandomUtilTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(RandomUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(RandomUtilTest.class);
 
 
     /**

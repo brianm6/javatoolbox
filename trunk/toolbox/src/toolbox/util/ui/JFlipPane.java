@@ -46,7 +46,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
 
@@ -58,8 +58,8 @@ import toolbox.util.ThreadUtil;
 public class JFlipPane extends JPanel
 {
     /** Logger **/
-    private static final Category logger_ =
-        Category.getInstance(JFlipPane.class);
+    private static final Logger logger_ =
+        Logger.getLogger(JFlipPane.class);
     
     // Positions
 	public static final String TOP    = "top";
@@ -1189,8 +1189,8 @@ public class JFlipPane extends JPanel
      */
     public static class FlipCardPanel extends JPanel
     {
-        private static final Category fcpLogger_ = 
-            Category.getInstance(FlipCardPanel.class);
+        private static final Logger fcpLogger_ = 
+            Logger.getLogger(FlipCardPanel.class);
         
         private JFlipPane flipPane_;
         

@@ -4,7 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
@@ -16,8 +16,8 @@ import toolbox.util.StringUtil;
 public class ResourceUtilTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(ResourceUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ResourceUtilTest.class);
         
     
     /**

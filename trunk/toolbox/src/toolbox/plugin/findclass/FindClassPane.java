@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +41,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import net.sf.jode.decompiler.Decompiler;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
+
 import toolbox.util.DateTimeUtil;
 import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
@@ -62,8 +62,8 @@ import toolbox.util.ui.ThreadSafeTableModel;
 public class JFindClass extends JFrame
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(JFindClass.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JFindClass.class);
 
     // Search    
     private JTextField           searchField_;
@@ -386,9 +386,9 @@ public class JFindClass extends JFrame
      * Generic error handler for GUI exceptions
      * 
      * @param  t   Exception causing error
-     * @param  c   Category to log to
+     * @param  c   Logger to log to
      */
-    public void handleException(Throwable t, Category c)
+    public void handleException(Throwable t, Logger c)
     {
         c.error(t.getMessage(), t);
         JSmartOptionPane.showExceptionMessageDialog(this, t);
@@ -451,7 +451,7 @@ public class JFindClass extends JFrame
      */
     class JFileExplorerHandler extends JFileExplorerAdapter
     {
-        Category logger_ = Category.getInstance(JFileExplorerHandler.class);
+        Logger logger_ = Logger.getLogger(JFileExplorerHandler.class);
         
         /**
          * Adds a directory to the path list

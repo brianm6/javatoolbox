@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * A TcpTunnel object listens on the given port,
@@ -13,8 +13,8 @@ import org.apache.log4j.Category;
  */
 public class TcpTunnel
 {
-    private static final Category logger_ = 
-        Category.getInstance(TcpTunnel.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(TcpTunnel.class);
     
 	/**
 	 * Entrypoint 

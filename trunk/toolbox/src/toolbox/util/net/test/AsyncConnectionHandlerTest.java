@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.net.AsyncConnectionHandler;
@@ -23,8 +23,8 @@ import toolbox.util.thread.strategy.ThreadPoolStrategy;
 public class AsyncConnectionHandlerTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(AsyncConnectionHandlerTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(AsyncConnectionHandlerTest.class);
     
     /**
      * Entry point

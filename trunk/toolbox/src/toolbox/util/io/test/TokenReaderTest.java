@@ -4,7 +4,7 @@ import java.io.StringReader;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.io.TokenReader;
 
@@ -14,8 +14,8 @@ import toolbox.util.io.TokenReader;
 public class TokenReaderTest extends TestCase
 {
     /** Logger **/
-    public static final Category logger_ =
-        Category.getInstance(TokenReaderTest.class);
+    public static final Logger logger_ =
+        Logger.getLogger(TokenReaderTest.class);
         
     /**
      * Entrypoint

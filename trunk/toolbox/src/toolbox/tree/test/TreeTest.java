@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -20,8 +20,8 @@ import toolbox.util.StringUtil;
 public class TreeTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(TreeTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(TreeTest.class);
     
     /** Temporary directory that will serve as the root dir for tests **/
     private File rootDir_;

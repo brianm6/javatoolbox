@@ -3,7 +3,7 @@ package toolbox.util.io.filter;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 

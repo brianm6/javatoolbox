@@ -2,7 +2,7 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.Console;
 
 /**
@@ -11,8 +11,8 @@ import toolbox.util.Console;
 public class ConsoleTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(ConsoleTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ConsoleTest.class);
 
     /**
      * Test implementation of console

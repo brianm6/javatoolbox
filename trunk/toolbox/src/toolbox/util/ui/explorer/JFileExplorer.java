@@ -57,7 +57,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
@@ -73,8 +73,8 @@ import toolbox.util.ui.images.TreeOpenGIF;
 public class JFileExplorer extends JPanel
 {
     /** Logger **/
-    private static final Category logger_ =
-        Category.getInstance(JFileExplorer.class);
+    private static final Logger logger_ =
+        Logger.getLogger(JFileExplorer.class);
 
     private JComboBox   rootsComboBox_;
     private JPopupMenu  folderPopup_;

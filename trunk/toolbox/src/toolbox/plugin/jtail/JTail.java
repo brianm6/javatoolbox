@@ -23,7 +23,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
@@ -47,8 +47,8 @@ import toolbox.util.ui.font.JFontChooserDialog;
 public class JTail extends JFrame
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(JTail.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JTail.class);
 
     /**
      * File explorer flipper that allows the user to select a file to tail

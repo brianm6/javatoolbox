@@ -5,7 +5,7 @@ import java.net.URL;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * This class provides a central authority for retrieving system resources
@@ -14,8 +14,8 @@ import org.apache.log4j.Category;
 public final class ResourceUtil
 {
     /** Logger **/
-    public static final Category logger = 
-        Category.getInstance(ResourceUtil.class);
+    public static final Logger logger = 
+        Logger.getLogger(ResourceUtil.class);
 
     /**
      * Locates a resource with the given name using an exhaustive

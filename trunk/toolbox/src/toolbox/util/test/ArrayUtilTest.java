@@ -2,7 +2,7 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.StringUtil;
 
@@ -13,8 +13,8 @@ public class ArrayUtilTest extends TestCase
 {
     
     /** Logger **/
-    private static final Category logger = 
-        Category.getInstance(ArrayUtilTest.class);
+    private static final Logger logger = 
+        Logger.getLogger(ArrayUtilTest.class);
 
     /**
      * ArrayUtilTest constructor

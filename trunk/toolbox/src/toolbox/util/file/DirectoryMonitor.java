@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
 
@@ -17,8 +17,8 @@ import toolbox.util.ThreadUtil;
 public class DirectoryMonitor
 {
     /** Logger **/
-    private static Category logger_ = 
-        Category.getInstance(DirectoryMonitor.class);
+    private static Logger logger_ = 
+        Logger.getLogger(DirectoryMonitor.class);
 
     /** Notification list **/
     private List listeners_ = new ArrayList();

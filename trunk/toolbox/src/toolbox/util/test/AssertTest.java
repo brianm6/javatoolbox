@@ -2,7 +2,7 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.Assert;
 import toolbox.util.AssertionException;
 
@@ -12,8 +12,8 @@ import toolbox.util.AssertionException;
 public class AssertTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(AssertTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(AssertTest.class);
     
     /**
      * Constructor for AssertTest.

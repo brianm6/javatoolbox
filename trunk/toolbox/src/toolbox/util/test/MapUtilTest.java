@@ -6,7 +6,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.MapUtil;
 
 /**
@@ -14,8 +14,8 @@ import toolbox.util.MapUtil;
  */
 public class MapUtilTest extends TestCase
 {
-    private static final Category logger_ = 
-        Category.getInstance(MapUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(MapUtilTest.class);
         
     /**
      * Entrypoint

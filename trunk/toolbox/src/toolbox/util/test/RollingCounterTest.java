@@ -2,7 +2,7 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.RollingCounter;
 
@@ -11,8 +11,8 @@ import toolbox.util.RollingCounter;
  */
 public class RollingCounterTest extends TestCase
 {
-    private static final Category logger_ = 
-        Category.getInstance(RollingCounterTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(RollingCounterTest.class);
         
     /**
      * Entrypoint

@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Socket related utilities
@@ -16,8 +16,8 @@ import org.apache.log4j.Category;
 public class SocketUtil
 {
     /** Logger **/
-    private static final Category logger = 
-        Category.getInstance(SocketUtil.class);
+    private static final Logger logger = 
+        Logger.getLogger(SocketUtil.class);
 
     /** Value embedded in message for an accept() timeout **/
     public static final String MSG_ACCEPT_TIMEOUT = "Accept timed out";

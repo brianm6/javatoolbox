@@ -6,7 +6,7 @@ import java.io.Writer;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
@@ -17,8 +17,8 @@ import toolbox.util.ThreadUtil;
 public class ThreadUtilTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(ThreadUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ThreadUtilTest.class);
 
     /**
      * Entrypoint

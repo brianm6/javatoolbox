@@ -2,7 +2,7 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 
 /**
@@ -12,8 +12,8 @@ public class ExceptionUtilTest extends TestCase
 {
     
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(ExceptionUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ExceptionUtilTest.class);
 
     /**
      * Entrypoint

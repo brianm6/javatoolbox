@@ -2,7 +2,7 @@ package toolbox.util.concurrent;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Queue that blocks on calls to pull() until an element is available
@@ -10,8 +10,8 @@ import org.apache.log4j.Category;
 public class BlockingQueue
 {
     /** Logger **/
-    private static final Category logger_ =
-        Category.getInstance(BlockingQueue.class);
+    private static final Logger logger_ =
+        Logger.getLogger(BlockingQueue.class);
         
     private ArrayList   queue_      = null;
     private Semaphore   semaphore_  = null;

@@ -4,15 +4,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JTabbedPane;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * enclosing_type
  */
 public class JTailTabbedPane extends JTabbedPane
 {
-    private static final Category logger_ =
-        Category.getInstance(JTailTabbedPane.class);
+    private static final Logger logger_ =
+        Logger.getLogger(JTailTabbedPane.class);
     
     /**
      * Constructor for JTailTabbedPane.

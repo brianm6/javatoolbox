@@ -1,16 +1,14 @@
 package toolbox.jsourceview;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.LineNumberReader;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,12 +22,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.Queue;
 import toolbox.util.SwingUtil;
-import toolbox.util.io.filter.CompoundFilter;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
@@ -42,8 +39,8 @@ import toolbox.util.ui.ThreadSafeTableModel;
  */
 public class JSourceView extends JFrame implements ActionListener
 {
-    private static final Category logger_ = 
-        Category.getInstance(JSourceView.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JSourceView.class);
         
     
     private static OrFilter sourceFilter_;

@@ -5,7 +5,7 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
@@ -17,8 +17,8 @@ import toolbox.util.RandomUtil;
 public class FileUtilTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(FileUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(FileUtilTest.class);
                 
     /**
      * Constructor for FileUtilTest.

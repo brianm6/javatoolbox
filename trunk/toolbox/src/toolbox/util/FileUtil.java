@@ -16,7 +16,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.io.filter.DirectoryFilter;
 
@@ -26,8 +26,8 @@ import toolbox.util.io.filter.DirectoryFilter;
 public final class FileUtil
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(FileUtil.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(FileUtil.class);
     
     /**
      * Prevent construction

@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.ui.JFileExplorer;
@@ -25,8 +25,8 @@ import toolbox.util.ui.JFileExplorerListener;
 public class JFileExplorerTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(JFileExplorerTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JFileExplorerTest.class);
         
         
     /**

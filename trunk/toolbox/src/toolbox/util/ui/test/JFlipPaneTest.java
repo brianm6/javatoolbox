@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFlipPane;
 
@@ -19,8 +19,8 @@ import toolbox.util.ui.JFlipPane;
 public class JFlipPaneTest extends JFrame
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(JFlipPaneTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JFlipPaneTest.class);
 
 
     /**

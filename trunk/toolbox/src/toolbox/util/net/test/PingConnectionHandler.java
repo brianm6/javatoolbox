@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Date;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
@@ -25,8 +25,8 @@ import toolbox.util.net.IConnectionHandler;
 public class PingConnectionHandler implements IConnectionHandler
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(PingConnectionHandler.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(PingConnectionHandler.class);
     
     /**
      * Constructor for TestConnectionHandler

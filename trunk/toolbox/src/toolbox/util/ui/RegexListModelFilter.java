@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.ListModel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
@@ -18,8 +18,8 @@ import toolbox.util.StringUtil;
 public class RegexListModelFilter extends AbstractListModelFilter
 {
     /** Logger **/
-    public static final Category logger_ =
-        Category.getInstance(RegexListModelFilter.class);
+    public static final Logger logger_ =
+        Logger.getLogger(RegexListModelFilter.class);
 
     /**
      * Default regular expression is to match all

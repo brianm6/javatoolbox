@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
@@ -17,8 +17,8 @@ import org.apache.regexp.RESyntaxException;
 public class RegexFilterReader extends LineNumberReader
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(RegexFilterReader.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(RegexFilterReader.class);
     
     /** Default regular expression matches all if one is not specified **/    
     private static final String DEFAULT_MATCH = "*";

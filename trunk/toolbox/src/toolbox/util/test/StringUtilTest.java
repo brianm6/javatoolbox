@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
@@ -15,8 +15,8 @@ import toolbox.util.StringUtil;
 public class StringUtilTest extends TestCase
 {
     /** Logger **/
-    private static Category logger = 
-        Category.getInstance(StringUtilTest.class);
+    private static Logger logger = 
+        Logger.getLogger(StringUtilTest.class);
 
     /**
      * StringUtilTest constructor comment.

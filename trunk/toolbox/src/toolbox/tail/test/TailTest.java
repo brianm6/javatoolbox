@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.tail.ITailListener;
 import toolbox.tail.Tail;
 import toolbox.util.ThreadUtil;
@@ -20,8 +20,8 @@ public class TailTest extends TestCase
 {
     
     /** Logger **/
-    public static final Category logger_ =
-        Category.getInstance(TailTest.class);
+    public static final Logger logger_ =
+        Logger.getLogger(TailTest.class);
 
     /**
      * Creates test
@@ -104,8 +104,8 @@ public class TailTest extends TestCase
 class TestTailListener implements ITailListener
 {
     /** Logger **/
-    private static final Category logger_ = TailTest.logger_;
-        //Category.getInstance(TestTailListener.class);
+    private static final Logger logger_ = TailTest.logger_;
+        //Logger.getLogger(TestTailListener.class);
         
     /**
      * Next line is available

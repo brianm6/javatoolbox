@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -22,8 +22,8 @@ import org.apache.log4j.Category;
 public class JDBCUtil
 {
     /** Logger **/
-    public static final Category logger_ =
-        Category.getInstance(JDBCUtil.class);
+    public static final Logger logger_ =
+        Logger.getLogger(JDBCUtil.class);
 
     /** JDBC connection properties **/
     private static Properties connProps_;

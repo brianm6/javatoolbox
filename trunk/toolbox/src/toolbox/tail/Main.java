@@ -2,7 +2,7 @@ package toolbox.tail;
 
 import java.io.FileNotFoundException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Tails one or more files
@@ -10,8 +10,8 @@ import org.apache.log4j.Category;
 public class Main extends TailAdapter
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(Main.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(Main.class);
 
     /**
      * Entrypoint 

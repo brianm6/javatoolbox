@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
 import toolbox.util.io.WrappingWriter;
@@ -16,8 +16,8 @@ import toolbox.util.io.WrappingWriter;
  */
 public class WrappingWriterTest extends TestCase
 {
-    private static final Category logger_ = 
-        Category.getInstance(WrappingWriterTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(WrappingWriterTest.class);
         
     /**
      * Entrypoint

@@ -3,7 +3,7 @@ package toolbox.util;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.MethodUtils;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Utility class for thread related stuff
@@ -11,8 +11,8 @@ import org.apache.log4j.Category;
 public final class ThreadUtil
 {
     /** Logger **/
-    protected static final Category logger_ = 
-        Category.getInstance(ThreadUtil.class);
+    protected static final Logger logger_ = 
+        Logger.getLogger(ThreadUtil.class);
         
     /**
      * Prevent construction

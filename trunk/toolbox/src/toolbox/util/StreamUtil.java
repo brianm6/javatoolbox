@@ -8,15 +8,15 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * I/O Stream Utility Class
  */
 public class StreamUtil
 {
-    private static final Category logger_ = 
-        Category.getInstance(StreamUtil.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(StreamUtil.class);
         
     /**
      * Prevent construction

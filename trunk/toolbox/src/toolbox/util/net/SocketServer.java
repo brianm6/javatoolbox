@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.SocketUtil;
 import toolbox.util.concurrent.Mutex;
@@ -27,8 +27,8 @@ import toolbox.util.thread.strategy.ThreadPoolStrategy;
 public class SocketServer implements Runnable
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(SocketServer.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(SocketServer.class);
 
     /** 
      * Socket server configuration properties

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
@@ -19,8 +19,8 @@ import toolbox.util.net.IConnectionHandler;
 public class EchoConnectionHandler implements IConnectionHandler
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(EchoConnectionHandler.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(EchoConnectionHandler.class);
     
     /** Terminate token **/
     public static final String TOKEN_TERMINATE = "terminate";

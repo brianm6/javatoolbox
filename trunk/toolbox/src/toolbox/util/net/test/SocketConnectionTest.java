@@ -6,7 +6,7 @@ import java.net.Socket;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.net.SocketConnection;
@@ -17,8 +17,8 @@ import toolbox.util.net.SocketConnection;
 public class SocketConnectionTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger = 
-        Category.getInstance(SocketConnectionTest.class);
+    private static final Logger logger = 
+        Logger.getLogger(SocketConnectionTest.class);
     
     /**
      * Entry point

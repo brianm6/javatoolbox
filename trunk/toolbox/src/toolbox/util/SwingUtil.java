@@ -16,7 +16,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
 
 import net.sourceforge.mlf.metouia.MetouiaLookAndFeel;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Swing Utility Class
@@ -24,8 +24,8 @@ import org.apache.log4j.Category;
 public class SwingUtil
 {
     /** Logger **/
-    private static final Category logger_ =
-        Category.getInstance(SwingUtil.class);
+    private static final Logger logger_ =
+        Logger.getLogger(SwingUtil.class);
     
     /** Monospaced font **/
     private static Font monofont_;

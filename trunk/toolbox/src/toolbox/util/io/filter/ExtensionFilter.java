@@ -3,7 +3,7 @@ package toolbox.util.io.filter;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Filters files based on the file's extension
@@ -11,8 +11,8 @@ import org.apache.log4j.Category;
 public class ExtensionFilter implements FilenameFilter
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(ExtensionFilter.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ExtensionFilter.class);
         
     /** Extension to filter on **/
     private String extension;

@@ -16,7 +16,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Extends the functionality of JTextArea by adding
@@ -29,8 +29,8 @@ import org.apache.log4j.Category;
 public class JSmartTextArea extends JTextArea
 {
     /** Logger **/
-    private static final Category logger_ =
-        Category.getInstance(JSmartTextArea.class);
+    private static final Logger logger_ =
+        Logger.getLogger(JSmartTextArea.class);
     
     private JPopupMenu          popup_;
     private JCheckBoxMenuItem   autoScrollItem_;

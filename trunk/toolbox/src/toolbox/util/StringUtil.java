@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.io.WrappingWriter;
 
 /**
@@ -16,8 +16,8 @@ import toolbox.util.io.WrappingWriter;
 public final class StringUtil
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(StringUtil.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(StringUtil.class);
     
     
     /**

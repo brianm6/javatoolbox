@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ui.JFileExplorer;
 
 /**
@@ -17,8 +17,8 @@ import toolbox.util.ui.JFileExplorer;
 public class FileSelectionPane extends JPanel implements ActionListener
 {
     /** Logger */
-	private static final Category logger_ =
-		Category.getInstance(FileSelectionPane.class);
+	private static final Logger logger_ =
+		Logger.getLogger(FileSelectionPane.class);
 	
 	private JFileExplorer  fileExplorer_;
 	private JButton        tailButton_;

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
@@ -17,8 +17,8 @@ public class SocketServerConfig
     /** 
      * Logger 
      */
-    private static final Category logger_ = 
-        Category.getInstance(SocketServerConfig.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(SocketServerConfig.class);
 
     /** 
      * Socket server port number property

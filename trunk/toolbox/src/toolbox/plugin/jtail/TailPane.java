@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 import toolbox.jtail.config.ITailPaneConfig;
@@ -34,8 +34,8 @@ import toolbox.util.ui.JSmartTextArea;
 public class TailPane extends JPanel
 {
     /** Logger **/
-	private static final Category logger_ = 
-		Category.getInstance(TailPane.class);
+	private static final Logger logger_ = 
+		Logger.getLogger(TailPane.class);
 	
 	private JButton        clearButton_;
 	private JButton        pauseButton_;

@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.io.filter.ExtensionFilter;
 
@@ -21,8 +21,8 @@ import toolbox.util.io.filter.ExtensionFilter;
  */
 public class ClassUtil
 {
-    private static final Category logger_ = 
-        Category.getInstance(ClassUtil.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ClassUtil.class);
 
     /**
      * Prevent construction

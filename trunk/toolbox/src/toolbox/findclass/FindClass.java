@@ -12,9 +12,10 @@ import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
+
 import toolbox.util.StringUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
@@ -27,8 +28,8 @@ import toolbox.util.io.filter.OrFilter;
 public class FindClass 
 { 
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(Main.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(Main.class);
     
     /** Class to find **/
     private String classToFind_;
@@ -85,11 +86,10 @@ public class FindClass
     public FindClass() 
     {
         // enable debug if findclass.debug found 
-        if (System.getProperty(debugProp_) == null)
-            Category.getDefaultHierarchy().disableDebug();
+        //if (System.getProperty(debugProp_) == null)
+        //    Logger.getDefaultHierarchy().disableDebug();
         
         addFindClassListener(defaultCollector_);
-        //buildSearchTargets();
     }
 
     //--------------------------------------------------------------------------

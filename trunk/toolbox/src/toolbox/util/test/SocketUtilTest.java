@@ -9,7 +9,7 @@ import java.net.SocketException;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceCloser;
 import toolbox.util.SocketUtil;
@@ -21,8 +21,8 @@ import toolbox.util.ThreadUtil;
 public class SocketUtilTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(SocketUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(SocketUtilTest.class);
         
     /**
      * Constructor for SocketUtilTest.

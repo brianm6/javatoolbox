@@ -3,7 +3,7 @@ package toolbox.jtail.config.exml;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
@@ -17,8 +17,8 @@ import electric.xml.Element;
  */
 public class ConfigManager implements IConfigManager
 {
-    private static final Category logger_ = 
-        Category.getInstance(ConfigManager.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ConfigManager.class);
         
     private static final String CONFIG_FILE = ".jtail.xml";
     

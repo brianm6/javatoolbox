@@ -4,7 +4,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
 import toolbox.util.RandomUtil;
@@ -16,8 +16,8 @@ import toolbox.util.ThreadUtil;
 public class ElapsedTimeTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(ElapsedTimeTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ElapsedTimeTest.class);
        
     /**
      * Entrypoint

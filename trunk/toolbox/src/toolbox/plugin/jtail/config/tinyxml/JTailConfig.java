@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.ArrayUtil;
@@ -20,8 +20,8 @@ import toolbox.util.xml.XMLNode;
 public class JTailConfig implements IJTailConfig, XMLConstants
 { 
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(JTailConfig.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JTailConfig.class);
     
     private Point               location_;
     private Dimension           size_;

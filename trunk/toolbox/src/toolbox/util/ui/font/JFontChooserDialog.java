@@ -16,7 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Simple font selection dialog
@@ -24,8 +24,8 @@ import org.apache.log4j.Category;
 public class JFontChooserDialog extends JDialog
 {
     /** Logger **/
-    private  static final Category logger_ = 
-        Category.getInstance(JFontChooserDialog.class);
+    private  static final Logger logger_ = 
+        Logger.getLogger(JFontChooserDialog.class);
         
     private  JFontChooser   fontChooser_;
     private  JButton        okButton_;

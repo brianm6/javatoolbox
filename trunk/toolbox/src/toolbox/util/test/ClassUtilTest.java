@@ -5,7 +5,7 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
@@ -16,8 +16,8 @@ import toolbox.util.StringUtil;
  */
 public class ClassUtilTest extends TestCase
 {
-    private static final Category logger_ = 
-        Category.getInstance(ClassUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(ClassUtilTest.class);
     
     /**
      * Entrypoint

@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.ui.font.JFontChooserDialog;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.IFontChooserDialogListener;
@@ -14,8 +14,8 @@ import toolbox.util.ui.font.IFontChooserDialogListener;
  */
 public class JFontChooserDialogTest extends TestCase
 {
-    private static final Category logger_ = 
-        Category.getInstance(JFontChooserDialogTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JFontChooserDialogTest.class);
         
     /**
      * Entry point

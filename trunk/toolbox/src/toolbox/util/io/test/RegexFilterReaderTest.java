@@ -4,7 +4,7 @@ import java.io.StringReader;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.util.io.RegexFilterReader;
 
 /** 
@@ -13,8 +13,8 @@ import toolbox.util.io.RegexFilterReader;
 public class RegexFilterReaderTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger_ = 
-        Category.getInstance(RegexFilterReaderTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(RegexFilterReaderTest.class);
         
     /**
      * Constructor for RegexFilterReaderTest.

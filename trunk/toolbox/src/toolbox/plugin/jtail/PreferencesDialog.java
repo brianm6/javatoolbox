@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import toolbox.jtail.config.IJTailConfig;
 
 /**
@@ -26,8 +26,8 @@ import toolbox.jtail.config.IJTailConfig;
  */
 public class PreferencesDialog extends JDialog implements ActionListener
 {
-    private static final Category logger_ =
-        Category.getInstance(PreferencesDialog.class);
+    private static final Logger logger_ =
+        Logger.getLogger(PreferencesDialog.class);
     
     private static final String ACTION_OK     = "OK";
     private static final String ACTION_CANCEL = "Cancel";
