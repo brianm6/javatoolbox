@@ -78,7 +78,7 @@ public final class ThreadUtil
     }
 
     /**
-     * Runs an objects method in a thread 
+     * Runs an objects method in a separate thread 
      * 
      * @param   target      Object which contains method to run
      * @param   methodName  Name of the method to execute
@@ -92,7 +92,7 @@ public final class ThreadUtil
 
     
     /**
-     * Runs an objects method in a thread 
+     * Runs an objects method in a separate thread 
      * 
      * @param   target      Object which contains method to run
      * @param   methodName  Name of the method to execute
@@ -115,7 +115,7 @@ public final class ThreadUtil
     /**
      * Runs a method on a given object in a thread
      */        
-    static class MethodRunner implements Runnable
+    public static class MethodRunner implements Runnable
     {
         /** 
          * Name of method to execute 
