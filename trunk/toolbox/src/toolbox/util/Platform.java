@@ -5,19 +5,22 @@ import java.io.File;
 /**
  * Platform specific utility methods
  */
-public class Platform
+public final class Platform
 {
-    private static final int UNIX = 0x31337;
+    private static final int UNIX       = 0x31337;
     private static final int WINDOWS_9X = 0x640;
     private static final int WINDOWS_NT = 0x666;
-    private static final int OS2 = 0xDEAD;
-    private static final int MAC_OS_X = 0xABC;
-    private static final int UNKNOWN = 0xBAD;
+    private static final int OS2        = 0xDEAD;
+    private static final int MAC_OS_X   = 0xABC;
+    private static final int UNKNOWN    = 0xBAD;
 
     private static int os;
     private static boolean java14;
 
-
+    //--------------------------------------------------------------------------
+    // Static Block
+    //--------------------------------------------------------------------------
+    
     static
     {
         String osName = System.getProperty("os.name");
@@ -50,8 +53,22 @@ public class Platform
         if(System.getProperty("java.version").compareTo("1.4") >= 0)
             java14 = true;
     } 
-    
-    
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+     
+    /**
+     * Private constructor
+     */   
+    private Platform()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+        
     /**
      * @return  True if we're running Windows 95/98/ME/NT/2000/XP, or OS/2.
      */
