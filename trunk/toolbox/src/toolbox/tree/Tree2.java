@@ -19,8 +19,10 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.UnflaggedOption;
 import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
+import com.martiansoftware.jsap.stringparsers.IntegerStringParser;
 import com.martiansoftware.jsap.stringparsers.StringStringParser;
 
+import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.ArrayUtil;
@@ -170,8 +172,23 @@ public class Tree2
     /**
      * Default regular expression is to match all.
      */
-    private static final String DEFAULT_REGEX = null;
+    private static final String DEFAULT_REGEX = "";
+    
+    /**
+     * Default depth is Integer.MAX_VALUE.
+     */
+    private static final int DEFAULT_MAXDEPTH = Integer.MAX_VALUE;
 
+    /**
+     * Default starting directory is the users current directory.
+     */
+    private static final String DEFAULT_DIR = System.getProperty("user.dir");
+    
+    /**
+     * Help is turned off by default.
+     */
+    private static final boolean DEFAULT_SHOWHELP = false;
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -206,6 +223,11 @@ public class Tree2
      */
     private boolean showDate_;
 
+    /**
+     * Maximum depth to recurse into the directory structure.
+     */
+    private int maxDepth_;
+    
     /** 
      * Root directory of the tree. 
      */
@@ -239,6 +261,7 @@ public class Tree2
     private static final String OPTION_REGEX = "regex";
     private static final String OPTION_SORT = "sort";
     private static final String OPTION_DIR = "dir";
+    private static final String OPTION_MAXDEPTH = "maxDepth";
     
     //--------------------------------------------------------------------------
     // Main
@@ -252,13 +275,6 @@ public class Tree2
      */
     public static void main(String args[]) throws Exception
     {
-        // command line options and arguments
-        String rootDir = null;
-        boolean showFiles = DEFAULT_SHOWFILES;
-        boolean showSize = DEFAULT_SHOWSIZE;
-        boolean showDate = DEFAULT_SHOWDATE;
-        String sortBy = DEFAULT_SORT;
-        String regex = DEFAULT_REGEX;
 
         ///////////////////////////////////////////////////////////////////////
         
@@ -268,25 +284,25 @@ public class Tree2
             new Switch(SWITCH_FILES)
                 .setShortFlag('f')
                 //.setLongFlag("files")
-                .setDefault("false");
+                .setDefault(DEFAULT_SHOWFILES + "");
 
         Switch sizeSwitch = 
             new Switch(SWITCH_SIZE)
                 .setShortFlag('s')
                 //.setLongFlag("size")
-                .setDefault("false");
+                .setDefault(DEFAULT_SHOWSIZE + "");
         
         Switch dateSwitch = 
             new Switch(SWITCH_DATE)
                 .setShortFlag('d')
                 //.setLongFlag("date")
-                .setDefault("false");
+                .setDefault(DEFAULT_SHOWDATE + "");
 
         Switch helpSwitch = 
             new Switch(SWITCH_HELP)
                 .setShortFlag('h')
                 //.setLongFlag("help")
-                .setDefault("false");
+                .setDefault(DEFAULT_SHOWHELP + "");
 
         FlaggedOption regexOption = 
             new FlaggedOption(OPTION_REGEX)
@@ -294,7 +310,7 @@ public class Tree2
                 .setRequired(false) 
                 .setShortFlag('r') 
                 //.setLongFlag("regex")
-                .setDefault("");
+                .setDefault(DEFAULT_REGEX);
         
         FlaggedOption sortOption = 
             new FlaggedOption(OPTION_SORT)
@@ -304,25 +320,33 @@ public class Tree2
                         SORT_DATE + ";" + 
                         SORT_SIZE))
                 .setRequired(false) 
-                .setShortFlag('o') 
+                .setShortFlag('o'); 
                 //.setLongFlag("sort")
-                .setDefault(SORT_NONE);
+                //.setDefault(SORT_NONE);
 
+        FlaggedOption maxDepthOption = 
+            new FlaggedOption(OPTION_MAXDEPTH)
+                .setStringParser(new IntegerStringParser())
+                .setRequired(false) 
+                .setShortFlag('m') 
+                //.setLongFlag("regex")
+                .setDefault(DEFAULT_MAXDEPTH+"");
+        
         UnflaggedOption dirOption =
             new UnflaggedOption(OPTION_DIR)
                 .setRequired(false)
-                .setStringParser(new StringStringParser());
+                .setStringParser(new StringStringParser())
+                .setDefault(DEFAULT_DIR);
                 
-        //
         // Help text
-        //
-        filesSwitch.setHelp("Includes files");
-        sizeSwitch.setHelp("Includes file size");
-        dateSwitch.setHelp("Includes file date/time");
-        helpSwitch.setHelp("Prints usage");
-        regexOption.setHelp("Filter files matching a regular expression");
-        sortOption.setHelp("Sorts files by {f = filename, d = date, s = size}");
-        dirOption.setHelp("Directory to print a tree for");
+        filesSwitch.setHelp("Includes file names in the output.");
+        sizeSwitch.setHelp("Includes file size in the output.");
+        dateSwitch.setHelp("Includes file date and time in the output.");
+        helpSwitch.setHelp("Prints tree usage with examples.");
+        regexOption.setHelp("Filters files matching a regular expression.");
+        sortOption.setHelp("Sorts files by {f = filename, d = date, s = size}.");
+        dirOption.setHelp("Root directory of the tree.");
+        maxDepthOption.setHelp("Max number of directories to recurse into starting at 1.");
         
         jsap.registerParameter(filesSwitch);
         jsap.registerParameter(sizeSwitch);
@@ -331,35 +355,32 @@ public class Tree2
         jsap.registerParameter(regexOption);
         jsap.registerParameter(sortOption);
         jsap.registerParameter(dirOption);
+        jsap.registerParameter(maxDepthOption);
         
         
         JSAPResult config = jsap.parse(args);    
 
-        if (config.getBoolean(SWITCH_HELP, false))
+        if (config.getBoolean(SWITCH_HELP))
         {
             printUsage(jsap);
             return;
         }
         
-        showFiles = config.getBoolean(SWITCH_FILES, DEFAULT_SHOWFILES);
-        showSize = config.getBoolean(SWITCH_SIZE, DEFAULT_SHOWSIZE);
-        showDate = config.getBoolean(SWITCH_DATE, DEFAULT_SHOWDATE);
-        regex = config.getString(OPTION_REGEX, "");
-        sortBy = config.getString(OPTION_SORT, DEFAULT_SORT);
-        rootDir = config.getString(OPTION_DIR, System.getProperty("user.dir"));
-        
         // Create us a tree and let it ride..
         try
         {
-            if (rootDir != null)
+            if (config.getString(OPTION_DIR) != null)
             {
-                Tree2 t = new Tree2(new File(rootDir), 
-                                  showFiles, 
-                                  showSize,
-                                  showDate,
-                                  sortBy,
-                                  regex);
-                t.showTree();
+                Tree2 tree = new Tree2(
+                    new File(config.getString(OPTION_DIR)), 
+                    config.getBoolean(SWITCH_FILES), 
+                    config.getBoolean(SWITCH_SIZE),
+                    config.getBoolean(SWITCH_DATE),
+                    config.getString(OPTION_SORT),
+                    config.getInt(OPTION_MAXDEPTH), 
+                    config.getString(OPTION_REGEX));
+                
+                tree.showTree();
             }
         }
         catch (IllegalArgumentException e)
@@ -381,14 +402,7 @@ public class Tree2
      */
     public Tree2(File rootDir)
     {
-        this(
-            rootDir, 
-            DEFAULT_SHOWFILES, 
-            DEFAULT_SHOWSIZE, 
-            DEFAULT_SHOWDATE,
-            DEFAULT_SORT,
-            DEFAULT_REGEX,
-            DEFAULT_WRITER);
+        this(rootDir, DEFAULT_WRITER);
     }
 
 
@@ -408,6 +422,7 @@ public class Tree2
             DEFAULT_SHOWDATE, 
             DEFAULT_SORT, 
             DEFAULT_REGEX,
+            DEFAULT_MAXDEPTH,
             writer);    
     }
 
@@ -421,14 +436,7 @@ public class Tree2
      */
     public Tree2(File rootDir, boolean showFiles)
     {
-        this(
-            rootDir, 
-            showFiles, 
-            DEFAULT_SHOWSIZE, 
-            DEFAULT_SHOWDATE, 
-            DEFAULT_SORT, 
-            DEFAULT_REGEX,
-            DEFAULT_WRITER);
+        this(rootDir, showFiles, DEFAULT_SHOWSIZE); 
     }
 
 
@@ -442,26 +450,23 @@ public class Tree2
      */
     public Tree2(File rootDir, boolean showFiles, boolean showSize)
     {
-        this(
-            rootDir, 
-            showFiles, 
-            showSize, 
-            DEFAULT_SHOWDATE, 
-            DEFAULT_SORT,
-            DEFAULT_REGEX,
-            DEFAULT_WRITER);
+        this(rootDir, showFiles, showSize, DEFAULT_SORT);
     }
 
 
     /**
-     * Creates a tree with the given root directory and flag to show files.
-     * 
-     * @param rootDir Root directory.
-     * @param showFiles If true, includes files (as opposed to just directories)
-     *        in the output.
-     * @param showSize If true, shows the size of the file.
-     * @param sortBy File attribute to use for sorting.
-     */
+	 * Creates a tree with the given root directory and flag to show files.
+	 * 
+	 * @param rootDir
+	 *            Root directory.
+	 * @param showFiles
+	 *            If true, includes files (as opposed to just directories) in
+	 *            the output.
+	 * @param showSize
+	 *            If true, shows the size of the file.
+	 * @param sortBy
+	 *            File attribute to use for sorting.
+	 */
     public Tree2(
         File rootDir, 
         boolean showFiles, 
@@ -473,9 +478,9 @@ public class Tree2
             showFiles, 
             showSize, 
             DEFAULT_SHOWDATE, 
-            sortBy, 
-            DEFAULT_REGEX,
-            DEFAULT_WRITER);
+            sortBy,
+            DEFAULT_MAXDEPTH,
+            DEFAULT_REGEX);
     }
 
     
@@ -488,6 +493,7 @@ public class Tree2
      * @param showSize If true, shows the size of the file.
      * @param showDate If true, shows the date/time of the file.
      * @param sortBy File attribute to use for sorting.
+     * @param maxDepth Max number of directories to recurse into.
      * @param regex File filter expressed as a regular expression. 
      */
     public Tree2(
@@ -496,6 +502,7 @@ public class Tree2
         boolean showSize, 
         boolean showDate, 
         String sortBy,
+        int maxDepth,
         String regex)
     {
         this(
@@ -505,6 +512,7 @@ public class Tree2
             showDate, 
             sortBy,
             regex,
+            maxDepth,
             DEFAULT_WRITER);
     }
    
@@ -529,6 +537,7 @@ public class Tree2
                 boolean showDate,
                 String sortBy,
                 String regex,
+                int maxDepth,
                 Writer writer)
     {
         rootDir_ = rootDir;
@@ -546,12 +555,12 @@ public class Tree2
             throw new IllegalArgumentException(
                 "Cannot read from " + rootDir_);
         
-        showSize_ = showSize;
-        showDate_ = showDate;
-        writer_ = new PrintWriter(writer, true);
+        showSize_  = showSize;
+        showDate_  = showDate;
+        writer_    = new PrintWriter(writer, true);  // turn on autoflush
         dirFilter_ = new DirectoryFilter();
-
-        regex_ = regex;
+        regex_     = regex;
+        maxDepth_  = maxDepth;
         
         //
         // If a regex is passed and the user forgot to turn on the -files
@@ -563,20 +572,17 @@ public class Tree2
         if (showFiles_)
             fileFilter_ = new FileFilter();
         
+        // TODO: expose case sensetivity?
         if (useRegex)
-        {
-            fileFilter_ = 
-                new AndFilter(
-                    fileFilter_, 
-                    new RegexFilter(regex_, false));  // TODO: expose case sensetivity?
-        }
+            fileFilter_ = new AndFilter(fileFilter_, 
+                new RegexFilter(regex_, false));  
 
         sortByMap_ = new HashMap();
-        sortByMap_.put(SORT_NONE, null);
+        sortByMap_.put(SORT_NONE, new NullComparator());
         sortByMap_.put(SORT_NAME, FileComparator.COMPARE_NAME);
         sortByMap_.put(SORT_SIZE, FileComparator.COMPARE_SIZE);
         sortByMap_.put(SORT_DATE, FileComparator.COMPARE_DATE);
-        sortBy_ = sortBy;
+        sortBy_ = sortBy == null ? DEFAULT_SORT : sortBy;
         
         if (!sortByMap_.containsKey(sortBy_))
             throw new IllegalArgumentException(
@@ -630,6 +636,9 @@ public class Tree2
      */
     protected boolean showTree(File rootDir, String level)
     {
+        if (getCurrentDepth(level) > maxDepth_)
+        	return true;
+        
         boolean atRoot = (level.length() == 0);
         
         if (atRoot)
@@ -637,8 +646,11 @@ public class Tree2
             
         // Get list of directories in root
         File[] dirs = rootDir.listFiles(dirFilter_);
+        
+        if (dirs == null)
+            dirs = new File[0];
+        
         Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
-
         String filler = (dirs.length == 0 ? SPACER : BAR);
         
         // Print files
@@ -763,12 +775,26 @@ public class Tree2
         
         return true;
     }
-        
+    
+    
+    /**
+     * Returns the current depth of the tree.
+     * 
+     * @param level String used for tree indentation.
+     * @return int
+     */
+    protected int getCurrentDepth(String level) 
+    {
+    	return (level.length() / SPACER.length()) + 1;
+    }
+    
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
     /**
+     * Dumps state of the tree to a string.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString()
