@@ -25,8 +25,11 @@ package toolbox;
  * TODO: Add tile and cascade to Desktop plugin host
  * TODO: Integrate new icons from 
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
- * 
- * ========================= JDBC Plugin =======================================
+ * =============================================================================
+ * TODO: DocViewer: Fix colors in pollo doc viewer.
+ * =============================================================================
+ * 								JDBCPlugin
+ * =============================================================================
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
  * TODO: Enable connect/disconnect buttons based on state
@@ -36,23 +39,21 @@ package toolbox;
  * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
  *       a selection.
  * =============================================================================
- * TODO: DocViewer: Fix colors in pollo doc viewer.
+ * 								FindClassPlugin
  * =============================================================================
- * TODO: FindClass: Reduce startup time.
- * TODO: FindClass: Make table cells editable for text that doesn't fit in cell
- * TODO: FindClass: Add option to have decompiler dump to one textarea or 
- *                  multiple tabs
- * TODO: FindClass: Update JSMartList so that scroll on demand is an option
- * TODO: FindClass: Have decompiler text area rembember font setting if dump 
- *                  to tabs
- * TODO: FindClass: Add a way to close all tabs in the decompiler 
- * TODO: FindClass: Add toggle for tab heading to be FQCN or just the 
- *                  class name
- * TODO: FindClass: Add decompile on select
- * TODO: FindClass: Add additional search criteria: A extends B, A implements C
- * TODO: FindClass: Add timer to see perf.
- * TODO: FindClass: For a selected Jar, make it the search target and autolist
- *                  all the classes within it.
+ * TODO: Reduce startup time.
+ * TODO: Make table cells editable for text that doesn't fit in cell
+ * TODO: Add option to have decompiler dump to one textarea or multiple tabs
+ * TODO: Update JSMartList so that scroll on demand is an option
+ * TODO: Have decompiler text area rembember font setting if dump to tabs
+ * TODO: Add a way to close all tabs in the decompiler 
+ * TODO: Add toggle for tab heading to be FQCN or just the class name
+ * TODO: Add decompile on select
+ * TODO: Add additional search criteria: A extends B, A implements C
+ * TODO: Add timer to see perf.
+ * TODO: For a selected Jar, make it the search target and autolist all the 
+ *       classes within it.
+ * TODO: Add size and index number columns to the search target page.
  * =============================================================================
  * TODO: TCPTunnel: Add option just to monitor the count and not output data.
  * TODO: TCPTunnel: Figure out why it freezes up
@@ -70,7 +71,8 @@ package toolbox;
  * 	- Updated JFreeChart to 0.9.18 
  * 	- Alphasorted the Plugin menu
  *  - Replaced select methods in StringUtil and StreamUtil with apache commons
- *  - Fixed splash image to use a blown up version of the regular toolbox icon 
+ *  - Fixed splash image to use a blown up version of the regular toolbox icon
+ *  - Made the jar search activity an async operation in the FindClassPlugin  
  * 
  * February 2004
  * 	- Add Plugin menu
