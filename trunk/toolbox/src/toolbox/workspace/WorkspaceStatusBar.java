@@ -116,7 +116,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     public void setStatus(String status)
     {
         //status_.setText(status);
-        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_DUKE));
     }
 
     
