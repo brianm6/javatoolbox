@@ -494,6 +494,13 @@ public class StringUtilTest extends TestCase
         assertEquals("two", StringUtil.tokenize(m, "Z", true)[2]);
         assertEquals("Z", StringUtil.tokenize(m, "Z", true)[3]);
         assertEquals("three", StringUtil.tokenize(m, "Z", true)[4]);
+        
+        // Delimiter > 1 character
+        String n = "oneABtwoABthree";
+        assertEquals(3, StringUtil.tokenize(n, "AB").length);
+        assertEquals("one", StringUtil.tokenize(n, "AB")[0]);
+        assertEquals("two", StringUtil.tokenize(n, "AB")[1]);
+        assertEquals("three", StringUtil.tokenize(n, "AB")[2]);
     }
     
     
