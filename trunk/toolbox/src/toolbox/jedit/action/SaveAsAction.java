@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
 import toolbox.jedit.JEditTextArea;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JSmartFileChooser;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -28,19 +28,21 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
     //--------------------------------------------------------------------------
     // IPreferenced Constants
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * This class itself does not have any prefs to save, but the contained
+     * file chooser does.
+     */
     private static final String NODE_SAVEAS_ACTION = "SaveAsAction";
-    private static final String PROP_LAST_DIR = "lastDir";
-    private static final String[] SAVED_PROPS = {PROP_LAST_DIR};
     
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Remembers last active directory.
+     * File chooser used to select the location for saving the file.
      */
-    private String lastDir_;
+    private JSmartFileChooser chooser_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -54,6 +56,7 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
     public SaveAsAction(JEditTextArea area)
     {
         super("Save As..", ImageCache.getIcon(ImageCache.IMAGE_SAVEAS), area);
+        chooser_ = new JSmartFileChooser();
     }
     
     //--------------------------------------------------------------------------
@@ -68,20 +71,11 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
     {
         try
         {
-            JFileChooser chooser = null;
-            
-            if (getLastDir() == null)
-                chooser = new JFileChooser();
-            else
-                chooser = new JFileChooser(getLastDir());
-
-            if (chooser.showSaveDialog(area_) == JFileChooser.APPROVE_OPTION) 
+            if (chooser_.showSaveDialog(area_) == JFileChooser.APPROVE_OPTION) 
             {
-                String saveFile = chooser.getSelectedFile().getCanonicalPath();
+                String saveFile = chooser_.getSelectedFile().getCanonicalPath();
                 FileUtil.setFileContents(saveFile, area_.getText(), false);
             }
-            
-            setLastDir(chooser.getCurrentDirectory().getCanonicalPath());
         }
         catch (FileNotFoundException fnfe)
         {
@@ -102,10 +96,13 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = XOMUtil.getFirstChildElement(prefs, NODE_SAVEAS_ACTION,
-            new Element(NODE_SAVEAS_ACTION));
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, 
+                NODE_SAVEAS_ACTION,
+                new Element(NODE_SAVEAS_ACTION));
         
-        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+        chooser_.applyPrefs(root);
     }
 
 
@@ -115,32 +112,7 @@ public class SaveAsAction extends AbstractJEditAction implements IPreferenced
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_SAVEAS_ACTION);
-        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        chooser_.savePrefs(root);
         XOMUtil.insertOrReplace(prefs, root);
-    }
-    
-    //--------------------------------------------------------------------------
-    // JavaBean Properties
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Returns the last directory navigated to in the file chooser.
-     * 
-     * @return String
-     */
-    public String getLastDir()
-    {
-        return lastDir_;
-    }
- 
-    
-    /**
-     * Sets the last directory navigated to using the file chooser.
-     * 
-     * @param lastDir Last selected directory in absolute form.
-     */
-    public void setLastDir(String lastDir)
-    {
-        lastDir_ = lastDir;
     }
 }

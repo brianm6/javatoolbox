@@ -14,8 +14,8 @@ import org.apache.log4j.Logger;
 import toolbox.jedit.JEditTextArea;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.JSmartFileChooser;
 
 /**
  * Inserts the text of a file at the current cursor location.
@@ -30,17 +30,12 @@ public class InsertFileAction extends AbstractJEditAction
     //--------------------------------------------------------------------------
     
     private static final String NODE_INSERT_FILE_ACTION = "InsertFileAction";
-    private static final String PROP_LAST_DIR = "lastDir";
-    private static final String[] SAVED_PROPS = {PROP_LAST_DIR};
     
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
-    /**
-     * Last directory chosed in the file chooser.
-     */
-    private String lastDir_;
+    private JSmartFileChooser chooser_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -54,6 +49,7 @@ public class InsertFileAction extends AbstractJEditAction
     public InsertFileAction(JEditTextArea area)
     {
         super("Insert..", area);
+        chooser_ = new JSmartFileChooser();
     }
     
     //--------------------------------------------------------------------------
@@ -68,25 +64,15 @@ public class InsertFileAction extends AbstractJEditAction
     {
         try
         {
-            JFileChooser chooser = null;
-            
-            if (getLastDir() == null)
-                chooser = new JFileChooser();
-            else
-                chooser = new JFileChooser(getLastDir());
-
-            if (chooser.showOpenDialog(area_) == 
-                JFileChooser.APPROVE_OPTION) 
+            if (chooser_.showOpenDialog(area_) == JFileChooser.APPROVE_OPTION) 
             {
                 String txt = FileUtil.getFileContents(
-                    chooser.getSelectedFile().getCanonicalPath());
+                    chooser_.getSelectedFile().getCanonicalPath());
                 
                 int curPos = area_.getCaretPosition();    
                 
                 area_.getDocument().insertString(curPos, txt, null);                        
             }
-            
-            setLastDir(chooser.getCurrentDirectory().getCanonicalPath());
         }
         catch (BadLocationException ble)
         {
@@ -114,7 +100,7 @@ public class InsertFileAction extends AbstractJEditAction
         Element root = XOMUtil.getFirstChildElement(prefs, 
             NODE_INSERT_FILE_ACTION, new Element(NODE_INSERT_FILE_ACTION));
         
-        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+        chooser_.applyPrefs(root);
     }
 
 
@@ -124,33 +110,7 @@ public class InsertFileAction extends AbstractJEditAction
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_INSERT_FILE_ACTION);
-        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        chooser_.savePrefs(root);
         XOMUtil.insertOrReplace(prefs, root);
     }
-    
-    //--------------------------------------------------------------------------
-    // JavaBean Properties
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Returns the last directory navigated to using the file chooser.
-     * 
-     * @return String
-     */
-    public String getLastDir()
-    {
-        return lastDir_;
-    }
- 
-    
-    /**
-     * Sets the last directory navigated to using the file chooser.
-     * 
-     * @param lastDir Last directory in absolute form.
-     */
-    public void setLastDir(String lastDir)
-    {
-        lastDir_ = lastDir;
-    }
-    
 }
