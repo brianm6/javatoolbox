@@ -22,6 +22,11 @@ public class EventOutputStream extends FilterOutputStream
      */
     private int  count_;
     
+    /**
+     * Friendly name for this stream
+     */
+    private String name_;
+    
     //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
@@ -33,7 +38,19 @@ public class EventOutputStream extends FilterOutputStream
      */
     public EventOutputStream(OutputStream out)
     {
+        this(null, out);
+    }
+    
+    /**
+     * Creates an EventOutputStream
+     * 
+     * @param  name Stream name
+     * @param  out  OutputStream to chain 
+     */
+    public EventOutputStream(String name, OutputStream out)
+    {
         super(out);
+        name_ = name;
         listeners_ = new ArrayList(2);
         count_ = 0;
     }
@@ -132,6 +149,14 @@ public class EventOutputStream extends FilterOutputStream
     {
         count_ = 0;
     }    
+    
+    /**
+     * @return
+     */
+    public String getName()
+    {
+        return name_;
+    }
     
     //--------------------------------------------------------------------------
     // Interfaces
