@@ -39,6 +39,11 @@ import toolbox.util.ui.layout.ParagraphLayout;
  */
 public class StatcvsPlugin extends JPanel implements IPlugin
 {
+    // TODO: Add nuke checkout dir
+    // TODO: Add one button to do everything
+    // TODO: Implement recent pattern
+ 
+    
     private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
     
     private static final String PROP_PROJECT     = "statcvs.plugin.project";
@@ -153,9 +158,15 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {    
         // Debug flag for netbeans cvs client
         if (debugCheckBox_.isSelected())
+        {
             System.setProperty("cvsClientLog", "system");
+            org.netbeans.lib.cvsclient.util.Logger.setLogging("system");
+        }
         else
+        {
             System.getProperties().remove("cvsClientLog");
+            org.netbeans.lib.cvsclient.util.Logger.setLogging(null);
+        }
     }
     
     protected void setUserDir(String dir)
@@ -201,6 +212,15 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         field.setText(FileUtil.trailWithSeparator(text));    
     }
 
+    protected String moduleToLogFile(String module)
+    {
+        return StringUtil.replace(
+            FileUtil.matchPlatformSeparator(cvsModuleField_.getText()),
+            File.separator,
+            ".") + ".log";
+        
+    }
+    
     /**
      * @return Absolute path to the cvs generated log file
      */
@@ -208,9 +228,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {
         return checkoutDirField_.getText() + 
                cvsModuleField_.getText() + 
-               File.separator + 
-               cvsModuleField_.getText() + 
-               ".log";
+               File.separator +
+               moduleToLogFile(cvsModuleField_.getText());
     }
 
     protected String getCVSBaseDir()
