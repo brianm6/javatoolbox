@@ -31,25 +31,21 @@ import org.apache.log4j.Logger;
  */
 public final class SwingUtil
 {
-    private static final Logger logger_ =
-        Logger.getLogger(SwingUtil.class);
+    private static final Logger logger_ = 
+    	Logger.getLogger(SwingUtil.class);
 
-    // Clover private constructor workaround
-    static { new SwingUtil(); }
-    
-    /** 
-     * Preferred monospaced font
-     */
+    /** Preferred monospaced font */
     private static Font monofont_;
     
-    /** 
-     * Preferred serif font 
-     */
+    /** Preferred serif font */
     private static Font serifFont_;
 
     //--------------------------------------------------------------------------
     // Static Block
     //--------------------------------------------------------------------------
+
+    // Clover private constructor workaround
+    static { new SwingUtil(); }
     
     static
     {
@@ -102,7 +98,6 @@ public final class SwingUtil
     public static void setWindowSizeAsPercentage(Window w, int percentWidth,
         int percentHeight)
     {
-
         Dimension desktopSize = w.getToolkit().getScreenSize();
 
         Dimension windowSize =
@@ -112,7 +107,6 @@ public final class SwingUtil
 
         w.setSize(windowSize);
     }
-
 
     /**
      * Moves the window to the center of the screen
@@ -129,7 +123,6 @@ public final class SwingUtil
 
         w.setLocation(left, top);
     }
-
 
     /**
      * Centers a child window relative to its parent window
@@ -148,16 +141,15 @@ public final class SwingUtil
             (parentSize.height - childSize.height) / 2 + loc.y);
     }
    
-   
-   /**
-    * Finds the frame for a given component. 
-    * 
-    * @param   component  Component to find parent frame for
-    * @return  Frame that component is a child of or null if the component
-    *          does not have a parent frame or if the parent frame is not
-    *          a Frame (could be a Dialog).
-    * @see     javax.swing.SwingUtilities#getWindowAncestor(Component)
-    */
+    /**
+     * Finds the frame for a given component. 
+     * 
+     * @param   component  Component to find parent frame for
+     * @return  Frame that component is a child of or null if the component
+     *          does not have a parent frame or if the parent frame is not
+     *          a Frame (could be a Dialog).
+     * @see     javax.swing.SwingUtilities#getWindowAncestor(Component)
+     */
     public static Frame getFrameAncestor(Component component)
     {
         // Find parent window
@@ -181,7 +173,6 @@ public final class SwingUtil
         c.setCursor(Cursor.getDefaultCursor());
     }
 
-
     /**
      * Sets the cursor to the wait cursor on the given component
      * 
@@ -197,8 +188,6 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
         
     /**
-     * Returns preferred monospaced font
-     * 
      * @return Monospaced font
      */
     public static Font getPreferredMonoFont()
@@ -240,15 +229,12 @@ public final class SwingUtil
         return monofont_;               
     }
 
-
     /**
-     * Returns preferred variable text font
-     * 
      * @return Preferred variable text font
      */
     public static Font getPreferredSerifFont()
     {
-        String favoredFont = "Verdana";
+        String favoredFont = "Tahoma";
         String backupFont  = "serif";
         
         if (serifFont_ == null)
@@ -293,7 +279,6 @@ public final class SwingUtil
         //SwingUtilities.updateComponentTreeUI(frame);
     }
     
-    
     /**
      * Sets the Look and Feel to Windows
      * 
@@ -304,7 +289,6 @@ public final class SwingUtil
         UIManager.setLookAndFeel(
             "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
     }
- 
  
     /**
      * Sets the Look and Feel to Motif/CDE
@@ -317,7 +301,6 @@ public final class SwingUtil
             "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
     }
  
- 
     /**
      * Sets the Look and Feel to Metouia
      * 
@@ -329,7 +312,6 @@ public final class SwingUtil
             "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
     }
 
-
     /**
      * Sets the Skin LAF
      * 
@@ -339,7 +321,6 @@ public final class SwingUtil
     { 
         UIManager.setLookAndFeel("com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
     }
-
 
     /**
      * Sets the preferred Look and Feel
@@ -351,7 +332,6 @@ public final class SwingUtil
         UIManager.setLookAndFeel(
             "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
     }
-
 
     /**
      * Retrieves list of availble look and feels available
@@ -464,7 +444,6 @@ public final class SwingUtil
             }
         }
     }
-
     
     /**
      * Cascades all internal frames on a desktop
@@ -493,7 +472,6 @@ public final class SwingUtil
         }
     }
 
-
     /** 
      * Cascades the given internal frame based upon the current number 
      * of internal frames
@@ -507,7 +485,6 @@ public final class SwingUtil
     {
         return cascade(desktop, frame, desktop.getAllFrames().length);
     }
-
 
     /**
      * Cascades the given internal frame based upon supplied count
