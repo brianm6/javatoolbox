@@ -24,6 +24,10 @@
         <property name="build"      location="${top}/build"/>
         <property name="build.lib"  location="${build}/lib"/>
         <property name="doc"        location="${top}/doc"/>
+        <property name="junit"      location="${doc}/junit"/>
+        <property name="junit.xml"  location="${junit}/xml"/>
+        <property name="junit.html" location="${junit}/html"/>
+        <property name="clover"     location="${doc}/clover"/>
         
         <property name="project.init.message" 
                   value="${ant.project.name} project initialized"/>
@@ -69,6 +73,7 @@
                 <include name="**/*.jar"/>
                 <include name="**/*.zip"/>
             </fileset>
+
 
             <path refid="project.tools.path"/>
         </path>
@@ -122,6 +127,10 @@
         <path id="project.class.path">
             <pathelement location="${src}"/>
             <pathelement location="${classes}"/>
+            <fileset dir="${build.lib}">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
             <path refid="common.class.path"/>
         </path>
         <echo message="${project.init.message}"/>
@@ -146,7 +155,7 @@
         <delete dir="${dist}" verbose="false" quiet="off"/>
         <delete dir="${classes}" verbose="false" quiet="off"/>
         
-        <antcall target="clover.clean"/>
+        <!--antcall target="clover.clean"-->
         
     </target>
 
@@ -158,6 +167,9 @@
             depends="init" 
             description="Compiles the source code">
     
+        <property name="cp" refid="project.class.path"/>
+        <echo message="Classpath=${cp}"/>
+        
         <javac 
             srcdir="${src}" 
             destdir="${classes}" 
@@ -259,7 +271,7 @@
             noindex="false" 
             nonavbar="false"
             notree="false"
-            packagenames="toolbox.util.ui,toolbox.util.reflect,toolbox.findclass.test,toolbox.showpath,toolbox.util,toolbox.test,toolbox.jtail.test,toolbox.util.args,toolbox.util.io.test,toolbox.util.ui.test,toolbox.launcher,toolbox.tunnel,toolbox.util.io,toolbox.util.test,toolbox.jsourceview,toolbox.tail.test,toolbox.util.sync,toolbox.jtail,toolbox.util.thread,toolbox.tail,toolbox.showclasspath,toolbox.util.ui.images,toolbox.findclass"
+			packagenames="toolbox.*"
             sourcepath="${src}"
             splitindex="false" 
             use="true" 
@@ -267,17 +279,22 @@
             
     </target>
 
+
+	<!-- packagenames="toolbox.util.ui,toolbox.util.reflect,toolbox.findclass.test,toolbox.showpath,toolbox.util,toolbox.test,toolbox.jtail.test,toolbox.util.args,toolbox.util.io.test,toolbox.util.ui.test,toolbox.launcher,toolbox.tunnel,toolbox.util.io,toolbox.util.test,toolbox.jsourceview,toolbox.tail.test,toolbox.util.sync,toolbox.jtail,toolbox.util.thread,toolbox.tail,toolbox.showclasspath,toolbox.util.ui.images,toolbox.findclass" -->
+
     <!--=============================-->
-    <!--            TEST             -->
+    <!--            JUNIT            -->
     <!--=============================-->
     <target name="junit" 
-            depends="init" 
-            description="Executes JUnit tests">
+            depends="compile" 
+            description="Executes JUnit tests and generates report">
 
-        <mkdir dir="${test}"/>
+        <mkdir dir="${junit}"/>
+        <mkdir dir="${junit.xml}"/>
+        <mkdir dir="${junit.html}"/>
         
         <delete>
-            <fileset dir="${test}" includes="**/TEST*.xml"></fileset>
+            <fileset dir="${junit.xml}" includes="**/TEST*.xml"></fileset>
         </delete>
         
         <!-- <junit printSummary="yes" haltonfailure="no"> -->
@@ -295,7 +312,7 @@
             
             <formatter type="xml"/>
             
-            <batchtest fork="no" todir="${test}">
+            <batchtest fork="no" todir="${junit.xml}">
                 <fileset dir="${src}">
                     <include name="**/*Test.java" />
                     <exclude name="**/RegressionTest.java" />
@@ -305,29 +322,28 @@
           
         </junit>
 
-
-        <junitreport todir="./test">
-            <fileset dir="./test">
-                <include name="TEST-*.xml"/>
-            </fileset>
-            <report format="frames" todir="./test/html"/>
-        </junitreport>        
-        
     </target>
 
 
     <!--=============================-->
-    <!--         SHOWREPORT          -->
+    <!--        JUNIT.REPORT         -->
     <!--=============================-->
-    <target name="showreport"
-            depends="init" 
+    <target name="junit.report"
+            depends="junit" 
             description="Launches report containing results of the JUnit test cases">
+
+        <junitreport todir="${junit.xml}">
+            <fileset dir="${junit.xml}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.html}"/>
+        </junitreport>        
         
         <echo message="OS=${os.name}"/>
         
         <exec executable="cmd.exe">
         	<!-- os="Windows NT" -->
-            <arg line="/c start ${test}/html/index.html"/>
+            <arg line="/c start ${junit.html}/index.html"/>
         </exec>            
             
     </target>
@@ -340,16 +356,16 @@
             description="Initalizes clover environment">
 
         <property name="clover.preserve" value="false"/>
-        <property name="clover.dir" location="${test}/clover"/>
+        <property name="clover.excludes" value="**/test/*"/>
         
-        <mkdir dir="${clover.dir}"/>
+        <mkdir dir="${clover}"/>
             
         <property name="clover.initstring" 
-                  value="${clover.dir}\toolbox_coverage.db"/>
+                  value="${clover}/toolbox_coverage.db"/>
                   
         <path id="clover.classpath">
-            <pathelement path="${build.lib}\clover.jar"/>
-            <pathelement path="${build.lib}\velocity.jar"/>
+            <pathelement path="${build.lib}/clover.jar"/>
+            <pathelement path="${build.lib}/velocity.jar"/>
         </path>
 
     </target>
@@ -390,9 +406,14 @@
             description="Generates clover results HTML format">  
             
         <java classname="com.cortexeb.tools.clover.reporters.html.HtmlReporter">   
-            <arg line="--outputdir ${clover.dir} --showSrc --initstring ${clover.initstring} --title 'Toolbox'"/>   
+            <arg line="--outputdir ${clover} --showSrc --initstring ${clover.initstring} --title 'Toolbox'"/>   
             <classpath refid="clover.classpath"/>  
         </java>
+        
+        <exec executable="cmd.exe">
+            <arg line="/c start ${clover}/index.html"/>
+        </exec>            
+       
     </target>
 
 
@@ -413,13 +434,12 @@
     
     
     <!--=============================-->
-    <!--        CLOVER.CLEAN         -->
+    <!--    depends="clover.init"     CLOVER.CLEAN         -->
     <!--=============================-->
     <target name="clover.clean"
-            depends="clover.init" 
             description="Removes clover generated files">
                     
-        <delete dir="${clover.dir}" verbose="false" quiet="off"/>
-        <delete dir="${clover.dir}"/>
+        <delete dir="${clover}" verbose="false" quiet="off"/>
+        <delete dir="${clover}"/>
     </target>
 </project>
