@@ -24,7 +24,18 @@ public class ImageCache
     public static final String IMAGE_SORT_ASCENDING = ROOT+"SortAscending.gif";
     public static final String IMAGE_SORT_DESCENDING= ROOT+"SortDescending.gif";
     
+    public static final String IMAGE_TREE_OPEN   = ROOT + "TreeOpen.gif";
+    public static final String IMAGE_TREE_CLOSED = ROOT + "TreeClosed.gif";
+    public static final String IMAGE_HARD_DRIVE  = ROOT + "HardDrive.gif";
+    
+    /**
+     * Hashmap for cached icons
+     */
     private static final Map iconCache_ = new HashMap();
+    
+    /**
+     * Hashmap for cached images
+     */
     private static final Map imageCache_ = new HashMap();
     
     //--------------------------------------------------------------------------
