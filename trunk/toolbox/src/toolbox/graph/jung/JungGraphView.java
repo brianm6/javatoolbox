@@ -7,7 +7,6 @@ import edu.uci.ics.jung.visualization.GraphDraw;
 import edu.uci.ics.jung.visualization.Layout;
 import edu.uci.ics.jung.visualization.SpringLayout;
 import edu.uci.ics.jung.visualization.graphdraw.SettableRenderer;
-import scratch.scott.AestheticSpringVisualizer;
 
 import toolbox.graph.GraphView;
 import toolbox.util.ui.Colors;
