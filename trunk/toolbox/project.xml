@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ===========================================================================
-    
-  Maven POM for the Java Toolbox 
-  
-  USAGE:
-
-    You do not invoke this file explicitly. Each subproject has a maven 
-    project.xml which directly extends/inherits base functionality from this
-    project. Change to an individual project's directory and invoke maven from 
-    there instead.
-
-  PURPOSE:
-  
-    This file serves as the parent maven POM (project object model) for each of 
-    the individual sub-projects. This reduces the amount of redunduncy created
-    when building a large system with multiple projects having similar
-    attributes and behavior.
-
-============================================================================ -->
+<!-- ====================================================================== -->
+<!--                 Maven POM for the Java Toolbox                         -->
+<!-- ====================================================================== -->
 <project>
 
   <pomVersion>3</pomVersion>
@@ -27,7 +11,7 @@
 
   <organization>
     <name>Toolbox</name>
-    <url>http://toolbox.sf.net/</url>
+    <url>http://hemisfear.cjb.net/</url>
   </organization>
   
   <inceptionYear>2002</inceptionYear>
@@ -36,19 +20,19 @@
   <gumpRepositoryId>toolbox</gumpRepositoryId>
   <description>Java Toolbox</description>
   <shortDescription>Toolbox that contains various apps and utilities to make java development easier.</shortDescription>
-  <url>http://toolbox.sf.net/</url>
-  <issueTrackingUrl>http://toolbox.sf.net</issueTrackingUrl>
-  <siteAddress>www.sf.net</siteAddress>
-  <siteDirectory>/www/maven.apache.org/</siteDirectory>
+  <url>http://hemisfear.cjb.net/</url>
+  <issueTrackingUrl>http://hemisfear.cjb.net</issueTrackingUrl>
+  <siteAddress>hemisfear.cjb.net</siteAddress>
+  <siteDirectory>/www/hemisfear.cjb.net/</siteDirectory>
   <distributionDirectory>
-    /www/jakarta.apache.org/builds/jakarta-turbine-maven/
+    /www/jakarta.apache.org/builds/toolbox/
   </distributionDirectory>
 
   <repository>
     <connection>
-      scm|cvs|pserver|analogue@12.239.81.65|c:\cvs\cvsrep|${pom.artifactId}
+      scm|cvs|pserver|analogue@hemisfear.cjb.net|c:/cvs/cvsrep|${pom.artifactId}
     </connection>
-    <url>http://toolbox.sf.net/</url>
+    <url>http://hemisfear.cjb.net/</url>
   </repository>
   
   <versions>
@@ -64,65 +48,13 @@
       <name>Semir Patel</name>
       <id>analogue</id>
       <email>analogue@yaoo.com</email>
-      <organization>Toolbox</organization>
+      <organization>:-)</organization>
     </developer>
   </developers>
-
-  <!--
-  <dependencies>
-    <dependency><id>debug</id><version/></dependency>
-    <dependency><id>acrobat</id><version/></dependency>
-    <dependency><id>ant</id><version/></dependency>    
-    <dependency><id>apple-mrj</id><version/></dependency>
-    <dependency><id>avalon-framework</id><version/></dependency>
-    
-    <dependency>
-      <id>batik</id>
-      <version/>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-      </properties>
-    </dependency>
       
-    <dependency><id>bsh</id><version/></dependency>
-    <dependency><id>commons-cli</id><version/></dependency>
-    <dependency><id>commons-collections</id><version/></dependency>
-    <dependency><id>commons-lang</id><version/></dependency>
-    <dependency><id>commons-beanutils</id><version/></dependency>
-    <dependency><id>commons-logging</id><version/></dependency>
-    <dependency><id>commons-net</id><version/></dependency>
-    <dependency><id>commons-io</id><version/></dependency>
-    <dependency><id>commons-codec</id><version/></dependency>
-    <dependency><id>cryptix32</id><version/></dependency>
-    <dependency><id>cryptix32-pgp</id><version/></dependency>        
-    <dependency><id>cvslib</id><version/></dependency>        
-    <dependency><id>fop</id><version/></dependency>                
-    <dependency><id>hamsam</id><version/></dependency>
-    <dependency><id>hsqldb</id><version/></dependency>
-    <dependency><id>jaimlib</id><version/></dependency>
-    <dependency><id>jakarta-regexp</id><version/></dependency>        
-    <dependency><id>jedit-syntax</id><version/></dependency>
-    <dependency><id>jode</id><version/></dependency>
-    <dependency><id>junit</id><version/></dependency>
-    <dependency><id>kunststoff</id><version/></dependency>
-    <dependency><id>log4j</id><version/></dependency>
-    <dependency><id>metouia</id><version/></dependency>
-    <dependency><id>plastic</id><version/></dependency>        
-    <dependency><id>sametime-comm</id><version/></dependency>
-    <dependency><id>sametime-comm-res</id><version/></dependency>                    
-    <dependency><id>saxon</id><version/></dependency>        
-    <dependency><id>skinlf</id><version/></dependency>
-    <dependency><id>statcvs</id><version/></dependency>        
-    <dependency><id>tinylaf</id><version/></dependency>        
-    <dependency><id>xercesImpl</id><version/></dependency>
-    <dependency><id>xep</id><version/></dependency>
-    <dependency><id>xml-apis</id><version/></dependency>
-    <dependency><id>xom</id><version/></dependency>    
-    <dependency><id>xplookandfeel</id><version/></dependency>
-    <dependency><id>xt</id><version/></dependency>
-  </dependencies>
-  -->
-      
+    <!-- ================= -->
+    <!-- Dependencies      -->
+    <!-- ================= -->
 
     <dependencies>
     
@@ -270,10 +202,12 @@
         </properties>
       </dependency>
 
+      <!--
       <dependency>
         <id>db2java</id>
         <version/>
       </dependency>
+      -->
     
       <dependency>
         <id>fop</id>
@@ -390,19 +324,11 @@
       <dependency>
         <id>sametime-comm</id>
         <version/>
-        <!--
-        <properties>
-          <jnlp.jar>true</jnlp.jar>
-        </properties>
-        -->
       </dependency>
     
       <dependency>
         <id>sametime-comm-res</id>
         <version/>
-        <!--properties>
-          <jnlp.jar>true</jnlp.jar>
-        </properties-->
       </dependency>
     
       <dependency>
@@ -510,6 +436,7 @@
         <exclude>**/jedit/**</exclude>
         <exclude>**/log4j/im/**/*Test.java</exclude>
         <exclude>**/BannerTaskTest.java</exclude>
+        <exclude>**/DecompilerTest.java</exclude>
       </excludes>
       
       <resources>
