@@ -51,7 +51,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     private static final Logger logger_ = Logger.getLogger(TunnelPane.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     public static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
@@ -73,7 +73,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     private JSmartTextArea outgoingArea_;
 
     /**
-     * Refernce to the workspace status bar.
+     * Reference to the workspace status bar.
      */
     private IStatusBar statusBar_;
 
@@ -417,9 +417,9 @@ public class TunnelPane extends JPanel implements IPreferenced
 
         tunnel_.applyPrefs(root);
         
-        listenPortField_.setText(tunnel_.getLocalPort() + "");
-        remoteHostField_.setText(tunnel_.getRemoteHost());
-        remotePortField_.setText(tunnel_.getRemotePort() + "");
+        setListenPort(tunnel_.getLocalPort());
+        setRemoteHost(tunnel_.getRemoteHost());
+        setRemotePort(tunnel_.getRemotePort());
 
         configFlipPane_.applyPrefs(root);
         splitter_.applyPrefs(root);
