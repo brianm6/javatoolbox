@@ -558,4 +558,15 @@ public final class StringUtil
         
         return lineString;
     }
+    
+    /**
+     * Reverses a string
+     * 
+     * @param   s  String to reverse
+     * @return  Reversed string
+     */
+    public static String reverse(String s)
+    {
+        return new StringBuffer(s).reverse().toString();
+    }
 }
