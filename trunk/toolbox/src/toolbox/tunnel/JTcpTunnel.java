@@ -11,17 +11,25 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.dump.Dumper;
+import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
  * JTcpTunnel tunnels TCP traffic between a port on the localhost and a port
@@ -32,6 +40,8 @@ import toolbox.util.ui.JSmartTextArea;
  */
 public class JTcpTunnel extends JFrame
 {
+	public static final Logger logger_ = Logger.getLogger(JTcpTunnel.class);
+    
     private int         listenPort_;
     private String      tunnelHost_;
     private int         tunnelPort_;
@@ -42,6 +52,10 @@ public class JTcpTunnel extends JFrame
     private Relay       outRelay_;
     private JSplitPane  splitter_;
     private JButton     clearButton_;
+
+    private JTextField  localPortField_;
+    private JTextField  remoteHostField_;
+    private JTextField  remortPortField_;
     
     /**
      * Entry point
@@ -164,41 +178,48 @@ public class JTcpTunnel extends JFrame
         setTitle("[Tunnel] localhost:" + listenPort_ +  " ==> " + 
             tunnelHost_ + ":" + tunnelPort_);
         
-        //======================================================================
-        
-        JPanel labelPanel = new JPanel(new BorderLayout());
-        
-        JLabel localLabel = new JLabel("From localhost:" + listenPort_, 
-            JLabel.CENTER);
-            
-        JLabel remoteLabel = new JLabel("From " + tunnelHost_ + ":" + 
-            tunnelPort_, JLabel.CENTER);
-        
-        labelPanel.add(BorderLayout.WEST, localLabel);
-        labelPanel.add(BorderLayout.EAST, remoteLabel);
-            
-        getContentPane().add(BorderLayout.NORTH, labelPanel);
 
-        //======================================================================
+        //===================== CENTER =========================================
+    
+        JPanel outputPane = new JPanel(new BorderLayout());
         
-        listenText_ = new JSmartTextArea(true, false);
-        listenText_.setFont(SwingUtil.getPreferredMonoFont());
-        listenText_.setRows(40);
-        listenText_.setColumns(80);
-        
-        tunnelText_ = new JSmartTextArea(true, false);
-        tunnelText_.setFont(SwingUtil.getPreferredMonoFont());
-        tunnelText_.setRows(40);
-        tunnelText_.setColumns(80);
-        
-        splitter_ = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
-            new JScrollPane(listenText_), new JScrollPane(tunnelText_));
-            
-        splitter_.setDividerLocation(0.5);
-        
-        getContentPane().add(BorderLayout.CENTER, splitter_);
+            //===================== NORTH ======================================
 
-        //======================================================================
+            JPanel labelPanel = new JPanel(new BorderLayout());
+    
+            JLabel localLabel = new JLabel("From localhost:" + listenPort_,
+                JLabel.CENTER);
+    
+            JLabel remoteLabel = new JLabel("From " + tunnelHost_ + ":" +
+                tunnelPort_, JLabel.CENTER);
+    
+            labelPanel.add(BorderLayout.WEST, localLabel);
+            labelPanel.add(BorderLayout.EAST, remoteLabel);
+    
+            outputPane.add(BorderLayout.NORTH, labelPanel);
+        
+            //===================== CENTER =====================================
+            
+            listenText_ = new JSmartTextArea(true, false);
+            listenText_.setFont(SwingUtil.getPreferredMonoFont());
+            //listenText_.setRows(40);
+            listenText_.setColumns(80);
+            
+            tunnelText_ = new JSmartTextArea(true, false);
+            tunnelText_.setFont(SwingUtil.getPreferredMonoFont());
+            //tunnelText_.setRows(40);
+            tunnelText_.setColumns(80); 
+            
+            splitter_ = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
+                new JScrollPane(listenText_), new JScrollPane(tunnelText_));
+                
+            //splitter_.setDividerLocation(0.5);
+        
+            outputPane.add(BorderLayout.CENTER, splitter_);
+              
+        getContentPane().add(BorderLayout.CENTER, outputPane);
+
+        //===================== SOUTH ==========================================
         
         // clear and status
         JPanel actionPanel = new JPanel(new BorderLayout());
@@ -220,6 +241,25 @@ public class JTcpTunnel extends JFrame
         actionPanel.add(BorderLayout.CENTER, buttonPanel);
         actionPanel.add(BorderLayout.SOUTH, status_ = new JLabel());
         getContentPane().add(BorderLayout.SOUTH, actionPanel);
+        
+        //===================== WEST ==========================================
+        
+        JPanel configPanel = new JPanel(new ParagraphLayout());
+        
+        configPanel.add(new JLabel("Local Tunnel Port"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(localPortField_ = new JTextField(10));
+        configPanel.add(new JLabel("Remote Host"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(remoteHostField_ = new JTextField(10));
+        configPanel.add(new JLabel("Remote Port"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(remortPortField_ = new JTextField(10));      
+        configPanel.add(new JButton(new StartTunnelAction()),ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(new JButton(new StopTunnelAction()));  
+        
+        JFlipPane configFlipPane = new JFlipPane(JFlipPane.LEFT);
+        configFlipPane.addFlipper("Config", configPanel);
+        configFlipPane.setExpanded(false);
+        
+        getContentPane().add(BorderLayout.WEST, configFlipPane);
         
         //======================================================================
         
@@ -252,6 +292,52 @@ public class JTcpTunnel extends JFrame
                 System.exit(0);           
             }
         });
+        
+        
+        //splitter_.setDividerLocation(0.5f);
+        //splitter_.resetToPreferredSizes();
+        splitter_.setContinuousLayout(true);
+        JComponent c = splitter_;
+        int i = (int)(c.getSize().getWidth()/2);
+        logger_.info("Divider: " + i);
+        logger_.info("Scrolly:" + c);
+        logger_.info("Scrolly2:\n " + Dumper.dump(c));                
+        splitter_.setDividerLocation(i);
+        
+    }
+    
+    //--------------------------------------------------------------------------
+	//  Actions
+	//--------------------------------------------------------------------------
+
+    /**
+     * Starts the tunnel
+     */    
+    class StartTunnelAction extends AbstractAction
+    {
+        public StartTunnelAction()
+        {
+            super("Start");
+        }
+        
+		public void actionPerformed(ActionEvent e)
+		{
+		}
+    }
+
+    /**
+     * Stops the tunnel
+     */
+    class StopTunnelAction extends AbstractAction
+    {
+        public StopTunnelAction()
+        {
+            super("Stop");
+        }
+        
+		public void actionPerformed(ActionEvent e)
+		{
+		}
     }
     
     //--------------------------------------------------------------------------
