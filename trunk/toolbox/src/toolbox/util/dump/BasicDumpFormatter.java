@@ -14,7 +14,7 @@ import toolbox.util.ClassUtil;
 /**
  * Basic implementation of the IDumper interface
  */
-public class BasicDumpFormatter implements IDumpFormatter
+public class BasicDumpFormatter implements DumpFormatter
 {
     /**
      * Classes that are excluded from the object dump
@@ -121,11 +121,11 @@ public class BasicDumpFormatter implements IDumpFormatter
     }
     
     //--------------------------------------------------------------------------
-    //  IDumpFormatter Interface
+    //  DumpFormatter Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.dump.IDumpFormatter#includeClass(java.lang.Class)
+     * @see toolbox.util.dump.DumpFormatter#includeClass(java.lang.Class)
      */
     public boolean shouldInclude(Class clazz)
     {
@@ -143,7 +143,8 @@ public class BasicDumpFormatter implements IDumpFormatter
     }
 
     /**
-     * @see toolbox.util.dump.IDumpFormatter#includeField(java.lang.reflect.Field)
+     * @see toolbox.util.dump.DumpFormatter#
+     *      includeField(java.lang.reflect.Field)
      */
     public boolean shouldInclude(Field field)
     {
@@ -165,23 +166,23 @@ public class BasicDumpFormatter implements IDumpFormatter
     }
     
     /**
-     * @see toolbox.util.dump.IDumpFormatter#formatClass(java.lang.Class)
+     * @see toolbox.util.dump.DumpFormatter#formatClass(java.lang.Class)
      */
-    public String formatClass(Class clazz)
+    public String formatClassName(Class clazz)
     {
-        return formatClass(clazz.getName());
+        return formatClassName(clazz.getName());
     }
 
     /**
-     * @see toolbox.util.dump.IDumpFormatter#formatClass(java.lang.String)
+     * @see toolbox.util.dump.DumpFormatter#formatClass(java.lang.String)
      */
-    public String formatClass(String className)
+    public String formatClassName(String className)
     {
         return (stripPackage_ ? ClassUtil.stripPackage(className) : className);
     }
 
     /**
-     * @see toolbox.util.dump.IDumpFormatter#showInheritance()
+     * @see toolbox.util.dump.DumpFormatter#showInheritance()
      */
     public boolean showInheritance()
     {
@@ -189,7 +190,7 @@ public class BasicDumpFormatter implements IDumpFormatter
     }
     
     /**
-     * @see toolbox.util.dump.IDumpFormatter#sortFields()
+     * @see toolbox.util.dump.DumpFormatter#sortFields()
      */
     public boolean sortFields()
     {
