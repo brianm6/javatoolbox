@@ -39,7 +39,7 @@ public interface IBoundedBuffer
 
 
     /**
-     * Puts object in the buffer
+     * Puts object in the buffer.
      * 
      * @param  x  Object to put
      */
@@ -47,7 +47,7 @@ public interface IBoundedBuffer
 
 
     /**
-     * Puts object in the buffer with a given timeout
+     * Puts object in the buffer with a given timeout.
      * 
      * @param x Object to put
      * @param timeout Timeout in ms to wait before returning
@@ -58,7 +58,7 @@ public interface IBoundedBuffer
 
 
     /**
-     * Takes an object from the buffer
+     * Takes an object from the buffer.
      * 
      * @return Object taken from the buffer
      */
@@ -66,7 +66,7 @@ public interface IBoundedBuffer
 
 
     /**
-     * Takes an object from the buffer waiting at most timeout ms
+     * Takes an object from the buffer waiting at most timeout ms.
      * 
      * @param timeout Most time to wait if buffer is empty
      * @return Object taken from the buffer
