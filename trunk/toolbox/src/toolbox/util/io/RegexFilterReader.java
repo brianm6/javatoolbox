@@ -22,7 +22,7 @@ public class RegexFilterReader extends LineNumberReader
     /** 
      * Default regular expression matches all if one is not specified 
      */    
-    private static final String DEFAULT_MATCH = "*";
+    private static final String DEFAULT_MATCH = ".";
 
     /** 
      * Regular expression as a string 
@@ -103,7 +103,7 @@ public class RegexFilterReader extends LineNumberReader
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from LineNumberReader
+    //  Overridden from java.io.LineNumberReader
     //--------------------------------------------------------------------------
         
     /**
