@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.CloverTestSuite;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JHeaderPanel;
+import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
@@ -71,16 +72,30 @@ public class UITestCase extends TestCase
      */
     protected UITestCase()
     {
-        try
-        {
-            LookAndFeelUtil.setPreferredLAF();
-        }
-        catch (Exception e)
-        {
-            logger_.error(e);
-        }
+        this(true);
     }
 
+    
+    /**
+     * Creates a UITestCase.
+     * 
+     * @param setLAF Set the look and feel?
+     */
+    protected UITestCase(boolean setLAF)
+    {
+        if (setLAF)
+        {
+            try
+            {
+                LookAndFeelUtil.setPreferredLAF();
+            }
+            catch (Exception e)
+            {
+                logger_.error(e);
+            }
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -156,7 +171,7 @@ public class UITestCase extends TestCase
     {
         JFrame parent = new JFrame();
         
-        JDialog dlg = new JDialog(parent, 
+        JDialog dlg = new JSmartDialog(parent, 
             ClassUtils.getShortClassName(getClass().getName()), true);
         
         dlg.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
