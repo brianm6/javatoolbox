@@ -841,6 +841,7 @@
       <!--url>http://www.ibiblio.org/maven/commons-jelly/jars/</url-->
     </dependency>
 
+    <!--
     <dependency>
       <groupId>statcvs</groupId>
       <artifactId>maven-statcvs-plugin</artifactId>
@@ -861,7 +862,19 @@
       <version>1.0-SNAPSHOT</version>
       <type>plugin</type>
     </dependency>    
+    -->
+    
+    <!-- This plugin cannot be found in the maven-plugins sourceforce repo -->
+    <!--
+    <dependency>
+      <groupId>maven-plugins</groupId>
+      <artifactId>maven-help-plugin</artifactId>
+      <version>1.0</version>
+      <type>plugin</type>
+    </dependency>    
+    -->
 
+    
   </dependencies>  
   
   <!-- ===================================================================== -->
