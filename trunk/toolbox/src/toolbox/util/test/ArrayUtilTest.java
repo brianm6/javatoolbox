@@ -12,7 +12,7 @@ import toolbox.util.ArrayUtil;
  */
 public class ArrayUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ArrayUtilTest.class);
 

@@ -16,7 +16,7 @@ import toolbox.util.ThreadUtil;
  */
 public class ElapsedTimeTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ElapsedTimeTest.class);
        
@@ -269,5 +269,4 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime time = new ElapsedTime(start.getTime(), end.getTime());
         logger_.info(time);
     }
-    
 }

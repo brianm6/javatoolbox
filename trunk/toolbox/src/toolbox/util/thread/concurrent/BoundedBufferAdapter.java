@@ -140,8 +140,8 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      *
      * @param   x        Object to add to buffer.
      * @param   timeout  Maximum time to wait in milliseconds.
-     * @throws  InterruptedException if another thread interrupts 
-     *          a blocked thread.
+     * @throws  InterruptedException if another thread interrupts a blocked 
+     *          thread.
      * @throws  Timeout if the timeout period elapsed.
      */
     public void put(Object x, long timeout) throws InterruptedException, Timeout

@@ -12,8 +12,9 @@ import toolbox.util.Banner;
  */
 public class BannerTest extends TestCase
 {
-    /** Logger **/
-    private static final Logger logger_ = Logger.getLogger(BannerTest.class);
+    /** Logger */
+    private static final Logger logger_ = 
+        Logger.getLogger(BannerTest.class);
     
     /**
      * Entrypoint
@@ -25,7 +26,10 @@ public class BannerTest extends TestCase
         TestRunner.run(BannerTest.class);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for FigletFontTest.
      * 
@@ -36,7 +40,10 @@ public class BannerTest extends TestCase
         super(arg0);
     }
 
-    
+    //--------------------------------------------------------------------------
+    // Unit Tests 
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests figlet
      * 

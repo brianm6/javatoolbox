@@ -16,7 +16,7 @@ import toolbox.util.CollectionUtil;
  */
 public class CollectionUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(CollectionUtilTest.class);
         

@@ -12,7 +12,7 @@ import toolbox.util.Console;
  */
 public class ConsoleTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ConsoleTest.class);
 
