@@ -32,8 +32,6 @@ public class PreferencedUtilTest extends TestCase
     
     /**
      * Tests writing bean properties to an xml string.
-     * 
-     * @throws Exception on error.
      */
     public void testWritePreferences() throws Exception
     {
@@ -46,22 +44,23 @@ public class PreferencedUtilTest extends TestCase
         PreferencedUtil.writePreferences(
             new MockBean(expectedFlavor, expectedAcidity), 
             root, 
-            new String[] {"flavor", "acidity"});
+            MockBean.PROPS);
         
-        logger_.debug("\n" + XOMUtil.toXML(root));
+        logger_.debug(StringUtil.banner(XOMUtil.toXML(root)));
         
-        assertEquals(expectedFlavor, root.getAttribute("flavor").getValue());
+        assertEquals(
+            expectedFlavor, 
+            root.getAttribute(MockBean.PROP_FLAVOR).getValue());
         
         assertEquals(
             expectedAcidity, 
-            Integer.parseInt(root.getAttribute("acidity").getValue()));
+            Integer.parseInt(
+                root.getAttribute(MockBean.PROP_ACIDITY).getValue()));
     }
 
     
     /**
      * Tests writing for a non-existant property.
-     * 
-     * @throws Exception on error.
      */
     public void testWritePreferencesNonExistantProperty() throws Exception
     {
@@ -72,15 +71,32 @@ public class PreferencedUtilTest extends TestCase
         PreferencedUtil.writePreferences(
             new MockBean(), root, new String[] {"nonExistantProperty"});
         
-        logger_.debug("\n" + XOMUtil.toXML(root));
+        logger_.debug(StringUtil.banner(XOMUtil.toXML(root)));
+        assertEquals(0, root.getAttributeCount());
+    }
+
+    
+    /**
+     * Tests writing for a property with a null value.
+     */
+    public void testWritePreferencesNullValue() throws Exception
+    {
+        logger_.info("Running testWritePreferencesNullValue..."); 
+        
+        Element root = new Element("root");
+        MockBean bean = new MockBean();
+        bean.setFlavor(null);
+        
+        PreferencedUtil.writePreferences(
+            bean, root, new String[] {MockBean.PROP_FLAVOR});
+        
+        logger_.debug(StringUtil.banner(XOMUtil.toXML(root)));
         assertEquals(0, root.getAttributeCount());
     }
 
     
     /**
      * Tests reading bean properties from an xml string.
-     * 
-     * @throws Exception on error.
      */
     public void testReadPreferences() throws Exception
     {
@@ -99,10 +115,7 @@ public class PreferencedUtilTest extends TestCase
         
         Element root = XOMUtil.toElement(xml);
         MockBean bean = new MockBean();
-        
-        PreferencedUtil.readPreferences(
-            bean, root, new String[] {"flavor", "acidity"});
-        
+        PreferencedUtil.readPreferences(bean, root, MockBean.PROPS);
         assertEquals(expectedFlavor, bean.getFlavor());
         assertEquals(expectedAcidity, bean.getAcidity());
     }
@@ -121,11 +134,10 @@ public class PreferencedUtilTest extends TestCase
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<root/>";
         
-        Element root = XOMUtil.toElement(xml);
-        MockBean bean = new MockBean();
-        
         PreferencedUtil.readPreferences(
-            bean, root, new String[] {"nonExistantProperty"});
+            new MockBean(), 
+            XOMUtil.toElement(xml), 
+            new String[] {"nonExistantProperty"});
         
         // No exception thrown == success
     }
@@ -137,8 +149,20 @@ public class PreferencedUtilTest extends TestCase
     /**
      * Simple class with two bean properties.
      */
-    public class MockBean
+    public static class MockBean
     {
+        //----------------------------------------------------------------------
+        // JavaBean Constants
+        //----------------------------------------------------------------------
+        
+        public static final String PROP_FLAVOR = "flavor";
+        public static final String PROP_ACIDITY = "acidity";
+        public static final String[] PROPS = {PROP_FLAVOR, PROP_ACIDITY};
+        
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
+        
         /**
          * Bean propery name = flavor.
          */
