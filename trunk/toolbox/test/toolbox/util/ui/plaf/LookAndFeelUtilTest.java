@@ -10,6 +10,8 @@ import javax.swing.JTable;
 
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.junit.testcase.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartButton;
@@ -26,6 +28,9 @@ import toolbox.util.ui.tree.JSmartTree;
  */
 public class LookAndFeelUtilTest extends UITestCase
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(LookAndFeelUtilTest.class);
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -63,6 +68,8 @@ public class LookAndFeelUtilTest extends UITestCase
      */
     public void testCreateThemesMenu()
     {
+        logger_.info("Running testCreateThemesMenu...");
+        
         SwingUtil.setDefaultAntiAlias(true);
         
         JMenuBar mb = new JMenuBar();
@@ -104,6 +111,8 @@ public class LookAndFeelUtilTest extends UITestCase
     
     public void testCreateThemesMenu2() throws Exception
     {
+        logger_.info("Running testCreateThemesMenu2...");
+        
         LAFInfo info = new LAFInfo();
         info.setAction(ActivateTinyLookAndFeelAction.class.getName());
         info.setClassName("de.muntjak.tinylookandfeel.TinyLookAndFeel");
@@ -151,5 +160,16 @@ public class LookAndFeelUtilTest extends UITestCase
             })));
         
         launchInDialog(p);
+    }
+    
+
+    /**
+     * Tests showUIProperties()
+     */
+    public void testShowUIProperties() throws Exception
+    {
+        logger_.info("Running testShowUIProperties...");
+        
+        LookAndFeelUtil.showUIProperties();
     }
 }
