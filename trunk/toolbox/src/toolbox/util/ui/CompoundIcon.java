@@ -128,7 +128,7 @@ public class CompoundIcon implements Icon
                 break;
             
             case SwingConstants.VERTICAL:
-                width = Math.max(icon1_.getIconWidth(), icon2_.getIconHeight());
+                width = Math.max(icon1_.getIconWidth(), icon2_.getIconWidth());
                 break;
         }
         
