@@ -15,6 +15,9 @@ import javax.swing.JPopupMenu;
  */
 public class JListPopupMenu extends JPopupMenu
 {
+    /**
+     * List that the popup menu is associated with
+     */
     private JList list_;
     
     //--------------------------------------------------------------------------
@@ -22,7 +25,7 @@ public class JListPopupMenu extends JPopupMenu
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for JListPopupMenu.
+     * Creates a JListPopupMenu
      * 
      * @param  list  JList to add popup to
      */
@@ -32,7 +35,7 @@ public class JListPopupMenu extends JPopupMenu
     }
 
     /**
-     * Constructor for JListPopupMenu.
+     * Creates a JListPopupMenu
      * 
      * @param label  Popupmenu label
      * @param list   JList to add popup to
@@ -45,7 +48,7 @@ public class JListPopupMenu extends JPopupMenu
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
@@ -59,15 +62,15 @@ public class JListPopupMenu extends JPopupMenu
     }
     
     //--------------------------------------------------------------------------
-    //  Action Inner Classes
+    // Actions
     //--------------------------------------------------------------------------
 
     /**
      * Copies the contents of the currently selected indices to the clipboard
      */    
-    protected class CopyAction extends AbstractAction
+    class CopyAction extends AbstractAction
     {
-        public CopyAction()
+        CopyAction()
         {
             super("Copy");
         }
@@ -95,9 +98,9 @@ public class JListPopupMenu extends JPopupMenu
     /**
      * Selects all items in the list box 
      */
-    protected class SelectAllAction extends AbstractAction
+    class SelectAllAction extends AbstractAction
     {
-        public SelectAllAction()
+        SelectAllAction()
         {
             super("Select All");
         }

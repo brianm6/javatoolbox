@@ -11,7 +11,9 @@ import javax.swing.JMenuItem;
  */
 public class JConveyorMenu extends JMenu
 {
-    /** Max capacity of the menu */
+    /** 
+     * Max number of items that can be displayed by the menu 
+     */
     private int capacity_;
     
     //--------------------------------------------------------------------------

@@ -13,7 +13,9 @@ import toolbox.util.Assert;
  */
 public class JConveyorPopupMenu extends JPopupMenu
 {
-    /** Max capacity of the menu */
+    /** 
+     * Max number of items that can be displayed by the popup menu
+     */
     private int capacity_;
     
     //--------------------------------------------------------------------------
