@@ -7,11 +7,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
+import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import org.apache.log4j.Category;
@@ -33,12 +37,14 @@ public class JTail extends JFrame
     
     private JDesktopPane desktop_;
     private FileSelectionWindow fileExplorerWindow_;
+    private FileSelectionPane fileSelectionPane_;
     private JTabbedPane tabbedPane_;
     private Properties props_;
+    private Map tailPaneMap_ = new HashMap();
     
     static
     {
-        FileStuffer stuffer = new FileStuffer(new File("c:\\crap.txt"), 1000);
+        FileStuffer stuffer = new FileStuffer(new File("c:\\crap.txt"), 100);
         stuffer.start();
     }
       
@@ -50,7 +56,7 @@ public class JTail extends JFrame
     {
         JTail jtail = new JTail();
         jtail.setVisible(true);
-        SwingUtil.tile(jtail.getDesktop());
+        //SwingUtil.tile(jtail.getDesktop());
     }
 
 
@@ -82,7 +88,7 @@ public class JTail extends JFrame
     {
         try
         {
-            build();
+            build2();
             addListeners();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
             loadProperties();
@@ -124,6 +130,23 @@ public class JTail extends JFrame
         tabbedWindow.setLocation(1,1);
         tabbedWindow.setSize(200,200);
     }
+
+
+    /**
+     * Builds the GUI
+     */
+    protected void build2()
+    {
+        getContentPane().setLayout(new BorderLayout());
+        
+        fileSelectionPane_ = new FileSelectionPane();
+        tabbedPane_ = new JTabbedPane();
+
+        JSplitPane rootSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+            fileSelectionPane_, tabbedPane_);                
+
+        getContentPane().add(BorderLayout.CENTER, rootSplitPane);
+    }
     
     
     /**
@@ -136,6 +159,15 @@ public class JTail extends JFrame
         try
         {
             TailPane tailPane = new TailPane(file);
+            
+            JButton closeButton = tailPane.getCloseButton();
+            
+            // Create map of (closeButton, tailPane) so that the tail pane
+            // can be reassociated if it needs to be removed from the
+            // tabbed pane
+            tailPaneMap_.put(closeButton, tailPane);
+            
+            closeButton.addActionListener(new CloseButtonListener());
             tabbedPane_.addTab(file.getName(), tailPane);
             tabbedPane_.setSelectedComponent(tailPane);
         }
@@ -202,13 +234,22 @@ public class JTail extends JFrame
      */
     protected void addListeners()
     {
-        fileExplorerWindow_.getFileSelectionPane().getFileExplorer().
+//        fileExplorerWindow_.getFileSelectionPane().getFileExplorer().
+//            addJFileExplorerListener(new FileSelectionListener());
+//            
+//        fileExplorerWindow_.getFileSelectionPane().getTailButton().
+//            addActionListener(new TailButtonListener());
+            
+        fileSelectionPane_.getFileExplorer().
             addJFileExplorerListener(new FileSelectionListener());
             
-        fileExplorerWindow_.getFileSelectionPane().getTailButton().
+        fileSelectionPane_.getTailButton().
             addActionListener(new TailButtonListener());
+            
     }
-
+    
+    
+    
 
     /**
      * Listener for the file explorer
@@ -239,8 +280,36 @@ public class JTail extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            tailFile(new File(fileExplorerWindow_.getFileSelectionPane().
-                getFileExplorer().getFilePath()));
+//            tailFile(new File(fileExplorerWindow_.getFileSelectionPane().
+//                getFileExplorer().getFilePath()));
+                
+            tailFile(new File(
+                fileSelectionPane_.getFileExplorer().getFilePath()));
+                
         }
     }
+    
+    
+    /**
+     * Tail button listener
+     */
+    class CloseButtonListener implements ActionListener
+    {
+        /**
+         * Close button on TailPane clicked
+         * 
+         * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            TailPane pane = (TailPane)tailPaneMap_.get(e.getSource());
+            
+            if (e != null)
+            {
+                tabbedPane_.remove(pane);        
+            }                
+        }
+    }
+    
+    
 }
