@@ -87,7 +87,34 @@
       <properties/>
     </dependency>
     -->
-      
+
+    <!--======================= UNIT BEGIN ==================================-->
+    <!-- xml-apis has to come before saxon because they both have difference -->
+    <!-- versions of org.w3c.dom apis                                        --> 
+    
+    <!--
+    <dependency>
+      <id>xml-apis</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+    -->
+    
+    <!--
+    <dependency>
+      <id>saxon</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+    --> 
+    
+    <!--======================= UNIT END ====================================-->
+    
+    
     <dependency>
       <id>3dlf</id>
       <version/>
@@ -519,14 +546,6 @@
     </dependency>
     
     <dependency>
-      <id>saxon</id>
-      <version/>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-      </properties>
-    </dependency>
-
-    <dependency>
       <id>skinlf</id>
       <version/>
       <properties>
@@ -587,14 +606,6 @@
       <id>xep</id>
       <version/>
       <url>http://www.renderx.com</url>
-      <properties>
-        <jnlp.jar>true</jnlp.jar>
-      </properties>
-    </dependency>
-
-    <dependency>
-      <id>xml-apis</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -714,21 +725,20 @@
     
   <reports>     
 
+    <report>maven-junit-report-plugin</report>
     <report>maven-changes-plugin</report>          
     <report>maven-developer-activity-plugin</report>
     <report>maven-file-activity-plugin</report>
     <report>maven-jdepend-plugin</report>
-    
     <report>maven-jxr-plugin</report>
     <report>maven-checkstyle-plugin</report>
-    <report>maven-junit-report-plugin</report>
-    <report>maven-clover-plugin</report>
     <report>maven-javadoc-plugin</report>
     <report>maven-changelog-plugin</report>
+    <report>maven-statcvs-plugin</report>
+    <report>maven-clover-plugin</report>
           
     <!--
     <report>maven-pmd-plugin</report>
-    <report>maven-statcvs-plugin</report>
     <report>maven-license-plugin</report>
     ======================================
     Uses vdoclet to find tags so will only
