@@ -3,6 +3,7 @@ package toolbox.util.ui.flippane;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.StringReader;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,9 +12,13 @@ import javax.swing.SwingConstants;
 
 import junit.textui.TestRunner;
 
+import nu.xom.Builder;
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import toolbox.junit.testcase.UITestCase;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
@@ -69,6 +74,52 @@ public class JFlipPaneTest extends UITestCase
         launchInDialog(p, UITestCase.SCREEN_TWO_THIRDS);
     }
 
+    
+    /**
+     * Tests savePrefs() and applyPrefs().
+     * 
+     * @throws Exception on error.
+     */
+    public void testSaveApplyPrefs() throws Exception
+    {
+        logger_.info("Running testSaveApplyPrefs...");
+        
+        JFlipPane before = new JFlipPane(JFlipPane.LEFT);
+        before.addFlipper("1", new JSmartLabel("Flipper1"));
+        before.addFlipper("2", new JSmartLabel("Flipper2"));
+        before.addFlipper("3", new JSmartLabel("Flipper3"));
+        before.setCollapsed(false);
+        before.setDimension(200);
+        before.setActiveFlipper("1");
+        
+        //
+        // Serialize to XML
+        //
+        Element root = new Element("root");
+        before.savePrefs(root);
+        String xml = XOMUtil.toXML(root);
+        logger_.info("\n" + xml);
+        
+        // 
+        // Hydrate from XML
+        //
+        JFlipPane after = new JFlipPane(JFlipPane.LEFT);
+        after.addFlipper("1", new JSmartLabel("Flipper1"));
+        after.addFlipper("2", new JSmartLabel("Flipper2"));
+        after.addFlipper("3", new JSmartLabel("Flipper3"));
+        
+        after.applyPrefs(new Builder().build(
+            new StringReader(xml)).getRootElement());
+        
+        
+        //
+        // Compare the "after" properties to the "before" ones
+        //
+        assertEquals(before.isCollapsed(), after.isCollapsed());
+        assertEquals(before.getDimension(), after.getDimension());
+        assertEquals(before.getActiveFlipper(), after.getActiveFlipper());
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
