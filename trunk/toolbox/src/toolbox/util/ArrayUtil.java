@@ -244,4 +244,21 @@ public class ArrayUtil
                 
         return -1;
     }
+    
+    
+    /**
+     * Determines if an array of objects contains an object
+     * 
+     * @param   array   Array of objects to search
+     * @param   obj     Object to search for
+     * @return  True if the object is found in the array, false otherwise
+     */
+    public static boolean contains(Object[] array, Object obj)
+    {
+        if (indexOf(array, obj) == -1)
+            return false;
+        else
+            return true;    
+    }
+    
 }
