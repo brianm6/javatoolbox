@@ -3,21 +3,16 @@ package toolbox.plugin.pdf;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-
-import com.adobe.acrobat.Viewer;
 
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
@@ -67,20 +62,16 @@ public class PDFPlugin extends JPanel implements IPlugin
      */
     private JPanel outputPanel_;
     
-    /** 
-     * Embedded PDF viewer component 
-     */
-    private Viewer viewer_;    
-
+    /**
+     * Document viewer
+     */    
+    private DocumentViewer viewer_;
+    
     /** 
      * File explorer used to open XML files 
      */
     private JFileExplorer explorer_;
 
-    /** 
-     * Full Path to acrobat reader executable 
-     */
-    private String pdfViewerPath_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -125,7 +116,17 @@ public class PDFPlugin extends JPanel implements IPlugin
      */
     protected void viewPDFEmbedded(File file) throws Exception
     {
-        viewPDFEmbedded(new FileInputStream(file));
+        //viewPDFEmbedded(new FileInputStream(file));
+        
+        if (viewer_ == null)
+        {
+            //viewer_ = new MultivalentViewer();
+            viewer_ = new AcrobatViewer();
+            viewer_.startup(null);
+            outputPanel_.add(BorderLayout.CENTER, viewer_.getComponent());
+        }
+
+        viewer_.view(file);
     }
 
     /**
@@ -134,19 +135,10 @@ public class PDFPlugin extends JPanel implements IPlugin
      * @param inputStream Stream to read PDF bytes from
      * @throws Exception on error
      */
-    private void viewPDFEmbedded(InputStream inputStream) throws Exception
-    {
-        if (viewer_ == null)
-        {
-            viewer_ = new Viewer();
-            outputPanel_.add(BorderLayout.CENTER, viewer_);
-            viewer_.activate();
-        }
-        
-        viewer_.setDocumentInputStream(inputStream);        
-        
-        viewer_.execMenuItem("FitVisibleWidth");
-    }
+//    private void viewPDFEmbedded(InputStream inputStream) throws Exception
+//    {
+//        
+//    }
 
     //--------------------------------------------------------------------------
     // IPlugin Interface
@@ -193,7 +185,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     public void shutdown()
     {
         if (viewer_ != null)
-            viewer_.deactivate();
+            viewer_.shutdown();
     }    
 
     //--------------------------------------------------------------------------
@@ -211,9 +203,6 @@ public class PDFPlugin extends JPanel implements IPlugin
         
         explorer_.applyPrefs(root);
         flipPane_.applyPrefs(root);
-            
-        pdfViewerPath_ = XOMUtil.getString(
-            root.getFirstChildElement(NODE_PDF_VIEWER), null);
     }
 
     /**
@@ -222,17 +211,8 @@ public class PDFPlugin extends JPanel implements IPlugin
     public void savePrefs(Element prefs)
     {
         Element root = new Element(NODE_PDF_PLUGIN);
-        
         explorer_.savePrefs(root);
         flipPane_.savePrefs(root);
-        
-        if (!StringUtil.isNullOrEmpty(pdfViewerPath_))
-        {
-            Element pdf = new Element(NODE_PDF_VIEWER);
-            pdf.appendChild(pdfViewerPath_);
-            root.appendChild(pdf);
-        }
-        
         XOMUtil.insertOrReplace(prefs, root);
     }
 
