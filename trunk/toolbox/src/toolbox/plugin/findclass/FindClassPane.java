@@ -81,8 +81,16 @@ public class JFindClass extends JFrame implements IPreferenced
      * TODO: Update tablecell renderer to highlight the matching substring
      */
 
-    private static final Logger logger_ = 
-        Logger.getLogger(JFindClass.class);
+    private static final Logger logger_ = Logger.getLogger(JFindClass.class);
+
+    /** Prefix tacked onto the beginning of all properties assoc w/ JTail */
+    private static final String PROP_PREFIX = "jfindclass.plugin";
+
+    private static final int COL_NUM       = 0;
+    private static final int COL_SOURCE    = 1;
+    private static final int COL_CLASS     = 2;
+    private static final int COL_SIZE      = 3;
+    private static final int COL_TIMESTAMP = 4;
 
     // Search    
     private JTextField           searchField_;
@@ -123,14 +131,6 @@ public class JFindClass extends JFrame implements IPreferenced
         "Timestamp"
     };
 
-    private static final int COL_NUM       = 0;
-    private static final int COL_SOURCE    = 1;
-    private static final int COL_CLASS     = 2;
-    private static final int COL_SIZE      = 3;
-    private static final int COL_TIMESTAMP = 4;
-
-    /** Prefix tacked onto the beginning of all properties assoc w/ JTail */
-    private static final String PROP_PREFIX = "jfindclass.plugin";
     
     //--------------------------------------------------------------------------
     // Main
@@ -234,16 +234,16 @@ public class JFindClass extends JFrame implements IPreferenced
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        // Search bar
-        buildSearchPanel();
+        // Search bar - north
+        //buildSearchPanel();
         
-        // Top flip pane (classpath & decompiler)
+        // Top flip pane (classpath & decompiler) - center - north
         buildTopFlipPane();
         
-        // SearchResults
+        // SearchResults - center - center
         buildSearchResultsPanel();
         
-        // Left flip pane with file explorer
+        // Left flip pane with file explorer - west
         buildLeftFlipPane();
 
         // Post tweaks
@@ -255,7 +255,7 @@ public class JFindClass extends JFrame implements IPreferenced
      * Allows the user to enter a regular expression into the search field
      * and initiate a search.
      */    
-    protected void buildSearchPanel()
+    protected JPanel buildSearchPanel()
     {
         // Search Panel
         
@@ -282,7 +282,8 @@ public class JFindClass extends JFrame implements IPreferenced
         searchPanel.add(ignoreCaseCheckBox_);
         searchPanel.add(showPathCheckBox_);
         
-        getContentPane().add(searchPanel, BorderLayout.NORTH);
+        return searchPanel;
+        //getContentPane().add(searchPanel, BorderLayout.NORTH);
     }
 
     /**
@@ -378,8 +379,12 @@ public class JFindClass extends JFrame implements IPreferenced
         resultPanel.add(resultLabel, BorderLayout.NORTH);
         resultPanel.add(resultPane_, BorderLayout.CENTER);
         
+        JPanel glue = new JPanel(new BorderLayout());
+        glue.add(BorderLayout.NORTH, buildSearchPanel());
+        glue.add(BorderLayout.SOUTH, buildTopFlipPane());
+
         JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.add(BorderLayout.NORTH, buildTopFlipPane());
+        centerPanel.add(BorderLayout.NORTH, glue);
         centerPanel.add(BorderLayout.CENTER, resultPanel);
         
         getContentPane().add(BorderLayout.CENTER, centerPanel);
