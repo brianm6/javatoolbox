@@ -6,6 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -44,9 +45,7 @@ import toolbox.util.StringUtil;
  * 
  * @author Steven Lee
  */
-public class ObjectMap
-    extends AbstractMap
-    implements java.io.Serializable, Cloneable
+public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 {
     private static Map CACHED_PDS =
         Collections.synchronizedMap(new WeakHashMap(100));
@@ -56,7 +55,8 @@ public class ObjectMap
 
     private static final Set NUMBER_CLASSES = new HashSet();
 
-    static {
+    static 
+    {
         NUMBER_CLASSES.add(Byte.class);
         NUMBER_CLASSES.add(Byte.TYPE);
         NUMBER_CLASSES.add(Short.class);
@@ -71,12 +71,14 @@ public class ObjectMap
         NUMBER_CLASSES.add(Double.TYPE);
     }
 
-    protected Object bean;
-    protected transient WeakReference wBean;
-    protected transient ObjectEntrySet entrySet;
-    protected boolean silent;
+    protected Object bean_;
+    protected transient WeakReference wBean_;
+    protected transient ObjectEntrySet entrySet_;
+    protected boolean silent_;
 
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Constructs a Map which wraps a <tt>bean</tt>.  If an exception
@@ -84,7 +86,8 @@ public class ObjectMap
      * be thrown by most of the <tt>Map</tt> methods.  The <tt>bean</tt>
      * is held onto by a strong reference.
      * 
-     * @param bean the object to convert to a <tt>Map</tt>.
+     * @param   bean  Object to convert to a <tt>Map</tt>.
+     * @throws  IntrospectionException
      */
     public ObjectMap(Object bean) throws IntrospectionException
     {
@@ -97,10 +100,11 @@ public class ObjectMap
      * be thrown by most of the <tt>Map</tt> methods when silent is false.  
      * The <tt>bean</tt> is held onto by a strong reference.
      * 
-     * @param bean the object to convert to a <tt>Map</tt>.
-     * @param silent true - exceptions thrown by bean are ignored<br>
-     *               false - MapInvocationTargetException will be thrown
-     *                       if the bean throws an exception
+     * @param   bean    Object to convert to a <tt>Map</tt>.
+     * @param   silent  true  - exceptions thrown by bean are ignored<br>
+     *                  false - MapInvocationTargetException will be thrown
+     *                          if the bean throws an exception
+     * @throws  IntrospectionException
      */
     public ObjectMap(Object bean, boolean silent) throws IntrospectionException
     {
@@ -120,26 +124,30 @@ public class ObjectMap
      *                       if the bean throws an exception
      * @param useWeakRef true - holds onto the bean using a WeakReference
      * 					 false - holds onto the bean using a strong reference
+     * @throws IntrospectionException
      */
     public ObjectMap(Object bean, boolean silent, boolean useWeakRef)
         throws IntrospectionException
     {
         if (useWeakRef)
-            this.wBean = new WeakReference(bean);
+            wBean_ = new WeakReference(bean);
         else
-            this.bean = bean;
+            bean_ = bean;
 
-        this.silent = silent;
-        this.entrySet = new ObjectEntrySet();
+        silent_ = silent;
+        entrySet_ = new ObjectEntrySet();
     }
 
-    public Object getBean()
-    {
-        return isBeanReferenceWeak() ? wBean.get() : bean;
-    }
+    //--------------------------------------------------------------------------
+    // Map Methods
+    //--------------------------------------------------------------------------
 
-    // MAP METHODS 
-
+    /**
+     * Checks if a key is in the map
+     * 
+     * @return True if map containts key, false otherwise
+     * @throws MapInvocationTargetException
+     */
     public boolean containsKey(Object key) throws MapInvocationTargetException
     {
         if (key != null)
@@ -174,6 +182,13 @@ public class ObjectMap
         return super.containsKey(key);
     }
 
+    /**
+     * Retrieves an object given its key
+     * 
+     * @param  key  Key to find object for
+     * @return Object for the given key
+     * @throws MapInvocationTargetException
+     */
     public Object get(Object key) throws MapInvocationTargetException
     {
         if (key != null)
@@ -203,15 +218,17 @@ public class ObjectMap
     }
 
     /**
+     * Puts an key, value pair in the map
+     * 
+     * @return Inserted value
      * @throws UnsupportedOperationException if a set method is not found
-     * @throws MapInvocationTargetException if an exception is thrown while calling the method
+     * @throws MapInvocationTargetException if an exception is thrown while 
+     *         calling the method
      * @throws IllegalArgumentException if the property is not found
      */
-    public Object put(Object key, Object value)
-        throws
-            UnsupportedOperationException,
-            IllegalArgumentException,
-            MapInvocationTargetException
+    public Object put(Object key, Object value) throws
+        UnsupportedOperationException, IllegalArgumentException,
+        MapInvocationTargetException
     {
         String str = (String) key.toString();
         int index = str.lastIndexOf('.');
@@ -232,7 +249,7 @@ public class ObjectMap
         }
         else
         {
-            for (Iterator i = entrySet.iterator(); i.hasNext();)
+            for (Iterator i = entrySet_.iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
 
@@ -248,13 +265,31 @@ public class ObjectMap
         }
     }
 
+    /**
+     * @return  Entryset
+     */
     public Set entrySet()
     {
-        return entrySet;
+        return entrySet_;
     }
 
-    // STANDARD METHODS
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
+    /**
+     * @return  Bean
+     */    
+    public Object getBean()
+    {
+        return isBeanReferenceWeak() ? wBean_.get() : bean_;
+    }
+
+    /**
+     * Converts map into a string
+     *
+     * @return  String
+     */
     public String toString()
     {
         int max = size() - 1;
@@ -295,6 +330,15 @@ public class ObjectMap
         return buf.toString();
     }
 
+    //--------------------------------------------------------------------------
+    // Cloneable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a clone
+     * 
+     * @return Cloned object
+     */
     public Object clone()
     {
         try
@@ -307,22 +351,27 @@ public class ObjectMap
         }
     }
 
-    // SERIALIZABLE METHODS
+    //--------------------------------------------------------------------------
+    // Serializable Interface
+    //--------------------------------------------------------------------------
 
     /**
      * After Serialization the ObjectMap will not use WeakReferences
      * if previously used.
+     * 
+     * @param  s  Stream to write serialzed form
+     * @throws IOException
      */
     private void writeObject(ObjectOutputStream s) throws IOException
     {
-        WeakReference wBeanSave = wBean;
+        WeakReference wBeanSave = wBean_;
         boolean useWeak = (wBeanSave != null);
 
         // Setup ObjectMap to not use WeakReferences
         if (useWeak)
         {
-            this.wBean = null;
-            this.bean = wBeanSave.get();
+            wBean_ = null;
+            bean_ = wBeanSave.get();
         }
 
         s.defaultWriteObject();
@@ -330,13 +379,17 @@ public class ObjectMap
         // Reset Object Back
         if (useWeak)
         {
-            this.wBean = wBeanSave;
-            this.bean = null;
+            wBean_ = wBeanSave;
+            bean_ = null;
         }
     }
 
     /**
      * Reads in the ObjectMap
+     * 
+     * @param  s  Stream to read serialized objects from
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
     private void readObject(ObjectInputStream s)
         throws IOException, ClassNotFoundException
@@ -346,7 +399,7 @@ public class ObjectMap
         // transient fields
         try
         {
-            this.entrySet = new ObjectEntrySet();
+            entrySet_ = new ObjectEntrySet();
         }
         catch (IntrospectionException e)
         {
@@ -354,16 +407,18 @@ public class ObjectMap
         }
     }
 
-    // HELPER METHODS
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
 
     protected boolean isSilent()
     {
-        return silent;
+        return silent_;
     }
 
     protected boolean isBeanReferenceWeak()
     {
-        return wBean != null;
+        return wBean_ != null;
     }
 
     protected Map asMap(Object object)
@@ -371,171 +426,9 @@ public class ObjectMap
         return AsMap.of(object);
     }
 
-    //////////////////////////////////////////////////////////
-    // OBJECTENTRYSET
-
-    class ObjectEntrySet extends AbstractSet
-    {
-        protected PropertyDescriptor[] pds;
-        protected MapEntry[] mapEntries;
-
-        public ObjectEntrySet() throws IntrospectionException
-        {
-            this.pds = getPropertyDescriptors(getBean().getClass());
-            this.mapEntries = new MapEntry[pds.length];
-
-            for (int i = 0; i < pds.length; i++)
-                this.mapEntries[i] = new MapEntry(i);
-        }
-
-        public int size()
-        {
-            return pds.length;
-        }
-
-        public Iterator iterator()
-        {
-            return new EntryIterator();
-        }
-
-        class EntryIterator implements Iterator
-        {
-            int i = 0;
-
-            public boolean hasNext()
-            {
-                return i < pds.length;
-            }
-
-            public Object next()
-            {
-                return mapEntries[i++];
-            }
-
-            public void remove()
-            {
-                throw new UnsupportedOperationException();
-            }
-
-        }
-
-        class MapEntry implements java.util.Map.Entry
-        {
-            int index;
-
-            public MapEntry(int index)
-            {
-                this.index = index;
-            }
-
-            // MAPENTRY METHODS
-
-            public Object getKey()
-            {
-                return pds[index].getName();
-            }
-
-            /**
-             * @throws MapInvocationTargetException if an exception is thrown while calling the method
-             */
-            public Object getValue() throws MapInvocationTargetException
-            {
-                try
-                {
-                    Method getMethod = pds[index].getReadMethod();
-                    if (getMethod == null)
-                        throw new UnsupportedOperationException(
-                            "get method for '"
-                                + pds[index].getName()
-                                + "' not found");
-
-                    return getMethod.invoke(getBean(), null);
-                }
-                catch (RuntimeException e)
-                {
-                    throw (RuntimeException) e;
-                }
-                catch (InvocationTargetException e)
-                {
-                    throw new MapInvocationTargetException(
-                        e.getTargetException(),
-                        "Error while getting property: "
-                            + pds[index].getName());
-                }
-                catch (Exception e)
-                {
-                    throw new MapInvocationTargetException(
-                        e,
-                        "Error while getting property: "
-                            + pds[index].getName());
-                }
-            }
-
-            public int hashCode()
-            {
-                return getKey().hashCode();
-            }
-
-            /**
-             * @throws UnsupportedOperationException if a set method is not found
-             * @throws MapInvocationTargetException if an exception is thrown while calling the method
-             */
-            public Object setValue(Object value)
-                throws MapInvocationTargetException, UnsupportedOperationException
-            {
-                Method setMethod = pds[index].getWriteMethod();
-
-                if (setMethod == null)
-                    throw new UnsupportedOperationException(
-                        "set method for '"
-                            + pds[index].getName()
-                            + "' not found");
-
-                try
-                {
-                    Class parmType = setMethod.getParameterTypes()[0];
-
-                    if (value == null)
-                    {
-                        value = convertString(null, parmType);
-                    }
-                    else if (!parmType.isAssignableFrom(value.getClass()))
-                    {
-                        if (value instanceof Number
-                            && isNumberConvertable(parmType))
-                            value = convertNumber((Number) value, parmType);
-                        else
-                            value = convertString(value.toString(), parmType);
-                    }
-
-                    setMethod.invoke(getBean(), new Object[] { value });
-                }
-                catch (RuntimeException e)
-                {
-                    throw (RuntimeException) e;
-                }
-                catch (InvocationTargetException e)
-                {
-                    throw new MapInvocationTargetException(
-                        e.getTargetException(),
-                        "Error while setting property: "
-                            + pds[index].getName());
-                }
-                catch (Exception e)
-                {
-                    throw new MapInvocationTargetException(
-                        e,
-                        "Error while setting property: "
-                            + pds[index].getName());
-                }
-
-                return null;
-            }
-        }
-
-    }
-
-    // HELPER STATIC MEHTODS
+    //--------------------------------------------------------------------------
+    // Static Methods
+    //--------------------------------------------------------------------------
 
     protected static boolean isNumberConvertable(Class t)
     {
@@ -653,4 +546,170 @@ public class ObjectMap
         return pds;
     }
 
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    class ObjectEntrySet extends AbstractSet
+    {
+        protected PropertyDescriptor[] pds;
+        protected MapEntry[] mapEntries;
+
+        public ObjectEntrySet() throws IntrospectionException
+        {
+            pds = getPropertyDescriptors(getBean().getClass());
+            mapEntries = new MapEntry[pds.length];
+
+            for (int i = 0; i < pds.length; i++)
+                mapEntries[i] = new MapEntry(i);
+        }
+
+        public int size()
+        {
+            return pds.length;
+        }
+
+        public Iterator iterator()
+        {
+            return new EntryIterator();
+        }
+
+        class EntryIterator implements Iterator
+        {
+            int i = 0;
+
+            public boolean hasNext()
+            {
+                return i < pds.length;
+            }
+
+            public Object next()
+            {
+                return mapEntries[i++];
+            }
+
+            public void remove()
+            {
+                throw new UnsupportedOperationException();
+            }
+
+        }
+
+        class MapEntry implements java.util.Map.Entry
+        {
+            int index;
+
+            public MapEntry(int newIndex)
+            {
+                index = newIndex;
+            }
+
+            // MAPENTRY METHODS
+
+            public Object getKey()
+            {
+                return pds[index].getName();
+            }
+
+            /**
+             * @throws MapInvocationTargetException if an exception is thrown 
+             *         while calling the method
+             */
+            public Object getValue() throws MapInvocationTargetException
+            {
+                try
+                {
+                    Method getMethod = pds[index].getReadMethod();
+                    if (getMethod == null)
+                        throw new UnsupportedOperationException(
+                            "get method for '"
+                                + pds[index].getName()
+                                + "' not found");
+
+                    return getMethod.invoke(getBean(), null);
+                }
+                catch (RuntimeException e)
+                {
+                    throw (RuntimeException) e;
+                }
+                catch (InvocationTargetException e)
+                {
+                    throw new MapInvocationTargetException(
+                        e.getTargetException(),
+                        "Error while getting property: "
+                            + pds[index].getName());
+                }
+                catch (Exception e)
+                {
+                    throw new MapInvocationTargetException(
+                        e,
+                        "Error while getting property: "
+                            + pds[index].getName());
+                }
+            }
+
+            public int hashCode()
+            {
+                return getKey().hashCode();
+            }
+
+            /**
+             * @throws UnsupportedOperationException if a set method is not found
+             * @throws MapInvocationTargetException if an exception is thrown 
+             *         while calling the method
+             */
+            public Object setValue(Object value)
+                throws MapInvocationTargetException, UnsupportedOperationException
+            {
+                Method setMethod = pds[index].getWriteMethod();
+
+                if (setMethod == null)
+                    throw new UnsupportedOperationException(
+                        "set method for '"
+                            + pds[index].getName()
+                            + "' not found");
+
+                try
+                {
+                    Class parmType = setMethod.getParameterTypes()[0];
+
+                    if (value == null)
+                    {
+                        value = convertString(null, parmType);
+                    }
+                    else if (!parmType.isAssignableFrom(value.getClass()))
+                    {
+                        if (value instanceof Number
+                            && isNumberConvertable(parmType))
+                            value = convertNumber((Number) value, parmType);
+                        else
+                            value = convertString(value.toString(), parmType);
+                    }
+
+                    setMethod.invoke(getBean(), new Object[] { value });
+                }
+                catch (RuntimeException e)
+                {
+                    throw (RuntimeException) e;
+                }
+                catch (InvocationTargetException e)
+                {
+                    throw new MapInvocationTargetException(
+                        e.getTargetException(),
+                        "Error while setting property: "
+                            + pds[index].getName());
+                }
+                catch (Exception e)
+                {
+                    throw new MapInvocationTargetException(
+                        e,
+                        "Error while setting property: "
+                            + pds[index].getName());
+                }
+
+                return null;
+            }
+        }
+
+    }
 }
