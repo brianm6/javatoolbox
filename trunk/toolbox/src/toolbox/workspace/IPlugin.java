@@ -9,6 +9,10 @@ import javax.swing.JMenuBar;
  * GUI component plugin interface for the PluginWorkspace
  * 
  * @see PluginWorkspace
+ * 
+ * <pre>
+ * TODO: Add getDescription()
+ * </pre>
  */
 public interface IPlugin
 {
