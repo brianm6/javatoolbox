@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 import toolbox.util.dump.Dumper;
 
@@ -14,6 +15,11 @@ import toolbox.util.dump.Dumper;
  */
 public class DumperTest extends TestCase
 {
+
+    private static final Logger logger_ = 
+        Logger.getLogger(DumperTest.class);
+                
+
     /**
      * Entrypoint
      * 
@@ -62,7 +68,8 @@ public class DumperTest extends TestCase
      */
     public void testDumpEmptyObject()
     {
-        System.out.println(Dumper.dump(new EmptyClass()));
+        logger_.info("Running testDumpEmptyObject...");
+        logger_.info("\n\n" + Dumper.dump(new EmptyClass()));
     }
 
     /**
@@ -70,16 +77,17 @@ public class DumperTest extends TestCase
      */
     public void testDumpSimpleObject()
     {
-        System.out.println(Dumper.dump(new Address()));
+        logger_.info("Running testDumpSimpleObject...");
+        logger_.info("\n\n" + Dumper.dump(new Address()));
     }
-
 
     /**
      * Tests object dumper for a simple test case
      */
     public void testDumpNestedObject()
     {
-        System.out.println(Dumper.dump(new Employee()));            
+        logger_.info("Running testDumpNestedObject...");
+        logger_.info("\n\n" + Dumper.dump(new Employee()));            
     }
     
     /**
@@ -87,7 +95,8 @@ public class DumperTest extends TestCase
      */
     public void testDumpJFrame()
     {
-        System.out.println(Dumper.dump(new JFrame()));
+        logger_.info("Running testDumpJFrame...");
+        logger_.info("\n\n" + Dumper.dump(new JFrame()));
     }
     
     /**
@@ -95,7 +104,17 @@ public class DumperTest extends TestCase
      */
     public void testDumpMultipleReferences()
     {
-        System.out.println(Dumper.dump(new MultipleReferences()));        
+        logger_.info("Running testDumpMultipleReferences...");
+        logger_.info("\n\n" + Dumper.dump(new MultipleReferences()));        
+    }
+    
+    /** 
+     * Tests dump of object with a constraining maxDepth
+     */
+    public void testDumpMaxDepth()
+    { 
+        logger_.info("Running testDumpMaxDepth...");
+        logger_.info("\n\n" + Dumper.dump(new Employee(), 3));        
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -143,14 +162,21 @@ public class DumperTest extends TestCase
         String city_;
         String state_;
         String zipCode_;
-        
+        Country country_;
+                
         public Address()
         {
             street_ = "1010 Main St";
             city_ = "Dallas";
             state_ = "TX";
             zipCode_ = "76123";
+            country_ = new Country();
         }
+    }
+
+    public class Country
+    {
+        String country_ = "USA";
     }
     
     public class Status
