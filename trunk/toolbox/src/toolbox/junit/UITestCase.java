@@ -33,7 +33,13 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
- * Base class UITestCase.
+ * Test case that is a base class for tests associated with some manual user
+ * interface sequence of events. UITestCase is a 'marker' class used by
+ * {@link CloverTestSuite} to exclude unit tests not suitable for unattended
+ * execution.
+ * 
+ * @see CloverTestSuite
+ * @see CloverTestFilter
  */
 public class UITestCase extends TestCase
 {
