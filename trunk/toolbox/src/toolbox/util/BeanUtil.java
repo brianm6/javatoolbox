@@ -13,6 +13,24 @@ public class BeanUtil
 {
     /**
      * Dumps the properties names and values of a bean into a string.
+     * <p>
+     * <b>Example:</b>
+     * <pre class="snippet">
+     * System.out.println(BeanUtil.toString(new Socket()));
+     * </pre>
+     * 
+     * <b>Output:</b>
+     * <pre class="snippet">
+     * OOBInline = false
+     * bound = false
+     * channel = [empty]
+     * class = class java.net.Socket
+     * closed = false
+     * connected = false
+     * inetAddress = [empty]
+     * inputShutdown = false
+     * inputStream = 
+     * </pre>
      * 
      * @param bean JavaBean to be introspected.
      * @return String dump of the property names and values.
