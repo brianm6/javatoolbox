@@ -13,7 +13,7 @@ public interface Service
 	 * 
 	 * @throws ServiceException if the service encounters problems starting up.
 	 */
-    public void start() throws ServiceException;
+    void start() throws ServiceException;
     
     
     /**
@@ -21,7 +21,7 @@ public interface Service
      * 
      * @throws ServiceException if the service encounters problems stopping.
      */
-    public void stop() throws ServiceException;
+    void stop() throws ServiceException;
     
     
     /**
@@ -30,7 +30,7 @@ public interface Service
      * 
      * @throws ServiceException if the service encounters problems pausing.
      */
-    public void pause() throws ServiceException;
+    void pause() throws ServiceException;
     
     
     /**
@@ -39,7 +39,7 @@ public interface Service
      *  
      * @throws ServiceException if the service encounters problems resuming.
      */
-    public void resume() throws ServiceException;
+    void resume() throws ServiceException;
     
     
     /**
@@ -47,7 +47,7 @@ public interface Service
      * 
      * @return boolean
      */
-    public boolean isRunning();
+    boolean isRunning();
     
     
     /**
@@ -55,7 +55,7 @@ public interface Service
      * 
      * @return boolean
      */
-    public boolean isPaused();
+    boolean isPaused();
     
     
     /**
@@ -63,5 +63,5 @@ public interface Service
      *  
      * @param listener Listener to add.
      */
-    public void addServiceListener(ServiceListener listener);
+    void addServiceListener(ServiceListener listener);
 }
