@@ -102,7 +102,7 @@
     </dependency>
     -->
     
-    <!--
+    <!-- 
     <dependency>
       <id>saxon</id>
       <version/>
@@ -459,7 +459,9 @@
     <dependency>
       <id>l2fprod-common</id>
       <version/>
-      <properties/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
     </dependency>
 
     <dependency>
