@@ -9,10 +9,12 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java2html.Java2Html;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
@@ -43,13 +45,12 @@ import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
-import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
-import de.java2html.JavaSource;
-import de.java2html.JavaSource2HTMLConverter;
-import de.java2html.JavaSourceConverter;
+//import de.java2html.JavaSource;
+//import de.java2html.JavaSource2HTMLConverter;
+//import de.java2html.JavaSourceConverter;
 
 /**
  * GUI for FindClass
@@ -591,49 +592,25 @@ public class JFindClass extends JFrame
                 try
                 {
                     decompiler.decompile(clazz, writer, null);
+                    
+                    // Nuke the tabs                
+                    String javaSource = StringUtil.replace(
+                        writer.getBuffer().toString(), "\t", "    ");
+                        
+                    System.out.println(javaSource);    
+                        
+                    StringReader javaReader = new StringReader(javaSource);
+                    StringWriter htmlWriter = new StringWriter();
+                    Java2Html converter = new Java2Html(javaReader, htmlWriter);
+                    
+                    sourceArea_.setText(htmlWriter.toString());
+                    sourceArea_.setCaretPosition(0);
                 }
                 catch(IOException ioe)
                 {
                     handleException(ioe, logger_);
                 }
 
-                // Nuke the tabs                
-                String java = StringUtil.replace(
-                    writer.getBuffer().toString(), "\t", "    ");
-                    
-//                sourceArea_.setText(java);
-//                sourceArea_.setCaretPosition(0);
-
-                int tabs = 4;
-        
-                //int target = chTarget.getSelectedIndex();
-        
-                // Collect statistical information
-                StringBuffer report = new StringBuffer();
-        
-                // Collect conversion-results
-                StringBuffer sb = new StringBuffer();
-        
-                // Create the converter
-                JavaSourceConverter converter = new JavaSource2HTMLConverter();
-        
-                sb.append(converter.getDocumentHeader());
-                sb.append(converter.getBlockSeparator());
-        
-                JavaSource source = new JavaSource(java, null, 4);
-                source.doParse();
-                converter.convert(source);
-                String block = converter.getResult();
-                sb.append(block);
-        
-                sb.append('\n');
-        
-                //report.append(source.getStatisticsString() + "\n");
-        
-                sb.append(converter.getDocumentFooter());
-                
-                sourceArea_.setText(sb.toString());
-                sourceArea_.setCaretPosition(0);
             }           
         }
         
