@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import toolbox.tree.Tree;
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
@@ -791,14 +792,53 @@ public class FileUtilTest extends TestCase
     /**
      * Tests removeDir()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRemoveDir() throws Exception
     {
-        //logger_.info("Running testRemoveDir...");
+        logger_.info("Running testRemoveDir...");
         
-        // TODO: write me
+        File root = FileUtil.createTempDir();
+        File current = root;
         
-        //assertTrue(true);
+        for (int i=0; i<10; i++)
+        {    
+            File newDir = new File(current, "dir-" + 
+                RandomUtil.nextString(10).toLowerCase());
+            
+            if (!newDir.mkdir())
+                break;
+            
+            FileUtil.setFileContents(
+                newDir.getAbsolutePath() + File.separator + "file-" + 
+                RandomUtil.nextInt(50),
+                RandomUtil.nextString(RandomUtil.nextInt(5000)).toLowerCase(), 
+                false);
+            
+            current = newDir;
+        }
+        
+        Tree before = new Tree(root, true, true);
+        before.showTree();
+        
+        FileUtil.removeDir(root);
+        
+        assertTrue(!root.exists());
+    }
+
+
+    /**
+     * Tests removeDir() failure cases.
+     * 
+     * @throws Exception on error.
+     */
+    public void testRemoveDirFailure() throws Exception
+    {
+        logger_.info("Running testRemoveDirFailure...");
+        
+        FileUtil.removeDir(null);
+
+        // TODO: Readonly files.
+        //       Files current in use/locked.
     }
 }
