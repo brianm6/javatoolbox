@@ -91,6 +91,7 @@ public class JTextComponentPopupMenu extends JPopupMenu
         add(new JMenuItem(new SetFontAction()));
         add(new JMenuItem(new FindAction(textComponent_)));
         add(new JMenuItem(new InsertFileAction(textComponent_)));
+        add(new JMenuItem(new SaveAsAction(textComponent_)));
         
         textComponent_.addMouseListener(new JPopupListener(this));
     }
@@ -287,4 +288,53 @@ public class JTextComponentPopupMenu extends JPopupMenu
             }
         }
     }
+    
+    /**
+     * Inserts the text of a file at the currnet cursor location
+     */
+    protected static class SaveAsAction extends AbstractAction
+    {
+        private static File lastDir_;
+        private JTextComponent jtc_;
+        
+        public SaveAsAction(JTextComponent jtc)
+        {
+            super("Save As..");
+            jtc_ = jtc;
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            try
+            {
+                JFileChooser chooser = null;
+                
+                if (lastDir_ == null)
+                    chooser = new JFileChooser();
+                else
+                    chooser = new JFileChooser(lastDir_);
+
+                if (chooser.showSaveDialog(jtc_) == 
+                    JFileChooser.APPROVE_OPTION) 
+                {
+                    String saveFile = 
+                        chooser.getSelectedFile().getCanonicalPath();
+                    
+                    logger_.debug("save file=" + saveFile);
+                    
+                    FileUtil.setFileContents(saveFile, jtc_.getText(), false);
+                }
+                
+                lastDir_ = chooser.getCurrentDirectory();
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                ExceptionUtil.handleUI(fnfe, logger_);
+            }
+            catch (IOException ioe)
+            {
+                ExceptionUtil.handleUI(ioe, logger_);
+            }
+        }
+    }    
 }
