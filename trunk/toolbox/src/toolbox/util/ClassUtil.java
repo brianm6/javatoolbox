@@ -320,4 +320,23 @@ public class ClassUtil
         else
             return fqn;
     }
+    
+    /**
+     * Strips the class portion from a fully qualified class name leaving only 
+     * the package name.
+     * 
+     * <pre>
+     * Examples:
+     * java.io.InputStream => java.io
+     * Widget              => "" (empty string)
+     * </pre>
+     * 
+     * @param   fqcn  Fully qualified class name
+     * @return  Package of the fqcn
+     */
+    public static String stripClass(String fqcn)
+    {
+        int i = fqcn.lastIndexOf(".");
+        return (i >= 0 ? fqcn.substring(0, i) : "");
+    }    
 }
