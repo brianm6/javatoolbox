@@ -21,22 +21,24 @@ import toolbox.util.ClassUtil;
 public class JarTestCollector implements TestCollector
 {
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /** 
-     * Creates a JarTestCollector 
+     * Creates a JarTestCollector. 
      */
     public JarTestCollector()
     {
     }
 
     //--------------------------------------------------------------------------
-    //  TestCollector Interface
+    // TestCollector Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @return Enumeration of classnames identified as JUnit tests
+     * Return an enumeration of classnames identified as JUnit tests.
+     * 
+     * @return Enumeration
      */
     public Enumeration collectTests()
     {
@@ -49,11 +51,11 @@ public class JarTestCollector implements TestCollector
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Private
     //--------------------------------------------------------------------------
 
     /**
-     * Retrieves list of classpath path entries that are jars
+     * Retrieves list of classpath path entries that are jars.
      * 
      * @param classPath Classpath to search for archives
      * @return List of classpath path entries that are jars
@@ -75,8 +77,9 @@ public class JarTestCollector implements TestCollector
         return result;
     }
     
+    
     /**
-     * Collects test classes in a jar/zip file
+     * Collects test classes in a jar/zip file.
      * 
      * @param archives List of archive files
      * @param result Running list of test files that where found
@@ -101,9 +104,10 @@ public class JarTestCollector implements TestCollector
         }
     }
     
+    
     /**
      * Finds all classes in a given jar file and tests for criteria matching
-     * a JUnit test case
+     * a JUnit test case.
      * 
      * @param jarName Name of the jar file to search
      * @param result Running list of test files that were found

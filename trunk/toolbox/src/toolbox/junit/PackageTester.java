@@ -13,7 +13,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 
 /**
- * Runs unit tests by java package
+ * Runs unit tests by java package.
  */
 public class PackageTester
 {
@@ -21,7 +21,7 @@ public class PackageTester
         Logger.getLogger(PackageTester.class);
     
     /**
-     * List of packages to test
+     * List of packages to test.
      */
     private List packages_; 
 
@@ -30,7 +30,7 @@ public class PackageTester
     //--------------------------------------------------------------------------
     
     /**
-     * Runs tests cases in one or more given package names
+     * Runs tests cases in one or more given package names.
      * 
      * @param args List of packages to test
      */            
@@ -52,15 +52,16 @@ public class PackageTester
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a PackageTester
+     * Creates a PackageTester.
      */
     public PackageTester() 
     {
         packages_ = new ArrayList();
     }
     
+    
     /**
-     * Creates a PackageTester
+     * Creates a PackageTester.
      * 
      * @param packageName Package name
      */
@@ -75,7 +76,7 @@ public class PackageTester
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a package to the list of packages to be tested
+     * Adds a package to the list of packages to be tested.
      * 
      * @param packageName Package name to add
      */
@@ -84,8 +85,9 @@ public class PackageTester
         packages_.add(packageName);
     }
 
+
     /**
-     * Returns the number of packages to be tested
+     * Returns the number of packages to be tested.
      * 
      * @return Number of packages
      */
@@ -94,8 +96,9 @@ public class PackageTester
         return packages_.size();
     }   
 
+
     /**
-     * Runs test cases in all the packages identified 
+     * Runs test cases in all the packages identified. 
      */
     public void run()
     {

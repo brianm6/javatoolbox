@@ -8,7 +8,7 @@ import junit.textui.TestRunner;
 import toolbox.junit.PackageTester;
 
 /**
- * Unit test for PackageTester
+ * Unit test for PackageTester.
  */
 public class PackageTesterTest extends TestCase
 {
@@ -22,9 +22,9 @@ public class PackageTesterTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -44,6 +44,7 @@ public class PackageTesterTest extends TestCase
         
         PackageTester.main(new String[] { testPackage_ } );
     }
+    
     
     /**
      * Tests PackageTester

@@ -40,7 +40,7 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * Simple plugin that allows running of JUnit tests by package
+ * Simple plugin that allows running of JUnit tests by package.
  */
 public class JUnitPlugin extends JPanel implements IPlugin
 {
@@ -64,7 +64,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JUnitPlugin
+     * Creates a JUnitPlugin.
      */
     public JUnitPlugin()
     {
@@ -75,7 +75,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -122,9 +122,10 @@ public class JUnitPlugin extends JPanel implements IPlugin
         add(BorderLayout.CENTER, outputPanel);
         add(BorderLayout.SOUTH, buttonPanel);        
     }     
-
+    
+    
     /**
-     * Updates the package list as a result of a change in the filter criteria
+     * Updates the package list as a result of a change in the filter criteria.
      */
     protected void updatePackageList()
     {
@@ -150,6 +151,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
         buildView();        
     }
 
+
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
@@ -157,6 +159,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     {
         return "JUnit";
     }
+
 
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
@@ -166,6 +169,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
         return this;
     }
 
+
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -173,6 +177,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     {
         return "JUnit add-on that enables running of test cases by package.";
     }
+
 
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -185,6 +190,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
         filterField_.setText(
             XOMUtil.getStringAttribute(root, ATTR_FILTER, ".*test"));
     }
+
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
@@ -195,6 +201,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
         root.addAttribute(new Attribute(ATTR_FILTER, filterField_.getText()));
         XOMUtil.insertOrReplace(prefs, root);    
     }
+
 
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
@@ -209,7 +216,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     
     /**
      * Gets the list of packages on the classpath and populates the package
-     * list box
+     * list box.
      */
     class GetPackageListAction extends AbstractAction
     {
@@ -239,7 +246,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * Runs the unit tests in the selected packges in the package list box
+     * Runs the unit tests in the selected packges in the package list box.
      */
     class TestPackagesAction extends AbstractAction
     {
@@ -248,7 +255,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
             super("Test Packages");
             putValue(MNEMONIC_KEY, new Integer('T'));
             putValue(SHORT_DESCRIPTION, 
-                "Runs JUNit tests in the selected packages");
+                "Runs JUnit tests in the selected packages");
         }
         
         public void actionPerformed(ActionEvent e)
@@ -270,7 +277,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Enabled dynamic filtering  of regex as it is typed
+     * Enabled dynamic filtering  of regex as it is typed.
      */    
     class FilterKeyListener extends KeyAdapter
     {

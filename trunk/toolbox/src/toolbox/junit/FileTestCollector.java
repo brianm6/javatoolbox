@@ -13,7 +13,7 @@ public class FileTestCollector extends ClassPathTestCollector
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FileTestCollector 
+     * Creates a FileTestCollector.
      */
     public FileTestCollector() 
     {

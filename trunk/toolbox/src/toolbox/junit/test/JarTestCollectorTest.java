@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.JarTestCollector;
 
 /**
- * Unit test for JarTestCollector
+ * Unit test for JarTestCollector.
  */
 public class JarTestCollectorTest extends TestCase
 {
@@ -23,9 +23,9 @@ public class JarTestCollectorTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      *
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {

@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.CompleteTestCollector;
 
 /**
- * Unit test for CompleteTestCollector
+ * Unit test for CompleteTestCollector.
  */
 public class CompleteTestCollectorTest extends TestCase
 {
@@ -23,9 +23,9 @@ public class CompleteTestCollectorTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      *
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
