@@ -6,8 +6,11 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -24,6 +27,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang.math.IntRange;
 import org.apache.log4j.Logger;
 
@@ -64,10 +68,12 @@ import toolbox.workspace.WorkspaceAction;
  * <p>
  * Features:
  * <ul>
- * <li>Remembers past queries so you don't have to type them in again
- *     (activated by a right mouse click in the SQL text area)
- * <li>Output is in plain text aligned by columns. Great for copy and paste to
- *     other applications.
+ *  <li>Remembers past queries so you don't have to type them in again
+ *      (activated by a right mouse click in the SQL text area).
+ *  <li>Output is in plain text aligned by columns. Great for copy and paste to
+ *      other applications.
+ *  <li>SQL statements can span multiple lines but must be terminated by a 
+ *      semicolon.
  * </ul>
  *
  * Shortcuts:
@@ -79,11 +85,15 @@ import toolbox.workspace.WorkspaceAction;
  *   </tr>
  *   <tr>
  *      <td>Ctrl-Enter</td>
- *      <td>Execute all SQL statements</td>
+ *      <td>Executes all SQL statements</td>
  *   </tr>
  *   <tr>
- *      <td>Ctrl-Shift-Enter</td>
- *      <td>Execute the current SQL statement</td>
+ *      <td>Ctrl-Shift-Enter (nothing selected)</td>
+ *      <td>Execute the SQL statement starting on the current line</td>
+ *   </tr>
+ *   <tr>
+ *      <td>Ctrl-Shift-Enter (text selected)</td>
+ *      <td>Executes the selected SQL statement</td>
  *   </tr>
  *   <tr>
  *      <td>Ctrl-Shift-F</td>
@@ -101,33 +111,30 @@ import toolbox.workspace.WorkspaceAction;
  */
 public class QueryPlugin extends JPanel implements IPlugin
 {
-    // TODO: Ctrl-Up/Down should scroll through query history
-    // TODO: Replace icons with valid ones.
-
     public static final Logger logger_ = Logger.getLogger(QueryPlugin.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
 
     /**
-     * XML: Root preferences element for the query plugin.
+     * Root preferences element for the query plugin.
      */
     public static final String NODE_QUERY_PLUGIN = "QueryPlugin";
 
     /**
-     * XML: Attribute of QueryPlugin that stores the max number of entries
-     *      in the sql history popup menu before getting truncated.
+     * Attribute of QueryPlugin that stores the max number of entries in the sql
+     * history popup menu before getting truncated.
      */
     public static final String ATTR_HISTORY_MAX = "maxHistory";
 
     /**
-     * XML: Child of QueryPlugin that contains a single "remembered" SQL stmt.
+     * Child of QueryPlugin that contains a single "remembered" SQL stmt.
      */
     public static final String NODE_HISTORY_ITEM = "HistoryItem";
 
     /**
-     * XML: Child of QueryPlugin that contains contents of the SQL text area.
+     * Child of QueryPlugin that contains contents of the SQL text area.
      */
     public static final String NODE_CONTENTS = "SQLContents";
 
@@ -137,6 +144,21 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public static final String NODE_LINE = "Line";
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Terminator character for SQL statements is a semicolon.
+     */
+    public static final char SQL_TERMINATOR = ';';
+    
+    /**
+     * The number of lines that must be contained in a given resultset before
+     * the output textarea will autoscroll to the end.
+     */
+    public static final int AUTO_SCROLL_THRESHOLD = 50;
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -190,6 +212,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public QueryPlugin()
     {
+        // Instantiated via reflection
     }
 
     //--------------------------------------------------------------------------
@@ -241,13 +264,9 @@ public class QueryPlugin extends JPanel implements IPlugin
             FileUtil.trailWithSeparator(
                 ClassUtil.packageToPath(
                     ClassUtil.stripClass(
-                        QueryPlugin.class.getName()))) +
-            "sqlref.txt";
+                        QueryPlugin.class.getName()))) + "sqlref.txt";
 
         sqlRef = sqlRef.replace(File.separatorChar, '/');
-
-        //JSmartTextArea area = new JSmartTextArea(
-        //    ResourceUtil.getResourceAsString(sqlRef)+ "\n");
 
         JEditTextArea area =
             new JEditTextArea(new TSQLTokenMarker(), new SQLDefaults());
@@ -289,7 +308,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlEditor_.setFont(FontUtil.getPreferredMonoFont());
 
         sqlEditor_.getInputHandler().addKeyBinding(
-            "C+ENTER", new ExecuteAction());
+            "C+ENTER", new ExecuteAllAction());
 
         sqlEditor_.getInputHandler().addKeyBinding(
             "CS+ENTER", new ExecuteCurrentAction());
@@ -301,11 +320,16 @@ public class QueryPlugin extends JPanel implements IPlugin
             "CS+F", new FormatSQLAction());
 
         // Build toolbar for SQL editor
-        JButton execute = JHeaderPanel.createButton(
+        JButton executeAll = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_PLAY),
-            "Execute SQL",
-            new ExecuteAction());
+            "Execute All SQL",
+            new ExecuteAllAction());
 
+        JButton executeCurrent = JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_FORWARD),
+            "Execute Current/Selected",
+            new ExecuteCurrentAction());
+        
         JButton format = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_BRACES),
             "Format",
@@ -322,7 +346,8 @@ public class QueryPlugin extends JPanel implements IPlugin
             new SQLReferenceAction());
 
         JToolBar toolbar = JHeaderPanel.createToolBar();
-        toolbar.add(execute);
+        toolbar.add(executeAll);
+        toolbar.add(executeCurrent);
         toolbar.add(format);
         toolbar.addSeparator();
         toolbar.add(clear);
@@ -687,22 +712,24 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // ExecuteAction
+    // ExecuteAllAction
     //--------------------------------------------------------------------------
 
     /**
-     * Runs the query and appends the results to the output text area.
+     * Runs all SQL statements in the editor. Each SQL statement must be 
+     * terminated by a semicolon. The results are appendended to the output 
+     * textarea.
      */
-    class ExecuteAction extends WorkspaceAction
+    class ExecuteAllAction extends WorkspaceAction
     {
         /**
-         * Creates a ExecuteAction.
+         * Creates an ExecuteAllAction.
          */
-        ExecuteAction()
+        ExecuteAllAction()
         {
-            super("Execute SQL", true, QueryPlugin.this, statusBar_);
+            super("Execute All SQL", true, QueryPlugin.this, statusBar_);
             putValue(MNEMONIC_KEY, new Integer('E'));
-            putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
+            putValue(SHORT_DESCRIPTION, "Executes all the SQL statements");
         }
 
 
@@ -712,27 +739,98 @@ public class QueryPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            String sql = sqlEditor_.getText();
-
-            if (StringUtils.isBlank(sql))
+            String sqlText = sqlEditor_.getText().trim();
+            
+            if (StringUtils.isBlank(sqlText))
             {
-                statusBar_.setInfo("Enter SQL to execute");
+                statusBar_.setWarning(
+                    "Enter SQL statements to execute into the editor first.");
             }
             else
             {
                 statusBar_.setInfo("Executing...");
-                String results = executeSQL(sqlEditor_.getText());
-                resultsArea_.append(results);
-
-                if ((!StringUtils.isBlank(results)) &&
-                    (StringUtil.tokenize(results, StringUtil.NL).length < 50))
-                    resultsArea_.scrollToEnd();
+                
+	            String[] stmts = StringUtils.split(sqlText, SQL_TERMINATOR);
+	            
+	            //logger_.debug(
+	            //    StringUtil.addBars(ArrayUtil.toString(stmts, true)));
+	            
+                List errors = new ArrayList();
+                
+	            for (int i = 0; i < stmts.length; i++)
+	            {
+	                try
+	                {
+	                    stmts[i] = stmts[i].trim();
+	                    String results = executeSQL(stmts[i]);
+	                    
+	                    if (!StringUtil.isMultiline(results))
+	                    {
+	                        String command = StringUtils.split(stmts[i])[0];
+	                        resultsArea_.append(command + " ");
+	                    }
+	                    else
+	                    {
+	                        resultsArea_.append("\n");
+	                        
+	                        //resultsArea_.append(
+	                        //    "Multline found..skipping command : " + 
+	                        //    stmts[i].substring(0,10));
+	                    }
+	                    
+	                    //resultsArea_.append(StringUtil.addBars(results) + "\n");
+	                    resultsArea_.append(results + "\n");
+	                    
+	                    //StringOutputStream sos = new StringOutputStream();
+	                    //HexDump.dump(results.getBytes(), 0, sos, 0);
+	                    //resultsArea_.append(sos.toString());
+	                    
+	                    
+	                    //
+	                    // Scroll to the end of the output textarea if more
+	                    // than a couple of page fulls of results is appended
+	                    //
+	                    
+	                    if ((!StringUtils.isBlank(results)) &&
+	                        (StringUtil.tokenize(results, 
+	                            StringUtil.NL).length < AUTO_SCROLL_THRESHOLD))
+	                    {
+	                        resultsArea_.scrollToEnd();
+	                    }
+	                }
+	                catch (Exception ee)
+	                {
+	                    errors.add(e);
+	                }
+	                
+	                if (errors.size() == 1)
+	                {
+	                    throw (Exception) errors.get(0);
+	                }
+	                else if (errors.size() > 1)
+	                {
+	                    StringBuffer sb = new StringBuffer();
+	                    sb.append("Not all statements executed successfully.");
+	                    sb.append("\n");
+	                    
+	                    for (int j = 0; j < errors.size(); j++)
+	                    {
+	                        Exception ex = (Exception) errors.get(j);
+	                        sb.append(ex.getMessage()).append("\n");
+	                        sb.append(ExceptionUtils.getFullStackTrace(ex));
+	                        sb.append("\n");
+	                    }
+	                    
+	                    throw new SQLException(sb.toString());
+	                }
+	            }
 
                 statusBar_.setInfo("Done");
             }
         }
     }
 
+    
     //--------------------------------------------------------------------------
     // ExecuteCurrentAction
     //--------------------------------------------------------------------------
@@ -903,7 +1001,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         public void actionPerformed(ActionEvent e)
         {
             sqlEditor_.setText(sql_);
-            new ExecuteAction().actionPerformed(e);
+            new ExecuteAllAction().actionPerformed(e);
         }
     }
 
