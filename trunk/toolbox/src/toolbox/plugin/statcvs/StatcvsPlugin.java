@@ -497,21 +497,13 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        boolean useDefaults = false;
-
-        if (prefs == null)
-            useDefaults = true;
-        else if (prefs.getFirstChildElement(NODE_STATCVS_PLUGIN) == null)
-            useDefaults = true;
-        else if (prefs.getFirstChildElement(
-            NODE_STATCVS_PLUGIN).getFirstChildElement(NODE_CVSPROJECTS) == null)
-            useDefaults = true;
-        else if (prefs.getFirstChildElement(
-            NODE_STATCVS_PLUGIN).getFirstChildElement(
-                NODE_CVSPROJECTS).getChildCount() == 0)
-            useDefaults = true;
-
-        if (useDefaults)
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_STATCVS_PLUGIN, new Element(NODE_STATCVS_PLUGIN));
+        
+        Element projects = XOMUtil.getFirstChildElement(
+            root, NODE_CVSPROJECTS, new Element(NODE_CVSPROJECTS));
+            
+        if (!projects.hasChildren())
         {
             projectCombo_.addItem(new CVSProject(
                 "Sourceforge",
@@ -542,13 +534,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
         else
         {
-            Element root = prefs.getFirstChildElement(NODE_STATCVS_PLUGIN);
-            Element cvsProjects = root.getFirstChildElement(NODE_CVSPROJECTS);
-            
             Elements projectList = 
-                cvsProjects.getChildElements(CVSProject.NODE_CVSPROJECT);
+                projects.getChildElements(CVSProject.NODE_CVSPROJECT);
              
-            for(int i=0; i<projectList.size(); i++)
+            for(int i=0, n=projectList.size(); i<n; i++)
             {
                 Element projectNode = projectList.get(i);
                 CVSProject project = new CVSProject(projectNode.toXML());
@@ -556,10 +545,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             }
 
             projectCombo_.setSelectedIndex(
-                XOMUtil.getIntegerAttribute(cvsProjects, ATTR_SELECTED, 0));
-                            
-            outputArea_.applyPrefs(root);            
+                XOMUtil.getIntegerAttribute(projects, ATTR_SELECTED, 0));
         }
+        
+        outputArea_.applyPrefs(root);
     }
 
     /**
