@@ -7,8 +7,6 @@ package toolbox.util.thread.concurrent;
  */
 public class ConditionVariable
 {
-    private Thread owner_ = null;
-
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
