@@ -132,7 +132,8 @@ public class DesktopPluginHost extends AbstractPluginHost
                                     true);
         
         frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(plugin.getComponent(), BorderLayout.CENTER);
+        JComponent c = plugin.getComponent();
+        frame.getContentPane().add(c, BorderLayout.CENTER);
         desktop_.add(frame);
         
         if (frame.getSize().equals(new Dimension(0, 0)))
@@ -142,6 +143,9 @@ public class DesktopPluginHost extends AbstractPluginHost
         frame.moveToFront();
         pluginToFrameMap_.put(plugin, frame);
 
+        if (c.getMinimumSize().height == 0 || c.getMinimumSize().width == 0)
+            c.setMinimumSize(new Dimension(300, 200));
+        
         //
         // When the internal frame is closed via the 'x' icon, route the event
         // to the equivalent of removing the plugin.
