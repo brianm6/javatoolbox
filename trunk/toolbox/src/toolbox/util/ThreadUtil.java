@@ -129,15 +129,18 @@ public final class ThreadUtil
      */
     public static void stop(Thread t, long millis)
     {
-        // Kill nicely and wait for death
-        ThreadUtil.join(t, millis);
-        
-        // Nuke as last resort if not dead
         if (t.isAlive())
+        {
             t.interrupt();
-
+            
+            if (t.isInterrupted())
+                logger_.debug("Thread interrupted");
+                
+            ThreadUtil.join(t, millis);
+        }
+        
         if (t.isAlive())
-            logger_.warn("Could not kill thread " + t);
+            logger_.warn("Could not stop thread " + t);
         else    
             t = null;                    
     }
