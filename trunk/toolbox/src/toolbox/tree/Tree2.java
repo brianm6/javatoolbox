@@ -487,6 +487,7 @@ public class Tree2
      * @param showSize If true, shows the size of the file.
      * @param showDate If true, shows the date/time of the file.
      * @param sortBy File attribute to use for sorting.
+     * @param regex File filter expressed as a regular expression. 
      */
     public Tree2(
         File rootDir, 
@@ -517,6 +518,7 @@ public class Tree2
      * @param showSize Set to true to print out the size of the file next to the
      *        filename.
      * @param sortBy Set to any of SORT_[NAME|SIZE|NONE] to specify sort order.
+     * @param regex File filter expressed as a regular expression. 
      * @param writer Output destination.
      * @throws IllegalArgumentException on invalid root dir.
      */
@@ -608,7 +610,7 @@ public class Tree2
     /**
      * Prints program usage.
      * 
-     * @param options Command line options.
+     * @param jsap Java simple argument parser.
      */
     protected static void printUsage(JSAP jsap)
     {

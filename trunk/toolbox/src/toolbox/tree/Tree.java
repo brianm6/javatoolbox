@@ -509,6 +509,7 @@ public class Tree
      * @param showSize If true, shows the size of the file.
      * @param showDate If true, shows the date/time of the file.
      * @param sortBy File attribute to use for sorting.
+     * @param regex File filter expressed as a regular expression.
      */
     public Tree(
         File rootDir, 
@@ -539,6 +540,7 @@ public class Tree
      * @param showSize Set to true to print out the size of the file next to the
      *        filename.
      * @param sortBy Set to any of SORT_[NAME|SIZE|NONE] to specify sort order.
+     * @param regex File filter expressed as a regular expression.
      * @param writer Output destination.
      * @throws IllegalArgumentException on invalid root dir.
      */
