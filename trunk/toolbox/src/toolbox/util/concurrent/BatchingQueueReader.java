@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import toolbox.util.ThreadUtil;
 
 /**
- * Reads as much content off a queue as possible (batch mode) and delivers 
- * in a single call to IBatchingQueueListener.nextBatch()
+ * Reads as much content off a queue as possible (batch mode) and delivers in a 
+ * single call to IBatchingQueueListener.nextBatch()
  */
 public class BatchingQueueReader
 {
@@ -127,7 +127,8 @@ public class BatchingQueueReader
      * 
      * @param  listener  Listener to add
      */   
-    public synchronized void addBatchingQueueListener(IBatchingQueueListener listener)
+    public synchronized void addBatchingQueueListener(
+    	IBatchingQueueListener listener)
     {
         listeners_.add(listener);
     }
@@ -138,7 +139,8 @@ public class BatchingQueueReader
      * 
      * @param  listener  Listener to remove
      */
-    public synchronized void removeBatchingQueueListener(IBatchingQueueListener listener)
+    public synchronized void removeBatchingQueueListener(
+    	IBatchingQueueListener listener)
     {
         listeners_.remove(listener);
     }
