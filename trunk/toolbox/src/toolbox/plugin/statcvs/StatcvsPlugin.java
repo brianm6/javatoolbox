@@ -3,7 +3,6 @@ package toolbox.plugin.statcvs;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
@@ -136,31 +135,15 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     private JSmartTextField launchURLField_;
     
-    /** 
-     * Saved user.dir before being overwritten (cvs commands require this). 
-     */
-    private String originalUserDir_;
-    
-    /** 
-     * Saved System.out before being overwritten (hijacked to capture the
-     * output of cvs log command).
-     */
-    private PrintStream originalSystemOut_;
-
     /**
-     * Saved System.err.
+     * CVS command's stdout redirected to the output text area.
      */
-    private PrintStream originalSystemErr_;
+    private PrintStream cvsOut_;
     
     /**
-     * System.out redirected to the output text area.
+     * CVS command's stderr redirected to the output text area.
      */
-    private PrintStream redirectedSystemOut_;
-    
-    /**
-     * System.err redirected to the output text area.
-     */
-    private PrintStream redirectedSystemErr_;
+    private PrintStream cvsErr_;
 
     //--------------------------------------------------------------------------
     // Public
@@ -183,7 +166,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // Protected
+    // UI Construction
     //--------------------------------------------------------------------------
     
     /**
@@ -268,6 +251,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return new JScrollPane(outputArea_);
     }
 
+    //--------------------------------------------------------------------------
+    // Input validation
+    //--------------------------------------------------------------------------
     
     /**
      * Sets debug flags for the external 3rd party cvslib.jar based on the 
@@ -286,26 +272,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             System.getProperties().remove("cvsClientLog");
             org.netbeans.lib.cvsclient.util.Logger.setLogging(null);
         }
-    }
-
-    
-    /**
-     * Sets the system property user.dir to the given value.
-     * 
-     * @param dir Directory.
-     */    
-    protected void setUserDir(String dir)
-    {
-        System.setProperty("user.dir", dir);
-    }
-
-    
-    /**
-     * Restores the value of system property user.dir.
-     */    
-    protected void restoreUserDir()
-    {
-        System.setProperty("user.dir", originalUserDir_);
     }
 
     
@@ -350,6 +316,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         field.setText(FileUtil.trailWithSeparator(text));    
     }
 
+    //--------------------------------------------------------------------------
+    // Helpers
+    //--------------------------------------------------------------------------
     
     /**
      * Returns a log file name based on the cvs module. Takes into account that
@@ -363,8 +332,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {
         return StringUtil.replace(
             FileUtil.matchPlatformSeparator(module),
-            File.separator,
-            ".") + ".log";
+                File.separator,
+                ".") 
+            + ".log";
     }
     
     
@@ -489,18 +459,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
         buildView();
         
-        // Save original user directory since we're gonna muck w/ it
-        originalUserDir_ = System.getProperty("user.dir");
-
-        // Save original System.out 
-        originalSystemOut_ = System.out;
-        originalSystemErr_ = System.err;
-
-        redirectedSystemOut_ = 
-            new PrintStream(new JTextAreaOutputStream(outputArea_));
-            
-        redirectedSystemErr_ = 
-            new PrintStream(new JTextAreaOutputStream(outputArea_));
+        cvsOut_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
+        cvsErr_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
     }
 
     
@@ -520,11 +480,17 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = XOMUtil.getFirstChildElement(
-            prefs, NODE_STATCVS_PLUGIN, new Element(NODE_STATCVS_PLUGIN));
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, 
+                NODE_STATCVS_PLUGIN, 
+                new Element(NODE_STATCVS_PLUGIN));
         
-        Element projects = XOMUtil.getFirstChildElement(
-            root, NODE_CVSPROJECTS, new Element(NODE_CVSPROJECTS));
+        Element projects = 
+            XOMUtil.getFirstChildElement(
+                root, 
+                NODE_CVSPROJECTS, 
+                new Element(NODE_CVSPROJECTS));
             
         if (projects.getChildCount() == 0)
         {
@@ -601,7 +567,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
  
  
     //--------------------------------------------------------------------------
-    // CVSProject
+    // StatcvsAction
     //--------------------------------------------------------------------------
     
     /**
@@ -627,25 +593,12 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         {
             super(name, true, async, scope, statusBar);
 
-            // Add an action to run before the main action to set the system
-            // out and err stream to the text area.            
-            addPreAction(new AbstractAction() 
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    System.setOut(redirectedSystemOut_);
-                    System.setErr(redirectedSystemErr_);
-                }
-            });
-
-            // This will restore the system out and err to their original 
-            // values when the main action has completed execution.
             addFinallyAction(new AbstractAction() 
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    System.setOut(originalSystemOut_);
-                    System.setErr(originalSystemErr_);
+                    cvsOut_.flush();
+                    cvsErr_.flush();
                 }
             });
         }        
@@ -733,25 +686,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             if (cvspass.exists())  
                 cvspass.delete();
 
-            String[] cvsargs = new String[] 
+            String[] cvsArgs = new String[] 
             {
                 "-d", 
                 cvsRootField_.getText(), 
                 "login"
             };
             
-            StringOutputStream cvsout = new StringOutputStream();
-            StringOutputStream cvserr = new StringOutputStream();
-            
             boolean success = CVSCommand.processCommand(
-                cvsargs, 
+                cvsArgs, 
                 null, 
-                checkoutDirField_.getText(), //System.getProperty("user.dir"),
-                new PrintStream(cvsout), 
-                new PrintStream(cvserr));
-            
-            outputArea_.append(cvsout.toString() + "\n");
-            outputArea_.append(cvserr.toString() + "\n");
+                checkoutDirField_.getText(),
+                cvsOut_, 
+                cvsErr_);
             
             statusBar_.setInfo(success ? "Login completed" : "Login failed");
         }
@@ -797,9 +744,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 "Checking out " + cvsModuleField_.getText() + 
                 " module to " + checkoutDirField_.getText() + "...");
 
-            setUserDir(checkoutDirField_.getText());
-
-            String cvsargs[] = new String[] 
+            String cvsArgs[] = new String[] 
             { 
                 "-d", 
                 cvsRootField_.getText(), 
@@ -807,18 +752,12 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 cvsModuleField_.getText() 
             };
 
-            StringOutputStream cvsout = new StringOutputStream();
-            StringOutputStream cvserr = new StringOutputStream();
-            
             boolean success = CVSCommand.processCommand(
-                cvsargs, 
+                cvsArgs, 
                 null, 
-                System.getProperty("user.dir"), //checkoutDirField_.getText(),
-                new PrintStream(cvsout), 
-                new PrintStream(cvserr));
-            
-            outputArea_.append(cvsout.toString() + "\n");
-            outputArea_.append(cvserr.toString() + "\n");
+                checkoutDirField_.getText(),
+                cvsOut_, 
+                cvsErr_);
             
             statusBar_.setInfo(success ? "Checkout done" : "Checkout failed");
         }
@@ -851,34 +790,36 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             statusBar_.setInfo("Generating log...");
             verify();
             setDebug();
-            
-            setUserDir(
-                FileUtil.trailWithSeparator(
-                    checkoutDirField_.getText()) + cvsModuleField_.getText());
 
-            String[] args = new String[] {"-d", cvsRootField_.getText(), "log"};
+            String[] cvsArgs = new String[] 
+            {
+                "-d", 
+                cvsRootField_.getText(), 
+                "log"
+            };
             
             logger_.debug("cvsLogFile = " + getCVSLogFile());
                     
-            StringOutputStream sos = new StringOutputStream();
-            PrintStream before = System.out;
+            StringOutputStream logCapture = new StringOutputStream();
             
-            try
-            {
-                System.setOut(new PrintStream(sos));
-                CVSCommand.main(args);
-                String fixedLogFile = fixLogFile(sos.toString());
-                FileUtil.setFileContents(getCVSLogFile(), fixedLogFile, false);
-                
-                statusBar_.setInfo(
-                    "Generated CVS log containing " + 
-                        fixedLogFile.length() + " bytes");
-            }
-            finally
-            {
-                System.setOut(before);
-                restoreUserDir();
-            }
+            String cvsDir = 
+                FileUtil.trailWithSeparator(checkoutDirField_.getText()) + 
+                cvsModuleField_.getText();
+
+            boolean success = CVSCommand.processCommand(
+                cvsArgs, 
+                null,
+                cvsDir, 
+                new PrintStream(logCapture), 
+                cvsErr_);
+            
+            
+            String fixedLogFile = fixLogFile(logCapture.toString());
+            FileUtil.setFileContents(getCVSLogFile(), fixedLogFile, false);
+            
+            statusBar_.setInfo(
+                "Generated CVS log containing " + 
+                    fixedLogFile.length() + " bytes");
         }
     }
 
