@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+
+<!-- build.xml for toolbox -->
+
+<project name="toolbox" default="all" basedir=".">
+
+    <!--=============================-->
+    <!--            ENV              -->
+    <!--=============================-->
+    <!-- configure environment -->
+    <target name="env" depends="prep,post">
+        <echo message="${ant.project.name} environment configured"/>
+    </target>
+
+    <!--=============================-->
+    <!--            PREP             -->
+    <!--=============================-->
+    <!-- prepare standard environment -->
+    <target name="prep">
+
+        <tstamp/>
+
+        <!-- project properties -->
+        <property name="top" location="."/>
+        <property name="src" location="${top}/src"/>
+        <property name="dist" location="${top}/dist"/>
+        <property name="classes" location="${top}/classes"/>
+        <property name="resources" location="${top}/resources"/>
+        <property name="targets" location="${top}/targets"/>
+        <property name="lib" location="${top}/lib"/>
+        <property name="project.init.message" value="${ant.project.name} project initialized"/>
+
+        <!-- make common directories -->
+        <mkdir dir="${targets}"/>
+
+        <!-- OS specific properties -->
+        <property environment="env"/>
+        <condition property="os.type" value="unix">
+            <os family="unix"/>
+        </condition>
+        <property name="os.type" value="windows"/>
+
+        <!-- set standard properties -->
+        <property name="javavm" value="1.2"/>
+        <!-- property name="build.compiler" value="jikes"/ -->
+        <property name="build.compiler.fulldepend" value="true"/>
+        <property name="project.failonerror" value="true"/>
+        <property name="project.debug" value="on"/>
+        <property name="optimize" value="on"/>
+        <property name="toolbox.id" value=""/>
+        <property name="toolbox.rundir" location="."/>
+
+        <!-- define project tools classpath -->
+        <path id="project.tools.path">
+            <fileset dir="${top}/lib">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
+        </path>
+
+        <!-- define common build classpath -->
+        <path id="common.class.path">
+            <fileset dir="${targets}">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
+
+            <fileset dir="${lib}">
+                <include name="**/*.jar"/>
+                <include name="**/*.zip"/>
+            </fileset>
+
+            <path refid="project.tools.path"/>
+        </path>
+
+        <property name="common.classpath" refid="common.class.path"/>
+
+        <echo message="${os.name} ${os.arch} ${os.version}"/>
+        <echo message="environment prepared on ${os.type} "/>
+    </target>
+
+    <!--=============================-->
+    <!--            POST             -->
+    <!--=============================-->
+    <!-- complete standard environment -->
+    <target name="post">
+
+        <!-- define common runtime classpath -->
+        <path id="runtime.class.path">
+            <path refid="common.class.path"/>
+            <pathelement location="${top}/resources"/>
+        </path>
+        
+        <property name="runtime.classpath" refid="runtime.class.path"/>
+
+        <echo message="environment complete on ${os.type} ${localhost.name}"/>
+    </target>
+
+    <!--=============================-->
+    <!--            SETUP            -->
+    <!--=============================-->
+    <target name="setup" depends="env">
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${classes}"/>
+        <echo message="${ant.project.name} setup complete"/>
+    </target>
+
+    <!--=============================-->
+    <!--             INIT            -->
+    <!--=============================-->
+    <target name="init" depends="setup">
+        <path id="project.class.path">
+            <pathelement location="${src}"/>
+            <pathelement location="${classes}"/>
+            <path refid="common.class.path"/>
+        </path>
+        <echo message="${project.init.message}"/>
+    </target>
+
+    <!--=============================-->
+    <!--             ALL             -->
+    <!--=============================-->
+    <target name="all" depends="init,compile,jar,dist"/>
+
+    <!--=============================-->
+    <!--            CLEAN            -->
+    <!--=============================-->
+    <target name="clean" depends="env">
+        <delete dir="${dist}" verbose="false" quiet="off"/>
+        <delete dir="${classes}" verbose="false" quiet="off"/>
+    </target>
+
+    <!--=============================-->
+    <!--           COMPILE           -->
+    <!--=============================-->
+    <target name="compile" depends="init">
+    
+        <javac 
+            srcdir="${src}" 
+            destdir="${classes}" 
+            debug="${project.debug}" 
+            optimize="${optimize}" 
+            target="${javavm}" 
+            fork="yes"
+            failonerror="${project.failonerror}">
+            
+            <classpath refid="project.class.path"/>
+        </javac>
+    </target>
+
+
+    <!--=============================-->
+    <!--             JAR             -->
+    <!--=============================-->
+    <target name="jar" depends="compile">
+
+        <delete verbose="true">
+            <fileset dir="${dist}" includes="**/*.jar"/>
+        </delete>
+
+        <unjar src="${lib}/log4j.jar" dest="${classes}" overwrite="false"/>
+        <unjar src="${lib}/junit.jar" dest="${classes}" overwrite="false"/>
+        <unjar src="${lib}/jakarta-regexp-1.2.jar" dest="${classes}" overwrite="false"/>
+                             
+        <jar jarfile="${dist}/toolbox.jar" 
+             manifest="${src}/META-INF/MANIFEST.MF">
+
+            <fileset dir="${classes}" excludes="**/MANIFEST.MF"/>
+            
+            <!-- fileset dir="${top}" includes="lib/*.jar"/-->
+            
+            <fileset dir="${resources}"/>
+
+            <!-- don't exclude tests -->
+            <!-- excludes="**/test/**" -->
+
+        </jar>
+
+    </target>
+
+    <!--=============================-->
+    <!--             DIST            -->
+    <!--=============================-->
+    <target name="dist" depends="jar">
+    
+        <copy todir="${targets}" overwrite="yes">
+            <fileset dir="${dist}" includes="**/*.jar"/>
+        </copy>
+        
+        <copy todir="c:\bin\" overwrite="yes">
+            <fileset dir="${dist}" includes="**/*.jar"/>
+        </copy>
+        
+    </target>
+
+    <!--=============================-->
+    <!--            TEST             -->
+    <!--=============================-->
+
+    <!--
+    <target name="test" depends="init">
+      <testengine basedir="${src}"
+                  outputfile="${dist}/testengine.txt"
+                  notify="${turbo.test.notify}">
+         <classpath refid="test.runtime.class.path"/>
+         <sysproperty key="com.swa.turbo.rundir"
+                      value="${turbo.rundir}"/>
+         <sysproperty key="com.swa.logging.log4j.file"
+                      value="${turbo.test.log.config}"/>
+      </testengine>
+   </target>
+   -->
+
+</project>
