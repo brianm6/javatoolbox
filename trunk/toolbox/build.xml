@@ -216,7 +216,7 @@
             overwrite ="false" />
 
         <unjar 
-        	src       ="${lib}/java-getopt.jar" 
+        	src       ="${lib}/java2html.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
