@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,7 +45,6 @@ import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
-import toolbox.util.io.ReversePipe;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plugin.IStatusBar;
 
@@ -69,6 +68,9 @@ public class TailPane extends JPanel
     // Special types of Logs that aren't "Files"
     public static final String LOG_SYSTEM_OUT = "[System.out]";
     public static final String LOG_LOG4J      = "[Log4J]";
+
+    private static final String MODE_START = "Start";
+    private static final String MODE_STOP  = "Stop";
     
     private JButton clearButton_;
     private JButton pauseButton_;
@@ -122,7 +124,12 @@ public class TailPane extends JPanel
         buildView(config);
         buildFilters();        
         setConfiguration(config);                
-        init();
+        
+        // Start tail through action so button states are OK
+        if (config_.isAutoStart())
+            startButton_.getAction().actionPerformed(
+                new ActionEvent(this, 0, "Start"));
+        
     }
     
     //--------------------------------------------------------------------------
@@ -153,9 +160,11 @@ public class TailPane extends JPanel
         //                TailQueueListener
         //
         
+        String file = config_.getFilename();
+        
         queue_          = new BlockingQueue();
         queueListener_  = new TailQueueListener();        
-        queueReader_    = new BatchingQueueReader(queue_);        
+        queueReader_    = new BatchingQueueReader(queue_, file + "-BatchingQueueReader");        
         queueReader_.addBatchingQueueListener(queueListener_);
         queueReader_.start();
         
@@ -163,51 +172,33 @@ public class TailPane extends JPanel
         tail_ = new Tail();
         tail_.addTailListener(new TailListener());
         
-        String file = config_.getFilename();
+        
          
         if (file.equals(LOG_SYSTEM_OUT))
         {
-            ReversePipe pipe = new ReversePipe(System.out);
-            PrintStream ps = new PrintStream(pipe.getOutputStream(), true);
+            PipedOutputStream pos = new PipedOutputStream();
+            PipedInputStream  pis = new PipedInputStream(pos);
+            PrintStream ps = new PrintStream(pos, true);
             System.setOut(ps);
-            
-            tail_.follow(new InputStreamReader(pipe.getInputStream()), 
-                new NullWriter());
-                
+            tail_.follow(new InputStreamReader(pis), new NullWriter(), file);
             logger_.debug("Tailing System.out...");
         }
         else if (file.equals(LOG_LOG4J))
         {
-            for (Enumeration e = LogManager.getCurrentLoggers(); e.hasMoreElements(); )
-            {
-                Logger logger = (Logger) e.nextElement();
-                
-                System.out.println("Logger: " + logger.getName());
-            }
-            
-            ReversePipe pipe = new ReversePipe();
-            OutputStream pos = pipe.getOutputStream();
+            PipedOutputStream pos = new PipedOutputStream();
+            PipedInputStream  pis = new PipedInputStream(pos);
             WriterAppender appender = new WriterAppender(new TTCCLayout(), pos);
             appender.setImmediateFlush(true);
             appender.setThreshold(Priority.DEBUG);
             appender.setName("toolbox-stream-appender");
-            
             LogManager.getLogger("toolbox").addAppender(appender);
-            
-            tail_.follow(new InputStreamReader(pipe.getInputStream()),
-                new NullWriter());
-                
+            tail_.follow(new InputStreamReader(pis), new NullWriter(), file);
             logger_.debug("Tailing Log4J...");                
         }
         else
         {
             tail_.follow(new File(file), new NullWriter());
         }
-
-        // Start tail through action so button states are OK
-        if (config_.isAutoStart())
-            startButton_.getAction().actionPerformed(
-                new ActionEvent(this, 0, "Start"));
     }
     
     /**
@@ -221,9 +212,8 @@ public class TailPane extends JPanel
         clearButton_    = new JButton(new ClearAction());
         pauseButton_    = new JButton(new PauseUnpauseAction());
         
-        String startMode =  config.isAutoStart() ? 
-                            StartStopAction.MODE_START :
-                            StartStopAction.MODE_STOP;
+        String startMode =  
+            config.isAutoStart() ? MODE_START : MODE_STOP;
         
         startButton_    = new JButton(new StartStopAction(startMode));
         closeButton_    = new JButton(new CloseAction());
@@ -378,7 +368,10 @@ public class TailPane extends JPanel
         config_.setAntiAlias(tailArea_.isAntiAlias());
         config_.setRegularExpression(getRegularExpression());
         config_.setCutExpression(getCutExpression());
-        config_.setAutoStart(tail_.isAlive());
+        
+        config_.setAutoStart(
+            startButton_.getText().equals(MODE_START) ? false : true);
+            
         return config_;
     }    
 
@@ -475,7 +468,7 @@ public class TailPane extends JPanel
     }
 
     /**
-     * Enabled dynamic filtering based on regex as it is typed
+     * Enables dynamic filtering based on regex as it is typed
      */    
     public class RegexActionListener implements ActionListener
     {
@@ -519,9 +512,6 @@ public class TailPane extends JPanel
      */
     private class StartStopAction extends AbstractAction
     {
-        private static final String MODE_START = "Start";
-        private static final String MODE_STOP  = "Stop";
-        
         private String mode_;
             
         public StartStopAction(String mode)
@@ -534,10 +524,14 @@ public class TailPane extends JPanel
     
         public void actionPerformed(ActionEvent e)
         { 
+            //
+            // Start
+            //
             if (mode_.equals(MODE_START))
             {
                 try
                 {
+                    init();
                     tail_.start();
                     mode_ = MODE_STOP;
                     putValue(Action.NAME, mode_);
@@ -546,14 +540,19 @@ public class TailPane extends JPanel
                     statusBar_.setStatus(
                         "Started tail for " + config_.getFilename());
                 }
-                catch(FileNotFoundException fnfe)
+                catch (IOException ioe)
                 {
-                    logger_.error(fnfe);
+                    logger_.error("StartStopAction", ioe);
                 }
             }
+            
+            //
+            // Stop
+            //
             else
             {
                 tail_.stop();
+                queueReader_.stop();
                 mode_ = MODE_START;
                 putValue(Action.NAME, mode_);                
                 pauseButton_.setEnabled(false);
