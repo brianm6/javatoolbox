@@ -14,12 +14,15 @@ import javax.swing.border.BevelBorder;
 import toolbox.util.SwingUtil;
 
 /**
- * JStatusPane
+ * JStatusPane is a simple component to show a text message as status
  */
 public class JStatusPane extends JPanel
 {
     private JLabel statusLabel_;
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for JStatusPane.
@@ -29,6 +32,9 @@ public class JStatusPane extends JPanel
         buildView();
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /**
      * Builds the view

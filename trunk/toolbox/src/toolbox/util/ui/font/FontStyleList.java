@@ -10,6 +10,9 @@ import javax.swing.JList;
  */
 public class FontStyleList extends JList
 {
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Construct a new FontStyleList, using the supplied values for style
@@ -29,6 +32,9 @@ public class FontStyleList extends JList
         super(validateStyleDisplayNames(styleDisplayNames));
     }
     
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
     
     /**
      * Validates style display names

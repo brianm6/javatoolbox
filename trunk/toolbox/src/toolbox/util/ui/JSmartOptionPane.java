@@ -22,7 +22,6 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
@@ -30,11 +29,13 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.OptionPaneUI;
+
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 
 /**
- * JSmartOptionPane
+ * JSmartOptionPane (mutated JOptionPane to support dialogs with a flippable 
+ * detailed message area)
  */
 public class JSmartOptionPane extends JOptionPane implements ActionListener
 {
@@ -100,6 +101,198 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     /** If true, a UI widget will be provided to the user to get input. */
     protected boolean wantsInput_;
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Creates a <code>JOptionPane</code> with a test message.
+     */
+    public JSmartOptionPane()
+    {
+        this("JSmartOptionPane message", "JSmartOptionPane details");
+    }
+
+
+    /**
+     * Creates a instance of <code>JOptionPane</code> to display a
+     * message using the 
+     * plain-message message type and the default options delivered by
+     * the UI.
+     *
+     * @param message the <code>Object</code> to display
+     */
+    public JSmartOptionPane(Object message, Object details)
+    {
+        this(message, details, JOptionPane.PLAIN_MESSAGE);
+    }
+
+
+    /**
+     * Creates an instance of <code>JOptionPane</code> to display a message
+     * with the specified message type and the default options,
+     *
+     * @param message the <code>Object</code> to display
+     * @param messageType the type of message to be displayed:
+     *                  <code>ERROR_MESSAGE</code>,
+     *          <code>INFORMATION_MESSAGE</code>,
+     *          <code>WARNING_MESSAGE</code>,
+     *                  <code>QUESTION_MESSAGE</code>,
+     *          or <code>PLAIN_MESSAGE</code>
+     */
+    public JSmartOptionPane(Object message, Object details, int messageType)
+    {
+        this(message, details, messageType, JOptionPane.DEFAULT_OPTION);
+    }
+
+
+    /**
+     * Creates an instance of <code>JOptionPane</code> to display a message
+     * with the specified message type and options.
+     *
+     * @param message the <code>Object</code> to display
+     * @param messageType the type of message to be displayed:
+     *                  <code>ERROR_MESSAGE</code>,
+     *          <code>INFORMATION_MESSAGE</code>,
+     *          <code>WARNING_MESSAGE</code>,
+     *                  <code>QUESTION_MESSAGE</code>,
+     *          or <code>PLAIN_MESSAGE</code>
+     * @param optionType the options to display in the pane:
+     *                  <code>DEFAULT_OPTION</code>, <code>YES_NO_OPTION</code>,
+     *          <code>YES_NO_CANCEL_OPTION</code>,
+     *                  <code>OK_CANCEL_OPTION</code>
+     */
+    public JSmartOptionPane(
+        Object message,
+        Object details,
+        int messageType,
+        int optionType)
+    {
+        this(message, details, messageType, optionType, null);
+    }
+
+
+    /**
+     * Creates an instance of <code>JOptionPane</code> to display a message
+     * with the specified message type, options, and icon.
+     *
+     * @param message     the <code>Object</code> to display
+     * @param details     the message details shown in flipper area
+     * @param messageType the type of message to be displayed:
+     *                    <code>ERROR_MESSAGE</code>,
+     *                    <code>INFORMATION_MESSAGE</code>,
+     *                    <code>WARNING_MESSAGE</code>,
+     *                    <code>QUESTION_MESSAGE</code>, or
+     *                    <code>PLAIN_MESSAGE</code>
+     * @param optionType  the options to display in the pane:
+     *                    <code>DEFAULT_OPTION</code>, 
+     *                    <code>YES_NO_OPTION</code>,
+     *                    <code>YES_NO_CANCEL_OPTION</code>,
+     *                    <code>OK_CANCEL_OPTION</code>
+     * @param icon        the <code>Icon</code> image to display
+     */
+    public JSmartOptionPane(
+        Object message,
+        Object details,
+        int messageType,
+        int optionType,
+        Icon icon)
+    {
+        this(message, details, messageType, optionType, icon, null);
+    }
+
+
+    /**
+     * Creates an instance of <code>JOptionPane</code> to display a message
+     * with the specified message type, icon, and options.
+     * None of the options is initially selected.
+     * <p>
+     * The options objects should contain either instances of
+     * <code>Component</code>s, (which are added directly) or
+     * <code>Strings</code> (which are wrapped in a <code>JButton</code>).
+     * If you provide <code>Component</code>s, you must ensure that when the
+     * <code>Component</code> is clicked it messages <code>setValue</code>
+     * in the created <code>JOptionPane</code>.
+     *
+     * @param message the <code>Object</code> to display
+     * @param messageType the type of message to be displayed:
+     *                  <code>ERROR_MESSAGE</code>, 
+     *          <code>INFORMATION_MESSAGE</code>,
+     *          <code>WARNING_MESSAGE</code>,
+     *                  <code>QUESTION_MESSAGE</code>,
+     *          or <code>PLAIN_MESSAGE</code>
+     * @param optionType the options to display in the pane:
+     *                  <code>DEFAULT_OPTION</code>,
+     *          <code>YES_NO_OPTION</code>,
+     *          <code>YES_NO_CANCEL_OPTION</code>,
+     *                  <code>OK_CANCEL_OPTION</code>
+     * @param icon the <code>Icon</code> image to display
+     * @param options  the choices the user can select
+     */
+    public JSmartOptionPane(
+        Object message,
+        Object details,
+        int messageType,
+        int optionType,
+        Icon icon,
+        Object[] options)
+    {
+        this(message, details, messageType, optionType, icon, options, null);
+    }
+
+
+    /**
+     * Creates an instance of <code>JOptionPane</code> to display a message
+     * with the specified message type, icon, and options, with the 
+     * initially-selected option specified.
+     *
+     * @param message the <code>Object</code> to display
+     * @param messageType the type of message to be displayed:
+     *                  <code>ERROR_MESSAGE</code>,
+     *          <code>INFORMATION_MESSAGE</code>,
+     *          <code>WARNING_MESSAGE</code>,
+     *                  <code>QUESTION_MESSAGE</code>,
+     *          or <code>PLAIN_MESSAGE</code>
+     * @param optionType the options to display in the pane:
+     *                  <code>DEFAULT_OPTION</code>,
+     *          <code>YES_NO_OPTION</code>,
+     *          <code>YES_NO_CANCEL_OPTION</code>,
+     *                  <code>OK_CANCEL_OPTION</code>
+     * @param icon the Icon image to display
+     * @param options  the choices the user can select
+     * @param initialValue the choice that is initially selected; if
+     *          <code>null</code>, then nothing will be initially selected;
+     *          only meaningful if <code>options</code> is used
+     */
+    public JSmartOptionPane(
+        Object message,
+        Object details,
+        int messageType,
+        int optionType,
+        Icon icon,
+        Object[] options,
+        Object initialValue)
+    {
+        message_ = message;
+        details_ = details;
+
+        if (options == null || options.length == 0)
+            options_ = getButtons();
+        else
+            options_ = options;
+
+        initialValue_ = initialValue;
+        icon_ = icon;
+        setMessageType(messageType);
+        setOptionType(optionType);
+        value_ = JOptionPane.UNINITIALIZED_VALUE;
+        inputValue_ = JOptionPane.UNINITIALIZED_VALUE;
+        updateUI();
+    }
+
+    //--------------------------------------------------------------------------
+    //  Implemenation
+    //--------------------------------------------------------------------------
 
     /**
      * Brings up a dialog displaying a message, specifying all parameters.
@@ -107,8 +300,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * @param parentComponent determines the <code>Frame</code> in which the
      *          dialog is displayed; if <code>null</code>,
      *          or if the <code>parentComponent</code> has no
-     *          <code>Frame</code>, a 
-     *                  default <code>Frame</code> is used
+     *          <code>Frame</code>, a default <code>Frame</code> is used
      * @param message   the <code>Object</code> to display
      * @param title     the title string for the dialog
      * @param messageType the type of message to be displayed:
@@ -338,193 +530,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         }
         */
     }
-
-
-    /**
-     * Creates a <code>JOptionPane</code> with a test message.
-     */
-    public JSmartOptionPane()
-    {
-        this("JSmartOptionPane message", "JSmartOptionPane details");
-    }
-
-
-    /**
-     * Creates a instance of <code>JOptionPane</code> to display a
-     * message using the 
-     * plain-message message type and the default options delivered by
-     * the UI.
-     *
-     * @param message the <code>Object</code> to display
-     */
-    public JSmartOptionPane(Object message, Object details)
-    {
-        this(message, details, JOptionPane.PLAIN_MESSAGE);
-    }
-
-
-    /**
-     * Creates an instance of <code>JOptionPane</code> to display a message
-     * with the specified message type and the default options,
-     *
-     * @param message the <code>Object</code> to display
-     * @param messageType the type of message to be displayed:
-     *                  <code>ERROR_MESSAGE</code>,
-     *          <code>INFORMATION_MESSAGE</code>,
-     *          <code>WARNING_MESSAGE</code>,
-     *                  <code>QUESTION_MESSAGE</code>,
-     *          or <code>PLAIN_MESSAGE</code>
-     */
-    public JSmartOptionPane(Object message, Object details, int messageType)
-    {
-        this(message, details, messageType, JOptionPane.DEFAULT_OPTION);
-    }
-
-
-    /**
-     * Creates an instance of <code>JOptionPane</code> to display a message
-     * with the specified message type and options.
-     *
-     * @param message the <code>Object</code> to display
-     * @param messageType the type of message to be displayed:
-     *                  <code>ERROR_MESSAGE</code>,
-     *          <code>INFORMATION_MESSAGE</code>,
-     *          <code>WARNING_MESSAGE</code>,
-     *                  <code>QUESTION_MESSAGE</code>,
-     *          or <code>PLAIN_MESSAGE</code>
-     * @param optionType the options to display in the pane:
-     *                  <code>DEFAULT_OPTION</code>, <code>YES_NO_OPTION</code>,
-     *          <code>YES_NO_CANCEL_OPTION</code>,
-     *                  <code>OK_CANCEL_OPTION</code>
-     */
-    public JSmartOptionPane(
-        Object message,
-        Object details,
-        int messageType,
-        int optionType)
-    {
-        this(message, details, messageType, optionType, null);
-    }
-
-
-    /**
-     * Creates an instance of <code>JOptionPane</code> to display a message
-     * with the specified message type, options, and icon.
-     *
-     * @param message     the <code>Object</code> to display
-     * @param details     the message details shown in flipper area
-     * @param messageType the type of message to be displayed:
-     *                    <code>ERROR_MESSAGE</code>,
-     *                    <code>INFORMATION_MESSAGE</code>,
-     *                    <code>WARNING_MESSAGE</code>,
-     *                    <code>QUESTION_MESSAGE</code>, or
-     *                    <code>PLAIN_MESSAGE</code>
-     * @param optionType  the options to display in the pane:
-     *                    <code>DEFAULT_OPTION</code>, 
-     *                    <code>YES_NO_OPTION</code>,
-     *                    <code>YES_NO_CANCEL_OPTION</code>,
-     *                    <code>OK_CANCEL_OPTION</code>
-     * @param icon        the <code>Icon</code> image to display
-     */
-    public JSmartOptionPane(
-        Object message,
-        Object details,
-        int messageType,
-        int optionType,
-        Icon icon)
-    {
-        this(message, details, messageType, optionType, icon, null);
-    }
-
-
-    /**
-     * Creates an instance of <code>JOptionPane</code> to display a message
-     * with the specified message type, icon, and options.
-     * None of the options is initially selected.
-     * <p>
-     * The options objects should contain either instances of
-     * <code>Component</code>s, (which are added directly) or
-     * <code>Strings</code> (which are wrapped in a <code>JButton</code>).
-     * If you provide <code>Component</code>s, you must ensure that when the
-     * <code>Component</code> is clicked it messages <code>setValue</code>
-     * in the created <code>JOptionPane</code>.
-     *
-     * @param message the <code>Object</code> to display
-     * @param messageType the type of message to be displayed:
-     *                  <code>ERROR_MESSAGE</code>, 
-     *          <code>INFORMATION_MESSAGE</code>,
-     *          <code>WARNING_MESSAGE</code>,
-     *                  <code>QUESTION_MESSAGE</code>,
-     *          or <code>PLAIN_MESSAGE</code>
-     * @param optionType the options to display in the pane:
-     *                  <code>DEFAULT_OPTION</code>,
-     *          <code>YES_NO_OPTION</code>,
-     *          <code>YES_NO_CANCEL_OPTION</code>,
-     *                  <code>OK_CANCEL_OPTION</code>
-     * @param icon the <code>Icon</code> image to display
-     * @param options  the choices the user can select
-     */
-    public JSmartOptionPane(
-        Object message,
-        Object details,
-        int messageType,
-        int optionType,
-        Icon icon,
-        Object[] options)
-    {
-        this(message, details, messageType, optionType, icon, options, null);
-    }
-
-
-    /**
-     * Creates an instance of <code>JOptionPane</code> to display a message
-     * with the specified message type, icon, and options, with the 
-     * initially-selected option specified.
-     *
-     * @param message the <code>Object</code> to display
-     * @param messageType the type of message to be displayed:
-     *                  <code>ERROR_MESSAGE</code>,
-     *          <code>INFORMATION_MESSAGE</code>,
-     *          <code>WARNING_MESSAGE</code>,
-     *                  <code>QUESTION_MESSAGE</code>,
-     *          or <code>PLAIN_MESSAGE</code>
-     * @param optionType the options to display in the pane:
-     *                  <code>DEFAULT_OPTION</code>,
-     *          <code>YES_NO_OPTION</code>,
-     *          <code>YES_NO_CANCEL_OPTION</code>,
-     *                  <code>OK_CANCEL_OPTION</code>
-     * @param icon the Icon image to display
-     * @param options  the choices the user can select
-     * @param initialValue the choice that is initially selected; if
-     *          <code>null</code>, then nothing will be initially selected;
-     *          only meaningful if <code>options</code> is used
-     */
-    public JSmartOptionPane(
-        Object message,
-        Object details,
-        int messageType,
-        int optionType,
-        Icon icon,
-        Object[] options,
-        Object initialValue)
-    {
-        message_ = message;
-        details_ = details;
-
-        if (options == null || options.length == 0)
-            options_ = getButtons();
-        else
-            options_ = options;
-
-        initialValue_ = initialValue;
-        icon_ = icon;
-        setMessageType(messageType);
-        setOptionType(optionType);
-        value_ = JOptionPane.UNINITIALIZED_VALUE;
-        inputValue_ = JOptionPane.UNINITIALIZED_VALUE;
-        updateUI();
-    }
-
 
     /**
      * Creates and returns a new <code>JDialog</code> wrapping

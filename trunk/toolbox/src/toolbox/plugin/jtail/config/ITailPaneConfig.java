@@ -7,10 +7,10 @@ import java.awt.Font;
  */
 public interface ITailPaneConfig
 {
-    public static final boolean DEFAULT_AUTOSCROLL = true;
-    public static final boolean DEFAULT_LINENUMBERS = false;
-    public static final String  DEFAULT_FILTER = "";
-    public static final boolean DEFAULT_FILTER_NEGATE = true;
+    public static final boolean DEFAULT_AUTOSCROLL       = true;
+    public static final boolean DEFAULT_LINENUMBERS      = false;
+    public static final String  DEFAULT_FILTER           = "";
+    public static final boolean DEFAULT_FILTER_NEGATE    = true;
     public static final boolean DEFAULT_FILTER_MATCHCASE = false;
 
     /**
@@ -20,13 +20,14 @@ public interface ITailPaneConfig
      */
     public boolean isAutoScroll();
 
+
     /**
      * Returns the filename that is being tailed.
      * 
      * @return String
      */
     public String getFilename();
-    
+
 
     /**
      * Returns the flag that toggles the display of line numbers
@@ -43,6 +44,7 @@ public interface ITailPaneConfig
      */
     public void setAutoScroll(boolean autoScroll);
 
+
     /**
      * Sets the name of the file being tailed
      * 
@@ -50,12 +52,14 @@ public interface ITailPaneConfig
      */
     public void setFilename(String filename);
 
+
     /**
      * Sets the showLineNumbers flag
      * 
      * @param showLineNumbers The showLineNumbers to set
      */
     public void setShowLineNumbers(boolean showLineNumbers);
+
   
     /**
      * Returns the font used in the text area
@@ -64,6 +68,7 @@ public interface ITailPaneConfig
      */
     public Font getFont();
 
+
     /**
      * Sets the font used in the text area
      * 
@@ -71,12 +76,14 @@ public interface ITailPaneConfig
      */
     public void setFont(Font font);
     
+    
     /**
      * Returns the filter (regular expression) used to include/exchage lines
      * 
      * @return String
      */
     public String getFilter();
+
 
     /**
      * Sets the filter (regular expression) used to include/exclude lines

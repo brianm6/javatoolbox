@@ -47,7 +47,7 @@ public class JSourceView extends JFrame implements ActionListener
     
     private static FilenameFilter sourceFilter_;
 
-    private static final String TEXT_GO = "Go!";
+    private static final String TEXT_GO     = "Go!";
     private static final String TEXT_CANCEL = "Cancel";
     
     private JTextField  dirField_;
@@ -100,6 +100,7 @@ public class JSourceView extends JFrame implements ActionListener
                     new ExtensionFilter("h")));
     }
 
+
     /**
      * Entrypoint
      * 
@@ -110,9 +111,9 @@ public class JSourceView extends JFrame implements ActionListener
         new JSourceView().setVisible(true);
     }
 
-    //
+    //--------------------------------------------------------------------------
     //  CONSTRUCTORS
-    //
+    //--------------------------------------------------------------------------    
     
     /**
      * Constructs JSourceview
@@ -159,9 +160,9 @@ public class JSourceView extends JFrame implements ActionListener
         SwingUtil.centerWindow(this);
     }
 
-    //
+    //--------------------------------------------------------------------------
     //  IMPLEMENTATION
-    //
+    //--------------------------------------------------------------------------
     
     /**
      * Creates the menu bar 
@@ -235,6 +236,7 @@ public class JSourceView extends JFrame implements ActionListener
     protected void saveResults() throws IOException
     {
         String s = JOptionPane.showInputDialog("Save to file");
+        
         if(s.length() > 0)
             tableModel_.saveToFile(s);
     }
@@ -342,9 +344,9 @@ public class JSourceView extends JFrame implements ActionListener
         return s.substring(s.lastIndexOf(pathSeparator_) + 1, s.length());
     }
 
-    //
+    //--------------------------------------------------------------------------
     //  INNER CLASSES
-    //
+    //--------------------------------------------------------------------------
     
     /** 
      * Scans directory
@@ -533,9 +535,11 @@ public class JSourceView extends JFrame implements ActionListener
                         Machine.scanLine(new LineScanner(line), linestatus);
                         
                         if(linestatus.getCountLine())
-                            filestats.setCodeLines(filestats.getCodeLines() + 1);
+                            filestats.setCodeLines(
+                                filestats.getCodeLines() + 1);
                         else
-                            filestats.setCommentLines(filestats.getCommentLines()+1);
+                            filestats.setCommentLines(
+                                filestats.getCommentLines() + 1);
                     }
                 }
         
@@ -543,7 +547,8 @@ public class JSourceView extends JFrame implements ActionListener
             }
             catch (Exception e)
             {
-                JSmartOptionPane.showExceptionMessageDialog(JSourceView.this, e);
+                JSmartOptionPane.showExceptionMessageDialog(
+                    JSourceView.this, e);
             }
             finally
             {

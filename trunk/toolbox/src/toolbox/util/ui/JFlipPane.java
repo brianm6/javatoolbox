@@ -86,6 +86,11 @@ public class JFlipPane extends JPanel
     private Hashtable       flippers_;
     private List            listeners_;
     
+    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
 	/**
 	 * Creates a JFlipPane with the given position
      * 
@@ -101,6 +106,9 @@ public class JFlipPane extends JPanel
         buildView();
 	} 
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /**
      * Builds the GUI
@@ -637,9 +645,9 @@ public class JFlipPane extends JPanel
     } 
 
     
-    //
-    // INNER CLASSES
-    //
+    //--------------------------------------------------------------------------
+    //  INNER CLASSES
+    //--------------------------------------------------------------------------
     
     /**
      * Handles expanding/collapsing of a flipper

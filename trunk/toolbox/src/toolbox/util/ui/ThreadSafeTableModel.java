@@ -17,7 +17,10 @@ import toolbox.util.concurrent.IBatchingQueueListener;
  * A thread safe table model that adds elements to the model on the 
  * EventDispatch thread. Updates that are made on an arbitrary thread can 
  * cause erratic repaint behavior and out of sync behavior between the 
- * model and view.
+ * model and view. To minimize thread creation (SwingUtilities.invokeLater())
+ * rows are added to the table in a batch like manned (=>1 rows) per invocation
+ * based on however many rows are availble to add. A blocking queue is used as
+ * the bridge between the table row producer and the table row consumer.
  */
 public class ThreadSafeTableModel extends DefaultTableModel 
     implements IBatchingQueueListener
@@ -26,13 +29,12 @@ public class ThreadSafeTableModel extends DefaultTableModel
     private static final Category logger_ = 
         Category.getInstance(ThreadSafeTableModel.class);
         
-    private BlockingQueue queue_;
+    private BlockingQueue       queue_;
     private BatchingQueueReader queueReader_;
     
-
-    //
-    //  CONSTRUCTORS
-    //
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a table model 
@@ -91,6 +93,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
         init();
     }
     
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
     
     /**
      * Inits table model
@@ -172,9 +177,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
         filewriter.close();
     }
 
-    //
-    //  INTERFACES
-    //
+    //--------------------------------------------------------------------------
+    //  Interfaces
+    //--------------------------------------------------------------------------
     
     /**
      * Interface for IBatchQueueListner
@@ -185,9 +190,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
         SwingUtilities.invokeLater(new AddRows(elements));
     }
 
-    //
-    //  INNER CLASSES
-    //
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
     
     /**
      * Runnable that adds a row to the table model

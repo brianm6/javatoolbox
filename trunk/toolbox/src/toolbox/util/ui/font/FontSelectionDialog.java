@@ -33,6 +33,9 @@ public class FontSelectionDialog extends JDialog
     private  JButton applyButton_;
     private  List    listeners_;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for FontSelectionDialog.
@@ -106,6 +109,9 @@ public class FontSelectionDialog extends JDialog
         buildView();
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
     
     /**
      * Builds the GUI
@@ -148,6 +154,9 @@ public class FontSelectionDialog extends JDialog
         listeners_.remove(listener);
     }
 
+    //--------------------------------------------------------------------------
+    //  Actions
+    //--------------------------------------------------------------------------
     
     /**
      * Action when the OK button is pressed

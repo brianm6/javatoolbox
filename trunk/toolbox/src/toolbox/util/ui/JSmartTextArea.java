@@ -28,6 +28,9 @@ public class JSmartTextArea extends JTextArea
     GradientPaint myGradient = new GradientPaint(0, 0, darkblue, 0, 50,
                                    darkrose);
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Constructor for JSmartTextArea.
@@ -99,6 +102,9 @@ public class JSmartTextArea extends JTextArea
         super(doc, text, rows, columns);
     }
     
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
     
     /**
      * Override paint to enable antialiasing
@@ -197,5 +203,4 @@ public class JSmartTextArea extends JTextArea
     {
         antiAlias_ = antiAlias;
     }
-
 }

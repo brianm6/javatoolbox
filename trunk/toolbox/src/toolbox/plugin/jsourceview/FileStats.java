@@ -17,12 +17,14 @@ public class FileStats
     /** Number of blank lines in file **/
     private int blankLines_;
     
+    
     /**
-     * No arg
+     * Constructor
      */
     public FileStats()
     {
     }
+    
     
     /**
      * Gets percentage of source code lines to total lines
@@ -31,13 +33,14 @@ public class FileStats
      */
     public int getPercent()
     {
-        if(codeLines_ > 0 && totalLines_ > 0)
+        if (codeLines_ > 0 && totalLines_ > 0)
             return (int)
-                (((float)codeLines_ / (float)
+                (( (float) codeLines_ / (float)
                     (totalLines_ - blankLines_)) * 100F);
         else
             return 0;
     }
+
 
     /**
      * Adds file stat to existing statistics
@@ -52,6 +55,7 @@ public class FileStats
         blankLines_   += filestats.getBlankLines();
     }
     
+    
     /**
      * Returns the blankLines.
      * 
@@ -61,6 +65,7 @@ public class FileStats
     {
         return blankLines_;
     }
+
 
     /**
      * Returns the codeLines.
@@ -72,6 +77,7 @@ public class FileStats
         return codeLines_;
     }
 
+
     /**
      * Returns the commentLines.
      * 
@@ -81,6 +87,7 @@ public class FileStats
     {
         return commentLines_;
     }
+
 
     /**
      * Returns the totalLines.
@@ -92,6 +99,7 @@ public class FileStats
         return totalLines_;
     }
 
+
     /**
      * Sets the blankLines.
      * 
@@ -99,8 +107,9 @@ public class FileStats
      */
     public void setBlankLines(int blankLines)
     {
-        this.blankLines_ = blankLines;
+        blankLines_ = blankLines;
     }
+
 
     /**
      * Sets the codeLines.
@@ -109,8 +118,9 @@ public class FileStats
      */
     public void setCodeLines(int codeLines)
     {
-        this.codeLines_ = codeLines;
+        codeLines_ = codeLines;
     }
+
 
     /**
      * Sets the commentLines.
@@ -119,8 +129,9 @@ public class FileStats
      */
     public void setCommentLines(int commentLines)
     {
-        this.commentLines_ = commentLines;
+        commentLines_ = commentLines;
     }
+
 
     /**
      * Sets the totalLines.
@@ -129,6 +140,6 @@ public class FileStats
      */
     public void setTotalLines(int totalLines)
     {
-        this.totalLines_ = totalLines;
+        totalLines_ = totalLines;
     }
 }

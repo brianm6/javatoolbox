@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,7 +22,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
 
 import org.apache.log4j.Category;
 import toolbox.jtail.config.IConfigManager;
@@ -80,9 +78,9 @@ public class JTail extends JFrame
         jtail.setVisible(true);
     }
 
-    //
+    //--------------------------------------------------------------------------
     //  CONSTRUCTORS
-    //
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for JTail.
@@ -104,9 +102,9 @@ public class JTail extends JFrame
         init();
     }
 
-    //
+    //--------------------------------------------------------------------------
     //  IMPLEMENTATION
-    //
+    //--------------------------------------------------------------------------    
     
     /** 
      * Initializes program
@@ -190,9 +188,11 @@ public class JTail extends JFrame
      */     
     protected void addTail(ITailPaneConfig config)
     {
+        String method = "[adTail] ";
+        
         try
         {
-            logger_.debug("[tail  ]\n" + config);
+            logger_.debug(method + "\n" + config);
             TailPane tailPane = new TailPane(config);
  
             JButton closeButton = tailPane.getCloseButton();
@@ -243,7 +243,7 @@ public class JTail extends JFrame
             Map.Entry entry = (Map.Entry) i.next();
             TailPane tailPane = (TailPane)entry.getValue();            
             ITailPaneConfig config = tailPane.getConfiguration();
-            configs = (ITailPaneConfig[])ArrayUtil.addElement(configs, config);    
+            configs = (ITailPaneConfig[])ArrayUtil.add(configs, config);    
         }
         jtailConfig_.setTailPaneConfigs(configs);
         
@@ -319,11 +319,10 @@ public class JTail extends JFrame
         return jtailConfig_.getDefaultFont();
     }
 
-
-    //
-    //  LISTENERS
-    //
-
+    //--------------------------------------------------------------------------
+    //  INNER CLASSES
+    //--------------------------------------------------------------------------
+    
     /**
      * Listener for the file explorer
      */
@@ -402,9 +401,9 @@ public class JTail extends JFrame
         }
     }
 
-    //
+    //--------------------------------------------------------------------------
     //  ACTIONS
-    //
+    //--------------------------------------------------------------------------
     
     /**
      * Action to exit the application. The configurations

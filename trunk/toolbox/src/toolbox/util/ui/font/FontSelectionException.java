@@ -5,6 +5,11 @@ package toolbox.util.ui.font;
  */
 public class FontSelectionException extends Exception
 {
+    /**
+     * Creates a FontSelectionException
+     * 
+     * @parm  msg  Exception message
+     */
     public FontSelectionException(String msg)
     {
         super(msg);

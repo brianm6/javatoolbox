@@ -77,9 +77,9 @@ public class FontSelectionPane extends JPanel
     /** Maximum number of characters permissibile in a valid font size */
     protected int maxNumCharsInFontSize_ = 3;
 
-    //
-    //  CONSTRUCTORS
-    //
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Like {@link #FontSelectionPane(java.awt.Font)}, except an initialFont of 
@@ -144,9 +144,9 @@ public class FontSelectionPane extends JPanel
         wireView();
     }
 
-    //
-    //  IMPLEMENTATION
-    //
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /**
      * Builds the GUI
@@ -489,9 +489,9 @@ public class FontSelectionPane extends JPanel
         fontSize_.setText(String.valueOf(size));
     }
 
-    //
-    //  INNER CLASSES
-    //
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
     
     /**
      * This class synchronizes font size value between the list containing

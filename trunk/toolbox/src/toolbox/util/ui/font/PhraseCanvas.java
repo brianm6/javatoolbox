@@ -19,6 +19,10 @@ public class PhraseCanvas extends Canvas
     protected String    phrase_;
     protected Font      font_;
     protected boolean   antialiasOn_;
+
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
             
     /**
      * Constructs a new PhraseCanvas with the supplied phrase, font, and 
@@ -36,6 +40,9 @@ public class PhraseCanvas extends Canvas
         antialiasOn_ = true;
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /** 
      * @see java.awt.Canvas#paint(java.awt.Graphics) 

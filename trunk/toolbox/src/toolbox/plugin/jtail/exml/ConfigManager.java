@@ -12,7 +12,7 @@ import electric.xml.Document;
 import electric.xml.Element;
 
 /**
- * enclosing_type
+ * Configuration manager for Electric XML persistence strategy
  */
 public class ConfigManager implements IConfigManager
 {

@@ -2,6 +2,7 @@ package toolbox.util.ui.font.test;
 
 import javax.swing.JFrame;
 import junit.framework.TestCase;
+import junit.textui.TestRunner;
 
 import org.apache.log4j.Category;
 import toolbox.util.ui.font.FontSelectionDialog;
@@ -23,7 +24,7 @@ public class FontSelectionDialogTest extends TestCase
      */
     public static void main(String[] args)
     {
-        junit.textui.TestRunner.run(FontSelectionDialogTest.class);
+        TestRunner.run(FontSelectionDialogTest.class);
     }
 
     /**

@@ -35,6 +35,7 @@ public class PreferencesDialog extends JDialog implements ActionListener
     /** Preferences will be changed on the config object directly **/
     private IJTailConfig config_;
     
+    
     /**
      * Constructor for PreferencesDialog.
      * 
@@ -73,6 +74,7 @@ public class PreferencesDialog extends JDialog implements ActionListener
         view.add(BorderLayout.SOUTH, buttonPanel);
         setContentPane(view);
     }
+
 
     /**
      * Builds the preferences panel
@@ -114,12 +116,15 @@ public class PreferencesDialog extends JDialog implements ActionListener
                 
         return prefPanel;
     }
+
     
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+     * @param  e  ActionEvent
      */
     public void actionPerformed(ActionEvent e)
     {
+        String method = "[actPrf] ";
+        
         String action = e.getActionCommand();
         
         if (action.equals(ACTION_OK))
@@ -131,9 +136,8 @@ public class PreferencesDialog extends JDialog implements ActionListener
         }
         else
         {
-            logger_.warn(
+            logger_.warn(method + 
                 "No handler in actionPerformed() for command " + action);
         }        
     }
-
 }

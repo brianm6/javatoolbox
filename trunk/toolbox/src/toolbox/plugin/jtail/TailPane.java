@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 
 import javax.swing.AbstractAction;
@@ -20,8 +18,7 @@ import javax.swing.JTextField;
 import org.apache.log4j.Category;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
-
-import toolbox.jtail.config.*;
+import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
 import toolbox.util.StringUtil;
@@ -63,6 +60,9 @@ public class TailPane extends JPanel
     /** Dirty filter flag **/
     private boolean filterDirty_;
     
+    //--------------------------------------------------------------------------
+    //  CONSTRUCTORS
+    //--------------------------------------------------------------------------    
         
     /** 
      * Creates a TAilPane with the given configuration
@@ -77,11 +77,9 @@ public class TailPane extends JPanel
         init();
     }
     
-    
-    //
-    //  MEATY STUFF
-    //
-    
+    //--------------------------------------------------------------------------
+    //  IMPLEMENTATION
+    //--------------------------------------------------------------------------    
     
     /**
      * Initializes the tail
@@ -173,11 +171,9 @@ public class TailPane extends JPanel
         return config_;
     }    
 
-
-    //
+    //--------------------------------------------------------------------------
     //  ACCESSORS/MUTATORS
-    //
-
+    //--------------------------------------------------------------------------
     
     /**
      * @return Close button
@@ -228,16 +224,23 @@ public class TailPane extends JPanel
         filterField_.setText(filter);
     }
 
+    //--------------------------------------------------------------------------
+    //  INTERFACES
+    //--------------------------------------------------------------------------
+    
+    public interface ITailPaneListener
+    {
+        public void newDataAvailable(TailPane tailPane);
+    }
 
-    //
+    //--------------------------------------------------------------------------
     //  INNER CLASSES
-    //
-
+    //--------------------------------------------------------------------------
     
     /**
      * Listener for tail
      */
-    class TailListener extends TailAdapter
+    private class TailListener extends TailAdapter
     {
         /**
          * Called when next line of input is available. When a new line is
@@ -257,7 +260,6 @@ public class TailPane extends JPanel
             }
         }
     }
-
     
     /**
      * Pops groups of messages off the queue (as many as can be read without 
@@ -267,7 +269,7 @@ public class TailPane extends JPanel
     {
         int lineNumber_ = 0;
         RE regExp_;
-        String oldFilter = "";
+        String oldFilter_ = "";
         
         /**
          * Creates a queue consumer for the given queue
@@ -287,8 +289,10 @@ public class TailPane extends JPanel
          */
         public void execute(Object[] objs)
         {
-            if (objs.length > 1)
-                logger_.debug("Lines popped: " + objs.length);
+            String method = "[execut] ";
+            
+            if (objs.length > 50)
+                logger_.debug(method + "Lines popped: " + objs.length);
             
             StringBuffer sb = new StringBuffer();
             String filter = filterField_.getText().trim();   
@@ -296,7 +300,7 @@ public class TailPane extends JPanel
             
             if (!byPassFilter)
             {
-                if(!filter.equals(oldFilter))
+                if(!filter.equals(oldFilter_))
                 {
                     try
                     {
@@ -307,7 +311,7 @@ public class TailPane extends JPanel
                         JSmartOptionPane.showExceptionMessageDialog(null, re);
                     }
                 
-                    oldFilter = filter;   
+                    oldFilter_ = filter;   
                 }
             }
 
@@ -349,11 +353,9 @@ public class TailPane extends JPanel
         }
     }
 
-   
-    //
-    //  GUI ACTIONS
-    //
-    
+    //--------------------------------------------------------------------------
+    //  ACTIONS
+    //--------------------------------------------------------------------------    
     
     /**
      * Starts/stops the tail
@@ -382,6 +384,8 @@ public class TailPane extends JPanel
          */
         public void actionPerformed(ActionEvent e)
         { 
+            String method = "[actPrf] ";
+            
             if (mode.equals(MODE_START))
             {
                 try
@@ -391,11 +395,11 @@ public class TailPane extends JPanel
                     putValue(Action.NAME, mode);
                     pauseButton_.setEnabled(true);
                     queueReader_.resetLines();
-                    logger_.debug("Started tail: " + tail_.getFile());                                                     
+                    logger_.debug(method + "Started tail: " + tail_.getFile());                                                     
                 }
                 catch(FileNotFoundException fnfe)
                 {
-                    logger_.error(e);
+                    logger_.error(method, fnfe);
                 }
             }
             else
@@ -404,7 +408,7 @@ public class TailPane extends JPanel
                 mode = MODE_START;
                 putValue(Action.NAME, mode);                
                 pauseButton_.setEnabled(false);
-                logger_.debug("Stopped tail: " + tail_.getFile());                
+                logger_.debug(method + "Stopped tail: " + tail_.getFile());                
             }
         }
     }
@@ -427,6 +431,7 @@ public class TailPane extends JPanel
             putValue(MNEMONIC_KEY, new Integer('P'));
             putValue(SHORT_DESCRIPTION, "Pause/Unpauses the tail");
         }
+
     
         /**
          * Pauses/unpauses the tail based on the current state
@@ -564,14 +569,5 @@ public class TailPane extends JPanel
             // no op since the checkbox is queried directly 
             // for its state            
         }
-    }
-    
-    //
-    //  INTERFACES
-    //
-    
-    public interface ITailPaneListener
-    {
-        public void newDataAvailable(TailPane tailPane);
     }
 }
