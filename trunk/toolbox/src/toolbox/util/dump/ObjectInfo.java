@@ -7,13 +7,19 @@ import java.lang.reflect.Field;
  */
 public class ObjectInfo
 {
-    /** Object being traversed */
+    /** 
+     * Object being traversed 
+     */
     private Object object_;
     
-    /** Traversal flag */
+    /** 
+     * Traversal flag 
+     */
     private boolean traversed_;
 
-    /** Field that the object as associated with in its parent class */
+    /** 
+     * Field that the object as associated with in its parent class 
+     */
     private Field field_;
     
     /**
@@ -57,7 +63,9 @@ public class ObjectInfo
     //--------------------------------------------------------------------------
     
     /**
-     * @return Sequence number for unique identification
+     * Returns the sequence number for unique identification
+     * 
+     * @return Sequence number
      */
     public String getSequenceNumber()
     {
@@ -65,7 +73,9 @@ public class ObjectInfo
     }
     
     /**
-     * @return True if the object has been traversed previously, false otherwise
+     * Returns true if the object has been traversed previously, false otherwise
+     * 
+     * @return Traversed flag
      */
     public boolean hasTraversed()
     {
@@ -73,7 +83,7 @@ public class ObjectInfo
     }
 
     /**
-     * Set the flag for whether the object has been traversed already
+     * Sets the flag for whether the object has been traversed already
      * 
      * @param  traversed  Traversed flag
      */
@@ -83,7 +93,9 @@ public class ObjectInfo
     }
     
     /**
-     * @return Field if any that was related to this object
+     * Returns the field if any that was related to this object
+     * 
+     * @return  Field
      */
     public Field getField()
     {
