@@ -5,18 +5,20 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.text.PlainDocument;
 
+import org.apache.log4j.Logger;
 import org.jedit.syntax.TextAreaDefaults;
 
 import toolbox.util.SwingUtil;
 
 /**
  * Modified JEditTextArea that supports a mouse wheel, tab size, and font
- * 
- * TODO: Add accelerators for cut/copy/paste/select all
  */
 public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     implements MouseWheelListener
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(JEditTextArea.class);
+        
     private int mouseWheelUnit_ = 3;
     private int tabSize_ = 4;
 
@@ -47,7 +49,26 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         
         // Set the tab size
         getDocument().putProperty(
-            PlainDocument.tabSizeAttribute, new Integer(tabSize_)); 
+            PlainDocument.tabSizeAttribute, new Integer(tabSize_));
+
+        // Some more useful keybindings...reuse actions from the popup menu            
+        getInputHandler().addKeyBinding(
+            "C+A", new JEditTextAreaPopupMenu.SelectAllAction(this));
+            
+        getInputHandler().addKeyBinding(
+            "C+V", new JEditTextAreaPopupMenu.PasteAction(this));
+            
+        getInputHandler().addKeyBinding(
+            "C+C", new JEditTextAreaPopupMenu.CopyAction(this));
+
+        getInputHandler().addKeyBinding(
+            "C+X", new JEditTextAreaPopupMenu.CutAction(this));
+            
+        getInputHandler().addKeyBinding(
+            "C+O", new JEditTextAreaPopupMenu.InsertFileAction(this));
+            
+        getInputHandler().addKeyBinding(
+            "C+S", new JEditTextAreaPopupMenu.SaveAsAction(this));
     }
     
     //--------------------------------------------------------------------------
