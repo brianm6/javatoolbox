@@ -1,9 +1,9 @@
 package toolbox.util.test;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 
@@ -16,6 +16,10 @@ public class ArrayUtilTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(ArrayUtilTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Starts the test case and runs the entire suite.
      *
@@ -27,21 +31,7 @@ public class ArrayUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * ArrayUtilTest constructor
-     *  
-     * @param aName String
-     */
-    public ArrayUtilTest(String aName)
-    {
-        super(aName);
-    }
-
-    //--------------------------------------------------------------------------
-    // Unit Tests
+    // Subset Unit Tests
     //--------------------------------------------------------------------------
 
     /**
@@ -65,7 +55,6 @@ public class ArrayUtilTest extends TestCase
             assertEquals("values don't match", d[i], e[i], 0);
     }
 
-
     /**
      * Test subset() for empty array
      */
@@ -77,7 +66,6 @@ public class ArrayUtilTest extends TestCase
         double[] e = ArrayUtil.subset(d, 0, 0);
         assertEquals("subset should be empty", 0, e.length);
     }
-
 
     /**
      * Test subset() for subset first half of array
@@ -99,7 +87,6 @@ public class ArrayUtilTest extends TestCase
             assertEquals("values don't match", d[i], e[i], 0);
     }
 
-
     /**
      * Test subset() for array of length 1
      */
@@ -112,7 +99,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals("subset should have one element", 1, e.length);
         assertEquals("values don't match", d[0], e[0], 0);
     }
-
 
     /**
      * Test subset() for subset second half of the array
@@ -140,7 +126,6 @@ public class ArrayUtilTest extends TestCase
         }
     }
 
-
     /**
      * Test subset(Object[]) for all
      */
@@ -159,7 +144,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals("second index is incorrect", "two", subset[1]);
     }
 
-
     /**
      * Test subset(Object[]) for empty array of objects
      */
@@ -171,7 +155,6 @@ public class ArrayUtilTest extends TestCase
         String[] e = (String[]) ArrayUtil.subset(d, 0, 0);
         assertEquals("subset should be empty", 0, e.length);
     }
-
 
     /**
      * Test subset(Object[]) for array of length 1
@@ -194,6 +177,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("values don't match", "c", e[0]);
     }
 
+    //--------------------------------------------------------------------------
+    // toString Unit Tests
+    //--------------------------------------------------------------------------
         
     /**
      * Tests toString()
@@ -217,7 +203,6 @@ public class ArrayUtilTest extends TestCase
 
     }
 
-
     /**
      * Tests toString() for empty array
      */
@@ -228,7 +213,6 @@ public class ArrayUtilTest extends TestCase
         String[] s = new String[0];
         logger_.info(ArrayUtil.toString(s));
     }
-    
 
     /**
      * Tests toString() for single element array with one per line = true
@@ -241,7 +225,6 @@ public class ArrayUtilTest extends TestCase
         logger_.info(ArrayUtil.toString(s, true));
         logger_.info(ArrayUtil.toString(s, false));        
     }
-
 
     /**
      * Tests toString() for one element per line
@@ -259,7 +242,10 @@ public class ArrayUtilTest extends TestCase
         String result   = ArrayUtil.toString(s, true);
         logger_.info("\n " + result);
     }
-
+    
+    //--------------------------------------------------------------------------
+    // IndexOf Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests indexOf() for an empty array 
@@ -275,7 +261,6 @@ public class ArrayUtilTest extends TestCase
         
         assertTrue("Array is empty", idx == -1);
     }
-
 
     /**
      * Tests indexOf() for an array of length 1
@@ -293,7 +278,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals("Found at wrong index", 0, idx);
     }
 
-
     /**
      * Tests indexOf() for an array of length 1 where obj not found
      */
@@ -309,7 +293,6 @@ public class ArrayUtilTest extends TestCase
         
         assertEquals("Should not have found a match", -1, idx);
     }
-
 
     /**
      * Tests indexOf() for an array of length > 1
@@ -328,7 +311,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals("Found at wrong index", 2, idx);
     }
 
-
     /**
      * Tests indexOf() for an array of length > 1 where obj not found
      */
@@ -346,6 +328,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("Should not have found a match", -1, idx);
     }
     
+    //--------------------------------------------------------------------------
+    // Contains Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests contains() for an empty array
@@ -357,7 +342,6 @@ public class ArrayUtilTest extends TestCase
         assertTrue("Should not be found in an empty array",
             !ArrayUtil.contains(new String[0], "blah"));
     }
- 
     
     /**
      * Tests contains() for object not found in an array of size one
@@ -370,7 +354,6 @@ public class ArrayUtilTest extends TestCase
             !ArrayUtil.contains(new String[] {"this"}, "dont match"));
     }
     
-    
     /**
      * Tests contains() for object not found in an array of size > one
      */
@@ -381,7 +364,6 @@ public class ArrayUtilTest extends TestCase
         assertTrue("Should not be found in an array with size > one", 
             !ArrayUtil.contains(new String[] {"one", "two", "three" }, "zero"));
     }    
-    
     
     /**
      * Tests contains() for object found in an array of size one
@@ -394,7 +376,6 @@ public class ArrayUtilTest extends TestCase
             ArrayUtil.contains(new String[] {"this"}, "this"));
     }
     
-    
     /**
      * Tests contains() for object found in an array of size > one
      */
@@ -405,29 +386,10 @@ public class ArrayUtilTest extends TestCase
         assertTrue("Should have found in an array with size > one", 
             ArrayUtil.contains(new String[] {"one", "two", "three" }, "two"));
     }    
-    
-    
-    /**
-     * Tests the isNullOrEmpty() method
-     */
-    public void testIsNullOrEmpty()
-    {
-        logger_.info("Running testIsNullOrEmpty...");
-        
-        String[] nullArray  = null;
-        String[] emptyArray = new String[0];
-        String[] oneArray   = new String[] { "zero" };
-        
-        assertTrue("Should have returned true for null array", 
-            ArrayUtil.isNullOrEmpty(nullArray));
-            
-        assertTrue("Should have returned true for empty array",
-            ArrayUtil.isNullOrEmpty(emptyArray));
-            
-        assertTrue("Should have returned false for non-empty array", 
-            !ArrayUtil.isNullOrEmpty(oneArray));            
-    }
-    
+
+    //--------------------------------------------------------------------------
+    // Concat Unit Tests
+    //--------------------------------------------------------------------------
 
     /*
      * concat(head, tail) test cases:
@@ -450,7 +412,6 @@ public class ArrayUtilTest extends TestCase
      * many     one
      * many     many
      */
-
     
     /**
      * Tests concat() for two empty arrays
@@ -469,9 +430,8 @@ public class ArrayUtilTest extends TestCase
             concatted.getClass().getComponentType());
     }
     
-    
     /**
-     * Tests merge() for an empty head and a tail containing one element 
+     * Tests concat() for two arrays, one of which is empty 
      */
     public void testConcatEmptyOne()
     {
@@ -487,7 +447,6 @@ public class ArrayUtilTest extends TestCase
             concatted.getClass().getComponentType());
         assertEquals("concatted array element incorrect", "one", concatted[0]);
     }
-
 
     /**
      * Tests concat() for an empty head and a tail containing many elements
@@ -512,7 +471,6 @@ public class ArrayUtilTest extends TestCase
                 concatted[i]);
     }
 
-
     /**
      * Tests concat() for an a head containing one element and an empty tail
      */
@@ -531,9 +489,8 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array element incorrect", "one", concatted[0]);
     }
 
-
     /**
-     * Tests merge() for an head containing many elements and an empty tail
+     * Tests concat() for an head containing many elements and an empty tail
      */
     public void testConcatManyEmpty()
     {
@@ -555,7 +512,6 @@ public class ArrayUtilTest extends TestCase
                 concatted[i]);
     }
  
- 
     /**
      * Tests concat() for a head and tail each containing one element 
      */
@@ -574,7 +530,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array element incorrect", "one", concatted[0]);
         assertEquals("concatted array element incorrect", "two", concatted[1]);
     }
-
 
     /**
      * Tests concat() for an head containing many elements and tail containing
@@ -604,7 +559,6 @@ public class ArrayUtilTest extends TestCase
             concatted[i]);
     }
 
-
     /**
      * Tests concat() for an tail containing many elements and head containing
      * one element
@@ -633,7 +587,6 @@ public class ArrayUtilTest extends TestCase
 
     }
 
-
     /**
      * Tests concat() for both head and tail containing many elements
      */
@@ -661,95 +614,10 @@ public class ArrayUtilTest extends TestCase
                 concatted[i+head.length]);
     }   
 
-    
-    /**
-     * Tests init(double)
-     */
-    public void testInitDouble()
-    {
-        logger_.info("Running testInitDouble...");
-                
-        double[] d = new double[10];
-        ArrayUtil.init(d, 99.9);
-            
-        for (int i=0; i<d.length; assertEquals(99.9d, d[i++], 0.0));
-    }
+    //--------------------------------------------------------------------------
+    // Insert/InsertAt Unit Tests
+    //--------------------------------------------------------------------------
 
-    
-    /**
-     * Tests init(int)
-     */
-    public void testInitInt()
-    {
-        logger_.info("Running testInitInt...");
-                
-        int[] d = new int[10];
-        ArrayUtil.init(d, 99);
-        
-        for (int i=0; i<d.length; assertEquals(99, d[i++]));
-    }
-    
-    
-    /**
-     * Tests toString(int[])
-     */
-    public void testToStringIntArray()
-    {
-        logger_.info("Running testToStringIntArray...");
-        
-        int[] i = new int[] {1, 2, 3, 4, 5};
-        logger_.info(ArrayUtil.toString(i));        
-    }
-
-
-    /**
-     * Tests toString(double[])
-     */
-    public void testToStringDoubleArray()
-    {
-        logger_.info("Running testToStringDoubleArray...");
-        
-        double[] d = new double[] {1.1, 2.2, 3.3, 4.4, 5.5};
-        logger_.info(ArrayUtil.toString(d));        
-    }
-
-
-    /**
-     * Tests add() for adding an object to an empty array
-     */
-    public void testAddToEmptyArray()
-    {
-        logger_.info("Running testAddToEmptyArray...");
-        
-        String[] arr = new String[0];
-        String obj = "foo";
-
-        String[] result = (String[])ArrayUtil.add(arr, obj);
-            
-        assertEquals(1, result.length);
-        assertEquals(obj, result[0]);    
-    }
-    
-    
-    /**
-     * Tests add() for adding an object to a non-empty array
-     */
-    public void testAddToArray()
-    {
-        logger_.info("Running testAddToArray...");
-        
-        String[] arr = new String[] { "one", "two", "three" };
-        String four = "four";        
-        String[] expected = new String[] {"one", "two", "three", four};
-
-
-        String[] result = (String[])ArrayUtil.add(arr, four);
-            
-        assertEquals(arr.length + 1, result.length);
-        assertTrue(ArrayUtil.equals(expected, result));    
-    }
-
-    
     /**
      * Tests insert() for inserting an object into an empty array
      */
@@ -765,7 +633,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals(1, result.length);
         assertEquals(obj, result[0]);    
     }
-    
     
     /**
      * Tests insert() for adding an object to a non-empty array
@@ -785,7 +652,6 @@ public class ArrayUtilTest extends TestCase
         assertTrue(ArrayUtil.equals(expected, result));    
     }
     
-    
     /**
      * Tests insertAt() for inserting an object into an empty array
      */
@@ -801,7 +667,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals(1, result.length);
         assertEquals(obj, result[0]);    
     }
-    
     
     /**
      * Tests insertAt() for adding an object to the front of a non-empty array
@@ -819,7 +684,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals(arr.length + 1, result.length);
         assertTrue(ArrayUtil.equals(expected, result));    
     }
-
     
     /**
      * Tests insertAt() for adding an object to the end of a non-empty array
@@ -837,7 +701,6 @@ public class ArrayUtilTest extends TestCase
         assertEquals(arr.length + 1, result.length);
         assertTrue(ArrayUtil.equals(expected, result));    
     }
-    
 
     /**
      * Tests insertAt() for adding an object to the middle of a non-empty array
@@ -854,5 +717,154 @@ public class ArrayUtilTest extends TestCase
             
         assertEquals(arr.length + 1, result.length);
         assertTrue(ArrayUtil.equals(expected, result));    
+    }
+
+    //--------------------------------------------------------------------------
+    // Remaining Unit Tests
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests init(double)
+     */
+    public void testInitDouble()
+    {
+        logger_.info("Running testInitDouble...");
+                
+        double[] d = new double[10];
+        ArrayUtil.init(d, 99.9);
+            
+        for (int i=0; i<d.length; assertEquals(99.9d, d[i++], 0.0));
+    }
+    
+    /**
+     * Tests init(int)
+     */
+    public void testInitInt()
+    {
+        logger_.info("Running testInitInt...");
+                
+        int[] d = new int[10];
+        ArrayUtil.init(d, 99);
+        
+        for (int i=0; i<d.length; assertEquals(99, d[i++]));
+    }
+    
+    /**
+     * Tests toString(int[])
+     */
+    public void testToStringIntArray()
+    {
+        logger_.info("Running testToStringIntArray...");
+        
+        int[] i = new int[] {1, 2, 3, 4, 5};
+        logger_.info(ArrayUtil.toString(i));        
+    }
+
+    /**
+     * Tests toString(double[])
+     */
+    public void testToStringDoubleArray()
+    {
+        logger_.info("Running testToStringDoubleArray...");
+        
+        double[] d = new double[] {1.1, 2.2, 3.3, 4.4, 5.5};
+        logger_.info(ArrayUtil.toString(d));        
+    }
+
+    /**
+     * Tests add() for adding an object to an empty array
+     */
+    public void testAddToEmptyArray()
+    {
+        logger_.info("Running testAddToEmptyArray...");
+        
+        String[] arr = new String[0];
+        String obj = "foo";
+
+        String[] result = (String[])ArrayUtil.add(arr, obj);
+            
+        assertEquals(1, result.length);
+        assertEquals(obj, result[0]);    
+    }
+    
+    /**
+     * Tests add() for adding an object to a non-empty array
+     */
+    public void testAddToArray()
+    {
+        logger_.info("Running testAddToArray...");
+        
+        String[] arr = new String[] { "one", "two", "three" };
+        String four = "four";        
+        String[] expected = new String[] {"one", "two", "three", four};
+
+
+        String[] result = (String[])ArrayUtil.add(arr, four);
+            
+        assertEquals(arr.length + 1, result.length);
+        assertTrue(ArrayUtil.equals(expected, result));    
+    }
+    
+    /**
+     * Tests equals() for by array reference and by array's contents reference
+     * and value.
+     */
+    public void testEquals()
+    {
+        logger_.info("Running testEquals...");
+        
+        String[] a = new String[] { "a", "b", "c"};
+        String[] b = new String[] { "1", "2" };
+        String[] c = new String[] { "alpha", "beta", "gamma" };
+        
+        Object x1 = new Integer(1);
+        Object x2 = new Boolean(false);
+        Object x3 = new Character('x');
+        
+        Object[] d1 = new Object[] { x1, x2, x3 };
+        Object[] d2 = new Object[] { x1, x2, x3 };
+        
+        Object y1 = new Integer(1);
+        Object y2 = new Boolean(false);
+        Object y3 = new Character('x');
+        
+        Object[] e1 = new Object[] { x1, x2, x3 };
+        Object[] e2 = new Object[] { y1, y2, y3 };
+                 
+        // Equal by reference: a == a
+        assertTrue(ArrayUtil.equals(a, a));
+        
+        // Not equal by length: a.length != b.length
+        assertFalse(ArrayUtil.equals(a,b));
+        
+        // Not equals by content: a[i] != c[i] or !a[i].equals(c[i])
+        assertFalse(ArrayUtil.equals(a,c));
+        
+        // Equal by contents' reference: d1[i] == d2[i]
+        assertTrue(ArrayUtil.equals(d1, d2));
+        
+        // Equal by contents' values: e1[i].equals(e2[i])
+        assertTrue(ArrayUtil.equals(e1, e2));        
+    }
+    
+    /**
+     * Tests the isNullOrEmpty() method
+     */
+    public void testIsNullOrEmpty()
+    {
+        logger_.info("Running testIsNullOrEmpty...");
+        
+        String[] nullArray  = null;
+        String[] emptyArray = new String[0];
+        String[] oneArray   = new String[] { "zero" };
+        
+        assertTrue("Should have returned true for null array", 
+            ArrayUtil.isNullOrEmpty(nullArray));
+            
+        assertTrue("Should have returned true for empty array",
+            ArrayUtil.isNullOrEmpty(emptyArray));
+            
+        assertTrue("Should have returned false for non-empty array", 
+            !ArrayUtil.isNullOrEmpty(oneArray));            
     }
 }
