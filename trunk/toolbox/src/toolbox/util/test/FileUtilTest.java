@@ -4,6 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 
 import toolbox.util.ArrayUtil;
@@ -33,6 +34,7 @@ public class FileUtilTest extends TestCase
      */
     public static void main(String[] args)
     {
+        BasicConfigurator.configure();
         TestRunner.run(FileUtilTest.class);
     }
 
