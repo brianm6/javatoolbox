@@ -1,23 +1,23 @@
 package toolbox.util.io;
 
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
+import toolbox.util.ArrayUtil;
 
 /**
  * MulticastOutputStream is an OutputStream that has multicast behavior. 
  * Multiple streams can be added to a multicast group so that writes to the 
  * MulticastOutputStream will be channeled to each stream in the group.
+ * 
+ * @see toolbox.util.io.test.MulticastOutputStreamTest
  */
-public class MulticastOutputStream extends FilterOutputStream
+public class MulticastOutputStream extends OutputStream
 {
     /** 
      * Members of the multicast group of streams 
      */
-    private List streams_;
+    private OutputStream[] streams_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -28,7 +28,7 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public MulticastOutputStream()
     {
-        this(null);
+        streams_ = new OutputStream[0];
     }
     
     /**
@@ -38,8 +38,7 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public MulticastOutputStream(OutputStream out)
     {
-        super(out);
-        streams_ = new ArrayList();
+        streams_ = new OutputStream[0];
         addStream(out);
     }
 
@@ -54,7 +53,7 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public synchronized void addStream(OutputStream out)
     {
-        streams_.add(out);
+        streams_ = (OutputStream[]) ArrayUtil.add(streams_, out);
     }
 
     /**
@@ -64,7 +63,7 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public synchronized void removeStream(OutputStream out)
     {
-        streams_.remove(out);
+        streams_ = (OutputStream[]) ArrayUtil.remove(streams_, out);
     }
 
     //--------------------------------------------------------------------------
@@ -79,8 +78,7 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public synchronized void write(int b) throws IOException
     {
-        for (Iterator e = streams_.iterator(); e.hasNext();)
-            ((OutputStream) e.next()).write(b);
+        for (int i=0; i<streams_.length; streams_[i++].write(b));
     }
 
     /**
@@ -90,8 +88,7 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public synchronized void flush() throws IOException
     {
-        for (Iterator e = streams_.iterator(); e.hasNext();)
-            ((OutputStream) e.next()).flush();
+        for (int i=0; i<streams_.length; streams_[i++].flush());
     }
 
     /**
@@ -101,7 +98,6 @@ public class MulticastOutputStream extends FilterOutputStream
      */
     public synchronized void close() throws IOException
     {
-        for (Iterator e = streams_.iterator(); e.hasNext();)
-            ((OutputStream) e.next()).close();
+        for (int i=0; i<streams_.length; streams_[i++].close());        
     }
 }
