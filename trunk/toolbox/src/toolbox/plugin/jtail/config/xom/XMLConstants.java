@@ -6,12 +6,7 @@ package toolbox.plugin.jtail.config.xom;
 public interface XMLConstants
 {
     // JTail XML element
-    String NODE_JTAIL    = "JTail";
-    String ATTR_HEIGHT   = "height";
-    String ATTR_WIDTH    = "width";
-    String ATTR_X        = "x";
-    String ATTR_Y        = "y";
-    String ATTR_DIR      = "dir";
+    String NODE_JTAIL = "JTail";
         
     // Defaults XML element
     String NODE_DEFAULTS = "Defaults";
@@ -26,10 +21,7 @@ public interface XMLConstants
     String     ATTR_FILENAME  = "name";
     
     // Font XML element
-    String NODE_FONT        = "Font";
-    String ATTR_FAMILY      = "family";
-    String ATTR_STYLE       = "style";        
-    String ATTR_SIZE        = "size";
+    String NODE_FONT = "Font";
 
     // Regular expression XML element
     String NODE_REGULAR_EXPRESSION = "Regex";
