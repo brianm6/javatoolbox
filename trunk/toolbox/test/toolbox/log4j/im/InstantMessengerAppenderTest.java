@@ -3,9 +3,9 @@ package toolbox.log4j.im;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 import toolbox.junit.testcase.StandaloneTestCase;
 import toolbox.util.ThreadUtil;
@@ -46,9 +46,8 @@ public class InstantMessengerAppenderTest extends TestCase
         InstantMessengerAppender imAppender = new InstantMessengerAppender();
         
         imAppender.setMessenger("null");
-        imAppender.setThreshold(Priority.INFO);
+        imAppender.setThreshold(Level.INFO);
         root.addAppender(imAppender);
-
         root.info("root info");
         root.debug("root debug");
         root.warn("root warning");
