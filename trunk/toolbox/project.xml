@@ -94,7 +94,7 @@
     
     
     <dependency>
-      <id>xml-apis</id>
+      <id>xml-apis-override</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -119,7 +119,7 @@
     
     <dependency>
       <id>3dlf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.markus-hillenbrand.de/3dlf</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -129,7 +129,7 @@
           
     <dependency>
       <id>acrobat</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.adobe.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -139,7 +139,7 @@
 
     <dependency>
       <id>alloy</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.incors.com/lookandfeel</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -163,7 +163,7 @@
 
     <dependency>
       <id>apple-mrj</id>
-      <version>LATEST</version>
+      <version></version>
       <url/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -173,7 +173,7 @@
 
     <dependency>
       <id>avalon-framework</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://avalon.apache.org/framework</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -183,7 +183,7 @@
 
     <dependency>
       <id>batik</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://xml.apache.org/batik</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -193,7 +193,7 @@
 
     <dependency>
       <id>bsh</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.beanshell.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -203,7 +203,7 @@
 
     <dependency>
       <id>calphahtml</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.netcomuk.co.uk/~offshore</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -213,7 +213,7 @@
 
     <dependency>
       <id>classworlds</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://classworlds.codehaus.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -223,7 +223,7 @@
 
     <dependency>
       <id>colt</id>
-      <version>LATEST</version>
+      <version></version>
       <url></url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -233,7 +233,7 @@
     
     <dependency>
       <id>commons-beanutils</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/commons/beanutils</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -243,7 +243,7 @@
             
     <dependency>
       <id>commons-cli</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/commons/cli</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -253,7 +253,7 @@
 
     <dependency>
       <id>commons-codec</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/commons/codec</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -263,7 +263,7 @@
 
     <dependency>
       <id>commons-collections</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/commons/collections</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -273,7 +273,7 @@
 
     <dependency>
       <id>commons-dbcp</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/commons/dbcp</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -282,8 +282,8 @@
     </dependency>
 
     <dependency>
-      <id>commons-io</id>
-      <version>LATEST</version>
+      <id>commons-io-override</id>
+      <version></version>
       <url>http://jakarta.apache.org/commons/io</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -292,8 +292,8 @@
     </dependency>
                           
     <dependency>
-      <id>commons-lang</id>
-      <version>LATEST</version>
+      <id>commons-lang-override</id>
+      <version></version>
       <url>http://jakarta.apache.org/commons/lang</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -302,8 +302,8 @@
     </dependency>
 
     <dependency>
-      <id>commons-logging</id>
-      <version>LATEST</version>
+      <id>commons-logging-override</id>
+      <version></version>
       <url>http://jakarta.apache.org/commons/logging</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -313,7 +313,7 @@
 
     <dependency>
       <id>commons-math</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/commons/math</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -322,8 +322,8 @@
     </dependency>
 
     <dependency>
-      <id>commons-net</id>
-      <version>LATEST</version>
+      <id>commons-net-override</id>
+      <version></version>
       <url>http://jakarta.apache.org/commons/net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -333,7 +333,7 @@
 
     <dependency>
       <id>commons-pool</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/commons/pool</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -343,7 +343,7 @@
             
     <dependency>
       <id>cryptix32</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.cryptix.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -353,7 +353,7 @@
 
     <dependency>
       <id>cryptix32-pgp</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.cryptix.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -363,7 +363,7 @@
 
     <dependency>
       <id>cvslib</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://javacvs.netbeans.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -373,7 +373,7 @@
 
     <dependency>
       <id>fhlaf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://fhlaf.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -383,7 +383,7 @@
     
     <dependency>
       <id>fop</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://xml.apache.org/fop</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -393,7 +393,7 @@
 
     <dependency>
       <id>forms</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://forms.dev.java.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -403,14 +403,14 @@
       
     <dependency>
       <id>hamsam</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://hamsam.sf.net</url>
       <properties/>
     </dependency>
 
     <dependency>
       <id>hippolf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.diod.se/product_hippolf.asp</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -420,7 +420,7 @@
 
     <dependency>
       <id>hsqldb</id>
-      <version>1.7.2.2</version>
+      <version></version>
       <url>http://www.hsqldb.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -430,7 +430,7 @@
 
     <dependency>
       <id>infonodelf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://sourceforge.net/projects/infonode/</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -440,7 +440,7 @@
 
     <dependency>
       <id>jakarta-oro</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/oro</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -450,7 +450,7 @@
 
     <dependency>
       <id>jakarta-regexp</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jakarta.apache.org/regexp</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -460,7 +460,7 @@
 
     <dependency>
       <id>jalopy</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jalopy.sf.net</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -470,7 +470,7 @@
 
     <dependency>
       <id>jarjar</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jarjar.sf.net</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -480,7 +480,7 @@
       
     <dependency>
       <id>janino</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.janino.net</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -490,14 +490,14 @@
 
     <dependency>
       <id>javassist</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.csg.is.titech.ac.jp/~chiba/javassist</url>      
       <properties/>
     </dependency>
 
     <dependency>
       <id>jaxen</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jaxen.codehaus.org</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -507,7 +507,7 @@
 
     <dependency>
       <id>jcommon</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.jfree.org/jcommon</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -517,7 +517,7 @@
 
     <dependency>
       <id>jdom</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.jdom.org</url>      
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -527,7 +527,7 @@
 
     <dependency>
       <id>jedit-syntax</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jedit-syntax.sourceforge.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -537,7 +537,7 @@
 
     <dependency>
       <id>jemmy</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jemmy.netbeans.org</url>
       <properties>
         <jnlp.jar>false</jnlp.jar>
@@ -546,7 +546,7 @@
 
     <dependency>
       <id>jfreechart</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.jfree.org/jfreechart</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -556,7 +556,7 @@
 
     <dependency>
       <id>jode</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jode.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -566,7 +566,7 @@
 
     <dependency>
       <id>jreversepro</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jrevpro.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -576,7 +576,7 @@
 
     <dependency>
       <id>jsap</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://sourceforge.net/projects/jsap</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -586,7 +586,7 @@
 
     <dependency>
       <id>jtidy</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jtidy.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -596,7 +596,7 @@
 
     <dependency>
       <id>jung</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://jung.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -605,8 +605,8 @@
     </dependency>
       
     <dependency>
-      <id>junit</id>
-      <version>3.8.1</version>
+      <id>junit-override</id>
+      <version></version>
       <url>http://www.junit.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -616,14 +616,14 @@
 
     <dependency>
       <id>junit-addons</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.sf.net/projects/junit-addons</url>
       <properties/>
     </dependency>
 
     <dependency>
       <id>kunststoff</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.incors.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -633,7 +633,7 @@
 
     <dependency>
       <id>l2fprod-common</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://l2fprod-common.dev.java.net</url> 
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -643,7 +643,7 @@
 
     <dependency>
       <id>liquidlf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://liquidlnf.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -653,7 +653,7 @@
 
     <dependency>
       <id>log4j</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://logging.apache.org/log4j</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -663,7 +663,7 @@
 
     <dependency>
       <id>looks</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.jgoodies.com/freeware/looks</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -673,7 +673,7 @@
 
     <dependency>
       <id>matra</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://matra.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -683,7 +683,7 @@
               
     <dependency>
       <id>metouia</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://mlf.sf.net/</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -693,7 +693,7 @@
 
     <dependency>
       <id>multivalent</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://multivalent.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -703,7 +703,7 @@
 
     <dependency>
       <id>napkinlf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://napkinlaf.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -713,7 +713,7 @@
 
     <dependency>
       <id>oyoahalf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.oyoaha.com/lookandfeel</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -723,7 +723,7 @@
 
     <dependency>
       <id>pollo</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://pollo.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -733,7 +733,7 @@
 
     <dependency>
       <id>prefuse</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://prefuse.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -743,7 +743,7 @@
       
     <dependency>
       <id>qdox</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://qdox.codehaus.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -753,7 +753,7 @@
     
     <dependency>
       <id>skinlf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>https://skinlf.dev.java.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -763,7 +763,7 @@
 
     <dependency>
       <id>squarenesslf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://squareness.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -773,7 +773,7 @@
 
     <dependency>
       <id>statcvs</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://statcvs.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -783,7 +783,7 @@
 
     <dependency>
       <id>tinylaf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.muntjak.de/hans/java/tinylaf</url>  
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -793,7 +793,7 @@
 
     <dependency>
       <id>toniclf</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.geocities.com/shfarr</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -803,7 +803,7 @@
 
     <dependency>
       <id>util-concurrent</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.mathcs.emory.edu/dcl/util</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -813,7 +813,7 @@
     
     <dependency>
       <id>webwindow</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.javio.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -823,7 +823,7 @@
 
     <dependency>
       <id>xercesImpl</id>
-      <version>VERSION</version>
+      <version></version>
       <url>http://xml.apache.org/xerces2-j</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -833,7 +833,7 @@
 
     <dependency>
       <id>xep</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.renderx.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -843,7 +843,7 @@
 
     <dependency>
       <id>xom</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://xom.dev.java.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -853,7 +853,7 @@
 
     <dependency>
       <id>xplookandfeel</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.stefan-krause.com/java</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -863,7 +863,7 @@
 
     <dependency>
       <id>xt</id>
-      <version>LATEST</version>
+      <version></version>
       <url>http://www.jclark.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
