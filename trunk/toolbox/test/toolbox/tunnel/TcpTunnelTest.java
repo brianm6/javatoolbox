@@ -1,6 +1,7 @@
 package toolbox.tunnel;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,16 +16,24 @@ import junit.textui.TestRunner;
 
 import nu.xom.Element;
 
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.RandomUtil;
 import toolbox.util.SocketUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.formatter.XMLFormatter;
+import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.StringOutputStream;
+import toolbox.util.io.throughput.DefaultThroughputMonitor;
+import toolbox.util.io.throughput.ThroughputEvent;
+import toolbox.util.io.throughput.ThroughputListener;
+import toolbox.util.io.throughput.ThroughputMonitor;
+import toolbox.util.net.AsyncConnectionHandler;
 import toolbox.util.net.DefaultSocketServerListener;
 import toolbox.util.net.EchoConnectionHandler;
 import toolbox.util.net.SocketServer;
@@ -90,7 +99,7 @@ public class TcpTunnelTest extends TestCase
      * 
      * @throws Exception on error.
      */
-    public void xxxtestTcpTunnel() throws Exception 
+    public void testTcpTunnel() throws Exception 
     {   
         logger_.info("Running testTcpTunnel...");
         
@@ -304,6 +313,187 @@ public class TcpTunnelTest extends TestCase
         
         assertEquals(StringUtils.chomp(message), lines[0]);
     }
+
+    
+    /**
+     * Tests the TcpTunnel for an end to end scenario of sending/receiving
+     * data though the tunnel.
+     * 
+     * @throws Exception on error.
+     */
+    public void testTcpTunnel_StressTest() throws Exception 
+    {   
+        logger_.info("Running testTcpTunnel_StressTest...");
+        
+        // Socket Server =======================================================
+        
+        // Setup server config...
+        SocketServerConfig serverConfig = 
+            new SocketServerConfig(
+                "TcpTunnelServer",
+                SocketUtil.getFreePort(),
+                EchoConnectionHandler.class.getName());
+
+        // Create server listener...
+        DefaultSocketServerListener serverListener = 
+            new DefaultSocketServerListener();
+
+        // Create server and start...
+        SocketServer server = new SocketServer(serverConfig);
+        
+        // Mute the handler...
+        AsyncConnectionHandler async = (AsyncConnectionHandler)
+            server.getConnectionHandler();
+        
+        EchoConnectionHandler handler = (EchoConnectionHandler) 
+            async.getConnectionHandler();
+        
+        handler.setQuiet(true);
+        
+        server.addSocketServerListener(serverListener);
+        server.start();
+        serverListener.waitForStart();        
+        
+        logger_.info("Socket server started!");    
+
+        // Tunnel ==============================================================
+        
+        // Setup tunnel to server...
+        int tunnelPort = SocketUtil.getFreePort();
+        
+        TcpTunnel tunnel = 
+            new TcpTunnel(
+                tunnelPort, 
+                "localhost", 
+                serverConfig.getServerPort());
+        
+        OutputStream ab = new NullOutputStream();
+        tunnel.setIncomingSink(ab);
+        
+        MonitoredOutputStream ba = 
+            new MonitoredOutputStream(new NullOutputStream());
+        
+        tunnel.setOutgoingSink(ba);
+        ThroughputMonitor monitor = new DefaultThroughputMonitor();
+        
+        monitor.addThroughputListener(new ThroughputListener()
+        {
+            public void currentThroughput(ThroughputEvent event)
+            {
+                logger_.info("Throughput: " + event.getThroughput());
+            }
+        });
+        
+        monitor.setMonitoringThroughput(true);
+        ba.setThroughputMonitor(monitor);
+        
+        DefaultTcpTunnelListener tunnelListener =
+            new DefaultTcpTunnelListener();
+        
+        tunnel.addTcpTunnelListener(tunnelListener);
+        tunnel.start();
+        tunnelListener.waitForStarted();
+    
+        logger_.info("Tunnel started!");
+
+        // Client ==============================================================
+        
+        // Setup client
+        Socket socket = new Socket("localhost", tunnelPort);
+        
+        final PrintWriter pw = 
+            new PrintWriter(
+                new BufferedWriter(
+                new OutputStreamWriter(
+                    socket.getOutputStream())));
+            
+        final BufferedReader br = 
+            new BufferedReader(
+                new InputStreamReader(
+                    socket.getInputStream()));
+
+        final String message = RandomUtil.nextString(100000); //"Hello";
+        
+        // Send some data
+        write(pw, message);
+        
+        // Send of data should trigger tunnel to connect to server
+        serverListener.waitForAccept();
+        
+        // Read result
+        String response = read(br);
+        assertEquals(message, response);
+        
+        class WriterThread implements Runnable {
+            
+            public void run()
+            {
+                for (int i = 1; i < 100; i++) 
+                {
+                    writeStress(pw, message);//RandomUtil.nextString(100000));
+                }
+                
+                logger_.debug("Writer thread done.");
+            }
+        }
+
+        class ReaderThread implements Runnable {
+            
+            public void run()
+            {
+                try
+                {
+                    String response = null;
+                    while ( (response = read(br)) != null);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                finally 
+                {
+                    logger_.debug("Reader thread done.");
+                }
+                
+            }
+        }
+
+        Thread w = new Thread(new WriterThread());
+        Thread r = new Thread(new ReaderThread());
+        
+        w.start();
+        r.start();
+        w.join();
+        write(pw, "terminate");
+        
+        r.join();
+        
+        //for (int i = 1; i < 20; i++) {
+        //    writeStress(pw, RandomUtil.nextString(100000));
+        //    response = read(br);
+        //}
+        
+        // Tear down
+        
+
+        //logger_.info(StringUtil.addBars("a->b:\n" + ab));
+        //logger_.info(StringUtil.addBars("b->a:\n" + ba));
+        
+        tunnel.stop();
+        server.stop();
+        
+        // Make sure count of bytes send/received adds up
+        //int r = tunnelListener.getTotalBytesRead();
+        //int w = tunnelListener.getTotalBytesWritten();
+        
+        logger_.info("Bytes read   : " + tunnelListener.getTotalBytesRead());
+        logger_.info("Bytes written: " + tunnelListener.getTotalBytesWritten());
+        
+        //int len = message.length() + "terminate".length() + "\r\n".length() * 2;
+        //assertEquals(len, r);
+        //assertEquals(len, w);
+    }
+    
     
     //--------------------------------------------------------------------------
     // Helpers
@@ -317,10 +507,19 @@ public class TcpTunnelTest extends TestCase
      */
     private void write(PrintWriter pw, String msg)
     {
-        logger_.info("a->b " + msg);
+        //logger_.info("a->b " + msg);
         pw.println(msg);
         pw.flush();
         ThreadUtil.sleep(1000);
+    }
+    
+
+    private void writeStress(PrintWriter pw, String msg)
+    {
+        //logger_.info("a->b " + msg);
+        pw.println(msg);
+        pw.flush();
+        //ThreadUtil.sleep(1000);
     }
     
     
@@ -332,7 +531,7 @@ public class TcpTunnelTest extends TestCase
      */
     private void write(OutputStream os, String msg) throws IOException
     {
-        logger_.info("a->b " + msg.length() + " - " + msg);
+        //logger_.info("a->b " + msg.length() + " - " + msg);
         os.write(msg.getBytes());
         os.flush();
         ThreadUtil.sleep(1000);
@@ -349,7 +548,7 @@ public class TcpTunnelTest extends TestCase
     public String read(BufferedReader br) throws Exception
     {
         String msg = br.readLine();
-        logger_.info("a<-b " + msg);
+        //logger_.info("a<-b " + msg);
         return msg;
     }
 
