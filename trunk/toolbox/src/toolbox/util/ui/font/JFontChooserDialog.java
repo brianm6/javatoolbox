@@ -127,7 +127,7 @@ public class JFontChooserDialog extends JDialog
     {
         this(owner, "Select Font", modal);
         fontChooser_.setSelectedFont(defaultFont);
-        fontChooser_.setAntiAlias(antiAlias);
+        fontChooser_.setAntiAliased(antiAlias);
     }
 
 
@@ -171,7 +171,7 @@ public class JFontChooserDialog extends JDialog
         super(owner, "Select Font", modal);
         buildView();
         fontChooser_.setSelectedFont(defaultFont);
-        fontChooser_.setAntiAlias(antialiased);
+        fontChooser_.setAntiAliased(antialiased);
     }
 
     //--------------------------------------------------------------------------
