@@ -14,13 +14,46 @@ import toolbox.util.io.transferred.TransferredMonitor;
 import toolbox.util.service.Nameable;
 
 /**
- * MonitoredOutputStream supports the following features.
+ * MonitoredOutputStream is a stream decorator that enables the monitoring of
+ * various stream related events and activities. These include:
  * <ul>
- *   <li>Monitoring of throughput in bytes/interval (observable)
- *   <li>Monitoring of bytes transferred every x number of bytes (observable)
- *   <li>Monitoring of the total bytes written (polling)
- *   <li>Monitoring of significant stream events (close, flush,etc) (observable)
+ *   <li>Stream throughput in bytes/second or any time interval
+ *   <li>Bytes transferred every x number of bytes
+ *   <li>Total bytes written
+ *   <li>Stream close() and flush() operations
  * </ul>
+ * <p>
+ * <b>Example:</b>
+ * <pre class="snippet">
+ * 
+ *   FileOutputStream myStream = new FileOutputStream("foo.xml");
+ *   MonitoredOutputStream mos = new MonitoredOutputStream(myStream);
+ *  
+ *   // Notification of close() and flush()
+ *   mos.addOutputStreamListener(new MyOutputStreamListener());
+ * 
+ *   // Notification every time 500 bytes are written to the stream
+ *   mos.getTransferredMonitor().setSampleLength(500);
+ *   mos.getTransferredMonitor().addTransferredListener(new MyTransferredListener());
+ * 
+ *   // Notification of the streams throughput in bytes/second
+ *   mos.getThroughputMonitor().setSampleInterval(1000);
+ *   mos.getThroughputMonitor().addThroughputListener(new MyThroughputListener());
+ * 
+ *   // Have to turn the throughput monitoring on 
+ *   mos.getThroughputMonitor().setMonitoringThroughput(true);
+ * 
+ *   // Write activity
+ *   myStream.write("this is a test".getBytes());
+ *   myStream.flush();
+ * 
+ *   // Get count of bytes written to the stream directly
+ *   System.out.println("Bytes written: " + mos.getCount());
+ * 
+ *   // Cleanup
+ *   mos.getThroughputMonitor.setMonitoringThroughput(false);
+ *   mos.close();
+ * </pre>
  * 
  * @see toolbox.util.io.MonitoredInputStream
  */
@@ -40,17 +73,17 @@ public class MonitoredOutputStream extends FilterOutputStream
     private String name_;
 
     /**
-     * Output stream listeners.
+     * Listeners interested in close and flush events.
      */
     private OutputStreamListener[] listeners_;
     
     /**
-     * Stream throughput monitor.
+     * Monitor for the throughput of bytes written to this stream.
      */
     private ThroughputMonitor throughputMonitor_;
 
     /**
-     * Bytes transferred monitor.
+     * Monitor for the number of bytes written to this stream.
      */
     private TransferredMonitor transferredMonitor_;
 
@@ -115,13 +148,19 @@ public class MonitoredOutputStream extends FilterOutputStream
     
     
     /**
-     * Causes firing of stream close event.
+     * Causes firing of stream close event and turns monitoring off if the
+     * client forgot.
      * 
      * @see java.io.FilterOutputStream#close()
      */
     public void close() throws IOException
     {
         super.close();
+        
+        // Turn off monitoring if user forgot.
+        if (getThroughputMonitor().isMonitoringThroughput())
+            getThroughputMonitor().setMonitoringThroughput(false);
+        
         fireStreamClosed();
     }
     
