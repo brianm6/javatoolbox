@@ -40,16 +40,25 @@ public class PluginHostManager
     private static final Logger logger_ = 
         Logger.getLogger(PluginHostManager.class);
     
-    public static final String HOST_TABBED = 
+    /**
+     * Tab panel plugin host.
+     */
+    public static final String PLUGIN_HOST_TABBED = 
         "toolbox.workspace.host.TabbedPluginHost";
     
-    public static final String HOST_DESKTOP = 
+    /**
+     * Internal frame plugin host.
+     */
+    public static final String PLUGIN_HOST_DESKTOP = 
         "toolbox.workspace.host.DesktopPluginHost";
 
-    public static final String[] hostPlugins_ = new String[] 
+    /**
+     * Array of all know plugin host types.
+     */
+    public static final String[] pluginHosts_ = new String[] 
     { 
-        HOST_TABBED, 
-        HOST_DESKTOP
+        PLUGIN_HOST_TABBED, 
+        PLUGIN_HOST_DESKTOP
     }; 
     
     //--------------------------------------------------------------------------
@@ -160,12 +169,12 @@ public class PluginHostManager
     {
         JMenu menu = new JSmartMenu("Plugin Host");
         
-        for (int i=0; i<hostPlugins_.length; i++)
+        for (int i=0; i<pluginHosts_.length; i++)
         {
             try
             {
                 PluginHost pluginHost = (PluginHost) 
-                    Class.forName(hostPlugins_[i]).newInstance();
+                    Class.forName(pluginHosts_[i]).newInstance();
                 
                 JMenuItem menuItem = new JSmartMenuItem(
                     new ActivatePluginHostAction(pluginHost));
