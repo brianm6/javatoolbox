@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="lib" path="debug"/>
     <classpathentry kind="src" path="src"/>
+    <classpathentry kind="src" path="debug"/>
     <classpathentry kind="lib" path="resources"/>
+    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="lib/junit.jar" sourcepath="/toolbox/lib/src/junit-src.zip"/>
     <classpathentry kind="lib" path="lib/log4j.jar" sourcepath="/toolbox/lib/src/log4j-src.zip"/>
-    <classpathentry kind="lib" path="lib/EXML.jar"/>
     <classpathentry kind="lib" path="lib/jode.jar"/>
     <classpathentry kind="lib" path="lib/metouia.jar"/>
-    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="lib/commons-beanutils.jar" sourcepath="/toolbox/lib/src/commons-beanutils-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-logging.jar" sourcepath="/toolbox/lib/src/commons-logging-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-collections.jar" sourcepath="/toolbox/lib/src/commons-collections-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-lang.jar" sourcepath="/toolbox/lib/src/commons-lang-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-net.jar" sourcepath="/toolbox/lib/src/commons-net-src.zip"/>
     <classpathentry kind="lib" path="lib/jakarta-regexp.jar" sourcepath="/toolbox/lib/src/jakarta-regexp-src.zip"/>
-    <classpathentry kind="lib" path="C:/SQLLIB/java/db2java.zip"/>
     <classpathentry kind="lib" path="lib/plastic.jar"/>
     <classpathentry kind="lib" path="lib/kunststoff.jar"/>
     <classpathentry kind="lib" path="lib/xplookandfeel.jar"/>
-    <classpathentry kind="lib" path="lib/xercesImpl.jar" sourcepath="/toolbox/lib/src/xercesImpl-src.zip"/>
-    <classpathentry kind="lib" path="lib/xml-apis.jar" sourcepath="/toolbox/lib/src/xml-apis-src.zip"/>
     <classpathentry kind="lib" path="lib/batik.jar"/>
     <classpathentry kind="lib" path="lib/acrobat.jar"/>
     <classpathentry kind="lib" path="lib/fop.jar" sourcepath="/toolbox/lib/src/fop-src.zip"/>
@@ -33,5 +29,19 @@
     <classpathentry kind="lib" path="lib/xep.jar"/>
     <classpathentry kind="lib" path="lib/xt.jar" sourcepath="/toolbox/lib/src/xt-src.zip"/>
     <classpathentry kind="lib" path="lib/commons-cli.jar"/>
+    <classpathentry kind="lib" path="build/lib/clover.jar"/>
+    <classpathentry kind="lib" path="lib/hsqldb.jar" sourcepath="/toolbox/lib/src/hsqldb-src.zip"/>
+    <classpathentry kind="lib" path="lib/classworlds.jar" sourcepath="G:/java/dev/classworlds-1.0-beta-3/src/java/main"/>
+    <classpathentry kind="lib" path="lib/commons-io.jar" sourcepath="/toolbox/lib/src/commons-io-src.zip"/>
+    <classpathentry kind="lib" path="lib/cvslib.jar"/>
+    <classpathentry kind="lib" path="lib/ant.jar"/>
+    <classpathentry kind="lib" path="lib/hamsam.jar"/>
+    <classpathentry kind="lib" path="lib/commons-codec.jar" sourcepath="/toolbox/lib/src/commons-codec-src.zip"/>
+    <classpathentry kind="lib" path="lib/statcvs.jar" sourcepath="K:/workspaces/workspace-lib/statcvs/src"/>
+    <classpathentry kind="lib" path="lib/tinylaf.jar"/>
+    <classpathentry kind="lib" path="lib/xercesImpl.jar" sourcepath="/toolbox/lib/src/xercesImpl-src.zip"/>
+    <classpathentry kind="lib" path="lib/xml-apis.jar" sourcepath="/toolbox/lib/src/xml-apis-src.zip"/>
+    <classpathentry kind="lib" path="lib/xom.jar" sourcepath="/toolbox/lib/src/xom-src.zip"/>
+    <classpathentry kind="lib" path="lib/jaimlib.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
