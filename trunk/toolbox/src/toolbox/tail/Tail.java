@@ -54,6 +54,8 @@ import toolbox.util.io.ReverseFileReader;
  */
 public class Tail
 {
+    // TODO: Implements Startable, Suspendable
+    
     private static final Logger logger_ = Logger.getLogger(Tail.class);
 
     //--------------------------------------------------------------------------
