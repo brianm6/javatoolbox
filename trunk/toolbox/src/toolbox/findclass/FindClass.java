@@ -181,7 +181,24 @@ public class FindClass
         
         return searchTargets_;
     }
+
     
+    /**
+     * Returns a list of all search targets (archives and directories) on the 
+     * classpath.
+     * 
+     * @return List of strings
+     */
+    public List getClassPathTargets()
+    {
+        List targets = new ArrayList();
+        String cp = ClassUtil.getClasspath();
+        StringTokenizer t = new StringTokenizer(cp, File.pathSeparator, false);
+        while (t.hasMoreTokens())
+            targets.add(t.nextToken());
+        return targets;
+    }
+        
     
     /**
      * Cancels a pending search.
@@ -279,23 +296,6 @@ public class FindClass
         //    for (Iterator i = searchTargets_.iterator(); 
         //        i.hasNext(); logger_.debug(i.next()));
         //}
-    }
-    
-    
-    /**
-     * Returns a list of all search targets (archives and directories) on the 
-     * classpath.
-     * 
-     * @return List of strings
-     */
-    protected List getClassPathTargets()
-    {
-        List targets = new ArrayList();
-        String cp = ClassUtil.getClasspath();
-        StringTokenizer t = new StringTokenizer(cp, File.pathSeparator, false);
-        while (t.hasMoreTokens())
-            targets.add(t.nextToken());
-        return targets;
     }
     
     
