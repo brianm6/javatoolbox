@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.plugin.jdbc.QueryPlugin;
+import toolbox.util.ElapsedTime;
 import toolbox.util.StringUtil;
 import toolbox.workspace.IStatusBar;
 
@@ -131,7 +132,10 @@ public class ExecuteCurrentAction extends BaseAction
         else
         {
             statusBar.setInfo("Executing...");
+            
+            ElapsedTime time = new ElapsedTime();
             String results = plugin.executeSQL(sql);
+            time.getEndTime();
             
             //plugin.getResultsArea().append(results + "\n");
 
@@ -140,7 +144,7 @@ public class ExecuteCurrentAction extends BaseAction
                     < plugin.getAutoScrollThreshold()))
                 plugin.getResultsArea().scrollToEnd();
 
-            statusBar.setInfo("Done");
+            statusBar.setInfo("SQL statement executed in " + time);
         }
     }
 }

@@ -13,12 +13,13 @@ import org.jedit.syntax.JEditTextArea;
 
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.plugin.jdbc.SQLMessageException;
+import toolbox.util.ElapsedTime;
 import toolbox.util.StringUtil;
 import toolbox.workspace.IStatusBar;
 
 /**
  * Runs all SQL statements in the editor. Each SQL statement must be terminated
- * by a semicolon. The results are appendended to the output textarea.
+ * by a semicolon. The results are appended to the output textarea.
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
@@ -75,17 +76,18 @@ public class ExecuteAllAction extends BaseAction
         else
         {
             plugin.getStatusBar().setInfo("Executing...");
-            
+
+            // Split sql editor contents into individual sql statements
             String[] stmts = 
-                StringUtils.split(
-                    sqlText, 
-                    plugin.getSqlTerminator());
+                StringUtils.split(sqlText, plugin.getSqlTerminator());
             
-            //logger_.debug(
-            //    StringUtil.addBars(ArrayUtil.toString(stmts, true)));
-            
+            // Collect errors if continueOnError is true
             List errors = new ArrayList();
             
+            // Time the execution
+            ElapsedTime time = new ElapsedTime();
+            
+            // Execute each statement 
             for (int i = 0; i < stmts.length; i++)
             {
                 try
@@ -100,36 +102,12 @@ public class ExecuteAllAction extends BaseAction
                         + "...";
 
                     statusBar.setInfo(status);
-                    logger_.debug(status);
+                    //logger_.debug(status);
                     
                     String results = plugin.executeSQL(stmts[i]);
                     
-                    if (!StringUtil.isMultiline(results))
-                    {
-                        String command = StringUtils.split(stmts[i])[0];
-                        //plugin.getResultsArea().append(command + " ");
-                    }
-                    else
-                    {
-                        // plugin.getResultsArea().append("\n");
-                        
-                        //resultsArea_.append(
-                        //    "Multline found..skipping command : " + 
-                        //    stmts[i].substring(0,10));
-                    }
-                    
-                    //resultsArea_.append(StringUtil.addBars(results) + "\n");
-                    //plugin.getResultsArea().append(results + "\n");
-                    
-                    //StringOutputStream sos = new StringOutputStream();
-                    //HexDump.dump(results.getBytes(), 0, sos, 0);
-                    //resultsArea_.append(sos.toString());
-                    
-                    
-                    //
                     // Scroll to the end of the output textarea if more
                     // than a couple of page fulls of results is appended
-                    //
                     
                     if ((!StringUtils.isBlank(results)) &&
                         (StringUtil.tokenize(results, StringUtil.NL).length 
@@ -146,42 +124,51 @@ public class ExecuteAllAction extends BaseAction
                     
                     errors.add(sme);
                     
-                    // Break out..
+                    // Break out if specified on first error
                     if (!plugin.isContinueOnError())
                         break;
-                    
                 }
                 catch (Exception ex)
                 {
                     errors.add(ex);
 
-                    // Break out..
+                    // Break out if specified on first error
                     if (!plugin.isContinueOnError())
                         break;
                 }
             }
             
+            // Stop timer
+            time.setEndTime();
+            
             switch (errors.size())
             {
+                // SUCCESS
                 case 0:
                     statusBar.setInfo(
-                        stmts.length + " statement(s) executed successfully.");
+                        stmts.length 
+                        + " statement(s) executed successfully in " 
+                        + time);
                     break;
-                    
+                
+                // FAILURE
                 case 1:
-                    statusBar.setError("Statement failed execution");
+                    statusBar.setError("Statement failed execution in " + time);
                     throw (Exception) errors.get(0);
-                    
+                
+                // MULTIPLE FAILURES
                 default:
                     
-                    // Merge errors into a single exception if many.
-                    
+                    // Merge errors into a single exception.
                     StringBuffer sb = new StringBuffer();
+                
                     sb.append(
                         errors.size()     
                         + " out of " 
                         + stmts.length 
-                        + " statments failed execution.\n");
+                        + " statments failed execution in " 
+                        + time 
+                        + "\n");
 
                     for (int j = 0; j < errors.size(); j++)
                     {
