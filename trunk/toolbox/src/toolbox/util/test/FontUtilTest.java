@@ -97,4 +97,34 @@ public class FontUtilTest extends TestCase
         assertNotNull(f);
         logger_.info("Preferred serif font: " + f.getName());
     }
+
+    
+    /**
+     * Tests grow()
+     */
+    public void testGrow()
+    {
+        logger_.info("Running testGrow...");
+        
+        Font f = FontUtil.getPreferredMonoFont();
+        int before = f.getSize();
+        Font g = FontUtil.grow(f, 8);
+        int after = g.getSize();
+        assertEquals(f.getSize() + 8, g.getSize());
+    }
+    
+    
+    /**
+     * Tests shrink()
+     */
+    public void testShrink()
+    {
+        logger_.info("Running testShrink...");
+        
+        Font f = FontUtil.getPreferredMonoFont();
+        int before = f.getSize();
+        Font g = FontUtil.shrink(f, 4);
+        int after = g.getSize();
+        assertEquals(f.getSize() - 4, g.getSize());
+    }
 }
