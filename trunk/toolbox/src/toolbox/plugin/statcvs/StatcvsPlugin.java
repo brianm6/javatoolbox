@@ -58,39 +58,67 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     // TODO: Implement recent pattern
     // TODO: Add support for projects that span multiple modules
     
-    private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(StatcvsPlugin.class);
     
+    /**
+     * XML: Node that holds a collection of CVSProjects
+     */
     private static final String NODE_CVSPROJECTS = "CVSProjects";
+    
+    /**
+     * XML: Node that contains the StatCVS plugin's preferences
+     */
     private static final String NODE_STATCVS_PLUGIN = "StatCVSPlugin";
     
-    /** Reference to the workspace statusbar */
+    /** 
+     * Reference to the workspace statusbar 
+     */
     private IStatusBar statusBar_;
     
-    /** Output text area for application activity */
+    /** 
+     * Output text area for application activity 
+     */
     private JSmartTextArea outputArea_;
     
-    /** Field for the project name (optional) */
+    /** 
+     * Field for the project name (optional) 
+     */
     private JComboBox projectCombo_;
     
-    /** Field for the cvs module name (required) */
+    /** 
+     * Field for the cvs module name (required) 
+     */
     private JTextField cvsModuleField_;
     
-    /** Field for the cvs root (required) */
+    /** 
+     * Field for the cvs root (required) 
+     */
     private JTextField cvsRootField_;
     
-    /** Field for the cvs password (required by empty strings are OK) */
+    /** 
+     * Field for the cvs password (required by empty strings are OK) 
+     */
     private JTextField cvsPasswordField_;
     
-    /** Field for the checkout directory (must already exist) */
+    /** 
+     * Field for the checkout directory (must already exist) 
+     */
     private JTextField checkoutDirField_;
     
-    /** Checkbox to toggle the cvslib.jar debug flag */
+    /** 
+     * Checkbox to toggle the cvslib.jar debug flag 
+     */
     private JCheckBox debugCheckBox_;
     
-    /** Field that contains the URL to view the generated statcvs report */
+    /** 
+     * Field that contains the URL to view the generated statcvs report 
+     */
     private JTextField launchURLField_;
     
-    /** Saved user.dir before being overwritten (cvs commands require this) */
+    /** 
+     * Saved user.dir before being overwritten (cvs commands require this) 
+     */
     private String originalUserDir_;
     
     /** 
@@ -150,6 +178,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     
     /**
      * Builds the control panel
+     * 
+     * @return JComponent
      */
     protected JComponent buildControlPanel()
     {
@@ -206,6 +236,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
     /**
      * Builds the output panel
+     * 
+     * @return JComponent
      */
     protected JComponent buildOutputPanel()
     {
@@ -443,9 +475,12 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             useDefaults = true;
         else if (prefs.getFirstChildElement(NODE_STATCVS_PLUGIN) == null)
             useDefaults = true;
-        else if (prefs.getFirstChildElement(NODE_STATCVS_PLUGIN).getFirstChildElement(NODE_CVSPROJECTS) == null)
+        else if (prefs.getFirstChildElement(
+            NODE_STATCVS_PLUGIN).getFirstChildElement(NODE_CVSPROJECTS) == null)
             useDefaults = true;
-        else if (prefs.getFirstChildElement(NODE_STATCVS_PLUGIN).getFirstChildElement(NODE_CVSPROJECTS).getChildCount() == 0)
+        else if (prefs.getFirstChildElement(
+            NODE_STATCVS_PLUGIN).getFirstChildElement(
+                NODE_CVSPROJECTS).getChildCount() == 0)
             useDefaults = true;
 
         if (useDefaults)
@@ -524,13 +559,13 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     class CVSProject 
     {
         private static final String NODE_CVSPROJECT  = "CVSProject";
-        private static final String ATTR_PROJECT = "project";
-        private static final String ATTR_MODULE  = "module";
-        private static final String ATTR_CVSROOT = "cvsroot";
-        private static final String ATTR_PASSWORD = "password";
+        private static final String ATTR_PROJECT     = "project";
+        private static final String ATTR_MODULE      = "module";
+        private static final String ATTR_CVSROOT     = "cvsroot";
+        private static final String ATTR_PASSWORD    = "password";
         private static final String ATTR_CHECKOUTDIR = "checkoutdir";
-        private static final String ATTR_DEBUG="debug";
-        private static final String ATTR_LAUNCHURL = "launchurl";
+        private static final String ATTR_DEBUG       = "debug";
+        private static final String ATTR_LAUNCHURL   = "launchurl";
         
         /** Field for the project name (optional) */
         private String project_;
@@ -561,27 +596,37 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          */
         public CVSProject(String xml) throws Exception
         {
-            Element project = new Builder().build(new StringReader(xml)).getRootElement();
+            Element project = 
+                new Builder().build(new StringReader(xml)).getRootElement();
             
-            setProject(XOMUtil.getStringAttribute(project, ATTR_PROJECT, "???"));
+            setProject(
+                XOMUtil.getStringAttribute(project, ATTR_PROJECT, "???"));
+                
             setCVSModule(XOMUtil.getStringAttribute(project, ATTR_MODULE, ""));
             setCVSRoot(XOMUtil.getStringAttribute(project, ATTR_CVSROOT, ""));
-            setCVSPassword(XOMUtil.getStringAttribute(project, ATTR_PASSWORD, ""));
-            setCheckoutDir(XOMUtil.getStringAttribute(project, ATTR_CHECKOUTDIR, ""));
+            
+            setCVSPassword(
+                XOMUtil.getStringAttribute(project, ATTR_PASSWORD, ""));
+                
+            setCheckoutDir(
+                XOMUtil.getStringAttribute(project, ATTR_CHECKOUTDIR, ""));
+                
             setDebug(XOMUtil.getBooleanAttribute(project, ATTR_DEBUG, false));
-            setLaunchURL(XOMUtil.getStringAttribute(project, ATTR_LAUNCHURL, ""));
+            
+            setLaunchURL(
+                XOMUtil.getStringAttribute(project, ATTR_LAUNCHURL, ""));
         }
         
         /**
          * Arg constructor 
          * 
-         * @param project
-         * @param module
-         * @param cvsRoot
-         * @param password
-         * @param checkOutDir
-         * @param debug
-         * @param launchURL
+         * @param project      Project name
+         * @param module       CVS module name
+         * @param cvsRoot      CVS root url
+         * @param password     Cleartext password
+         * @param checkOutDir  Directory to checkout files to
+         * @param debug        Print debug output
+         * @param launchURL    Launch URL for viewing generated statistics
          */
         public CVSProject(String project, String module, String cvsRoot, 
             String password, String checkOutDir, boolean debug, 
@@ -617,13 +662,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             project.addAttribute(new Attribute(ATTR_PROJECT, getProject()));
             project.addAttribute(new Attribute(ATTR_MODULE, getCVSModule()));
             project.addAttribute(new Attribute(ATTR_CVSROOT, getCVSRoot()));
-            project.addAttribute(new Attribute(ATTR_PASSWORD, getCVSPassword()));
-            project.addAttribute(new Attribute(ATTR_CHECKOUTDIR, getCheckoutDir()));
-            project.addAttribute(new Attribute(ATTR_DEBUG, isDebug() ? "true" : "false"));
+            
+            project.addAttribute(
+                new Attribute(ATTR_PASSWORD, getCVSPassword()));
+                
+            project.addAttribute(
+                new Attribute(ATTR_CHECKOUTDIR, getCheckoutDir()));
+                
+            project.addAttribute(
+                new Attribute(ATTR_DEBUG, isDebug() ? "true" : "false"));
+                
             project.addAttribute(new Attribute(ATTR_LAUNCHURL, getLaunchURL()));
             return project;
         }
-
 
         /**
          * Returns directory that files will be checked out to.
