@@ -7,6 +7,8 @@ import toolbox.util.service.Initializable;
 
 /**
  * Common interface for all 3rd party XSL-FO implementations.
+ * 
+ * @see toolbox.plugin.xslfo.FOProcessorFactory
  */
 public interface FOProcessor extends Initializable
 {
