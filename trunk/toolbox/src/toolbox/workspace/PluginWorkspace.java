@@ -36,6 +36,7 @@ import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
 import toolbox.util.ResourceCloser;
 import toolbox.util.StringUtil;
@@ -318,8 +319,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         // Save to file
         String userhome = System.getProperty("user.home");
         
-        if (!userhome.endsWith(File.separator))
-            userhome = userhome + File.separator;
+        userhome = FileUtil.trailWithSeparator(userhome);
             
         File f = new File( userhome + FILE_PREFS);
         FileOutputStream fos = null;
