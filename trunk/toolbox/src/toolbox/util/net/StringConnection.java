@@ -27,7 +27,6 @@ public class StringConnection extends AbstractConnection implements IConnection
      */
     private boolean connected_;
     
-    
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -45,7 +44,7 @@ public class StringConnection extends AbstractConnection implements IConnection
     /**
      * Creates a StringConnection with the given input string
      * 
-     * @param    str        Input stream contents
+     * @param  str  Input stream contents
      */
     public StringConnection(String str)
     {
@@ -106,7 +105,7 @@ public class StringConnection extends AbstractConnection implements IConnection
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
     
     /**

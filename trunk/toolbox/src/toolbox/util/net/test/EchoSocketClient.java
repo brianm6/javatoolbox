@@ -29,6 +29,10 @@ public class EchoSocketClient
     
     private LineNumberReader reader_;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Create socket client on localhost with given port
      * 
@@ -66,6 +70,10 @@ public class EchoSocketClient
             logger_.error("While creating socket", e);
         }
     }
+    
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
     
     /**
      * Sends a request to socket and reads the response

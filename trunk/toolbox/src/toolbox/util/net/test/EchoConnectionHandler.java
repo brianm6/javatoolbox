@@ -26,12 +26,20 @@ public class EchoConnectionHandler implements IConnectionHandler
      */
     public static final String TOKEN_TERMINATE = "terminate";
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for EchoConnectionHandler
      */
     public EchoConnectionHandler()
     {
     }
+    
+    //--------------------------------------------------------------------------
+    //  Interface IConnectionHandler
+    //--------------------------------------------------------------------------
     
     /**
      * Implementation for IConnectionHandler
