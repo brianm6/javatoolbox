@@ -1,10 +1,15 @@
 package toolbox.jdbc;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
@@ -17,19 +22,21 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * JDBC Drivers configuration panel
+ * JDBC driver and connection settings configuration panel
  */    
 public class DBConfig extends JPanel implements IPreferenced
 {
@@ -70,6 +77,11 @@ public class DBConfig extends JPanel implements IPreferenced
     private JComboBox profileCombo_;
     
     /**
+     * Jar containing the jdbc driver if not already on the classpath
+     */
+    private JTextField jarField_;
+    
+    /**
      * JDBC driver (dot notated class name)
      */
     private JTextField driverField_;
@@ -105,7 +117,7 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     public DBConfig(QueryPlugin plugin)
     {
-        plugin_    = plugin;
+        plugin_ = plugin;
         statusBar_ = plugin.getStatusBar();
         buildView();
     }
@@ -152,10 +164,40 @@ public class DBConfig extends JPanel implements IPreferenced
         tb.add(new SaveAction());
         tb.add(new DeleteAction());
         add(tb);
-                
+
+        // Create a jar text field with a "..." button to choose the jar file
+        // attached to its right side
+        
+        jarField_ = new JSmartTextField(20);
+        
+        jarField_.setToolTipText(
+            "Only use if the JDBC driver is not on the classpath");
+        
+        JButton jarChooserButton_ = new JSmartButton(new JarChooserAction());
+        
+        GridBagLayout gbl = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        Dimension d = new Dimension(12, jarField_.getPreferredSize().height);
+        jarChooserButton_.setPreferredSize(d);
+        
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 9;
+        JPanel jarPanel = new JPanel(gbl);
+        jarPanel.add(jarField_, gbc);
+        gbc.gridx = 2;
+        gbc.weightx = 1;
+        jarPanel.add(jarChooserButton_, gbc);
+
+        add(new JSmartLabel("Jar"), ParagraphLayout.NEW_PARAGRAPH);
+        add(jarPanel);
+
         add(new JSmartLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
         add(driverField_ = new JSmartTextField(20));
-
+        
         add(new JSmartLabel("URL"), ParagraphLayout.NEW_PARAGRAPH);
         add(urlField_ = new JSmartTextField(20));
     
@@ -186,6 +228,7 @@ public class DBConfig extends JPanel implements IPreferenced
             
             profileCombo_.addItem(new DBProfile(
                 "DB2",
+                "",
                 "COM.ibm.db2.jdbc.app.DB2Driver",
                 "jdbc:db2:<dbname>",
                 "",
@@ -193,6 +236,7 @@ public class DBConfig extends JPanel implements IPreferenced
         
             profileCombo_.addItem(new DBProfile(
                 "Oracle",
+                "",
                 "oracle.jdbc.driver.OracleDriver",
                 "jdbc:oracle:thin:@<host>:<port>:<sid>",
                 "",
@@ -200,6 +244,7 @@ public class DBConfig extends JPanel implements IPreferenced
             
             profileCombo_.addItem(new DBProfile(
                 "HSQL",
+                "",
                 "org.hsqldb.jdbcDriver",
                 "jdbc:hsqldb:<database>",
                 "SA",
@@ -255,7 +300,7 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         ConnectAction()  
         {
-            super("Connect", true, plugin_.getComponent(), statusBar_);
+            super("Connect", false, plugin_.getComponent(), statusBar_);
             putValue(SHORT_DESCRIPTION, "Connects to the database");
         }
     
@@ -263,11 +308,23 @@ public class DBConfig extends JPanel implements IPreferenced
         {
             statusBar_.setInfo("Connecting to the database...");
             
-            JDBCUtil.init(
-                driverField_.getText(),
-                urlField_.getText(),
-                userField_.getText(),
-                passwordField_.getText());
+            if (StringUtil.isNullOrBlank(jarField_.getText()))
+            {    
+                JDBCUtil.init(
+                    driverField_.getText(),
+                    urlField_.getText(),
+                    userField_.getText(),
+                    passwordField_.getText());
+            }
+            else
+            {
+                JDBCUtil.init(
+                    jarField_.getText(),
+                    driverField_.getText(),
+                    urlField_.getText(),
+                    userField_.getText(),
+                    passwordField_.getText());
+            }
          
             statusBar_.setInfo("Connected to the database!");
         }
@@ -285,6 +342,8 @@ public class DBConfig extends JPanel implements IPreferenced
             if (obj instanceof DBProfile)
             {
                 DBProfile profile = (DBProfile) profileCombo_.getSelectedItem();
+                
+                jarField_.setText(profile.getJarFile());
                 driverField_.setText(profile.getDriver());
                 urlField_.setText(profile.getUrl());
                 userField_.setText(profile.getUsername());
@@ -317,6 +376,7 @@ public class DBConfig extends JPanel implements IPreferenced
                 
                 if (profile.getProfileName().equals(current))
                 {
+                    profile.setJarFile(jarField_.getText());
                     profile.setDriver(driverField_.getText());
                     profile.setUrl(urlField_.getText());
                     profile.setUsername(userField_.getText());
@@ -330,6 +390,7 @@ public class DBConfig extends JPanel implements IPreferenced
             {
                 DBProfile profile = new DBProfile(
                     current,
+                    jarField_.getText(),
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
@@ -382,6 +443,30 @@ public class DBConfig extends JPanel implements IPreferenced
             {
                 statusBar_.setStatus("Profile " + current + " does not exist.");
             }   
+        }
+    }
+
+    /**
+     * Allows user to pick a source directory through the file chooser instead 
+     * of typing one in.
+     */
+    class JarChooserAction extends SmartAction
+    {
+        JarChooserAction()
+        {
+            super("...", true, false, null);
+        }
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            
+            if (chooser.showDialog(DBConfig.this, 
+                "Select JDBC Driver Jar File") == JFileChooser.APPROVE_OPTION)
+            {
+                jarField_.setText(chooser.getSelectedFile().getCanonicalPath());
+            }
         }
     }
 }
