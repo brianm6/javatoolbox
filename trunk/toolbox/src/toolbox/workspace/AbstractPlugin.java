@@ -7,6 +7,7 @@ import toolbox.util.service.ServiceListener;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.statemachine.StateMachine;
+import toolbox.workspace.prefs.Preferences;
 
 /**
  * Abstract base class for IPlugin implementors.
@@ -38,6 +39,19 @@ public abstract class AbstractPlugin implements IPlugin
     protected AbstractPlugin()
     {
         machine_ = AbstractService.createStateMachine(this);
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPlugin#getPreferences()
+     */
+    public Preferences getPreferences()
+    {
+        // TODO: Remove once all plugins implmenments this method.
+        return null;
     }
     
     //--------------------------------------------------------------------------
@@ -140,8 +154,7 @@ public abstract class AbstractPlugin implements IPlugin
      * @param activity Service activity.
      * @throws ServiceException if the state transition is invalid.
      */
-    public void transition(ServiceTransition activity) 
-        throws ServiceException
+    public void transition(ServiceTransition activity) throws ServiceException
     {
         machine_.transition(activity);
     }
