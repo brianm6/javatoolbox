@@ -29,7 +29,6 @@ import net.sf.statcvs.Main;
 import net.sf.statcvs.output.CommandLineParser;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.JTextAreaOutputStream;
