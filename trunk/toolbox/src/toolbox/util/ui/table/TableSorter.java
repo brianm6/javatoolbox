@@ -80,11 +80,11 @@ public class TableSorter extends TableMap
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a TableSorter
      */
     public TableSorter()
     {
-        indexes_ = new int[0]; // For consistency.
+        indexes_ = new int[0];
         init();        
     }
     
@@ -214,7 +214,9 @@ public class TableSorter extends TableMap
     }
 
     /**
-     * @return  True if sorter is enabled, false otherwise
+     * Returns true if sorter is enabled, false otherwise.
+     * 
+     * @return boolean
      */
     public boolean isEnabled()
     {
@@ -222,6 +224,8 @@ public class TableSorter extends TableMap
     }
 
     /**
+     * Sets the enabled state of the table sorder.
+     * 
      * @param  b  Flag to enable/disable the sorter
      */
     public void setEnabled(boolean b)
@@ -505,7 +509,9 @@ public class TableSorter extends TableMap
     }
 
     /**
-     * @return Table header cell renderer
+     * Returns the table header cell renderer
+     * 
+     * @return TableCellRenderer
      */    
     protected TableCellRenderer createDefaultRenderer()
     {
@@ -523,11 +529,11 @@ public class TableSorter extends TableMap
     /**
      * Listens for mouse clicks on the table header cells to trigger sorting 
      */
-    private final class SortingMouseListener extends MouseAdapter
+    final class SortingMouseListener extends MouseAdapter
     {
         private final JTable tableView_;
         
-        private SortingMouseListener(JTable tableView)
+        SortingMouseListener(JTable tableView)
         {
             tableView_ = tableView;
         }
@@ -549,7 +555,7 @@ public class TableSorter extends TableMap
      * Renders the ascending/descending sort direction graphic in the table
      * header cell. 
      */
-    private final class TableHeaderCellRenderer extends DefaultTableCellRenderer
+    final class TableHeaderCellRenderer extends DefaultTableCellRenderer
     {
         public Component getTableCellRendererComponent(
             JTable table,

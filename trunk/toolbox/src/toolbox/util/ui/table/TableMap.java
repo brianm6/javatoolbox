@@ -19,7 +19,9 @@ import javax.swing.table.TableModel;
  */
 public class TableMap extends AbstractTableModel implements TableModelListener
 {
-    /** Delegate table model */
+    /** 
+     * Delegate table model 
+     */
     private TableModel model_;
 
     //--------------------------------------------------------------------------
@@ -27,7 +29,9 @@ public class TableMap extends AbstractTableModel implements TableModelListener
     //--------------------------------------------------------------------------
 
     /**
-     * @return  Table model
+     * Returns the table model
+     * 
+     * @return TableModel
      */    
     public TableModel getModel()
     {
@@ -46,7 +50,7 @@ public class TableMap extends AbstractTableModel implements TableModelListener
     }
 
     //--------------------------------------------------------------------------
-    // Overrides javax.swing.table.AbstractTableModel
+    // Overrides AbstractTableModel
     //--------------------------------------------------------------------------
     
     /**
@@ -109,6 +113,10 @@ public class TableMap extends AbstractTableModel implements TableModelListener
     // TableModelListener Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see javax.swing.event.TableModelListener#
+     *      tableChanged(javax.swing.event.TableModelEvent)
+     */
     public void tableChanged(TableModelEvent e)
     {
         // By default forward all events to all the listeners.
