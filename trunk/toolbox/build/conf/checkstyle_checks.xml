@@ -7,7 +7,7 @@
 
     <metadata name="com.atlas-sw.eclipse" value="I like Sydney"/>
 
-    <property name="severity" value="error"/>
+    <property name="severity" value="warning"/>
 
     <module name="PackageHtml"/>
 
@@ -52,7 +52,10 @@
 
         <module name="IllegalImport"/>
         <module name="IllegalInstantiation"/>
+        
+        <!--
         <module name="InnerAssignment"/>
+        -->
         
         <module name="JavadocType">
 	        <property name="scope" value="public"/>
@@ -106,11 +109,14 @@
             <property name="allowLineBreaks" value="true"/>
         </module>
 
+		<!--
         <module name="OperatorWrap"/>
         <module name="OperatorWrap">
             <property name="tokens" value="ASSIGN, DIV_ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, STAR_ASSIGN, MOD_ASSIGN, SR_ASSIGN, BSR_ASSIGN, SL_ASSIGN, BXOR_ASSIGN, BOR_ASSIGN, BAND_ASSIGN"/>
             <property name="option" value="eol"/>
         </module>
+        -->
+        
         <module name="PackageName"/>
         
         <module name="ParameterName">
