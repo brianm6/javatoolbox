@@ -49,7 +49,7 @@ public class JTailPlugin implements IPlugin
      */
     public JComponent getComponent()
     {
-        return (JComponent) jtail_.getContentPane();
+        return (JComponent) jtail_;
     }
 
     
