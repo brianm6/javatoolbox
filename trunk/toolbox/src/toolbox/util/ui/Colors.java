@@ -2,8 +2,11 @@ package toolbox.util.ui;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import javax.swing.plaf.ColorUIResource;
+
+import org.apache.commons.collections.iterators.ArrayIterator;
 
 /**
  * Additional colors from X11's rgb.txt.
@@ -793,6 +796,17 @@ public class Colors
         return colors[pos].toColor();
     }
 
+    
+    /**
+     * Returns an iterator for the list of colors.
+     * 
+     * @return Iterator
+     */
+    public static Iterator iterator()
+    {
+        return new ArrayIterator(colors);
+    }
+    
     //--------------------------------------------------------------------------
     // XColor
     //--------------------------------------------------------------------------
@@ -800,7 +814,7 @@ public class Colors
     /**
      * Internal Color Representation.
      */
-    private static class XColor implements Comparable
+    public static class XColor implements Comparable
     {
         private String name_;
         private int red_;
@@ -819,7 +833,7 @@ public class Colors
          * @param green Green component.
          * @param blue Blue component.
          */
-        XColor(String name, int red, int green, int blue)
+        public XColor(String name, int red, int green, int blue)
         {
             name_ = name;
             red_ = red;
@@ -836,11 +850,22 @@ public class Colors
          * 
          * @return Color
          */
-        Color toColor()
+        public Color toColor()
         {
             return new ColorUIResource(red_, green_, blue_);
         }
 
+        
+        /**
+         * Returns this colors name.
+         * 
+         * @return String
+         */
+        public String getName()
+        {
+            return name_;
+        }
+        
         //----------------------------------------------------------------------
         // Comparable Interface
         //----------------------------------------------------------------------
