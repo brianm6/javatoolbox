@@ -32,6 +32,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartFileChooser;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextField;
@@ -230,6 +231,11 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     private File lastDir_;
 
+    /**
+     * Directory chooser.
+     */
+    private JSmartFileChooser chooser_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -336,7 +342,8 @@ public class JSourceView extends JPanel implements IPreferenced
         
         if (!StringUtils.isBlank(dirField_.getText()))
             lastDir_ = new File(dirField_.getText());
-        
+     
+        chooser_.applyPrefs(root);
         table_.applyPrefs(root);
     }
 
@@ -350,7 +357,8 @@ public class JSourceView extends JPanel implements IPreferenced
         
         root.addAttribute(
             new Attribute(ATTR_LAST_DIR, dirField_.getText().trim()));
-        
+       
+        chooser_.savePrefs(root);
         table_.savePrefs(root);
         
         XOMUtil.insertOrReplace(prefs, root);
@@ -457,6 +465,8 @@ public class JSourceView extends JPanel implements IPreferenced
         jpanel.add(scanStatusLabel_, BorderLayout.NORTH);
         jpanel.add(parseStatusLabel_, BorderLayout.SOUTH);
         add(jpanel, BorderLayout.SOUTH);
+        
+        chooser_ = new JSmartFileChooser();
     }
     
     
@@ -610,17 +620,13 @@ public class JSourceView extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            JFileChooser chooser = new JFileChooser();
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser_.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             
-            if (lastDir_ != null)
-                chooser.setCurrentDirectory(lastDir_);
-            
-            if (chooser.showDialog(JSourceView.this, "Select Directory") 
+            if (chooser_.showDialog(JSourceView.this, "Select Directory") 
                 == JFileChooser.APPROVE_OPTION)
             {
-                dirField_.setText(chooser.getSelectedFile().getCanonicalPath());
-                lastDir_ = chooser.getSelectedFile();
+                dirField_.setText(chooser_.getSelectedFile().getCanonicalPath());
+                lastDir_ = chooser_.getSelectedFile();
             }
         }
     }
