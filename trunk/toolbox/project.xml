@@ -273,9 +273,6 @@
       <dependency>
         <id>db2java</id>
         <version/>
-        <properties>
-          <jnlp.jar>true</jnlp.jar>
-        </properties>
       </dependency>
     
       <dependency>
