@@ -21,6 +21,18 @@ public class JTcpTunnelPlugin implements IPlugin
     private JTcpTunnelPane jtcpTunnelPane_;
     
     //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default constructor
+     */
+    public JTcpTunnelPlugin()
+    {
+        jtcpTunnelPane_ = new JTcpTunnelPane();        
+    }
+    
+    //--------------------------------------------------------------------------
     // Interface IPlugin
     //--------------------------------------------------------------------------
     
@@ -61,7 +73,8 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void init()
     {
-        jtcpTunnelPane_ = new JTcpTunnelPane();
+        // moved to constructor
+        //jtcpTunnelPane_ = new JTcpTunnelPane();
     }
 
     /**
@@ -85,7 +98,7 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void setStatusBar(IStatusBar statusBar)
     {
-        jtcpTunnelPane_.setStatusBar(statusBar);
+         jtcpTunnelPane_.setStatusBar(statusBar);
     }
 
     /**
