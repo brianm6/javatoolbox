@@ -168,7 +168,7 @@ public class MonitoredInputStreamTest extends TestCase
             int c = eis.read();
             assertTrue(c >= 0);
             assertEquals(str.charAt(i), (char) c);
-            assertEquals(i + 1, eis.getCount());
+            assertEquals(i + 1, eis.getTransferredMonitor().getBytesTransferred());
         }
        
         eis.close();
@@ -253,7 +253,7 @@ public class MonitoredInputStreamTest extends TestCase
                 assertEquals(str.charAt(cnt++), b[i]); 
         }
         
-        assertEquals(str.length(), eis.getCount());
+        assertEquals(str.length(), eis.getTransferredMonitor().getBytesTransferred());
         eis.close();
         eis.removeListener(listener);
     }
