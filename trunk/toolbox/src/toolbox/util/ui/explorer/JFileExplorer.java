@@ -12,13 +12,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -42,10 +39,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.apache.log4j.Logger;
+
 import nu.xom.Attribute;
 import nu.xom.Element;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
@@ -91,9 +88,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private Icon   driveIcon_;
 
     /** 
-     * Collection of listeners 
+     * List of interested listeners 
      */ 
-    private List fileExplorerListeners_ = new ArrayList();
+    private JFileExplorerListener[] fileExplorerListeners_;
 
 	/** 
 	 * Flag to prevent events from triggering new events to be generated while
@@ -133,6 +130,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     public JFileExplorer(boolean verticalSplitter)
     {
+        fileExplorerListeners_ = new JFileExplorerListener[0];
         buildView(verticalSplitter);
     }
 
@@ -365,11 +363,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.awt.Component
+    //  Overrides java.awt.Component
     //--------------------------------------------------------------------------
-    
+
     /**
-     * @return Preferred dimension
+     * @see java.awt.Component#getPreferredSize()
      */
     public Dimension getPreferredSize()
     {
@@ -387,7 +385,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     public void addJFileExplorerListener(JFileExplorerListener listener)
     {
-        fileExplorerListeners_.add(listener);
+        fileExplorerListeners_ = 
+            (JFileExplorerListener[]) 
+                ArrayUtil.add(fileExplorerListeners_, listener);
     }
 
     /**
@@ -397,7 +397,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     public void removeJFileExplorerListener(JFileExplorerListener listener)
     {
-        fileExplorerListeners_.remove(listener);
+        fileExplorerListeners_ = 
+            (JFileExplorerListener[]) 
+                ArrayUtil.remove(fileExplorerListeners_, listener);
     }
 
     /**
@@ -405,8 +407,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFileDoubleClicked()
     {
-        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-             ((JFileExplorerListener)i.next()).fileDoubleClicked(getFilePath());
+        for (int i=0; i<fileExplorerListeners_.length; 
+            fileExplorerListeners_[i++].fileDoubleClicked(getFilePath()));
     }
 
     /**
@@ -414,8 +416,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFileSelected()
     {
-        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-             ((JFileExplorerListener)i.next()).fileSelected(getFilePath());
+        for (int i=0; i<fileExplorerListeners_.length; 
+            fileExplorerListeners_[i++].fileSelected(getFilePath()));
     }
     
     /**
@@ -425,8 +427,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderSelected(String folder)
     {
-        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-             ((JFileExplorerListener)i.next()).folderSelected(folder);
+        for (int i=0; i<fileExplorerListeners_.length; 
+            fileExplorerListeners_[i++].folderSelected(getFilePath()));
     }
     
     /**
@@ -436,8 +438,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderDoubleClicked(String folder)
     {
-        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-             ((JFileExplorerListener)i.next()).folderDoubleClicked(folder); 
+        for (int i=0; i<fileExplorerListeners_.length; 
+            fileExplorerListeners_[i++].folderDoubleClicked(folder));
     }
 
     //--------------------------------------------------------------------------
