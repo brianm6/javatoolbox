@@ -36,12 +36,15 @@ package toolbox;
  * TODO: Added number of files/selected files to the JFileExplorer InfoBar
  * TODO: Add Swing preferences (window drag, resize outline, etc)
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
+ * TODO: Save db profiles to a separate file.
+ * TODO: Update JDBCUtil to handle multiple sessions.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
  * 								JDBCPlugin
  * =============================================================================
  * TODO: Fix sql history list getting too big
+ * TODO: Add realtime grep filter to results pane
  * TODO: Fix ClassCastException on execute async
  * TODO: Customize SQLFormatter formatting options
  *       Change formatter to leave "select *" on the same line. Apply to all
