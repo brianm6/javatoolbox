@@ -52,6 +52,10 @@ import toolbox.util.ResourceUtil;
 /**
  * JFlipPane is a panel with flipper like behavior to hide a and show any
  * number of children.
+ * 
+ * <pre>
+ * TODO: Add ability to save/restore preferences (selected flipper, open state)
+ * </pre>
  */
 public class JFlipPane extends JPanel
 {
@@ -62,10 +66,10 @@ public class JFlipPane extends JPanel
     // Positions
     
     /** Top position */
-    public static final String TOP    = "top";
+    public static final String TOP = "top";
     
     /** Left position */
-    public static final String LEFT   = "left";
+    public static final String LEFT = "left";
     
     /** Bottom position */
     public static final String BOTTOM = "bottom";
