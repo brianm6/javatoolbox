@@ -7,8 +7,11 @@ import java.util.HashMap;
 import toolbox.util.ArrayUtil;
 
 /**
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
+ * Main class referenced by MANIFEST.MF in toolbox.jar. Provides convenient
+ * way to run toolbox executables via 
+ * <pre>
+ * java -jar toolbox.jar [program name]
+ * </pre>
  */
 public class Main
 {
@@ -82,7 +85,7 @@ public class Main
     }
     
     /**
-     * Launches the programs
+     * Launches a toolbox executable with the given classname and arguments
      * 
      * @param  className   Name of class to launch
      * @param  args        Arguments
