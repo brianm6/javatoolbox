@@ -22,8 +22,20 @@ package toolbox.util.service;
   </pre>                                      
  */              
 
-public interface Service
+public interface Service extends Resumable
 {
+    //--------------------------------------------------------------------------
+    // LifeCycle
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Initializes the service.
+     * 
+     * @throws ServiceException if the service encounters problems initializing.
+     */
+    void initialize() throws ServiceException;
+
+    
     /**
      * Starts the service. Once a service it started, it may either be paused or
      * stopped.
@@ -39,25 +51,10 @@ public interface Service
      * @throws ServiceException if the service encounters problems stopping.
      */
     void stop() throws ServiceException;
-    
-    
-    /**
-     * Pauses the service indefinitely. Once a service is paused, it may only
-     * be resumed.
-     * 
-     * @throws ServiceException if the service encounters problems pausing.
-     */
-    void pause() throws ServiceException;
-    
-    
-    /**
-     * Resumes the service and returns it to a running state. Once a service is
-     * resumed, it may either be paused again or stopped.
-     *  
-     * @throws ServiceException if the service encounters problems resuming.
-     */
-    void resume() throws ServiceException;
-    
+
+    //--------------------------------------------------------------------------
+    // Monitoring
+    //--------------------------------------------------------------------------
     
     /**
      * Returns true if the service is running, false otherwise.
@@ -66,14 +63,9 @@ public interface Service
      */
     boolean isRunning();
     
-    
-    /**
-     * Returns true if the service is paused, false otherwise.
-     * 
-     * @return boolean
-     */
-    boolean isPaused();
-    
+    //--------------------------------------------------------------------------
+    // Notification
+    //--------------------------------------------------------------------------
     
     /**
      * Adds a listener to the list of observers.
@@ -81,4 +73,12 @@ public interface Service
      * @param listener Listener to add.
      */
     void addServiceListener(ServiceListener listener);
+
+    
+    /**
+     * Removes a listener from the list of observers.
+     *  
+     * @param listener Listener to remove.
+     */
+    void removeServiceListener(ServiceListener listener);
 }
