@@ -69,6 +69,7 @@
   </developers>
 
   <dependencies>
+    <dependency><id>debug</id><version/></dependency>
     <dependency><id>acrobat</id><version/></dependency>
     <dependency><id>ant</id><version/></dependency>    
     <dependency><id>apple-mrj</id><version/></dependency>
@@ -88,6 +89,7 @@
     <dependency><id>cvslib</id><version/></dependency>        
 	<dependency><id>fop</id><version/></dependency>        	    
     <dependency><id>hamsam</id><version/></dependency>
+    <dependency><id>hsqldb</id><version/></dependency>
     <dependency><id>jaimlib</id><version/></dependency>
     <dependency><id>jakarta-regexp</id><version/></dependency>	    
 	<dependency><id>jedit-syntax</id><version/></dependency>
@@ -97,6 +99,8 @@
 	<dependency><id>log4j</id><version/></dependency>
     <dependency><id>metouia</id><version/></dependency>
     <dependency><id>plastic</id><version/></dependency>    	
+    <dependency><id>sametime-comm</id><version/></dependency>
+    <dependency><id>sametime-comm-res</id><version/></dependency>    	        	
     <dependency><id>saxon</id><version/></dependency>	    
     <dependency><id>statcvs</id><version/></dependency>	    
     <dependency><id>tinylaf</id><version/></dependency>	    
@@ -106,10 +110,6 @@
 	<dependency><id>xom</id><version/></dependency>	
 	<dependency><id>xplookandfeel</id><version/></dependency>
     <dependency><id>xt</id><version/></dependency>
-    
-    <dependency><id>STComm</id><version/></dependency>	    
-    <dependency><id>CommRes</id><version/></dependency>	    
-    
   </dependencies>
   
   <build>
@@ -171,16 +171,19 @@
   
  
     <reports>     
-      <!-- <report>maven-junit-report-plugin</report> -->
+      <report>maven-junit-report-plugin</report>
       <report>maven-jdepend-plugin</report>
       <report>maven-checkstyle-plugin</report>
       <report>maven-changes-plugin</report>
       <report>maven-changelog-plugin</report>
       <report>maven-developer-activity-plugin</report>
       <report>maven-file-activity-plugin</report>
-      <!-- <report>maven-statcvs-plugin</report> -->
       <report>maven-javadoc-plugin</report>
       <report>maven-jxr-plugin</report>
+      <report>maven-pmd-plugin</report>
+      <report>maven-jdepend-plugin</report>
+
+      <!-- <report>maven-statcvs-plugin</report> -->      
       <!-- <report>maven-tasklist-plugin</report> -->
       <!-- <report>maven-simian-plugin</report> -->
       
