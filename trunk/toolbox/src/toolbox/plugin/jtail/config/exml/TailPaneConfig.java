@@ -1,20 +1,15 @@
 package toolbox.jtail.config.exml;
 
 import java.awt.Font;
-import java.beans.IntrospectionException;
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
-import toolbox.jtail.config.ITailPaneConfig;
-import toolbox.util.collections.AsMap;
-import toolbox.util.collections.ObjectMap;
-
-import electric.xml.Attribute;
-import electric.xml.Attributes;
 import electric.xml.Element;
 
+import toolbox.jtail.config.ITailPaneConfig;
+import toolbox.util.collections.AsMap;
+    
 /**
  * TailConfig is a data object that captures the configuration of a
  * given tail instance with the ability to marshal itself to and from 
@@ -33,6 +28,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     private boolean antiAlias_;
     private Font    font_;
     private String  filter_;
+    private String  cutExpression_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -65,7 +61,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         setShowLineNumbers(showLineNumbers);
         setAntiAlias(antiAlias);
         setFont(font);
-        setFilter(filter);
+        setRegularExpression(filter);
     }
 
     //--------------------------------------------------------------------------
@@ -131,13 +127,13 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         
         if (filterNode != null)
         {
-            config.setFilter(filterNode.getTextString());
+            config.setRegularExpression(filterNode.getTextString());
 
             // TODO: support negate and case
         }
         else
         {
-            config.setFilter(DEFAULT_FILTER);
+            config.setRegularExpression(DEFAULT_REGEX);
         }
             
         return config;
@@ -176,7 +172,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         
         // Filter element
         Element filter = new Element(ELEMENT_FILTER);
-        filter.setText(getFilter());
+        filter.setText(getRegularExpression());
         
         // Add child nodes to tail
         tail.addElement(font);
@@ -293,7 +289,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * 
      * @return String
      */
-    public String getFilter()
+    public String getRegularExpression()
     {
         return filter_;
     }
@@ -304,7 +300,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * 
      * @param filter The filter to set
      */
-    public void setFilter(String filter)
+    public void setRegularExpression(String filter)
     {
         filter_ = filter;
     }
@@ -329,4 +325,21 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     {
         antiAlias_ = b;
     }
+    
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#getCutExpression()
+     */
+    public String getCutExpression()
+    {
+        return cutExpression_;
+    }
+    
+    /**
+     * @see toolbox.jtail.config.ITailPaneConfig#setCutExpression(String)
+     */
+    public void setCutExpression(String cutExpression)
+    {
+        cutExpression_ = cutExpression;
+    }
+    
 }

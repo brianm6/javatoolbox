@@ -85,7 +85,7 @@ public class ConfigManager implements IConfigManager
                 ITailPaneConfig.DEFAULT_LINENUMBERS,
                 ITailPaneConfig.DEFAULT_ANTIALIAS,
                 SwingUtil.getPreferredMonoFont(),
-                ITailPaneConfig.DEFAULT_FILTER);
+                ITailPaneConfig.DEFAULT_REGEX);
 
             jtailConfig.setDefaultConfig(defaultConfig);            
             jtailConfig.setTailConfigs(new TailPaneConfig[0]);
