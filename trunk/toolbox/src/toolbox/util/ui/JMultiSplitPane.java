@@ -28,9 +28,89 @@ public class JMultiSplitPane extends JPanel
     private static final Logger logger_ =
         Logger.getLogger(JMultiSplitPane.class);
 
+    /**
+     * Size in pixels of the divider.
+     */
     private int dividerSize_;
+    
+    /**
+     * Horizontal or vertival?
+     */
     private int orientation_;
+    
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
 
+    private static int serial = 0;
+    private static int splitWidth = 10;
+    
+    /**
+     * Entrypoint
+     * 
+     * @param args None recognized
+     */
+    public static void main(String[] args)
+    {
+        JFrame f = new JFrame("MultiSplitPane Test");
+        f.getContentPane().setLayout(new GridLayout());
+        
+        final JMultiSplitPane msp =
+            new JMultiSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitWidth);
+            
+        f.getContentPane().add(msp);
+
+        JPanel butPanel = new JPanel();
+        f.getContentPane().add(butPanel);
+
+        JButton butAdd = new JSmartButton("add");
+        butPanel.add(butAdd);
+        
+        butAdd.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ect)
+            {
+                JButton but = new JButton("remove" + (serial++));
+                msp.add(but);
+                msp.revalidate();
+                
+                but.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent evt)
+                    {
+                        msp.remove((JComponent) evt.getSource());
+                    }
+                });
+            }
+        });
+        
+        JButton butThin = new JButton("thin");
+        
+        butThin.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent evt)
+            {
+                msp.setDividerSize(--splitWidth);
+            }
+        });
+        
+        butPanel.add(butThin);
+
+        JButton butThick = new JButton("thick");
+        
+        butThick.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent evt)
+            {
+                msp.setDividerSize(++splitWidth);
+            }
+        });
+        
+        butPanel.add(butThick);
+        f.pack();
+        f.show();
+    }    
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -389,13 +469,13 @@ public class JMultiSplitPane extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // AddComponent
     //--------------------------------------------------------------------------
 
     /**
      * Adds a component to the multisplit pane.
      */
-    private class AddComponent implements Runnable
+    class AddComponent implements Runnable
     {
         private JComponent comp_;
                 
@@ -411,10 +491,14 @@ public class JMultiSplitPane extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // RemoveComponent
+    //--------------------------------------------------------------------------
+    
     /**
      * Removes a component from the multisplitpane.
      */
-    private class RemoveComponent implements Runnable
+    class RemoveComponent implements Runnable
     {
         private JComponent comp_;
                 
@@ -430,6 +514,10 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
+    //--------------------------------------------------------------------------
+    // IntVector
+    //--------------------------------------------------------------------------
+    
     /**
      * A simple dynamic vector of ints.
      */
@@ -441,15 +529,20 @@ public class JMultiSplitPane extends JPanel
         private int end_;       // one beyond last valid pos
         private int[] arr_;     // data
 
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
-         * Default constructor
+         * Creates an IntVector.
          */
         public IntVector()
         {
         }
 
+        
         /**
-         * Arg constructor
+         * Creates an IntVector with an initial size.
          * 
          * @param initialSize Initial size
          */
@@ -458,8 +551,12 @@ public class JMultiSplitPane extends JPanel
             arr_ = new int[initialSize];
         }
 
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
+        
         /** 
-         * Add an int last 
+         * Add an int last. 
          * 
          * @param v int
          */
@@ -490,8 +587,11 @@ public class JMultiSplitPane extends JPanel
             arr_[end_++] = v;
         }
 
+        
         /**
-         * @return int at the front
+         * Return the int at the front.
+         * 
+         * @return int
          */
         public int front()
         {
@@ -501,8 +601,11 @@ public class JMultiSplitPane extends JPanel
             return arr_[start_];
         }
 
+        
         /**
-         * @return int popped from the front
+         * Returns the int popped from the front.
+         * 
+         * @return int
          */
         public int popFront()
         {
@@ -512,8 +615,11 @@ public class JMultiSplitPane extends JPanel
             return arr_[start_++];
         }
 
+        
         /**
-         * @return Last int in array
+         * Returns the last int in the array.
+         * 
+         * @return int
          */
         public int back()
         {
@@ -523,8 +629,11 @@ public class JMultiSplitPane extends JPanel
             return arr_[end_ - 1];
         }
 
+        
         /**
-         * @return Last element 
+         * Returns the last element.
+         * 
+         * @return int 
          */        
         public int popBack()
         {
@@ -534,8 +643,11 @@ public class JMultiSplitPane extends JPanel
             return arr_[--end_];
         }
 
+        
         /**
-         * @return Array representation
+         * Returns the Array representation.
+         * 
+         * @return int[]
          */
         public int[] getArray()
         {
@@ -549,93 +661,24 @@ public class JMultiSplitPane extends JPanel
             return res;
         }
 
+        
         /**
-         * @return Size of vector
+         * Returns the size of the vector.
+         * 
+         * @return int
          */
         public int size()
         {
             return end_ - start_;
         }
 
+        
         /**
-         * Resets vector
+         * Resets the vector.
          */
         public void clean()
         {
             start_ = end_ = 0;
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // Entry Point
-    //--------------------------------------------------------------------------
-
-    private static int serial = 0;
-    private static int splitWidth = 10;
-    
-    /**
-     * Entrypoint
-     * 
-     * @param args None recognized
-     */
-    public static void main(String[] args)
-    {
-        JFrame f = new JFrame("MultiSplitPane Test");
-        f.getContentPane().setLayout(new GridLayout());
-        
-        final JMultiSplitPane msp =
-            new JMultiSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitWidth);
-            
-        f.getContentPane().add(msp);
-
-        JPanel butPanel = new JPanel();
-        f.getContentPane().add(butPanel);
-
-        JButton butAdd = new JSmartButton("add");
-        butPanel.add(butAdd);
-        
-        butAdd.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ect)
-            {
-                JButton but = new JButton("remove" + (serial++));
-                msp.add(but);
-                msp.revalidate();
-                
-                but.addActionListener(new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent evt)
-                    {
-                        msp.remove((JComponent) evt.getSource());
-                    }
-                });
-            }
-        });
-        
-        JButton butThin = new JButton("thin");
-        
-        butThin.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent evt)
-            {
-                msp.setDividerSize(--splitWidth);
-            }
-        });
-        
-        butPanel.add(butThin);
-
-        JButton butThick = new JButton("thick");
-        
-        butThick.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent evt)
-            {
-                msp.setDividerSize(++splitWidth);
-            }
-        });
-        
-        butPanel.add(butThick);
-        f.pack();
-        f.show();
     }
 }
