@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
  * determining the time elapsed for any given method call/operation/unit of
  * work.
  * <p>
- * Example: 
- * <pre>
+ * <b>Example:</b> 
+ * <pre class="snippet">
  * // Create new instance init'ed to current time
  * ElapsedTime et = new ElapsedTime();
  * 
@@ -420,8 +420,10 @@ public class ElapsedTime
         {
             ElapsedTime rhs = (ElapsedTime) obj;
 
-            result = new EqualsBuilder().append(
-                        getTotalMillis(), rhs.getTotalMillis()).isEquals();
+            result = 
+                new EqualsBuilder().append(
+                    getTotalMillis(), 
+                    rhs.getTotalMillis()).isEquals();
         }
  
         return result;
