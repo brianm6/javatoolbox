@@ -71,12 +71,14 @@
 
   <dependencies>
 
+    <!--
     <dependency>
       <id>debug</id>
       <version/>
       <properties/>
     </dependency>
-
+    -->
+    
     <dependency>
       <id>acrobat</id>
       <version/>
@@ -95,6 +97,12 @@
 
     <dependency>
       <id>ant</id>
+      <version/>
+      <properties/>
+    </dependency>
+
+    <dependency>
+      <id>ant-launcher</id>
       <version/>
       <properties/>
     </dependency>
