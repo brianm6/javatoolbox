@@ -32,7 +32,6 @@
  * TODO: Add Swing preferences (window drag, resize outline, etc)
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Save db profiles to a separate file.
- * TODO: Look into Jemmy for automating GUI unit tests.
  * TODO: Expose xml formatter properties in TextToolsPlugin
  * TODO: Expose html formatter properties in TextToolsPlugin
  * TODO: Add undo to TextToolsPlugin
@@ -45,7 +44,8 @@
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
  * TODO: Update JSmartTableHeader to sort and auto-resize don't conflict
- * TODO: Update PluginWorkspace to extends JSmartFrame
+ * TODO: Update PluginWorkspace to accept a command line flag to load
+ *       preferences from a different file.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -97,6 +97,9 @@
       <action type="add   ">Util - Added ability to render font names in the listbox using the font itself in JFontChooser</action>
       <action type="add   ">Util - Added JSmartDialog. Persists size, location, and esc key is bound to dispose.</action>
       <action type="add   ">Util - Added convenience methods to PreferenceUtil to save/restore bounds for a component</action>
+      <action type="add   ">Lib - Added jemmy.jar to unit test UI components</action>
+      <action type="add   ">Test - Jemmified JFontChooserDialog test and createed JemmyUtil in the process</action>
+      <action type="update">Workspace - Updated PluginWorkspace to extend JSmartFrame and delegated save/apply of prefs to superclass</action>
     </release>
     
     <release version="2.0" date="July 2004">
