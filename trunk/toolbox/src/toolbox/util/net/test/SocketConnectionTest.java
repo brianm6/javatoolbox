@@ -200,6 +200,7 @@ public class SocketConnectionTest extends TestCase
         connection.close();
         listener.waitForClosing();
         listener.waitForClose();
+        connection.removeConnectionListener(listener);
         s.stop();
     }
 
