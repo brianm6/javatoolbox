@@ -471,6 +471,7 @@ public final class StringUtil
      * 
      * @param   s          String to tokenize
      * @param   delimiter  Delimiter used for separate tokens
+     * @param   saveDelims Counts the delimiter as a token
      * @return  Array of string tokens
      */  
     public static String[] tokenize(String s, String delimiter, boolean saveDelims)
