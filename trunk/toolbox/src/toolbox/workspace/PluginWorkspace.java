@@ -503,7 +503,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             try
             {
                 UIManager.setLookAndFeel(lafClass);
-                SwingUtilities.updateComponentTreeUI(this);
+                
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
+                    }
+                });
             }
             catch (Exception e)
             {
