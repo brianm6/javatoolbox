@@ -1,6 +1,8 @@
 package toolbox.util;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +13,7 @@ import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDesktopPane;
@@ -31,6 +34,8 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
@@ -178,6 +183,30 @@ public class SwingUtilTest extends UITestCase
         assertTrue(results2.iterator().next() instanceof JTextComponent);
     }
     
+    
+    /**
+     * Tests rotateImage() by rotating an image 360 degrees. 
+     */
+    public void testRotate() throws Exception
+    {
+        logger_.info("Running testRotate...");
+        
+        JPanel p = new JPanel(new GridLayout(18, 18));
+        Image image = ImageCache.getImage(ImageCache.IMAGE_DUKE);
+        
+        while(image.getHeight(null) < 0);
+        while(image.getWidth(null) < 0);
+        
+        for (int i = 0; i < 360; i++)
+        {
+            logger_.debug("Image " + i);
+            Image rotated = SwingUtil.rotate(image, i);
+            JButton b = new JSmartButton(i+"", new ImageIcon(rotated));
+            p.add(b);
+        }
+            
+        launchInDialog(p);
+    }
     
     //--------------------------------------------------------------------------
     // Helper Classes
