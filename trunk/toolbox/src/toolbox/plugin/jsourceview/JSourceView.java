@@ -34,7 +34,8 @@ import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
 /**
- * JSourceView
+ * JSourceView gathers statistics on one or more source files and presents
+ * them in a table format for viewing.
  */
 public class JSourceView extends JFrame implements ActionListener
 {
@@ -242,6 +243,8 @@ public class JSourceView extends JFrame implements ActionListener
 
     /**
      * Saves the results to a file
+     * 
+     * @throws IOException on error
      */
     protected void saveResults() throws IOException
     {
@@ -336,10 +339,10 @@ public class JSourceView extends JFrame implements ActionListener
                     tableRow[0] = fileCount+"";
                     tableRow[1] = getDirectoryOnly(filename);
                     tableRow[2] = getFileOnly(filename);
-                    tableRow[3] = String.valueOf(fileStats.codeLines);
-                    tableRow[4] = String.valueOf(fileStats.commentLines);
-                    tableRow[5] = String.valueOf(fileStats.blankLines);
-                    tableRow[6] = String.valueOf(fileStats.totalLines);
+                    tableRow[3] = String.valueOf(fileStats.getCodeLines());
+                    tableRow[4] = String.valueOf(fileStats.getCommentLines());
+                    tableRow[5] = String.valueOf(fileStats.getBlankLines());
+                    tableRow[6] = String.valueOf(fileStats.getTotalLines());
                     tableRow[7] = fileStats.getPercent() + "%";
                     
                     tableModel_.addRow(tableRow);
@@ -359,10 +362,10 @@ public class JSourceView extends JFrame implements ActionListener
             totalRow[0] = "";
             totalRow[1] = "Grand";
             totalRow[2] = "Total";
-            totalRow[3] = String.valueOf(totalStats.codeLines);
-            totalRow[4] = String.valueOf(totalStats.commentLines);
-            totalRow[5] = String.valueOf(totalStats.blankLines);
-            totalRow[6] = String.valueOf(totalStats.totalLines);
+            totalRow[3] = String.valueOf(totalStats.getCodeLines());
+            totalRow[4] = String.valueOf(totalStats.getCommentLines());
+            totalRow[5] = String.valueOf(totalStats.getBlankLines());
+            totalRow[6] = String.valueOf(totalStats.getTotalLines());
             totalRow[7] = totalStats.getPercent() + "%";
             tableModel_.addRow(totalRow);
             
@@ -418,20 +421,20 @@ public class JSourceView extends JFrame implements ActionListener
             
             while((line = lineReader.readLine()) != null) 
             {
-                filestats.totalLines++;
+                filestats.setTotalLines(filestats.getTotalLines()+1);
                 
                 if (line.trim().length() == 0)
                 {
-                    filestats.blankLines++;
+                    filestats.setBlankLines(filestats.getBlankLines()+1);
                 }
                 else
                 {
                     Machine.scanLine(new LineScanner(line), linestatus);
                     
                     if(linestatus.getCountLine())
-                        filestats.codeLines++;
+                        filestats.setCodeLines(filestats.getCodeLines() + 1);
                     else
-                        filestats.commentLines++;
+                        filestats.setCommentLines(filestats.getCommentLines()+1);
                 }
             }
     
