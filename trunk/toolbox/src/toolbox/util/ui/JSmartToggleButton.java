@@ -20,6 +20,17 @@ import toolbox.util.SwingUtil;
  *       state of the button must be kept in sync with a flag beloging to 
  *       another component.
  * </ul>
+ * Intended usage:
+ * <pre>
+ * JSmartToggleButton b = new JSmartToggleButton();
+ * 
+ * //
+ * // Whenever the 'selected' event occurs, the toggle button will get 
+ * // notified and toggle  its state.
+ * //
+ * MyComponent mc = new MyComponent();
+ * b.toggleOnProperty(mc, "selected");
+ * </pre>
  */
 public class JSmartToggleButton extends JToggleButton implements AntiAliased
 {
