@@ -13,7 +13,6 @@ package toolbox;
  * TODO: Add detach notification to tail.
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
- * TODO: Add HTTP proxy support to preferences dialog.
  * TODO: Add icons to statusbar.
  * TODO: Add way to copy the current selection from the file explorer dir pane.
  * TODO: Really pick apart JSmartTextArea and figure out a good way optimizing
@@ -22,9 +21,6 @@ package toolbox;
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
- * TODO: Figure out how to put separators on the main javadocs page
- * =============================================================================
- * 
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -57,6 +53,8 @@ package toolbox;
  * - Scan source for refactorings to use DisposeAction 
  * - Update to latest Sun TableSorter
  * - Integrate statcvs-xml from berlios
+ * - Add HTTP proxy support to preferences dialog. 
+ * - Figure out how to put separators on the main javadocs page
  * ============================================================================= 
  * </pre>
  */
