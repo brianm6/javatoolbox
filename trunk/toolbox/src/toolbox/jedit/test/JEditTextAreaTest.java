@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -28,6 +27,8 @@ import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartLabel;
 
 /**
  * Unit test for JEditTextArea.
@@ -117,14 +118,14 @@ public class JEditTextAreaTest extends TestCase
             
             JPanel p = new JPanel(new FlowLayout());
             
-            p.add(new JLabel("Foreground"));
+            p.add(new JSmartLabel("Foreground"));
             
-            p.add(fgCombo_ = new JComboBox(
+            p.add(fgCombo_ = new JSmartComboBox(
                 new String [] {"red", "green", "blue"} ));
             
-            p.add(new JLabel("Background"));
+            p.add(new JSmartLabel("Background"));
             
-            p.add(bgCombo_ = new JComboBox(
+            p.add(bgCombo_ = new JSmartComboBox(
                 new String [] {"red", "green", "blue"} ));
             
             fgCombo_.addActionListener(this);

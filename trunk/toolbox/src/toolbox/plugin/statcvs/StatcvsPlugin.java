@@ -17,12 +17,14 @@ import javax.swing.JToolBar;
 
 import net.sf.statcvs.Main;
 import net.sf.statcvs.output.CommandLineParser;
+
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
+
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
 import toolbox.util.ArrayUtil;
@@ -33,11 +35,13 @@ import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.NativeBrowser;
+import toolbox.util.ui.JSmartTextArea.ClearAction;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.IPlugin;
@@ -227,7 +231,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         p.add(checkoutDirField_ = new JSmartTextField(30));
         
         p.add(new JSmartLabel("Debug output"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(debugCheckBox_ = new JCheckBox());
+        p.add(debugCheckBox_ = new JSmartCheckBox());
         
         p.add(new JSmartLabel("Launch URL"), ParagraphLayout.NEW_PARAGRAPH);        
         p.add(launchURLField_ = new JSmartTextField(30));

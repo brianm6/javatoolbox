@@ -215,7 +215,7 @@ public class JFindClass extends JFrame implements IPreferenced
         searchPanel.add(searchField_); 
         searchPanel.add(searchButton_);
         searchPanel.add(dupesButton_);
-        searchPanel.add(new JLabel("      "));
+        searchPanel.add(new JSmartLabel("      "));
         searchPanel.add(ignoreCaseCheckBox_);
         searchPanel.add(showPathCheckBox_);
         searchPanel.add(hiliteMatchesCheckBox_);

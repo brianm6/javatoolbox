@@ -16,7 +16,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -43,7 +42,11 @@ import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartCheckBox;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.workspace.IStatusBar;
 
@@ -288,18 +291,18 @@ public class TailPane extends JPanel
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
         
-        JButton clearButton_ = new JButton(tailArea_.new ClearAction());
-        pauseButton_ = new JButton(new PauseUnpauseAction());
+        JButton clearButton_ = new JSmartButton(tailArea_.new ClearAction());
+        pauseButton_ = new JSmartButton(new PauseUnpauseAction());
         
         String startMode =  
             config.isAutoStart() ? MODE_START : MODE_STOP;
         
-        startButton_    = new JButton(new StartStopAction(startMode));
-        closeButton_    = new JButton(new CloseAction());
-        autoScrollBox_  = new JCheckBox(new AutoScrollAction());
-        lineNumbersBox_ = new JCheckBox(new ShowLineNumbersAction());
-        regexField_     = new JTextField(5);
-        cutField_       = new JTextField(5);
+        startButton_    = new JSmartButton(new StartStopAction(startMode));
+        closeButton_    = new JSmartButton(new CloseAction());
+        autoScrollBox_  = new JSmartCheckBox(new AutoScrollAction());
+        lineNumbersBox_ = new JSmartCheckBox(new ShowLineNumbersAction());
+        regexField_     = new JSmartTextField(5);
+        cutField_       = new JSmartTextField(5);
 
         regexField_.addActionListener(new RegexActionListener());
         cutField_.addActionListener(new CutActionListener());
@@ -311,9 +314,9 @@ public class TailPane extends JPanel
         buttonPanel.add(closeButton_);
         buttonPanel.add(autoScrollBox_);
         buttonPanel.add(lineNumbersBox_);
-        buttonPanel.add(new JLabel("Include filter"));
+        buttonPanel.add(new JSmartLabel("Include filter"));
         buttonPanel.add(regexField_);
-        buttonPanel.add(new JLabel("Cut"));
+        buttonPanel.add(new JSmartLabel("Cut"));
         buttonPanel.add(cutField_);
         
         setLayout(new BorderLayout());

@@ -5,7 +5,6 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -16,10 +15,13 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * Unit test for ParagraphLayout
+ * Unit test for ParagraphLayout.
  */
 public class ParagraphLayoutTest extends TestCase
 {
@@ -33,7 +35,8 @@ public class ParagraphLayoutTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
+     * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
     {
@@ -46,7 +49,7 @@ public class ParagraphLayoutTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests paragraph layout
+     * Tests paragraph layout.
      */
     public void testParagraphLayout()
     {
@@ -55,36 +58,36 @@ public class ParagraphLayoutTest extends TestCase
         JFrame jf = new JFrame("ParagraphLayout Unit Test");
         Container f = jf.getContentPane();
         f.setLayout(new ParagraphLayout());
-        JButton b1 = new JButton("One");
-        JButton b2 = new JButton("Two");
-        JButton b3 = new JButton("Three");
-        JButton b4 = new JButton("Four");
-        JButton b5 = new JButton("Five");
-        JButton b6 = new JButton("Six");
-        JButton b7 = new JButton("Seven");
-        JButton b8 = new JButton("Eight");
-        JTextField t1 = new JTextField(4);
-        JTextField t2 = new JTextField(20);
+        JButton b1 = new JSmartButton("One");
+        JButton b2 = new JSmartButton("Two");
+        JButton b3 = new JSmartButton("Three");
+        JButton b4 = new JSmartButton("Four");
+        JButton b5 = new JSmartButton("Five");
+        JButton b6 = new JSmartButton("Six");
+        JButton b7 = new JSmartButton("Seven");
+        JButton b8 = new JSmartButton("Eight");
+        JTextField t1 = new JSmartTextField(4);
+        JTextField t2 = new JSmartTextField(20);
         JTextArea t3 = new JTextArea(5, 30);
 
         b2.setFont(new Font("serif", Font.PLAIN, 24));
-        f.add(new JLabel("Some buttons:"), ParagraphLayout.NEW_PARAGRAPH);
+        f.add(new JSmartLabel("Some buttons:"), ParagraphLayout.NEW_PARAGRAPH);
         f.add(b1);
-        f.add(new JLabel("A long label:"), ParagraphLayout.NEW_PARAGRAPH);
+        f.add(new JSmartLabel("A long label:"), ParagraphLayout.NEW_PARAGRAPH);
         f.add(b2);
         f.add(b3);
-        f.add(new JLabel("Short label:"), ParagraphLayout.NEW_PARAGRAPH);
+        f.add(new JSmartLabel("Short label:"), ParagraphLayout.NEW_PARAGRAPH);
         f.add(b4);
         f.add(b5, ParagraphLayout.NEW_LINE);
         f.add(b6);
         f.add(b7);
         f.add(b8, ParagraphLayout.NEW_LINE);
-        f.add(new JLabel("Text:"), ParagraphLayout.NEW_PARAGRAPH);
+        f.add(new JSmartLabel("Text:"), ParagraphLayout.NEW_PARAGRAPH);
         f.add(t1);
-        f.add(new JLabel("More text:"), ParagraphLayout.NEW_PARAGRAPH);
+        f.add(new JSmartLabel("More text:"), ParagraphLayout.NEW_PARAGRAPH);
         f.add(t2);
-        f.add(new JLabel("miles"));
-        f.add(new JLabel("A text area:"), ParagraphLayout.NEW_PARAGRAPH_TOP);
+        f.add(new JSmartLabel("miles"));
+        f.add(new JSmartLabel("A text area:"), ParagraphLayout.NEW_PARAGRAPH_TOP);
         f.add(new JScrollPane(t3));
         jf.pack();
         SwingUtil.centerWindow(jf);

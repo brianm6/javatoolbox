@@ -18,6 +18,8 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JFileExplorer;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.flippane.FlipPaneListener;
 import toolbox.util.ui.flippane.JFlipPane;
 
@@ -78,7 +80,7 @@ public class JFlipPaneTest extends TestCase
             c.add(BorderLayout.NORTH, createFlipPane(JFlipPane.TOP));
             c.add(BorderLayout.SOUTH, createFlipPane(JFlipPane.BOTTOM));
             
-            JLabel label = new JLabel("Filler");
+            JLabel label = new JSmartLabel("Filler");
             label.setFont(label.getFont().deriveFont((float)50.0));
             label.setHorizontalAlignment(SwingConstants.CENTER);
             label.setBackground(Color.white);
@@ -89,10 +91,10 @@ public class JFlipPaneTest extends TestCase
         protected JFlipPane createFlipPane(String pos)
         {
             JFlipPane fp = new JFlipPane(pos);
-            JLabel card1 = new JLabel("Label");
+            JLabel card1 = new JSmartLabel("Label");
             fp.addFlipper(card1.getText(), card1);
             
-            JButton card2 = new JButton("Button");
+            JButton card2 = new JSmartButton("Button");
             card2.setPreferredSize(new Dimension(100,100));
             card2.setMinimumSize(new Dimension(50,50));
             fp.addFlipper(card2.getText(), card2);

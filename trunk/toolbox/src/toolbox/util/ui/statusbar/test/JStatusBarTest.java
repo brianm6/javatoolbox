@@ -14,10 +14,11 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.RandomUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
- * Unit test for JStatusBar
+ * Unit test for JStatusBar.
  */
 public class JStatusBarTest extends TestCase
 {
@@ -61,19 +62,19 @@ public class JStatusBarTest extends TestCase
         
         // Relative normal
         status.addStatusComponent(
-            new JLabel(" Relative x1 "), JStatusBar.RELATIVE, 1);
+            new JSmartLabel(" Relative x1 "), JStatusBar.RELATIVE, 1);
         
         // Fixed, based on preferred size
         status.addStatusComponent(
-            new JLabel(" Preferred "));
+            new JSmartLabel(" Preferred "));
         
         // Fixed, based on specified size
         status.addStatusComponent(
-            new JLabel(" Fixed "), JStatusBar.FIXED, 40);
+            new JSmartLabel(" Fixed "), JStatusBar.FIXED, 40);
         
         // Relative normal
         status.addStatusComponent(
-            new JLabel(" Relative x1 "), JStatusBar.RELATIVE);
+            new JSmartLabel(" Relative x1 "), JStatusBar.RELATIVE);
         
         // Progress bar is based on preferred size
         JProgressBar progressBar = new JProgressBar(1, 100);

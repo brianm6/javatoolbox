@@ -11,7 +11,7 @@
 
   <organization>
     <name>Toolbox</name>
-    <url>http://hemisfear.cjb.net/</url>
+    <url>http://hemisfear.cjb.net:8080/</url>
   </organization>
   
   <inceptionYear>2002</inceptionYear>
@@ -20,19 +20,20 @@
   <gumpRepositoryId>toolbox</gumpRepositoryId>
   <description>Java Toolbox</description>
   <shortDescription>Toolbox that contains various apps and utilities to make java development easier.</shortDescription>
-  <url>http://hemisfear.cjb.net/</url>
-  <issueTrackingUrl>http://hemisfear.cjb.net</issueTrackingUrl>
+  <url>http://hemisfear.cjb.net:8080/</url>
+  <issueTrackingUrl>http://hemisfear.cjb.net:8080/</issueTrackingUrl>
   <siteAddress>hemisfear.cjb.net</siteAddress>
   <siteDirectory>/www/hemisfear.cjb.net/</siteDirectory>
-  <distributionDirectory>
-    /www/jakarta.apache.org/builds/toolbox/
-  </distributionDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/toolbox/</distributionDirectory>
 
   <repository>
     <connection>
       scm|cvs|pserver|analogue@hemisfear.cjb.net|c:/cvs/cvsrep|${pom.artifactId}
     </connection>
-    <url>http://hemisfear.cjb.net/</url>
+    
+    <!-- TODO: remove once statcvs does not depend on this -->
+    <url>http://cvs.classworlds.codehaus.org/</url>
+    
   </repository>
   
   <versions>
@@ -486,7 +487,9 @@
       <report>maven-pmd-plugin</report>
       <report>maven-jdepend-plugin</report>
 
-      <!-- <report>maven-statcvs-plugin</report> -->      
+      <report>maven-statcvs-plugin</report>
+      <report>maven-clover-plugin</report>
+      
       <!-- <report>maven-tasklist-plugin</report> -->
       <!-- <report>maven-simian-plugin</report> -->
       

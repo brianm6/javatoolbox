@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.RandomUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JMemoryMonitor;
+import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 
 /**
@@ -59,7 +60,7 @@ public class JMemoryMonitorTest extends TestCase
         cp.setLayout(new BorderLayout());
         cp.add(new JMemoryMonitor(), BorderLayout.CENTER);
         
-        JButton button = new JButton(new EatMemoryAction());
+        JButton button = new JSmartButton(new EatMemoryAction());
         cp.add(button, BorderLayout.SOUTH);        
         frame.setSize(300,75);
         SwingUtil.centerWindow(frame);

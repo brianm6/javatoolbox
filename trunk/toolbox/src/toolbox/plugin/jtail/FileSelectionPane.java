@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import toolbox.util.ui.JFileExplorer;
+import toolbox.util.ui.JSmartButton;
 
 /**
  * Custom file explorer panel for JTail. Just adds a "Tail" button to the
@@ -72,8 +73,8 @@ public class FileSelectionPane extends JPanel
         
         // Button panel    
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        tailButton_ = new JButton("Tail");
-        aggregateButton_ = new JButton("Aggregate");
+        tailButton_ = new JSmartButton("Tail");
+        aggregateButton_ = new JSmartButton("Aggregate");
         buttonPanel.add(tailButton_);
         buttonPanel.add(aggregateButton_);
         add(buttonPanel, BorderLayout.SOUTH);

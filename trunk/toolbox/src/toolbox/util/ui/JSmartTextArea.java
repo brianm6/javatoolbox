@@ -132,6 +132,18 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         setPruneFactor(0);
     }
 
+    
+    /**
+     * Creates a JSmartTextArea with the given number of rows and columns.
+     * 
+     * @param rows Number of rows
+     * @param columns Number of columns.
+     */
+    public JSmartTextArea(int rows, int columns)
+    {
+        super(rows, columns);
+    }
+
     //--------------------------------------------------------------------------
     // IPreferenced Interface 
     //--------------------------------------------------------------------------

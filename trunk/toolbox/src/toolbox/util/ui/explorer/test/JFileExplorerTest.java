@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -20,6 +19,9 @@ import org.apache.log4j.Logger;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerListener;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartTextField;
 
 /**
  * Unit test for JFileExplorer
@@ -88,10 +90,10 @@ public class JFileExplorerTest extends TestCase
             getContentPane().add(jfe_, BorderLayout.CENTER);
             
             JPanel testPanel = new JPanel(new FlowLayout());
-            testField_ = new JTextField(15);
-            testButton_ = new JButton("Set folder");
+            testField_ = new JSmartTextField(15);
+            testButton_ = new JSmartButton("Set folder");
             testButton_.addActionListener(this);
-            testPanel.add(new JLabel("Folder"));
+            testPanel.add(new JSmartLabel("Folder"));
             testPanel.add(testField_);
             testPanel.add(testButton_);
             getContentPane().add(testPanel, BorderLayout.SOUTH);

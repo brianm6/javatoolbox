@@ -16,13 +16,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JSmartMenu;
+import toolbox.util.ui.JSmartMenuItem;
 
 /**
  * Unit test for SwingUtil
@@ -116,9 +118,9 @@ public class SwingUtilTest extends TestCase
         protected JMenuBar createMenuBar()
         {
             JMenuBar menuBar = new JMenuBar();
-            JMenu menu = new JMenu("Document");
+            JMenu menu = new JSmartMenu("Document");
             menu.setMnemonic(KeyEvent.VK_D);
-            JMenuItem menuItem = new JMenuItem("New");
+            JMenuItem menuItem = new JSmartMenuItem("New");
             menuItem.setMnemonic(KeyEvent.VK_N);
             
             menuItem.addActionListener(new ActionListener()
@@ -129,7 +131,7 @@ public class SwingUtilTest extends TestCase
                 }
             });
             
-            JMenuItem tileItem = new JMenuItem("Tile");
+            JMenuItem tileItem = new JSmartMenuItem("Tile");
             tileItem.setMnemonic(KeyEvent.VK_T);
             
             tileItem.addActionListener(new ActionListener()
@@ -140,7 +142,7 @@ public class SwingUtilTest extends TestCase
                 }
             });
             
-            JMenuItem cascadeItem = new JMenuItem("Cascade");
+            JMenuItem cascadeItem = new JSmartMenuItem("Cascade");
             cascadeItem.setMnemonic(KeyEvent.VK_C);
             
             cascadeItem.addActionListener(new ActionListener()

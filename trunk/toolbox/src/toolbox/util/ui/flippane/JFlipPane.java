@@ -27,16 +27,18 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.JSmartPopupMenu;
 
 /**
  * JFlipPane is a panel with flipper like behavior to hide a and show any
@@ -213,7 +215,7 @@ public class JFlipPane extends JPanel
         button.addMouseListener(new PopupHandler());
 
         // Create menu item
-        JMenuItem menuItem = new JMenuItem(name);
+        JMenuItem menuItem = new JSmartMenuItem(name);
 
         menuItem.addActionListener(new ActionListener()
         {
@@ -567,7 +569,7 @@ public class JFlipPane extends JPanel
         buttonPanel_.add(popupButton_);        
                 
         // Adds buttons to mutually exclusive button group
-        popup_ = new JPopupMenu();
+        popup_ = new JSmartPopupMenu();
         buttonGroup_ = new ButtonGroup();
 
         // JDK 1.4 workaround

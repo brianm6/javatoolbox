@@ -59,7 +59,8 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         progressBar_ = new JProgressBar();
         status_ = new JSmartLabel("Howdy pardner!");
 
-        JLabel gc = new JLabel(ImageCache.getIcon(ImageCache.IMAGE_TRASHCAN));
+        JLabel gc = new JSmartLabel(
+            ImageCache.getIcon(ImageCache.IMAGE_TRASHCAN));
         
         gc.addMouseListener(new MouseAdapter()
         {

@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -18,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 
 /**
@@ -84,16 +84,16 @@ public class SmartActionTest extends TestCase
     {
         JPanel p = new JPanel(new GridLayout(4,4));
         
-        p.add(new JButton(new SyncTimedNoProbsAction(
+        p.add(new JSmartButton(new SyncTimedNoProbsAction(
             "Run synchronous timed action with no problems", false, p)));
             
-        p.add(new JButton(new SyncTimedThrowingAction(
+        p.add(new JSmartButton(new SyncTimedThrowingAction(
             "Run synchronous timed action that throws an exception", false,p)));
             
-        p.add(new JButton(new AsyncTimedNoProbsAction(
+        p.add(new JSmartButton(new AsyncTimedNoProbsAction(
             "Run asynchronous timed action with no problems", true, p)));
             
-        p.add(new JButton(new AsyncTimedThrowingAction(
+        p.add(new JSmartButton(new AsyncTimedThrowingAction(
             "Run asynchronous timed action that throws an exception", true,p)));
         return p;
     }

@@ -308,7 +308,7 @@ public class JMultiSplitPane extends JPanel
             
             // create a splitpane and add the original to the top/left
             // and the new to the bot/right
-            JSplitPane split = new JSplitPane(orientation_);
+            JSplitPane split = new JSmartSplitPane(orientation_);
             split.setTopComponent(oldcomp);
             split.setBottomComponent(comp);
             split.setBorder(BorderFactory.createEmptyBorder());
@@ -591,7 +591,7 @@ public class JMultiSplitPane extends JPanel
         JPanel butPanel = new JPanel();
         f.getContentPane().add(butPanel);
 
-        JButton butAdd = new JButton("add");
+        JButton butAdd = new JSmartButton("add");
         butPanel.add(butAdd);
         
         butAdd.addActionListener(new ActionListener()

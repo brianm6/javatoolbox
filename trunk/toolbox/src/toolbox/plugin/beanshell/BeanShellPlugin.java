@@ -15,6 +15,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 
 import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.IPlugin;
 
@@ -119,7 +120,7 @@ public class BeanShellPlugin extends JPanel implements IPlugin
         }
         
         JSplitPane splitter = 
-            new JSplitPane(JSplitPane.VERTICAL_SPLIT, console_, output_);
+            new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT, console_, output_);
             
         setLayout(new BorderLayout());
         add(BorderLayout.CENTER, splitter);

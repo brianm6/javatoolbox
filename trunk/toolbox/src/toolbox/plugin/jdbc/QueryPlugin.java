@@ -37,9 +37,11 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
+import toolbox.util.ui.JSmartTextArea.ClearAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
@@ -295,7 +297,10 @@ public class QueryPlugin extends JPanel implements IPlugin
         if (!sqlHistory_.containsValue(sql))
         {   
             sqlHistory_.put(sql, sql);
-            JMenuItem menuItem = new JMenuItem(new ExecutePriorAction(sql));
+            
+            JMenuItem menuItem = 
+                new JSmartMenuItem(new ExecutePriorAction(sql));
+            
             sqlPopup_.add(menuItem);
         }
     }
