@@ -3,13 +3,16 @@ package toolbox.util;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.apache.commons.io.CopyUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -35,7 +38,7 @@ public final class ResourceUtil
     }
 
     //--------------------------------------------------------------------------
-    // Get Resouces in Different Forms
+    // Preferred Resource Loading Strategy 
     //--------------------------------------------------------------------------
 
     /**
@@ -99,6 +102,9 @@ public final class ResourceUtil
         return is;
     }
 
+    //--------------------------------------------------------------------------
+    // Convenience methods that return a resource in common forms.
+    //--------------------------------------------------------------------------
     
     /**
 	 * Locates a resource with the given name using an exhaustive variety of
@@ -165,6 +171,36 @@ public final class ResourceUtil
         return image;
     }
 
+    
+    /**
+     * Returns a temp file that contains the resource with the given name.
+     * The caller is responsible for deleting after being used. 
+     * 
+     * @param name Resource name (file, url, etc)
+     * @return File
+     */
+    public static File getResourceAsTempFile(String name) throws IOException
+    {
+        InputStream is = null;
+        OutputStream os = null;
+        File f = null;
+        
+        try
+        {   
+            is = getResource(name);
+            f = FileUtil.createTempFile();
+            os = new FileOutputStream(f);
+            int len = CopyUtils.copy(is, os);
+        }
+        finally
+        {
+            StreamUtil.close(is);
+            StreamUtil.close(os);
+        }
+        
+        return f;
+    }
+    
     //--------------------------------------------------------------------------
     // URL Resources
     //--------------------------------------------------------------------------
