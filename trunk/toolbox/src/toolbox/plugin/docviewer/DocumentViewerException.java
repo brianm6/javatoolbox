@@ -1,9 +1,10 @@
 package toolbox.plugin.docviewer;
 
 /**
- * Exception throws by methods defined in the DocumentViewer interface.
+ * Exception thrown by classes implementing the {@link DocumentViewer} 
+ * interface.
  */
-public class DocumentViewerException extends Exception
+public class DocumentViewerException extends RuntimeException
 {
     /**
      * Creates a DocumentViewerException. 
