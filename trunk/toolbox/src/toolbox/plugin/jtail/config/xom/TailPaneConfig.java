@@ -33,7 +33,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     /**
      * Files being tailed.
      */
-    private String[]  filenames_;
+    private String[] filenames_;
     
     /**
      * Flag to turn line numbers on/off.
@@ -48,12 +48,12 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     /**
      * Regular expression to filter the tail output.
      */
-    private String  regularExpression_;
+    private String regularExpression_;
     
     /**
      * Cut expression to filter the tail output.
      */
-    private String  cutExpression_;
+    private String cutExpression_;
 
     // TODO: Following attribs need to be migrated out of here -----------------
     
