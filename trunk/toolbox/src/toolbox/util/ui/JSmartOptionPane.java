@@ -1154,7 +1154,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     {
         if (detailArea_ == null)
         {
-            detailArea_ = new JTextArea();
+            detailArea_ = new JSmartTextArea();
             detailArea_.setFont(SwingUtil.getPreferredMonoFont());
             detailScroller_ = new JScrollPane(detailArea_);
 

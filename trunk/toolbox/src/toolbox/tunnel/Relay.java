@@ -19,7 +19,6 @@ public class Relay extends Thread
     private OutputStream  out_;
     private byte[]        buf_ = new byte[BUFSIZ];
     private JTextArea     textArea_;
-    private boolean       follow_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -33,7 +32,7 @@ public class Relay extends Thread
      */
     public Relay(InputStream in, OutputStream out)
     {
-        this(in, out, null, false);
+        this(in, out, null);
     }
 
 
@@ -43,14 +42,12 @@ public class Relay extends Thread
      * @param  in       Input stream
      * @param  out      Output stream
      * @param  ta       Textarea
-     * @param  follow   Should text area autoscroll w/ output?
      */
-    public Relay(InputStream in, OutputStream out, JTextArea ta, boolean follow)
+    public Relay(InputStream in, OutputStream out, JTextArea ta)
     {
         in_ = in;
         out_ = out;
         textArea_ = ta;
-        follow_ = follow;
     }
 
     //--------------------------------------------------------------------------
@@ -72,13 +69,7 @@ public class Relay extends Thread
                 out_.flush();
 
                 if (textArea_ != null)
-                {
                     textArea_.append(new String(buf_, 0, n));
-                    
-                    if (follow_)
-                        textArea_.setCaretPosition(
-                            textArea_.getDocument().getLength());
-                }
             }
         }
         catch (IOException e)

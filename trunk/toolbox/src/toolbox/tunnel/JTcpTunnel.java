@@ -24,11 +24,14 @@ import javax.swing.event.ChangeListener;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
+import toolbox.util.ui.JSmartTextArea;
 
 /**
  * JTcpTunnel tunnels TCP traffic between a port on the localhost and a port
  * on a remote host. All bytes sent/received are displayed in the GUI for
  * visual inspection.
+ * <p>
+ * TODO: Add filtering
  */
 public class JTcpTunnel extends JFrame
 {
@@ -41,7 +44,6 @@ public class JTcpTunnel extends JFrame
     private Relay       inRelay_;
     private Relay       outRelay_;
     private JSplitPane  splitter_;
-    private JCheckBox   followCheckBox_;
     private JButton     clearButton_;
     
     /**
@@ -144,10 +146,10 @@ public class JTcpTunnel extends JFrame
 
                     // relay the stuff thru
                     new Relay(sc.getInputStream(), st.getOutputStream(), 
-                        getListenText(), followCheckBox_.isSelected()).start();
+                        getListenText()).start();
                               
                     new Relay(st.getInputStream(), sc.getOutputStream(), 
-                        getTunnelText(), followCheckBox_.isSelected()).start();
+                        getTunnelText()).start();
 
                     // that's it .. they're off
                 }
@@ -190,16 +192,15 @@ public class JTcpTunnel extends JFrame
 
         //======================================================================
         
-        listenText_ = new JTextArea();
+        listenText_ = new JSmartTextArea(true, false);
         listenText_.setFont(SwingUtil.getPreferredMonoFont());
         listenText_.setRows(40);
         listenText_.setColumns(80);
         
-        tunnelText_ = new JTextArea();
+        tunnelText_ = new JSmartTextArea(true, false);
         tunnelText_.setFont(SwingUtil.getPreferredMonoFont());
         tunnelText_.setRows(40);
         tunnelText_.setColumns(80);
-        tunnelText_.setAutoscrolls(true);
         
         splitter_ = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
             new JScrollPane(listenText_), new JScrollPane(tunnelText_));
@@ -215,9 +216,7 @@ public class JTcpTunnel extends JFrame
         JPanel buttonPanel = new JPanel();
 
         clearButton_ = new JButton("Clear");
-        followCheckBox_ = new JCheckBox("Follow output", true);
         buttonPanel.add(clearButton_);
-        buttonPanel.add(followCheckBox_);
         
         // Clear both textareas
         clearButton_.addActionListener(new ActionListener() 
@@ -226,19 +225,6 @@ public class JTcpTunnel extends JFrame
             {
                 listenText_.setText("");
                 tunnelText_.setText("");
-            }
-        });
-
-        // Allow follow behavior to change in real time
-        followCheckBox_.addChangeListener(new ChangeListener()
-        {
-            /**
-             * @see javax.swing.event.ChangeListener#stateChanged(ChangeEvent)
-             */
-            public void stateChanged(ChangeEvent e)
-            {
-                listenText_.setAutoscrolls(followCheckBox_.isSelected());           
-                tunnelText_.setAutoscrolls(followCheckBox_.isSelected());
             }
         });
         
