@@ -17,7 +17,7 @@ import toolbox.util.service.Nameable;
  * MonitoredOutputStream is a stream decorator that enables the monitoring of
  * various stream related events and activities. These include:
  * <ul>
- *   <li>Stream throughput in bytes/second or any time interval
+ *   <li>Stream throughput in bytes/second or any arbitrary time interval
  *   <li>Bytes transferred every x number of bytes
  *   <li>Total bytes written
  *   <li>Stream close() and flush() operations
@@ -73,7 +73,7 @@ public class MonitoredOutputStream extends FilterOutputStream
     private String name_;
 
     /**
-     * Listeners interested in close and flush events.
+     * Listeners interested in close() and flush() notification.
      */
     private OutputStreamListener[] listeners_;
     
@@ -192,8 +192,6 @@ public class MonitoredOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the stream name.
-     * 
      * @see toolbox.util.service.Nameable#getName()
      */
     public String getName()
@@ -215,7 +213,7 @@ public class MonitoredOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the number of bytes written to the stream.
+     * Returns the total number of bytes written to this stream.
      * 
      * @return long
      */
@@ -226,7 +224,9 @@ public class MonitoredOutputStream extends FilterOutputStream
     
 
     /**
-     * @return Returns the throughputMonitor.
+     * Returns the monitor used to keep track of this streams throughput.
+     * 
+     * @return ThroughputMonitor
      */
     public ThroughputMonitor getThroughputMonitor()
     {
@@ -235,6 +235,8 @@ public class MonitoredOutputStream extends FilterOutputStream
     
     
     /**
+     * Sets the monitor used to keep track of this streams throughput.
+     * 
      * @param throughputMonitor The throughputMonitor to set.
      */
     public void setThroughputMonitor(ThroughputMonitor throughputMonitor)
@@ -244,7 +246,9 @@ public class MonitoredOutputStream extends FilterOutputStream
 
     
     /**
-     * @return Returns the transferredMonitor.
+     * Returns the monitor used to keep track of this streams bytes transferred.
+     * 
+     * @return TransferredMonitor
      */
     public TransferredMonitor getTransferredMonitor()
     {
@@ -253,6 +257,8 @@ public class MonitoredOutputStream extends FilterOutputStream
     
     
     /**
+     * Sets the monitor used to keep track of this streams bytes transferred.
+     * 
      * @param transferredMonitor The transferredMonitor to set.
      */
     public void setTransferredMonitor(TransferredMonitor transferredMonitor)
@@ -262,9 +268,9 @@ public class MonitoredOutputStream extends FilterOutputStream
 
     
     /**
-     * Adds a Listener to the list of registered stream listeners.
+     * Adds a listener to this stream.
      * 
-     * @param listener Listener to register.
+     * @param listener Listener to receive notifications of outputstream events.
      */
     public void addOutputStreamListener(OutputStreamListener listener)
     {
@@ -274,9 +280,10 @@ public class MonitoredOutputStream extends FilterOutputStream
     
     
     /**
-     * Removes a Listener from the list of registered stream listeners.
+     * Removes a listener from this stream.
      * 
-     * @param listener Listener to remove.
+     * @param listener Listener that will no longer receive notifications of
+     *        outputstream events.
      */
     public void removeOutputStreamListener(OutputStreamListener listener)
     {

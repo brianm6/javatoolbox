@@ -78,9 +78,9 @@ public class MulticastOutputStream extends OutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a stream to the multicast group.
+     * Adds a stream to this multicast group.
      * 
-     * @param out Stream to add.
+     * @param out Stream that will receive data sent this multicast group.
      */
     public synchronized void addStream(OutputStream out)
     {
@@ -90,9 +90,10 @@ public class MulticastOutputStream extends OutputStream
 
     
     /**
-     * Removes a stream from the multicast group.
+     * Removes a stream from this multicast group.
      * 
-     * @param out Stream to remove.
+     * @param out Stream that will no longer receive data sent to this multicast
+     *        group.
      */
     public synchronized void removeStream(OutputStream out)
     {
