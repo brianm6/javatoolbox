@@ -5,6 +5,8 @@ import java.util.Properties;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.net.SocketServerConfig;
 
 /**
@@ -12,14 +14,9 @@ import toolbox.util.net.SocketServerConfig;
  */
 public class SocketServerConfigTest extends TestCase
 {
-
-    /**
-     * Constructor for SocketServerConfigTest
-     */
-    public SocketServerConfigTest(String arg0)
-    {
-        super(arg0);
-    }
+    /** Logger **/
+    public static final Logger logger_ =
+        Logger.getLogger(SocketServerConfigTest.class);
 
     /**
      * Entrypoint 
@@ -27,6 +24,14 @@ public class SocketServerConfigTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(SocketServerConfigTest.class);
+    }
+        
+    /**
+     * Constructor for SocketServerConfigTest
+     */
+    public SocketServerConfigTest(String arg0)
+    {
+        super(arg0);
     }
     
     /**
@@ -38,6 +43,7 @@ public class SocketServerConfigTest extends TestCase
         SocketServerConfig config = new SocketServerConfig();
         config.load("SocketServer.properties");
         assertEquals("ports don't match", 0, config.getServerPort());
+        logger_.info(config);
     }
     
     /**
@@ -52,7 +58,7 @@ public class SocketServerConfigTest extends TestCase
         props.put(SocketServerConfig.PROP_SOCKET_QUEUE_SIZE, "11");
         props.put(SocketServerConfig.PROP_SOCKET_TIMEOUT, "13");
         props.put(SocketServerConfig.PROP_CONNECTION_HANDLER, 
-            "some.connection.handler");
+            "com.swa.turbo.util.comm.test.NullConnectionHandler");
         
         SocketServerConfig config = new SocketServerConfig();
         config.load(props);
@@ -63,7 +69,10 @@ public class SocketServerConfigTest extends TestCase
         assertEquals("socket queue don't match", 11, config.getSocketQueueSize());
         assertEquals("socket timeout don't match", 13, config.getSocketTimeout());
         
-        assertEquals("socket handlers don't match", "some.connection.handler", 
+        assertEquals("socket handlers don't match", 
+            "com.swa.turbo.util.comm.test.NullConnectionHandler", 
             config.getConnectionHandlerType());
+            
+        logger_.info(config);
     }
 }
