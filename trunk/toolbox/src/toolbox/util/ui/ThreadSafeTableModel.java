@@ -23,11 +23,11 @@ import toolbox.util.concurrent.IBatchingQueueListener;
  * the bridge between the table row producer and the table row consumer.
  * 
  * TODO: Replace Vector with Array
+ * TODO: Move to package toolbox.util.ui.table
  */
 public class ThreadSafeTableModel extends DefaultTableModel 
     implements IBatchingQueueListener
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ThreadSafeTableModel.class);
         
@@ -106,13 +106,14 @@ public class ThreadSafeTableModel extends DefaultTableModel
     }
     
     //--------------------------------------------------------------------------
-    // Public
+    // Overrides javax.swing.table.DefaultTableModel
     //--------------------------------------------------------------------------
-    
+        
     /**
      * Adds a vector of data as a row to the table
      * 
      * @param  vector  Adds vector of data to the table as a new row
+     * @see    javax.swing.table.DefaultTableModel#addRow(Vector)
      */
     public void addRow(Vector vector)
     {
@@ -134,6 +135,27 @@ public class ThreadSafeTableModel extends DefaultTableModel
             super.addRow(vector);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // Overrides javax.swing.table.AbstractTableModel
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns class associated with a given column. Needed for sorting
+     * capability.
+     * 
+     * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
+     */
+    public Class getColumnClass(int columnIndex)
+    {
+        return (getRowCount() > 0) 
+            ? getValueAt(0, columnIndex).getClass() 
+            : super.getColumnClass(columnIndex);    
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * Adds an array of rows to the table
