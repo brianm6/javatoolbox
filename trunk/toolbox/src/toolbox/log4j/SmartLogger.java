@@ -1,7 +1,7 @@
 package toolbox.log4j;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 import toolbox.util.StringUtil;
 
@@ -36,7 +36,7 @@ public final class SmartLogger
      */
     public static void debug(Logger logger, Object msg)
     {
-        log(logger, Priority.DEBUG, msg);
+        log(logger, Level.DEBUG, msg);
     }
 
     
@@ -49,7 +49,7 @@ public final class SmartLogger
      */
     public static void info(Logger logger, Object msg)
     {
-        log(logger, Priority.INFO, msg);
+        log(logger, Level.INFO, msg);
     }
 
     
@@ -61,7 +61,7 @@ public final class SmartLogger
      * @param priority Message priority.
      * @param msg Multiline object to log.
      */
-    public static void log(Logger logger, Priority priority, Object msg)
+    public static void log(Logger logger, Level priority, Object msg)
     {
         // TODO: fix this pile of mess!
         

@@ -19,8 +19,8 @@ import javax.swing.JTextField;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 import toolbox.junit.PackageTester;
 import toolbox.log4j.JTextAreaAppender;
@@ -130,7 +130,7 @@ public class JUnitPlugin extends AbstractPlugin
         // Appender
         JTextAreaAppender appender = new JTextAreaAppender(area);
         Logger.getRootLogger().addAppender(appender);        
-        appender.setThreshold(Priority.DEBUG);
+        appender.setThreshold(Level.DEBUG);
 
         // Output panel
         JPanel outputPanel = new JPanel(new BorderLayout());
