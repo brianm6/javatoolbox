@@ -713,6 +713,7 @@ public class JFontChooser extends JPanel
         {
             phraseCanvas_.setAntiAlias(antiAliasCheckBox_.isSelected());
             phraseCanvas_.repaint();
+            fireFontSelectionChanged();
         }
     }
 }
