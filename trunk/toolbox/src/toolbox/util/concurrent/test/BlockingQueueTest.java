@@ -99,7 +99,7 @@ public class BlockingQueueTest extends TestCase
                 logger_.info("Elapsed time: " + time);
                 logger_.info("Popped obj  : " + obj);                
             }
-        });
+        }, "testPullTimeoutMet");
         t.start();
                 
         ThreadUtil.sleep(2000);

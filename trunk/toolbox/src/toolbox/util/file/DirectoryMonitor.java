@@ -80,7 +80,10 @@ public class DirectoryMonitor
             throw new IllegalStateException(
                 "The directory monitor is already running.");
 
-        monitor_ = new Thread(new ActivityRunner());
+        monitor_ = 
+            new Thread(new ActivityRunner(),
+                "DirectoryMonitor " + directory_.getName());
+                        
         monitor_.start();
         shutdown_ = false;               
     }
