@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.util.Properties;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -13,7 +14,10 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JTcpTunnelPlugin implements IPlugin
 {
-    private JTcpTunnel jtcpTunnel_;
+    /**
+     * Delegate
+     */
+    private JTcpTunnelPane jtcpTunnelPane_;
     
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getName()
@@ -28,7 +32,7 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public Component getComponent()
     {
-        return jtcpTunnel_.getContentPane();
+        return jtcpTunnelPane_;
     }
 
     /**
@@ -36,7 +40,11 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public JMenu getMenu()
     {
-        return null;
+        JMenu menu = new JMenu(getName());
+        menu.add(new JMenuItem(jtcpTunnelPane_.new StartTunnelAction()));
+        menu.add(new JMenuItem(jtcpTunnelPane_.new StopTunnelAction()));
+        menu.add(new JMenuItem(jtcpTunnelPane_.new ClearAction()));
+        return menu;
     }
 
     /**
@@ -44,7 +52,7 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void init()
     {
-        jtcpTunnel_ = new JTcpTunnel();
+        jtcpTunnelPane_ = new JTcpTunnelPane();
     }
 
     /**
@@ -74,5 +82,4 @@ public class JTcpTunnelPlugin implements IPlugin
     public void shutdown()
     {
     }
-
 }
