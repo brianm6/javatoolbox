@@ -6,20 +6,18 @@ import org.apache.tools.ant.Task;
 import toolbox.util.Banner;
 
 /**
- * Task thats converts text to an ASCII banner.
+ * ANT Task thats converts text to an ASCII banner.
  */
 public class BannerTask extends Task
 {
-    /** Banner message */
-    private String msg_;
-    
-    /**
-     * @see org.apache.tools.ant.Task#execute()
+    /** 
+     * Banner text 
      */
-    public void execute() throws BuildException
-    {
-        System.out.println(Banner.getBanner(msg_));
-    }
+    private String msg_;
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the banner message
@@ -29,5 +27,17 @@ public class BannerTask extends Task
     public void setMessage(String msg)
     {
         msg_ = msg;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Overrides org.apache.tools.ant.Task
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see org.apache.tools.ant.Task#execute()
+     */
+    public void execute() throws BuildException
+    {
+        System.out.println(Banner.getBanner(msg_));
     }
 }

@@ -10,6 +10,10 @@ import org.apache.tools.ant.Main;
  */
 public class BannerTaskTest extends TestCase
 {
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
@@ -19,12 +23,14 @@ public class BannerTaskTest extends TestCase
     {
         TestRunner.run(BannerTaskTest.class);
     }
-    
-    public BannerTaskTest(String name)
-    {
-        super(name);
-    }
-    
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+
+    /**
+     * Tests the banner task
+     */        
     public void testBannerTask()
     {
         //-Dant.home=c:\ant 
@@ -42,5 +48,4 @@ public class BannerTaskTest extends TestCase
         
         //[options] [target]
     }
-
 }
