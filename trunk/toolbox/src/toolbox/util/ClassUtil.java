@@ -265,9 +265,15 @@ public final class ClassUtil
     
     /**
      * Converts a package name into a file path.
+     * <p>
+     * <b>Example</b>
+     * <pre class="snippet">
+     *   packageToPath("a.b")         => a/b         (path separator is '/')
+     *   packageToPath("com.foo.bar") => com\foo\bar (path separaror is '\')
+     * </pre>
      * 
      * @param packageName Package name.
-     * @return File path.
+     * @return String
      */
     public static String packageToPath(String packageName)
     {
@@ -276,11 +282,18 @@ public final class ClassUtil
     
     
     /**
-     * Determines if a files name indicates a java archive. This includes zip
-     * and jar file types.
+     * Determines if a file's name indicates that is a java archive. This 
+     * includes files with the following extensions. Returns true if the name 
+     * is a valid java archive, false otherwise.
+     * <ul>
+     *   <li>zip
+     *   <li>jar
+     *   <li>ear
+     *   <li>war
+     * </ul>
      * 
      * @param filename File to examine.
-     * @return True if the name is a valid java archive, false otherwise.
+     * @return boolean 
      */
     public static boolean isArchive(String filename)
     {
@@ -426,10 +439,19 @@ public final class ClassUtil
     
     
     /**
-     * Finds a file if it exists on the system's executable PATH.
-     * 
+     * Finds a file if it exists on the system's executable PATH. If there are
+     * multiple occurrences in the path, the first one encountered in left
+     * to right order in the path is returned. If the file is not found in the
+     * path, a null is returned.
+     * <p>
+     * <b>Example</b>
+     * <pre class="snippet">
+     *   Assuming the PATH = c:\;c:\windows;c:\bin;
+     *   and some.exe exists in c:\bin
+     *   findInPath("some.exe") will return c:\bin\some.exe 
+     * </pre>
      * @param file Executable file to find.
-     * @return File if found, null otherwise.
+     * @return File
      */
     public static File findInPath(String file)
     {
@@ -457,5 +479,31 @@ public final class ClassUtil
         }
 
         return result;
+    }
+
+    
+    /**
+     * Returns true if the name of the given class indicates that it is an
+     * inner class, false otherwise.
+     * <p>
+     * <b>Example</b>
+     * <pre class="snippet">
+     *   isInnerClass("Widget$Listener")     ==> true
+     *   isInnerClass("Car$Engine$Cylinder") ==> true
+     *   isInnerClass("ThingyBob$1")         ==> true
+     *   isInnerClass("a$b")                 ==> true
+     * </pre>
+     * 
+     * @param clazz Name of the class in FCQN or shortened form without the file
+     *        extension.
+     * @return boolean
+     */
+    public static boolean isInnerClass(String clazz)
+    {
+        int idx = clazz.lastIndexOf("$");
+        
+        return (clazz.length() > 2) &&     // a$b is shortest inner class 
+               (idx > 0) &&                // separator can't be first char
+               (idx < clazz.length() - 1); // separator can't be the last char
     }
 }
