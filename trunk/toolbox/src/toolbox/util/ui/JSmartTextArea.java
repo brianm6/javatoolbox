@@ -121,14 +121,6 @@ public class JSmartTextArea extends JTextArea
     // IPreferenced Interface 
     //--------------------------------------------------------------------------
     
-    /**
-     * Convenience method to scroll to the bottom of the text area
-     */
-    public void scrollToEnd()
-    {
-        setCaretPosition(getDocument().getLength());
-    }
-
     public void applyPrefs(Element fromNode)
     {
         if (fromNode != null)
@@ -140,8 +132,9 @@ public class JSmartTextArea extends JTextArea
                     
             setAntiAlias(
                 XOMUtil.getBooleanAttribute(prefs, ATTR_ANTIALIAS, false));
-                    
-            setFont(FontUtil.toFont(prefs.getChildElements(NODE_FONT).get(0)));
+            
+            if (XOMUtil.getFirstChildElement(prefs, NODE_FONT, null) != null)        
+                setFont(FontUtil.toFont(prefs.getFirstChildElement(NODE_FONT)));
         }
     }
     
@@ -209,8 +202,16 @@ public class JSmartTextArea extends JTextArea
     }
     
     //--------------------------------------------------------------------------
-    //  Accessors/Mutators
+    // Public
     //--------------------------------------------------------------------------
+    
+    /**
+     * Convenience method to scroll to the bottom of the text area
+     */
+    public void scrollToEnd()
+    {
+        setCaretPosition(getDocument().getLength());
+    }
     
     /**
      * Returns true if autoscroll is enabled, false otherwise
