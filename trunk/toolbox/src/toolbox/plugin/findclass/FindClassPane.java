@@ -9,7 +9,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +22,6 @@ import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -44,30 +42,18 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
-import org.jedit.syntax.JavaTokenMarker;
-import org.jedit.syntax.TextAreaDefaults;
-
-import toolbox.jedit.JEditPopupMenu;
-import toolbox.jedit.JEditTextArea;
-import toolbox.jedit.JavaDefaults;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
-import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.MathUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.decompiler.Decompiler;
-import toolbox.util.decompiler.DecompilerException;
-import toolbox.util.decompiler.DecompilerFactory;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
-import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
@@ -84,7 +70,7 @@ import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * GUI for finding class files by regular expression from the classpath
+ * UI for finding class files by regular expression from the classpath
  * or any arbitrary java archive or directory.
  */
 public class JFindClass extends JFrame implements IPreferenced
@@ -127,11 +113,7 @@ public class JFindClass extends JFrame implements IPreferenced
     private JList                searchList_;
     private DefaultListModel     searchListModel_;
     private JPopupMenu           searchPopupMenu_;
-    private JEditTextArea        sourceArea_;
 
-    // Decompiler flipper
-    private JComboBox            decompilerCombo_; 
-    
     // Results    
     private JTable               resultTable_;
     private ResultsTableModel    resultTableModel_;
@@ -249,52 +231,6 @@ public class JFindClass extends JFrame implements IPreferenced
 
     
     /**
-     * Builds the Decompiler panel which shows a class file (search result) in 
-     * decompiled form.
-     * 
-     * @return Decompiler panel
-     */
-    protected JPanel buildDecompilerFlipper()
-    {
-    	return new DecompilerPanel(resultTable_);
-    	
-//        TextAreaDefaults defaults = new JavaDefaults();
-//        
-//        sourceArea_ = 
-//            new JEditTextArea(new JavaTokenMarker(), defaults);
-//
-//        // Hack for circular reference in popup menu            
-//        ((JEditPopupMenu) defaults.popup).setTextArea(sourceArea_);
-//        ((JEditPopupMenu) defaults.popup).buildView();
-//
-//        Decompiler[] decompilers = null;
-//        
-//        try
-//        {
-//            decompilers = DecompilerFactory.createAll(); 
-//        }
-//        catch (DecompilerException de)
-//        {
-//            ExceptionUtil.handleUI(de, logger_);
-//        }
-//
-//        decompilerCombo_ = new JSmartComboBox(decompilers);
-//        JButton decompileButton = new JSmartButton(new DecompileAction());
-//        JPanel decompilerPanel = new JPanel(new BorderLayout());
-//        decompilerPanel.add(BorderLayout.CENTER, sourceArea_);
-//        
-//        JPanel buttonPanel = new JPanel(new FlowLayout());
-//        buttonPanel.add(decompilerCombo_);
-//        buttonPanel.add(decompileButton);
-//        
-//        decompilerPanel.add(BorderLayout.SOUTH, buttonPanel);
-//        decompilerPanel.setPreferredSize(new Dimension(100, 400));
-//        
-//        return decompilerPanel;
-    }
-
-    
-    /**
      * Builds the Classpath panel which shows all paths/archives that have been
      * targeted for the current search.
      * 
@@ -329,7 +265,7 @@ public class JFindClass extends JFrame implements IPreferenced
     protected JPanel buildTopFlipPane()
     {
         JPanel pathPanel = buildClasspathFlipper();        
-        JPanel decompilerPanel = buildDecompilerFlipper();
+        JPanel decompilerPanel = new DecompilerPanel(resultTable_);
                 
         // Top flip pane
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
@@ -461,7 +397,8 @@ public class JFindClass extends JFrame implements IPreferenced
                 root, NODE_TOP_FLIPPANE, new Element(NODE_TOP_FLIPPANE)));
             
         fileExplorer_.applyPrefs(root);
-        sourceArea_.applyPrefs(root);
+
+		// TODO: Integrate preferences for DecompilerPanel
     }
     
     
@@ -473,7 +410,8 @@ public class JFindClass extends JFrame implements IPreferenced
         Element root = new Element(NODE_JFINDCLASS_PLUGIN);
         
         fileExplorer_.savePrefs(root);
-        sourceArea_.savePrefs(root);
+
+		// TODO: Integrate preferences for DecompilerPanel
         
         Element topFlipPane = new Element(NODE_TOP_FLIPPANE);
         topFlipPane_.savePrefs(topFlipPane);
