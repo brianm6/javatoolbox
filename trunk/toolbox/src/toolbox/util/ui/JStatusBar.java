@@ -19,7 +19,6 @@ import toolbox.util.ui.plugin.IStatusBar;
  * 
  * <pre>
  * TODO: Add RMB accessible status history
- * TODO: Add knight right like busy meter
  * TODO: Add log4j like prioity with visual cues (TBD)
  * </pre>
  */
