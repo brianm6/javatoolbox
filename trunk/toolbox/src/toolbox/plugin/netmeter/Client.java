@@ -12,7 +12,8 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.io.EventOutputStream;
 import toolbox.util.net.SocketConnection;
-import toolbox.util.service.*;
+import toolbox.util.service.AbstractService;
+import toolbox.util.service.ServiceException;
 
 /**
  * Client is a non-UI component that behaves as a Service. Its sole purpose is
@@ -110,7 +111,7 @@ public class Client extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a loopback Client attached to NetMeter.DEFAULT_PORT
+     * Creates a loopback Client attached to NetMeter.DEFAULT_PORT.
      */
     public Client()
     {
@@ -147,7 +148,9 @@ public class Client extends AbstractService
     
     
     /**
-     * @return Returns the hostname.
+     * Returns the hostname.
+     * 
+     * @return String
      */
     public String getHostname()
     {
@@ -156,6 +159,8 @@ public class Client extends AbstractService
 
     
     /**
+     * Sets the hostname.
+     * 
      * @param hostname The hostname to set.
      */
     public void setHostname(String hostname)
@@ -165,7 +170,9 @@ public class Client extends AbstractService
 
     
     /**
-     * @return Returns the port.
+     * Returns the port.
+     * 
+     * @return int
      */
     public int getPort()
     {
@@ -174,6 +181,8 @@ public class Client extends AbstractService
 
     
     /**
+     * Sets the port.
+     * 
      * @param port The port to set.
      */
     public void setPort(int port)

@@ -100,6 +100,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         return "NetMeter";
     }
 
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getComponent()
      */
@@ -108,6 +109,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         return this;
     }
 
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getDescription()
      */
@@ -116,6 +118,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         return "NetMeter";
     }
 
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#startup(java.util.Map)
      */
@@ -124,6 +127,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         buildView();
     }
 
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#shutdown()
      */

@@ -90,6 +90,10 @@ public abstract class WorkspaceAction extends SmartAction
      */
     class BusyProgressBarAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             statusBar_.setBusy(true);    
@@ -105,6 +109,10 @@ public abstract class WorkspaceAction extends SmartAction
      */    
     class DoneProgressBarAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             statusBar_.setBusy(false);    
@@ -120,6 +128,10 @@ public abstract class WorkspaceAction extends SmartAction
      */    
     class DisplayErrorOnStatusBarAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             Throwable caught = getCaught();

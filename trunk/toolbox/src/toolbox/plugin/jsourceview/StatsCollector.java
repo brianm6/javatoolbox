@@ -240,15 +240,15 @@ public class StatsCollector
      */
     class RealCodeCollector implements CodeCollector
     {
-        LineStatus  status  = new LineStatus();
-        LineScanner scanner = new LineScanner();
+        LineStatus  status_  = new LineStatus();
+        LineScanner scanner_ = new LineScanner();
         
         public boolean identify(FileStats stats, String line)
         {
-            scanner.setLine(line);
-            Machine.scanLine(scanner, status);
+            scanner_.setLine(line);
+            Machine.scanLine(scanner_, status_);
                         
-            if (status.isRealCode())
+            if (status_.isRealCode())
             {
                 stats.incrementCodeLines();
                 //logger_.debug("Real code: " + line);

@@ -348,17 +348,17 @@ public class PropertyPromptTask extends Task
         /**
          * Use linefeeds.
          */
-        private boolean linefeed = true;
+        private boolean linefeed_ = true;
         
         /**
          * Timeone in seconds. Zero is indefinite.
          */
-        private int timeout = 0;
+        private int timeout_ = 0;
         
         /**
          * Default string.
          */
-        private String defaultString = "";
+        private String defaultString_ = "";
 
         //----------------------------------------------------------------------
         // Constructors
@@ -397,7 +397,7 @@ public class PropertyPromptTask extends Task
          */
         public void setTimeout(int seconds)
         {
-            timeout = seconds;
+            timeout_ = seconds;
         }
 
         
@@ -408,7 +408,7 @@ public class PropertyPromptTask extends Task
          */
         public void setDefaultString(String str)
         {
-            defaultString = str;
+            defaultString_ = str;
         }
 
         //----------------------------------------------------------------------
@@ -442,13 +442,13 @@ public class PropertyPromptTask extends Task
                 else
                     msec++;
                     
-                if (timeout != 0 && sec >= timeout)
+                if (timeout_ != 0 && sec >= timeout_)
                 {
-                    if (linefeed)
+                    if (linefeed_)
                     {
                         System.out.print("\n");
                     }
-                    return defaultString;
+                    return defaultString_;
                 }
             }
             

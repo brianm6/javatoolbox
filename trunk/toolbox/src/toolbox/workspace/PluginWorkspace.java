@@ -747,6 +747,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class CloseWindowListener extends WindowAdapter
     {
+        /**
+		 * @see java.awt.event.WindowListener#windowClosing(
+         *      java.awt.event.WindowEvent)
+		 */
         public void windowClosing(WindowEvent e)
         {
             try
@@ -770,12 +774,20 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class ExitAction extends AbstractAction
     {
+        /**
+         * Creates a ExitAction.
+         */
         ExitAction()
         {
             super("Exit");
             putValue(Action.MNEMONIC_KEY, new Integer('X'));
         }
 
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent ae)
         {
             new CloseWindowListener().windowClosing(
@@ -797,12 +809,20 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class PluginsAction extends AbstractAction
     {
+        /**
+         * Creates a PluginsAction.
+         */
         PluginsAction()
         {
             super("Plugins..");
             putValue(Action.MNEMONIC_KEY, new Integer('P'));
         }
 
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent ae)
         {
             JDialog dialog = new PluginDialog(PluginWorkspace.this);
@@ -820,6 +840,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 	 */
     class SavePreferencesAction extends WorkspaceAction
     {
+        /**
+         * Creates a SavePreferencesAction.
+         */
         SavePreferencesAction()
         {
             super("Save prefs", false, null, null);
@@ -829,6 +852,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 ImageCache.getIcon(ImageCache.IMAGE_SAVE));
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             savePrefs(prefs_);
@@ -844,6 +872,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class GarbageCollectAction extends WorkspaceAction
     {
+        /**
+         * Creates a GarbageCollectAction.
+         */
         GarbageCollectAction()
         {
             super("Run GC", false, null, null);
@@ -851,6 +882,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             long freeMem  = Runtime.getRuntime().freeMemory();
@@ -889,15 +925,23 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class AntiAliasAction extends AbstractAction
     {
-        // TODO: Figure out where menus aren't adhering.
-        
+        /**
+         * Creates a AntiAliasAction.
+         */
         AntiAliasAction()
         {
             super("Smooth Fonts");
         }
 
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
+            // TODO: Figure out where menus aren't adhering.
+            
             JCheckBoxMenuItem cb = (JCheckBoxMenuItem) e.getSource();
             boolean b = cb.isSelected();
             SwingUtil.setDefaultAntiAlias(b);
@@ -916,7 +960,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 for (int j=0; j<menu.getItemCount(); j++)
                     SwingUtil.setAntiAliased(menu.getMenuComponent(j), b);
             }
-
             
             PluginWorkspace.this.repaint();
         }
