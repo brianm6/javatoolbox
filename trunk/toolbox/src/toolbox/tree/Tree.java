@@ -581,9 +581,9 @@ public class Tree
             {
                 String total = formatter_.format(dirSize);
                 int tlen = total.length();
-                String dashy = StringUtil.repeat("-", tlen);
+                //String dashy = StringUtil.repeat("-", tlen);
                 int alotted = longestName + largestFile + 1;
-                String header = StringUtil.repeat(" ", alotted - tlen); 
+                //String header = StringUtil.repeat(" ", alotted - tlen); 
                 
                 //writer_.println(level + filler + header + dashy);
                 //writer_.println(level + filler + header.substring(1) + "." + total + ".");
