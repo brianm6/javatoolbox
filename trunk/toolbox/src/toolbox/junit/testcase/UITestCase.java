@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.junit.CloverTestSuite;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartDialog;
