@@ -11,6 +11,9 @@ import java.util.List;
  */
 public abstract class CompoundFilter implements FilenameFilter
 {
+    /**
+     * Collection of the filters that make up the compound filter
+     */
     private List filters_ = new ArrayList();
 
     //--------------------------------------------------------------------------
@@ -32,6 +35,8 @@ public abstract class CompoundFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
+     * Returns an iterator over the filters making up the compound filter
+     * 
      * @return Iterator over filters
      */
     protected Iterator iterator()

@@ -9,6 +9,9 @@ import java.io.FilenameFilter;
  */
 public class NotFilter implements FilenameFilter
 {
+    /**
+     * Filter to negate
+     */
     private FilenameFilter filter_;
     
     //--------------------------------------------------------------------------
@@ -35,7 +38,6 @@ public class NotFilter implements FilenameFilter
      * @param    dir   Directory file is contained in
      * @param    name  Name of file
      * @return   Inverse of filter
-     *           
      */
     public boolean accept(File dir,String name)
     {

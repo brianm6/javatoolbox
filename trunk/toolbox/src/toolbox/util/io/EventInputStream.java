@@ -9,8 +9,6 @@ import java.util.List;
 /**
  * Input stream that generates events for common stream operations and also
  * tracks the number of bytes read from the stream.
- * 
- * TODO: Unit Test
  */
 public class EventInputStream extends FilterInputStream
 {
@@ -138,7 +136,9 @@ public class EventInputStream extends FilterInputStream
     //--------------------------------------------------------------------------
     
     /**
-     * @return  Number of bytes read from the stream
+     * Returns the number of bytes read from the stream
+     * 
+     * @return Num bytes read
      */
     public int getCount()
     {
@@ -154,6 +154,8 @@ public class EventInputStream extends FilterInputStream
     }    
     
     /**
+     * Returns the friendly name of the stream
+     * 
      * @return Stream name
      */
     public String getName()

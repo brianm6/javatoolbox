@@ -34,17 +34,17 @@ public abstract class AbstractConnection implements IConnection
     public abstract void connect() throws IOException;
 
     /**
-     * @see IConnection#close()
+     * @see toolbox.util.net.IConnection#close()
      */
     public abstract void close() throws IOException;
 
     /**
-     * @see IConnection#getInputStream()
+     * @see toolbox.util.net.IConnection#getInputStream()
      */
     public abstract InputStream getInputStream() throws IOException;
 
     /**
-     * @see IConnection#getOutputStream()
+     * @see toolbox.util.net.IConnection#getOutputStream()
      */
     public abstract OutputStream getOutputStream() throws IOException;
 

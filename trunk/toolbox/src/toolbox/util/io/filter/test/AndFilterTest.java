@@ -39,7 +39,7 @@ public class AndFilterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from junit.framework.TestCase
+    // Overrides junit.framework.TestCase
     //--------------------------------------------------------------------------
     
     /** 
@@ -51,7 +51,6 @@ public class AndFilterTest extends TestCase
         testDir_.mkdir();
         String base = testDir_.getAbsolutePath() + File.separator;
         FileUtil.setFileContents(base + "AndFilterTest.txt", "testing", false);
-        super.setUp();
     }
 
     /**
@@ -61,7 +60,6 @@ public class AndFilterTest extends TestCase
     {
         FileUtil.cleanDir(testDir_);
         testDir_.delete();
-        super.tearDown();
     }
    
     //--------------------------------------------------------------------------

@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
  */
 public class ExtensionFilter implements FilenameFilter
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ExtensionFilter.class);
         
@@ -27,7 +26,7 @@ public class ExtensionFilter implements FilenameFilter
      * Creates an Extension filter with the given file extension. The extension
      * can optionally contain the leading dot.
      * 
-     * @param  fileExtension   File extension to filter on
+     * @param  fileExtension  File extension to filter on
      */   
     public ExtensionFilter(String fileExtension)
     {
@@ -45,17 +44,12 @@ public class ExtensionFilter implements FilenameFilter
     /**
      * Filter out a files by extension
      * 
-     * @param    dir   Directory file is contained in
-     * @param    name  Name of file
-     * @return   True if the file matches the extension, false otherwise
+     * @param   dir   Directory file is contained in
+     * @param   name  Name of file
+     * @return  True if the file matches the extension, false otherwise
      */
-    public boolean accept(File dir,String name)
+    public boolean accept(File dir, String name)
     {
-        boolean b = name.toLowerCase().endsWith(extension_.toLowerCase());
-        
-        //if (b)
-        //    logger_.debug("Accepted " + name);
-        
-        return b;
+        return name.toLowerCase().endsWith(extension_.toLowerCase());
     }
 }
