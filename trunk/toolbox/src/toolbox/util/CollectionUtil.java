@@ -2,7 +2,6 @@ package toolbox.util;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Utility class for Collections
