@@ -15,24 +15,20 @@ import electric.xml.Element;
 import electric.xml.Elements;
 
 /**
- * enclosing_type
+ * Electric XML implemenation of IJTailConfig interface that marshals
+ * configuration information to/from XML
  */
-public class JTailConfig implements IJTailConfig
-{
+public class JTailConfig implements IJTailConfig, XMLConstants
+{ 
     private static final Category logger_ = 
         Category.getInstance(JTailConfig.class);
         
-    private static final String ELEMENT_JTAIL = "JTail";
-    private static final String ATTR_HEIGHT   = "height";
-    private static final String ATTR_WIDTH    = "width";
-    private static final String ATTR_X        = "x";
-    private static final String ATTR_Y        = "y";
     
-
-    
-    
-    private Font defaultFont_;
-    private Point location_;
+    private Font      defaultFont_;
+    private boolean   defaultAutoScroll_;
+    private boolean   defaultShowLineNumbers_;
+    private String    defaultFilter_;
+    private Point     location_;
     private Dimension size_;
     private ITailPaneConfig[] tailPaneConfigs_;
     
@@ -42,79 +38,7 @@ public class JTailConfig implements IJTailConfig
     public JTailConfig()
     {
     }
-    
-    /**
-     * Returns the defaultFont.
-     * @return Font
-     */
-    public Font getDefaultFont()
-    {
-        return defaultFont_;
-    }
 
-    /**
-     * Returns the location.
-     * @return Point
-     */
-    public Point getLocation()
-    {
-        return location_;
-    }
-
-    /**
-     * Returns the size.
-     * @return Dimension
-     */
-    public Dimension getSize()
-    {
-        return size_;
-    }
-
-    /**
-     * Sets the defaultFont.
-     * @param defaultFont The defaultFont to set
-     */
-    public void setDefaultFont(Font defaultFont)
-    {
-        defaultFont_ = defaultFont;
-    }
-
-    /**
-     * Sets the location.
-     * @param location The location to set
-     */
-    public void setLocation(Point location)
-    {
-        location_ = location;
-    }
-
-    /**
-     * Sets the size.
-     * @param size The size to set
-     */
-    public void setSize(Dimension size)
-    {
-        size_ = size;
-    }
-    
-    /**
-     * Returns the tailPaneConfigs.
-     * @return ITailPaneConfig[]
-     */
-    public ITailPaneConfig[] getTailPaneConfigs()
-    {
-        return tailPaneConfigs_;
-    }
-
-    /**
-     * Sets the tailPaneConfigs.
-     * @param tailPaneConfigs The tailPaneConfigs to set
-     */
-    public void setTailPaneConfigs(ITailPaneConfig[] tailPaneConfigs)
-    {
-        tailPaneConfigs_ = tailPaneConfigs;
-    }
-    
     /**
      * Marshals from IJTailConfig -> XML
      * 
@@ -134,16 +58,33 @@ public class JTailConfig implements IJTailConfig
         jtailNode.setAttribute(ATTR_X, getLocation().x + "");
         jtailNode.setAttribute(ATTR_Y, getLocation().y + "");
 
-        // Default font
-        Element fontNode = new Element(TailPaneConfig.ELEMENT_FONT);
-        fontNode.setAttribute(
-            TailPaneConfig.ATTR_FAMILY, getDefaultFont().getFamily());
-        fontNode.setAttribute(
-            TailPaneConfig.ATTR_STYLE, getDefaultFont().getStyle() + "");
-        fontNode.setAttribute(
-            TailPaneConfig.ATTR_SIZE, getDefaultFont().getSize() + "");            
-        jtailNode.addElement(fontNode);
 
+        // Tail element
+        Element tail = new Element(ELEMENT_TAIL);
+        tail.setAttribute(ATTR_AUTOSCROLL, 
+            new Boolean(getDefaultAutoScroll()).toString());
+        tail.setAttribute(ATTR_LINENUMBERS, 
+            new Boolean(getDefaultShowLineNumbers()).toString());
+        
+        // Font element    
+        Element font = new Element(ELEMENT_FONT);
+        font.setAttribute(ATTR_FAMILY, getDefaultFont().getFamily());
+        font.setAttribute(ATTR_STYLE, getDefaultFont().getStyle() + "");
+        font.setAttribute(ATTR_SIZE, getDefaultFont().getSize() + "");            
+        
+        // Filter element
+        Element filter = new Element(ELEMENT_FILTER);
+        filter.setText(getDefaultFilter());
+        
+        // Add child nodes to tail
+        tail.addElement(font);
+        tail.addElement(filter);
+
+        // Defaults
+        Element defaultsNode = new Element(ELEMENT_DEFAULTS);
+        defaultsNode.addElement(tail);
+        
+        jtailNode.addElement(defaultsNode);
         
         // Save child ITailPaneConfigs
         logger_.debug("Saving "+ tailPaneConfigs_.length+" configurations");
@@ -248,4 +189,131 @@ public class JTailConfig implements IJTailConfig
         
         return jtailConfig;
     }
+    
+    /**
+     * Returns the defaultFont.
+     * @return Font
+     */
+    public Font getDefaultFont()
+    {
+        return defaultFont_;
+    }
+
+    /**
+     * Returns the location.
+     * @return Point
+     */
+    public Point getLocation()
+    {
+        return location_;
+    }
+
+    /**
+     * Returns the size.
+     * @return Dimension
+     */
+    public Dimension getSize()
+    {
+        return size_;
+    }
+
+    /**
+     * Sets the defaultFont.
+     * @param defaultFont The defaultFont to set
+     */
+    public void setDefaultFont(Font defaultFont)
+    {
+        defaultFont_ = defaultFont;
+    }
+
+    /**
+     * Sets the location.
+     * @param location The location to set
+     */
+    public void setLocation(Point location)
+    {
+        location_ = location;
+    }
+
+    /**
+     * Sets the size.
+     * @param size The size to set
+     */
+    public void setSize(Dimension size)
+    {
+        size_ = size;
+    }
+    
+    /**
+     * Returns the tailPaneConfigs.
+     * @return ITailPaneConfig[]
+     */
+    public ITailPaneConfig[] getTailPaneConfigs()
+    {
+        return tailPaneConfigs_;
+    }
+
+    /**
+     * Sets the tailPaneConfigs.
+     * @param tailPaneConfigs The tailPaneConfigs to set
+     */
+    public void setTailPaneConfigs(ITailPaneConfig[] tailPaneConfigs)
+    {
+        tailPaneConfigs_ = tailPaneConfigs;
+    }
+    
+    /**
+     * Returns the defaultAutoScroll.
+     * @return boolean
+     */
+    public boolean getDefaultAutoScroll()
+    {
+        return defaultAutoScroll_;
+    }
+
+    /**
+     * Returns the defaultFilter.
+     * @return String
+     */
+    public String getDefaultFilter()
+    {
+        return defaultFilter_;
+    }
+
+    /**
+     * Returns the defaultShowLineNumbers.
+     * @return boolean
+     */
+    public boolean getDefaultShowLineNumbers()
+    {
+        return defaultShowLineNumbers_;
+    }
+
+    /**
+     * Sets the defaultAutoScroll.
+     * @param defaultAutoScroll The defaultAutoScroll to set
+     */
+    public void setDefaultAutoScroll(boolean defaultAutoScroll)
+    {
+        defaultAutoScroll_ = defaultAutoScroll;
+    }
+
+    /**
+     * Sets the defaultFilter.
+     * @param defaultFilter The defaultFilter to set
+     */
+    public void setDefaultFilter(String defaultFilter)
+    {
+        defaultFilter_ = defaultFilter;
+    }
+
+    /**
+     * Sets the defaultShowLineNumbers.
+     * @param defaultShowLineNumbers The defaultShowLineNumbers to set
+     */
+    public void setDefaultShowLineNumbers(boolean defaultShowLineNumbers)
+    {
+        defaultShowLineNumbers_ = defaultShowLineNumbers;
+    }
+
 }
