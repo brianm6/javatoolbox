@@ -1,13 +1,17 @@
 package toolbox.findclass;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,11 +24,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import org.apache.log4j.Category;
 
+import toolbox.util.DateTimeUtil;
+import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
@@ -55,12 +63,15 @@ public class JFindClass extends JFrame
     private DefaultTableModel resultTableModel_;
     private JScrollPane       resultPane_;
     private int               resultCount_;
-        
+    
+    /** Result table columns **/    
     private String[] resultColumns_ = new String[] 
     {
         "Num", 
         "Source", 
-        "Class File"
+        "Class File",
+        "Size", 
+        "Timestamp"
     };
 
     private FindClass findClass_;
@@ -118,20 +129,19 @@ public class JFindClass extends JFrame
 
 
     /**
-     * Builds the view
+     * Builds the GUI and to the contentPane
      */
     protected void buildView()
     {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        /* Search Panel */
-        
+        // Search Panel
         JLabel searchLabel = new JLabel("Find Class");
 
         ActionListener actionHandler = new ActionHandler();
         
-        searchField_ = new JTextField(12);
+        searchField_ = new JTextField(20);
         searchField_.addActionListener(actionHandler);
         searchField_.setFont(SwingUtil.getPreferredMonoFont());
         
@@ -149,8 +159,7 @@ public class JFindClass extends JFrame
         
         contentPane.add(searchPanel, BorderLayout.NORTH);
 
-        /* Path & Explorer Panel */
-
+        // Path & Explorer Panel
         JLabel pathListLabel = new JLabel("Classpath");
         pathModel_ = new DefaultListModel(); 
         pathList_  = new JList(pathModel_);
@@ -170,8 +179,7 @@ public class JFindClass extends JFrame
         JSplitPane topSplitPane = 
             new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, explorer_, pathPanel);
         
-        /* Result Panel */
-        
+        // Result panel        
         JLabel resultLabel = new JLabel("Results");
         
         resultTableModel_ = new ThreadSafeTableModel(resultColumns_,0);
@@ -182,27 +190,28 @@ public class JFindClass extends JFrame
         JPanel resultPanel = new JPanel(new BorderLayout());
         resultPanel.add(resultLabel, BorderLayout.NORTH);
         resultPanel.add(resultPane_, BorderLayout.CENTER);
+       
         
-        /* Split pane */
-        
+        // Split pane
         JSplitPane splitPane = 
-            new JSplitPane(JSplitPane.VERTICAL_SPLIT, topSplitPane, resultPanel);
+            new JSplitPane(
+                JSplitPane.VERTICAL_SPLIT, 
+                topSplitPane, 
+                resultPanel);
         
         contentPane.add(splitPane, BorderLayout.CENTER);
 
-        /* Status bar */
-        
+        // Status bar        
         statusLabel_ = new JLabel("Enter a regular expression and hit Find!");
         contentPane.add(statusLabel_, BorderLayout.SOUTH);
         
-        /* Post tweaks */
-        
+        // Post tweaks
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
     }
 
 
     /**
-     * Tweaks the table for presentation
+     * Tweaks the table columns for width and extents
      */
     protected void tweakTable()
     {
@@ -210,14 +219,92 @@ public class JFindClass extends JFrame
         resultTable_.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         
         TableColumnModel columnModel = resultTable_.getColumnModel();
-        TableColumn column = columnModel.getColumn(0);
 
+        // Tweak file number column
+        TableColumn column = columnModel.getColumn(0);
         column.setMinWidth(50);
         column.setPreferredWidth(50);        
-        column.setMaxWidth(100);
+        column.setMaxWidth(100); 
+        
+        // Tweaks file size column
+        column = columnModel.getColumn(3);
+        column.setMinWidth(50);
+        column.setPreferredWidth(50);
+        column.setMaxWidth(130);
+        
+        // Tweak timestamp column
+        column = columnModel.getColumn(4);
+        column.setMinWidth(150);
+        column.setPreferredWidth(150);
+        column.setMaxWidth(300);
+        
+        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(0) , 
+            new AlternatingCellRenderer());
+
+        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(1) , 
+            new AlternatingCellRenderer());
+
+        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(2) , 
+            new AlternatingCellRenderer());
+
+        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(3) , 
+            new AlternatingCellRenderer());
+            
+        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(4) , 
+            new AlternatingCellRenderer());
+            
     }
 
+
+    /**
+     * Executes search based on the contents of the search field
+     * 
+     * @param  s  Search string (can be a regular expression)
+     */
+    public void searchButtonClicked(String s) 
+    {
+        try
+        {
+            String search = searchField_.getText().trim();
+            
+            logger_.debug("Searching for " + search);
+            
+            if (StringUtil.isNullOrEmpty(search))
+            {
+                setStatus("Enter class to search");
+            }
+            else
+            {
+                resultTableModel_.setNumRows(0);
+                resultCount_      = 0;
+                
+                Object results[]  = findClass_.findClass(
+                    search, ignoreCaseCheckBox_.isSelected());             
+                    
+                setStatus(results.length + " matches found");
+            }
+        }
+        catch (Exception e)
+        {
+            JSmartOptionPane.showExceptionMessageDialog(JFindClass.this, e);
+        }
+    }
     
+    
+    /**
+     * Sets the text of the status bar
+     * 
+     * @param  s  Status text
+     */
+    protected void setStatus(String s)
+    {
+        statusLabel_.setText(s);
+    }
+
+
+    /**
+     * Handles actions generated by search controls 
+     */
     class ActionHandler implements ActionListener
     {
         /**
@@ -242,41 +329,6 @@ public class JFindClass extends JFrame
 
 
     /**
-     * Execute search
-     * 
-     * @param  s  Search regular expression
-     */
-    public void searchButtonClicked(String s) 
-    {
-        try
-        {
-            String search = searchField_.getText().trim();
-            
-            logger_.debug("Searching for " + search);
-            
-            if (StringUtil.isNullOrEmpty(search))
-            {
-                statusLabel_.setText("Enter class to search");
-            }
-            else
-            {
-                resultTableModel_.setNumRows(0);
-                resultCount_      = 0;
-                
-                Object results[]  = findClass_.findClass(
-                    search, ignoreCaseCheckBox_.isSelected());             
-                    
-                statusLabel_.setText(results.length + " matches found");
-            }
-        }
-        catch (Exception e)
-        {
-            JSmartOptionPane.showExceptionMessageDialog(JFindClass.this, e);
-        }
-    }
-    
-
-    /**
      * Handler for events generated by JFileExplorer
      */
     class FindClassHandler extends FindClassAdapter
@@ -289,11 +341,16 @@ public class JFindClass extends JFrame
         public void classFound(FindClassResult searchResult)
         {
             Vector row = new Vector();
-            row.add(++resultCount_ + "");
-            row.add(searchResult.getClassLocation());
-            row.add(searchResult.getClassFQN());
+            String offset = " ";
+            
+            row.add(offset + (++resultCount_));
+            row.add(offset + searchResult.getClassLocation());
+            row.add(offset + searchResult.getClassFQN());
+            row.add(offset + searchResult.getFileSize()+"");
+            row.add(offset + DateTimeUtil.format(searchResult.getTimestamp()));
             resultTableModel_.addRow(row);
         }
+
         
         /**
          * When a target is searched, update the status bar
@@ -302,38 +359,51 @@ public class JFindClass extends JFrame
          */
         public void searchingTarget(String target)
         {
-            statusLabel_.setText("Searching " + target + " ...");
+            setStatus("Searching " + target + " ...");
             pathList_.setSelectedValue(target, true);    
         }
+
         
         /**
          * When a search is cancelled, update the status bar
          */
         public void searchCancelled()
         {
-            statusLabel_.setText("Search cancelled");
+            setStatus("Search cancelled");
         }    
-
     }
-    
+
     
     /**
      * Handler class for the file explorer
      */
     class JFileExplorerHandler extends JFileExplorerAdapter
     {
+        /**
+         * Adds a directory to the path list
+         * 
+         * @param  folder  Directory to add
+         */
         public void folderDoubleClicked(String folder)
         {
             findClass_.addSearchTarget(folder);
             syncPathModel();
         }
-        
+ 
+        /**
+         * Adds a file to the path list
+         * 
+         * @param  file  File to add
+         */       
         public void fileDoubleClicked(String file)
         {
             findClass_.addSearchTarget(file);
             syncPathModel();
         }
-        
+     
+        /**
+         * Syncs the path list model with the search targets in FindClass
+         */   
         protected void syncPathModel()
         {
             pathModel_.clear();
@@ -342,6 +412,79 @@ public class JFindClass extends JFrame
             for (int i=0; 
                  i<targets.size(); 
                  pathModel_.addElement(targets.get(i++)));
+        }
+    }
+ 
+    /**
+     * Alternating color cellrenderer
+     */   
+    class AlternatingCellRenderer extends DefaultTableCellRenderer
+    {
+        /**
+         *
+         * Returns the default table cell renderer.
+         *
+         * @param table  the <code>JTable</code>
+         * @param value  the value to assign to the cell at
+         *          <code>[row, column]</code>
+         * @param isSelected true if cell is selected
+         * @param isFocus true if cell has focus
+         * @param row  the row of the cell to render
+         * @param column the column of the cell to render
+         * @return the default table cell renderer
+         */
+        public Component getTableCellRendererComponent(
+            JTable table,
+            Object value,
+            boolean isSelected,
+            boolean hasFocus,
+            int row,
+            int column)
+        {
+
+            if (isSelected)
+            {
+                super.setForeground(table.getSelectionForeground());
+                super.setBackground(table.getSelectionBackground());
+            }
+            else
+            {
+                super.setForeground(table.getForeground());
+                
+                super.setBackground(
+                    MathUtil.isEven(row) 
+                        ? table.getBackground()
+                        //: table.getBackground().brighter());
+                        : Color.lightGray);
+                    
+//                super.setBackground(
+//                    (unselectedBackground != null) ? unselectedBackground : table.getBackground());
+            }
+
+            setFont(table.getFont());
+
+            if (hasFocus)
+            {
+                setBorder(
+                    UIManager.getBorder("Table.focusCellHighlightBorder"));
+                    
+                if (table.isCellEditable(row, column))
+                {
+                    super.setForeground(
+                        UIManager.getColor("Table.focusCellForeground"));
+                        
+                    super.setBackground(
+                        UIManager.getColor("Table.focusCellBackground"));
+                }
+            }
+            else
+            {
+                setBorder(noFocusBorder);
+            }
+
+            setValue(value);
+
+            return this;
         }
     }
 }
