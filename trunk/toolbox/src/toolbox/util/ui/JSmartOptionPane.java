@@ -6,7 +6,6 @@ import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.HeadlessException;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -119,10 +118,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *          or <code>PLAIN_MESSAGE</code>
      * @param icon      an icon to display in the dialog that helps the user
      *                  identify the kind of message that is being displayed
-     * @exception HeadlessException if
-     *   <code>GraphicsEnvironment.isHeadless</code> returns
-     *   <code>true</code>
-     * @see java.awt.GraphicsEnvironment#isHeadless
      */
     public static void showDetailedMessageDialog(
         Component parentComponent,
@@ -160,10 +155,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
       *          <code>WARNING_MESSAGE</code>,
       *                  <code>QUESTION_MESSAGE</code>,
       *          or <code>PLAIN_MESSAGE</code>
-      * @exception HeadlessException if
-      *   <code>GraphicsEnvironment.isHeadless</code> returns
-      *   <code>true</code>
-      * @see java.awt.GraphicsEnvironment#isHeadless
       */
     public static void showDetailedMessageDialog(
         Component parentComponent,
@@ -189,10 +180,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
       *      or if the <code>parentComponent</code> has no
       *      <code>Frame</code>, a default <code>Frame</code> is used
       * @param message   the <code>Object</code> to display
-      * @exception HeadlessException if
-      *   <code>GraphicsEnvironment.isHeadless</code> returns
-      *   <code>true</code>
-      * @see java.awt.GraphicsEnvironment#isHeadless
       */
     public static void showDetailedMessageDialog(
         Component parentComponent,
@@ -254,10 +241,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * @return an integer indicating the option chosen by the user, 
      *              or <code>CLOSED_OPTION</code> if the user closed
      *                  the dialog
-     * @exception HeadlessException if
-     *   <code>GraphicsEnvironment.isHeadless</code> returns
-     *   <code>true</code>
-     * @see java.awt.GraphicsEnvironment#isHeadless
      */
     public static int showOptionDialog(
         Component parentComponent,
@@ -269,7 +252,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         Icon icon,
         Object[] options,
         Object initialValue)
-        throws HeadlessException
     {
         JSmartOptionPane pane =
             new JSmartOptionPane(
@@ -316,6 +298,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
     private static int styleFromMessageType(int messageType)
     {
+        return messageType;
+        
+        /*
         switch (messageType)
         {
             case JOptionPane.ERROR_MESSAGE :
@@ -330,6 +315,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
             default :
                 return JRootPane.PLAIN_DIALOG;
         }
+        */
     }
 
     /**
@@ -530,10 +516,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *      no <code>Frame</code>, a default <code>Frame</code> is used
      * @param title     the title string for the dialog
      * @return a new <code>JDialog</code> containing this instance
-     * @exception HeadlessException if
-     *   <code>GraphicsEnvironment.isHeadless</code> returns
-     *   <code>true</code>
-     * @see java.awt.GraphicsEnvironment#isHeadless
      */
     public JDialog createDialog(Component parentComponent, String title)
     {
@@ -629,12 +611,8 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * which a frame is not provided.
      *
      * @return the default <code>Frame</code> to use
-     * @exception HeadlessException if
-     *   <code>GraphicsEnvironment.isHeadless</code> returns
-     *   <code>true</code>
-     * @see java.awt.GraphicsEnvironment#isHeadless
      */
-    public static Frame getRootFrame() throws HeadlessException
+    public static Frame getRootFrame()
     {
         return new Frame();
     }
@@ -650,13 +628,8 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *          frame if the component is <code>null</code>,
      *      or does not have a valid 
      *          <code>Frame</code> or <code>Dialog</code> parent
-     * @exception HeadlessException if
-     *   <code>GraphicsEnvironment.isHeadless</code> returns
-     *   <code>true</code>
-     * @see java.awt.GraphicsEnvironment#isHeadless
      */
     static Window getWindowForComponent2(Component parentComponent)
-        throws HeadlessException
     {
         if (parentComponent == null)
             return getRootFrame();
