@@ -263,9 +263,14 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         // Build toolbar for SQL editor
         JButton execute = JHeaderPanel.createButton(
-            ImageCache.getIcon(ImageCache.IMAGE_REFRESH),
+            ImageCache.getIcon(ImageCache.IMAGE_PLAY),
             "Execute SQL",
             new ExecuteAction());
+        
+        JButton format = JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_BRACES),
+            "Format",
+            new FormatSQLAction());
         
         JButton clear = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
@@ -279,6 +284,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(execute);
+        toolbar.add(format);
+        toolbar.addSeparator();
         toolbar.add(clear);
         toolbar.add(help);
         
@@ -303,12 +310,12 @@ public class QueryPlugin extends JPanel implements IPlugin
                 resultsArea_.new ClearAction());
         
         JButton listTables = JHeaderPanel.createButton(
-                ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE),
+                ImageCache.getIcon(ImageCache.IMAGE_TABLES),
                 "List tables",
                 new ListTablesAction());
 
         JButton listColumns = JHeaderPanel.createButton(
-                ImageCache.getIcon(ImageCache.IMAGE_COPY),
+                ImageCache.getIcon(ImageCache.IMAGE_COLUMNS),
                 "List columns",
                 new ListColumnsAction());
         
