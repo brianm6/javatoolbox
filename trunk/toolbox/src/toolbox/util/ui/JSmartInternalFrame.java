@@ -9,16 +9,15 @@ import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
 /**
- * An extension of JInternalFrame that supports persistence of preferences 
- * including size, location, and iconified state.
+ * JSmartInternalFrame is an extension of JInternalFrame that supports
+ * persistence of preferences including size, location, and iconified state.
  */
 public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
 {
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
 
-    // Preferences.
     private static final String NODE_JFRAME    = "JInternalFrame";
     private static final String ATTR_MAXIMIZED = "maximized";
     private static final String ATTR_WIDTH     = "w";
@@ -26,7 +25,10 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
     private static final String ATTR_X         = "x";
     private static final String ATTR_Y         = "y";
 
-    // Defaults for select preferences.
+    //--------------------------------------------------------------------------
+    // Defaults Constants
+    //--------------------------------------------------------------------------
+
     private static final boolean DEFAULT_MAXIMIZED = false;
     private static final int DEFAULT_WIDTH = 300;
     private static final int DEFAULT_HEIGHT = 200;
@@ -53,26 +55,26 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
         super(title);
     }
 
-    
+
     /**
      * Creates a JSmartInternalFrame.
-     * 
-     * @param title
-     * @param resizable
-     * @param closable
-     * @param maximizable
-     * @param iconifiable
+     *
+     * @param title Frame title.
+     * @param resizable Frame can be resized.
+     * @param closable Frame can be closed.
+     * @param maximizable Frame can be maximized.
+     * @param iconifiable Frame can be iconified.
      */
     public JSmartInternalFrame(
-        String title, 
+        String title,
         boolean resizable,
-        boolean closable, 
-        boolean maximizable, 
+        boolean closable,
+        boolean maximizable,
         boolean iconifiable)
     {
         super(title, resizable, closable, maximizable, iconifiable);
     }
-    
+
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
@@ -102,12 +104,7 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JFRAME);
-
         boolean maximized = false;
-        
-        // (getMgetExtendedState() & Frame.MAXIMIZED_BOTH) ==;
-        // Frame.MAXIMIZED_BOTH;
-
         root.addAttribute(new Attribute(ATTR_MAXIMIZED, maximized + ""));
 
         if (!maximized)

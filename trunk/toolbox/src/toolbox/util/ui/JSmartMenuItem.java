@@ -14,18 +14,18 @@ import toolbox.util.SwingUtil;
  * JSmartMenuItem adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Antialised text
  * </ul>
  */
 public class JSmartMenuItem extends JMenuItem implements AntiAliased
 {
     private static final Logger logger_ =
         Logger.getLogger(JSmartMenuItem.class);
-        
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Antialiased flag.
      */
@@ -34,7 +34,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a JSmartMenuItem.
      */
@@ -45,7 +45,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
 
     /**
      * Creates a JSmartMenuItem.
-     * 
+     *
      * @param text Menu item text.
      */
     public JSmartMenuItem(String text)
@@ -56,7 +56,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
 
     /**
      * Creates a JSmartMenuItem.
-     * 
+     *
      * @param text Menu item text.
      * @param mnemonic Text mnemonic.
      */
@@ -68,7 +68,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
 
     /**
      * Creates a JSmartMenuItem.
-     * 
+     *
      * @param a Action activated by the selection of this menu item.
      */
     public JSmartMenuItem(Action a)
@@ -79,7 +79,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
 
     /**
      * Creates a JSmartMenuItem.
-     * 
+     *
      * @param icon Menu item icon.
      */
     public JSmartMenuItem(Icon icon)
@@ -90,7 +90,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
 
     /**
      * Creates a JSmartMenuItem.
-     * 
+     *
      * @param text Menu item text.
      * @param icon Menu item icon.
      */
@@ -102,7 +102,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -111,16 +111,16 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
         return antiAliased_;
     }
 
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
     {
-        logger_.debug("AA set to " + b + " on menuItem " + getText());
+        //logger_.debug("AA set to " + b + " on menuItem " + getText());
         antiAliased_ = b;
     }
-    
+
     //--------------------------------------------------------------------------
     // Overrides JComponent
     //--------------------------------------------------------------------------

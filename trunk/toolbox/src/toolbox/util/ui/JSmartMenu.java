@@ -11,7 +11,7 @@ import toolbox.util.SwingUtil;
  * JSmartMenu adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Antialised text
  * </ul>
  */
 public class JSmartMenu extends JMenu implements AntiAliased
@@ -19,7 +19,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Antialiased flag.
      */
@@ -28,7 +28,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a JSmartMenu.
      */
@@ -39,7 +39,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
 
     /**
      * Creates a JSmartMenu.
-     * 
+     *
      * @param s Menu text.
      */
     public JSmartMenu(String s)
@@ -50,9 +50,9 @@ public class JSmartMenu extends JMenu implements AntiAliased
 
     /**
      * Creates a JSmartMenu.
-     * 
+     *
      * @param s Menu text.
-     * @param b Can the menu be torn off.  
+     * @param b Can the menu be torn off.
      */
     public JSmartMenu(String s, boolean b)
     {
@@ -62,7 +62,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
 
     /**
      * Creates a JSmartMenu.
-     * 
+     *
      * @param a Action activated by the selection of this menu.
      */
     public JSmartMenu(Action a)
@@ -73,7 +73,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -90,7 +90,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
     {
         antiAliased_ = b;
     }
-    
+
     //--------------------------------------------------------------------------
     // Overrides JComponent
     //--------------------------------------------------------------------------

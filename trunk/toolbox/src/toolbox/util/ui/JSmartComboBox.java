@@ -10,12 +10,13 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.list.SmartListCellRenderer;
 
 /**
- * JSmartComboBox adds the following behavior.
+ * JSmartComboBox extends the base JComboBox by supporting additional
+ * functionality. This includes:
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Antialised text
  * </ul>
- * 
+ *
  * @see SmartListCellRenderer
  */
 public class JSmartComboBox extends JComboBox implements AntiAliased
@@ -23,7 +24,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Antialiased flag.
      */
@@ -32,7 +33,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a JSmartComboBox.
      */
@@ -44,7 +45,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
 
     /**
      * Creates a JSmartComboBox.
-     * 
+     *
      * @param items Dropdown items.
      */
     public JSmartComboBox(Object[] items)
@@ -56,7 +57,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
 
     /**
      * Creates a JSmartComboBox.
-     * 
+     *
      * @param items Dropdown items.
      */
     public JSmartComboBox(Vector items)
@@ -68,7 +69,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
 
     /**
      * Creates a JSmartComboBox.
-     * 
+     *
      * @param aModel Combobox model.
      */
     public JSmartComboBox(ComboBoxModel aModel)
@@ -80,7 +81,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Initializes the combobox by setting the list cell renderer to a
      * SmartListCellRenderer.
@@ -89,11 +90,11 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     {
         setRenderer(new SmartListCellRenderer());
     }
-    
+
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -110,7 +111,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     {
         antiAliased_ = b;
     }
-    
+
     //--------------------------------------------------------------------------
     // Overrides JComponent
     //--------------------------------------------------------------------------

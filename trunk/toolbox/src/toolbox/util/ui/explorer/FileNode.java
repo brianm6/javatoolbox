@@ -5,19 +5,20 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import toolbox.util.Platform;
 
 /**
- * FileNode used to represent directories in the directory tree. The purpose of
- * this class is to implement a useful equals() method that compares files based
- * on the their name.
+ * FileNode is a TreeNode that has special behavior when used to compare to
+ * another FileNode. The equality is based on the name of the file and also
+ * takes into account the platform. If running on a unix system, the file
+ * comparison is case-insensetive.
  */
 public class FileNode extends DefaultMutableTreeNode
 {
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a FileNode.
-     * 
+     *
      * @param userObject Object to associate with the file node.
      */
     public FileNode(Object userObject)
@@ -28,11 +29,11 @@ public class FileNode extends DefaultMutableTreeNode
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
-    
+
     /**
      * Compares based on directory/file name. Is sensetive to the host
      * platform w.r.t. case sensetivity.
-     * 
+     *
      * @param obj Object to compare.
      * @return True if nodes are equal, false otherwise.
      */
@@ -40,19 +41,19 @@ public class FileNode extends DefaultMutableTreeNode
     {
         if (!(obj instanceof DefaultMutableTreeNode))
             return false;
-        
+
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj;
-        
+
         String file1 = (String) getUserObject();
         String file2 = (String) node.getUserObject();
-        
+
         if (Platform.isUnix())
             return file1.equals(file2);
         else
             return file1.equalsIgnoreCase(file2);
     }
-    
-    
+
+
     /**
      * @see java.lang.Object#hashCode()
      */
