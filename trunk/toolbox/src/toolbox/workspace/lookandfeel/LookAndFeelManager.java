@@ -78,6 +78,10 @@ public class LookAndFeelManager
         UIManager.installLookAndFeel(
             "SkinLF - BBJ", 
             "toolbox.workspace.lookandfeel.skinlf.BBJLookAndFeel");
+        
+        UIManager.installLookAndFeel(
+            "SkinLF - Toxic", 
+            "toolbox.workspace.lookandfeel.skinlf.ToxicLookAndFeel");
     }
 
     /**
