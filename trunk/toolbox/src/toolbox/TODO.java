@@ -10,6 +10,7 @@ package toolbox;
  * TODO: Add package.html to all packages
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Integrate automatic build number generation into the build process.
+ * TODO: Change getName() to getPluginName() in IPlugin
  * </pre>
  */
 public class TODO
