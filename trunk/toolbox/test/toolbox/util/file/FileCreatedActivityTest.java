@@ -11,7 +11,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for FileCreatedActivity.
+ * Unit test for {@link toolbox.util.file.FileCreatedActivity}.
  */
 public class FileCreatedActivityTest extends TestCase
 {

@@ -11,7 +11,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for FileStuffer.
+ * Unit test for {@link toolbox.util.file.FileStuffer}.
  */
 public class FileStufferTest extends TestCase
 {

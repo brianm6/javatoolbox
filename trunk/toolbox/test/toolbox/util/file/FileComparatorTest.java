@@ -12,9 +12,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for FileComparator.
- * 
- * @see toolbox.util.file.FileComparator
+ * Unit test for {@link toolbox.util.file.FileComparator}.
  */
 public class FileComparatorTest extends TestCase
 {
