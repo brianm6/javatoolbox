@@ -155,6 +155,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     public static void main(String args[])
     {
+        JFrame.setDefaultLookAndFeelDecorated(true);    // to decorate frames
+        JDialog.setDefaultLookAndFeelDecorated(true);   // to decorate dialogs
+
         try
         {
             new PluginWorkspace();
@@ -177,12 +180,13 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     public PluginWorkspace() throws Exception
     {
         super("Toolbox");
-            
-        buildView();
+        
         loadPrefs();
+        setLAF(prefs_);
+        buildView();
+        applyPrefs(prefs_);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        applyPrefs(prefs_);
     }
 
     //--------------------------------------------------------------------------
@@ -204,19 +208,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugin.startup(bootstrapMap_);
 
         // Create tab
-        //JPanel pluginPanel = new JPanel(new BorderLayout());
-        
-        //pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
-        //tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
-        //tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
-        
         tabbedPane_.addTab(
             plugin.getName(), 
             plugin.getComponent(), 
             ImageCache.getIcon(ImageCache.IMAGE_CROSS));
             
-        //tabbedPane_.setSelectedIndex(0);
-        
         // Restore unloaded preferences if they exist
         Element workspaceNode = 
             prefs_.getFirstChildElement(NODE_WORKSPACE);
@@ -261,18 +257,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugin.startup(bootstrapMap_);
 
         // Create tab
-        //JPanel pluginPanel = new JPanel(new BorderLayout());
-        
-        //pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
-        //tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
-        //tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
-        
         tabbedPane_.addTab(
             plugin.getName(), 
             plugin.getComponent(), 
             ImageCache.getIcon(ImageCache.IMAGE_CROSS));
-        
-        //tabbedPane_.setSelectedIndex(0);
         
         // Restore preferences but first see if there is a set of unloaded 
         // prefs for this plugin hanging around
@@ -374,17 +362,15 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected void buildView()
     {
-        Container contentPane = getContentPane();
-        contentPane.setLayout(new BorderLayout());
-
-        tabbedPane_ = 
-            new JSmartTabbedPane(); //ImageCache.getIcon(ImageCache.IMAGE_DELETE));
-        
+        tabbedPane_ = new JSmartTabbedPane();
         tabbedPane_.addSmartTabbedPaneListener(new PluginTabbedPaneListener());
-        contentPane.add(BorderLayout.CENTER, tabbedPane_);
 
         statusBar_ = new WorkspaceStatusBar();
         statusBar_.setStatus("Howdy pardner!");
+        
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
+        contentPane.add(BorderLayout.CENTER, tabbedPane_);
         contentPane.add(BorderLayout.SOUTH, (Component) statusBar_);
         
         bootstrapMap_ = new HashMap(1);
@@ -533,6 +519,43 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
+    /**
+     * Sets only the LookAndFeel based on the loaded preferences
+     * 
+     * @param prefs DOM representing the saved preferences.
+     */
+    protected void setLAF(Element prefs)
+    {
+        Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
+        
+        if (root != null)
+        {    
+            // Restore look and feel
+            String lafClass = XOMUtil.getStringAttribute(root, ATTR_LAF, null);
+            
+            if (lafClass != null)
+            {
+                try
+                {
+                    UIManager.setLookAndFeel(lafClass);
+                    
+                    SwingUtilities.invokeLater(new Runnable()
+                    {
+                        public void run()
+                        {
+                            SwingUtilities.updateComponentTreeUI(
+                                PluginWorkspace.this);
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    ExceptionUtil.handleUI(e, logger_);
+                }   
+            }
+        }    
+    }       
+
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
@@ -676,26 +699,26 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             // Restore look and feel
             String lafClass = XOMUtil.getStringAttribute(root, ATTR_LAF, null);
             
-            if (lafClass != null)
-            {
-                try
-                {
-                    UIManager.setLookAndFeel(lafClass);
-                    
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
-                        public void run()
-                        {
-                            SwingUtilities.updateComponentTreeUI(
-                                PluginWorkspace.this);
-                        }
-                    });
-                }
-                catch (Exception e)
-                {
-                    ExceptionUtil.handleUI(e, logger_);
-                }   
-            }
+//            if (lafClass != null)
+//            {
+//                try
+//                {
+//                    UIManager.setLookAndFeel(lafClass);
+//                    
+//                    SwingUtilities.invokeLater(new Runnable()
+//                    {
+//                        public void run()
+//                        {
+//                            SwingUtilities.updateComponentTreeUI(
+//                                PluginWorkspace.this);
+//                        }
+//                    });
+//                }
+//                catch (Exception e)
+//                {
+//                    ExceptionUtil.handleUI(e, logger_);
+//                }   
+//            }
     
             // Activate the currently loaded look and feel in the menu
             String lafName = UIManager.getLookAndFeel().getName();        
@@ -751,7 +774,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 "Root preferences object is empty.We're starting from scratch");
         }
     }       
-
 
     //--------------------------------------------------------------------------
     // Package
