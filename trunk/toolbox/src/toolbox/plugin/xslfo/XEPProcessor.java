@@ -38,7 +38,7 @@ public class XEPProcessor implements FOProcessor
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
     {
-        String foFile = FileUtil.getTempFilename() + ".xml";
+        String foFile = FileUtil.generateTempFilename() + ".xml";
         FileUtil.setFileContents(foFile, StreamUtil.toBytes(foStream), false);
         String pdfFile = foFile + ".pdf";
         renderPDF(new File(foFile), new File(pdfFile));

@@ -51,8 +51,8 @@ public class FileCreatedActivityTest extends TestCase
         
         try
         {
-            String file1 = FileUtil.getTempFilename(dir);            
-            String file2 = FileUtil.getTempFilename(dir);
+            String file1 = FileUtil.generateTempFilename(dir);            
+            String file2 = FileUtil.generateTempFilename(dir);
             
             FileUtil.setFileContents(file1, "file1", false);
             FileUtil.setFileContents(file2, "file2", false);
@@ -63,7 +63,7 @@ public class FileCreatedActivityTest extends TestCase
             assertEquals("first run should be empty", 0, firstRun.length);
             
             // Add a file to the baseline dir
-            String file3 = FileUtil.getTempFilename(dir);
+            String file3 = FileUtil.generateTempFilename(dir);
             FileUtil.setFileContents(file3, "file3", false);
             
             // Run the activity again..should report 1  new file
