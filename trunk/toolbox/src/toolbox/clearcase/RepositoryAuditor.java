@@ -3,26 +3,28 @@ package toolbox.clearcase;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
-import net.sf.statcvs.util.FileUtils;
-
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.Closure;
-import org.apache.commons.collections.Transformer;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.clearcase.adapter.ClearCaseAdapterFactory;
 import toolbox.clearcase.audit.ContainsTabsAudit;
+import toolbox.clearcase.audit.MissingCommentAudit;
 import toolbox.util.DateUtil;
-import toolbox.util.FileUtil;
 import toolbox.util.collections.ObjectComparator;
 
 /**
@@ -93,13 +95,13 @@ public class RepositoryAuditor
         
         List changedFiles = 
             cc.findChangedFiles(
-                DateUtil.addDays(new Date(), -3), 
+                DateUtil.addDays(new Date(), -30), 
                 new Date(), 
                 new SuffixFileFilter(".java"));
 
         
         List audits = new ArrayList();
-        //audits.add(new MissingCommentAudit());
+        audits.add(new MissingCommentAudit());
         audits.add(new ContainsTabsAudit());
         List finalResults = new ArrayList();
         
@@ -112,32 +114,55 @@ public class RepositoryAuditor
         Comparator sortByUser = new ObjectComparator("username", "filename");
         Collections.sort(finalResults, sortByUser);
         
+        int maxUsername = getMaxLength(finalResults, "username");
+        int maxFilename = getMaxLength(finalResults, "fileOnly");
+        int maxReason   = getMaxLength(finalResults, "reason");
+        int maxDate     = getMaxLength(finalResults, "date");
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(StringUtils.repeat("=", 80));
+        sb.append("\n");
+        sb.append(StringUtils.rightPad("User", maxUsername));
+        sb.append(StringUtils.rightPad("File", maxFilename));
+        sb.append(StringUtils.rightPad("Reason", maxReason));
+        sb.append(StringUtils.rightPad("Timestamp", maxDate));
+        sb.append("Dir\n");
+        sb.append(StringUtils.repeat("=", 80));
+        sb.append("\n");
         
         
-        for (Iterator iter = finalResults.iterator(); iter.hasNext();)
+        for (ListIterator iter = finalResults.listIterator(); iter.hasNext();)
         {
             IAuditResult result = (IAuditResult) iter.next();
+        
+            sb.append(StringUtils.rightPad(
+                getAlias(result.getUsername()), maxUsername));
             
-            StringBuffer sb = new StringBuffer();
-            sb.append(StringUtils.rightPad(getAlias(result.getUsername()), 10));
-            sb.append("  ");
-            
-            sb.append(
-                StringUtils.rightPad(
-                    FileUtils.getFilenameWithoutPath(
-                        result.getFilename()), 15));
-            
-            sb.append("  ");
-            sb.append(StringUtils.rightPad(result.getReason(), 20));
-            sb.append("  ");
-            sb.append(StringUtils.rightPad(result.getDate(), 20));
-            sb.append("  ");
-            sb.append(FileUtil.stripFile(result.getFilename()));
-            
-            System.out.println(sb);
+            sb.append(StringUtils.rightPad(result.getFileOnly(), maxFilename));
+            sb.append(StringUtils.rightPad(result.getReason(), maxReason));
+            sb.append(StringUtils.rightPad(result.getDate(), maxDate));
+            sb.append(FilenameUtils.getPath(result.getFilename()));
+            sb.append("\n");
         }
+        
+        System.out.println(sb);
     }
 
+    
+    /**
+     * 
+     * @param coll
+     * @param propName
+     * @return
+     */
+    private int getMaxLength(Collection coll, String propName)
+    {
+        MaxStringLengthFinder finder = new MaxStringLengthFinder(propName);
+        CollectionUtils.forAllDo(coll, finder);
+        return finder.getMaxLength() + 2;
+    }
+    
+    
     /**
      * @param username
      * @return
@@ -151,15 +176,19 @@ public class RepositoryAuditor
         return result;
     }
     
+    //--------------------------------------------------------------------------
+    // StringLengthClosure
+    //--------------------------------------------------------------------------
     
-    
-    class StringLengthClosure implements Closure
+    class MaxStringLengthFinder implements Closure
     {
         String propName_;
+        int max_;
         
-        public StringLengthClosure(String propName)
+        public MaxStringLengthFinder(String propName)
         {
             propName_ = propName;
+            max_ = 0;
         }
         
         /**
@@ -167,8 +196,21 @@ public class RepositoryAuditor
          */
         public void execute(Object input)
         {
-            Property
+            try
+            {
+                String value = BeanUtils.getProperty(input, propName_);
+                max_ = Math.max(max_, value.length());
+            }
+            catch (Exception e)
+            {
+                logger_.error(e);
+            }
+        }
+        
+        
+        public int getMaxLength()
+        {
+            return max_;
         }
     }
-    
 }
