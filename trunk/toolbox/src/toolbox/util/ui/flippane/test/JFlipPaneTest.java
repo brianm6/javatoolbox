@@ -19,13 +19,17 @@ import toolbox.util.ui.flippane.FlipPaneListener;
  * <p>
  * 
  * TODO: Figure out how to use JFCUnit/Abbott/other tool to test GUIS
+ * TODO: Refactor into a JUnit test
  */
 public class JFlipPaneTest extends JFrame
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JFlipPaneTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entry point
      * 
