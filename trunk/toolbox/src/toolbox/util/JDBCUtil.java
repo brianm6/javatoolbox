@@ -1,6 +1,8 @@
 package toolbox.util;
 
 import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -20,37 +22,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.dbcp.DriverManagerConnectionFactory;
+import org.apache.commons.dbcp.PoolableConnectionFactory;
+import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.pool.ObjectPool;
+import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
 
 /**
  * JDBC Utility class that makes it easy to execute SQL statements and see the 
- * results as formatted text in a tabular layout.
+ * results as formatted text in a tabular layout. Connection pooling is turned
+ * on by default and overcomes a failure with fast connect/disconnect when
+ * using HSQL in server mode.
  * <p>
- * Typical usage:
- * <p>
+ * Sample usage:
  * <pre>
- * 
- * JdbcUtilities.init("driver", "url", "username", "password");
- * 
- * String results = 
- *     JDBCUtilities.executeQuery(
- *         "select * from users where age > 30");
- * 
+ * JDBCUtil.init("org.some.JDBCDriver", "jdbc:someurl", "username", "password");
+ * String results = JDBCUtil.executeQuery("select * from users where age > 30");
  * System.out.println(results);
  * 
- * int numRows = 
- *     JDBCUtilities.executeUpdate(
- *         "delete from users where age < 30");
- * 
+ * int numRows = JDBCUtil.executeUpdate("delete from users where age < 30");
  * System.out.println(numrows + " rows deleted.");
- * 
+ * JDBCUtil.shutdown();
  * </pre>
  * <p>
- * Sample Output 
- * <p>
+ * Sample Output: 
  * <pre>
- * 
  * USERNAME  AGE  TITLE
  * ---------------------------
  * jsmith    23   Consultant
@@ -58,24 +56,51 @@ import org.apache.log4j.Logger;
  * hsimpson  45   Misc.
  *    
  * 4 rows
- * 
  * </pre>
+ * 
+ * TODO: Add connection pooling to init methods with jar.
  */
 public final class JDBCUtil
 {
     private static final Logger logger_ = Logger.getLogger(JDBCUtil.class);
 
     //--------------------------------------------------------------------------
+    // Connection Pool Constants
+    //--------------------------------------------------------------------------
+
+    /**
+     * Classname of the commons-dbcp pooling JDBC driver.
+     */
+    private static final String CONN_POOL_DRIVER = 
+        "org.apache.commons.dbcp.PoolingDriver";
+    
+    /**
+     * URL prefix of the connection pooling JDBC driver.
+     */
+    private static final String CONN_POOL_URL_PREFIX = 
+        "jdbc:apache:commons:dbcp:"; 
+
+    /**
+     * Name of the connection pool for use exclusively by this class.
+     */	
+    private static final String CONN_POOL_NAME = "jdbcutil";
+    
+    /**
+     * Connection pooling is turned on by default.
+     */
+    private static final boolean DEFAULT_POOLED = true;
+    
+    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
     /** 
-     * JDBC connection properties. 
+     * JDBC connection properties that contains username, password, etc. 
      */
     private static Properties connProps_;
  
     /**
-     * JDBC driver.
+     * Instance of the JDBC driver.
      */   
     private static Driver driver_;
 
@@ -85,11 +110,11 @@ public final class JDBCUtil
     static { new JDBCUtil(); }
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Prevent construction.
+     * Singleton - prevent construction.
      */
     private JDBCUtil()
     {
@@ -101,7 +126,8 @@ public final class JDBCUtil
 
     /**
      * Initialzies the JDBC properties. Must be called before any of the other
-     * methods are invoked.
+     * methods are invoked. Connection pooling is set to the DEFAUILT_POOLED
+     * value.
      * 
      * @param driver JDBC driver to use.
      * @param url URL to database resource.
@@ -117,17 +143,77 @@ public final class JDBCUtil
         String url, 
         String user, 
         String password) 
-        throws ClassNotFoundException, 
+        throws ClassNotFoundException,
                SQLException,
                IllegalAccessException,
-               InstantiationException
+               InstantiationException 
     {
-        driver_ = (Driver) Class.forName(driver).newInstance();
+        init(driver, url, user, password, DEFAULT_POOLED);
+    }
+
+    
+    /**
+     * Initialzies the JDBC properties. Must be called before any of the other
+     * methods are invoked.
+     * 
+     * @param driver JDBC driver to use.
+     * @param url URL to database resource.
+     * @param user Username used for authentication.
+     * @param password Password used for authentication.
+     * @param pooled Set to true to use a connection pool. 
+     * @throws SQLException on SQL error.
+     * @throws ClassNotFoundException if the JDBC driver is not found.
+     * @throws IllegalAccessException if problems accessing jdbc driver.
+     * @throws InstantiationException if problems instantiating the jdbc driver.
+     */
+    public static void init(
+        String driver,
+        String url,
+        String user,
+        String password,
+        boolean pooled)
+        throws ClassNotFoundException,
+               SQLException,
+               IllegalAccessException,
+               InstantiationException 
+    {
+        if (!pooled)
+        {
+            driver_ = (Driver) Class.forName(driver).newInstance();
+            
+            connProps_ = new Properties();
+            connProps_.put("user", user);
+            connProps_.put("password", password);
+            connProps_.put("url", url);
+        }
+        else
+        {
+            Class.forName(driver);
+            ObjectPool connPool = new GenericObjectPool(null);
         
-        connProps_ = new Properties();
-        connProps_.put("user", user);
-        connProps_.put("password", password);
-        connProps_.put("url", url);
+            PoolableConnectionFactory pconnFactory = 
+                new PoolableConnectionFactory(
+                    new DriverManagerConnectionFactory(url, user, password), 
+                    connPool, 
+                    null, 
+                    null, 
+                    false,  // readonly
+                    true);  // autocommit
+	
+            Class.forName(CONN_POOL_DRIVER);
+	        
+            PoolingDriver poolDriver = (PoolingDriver)
+                DriverManager.getDriver(CONN_POOL_URL_PREFIX);
+	        								  		
+            poolDriver.registerPool(CONN_POOL_NAME, connPool);
+	
+            driver_ = poolDriver;
+	        
+            connProps_ = new Properties();
+            connProps_.put("user", user);
+            connProps_.put("password", password);
+            connProps_.put("url", CONN_POOL_URL_PREFIX + CONN_POOL_NAME); 
+        }
         
         Connection conn = getConnection();
         DatabaseMetaData meta = conn.getMetaData();
@@ -251,7 +337,7 @@ public final class JDBCUtil
 
     
     /**
-     * Returns a list of tables.
+     * Returns a list of the existing tables in the database.
      * 
      * @return String[]
      * @throws SQLException on DB error.
@@ -639,11 +725,41 @@ public final class JDBCUtil
      * 
      * @throws SQLException on SQL error.
      */
-    public static void shutdown() throws SQLException
-    {
-        DriverManager.deregisterDriver(driver_);
+    public static void shutdown() throws SQLException {
+        
+        /*
+        if (usePool_) {
+            PoolingDriver pd = (PoolingDriver) driver_;
+            
+            try {
+                pd.getPool(CONN_POOL_NAME).close();
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+                throw new SQLException(e.getMessage());
+            }
+        }
+        */
+            
+        //DriverManager.deregisterDriver(driver_);
         driver_ = null;
         connProps_ = null;        
+    }
+
+    
+    /**
+     * Sends DriverManager debug output to System.out.
+     * 
+     * @param b True to turn debug on, false otherwise.
+     */
+    public static void setDebug(boolean b) {
+    
+        if (b)
+            DriverManager.setLogWriter(
+                new PrintWriter(new OutputStreamWriter(System.out)));
+        else
+            DriverManager.setLogWriter(null);
     }
     
     //--------------------------------------------------------------------------
