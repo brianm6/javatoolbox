@@ -61,11 +61,6 @@ public class PreferencesDialog extends JSmartDialog
     private JPanel cardPanel_;
 
     /**
-     * Layout for switching out the PreferencesViews.
-     */
-    private CardLayout cardLayout_;
-
-    /**
      * Source of the PreferencesViews.
      */
     private PreferencesManager preferencesManager_;
@@ -163,8 +158,9 @@ public class PreferencesDialog extends JSmartDialog
      */
     protected JComponent buildCardPanel()
     {
-        cardLayout_ = new CardLayout();
-        cardPanel_ = new JPanel(cardLayout_);
+        
+        CardLayout cardLayout = new CardLayout();
+        cardPanel_ = new JPanel(cardLayout);
         cardPanel_.setBorder(new EmptyBorder(10, 0, 0, 10));
         return cardPanel_;
     }
@@ -215,7 +211,8 @@ public class PreferencesDialog extends JSmartDialog
         public void actionPerformed(ActionEvent e)
         {
             IConfigurator prefs = (IConfigurator) getValue("prefs");
-            cardLayout_.show(cardPanel_, prefs.getLabel());
+            CardLayout layout = (CardLayout) cardPanel_.getLayout();
+            layout.show(cardPanel_, prefs.getLabel());
         }
     }
 
