@@ -338,9 +338,7 @@ public final class JDBCUtil
      */
     public static Object[][] toArray(ResultSet rs) throws SQLException
     {
-        ResultSetMetaData meta = rs.getMetaData();
-    
-        int numCols = meta.getColumnCount();
+        int numCols = rs.getMetaData().getColumnCount();
         List rows = new ArrayList();
     
         while (rs.next())
@@ -357,15 +355,10 @@ public final class JDBCUtil
         
         if (!rows.isEmpty())
         {    
-            table = new Object[numCols][rows.size()];
+            table = new Object[rows.size()][numCols];
         
             for (int i = 0, n = rows.size(); i < n; i++)
-            {
-                Object[] row = (Object[]) rows.get(i);
-        
-                for (int j = 0; j < row.length; j++)
-                    table[j][i] = row[j];
-            }
+                table[i] = (Object[]) rows.get(i);
         
             rows.clear();
             rows = null;
