@@ -145,7 +145,7 @@ public class RollingCounter
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
     /**
@@ -183,4 +183,3 @@ public class RollingCounter
         void afterRoll(RollingCounter rc);
     }
 }
-

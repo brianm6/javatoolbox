@@ -45,7 +45,7 @@ public final class ResourceUtil
      * <p>
      * File Resource -> Class Resource -> PackageResource -> URL Resource
      * 
-     * @param name Name of the resource
+     * @param name Name of the resource.
      * @return InputStream or null if resource not found.
      * @throws IOException on I/O error.
      */
@@ -145,7 +145,7 @@ public final class ResourceUtil
      * methods. This is just a convenience method to return the resource in the
      * form of a byte array instead of a stream.
      * 
-     * @param name Name of the resource
+     * @param name Name of the resource.
      * @return Byte array representing the resource of null if the resource
      *         could not be found.
      */
@@ -170,7 +170,7 @@ public final class ResourceUtil
     /**
      * Returns resource with the given name as a string.
      * 
-     * @param name Resource name (file, url, etc)
+     * @param name Resource name (file, url, etc).
      * @return Resource contents as a string.
      */
     public static String getResourceAsString(String name)
@@ -183,8 +183,8 @@ public final class ResourceUtil
      * This is just a convenience method to return a resource in the form of of
      * an Icon. The name should refer to a valid GIF or JPG image.
      * 
-     * @param name Name of the resource
-     * @return Icon representing the named resource
+     * @param name Name of the resource.
+     * @return Icon representing the named resource.
      */
     public static Icon getResourceAsIcon(String name)
     {
@@ -195,8 +195,8 @@ public final class ResourceUtil
     /**
      * Convenience method to load a resource as an image.
      * 
-     * @param name Path to the GIF/JPG file
-     * @return Image of given resource
+     * @param name Path to the GIF/JPG file.
+     * @return Image of given resource.
      */
     public static Image getResourceAsImage(String name)
     {
