@@ -5,6 +5,7 @@ import java.util.Collections;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -298,11 +299,13 @@ public class AbstractServiceTest extends TestCase
         logger_.info("Running testStop...");
         
         Service s = new MockService(true);
-        s.addServiceListener(new MockServiceListener());
+        ServiceListener listener = new MockServiceListener();
+        s.addServiceListener(listener);
         s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.stop();
         assertFalse(s.isRunning());
+        s.removeServiceListener(listener);
     }
 
 
@@ -435,6 +438,21 @@ public class AbstractServiceTest extends TestCase
         }
     }
 
+    
+    /**
+     * Tests non-strict state transitions. 
+     */
+    public void testNotStrict() throws Exception
+    {
+        logger_.info("Running testNotStrict...");
+        
+        MockService s = new MockService(false);
+        s.stop();
+        s.initialize(MapUtils.EMPTY_MAP);
+        s.suspend();
+        s.destroy();
+    }
+    
     //--------------------------------------------------------------------------
     // MockService
     //--------------------------------------------------------------------------
