@@ -12,6 +12,7 @@ public interface FileTypes
         "fo", 
         "jelly",
         "jnlp",
+        "jsl",
         "svg",
         "xmi",
         "xml", 
