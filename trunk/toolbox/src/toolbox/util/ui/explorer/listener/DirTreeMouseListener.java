@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.explorer.action.CreateDirAction;
@@ -16,8 +17,8 @@ import toolbox.util.ui.explorer.action.RenameDirAction;
 /**
  * Inner class for handling mouse click events on the directory tree.
  */
-public class DirTreeMouseListener extends AbstractListener 
-    implements MouseListener
+public class DirTreeMouseListener 
+    extends AbstractListener implements MouseListener
 {
     //--------------------------------------------------------------------------
     // Constructors
@@ -38,12 +39,14 @@ public class DirTreeMouseListener extends AbstractListener
     //--------------------------------------------------------------------------
     
     /**
+     * Activates popoup menu or double click on a directory node.
+     * 
      * @see java.awt.event.MouseListener#mouseClicked(
      *      java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent evt)
     {
-        if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0 ) 
+        if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0) 
         {
             JPopupMenu popup = getProxy().getFolderPopup();
             
@@ -59,7 +62,7 @@ public class DirTreeMouseListener extends AbstractListener
             
             popup.show(evt.getComponent(), evt.getX(), evt.getY());
         }
-        else if (evt.getClickCount() == 2)
+        else if (SwingUtil.isDoubleClick(evt))
         {
             getProxy().fireFolderDoubleClicked(getExplorer().getCurrentPath());
         }
