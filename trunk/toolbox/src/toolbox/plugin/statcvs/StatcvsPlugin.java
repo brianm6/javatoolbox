@@ -56,20 +56,33 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 {
     // TODO: Add nuke checkout dir
     // TODO: Add support for projects that span multiple modules
-    // TODO: Restore last selected project
     
     private static final Logger logger_ = 
         Logger.getLogger(StatcvsPlugin.class);
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
     /**
-     * XML: Node that holds a collection of CVSProjects
+     * Node that contains the StatCVS plugin's preferences
+     */
+    private static final String NODE_STATCVS_PLUGIN = "StatCVSPlugin";
+    
+    /** 
+     * Node that holds a collection of CVSProjects 
      */
     private static final String NODE_CVSPROJECTS = "CVSProjects";
     
-    /**
-     * XML: Node that contains the StatCVS plugin's preferences
+    /** 
+     * Attribute of NODE_CVSPROJECTS that saves the index of the currently
+     * selected cvs project. 
      */
-    private static final String NODE_STATCVS_PLUGIN = "StatCVSPlugin";
+    private static final String ATTR_SELECTED  = "selected";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Reference to the workspace statusbar 
@@ -419,22 +432,34 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see java.awt.Component#getName()
+     */
     public String getName()
     {
         return "StatCVS";    
     }
     
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
+     */
     public JComponent getComponent()
     {
         return this;
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     */
     public String getDescription()
     {
         return "Runs Statcvs on a CVS module";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#startup(java.util.Map)
+     */
     public void startup(Map params)
     {
         if (params != null)
@@ -456,6 +481,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             new PrintStream(new JTextAreaOutputStream(outputArea_));
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
+     */
     public void shutdown()
     {
     }
@@ -515,18 +543,21 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         else
         {
             Element root = prefs.getFirstChildElement(NODE_STATCVS_PLUGIN);
+            Element cvsProjects = root.getFirstChildElement(NODE_CVSPROJECTS);
             
             Elements projectList = 
-                root.getFirstChildElement(NODE_CVSPROJECTS).
-                    getChildElements(CVSProject.NODE_CVSPROJECT);
-            
+                cvsProjects.getChildElements(CVSProject.NODE_CVSPROJECT);
+             
             for(int i=0; i<projectList.size(); i++)
             {
                 Element projectNode = projectList.get(i);
                 CVSProject project = new CVSProject(projectNode.toXML());
                 addProject(project);
             }
-            
+
+            projectCombo_.setSelectedIndex(
+                XOMUtil.getIntegerAttribute(cvsProjects, ATTR_SELECTED, 0));
+                            
             outputArea_.applyPrefs(root);            
         }
     }
@@ -538,6 +569,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {
         Element root = new Element(NODE_STATCVS_PLUGIN);
         Element projects = new Element(NODE_CVSPROJECTS);
+        
+        projects.addAttribute(
+            new Attribute(ATTR_SELECTED, projectCombo_.getSelectedIndex()+""));
         
         for (int i=0, n=projectCombo_.getItemCount(); i<n; i++)
         {
@@ -561,34 +595,48 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class CVSProject 
     {
-        private static final String NODE_CVSPROJECT  = "CVSProject";
-        private static final String ATTR_PROJECT     = "project";
-        private static final String ATTR_MODULE      = "module";
-        private static final String ATTR_CVSROOT     = "cvsroot";
-        private static final String ATTR_PASSWORD    = "password";
-        private static final String ATTR_CHECKOUTDIR = "checkoutdir";
-        private static final String ATTR_DEBUG       = "debug";
-        private static final String ATTR_LAUNCHURL   = "launchurl";
+        private static final String NODE_CVSPROJECT    = "CVSProject";
+        private static final String   ATTR_PROJECT     = "project";
+        private static final String   ATTR_MODULE      = "module";
+        private static final String   ATTR_CVSROOT     = "cvsroot";
+        private static final String   ATTR_PASSWORD    = "password";
+        private static final String   ATTR_CHECKOUTDIR = "checkoutdir";
+        private static final String   ATTR_DEBUG       = "debug";
+        private static final String   ATTR_LAUNCHURL   = "launchurl";
         
-        /** Field for the project name (optional) */
+        /** 
+         * Field for the project name (required for saving) 
+         */
         private String project_;
     
-        /** Field for the cvs module name (required) */
+        /** 
+         * Field for the cvs module name (required) 
+         */
         private String cvsModule_;
     
-        /** Field for the cvs root (required) */
+        /** 
+         * Field for the cvs root (required) 
+         */
         private String cvsRoot_;
     
-        /** Field for the cvs password (required by empty strings are OK) */
+        /** 
+         * Field for the cvs password (required but empty strings are OK) 
+         */
         private String cvsPassword_;
     
-        /** Field for the checkout directory (must already exist) */
+        /** 
+         * Field for the checkout directory (must already exist) 
+         */
         private String checkoutDir_;
     
-        /** Checkbox to toggle the cvslib.jar debug flag */
+        /** 
+         * Checkbox to toggle the cvslib.jar debug flag 
+         */
         private boolean debug_;
     
-        /** Field that contains the URL to view the generated statcvs report */
+        /** 
+         * Field that contains the URL to view the generated statcvs report 
+         */
         private String launchURL_;
         
         //----------------------------------------------------------------------
