@@ -11,23 +11,63 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.output.NullOutputStream;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SocketUtil;
 import toolbox.util.io.EventOutputStream;
 import toolbox.util.io.MulticastOutputStream;
-import toolbox.util.io.NullOutputStream;
 
 /**
- * A TcpTunnel serves as a transparent intermediary between a TCP conection on 
- * the current host and a remote host. By serving as an intermediary, traffic
- * on the TCP connection can be captured and saved for later analysis and aid 
- * in trouble shooting protocol level issues. The local listen port is the
- * port that you will redirect your client application to communicate with.
- * The remote host and port is the connection endpoint between.
- * 
+ * Tunnels TCP traffic through a local proxy port before it is forwarded to
+ * the intended recipient. This allows a view into a "real time" window 
+ * of the data being sent back and forth. Very useful for socket level 
+ * degugging.
  * <pre>
+ * 
+ * Without Tunnel:
+ * 
+ *              Client                Server:80
+ *             --------              --------
+ *                 |                     |
+ *                 |        read         |
+ *                 |-------------------->|
+ *                 |                     |--.
+ *                 |                     |  | do something 
+ *                 |                     |<-'
+ *                 |        write        |
+ *                 |<--------------------|
+ *                 |                     |
+ * 
+ * With Tunnel:
+ * 
+ *              Client        Tunnel         Server
+ *            [localhost]  [localhost:80]  [server:80]
+ *            -----------  --------------  -----------
+ *                 |              |            |
+ *                 |     write    |            |  
+ *                 |------------->|            |
+ *                 |              |--.         |
+ *                 |              |  |out sink |
+ *                 |              |<-'         |
+ *                 |              |            | 
+ *                 |              |   write    |
+ *                 |              |----------->| 
+ *                 |              |            |--.
+ *                 |              |            |  | do something 
+ *                 |              |            |<-'
+ *                 |              |    write   |
+ *                 |              |<-----------|
+ *                 |              |            |
+ *                 |              |--.         |
+ *                 |              |  |in sink  |
+ *                 |              |<-'         |
+ *                 |     write    |            |
+ *                 |<-------------|            |
+ *                 |              |            |
+ * 
+ * 
  * Sequence of events:
  * 
  * 1. socket client connects to TcpTunnel (localhost:port)
@@ -48,17 +88,40 @@ public class TcpTunnel implements TcpTunnelListener
     private static final String STREAM_IN  = "in";
     private static final String STREAM_OUT = "out";
 
+    /** Server socket for tunnel port on localhost */
     private ServerSocket ss_;
-    private boolean      stop_ = false;
-    private int          listenPort_;
-    private String       remoteHost_;
-    private int          remotePort_;
-    private List         outgoingStreams_;
-    private List         incomingStreams_;
-    private List         listeners_;
+
+    /** Tunnel port on localhost */
+    private int listenPort_;
     
+    /** Flag to shutdown */
+    private boolean stopped_ = false;
+
+    /** Intended recipient hostname */    
+    private String remoteHost_;
+    
+    /** Intended recipient port */
+    private int remotePort_;
+    
+    /** Listeners of tunnel events */
+    private List listeners_;
+    
+    /** Total number of incoming bytes */
     private int inTotal_;
+    
+    /** Total number of outgoing bytes */
     private int outTotal_;
+
+    /** Sink for incoming data from the remote host */
+    private OutputStream incomingSink_;
+    
+    /** Sink for outgoing data to the remote host */
+    private OutputStream outgoingSink_;
+     
+        
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entrypoint 
@@ -85,8 +148,8 @@ public class TcpTunnel implements TcpTunnelListener
             "TcpTunnel: Ready to service connections on port " + listenport);
 
         TcpTunnel tunnel = new TcpTunnel(listenport, tunnelhost, tunnelport);
-        tunnel.addOutgoingStream(System.out);
-        tunnel.addIncomingStream(System.out);
+        tunnel.setIncomingSink(System.out);
+        tunnel.setOutgoingSink(System.out);
         tunnel.addTcpTunnelListener(tunnel);
         tunnel.start();
     }
@@ -96,7 +159,7 @@ public class TcpTunnel implements TcpTunnelListener
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TcpTunnel
+     * Creates a TcpTunnel with incoming/outgoing data echoed to System.out
      * 
      * @param  listenPort  Local port to listen on
      * @param  remoteHost  Remote host to connect to
@@ -107,38 +170,32 @@ public class TcpTunnel implements TcpTunnelListener
         listenPort_ = listenPort;
         remoteHost_ = remoteHost;
         remotePort_ = remotePort;
+        listeners_  = new ArrayList();
+        inTotal_    = 0;
+        outTotal_   = 0;
         
-        incomingStreams_ = new ArrayList();
-        outgoingStreams_ = new ArrayList();
-        listeners_       = new ArrayList();
-        inTotal_         = 0;
-        outTotal_        = 0;
+        incomingSink_ = System.out;
+        outgoingSink_ = System.out;
     }    
        
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-                  
+
     /**
-     * Adds an output stream to the collection of incoming streams that
-     * data from the remote host will be multicast to
-     * 
-     * @param  stream  Stream to add to multicast group
+     * @param stream
      */
-    public void addIncomingStream(OutputStream stream)
+    public void setIncomingSink(OutputStream stream)
     {
-        incomingStreams_.add(stream);    
+        incomingSink_ = stream;
     }
 
     /**
-     * Adds an output stream to the collection of outgoing streams that
-     * sends data from the local socket client to the remote host
-     * 
-     * @param  stream  Stream to add to multicast group
+     * @param stream
      */
-    public void addOutgoingStream(OutputStream stream)
+    public void setOutgoingSink(OutputStream stream)
     {
-        outgoingStreams_.add(stream);    
+        outgoingSink_ = stream;
     }
         
     /**
@@ -153,9 +210,11 @@ public class TcpTunnel implements TcpTunnelListener
             // Server socket on listenPort
             ss_ = new ServerSocket(listenPort_);
             ss_.setSoTimeout(5000);
-            stop_ = false;
+            stopped_ = false;
             
-            while (!stop_)
+            fireTunnelStarted();
+            
+            while (!stopped_)
             {
                 try
                 {
@@ -193,10 +252,7 @@ public class TcpTunnel implements TcpTunnelListener
                         eos.addListener(new OutputStreamListener());
                             
                         outStreams.addStream(eos);
-                        
-                        for (Iterator i = outgoingStreams_.iterator(); 
-                            i.hasNext();)
-                                outStreams.addStream((OutputStream)i.next());
+                        outStreams.addStream(outgoingSink_);
                         
                         MulticastOutputStream inStreams = 
                             new MulticastOutputStream();
@@ -210,20 +266,17 @@ public class TcpTunnel implements TcpTunnelListener
                         eis.addListener(new OutputStreamListener());    
                         
                         inStreams.addStream(eis);
-                        
-                        for (Iterator i = incomingStreams_.iterator(); 
-                            i.hasNext();)
-                                inStreams.addStream((OutputStream)i.next());    
+                        inStreams.addStream(incomingSink_);    
 
                         new Thread(new Relay(
                             new BufferedInputStream(cs.getInputStream()), 
-                            new BufferedOutputStream(outStreams))).start();
+                            new BufferedOutputStream(outStreams)),
+                            "TcpTunnel:incomingSink").start();
                             
                         new Thread(new Relay(
                             new BufferedInputStream(rs.getInputStream()), 
-                            new BufferedOutputStream(inStreams))).start();
-
-                        // that's it .. they're off
+                            new BufferedOutputStream(inStreams)), 
+                            "TcpTunnel:outgoingSink").start();
                     }
                 }
                 catch (SocketTimeoutException ste)
@@ -232,7 +285,7 @@ public class TcpTunnel implements TcpTunnelListener
                 }
                 catch (Exception e)
                 {
-                    if (!stop_)
+                    if (!stopped_)
                         ExceptionUtil.handleUI(e, logger_);
                 }
             }
@@ -248,7 +301,7 @@ public class TcpTunnel implements TcpTunnelListener
      */              
     public void stop()
     {
-        stop_ = true;
+        stopped_ = true;
         SocketUtil.close(ss_);    
         fireStatusChanged("Tunnel stopped");
     }
@@ -303,6 +356,18 @@ public class TcpTunnel implements TcpTunnelListener
             ((TcpTunnelListener) i.next()).bytesWritten(
                 this, connWritten, outTotal_);
     }
+
+    /**
+     * Fires notifcation that the tunnel has started.
+     * 
+     * @param  status  New status
+     */
+    protected void fireTunnelStarted()
+    {
+        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+            ((TcpTunnelListener) i.next()).tunnelStarted(this);    
+    }
+
     
     //--------------------------------------------------------------------------
     // Interface TcpTunnelListener
@@ -336,6 +401,12 @@ public class TcpTunnel implements TcpTunnelListener
     {
         System.out.println("[Bytes written: " + connBytesWritten + "]");
     }
+    
+    public void tunnelStarted(TcpTunnel tunnel)
+    {
+        System.out.println("Tunnel started");
+    }
+    
     
     //--------------------------------------------------------------------------
     // Inner Classes
