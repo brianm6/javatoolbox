@@ -1,6 +1,7 @@
 package toolbox.plugin.jdbc;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.OutputStreamWriter;
@@ -65,6 +66,7 @@ import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
@@ -163,6 +165,17 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public static final String[] SAVED_PROPS = 
         new String[] {"sendErrorToConsole"};
+
+    /**
+     * Name of the card in the results panel associated with the results text 
+     * area.
+     */
+    private static final String CARD_TEXTAREA = "resultsTextArea";
+
+    /**
+     * Name of the card in the results panel associated with the results table.
+     */
+    private static final String CARD_TABLE = "resultsTable";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -232,6 +245,12 @@ public class QueryPlugin extends JPanel implements IPlugin
      * View for configuring the database benchmark.
      */
     private DBBenchmarkView benchmarkView_;
+
+    private JSmartTable resultsTable_;
+
+    private CardLayout resultsLayout_;
+    
+    private JPanel resultsCardPanel_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -637,23 +656,50 @@ public class QueryPlugin extends JPanel implements IPlugin
                 "List columns",
                 new ListColumnsAction(this));
 
-        JPanel p = new JPanel(new BorderLayout());
+        JToggleButton switchResults = JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_DUKE),
+                "Switch results display",
+                new SwitchResultsAction());
+        
+        JPanel resultsAreaPanel = new JPanel(new BorderLayout());
         
         JToggleButton filterResults = JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_FUNNEL),
                 "Show results filter",
-                new ShowResultsFilterAction(this, p));
+                new ShowResultsFilterAction(this, resultsAreaPanel));
                 
         JToolBar toolbar = JHeaderPanel.createToolBar();
+        toolbar.add(switchResults);
         toolbar.add(listTables);
         toolbar.add(listColumns);
         toolbar.add(filterResults);
         toolbar.add(clear);
 
-        p.add(BorderLayout.CENTER, new JScrollPane(resultsArea_));
-        return new JHeaderPanel("Results", toolbar, p);
+        resultsLayout_ = new CardLayout();
+        
+        resultsCardPanel_ = new JPanel(resultsLayout_);
+        
+        resultsTable_ = new JSmartTable(10,10);
+
+        resultsCardPanel_.add(new JScrollPane(resultsTable_), CARD_TABLE);
+        resultsCardPanel_.add(new JScrollPane(resultsArea_), CARD_TEXTAREA);
+                
+        resultsAreaPanel.add(BorderLayout.CENTER, resultsCardPanel_);
+        
+        resultsLayout_.show(resultsCardPanel_, CARD_TEXTAREA);
+        
+        return new JHeaderPanel("Results", toolbar, resultsCardPanel_);
     }
 
+    
+    public class SwitchResultsAction extends AbstractAction
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            resultsLayout_.next(resultsCardPanel_);
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
