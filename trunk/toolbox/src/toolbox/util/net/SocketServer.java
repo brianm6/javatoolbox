@@ -172,7 +172,7 @@ public class SocketServer implements Runnable
     private void configure() throws SocketException
     {
         // Name thread based on server socket port
-        serverThread_.setName(
+        serverThread_.setName("SocketServer-" + 
             config_.getName() + ":" + config_.getServerPort());
             
         serverThread_.setDaemon(true);
@@ -219,10 +219,20 @@ public class SocketServer implements Runnable
      * 
      * @param  socket  New socket that was created
      */
-    protected void fireSocketAccepted(Socket socket)
+    protected void fireSocketAccepted(Socket socket, IConnection conn)
     {
         for (Iterator i = listeners_.iterator(); i.hasNext(); )
-            ((ISocketServerListener)i.next()).socketAccepted(socket);
+            ((ISocketServerListener)i.next()).socketAccepted(socket, conn);
+    }
+
+    /**
+     * Fires notification that the server has started and ready to accept
+     * client connections.
+     */
+    protected void fireServerStarted()
+    {
+        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+            ((ISocketServerListener)i.next()).serverStarted(this);
     }
 
     /**
@@ -257,6 +267,8 @@ public class SocketServer implements Runnable
         logger_.info(config_.getName() + " waiting for connection on " + 
             serverSocket_.getLocalPort());
 
+        fireServerStarted();
+        
         while (!shutdown_)
         {
             try
@@ -269,15 +281,15 @@ public class SocketServer implements Runnable
 
                 logger_.debug(config_.getName() + " accepted connection from " + 
                     socket.getInetAddress() + ":" + socket.getPort());
-
-                // Fire notification to listeners                             
-                fireSocketAccepted(socket);                             
                 
                 // Set timeout on newly acquired socket
                 socket.setSoTimeout(config_.getSocketTimeout());
 
                 // Wrap socket in a connection
                 IConnection socketConn = new SocketConnection(socket);
+
+                // Fire notification to listeners                             
+                fireSocketAccepted(socket, socketConn);                             
 
                 // Create handler 
                 IConnectionHandler handler = getConnectionHandler();
