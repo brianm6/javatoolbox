@@ -49,7 +49,7 @@ public class RandomUtilTest extends TestCase
         
         try
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 156; i++)
             {
                 char c = RandomUtil.nextAlpha();
                 sb.append(c);
@@ -75,7 +75,7 @@ public class RandomUtilTest extends TestCase
         
         try
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 156; i++)
             {
                 char c = RandomUtil.nextUpperAlpha();
                 sb.append(c);
@@ -86,7 +86,7 @@ public class RandomUtilTest extends TestCase
         }
         finally
         {
-            logger_.debug("Random upper alphas:\n " + 
+            logger_.debug("Random upper alphas:\n" + 
                 StringUtil.wrap(sb.toString(), true));
         }
     }
@@ -103,7 +103,7 @@ public class RandomUtilTest extends TestCase
         
         try
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 156; i++)
             {
                 char c = RandomUtil.nextLowerAlpha();
                 sb.append(c);
@@ -114,7 +114,7 @@ public class RandomUtilTest extends TestCase
         }
         finally
         {
-            logger_.debug("Random lower alphas:\n " + 
+            logger_.debug("Random lower alphas:\n" + 
                 StringUtil.wrap(sb.toString(), true));
         }
     }       
