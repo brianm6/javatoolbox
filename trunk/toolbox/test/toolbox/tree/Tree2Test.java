@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
+import toolbox.util.io.NullWriter;
 
 /**
  * Unit test for Tree2.
@@ -99,8 +100,8 @@ public class Tree2Test extends TestCase
         Tree2 t6 = new Tree2(FileUtil.getTempDir(), true, true, Tree2.SORT_NAME);
         assertNotNull(t6);
 
-        Tree2 t7 = new Tree2(
-            FileUtil.getTempDir(), true, true, true, Tree2.SORT_NAME, 5, ".*");
+        Tree2 t7 = new Tree2(FileUtil.getTempDir(), 
+            true, true, true, false, Tree2.SORT_NAME, 5, ".*");
         
         assertNotNull(t7);
     }
@@ -407,7 +408,7 @@ public class Tree2Test extends TestCase
         StringWriter sw = new StringWriter();
         
         Tree2 tree = new Tree2(
-            rootTestDir_, false, false, false, Tree2.SORT_NONE, "", 1, sw);
+            rootTestDir_, false, false, false, false, Tree2.SORT_NONE, "", 1, sw);
         
         tree.showTree();
         
@@ -420,7 +421,7 @@ public class Tree2Test extends TestCase
         sw = new StringWriter();
         
         tree = new Tree2(
-            rootTestDir_, false, false, false, Tree2.SORT_NONE, "", 2, sw);
+            rootTestDir_, false, false, false, false, Tree2.SORT_NONE, "", 2, sw);
         
         tree.showTree();
         
@@ -433,7 +434,7 @@ public class Tree2Test extends TestCase
         sw = new StringWriter();
         
         tree = new Tree2(
-            rootTestDir_, false, false, false, Tree2.SORT_NONE, "", 99, sw);
+            rootTestDir_, false, false, false, false, Tree2.SORT_NONE, "", 99, sw);
         
         tree.showTree();
         
@@ -443,7 +444,69 @@ public class Tree2Test extends TestCase
         assertTrue(sw.toString().indexOf("depth3") >= 0);
     }
     
+    
+    /**
+     * Tests the max depth switch for an invalid value.
+     * 
+     * @throws Exception on error.
+     */
+    public void testMaxDepthInvalid() throws Exception
+    {
+        logger_.info("Running testMaxDepthInvalid...");
+        
+        try 
+        {
+        	Tree2 tree = new Tree2(rootTestDir_, 
+                false, false, false, false, 
+                Tree2.SORT_NONE, "", 0, new NullWriter());
+         
+            fail("Max depth of zero should have choked");
+        }
+        catch (IllegalArgumentException iae)
+        {
+        	// Success
+        }
+    }
 
+    
+    /**
+     * Tests the fullpath (-p) switch
+     * 
+     * @throws Exception on error.
+     */
+    public void testShowFullPath() throws Exception
+    {
+        logger_.info("Running testShowFullPath...");
+        
+        // Setup ===============================================================
+        File dir1 = new File(rootTestDir_, "dir1");
+        assertTrue(dir1.mkdir());
+        createFile(dir1);
+        StringWriter sw = new StringWriter();
+        
+        // Tree with fullpath ==================================================
+        Tree2 tree = new Tree2(
+            rootTestDir_, 
+            true,  // show files 
+            false, false, 
+            true,  // fulll path
+            Tree2.SORT_NONE, "", Integer.MAX_VALUE, sw);
+        
+        tree.showTree();
+        
+        // Verify ==============================================================
+        logger_.info("\nFull paths should be showing: \n" + sw);
+        
+        // root dir substring should occur in 
+        // 1. root
+        // 2. dir1
+        // 3. file1
+        assertEquals(3, 
+            StringUtils.countMatches(
+                sw.toString(), 
+                rootTestDir_.getAbsolutePath()));
+    }
+    
     //--------------------------------------------------------------------------
     // Helper Methods
     //--------------------------------------------------------------------------
