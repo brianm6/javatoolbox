@@ -199,10 +199,10 @@ public final class LookAndFeelUtil
         
         for (Iterator i = lookAndFeels_.iterator(); i.hasNext();)
         {   
+            LAFInfo info = (LAFInfo) i.next();        
+            
             try
             {
-                LAFInfo info = (LAFInfo) i.next();
-                
                 // Group look and feels by property group.name. If group.name
                 // is not available, then just use the look and feels name
                 // instead.
@@ -233,9 +233,9 @@ public final class LookAndFeelUtil
                 submenu.add(cb);
                 menuItemMap_.put(info, cb);
             }
-            catch (Exception e)
+            catch (Throwable t)
             {
-                ExceptionUtil.handleUI(e, logger_);
+                logger_.error(t);
             }
         }
 
