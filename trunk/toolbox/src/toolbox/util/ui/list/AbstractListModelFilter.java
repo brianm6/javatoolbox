@@ -51,7 +51,6 @@ public abstract class AbstractListModelFilter extends AbstractListModel
      */
     public int getSize()
     {
-        // delegate to filter target
         return delegate_.getSize();
     }
 
@@ -60,27 +59,24 @@ public abstract class AbstractListModelFilter extends AbstractListModel
      */
     public Object getElementAt(int index)
     {
-        // delegate to filter target
         return delegate_.getElementAt(index);
     }
 
     /**
-     * @see javax.swing.ListModel
-     *      #addListDataListener(javax.swing.event.ListDataListener)
+     * @see javax.swing.ListModel#addListDataListener(
+     *      javax.swing.event.ListDataListener)
      */
     public void addListDataListener(ListDataListener listener)
     {
-        // delegate to filter target
         delegate_.addListDataListener(listener);
     }
     
     /**
-     * @see javax.swing.ListModel
-     *      #removeListDataListener(javax.swing.event.ListDataListener)
+     * @see javax.swing.ListModel#removeListDataListener(
+     *      javax.swing.event.ListDataListener)
      */
     public void removeListDataListener(ListDataListener listener)
     {
-        // delegate to filter target
         delegate_.removeListDataListener(listener);
     }
 }
