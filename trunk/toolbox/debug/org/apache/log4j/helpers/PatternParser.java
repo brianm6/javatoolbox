@@ -15,6 +15,8 @@ import org.apache.log4j.Layout;
 import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
 
+import toolbox.util.StringUtil;
+
 // Contributors:   Nelson Minar <(nelson@monkey.org>
 //                 Igor E. Poteryaev <jah@mail.ru>
 //                 Reinhard Deschler <reinhard.deschler@web.de>
@@ -34,6 +36,13 @@ import org.apache.log4j.spi.LoggingEvent;
 */
 public class PatternParser {
 
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug org.apache.log4j.helpers.PatternParser"));
+    }
+    
+    
   private static final char ESCAPE_CHAR = '%';
 
   private static final int LITERAL_STATE = 0;

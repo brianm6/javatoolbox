@@ -46,6 +46,8 @@ import java.awt.Cursor;
 import javax.swing.text.*;
 import javax.swing.*;
 
+import toolbox.util.StringUtil;
+
 // Things that are not in the core packages
 
 import bsh.util.NameCompletion;
@@ -68,6 +70,12 @@ public class JConsole extends JScrollPane
     implements GUIConsoleInterface, Runnable, KeyListener,
     MouseListener, ActionListener, PropertyChangeListener 
 {
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug bsh.util.JConsole"));
+    }
+    
     private final static String CUT = "Cut";
     private final static String COPY = "Copy";
     private final static String PASTE = "Paste";

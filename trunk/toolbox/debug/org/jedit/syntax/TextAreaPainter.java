@@ -19,9 +19,12 @@ import javax.swing.text.Segment;
 import javax.swing.text.TabExpander;
 import javax.swing.text.Utilities;
 
-//
+import toolbox.util.StringUtil;
+
+// ===================================================================
+// OVERRIDE:
 // Modifications made to paint() to support anti-aliasing of text
-//
+// ===================================================================
 
 /**
  * The text area repaint manager. It performs double buffering and paints
@@ -31,6 +34,12 @@ import javax.swing.text.Utilities;
  */
 public class TextAreaPainter extends JComponent implements TabExpander
 {
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug org.jedit.syntax.TextAreaPainter"));
+    }
+    
    /**
     * Creates a new repaint manager. This should be not be called
     * directly.
@@ -366,7 +375,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
     */
    public void paint(Graphics gfx)
    {
-       //-------------- BEGIN -------------------------------
+       // ======================================================================
+       // OVERRIDE:
        
        toolbox.jedit.JEditTextArea ta =  (toolbox.jedit.JEditTextArea) textArea;
        
@@ -375,7 +385,7 @@ public class TextAreaPainter extends JComponent implements TabExpander
                RenderingHints.KEY_TEXT_ANTIALIASING,
                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
        
-        //-------------- END -------------------------------
+        // =====================================================================
         
       tabSize = fm.charWidth(' ') * ((Integer)textArea
          .getDocument().getProperty(

@@ -67,6 +67,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Properties;
 
+import toolbox.util.StringUtil;
+
 /**
  * <p><code>Parser</code> creates {@link CommandLine}s.</p>
  *
@@ -76,6 +78,12 @@ import java.util.Properties;
  */
 public abstract class Parser implements CommandLineParser {
 
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug org.apache.commons.cli.Parser"));
+    }
+    
     /** commandline instance */
     private CommandLine cmd;
 

@@ -22,12 +22,22 @@ import org.netbeans.lib.cvsclient.command.*;
 import org.netbeans.lib.cvsclient.connection.*;
 import org.netbeans.lib.cvsclient.util.Logger;
 
+import toolbox.util.StringUtil;
+
 /**
  * An implementation of the standard CVS client utility (command line tool)
  * in Java
  * @author  Robert Greig
  */
 public class CVSCommand {
+    
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug org.netbeans.lib.cvsclient.commandLine.CVSCommand"));
+    }
+    
+    
     /**
      * The path to the repository on the server
      */
@@ -308,11 +318,13 @@ public class CVSCommand {
         c.setUserName(userName);
         String password = null;
         
-        String overridePassword = System.getProperty("cvs.password");
        
-        // HACK : Override getting of password via command line if one is
-        //        specified in the property cvs.password.
+        // =====================================================================
+        // OVERRIDE : Override getting of password via command line if one is
+        //            specified in the property cvs.password.
           
+        String overridePassword = System.getProperty("cvs.password");
+        
         if (overridePassword != null)
         {
             System.out.println("Using cvs.password...");
@@ -331,6 +343,8 @@ public class CVSCommand {
                 return false;
             }
         }
+        
+        // =====================================================================
 
         String encodedPassword = StandardScrambler.getInstance().scramble(
                 password);

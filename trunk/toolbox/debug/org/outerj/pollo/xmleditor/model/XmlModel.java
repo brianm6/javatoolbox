@@ -42,7 +42,8 @@ public class XmlModel
 {
     static
     {
-        System.out.println(StringUtil.addBars("Loaded debug XmlModel.class"));
+        System.out.println(StringUtil.addBars(
+            "Loaded debug org.outerj.pollo.xmleditor.model.XmlModel.class"));
     }
     
     public static final int PARSED_MODE = 1;
