@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.Enumeration;
 
@@ -720,7 +721,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         DefaultMutableTreeNode currentNode)
     {
         File[] files = new File(pathToAddFolders).listFiles(
-            (FileFilter) DirectoryFileFilter.INSTANCE);
+            (FilenameFilter) DirectoryFileFilter.INSTANCE);
             
         Arrays.sort(files, FileComparator.COMPARE_NAME);
         String[] fileList = new String[files.length];
