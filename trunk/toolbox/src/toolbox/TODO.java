@@ -22,6 +22,7 @@ package toolbox;
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Convert all gifs to pngs.
+ * TODO: Add swap-a-rama to text tools.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
