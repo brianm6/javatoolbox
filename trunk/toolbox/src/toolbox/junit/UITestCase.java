@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ClassUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JCollapsablePanel;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
@@ -267,7 +268,12 @@ public class UITestCase extends TestCase
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(propSheet, BorderLayout.CENTER);
         panel.add(updateButton, BorderLayout.SOUTH);
-        return panel;
+        
+        JHeaderPanel p = 
+            new JHeaderPanel(
+                "Property Sheet - " + bean.getClass().getName(), null, panel);
+        
+        return p;
     }
     
     
@@ -280,9 +286,14 @@ public class UITestCase extends TestCase
      */
     protected JPanel createPropertyChangeConsole(Component c)
     {
-        JCollapsablePanel p = new JCollapsablePanel("Property Change Events");
-        final JSmartTextArea area = new JSmartTextArea("");
         
+        final JSmartTextArea area = new JSmartTextArea("");
+
+        JHeaderPanel p = 
+            new JHeaderPanel(
+                "Property Change Events - " + c.getClass().getName(), 
+                JHeaderPanel.createToolBar(area), new JScrollPane(area));
+
         c.addPropertyChangeListener(new PropertyChangeListener()
         {
             public void propertyChange(PropertyChangeEvent evt)
@@ -295,7 +306,6 @@ public class UITestCase extends TestCase
             }
         });
         
-        p.setContent(new JScrollPane(area));
         return p;
     }
 }
