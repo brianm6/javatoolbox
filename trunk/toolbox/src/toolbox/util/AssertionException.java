@@ -1,6 +1,5 @@
 package toolbox.util;
 
-
 /**
  * Represents an assertion violation
  *
@@ -8,20 +7,25 @@ package toolbox.util;
  */
 public class AssertionException extends RuntimeException
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Create a default instance
      */
     public AssertionException()
     {
-        super();
     }
+    
+    
     /**
      * Create an instance with a descriptive message
      *
-     * @param aString  A descriptive message string
+     * @param  message  A descriptive message string
      */
-    public AssertionException(String aString)
+    public AssertionException(String message)
     {
-        super(aString);
+        super(message);
     }
 }

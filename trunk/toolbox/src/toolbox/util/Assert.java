@@ -14,7 +14,9 @@ package toolbox.util;
  */
 public class Assert
 {
-    /** Default assertion error message **/
+    /** 
+     * Default assertion error message 
+     */
     private static final String DEFAULT_MSG = "";
 
     //--------------------------------------------------------------------------
@@ -22,7 +24,7 @@ public class Assert
     //--------------------------------------------------------------------------
     
     /**
-     * Enforce singleton
+     * Prevent construction
      */
     private Assert()
     {
@@ -35,23 +37,20 @@ public class Assert
     /**
      * Assert that two doubles are equals within some tolerance.
      *
-     * @param aDoubleA          The first number to compare
-     * @param aDoubleB          The second number to compare
-     * @param allowedTolerance  The allowed difference between 
-     *                          aDoubleA and aDoubleB
-     * @param anErrorMsg        A text message used in the construction 
-     *                          of an exception when the two numbers differ 
-     *                          beyond allowedTolerance.
-     * @exception               AssertionException raised with anErrorMsg 
-     *                          when the condition fails.
+     * @param  doubleA    The first number to compare
+     * @param  doubleB    The second number to compare
+     * @param  tolerance  Allowed difference between doubleA and doubleB
+     * @param  errorMsg   A text message used in the construction of an 
+     *                    exception when the two numbers differ beyond tolerance
+     * @throws AssertionException raised with errorMsg when the condition fails.
      */
-    public static void equals(double aDoubleA, double aDoubleB, 
-        double allowedTolerance, String anErrorMsg) throws AssertionException
+    public static void equals(double doubleA, double doubleB, 
+        double tolerance, String errorMsg) throws AssertionException
     {
-        if (Math.abs(aDoubleA - aDoubleB) > allowedTolerance)
+        if (Math.abs(doubleA - doubleB) > tolerance)
         {
-            raiseAssertionException(anErrorMsg + " (Expected <" + aDoubleA + 
-                "> but was <" + aDoubleB + ">)");
+            raiseAssertionException(errorMsg + " (Expected <" + doubleA + 
+                "> but was <" + doubleB + ">)");
         }
     }
 
@@ -59,178 +58,173 @@ public class Assert
     /**
      * Assert that two floats are equals within some tolerance.
      *
-     * @param aFloatA           The first number to compare
-     * @param aFloatB           The second number to compare
-     * @param allowedTolerance  The allowed diff between aFloatA and aFloatB
-     * @param anErrorMsg        A text message used in the construction of an 
-     *                          exception when the two numbers differ beyond 
-     *                          allowedTolerance.
-     * @exception               AssertionException raised with anErrorMsg 
-     *                          when the condition fails.
+     * @param  floatA     The first number to compare
+     * @param  floatB     The second number to compare
+     * @param  tolerance  The allowed diff between floatA and floatB
+     * @param  errorMsg   A text message used in the construction of an 
+     *                    exception when the two numbers differ beyond 
+     *                    tolerance.
+     * @throws AssertionException raised with errorMsg when the condition fails.
      */
-    public static void equals(float aFloatA, float aFloatB, 
-        float allowedTolerance, String anErrorMsg) throws AssertionException
+    public static void equals(float floatA, float floatB, 
+        float tolerance, String errorMsg) throws AssertionException
     {
-        if (Math.abs(aFloatA - aFloatB) > allowedTolerance)
+        if (Math.abs(floatA - floatB) > tolerance)
         {
-            raiseAssertionException(anErrorMsg + " (Expected <" + aFloatA + 
-                "> but was <" + aFloatB + ">)");
+            raiseAssertionException(errorMsg + " (Expected <" + floatA + 
+                "> but was <" + floatB + ">)");
         }
     }
 
     /**
      * Assert that two longs are <code>equal</code>.
      * 
-     * @param aLongA    First long to compare
-     * @param aLongB    Second long to compare
-     * @param message   A text message used in the construction of an exception
-     *                  when anObject is null.
-     * @exception       AssertionException raised with message when anObject 
-     *                  is null.
+     * @param  longA    First long to compare
+     * @param  longB    Second long to compare
+     * @param  message  Text message used in the construction of an exception
+     *                  when not equal.
+     * @throws AssertionException raised with message when not equal.
      */
-    public static void equals(long aLongA, long aLongB, String message)
+    public static void equals(long longA, long longB, String message)
         throws AssertionException
     {
-
-        if (aLongA != aLongB)
+        if (longA != longB)
         {
-            raiseAssertionException(message + " (Expected <" + aLongA + 
-                "> but was <" + aLongB + ">)");
+            raiseAssertionException(message + " (Expected <" + longA + 
+                "> but was <" + longB + ">)");
         }
     }
 
     /**
      * Assert that two objects are equal.
      *
-     * @param     anObjectA  The first object to compare
-     * @param     anObjectB  The second object to compare
-     * @exception            AssertionException raised when the anObjectA not 
-     *                       equal to anObjectB
+     * @param   objectA  The first object to compare
+     * @param   objectB  The second object to compare
+     * @throws  AssertionException raised when the objectA not equal to objectB
      */
-    public static void equals(Object anObjectA, Object anObjectB)
+    public static void equals(Object objectA, Object objectB)
         throws AssertionException
     {
-        equals(anObjectA, anObjectB, DEFAULT_MSG);
+        equals(objectA, objectB, DEFAULT_MSG);
     }
 
     /**
      * Assert that two objects are equal.
      *
-     * @param anObjectA   The first object to compare
-     * @param anObjectB   The second object to compare
-     * @param anErrorMsg  A text message used in the construction of an 
+     * @param   objectA   The first object to compare
+     * @param   objectB   The second object to compare
+     * @param   errorMsg  Text message used in the construction of an 
      *                    exception when the condition fails.
-     * @exception         AssertionException raised when the anObjectA not 
-     *                    equal to anObjectB
+     * @throws  AssertionException raised when the objectA not equal to objectB
      */
-    public static void equals(Object anObjectA, Object anObjectB, 
-        String anErrorMsg) throws AssertionException
+    public static void equals(Object objectA, Object objectB, 
+        String errorMsg) throws AssertionException
     {
 
-        if (!anObjectA.equals(anObjectB))
+        if (!objectA.equals(objectB))
         {
-            raiseAssertionException(anErrorMsg + " (Expected <" + 
-                anObjectA + "> but was <" + anObjectB + ">)");
+            raiseAssertionException(errorMsg + " (Expected <" + 
+                objectA + "> but was <" + objectB + ">)");
         }
     }
 
     /**
-     * Assert that the anExpressionResult is false.
+     * Assert that the expressionResult is false.
      *
-     * @param anExpressionResult   Results in a boolean value
-     * @exception AssertionException  Raised when anExpressionResult is true
+     * @param   expressionResult    Results in a boolean value
+     * @throws  AssertionException raised when expressionResult is true
      */
-    public static void isFalse(boolean anExpressionResult)
+    public static void isFalse(boolean expressionResult)
         throws AssertionException
     {
-        isFalse(anExpressionResult, DEFAULT_MSG);
+        isFalse(expressionResult, DEFAULT_MSG);
     }
 
     /**
      * Assert that the parameter is false.
      *
-     * @param anExpressionResult  A boolean; should be false.
-     * @param anErrorMsg          A text message used in the construction of an 
-     *                            exception when anExpressionResult is true.
-     * @exception                 AssertionException raised with message when 
-     *                            anExpressionResult is true
+     * @param  expressionResult  A boolean; should be false.
+     * @param  errorMsg          Text message used in the construction of an 
+     *                           exception when expressionResult is true.
+     * @throws AssertionException raised with message when expressionResult 
+     *         is true
      */
-    public static void isFalse(boolean anExpressionResult, String anErrorMsg)
+    public static void isFalse(boolean expressionResult, String errorMsg)
         throws AssertionException
     {
-
-        isTrue(!anExpressionResult, anErrorMsg);
+        isTrue(!expressionResult, errorMsg);
     }
 
     /**
-     * Assert that the anExpressionResult is true.
+     * Assert that the expressionResult is true.
      *
-     * @param anExpressionResult   Results in a boolean value
-     * @exception AssertionException  Raised when anExpressionResult is false
+     * @param   expressionResult    Results in a boolean value
+     * @throws  AssertionException raised when expressionResult is false
      */
-    public static void isTrue(boolean anExpressionResult)
+    public static void isTrue(boolean expressionResult)
         throws AssertionException
     {
-        isTrue(anExpressionResult, DEFAULT_MSG);
+        isTrue(expressionResult, DEFAULT_MSG);
     }
 
     /**
      * Assert that the parameter is true.
      *
-     * @param anExpressionResult  A boolean; should be true.
-     * @param anErrorMsg          A text message used in the construction 
-     *                            of an exception when anExpressionResult 
-     *                            is false.
-     * @exception                 AssertionException raised with message when 
-     *                            anExpressionResult is false
+     * @param  expressionResult  A boolean; should be true.
+     * @param  errorMsg          Text message used in the construction of an 
+     *                           exception when expressionResult is false.
+     * @throws AssertionException raised with message when expressionResult is 
+     *         false
      */
-    public static void isTrue(boolean anExpressionResult, String anErrorMsg)
+    public static void isTrue(boolean expressionResult, String errorMsg)
         throws AssertionException
     {
-
-        if (!anExpressionResult)
+        if (!expressionResult)
         {
-            raiseAssertionException(anErrorMsg);
+            raiseAssertionException(errorMsg);
         }
     }
 
     /**
      * Assert that an object is not null.
      *
-     * @param anObject  The non-null object
-     * @exception AssertionException  Raised when anObject is null.
+     * @param   object  The non-null object
+     * @throws  AssertionException raised when object is null.
      */
-    public static void notNull(Object anObject) throws AssertionException
+    public static void notNull(Object object) throws AssertionException
     {
-        notNull(anObject, DEFAULT_MSG);
+        notNull(object, DEFAULT_MSG);
     }
 
     /**
      * Assert that an object is not null.
      *
-     * @param anObject    The non-null object
-     * @param anErrorMsg  A text message used in the construction of an 
-     *                    exception when anObject is null.
-     * @exception AssertionException raised with message when anObject is null.
+     * @param  object    The non-null object
+     * @param  errorMsg  Text message used in the construction of an exception 
+     *                   when object is null.
+     * @throws AssertionException raised with message when object is null.
      */
-    public static void notNull(Object anObject, String anErrorMsg)
+    public static void notNull(Object object, String errorMsg)
         throws AssertionException
     {
-
-        if (anObject == null)
+        if (object == null)
         {
-            raiseAssertionException(anErrorMsg);
+            raiseAssertionException(errorMsg);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
 
     /**
      * A factory method for creating and throwing AssertionExceptions.
      *
-     * @param anErrorMsg  a String message for the new exception
-     * @exception anAssertionException
+     * @param  errorMsg  String message for the new exception
+     * @throws AssertionException with given error message
      */
-    protected static void raiseAssertionException(String anErrorMsg)
+    protected static void raiseAssertionException(String errorMsg)
     {
-        throw new AssertionException(anErrorMsg);
+        throw new AssertionException(errorMsg);
     }
 }
