@@ -9,6 +9,8 @@ import toolbox.util.StringUtil;
 
 /**
  * Unit test for SQLFormatter.
+ * 
+ * @see toolbox.util.db.SQLFormatter
  */
 public class SQLFormatterTest extends TestCase
 {
@@ -50,6 +52,18 @@ public class SQLFormatterTest extends TestCase
         logger_.info("Running testFormatSQL1...");
         
         String s = formatter_.format("select * from user");
+        logger_.info(StringUtil.addBars(s));
+    }
+
+    
+    /**
+     * Tests formatting of a simple select stmt.
+     */
+    public void testFormatSQL1_1()
+    {
+        logger_.info("Running testFormatSQL1_1...");
+        
+        String s = formatter_.format("SELECT * FROM USER");
         logger_.info(StringUtil.addBars(s));
     }
     
