@@ -5,10 +5,10 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
@@ -24,8 +24,10 @@ import toolbox.util.ui.layout.ParagraphLayout;
  *     NetMeterPlugin.
  * </ul>
  */
-public class ServerFactoryView extends JPanel
+public class ServerFactoryView extends JHeaderPanel
 {
+    // TODO: Set icon in header
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -51,6 +53,7 @@ public class ServerFactoryView extends JPanel
      */
     public ServerFactoryView(NetMeterPlugin plugin)
     {
+        super("Server Factory");
         plugin_ = plugin;
         buildView();
     }
@@ -64,21 +67,24 @@ public class ServerFactoryView extends JPanel
      */
     protected void buildView()
     {
-        setBorder(BorderFactory.createEtchedBorder());
-        setLayout(new BorderLayout());
+        JPanel content = new JPanel(new BorderLayout());
         JPanel inputPanel = new JPanel(new ParagraphLayout());
 
         // Port
-        inputPanel.add(new JSmartLabel("Server Port"), 
+        inputPanel.add(
+            new JSmartLabel("Server Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
+        
         serverPortField_ = new JSmartTextField(6);
         serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT + "");
         inputPanel.add(serverPortField_);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(new JSmartButton(new CreateAction()));
-        add(inputPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        content.add(inputPanel, BorderLayout.CENTER);
+        content.add(buttonPanel, BorderLayout.SOUTH);
+        
+        setContent(content);
     }
     
     //--------------------------------------------------------------------------
