@@ -1,6 +1,5 @@
 package toolbox.util.ui.explorer;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -57,6 +56,7 @@ import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.list.JSmartList;
+import toolbox.util.ui.list.SmartListCellRenderer;
 import toolbox.util.ui.statusbar.JStatusBar;
 import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
@@ -785,14 +785,15 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
      */
-    class DriveIconCellRenderer extends JSmartLabel implements ListCellRenderer
+    class DriveIconCellRenderer extends SmartListCellRenderer implements 
+        ListCellRenderer
     {
         /**
          * Creates a DriveIconCellRenderer.
          */
         DriveIconCellRenderer()
         {
-            this.setOpaque(true);
+            //this.setOpaque(true);
         }
 
         //----------------------------------------------------------------------
@@ -810,10 +811,12 @@ public class JFileExplorer extends JPanel implements IPreferenced
             boolean isSelected, 
             boolean cellHasFocus)
         {
+            super.getListCellRendererComponent(
+                list, value, index, isSelected, cellHasFocus);
+            
             setText(value.toString());
             setIcon(driveIcon_);
-            setBackground(isSelected ? Color.blue : Color.white);
-            setForeground(isSelected ? Color.white : Color.black);
+            
             return this;
         }
     }
