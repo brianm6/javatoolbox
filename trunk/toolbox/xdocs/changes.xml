@@ -38,6 +38,8 @@
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Save db profiles to a separate file.
  * TODO: Look into Jemmy for automating GUI unit tests.
+ * TODO: Add WinLAF https://winlaf.dev.java.net
+ * TODO: Add latest Oyoaha and all its themes
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
