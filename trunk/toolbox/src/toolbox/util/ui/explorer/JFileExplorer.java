@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -43,12 +44,14 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.DateTimeUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
  * Tree based file browser widget based on an open-source project and heavily 
@@ -65,6 +68,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorer.class);
 
+    // Preferences XML structure
     private static final String NODE_JFILEEXPLORER = "JFileExplorer";
     private static final String   ATTR_PATH        = "path";
     private static final String   ATTR_FILE        = "file";
@@ -101,6 +105,12 @@ public class JFileExplorer extends JPanel implements IPreferenced
      * Listener for the change in selection to the directory 
      */
     private DirTreeSelectionListener treeSelectionListener_;
+    
+    /**
+     * File information bar displayed at the bottom of the component. 
+     * Displays file size, last modified date, and read/write status.
+     */
+    private InfoBar infoBar_;
         
     //--------------------------------------------------------------------------
     //  Constructors
@@ -301,7 +311,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // Preferences Support
+    // IPreferencesd Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -353,7 +363,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
                 XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER, 150));
         }
     }
-    
 
     //--------------------------------------------------------------------------
     //  Overridden from java.awt.Component
@@ -396,8 +405,17 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFileDoubleClicked()
     {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
              ((JFileExplorerListener)i.next()).fileDoubleClicked(getFilePath());
+    }
+
+    /**
+     * Fires an event when a file is selected by the user
+     */
+    protected void fireFileSelected()
+    {
+        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+             ((JFileExplorerListener)i.next()).fileSelected(getFilePath());
     }
     
     /**
@@ -407,7 +425,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderSelected(String folder)
     {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
              ((JFileExplorerListener)i.next()).folderSelected(folder);
     }
     
@@ -418,12 +436,12 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderDoubleClicked(String folder)
     {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        for (Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
              ((JFileExplorerListener)i.next()).folderDoubleClicked(folder); 
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
@@ -433,12 +451,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void buildView(boolean verticalSplitter)
     {
-
         // File system roots combobox
         rootsComboBox_ = new JComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
         rootsComboBox_.addItemListener(new DriveComboListener());
-        driveIcon_= ImageCache.getIcon("/toolbox/util/ui/images/HardDrive.gif");
+        driveIcon_= ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE);
         rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
@@ -454,15 +471,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
 
         // Load tree icons        
         DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-         
-        renderer.setClosedIcon(
-            ImageCache.getIcon("/toolbox/util/ui/images/TreeOpen.gif"));
-
-        renderer.setOpenIcon(
-            ImageCache.getIcon("/toolbox/util/ui/images/TreeOpen.gif"));
-
-        renderer.setLeafIcon(
-            ImageCache.getIcon("/toolbox/util/ui/images/TreeClosed.gif"));
+        renderer.setClosedIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
+        renderer.setOpenIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
+        renderer.setLeafIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED));
 
         // Directory tree
         treeModel_ = new DefaultTreeModel(rootNode_);
@@ -517,6 +528,20 @@ public class JFileExplorer extends JPanel implements IPreferenced
         constraints.anchor = GridBagConstraints.CENTER;
         gridbag.setConstraints(splitPane_, constraints);
         add(splitPane_);
+              
+        infoBar_ = new InfoBar();
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 100;
+        constraints.weighty = 000;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.SOUTH;
+        gridbag.setConstraints(infoBar_, constraints);
+        add(infoBar_);
+              
+        addJFileExplorerListener(new InfoBarUpdater());              
               
         splitPane_.setDividerLocation(150);
     }
@@ -623,6 +648,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
                     break;
                 }
             }
+            
             if (shouldAdd)
             {
                 treeModel_.insertNodeInto(
@@ -716,17 +742,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
     
     /**
-     * Inner class that compares file names for sorting.
+     * Compares file names for sorting.
      */
-    private class FileComparator implements Comparator
+    class FileComparator implements Comparator
     {
-        /**
-         * Compares two files using the file name
-         *
-         * @param  a   First file
-         * @param  b   Second file
-         * @return -1 if a<b, 0 if equal, and 1 if a>b
-         */
         public int compare(Object a, Object b)
         {
             File fileA = (File) a;
@@ -738,29 +757,19 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
      */
-    private class DriveIconCellRenderer extends JLabel
-        implements ListCellRenderer
+    class DriveIconCellRenderer extends JLabel implements ListCellRenderer
     {
-        /**
-         * Default constructor
-         */
         public DriveIconCellRenderer()
         {
             this.setOpaque(true);
         }
 
-        /**
-         * Gets the renderer for the list cell
-         *
-         * @param   list          JList
-         * @param   value         Value
-         * @param   index         Index
-         * @param   isSelected    boolean
-         * @param   cellHasFocus  boolean
-         * @return  Component
-         */
-        public Component getListCellRendererComponent(JList list,
-            Object value, int index, boolean isSelected, boolean cellHasFocus)
+        public Component getListCellRendererComponent(
+            JList list,
+            Object value, 
+            int index, 
+            boolean isSelected, 
+            boolean cellHasFocus)
         {
             setText(value.toString());
             setIcon(driveIcon_);
@@ -771,21 +780,20 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     /**
-     * Inner class for handling click events on the file list.
+     * Handles double click mouse events on a file in the file list
      */
-    private class FileListMouseListener extends MouseAdapter
+    class FileListMouseListener extends MouseAdapter
     {
-        /**
-         * Handles mouse clicked events
-         * 
-         * @param  evt  Mouse event to handle
-         */
         public void mouseClicked(MouseEvent evt)
         {
             if (evt.getClickCount() == 2 && fileList_.getSelectedIndex() != -1)
             {
                 // double click on a file fires event to listeners 
                 fireFileDoubleClicked();
+            }
+            else if (evt.getClickCount() == 1)
+            {
+                fireFileSelected();
             }
             else if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
             {
@@ -799,11 +807,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     private class DirTreeMouseListener extends MouseAdapter
     {
-        /**
-         * Handles mouse clicks in the tree
-         * 
-         * @param  evt  Mouse event to handle
-         */
         public void mouseClicked(MouseEvent evt)
         {
             if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && 
@@ -821,7 +824,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Handles the changing of the selection of the file root (drive letter)
      */
-    private class DriveComboListener implements ItemListener
+    class DriveComboListener implements ItemListener
     {
         public void itemStateChanged(ItemEvent ie)
         {
@@ -845,15 +848,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     /**
-     * Inner class to give support for Tree selection events.
+     * Updates the file list when the directory folder selection changes
      */
-    private class DirTreeSelectionListener implements TreeSelectionListener
+    class DirTreeSelectionListener implements TreeSelectionListener
     {
-        /**
-         * Called when a selection has changed on the tree
-         * 
-         * @param  e  TreeSelectionEvent to handle
-         */
         public void valueChanged(TreeSelectionEvent e)
         {
             StringBuffer s = new StringBuffer();
@@ -881,6 +879,38 @@ public class JFileExplorer extends JPanel implements IPreferenced
             fireFolderSelected(folder);
             
             selectFolder(folder);
+        }
+    }
+
+    /**
+     * Simple file information bar that shows file attributes
+     */    
+    class InfoBar extends JStatusBar
+    {
+        // TODO: Add as 4 little compartments instead
+        private JLabel label_;
+        
+        InfoBar()
+        {
+            label_ = new JLabel("InfoBar!");
+            addStatusComponent(label_, true);
+        }
+        
+        public void showInfo(File file)
+        {
+            label_.setText(
+                "Size " + file.length() + " " + 
+                "Mod " + DateTimeUtil.format(new Date(file.lastModified())) +
+                (file.canRead() ? " R " : "") +
+                (file.canWrite() ? " W " : ""));
+        }
+    }
+    
+    class InfoBarUpdater extends JFileExplorerAdapter
+    {
+        public void fileSelected(String file)
+        {
+            infoBar_.showInfo(new File(file));
         }
     }
 }
