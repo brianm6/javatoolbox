@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 
 import toolbox.workspace.IPlugin;
+import toolbox.workspace.IPreferenced;
 
 /**
  * PluginHost is an interface used to manage and host IPlugins with a slant
@@ -14,8 +15,21 @@ import toolbox.workspace.IPlugin;
  * 
  * @see PluginHostManager
  */
-public interface PluginHost
+public interface PluginHost extends IPreferenced
 {
+    //--------------------------------------------------------------------------
+    // IPreferenced Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String NODE_PLUGINHOST = "PluginHost";
+    public static final String ATTR_CLASS = "class";
+    public static final String NODE_FRAME = "PluginFrame";
+    public static final String ATTR_PLUGIN_NAME = "name";
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
     /**
      * The actual GUI component that will host the plugins as child components.
      * 
