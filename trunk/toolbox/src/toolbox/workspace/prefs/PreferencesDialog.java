@@ -37,6 +37,9 @@ import toolbox.workspace.PluginWorkspace;
  */
 public class PreferencesDialog extends JSmartDialog
 {
+    // TODO: Save/restore the last selected configurator
+    // TODO: Save/restore the last selected size and location
+    
     private static final Logger logger_ =
         Logger.getLogger(PreferencesDialog.class);
 
