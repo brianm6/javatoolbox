@@ -569,7 +569,7 @@ public class JFontChooser extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // FontSizeSynchronizer
     //--------------------------------------------------------------------------
     
     /**
@@ -585,7 +585,7 @@ public class JFontChooser extends JPanel
         private boolean updating_;
         
         /**
-         * Creates a FontSizeSynchronizer
+         * Creates a FontSizeSynchronizer.
          * 
          * @param list List containing predefined font sizes 
          * @param textField Text field in which font size is specified
@@ -692,9 +692,12 @@ public class JFontChooser extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // FontSelectionListener
+    //--------------------------------------------------------------------------
     
     /**
-     * Listener for the font name list
+     * Listener for the font name list.
      */
     protected class FontSelectionListener implements ListSelectionListener
     {
@@ -704,9 +707,12 @@ public class JFontChooser extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // PhraseFontSelectionListener
+    //--------------------------------------------------------------------------
     
     /**
-     * Listener that notifies the phraseCanvas of font changes
+     * Listener that notifies the phraseCanvas of font changes.
      */
     protected class PhraseFontSelectionListener implements 
         IFontChooserListener
@@ -733,9 +739,12 @@ public class JFontChooser extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // AntiAliasAction
+    //--------------------------------------------------------------------------
     
     /**
-     * Action to toggle antialias of fonts
+     * Action to toggle antialias of fonts.
      */
     private class AntiAliasAction extends AbstractAction
     {

@@ -233,7 +233,7 @@ public class JFontChooserDialog extends JDialog
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // FontSelectionListener
     //--------------------------------------------------------------------------
     
     /**
@@ -251,7 +251,7 @@ public class JFontChooserDialog extends JDialog
     }
 
     //--------------------------------------------------------------------------
-    //  Actions
+    // OKAction
     //--------------------------------------------------------------------------
     
     /**
@@ -277,6 +277,9 @@ public class JFontChooserDialog extends JDialog
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ApplyAction
+    //--------------------------------------------------------------------------
 
     /**
      * Notifies listeners that the apply was selected.
@@ -299,6 +302,9 @@ public class JFontChooserDialog extends JDialog
         }
     }
 
+    //--------------------------------------------------------------------------
+    // CancelAction
+    //--------------------------------------------------------------------------
 
     /**
      * Notifies listeners that cancel was selected and disposes of the

@@ -10,7 +10,7 @@ public interface FlipPaneListener
      * 
      * @param flipPane Flip pane that was collapsed
      */
-    public void collapsed(JFlipPane flipPane);
+    void collapsed(JFlipPane flipPane);
     
     
     /**
@@ -18,5 +18,5 @@ public interface FlipPaneListener
      * 
      * @param flipPane Flip pane that was expanded
      */
-    public void expanded(JFlipPane flipPane);
+    void expanded(JFlipPane flipPane);
 }

@@ -18,7 +18,7 @@ import javax.swing.border.Border;
 public class FlipCardPanel extends JPanel
 {
     /** 
-     * Flippane encompassing this panel 
+     * Flippane encompassing this panel. 
      */
     private JFlipPane flipPane_;
     
@@ -57,9 +57,11 @@ public class FlipCardPanel extends JPanel
     //--------------------------------------------------------------------------
     // Overrides javax.swing.JComponent
     //--------------------------------------------------------------------------
-    
+
     /**
-     * @return Minimum size
+     * Returns the components minimum size.
+     * 
+     * @return Dimension
      */
     public Dimension getMinimumSize()
     {
@@ -111,7 +113,7 @@ public class FlipCardPanel extends JPanel
     } 
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // ResizeMouseHandler
     //--------------------------------------------------------------------------
     
     /**
@@ -125,7 +127,7 @@ public class FlipCardPanel extends JPanel
 
         /**
          * Takes an image of the flip pane dimension (height or width) and 
-         * the point that the mouse started to be dragged
+         * the point that the mouse started to be dragged.
          * 
          * @param evt Mouse pressed event
          */
@@ -140,7 +142,7 @@ public class FlipCardPanel extends JPanel
         
         /** 
          * Changes mouse cursor based on location over the draggable part of 
-         * the border
+         * the border.
          * 
          * @param evt Mouse moved event
          */

@@ -22,7 +22,7 @@ public class PhraseCanvas extends JComponent
     private boolean   antiAlias_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
             
     /**
@@ -44,7 +44,7 @@ public class PhraseCanvas extends JComponent
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Overrides java.awt.Component
     //--------------------------------------------------------------------------
 
     /** 
@@ -104,7 +104,10 @@ public class PhraseCanvas extends JComponent
         g2d.drawGlyphVector(glyphVector, (float) x, (float) y);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /** 
      * Returns the phrase to be rendered by this PhraseCanvas.
      * 

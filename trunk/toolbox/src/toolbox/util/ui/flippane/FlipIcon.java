@@ -13,7 +13,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.Icon;
 
 /**
- * FlipIcon
+ * FlipIcon.
  */
 public class FlipIcon implements Icon
 {
@@ -74,7 +74,9 @@ public class FlipIcon implements Icon
     //--------------------------------------------------------------------------
     
     /**
-     * @return Icon width
+     * Returns the icons width.
+     * 
+     * @return int
      */
     public int getIconWidth()
     {
@@ -82,8 +84,11 @@ public class FlipIcon implements Icon
                      rotate_ == FlipIcon.CCW ? height_ : width_);
     } 
 
+    
     /**
-     * @return Icon height
+     * Returns the icons height.
+     * 
+     * @return int
      */
     public int getIconHeight()
     {
@@ -91,8 +96,9 @@ public class FlipIcon implements Icon
                      rotate_ == FlipIcon.CCW ? width_ : height_);
     } 
 
+    
     /**
-     * Renders the icon on the graphics.
+     * Renders the icon on the graphics object.
      * 
      * @param c Component
      * @param g Graphics

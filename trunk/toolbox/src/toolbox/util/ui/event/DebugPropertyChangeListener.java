@@ -14,7 +14,11 @@ public class DebugPropertyChangeListener implements PropertyChangeListener
 {
     private static final Logger logger_ =
         Logger.getLogger(DebugPropertyChangeListener.class);
-        
+
+    //--------------------------------------------------------------------------
+    // PropertyChangeListener Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see java.beans.PropertyChangeListener#propertyChange(
      *      java.beans.PropertyChangeEvent)

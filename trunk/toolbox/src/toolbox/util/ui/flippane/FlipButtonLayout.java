@@ -11,7 +11,7 @@ import java.awt.LayoutManager;
 public class FlipButtonLayout implements LayoutManager
 {
     /** 
-     * Flippane to layout 
+     * Flippane to layout. 
      */
     private JFlipPane flipPane_;
     
@@ -20,7 +20,7 @@ public class FlipButtonLayout implements LayoutManager
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a button layout
+     * Creates a button layout.
      * 
      * @param flipPane Enclosing flip pane
      */    

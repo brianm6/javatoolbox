@@ -46,56 +46,64 @@ import toolbox.util.ui.JSmartPopupMenu;
  */
 public class JFlipPane extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final Logger logger_ =
         Logger.getLogger(JFlipPane.class);
 
     /**
-     * Root node for preferences
+     * Root node for preferences.
      */
     private static final String NODE_JFLIPPANE = "JFlipPane";
 
     /** 
-     * Attribute for the collapsed state of the flippane
+     * Attribute for the collapsed state of the flippane.
      */
     private static final String ATTR_COLLAPSED = "collapsed";
     
     /** 
-     * Attribute for the height/width of the flippane 
+     * Attribute for the height/width of the flippane.
      */
     private static final String ATTR_DIMENSION = "dimension";
     
     /** 
-     * Attribute for the currently selected flipper 
+     * Attribute for the currently selected flipper. 
      */
     private static final String ATTR_ACTIVE = "activeFlipper";
     
     /** 
-     * Flippane attached to the top wall 
+     * Flippane attached to the top wall. 
      */
     public static final String TOP = "top";
     
     /** 
-     * Flippane attached to the left wall 
+     * Flippane attached to the left wall. 
      */
     public static final String LEFT = "left";
     
     /** 
-     * Flippane attached to the bottom wall 
+     * Flippane attached to the bottom wall. 
      */
     public static final String BOTTOM = "bottom";
     
     /** 
-     * Flippane attached to the right wall 
+     * Flippane attached to the right wall. 
      */
     public static final String RIGHT  = "right";
     
     /** 
-     * Draggable splitpane like splitter bar width 
+     * Draggable splitpane like splitter bar width. 
      */
     public static final int SPLITTER_WIDTH = 10;
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * The wall of the enclosing panel that the flippane is attached to 
+     * The wall of the enclosing panel that the flippane is attached to. 
      */
     private String position_;
     
@@ -107,38 +115,38 @@ public class JFlipPane extends JPanel
     private int dimension_;
     
     /** 
-     * Houses the buttons that expand/collapse a flipper 
+     * Houses the buttons that expand/collapse a flipper. 
      */
     private JPanel buttonPanel_;
     
     /** 
-     * Button attached to every flippane used to collapse all flippers 
+     * Button attached to every flippane used to collapse all flippers. 
      */
     private JButton closeButton_;
     
     /**
      * Button group used to ensure that all flippane selections are mutually
-     * exclusive
+     * exclusive.
      */
     private ButtonGroup buttonGroup_;
 
     /** 
-     * Internal layout used by the flippane to switch between flippers 
+     * Internal layout used by the flippane to switch between flippers. 
      */
     private FlipCardPanel flipCardPanel_;
 
     /** 
-     * Currently selected/active flipper 
+     * Currently selected/active flipper.
      */
     private JComponent current_;
     
     /** 
-     * Interested listeners to flippane events 
+     * Interested listeners to flippane events. 
      */
     private List listeners_;
     
     /** 
-     * Maps a name (button text) to a flippane component 
+     * Maps a name (button text) to a flippane component. 
      */
     private Map flippers_;
 
@@ -767,7 +775,7 @@ public class JFlipPane extends JPanel
     }
     
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // FlipperHandler
     //--------------------------------------------------------------------------
     
     /**
@@ -811,7 +819,10 @@ public class JFlipPane extends JPanel
         }
     } 
 
-
+    //--------------------------------------------------------------------------
+    // PopupHandler
+    //--------------------------------------------------------------------------
+    
     /**
      * Mouse handler to show popup menu.
      */

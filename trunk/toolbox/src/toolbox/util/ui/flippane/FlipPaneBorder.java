@@ -10,7 +10,7 @@ import javax.swing.border.Border;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 /**
- * Custom border for JFlipPane
+ * Custom border for JFlipPane.
  */
 public class FlipPaneBorder implements Border
 {
@@ -87,7 +87,9 @@ public class FlipPaneBorder implements Border
     
     
     /**
-     * @return True if border is opaque, false otherwise.
+     * Returns true if border is opaque, false otherwise.
+     * 
+     * @return boolean
      */
     public boolean isBorderOpaque()
     {
