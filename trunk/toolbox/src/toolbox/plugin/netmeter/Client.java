@@ -213,4 +213,38 @@ public class Client implements Service
             logger_.info("Client thruput: " + nf.format(delta/1000) + " kb/s");
         }
     }
+    
+    
+    /**
+     * @return Returns the hostname.
+     */
+    public String getHostname()
+    {
+        return hostname_;
+    }
+
+    /**
+     * @param hostname The hostname to set.
+     */
+    public void setHostname(String hostname)
+    {
+        hostname_ = hostname;
+    }
+
+    /**
+     * @return Returns the port.
+     */
+    public int getPort()
+    {
+        return port_;
+    }
+
+    /**
+     * @param port The port to set.
+     */
+    public void setPort(int port)
+    {
+        port_ = port;
+    }
+
 }
