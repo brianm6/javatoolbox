@@ -26,7 +26,7 @@ import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.concurrent.BatchQueueReader;
+import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
@@ -263,7 +263,7 @@ public class TailPane extends JPanel
      * Pops groups of messages off the queue (as many as can be read without 
      * waiting) and consolidates before sending then to the textarea
      */
-    private class TailQueueReader extends BatchQueueReader
+    private class TailQueueReader extends BatchingQueueReader
     {
         int lineNumber_ = 0;
         RE regExp_;
