@@ -3,6 +3,7 @@ package toolbox.plugin.jardeps;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.LineNumberReader;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -14,8 +15,9 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import com.tonicsystems.jarjar.DepFind;
 import com.tonicsystems.jarjar.DepHandler;
-import com.tonicsystems.jarjar.Main;
+import com.tonicsystems.jarjar.TextDepHandler;
 
 import nu.xom.Element;
 
@@ -29,8 +31,6 @@ import toolbox.graph.GraphLib;
 import toolbox.graph.GraphLibFactory;
 import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
-import toolbox.graph.jung.JungGraphLib;
-import toolbox.graph.prefuse.PrefuseGraphLib;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.service.ServiceException;
@@ -298,14 +298,15 @@ public class JarDepsPlugin extends AbstractPlugin
         
         try
         {
+            // Run through JarJar dependency finder
             StringWriter jarjarOutput = new StringWriter();
-            
-            Main jarjar = new Main();
-            jarjar.setLevel(DepHandler.LEVEL_JAR);
-            jarjar.find(classpath, classpath, jarjarOutput);
-               
+            PrintWriter w = new PrintWriter(jarjarOutput);
+            DepHandler handler = new TextDepHandler(w, DepHandler.LEVEL_JAR);
+            new DepFind().run(classpath, classpath, handler);
+            w.flush();            
             logger_.info(jarjarOutput.toString());
-            
+
+            // Parse output into node----edge--->node
             LineNumberReader lnr = 
                 new LineNumberReader(new StringReader(jarjarOutput.toString()));
             
