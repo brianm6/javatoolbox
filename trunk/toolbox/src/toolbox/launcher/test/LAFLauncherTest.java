@@ -5,12 +5,13 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.junit.StandaloneTestCase;
 import toolbox.launcher.LAFLauncher;
 
 /**
  * Unit test for LAFLauncher.
  */
-public class LAFLauncherTest extends TestCase
+public class LAFLauncherTest extends TestCase implements StandaloneTestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(LAFLauncherTest.class);
