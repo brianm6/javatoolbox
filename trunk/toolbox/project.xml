@@ -102,6 +102,7 @@
     <dependency><id>sametime-comm</id><version/></dependency>
     <dependency><id>sametime-comm-res</id><version/></dependency>    	        	
     <dependency><id>saxon</id><version/></dependency>	    
+    <dependency><id>skinlf</id><version/></dependency>
     <dependency><id>statcvs</id><version/></dependency>	    
     <dependency><id>tinylaf</id><version/></dependency>	    
 	<dependency><id>xercesImpl</id><version/></dependency>
