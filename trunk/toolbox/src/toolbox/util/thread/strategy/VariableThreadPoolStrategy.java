@@ -20,6 +20,10 @@ import toolbox.util.thread.concurrent.Timeout;
  */
 public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Default initial size.
      */
@@ -45,14 +49,53 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     public static final int DEFAULT_TIMEOUT = 5000;
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Initial size of the thread pool.
+     */
     private int initSize_;
+    
+    /**
+     * Increment by which to grow.
+     */
     private int growSize_;
+    
+    /**
+     * Thread pool size.
+     */
     private int poolSize_;
+    
+    /**
+     * Pending size of the pool.
+     */
     private int pendingSize_;
+    
+    /**
+     * Current size of the pool.
+     */
     private int currentSize_;
+    
+    /**
+     * Busy size fo the.
+     */
     private int busySize_;
+    
+    /**
+     * Timeout for requests.
+     */
     private int timeout_;
+    
+    /**
+     * Our runnable.
+     */
     private Runnable runnable_;
+    
+    /**
+     * Request queue.
+     */
     private IBoundedBuffer requestQueue_;
 
     //--------------------------------------------------------------------------
@@ -64,20 +107,26 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     public VariableThreadPoolStrategy()
     {
-        this(DEFAULT_INIT_SIZE, DEFAULT_GROW_SIZE, DEFAULT_POOL_SIZE, 
-             DEFAULT_QUEUE_SIZE, DEFAULT_TIMEOUT);
+        this(DEFAULT_INIT_SIZE, 
+            DEFAULT_GROW_SIZE, 
+            DEFAULT_POOL_SIZE, 
+            DEFAULT_QUEUE_SIZE, 
+            DEFAULT_TIMEOUT);
     }
 
 
     /**
      * Creates a default variable thread pool consisting of initSize threads.
      * 
-     * @param initSize Initial number of threads
+     * @param initSize Initial number of threads.
      */
     public VariableThreadPoolStrategy(int initSize)
     {
-        this(initSize, DEFAULT_GROW_SIZE, DEFAULT_POOL_SIZE, 
-             DEFAULT_QUEUE_SIZE, DEFAULT_TIMEOUT);
+        this(initSize, 
+            DEFAULT_GROW_SIZE, 
+            DEFAULT_POOL_SIZE, 
+            DEFAULT_QUEUE_SIZE, 
+            DEFAULT_TIMEOUT);
     }
 
 
@@ -132,8 +181,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 
         if (busySize_ + pendingSize_ >= currentSize_)
         {
-            int growSize = Math.min(poolSize_ - 
-                                    currentSize_, growSize_);
+            int growSize = Math.min(poolSize_ - currentSize_, growSize_);
             growSize = createThreads(growSize, runnable_).length;
             currentSize_ += growSize;
         }
@@ -245,9 +293,16 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     static class Task
     {
+        /**
+         * Request that is dispatched on a thread.
+         */
         private IThreadable request_;
+        
+        /**
+         * Return value of the request.
+         */
         private ReturnValue result_;
-
+        
         /**
          * Creates a Task.
          * 

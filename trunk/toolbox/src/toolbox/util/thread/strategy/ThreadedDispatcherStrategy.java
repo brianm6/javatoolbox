@@ -11,7 +11,18 @@ import toolbox.util.thread.ThreadContainer;
 public abstract class ThreadedDispatcherStrategy 
     extends AbstractDispatcherStrategy
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Number of pending results.
+     */
     private int pendingResults_;
+    
+    /**
+     * Thread container.
+     */
     private ThreadContainer container_;
 
     //--------------------------------------------------------------------------
@@ -36,7 +47,7 @@ public abstract class ThreadedDispatcherStrategy
      * that can interrogate the result.
      * 
      * @param request Request to publish.
-     * @return Future object encapsualting the request result
+     * @return Future object encapsualting the request result.
      */
     public ReturnValue dispatch(IThreadable request)
     {
@@ -109,14 +120,14 @@ public abstract class ThreadedDispatcherStrategy
 
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
      * Services the request and manages the set of active requests.
      *
      * @param request Request to publish.
-     * @param result Holds the request result
+     * @param result Holds the request result.
      */
     protected void serviceRequest(IThreadable request, ReturnValue result)
     {

@@ -16,7 +16,7 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
     
     /**
-     * Services the request in new thread and records the result
+     * Services the request in new thread and records the result.
      *
      * @param request Request to publish.
      * @param result Holds the request result.
@@ -27,7 +27,7 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // ThreadPerRequestRunnable
     //--------------------------------------------------------------------------
     
     /**
@@ -35,7 +35,14 @@ public class ThreadPerRequestStrategy extends ThreadedDispatcherStrategy
      */
     class ThreadPerRequestRunnable implements Runnable
     {
+        /**
+         * Request.
+         */
         private IThreadable request_;
+        
+        /**
+         * Return value.
+         */
         private ReturnValue result_;
 
         /**

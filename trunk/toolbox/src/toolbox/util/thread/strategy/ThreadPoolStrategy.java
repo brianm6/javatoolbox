@@ -19,18 +19,37 @@ import toolbox.util.thread.concurrent.IBoundedBuffer;
  */
 public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
-     * Default pool size
+     * Default pool size.
      */
     public static final int DEFAULT_POOL_SIZE = 10;
     
     /**
-     * Default queue size
+     * Default queue size.
      */
     public static final int DEFAULT_QUEUE_SIZE = 100;
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Size fo the thread pool.
+     */
     private int poolSize_;
+    
+    /**
+     * Runnable.
+     */
     private Runnable runnable_;
+    
+    /**
+     * Queue for requests.
+     */
     private IBoundedBuffer requestQueue_;
 
     //--------------------------------------------------------------------------
@@ -88,7 +107,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // Task
     //--------------------------------------------------------------------------
         
     /**
@@ -96,7 +115,14 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      */    
     static class Task
     {
+        /**
+         * Request to complete.
+         */
         private IThreadable request_;
+        
+        /**
+         * End result of completing the request.
+         */
         private ReturnValue result_;
 
         /**
@@ -112,6 +138,9 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ThreadPoolRunnable
+    //--------------------------------------------------------------------------
     
     /**
      * Strategy specific runnable for thread-pool strategy.
@@ -119,9 +148,9 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     class ThreadPoolRunnable implements Runnable
     {
         /**
-         * Process the next available task on the queue or block until
-         * one becomes available.  A null task instructs this strategy
-         * to stop reading further tasks.
+         * Process the next available task on the queue or block until one
+         * becomes available. A null task instructs this strategy to stop
+         * reading further tasks.
          */
         public void run()
         {
