@@ -21,6 +21,10 @@ public class SwingUtil
     /** Monospaced font **/
     private static Font monofont_;
     
+    /** Serif font **/
+    private static Font serifFont_;
+    
+    
     /**
      * Prevent construction
      */
@@ -123,17 +127,18 @@ public class SwingUtil
         return monofont_;               
     }
 
+
     /**
      * Returns preferred variable text font
      * 
      * @return Preferred variable text font
      */
-    public static Font getPreferredFont()
+    public static Font getPreferredSerifFont()
     {
         String favoredFont = "Verdana";
         String backupFont  = "serif";
         
-        if (monofont_ == null)
+        if (serifFont_ == null)
         {
             GraphicsEnvironment ge = 
                 GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -152,12 +157,11 @@ public class SwingUtil
                 attribMap.put(TextAttribute.FONT, backupFont);        
             }
 
-            monofont_ = new Font(attribMap);            
+            serifFont_ = new Font(attribMap);            
         }
         
-        return monofont_;               
+        return serifFont_;               
     }
-
     
     
     /**
