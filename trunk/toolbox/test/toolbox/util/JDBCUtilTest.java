@@ -12,35 +12,35 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.showclasspath.Main;
-import toolbox.util.FileUtil;
-import toolbox.util.JDBCUtil;
-import toolbox.util.RandomUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for JDBCUtil.
+ * Unit test for JDBCUtil. This uses an in-process instance of HSQLDB for a 
+ * test database.
  */
 public class JDBCUtilTest extends TestCase
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(JDBCUtilTest.class);
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
-    private static String FS = File.separator;
-    
-    private static String DB_JAR = "hsqldb.jar";
-    private static String DB_DRIVER = "org.hsqldb.jdbcDriver";
-    private static String DB_USER = "SA";
+    private static String FS          = File.separator;
+    private static String DB_JAR      = "hsqldb.jar";
+    private static String DB_DRIVER   = "org.hsqldb.jdbcDriver";
+    private static String DB_USER     = "SA";
     private static String DB_PASSWORD = "";
-    private static String DB_URL = "jdbc:hsqldb:" + FileUtil.getTempDir() + FS; 
-    
+    private static String DB_URL = "jdbc:hsqldb:" + FileUtil.getTempDir() + FS;
+
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-    
+
     /**
      * Entrypoint.
-     * 
+     *
      * @param args None recognized
      */
     public static void main(String[] args)
@@ -49,18 +49,18 @@ public class JDBCUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests 
+    // Unit Tests
     //--------------------------------------------------------------------------
 
     /**
      * Tests init()
-     * 
+     *
      * @throws Exception on error.
      */
     public void testInit() throws Exception
     {
         logger_.info("Running testInit...");
-        
+
         try
         {
             JDBCUtil.init(DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD);
@@ -78,44 +78,44 @@ public class JDBCUtilTest extends TestCase
 
 
     /**
-     * Tests init() loading the jdbc driver from a jar file. 
-     * 
+     * Tests init() loading the jdbc driver from a jar file.
+     *
      * @throws Exception on error.
      */
     public void testInitUsingJar() throws Exception
     {
         logger_.info("Running testInitUsingJar...");
-        
+
         try
-        {                
+        {
             JDBCUtil.init(getDBJar(), DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD);
-            
-            
-            
+
+
+
         }
         finally
         {
             JDBCUtil.shutdown();
         }
-    }    
-    
-    
+    }
+
+
     /**
      * Tests getConnection()
-     * 
+     *
      * @throws Exception on error
      */
     public void testGetConnection() throws Exception
     {
         logger_.info("Running testGetConnection...");
-        
-        String prefix = "JDBCUtilTest_testGetConnection_" + 
+
+        String prefix = "JDBCUtilTest_testGetConnection_" +
             RandomUtil.nextInt(1000);
-        
+
         try
-        {    
+        {
             JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
-            
+
             Connection conn = JDBCUtil.getConnection();
             logger_.info("Connection: " + conn);
             logger_.info("Autocommit: " + conn.getAutoCommit());
@@ -132,13 +132,13 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests getConnection() failure because not initialized.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testGetConnectionFailure() throws Exception
     {
         logger_.info("Running testGetConnectionFailure...");
-        
+
         try
         {
             JDBCUtil.getConnection();
@@ -156,18 +156,18 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests executeQuery() on an empty table.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testExecuteQueryZero() throws Exception
     {
         logger_.info("Running testExecuteQueryZero...");
-        
-        String prefix = "JDBCUtilTest_testQueryExecuteZero_" + 
+
+        String prefix = "JDBCUtilTest_testQueryExecuteZero_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
@@ -180,31 +180,31 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-        }  
+        }
     }
-    
-    
+
+
     /**
      * Tests executeQuery() on table with only one row of data.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testExecuteQueryOne() throws Exception
     {
         logger_.info("Running testExecuteQueryOne...");
-        
-        String prefix = "JDBCUtilTest_testQueryExecuteOne_" + 
+
+        String prefix = "JDBCUtilTest_testQueryExecuteOne_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
+
             JDBCUtil.executeUpdate(
                 "insert into " + table + "(id) values (999)");
-            
+
             String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("1 rows") >= 0);
             assertTrue(results.indexOf("999") >= 0);
@@ -215,35 +215,35 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-        }  
+        }
     }
 
 
     /**
      * Tests executeQuery() on table with many rows of data.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testExecuteQueryMany() throws Exception
     {
         logger_.info("Running testExecuteQueryMany...");
-        
-        String prefix = "JDBCUtilTest_testQueryExecuteMany_" + 
+
+        String prefix = "JDBCUtilTest_testQueryExecuteMany_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
+
             for (int i = 0; i < 100; i++)
             {
                 JDBCUtil.executeUpdate(
-                    "insert into " + table + "(id) " + 
+                    "insert into " + table + "(id) " +
                     "values (" + i + ")");
             }
-                    
+
             String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("100 rows") >= 0);
             logger_.info("\n" + StringUtil.wrap(results.replace('\n', ' ')));
@@ -253,32 +253,32 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-        }  
+        }
     }
 
 
     /**
      * Tests executeQueryArray() on an empty table.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testExecuteQueryArrayZero() throws Exception
     {
         logger_.info("Running testExecuteQueryArrayZero...");
-        
-        String prefix = "JDBCUtilTest_testQueryExecuteArrayZero_" + 
+
+        String prefix = "JDBCUtilTest_testQueryExecuteArrayZero_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
-            Object[][] results = 
+
+            Object[][] results =
                 JDBCUtil.executeQueryArray("select * from " + table);
-                            
-            // Column headers still occupy one row                            
+
+            // Column headers still occupy one row
             assertEquals(0, results.length);
         }
         finally
@@ -286,34 +286,34 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-        }  
+        }
     }
 
 
     /**
      * Tests executeQueryArray() on table with only one row of data.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testExecuteQueryArrayOne() throws Exception
     {
         logger_.info("Running testExecuteQueryArrayOne...");
-        
-        String prefix = "JDBCUtilTest_testQueryExecuteArrayOne_" + 
+
+        String prefix = "JDBCUtilTest_testQueryExecuteArrayOne_" +
             RandomUtil.nextInt(1000);
-            
+
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             JDBCUtil.executeUpdate(
                 "insert into " + table + "(id) values (999)");
-            
-            Object[][] results = 
+
+            Object[][] results =
                 JDBCUtil.executeQueryArray("select * from " + table);
-                            
+
             assertEquals(1, results.length);
             assertEquals(1, results[0].length);
             assertEquals(new Integer(999), results[0][0]);
@@ -323,38 +323,38 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-        }  
+        }
     }
 
 
     /**
      * Tests executeQueryArray() on table with many rows of data.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testExecuteQueryArrayMany() throws Exception
     {
         logger_.info("Running testExecuteQueryArrayMany...");
-        
-        String prefix = "JDBCUtilTest_testExecuteQueryArrayMany_" + 
+
+        String prefix = "JDBCUtilTest_testExecuteQueryArrayMany_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
+
             for (int i = 0; i < 100; i++)
                 JDBCUtil.executeUpdate(
                     "insert into " + table + "(id) values (" + i + ")");
-                    
-            Object[][] results = 
+
+            Object[][] results =
                 JDBCUtil.executeQueryArray("select * from " + table);
-                            
+
             assertEquals(1, results.length);
             assertEquals(100, results[0].length);
-            
+
             for (int i = 0; i < 100; i++)
                 assertEquals(new Integer(i), results[0][i]);
         }
@@ -363,41 +363,41 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-        }  
+        }
     }
 
 
     /**
      * Tests executeUpdate() for INSERT, UPDATE, and DELETE.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testExecuteUpdate() throws Exception
     {
         logger_.info("Running testExecuteUpdate...");
-        
-        String prefix = "JDBCUtilTest_testExecuteUpdate_" + 
+
+        String prefix = "JDBCUtilTest_testExecuteUpdate_" +
             RandomUtil.nextInt(1000);
-            
+
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_execute_update";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
-            assertEquals(1, 
+
+            assertEquals(1,
                 JDBCUtil.executeUpdate(
                     "insert into " + table + " (id) values(100)"));
 
-            assertEquals(1, 
+            assertEquals(1,
                 JDBCUtil.executeUpdate(
                     "update " + table + " set id=999 where id=100"));
-                    
+
             assertEquals(1,
                 JDBCUtil.executeUpdate(
                     "delete from " + table + " where id=999"));
-                            
+
             String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("0 rows") >= 0);
             logger_.info("\n" + results);
@@ -407,42 +407,42 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
-        }  
+        }
     }
 
 
     /**
      * Tests getSize() on an empty table.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testGetSizeZero() throws Exception
     {
         logger_.info("Running testGetSizeZero...");
-        
-        String prefix = "JDBCUtilTest_testGetSizeZero_" + 
+
+        String prefix = "JDBCUtilTest_testGetSizeZero_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_zero";
         Connection conn = null;
         ResultSet results = null;
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             conn = JDBCUtil.getConnection();
-            
+
             Statement s = conn.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY);
-            
+
             results = s.executeQuery("select * from " + table);
-                
+
             int size = JDBCUtil.getSize(results);
-            
+
             logger_.info("Resultset size: " + size);
             assertEquals("size shold be zero", 0, size);
-                
+
         }
         finally
         {
@@ -450,28 +450,28 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.releaseConnection(conn);
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
-            cleanup(prefix); 
+            cleanup(prefix);
         }
     }
 
 
     /**
      * Tests getSize() on a table with many rows.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testGetSizeMany() throws Exception
     {
         logger_.info("Running testGetSizeMany...");
-        
-        String prefix = "JDBCUtilTest_testGetSizeMany_" + 
+
+        String prefix = "JDBCUtilTest_testGetSizeMany_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_many";
         Connection conn = null;
         ResultSet results = null;
         int numRows = 100;
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
@@ -479,18 +479,18 @@ public class JDBCUtilTest extends TestCase
             for (int i = 0; i < numRows; i++)
                 JDBCUtil.executeUpdate(
                     "insert into " + table + "(id) values (" + i + ")");
-            
+
             conn = JDBCUtil.getConnection();
-            
+
             Statement s = conn.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY);
-            
+
             results = s.executeQuery("select * from " + table);
-            
+
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);
-            
+
             logger_.info("Resultset size: " + size);
             assertEquals("size mismatch", numRows, size);
 
@@ -498,7 +498,7 @@ public class JDBCUtilTest extends TestCase
             // Make sure position of cursor is unchanged.
             //
             assertEquals(cursorPos == 0 ? 1 : cursorPos, results.getRow());
-            
+
         }
         finally
         {
@@ -506,53 +506,53 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.releaseConnection(conn);
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
-            cleanup(prefix); 
+            cleanup(prefix);
         }
     }
 
 
     /**
      * Tests getSize() on a table with one row.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testGetSizeOne() throws Exception
     {
         logger_.info("Running testGetSizeOne...");
-        
-        String prefix = "JDBCUtilTest_testGetSizeOne_" + 
+
+        String prefix = "JDBCUtilTest_testGetSizeOne_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_one";
         Connection conn = null;
         ResultSet results = null;
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
+
             JDBCUtil.executeUpdate(
                 "insert into " + table + "(id) values (999)");
-            
+
             conn = JDBCUtil.getConnection();
-            
+
             Statement s = conn.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY);
-            
+
             results = s.executeQuery("select * from " + table);
-            
+
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);
-            
+
             logger_.info("Resultset size: " + size);
             assertEquals("size should be one", 1, size);
-            
+
             //
             // Make sure position of cursor is unchanged.
             //
             assertEquals(cursorPos == 0 ? 1 : cursorPos, results.getRow());
-                
+
         }
         finally
         {
@@ -560,49 +560,49 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.releaseConnection(conn);
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
-            cleanup(prefix); 
+            cleanup(prefix);
         }
     }
 
-    
+
     /**
      * Tests getSize() to make sure a non-zero cursor position is restored.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testGetSizeNonZeroCursorPos() throws Exception
     {
         logger_.info("Running testGetSizeNonZeroCursorPos...");
-        
-        String prefix = "JDBCUtilTest_testGetSizeNonZeroCursorPos_" + 
+
+        String prefix = "JDBCUtilTest_testGetSizeNonZeroCursorPos_" +
             RandomUtil.nextInt(1000);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "table_size";
         Connection conn = null;
         ResultSet results = null;
         int numRows = 50;
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            
+
             for (int i = 0; i < numRows; i++)
                 JDBCUtil.executeUpdate(
                     "insert into " + table + "(id) values (" + i + ")");
-            
+
             conn = JDBCUtil.getConnection();
-            
+
             Statement s = conn.createStatement(
-                ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY);
-            
+
             results = s.executeQuery("select * from " + table);
-            
+
             //
             // Move cursor
             //
             results.absolute(numRows / 10);
-            
+
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);
             logger_.debug("Restored cursor position: " + cursorPos);
@@ -614,35 +614,35 @@ public class JDBCUtilTest extends TestCase
             JDBCUtil.releaseConnection(conn);
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
-            cleanup(prefix); 
+            cleanup(prefix);
         }
     }
 
-    
+
     /**
      * Tests dropTable()
-     * 
+     *
      * @throws Exception on error.
      */
     public void testDropTable() throws Exception
     {
         logger_.info("Running testDropTable...");
-        
+
         String prefix = "JDBCUtilTest_testDropTable_" + RandomUtil.nextInt(999);
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
         String table = "user";
-        
+
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             JDBCUtil.executeUpdate(
                 "insert into " + table + "(id) values (999)");
-           
+
             // Make sure table exists
             String contents = JDBCUtil.executeQuery("select * from user");
-            //logger_.info("Before drop: " + contents);             
+            //logger_.info("Before drop: " + contents);
             assertTrue(contents.indexOf("ID") >= 0);
-                                
+
             JDBCUtil.dropTable("user");
 
             // Make sure table does not exist
@@ -660,31 +660,31 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.shutdown();
-            cleanup(prefix); 
+            cleanup(prefix);
         }
     }
-    
-    
+
+
     /**
      * Tests dropTable() for failures: null, non-existant table.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testDropTableFailure() throws Exception
     {
         logger_.info("Running testDropTableFailure...");
-        
-        String prefix = "JDBCUtilTest_testDropTableFailure_" + 
+
+        String prefix = "JDBCUtilTest_testDropTableFailure_" +
             RandomUtil.nextInt(999);
-        
+
         JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
-        
+
         try
         {
             JDBCUtil.dropTable(null);
             JDBCUtil.dropTable("");
             JDBCUtil.dropTable("invalid_table");
-            
+
             // Success
         }
         catch (Exception e)
@@ -694,39 +694,39 @@ public class JDBCUtilTest extends TestCase
         finally
         {
             JDBCUtil.shutdown();
-            cleanup(prefix); 
+            cleanup(prefix);
         }
     }
 
-    
+
     /**
      * Tests shutdown()
-     * 
+     *
      * @throws Exception on error.
      */
     public void testShutdown() throws Exception
     {
         logger_.info("Running testShutdown...");
-        
+
         JDBCUtil.init(DB_DRIVER, DB_URL, DB_USER, DB_PASSWORD);
         JDBCUtil.shutdown();
     }
 
-    
+
     /**
      * Tests close(ResultSet) for a null ResultSet.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testCloseNullResultSet() throws Exception
     {
         logger_.info("Running testCloseNullResultSet...");
-        
+
         try
         {
             ResultSet rs = null;
             JDBCUtil.close(rs);
-            
+
             // Success
         }
         catch (Exception e)
@@ -735,21 +735,21 @@ public class JDBCUtilTest extends TestCase
         }
     }
 
-    
+
     /**
      * Tests close(Statement) for a null statement.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testCloseNullStatement() throws Exception
     {
         logger_.info("Running testCloseNullStatement...");
-        
+
         try
         {
             Statement stmt = null;
             JDBCUtil.close(stmt);
-            
+
             // Success
         }
         catch (Exception e)
@@ -758,21 +758,21 @@ public class JDBCUtilTest extends TestCase
         }
     }
 
-    
+
     /**
      * Tests release(Connection) for a null connection.
-     * 
+     *
      * @throws Exception on error.
      */
     public void testReleaseNullConnection() throws Exception
     {
         logger_.info("Running testReleaseNullConnection...");
-        
+
         try
         {
             Connection conn = null;
             JDBCUtil.releaseConnection(conn);
-            
+
             // Success
         }
         catch (Exception e)
@@ -780,29 +780,71 @@ public class JDBCUtilTest extends TestCase
             fail("Releasing null Connection should not fail");
         }
     }
-    
+
+
+    /**
+     * Tests getTableNames()
+     *
+     * @throws Exception on error.
+     */
+    public void testGetTableNames() throws Exception
+    {
+        logger_.info("Running testGetTableNames...");
+
+        String prefix =
+            "JDBCUtilTest_testGetTableNames_" + RandomUtil.nextInt(1000);
+
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
+        String table = "table_gettablenames";
+
+        try
+        {
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            String[] tables = JDBCUtil.getTableNames();
+            logger_.info("Tables =\n" + ArrayUtil.toString(tables, true));
+
+            //
+            // The table names may not be in the same case so the search has
+            // to be case insensetive.
+            //
+
+            assertTrue(
+                "Table " + table + " should be in list of table names returned",
+                ArrayUtil.contains(
+                    tables,
+                    table,
+                    String.CASE_INSENSITIVE_ORDER));
+        }
+        finally
+        {
+            JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
+            cleanup(prefix);
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
-    
+
     /**
      * Cleans up HSQLDB file remnants.
-     * 
+     *
      * @param prefix Name prefix.
      */
     protected void cleanup(String prefix)
     {
         (new File(
             FileUtil.getTempDir() + FS + prefix + ".properties")).delete();
-        
+
         (new File(FileUtil.getTempDir() + FS + prefix + ".data")).delete();
         (new File(FileUtil.getTempDir() + FS + prefix + ".script")).delete();
     }
-    
-    
+
+
     /**
      * Returns the absolute path of the test db driver jar file we're using.
-     * 
+     *
      * @return String
      */
     protected String getDBJar()
@@ -811,7 +853,7 @@ public class JDBCUtilTest extends TestCase
         StringOutputStream sos = new StringOutputStream();
         Main.showPath(sos);
         String[] lines = StringUtil.tokenize(sos.toString(), "\n");
-        
+
         for (int i = 0; i < lines.length; i++)
         {
             if (lines[i].indexOf(DB_JAR) >= 0)
@@ -821,7 +863,7 @@ public class JDBCUtilTest extends TestCase
                 break;
             }
         }
-        
+
         return jarFile;
-    }    
+    }
 }
