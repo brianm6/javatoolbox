@@ -15,6 +15,8 @@ import toolbox.util.XOMUtil;
  */
 public class CVSProject implements Comparable
 {
+    // TODO: Convert IPreferenced interface to use bean properties
+    
     //--------------------------------------------------------------------------
     // XML Constants
     //--------------------------------------------------------------------------
@@ -97,8 +99,8 @@ public class CVSProject implements Comparable
         setCheckoutDir(XOMUtil.getStringAttribute(p, ATTR_CHECKOUTDIR, ""));
         setDebug(XOMUtil.getBooleanAttribute(p, ATTR_DEBUG, false));
         setLaunchURL(XOMUtil.getStringAttribute(p, ATTR_LAUNCHURL, ""));
-        setEngine(XOMUtil.getStringAttribute(p, ATTR_ENGINE, 
-            StatcvsPlugin.PROP_STATCVS_ENGINE));
+        setEngine(XOMUtil.getStringAttribute(
+            p, ATTR_ENGINE, StatcvsPlugin.CLASS_STATCVS_XML_ENGINE));
     }
 
 
@@ -369,9 +371,9 @@ public class CVSProject implements Comparable
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the project name so it is displayed by the renderer for
-     * the comboxbox.
-     *
+     * Returns the project name so it is displayed by the renderer for the
+     * combobox.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString()
