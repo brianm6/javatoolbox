@@ -684,29 +684,6 @@ public class FileUtilTest extends TestCase
     
     
     /**
-     * Tests stripFile().
-     */
-    public void testStripFile()
-    {
-        logger_.info("Running testStripFile...");
-        
-        String s = File.separator;
-        
-        assertEquals("c:", FileUtil.stripFile("c:" + s + "file.txt"));
-        assertEquals("..", FileUtil.stripFile(".." + s + "file.txt"));
-        assertEquals("", FileUtil.stripFile("file.txt"));
-        assertEquals("", FileUtil.stripFile(s + "file.txt"));
-        assertEquals("", FileUtil.stripFile("a"));
-        assertEquals("", FileUtil.stripFile(""));
-        
-        assertEquals(
-            "c:" + s + "a" + s + "c" + s + "..", 
-            FileUtil.stripFile(
-                "c:" + s + "a" + s + "c" + s + ".." + s + "file.txt"));
-    }
-    
-    
-    /**
      * Tests createTempDir().
      * 
      * @throws Exception on error

@@ -433,29 +433,6 @@ public final class FileUtil
 
     
     /**
-     * Strips the file portion away from an absolute or relative file path
-     * leaving only the path. The resulting path does not have a trailing
-     * file separator.
-     * <pre>
-     * 
-     * Examples:
-     * 
-     * c:\data\work\tmp\orders.txt  => c:\data\work\tmp
-     * /usr/home/user/orders.xml    => /usr/home/user
-     * 
-     * </pre>
-     *
-     * @param filepath Path including filename.
-     * @return Just the path portion of the filepath.
-     */
-    public static String stripFile(String filepath)
-    {
-        int i = filepath.lastIndexOf(File.separatorChar);
-        return (i >= 0 ? filepath.substring(0, i) : "");
-    }    
-
-    
-    /**
      * Deletes a file quietly. If the file can be deleted, ok. If not, 
      * does not cause a fuss.
      * 

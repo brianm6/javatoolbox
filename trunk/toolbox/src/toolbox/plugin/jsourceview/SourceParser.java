@@ -7,7 +7,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
-import toolbox.util.FileUtil;
 
 /**
  * Pops files off of the work queue and parses them to gather stats.
@@ -119,7 +118,7 @@ class SourceParser implements Runnable
                         new Object[JSourceView.COL_NAMES.length];
                     
                     tableRow[0] = new Integer(fileCount);
-                    tableRow[1] = FileUtil.stripFile(filename);
+                    tableRow[1] = FilenameUtils.getPath(filename);
                     tableRow[2] = FilenameUtils.getName(filename);
                     tableRow[3] = new Integer(fileStats.getCodeLines());
                     tableRow[4] = new Integer(fileStats.getCommentLines());
