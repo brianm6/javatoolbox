@@ -14,6 +14,7 @@ import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -681,22 +682,26 @@ public class JFileExplorer extends JPanel implements IPreferenced
         SwingUtil.bindKey(
             tree_, 
             new DeleteDirAction(this), 
-            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+            JComponent.WHEN_FOCUSED);
         
         SwingUtil.bindKey(
             tree_,
             new RefreshAction(this),
-            KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0),
+            JComponent.WHEN_FOCUSED);
         
         SwingUtil.bindKey(
             tree_,
             new RenameDirAction(this),
-            KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0),
+            JComponent.WHEN_FOCUSED);
         
         SwingUtil.bindKey(
             tree_,
             new UpOneLevelAction(this),
-            KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+            JComponent.WHEN_FOCUSED);
     }
 
 
@@ -726,22 +731,26 @@ public class JFileExplorer extends JPanel implements IPreferenced
         SwingUtil.bindKey(
             fileList_,
             deleteFileAction,
-            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+            JComponent.WHEN_FOCUSED);
         
         SwingUtil.bindKey(
             fileList_,
             new RefreshAction(this),
-            KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0),
+            JComponent.WHEN_FOCUSED);
         
         SwingUtil.bindKey(
             fileList_,
             renameFileAction,
-            KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0),
+            JComponent.WHEN_FOCUSED);
 
         SwingUtil.bindKey(
             fileList_,
             new UpOneLevelAction(this),
-            KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+            KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+            JComponent.WHEN_FOCUSED);
     }
     
     //--------------------------------------------------------------------------
