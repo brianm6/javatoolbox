@@ -30,6 +30,10 @@ import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartStatusBar;
+import toolbox.util.ui.font.FontSelectionDialog;
+import toolbox.util.ui.font.FontSelectionException;
+import toolbox.util.ui.font.FontSelectionPanel;
+import toolbox.util.ui.font.IFontDialogListener;
 
 import electric.xml.Document;
 import electric.xml.Element;
@@ -147,6 +151,8 @@ public class JTail extends JFrame
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu   = new JMenu("File");
         fileMenu.setMnemonic('F');
+        fileMenu.add(new SetFontAction());
+        fileMenu.addSeparator();
         fileMenu.add(new SaveAction());
         fileMenu.add(new ExitAction());
         
@@ -465,6 +471,76 @@ public class JTail extends JFrame
             FileStuffer stuffer = new FileStuffer(new File(file), 100);
             stuffer.start();
             statusBar_.setStatus("Created " + file + " for tailing");
+        }
+    }
+    
+    /**
+     * Select Font action
+     */
+    private class SetFontAction extends AbstractAction 
+        implements IFontDialogListener
+    {
+        public SetFontAction()
+        {
+            super("Set font ..");
+            putValue(MNEMONIC_KEY, new Integer('S'));
+            putValue(SHORT_DESCRIPTION, "Sets the font of the tail output");
+            putValue(ACCELERATOR_KEY, 
+                KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
+        }
+    
+        /**
+         * Saves the configuration
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            FontSelectionDialog fsd = new FontSelectionDialog(JTail.this, false);
+            fsd.addFontDialogListener(this);
+            SwingUtil.centerWindow(fsd);
+            fsd.setVisible(true);
+        }
+        
+        /**
+         * Sets the font of the currently selected tail to the chosen font in 
+         * the font selection dialog
+         * 
+         * @param  fontPanel  Font selection panel in the dialog box
+         */
+        public void applyButtonPressed(FontSelectionPanel fontPanel)
+        {
+            try
+            {
+                TailPane pane = (TailPane) tabbedPane_.getSelectedComponent();
+                pane.setTailFont(fontPanel.getSelectedFont());
+            }
+            catch (FontSelectionException fse)
+            {
+                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
+            }
+        }
+
+        /**
+         *  Cancel button was pressed 
+         */
+        public void cancelButtonPressed(FontSelectionPanel fontPanel)
+        {
+            // Do nothing
+        }
+        
+        /**
+         * OK button was pressed
+         */
+        public void okButtonPressed(FontSelectionPanel fontPanel)
+        {
+            try
+            {
+                TailPane pane = (TailPane) tabbedPane_.getSelectedComponent();
+                pane.setTailFont(fontPanel.getSelectedFont());
+            }
+            catch (FontSelectionException fse)
+            {
+                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
+            }
         }
     }
 }
