@@ -1,0 +1,122 @@
+package toolbox.util.test;
+
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
+import toolbox.util.XMLUtil;
+
+/**
+ * Unit test for XMLUtil
+ */
+public class XMLUtilTest extends TestCase
+{
+    private static final Logger logger_ =
+        Logger.getLogger(XMLUtilTest.class);
+        
+    /**
+     * Entrypoint
+     * 
+     * @param  args  None
+     */
+    public static void main(String[] args)
+    {
+        TestRunner.run(XMLUtilTest.class);
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Constructor for XMLUtilTest
+     * 
+     * @param  arg0  Test name
+     */
+    public XMLUtilTest(String arg0)
+    {
+        super(arg0);
+    }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+        
+    /**
+     * Tests format()
+     */
+    public void testFormat()
+    {
+        logger_.info("Running testFormat...");
+        
+        String xml =
+        "<root>" +
+        "<type unid=\"1awiysxq\">" +
+        "<localName>" +
+        "null</localName>" +
+        "<isChanged>" +
+        "false</isChanged>" +
+        "<elideLabel>" +
+        "false</elideLabel>" +
+        "<sequence>" +
+        "</sequence>" +
+        "<validationSequence>" +
+        "</validationSequence>" +
+        "<readOnly name=\"domain\">" +
+        "<localName>" +
+        "domain</localName>" +
+        "<isChanged>" +
+        "false</isChanged>" +
+        "<elideLabel>" +
+        "false</elideLabel>" +
+        "<valueDomain>" +
+        "null</valueDomain>" +
+        "<value>" +
+        "</value>" +
+        "</readOnly>" +
+        "<list name=\"translationEntry\">" +
+        "<localName>" +
+        "translationEntry</localName>" +
+        "<isChanged>" +
+        "false</isChanged>" +
+        "<elideLabel>" +
+        "false</elideLabel>" +
+        "<newAllowed>" +
+        "true</newAllowed>" +
+        "<deleteAllowed>" +
+        "true</deleteAllowed>" +
+        "</list>" +
+        "<singleKeyword name=\"changeRequestApproval\">" +
+        "<localName>" +
+        "changeRequestApproval</localName>" +
+        "<isChanged>" +
+        "false</isChanged>" +
+        "<elideLabel>" +
+        "false</elideLabel>" +
+        "<sequence>" +
+        "</sequence>" +
+        "<validationSequence>" +
+        "#</validationSequence>" +
+        "<editable>" +
+        "true</editable>" +
+        "<mandatory>" +
+        "false</mandatory>" +
+        "<domain>" +
+        "APPROVAL</domain>" +
+        "<cascaded>" +
+        "false</cascaded>" +
+        "<value>" +
+        "</value>" +
+        "</singleKeyword>" +
+        "</type>" +
+        "</root>";
+
+        String formatted = XMLUtil.format(xml);
+        
+        assertNotNull(formatted);
+        
+        logger_.info("Formatted XML:\n\n" + formatted);
+        
+    }
+}
