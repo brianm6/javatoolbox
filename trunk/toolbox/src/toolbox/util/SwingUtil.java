@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ui.AntiAliased;
 
 /**
- * Swing Utility Class
+ * Swing Utility Class.
  */
 public final class SwingUtil
 {
@@ -39,17 +39,17 @@ public final class SwingUtil
         Logger.getLogger(SwingUtil.class);
 
     /** 
-     * Preferred monospaced font 
+     * Preferred monospaced font.
      */
     private static Font monofont_;
     
     /** 
-     * Preferred serif font 
+     * Preferred serif font. 
      */
     private static Font serifFont_;
 
     /**
-     * Global antialias flag that all 'smart' components are aware of
+     * Global antialias flag that all 'smart' components are aware of.
      */
     private static boolean defaultAntiAlias_ = false;
     
@@ -87,6 +87,10 @@ public final class SwingUtil
         UIManager.installLookAndFeel("TinyLookAndFeel", 
             "de.muntjak.tinylookandfeel.TinyLookAndFeel");
         
+        
+        //UIManager.installLookAndFeel("FH Look & Feel",
+        //    "com.shfarr.ui.plaf.fh.FhLookAndFeel");
+        
         //UIManager.installLookAndFeel("GTK+",
         //    "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
         
@@ -105,7 +109,7 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
         
     /**
-     * Prevent construction
+     * Prevent construction.
      */
     private SwingUtil()
     {
@@ -116,7 +120,7 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the size of a window to a given percentage of the users desktop
+     * Sets the size of a window to a given percentage of the users desktop.
      *
      * @param w Window to size
      * @param percentWidth Percent width from 1 to 100
@@ -135,8 +139,9 @@ public final class SwingUtil
         w.setSize(windowSize);
     }
 
+
     /**
-     * Moves the window to the center of the screen
+     * Moves the window to the center of the screen.
      * 
      * @param w Window to move
      */
@@ -151,8 +156,9 @@ public final class SwingUtil
         w.setLocation(left, top);
     }
 
+
     /**
-     * Centers a child window relative to its parent window
+     * Centers a child window relative to its parent window.
      * 
      * @param parent Parent window
      * @param child Child window
@@ -168,13 +174,14 @@ public final class SwingUtil
             (parentSize.height - childSize.height) / 2 + loc.y);
     }
    
+
     /**
      * Finds the frame for a given component. 
      * 
-     * @param component  Component to find parent frame for
+     * @param component Component to find parent frame for
      * @return Frame that component is a child of or null if the component
-     * does not have a parent frame or if the parent frame is not
-     * a Frame (could be a Dialog).
+     *         does not have a parent frame or if the parent frame is not
+     *         a Frame (could be a Dialog).
      * @see javax.swing.SwingUtilities#getWindowAncestor(Component)
      */
     public static Frame getFrameAncestor(Component component)
@@ -191,9 +198,9 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
        
     /**
-     * Sets the cursor to the default cursor on the given component
+     * Sets the cursor to the default cursor on the given component.
      * 
-     * @param c Component
+     * @param c Component to set the cursor on.
      */
     public static void setDefaultCursor(Component c)
     {
@@ -206,10 +213,11 @@ public final class SwingUtil
         }
     }
 
+
     /**
-     * Sets the cursor to the wait cursor on the given component
+     * Sets the cursor to the wait cursor on the given component.
      * 
-     * @param c Component
+     * @param c Component to set the cursor on.
      */
     public static int setWaitCursor(Component c)
     {
@@ -277,6 +285,7 @@ public final class SwingUtil
         return monofont_;               
     }
 
+
     /**
      * Returns the preferred variable text font available on the system.
      * 
@@ -317,7 +326,7 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the Look and Feel to Metal
+     * Sets the Look and Feel to Metal.
      * 
      * @throws Exception on error
      */    
@@ -329,8 +338,9 @@ public final class SwingUtil
         propagateChangeInLAF();
     }
     
+
     /**
-     * Sets the Look and Feel to Windows
+     * Sets the Look and Feel to Windows.
      * 
      * @throws Exception on error
      */
@@ -342,8 +352,9 @@ public final class SwingUtil
         propagateChangeInLAF();            
     }
  
+
     /**
-     * Sets the Look and Feel to Motif/CDE
+     * Sets the Look and Feel to Motif/CDE.
      * 
      * @throws Exception on error
      */   
@@ -355,8 +366,9 @@ public final class SwingUtil
         propagateChangeInLAF();            
     }
  
+
     /**
-     * Sets the Look and Feel to Metouia
+     * Sets the Look and Feel to Metouia.
      * 
      * @throws Exception on error
      */
@@ -368,8 +380,9 @@ public final class SwingUtil
         propagateChangeInLAF();            
     }
 
+
     /**
-     * Sets the Skin LAF
+     * Sets the Skin LAF.
      * 
      * @throws Exception on error
      */
@@ -379,8 +392,9 @@ public final class SwingUtil
         propagateChangeInLAF();
     }
 
+
     /**
-     * Sets the preferred Look and Feel
+     * Sets the preferred Look and Feel.
      * 
      * @throws Exception on error
      */
@@ -392,8 +406,9 @@ public final class SwingUtil
         propagateChangeInLAF();            
     }
 
+
     /**
-     * Retrieves list of availble look and feels available
+     * Retrieves list of availble look and feels available.
      * 
      * @return Array of look and feels
      */
@@ -402,6 +417,7 @@ public final class SwingUtil
         return UIManager.getInstalledLookAndFeels();
     }
     
+
     /**
      * Propagates the change in LookAndFeel selection to all known windows.
      * Appropriate to be called immediately after UIManager.setLookAndFeel().
@@ -515,9 +531,10 @@ public final class SwingUtil
             }
         }
     }
+
     
     /**
-     * Cascades all internal frames on a desktop
+     * Cascades all internal frames on a desktop.
      * 
      * @param desktop Desktop on with to cascade all internal frames
      */
@@ -543,28 +560,30 @@ public final class SwingUtil
         }
     }
 
+
     /** 
      * Cascades the given internal frame based upon the current number 
-     * of internal frames
+     * of internal frames.
      *
      * @param desktop Desktop
      * @param frame Internal frame to cascade
      * @return Point object representing the location assigned to the 
-     * internal frame upon the virtual desktop
+     *         internal frame upon the virtual desktop
      */
     public static Point cascade(JDesktopPane desktop,JInternalFrame frame)
     {
         return cascade(desktop, frame, desktop.getAllFrames().length);
     }
 
+
     /**
-     * Cascades the given internal frame based upon supplied count
+     * Cascades the given internal frame based upon supplied count.
      *
      * @param desktop Desktop upon which frame is visible
      * @param f Internal frame to cascade
      * @param count Count to use in cascading the internal frame
      * @return Point object representing the location assigned to the internal 
-     * frame upon the virtual desktop
+     *         frame upon the virtual desktop
      */
     private static Point cascade(JDesktopPane desktop, JInternalFrame f, 
         int count)
@@ -615,7 +634,7 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Wraps a component in a JPanel using a flowlayout
+     * Wraps a component in a JPanel using a flowlayout.
      *
      * @param component Component to wrap
      * @return JPanel 
@@ -627,8 +646,9 @@ public final class SwingUtil
         return panel;    
     }
 
+
     /**
-     * Wraps a component tightly in a JPanel using BorderLayout
+     * Wraps a component tightly in a JPanel using BorderLayout.
      *
      * @param component Component to wrap
      * @return JPanel 
@@ -640,8 +660,9 @@ public final class SwingUtil
         return panel;    
     }
 
+
     /**
-     * Turns on antialiasing for a graphics context
+     * Turns on antialiasing for a graphics context.
      * 
      * @param graphics Graphics context
      * @param antiAliased Set to true to turn antialiasing on for the graphics
@@ -675,6 +696,7 @@ public final class SwingUtil
         return defaultAntiAlias_;
     }
     
+
     /**
      * Sets the flag for antialiasing all 'smart' components.
      * 
@@ -685,6 +707,7 @@ public final class SwingUtil
         defaultAntiAlias_ = b; 
     }
     
+
     /**
      * Sets the antialiased flag on a tree of components.
      * 
