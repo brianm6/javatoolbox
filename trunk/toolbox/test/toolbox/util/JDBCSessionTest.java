@@ -497,11 +497,11 @@ public class JDBCSessionTest extends TestCase
             Object[][] results =
                 JDBCSession.executeQueryArray(name, "select * from " + table);
 
-            assertEquals(1, results.length);
-            assertEquals(100, results[0].length);
+            assertEquals(100, results.length);
+            assertEquals(1, results[0].length);
 
             for (int i = 0; i < 100; i++)
-                assertEquals(new Integer(i), results[0][i]);
+                assertEquals(new Integer(i), results[i][0]);
         }
         finally
         {
