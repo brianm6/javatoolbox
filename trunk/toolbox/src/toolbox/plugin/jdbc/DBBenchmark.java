@@ -1,11 +1,8 @@
 package toolbox.plugin.jdbc;
 
-import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,11 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.NullOutputStream;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.JDBCSession;
 import toolbox.util.JDBCUtil;
 import toolbox.util.MemoryWatcher;
 import toolbox.util.RandomUtil;
@@ -41,10 +36,24 @@ public class DBBenchmark
     // Constants
     //--------------------------------------------------------------------------
     
-    public final static int TELLER = 0;
-    public final static int BRANCH = 1;
-    public final static int ACCOUNT = 2;
+    /**
+     * Javabean properties that editable for this object. These properties
+     * are persisted via the IPreferenced interface and edited by the 
+     * DBBenchmarkView UI component.
+     */
+    public static final String[] SAVED_PROPS = new String[] {
+        "verbose",
+        "numClients",
+        "numTxPerClient"
+    };
+        
+    public static final int TELLER = 0;
+    public static final int BRANCH = 1;
+    public static final int ACCOUNT = 2;
     
+    /**
+     * Number format used during report generation.
+     */
     private static final NumberFormat FMT = DecimalFormat.getNumberInstance();
     
     //--------------------------------------------------------------------------
@@ -79,16 +88,6 @@ public class DBBenchmark
     private static int numHistory_  = 864000; 
     
     /**
-     * Use transactions.
-     */
-    private static boolean transactions_ = true;
-    
-    /**
-     * Use prepared statements.
-     */
-    private static boolean preparedStmt_ = false;
-    
-    /**
      * Table extension.
      */
     private static String tableExtension_ = "";
@@ -103,30 +102,34 @@ public class DBBenchmark
      */
     private static String shutdownCommand_ = "";
     
-    /**
-     * Tab file.
-     */
-    private static PrintStream tabFile_ = 
-        new PrintStream(new NullOutputStream());
-    
-    /**
-     * Verbose flag.
-     */
-    private static boolean verbose_ = false;
-    
-    /**
-     * Default number of clients.
-     */
-    private static int numClients_ = 10;
-    
-    /**
-     * Default number of transactions per client.
-     */
-    private static int numTxPerClient_ = 10;
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
+
+    /**
+     * Use transactions.
+     */
+    private boolean transactions_ = true;
+
+    /**
+     * Use prepared statements.
+     */
+    private boolean preparedStmt_ = false;
+
+    /**
+     * Default number of transactions per client.
+     */
+    private int numTxPerClient_ = 10;
+
+    /**
+     * Verbose flag.
+     */
+    private boolean verbose_ = false;
+
+    /**
+     * Number of clients (thread).
+     */
+    private int numClients_ = 10;
     
     /**
      * Number of failed transactions.
@@ -154,176 +157,14 @@ public class DBBenchmark
     private PrintWriter writer_;
 
     //--------------------------------------------------------------------------
-    // Main
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Creates a 1-tps database (1 branch, 10 tellers) and runs one TPC BM B 
-     * transaction. Example command line:
-     * <pre>
-     * java DBBench -driver org.hsqldb.jdbcDriver -url jdbc:hsqldb:/hsql/test33 -user sa -clients 20
-     * </pre>
-     * 
-     * @param args See above. 
-     */
-    public static void main(String[] args) 
-    {
-        //DriverManager.setLogWriter(new PrintWriter(new OutputStreamWriter(System.out)));
-        
-        String  driver   = "";
-        String  url      = "";
-        String  user     = "";
-        String  password = "";
-        boolean initDB   = false;
-
-        for (int i = 0; i < args.length; i++)
-        {
-            if (args[i].equals("-clients"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-                    numClients_ = Integer.parseInt(args[i]);
-                }
-            }
-            else if (args[i].equals("-driver"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-                    driver = args[i];
-
-                    if (driver.equals(
-                        "org.enhydra.instantdb.jdbc.idbDriver"))
-                        shutdownCommand_ = "SHUTDOWN";
-
-                    if (driver.equals(
-                        "com.borland.datastore.jdbc.DataStoreDriver"))
-                    {
-                    }
-
-                    if (driver.equals("com.mckoi.JDBCDriver"))
-                        shutdownCommand_ = "SHUTDOWN";
-
-                    if (driver.equals("org.hsqldb.jdbcDriver"))
-                    {
-                        tableExtension_ = "CREATE CACHED TABLE ";
-                        shutdownCommand_ = "SHUTDOWN COMPACT";
-                    }
-                }
-            }
-            else if (args[i].equals("-url"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-                    url = args[i];
-                }
-            }
-            else if (args[i].equals("-user"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-                    user = args[i];
-                }
-            }
-            else if (args[i].equals("-tabfile"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-
-                    try
-                    {
-                        tabFile_ = new PrintStream(
-                            new FileOutputStream(args[i]));
-                    }
-                    catch (Exception e)
-                    {
-                        tabFile_ = new PrintStream(new NullOutputStream());
-                    }
-                }
-            }
-            else if (args[i].equals("-password"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-                    password = args[i];
-                }
-            }
-            else if (args[i].equals("-tpc"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-                    numTxPerClient_ = Integer.parseInt(args[i]);
-                }
-            }
-            else if (args[i].equals("-init"))
-                initDB = true;
-            else if (args[i].equals("-tps"))
-            {
-                if (i + 1 < args.length)
-                {
-                    i++;
-                    tps_ = Integer.parseInt(args[i]);
-                }
-            }
-            else if (args[i].equals("-v"))
-                verbose_ = true;
-        }
-
-        if (StringUtils.isBlank(driver) || 
-            StringUtils.isBlank(url)) 
-        {
-            System.out.println(
-                "Usage: java DBBenchmark -driver [driver_class_name] " +
-                "-url [url_to_db] -user [username] -password [password] [-v] " +
-                "[-init] [-tpc n] [-clients]");
-            
-            System.out.println();
-            System.out.println("-v       Verbose error messages");
-            System.out.println("-init    Initialize the tables");
-            System.out.println("-tpc     Transactions per client");
-            System.out.println("-clients Number of simultaneous clients");
-            System.exit(-1);
-        }
-
-        System.out.println(
-            "*********************************************************");
-        System.out.println(
-            "* DBBenchmark v1.1                                        *");
-        System.out.println(
-            "*********************************************************");
-        System.out.println();
-        System.out.println("Driver      : " + driver);
-        System.out.println("URL         : " + url);
-        System.out.println();
-        System.out.println("Scale factor: " + tps_);
-        System.out.println("# Clients   : " + numClients_);
-        System.out.println("# Txn/Client: " + numTxPerClient_);
-        System.out.println();
-
-        try
-        {
-            Class.forName(driver);
-
-            DBBenchmark bench = 
-                new DBBenchmark(url, user, password, initDB);
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
-    //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
+    public DBBenchmark()
+    {
+    }
+    
+    
     /**
      * Creates a DBBenchmark and sends output to System.out by default.
      * 
@@ -356,7 +197,6 @@ public class DBBenchmark
         PrintWriter writer)
     {
         writer_ = writer;
-        //memoryWatcher_ = new MemoryWatcher();
         
         try
         {
@@ -397,14 +237,81 @@ public class DBBenchmark
                     JDBCUtil.releaseConnection(conn);
                 }
                 */
-                
-                IOUtils.closeQuietly(tabFile_);
             }
             catch (Exception ex2)
             {
                 logger_.error(ex2);
             }
         }
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the numClients.
+     * 
+     * @return int
+     */
+    public int getNumClients()
+    {
+        return numClients_;
+    }
+
+
+    /**
+     * Sets the numClients.
+     * 
+     * @param numClients The numClients to set.
+     */
+    public void setNumClients(int numClients)
+    {
+        numClients_ = numClients;
+    }
+
+
+    /**
+     * Returns the numTxPerClient.
+     * 
+     * @return int
+     */
+    public int getNumTxPerClient()
+    {
+        return numTxPerClient_;
+    }
+
+
+    /**
+     * Sets the numTxPerClient.
+     * 
+     * @param numTxPerClient The numTxPerClient to set.
+     */
+    public void setNumTxPerClient(int numTxPerClient)
+    {
+        numTxPerClient_ = numTxPerClient;
+    }
+
+
+    /**
+     * Returns the verbose.
+     * 
+     * @return boolean
+     */
+    public boolean isVerbose()
+    {
+        return verbose_;
+    }
+
+
+    /**
+     * Sets the verbose.
+     * 
+     * @param verbose The verbose to set.
+     */
+    public void setVerbose(boolean verbose)
+    {
+        verbose_ = verbose;
     }
 
     //--------------------------------------------------------------------------
@@ -426,7 +333,8 @@ public class DBBenchmark
         boolean usePreparedStatements, 
         String url, 
         String user, 
-        String password) throws InterruptedException, ServiceException
+        String password) 
+        throws InterruptedException, ServiceException, SQLException
     {
         memoryWatcher_ = new MemoryWatcher();
         memoryWatcher_.initialize(MapUtils.EMPTY_MAP);
@@ -474,13 +382,13 @@ public class DBBenchmark
     /**
      * Generates a report containing statistics from the last executed 
      * benchmark. 
+     *
+     * @throws ServiceException on error. 
      */
     protected void generateReport() throws ServiceException
     {
         long endTime = System.currentTimeMillis();
         double completionTime = ((double) endTime - (double) startTime_) / 1000;
-
-        tabFile_.print(tps_ + ";" + numClients_ + ";" + numTxPerClient_ + ";");
 
         writer_.println();
         writer_.print("Benchmark: ");
@@ -488,23 +396,19 @@ public class DBBenchmark
         if (preparedStmt_)
         {
             writer_.print("Prepared Statements ");
-            tabFile_.print("<prepared statements>;");
         }
         else
         {
             writer_.print("Direct Queries ");
-            tabFile_.print("<direct queries>;");
         }
 
         if (transactions_)
         {
             writer_.print("+ Transactions");
-            tabFile_.print("<transactions>;");
         }
         else
         {
             writer_.print("+ Auto-commit");
-            tabFile_.print("<auto-commit>;");
         }
 
         writer_.println("\n" + StringUtil.BR);
@@ -527,19 +431,8 @@ public class DBBenchmark
         writer_.println(
             "Max memory  " + FMT.format(memoryWatcher_.getMax()) + " KB");
 
-        tabFile_.print(
-            memoryWatcher_.getMax() 
-            + ";" 
-            + memoryWatcher_.getMin() 
-            + ";" 
-            + failedTx_ 
-            + ";" 
-            + rate 
-            + "\n");
-
         txCount_ = 0;
         failedTx_ = 0;
-        //memoryWatcher_.initialize(MapUtils.EMPTY_MAP);
     }
 
     
@@ -904,7 +797,7 @@ public class DBBenchmark
      * @param type ACCOUNT, TELLER, or BRANCH
      * @return int
      */
-    protected static int getRandomID(int type)
+    protected int getRandomID(int type)
     {
         int min;
         int max;
@@ -933,7 +826,7 @@ public class DBBenchmark
                 max = min + num - 1;
         }
 
-        return (RandomUtil.nextInt(min, max));
+        return RandomUtil.nextInt(min, max);
     }
 
     
@@ -945,20 +838,33 @@ public class DBBenchmark
      * @param password Password
      * @return Connection
      */
-    protected static Connection connect(String url, String user, String password)
+    protected Connection connect(String url, String user, String password)
+        throws SQLException
     {
-        Connection conn = null;
+        String name = "bench";
         
         try
         {
-            conn = DriverManager.getConnection(url, user, password);
+            JDBCSession.getSession(name);
         }
-        catch (Exception ex)
+        catch (IllegalArgumentException iae)
         {
-            logger_.error(ex);
+            try
+            {
+                JDBCSession.init(
+                    name, 
+                    "org.hsqldb.jdbcDriver", 
+                    url, 
+                    user, 
+                    password);
+            }
+            catch (Exception e)
+            {
+                logger_.error(e);
+            }
         }
-
-        return conn;
+    
+        return JDBCSession.getConnection(name);
     }
     
     //--------------------------------------------------------------------------
@@ -990,12 +896,14 @@ public class DBBenchmark
          * @param url JDBC url.
          * @param user Username.
          * @param password Password.
+         * @throws SQLException on connection error.
          */
         public ClientThread(
             int numOfTx, 
             String url, 
             String user,
             String password)
+            throws SQLException
         {
             numTx_ = numOfTx;
             conn_ = connect(url, user, password);
@@ -1214,6 +1122,7 @@ public class DBBenchmark
             return 0;
         }
     }
+    
 }
 
 /* Copyright (c) 2001-2002, The HSQL Development Group
@@ -1245,3 +1154,169 @@ public class DBBenchmark
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+
+
+/**
+ * Creates a 1-tps database (1 branch, 10 tellers) and runs one TPC BM B 
+ * transaction. Example command line:
+ * <pre>
+ * java DBBench -driver org.hsqldb.jdbcDriver -url jdbc:hsqldb:/hsql/test33 -user sa -clients 20
+ * </pre>
+ * 
+ * @param args See above. 
+ */
+//public static void main(String[] args) 
+//{
+//    //DriverManager.setLogWriter(new PrintWriter(new OutputStreamWriter(System.out)));
+//    
+//    String  driver   = "";
+//    String  url      = "";
+//    String  user     = "";
+//    String  password = "";
+//    boolean initDB   = false;
+//
+//    for (int i = 0; i < args.length; i++)
+//    {
+//        if (args[i].equals("-clients"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//                numClients_ = Integer.parseInt(args[i]);
+//            }
+//        }
+//        else if (args[i].equals("-driver"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//                driver = args[i];
+//
+//                if (driver.equals(
+//                    "org.enhydra.instantdb.jdbc.idbDriver"))
+//                    shutdownCommand_ = "SHUTDOWN";
+//
+//                if (driver.equals(
+//                    "com.borland.datastore.jdbc.DataStoreDriver"))
+//                {
+//                }
+//
+//                if (driver.equals("com.mckoi.JDBCDriver"))
+//                    shutdownCommand_ = "SHUTDOWN";
+//
+//                if (driver.equals("org.hsqldb.jdbcDriver"))
+//                {
+//                    tableExtension_ = "CREATE CACHED TABLE ";
+//                    shutdownCommand_ = "SHUTDOWN COMPACT";
+//                }
+//            }
+//        }
+//        else if (args[i].equals("-url"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//                url = args[i];
+//            }
+//        }
+//        else if (args[i].equals("-user"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//                user = args[i];
+//            }
+//        }
+//        else if (args[i].equals("-tabfile"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//
+//                try
+//                {
+//                    tabFile_ = new PrintStream(
+//                        new FileOutputStream(args[i]));
+//                }
+//                catch (Exception e)
+//                {
+//                    tabFile_ = new PrintStream(new NullOutputStream());
+//                }
+//            }
+//        }
+//        else if (args[i].equals("-password"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//                password = args[i];
+//            }
+//        }
+//        else if (args[i].equals("-tpc"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//                numTxPerClient_ = Integer.parseInt(args[i]);
+//            }
+//        }
+//        else if (args[i].equals("-init"))
+//            initDB = true;
+//        else if (args[i].equals("-tps"))
+//        {
+//            if (i + 1 < args.length)
+//            {
+//                i++;
+//                tps_ = Integer.parseInt(args[i]);
+//            }
+//        }
+//        else if (args[i].equals("-v"))
+//            verbose_ = true;
+//    }
+//
+//    if (StringUtils.isBlank(driver) || 
+//        StringUtils.isBlank(url)) 
+//    {
+//        System.out.println(
+//            "Usage: java DBBenchmark -driver [driver_class_name] " +
+//            "-url [url_to_db] -user [username] -password [password] [-v] " +
+//            "[-init] [-tpc n] [-clients]");
+//        
+//        System.out.println();
+//        System.out.println("-v       Verbose error messages");
+//        System.out.println("-init    Initialize the tables");
+//        System.out.println("-tpc     Transactions per client");
+//        System.out.println("-clients Number of simultaneous clients");
+//        System.exit(-1);
+//    }
+//
+//    System.out.println(
+//        "*********************************************************");
+//    System.out.println(
+//        "* DBBenchmark v1.1                                        *");
+//    System.out.println(
+//        "*********************************************************");
+//    System.out.println();
+//    System.out.println("Driver      : " + driver);
+//    System.out.println("URL         : " + url);
+//    System.out.println();
+//    System.out.println("Scale factor: " + tps_);
+//    System.out.println("# Clients   : " + numClients_);
+//    System.out.println("# Txn/Client: " + numTxPerClient_);
+//    System.out.println();
+//
+//    try
+//    {
+//        Class.forName(driver);
+//
+//        DBBenchmark bench = 
+//            new DBBenchmark(url, user, password, initDB);
+//    }
+//    catch (Exception ex)
+//    {
+//        System.out.println(ex.getMessage());
+//        ex.printStackTrace();
+//    }
+//}
+
