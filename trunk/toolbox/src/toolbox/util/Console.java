@@ -13,34 +13,34 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
- * The purpose of the Interactive Console is to add interactive console based 
- * command execution with little effort to existing or new console based 
- * programs. Interactive Console provides the following commands:
- * <pre>
- * 
- * 1. quit/exit - exits the JVM
- * 2. classpath - prints out classpath information
- * 3. props     - prints out system properties
- * 4. setprop   - sets/adds a property to system properties
- * 5. delprop   - removes a property from system properties
- * 6. mem       - prints out memory usage information
- * 7. detach    - detaches the input stream from the console so Ctrl-C works
- *                to get a JVM dump
- * 8. help      - you're reading it
- * 9. uptime    - shows uptime of process
- * 
- * </pre>
+ * The purpose of the Console is to easily facilitate the execution of
+ * commands in an interactive text based environment. The following commands 
+ * are supported: 
+ * <ul>
+ *  <li>classpath - shows classpath information.
+ *  <li>delprop   - removes a property from the system properties.
+ *  <li>detach    - detaches the input stream from the console so Ctrl-C works 
+ *                  to get a JVM dump.
+ *  <li>help      - shows help on the available commands.
+ *  <li>history   - shows a history of executed commands  
+ *  <li>mem       - shows heap usage information.  
+ *  <li>props     - shows the system properties.
+ *  <li>quit/exit - exits the JVM.
+ *  <li>setprop   - sets/adds a property to the system properties.
+ *  <li>uptime    - shows the uptime of this process.
+ * </ul>
+ * <br>
  * To add a new command, just override handleCommand() in your subclass of 
- * InteractiveConsole and add interceptors for whatever commands you would like 
- * to support. Don't forget to call super.handleCommand() if your concrete 
- * implementation doesn't understand the command (delegate to a higher 
- * authority).
+ * Console and add interceptors for whatever commands you would like 
+ * to support.
  */
 public abstract class Console
 {
     //--------------------------------------------------------------------------
-    // Constants
+    // Commands
     //--------------------------------------------------------------------------
     
     /**
@@ -93,6 +93,11 @@ public abstract class Console
      */
     public static final String CMD_UPTIME = "uptime";
     
+    /** 
+     * Command to show the history of previously executed commands.
+     */
+    public static final String CMD_HISTORY = "history";
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -100,7 +105,7 @@ public abstract class Console
     /** 
      * Source of commands. 
      */    
-    private LineNumberReader lnr_;
+    private LineNumberReader reader_;
     
     /** 
      * Output of command results. 
@@ -111,6 +116,11 @@ public abstract class Console
      * Time console was created.
      */
     private long startTime_;
+    
+    /**
+     * Command history.
+     */
+    private List history_;
     
     //--------------------------------------------------------------------------
     // Constructors 
@@ -124,10 +134,10 @@ public abstract class Console
     {
         this(System.in, System.out);
     }
-    
-    
+
+
     /**
-     * Create an InteractiveConsole with the given streams.
+     * Creates a Console with the given input and output streams.
      * 
      * @param is Input stream to read commands from.
      * @param os Output stream to write command results to.
@@ -135,9 +145,9 @@ public abstract class Console
     public Console(InputStream is, PrintStream os)
     {
         startTime_ = Calendar.getInstance().getTime().getTime();
-        
-        ps_  = os;
-        lnr_ = new LineNumberReader(new InputStreamReader(is));                 
+        ps_        = os;
+        reader_    = new LineNumberReader(new InputStreamReader(is));
+        history_   = new ArrayList();
     }
 
     //--------------------------------------------------------------------------
@@ -156,15 +166,24 @@ public abstract class Console
     //--------------------------------------------------------------------------
  
     /**
-     * This method must be called when ready to handle commands. The loop is 
+     * This method must be called when ready to handle commands. The loop is
      * neverending so this call does block (reading from the input stream).
      */
     public void startConsole()
     {
         while (true)
         {
-            String command = getNextCommand();
-            handleCommand(command);
+
+            try
+            {
+                String command = getNextCommand();
+                handleCommand(command);
+            }
+            catch (Exception ex)
+            {
+                System.err.println(ex);
+                ex.printStackTrace();
+            }
         }
     }
       
@@ -179,27 +198,28 @@ public abstract class Console
         return ps_;
     }
 
-    
+
     /**
-     * Retrieves the next command from the input stream. 
+     * Retrieves the next command from the input stream.
      * 
      * @return Next command.
      */
     public String getNextCommand()
     {
         String cmd = null;
-        
+
         try
         {
             getPrintStream().print(getPrompt());
-            cmd = lnr_.readLine();        
+            cmd = reader_.readLine();
         }
         catch (IOException io)
         {
             System.err.println(io);
-            io.printStackTrace();    
+            io.printStackTrace();
         }
-        
+
+        history_.add(cmd);
         return cmd;
     }        
     
@@ -209,7 +229,7 @@ public abstract class Console
      * 
      * @param cmd Command to handle.
      */
-    public void handleCommand(String cmd)
+    public void handleCommand(String cmd) 
     {
         if (cmd.equals(CMD_QUIT) || cmd.equals(CMD_EXIT))
             commandQuit();
@@ -229,8 +249,21 @@ public abstract class Console
             commandDelProp(cmd);
         else if (cmd.equals(CMD_UPTIME))
             commandUptime();
+        else if (cmd.equals(CMD_HISTORY))
+            commandHistory();            
         else
-            ps_.println("Unknown command: " + cmd);
+            getPrintStream().println("Unknown command: " + cmd);
+    }
+
+
+    /**
+     * Returns the command history.
+     * 
+     * @return Buffer
+     */
+    public List getHistory()
+    {
+        return history_;
     }
 
     //--------------------------------------------------------------------------
@@ -238,16 +271,16 @@ public abstract class Console
     //--------------------------------------------------------------------------
 
     /**
-     * Adds/sets a property to system properties. 
+     * Adds/sets a property to system properties.
      * 
      * @param cmd Original command so we can extract prop name/value.
      */
     protected void commandSetProp(String cmd)
     {
         StringTokenizer st = new StringTokenizer(cmd, " ");
-        
+
         if (st.countTokens() != 3)
-            ps_.println("setprop <property name> <value>");
+            getPrintStream().println("setprop <property name> <value>");
         else
         {
             st.nextToken();
@@ -264,7 +297,7 @@ public abstract class Console
     protected void commandDelProp(String cmd)
     {
         StringTokenizer st = new StringTokenizer(cmd, " ");
-        
+
         if (st.countTokens() != 2)
             ps_.println("delprop <property name>");
         else
@@ -276,10 +309,11 @@ public abstract class Console
 
     
     /**
-     * Exits the virtual machine. 
+     * Exits the virtual machine.
      */
     protected void commandQuit()
     {
+        getPrintStream().println("Goodbye!");
         System.exit(0);
     }
 
@@ -290,15 +324,23 @@ public abstract class Console
     protected void commandDetach()
     {
         /**
-         * detach from the input stream for 10 secs so Ctrl-C can work so 
-         * the VM can be dumped without exiting or causing termination 
+         * detach from the input stream for 10 secs so Ctrl-C can work so the VM
+         * can be dumped without exiting or causing termination
          */
         int numSecs = 10000;
-        
-        getPrintStream().println("Detaching from inputstream for " + 
-            numSecs / 1000 + " secs...");
-            
-        ThreadUtil.sleep(10000);
+
+        getPrintStream().println(
+            "Detaching from inputstream for " + numSecs / 1000 + " secs...");
+
+        try
+        {
+            Thread.sleep(10000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
         getPrintStream().println("Re-attached to inputstream.");
     }
     
@@ -311,16 +353,28 @@ public abstract class Console
         PrintStream ps = getPrintStream();
         ps.println("classpath  => prints out classpath information");
         ps.println("delprop    => removes a properties from system properties");
-        ps.println("detach     => detaches from System.in so Ctrl-C can" +
-                                 "trigger a VM dump");        
+        ps.println("detach     => detaches from System.in so Ctrl-C can"
+                 + "trigger a VM dump");
         ps.println("mem        => prints out runtime memeory info");
-        ps.println("help       => prints help info");        
+        ps.println("help       => prints help info");
         ps.println("props      => prints out System properties");
-        ps.println("quit       => quits the program");        
+        ps.println("quit       => quits the program");
         ps.println("setprop    => adds/changes the value of a system property");
         ps.println("uptime     => shows how long process has been running");
     }
 
+
+    /**
+     * Prints command history.
+     */
+    protected void commandHistory()
+    {
+        Object[] cmds = history_.toArray();
+        
+        for (int i = 0; i < cmds.length - 1; 
+            getPrintStream().println(cmds[i++].toString()));
+    }
+    
     
     /**
      * Prints out all system properties in alphabetical order.
@@ -329,14 +383,14 @@ public abstract class Console
     {
         Properties props = System.getProperties();
 
-        List list = new ArrayList();        
-        
+        List list = new ArrayList();
+
         int max = 0;
-        
+
         for (Enumeration e = props.propertyNames(); e.hasMoreElements();)
         {
             String name = (String) e.nextElement();
-            
+
             // keep track of max length to line columns up
             if (name.length() > max)
                 max = name.length();
@@ -351,7 +405,7 @@ public abstract class Console
         {
             String name = (String) arr[i];
             String value = props.getProperty(name);
-            getPrintStream().println(StringUtil.left(name, max + 1) + value);
+            getPrintStream().println(StringUtils.left(name, max + 1) + value);
         }
     }
 
@@ -363,7 +417,7 @@ public abstract class Console
     {
         getPrintStream().println(
             "Free memory  " + Runtime.getRuntime().freeMemory());
-            
+
         getPrintStream().println(
             "Total memory " + Runtime.getRuntime().totalMemory());
     }
@@ -376,13 +430,13 @@ public abstract class Console
     {
         StringBuffer sb = new StringBuffer();
         String path = System.getProperty("java.class.path");
-        
+
         for (StringTokenizer st = new StringTokenizer(path, 
-                System.getProperty("path.separator")); st.hasMoreTokens();)
-        {          
+            System.getProperty("path.separator")); st.hasMoreTokens();)
+        {
             sb.append(" " + st.nextToken() + "\n");
         }
-        
+
         getPrintStream().print(sb.toString());
     }
     
@@ -394,13 +448,13 @@ public abstract class Console
     {
         long currentTime = Calendar.getInstance().getTime().getTime();
         long delta = currentTime - startTime_;
-        
-        long milli  = 1;
+
+        long milli = 1;
         long second = 1000 * milli;
         long minute = 60 * second;
-        long hour   = 60 * minute;
-        long day    = 24 * hour;
-        
+        long hour = 60 * minute;
+        long day = 24 * hour;
+
         long days = delta / day;
         delta -= days * day;
         long hours = delta / hour;
@@ -410,9 +464,9 @@ public abstract class Console
         long seconds = delta / second;
         delta -= second * seconds;
         long millis = delta;
-        
+
         StringBuffer sb = new StringBuffer();
-        
+
         if (days > 0)
             sb.append(days + "d ");
         if (hours > 0)
@@ -423,7 +477,7 @@ public abstract class Console
             sb.append(seconds + "s ");
         if (millis > 0)
             sb.append(millis + "ms");
-        
+
         getPrintStream().println(sb.toString());
     }
 }
