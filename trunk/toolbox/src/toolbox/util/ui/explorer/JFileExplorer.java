@@ -65,8 +65,8 @@ public class JFileExplorer extends JPanel
         Logger.getLogger(JFileExplorer.class);
 
     // Saved component properties
-    private static final String PROP_PATH = ".explorer.path";
-    private static final String PROP_FILE = ".explorer.file";
+    private static final String PROP_PATH    = ".explorer.path";
+    private static final String PROP_FILE    = ".explorer.file";
     private static final String PROP_DIVIDER = ".explorer.dividerlocation";
 
     // Models
@@ -88,6 +88,12 @@ public class JFileExplorer extends JPanel
     /** Collection of listeners */ 
     private List fileExplorerListeners_ = new ArrayList();
 
+	/** Flag to prevent events from triggering new events to be generated */
+    private boolean processingTreeEvent_;
+    
+    /** Listener for the change in selection to the directory */
+    private DirTreeSelectionListener treeSelectionListener_;
+        
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -165,112 +171,128 @@ public class JFileExplorer extends JPanel
      */
     public void selectFolder(String path)
     {
-        String[] pathTokens = StringUtil.tokenize(path, File.separator);
-        
-        if (Platform.isUnix())
+        if (!processingTreeEvent_)
         {
-            if (path.startsWith(File.separator))
-            {
-                // Set root to "/"
-                pathTokens = (String[]) 
-                    ArrayUtil.insert(pathTokens, File.separator);
-            }
-            else
-            {
-                throw new IllegalArgumentException("Path must begin with /");
-            }
-        }
-        else // if (Platform.isWindows())
-        {
-            // Treat all other platforms like windows
-            
-            if (path.startsWith(File.separator))
-            {
-                // Update the root since the path separator was stripped by
-                // the tokenizer
-                pathTokens[0] = getDefaultRoot();
-            }
-            else
-            {
-                // Root drive a possibility
-                File root  = new File(path.substring(0,3));
+            processingTreeEvent_ = true;
                 
-                if (ArrayUtil.contains(File.listRoots(), root))
+            //logger_.debug("path = " + path);
+            //logger_.debug(Stringz.BR);
+            //logger_.debug("**", new Exception("From selectFolder()"));
+            //logger_.debug(Stringz.BR);
+            
+            String[] pathTokens = StringUtil.tokenize(path, File.separator);
+            
+            if (Platform.isUnix())
+            {
+                if (path.startsWith(File.separator))
                 {
-                    // Update the root since the path separator was stripped
-                    // by the tokenizer
-                    pathTokens[0] = root.toString();
-                    
-                    // Switch to different drive if necessary
-                    rootsComboBox_.setSelectedItem(new File(pathTokens[0]));
-                    
-                    logger_.debug("Switching to root in path: " + 
-                        rootsComboBox_.getSelectedItem());
+                    // Set root to "/"
+                    pathTokens = (String[]) 
+                        ArrayUtil.insert(pathTokens, File.separator);
                 }
                 else
                 {
-                    // Root not found in list
-                    throw new IllegalArgumentException( 
-                        "Root could not be determined in path " + path);
+                    throw new IllegalArgumentException("Path must begin with /");
                 }
             }
-        }
-
-        logger_.debug("Path Tokens: " + ArrayUtil.toString(pathTokens));
-        
-        DefaultTreeModel model = (DefaultTreeModel)tree_.getModel();
-        FileNode root = (FileNode) model.getRoot();
-
-        // Discover path by iterating over pathTokens and building a TreePath 
-        // dynamically
-        
-        if (root.equals(new FileNode(pathTokens[0])))
-        {
-            FileNode current = root;
-            
-            //logger_.debug(method + 
-            //  "Current " + current + " children: " + current.getChildCount());
-            
-            // Starts at 1 to skip over root
-            for(int i=1; i<pathTokens.length; i++) 
+            else // if (Platform.isWindows())
             {
-                if (current.getChildCount() == 0)
-                {
-                    // Expand node on demand
-                    String partialPath = "";
-                    for (int j=0; j< i; j++) 
-                    {
-                        if (pathTokens[j].endsWith(File.separator))
-                            pathTokens[j] = pathTokens[j].substring(0, 
-                                pathTokens[j].length() -1);
-                            
-                        partialPath = partialPath + 
-                            pathTokens[j] + File.separator;
-                    }
-                        
-                    //logger_.debug(method + "Partial path = "  + partialPath);
-                        
-                    setTreeFolders(partialPath, current);
-                }
+                // Treat all other platforms like windows
                 
-                FileNode child = new FileNode(pathTokens[i]);
-                child.setParent(current);
-                int idx = current.getIndex(child);
+                if (path.startsWith(File.separator))
+                {
+                    // Update the root since the path separator was stripped by
+                    // the tokenizer
+                    pathTokens[0] = getDefaultRoot();
+                }
+                else
+                {
+                    // Root drive a possibility
+                    File root  = new File(path.substring(0,3));
+                    
+                    if (ArrayUtil.contains(File.listRoots(), root))
+                    {
+                        // Update the root since the path separator was stripped
+                        // by the tokenizer
+                        pathTokens[0] = root.toString();
+                        
+                        // Switch to different drive if necessary
+                        rootsComboBox_.setSelectedItem(new File(pathTokens[0]));
+                        
+                        logger_.debug(
+                            "Switching to root " + 
+                                rootsComboBox_.getSelectedItem() + 
+                                    " in path " + path);
+                    }
+                    else
+                    {
+                        // Root not found in list
+                        throw new IllegalArgumentException( 
+                            "Root could not be determined in path " + path);
+                    }
+                }
+            }
+    
+            logger_.debug("Path Tokens = " + ArrayUtil.toString(pathTokens));
+            
+            DefaultTreeModel model = (DefaultTreeModel)tree_.getModel();
+            FileNode root = (FileNode) model.getRoot();
+    
+            // Discover path by iterating over pathTokens and building a TreePath 
+            // dynamically
+            
+            if (root.equals(new FileNode(pathTokens[0])))
+            {
+                FileNode current = root;
                 
                 //logger_.debug(method + 
-                //    "node " + current + " found at index " + idx);
+                //  "Current " + current + " children: " + current.getChildCount());
+                
+                // Starts at 1 to skip over root
+                for(int i=1; i<pathTokens.length; i++) 
+                {
+                    if (current.getChildCount() == 0)
+                    {
+                        // Expand node on demand
+                        String partialPath = "";
+                        for (int j=0; j< i; j++) 
+                        {
+                            if (pathTokens[j].endsWith(File.separator))
+                                pathTokens[j] = pathTokens[j].substring(0, 
+                                    pathTokens[j].length() -1);
+                                
+                            partialPath = partialPath + 
+                                pathTokens[j] + File.separator;
+                        }
+                            
+                        //logger_.debug(method + "Partial path = "  + partialPath);
+                            
+                        setTreeFolders(partialPath, current);
+                    }
                     
-                current = (FileNode) current.getChildAt(idx);
+                    FileNode child = new FileNode(pathTokens[i]);
+                    child.setParent(current);
+                    int idx = current.getIndex(child);
+                    
+                    //logger_.debug(method + 
+                    //    "node " + current + " found at index " + idx);
+                        
+                    current = (FileNode) current.getChildAt(idx);
+                }
+                
+                TreePath tp = new TreePath(current.getPath());
+                tree_.setSelectionPath(tp);
+                tree_.scrollPathToVisible(tp);
+            }
+            else
+            {
+                throw new IllegalArgumentException(
+                    "Root didnt match in model!" +
+                        root + "doesnt match " + new FileNode(pathTokens[0]));
             }
             
-            TreePath tp = new TreePath(current.getPath());
-            tree_.setSelectionPath(tp);
-            tree_.scrollPathToVisible(tp);
+            processingTreeEvent_ = false;
         }
-        else
-            throw new IllegalArgumentException(
-                "Root didnt match in model!" +
-                    root + new FileNode(pathTokens[0]));
     }
 
     //--------------------------------------------------------------------------
@@ -407,7 +429,7 @@ public class JFileExplorer extends JPanel
         // File system roots combobox
         rootsComboBox_ = new JComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
-        rootsComboBox_.addItemListener(new FileRootItemListener());
+        rootsComboBox_.addItemListener(new DriveComboListener());
         rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
@@ -446,7 +468,10 @@ public class JFileExplorer extends JPanel
             
         tree_.setRootVisible(true);
         tree_.setScrollsOnExpand(true);
-        tree_.addTreeSelectionListener(new DirTreeSelectionListener());
+        
+        treeSelectionListener_ = new DirTreeSelectionListener();
+        tree_.addTreeSelectionListener(treeSelectionListener_);
+        
         tree_.addMouseListener(new DirTreeMouseListener());
         tree_.setCellRenderer(renderer);
         tree_.putClientProperty("JTree.lineStyle", "Angled");
@@ -549,8 +574,13 @@ public class JFileExplorer extends JPanel
      */
     protected void clear()
     {
+        // Disable events while the tree is being cleared
+        tree_.removeTreeSelectionListener(treeSelectionListener_);
+        
         rootNode_.removeAllChildren();
         treeModel_.reload();
+        
+        tree_.addTreeSelectionListener(treeSelectionListener_);
     }
 
     /**
@@ -808,21 +838,28 @@ public class JFileExplorer extends JPanel
     }
 
     /**
-     * Inner class to give support for Roots ComboBox changes.
+     * Handles the changing of the selection of the file root (drive letter)
      */
-    private class FileRootItemListener implements ItemListener
+    private class DriveComboListener implements ItemListener
     {
-        /**
-         * Called when an item state has changed
-         * 
-         * @param  ie  ItemEvent to handle
-         */
         public void itemStateChanged(ItemEvent ie)
         {
-            setFileList(rootsComboBox_.getSelectedItem().toString());
-            clear();
-            setTreeRoot(rootsComboBox_.getSelectedItem().toString());
-            setTreeFolders(rootsComboBox_.getSelectedItem().toString(), null);
+            if (ie.getStateChange() == ItemEvent.SELECTED)
+            {
+                String fileRoot = rootsComboBox_.getSelectedItem().toString();
+                
+                //logger_.debug("new drive = " + fileRoot);
+                //logger_.debug(Stringz.BR);            
+                //logger_.debug(Dumper.dump(ie,5)); 
+                //logger_.debug(Stringz.BR);
+                //logger_.debug("$$$$$", new Exception("From itemStateChanged()"));
+                //logger_.debug(Stringz.BR);
+                 
+                setFileList(fileRoot);
+                clear();
+                setTreeRoot(fileRoot);
+                setTreeFolders(fileRoot, null);
+            }
         }
     }
 
