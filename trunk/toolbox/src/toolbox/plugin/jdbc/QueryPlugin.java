@@ -3,6 +3,8 @@ package toolbox.plugin.jdbc;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -18,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
 
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -31,14 +34,19 @@ import org.jedit.syntax.TextAreaDefaults;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
+import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.JDBCUtil;
+import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.db.SQLFormatter;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartOptionPane;
@@ -143,7 +151,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /** 
      * Text area for entering sql statements. 
      */    
-    private JEditTextArea sqlArea_;
+    private JEditTextArea sqlEditor_;
     
     /** 
      * Text are for sql execution results. 
@@ -226,35 +234,64 @@ public class QueryPlugin extends JPanel implements IPlugin
         TextAreaDefaults defaults = new SQLDefaults();
         defaults.popup = rootPopup;
         
-        sqlArea_ = new JEditTextArea(new TSQLTokenMarker(), defaults);
+        sqlEditor_ = new JEditTextArea(new TSQLTokenMarker(), defaults);
         
-        editMenu.setTextArea(sqlArea_);
+        editMenu.setTextArea(sqlEditor_);
         editMenu.buildView();
         
         rootPopup.add(SwingUtil.popupToMenu(editMenu));
         
-        sqlArea_.setFont(FontUtil.getPreferredMonoFont());
+        sqlEditor_.setFont(FontUtil.getPreferredMonoFont());
         
-        sqlArea_.getInputHandler().addKeyBinding(
+        sqlEditor_.getInputHandler().addKeyBinding(
             "C+ENTER", new ExecuteAction());
        
-        sqlArea_.getInputHandler().addKeyBinding(
+        sqlEditor_.getInputHandler().addKeyBinding(
             "CS+ENTER", new ExecuteCurrentAction());
              
-        sqlArea_.getInputHandler().addKeyBinding(
+        sqlEditor_.getInputHandler().addKeyBinding(
             "C+UP", new CtrlUpAction());
                          
-        sqlArea_.getInputHandler().addKeyBinding(
+        sqlEditor_.getInputHandler().addKeyBinding(
             "CS+F", new FormatSQLAction());
         
         resultsArea_ = new JSmartTextArea();
         resultsArea_.setFont(FontUtil.getPreferredMonoFont());
         
+        JButton help = new JButton(
+            ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK));
+        help.setFocusPainted(false);
+        help.setToolTipText("SQL Help");
+        help.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                String sqlRef = File.separator + 
+                    FileUtil.trailWithSeparator(
+                        ClassUtil.packageToPath(
+                            ClassUtil.stripClass(
+                                QueryPlugin.class.getName()))) + 
+                                    "sqlref.txt";
+                
+                sqlRef = sqlRef.replace(File.separatorChar, '/');
+                
+                sqlEditor_.setText(sqlEditor_.getText() + "\n" +
+                    ResourceUtil.getResourceAsString(sqlRef));
+            }
+        });
+        
+        JToolBar tb = new JToolBar();
+        tb.setRollover(true);
+        tb.add(help);
+        
         areaSplitPane_ = 
             new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
-                sqlArea_, // JEditTextArea is already wrapped in a scroller
-                new JScrollPane(resultsArea_));
+                new JHeaderPanel("SQL Editor", tb, sqlEditor_),
+                new JHeaderPanel(
+                    "Results", 
+                    null, 
+                    new JScrollPane(resultsArea_)));
 
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -286,7 +323,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      * formatted string.
      * 
      * @param sql SQL query,
-     * @return Formatted results,
+     * @return Formatted results.
      * @see JDBCUtil#format(ResultSet)
      */
     protected String executeSQL(String sql)
@@ -359,17 +396,17 @@ public class QueryPlugin extends JPanel implements IPlugin
     protected IntRange getActiveRange()
     {
         IntRange range = new IntRange(0);
-        String selected = sqlArea_.getSelectedText();
+        String selected = sqlEditor_.getSelectedText();
         
         if (!StringUtil.isNullOrEmpty(selected))
         {
             range = new IntRange(
-                sqlArea_.getSelectionStart(), sqlArea_.getSelectionEnd());
+                sqlEditor_.getSelectionStart(), sqlEditor_.getSelectionEnd());
         }
         else  
         {
-            int caret = sqlArea_.getCaretPosition();
-            String all = sqlArea_.getText();
+            int caret = sqlEditor_.getCaretPosition();
+            String all = sqlEditor_.getText();
             int semi = all.indexOf(';', caret);
             
             if (semi >= 0)
@@ -415,7 +452,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         IntRange range = getActiveRange();
         
         String active =  
-            sqlArea_.getText(
+            sqlEditor_.getText(
                 range.getMinimumInteger(), 
                 range.getMaximumInteger() - range.getMinimumInteger());
         
@@ -430,7 +467,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected void setActiveText(String active)
     {
-        String all = sqlArea_.getText();
+        String all = sqlEditor_.getText();
         int len = all.length();
         IntRange range = getActiveRange();
         int min = range.getMinimumInteger();
@@ -446,7 +483,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         sb.append("\n");
         sb.append(all.substring(max, len));
         
-        sqlArea_.setText(sb.toString());
+        sqlEditor_.setText(sb.toString());
     }
     
     //--------------------------------------------------------------------------
@@ -525,10 +562,10 @@ public class QueryPlugin extends JPanel implements IPlugin
         leftFlipPane_.applyPrefs(root);
         dbConfigPane_.applyPrefs(root);
         resultsArea_.applyPrefs(root);
-        sqlArea_.applyPrefs(root);
+        sqlEditor_.applyPrefs(root);
         areaSplitPane_.applyPrefs(root);
         
-        sqlArea_.setText(
+        sqlEditor_.setText(
             XOMUtil.getString(
                 root.getFirstChildElement(NODE_CONTENTS), ""));
     }
@@ -549,13 +586,13 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
         
         Element contents = new Element(NODE_CONTENTS);
-        contents.appendChild(sqlArea_.getText().trim());
+        contents.appendChild(sqlEditor_.getText().trim());
         root.appendChild(contents);
         
         leftFlipPane_.savePrefs(root);
         dbConfigPane_.savePrefs(root);
         resultsArea_.savePrefs(root);
-        sqlArea_.savePrefs(root);
+        sqlEditor_.savePrefs(root);
         areaSplitPane_.savePrefs(root);
         
         XOMUtil.insertOrReplace(prefs, root);
@@ -590,7 +627,7 @@ public class QueryPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            String sql = sqlArea_.getText();
+            String sql = sqlEditor_.getText();
             
             if (StringUtil.isNullOrBlank(sql))
             {
@@ -599,7 +636,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             else
             {
                 statusBar_.setStatus("Executing...");
-                String results = executeSQL(sqlArea_.getText());
+                String results = executeSQL(sqlEditor_.getText());
                 resultsArea_.append(results);
                 
                 if ((!StringUtil.isNullOrBlank(results)) &&
@@ -636,7 +673,7 @@ public class QueryPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            String sql = sqlArea_.getLineText(sqlArea_.getCaretLine());
+            String sql = sqlEditor_.getLineText(sqlEditor_.getCaretLine());
             
             if (StringUtil.isNullOrBlank(sql))
             {
@@ -737,7 +774,7 @@ public class QueryPlugin extends JPanel implements IPlugin
          */
         public void actionPerformed(ActionEvent e)
         {
-            sqlArea_.setText(sql_);
+            sqlEditor_.setText(sql_);
             new ExecuteAction().actionPerformed(e);
         }
     }
