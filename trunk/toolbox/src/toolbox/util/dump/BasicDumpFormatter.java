@@ -101,8 +101,8 @@ public class BasicDumpFormatter implements IDumpFormatter
      * Allows stripping of the package name when printing out a classes 
      * fully qualified name.
      * 
-     * @param     b   If true, package will be choped from a class name,
-     *                otherwise the FQN will be used
+     * @param  b  If true, package will be choped from a class name, otherwise 
+     *            the FQN will be used.
      */
     public void setStripPackage(boolean b)
     {
@@ -112,8 +112,8 @@ public class BasicDumpFormatter implements IDumpFormatter
     /**
      * Flag to set the display of the class inheritance hierarchy
      * 
-     * @param  b    If true, show inheritance hierarchy, otherwise just print
-     *              the name of the current class in the hierarchy
+     * @param  b  If true, show inheritance hierarchy, otherwise just print
+     *            the name of the current class in the hierarchy.
      */
     public void setShowInheritance(boolean b)
     {
@@ -125,7 +125,7 @@ public class BasicDumpFormatter implements IDumpFormatter
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.IDumper#includeClass(java.lang.Class)
+     * @see toolbox.util.dump.IDumpFormatter#includeClass(java.lang.Class)
      */
     public boolean shouldInclude(Class clazz)
     {
@@ -143,7 +143,7 @@ public class BasicDumpFormatter implements IDumpFormatter
     }
 
     /**
-     * @see toolbox.util.IDumper#includeField(java.lang.reflect.Field)
+     * @see toolbox.util.dump.IDumpFormatter#includeField(java.lang.reflect.Field)
      */
     public boolean shouldInclude(Field field)
     {
