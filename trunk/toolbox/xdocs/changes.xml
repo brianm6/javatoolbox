@@ -37,7 +37,6 @@
  * TODO: Add Swing preferences (window drag, resize outline, etc)
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
  * TODO: Save db profiles to a separate file.
- * TODO: Upgrade cvs.exe
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -94,7 +93,8 @@
       <action type="fix"   >Fixed ClassCastException in QueryPlugin on query execution failure</action>
       <action type="add"   >Created DynamicFilterView for real time filtering of a textarea</action>              
       <action type="add"   >Added realtime filtering to QueryPlugin results pane</action>              
-      <action type="add"   >Added this changes report to maven</action>              
+      <action type="add"   >Added this changes report to maven</action>
+      <action type="update">Upgraded to cvs 1.12.9 to get maven-statcvs-plugin working</action>
     </release>
 
     <release version="2.0" date="June 2004">
