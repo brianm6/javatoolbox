@@ -48,23 +48,6 @@ public class JFontChooserDialog extends JSmartDialog
     private JFontChooser fontChooser_;
     
     /**
-     * Button which sets the currently selected font and dismisses the dialog 
-     * box.
-     */
-    private JButton okButton_;
-    
-    /**
-     * Button which cancels the dialog box without changing the font.
-     */
-    private JButton cancelButton_;
-    
-    /**
-     * Button which notifies listeners that the user wants the currently
-     * selected font applied to their view.
-     */
-    private JButton applyButton_;
-    
-    /**
      * List of font chooser dialog listeners.
      */
     private List listeners_;
@@ -198,18 +181,18 @@ public class JFontChooserDialog extends JSmartDialog
         fontChooser_.addFontSelectionListener(new FontSelectionListener());
         getContentPane().add(BorderLayout.CENTER, fontChooser_);
 
-        okButton_     = new JSmartButton(new OKAction());
-        cancelButton_ = new JSmartButton(new CancelAction());
-        applyButton_  = new JSmartButton(new ApplyAction());
+        JButton okButton     = new JSmartButton(new OKAction());
+        JButton cancelButton = new JSmartButton(new CancelAction());
+        JButton applyButton  = new JSmartButton(new ApplyAction());
         
-        applyButton_.setName(NAME_APPLY_BUTTON);
-        cancelButton_.setName(NAME_CANCEL_BUTTON);
-        okButton_.setName(NAME_OK_BUTTON);
+        applyButton.setName(NAME_APPLY_BUTTON);
+        cancelButton.setName(NAME_CANCEL_BUTTON);
+        okButton.setName(NAME_OK_BUTTON);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(okButton_);
-        buttonPanel.add(applyButton_);        
-        buttonPanel.add(cancelButton_);
+        buttonPanel.add(okButton);
+        buttonPanel.add(applyButton);        
+        buttonPanel.add(cancelButton);
         
         JPanel p = new JPanel(new GridLayout(2, 1));
         JPanel a = new JPanel(new FlowLayout());
