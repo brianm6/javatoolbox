@@ -44,60 +44,6 @@ public class ClassUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests getClassesInPackage() for a package in a file system directory.
-     */
-    public void testGetClassesInPackageDirectory()
-    {
-        assertTrue(true);
-        
-        // TODO: Revisit testcase 
-        
-        // Have to revisit because no classes files are hanging out in
-        // a directory on the classpath when the test is run from outside
-        // eclipse
-        
-        //logger_.info("Running testGetClassesInPackageDirectory...");
-        
-        //String[] classes = ClassUtil.getClassesInPackage("toolbox.util");
-        //logger_.info("\n" + ArrayUtil.toString(classes, true));
-        //assertTrue(StringUtil.class.getName() + " not found in package", 
-        //    ArrayUtil.contains(classes, StringUtil.class.getName()));
-    }
-    
-    
-    /**
-     * Tests getClassesInPackage() for a package in a jar file.
-     */
-    public void testGetClassesInPackageArchive()
-    {
-        logger_.info("Running testGetClassesInPackageArchive...");
-        
-        String[] classes = ClassUtil.getClassesInPackage("junit.textui");
-        
-        //logger_.info("\n"+ArrayUtil.toString(classes, true));
-        
-        assertTrue(TestRunner.class.getName() + " not found in package", 
-            ArrayUtil.contains(classes, TestRunner.class.getName()));
-    }
-    
-    
-    /**
-     * Tests getClassesInPackage() for a package in the boot classpath.
-     */
-    public void testGetClassesInPackageBoot()
-    {
-        logger_.info("Running testGetClassesInPackageBoot...");
-        
-        String[] classes = ClassUtil.getClassesInPackage("java.lang");
-        
-        //logger_.info("\n" + ArrayUtil.toString(classes, true));
-        
-        assertTrue(String.class.getName() + " not found in package", 
-            ArrayUtil.contains(classes, String.class.getName()));
-    }
-    
-    
-    /**
      * Tests getPackagesInClasspath(). 
      */
     public void testGetPackagesInClasspath()
@@ -123,83 +69,7 @@ public class ClassUtilTest extends TestCase
         String[] paths = StringUtil.tokenize(classpath, File.pathSeparator);
         SmartLogger.info(logger_, ArrayUtil.toString(paths, true));
     }
-    
-    
-    /**
-     * Positive tests isArchive()
-     */
-    public void testIsArchive()
-    {
-        logger_.info("Running testIsArchive...");
-        
-        // Positive tests
-        assertTrue("testIsArchive 1", ClassUtil.isArchive("a.jar"));
-        assertTrue("testIsArchive 2", ClassUtil.isArchive("b.zip"));
-        assertTrue("testIsArchive 3", ClassUtil.isArchive("c.ear"));
-        assertTrue("testIsArchive 4", ClassUtil.isArchive("d.war"));
-        assertTrue("testIsArchive 5", ClassUtil.isArchive("AFD.JAR"));
-        assertTrue("testIsArchive 6", ClassUtil.isArchive("ASDF.ZIP"));
-        assertTrue("testIsArchive 7", ClassUtil.isArchive("XYZ.EAR"));
-        assertTrue("testIsArchive 8", ClassUtil.isArchive("ABC.WAR"));
-        assertTrue("testIsArchive 9", ClassUtil.isArchive("a.b.jar"));
-        assertTrue("testIsArchive 10", ClassUtil.isArchive("C.D.ZIP"));
-        assertTrue("testIsArchive 11", ClassUtil.isArchive("a.b.ear"));
-        assertTrue("testIsArchive 12", ClassUtil.isArchive("C.D.war"));
-    }
 
-    
-    /**
-     * Negative tests isArchive()
-     */
-    public void testIsArchiveNegative()
-    {
-        logger_.info("Running testIsArchiveNegative...");
-
-        // Negative tests        
-        assertTrue("testIsArchiveFailure 1", !ClassUtil.isArchive(""));
-        assertTrue("testIsArchiveFailure 2", !ClassUtil.isArchive(" "));
-        assertTrue("testIsArchiveFailure 3", !ClassUtil.isArchive("jar"));
-        assertTrue("testIsArchiveFailure 4", !ClassUtil.isArchive("ZIP"));
-        assertTrue("testIsArchiveFailure 5", !ClassUtil.isArchive("ear"));
-        assertTrue("testIsArchiveFailure 6", !ClassUtil.isArchive("WaR"));        
-        assertTrue("testIsArchiveFailure 7", !ClassUtil.isArchive("df.jarx"));
-        assertTrue("testIsArchiveFailure 8", !ClassUtil.isArchive("df.zipo"));
-        assertTrue("testIsArchiveFailure 9", !ClassUtil.isArchive("df.earx"));
-        assertTrue("testIsArchiveFailure 10", !ClassUtil.isArchive("df.waro"));
-    }
-
-    
-    /**
-     * Positive tests isClassFile()
-     */ 
-    public void testIsClassFile()
-    {
-        logger_.info("Running testIsClassFile...");
-        
-        // Positive tests
-        assertTrue(ClassUtil.isClassFile("a.class"));
-        assertTrue(ClassUtil.isClassFile("A.CLASS"));
-        assertTrue(ClassUtil.isClassFile("asdfasf.class"));
-        assertTrue(ClassUtil.isClassFile("abc$123.class")); 
-        assertTrue(ClassUtil.isClassFile("abc_123.CLASS"));
-    }
-    
-    
-    /**
-     * Negative tests for isClassFile()
-     */ 
-    public void testIsClassFileNegative()
-    {
-        logger_.info("Running testIsClassFileNegative...");
-        
-        // Negative tests        
-        assertTrue(!ClassUtil.isArchive(".class"));
-        assertTrue(!ClassUtil.isArchive("class "));
-        assertTrue(!ClassUtil.isArchive(".class."));
-        assertTrue(!ClassUtil.isArchive("a.b.class.x"));        
-        assertTrue(!ClassUtil.isArchive("X.CLASS.X"));
-    }
-    
     
     /**
      * Tests packageToPath()
@@ -273,7 +143,209 @@ public class ClassUtilTest extends TestCase
         assertEquals(Integer.class, many[1]);
         assertEquals(ArrayList.class, many[2]);
     }
+
     
+    /**
+     * Tests isInnerClass()
+     */
+    public void testIsInnerClass()
+    {
+        logger_.info("Running testIsInnerClass...");
+        
+        assertFalse(ClassUtil.isInnerClass(""));
+        assertFalse(ClassUtil.isInnerClass("a"));
+        assertFalse(ClassUtil.isInnerClass("a.b"));
+        assertFalse(ClassUtil.isInnerClass("abc"));
+        assertFalse(ClassUtil.isInnerClass("$"));
+        assertFalse(ClassUtil.isInnerClass("$$"));
+        assertFalse(ClassUtil.isInnerClass("one$two$three$"));
+        
+        assertTrue(ClassUtil.isInnerClass("a$b"));
+        assertTrue(ClassUtil.isInnerClass("one$two"));
+        assertTrue(ClassUtil.isInnerClass("one$two$three"));
+        
+    }
+
+    //--------------------------------------------------------------------------
+    // Tests getClassesInPackage()
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests getClassesInPackage() for a package in a file system directory.
+     */
+    public void testGetClassesInPackageDirectory()
+    {
+        assertTrue(true);
+        
+        // TODO: Revisit testcase 
+        
+        // Have to revisit because no classes files are hanging out in
+        // a directory on the classpath when the test is run from outside
+        // eclipse
+        
+        //logger_.info("Running testGetClassesInPackageDirectory...");
+        
+        //String[] classes = ClassUtil.getClassesInPackage("toolbox.util");
+        //logger_.info("\n" + ArrayUtil.toString(classes, true));
+        //assertTrue(StringUtil.class.getName() + " not found in package", 
+        //    ArrayUtil.contains(classes, StringUtil.class.getName()));
+    }
+    
+    
+    /**
+     * Tests getClassesInPackage() for a package in a jar file.
+     */
+    public void testGetClassesInPackageArchive()
+    {
+        logger_.info("Running testGetClassesInPackageArchive...");
+        
+        String[] classes = ClassUtil.getClassesInPackage("junit.textui");
+        
+        //logger_.info("\n"+ArrayUtil.toString(classes, true));
+        
+        assertTrue(TestRunner.class.getName() + " not found in package", 
+            ArrayUtil.contains(classes, TestRunner.class.getName()));
+    }
+    
+    
+    /**
+     * Tests getClassesInPackage() for a package in the boot classpath.
+     */
+    public void testGetClassesInPackageBoot()
+    {
+        logger_.info("Running testGetClassesInPackageBoot...");
+        
+        String[] classes = ClassUtil.getClassesInPackage("java.lang");
+        
+        //logger_.info("\n" + ArrayUtil.toString(classes, true));
+        
+        assertTrue(String.class.getName() + " not found in package", 
+            ArrayUtil.contains(classes, String.class.getName()));
+    }
+    
+    //--------------------------------------------------------------------------
+    // Tests isArchive()
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Positive tests isArchive()
+     */
+    public void testIsArchive()
+    {
+        logger_.info("Running testIsArchive...");
+        
+        // Positive tests
+        assertTrue("testIsArchive 1", ClassUtil.isArchive("a.jar"));
+        assertTrue("testIsArchive 2", ClassUtil.isArchive("b.zip"));
+        assertTrue("testIsArchive 3", ClassUtil.isArchive("c.ear"));
+        assertTrue("testIsArchive 4", ClassUtil.isArchive("d.war"));
+        assertTrue("testIsArchive 5", ClassUtil.isArchive("AFD.JAR"));
+        assertTrue("testIsArchive 6", ClassUtil.isArchive("ASDF.ZIP"));
+        assertTrue("testIsArchive 7", ClassUtil.isArchive("XYZ.EAR"));
+        assertTrue("testIsArchive 8", ClassUtil.isArchive("ABC.WAR"));
+        assertTrue("testIsArchive 9", ClassUtil.isArchive("a.b.jar"));
+        assertTrue("testIsArchive 10", ClassUtil.isArchive("C.D.ZIP"));
+        assertTrue("testIsArchive 11", ClassUtil.isArchive("a.b.ear"));
+        assertTrue("testIsArchive 12", ClassUtil.isArchive("C.D.war"));
+    }
+
+    
+    /**
+     * Negative tests isArchive()
+     */
+    public void testIsArchiveNegative()
+    {
+        logger_.info("Running testIsArchiveNegative...");
+
+        // Negative tests        
+        assertTrue("testIsArchiveFailure 1", !ClassUtil.isArchive(""));
+        assertTrue("testIsArchiveFailure 2", !ClassUtil.isArchive(" "));
+        assertTrue("testIsArchiveFailure 3", !ClassUtil.isArchive("jar"));
+        assertTrue("testIsArchiveFailure 4", !ClassUtil.isArchive("ZIP"));
+        assertTrue("testIsArchiveFailure 5", !ClassUtil.isArchive("ear"));
+        assertTrue("testIsArchiveFailure 6", !ClassUtil.isArchive("WaR"));        
+        assertTrue("testIsArchiveFailure 7", !ClassUtil.isArchive("df.jarx"));
+        assertTrue("testIsArchiveFailure 8", !ClassUtil.isArchive("df.zipo"));
+        assertTrue("testIsArchiveFailure 9", !ClassUtil.isArchive("df.earx"));
+        assertTrue("testIsArchiveFailure 10", !ClassUtil.isArchive("df.waro"));
+    }
+    
+    //--------------------------------------------------------------------------
+    // Tests isClassFile()
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Positive tests isClassFile()
+     */ 
+    public void testIsClassFile()
+    {
+        logger_.info("Running testIsClassFile...");
+        
+        // Positive tests
+        assertTrue(ClassUtil.isClassFile("a.class"));
+        assertTrue(ClassUtil.isClassFile("A.CLASS"));
+        assertTrue(ClassUtil.isClassFile("asdfasf.class"));
+        assertTrue(ClassUtil.isClassFile("abc$123.class")); 
+        assertTrue(ClassUtil.isClassFile("abc_123.CLASS"));
+    }
+    
+    
+    /**
+     * Negative tests for isClassFile()
+     */ 
+    public void testIsClassFileNegative()
+    {
+        logger_.info("Running testIsClassFileNegative...");
+        
+        // Negative tests        
+        assertTrue(!ClassUtil.isArchive(".class"));
+        assertTrue(!ClassUtil.isArchive("class "));
+        assertTrue(!ClassUtil.isArchive(".class."));
+        assertTrue(!ClassUtil.isArchive("a.b.class.x"));        
+        assertTrue(!ClassUtil.isArchive("X.CLASS.X"));
+    }
+
+    //--------------------------------------------------------------------------
+    // Tests findInPath()
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests findInPath()
+     */
+    public void testFindInPath() throws Exception
+    {
+        logger_.info("Running testFindInPath...");
+        
+        String findMe = null;
+        
+        if (Platform.isUnix())
+            findMe = "sh";
+        else if (Platform.isWindows() || Platform.isOS2())
+            findMe = "cmd.exe";
+        else
+        {
+            logger_.info("Skipping testFindInPath due to current platform.");
+            return;
+        }
+        
+        File f = ClassUtil.findInPath(findMe);
+        assertNotNull(f);
+        logger_.debug("Found " + f);
+    }
+    
+    
+    /**
+     * Test findInPath() for a file not found.
+     */
+    public void testFindInPathNotFound() throws Exception
+    {
+        logger_.info("Running testFindInPathNotFound...");
+        assertNull(ClassUtil.findInPath("SomeNonExistantFile.exe"));
+    }
+    
+    //--------------------------------------------------------------------------
+    // Tests getClassLocation()
+    //--------------------------------------------------------------------------
     
     /**
      * Tests getClassLocation() from a jar file.
@@ -323,63 +395,9 @@ public class ClassUtilTest extends TestCase
         assertNull(loc3);
     }
     
-    
-    /**
-     * Tests findInPath()
-     */
-    public void testFindInPath() throws Exception
-    {
-        logger_.info("Running testFindInPath...");
-        
-        String findMe = null;
-        
-        if (Platform.isUnix())
-            findMe = "sh";
-        else if (Platform.isWindows() || Platform.isOS2())
-            findMe = "cmd.exe";
-        else
-        {
-            logger_.info("Skipping testFindInPath due to current platform.");
-            return;
-        }
-        
-        File f = ClassUtil.findInPath(findMe);
-        assertNotNull(f);
-        logger_.debug("Found " + f);
-    }
-    
-    
-    /**
-     * Test findInPath() for a file not found.
-     */
-    public void testFindInPathNotFound() throws Exception
-    {
-        logger_.info("Running testFindInPathNotFound...");
-        assertNull(ClassUtil.findInPath("SomeNonExistantFile.exe"));
-    }
-    
-
-    /**
-     * Tests isInnerClass()
-     */
-    public void testIsInnerClass()
-    {
-        logger_.info("Running testIsInnerClass...");
-        
-        assertFalse(ClassUtil.isInnerClass(""));
-        assertFalse(ClassUtil.isInnerClass("a"));
-        assertFalse(ClassUtil.isInnerClass("a.b"));
-        assertFalse(ClassUtil.isInnerClass("abc"));
-        assertFalse(ClassUtil.isInnerClass("$"));
-        assertFalse(ClassUtil.isInnerClass("$$"));
-        assertFalse(ClassUtil.isInnerClass("one$two$three$"));
-        
-        assertTrue(ClassUtil.isInnerClass("a$b"));
-        assertTrue(ClassUtil.isInnerClass("one$two"));
-        assertTrue(ClassUtil.isInnerClass("one$two$three"));
-        
-    }
-    
+    //--------------------------------------------------------------------------
+    // Tests toClass()
+    //--------------------------------------------------------------------------
     
     /**
      * Tests toClass() for null input.
