@@ -15,6 +15,7 @@ import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java2html.Java2Html;
 
@@ -38,9 +39,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import net.sf.jode.decompiler.Decompiler;
-
 import org.apache.log4j.Logger;
+
+import net.sf.jode.decompiler.Decompiler;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
@@ -59,6 +60,10 @@ import toolbox.util.ui.ThreadSafeTableModel;
 
 /**
  * GUI for FindClass
+ * 
+ * <pre>
+ * TODO: Replace decompiler HTML view with jedit-syntax editor
+ * </pre>
  */
 public class JFindClass extends JFrame
 {
@@ -151,6 +156,28 @@ public class JFindClass extends JFrame
     }
 
     //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     */
+    public void savePrefs(Properties prefs)
+    {
+        fileExplorer_.savePrefs(prefs, 
+            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
+    }
+
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     */
+    public void applyPrefs(Properties prefs)
+    {
+        fileExplorer_.applyPrefs(prefs, 
+            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
+    }
+
+    //--------------------------------------------------------------------------
     //  Private
     //--------------------------------------------------------------------------
  
@@ -207,7 +234,6 @@ public class JFindClass extends JFrame
         JLabel searchLabel = new JLabel("Find Class");
         searchField_ = new JTextField(20);
         searchField_.addActionListener(searchAction);
-        searchField_.setFont(SwingUtil.getPreferredMonoFont());
         searchField_.setToolTipText("I like Regular expressions!");
         searchButton_ = new JButton(searchAction);
         ignoreCaseCheckBox_ = new JCheckBox("Ignore Case", true);
@@ -252,7 +278,6 @@ public class JFindClass extends JFrame
     {
         searchListModel_ = new DefaultListModel(); 
         searchList_ = new JList(searchListModel_);
-        searchList_.setFont(SwingUtil.getPreferredMonoFont());
         
         // Create popup menu and wire it to the JList
         searchPopupMenu_ = new JPopupMenu();
@@ -346,7 +371,6 @@ public class JFindClass extends JFrame
      */
     protected void tweakTable()
     {
-        resultTable_.setFont(SwingUtil.getPreferredSerifFont());
         resultTable_.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         
         TableColumnModel columnModel = resultTable_.getColumnModel();
@@ -549,8 +573,6 @@ public class JFindClass extends JFrame
                     super.setBackground(new Color(240,240,240));
             }
 
-            setFont(table.getFont());
-
             if (hasFocus)
             {
                 setBorder(
@@ -625,7 +647,7 @@ public class JFindClass extends JFrame
                     String javaSource = StringUtil.replace(
                         writer.getBuffer().toString(), "\t", "    ");
                         
-                    System.out.println(javaSource);    
+                    logger_.debug("\n" + javaSource);    
                         
                     StringReader javaReader = new StringReader(javaSource);
                     StringWriter htmlWriter = new StringWriter();
