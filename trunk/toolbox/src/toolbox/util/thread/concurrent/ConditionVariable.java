@@ -1,29 +1,25 @@
 package toolbox.util.thread.concurrent;
 
 /**
- * ConditionVariable.java
- *
  * This class implements a synchronization semaphore that blocks calling
  * threads until a particular condition is met.  It is used in conjuction 
  * with a mutex to ensure condition integrity.
  */
 public class ConditionVariable
 {
-    Thread owner_ = null;
-
+    private Thread owner_ = null;
 
     /**
-    * Releases the mutex and blocks the calling thread until the condition
-    * variable is signaled.
-    *
-    * @param    mutex        mutex used to test the condition.
-    * @exception    Mutex.NotOwnerException if the calling thread does
-    *            not own the mutex.
-    * @exception    Mutex.UnderflowException if the mutex has not been
-    *            acquired.
-    */
-    public void condWait(Mutex mutex)
-                  throws Mutex.NotOwnerException, Mutex.UnderflowException
+     * Releases the mutex and blocks the calling thread until the condition
+     * variable is signaled.
+     *
+     * @param    mutex        mutex used to test the condition.
+     * @throws   Mutex.NotOwnerException if the calling thread does not own 
+     *           the mutex.
+     * @throws   Mutex.UnderflowException if the mutex has not been acquired.
+     */
+    public void condWait(Mutex mutex) throws Mutex.NotOwnerException, 
+        Mutex.UnderflowException
     {
         try
         {
@@ -35,12 +31,10 @@ public class ConditionVariable
         }
         catch (InterruptedException ie)
         {
-
             // Allow spurious interrupts
         }
         finally
         {
-
             // *Always* lock before returning
             mutex.lock();
         }
@@ -48,21 +42,20 @@ public class ConditionVariable
 
 
     /**
-    * Releases the mutex and blocks the calling thread until the condition
-    * variable is signaled or the timeout period elapses.
-    *
-    * @param    mutex        mutex used to test the condition.
-    * @param    timeout        the maximum time to wait in milliseconds.
-    * @exception    Mutex.NotOwnerException if the calling thread does
-    *            not own the mutex.
-    * @exception    Mutex.UnderflowException if the mutex has not been
-    *            acquired.
-    * @exception    InterruptedException if another thread interrupts
-    *            a blocked thread.
-    */
-    public void condWait(Mutex mutex, long timeout)
-                  throws Mutex.NotOwnerException, Mutex.UnderflowException, 
-                         InterruptedException
+     * Releases the mutex and blocks the calling thread until the condition
+     * variable is signaled or the timeout period elapses.
+     *
+     * @param    mutex        Mutex used to test the condition.
+     * @param    timeout      Maximum time to wait in milliseconds.
+     * @throws   Mutex.NotOwnerException if the calling thread does
+     *           not own the mutex.
+     * @throws   Mutex.UnderflowException if the mutex has not been
+     *           acquired. 
+     * @throws   InterruptedException if another thread interrupts
+     *           a blocked thread.
+     */
+    public void condWait(Mutex mutex, long timeout) throws 
+        Mutex.NotOwnerException, Mutex.UnderflowException, InterruptedException
     {
         try
         {
@@ -74,7 +67,6 @@ public class ConditionVariable
         }
         finally
         {
-
             // *Always* lock before returning
             mutex.lock();
         }
@@ -82,8 +74,8 @@ public class ConditionVariable
 
 
     /**
-    * Signals a single thread blocked on this condition variable. 
-    */
+     * Signals a single thread blocked on this condition variable. 
+     */
     public synchronized void condSignal()
     {
         notify();
@@ -91,11 +83,10 @@ public class ConditionVariable
 
 
     /**
-    * Signals all threads blocked on this condition variable. 
-    */
+     * Signals all threads blocked on this condition variable. 
+     */
     public synchronized void condBroadcast()
     {
         notifyAll();
     }
 }
-;

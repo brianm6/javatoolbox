@@ -70,7 +70,7 @@ public class ThreadUtilTest extends TestCase
         
         Tester target = new Tester();
         ThreadUtil.run(target, "pingSimple", null).join();
-        assertTrue("ping was not executed", target.pingSimpleCalled);
+        assertTrue("ping was not executed", target.pingSimpleCalled_);
     }
 
     /**
@@ -92,7 +92,7 @@ public class ThreadUtilTest extends TestCase
         };
        
         ThreadUtil.run(target, "pingArgs", params).join();
-        assertTrue("pingArgs was not executed", target.pingArgsCalled);
+        assertTrue("pingArgs was not executed", target.pingArgsCalled_);
     }
 
  
@@ -118,7 +118,7 @@ public class ThreadUtilTest extends TestCase
                 "hello from testRunComplex()"
             }).join();
             
-        assertTrue("pingComplex was not executed", target.pingComplexCalled);
+        assertTrue("pingComplex was not executed", target.pingComplexCalled_);
     } 
 
     /**
@@ -143,7 +143,7 @@ public class ThreadUtilTest extends TestCase
             }).join();
             
         assertTrue("pingPrimitive was not executed", 
-            target.pingPrimitiveCalled);
+            target.pingPrimitiveCalled_);
     } 
  
  
@@ -169,22 +169,22 @@ public class ThreadUtilTest extends TestCase
      */   
     protected class Tester
     {
-        public boolean pingSimpleCalled;
-        public boolean pingArgsCalled;
-        public boolean pingComplexCalled;
-        public boolean pingPrimitiveCalled;
-        public boolean pingInnerCalled;
+        private boolean pingSimpleCalled_;
+        private boolean pingArgsCalled_;
+        private boolean pingComplexCalled_;
+        private boolean pingPrimitiveCalled_;
+        private boolean pingInnerCalled_;
                
         /**
          * Default constructor
          */
         public Tester()
         {
-            pingSimpleCalled    = false;
-            pingArgsCalled      = false;
-            pingComplexCalled   = false;
-            pingPrimitiveCalled = false;
-            pingInnerCalled     = false;
+            pingSimpleCalled_    = false;
+            pingArgsCalled_      = false;
+            pingComplexCalled_   = false;
+            pingPrimitiveCalled_ = false;
+            pingInnerCalled_     = false;
         }
         
         /**
@@ -192,7 +192,7 @@ public class ThreadUtilTest extends TestCase
          */
         public void pingSimple()
         {
-            pingSimpleCalled = true;
+            pingSimpleCalled_ = true;
             logger_.info("Called ping()");
         }
         
@@ -201,7 +201,7 @@ public class ThreadUtilTest extends TestCase
          */
         public void pingArgs(String str, String[] strArray)
         {
-            pingArgsCalled = true;
+            pingArgsCalled_ = true;
             logger_.info("Called pingArgs(" + str + ", " + 
                 ArrayUtil.toString(strArray, false) + ")");
         }
@@ -211,7 +211,7 @@ public class ThreadUtilTest extends TestCase
          */       
         public void pingComplex(Writer pw,  Integer i, Integer i2, String s)
         {
-            pingComplexCalled = true;
+            pingComplexCalled_ = true;
             logger_.info("Called write delayed!");
         }
         
@@ -220,7 +220,7 @@ public class ThreadUtilTest extends TestCase
          */
         public void pingPrimitive(int a, /*char c,*/ boolean b, long l, float f)
         {
-            pingPrimitiveCalled = true;
+            pingPrimitiveCalled_ = true;
             logger_.info("Called pingPrimitive!");
         }
         
@@ -229,7 +229,7 @@ public class ThreadUtilTest extends TestCase
          */
         public void pingInner()
         {
-            pingInnerCalled = true;
+            pingInnerCalled_ = true;
             logger_.info("Called pingInner()");
         }
         
@@ -239,7 +239,98 @@ public class ThreadUtilTest extends TestCase
         public void testFromInnerClass() throws Exception
         {
             ThreadUtil.run(Tester.this, "pingInner", null).join();
-            assertTrue("pingInner() not called", pingInnerCalled);
+            assertTrue("pingInner() not called", pingInnerCalled_);
         }
+        
+        /**
+         * Returns the pingArgsCalled.
+         * @return boolean
+         */
+        public boolean isPingArgsCalled()
+        {
+            return pingArgsCalled_;
+        }
+
+        /**
+         * Returns the pingComplexCalled.
+         * @return boolean
+         */
+        public boolean isPingComplexCalled()
+        {
+            return pingComplexCalled_;
+        }
+
+        /**
+         * Returns the pingInnerCalled.
+         * @return boolean
+         */
+        public boolean isPingInnerCalled()
+        {
+            return pingInnerCalled_;
+        }
+
+        /**
+         * Returns the pingPrimitiveCalled.
+         * @return boolean
+         */
+        public boolean isPingPrimitiveCalled()
+        {
+            return pingPrimitiveCalled_;
+        }
+
+        /**
+         * Returns the pingSimpleCalled.
+         * @return boolean
+         */
+        public boolean isPingSimpleCalled()
+        {
+            return pingSimpleCalled_;
+        }
+
+        /**
+         * Sets the pingArgsCalled.
+         * @param pingArgsCalled The pingArgsCalled to set
+         */
+        public void setPingArgsCalled(boolean pingArgsCalled)
+        {
+            this.pingArgsCalled_ = pingArgsCalled;
+        }
+
+        /**
+         * Sets the pingComplexCalled.
+         * @param pingComplexCalled The pingComplexCalled to set
+         */
+        public void setPingComplexCalled(boolean pingComplexCalled)
+        {
+            this.pingComplexCalled_ = pingComplexCalled;
+        }
+
+        /**
+         * Sets the pingInnerCalled.
+         * @param pingInnerCalled The pingInnerCalled to set
+         */
+        public void setPingInnerCalled(boolean pingInnerCalled)
+        {
+            this.pingInnerCalled_ = pingInnerCalled;
+        }
+
+        /**
+         * Sets the pingPrimitiveCalled.
+         * @param pingPrimitiveCalled The pingPrimitiveCalled to set
+         */
+        public void setPingPrimitiveCalled(boolean pingPrimitiveCalled)
+        {
+            this.pingPrimitiveCalled_ = pingPrimitiveCalled;
+        }
+
+        /**
+         * Sets the pingSimpleCalled.
+         * @param pingSimpleCalled The pingSimpleCalled to set
+         */
+        public void setPingSimpleCalled(boolean pingSimpleCalled)
+        {
+            this.pingSimpleCalled_ = pingSimpleCalled;
+        }
+
     }
 }

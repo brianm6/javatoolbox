@@ -2,23 +2,41 @@ package toolbox.util.thread.concurrent;
 
 /**
  * This class implements a counting semaphore.
-**/
+ */
 public class CountingSemaphore
 {
-    int count_;
-    int maximum_;
-    EventSemaphore event_;
+    private int count_;
+    private int maximum_;
+    private EventSemaphore event_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default constructor
+     */
     public CountingSemaphore()
     {
         this(0);
     }
 
+    /**
+     * Constructor with initial count
+     * 
+     * @param  initial  Initial count
+     */
     public CountingSemaphore(int initial)
     {
         this(initial, Integer.MAX_VALUE);
     }
 
+    /**
+     * Constructor with count and max count
+     * 
+     * @param  initial  Initial count
+     * @param  maximum  Max count
+     */
     public CountingSemaphore(int initial, int maximum)
     {
         if (initial < 0 || maximum < 0 || 
@@ -30,6 +48,13 @@ public class CountingSemaphore
         maximum_ = maximum;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Obtains lock
+     */
     public void lock()
     {
         while (true)
@@ -49,16 +74,25 @@ public class CountingSemaphore
         }
     }
 
+    /**
+     * Obtains a lock
+     */
     public void obtain()
     {
         lock();
     }
 
-    public synchronized boolean tryLock(int how_many)
+    /**
+     * Tries to obtail a lock
+     * 
+     * @param  howMany  Count to obtail
+     * @return True if lock obtained, false otherwise
+     */
+    public synchronized boolean tryLock(int howMany)
     {
-        if (count_ >= how_many)
+        if (count_ >= howMany)
         {
-            count_ -= how_many;
+            count_ -= howMany;
 
             return true;
         }
@@ -66,44 +100,70 @@ public class CountingSemaphore
         return false;
     }
 
+    /**
+     * Tries to obtain the lock
+     * 
+     * @return  True if successful, false otherwise
+     */
     public boolean tryLock()
     {
         return tryLock(1);
     }
 
-    public synchronized void unlock(int how_many)
+    /**
+     * Releases the lock
+     * 
+     * @param  howMany  Count to unlock
+     */
+    public synchronized void unlock(int howMany)
     {
-        if (how_many < 0 || 
-            (count_ + how_many > maximum_))
+        if (howMany < 0 || 
+            (count_ + howMany > maximum_))
             throw new IllegalArgumentException();
 
-        count_ += how_many;
+        count_ += howMany;
         event_.post();
     }
 
+    /**
+     * Unlocks
+     */
     public void unlock()
     {
         unlock(1);
     }
 
-    public void release(int how_many)
+    /**
+     * Releases lock
+     * 
+     * @param  howMany  Count of how many to release
+     */
+    public void release(int howMany)
     {
-        unlock(how_many);
+        unlock(howMany);
     }
 
+    /**
+     * Releases a lock
+     */
     public void release()
     {
         release(1);
     }
 
+    /**
+     * @return Count of semaphore
+     */
     public synchronized int count()
     {
         return count_;
     }
 
+    /**
+     * @return  Max count
+     */
     public synchronized int maximum()
     {
         return maximum_;
     }
 }
-;
