@@ -1,7 +1,5 @@
 package toolbox.tail.test;
 
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.PrintWriter;
@@ -27,6 +25,10 @@ public class TailTest extends TestCase
     public static final Logger logger_ =
         Logger.getLogger(TailTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
@@ -37,20 +39,6 @@ public class TailTest extends TestCase
         TestRunner.run(TailTest.class);
     }
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Creates test
-     * 
-     * @param  name Name
-     */
-    public TailTest(String name)
-    {
-        super(name);
-    }
-    
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
@@ -125,6 +113,7 @@ public class TailTest extends TestCase
      */
     public void testTailStream() throws Exception
     {
+        // TODO: Implement testTailStream()
 //       logger_.info("Running testTailStream...");
 //       
 //        PipedOutputStream pos = new PipedOutputStream();
