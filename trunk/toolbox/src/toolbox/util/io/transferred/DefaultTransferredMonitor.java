@@ -31,12 +31,12 @@ public class DefaultTransferredMonitor implements TransferredMonitor
     /**
      * Number of bytes read between each notification.
      */
-    private int length_;
+    private int sampleLength_;
 
     /**
      * Total number of bytes transferred across the channel.
      */
-    private int totalTransferred_;
+    private long totalTransferred_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -80,9 +80,9 @@ public class DefaultTransferredMonitor implements TransferredMonitor
 	/**
      * @see toolbox.util.io.transferred.TransferredMonitor#setSampleLength(int)
      */
-    public void setSampleLength(int numBytes)
+    public void setSampleLength(int sampleLength)
     {
-        length_ = numBytes;
+        sampleLength_ = sampleLength;
     }
     
 
@@ -91,7 +91,7 @@ public class DefaultTransferredMonitor implements TransferredMonitor
      */
     public int getSampleLength()
     {
-        return length_;
+        return sampleLength_;
     }
     
     
