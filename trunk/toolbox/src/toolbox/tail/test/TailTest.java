@@ -1,23 +1,26 @@
 package toolbox.tail.test;
 
 import java.io.File;
+import java.io.OutputStreamWriter;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.tail.ITailListener;
+import toolbox.tail.TailListener;
 import toolbox.tail.Tail;
 import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
+import toolbox.util.file.FileStuffer;
 import toolbox.util.io.NullWriter;
 
 /**
@@ -69,7 +72,7 @@ public class TailTest extends TestCase
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
-    
+
     /**
      * Tests tailing of a regular old file sitting around not doing anything.<p>
      * This implies the file:               <br>
@@ -78,32 +81,103 @@ public class TailTest extends TestCase
      * - has no intended future activity    <br>
      * - can be deleted without consequence
      */
-    public void testTailUnattachedFile() throws Exception
-    {
-        logger_.info("Running testTailUnattachedFile...");
-        
-        String file = FileUtil.getTempFilename();
-        FileUtil.setFileContents(file, makeParagraph(200), false);
-        TestTailListener listener = new TestTailListener();
-               
-        Tail tail = new Tail();
-        tail.follow(new File(file), new NullWriter());
-        tail.addTailListener(listener);
-        tail.start();
-        listener.waitForStart();
-        listener.waitForEnded();
-                
-        logger_.info("Done!");
-    }
     
     /**
-     * Tests tail using a reader
+     * Tests tailing of a files backlog for a specific number of lines
+     */
+    public void testTailBacklog() throws Exception
+    {
+        logger_.info("Running testTailBacklog...");
+
+        String file = FileUtil.getTempFilename();
+        
+        try
+        {
+            int backlog = 10;   // backlog lines to test
+            int total = 200;    // num lines in test file
+
+            String para = makeParagraph(total);
+            FileUtil.setFileContents(file, para , false);
+            TestTailListener listener = new TestTailListener();
+                   
+            Tail tail = new Tail();
+            tail.follow(new File(file), new NullWriter());
+            tail.setBacklog(backlog);
+            tail.addTailListener(listener);
+            tail.start();
+            listener.waitForStart();
+
+            logger_.info("toString: " + toString());
+                 
+            String[] paras = StringUtil.tokenize(para, "\n");
+                   
+            for (int i=0; i<backlog; i++)
+            {
+                String line = listener.waitForNextLine();
+                logger_.info("Backlog line " + i + ": " + line);
+                assertEquals(paras[i + total - backlog], line);
+            }
+                
+            tail.stop();
+            listener.waitForStop();
+        }
+        finally
+        {
+            FileUtil.delete(file);
+        }
+        
+        logger_.info("Done!");
+    }
+
+    /**
+     * 
      * 
      * @throws  Exception on error
      */
-    public void testTailReader() throws Exception
+    public void testTailFile() throws Exception
     {
-       logger_.info("Running testTailReader...");
+        logger_.info("Running testTailFile...");
+       
+        String file = FileUtil.getTempFilename();
+        File   ffile = new File(file);
+        FileStuffer stuffer = new FileStuffer(ffile, 250);
+        Writer sink = null;
+         
+        try
+        {
+            stuffer.start();
+            
+            ThreadUtil.sleep(1000);
+            
+            Tail tail = new Tail();
+            //Writer sink = new StringWriter();
+            sink = new OutputStreamWriter(System.out);
+            tail.follow(ffile, sink);
+            tail.setBacklog(4);
+            tail.start();
+            
+            ThreadUtil.sleep(500);
+            
+            tail.stop();
+            
+            sink.flush();
+        }
+        finally
+        {
+            sink.close();
+            stuffer.stop();
+            FileUtil.delete(file);
+        }
+    }
+    
+    /**
+     * Tests the lifecycle of a Tail object (start/stop/pause/unpause)
+     * 
+     * @throws  Exception on error
+     */
+    public void testTailLifeCycle() throws Exception
+    {
+       logger_.info("Running testTailLifeCycle...");
        
         PipedWriter writer = new PipedWriter();
         PipedReader reader = new PipedReader(writer);
@@ -123,8 +197,6 @@ public class TailTest extends TestCase
         // Create a listener so we can test event
         TestTailListener listener = new TestTailListener();        
         tail.addTailListener(listener);
-        
-        logger_.info(tail.toString());
 
         // Create sinks for tail and attach them to the tail
         // Attach the input reader to the tail        
@@ -257,7 +329,7 @@ public class TailTest extends TestCase
     {
         StringBuffer sb = new StringBuffer();
         for (int i=0; i < lines; i++)
-            sb.append(i + " " + makeSentence() + "\n");
+            sb.append(i + " " + makeSentence() + (i+1 == lines ? "" : "\n"));
         return sb.toString();
     }
     
@@ -282,30 +354,27 @@ public class TailTest extends TestCase
 /**
  * Test tail listener 
  */
-class TestTailListener implements ITailListener
+class TestTailListener implements TailListener
 {
-    /** Logger */
     private static final Logger logger_ = TailTest.logger_;
         
-    private BlockingQueue startEvents_ = new BlockingQueue();
-    private BlockingQueue stopEvents_  = new BlockingQueue();
+    private BlockingQueue startEvents_    = new BlockingQueue();
+    private BlockingQueue stopEvents_     = new BlockingQueue();
     private BlockingQueue nextLineEvents_ = new BlockingQueue();
-    private BlockingQueue endedEvents_ = new BlockingQueue();
-    private BlockingQueue pauseEvents_ = new BlockingQueue();
-    private BlockingQueue unpauseEvents_ = new BlockingQueue();
-        
+    private BlockingQueue endedEvents_    = new BlockingQueue();
+    private BlockingQueue pauseEvents_    = new BlockingQueue();
+    private BlockingQueue unpauseEvents_  = new BlockingQueue();
+
     /**
-     * Next line is available
-     * 
-     * @param  line  LineScanner
-     */    
-    public void nextLine(String line)
+     * @see TailListener#nextLine(Tail, String)
+     */
+    public void nextLine(Tail tail, String line)
     {
-        logger_.debug(line);
+        //logger_.debug(line);
         
         try
         {
-            nextLineEvents_.push("nextLine");    
+            nextLineEvents_.push(line);    
         }
         catch (Exception e)
         {
@@ -317,7 +386,7 @@ class TestTailListener implements ITailListener
     /**
      * Tail was started
      */
-    public void tailStarted()
+    public void tailStarted(Tail tail)
     {
         logger_.info("tail started");
         
@@ -331,11 +400,10 @@ class TestTailListener implements ITailListener
         }
     }
     
-    
     /** 
      * Tail was stopped
      */
-    public void tailStopped()
+    public void tailStopped(Tail tail)
     {
         logger_.info("tail stopped");
         
@@ -349,11 +417,10 @@ class TestTailListener implements ITailListener
         }
     }
   
-  
     /**
      * Tail was ended
      */
-    public void tailEnded()
+    public void tailEnded(Tail tail)
     {
         logger_.info("tail ended");
         
@@ -367,11 +434,10 @@ class TestTailListener implements ITailListener
         }
     }
     
-    
     /** 
      * Tail was paused
      */
-    public void tailPaused()
+    public void tailPaused(Tail tail)
     {
         logger_.info("tail paused");
         
@@ -385,11 +451,10 @@ class TestTailListener implements ITailListener
         }
     }
     
-    
     /**
      * Tail was unpaused
      */
-    public void tailUnpaused()
+    public void tailUnpaused(Tail tail)
     {
         logger_.info("tail unpaused");
         
@@ -403,6 +468,14 @@ class TestTailListener implements ITailListener
         }
     }
     
+    /**
+     * @see toolbox.tail.TailListener#tailReattached(toolbox.tail.Tail)
+     */
+    public void tailReattached(Tail tail)
+    {
+        logger_.info("Tail re-attached");
+    }
+
     public void waitForStart() throws InterruptedException
     {
         startEvents_.pull();
@@ -426,5 +499,10 @@ class TestTailListener implements ITailListener
     public void waitForEnded() throws InterruptedException
     {
         endedEvents_.pull();
+    }
+    
+    public String waitForNextLine() throws InterruptedException
+    {
+        return (String) nextLineEvents_.pull();
     }
 }
