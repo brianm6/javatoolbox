@@ -1,4 +1,5 @@
 package toolbox.util;
+
 /**
  * Represents an assertion violation
  *
@@ -11,8 +12,8 @@ public class AssertionException extends RuntimeException
      */
     public AssertionException()
     {
-        super();
     }
+    
     /**
      * Create an instance with a descriptive message
      *

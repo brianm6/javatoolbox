@@ -1,7 +1,3 @@
-/**
- * Copyright 2002, Southwest Airlines
- * All Rights Reserved
- */
 package toolbox.util.collections;
 
 import java.util.Comparator;
@@ -11,7 +7,9 @@ import java.util.Comparator;
  */
 public class ReverseComparator implements Comparator
 {
-    /** Comparator whose comparisons are going to be reversed **/
+    /** 
+     * Comparator whose comparisons are going to be reversed 
+     */
     protected Comparator comparator_;
 
     /**

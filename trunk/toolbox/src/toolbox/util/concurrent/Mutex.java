@@ -22,7 +22,8 @@ package toolbox.util.concurrent;
  * overhead that would normally make this worthwhile only in cases of
  * extreme contention.
  * <pre>
- * class Node { 
+ * class Node 
+ * { 
  *   Object item; 
  *   Node next; 
  *   Mutex lock = new Mutex(); // each node keeps its own lock
@@ -30,7 +31,8 @@ package toolbox.util.concurrent;
  *   Node(Object x, Node n) { item = x; next = n; }
  * }
  *
- * class List {
+ * class List 
+ * {
  *    protected Node head; // pointer to first node of list
  *
  *    // Use plain java synchronization to protect head field.
@@ -38,7 +40,8 @@ package toolbox.util.concurrent;
  *    //  reason to do so.)
  *    protected synchronized Node getHead() { return head; }
  *
- *    boolean search(Object x) throws InterruptedException {
+ *    boolean search(Object x) throws InterruptedException 
+ *    {
  *      Node p = getHead();
  *      if (p == null) return false;
  *
@@ -51,22 +54,30 @@ package toolbox.util.concurrent;
  *                                     //    InterruptedException now,
  *                                     //    so there is no need for any
  *                                     //    further cleanup.)
- *      for (;;) {
- *        if (x.equals(p.item)) {
+ *      for (;;) 
+ *      {
+ *        if (x.equals(p.item)) 
+ *        {
  *          p.lock.release();          // release current before return
  *          return true;
  *        }
- *        else {
+ *        else 
+ *        {
  *          Node nextp = p.next;
- *          if (nextp == null) {
+ * 
+ *          if (nextp == null) 
+ *          {
  *            p.lock.release();       // release final lock that was held
  *            return false;
  *          }
- *          else {
- *            try {
+ *          else 
+ *          {
+ *            try 
+ *            {
  *              nextp.lock.acquire(); // get next lock before releasing current
  *            }
- *            catch (InterruptedException ex) {
+ *            catch (InterruptedException ex) 
+ *            {
  *              p.lock.release();    // also release current if acquire fails
  *              throw ex;
  *            }
@@ -77,7 +88,8 @@ package toolbox.util.concurrent;
  *      }
  *    }
  *
- *    synchronized void add(Object x) { // simple prepend
+ *    synchronized void add(Object x) 
+ *    { // simple prepend
  *      // The use of `synchronized'  here protects only head field.
  *      // The method does not need to wait out other traversers 
  *      // who have already made it past head.
@@ -91,7 +103,7 @@ package toolbox.util.concurrent;
  * <p>
  * @see Semaphore
  * <p>
-**/
+ */
 
 public class Mutex implements Sync
 {
@@ -99,10 +111,20 @@ public class Mutex implements Sync
     /** The lock status **/
     protected boolean inuse_ = false;
 
+    //--------------------------------------------------------------------------
+    // Sync Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Acquires the mutex
+     * 
+     * @throws  InterruptedException
+     */
     public void acquire() throws InterruptedException
     {
         if (Thread.interrupted())
             throw new InterruptedException();
+            
         synchronized (this)
         {
             try
@@ -119,16 +141,26 @@ public class Mutex implements Sync
         }
     }
 
+    /**
+     * Releases the mutex
+     */
     public synchronized void release()
     {
         inuse_ = false;
         notify();
     }
 
+    /**
+     * Attempts to acquire the mutex in a given time frame
+     * 
+     * @param   msecs  Milliseconds to attempt
+     * @throws  InterruptedException
+     */
     public boolean attempt(long msecs) throws InterruptedException
     {
         if (Thread.interrupted())
             throw new InterruptedException();
+            
         synchronized (this)
         {
             if (!inuse_)
@@ -147,6 +179,7 @@ public class Mutex implements Sync
                     for (;;)
                     {
                         wait(waitTime);
+                        
                         if (!inuse_)
                         {
                             inuse_ = true;
@@ -154,8 +187,8 @@ public class Mutex implements Sync
                         }
                         else
                         {
-                            waitTime =
-                                msecs - (System.currentTimeMillis() - start);
+                            waitTime = msecs - (System.currentTimeMillis() - start);
+                            
                             if (waitTime <= 0)
                                 return false;
                         }
@@ -169,5 +202,4 @@ public class Mutex implements Sync
             }
         }
     }
-
 }
