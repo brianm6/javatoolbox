@@ -192,7 +192,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      */
     protected void smartInit()
     {
-        setTableHeader(new JSmartTableHeader(getColumnModel()));
+        setTableHeader(new JSmartTableHeader(getColumnModel(), this));
         followTracker_ = new FollowTracker();
 
         addPropertyChangeListener(
