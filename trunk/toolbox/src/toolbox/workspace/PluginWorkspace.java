@@ -1179,8 +1179,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 JMenu menu = getJMenuBar().getMenu(i);
                 SwingUtil.setAntiAliased(menu, b);
 
-                for (int j = 0; j < menu.getItemCount(); j++)
-                    SwingUtil.setAntiAliased(menu.getMenuComponent(j), b);
+				// WORKAROUND: Try/catch added as workaround for FH LookAndFeel
+				//             throwing NPE.
+                try
+                {
+                    for (int j = 0; j < menu.getItemCount(); j++)
+                        SwingUtil.setAntiAliased(menu.getMenuComponent(j), b);
+                }
+                catch (Exception ex)
+                {
+                    logger_.error(ex);
+                }
             }
 
             PluginWorkspace.this.repaint();

@@ -516,13 +516,19 @@ public class JHeaderPanel extends JPanel
             
             Color control = UIManager.getColor("control");
             
+            // WORKAROUND: FH look and fool has no control color defined.
+            if (control == null)
+                control = UIManager.getColor("Label.background");
+            
             int width = getWidth();
             int height = getHeight();
 
             Graphics2D g2 = (Graphics2D) g;
             Paint storedPaint = g2.getPaint();
-            g2.setPaint(new GradientPaint(0, 0, getBackground(), width, 0,
-                control));
+            
+            g2.setPaint(
+                new GradientPaint(0, 0, getBackground(), width, 0, control));
+            
             g2.fillRect(0, 0, width, height);
             g2.setPaint(storedPaint);
         }
