@@ -49,6 +49,7 @@
  * TODO: Add dbcopy functionality from dbunit
  * TODO: Replace invoker with executor
  * TODO: Write ndoc maven plugin
+ * TODO: Write FramePluginHost
  * =============================================================================
  *                              Build
  * =============================================================================
