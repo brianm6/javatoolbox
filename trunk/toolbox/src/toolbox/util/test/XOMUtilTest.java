@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.XOMUtil;
 
 /**
- * Unit test for XOMUtil
+ * Unit test for XOMUtil.
  */
 public class XOMUtilTest extends TestCase
 {
@@ -25,7 +25,7 @@ public class XOMUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      *
      * @param args None
      */
@@ -39,7 +39,7 @@ public class XOMUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests getInteger() for positive, negative, and null cases
+     * Tests getInteger() for positive, negative, and null cases.
      */
     public void testGetInteger()
     {
@@ -64,6 +64,7 @@ public class XOMUtilTest extends TestCase
         assertEquals(-1, XOMUtil.getInteger(node, -1));
     }
 
+    
     /**
      * Tests getString()
      */
@@ -85,6 +86,7 @@ public class XOMUtilTest extends TestCase
         assertEquals("default", XOMUtil.getString(null, "default"));
     }
 
+    
     /**
      * Tests getBoolean()
      */
@@ -106,6 +108,7 @@ public class XOMUtilTest extends TestCase
         assertEquals(false, XOMUtil.getBoolean(null, false));
     }
 
+    
     /**
      * Tests getIntegerAttribute()
      */
@@ -123,6 +126,7 @@ public class XOMUtilTest extends TestCase
         assertEquals(-1, XOMUtil.getIntegerAttribute(node, "badInt", -1));
     }
 
+    
     /**
      * Tests getBooleanAttribute()
      */
@@ -139,6 +143,7 @@ public class XOMUtilTest extends TestCase
         assertFalse(XOMUtil.getBooleanAttribute(null, null, false));
     }
 
+    
     /**
      * Tests getStringAttribute()
      */
@@ -155,10 +160,11 @@ public class XOMUtilTest extends TestCase
         assertEquals("abc", XOMUtil.getStringAttribute(null, null, "abc"));
     }
 
+    
     /**
      * Tests insertOrReplace() for the insert scenario
      * 
-     * @throws IOException
+     * @throws IOException on I/O error.
      */
     public void testInsertOrReplaceAsInsert() throws IOException
     {
@@ -173,10 +179,11 @@ public class XOMUtilTest extends TestCase
         //logger_.info(XOMUtil.toXML(parent));
     }
 
+    
     /**
-     * Tests insertOrReplace() for the replace scenario
+     * Tests insertOrReplace() for the replace scenario.
      * 
-     * @throws IOException
+     * @throws IOException on I/O error.
      */
     public void testInsertOrReplaceAsReplace() throws IOException
     {
@@ -198,6 +205,47 @@ public class XOMUtilTest extends TestCase
         // logger_.info("\n" + XOMUtil.toXML(parent));
     }
 
+    
+    /**
+     * Tests insertOrReplace() failure when 2 identical child nodes already
+     * exist.
+     * 
+     * @throws IOException on I/O error.
+     */
+    public void testInsertOrReplaceFailure() throws IOException
+    {
+        logger_.info("Running testInsertOrReplaceFailure...");
+        
+        Element parent = new Element("parent");
+        
+        Element dupe1 = new Element("child");
+        dupe1.addAttribute(new Attribute("id", "dupe1"));
+        parent.appendChild(dupe1);
+        
+        Element dupe2 = new Element("child");
+        dupe1.addAttribute(new Attribute("id", "dupe2"));
+        parent.appendChild(dupe2);
+        
+        Element newChild = new Element("child");
+        newChild.addAttribute(new Attribute("id","new"));
+        
+        try
+        {
+            XOMUtil.insertOrReplace(parent, newChild);
+            fail("Failure expected.");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            // Expected
+            assert(true);
+        }
+        catch (Exception e)
+        {
+            fail("Unexpected exception: " + e);
+        }
+    }
+    
+    
     /**
      * Tests getFirstChild()
      */
@@ -231,5 +279,23 @@ public class XOMUtilTest extends TestCase
 
         assertEquals("default", XOMUtil.getFirstChildElement(
             parent, null, new Element("default")).getLocalName());
+    }
+    
+    
+    /**
+     * Tests toXML()
+     * 
+     * @throws IOException on I/O error.
+     */
+    public void testToXML() throws IOException
+    {
+        logger_.info("Running testToXML...");
+        
+        // Test get string from node
+        Element node = new Element("Node");
+        node.addAttribute(new Attribute("name", "value"));
+        node.appendChild(new Element("Child"));
+        String xml = XOMUtil.toXML(node);
+        logger_.debug("\n" + xml);
     }
 }
