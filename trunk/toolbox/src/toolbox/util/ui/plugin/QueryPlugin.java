@@ -242,44 +242,26 @@ public class QueryPlugin extends JPanel implements IPlugin
     //  IPlugin Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#init()
-     */
     public void init()
     {
         buildView();
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getName()
-     */
     public String getName()
     {
         return "JDBC Query";
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
-     */
     public Component getComponent()
     {
         return this;
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
-     */
     public JMenuBar getMenuBar()
     {
         return null;
     }
 
-    /**
-     * Saves contents of sqlPopupMenu to a Properties object 
-     * 
-     * @param  prefs  Preferences object
-     * @see    toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
-     */
     public void applyPrefs(Properties prefs)
     {
         String history = prefs.getProperty(PROP_HISTORY);
@@ -303,12 +285,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         leftFlipPane_.applyPrefs(prefs, PROP_PREFIX);
     }
 
-    /**
-     * Restores the of the sqlPopupMenu from a Properties object
-     * 
-     * @param  prefs  Preferences object
-     * @see    toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
-     */
     public void savePrefs(Properties prefs)
     {
         // Munge all SQL statements into one string and save
@@ -329,17 +305,11 @@ public class QueryPlugin extends JPanel implements IPlugin
         leftFlipPane_.savePrefs(prefs, PROP_PREFIX);
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
-     */
     public void setStatusBar(IStatusBar statusBar)
     {
         statusBar_ = statusBar;
     }
     
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
-     */
     public void shutdown()
     {
     }
