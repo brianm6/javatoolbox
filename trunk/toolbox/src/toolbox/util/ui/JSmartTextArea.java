@@ -4,17 +4,12 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.SwingUtil;
-import toolbox.util.ThreadUtil;
-import toolbox.util.ui.plugin.IPreferenced;
 
 /**
  * Extends the functionality of JTextArea by adding:
@@ -26,8 +21,10 @@ import toolbox.util.ui.plugin.IPreferenced;
  */
 public class JSmartTextArea extends JTextArea // implements IPreferenced
 {
-    private static final Logger logger_ =
-        Logger.getLogger(JSmartTextArea.class);
+    // TODO: Implement saving of preferences  
+    
+    //private static final Logger logger_ =
+    //    Logger.getLogger(JSmartTextArea.class);
     
     /** 
      * Popup menu for this component 
@@ -37,12 +34,12 @@ public class JSmartTextArea extends JTextArea // implements IPreferenced
     /**
      * Check box that toggles autoscroll
      */
-    private JCheckBoxMenuItem  autoScrollItem_;
+    private JCheckBoxMenuItem autoScrollItem_;
     
     /** 
      * Check box that toggles antialiasing of text
      */
-    private JCheckBoxMenuItem  antiAliasItem_;
+    private JCheckBoxMenuItem antiAliasItem_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -95,6 +92,18 @@ public class JSmartTextArea extends JTextArea // implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
+    //  Public 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Convenience method to scroll to the bottom of the text area
+     */
+    public void scrollToEnd()
+    {
+        setCaretPosition(getDocument().getLength());
+    }
+
+    //--------------------------------------------------------------------------
     //  Overrides java.awt.Component
     //--------------------------------------------------------------------------
     
@@ -143,47 +152,6 @@ public class JSmartTextArea extends JTextArea // implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    // Protected
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Adds a popupmenu to the textarea
-     */
-    protected void buildView()
-    {
-        // Build popup menu and add register with textarea
-        autoScrollItem_ = new JCheckBoxMenuItem(new AutoScrollAction());
-        antiAliasItem_  = new JCheckBoxMenuItem(new AntiAliasAction());
-        popup_ = new JTextComponentPopupMenu(this);    
-        popup_.addSeparator();    
-        popup_.add(autoScrollItem_);
-        popup_.add(antiAliasItem_);
-    }    
-    
-    //--------------------------------------------------------------------------
-    //  Public 
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Convenience method to scroll to the bottom of the text area
-     */
-    public void scrollToEnd()
-    {
-        setCaretPosition(getDocument().getLength());
-    }
-    
-    /**
-     * Creates the comonly used clear action
-     * 
-     * @return Action to clear the text area
-     */
-    public Action createClearAction()
-    {
-        return new ClearAction("Clear");
-    }
-    
-    
-    //--------------------------------------------------------------------------
     //  Accessors/Mutators
     //--------------------------------------------------------------------------
     
@@ -222,11 +190,32 @@ public class JSmartTextArea extends JTextArea // implements IPreferenced
     {
         antiAliasItem_.setSelected(antiAlias);
     }
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a popupmenu to the textarea
+     */
+    protected void buildView()
+    {
+        // Build popup menu and add register with textarea
+        autoScrollItem_ = new JCheckBoxMenuItem(new AutoScrollAction());
+        antiAliasItem_  = new JCheckBoxMenuItem(new AntiAliasAction());
+        popup_ = new JTextComponentPopupMenu(this);    
+        popup_.addSeparator();    
+        popup_.add(autoScrollItem_);
+        popup_.add(antiAliasItem_);
+    }    
     
     //--------------------------------------------------------------------------
     //  Actions
     //--------------------------------------------------------------------------
     
+    /**
+     * Toggles autoscroll
+     */    
     class AutoScrollAction extends AbstractAction 
     {
         public AutoScrollAction()
@@ -240,6 +229,9 @@ public class JSmartTextArea extends JTextArea // implements IPreferenced
         }
     }    
 
+    /**
+     * Toggles antialiasing
+     */
     class AntiAliasAction extends AbstractAction 
     {
         public AntiAliasAction()
@@ -253,11 +245,21 @@ public class JSmartTextArea extends JTextArea // implements IPreferenced
         }
     }
     
+    /**
+     * Clears the text area
+     */
     public class ClearAction extends AbstractAction
     {
+        public ClearAction()
+        {
+            this("Clear");
+        }
+        
         public ClearAction(String name)
         {
             super(name);
+            putValue(MNEMONIC_KEY, new Integer('C'));
+            putValue(SHORT_DESCRIPTION, "Clears the output");
         }
         
         public void actionPerformed(ActionEvent e)
