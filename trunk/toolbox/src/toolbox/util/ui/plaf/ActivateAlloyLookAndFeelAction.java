@@ -1,10 +1,8 @@
 package toolbox.util.ui.plaf;
 
-import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 
 import com.incors.plaf.alloy.AlloyLookAndFeel;
 import com.incors.plaf.alloy.AlloyTheme;
