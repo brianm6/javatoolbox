@@ -423,7 +423,7 @@ public class Dumper implements Stringz
             {
                 result = "null";
             }
-            else if (StringUtil.isNullEmptyOrBlank(toString))
+            else if (StringUtil.isNullOrBlank(toString))
             {
                 result = stripped;
             }
