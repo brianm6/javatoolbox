@@ -176,9 +176,10 @@ public final class RandomUtil
 
 
     /**
-     * Generates a random string of the given length makde up of arbitrary
+     * Generates a random string of the given length made up of arbitrary
      * alphanumberic characters.
      * 
+     * @param length Length of the random string to generate.
      * @return String
      */
     public static String nextString(int length)
@@ -209,7 +210,7 @@ public final class RandomUtil
     
 
     /**
-     * Returns a randomly chosen element from the passed in list
+     * Returns a randomly chosen element from the passed in list.
      * 
      * @param list List to pick random element from.
      * @return Randomly chosen element from the list. Null if list is empty.
