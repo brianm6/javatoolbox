@@ -406,13 +406,13 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         String[] plugins = StringUtil.tokenize(pluginLine, ",");
 
         // Restore look and feel
-        String lafName = prefs_.getProperty(KEY_LAF);
+        String lafClass = prefs_.getProperty(KEY_LAF);
         
-        if (lafName != null)
+        if (lafClass != null)
         {
             try
             {
-                UIManager.setLookAndFeel(lafName);
+                UIManager.setLookAndFeel(lafClass);
                 SwingUtilities.updateComponentTreeUI(this);
             }
             catch (Exception e)
@@ -422,7 +422,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         }
 
         // Activate the currently loaded look and feel in the menu
-        String laf = UIManager.getLookAndFeel().getName();        
+        String lafName = UIManager.getLookAndFeel().getName();        
         
         for (int i=0; i<lafMenu_.getItemCount(); i++)
         {
@@ -430,7 +430,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             
             if (item instanceof JCheckBoxMenuItem)
             {
-                if (item.getText().equals(laf))
+                if (item.getText().equals(lafName))
                     item.setSelected(true);
             }
         }
