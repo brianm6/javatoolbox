@@ -104,7 +104,7 @@
             depends     = "init,compile,jar,dist" 
             description = "Builds everything! (init, compile, jar, dist)">
        
-		<banner message="All Done!"/>	  
+        <banner message="All Done!"/>      
     </target>
 
 
@@ -135,7 +135,7 @@
             depends     = "init" 
             description = "Compiles the source code">
     
-    	<banner message="Compiling..."/>
+        <banner message="Compiling..."/>
     
         <property name="cp" refid="project.class.path"/>
 
@@ -171,45 +171,45 @@
             depends     = "compile" 
             description = "Creates an executable jar">
 
-		<banner message="Jarring..."/>
-		
+        <banner message="Jarring..."/>
+        
         <mkdir dir="${build.stage}/toolbox"/>
-		<delete file="${dist}/toolbox.jar" verbose="false" quiet="off"/>
-		
+        <delete file="${dist}/toolbox.jar" verbose="false" quiet="off"/>
+        
         <!-- Unjar all jars to staging area -->
         <unjar dest="${build.stage}/toolbox" overwrite ="false">
 
             <fileset dir="${lib}">
                 <include name="log4j.jar"/>
                 <include name="jode.jar"/> 
-				<include name="junit.jar"/>
+                <include name="junit.jar"/>
                 <include name="xml-apis.jar"/>
-				<include name="xercesImpl.jar"/>
-				<include name="xom.jar"/>
+                <include name="xercesImpl.jar"/>
+                <include name="xom.jar"/>
                 <include name="jedit-syntax.jar"/>
                 
                 <!-- ===== Apache Commons ===== -->
                 <include name="commons-cli.jar"/>
                 <include name="commons-lang.jar"/>
                 <include name="commons-beanutils.jar"/>
-				<include name="commons-logging.jar"/>
+                <include name="commons-logging.jar"/>
                 <include name="commons-collections.jar"/>
                 <include name="commons-net.jar"/>
                 <include name="commons-io.jar"/>
                 <include name="commons-codec.jar"/>
                 <include name="jakarta-regexp.jar"/>
                 
-		        <!-- ===== Look and Feels ==== -->                    
+                <!-- ===== Look and Feels ==== -->                    
                 <include name="plastic.jar"/>
                 <include name="kunststoff.jar"/>
                 <include name="xplookandfeel.jar"/>
                 <include name="metouia.jar"/>
                 <include name="tinylaf.jar"/>
 
-		        <!-- ===== Log4j IM Appenders ==== -->
-		        <include name="hamsam.jar"/>
-		        <include name="jaimlib.jar"/>
-		        
+                <!-- ===== Log4j IM Appenders ==== -->
+                <include name="hamsam.jar"/>
+                <include name="jaimlib.jar"/>
+                
             </fileset>
         </unjar>    
 
@@ -217,13 +217,13 @@
         <copy todir="${build.stage}/toolbox" overwrite="yes">
         
             <fileset 
-            	dir="${classes}" 
-            	includes="**/*.class"
-            	excludes="**/MANIFEST.MF,**/test/**"/>
-            	
+                dir="${classes}" 
+                includes="**/*.class"
+                excludes="**/MANIFEST.MF,**/test/**"/>
+                
             <fileset 
-            	dir="${resources}" 
-            	excludes="**/test/**"/>
+                dir="${resources}" 
+                excludes="**/test/**"/>
         </copy>
 
         <!-- Jar up staging area to produce toolbox.jar -->                    
@@ -253,21 +253,21 @@
             <fileset dir="${dist}" includes="toolbox-xslfo.jar"/>
         </delete>
 
-		<mkdir dir="${build.stage}/xslfo"/>
-		
+        <mkdir dir="${build.stage}/xslfo"/>
+        
         <!-- Unjar all jars to staging area -->
         <unjar dest="${build.stage}/xslfo" overwrite="true">
 
             <fileset dir="${lib}">
             
-		        <!-- ===== XSL-FO Plugin Dependencies ==== -->
-		        <include name="fop.jar"/>
-                <include name="batik.jar"/>		        
+                <!-- ===== XSL-FO Plugin Dependencies ==== -->
+                <include name="fop.jar"/>
+                <include name="batik.jar"/>                
                 <include name="acrobat.jar"/>
-                <include name="avalon-framework.jar"/>				 
+                <include name="avalon-framework.jar"/>                 
                 <include name="apple-mrj.jar"/>
                 <include name="xep.jar"/>
-                <include name="xt.jar"/>				 
+                <include name="xt.jar"/>                 
                 <include name="saxon.jar"/>
                 <include name="cryptix32.jar"/>
                 <include name="cryptix32-pgp.jar"/>
@@ -294,13 +294,13 @@
             <fileset dir="${dist}" includes="toolbox-statcvs.jar"/>
         </delete>
 
-		<mkdir dir="${build.stage}/statcvs"/>
-		
+        <mkdir dir="${build.stage}/statcvs"/>
+        
         <!-- Unjar all jars to staging area -->
         <unjar dest="${build.stage}/statcvs" overwrite="true">
             <fileset dir="${lib}">
-		        <include name="cvslib.jar"/>
-		        <include name="statcvs.jar"/>
+                <include name="cvslib.jar"/>
+                <include name="statcvs.jar"/>
             </fileset>
         </unjar>    
 
@@ -323,9 +323,9 @@
             <fileset dir="${dist}" includes="toolbox-ant.jar"/>
         </delete>
 
-		<classfileset id="anttasks" dir="${classes}">
-			<rootfileset dir="${classes}" includes="toolbox/ant/*.class"/>
-		</classfileset>
+        <classfileset id="anttasks" dir="${classes}">
+            <rootfileset dir="${classes}" includes="toolbox/ant/*.class"/>
+        </classfileset>
         
         <jar jarfile = "${dist}/toolbox-ant.jar" compress = "yes">
             <fileset refid="anttasks"/> 
@@ -361,6 +361,20 @@
             <fileset dir="${dist}" includes="**/*.jar"/>
         </copy>
         
+    </target>
+
+
+    <!--=============================-->
+    <!--          MAKE-EXE           -->
+    <!--=============================-->
+    <target name="make-exe"
+            description="Creates a native executable"
+            depends="init">
+    
+        <jstub archive="${dist}/toolbox.jar"
+               mode="win32-console"
+               execute="java -jar toolbox.exe workspace"
+               output="${dist}/toolbox.exe"/>
     </target>
 
 
@@ -418,7 +432,7 @@
             depends     = "init"
             description = "Executes JUnit tests and generates report. Use -Djunit.class to single out test class.">
 
-		<banner message="Testing..."/>
+        <banner message="Testing..."/>
 
         <mkdir dir="${junit}"/>
         <mkdir dir="${junit.xml}"/>
@@ -446,9 +460,9 @@
             
             <formatter type="xml"/>
 
-			<!-- have to fork because JDBCUtilTest gets out of mem error -->
-			<!-- but it is not really out of mem ##!@!@                  -->
-			
+            <!-- have to fork because JDBCUtilTest gets out of mem error -->
+            <!-- but it is not really out of mem ##!@!@                  -->
+            
             <batchtest fork="no" todir="${junit.xml}">
                 <fileset dir="${src}">
                 
@@ -754,5 +768,8 @@
     
     <taskdef resource  = "checkstyletask.properties"
              classpath = "build/lib/checkstyle.jar"/>
-             
+
+    <taskdef resource  = "com/roxes/tools/ant/taskdefs.properties"
+             classpath = "build/lib/roxes.jar"/>
+    
 </project>
