@@ -35,6 +35,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import toolbox.log4j.LoggingMenu;
 import toolbox.log4j.SmartLogger;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
