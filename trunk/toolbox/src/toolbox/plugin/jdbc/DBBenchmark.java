@@ -576,9 +576,6 @@ public class DBBenchmark implements Startable, IPreferenced
     /**
      * Creates the test database.
      * 
-     * @param url JDBC url.
-     * @param user Username.
-     * @param password Password.
      * @throws Exception on error.
      */
     protected void createDatabase() throws Exception
