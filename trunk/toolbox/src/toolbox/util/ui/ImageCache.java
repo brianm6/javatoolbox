@@ -47,6 +47,8 @@ public class ImageCache
     public static final String IMAGE_HARD_DRIVE  = ROOT + "HardDrive.gif";
     
     public static final String IMAGE_DATASOURCE  = ROOT + "Datasource.gif";
+    public static final String IMAGE_QUESTION_MARK = ROOT + "QuestionMark.png";
+    
     
     /**
      * Map for cached icons.
