@@ -33,6 +33,7 @@ import org.apache.regexp.RESyntaxException;
 import org.w3c.tidy.Tidy;
 
 import toolbox.plugin.jtail.filter.RegexLineFilter;
+import toolbox.util.ArrayUtil;
 import toolbox.util.Banner;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
@@ -408,8 +409,10 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();        
-            String[] lines = StringUtil.tokenize(text, StringUtil.NL);
+            String[] lines = StringUtil.tokenize(text, StringUtil.NL, true);
             StringBuffer sb = new StringBuffer();
+            
+            logger_.debug(StringUtil.addBars(ArrayUtil.toString(lines, true)));
             
             for (int i = 0; i < lines.length; i++)
             {
@@ -420,9 +423,13 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                     sb.append("+ ");
                 
                 sb.append("\"");
-                sb.append(line);
-                sb.append("\"");
+                if (line.charAt(0) != '\n') 
+                    sb.append(line);
+                sb.append("\\n\"");
                 sb.append(StringUtil.NL);
+                
+                if (!line.equals(StringUtil.NL))
+                    i++;
             }
             
             outputArea_.append(sb.toString());
