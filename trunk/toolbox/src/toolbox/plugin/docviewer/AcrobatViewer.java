@@ -163,8 +163,8 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     public boolean canView(File file)
     {
         return ArrayUtil.contains(
-                getViewableFileTypes(), 
-                FileUtil.getExtension(file));
+            getViewableFileTypes(), 
+            FileUtil.getExtension(file).toLowerCase());
     }
 
     
