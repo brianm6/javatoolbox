@@ -20,7 +20,6 @@ package toolbox;
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Add a filled bar mode to JSourceView
- * TODO: Create JSmartFrame - remember size and position
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
  * =============================================================================
@@ -49,6 +48,9 @@ package toolbox;
  * =============================== COMPLETED ===================================
  * - Add Plugin menu
  * - Separate unit tests from main source branch + reconfig maven.
+ * - Created JSmartInternalFrame
+ * - DesktopPluginHost now rembers window position and sizes
+ * - 
  * ============================================================================= 
  * </pre>
  */
