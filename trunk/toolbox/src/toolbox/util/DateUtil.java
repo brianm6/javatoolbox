@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * Utility class that deals only with the DATE portions of the 
  * {@link java.util.Date} class.
@@ -256,13 +258,15 @@ public final class DateUtil
      * @param before The lessor of the two dates.
      * @param after The greater of the two dates.
      * @return Number of days in between.
+     * @throws IllegalArgumentException if the before date occurs after the
+     *         after date.
      */
     public static int getDifferenceInDays(final Date before, final Date after)
     {
         if (equals(before, after))
             return 0;
 
-        Assert.isTrue(before.before(after),
+        Validate.isTrue(before.before(after),
             "Before date " + before + " must be less than after date " + after);
 
         long secs = (after.getTime() - before.getTime()) / 1000;

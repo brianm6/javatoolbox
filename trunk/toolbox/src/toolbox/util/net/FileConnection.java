@@ -10,8 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
-
-import toolbox.util.Assert;
+import org.apache.commons.lang.Validate;
 
 /**
  * Concrete implementation of an IConnection that uses one file to read input
@@ -98,18 +97,20 @@ public class FileConnection extends AbstractConnection implements IConnection
      * Opens the connection.
      * 
      * @throws IOException on I/O error.
+     * @throws IllegalArgumentException if the input file does not exist, is
+     *         readonly, or is not a file.
      */
     public void connect() throws IOException
     {
         // Input file validations
         
-        Assert.isTrue(inputFile_.exists(), 
+        Validate.isTrue(inputFile_.exists(), 
             "Input file " + inputFile_ + "does not exist.");
         
-        Assert.isTrue(inputFile_.canRead(),
+        Validate.isTrue(inputFile_.canRead(),
             "Cannot read from input file " + inputFile_ + ".");
             
-        Assert.isTrue(inputFile_.isFile(),
+        Validate.isTrue(inputFile_.isFile(),
             "Input file " + inputFile_ + "cannot be a directory.");
 
         inputStream_ = 

@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Comparator;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 /**
@@ -66,6 +67,7 @@ public final class ArrayUtil
      * @param startIndex The starting index (inclusive).
      * @param endIndex The ending index (inclusive).
      * @return Subset of the array.
+     * @throws IllegalArgumentException on illegal bounds.
      */
     public static double[] subset(double[] array, int startIndex, int endIndex)
     {
@@ -75,14 +77,13 @@ public final class ArrayUtil
             return new double[0];
 
         // Do bounds checking
-        Assert.isTrue(startIndex <= endIndex, 
-                      "Start index " + startIndex + 
-                      " must be <= end index of " + 
-                      endIndex);
+        Validate.isTrue(
+            startIndex <= endIndex, 
+            "Start index " + startIndex + " must be <= end index of "+endIndex);
                       
-        Assert.isTrue(endIndex <= len, 
-                      "End index " + endIndex + 
-                      " must be <= array length of " + len);
+        Validate.isTrue(
+            endIndex <= len, 
+            "End index " + endIndex + " must be <= array length of " + len);
 
         // Copy array
         int subLen = (endIndex - startIndex) + 1;
@@ -103,6 +104,7 @@ public final class ArrayUtil
      * @param startIndex The starting index (inclusive).
      * @param endIndex The ending index (inclusive).
      * @return Subset of the array.
+     * @throws IllegalArgumentException on illegal bounds. 
      */
     public static byte[] subset(byte[] array, int startIndex, int endIndex)
     {
@@ -112,14 +114,13 @@ public final class ArrayUtil
             return new byte[0];
 
         // Do bounds checking
-        Assert.isTrue(startIndex <= endIndex, 
-                      "Start index " + startIndex + 
-                      " must be <= end index of " + 
-                      endIndex);
+        Validate.isTrue(
+            startIndex <= endIndex, 
+            "Start index " + startIndex + " must be <= end index of "+endIndex);
                       
-        Assert.isTrue(endIndex <= len, 
-                      "End index " + endIndex + 
-                      " must be <= array length of " + len);
+        Validate.isTrue(
+            endIndex <= len, 
+            "End index " + endIndex + " must be <= array length of " + len);
 
         // Copy array
         byte[] sub = new byte[endIndex - startIndex + 1];

@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 
 /**
  * Utility class for doubles.
@@ -84,10 +85,13 @@ public final class DoubleUtil
      * @param subtractFrom Array to subtract from.
      * @param subtract Array to subtract.
      * @return Array of the difference.
+     * @throws IllegalArgumentException if the arrays are not of the same 
+     *         length.
      */
     public static double[] difference(double[] subtractFrom, double[] subtract) 
     {
-        Assert.equals(subtractFrom.length, subtract.length, 
+        Validate.isTrue(
+            subtractFrom.length == subtract.length, 
             "Arrays must be of equal length.");
 
         double[] diff = new double[subtract.length];

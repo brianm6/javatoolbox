@@ -3,7 +3,7 @@ package toolbox.util.ui;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
-import toolbox.util.Assert;
+import org.apache.commons.lang.Validate;
 
 /**
  * JPopupMenu that works like a conveyor belt. New items get inserted at the top
@@ -67,10 +67,11 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
      * Sets the max capacity of the popup menu.
      * 
      * @param capacity Capacity > 0
+     * @throws IllegalArgumentException if capacity < 1.
      */
     public void setCapacity(int capacity)
     {
-        Assert.isTrue(capacity > 0, "Capacity must be > 0");
+        Validate.isTrue(capacity > 0, "Capacity must be > 0");
         capacity_ = capacity;    
     }
     

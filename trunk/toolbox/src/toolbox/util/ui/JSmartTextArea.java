@@ -9,9 +9,9 @@ import javax.swing.text.Document;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
-import toolbox.util.Assert;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
@@ -226,31 +226,7 @@ public class JSmartTextArea extends JTextArea
         firePropertyChange("autoscroll", old, autoScroll);
     }
 
-
-    /**
-     * Returns true if antialiasing is enabled, false otherwise.
-     *
-     * @return boolean
-     */
-    public boolean isAntiAliased()
-    {
-        return antiAlias_;
-    }
-
-
-    /**
-     * Activates antialiasing of text.
-     *
-     * @param antiAlias True turns antialiasing on; false turns it off.
-     */
-    public void setAntiAliased(boolean antiAlias)
-    {
-        boolean old = antiAlias_;
-        antiAlias_ = antiAlias;
-        firePropertyChange("antialias", old, antiAlias_);
-    }
-
-
+    
     /**
      * Returns the maximum number of characters displayable by the text area
      * before the contents get pruned.
@@ -292,10 +268,12 @@ public class JSmartTextArea extends JTextArea
      * Sets the pruning factor.
      *
      * @param f Pruning factor.
+     * @throws IllegalArgumentException if the pruning factor is not between
+     *         0 and 100.
      */
     public void setPruneFactor(int f)
     {
-        Assert.isTrue(
+        Validate.isTrue(
             f >= 0 && f <= 100,
             "Pruning factor must be an integer between 0 and 100");
 
@@ -353,6 +331,33 @@ public class JSmartTextArea extends JTextArea
                 "antialias"));
     }
 
+    //--------------------------------------------------------------------------
+    // Antialiased Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns true if antialiasing is enabled, false otherwise.
+     *
+     * @return boolean
+     */
+    public boolean isAntiAliased()
+    {
+        return antiAlias_;
+    }
+
+
+    /**
+     * Activates antialiasing of text.
+     *
+     * @param antiAlias True turns antialiasing on; false turns it off.
+     */
+    public void setAntiAliased(boolean antiAlias)
+    {
+        boolean old = antiAlias_;
+        antiAlias_ = antiAlias;
+        firePropertyChange("antialias", old, antiAlias_);
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------

@@ -78,7 +78,7 @@ package toolbox;
  *  - Added connection pooling to JDBCUtil using commons-dbcp
  *  - Upgraded to commons-io-1.0
  *  - Added 3D look and feel
- *  - Added a tree based DTD DocumentViewer
+ *  - Added a tree based DTD viewer to the DocumentViewerPlugin
  *  - Updated usage template in FindClass
  *  - Updated FileComparator to use static instances
  *  - Relaced ClassUtil.stripClass and stripPackage with commons-lang equivalent

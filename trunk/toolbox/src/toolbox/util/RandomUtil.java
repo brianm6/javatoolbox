@@ -3,10 +3,13 @@ package toolbox.util;
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
 
 /**
  * Utility class for generating commonly used random elements.
+ * 
+ * @see org.apache.commons.lang.math.RandomUtils
  */
 public final class RandomUtil
 {
@@ -57,10 +60,11 @@ public final class RandomUtil
      * @param floor Lower boundary.
      * @param ceiling Upper boundary.
      * @return Random int.
+     * @throws IllegalArgumentException if floor is greater than ceiling.
      */
     public static int nextInt(int floor, int ceiling)
     {
-        Assert.isTrue(
+        Validate.isTrue(
             floor <= ceiling,
             "Ceiling " + ceiling + " cannot be less than floor " + floor);
 

@@ -2,6 +2,7 @@ package toolbox.util;
 
 import java.util.Date;
 
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
@@ -9,11 +10,10 @@ import org.apache.log4j.Logger;
 /**
  * Represents the time elapsed between two instances in time. Useful for 
  * determining the time elapsed for any given method call/operation/unit of
- * work. 
+ * work.
+ * <p>
+ * Example: 
  * <pre>
- *  
- * Usage:
- * 
  * // Create new instance init'ed to current time
  * ElapsedTime et = new ElapsedTime();
  * 
@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
  * 
  * // Show elapsed time
  * System.out.println(et);
- * 
  * </pre>
  */
 public class ElapsedTime
@@ -347,10 +346,13 @@ public class ElapsedTime
     
     /**
      * Calculates the elapsed time between the starting time and ending time.
+     * 
+     * @throws IllegalArgumentException if end time does not occur after the
+     *         start time.
      */
     protected void recalc()
     {
-        Assert.isTrue(
+        Validate.isTrue(
             endTime_ >= startTime_, 
             "Ending time " + endTime_ + 
             " must be greater than or equal to the" +

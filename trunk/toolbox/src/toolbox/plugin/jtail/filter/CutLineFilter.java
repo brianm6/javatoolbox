@@ -3,10 +3,8 @@ package toolbox.plugin.jtail.filter;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.ToStringBuilder;
-
-import toolbox.util.Assert;
-import toolbox.util.AssertionException;
 
 /**
  * Filter that cuts a specified number of columns from a line base on a simple
@@ -104,16 +102,7 @@ public class CutLineFilter extends AbstractLineFilter
         if (StringUtils.isEmpty(cut_))
             setEnabled(false);
         else
-        {        
-            try
-            {
-                parseCut();
-            }
-            catch (AssertionException ae)
-            {
-                throw new IllegalArgumentException(ae.getMessage());
-            }
-        }
+            parseCut();
     }
     
     //--------------------------------------------------------------------------
@@ -122,24 +111,27 @@ public class CutLineFilter extends AbstractLineFilter
 
     /**
      * Parses the cut expression.
+     * 
+     * @throws IllegalArgumentException if the expression is not valid.
      */    
     protected void parseCut()
     {
         StringTokenizer st = new StringTokenizer(cut_, "-");        
         
-        Assert.equals(st.countTokens(), 2, 
+        Validate.isTrue(
+            st.countTokens() == 2, 
             "Cut expression should be of form x-y. " + cut_);
         
         begin_ = Integer.parseInt(st.nextToken()) - 1;
         end_   = Integer.parseInt(st.nextToken());
 
-        if (begin_ == end_) 
-            throw new IllegalArgumentException(
-                "Begin cannot be equal to end. " + cut_);
+        Validate.isTrue(
+            begin_ != end_,
+            "Begin cannot be equal to end. " + cut_);
             
-        if (begin_ > end_)
-            throw new IllegalArgumentException(
-                "Begin cannot be greater than end. " + cut_);            
+        Validate.isTrue (
+            begin_ < end_,
+            "Begin cannot be greater than end. " + cut_);            
     }
     
     //--------------------------------------------------------------------------

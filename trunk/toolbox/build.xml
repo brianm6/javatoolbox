@@ -145,6 +145,7 @@
         <property name="cp" refid="project.class.path"/>
 
         <!-- Prints out the classpath -->
+    	<!--
         <script language="beanshell"> <![CDATA[
             print("[CLASSPATH]");
             sb = new StringBuffer();
@@ -153,7 +154,8 @@
                 sb.append(t.nextToken() + System.getProperty("line.separator"));
             print(sb.toString());
         ]]></script>
-
+        -->
+        
         <javac
             destdir     = "${classes}"
             debug       = "${project.debug}"

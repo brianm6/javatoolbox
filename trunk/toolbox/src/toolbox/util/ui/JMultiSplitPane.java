@@ -16,9 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-
-import toolbox.util.Assert;
 
 /**
  * A panel which contains multiple JComponents, held apart by JSplitPanes.
@@ -388,7 +387,9 @@ public class JMultiSplitPane extends JPanel
         }
         else
         {
-            Assert.equals(1, n, "Should be exactly one component in " + this);
+            Validate.isTrue(
+                1 == n, 
+                "Should be exactly one component in " + this);
             
             // get and remove the current component
             Component oldcomp = getComponent(0);
@@ -424,8 +425,9 @@ public class JMultiSplitPane extends JPanel
         }
         else
         {
-            Assert.isTrue(
-                cont instanceof JSplitPane, "container not a splitpane!");
+            Validate.isTrue(
+                cont instanceof JSplitPane, 
+                "container not a splitpane!");
             
             JSplitPane split = (JSplitPane) cont;
             Container parent = split.getParent();
@@ -464,8 +466,9 @@ public class JMultiSplitPane extends JPanel
         }
         else
         {
-            Assert.isTrue(
-                parent instanceof JSplitPane, "parent not a JSplitPane!");
+            Validate.isTrue(
+                parent instanceof JSplitPane, 
+                "parent not a JSplitPane!");
             
             JSplitPane splitParent = (JSplitPane) parent;
             

@@ -31,9 +31,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
-import toolbox.util.Assert;
 import toolbox.util.Banner;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
@@ -654,7 +654,7 @@ public class JFontChooser extends JPanel
          */
         protected void handle(DocumentEvent e)
         {
-            Assert.notNull(e);
+            Validate.notNull(e, "Document event is null");
             
             if (updating_)
                 return;
