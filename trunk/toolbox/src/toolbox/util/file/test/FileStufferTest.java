@@ -40,7 +40,7 @@ public class FileStufferTest extends TestCase
     /**
      * Tests running the filestuffer.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFileStuffer() throws Exception
     {
@@ -63,6 +63,20 @@ public class FileStufferTest extends TestCase
         logger_.info("File contents: \n" + contents);
         
         outfile.delete();
+    }
+
+    
+    /**
+     * Tests main() for invalid args.
+     * 
+     * @throws Exception on error.
+     */
+    public void testMainFailure() throws Exception
+    {
+        logger_.info("Running testMainFailure...");
+
+        FileStuffer.main(
+            new String[] {"one arg ok", "two args ok", "three args bad"});
     }
     
     
