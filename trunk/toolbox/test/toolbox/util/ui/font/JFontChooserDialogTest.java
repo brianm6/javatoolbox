@@ -4,9 +4,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.apache.commons.lang.math.RandomUtils;
@@ -64,42 +61,20 @@ public class JFontChooserDialogTest extends UITestCase
     public static void main(String[] args) throws Exception
     {
         logger_.info(StringUtil.banner("Main " + ArrayUtil.toString(args)));
-        TestRunner.run(suite());
+        TestRunner.run(JFontChooserDialogTest.class);
         System.exit(0); 
     }
 
+    //--------------------------------------------------------------------------
+    // Overrides TestCase
+    //--------------------------------------------------------------------------
     
     /**
-     * @return
+     * @see junit.framework.TestCase#setUp()
      */
-    public static Test suite()
+    protected void setUp() throws Exception
     {
-        logger_.info(StringUtil.banner("JFontChooserDialogTest.suite()"));
-        TestSuite suite = new TestSuite(JFontChooserDialogTest.class);
-        
-        TestSetup wrapper = new TestSetup(suite)
-        {
-            protected void setUp() throws Exception
-            {
-                //setUpOnce();
-            }
-
-            protected void tearDown() throws Exception
-            {
-                //tearDownOnce();            
-            }
-
-        };
-        
-        return wrapper;
-    }
-    
-    //==================================================================
-    // Setup Once
-    //------------------------------------------------------------------
-    private static void setUpOnce()
-    {
-        logger_.info(StringUtil.banner("One time setup"));
+        super.setUp();
         
         //JemmyProperties.setCurrentDispatchingModel(
         //    JemmyProperties.ROBOT_MODEL_MASK);
@@ -133,38 +108,6 @@ public class JFontChooserDialogTest extends UITestCase
 
         SwingUtil.centerWindow(fsd);
         fsd.setVisible(true);
-    }
-
-    //==================================================================
-    // Tear Down Once
-    //------------------------------------------------------------------
-    private static void tearDownOnce()
-    {
-        logger_.info(StringUtil.banner("One time tear down"));
-
-        // Only dispose if the dialog hasn't already been dismissed by the
-        // test case.
-        if (JDialogOperator.findJDialog("Select font", true, false) != null)
-        {
-            JDialogOperator dialog = new JDialogOperator("Select font");
-            JDialog dialogSource = (JDialog) dialog.getSource();
-            dialogSource.setVisible(false);
-            dialogSource.dispose();
-        }
-        
-        //new QueueTool().waitEmpty(10000);
-        //dialog.waitClosed();
-        //QueueTool.uninstallQueue();
-    }
-
-    
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-        setUpOnce();
         
         dialog_ = new JDialogOperator("Select font");
         
@@ -196,7 +139,20 @@ public class JFontChooserDialogTest extends UITestCase
      */
     protected void tearDown() throws Exception
     {
-        tearDownOnce();
+        // Only dispose if the dialog hasn't already been dismissed by the
+        // test case.
+        if (JDialogOperator.findJDialog("Select font", true, false) != null)
+        {
+            JDialogOperator dialog = new JDialogOperator("Select font");
+            JDialog dialogSource = (JDialog) dialog.getSource();
+            dialogSource.setVisible(false);
+            dialogSource.dispose();
+        }
+        
+        //new QueueTool().waitEmpty(10000);
+        //dialog.waitClosed();
+        //QueueTool.uninstallQueue();
+
         super.tearDown();
     }
     
@@ -290,6 +246,7 @@ public class JFontChooserDialogTest extends UITestCase
         assertTrue(!dialog_.getSource().isVisible());
     }
     
+    
     /**
      * Tests
      */
@@ -305,6 +262,6 @@ public class JFontChooserDialogTest extends UITestCase
         chooser.setRenderedUsingFont(true);
         chooser.setMonospaceEmphasized(true);
         fontList_.repaint();
-        ThreadUtil.sleep(5000);
+        ThreadUtil.sleep(3000);
     }
 }
