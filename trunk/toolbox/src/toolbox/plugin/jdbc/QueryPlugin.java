@@ -35,6 +35,7 @@ import toolbox.jedit.JEditActions;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
+import toolbox.plugin.jdbc.action.FormatSQLAction;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
 import toolbox.plugin.jdbc.action.SQLReferenceAction;
@@ -242,6 +243,54 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         return sqlEditor_;
     }
+
+    
+    /**
+     * Gets the active sql statement(s) based on the cursor position, selection
+     * and position in an existing sql statement.
+     *
+     * @return Selected text if a selection exists. SQL statement if the cursor
+     *         is position in the bounds of a valid sql statement, or the
+     *         entire contents of the text area.
+     */
+    public String getActiveText()
+    {
+        IntRange range = getActiveRange();
+
+        String active =
+            sqlEditor_.getText(
+                range.getMinimumInteger(),
+                range.getMaximumInteger() - range.getMinimumInteger());
+
+        return active;
+    }
+
+
+    /**
+     * Replaces the current active text.
+     *
+     * @param active Text to replace current active text with.
+     */
+    public void setActiveText(String active)
+    {
+        String all = sqlEditor_.getText();
+        int len = all.length();
+        IntRange range = getActiveRange();
+        int min = range.getMinimumInteger();
+        int max = range.getMaximumInteger();
+
+        logger_.debug("Range: " + range);
+        logger_.debug("JETA: " + len);
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(all.substring(0, min));
+        sb.append("\n");
+        sb.append(active);
+        sb.append("\n");
+        sb.append(all.substring(max, len));
+
+        sqlEditor_.setText(sb.toString());
+    }
     
     //--------------------------------------------------------------------------
     // Build UI
@@ -337,9 +386,11 @@ public class QueryPlugin extends JPanel implements IPlugin
             "C+UP", new CtrlUpAction());
 
         sqlEditor_.getInputHandler().addKeyBinding(
-            "CS+F", new FormatSQLAction());
+            "CS+F", new FormatSQLAction(this));
 
+        //
         // Build toolbar for SQL editor
+        //
         JButton executeAll = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_PLAY),
             "Execute All SQL",
@@ -353,7 +404,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JButton format = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_BRACES),
             "Format",
-            new FormatSQLAction());
+            new FormatSQLAction(this));
 
         JButton clear = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
@@ -541,54 +592,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
 
         return range;
-    }
-
-
-    /**
-     * Gets the active sql statement(s) based on the cursor position, selection
-     * and position in an existing sql statement.
-     *
-     * @return Selected text if a selection exists. SQL statement if the cursor
-     *         is position in the bounds of a valid sql statement, or the
-     *         entire contents of the text area.
-     */
-    protected String getActiveText()
-    {
-        IntRange range = getActiveRange();
-
-        String active =
-            sqlEditor_.getText(
-                range.getMinimumInteger(),
-                range.getMaximumInteger() - range.getMinimumInteger());
-
-        return active;
-    }
-
-
-    /**
-     * Replaces the current active text.
-     *
-     * @param active Text to replace current active text with.
-     */
-    protected void setActiveText(String active)
-    {
-        String all = sqlEditor_.getText();
-        int len = all.length();
-        IntRange range = getActiveRange();
-        int min = range.getMinimumInteger();
-        int max = range.getMaximumInteger();
-
-        logger_.debug("Range: " + range);
-        logger_.debug("JETA: " + len);
-
-        StringBuffer sb = new StringBuffer();
-        sb.append(all.substring(0, min));
-        sb.append("\n");
-        sb.append(active);
-        sb.append("\n");
-        sb.append(all.substring(max, len));
-
-        sqlEditor_.setText(sb.toString());
     }
 
     //--------------------------------------------------------------------------
@@ -913,53 +916,6 @@ public class QueryPlugin extends JPanel implements IPlugin
 
     //--------------------------------------------------------------------------
     // FormatSQLAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Formats the current or selected sql statements.
-     */
-    class FormatSQLAction extends WorkspaceAction
-    {
-        /**
-         * Creates a FormatSQLAction.
-         */
-        FormatSQLAction()
-        {
-            super("Format", false, null, statusBar_);
-        }
-
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            String sql = getActiveText();
-
-            if (StringUtils.isBlank(sql))
-            {
-                statusBar_.setWarning("Nothing to format.");
-            }
-            else
-            {
-                SQLFormatter formatter = new SQLFormatter();
-                String[] statements = StringUtil.tokenize(sql, ";");
-                StringBuffer sb = new StringBuffer();
-
-                for (int i = 0; i < statements.length; i++)
-                {
-                    sb.append(formatter.format(statements[i] + ";"));
-                    sb.append("\n");
-                }
-
-                setActiveText(sb.toString());
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // ExecutePriorAction
     //--------------------------------------------------------------------------
 
     /**
