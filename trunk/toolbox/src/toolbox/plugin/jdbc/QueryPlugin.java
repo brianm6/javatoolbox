@@ -46,7 +46,6 @@ import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
 import toolbox.plugin.jdbc.action.SQLReferenceAction;
 import toolbox.util.ClassUtil;
-import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.JDBCUtil;
@@ -335,50 +334,37 @@ public class QueryPlugin extends JPanel implements IPlugin
      * Runs a query against the database and returns the results as a nicely
      * formatted string.
      *
-     * @param sql SQL query.
+     * @param sql SQL statement.
      * @return Formatted results.
+     * @throws SQLException on SQL error.
      * @see JDBCUtil#format(ResultSet)
      */
-    public String executeSQL(String sql)
+    public String executeSQL(String sql) throws SQLException
     {
         String metaResults = null;
         String lower = sql.trim().toLowerCase();
 
-        try
+        if (lower.startsWith("select"))
         {
-            if (lower.startsWith("select"))
-            {
-                //
-                // Execute select statement
-                //
-                
-                metaResults = JDBCUtil.executeQuery(sql);
-            }
-            else if (lower.startsWith("insert") ||
-                     lower.startsWith("delete") ||
-                     lower.startsWith("update") ||
-                     lower.startsWith("create") ||
-                     lower.startsWith("drop")   ||
-                     lower.startsWith("alter"))
-            {
-                metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
-            }
-            else
-            {
-                //
-                // Everything else is processed as an update
-                //
-                
-                metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
-            }
-
-            addToHistory(sql);
+            // Execute select statement
+            metaResults = JDBCUtil.executeQuery(sql);
         }
-        catch (Exception e)
+        else if (lower.startsWith("insert") ||
+                 lower.startsWith("delete") ||
+                 lower.startsWith("update") ||
+                 lower.startsWith("create") ||
+                 lower.startsWith("drop")   ||
+                 lower.startsWith("alter"))
         {
-            ExceptionUtil.handleUI(e, logger_);
+            metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
+        }
+        else
+        {
+            // Everything else is processed as an update
+            metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
         }
 
+        addToHistory(sql);
         return metaResults;
     }
 
@@ -845,9 +831,10 @@ public class QueryPlugin extends JPanel implements IPlugin
 	                        resultsArea_.scrollToEnd();
 	                    }
 	                }
-	                catch (Exception ee)
+	                catch (Exception ex)
 	                {
-	                    errors.add(e);
+                        // Collect the errors
+	                    errors.add(ex);
 	                }
 	                
 	                if (errors.size() == 1)
@@ -856,6 +843,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 	                }
 	                else if (errors.size() > 1)
 	                {
+                        // Merge errors into a single exception if many.
 	                    StringBuffer sb = new StringBuffer();
 	                    sb.append("Not all statements executed successfully.");
 	                    sb.append("\n");
