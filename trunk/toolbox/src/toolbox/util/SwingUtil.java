@@ -350,7 +350,8 @@ public final class SwingUtil
      */
     public static void setPreferredLAF() throws Exception
     { 
-        setMetouiaLAF();
+        UIManager.setLookAndFeel(
+            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
     }
 
 
