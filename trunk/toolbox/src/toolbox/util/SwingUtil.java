@@ -14,6 +14,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Window;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -618,5 +619,39 @@ public final class SwingUtil
             phantomFrame_ = new JFrame();
 
         phantomFrame_.getContentPane().remove(c);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Component Hierarchy
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Finds all instances of a given component type in a component hierarchy.
+     * 
+     * @param clazz Component type to find.
+     * @param c Root of component hierarchy.
+     * @param results Found components are collected in this list.
+     */
+    public static void findInstancesOf(
+        Class clazz, 
+        Component c, 
+        List results)
+    {
+        //logger_.debug("Checking " + c.getClass().getName());
+        
+        if (clazz.isAssignableFrom(c.getClass()))    
+        {
+            //logger_.debug("Adding " + c.getClass().getName());
+            results.add(c);
+        }
+        
+        if (c instanceof Container)
+        {
+            Container container = (Container) c;
+            Component[] components = container.getComponents();
+            
+            for (int i = 0; i < components.length; i++)
+                findInstancesOf(clazz, components[i], results);
+        }
     }
 }
