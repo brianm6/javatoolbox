@@ -11,8 +11,7 @@ import org.apache.log4j.Logger;
  */
 public class Main extends TailAdapter
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(Main.class);
+    private static final Logger logger_ = Logger.getLogger(Main.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -21,7 +20,7 @@ public class Main extends TailAdapter
     /**
      * Entrypoint. 
      * 
-     * @param args List of files to tail
+     * @param args List of files to tail.
      */    
     public static void main(String args[])
     {
@@ -33,13 +32,12 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Arg constructor.
+     * Creates a Main.
      * 
-     * @param args Array of files to tail
+     * @param args Array of files to tail.
      */
     public Main(String args[])
     {
-    
         if (args.length == 0)
         {
             printUsage();
@@ -72,14 +70,14 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Program usage. 
+     * Prints program usage to standard output. 
      */
     private void printUsage()
     {
         System.out.println(
             "Program : Tails a list of files");
         System.out.println(
-            "Usage   : java toolbox.tail.Main [file1 file2 ... file8]");
+            "Usage   : java toolbox.tail.Main [file1 file2 ... filex]");
         System.out.println(
             "Example : java toolbox.tail.Main appserver.log");
     }

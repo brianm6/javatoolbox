@@ -54,8 +54,11 @@ import toolbox.util.io.ReverseFileReader;
  */
 public class Tail
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(Tail.class);
+    private static final Logger logger_ = Logger.getLogger(Tail.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
     /** 
      * Default number of lines to print from the bottom of an existing file
@@ -63,6 +66,10 @@ public class Tail
      */ 
     public static final int DEFAULT_BACKLOG = 20;
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Tail listeners. 
      */ 
@@ -132,8 +139,8 @@ public class Tail
     /**
      * Follows the given file sending the tail output to the writer.
      * 
-     * @param readFrom File to tail
-     * @param writeTo Writer to send tail output to
+     * @param readFrom File to tail.
+     * @param writeTo Writer to send tail output to.
      */
     public void follow(File readFrom, Writer writeTo)
     {
@@ -145,8 +152,8 @@ public class Tail
     /**
      * Follows the given reader sending the tail output to the writer.
      * 
-     * @param readFrom Reader to follow
-     * @param writeTo Writer to send the tail output to
+     * @param readFrom Reader to follow.
+     * @param writeTo Writer to send the tail output to.
      */
     public void follow(Reader readFrom, Writer writeTo, String threadName) 
     {
@@ -354,8 +361,8 @@ public class Tail
     /**
      * Shows the backlog of the file being followed.
      * 
-     * @throws IOException on I/O error
-     * @throws FileNotFoundException on non-existant file
+     * @throws IOException on I/O error.
+     * @throws FileNotFoundException on non-existant file.
      */
     protected void showBacklog() throws IOException, FileNotFoundException
     {
@@ -385,7 +392,7 @@ public class Tail
     /**
      * Connects to the available source for data. Reader or File.
      * 
-     * @throws FileNotFoundException if file not found
+     * @throws FileNotFoundException if file not found.
      */
     protected void connect() throws FileNotFoundException
     {
@@ -402,7 +409,7 @@ public class Tail
     /**
      * Adds a listener to the tail.
      * 
-     * @param listener Listener to add
+     * @param listener Listener to add.
      */
     public void addTailListener(TailListener listener)
     {
@@ -413,7 +420,7 @@ public class Tail
     /**
      * Removes a listener from the tail.
      * 
-     * @param listener Listener to remove
+     * @param listener Listener to remove.
      */
     public void removeTailListener(TailListener listener)
     {
@@ -424,7 +431,7 @@ public class Tail
     /**
      * Fires event for availability of the next line of the tail.
      * 
-     * @param line Next line of the tail
+     * @param line Next line of the tail.
      */
     protected void fireNextLine(String line)
     {
@@ -453,7 +460,7 @@ public class Tail
 
     
     /**
-     * Fires event when tail is stopped
+     * Fires event when tail is stopped.
      */
     protected void fireTailStopped()
     {
@@ -462,7 +469,7 @@ public class Tail
     
     
     /**
-     * Fires event when tail is started
+     * Fires event when tail is started.
      */
     protected void fireTailStarted()
     {
@@ -471,7 +478,7 @@ public class Tail
     
     
     /**
-     * Fires event when tail has reached the end of stream/reader/etc
+     * Fires event when tail has reached the end of stream/reader/etc.
      */
     protected void fireTailEnded()
     {
@@ -480,7 +487,7 @@ public class Tail
     
     
     /**
-     * Fires an event when the tail is unpaused 
+     * Fires an event when the tail is unpaused. 
      */
     protected void fireTailUnpaused()
     {
@@ -489,7 +496,7 @@ public class Tail
     
     
     /**
-     * Fires an event when the tail is paused 
+     * Fires an event when the tail is paused. 
      */
     protected void fireTailPaused()
     {
@@ -498,7 +505,7 @@ public class Tail
 
     
     /**
-     * Fires an event when the tail is re-attached to its source 
+     * Fires an event when the tail is re-attached to its source. 
      */
     protected void fireReattached()
     {

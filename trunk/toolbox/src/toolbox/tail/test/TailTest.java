@@ -31,8 +31,12 @@ public class TailTest extends TestCase
 {
     public static final Logger logger_ = Logger.getLogger(TailTest.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * Word list used for test data 
+     * Word list used for test data. 
      */
     private String[] words_;
     
