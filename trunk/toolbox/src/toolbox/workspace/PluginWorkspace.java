@@ -37,6 +37,7 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
+import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
@@ -52,7 +53,6 @@ import toolbox.util.SwingUtil;
  * TODO: Plugin to configure log4j
  * TODO: Make plugins detachable
  * TODO: Make webstart enabled
- * TODO: Added close icon to plugin tabs
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Abstraction for concrete regular expression engine implementation
  * TODO: Convert project build and layout to Maven
@@ -242,6 +242,10 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         setJMenuBar(createMenuBar());
         
         addWindowListener(new CloseWindowListener());
+        
+        setIconImage(
+            ResourceUtil.getResourceAsImage(
+                "toolbox/util/ui/images/Toolbox.gif"));
     }
 
     /**
