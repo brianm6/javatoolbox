@@ -108,7 +108,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a TextToolsPlugin.
+     * Creates a TextToolsPlugin. Necessary for instantiation via reflection.
      */
     public TextToolsPlugin()
     {
@@ -163,10 +163,27 @@ public class TextToolsPlugin extends JPanel implements IPlugin
 
         // Top flip pane
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
-        topFlipPane_.addFlipper("Filter", new FilterPane(this));
-        topFlipPane_.addFlipper("Tokenizer", new TokenizerPane(this));
-        topFlipPane_.addFlipper("Codec", new CodecPane(this));
-        topFlipPane_.addFlipper("Format", new FormatPane(this));
+        
+        topFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_FUNNEL), 
+            "Filter", 
+            new FilterPane(this));
+        
+        topFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP),
+            "Tokenizer", 
+            new TokenizerPane(this));
+        
+        topFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_PLAY),
+            "Codec", 
+            new CodecPane(this));
+        
+        topFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_BRACES),
+            "Format", 
+            new FormatPane(this));
+        
         add(topFlipPane_, BorderLayout.NORTH);
     }
 
