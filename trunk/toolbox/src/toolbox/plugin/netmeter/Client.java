@@ -2,6 +2,7 @@ package toolbox.plugin.netmeter;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.text.NumberFormat;
 
 import org.apache.log4j.Logger;
@@ -52,6 +53,9 @@ public class Client extends AbstractService
      */
     private MonitoredOutputStream mos_;
     
+    /**
+     * Monitors the throughput of the stream.
+     */
     private ThroughputMonitor monitor_;
     
     /**
@@ -111,7 +115,7 @@ public class Client extends AbstractService
     /**
      * Creates a loopback Client attached to NetMeter.DEFAULT_PORT.
      */
-    public Client()
+    public Client() throws ServiceException
     {
         this("127.0.0.1", NetMeterPlugin.DEFAULT_PORT);
     }
@@ -123,11 +127,10 @@ public class Client extends AbstractService
      * @param hostname Server hostname.
      * @param port Server port.
      */
-    public Client(String hostname, int port)
+    public Client(String hostname, int port) throws ServiceException
     {
         setHostname(hostname);
         setPort(port);
-        monitor_ = new DefaultThroughputMonitor();
     }
 
     //--------------------------------------------------------------------------
@@ -193,6 +196,16 @@ public class Client extends AbstractService
     //--------------------------------------------------------------------------
     
     /**
+     * @see toolbox.util.service.AbstractService#initialize()
+     */
+    public void initialize() throws ServiceException
+    {
+        monitor_ = new DefaultThroughputMonitor();
+        super.initialize();
+    }
+    
+    
+    /**
      * @see toolbox.util.service.Service#start()
      */
     public void start() throws ServiceException
@@ -203,8 +216,6 @@ public class Client extends AbstractService
             {
                 try
                 {
-                    conn_ = new SocketConnection(hostname_, port_);
-            
                     mos_ = new MonitoredOutputStream(
                             "Client", 
                             new BufferedOutputStream(conn_.getOutputStream()));
@@ -230,6 +241,22 @@ public class Client extends AbstractService
                 }
             }
         });
+
+        // Connect before the thread is spawned to success/failure can be
+        // handled.
+        
+        try
+        {
+            conn_ = new SocketConnection(hostname_, port_);
+        }
+        catch (UnknownHostException uhe)
+        {
+            throw new ServiceException(uhe);
+        }
+        catch (IOException ioe)
+        {
+            throw new ServiceException(ioe);
+        }
         
         clientThread_.start();
         super.start();
