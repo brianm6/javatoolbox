@@ -7,8 +7,13 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+
 import org.apache.commons.lang.StringUtils;
 
+import toolbox.forms.SmartComponentFactory;
 import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
 import toolbox.util.service.Service;
@@ -16,9 +21,7 @@ import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
 import toolbox.util.service.ServiceView;
 import toolbox.util.ui.JHeaderPanel;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
-import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
  * ClientView concepts.
@@ -30,6 +33,8 @@ import toolbox.util.ui.layout.ParagraphLayout;
  *  <li>ClientView contains an embedded ServiceView UI component that allows
  *      manipulation of the service state.
  * </ul>
+ * 
+ * @see toolbox.plugin.netmeter.ClientFactoryView
  */
 public class ClientView extends JHeaderPanel 
     implements ServiceListener, ThroughputListener
@@ -67,7 +72,6 @@ public class ClientView extends JHeaderPanel
      * Bandwidth throttle
      */
     private JSlider throttle_;
-    
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -114,8 +118,7 @@ public class ClientView extends JHeaderPanel
         JPanel content = new JPanel(new BorderLayout());
         content.add(buildInputPanel(), BorderLayout.NORTH);
         
-        ThrottleView throttleView = new ThrottleView(client_.getBandwidth());
-        content.add(throttleView, BorderLayout.CENTER);
+        //content.add(throttleView, BorderLayout.CENTER);
         content.add(new ServiceView(client_), BorderLayout.SOUTH);
         
         if (client_ != null)
@@ -136,41 +139,51 @@ public class ClientView extends JHeaderPanel
     
     
     /**
-     * Creates the input panel for the server information.
+     * Creates the panel that displays server information.
      * 
      * @return JPanel
      */
     protected JPanel buildInputPanel()
     {
-        JPanel p = new JPanel(new ParagraphLayout());
-        
-        // Hostname
-        p.add(new JSmartLabel("Server"), ParagraphLayout.NEW_PARAGRAPH);
+        FormLayout layout = new FormLayout("r:p:g, p, l:p:g", "");
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        builder.setComponentFactory(SmartComponentFactory.getInstance());
+        builder.setDefaultDialogBorder();
+
         serverHostnameField_ = new JSmartTextField(10);
         serverHostnameField_.setEditable(false);
-        p.add(serverHostnameField_);
-
-        // Port
-        p.add(new JSmartLabel("Port"), ParagraphLayout.NEW_PARAGRAPH);
+        builder.append("Server", serverHostnameField_);
+        builder.nextLine();
+        
         serverPortField_ = new JSmartTextField(10);
         serverPortField_.setEditable(false);
-        p.add(serverPortField_);
-        
-        // Throughput
-        p.add(new JSmartLabel("Server Throughput"),
-            ParagraphLayout.NEW_PARAGRAPH);
+        builder.append("Port", serverPortField_);
+        builder.nextLine();
+
         throughputField_ = new JSmartTextField(10);
         throughputField_.setEditable(false);
-        p.add(throughputField_);
+        builder.append("Server Throughput", throughputField_);
+        builder.nextLine();
 
-        // Status
-        p.add(new JSmartLabel("Status"), ParagraphLayout.NEW_PARAGRAPH);
         statusField_ = new JSmartTextField(10);
         statusField_.setText("Stopped");
         statusField_.setEditable(false);
-        p.add(statusField_);
+        builder.append("Status", statusField_);
+        builder.nextLine();
+
+        builder.appendRelatedComponentsGapRow();
+        builder.nextLine();
+        builder.appendRelatedComponentsGapRow();
+        builder.nextLine();
+
+        builder.appendRow("c:p:g");
+        CellConstraints cc = new CellConstraints();
         
-        return p;
+        builder.add(
+            new ThrottleView(client_.getBandwidth()),
+            cc.xyw(builder.getColumn(), builder.getRow(), 3, "c,f"));
+        
+        return builder.getPanel();
     }
 
     //--------------------------------------------------------------------------
