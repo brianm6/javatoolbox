@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===========================================================================
+    
+  Maven POM for the Java Toolbox 
+  
+  USAGE:
+
+	You do not invoke this file explicitly. Each subproject has a maven 
+	project.xml which directly extends/inherits base functionality from this
+	project. Change to an individual project's directory and invoke maven from 
+	there instead.
+
+  PURPOSE:
+  
+    This file serves as the parent maven POM (project object model) for each of 
+    the individual sub-projects. This reduces the amount of redunduncy created
+    when building a large system with multiple projects having similar
+    attributes and behavior.
+
+============================================================================ -->
+<project>
+
+  <pomVersion>3</pomVersion>
+  <id>toolbox</id>
+  <name>Java Toolbox</name>
+  <currentVersion>1.1</currentVersion>
+
+  <organization>
+    <name>Toolbox</name>
+    <url>http://toolbox.sf.net/</url>
+  </organization>
+  
+  <inceptionYear>2002</inceptionYear>
+  <package>toolbox</package>
+  <logo/>
+  <gumpRepositoryId>toolbox</gumpRepositoryId>
+  <description>Java Toolbox</description>
+  <shortDescription>Toolbox that contains various apps and utilities to make java development easier.</shortDescription>
+  <url>http://toolbox.sf.net/</url>
+  <issueTrackingUrl>http://toolbox.sf.net</issueTrackingUrl>
+  <siteAddress>www.sf.net</siteAddress>
+  <siteDirectory>/www/maven.apache.org/</siteDirectory>
+  <distributionDirectory>
+    /www/jakarta.apache.org/builds/jakarta-turbine-maven/
+  </distributionDirectory>
+
+  <repository>
+    <connection>
+      scm:cvs:pserver:analogue@192.168.1.103:4802:c:/cvs/cvsrep:${pom.artifactId}
+    </connection>
+    <url>http://toolbox.sf.net/</url>
+  </repository>
+  
+  <versions>
+    <version>
+      <id>head</id>
+      <name>head</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+  
+  <developers>
+    <developer>
+      <name>Semir Patel</name>
+      <id>analogue</id>
+      <email>analogue@yaoo.com</email>
+      <organization>Toolbox</organization>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency><id>acrobat</id><version/></dependency>
+    <dependency><id>ant</id><version/></dependency>    
+    <dependency><id>apple-mrj</id><version/></dependency>
+    <dependency><id>avalon-framework</id><version/></dependency>	    
+    <dependency><id>batik</id><version/></dependency>
+    <dependency><id>bsh</id><version/></dependency>
+    <dependency><id>commons-cli</id><version/></dependency>
+    <dependency><id>commons-collections</id><version/></dependency>
+    <dependency><id>commons-lang</id><version/></dependency>
+    <dependency><id>commons-beanutils</id><version/></dependency>
+    <dependency><id>commons-logging</id><version/></dependency>
+    <dependency><id>commons-net</id><version/></dependency>
+    <dependency><id>commons-io</id><version/></dependency>
+    <dependency><id>commons-codec</id><version/></dependency>
+    <dependency><id>cryptix32</id><version/></dependency>
+    <dependency><id>cryptix32-pgp</id><version/></dependency>        
+    <dependency><id>cvslib</id><version/></dependency>        
+	<dependency><id>fop</id><version/></dependency>        	    
+    <dependency><id>hamsam</id><version/></dependency>
+    <dependency><id>jaimlib</id><version/></dependency>
+    <dependency><id>jakarta-regexp</id><version/></dependency>	    
+	<dependency><id>jedit-syntax</id><version/></dependency>
+    <dependency><id>jode</id><version/></dependency>
+    <dependency><id>junit</id><version/></dependency>
+    <dependency><id>kunststoff</id><version/></dependency>
+	<dependency><id>log4j</id><version/></dependency>
+    <dependency><id>metouia</id><version/></dependency>
+    <dependency><id>plastic</id><version/></dependency>    	
+    <dependency><id>saxon</id><version/></dependency>	    
+    <dependency><id>statcvs</id><version/></dependency>	    
+    <dependency><id>tinylaf</id><version/></dependency>	    
+	<dependency><id>xercesImpl</id><version/></dependency>
+    <dependency><id>xep</id><version/></dependency>
+	<dependency><id>xml-apis</id><version/></dependency>
+	<dependency><id>xom</id><version/></dependency>	
+	<dependency><id>xplookandfeel</id><version/></dependency>
+    <dependency><id>xt</id><version/></dependency>
+    
+    <dependency><id>STComm</id><version/></dependency>	    
+    <dependency><id>CommRes</id><version/></dependency>	    
+    
+  </dependencies>
+  
+  <build>
+  
+    <nagEmailAddress>analogue@yahoo.com</nagEmailAddress>
+    <sourceDirectory>src</sourceDirectory>
+    <unitTestSourceDirectory>src</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+    <aspectSourceDirectory/>
+  
+    <!-- Unit test classes -->
+    
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      
+      <excludes>
+        <exclude>**/RepositoryTest.java</exclude>
+        <exclude>**/ui/**/*Test.java</exclude>
+        <exclude>**/SwingUtilTest.java</exclude>
+        <exclude>**/jedit/**</exclude>
+        <exclude>**/log4j/im/**/*Test.java</exclude>
+        <exclude>**/BannerTaskTest.java</exclude>
+      </excludes>
+      
+      <resources>
+        <resource>
+          <directory>${basedir}/resources</directory>
+          <includes>
+            <include>**/test/**</include>
+          </includes>
+        </resource>
+        
+        <!--
+        <resource>
+          <directory>${basedir}/debug</directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+        </resource>
+        -->
+        
+      </resources>
+    </unitTest>
+    
+    <resources>
+      <resource>
+          <directory>${basedir}/resources</directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <excludes>
+            <exclude>**/test/**/*</exclude>
+          </excludes>
+      </resource>
+    </resources>
+  </build>
+  
+ 
+    <reports>     
+      <report>maven-junit-report-plugin</report>
+      <report>maven-jdepend-plugin</report>
+      <!-- <report>maven-checkstyle-plugin</report> -->
+      <report>maven-changes-plugin</report>
+      <report>maven-changelog-plugin</report>
+      <report>maven-developer-activity-plugin</report>
+      <report>maven-file-activity-plugin</report>
+      <report>maven-statcvs-plugin</report>
+      <report>maven-javadoc-plugin</report>
+      <report>maven-jxr-plugin</report>
+      <report>maven-tasklist-plugin</report>
+      <!-- <report>maven-simian-plugin</report> -->
+      
+    </reports>
+  
+</project>
