@@ -214,11 +214,11 @@ public final class SwingUtil
         String favoredFont;
         
         if (Platform.isUnix())
-            favoredFont = "LucidaSansTypewriter";
+            favoredFont = "Monospaced";
         else
             favoredFont = "Lucida Console";
             
-        String backupFont  = "monospaced";
+        String backupFont  = "mono";
         
         if (monofont_ == null)
         {
@@ -228,6 +228,9 @@ public final class SwingUtil
                 GraphicsEnvironment.getLocalGraphicsEnvironment();
                 
             String[] familyNames = ge.getAvailableFontFamilyNames();
+            
+            logger_.debug(ArrayUtil.toString(familyNames, false));
+            
             Map attribMap = new HashMap();
              
             if (ArrayUtil.contains(familyNames, favoredFont))
