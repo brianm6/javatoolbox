@@ -8,10 +8,10 @@ import org.apache.tools.ant.Main;
 import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
- * Unit test for BannerTask. This test is marked as standalone because the call
+ * Unit test for FigletTask. This test is marked as standalone because the call
  * into Ant results in call to System.exit() on completion.
  */
-public class BannerTaskTest extends TestCase implements StandaloneTestCase
+public class FigletTaskTest extends TestCase implements StandaloneTestCase
 {
     //--------------------------------------------------------------------------
     // Main
@@ -24,7 +24,7 @@ public class BannerTaskTest extends TestCase implements StandaloneTestCase
      */
     public static void main(String[] args)
     {
-        TestRunner.run(BannerTaskTest.class);
+        TestRunner.run(FigletTaskTest.class);
     }
 
     //--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ public class BannerTaskTest extends TestCase implements StandaloneTestCase
         
         String args[] =
         {
-            "-f", "resources/toolbox/ant/test/BannerTaskTest.xml"
+            "-f", "resources/toolbox/ant/test/FigletTaskTest.xml"
         };
             
         Main.main(args); 

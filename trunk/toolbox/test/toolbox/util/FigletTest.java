@@ -5,14 +5,14 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.Banner;
+import toolbox.util.Figlet;
 
 /**
- * Unit test for Banner.
+ * Unit test for Figlet.
  */
-public class BannerTest extends TestCase
+public class FigletTest extends TestCase
 {
-    private static final Logger logger_ = Logger.getLogger(BannerTest.class);
+    private static final Logger logger_ = Logger.getLogger(FigletTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -25,7 +25,7 @@ public class BannerTest extends TestCase
      */
     public static void main(String[] args)
     {
-        TestRunner.run(BannerTest.class);
+        TestRunner.run(FigletTest.class);
     }
     
     //--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ public class BannerTest extends TestCase
     {
         logger_.info("Running testFiglet...");
         
-        String s = Banner.getBanner("Howdy!");
+        String s = Figlet.getBanner("Howdy!");
         logger_.info("\n" + s);
     }
     
@@ -53,12 +53,12 @@ public class BannerTest extends TestCase
     {
         logger_.info("Running testMain...");
         
-        Banner.main(new String[0]);
-        Banner.main(new String[] {"-h"});        
-        Banner.main(new String[] {"Ummmm...!"});
-        Banner.main(new String[] {"-l", "Donuts!"});
-        Banner.main(new String[] {"-s", "One doh per line"});
-        Banner.main(new String[] {"-s", "-l", "Byte code"});
-        Banner.main(new String[] {"-w", "120", "[this a big line 120]"});
+        Figlet.main(new String[0]);
+        Figlet.main(new String[] {"-h"});        
+        Figlet.main(new String[] {"Ummmm...!"});
+        Figlet.main(new String[] {"-l", "Donuts!"});
+        Figlet.main(new String[] {"-s", "One doh per line"});
+        Figlet.main(new String[] {"-s", "-l", "Byte code"});
+        Figlet.main(new String[] {"-w", "120", "[this a big line 120]"});
     }
 }

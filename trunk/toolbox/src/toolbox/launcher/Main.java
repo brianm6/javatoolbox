@@ -35,6 +35,7 @@ public class Main
         // Map program names to class names
         programMap_ = new HashMap(15);
         
+        programMap_.put("figlet",        "toolbox.util.Figlet");
         programMap_.put("findclass",     "toolbox.findclass.Main");
         programMap_.put("rtelnet",       "toolbox.rtelnet.RemoteTelnet");
         programMap_.put("showclasspath", "toolbox.showclasspath.Main");
@@ -42,7 +43,6 @@ public class Main
         programMap_.put("tail",          "toolbox.tail.Main");
         programMap_.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
         programMap_.put("tree",          "toolbox.tree.Tree");
-        programMap_.put("banner",        "toolbox.util.Banner");
         programMap_.put("workspace",     "toolbox.workspace.PluginWorkspace");
         programMap_.put("laflauncher",   "toolbox.launcher.LAFLauncher");
     }
@@ -142,7 +142,7 @@ public class Main
             "                                                       \n" +
             "       where program is:                               \n" +
             "                                                       \n" +
-            "       banner        => creates a text banner          \n" +
+            "       figlet        => creates a text banner          \n" +
             "       findclass     => find a java class file         \n" +
             "       rtelnet       => executes a telnet command      \n" +
             "       showclasspath => show detailed classpath info   \n" +

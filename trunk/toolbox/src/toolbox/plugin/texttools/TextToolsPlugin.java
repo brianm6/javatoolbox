@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.Banner;
+import toolbox.util.Figlet;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -450,7 +450,7 @@ public class TextToolsPlugin extends AbstractPlugin
          */
         BannerAction()
         {
-            super("Banner", true, false, null);
+            super("Figlet", true, false, null);
             putValue(MNEMONIC_KEY, new Integer('B'));
             putValue(SHORT_DESCRIPTION, "Creates an ascii text banner");
         }
@@ -465,7 +465,7 @@ public class TextToolsPlugin extends AbstractPlugin
             String[] lines = StringUtil.tokenize(getInputText(), StringUtil.NL);
 
             for (int i = 0; i < lines.length; i++)
-                outputArea_.append(StringUtil.NL + Banner.getBanner(lines[i]));
+                outputArea_.append(StringUtil.NL + Figlet.getBanner(lines[i]));
         }
     }
 

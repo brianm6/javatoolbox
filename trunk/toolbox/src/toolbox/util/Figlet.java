@@ -18,12 +18,12 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.log4j.Logger;
 
 /**
- * Banner converts a text string into a banner using ASCII characters to form
+ * Figlet converts a text string into a banner using ASCII characters to form
  * larger versions of the letters.
  * <p>
  * <b>Example:</b>
  * <pre class="snippet">
- * System.out.println(Banner.getBanner("Banner")); 
+ * System.out.println(Figlet.getBanner("Figlet")); 
  * </pre>
  * 
  * <b>Output:</b>
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  *  |____/   \__,_| |_| |_| |_| |_|  \___| |_|   
  * </pre>
  */ 
-public class Banner
+public class Figlet
 {
     private static final String FONT_STANDARD_DATA = 
 
@@ -2277,7 +2277,7 @@ public class Banner
     /** 
      * Logger. 
      */
-    private static final Logger logger_ = Logger.getLogger(Banner.class);
+    private static final Logger logger_ = Logger.getLogger(Figlet.class);
     
     /** 
      * Default font. 
@@ -2286,7 +2286,7 @@ public class Banner
         new BannerFont(FONT_STANDARD_DATA);
 
     // Clover private constructor workaround
-    static { new Banner(); }
+    static { new Figlet(); }
 
     // TODO: Add more font files
     
@@ -2414,7 +2414,7 @@ public class Banner
     /**
      * Private constructor.
      */
-    private Banner()
+    private Figlet()
     {
     }
     
@@ -2426,7 +2426,7 @@ public class Banner
      * Converts from ASCII to a banner.
      *
      * @param message Message.
-     * @return Banner as a string.
+     * @return Figlet as a string.
      */
     public static String getBanner(String message)
     {
@@ -2442,7 +2442,7 @@ public class Banner
      * @param splitAtWord True if split at word.
      * @param leftJustify True to left justify text.
      * @param splitWidth Width of split.
-     * @return Banner as a string.
+     * @return Figlet as a string.
      */
     public static String getBanner(String message, boolean splitAtWord,
         boolean leftJustify, int splitWidth)
@@ -2461,7 +2461,7 @@ public class Banner
      * @param splitAtWord True if split at word.
      * @param leftJustify True to left justify text.
      * @param splitWidth Width of split.
-     * @return Banner as a string.
+     * @return Figlet as a string.
      */
     public static String getBanner(String message, BannerFont figletFont,
         boolean splitAtWord, boolean leftJustify, int splitWidth)
@@ -2544,7 +2544,7 @@ public class Banner
      * 
      * @param message Text of message.
      * @param offset Offset to start.
-     * @return Banner moved to the right.
+     * @return Figlet moved to the right.
      */
     private static String scroll(String message, int offset)
     {
@@ -2570,7 +2570,7 @@ public class Banner
      * @param line New line.
      * @param leftJustify True to left justify.
      * @param splitWidth Width at which to split a line.
-     * @return Banner with new line appended.
+     * @return Figlet with new line appended.
      */
     private static String addLine(String text, String line, boolean leftJustify,
         int splitWidth)
@@ -2591,7 +2591,7 @@ public class Banner
      * 
      * @param message Message.
      * @param font Font to use.
-     * @return Banner.
+     * @return Figlet.
      */
     private static String convertOneLine(String message, BannerFont font)
     {
@@ -2615,10 +2615,10 @@ public class Banner
     /**
      * Appends a word to a banner.
      * 
-     * @param message Banner to append word to.
+     * @param message Figlet to append word to.
      * @param end Word to append to the banner.
      * @param font Font to use.
-     * @return Banner with word appended.
+     * @return Figlet with word appended.
      */
     private static String append(String message, String end, BannerFont font)
     {
@@ -2653,9 +2653,9 @@ public class Banner
     {
         StringBuffer sb = new StringBuffer();
         
-        sb.append("Banner converts a string of text to a banner using ");
+        sb.append("Figlet converts a string of text to a banner using ");
         sb.append("ASCII characters.\n\n");
-        sb.append("Usage  : java toolbox.util.Banner [options] text\n");
+        sb.append("Usage  : java toolbox.util.Figlet [options] text\n");
         sb.append("Options: -h, --help        => Prints this help\n");
         sb.append("         -s, --splitWords  => One word per line\n");
         sb.append("         -l, --leftJustify => Left justify text ");
@@ -2870,7 +2870,7 @@ public class Banner
 }
 
 /*
- * Banner
+ * Figlet
  *
  * @author Benoit Rigaut CERN July 96
  * www.rigaut.com benoit@rigaut.com
