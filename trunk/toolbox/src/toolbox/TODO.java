@@ -21,6 +21,7 @@ package toolbox;
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
+ * TODO: FindClass: Reduce startup time.
  * TODO: FindClass: Make table cells editable for text that doesn't fit in cell
  * TODO: FindClass: Add option to have decompiler dump to one textarea or 
  *                  multiple tabs
