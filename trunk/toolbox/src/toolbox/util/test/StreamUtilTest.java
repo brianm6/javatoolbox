@@ -1,6 +1,9 @@
 package toolbox.util.test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -145,7 +148,8 @@ public class StreamUtilTest extends TestCase
     
     
     /**
-     * Tests close(OutputStream)
+     * Tests close(OutputStream) for a valid, null, and exception throwing 
+     * OutputStream.
      * 
      * @throws Exception on error
      */
@@ -157,29 +161,48 @@ public class StreamUtilTest extends TestCase
         sos.write("testing".getBytes());
         StreamUtil.close(sos);
         StreamUtil.close((OutputStream) null);
+        
+        // This should log the exception as a warning.
+        StreamUtil.close(new StringOutputStream() 
+        {
+            public void close()
+            {
+                throw new RuntimeException("Thrown on purpose");
+            }
+        });
     }
    
     
     /**
-     * Tests close(InputStream)
+     * Tests close(InputStream) for a valid, null, and exception throwing 
+     * InputStream.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testCloseInputStream() throws Exception
     {
-        logger_.info("Running testCloseOutputStream...");
+        logger_.info("Running testCloseInputStream...");
 
-        StringOutputStream sos = new StringOutputStream();
-        sos.write("testing".getBytes());
-        StreamUtil.close(sos);
-        StreamUtil.close((OutputStream) null);
+        StringInputStream sis = new StringInputStream("abcdefg");
+        sis.read();
+        StreamUtil.close(sis);
+        StreamUtil.close((InputStream) null);
+        
+        // This should log the exception as a warning.        
+        StreamUtil.close(new StringInputStream() 
+        {
+            public void close() throws IOException
+            {
+                throw new IOException("Thrown on purpose");
+            }
+        });
     }
     
     
     /**
-     * Tests close(Writer)
+     * Tests close(Writer) for a valid, null, and exception throwing Writer.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testCloseWriter() throws Exception
     {
@@ -188,32 +211,40 @@ public class StreamUtilTest extends TestCase
         StringWriter w = new StringWriter();
         w.write("testing");
         StreamUtil.close(w);
+        StreamUtil.close((Writer) null);
+        
+        // This should log the exception as a warning.
+        StreamUtil.close(new StringWriter()
+        { 
+            public void close() throws IOException
+            {
+                throw new IOException("Thrown on purpose.");
+            }
+        });
     }
     
     
     /**
-     * Tests close(Writer) when passing in a null value. Expected behavior is
-     * to ignore and not raise any error conditions.
+     * Tests close(Reader) for a valid, null, and exception throwing Reader.
      * 
      * @throws Exception on error.
      */
-    public void testCloseWriterNull() throws Exception
+    public void testCloseReader() throws Exception
     {
-        logger_.info("Running testCloseWriterNull...");
+        logger_.info("Running testCloseReader...");
         
-        Writer w = null;
+        StringReader r = new StringReader("abc123");
+        r.read();
+        StreamUtil.close(r);
+        StreamUtil.close((Reader) null);
         
-        try
+        // This should log the exception as a warning.
+        StreamUtil.close(new StringReader("")
         {
-            StreamUtil.close(w);
-
-            // Success.
-            assertTrue(true);
-        }
-        catch (Exception e)
-        {
-            fail("Null writer should not generate exception");
-        }
-        
-    }    
+            public void close()
+            {
+                throw new RuntimeException("Thrown on purpose.");
+            }
+        });
+    }
 }
