@@ -214,7 +214,7 @@ public class DBConfig extends JPanel implements IPreferenced
 
     //--------------------------------------------------------------------------
     // IPreferenced Interface
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
         
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -265,7 +265,7 @@ public class DBConfig extends JPanel implements IPreferenced
             { 
                 Elements dbProfiles = dbConfig.getChildElements(NODE_DBPROFILE);
                                 
-                for (int i=0, n = dbProfiles.size(); i<n; i++)
+                for (int i = 0, n = dbProfiles.size(); i < n; i++)
                     addProfile(new DBProfile(dbProfiles.get(i).toXML()));
                     
                 profileCombo_.setSelectedIndex(
@@ -288,9 +288,10 @@ public class DBConfig extends JPanel implements IPreferenced
         Element dbConfig = new Element(NODE_DBCONFIG);
         
         dbConfig.addAttribute(
-            new Attribute(ATTR_SELECTED, profileCombo_.getSelectedIndex()+""));
+            new Attribute(ATTR_SELECTED, 
+            profileCombo_.getSelectedIndex() + ""));
             
-        for (int i=0, n=profileCombo_.getItemCount(); i<n; i++)
+        for (int i = 0, n = profileCombo_.getItemCount(); i < n; i++)
         {
             DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
             dbConfig.appendChild(profile.toDOM());
@@ -308,12 +309,20 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     class ConnectAction extends WorkspaceAction
     {
+        /**
+         * Creates a ConnectAction.
+         */
         ConnectAction()  
         {
             super("Connect", false, plugin_.getComponent(), statusBar_);
             putValue(SHORT_DESCRIPTION, "Connects to the database");
         }
-    
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             statusBar_.setInfo("Connecting to the database...");
@@ -349,12 +358,20 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     class DisconnectAction extends WorkspaceAction
     {
+        /**
+         * Creates a DisconnectAction.
+         */
         DisconnectAction()  
         {
             super("Disconnect", false, plugin_.getComponent(), statusBar_);
             putValue(SHORT_DESCRIPTION, "Disconnects from the database.");
         }
-    
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             statusBar_.setInfo("Disconnecting from the database...");
@@ -372,6 +389,10 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     class ProfileChangedAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         { 
             Object obj = profileCombo_.getSelectedItem();
@@ -394,24 +415,32 @@ public class DBConfig extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Saves the current DB profile. If the profile does not already exist,
-     * it is created.
+     * Saves the current DB profile. If the profile does not already exist, it
+     * is created.
      */
     class SaveAction extends AbstractAction
     {
+        /**
+         * Creates a SaveAction.
+         */
         SaveAction()
         {
             super("", ImageCache.getIcon(ImageCache.IMAGE_SAVE));
             putValue(SHORT_DESCRIPTION, "Saves the profile");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String current = profileCombo_.getEditor().getItem().toString();
             
             boolean found = false;
             
-            for (int i=0; i< profileCombo_.getItemCount(); i++)
+            for (int i = 0; i < profileCombo_.getItemCount(); i++)
             {
                 DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
                 
@@ -441,7 +470,7 @@ public class DBConfig extends JPanel implements IPreferenced
                 profileCombo_.setSelectedItem(profile);    
             }
             
-            statusBar_.setStatus("Profile " + current + " saved.");               
+            statusBar_.setStatus("Profile " + current + " saved.");
         }
     }
 
@@ -454,19 +483,27 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     class DeleteAction extends AbstractAction
     {
+        /**
+         * Creates a DeleteAction.
+         */
         public DeleteAction()  
         {
             super("", ImageCache.getIcon(ImageCache.IMAGE_DELETE));
             putValue(SHORT_DESCRIPTION, "Deletes the profile");
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String current = profileCombo_.getEditor().getItem().toString();
             
             boolean found = false;
             
-            for (int i=0; i< profileCombo_.getItemCount(); i++)
+            for (int i = 0; i < profileCombo_.getItemCount(); i++)
             {
                 DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
                 
@@ -478,7 +515,7 @@ public class DBConfig extends JPanel implements IPreferenced
                     if (profileCombo_.getItemCount() > 0)
                         profileCombo_.setSelectedIndex(0);
                     
-                    statusBar_.setStatus("Profile " + current + " deleted.");    
+                    statusBar_.setStatus("Profile " + current + " deleted.");
                     found |= true;
                     break;
                 }
@@ -501,11 +538,19 @@ public class DBConfig extends JPanel implements IPreferenced
      */
     class JarChooserAction extends SmartAction
     {
+        /**
+         * Creates a JarChooserAction.
+         */
         JarChooserAction()
         {
             super("...", true, false, null);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = new JFileChooser();

@@ -65,12 +65,30 @@ import toolbox.workspace.WorkspaceAction;
  * Shortcuts:
  * <p>
  * <table border=1>
- *   <tr><th>Key</th><th>Function</th></tr>
- *   <tr><td>Ctrl-Enter</td><td>Execute all SQL statements</td></tr>
- *   <tr><td>Ctrl-Shift-Enter</td><td>Execute the current SQL statement</td></tr>
- *   <tr><td>Ctrl-Shift-F</td><td>Format the active SQL statement(s)</td></tr>
- *   <tr><td>Ctrl-Up</td><td>Scroll up in SQL history</td></tr>
- *   <tr><td>Ctrl-Down</td><td>Scroll down in SQL history</td></tr>
+ *   <tr>
+ *      <th>Key</th>
+ *      <th>Function</th>
+ *   </tr>
+ *   <tr>
+ *      <td>Ctrl-Enter</td>
+ *      <td>Execute all SQL statements</td>
+ *   </tr>
+ *   <tr>
+ *      <td>Ctrl-Shift-Enter</td>
+ *      <td>Execute the current SQL statement</td>
+ *   </tr>
+ *   <tr>
+ *      <td>Ctrl-Shift-F</td>
+ *      <td>Format the active SQL statement(s)</td>
+ *   </tr>
+ *   <tr>
+ *      <td>Ctrl-Up</td>
+ *      <td>Scroll up in SQL history</td>
+ *   </tr>
+ *   <tr>
+ *      <td>Ctrl-Down</td>
+ *      <td>Scroll down in SQL history</td>
+ *   </tr>
  * </table>
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
@@ -80,10 +98,12 @@ public class QueryPlugin extends JPanel implements IPlugin
      
     //--------------------------------------------------------------------------
     // Constants
-    //--------------------------------------------------------------------------     
-     
-    public static final Logger logger_ =
-        Logger.getLogger(QueryPlugin.class);   
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Logger.
+     */
+    public static final Logger logger_ = Logger.getLogger(QueryPlugin.class);   
 
     /**
      * XML: Root preferences element for the query plugin.
@@ -102,7 +122,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final String NODE_HISTORY_ITEM = "HistoryItem";
         
     /** 
-     * XML: Child of QueryPlugin that contains the contents of the SQL text area 
+     * XML: Child of QueryPlugin that contains contents of the SQL text area.
      */
     public static final String NODE_CONTENTS = "SQLContents";
 
@@ -285,7 +305,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                      lower.startsWith("delete") ||
                      lower.startsWith("update") ||
                      lower.startsWith("create") ||
-                     lower.startsWith("drop") )
+                     lower.startsWith("drop"))
             {
                 metaResults = JDBCUtil.executeUpdate(sql) + " rows affected."; 
             }
@@ -352,7 +372,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             String all = sqlArea_.getText();
             int semi = all.indexOf(';', caret);
             
-            if (semi >=0)
+            if (semi >= 0)
             {
                 // Terminating semicolon found. so we just have to find the
                 // beginning of the statement which either be the beginning of
@@ -360,7 +380,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 // direction from the carets location.
                 int begin;
                 
-                for (begin = caret-1; begin>=0; begin--)
+                for (begin = caret - 1; begin >= 0; begin--)
                 {
                     if (all.charAt(begin) == ';')
                     {    
@@ -368,7 +388,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                     }
                 }
                 
-                range = new IntRange(begin+1, semi);
+                range = new IntRange(begin + 1, semi);
             }
             else
             {
@@ -439,7 +459,8 @@ public class QueryPlugin extends JPanel implements IPlugin
     public void startup(Map params)
     {
         if (params != null)
-            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar_ = 
+                (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
             
         buildView();
     }
@@ -472,16 +493,16 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     
-	/**
+    /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
     public void shutdown()
-	{
-	}
+    {
+    }
 
-	//--------------------------------------------------------------------------
-	// IPreferenced Interface
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -498,7 +519,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 
         logger_.debug("Restoring " + historyItems.size() + " saved sql stmts");
         
-        for (int i=0; i<historyItems.size(); i++)
+        for (int i = 0; i < historyItems.size(); i++)
             addToHistory(historyItems.get(i).getValue());
         
         leftFlipPane_.applyPrefs(root);
@@ -509,7 +530,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         sqlArea_.setText(
             XOMUtil.getString(
-                root.getFirstChildElement(NODE_CONTENTS),""));
+                root.getFirstChildElement(NODE_CONTENTS), ""));
     }
 
     
@@ -520,7 +541,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         Element root = new Element(NODE_QUERY_PLUGIN);
          
-        for (Iterator i =  sqlHistory_.values().iterator(); i.hasNext(); )
+        for (Iterator i = sqlHistory_.values().iterator(); i.hasNext();)
         {
             Element historyItem = new Element(NODE_HISTORY_ITEM);
             historyItem.appendChild(i.next().toString());
@@ -540,6 +561,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         XOMUtil.insertOrReplace(prefs, root);
     }
     
+    /**
+     * ExecuteAction
+     */
     //--------------------------------------------------------------------------
     // ExecuteAction
     //--------------------------------------------------------------------------
@@ -549,6 +573,9 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     class ExecuteAction extends WorkspaceAction
     {
+        /**
+         * Creates a ExecuteAction.
+         */
         ExecuteAction()
         {
             super("Execute SQL", true, QueryPlugin.this, statusBar_);
@@ -556,6 +583,11 @@ public class QueryPlugin extends JPanel implements IPlugin
             putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             String sql = sqlArea_.getText();
@@ -588,12 +620,20 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     class ExecuteCurrentAction extends WorkspaceAction
     {
+        /**
+         * Creates a ExecuteCurrentAction.
+         */
         ExecuteCurrentAction()
         {
             super("Execute Current Statement", true, QueryPlugin.this, 
                 statusBar_);
         }
     
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             String sql = sqlArea_.getLineText(sqlArea_.getCaretLine());
@@ -626,11 +666,19 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     class FormatSQLAction extends WorkspaceAction
     {
+        /**
+         * Creates a FormatSQLAction.
+         */
         FormatSQLAction()
         {
             super("Format", false, null, statusBar_);
         }
-    
+
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             String sql = getActiveText();
@@ -645,7 +693,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 String[] statements = StringUtil.tokenize(sql, ";");
                 StringBuffer sb = new StringBuffer();
                 
-                for (int i=0; i<statements.length; i++)
+                for (int i = 0; i < statements.length; i++)
                 {
                     sb.append(formatter.format(statements[i] + ";"));
                     sb.append("\n");
@@ -665,8 +713,16 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     class ExecutePriorAction extends AbstractAction
     {
+        /**
+         * SQL statement to execute.
+         */
         private String sql_;
         
+        /**
+         * Creates a ExecutePriorAction.
+         * 
+         * @param sql SQL to execute.
+         */
         ExecutePriorAction(String sql)
         {
             super(sql);
@@ -674,6 +730,11 @@ public class QueryPlugin extends JPanel implements IPlugin
             putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
         }
     
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             sqlArea_.setText(sql_);
@@ -690,11 +751,19 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     class CtrlUpAction extends AbstractAction
     {
+        /**
+         * Creates a CtrlUpAction.
+         */
         CtrlUpAction()
         {
             super("Scroll History Up");
         }
-    
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             statusBar_.setStatus("TODO: Implement ctrl-up");
@@ -714,11 +783,19 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     class ListTablesAction extends SmartAction
     {
+        /**
+         * Creates a ListTablesAction.
+         */
         public ListTablesAction()
         {
             super("List Tables", true, false, null);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             Connection conn = JDBCUtil.getConnection();
@@ -741,11 +818,19 @@ public class QueryPlugin extends JPanel implements IPlugin
      */    
     class ListColumnsAction extends SmartAction
     {
+        /**
+         * Creates a ListColumnsAction.
+         */
         public ListColumnsAction()
         {
             super("List Columns", true, false, null);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             Connection conn = JDBCUtil.getConnection();

@@ -60,7 +60,7 @@ public class DBProfile
     //--------------------------------------------------------------------------
     
     /**
-     * Profile name is a user friendly term used to uniquely identify a profile. 
+     * Profile name is a user friendly term used to uniquely identify a profile.
      */
     private String profileName_;
     
@@ -96,17 +96,17 @@ public class DBProfile
     /**
      * Creates a DBProfile from XML.
      *
-     * @param xml String containing a valid XML persistence of DBProfile
-     * @throws IOException on I/O error
-     * @throws ParseException on XML parsing error 
+     * @param xml String containing a valid XML persistence of DBProfile.
+     * @throws IOException on I/O error.
+     * @throws ParseException on XML parsing error. 
      */
-    public DBProfile(String xml) throws ParseException, IOException
+    public DBProfile(String xml) throws IOException, ParseException
     {
         Element profile = 
             new Builder().build(new StringReader(xml)).getRootElement();
         
         setProfileName(profile.getAttributeValue(ATTR_PROFILE_NAME));
-        setJarFile(XOMUtil.getStringAttribute(profile,ATTR_JARFILE,""));
+        setJarFile(XOMUtil.getStringAttribute(profile, ATTR_JARFILE, ""));
         setDriver(profile.getAttributeValue(ATTR_DRIVER));
         setUrl(profile.getAttributeValue(ATTR_URL));
         setUsername(profile.getAttributeValue(ATTR_USERNAME));
@@ -117,12 +117,12 @@ public class DBProfile
     /**
      * Creates a DBProfile.
      *
-     * @param profileName Friendly name of the profile
-     * @param jarFile JDBC driver jar file
-     * @param driver JDBC driver class
-     * @param url JDBC access url
-     * @param username Username
-     * @param password Password in clear text       
+     * @param profileName Friendly name of the profile.
+     * @param jarFile JDBC driver jar file.
+     * @param driver JDBC driver class.
+     * @param url JDBC access url.
+     * @param username Username.
+     * @param password Password in clear text.       
      */
     public DBProfile(
         String profileName,
@@ -147,7 +147,7 @@ public class DBProfile
     /**
      * Returns an XML representation of the data contained in this profile.
      * 
-     * @return XML string
+     * @return XML string.
      */
     public String toXML()
     {
@@ -158,7 +158,7 @@ public class DBProfile
     /**
      * Returns a DOM representation of the data contained in this profile.
      * 
-     * @return DOM tree
+     * @return DOM tree.
      */    
     public Element toDOM()
     {
@@ -179,7 +179,7 @@ public class DBProfile
     /**
      * Returns the name of the database profile.
      * 
-     * @return Profile name
+     * @return Profile name.
      */
     public String getProfileName()
     {
@@ -190,7 +190,7 @@ public class DBProfile
     /**
      * Returns the JDBC driver.
      * 
-     * @return JDBC driver
+     * @return JDBC driver.
      */
     public String getDriver()
     {
@@ -212,7 +212,7 @@ public class DBProfile
     /**
      * Returns the JDBC password.
      * 
-     * @return JDBC password
+     * @return JDBC password.
      */
     public String getPassword()
     {
@@ -223,7 +223,7 @@ public class DBProfile
     /**
      * Returns the JDBC URL.
      * 
-     * @return JDBC URL
+     * @return JDBC URL.
      */
     public String getUrl()
     {
@@ -234,7 +234,7 @@ public class DBProfile
     /**
      * Returns the JDBC username.
      * 
-     * @return JDBC username
+     * @return JDBC username.
      */
     public String getUsername()
     {
@@ -245,7 +245,7 @@ public class DBProfile
     /**
      * Sets the name of the database profile.
      * 
-     * @param string  Profile name
+     * @param string Profile name.
      */
     public void setProfileName(String string)
     {
@@ -256,7 +256,7 @@ public class DBProfile
     /**
      * Sets the JDBC driver. Must be a FQCN.
      * 
-     * @param string JDBC driver
+     * @param string JDBC driver.
      */
     public void setDriver(String string)
     {
@@ -267,7 +267,7 @@ public class DBProfile
     /**
      * Sets the JDBC password.
      * 
-     * @param string  JDBC password in clear text
+     * @param string JDBC password in clear text.
      */
     public void setPassword(String string)
     {
@@ -278,7 +278,7 @@ public class DBProfile
     /**
      * Sets the JDBC URL.
      * 
-     * @param string JDBC URL
+     * @param string JDBC URL.
      */
     public void setUrl(String string)
     {
@@ -289,7 +289,7 @@ public class DBProfile
     /**
      * Sets the JDBC username.
      * 
-     * @param string JDBC username
+     * @param string JDBC username.
      */
     public void setUsername(String string)
     {
@@ -298,7 +298,7 @@ public class DBProfile
 
     
     /**
-     * Sets the name of the jar file containing the JDBC driver
+     * Sets the name of the jar file containing the JDBC driver.
      * 
      * @param jarFile Path and name of jdbc driver jar file.
      */
@@ -316,7 +316,7 @@ public class DBProfile
      * what is used by default to render the text value of this profile when
      * added to a JComboBox.
      * 
-     * @return Profile name
+     * @return Profile name.
      */ 
     public String toString()
     {
