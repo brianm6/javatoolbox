@@ -245,6 +245,8 @@ public class Tail implements Runnable
 
 
     /**
+     * Adds a writer to the list of tail sinks
+     * 
      * @param  writer  Writer to add
      */
     public void addWriter(Writer writer)
@@ -252,8 +254,21 @@ public class Tail implements Runnable
         writers_.add(writer);
     }
 
-    
+
+	/**
+	 * Removes a writer from the list of tail sinks
+	 * 
+	 * @param  writer  Writer to remove
+	 */
+	public void removeWriter(Writer writer)
+	{
+		writers_.remove(writer);
+	}
+	
+	
     /**
+     * Adds an output stream to the list of tail sinks
+     * 
      * @param  os  OutputStream to add
      */
     public void addOutputStream(OutputStream os)
@@ -263,6 +278,8 @@ public class Tail implements Runnable
 
     
     /**
+     * Removes an outputstream from the list of tail sinks
+     * 
      * @param  os  Outputstream to remove
      */
     public void removeOutputStream(OutputStream os)
