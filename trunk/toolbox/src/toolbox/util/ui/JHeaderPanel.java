@@ -61,9 +61,24 @@ public class JHeaderPanel extends JPanel
     // Fields
     //--------------------------------------------------------------------------
     
+    /**
+     * Title.
+     */
     private JLabel titleLabel;
+    
+    /**
+     * Background gradient.
+     */
     private GradientPanel gradientPanel;
+    
+    /**
+     * Wraps the title and gradient.
+     */
     private JPanel headerPanel;
+    
+    /**
+     * Selected state.
+     */
     private boolean isSelected;
 
     //--------------------------------------------------------------------------
@@ -575,7 +590,7 @@ public class JHeaderPanel extends JPanel
     {
         jb.setFocusPainted(false);
         jb.setRolloverIcon(jb.getIcon());
-        jb.setMargin(new Insets(0,0,0,0));
+        jb.setMargin(new Insets(0, 0, 0, 0));
         jb.setText(null);
     }
     

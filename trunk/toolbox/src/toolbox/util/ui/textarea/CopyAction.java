@@ -19,6 +19,8 @@ public class CopyAction extends AbstractTextComponentAction
     
     /**
      * Creates a CopyAction.
+     * 
+     * @param textComponent Textcomponent to copy text from.
      */
     public CopyAction(JTextComponent textComponent)
     {

@@ -56,7 +56,7 @@ public class JSmartTableTest extends UITestCase
     {
         logger_.info("Running testJSmartTable...");
     
-        final DefaultTableModel model = new DefaultTableModel(0,3);
+        final DefaultTableModel model = new DefaultTableModel(0, 3);
         final JSmartTable table = new JSmartTable(model);
         JScrollPane scroller = new JScrollPane(table);
         JPanel content = new JPanel(new BorderLayout());
@@ -67,14 +67,14 @@ public class JSmartTableTest extends UITestCase
         {
             public void actionPerformed(ActionEvent e)
             {
-                for (int i=0, n=RandomUtil.nextInt(1,10); i<n;  i++)
+                for (int i = 0, n = RandomUtil.nextInt(1, 10); i < n;  i++)
                 {    
                     model.addRow(
                         new String[] 
                         { 
-                            RandomUtil.nextUpperAlpha()+"",
-                            RandomUtil.nextUpperAlpha()+"",
-                            RandomUtil.nextUpperAlpha()+""
+                            RandomUtil.nextUpperAlpha() + "",
+                            RandomUtil.nextUpperAlpha() + "",
+                            RandomUtil.nextUpperAlpha() + ""
                         });
                 }
             }
@@ -85,14 +85,18 @@ public class JSmartTableTest extends UITestCase
         b.toggleOnProperty(table, "autotail");
         buttons.add(b);
         
-        buttons.add(new JSmartButton(new AbstractAction("setAutoTail(true)") {
-            public void actionPerformed(ActionEvent e) {
+        buttons.add(new JSmartButton(new AbstractAction("setAutoTail(true)") 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
                 table.setAutoTail(true);
             }
         }));
 
-        buttons.add(new JSmartButton(new AbstractAction("setAutoTail(false)") {
-            public void actionPerformed(ActionEvent e) {
+        buttons.add(new JSmartButton(new AbstractAction("setAutoTail(false)") 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
                 table.setAutoTail(false);
             }
         }));

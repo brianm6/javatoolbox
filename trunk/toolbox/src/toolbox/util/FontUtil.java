@@ -159,7 +159,7 @@ public final class FontUtil
      */
     public static Font grow(final Font font, int units)
     {
-        Font f = font.deriveFont((float)(font.getSize() + units));
+        Font f = font.deriveFont((float) (font.getSize() + units));
         return f;
     }
 

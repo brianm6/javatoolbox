@@ -220,6 +220,7 @@ public class UITestCase extends TestCase
      * 
      * @param bean Java bean.
      * @return JPanel
+     * @throws Exception on error.
      */
     protected JPanel createPropertySheet(final Object bean) throws Exception
     {

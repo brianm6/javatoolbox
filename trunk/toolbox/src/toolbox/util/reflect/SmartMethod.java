@@ -5,7 +5,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 /**
- * SmartMethod
+ * SmartMethod.
  */
 public class SmartMethod
 {

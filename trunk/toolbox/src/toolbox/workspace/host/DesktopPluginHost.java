@@ -120,7 +120,7 @@ public class DesktopPluginHost extends AbstractPluginHost
         frame.getContentPane().add(plugin.getComponent(), BorderLayout.CENTER);
         desktop_.add(frame);
         
-        if (frame.getSize().equals(new Dimension(0,0)))
+        if (frame.getSize().equals(new Dimension(0, 0)))
             frame.pack();
         
         frame.setVisible(true);

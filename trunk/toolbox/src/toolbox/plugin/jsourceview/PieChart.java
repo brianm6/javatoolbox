@@ -35,6 +35,8 @@ public class PieChart extends JPanel
     
     /**
      * Creates a PieChart.
+     * 
+     * @param totals Total file statistics.
      */
     public PieChart(FileStats totals) 
     {
@@ -87,7 +89,7 @@ public class PieChart extends JPanel
      */
     protected float percent(float top, float bottom)
     {
-        return (top/bottom * 100);
+        return (top / bottom * 100);
     }
     
     

@@ -31,6 +31,8 @@ class CodecPane extends JPanel
     
     /**
      * Creates a CodecPane.
+     * 
+     * @param plugin Parent plugin.
      */
     CodecPane(TextToolsPlugin plugin)
     {

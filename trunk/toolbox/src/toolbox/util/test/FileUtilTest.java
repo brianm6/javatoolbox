@@ -775,7 +775,7 @@ public class FileUtilTest extends TestCase
         {
             int maxLen = 0;
             
-            for (int i=0; i < maxFiles; i++)
+            for (int i = 0; i < maxFiles; i++)
             {
                 File file = FileUtil.createTempFile(dir);
                 int len = RandomUtil.nextInt(1, 5000);
@@ -857,7 +857,7 @@ public class FileUtilTest extends TestCase
         File root = FileUtil.createTempDir();
         File current = root;
         
-        for (int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++)
         {    
             File newDir = new File(current, "dir-" + 
                 RandomUtil.nextString(10).toLowerCase());

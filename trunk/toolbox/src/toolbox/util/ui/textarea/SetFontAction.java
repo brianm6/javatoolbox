@@ -41,6 +41,8 @@ public class SetFontAction extends AbstractAction
     
     /**
      * Creates a SetFontAction.
+     * 
+     * @param component Component to change font of.
      */
     public SetFontAction(Component component)
     {

@@ -345,6 +345,10 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      */
     class FollowTracker implements TableModelListener
     {
+        /**
+         * @see javax.swing.event.TableModelListener#tableChanged(
+         *      javax.swing.event.TableModelEvent)
+         */
         public void tableChanged(TableModelEvent e)
         {
             // Only update scrolly bar if a row was inserted or deleted.

@@ -117,7 +117,7 @@ public class EventInputStreamTest extends TestCase
             int c = eis.read();
             assertTrue(c >= 0);
             assertEquals(str.charAt(i), (char) c);
-            assertEquals(i+1, eis.getCount());
+            assertEquals(i + 1, eis.getCount());
         }
        
         eis.close();
@@ -198,7 +198,7 @@ public class EventInputStreamTest extends TestCase
             
             //logger_.info("Read " + n + " chars..");
             
-            for (int i = 0; i<n; i++)
+            for (int i = 0; i < n; i++)
                 assertEquals(str.charAt(cnt++), b[i]); 
         }
         

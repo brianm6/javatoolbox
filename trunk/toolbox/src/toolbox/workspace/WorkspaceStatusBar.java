@@ -278,6 +278,11 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public class StatusHistoryWindow extends Window
     {
+        /**
+         * Creates a StatusHistoryWindow.
+         * 
+         * @param frame Parent frame.
+         */
         public StatusHistoryWindow(Frame frame)
         {
             super(frame);

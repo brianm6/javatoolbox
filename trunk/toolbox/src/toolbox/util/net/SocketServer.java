@@ -263,6 +263,8 @@ public class SocketServer implements Runnable
 
     /**
      * Fires notification that a connection has been handled.
+     * 
+     * @param connectionHandler Connection that was handled.
      */
     protected void fireConnectionHandled(IConnectionHandler connectionHandler)
     {

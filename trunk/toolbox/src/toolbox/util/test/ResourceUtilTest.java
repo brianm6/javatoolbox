@@ -83,7 +83,7 @@ public class ResourceUtilTest extends TestCase
      * 
      * @throws Exception on error.
      */
-    public void testGetResource_FileInClasspath() throws Exception
+    public void testGetResourceFileInClasspath() throws Exception
     {
         logger_.info("Running testGetResource_FileInClasspath...");
         
@@ -101,7 +101,7 @@ public class ResourceUtilTest extends TestCase
      * 
      * @throws Exception on error.
      */
-    public void testGetResource_FileAbsolute() throws Exception
+    public void testGetResourceFileAbsolute() throws Exception
     {
         logger_.info("Running testGetResource_FileAbsolute...");
 
@@ -138,7 +138,7 @@ public class ResourceUtilTest extends TestCase
      * 
      * @throws Exception on error.
      */
-    public void testGetResource_FileOverHTTP() throws Exception
+    public void testGetResourceFileOverHTTP() throws Exception
     {
         logger_.info("Running testGetResource_FileOverHTTP...");
         
@@ -155,7 +155,7 @@ public class ResourceUtilTest extends TestCase
      * 
      * @throws Exception on error.
      */
-    public void testGetResource_Failure() throws Exception
+    public void testGetResourceFailure() throws Exception
     {
         logger_.info("Running testGetResource_Failure...");
         

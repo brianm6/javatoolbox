@@ -84,7 +84,7 @@ public class JEditViewer implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JEditViewer
+     * Creates a JEditViewer.
      */
     public JEditViewer()
     {
@@ -134,7 +134,7 @@ public class JEditViewer implements DocumentViewer
             textArea_.getPainter().setFont(FontUtil.getPreferredMonoFont());
             String text = FileUtil.getFileContents(file.getCanonicalPath());
             textArea_.setText(text);
-            textArea_.scrollTo(0,0);
+            textArea_.scrollTo(0, 0);
         }
         catch (FileNotFoundException e)
         {

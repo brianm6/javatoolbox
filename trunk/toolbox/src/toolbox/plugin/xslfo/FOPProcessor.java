@@ -83,8 +83,8 @@ public class FOPProcessor implements FOProcessor
     
     
     /**
-     * @see toolbox.plugin.xslfo.FOProcessor#renderPostscript(java.io.InputStream,
-     *      java.io.OutputStream)
+     * @see toolbox.plugin.xslfo.FOProcessor#renderPostscript(
+     *      java.io.InputStream, java.io.OutputStream)
      */
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception

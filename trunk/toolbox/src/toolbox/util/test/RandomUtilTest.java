@@ -432,7 +432,7 @@ public class RandomUtilTest extends TestCase
         
         Set byteSet = new HashSet();
         
-        for (int i=0; i<255; i++)
+        for (int i = 0; i < 255; i++)
             byteSet.add(new Byte((byte) i));
         
         int cnt = 0;

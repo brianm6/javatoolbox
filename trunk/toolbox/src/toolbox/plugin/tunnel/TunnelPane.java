@@ -324,6 +324,7 @@ public class TunnelPane extends JPanel implements IPreferenced
      * Creates the common toolbar that is used in the input and output text
      * areas.
      * 
+     * @param area Textarea.
      * @return JToolBar 
      */
     protected JToolBar createHeaderToolBar(JSmartTextArea area)
@@ -555,10 +556,10 @@ public class TunnelPane extends JPanel implements IPreferenced
                     getRemoteHost(), 
                     getRemotePort());
                     
-            tunnel_.setIncomingSink(new BufferedOutputStream( //System.out));
+            tunnel_.setIncomingSink(new BufferedOutputStream(//System.out));
                 new JTextAreaOutputStream(outgoingArea_), 20480));
             
-            tunnel_.setOutgoingSink(new BufferedOutputStream( //System.err));
+            tunnel_.setOutgoingSink(new BufferedOutputStream(//System.err));
                 new JTextAreaOutputStream(incomingArea_), 20480));
                 
             tunnel_.addTcpTunnelListener(this);

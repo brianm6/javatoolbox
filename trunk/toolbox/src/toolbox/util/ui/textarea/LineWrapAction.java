@@ -19,6 +19,8 @@ public class LineWrapAction extends AbstractTextComponentAction
     
     /**
      * Creates a AutoScrollAction.
+     * 
+     * @param area Text area that supports line wrap.
      */
     public LineWrapAction(JSmartTextArea area)
     {

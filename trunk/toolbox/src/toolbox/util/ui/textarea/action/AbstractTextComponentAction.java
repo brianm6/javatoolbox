@@ -24,6 +24,8 @@ public abstract class AbstractTextComponentAction extends AbstractAction
     
     /**
      * Creates a AbstractTextComponentAction.
+     * 
+     * @param textComponent Text component that is the target of this action.
      */
     public AbstractTextComponentAction(JTextComponent textComponent)
     {
@@ -51,6 +53,7 @@ public abstract class AbstractTextComponentAction extends AbstractAction
      * 
      * @param textComponent Text component.
      * @param name Label of the action target.
+     * @param icon Icon.
      */
     public AbstractTextComponentAction(
         JTextComponent textComponent,

@@ -59,7 +59,7 @@ public class TcpTunnelTest extends TestCase
      */
     protected void setUp() throws Exception
     {
-        os_= System.out;
+        os_ = System.out;
         es_ = System.err;
     }
     

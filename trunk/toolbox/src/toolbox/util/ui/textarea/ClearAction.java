@@ -18,6 +18,8 @@ public class ClearAction extends AbstractTextComponentAction
     
     /**
      * Creates a ClearAction.
+     * 
+     * @param textComponent Textcomponent to clear.
      */
     public ClearAction(JTextComponent textComponent)
     {

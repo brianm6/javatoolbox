@@ -17,6 +17,8 @@ public class SelectAllAction extends AbstractTextComponentAction
     
     /**
      * Creates a SelectAllAction.
+     * 
+     * @param textComponent Textcomponent in which to select all text.
      */
     public SelectAllAction(JTextComponent textComponent)
     {

@@ -27,6 +27,8 @@ public class AntiAliasAction extends AbstractAction
     
     /**
      * Creates an AntiAliasAction.
+     * 
+     * @param component Component that supports antialiasing.
      */
     public AntiAliasAction(Component component)
     {

@@ -72,7 +72,7 @@ public class FlipButtonLayout implements LayoutManager
         // NOTE: All the "2-1" are for the removed close button.
         //
         
-        if (comp.length == 2-1)
+        if (comp.length == 2 - 1)
         {
             // nothing 'cept close box and popup button
             return new Dimension(0, 0);
@@ -81,9 +81,9 @@ public class FlipButtonLayout implements LayoutManager
         {
             if (flipPane_.getPosition().equals(JFlipPane.TOP) || 
                 flipPane_.getPosition().equals(JFlipPane.BOTTOM))
-                return new Dimension(0, comp[2-1].getPreferredSize().height);
+                return new Dimension(0, comp[2 - 1].getPreferredSize().height);
             else
-                return new Dimension(comp[2-1].getPreferredSize().width, 0);
+                return new Dimension(comp[2 - 1].getPreferredSize().width, 0);
         }
     } 
 
@@ -98,7 +98,7 @@ public class FlipButtonLayout implements LayoutManager
     {
         Component[] comp = parent.getComponents();
         
-        if (comp.length == 2-1)
+        if (comp.length == 2 - 1)
         {
             // nothing 'cept close box and popup button
             return new Dimension(0, 0);
@@ -107,9 +107,9 @@ public class FlipButtonLayout implements LayoutManager
         {
             if (flipPane_.getPosition().equals(JFlipPane.TOP) || 
                 flipPane_.getPosition().equals(JFlipPane.BOTTOM))
-                return new Dimension(0, comp[2-1].getMinimumSize().height);
+                return new Dimension(0, comp[2 - 1].getMinimumSize().height);
             else
-                return new Dimension(comp[2-1].getMinimumSize().width, 0);
+                return new Dimension(comp[2 - 1].getMinimumSize().width, 0);
         }
     } 
     
@@ -123,7 +123,7 @@ public class FlipButtonLayout implements LayoutManager
     {
         Component[] comp = parent.getComponents();
         
-        if (comp.length != 2-1)
+        if (comp.length != 2 - 1)
         {
             boolean closeBoxSizeSet = false;
             boolean noMore = false;
@@ -132,7 +132,7 @@ public class FlipButtonLayout implements LayoutManager
             Dimension parentSize = parent.getSize();
             int pos = 0;
             
-            for (int i = 2-1; i < comp.length; i++)
+            for (int i = 2 - 1; i < comp.length; i++)
             {
                 Dimension size = comp[i].getPreferredSize();
                 

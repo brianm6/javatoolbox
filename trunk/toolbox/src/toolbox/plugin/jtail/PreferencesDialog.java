@@ -27,38 +27,38 @@ import toolbox.util.ui.JSmartTextField;
  * JTail preferences dialog.
  */
 public class PreferencesDialog extends JDialog implements ActionListener
-{ 
+{
     // TODO: Finish UI for setting the defaults
-    
+
     private static final Logger logger_ =
         Logger.getLogger(PreferencesDialog.class);
 
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
+
     private static final String ACTION_OK     = "OK";
     private static final String ACTION_CANCEL = "Cancel";
-    
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
-    /** 
-     * Preferences will be changed on the config object directly. 
+
+    /**
+     * Preferences will be changed on the config object directly.
      */
     private IJTailConfig config_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-	 * Constructor for PreferencesDialog.
-	 * 
-	 * @param owner Parent frame.
-	 * @param config Configuration.
-	 */
+     * Constructor for PreferencesDialog.
+     *
+     * @param owner Parent frame.
+     * @param config Configuration.
+     */
     public PreferencesDialog(Frame owner, IJTailConfig config)
     {
         super(owner, "JTail Preferences", true);
@@ -66,30 +66,30 @@ public class PreferencesDialog extends JDialog implements ActionListener
         buildView();
         pack();
     }
-    
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-    
+
     /**
      * Builds the GUI.
      */
     protected void buildView()
     {
-        // Build and wire button panel        
+        // Build and wire button panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton okButton = new JSmartButton(ACTION_OK);
         okButton.setActionCommand(ACTION_OK);
         okButton.addActionListener(this);
-        
+
         JButton cancelButton = new JSmartButton(ACTION_CANCEL);
         cancelButton.setActionCommand(ACTION_CANCEL);
         cancelButton.addActionListener(this);
-        
+
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
-        
-        // Add to content pane        
+
+        // Add to content pane
         JPanel view = new JPanel(new BorderLayout());
         view.add(BorderLayout.CENTER, buildPreferencesPanel());
         view.add(BorderLayout.SOUTH, buttonPanel);
@@ -99,52 +99,52 @@ public class PreferencesDialog extends JDialog implements ActionListener
 
     /**
      * Builds the preferences panel.
-     * 
+     *
      * @return Preferences panel.
-     */    
+     */
     protected JPanel buildPreferencesPanel()
     {
         // Build and wire preferences panel
         JPanel prefPanel = new JPanel(new GridBagLayout());
         prefPanel.setBorder(BorderFactory.createTitledBorder("Defaults"));
-        
+
         GridBagConstraints gbc = new GridBagConstraints();
-       
+
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 4, 7, 4);
-        
+
         prefPanel.add(new JSmartLabel("AutoScroll", SwingConstants.RIGHT), gbc);
-        
+
         gbc.gridx++;
-        prefPanel.add(new JSmartCheckBox(), gbc);        
-        
+        prefPanel.add(new JSmartCheckBox(), gbc);
+
         gbc.gridy++;
         gbc.gridx--;
         prefPanel.add(
             new JSmartLabel("Show Line Numbers", SwingConstants.RIGHT), gbc);
-        
+
         gbc.gridx++;
         prefPanel.add(new JSmartCheckBox(), gbc);
-        
+
         gbc.gridx--;
         gbc.gridy++;
         prefPanel.add(new JSmartLabel("Filter", SwingConstants.RIGHT), gbc);
-        
+
         gbc.gridx++;
         gbc.fill = GridBagConstraints.NONE;
         prefPanel.add(new JSmartTextField(12), gbc);
-                
+
         return prefPanel;
     }
 
     //--------------------------------------------------------------------------
     // ActionListener Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
@@ -152,7 +152,7 @@ public class PreferencesDialog extends JDialog implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         String action = e.getActionCommand();
-        
+
         if (action.equals(ACTION_OK))
         {
             ;
@@ -165,6 +165,6 @@ public class PreferencesDialog extends JDialog implements ActionListener
         {
             logger_.warn(
                 "No handler in actionPerformed() for command " + action);
-        }        
+        }
     }
 }

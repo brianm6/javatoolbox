@@ -19,12 +19,12 @@ import toolbox.workspace.IPreferenced;
  */
 public class JSmartFrame extends JFrame implements IPreferenced
 {
-	// TODO: Needs to be tested.
+    // TODO: Needs to be tested.
 
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
+
     // Preferences.
     private static final String NODE_JFRAME    = "JFrame";
     private static final String ATTR_MAXIMIZED = "maximized";
@@ -32,29 +32,29 @@ public class JSmartFrame extends JFrame implements IPreferenced
     private static final String ATTR_HEIGHT    = "h";
     private static final String ATTR_X         = "x";
     private static final String ATTR_Y         = "y";
-    
+
     // Defaults for select preferences.
     private static final boolean DEFAULT_MAXIMIZED = false;
     private static final int DEFAULT_WIDTH = 800;
     private static final int DEFAULT_HEIGHT = 600;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a JSmartFrame.
-     * 
-     * @throws HeadlessException on headless error. 
+     *
+     * @throws HeadlessException on headless error.
      */
     public JSmartFrame() throws HeadlessException
     {
     }
 
-    
+
     /**
      * Creates a JSmartFrame.
-     * 
+     *
      * @param gc Graphics configuration.
      */
     public JSmartFrame(GraphicsConfiguration gc)
@@ -62,10 +62,10 @@ public class JSmartFrame extends JFrame implements IPreferenced
         super(gc);
     }
 
-    
+
     /**
      * Creates a JSmartFrame.
-     * 
+     *
      * @param title Frame title.
      * @throws HeadlessException on headless error.
      */
@@ -74,10 +74,10 @@ public class JSmartFrame extends JFrame implements IPreferenced
         super(title);
     }
 
-    
+
     /**
      * Creates a JSmartFrame.
-     * 
+     *
      * @param title Frame title.
      * @param gc Graphics configuration.
      */
@@ -89,28 +89,28 @@ public class JSmartFrame extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
     {
         Element root = prefs.getFirstChildElement(NODE_JFRAME);
-        
+
         setLocation(
             XOMUtil.getIntegerAttribute(root, ATTR_X, 0),
             XOMUtil.getIntegerAttribute(root, ATTR_Y, 0));
-        
+
         setSize(
             XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, DEFAULT_WIDTH),
             XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, DEFAULT_HEIGHT));
-        
-        boolean maximized = 
+
+        boolean maximized =
             XOMUtil.getBooleanAttribute(
                 root, ATTR_MAXIMIZED, DEFAULT_MAXIMIZED);
-        
+
         // Frame has to be visible before it can be maximized so just queue
-        // this bad boy up on the event queue 
+        // this bad boy up on the event queue
         if (maximized)
         {
             SwingUtilities.invokeLater(new Runnable()
@@ -122,29 +122,29 @@ public class JSmartFrame extends JFrame implements IPreferenced
             });
         }
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JFRAME);
-        
-        boolean maximized = (getExtendedState() & Frame.MAXIMIZED_BOTH) == 
+
+        boolean maximized = (getExtendedState() & Frame.MAXIMIZED_BOTH) ==
             Frame.MAXIMIZED_BOTH;
 
         root.addAttribute(new Attribute(ATTR_MAXIMIZED, maximized + ""));
-        
+
         if (!maximized)
         {
             root.addAttribute(new Attribute(ATTR_X, getLocation().x + ""));
             root.addAttribute(new Attribute(ATTR_Y, getLocation().y + ""));
             root.addAttribute(new Attribute(ATTR_WIDTH, getSize().width + ""));
-            root.addAttribute(new Attribute(ATTR_HEIGHT, 
-                getSize().height + "")); 
+            root.addAttribute(new Attribute(ATTR_HEIGHT,
+                getSize().height + ""));
         }
-        
+
         XOMUtil.insertOrReplace(prefs, root);
     }
 }

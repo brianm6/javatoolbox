@@ -141,7 +141,7 @@ public class PrintableOutputStream extends FilterOutputStream
      * Sets the replacement string. Set to the empty string to discard 
      * completely.
      *  
-     * @param String The non-printable character replacement string.
+     * @param replacement The non-printable character replacement string.
      */
     public void setReplacement(String replacement)
     {

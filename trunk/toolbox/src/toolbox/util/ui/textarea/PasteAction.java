@@ -19,6 +19,8 @@ public class PasteAction extends AbstractTextComponentAction
     
     /**
      * Creates a PasteAction.
+     * 
+     * @param textComponent Textcomponent to paste text into. 
      */
     public PasteAction(JTextComponent textComponent)
     {

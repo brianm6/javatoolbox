@@ -206,7 +206,6 @@ public class TailPane extends JHeaderPanel
      * List of listeners interested in newData() and tailAggregated().
      */
     private ITailPaneListener[] tailPaneListeners_;
-
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -217,11 +216,11 @@ public class TailPane extends JHeaderPanel
      * 
      * @param config Details of the tail configuration.
      * @param statusBar Status bar.
-     * @throws IOException if an I/O error occurs.
      * @throws FileNotFoundException if file not found.
+     * @throws IOException if an I/O error occurs.
      */
-    public TailPane(ITailPaneConfig config, IStatusBar statusBar) 
-        throws IOException, FileNotFoundException
+    public TailPane(ITailPaneConfig config, IStatusBar statusBar) throws 
+        IOException, FileNotFoundException
     {
         super(config.getFilenames()[0]);
         statusBar_ = statusBar;

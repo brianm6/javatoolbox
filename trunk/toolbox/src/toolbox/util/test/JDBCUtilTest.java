@@ -601,7 +601,7 @@ public class JDBCUtilTest extends TestCase
             //
             // Move cursor
             //
-            results.absolute(numRows/10);
+            results.absolute(numRows / 10);
             
             int cursorPos = results.getRow();
             int size = JDBCUtil.getSize(results);

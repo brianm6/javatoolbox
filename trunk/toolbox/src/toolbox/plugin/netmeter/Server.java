@@ -140,45 +140,6 @@ public class Server extends AbstractService
     }
 
     //--------------------------------------------------------------------------
-    // ServerListener 
-    //--------------------------------------------------------------------------
-    
-    class ServerListener implements ISocketServerListener
-    {
-        /**
-         * @see toolbox.util.net.ISocketServerListener#socketAccepted(java.net.Socket, toolbox.util.net.IConnection)
-         */
-        public void socketAccepted(Socket socket, IConnection connection)
-        {
-        }
-
-
-        /**
-         * @see toolbox.util.net.ISocketServerListener#serverStarted(toolbox.util.net.SocketServer)
-         */
-        public void serverStarted(SocketServer server)
-        {
-        }
-
-
-        /**
-         * @see toolbox.util.net.ISocketServerListener#connectionHandled(toolbox.util.net.IConnectionHandler)
-         */
-        public void connectionHandled(IConnectionHandler connectionHandler)
-        {
-        }
-        
-        /**
-         * @see toolbox.util.net.ISocketServerListener#serverStopped(toolbox.util.net.SocketServer)
-         */
-        public void serverStopped(SocketServer server)
-        {
-            
-        }
-    }
-    
-    
-    //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------
 
@@ -258,5 +219,49 @@ public class Server extends AbstractService
     public boolean isPaused()
     {
         throw new UnsupportedOperationException("isPaused not supported");
+    }
+    
+    //--------------------------------------------------------------------------
+    // ServerListener 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * ServerListener.
+     */
+    class ServerListener implements ISocketServerListener
+    {
+        /**
+         * @see toolbox.util.net.ISocketServerListener#socketAccepted(
+         *      java.net.Socket, toolbox.util.net.IConnection)
+         */
+        public void socketAccepted(Socket socket, IConnection connection)
+        {
+        }
+
+
+        /**
+         * @see toolbox.util.net.ISocketServerListener#serverStarted(
+         *      toolbox.util.net.SocketServer)
+         */
+        public void serverStarted(SocketServer server)
+        {
+        }
+
+
+        /**
+         * @see toolbox.util.net.ISocketServerListener#connectionHandled(
+         *      toolbox.util.net.IConnectionHandler)
+         */
+        public void connectionHandled(IConnectionHandler connectionHandler)
+        {
+        }
+        
+        /**
+         * @see toolbox.util.net.ISocketServerListener#serverStopped(
+         *      toolbox.util.net.SocketServer)
+         */
+        public void serverStopped(SocketServer server)
+        {
+        }
     }
 }

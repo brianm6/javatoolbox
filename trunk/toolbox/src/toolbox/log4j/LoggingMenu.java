@@ -23,7 +23,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
-import toolbox.log4j.JTextAreaAppender;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
@@ -380,7 +379,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
             {
                 super("Logging Console");
                 buildView();
-                setSize(300,400);
+                setSize(300, 400);
                 setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 addWindowListener(new WindowListener());
             }
