@@ -3,7 +3,7 @@ package toolbox.util.service;
 import toolbox.util.ArrayUtil;
 
 /**
- * Abstract base class for Service implementors.
+ * Event notification implementation for ObservableService implementors.
  */
 public class ServiceNotifier implements ObservableService
 {
@@ -31,9 +31,9 @@ public class ServiceNotifier implements ObservableService
      * 
      * @see #DEFAULT_STRICT
      */
-    protected ServiceNotifier(Service nature)
+    protected ServiceNotifier(Service service)
     {
-        service_ = nature;
+        service_ = service;
     }
 
     //--------------------------------------------------------------------------

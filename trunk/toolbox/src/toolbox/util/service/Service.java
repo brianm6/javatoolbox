@@ -3,7 +3,7 @@ package toolbox.util.service;
 /**
  * An object that implements the Service interface adheres to basic lifecycle
  * states and the deterministic transitions between states according to well
- * defined events.
+ * defined events. 
  * <p> 
  * <pre class="snippet">
  *                    Service State Finite State Machine
@@ -24,7 +24,6 @@ package toolbox.util.service;
  *                                    start
  *</pre>                                      
  */              
-
 public interface Service 
 {
     /**
@@ -33,6 +32,4 @@ public interface Service
      * @return ServiceState
      */
     public ServiceState getState();
-    
-    
 }

@@ -3,8 +3,8 @@ package toolbox.util.service;
 import toolbox.util.statemachine.impl.DefaultState;
 
 /**
- * ServiceState represents the six distinct states of a Service.
- * 
+ * ServiceState represents the various lifecycle states of a Service.
+ *  
  * @see toolbox.util.service.Service
  */
 public class ServiceState extends DefaultState

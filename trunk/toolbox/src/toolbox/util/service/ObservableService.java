@@ -1,7 +1,9 @@
 package toolbox.util.service;
 
 /**
- * ObservableService is responsible for _____.
+ * ObservableService is a notification interface for Service implementors.
+ * 
+ * @see toolbox.util.service.ServiceNotifier
  */
 public interface ObservableService
 {

@@ -1,8 +1,7 @@
 package toolbox.util.service;
 
 /**
- * Entities which can be assigned a name implement this
- * Nameable interface.
+ * Nameable interface is for entities which can be referenced via a name.
  */
 public interface Nameable
 {

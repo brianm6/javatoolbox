@@ -1,16 +1,17 @@
 package toolbox.util.service;
 
 /**
- * A Destroyable service can be destroyed once and only once. The destroyed
- * state is a terminal state. A service can only be destroyed if in the Stopped
- * state.
+ * Destroyable service.
+ * 
+ * @see toolbox.util.service.Initializable
  */
 public interface Destroyable extends Service
 {
     /**
      * Destroys this service.
      * 
+     * @throws IllegalStateException on invalid service state.
      * @throws ServiceException on destroy error.
      */
-    void destroy() throws ServiceException;
+    void destroy() throws IllegalStateException, ServiceException;
 }
