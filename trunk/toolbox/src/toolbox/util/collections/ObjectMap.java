@@ -18,14 +18,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.Map.Entry;
 
 import toolbox.util.StringUtil;
 
 /**
- * Converts an Object into a Map.  The keys are the properties 
- * (get/set method names) and the values are the result of calling
- * the corresponding get method.
+ * Converts an Object into a Map.  The keys are the properties (get/set method 
+ * names) and the values are the result of calling the corresponding get method.
  * 
  * <pre>
  * Example:
@@ -81,10 +79,10 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     //--------------------------------------------------------------------------
 
     /**
-     * Constructs a Map which wraps a <tt>bean</tt>.  If an exception
-     * is thrown by the bean, then a MapInvocationException can
-     * be thrown by most of the <tt>Map</tt> methods.  The <tt>bean</tt>
-     * is held onto by a strong reference.
+     * Constructs a Map which wraps a <tt>bean</tt>.  If an exception is thrown 
+     * by the bean, then a MapInvocationException can be thrown by most of the 
+     * <tt>Map</tt> methods.  The <tt>bean</tt> is held onto by a strong 
+     * reference.
      * 
      * @param   bean  Object to convert to a <tt>Map</tt>.
      * @throws  IntrospectionException on error
@@ -95,10 +93,10 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     }
 
     /**
-     * Constructs a Map which wraps a <tt>bean</tt>.  If an exception
-     * is thrown by the bean, then a MapInvocationException can
-     * be thrown by most of the <tt>Map</tt> methods when silent is false.  
-     * The <tt>bean</tt> is held onto by a strong reference.
+     * Constructs a Map which wraps a <tt>bean</tt>.  If an exception is thrown 
+     * by the bean, then a MapInvocationException can be thrown by most of the 
+     * <tt>Map</tt> methods when silent is false. The <tt>bean</tt> is held 
+     * onto by a strong reference.
      * 
      * @param   bean    Object to convert to a <tt>Map</tt>.
      * @param   silent  true  - exceptions thrown by bean are ignored<br>
@@ -723,6 +721,5 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 return null;
             }
         }
-
     }
 }

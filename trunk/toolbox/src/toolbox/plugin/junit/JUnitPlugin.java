@@ -15,7 +15,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -49,11 +48,11 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     private Action getPackagesAction_;
     private Action testPackagesAction_;
     
-    private JTextField filterField_;
-    private JList packageList_;
-    private DefaultListModel packageModel_;
-    private RegexListModelFilter filterModel_;
-    private IStatusBar statusBar_;
+    private JTextField              filterField_;
+    private JList                   packageList_;
+    private DefaultListModel        packageModel_;
+    private RegexListModelFilter    filterModel_;
+    private IStatusBar              statusBar_;
            
     //--------------------------------------------------------------------------
     //  Constructors
@@ -100,7 +99,6 @@ public class JUnitPlugin extends JPanel implements  IPlugin
         JTextArea area = appender.getTextArea();
         outputPanel.add(BorderLayout.CENTER, new JScrollPane(area));
         area.setFont(SwingUtil.getPreferredMonoFont());
-        
         
         // build button panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
