@@ -5,13 +5,11 @@ import java.io.OutputStream;
 import javax.swing.JTextArea;
 
 /**
- * An outputStream that dumps into a JTextArea
+ * An outputStream that dumps into a {@link javax.swing.JTextArea}.
  */
 public class JTextAreaOutputStream extends OutputStream
 {
-    /**
-     * Textarea to dump to 
-     */
+    /** Textarea to dump to */
     private JTextArea textArea_;
 
     //--------------------------------------------------------------------------
@@ -29,46 +27,13 @@ public class JTextAreaOutputStream extends OutputStream
     }
  
     //--------------------------------------------------------------------------
-    // Overridden from java.io.OutputStream 
+    // Implements Abstract from java.io.OutputStream 
     //--------------------------------------------------------------------------
-    
-    /**
-     * Does nothing 
-     */
-    public void close()
-    {
-        // Do nothing
-    }    
- 
-    /**
-     * Writes array of bytes to textarea
-     * 
-     * @param  b  Array of bytes
-     */
-    public void write(byte[] b)
-    {     
-        write(b, 0, b.length); 
-    }
 
     /**
-     * Writes bytes to text area
+     * Writes a byte to the textarea.
      * 
-     * @param  b    Array of bytes
-     * @param  off  Offset in array 
-     * @param  len  Number of bytes to write
-     */
-    public void write(byte[] b, int off, int len)
-    {
-        byte[] bArray = new byte[len];
-        System.arraycopy(b, off, bArray, 0, len);
- 
-        textArea_.append(new String(bArray));
-    }
-
-    /**
-     * Writes a single byte to the textarea
-     * 
-     * @param  b  Byte to write
+     * @param  b  Byte
      */
     public void write(int b)
     { 
