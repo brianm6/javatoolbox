@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.DateTimeUtil;
 
 /**
- * Unit test for DateTimeUtil
+ * Unit test for DateTimeUtil.
  */
 public class DateTimeUtilTest extends TestCase
 {
@@ -23,7 +23,7 @@ public class DateTimeUtilTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -55,6 +55,7 @@ public class DateTimeUtilTest extends TestCase
         assertTrue("millis not zero", c.get(Calendar.MILLISECOND) == 0);
     }
 
+    
     /**
      * Tests add()
      */
@@ -69,6 +70,7 @@ public class DateTimeUtilTest extends TestCase
         logger_.info("After adding: " + DateTimeUtil.format(d));      
     }
     
+    
     /**
      * Tests getBeginningOfTime()
      */
@@ -79,6 +81,7 @@ public class DateTimeUtilTest extends TestCase
        Date d = DateTimeUtil.getBeginningOfTime();
        logger_.info("Beginning of time: " + DateTimeUtil.format(d));
     }   
+    
     
     /**
      * Test getEndOfDay()
@@ -91,6 +94,7 @@ public class DateTimeUtilTest extends TestCase
        logger_.info("End of day: " + DateTimeUtil.format(d));
     }
     
+    
     /**
      * Tests getEndOfTime()
      */
@@ -100,5 +104,17 @@ public class DateTimeUtilTest extends TestCase
        
        Date d = DateTimeUtil.getEndOfTime();
        logger_.info("End of time: " + DateTimeUtil.format(d));
+    }
+    
+    
+    /**
+     * Tests formatToSecond()
+     */
+    public void testFormatToSecond()
+    {
+       logger_.info("Running testFormatToSecond...");        
+       
+       Date d = new Date();
+       logger_.info("Formatted to seconds: " + DateTimeUtil.formatToSecond(d));
     }   
 }
