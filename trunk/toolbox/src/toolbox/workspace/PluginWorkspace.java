@@ -32,6 +32,7 @@ import nu.xom.ParseException;
 import nu.xom.Serializer;
 
 import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
@@ -524,18 +525,25 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
     
     /**
-     * Sets only the LookAndFeel based on the loaded preferences.
+     * Sets only the LookAndFeel based on the loaded preferences. The buck stops
+     * here if the look and feel should fail to load.
      * 
      * @param prefs DOM representing the saved preferences.
-     * @throws Exception on error.
      */
-    protected void setLAF(Element prefs) throws Exception
+    protected void setLAF(Element prefs)
     {
         Element root = 
             XOMUtil.getFirstChildElement(
                 prefs, NODE_WORKSPACE, new Element(NODE_WORKSPACE));
         
-        LookAndFeelUtil.setLookAndFeel(root);
+        try
+        {
+            LookAndFeelUtil.setLookAndFeel(root);
+        }
+        catch (Exception e)
+        {
+            ExceptionUtil.handleUI(e, logger_);
+        }
     }       
 
     //--------------------------------------------------------------------------
@@ -581,7 +589,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
         // Save log level
         root.addAttribute(new Attribute(
-            ATTR_LOG_LEVEL, Logger.getLogger("toolbox").getLevel().toString()));
+            ATTR_LOG_LEVEL, Logger.getRootLogger().getLevel().toString()));
         
         // Save look and feel
         LookAndFeelUtil.savePrefs(root);
@@ -694,7 +702,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             Level.toLevel(
                 XOMUtil.getStringAttribute(
                     root, ATTR_LOG_LEVEL, 
-                        Logger.getLogger("toolbox").getLevel().toString()));
+                        Logger.getRootLogger().getLevel().toString()));
 
         logMenu_.setLogLevel(level);
         
@@ -803,6 +811,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             setVisible(false);
             dispose();
             logger_.debug("Goodbye!");
+            LogManager.shutdown();
             System.exit(0);
         }
     }
