@@ -31,18 +31,7 @@
   xmlns:bsh="jelly:beanshell">
 
     <!-- =================================================================== -->
-    <!-- GOAL : UPDATE-PROPS                                                 -->
-    <!-- =================================================================== -->
-    <goal name="update-props" description="Copy build.properties to $HOME">
-        <property environment="sysenv"/>
-        <copy todir="${sysenv.USERPROFILE}" verbose="true" overwrite="true">
-            <fileset dir="${basedir}" includes="build.properties"/>
-        </copy>
-    </goal> 
-  
-  
-    <!-- =================================================================== -->
-    <!-- PRE : JAVA : COMPILE                                                -->
+    <!-- [PRE] JAVA:COMPILE                                                  -->
     <!-- =================================================================== -->
     <preGoal name="java:compile"> 
        <!-- Piggybacks the debug source tree onto the compile goal -->
@@ -50,41 +39,9 @@
        <maven:addPath id="maven.compile.src.set" refid="debug.src"/> 
     </preGoal> 
 
-
-    <!-- =================================================================== -->
-    <!-- PRE:TEST                                                            -->
-    <!-- =================================================================== -->
-    
-    <!--
-    <preGoal name="test:crap">
-
-       
-       <ant:pathconvert targetos="windows" property="crap" refid="${maven.dependency.classpath}"/>
-       
-       
-       <property name="crap" refid="maven.dependency.classpath"/>
-       <set var="crap" value="${basedir};${crap}"/>
-       <set var="maven.dependency.classpath" value="${crap}"/>
-       <path id="maven.dependency.classpath" location="${basedir}"/>
-       
-       <echo message="crap=${crap}"/>
-       <echo message="Before Pregoal Test: ${maven.dependency.classpath}"/>
-       <echo message=""/>
-              
-       <path id="hacked" location="${basedir}/classes"/>
-       <maven:addPath id="hacked" refid="maven.dependency.classpath"/>
-       <j:set var="maven.dependency.classpath" value="${hacked}"/>
-       
-       <echo message=""/>
-       <echo message="After Pregoal Test: ${maven.dependency.classpath}"/>
-       <echo message=""/>
-       
-    </preGoal> 
-    -->
-
     
     <!-- =================================================================== -->
-    <!-- C V S - U P D A T E                                                 -->
+    <!-- CVS-UPDATE                                                          -->
     <!-- =================================================================== -->
     <goal name="cvs-update" description="Updates the project from CVS">
 
@@ -105,7 +62,7 @@
 
 
     <!-- =================================================================== -->
-    <!-- J N L P - D E P L O Y                                               -->
+    <!-- JNLP-DEPLOY                                                         -->
     <!-- =================================================================== -->
     <goal name="jnlp-deploy" description="Deploys the JNLP distribution to Tomcat">
       
@@ -192,19 +149,18 @@
 
 
     <!-- =================================================================== -->
-    <!-- A L I A S E S                                                       -->
+    <!-- UPDATE-PROPS                                                        -->
     <!-- =================================================================== -->
-    <goal name="compile" description="Alias for java:compile">
-        <attainGoal name="java:compile"/>
-    </goal>
-      
-    <goal name="jar" description="Alias for jar:install">
-        <attainGoal name="jar:install"/>
-    </goal>
+    <goal name="update-props" description="Copy build.properties to $HOME">
+        <property environment="sysenv"/>
+        <copy todir="${sysenv.USERPROFILE}" verbose="true" overwrite="true">
+            <fileset dir="${basedir}" includes="build.properties"/>
+        </copy>
+    </goal> 
 
 
     <!-- =================================================================== -->
-    <!-- H E L P                                                             -->
+    <!-- HELP                                                                -->
     <!-- =================================================================== -->
     <goal name="help" description="Help for build targets">
         <echo>
@@ -214,7 +170,7 @@
 
 Scope: 
 
-  Maven goals for Toolbox
+  Maven goals for the Java Toolbox
 
 Commands:
 
@@ -232,4 +188,39 @@ Commands:
 ================================================================================
         </echo>
     </goal>
+    
+    <!-- =================================================================== -->
+    <!-- UMLGRAPH                                                            -->
+    <!-- =================================================================== -->
+    <goal name="umlgraph" description="Generates UML class diagrams">
+        
+        <!-- TODO: This task is unfinished because dot is not implemented    --> 
+        <!--       in java. Maybe finish if dot ever gets ported.            -->
+        
+        <path id="umlgraph.classpath">
+            <fileset dir="${basedir}/lib">
+                <include name="*.jar"/>
+                <include name="*.zip"/>
+            </fileset>
+        </path>
+        
+        <!--
+		<pathconvert 
+		    targetos="windows" 
+		    property="umlgraph.classpath" 
+		    refid="umlgraph.classpath"/>
+		    
+        <echo>classpath=${umlgraph.classpathy}</echo>
+        -->
+        
+        <javadoc 
+            doclet           = "UmlGraph"
+            docletpath       = "${basedir}/lib/UmlGraph.jar"
+            source           = "*.java"
+            sourcepath       = "${basedir}/src"
+            packagenames     = "toolbox.jtail.*"
+            classpathref     = "umlgraph.classpath"
+            verbose          = "false"/>
+    </goal>
+    
 </project>
