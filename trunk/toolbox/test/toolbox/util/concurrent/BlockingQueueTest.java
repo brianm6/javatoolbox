@@ -1,5 +1,9 @@
 package toolbox.util.concurrent;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.util.concurrent.TimeUnit;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -43,9 +47,9 @@ public class BlockingQueueTest extends TestCase
     {
         logger_.info("Running testPullTimeoutExpired...");
         
-        BlockingQueue q = new BlockingQueue();
+        BlockingQueue q = new LinkedBlockingQueue();
         ElapsedTime time = new ElapsedTime();
-        Object obj = q.pull(5000);
+        Object obj = q.poll(5000, TimeUnit.MILLISECONDS);
         time.setEndTime();
         
         logger_.info("Elapsed time = " + time);
@@ -62,7 +66,7 @@ public class BlockingQueueTest extends TestCase
     {
         logger_.info("Running testPullTimeoutMet...");
         
-        final BlockingQueue q = new BlockingQueue();
+        final BlockingQueue q = new LinkedBlockingQueue();
         
         Thread t = new Thread(new Runnable()
         {
@@ -73,7 +77,7 @@ public class BlockingQueueTest extends TestCase
                 
                 try
                 {
-                    obj = q.pull(10000);
+                    obj = q.poll(10000, TimeUnit.MILLISECONDS);
                 }
                 catch (InterruptedException e) 
                 {
@@ -90,7 +94,7 @@ public class BlockingQueueTest extends TestCase
                 
         ThreadUtil.sleep(2000);
         
-        q.push("moo");
+        q.offer("moo");
         
         t.join();
     }
@@ -105,11 +109,11 @@ public class BlockingQueueTest extends TestCase
     {
         logger_.info("Running testToString...");
         
-        BlockingQueue q = new BlockingQueue();
+        BlockingQueue q = new LinkedBlockingQueue();
         
-        q.push("a");
-        q.push("b");
-        q.push("c");
+        q.offer("a");
+        q.offer("b");
+        q.offer("c");
         
         logger_.info("toString = " + q);
     }
@@ -124,7 +128,7 @@ public class BlockingQueueTest extends TestCase
     {
         logger_.info("Running testInterrupt...");
         
-        final BlockingQueue q = new BlockingQueue();
+        final BlockingQueue q = new LinkedBlockingQueue();
         
         Thread blocked = new Thread(new Runnable()
         {
@@ -132,7 +136,7 @@ public class BlockingQueueTest extends TestCase
             {
                 try
                 {
-                    q.pull();
+                    q.poll();
                 }
                 catch (Throwable t)
                 {
