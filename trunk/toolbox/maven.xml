@@ -384,6 +384,8 @@ Commands:
                 <include name="concurrent.jar"/>
                 <include name="forms.jar"/>
                 <include name="jemmy.jar"/>
+                <include name="jdom.jar"/>
+                <include name="jalopy.jar"/>
 
                 <!-- Doc viewer plugin -->
                 <include name="calphahtml.jar"/>
@@ -406,6 +408,7 @@ Commands:
                 <include name="commons-math.jar"/>
                 <include name="commons-net.jar"/>
                 <include name="commons-pool.jar"/>
+                <include name="jakarta-oro.jar"/>
                 <include name="jakarta-regexp.jar"/>
 
                 <!-- ===== Log4j IM Appenders ==== -->

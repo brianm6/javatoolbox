@@ -389,7 +389,23 @@
     </dependency>
 
     <dependency>
+      <id>jakarta-oro</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>jakarta-regexp</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jalopy</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
@@ -412,6 +428,14 @@
 
     <dependency>
       <id>jcommon</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <id>jdom</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>

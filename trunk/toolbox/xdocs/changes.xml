@@ -44,6 +44,7 @@
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
  * TODO: Add a way to change the lookand feel font globally
+ * TODO: Upate code snippets to use <pre class="snippet">
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -102,6 +103,7 @@
       <action type="update">FindClassPlugin - Reduced startup time by limited default search targets to those on the classpath only</action>
       <action type="update">Misc - Converting all implementors of IPreferenced to use the javabean method for passivation/hydration</action>
       <action type="add"   >Lib - Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</action>
+      <action type="add"   >Lib - Added jalopy.jar, jakarta-oro.jar, and jdom.jar to support toolbox.util.formatter.JavaFormatter</action>
     </release>
     
     <release version="2.0" date="July 2004">
