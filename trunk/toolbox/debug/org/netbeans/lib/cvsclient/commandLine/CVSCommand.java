@@ -29,12 +29,20 @@ import org.netbeans.lib.cvsclient.connection.*;
 import org.netbeans.lib.cvsclient.connection.StandardScrambler;
 import org.netbeans.lib.cvsclient.event.CVSListener;
 
+import toolbox.util.StringUtil;
+
 /**
  * An implementation of the standard CVS client utility (command line tool)
  * in Java
  * @author  Robert Greig
  */
 public class CVSCommand {
+    
+    static
+    {
+        System.out.println(StringUtil.addBars(
+            "Loaded debug org.netbeans.lib.cvsclient.commandLine.CVSCommand"));
+    }
     
     private static final String HELP_OPTIONS = "--help-options"; // NOI18N
     private static final String HELP_COMMANDS = "--help-commands"; // NOI18N
@@ -212,16 +220,33 @@ public class CVSCommand {
         PServerConnection c = new PServerConnection();
         c.setUserName(userName);
         String password = null;
-        try {
-            BufferedReader in = new BufferedReader(new
-                    InputStreamReader(System.in));
-            System.out.print("Enter password: ");
-            password = in.readLine();
+        
+        // =====================================================================
+        // OVERRIDE : Override getting of password via command line if one is
+        //            specified in the property cvs.password.
+          
+        String overridePassword = System.getProperty("cvs.password");
+        
+        if (overridePassword != null)
+        {
+            System.out.println("Using cvs.password...");
+            password = overridePassword;
         }
-        catch (IOException e) {
-            System.err.println("Could not read password: " + e);
-            return false;
+        else
+        {
+            try {
+                BufferedReader in = new BufferedReader(new
+                        InputStreamReader(System.in));
+                System.out.print("Enter password: ");
+                password = in.readLine();
+            }
+            catch (IOException e) {
+                System.err.println("Could not read password: " + e);
+                return false;
+            }
         }
+        
+        // =====================================================================
 
         String encodedPassword = StandardScrambler.getInstance().scramble(
                 password);
@@ -352,9 +377,24 @@ public class CVSCommand {
     public static void main(String[] args) {
         if (processCommand(args, null, System.getProperty("user.dir"),
                            System.out, System.err)) {
-            System.exit(0);
+            
+            // =================================================================
+            // OVERRIDE : Don't let it exit the jvm
+            //
+            
+            //System.exit(0);
+            
+            // =================================================================
+ 
         } else {
-            System.exit(1);
+            
+            // =================================================================
+            // OVERRIDE : Don't let it exit the jvm
+            //
+           
+            //System.exit(1);
+            
+            // =================================================================            
         }
     }
     
@@ -642,5 +682,4 @@ public class CVSCommand {
         }
         
     }
-    
 }
