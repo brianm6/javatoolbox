@@ -21,7 +21,6 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
@@ -47,55 +46,6 @@ public final class SwingUtil
     // Clover private constructor workaround
     static { new SwingUtil(); }
     
-    static
-    {
-        // Install additional look and feels
-        UIManager.installLookAndFeel("Metouia", 
-            "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
-            
-        UIManager.installLookAndFeel("Kunststoff",    
-            "com.incors.plaf.kunststoff.KunststoffLookAndFeel");
-        
-        UIManager.installLookAndFeel("SkinLF", 
-            "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-            
-        UIManager.installLookAndFeel("JGoodies Plastic",
-            "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
-            
-        UIManager.installLookAndFeel("JGoodies Plastic 3D",
-            "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel");
-
-        UIManager.installLookAndFeel("JGoodies Plastic XP",
-            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
-        
-        UIManager.installLookAndFeel("XPLookAndFeel", 
-            "com.stefankrause.xplookandfeel.XPLookAndFeel");
-            
-        UIManager.installLookAndFeel("TinyLookAndFeel", 
-            "de.muntjak.tinylookandfeel.TinyLookAndFeel");
-        
-        UIManager.installLookAndFeel("Tonic L&F", 
-            "com.digitprop.tonic.TonicLookAndFeel");
-
-        UIManager.installLookAndFeel("Liquid L&F", 
-            "com.birosoft.liquid.LiquidLookAndFeel");
-
-        //UIManager.installLookAndFeel("FH Look & Feel",
-        //    "com.shfarr.ui.plaf.fh.FhLookAndFeel");
-        
-        //UIManager.installLookAndFeel("GTK+",
-        //    "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        
-        //UIManager.installLookAndFeel("Oyoaha",    
-        //    "com.oyoaha.swing.plaf.oyoaha.OyoahaLookAndFeel");
-
-
-        //SlafLookAndFeel.setCurrentTheme("Edbgruppen");
-        
-        //UIManager.installLookAndFeel("Slaf",    
-        //    "com.memoire.slaf.SlafLookAndFeel");                        
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -227,118 +177,9 @@ public final class SwingUtil
     }
     
     //--------------------------------------------------------------------------
-    // Look and Feel Stuff
+    // Desktop Stuff
     //--------------------------------------------------------------------------
         
-    /**
-     * Sets the Look and Feel to Metal.
-     * 
-     * @throws Exception on error
-     */    
-    public static void setMetalLAF() throws Exception
-    {
-        UIManager.setLookAndFeel(
-            "javax.swing.plaf.metal.MetalLookAndFeel");
-            
-        propagateChangeInLAF();
-    }
-    
-
-    /**
-     * Sets the Look and Feel to Windows.
-     * 
-     * @throws Exception on error
-     */
-    public static void setWindowsLAF() throws Exception
-    {
-        UIManager.setLookAndFeel(
-            "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            
-        propagateChangeInLAF();            
-    }
- 
-
-    /**
-     * Sets the Look and Feel to Motif/CDE.
-     * 
-     * @throws Exception on error
-     */   
-    public static void setMotifLAF() throws Exception
-    {
-        UIManager.setLookAndFeel(
-            "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            
-        propagateChangeInLAF();            
-    }
- 
-
-    /**
-     * Sets the Look and Feel to Metouia.
-     * 
-     * @throws Exception on error
-     */
-    public static void setMetouiaLAF() throws Exception
-    { 
-        UIManager.setLookAndFeel(
-            "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
-            
-        propagateChangeInLAF();            
-    }
-
-
-    /**
-     * Sets the Skin LAF.
-     * 
-     * @throws Exception on error
-     */
-    public static void setSkinLAF() throws Exception
-    { 
-        UIManager.setLookAndFeel("com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-        propagateChangeInLAF();
-    }
-
-
-    /**
-     * Sets the preferred Look and Feel.
-     * 
-     * @throws Exception on error
-     */
-    public static void setPreferredLAF() throws Exception
-    { 
-        UIManager.setLookAndFeel(
-            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
-        
-        propagateChangeInLAF();            
-    }
-
-
-    /**
-     * Retrieves list of availble look and feels available.
-     * 
-     * @return Array of look and feels
-     */
-    public static UIManager.LookAndFeelInfo[] getLAFs()
-    {
-        return UIManager.getInstalledLookAndFeels();
-    }
-    
-
-    /**
-     * Propagates the change in LookAndFeel selection to all known windows.
-     * Appropriate to be called immediately after UIManager.setLookAndFeel().
-     */
-    public static void propagateChangeInLAF()
-    {
-        Frame[] frames = Frame.getFrames();
-        
-        for (int i=0; i<frames.length; i++)
-            SwingUtilities.updateComponentTreeUI(frames[i]);                    
-    }
-    
-    //--------------------------------------------------------------------------
-    // Internal Frame Stuff
-    //--------------------------------------------------------------------------
-    
     /** 
      * Tiles internal frames upon the desktop. 
      * 
