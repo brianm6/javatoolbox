@@ -1,12 +1,8 @@
 package toolbox.util;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -137,48 +133,6 @@ public final class ResourceCloser
     }
 
 
-    /**
-     * Closes a socket quietly
-     * 
-     * @param  socket  Socket to close
-     */    
-    public static void close(Socket socket)
-    {
-        if (socket != null)
-        {
-            try
-            {
-                socket.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn("An error occurred while closing a Socket.", e);
-            }
-        }
-    }
-
-
-    /**
-     * Closes a server socket quietly
-     * 
-     * @param  serverSocket  Server socket to close
-     */    
-    public static void close(ServerSocket serverSocket)
-    {
-        if (serverSocket != null)
-        {
-            try
-            {
-                serverSocket.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn(
-                    "An error occurred while closing a ServerSocket", e);
-            }
-        }
-    }
-    
     /**
      * Removes an EJB quietly
      *

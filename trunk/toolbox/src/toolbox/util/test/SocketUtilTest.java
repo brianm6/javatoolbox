@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import toolbox.util.ResourceCloser;
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 
@@ -121,7 +120,7 @@ public class SocketUtilTest extends TestCase
             ss.getLocalPort(), 1, 5);
              
         // cleanup
-        ResourceCloser.close(socket);
+        SocketUtil.close(socket);
     }
     
     /**

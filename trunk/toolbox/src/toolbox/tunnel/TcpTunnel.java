@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
-import toolbox.util.ResourceCloser;
+import toolbox.util.SocketUtil;
 import toolbox.util.io.EventOutputStream;
 import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.io.NullOutputStream;
@@ -249,7 +249,7 @@ public class TcpTunnel implements TcpTunnelListener
     public void stop()
     {
         stop_ = true;
-        ResourceCloser.close(ss_);    
+        SocketUtil.close(ss_);    
         fireStatusChanged("Tunnel stopped");
     }
     

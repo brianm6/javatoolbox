@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 import org.apache.log4j.Logger;
 
 /**
- * Socket related utilities
+ * Socket Utility Class
  */
 public class SocketUtil
 {
@@ -53,8 +53,9 @@ public class SocketUtil
      * @param   interval    Retry interval in seconds. Zero = no interval
      * @param   maxRetries  Maximum number of times to retry. Zero = infinite
      * @return  Socket if connection succeeded, null otherwise
-     * @throws  IOException if an error occurs
-     * @throws  UnknownHostException if host not found/resolvable
+     * @throws  IOException if an I/O error occurs
+     * @throws  UnknownHostException if host is not found, invalid, or network
+     *          connection is down.
      */
     public static Socket connectWithRetry(
         String hostname, 
@@ -140,5 +141,46 @@ public class SocketUtil
         int port = server.getLocalPort();
         server.close();
         return port;
+    }
+
+    /**
+     * Closes a socket quietly
+     * 
+     * @param  socket  Socket to close
+     */    
+    public static void close(Socket socket)
+    {
+        if (socket != null)
+        {
+            try
+            {
+                socket.close();
+            }
+            catch (IOException e)
+            {
+                logger_.warn("An error occurred while closing a Socket.", e);
+            }
+        }
+    }
+
+    /**
+     * Closes a server socket quietly
+     * 
+     * @param  serverSocket  Server socket to close
+     */    
+    public static void close(ServerSocket serverSocket)
+    {
+        if (serverSocket != null)
+        {
+            try
+            {
+                serverSocket.close();
+            }
+            catch (IOException e)
+            {
+                logger_.warn(
+                    "An error occurred while closing a ServerSocket", e);
+            }
+        }
     }
 }
