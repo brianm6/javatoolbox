@@ -1,6 +1,7 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -16,12 +17,10 @@ import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -41,15 +40,16 @@ import toolbox.util.PropertiesUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.TryCatchAction;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JStatusBar;
+import toolbox.util.ui.TryCatchAction;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
  * a tab panel. All pluggable GUI components must implements the IPlugin 
  * interface as a base set of functionality to be hosted by PluginWorkspace.
  */
-public class PluginWorkspace extends JFrame implements IStatusBar
+public class PluginWorkspace extends JFrame
 {
     /*
      * TODO: Plugin to configure log4j
@@ -60,7 +60,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      * TODO: Convert project build and layout to Maven
      * TODO: Use Quilt for JUnit Test coverage instead of Clover
      * TODO: Add support for selecting Plastic Look & Feel color themes
-     * TODO: Updated to use JStatusBar 
      */
         
     private static final Logger logger_ = 
@@ -80,12 +79,12 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     private JTabbedPane tabbedPane_;
     
     /** Status bar at bottom of screen */
-    private JLabel statusLabel_;
+    private IStatusBar statusBar_;
     
     /** Look and Feel Menu Items */
     private JMenu lafMenu_;
     
-    /** Preferences stores as NV pairs */
+    /** Preferences stored as NV pairs */
     private Properties prefs_;
     
     /** Map of plugin names -> plugins */
@@ -98,8 +97,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     /**
      * Entrypoint 
      * 
-     * @param  args  Args can be a list of one or more classnames that 
-     *               implement the IPlugin interface
+     * @param  args  None recognized
      */
     public static void main(String args[])
     {
@@ -119,7 +117,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     //--------------------------------------------------------------------------
 
     /**
-     * Create a new PluginWorkspace
+     * Creates a PluginWorkspace
      * 
      * @throws Exception on error
      */
@@ -132,10 +130,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         applyPrefs();
-        
-        // Nasty hack so plugins get initialized after the empty
-        // workspace has been realized
-        //SwingUtilities.invokeLater(new PostInit());
     }
 
     //--------------------------------------------------------------------------
@@ -153,7 +147,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         plugins_.put(plugin.getName(), plugin);
 
         // Give plugin's its status bar
-        plugin.setStatusBar(this);
+        plugin.setStatusBar(statusBar_);
 
         // Init plugin
         plugin.init();
@@ -188,7 +182,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     }
 
     /**
-     * Deregisters a plugin given its FQN
+     * Deregisters a plugin given its fully qualified name
      * 
      * @param   pluginClass  Class name of plugin to remove
      * @throws  Exception on error
@@ -206,8 +200,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         }
         else
         {
-            logger_.warn("deregisterPlugin: Plugin " + pluginClass + 
-                " not found.");
+            logger_.warn("Plugin " + pluginClass + " was not found.");
         }
     }
 
@@ -226,9 +219,9 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         tabbedPane_ = new JTabbedPane();
         contentPane.add(BorderLayout.CENTER, tabbedPane_);
 
-        statusLabel_ = new JLabel(" Howdy pardner!");
-        statusLabel_.setBorder(BorderFactory.createLoweredBevelBorder());
-        contentPane.add(statusLabel_, BorderLayout.SOUTH);
+        statusBar_ = new JStatusBar();
+        statusBar_.setStatus("Howdy pardner!");
+        contentPane.add(BorderLayout.SOUTH, (Component) statusBar_);
         
         setJMenuBar(createMenuBar());
         
@@ -412,7 +405,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         
         SmartLogger.debug(logger_, PropertiesUtil.toString(prefs_));
         
-        setStatus("Saved preferences");
+        statusBar_.setStatus("Saved preferences");
     }
 
     /**
@@ -513,34 +506,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     Map getPlugins()
     {
         return plugins_;
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Implements IStatusBar
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Sets the text of the status bar
-     * 
-     * @param  status  Status message
-     */
-    public void setStatus(String status)
-    {
-        // registerPlugin gets called before buildView and 
-        // msg generaator panel calls this when constructed
-        
-        if (statusLabel_ != null)
-            statusLabel_.setText(status);
-    }
-    
-    /**
-     * Retrieves the status text
-     * 
-     * @return  Status text
-     */
-    public String getStatus()
-    {
-        return statusLabel_.getText();
     }
     
     //--------------------------------------------------------------------------
@@ -679,10 +644,30 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         
         public void tryActionPerformed(ActionEvent e)
         {
+            long freeMem  = Runtime.getRuntime().freeMemory();
+            long totalMem = Runtime.getRuntime().totalMemory();
+            long maxMem   = Runtime.getRuntime().maxMemory();
+            long beforeUsedMem  = (totalMem - freeMem)/1000;
+            
             ElapsedTime time = new ElapsedTime();
             System.gc();
             time.setEndTime();
-            setStatus("Finished GC in " + time);
+            
+            freeMem  = Runtime.getRuntime().freeMemory();
+            totalMem = Runtime.getRuntime().totalMemory();
+            maxMem   = Runtime.getRuntime().maxMemory();
+            long afterUsedMem  = (totalMem - freeMem)/1000;
+
+            statusBar_.setStatus("" +
+                "<html>" + "<font color='black'>" +
+                  "Finished GC in " + time + ".   " +
+                  "Used Before: "   + beforeUsedMem + "K   " +
+                  "After: "         + afterUsedMem  + "K   " +
+                  "Freed:<b>"       + (beforeUsedMem - afterUsedMem) + "K</b>   "+ 
+                  "Total:     "     + totalMem/1000 + "K   " +
+                  "Max: "           + maxMem/1000   + "K   " +
+                  "</font>" +
+                "</html>");
         }
     }
 }
