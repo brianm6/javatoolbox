@@ -6,116 +6,126 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 
 import org.outerj.pollo.xmleditor.XmlEditor;
 import org.outerj.pollo.xmleditor.displayspec.GenericDisplaySpecification;
 import org.outerj.pollo.xmleditor.model.XmlModel;
-import toolbox.plugin.pdf.DocumentViewer;
-import toolbox.plugin.pdf.DocumentViewerException;
+
+import toolbox.util.ArrayUtil;
+import toolbox.util.FileUtil;
 
 /**
+ * XML document viewer that uses Pollo for rendering the document.
  */
 public class PolloViewer implements DocumentViewer
 {
-
-    /**
-     * @see toolbox.plugin.pdf.DocumentViewer#getComponent()
-     */
-    public JComponent getComponent()
-    {
-        /**
-        * 
-        */
-        return null;
-    }
+    private XmlEditor editor_;
+    private JScrollPane scroller_;
+    
+    //--------------------------------------------------------------------------
+    // DocumentViewer Interface 
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#getViewableFileTypes()
-     */
-    public String[] getViewableFileTypes()
-    {
-        /**
-        * 
-        */
-        return null;
-    }
-    
-    /**
-     * @see toolbox.plugin.pdf.DocumentViewer#isViewable(java.lang.String)
-     */
-    public boolean isViewable(String fileType)
-    {
-        /**
-        * 
-        */
-        return false;
-    }
-    
-    /**
-     * @see toolbox.plugin.pdf.DocumentViewer#shutdown()
-     */
-    public void shutdown()
-    {
-        /**
-        * 
-        */
-
-    }
-    
-    /**
-     * @see toolbox.plugin.pdf.DocumentViewer#startup(java.util.Map)
+     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
      */
     public void startup(Map init) throws DocumentViewerException
     {
-        /**
-        * 
-        */
-
+        try
+        {
+            GenericDisplaySpecification displaySpec = 
+                new GenericDisplaySpecification();
+            
+            HashMap initMap = new HashMap();
+            init.put("use-random-colors", "true");
+            //init.put("fixed-color", "0xffeeff");
+            //init.put("background-color", null);
+            init.put("treetype", "pollo");
+            
+            displaySpec.init(initMap);
+            editor_ = new XmlEditor(null, displaySpec, -1);
+        }
+        catch (Exception pe)
+        {
+            throw new DocumentViewerException(pe);
+        }
     }
     
+    
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#view(java.io.File)
+     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
+     */
+    public String getName()
+    {
+        return "Pollo";
+    }
+
+    
+    /**
+     * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
+     */
+    public JComponent getComponent()
+    {
+        if (scroller_ == null)
+            scroller_ = new JScrollPane(editor_);
+        
+        return scroller_;
+    }
+    
+    
+    /**
+     * @see toolbox.plugin.docviewer.DocumentViewer#getViewableFileTypes()
+     */
+    public String[] getViewableFileTypes()
+    {
+        return new String[] { "xml", "xsl", "fo", "jnlp" };
+    }
+    
+    
+    /**
+     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
+     */
+    public boolean canView(File file)
+    {
+        return ArrayUtil.contains(
+                getViewableFileTypes(), 
+                FileUtil.getExtension(file));
+    }
+
+    
+    /**
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
     public void view(File file) throws DocumentViewerException
     {
-        /**
-        * 
-        */
-
+        try
+        {
+            XmlModel model = new XmlModel(0);
+            model.readFromResource(file);
+            editor_.setXmlModel(model);
+            editor_.validate();
+            editor_.repaint();
+        }
+        catch (Exception e)
+        {
+            throw new DocumentViewerException(e);
+        }
     }
     
+    
     /**
-     * @see toolbox.plugin.pdf.DocumentViewer#view(java.io.InputStream)
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.InputStream)
      */
     public void view(InputStream is) throws DocumentViewerException
     {
-        /**
-        * 
-        */
-
     }
+
     
-    
-    public void testXmlEditor() throws Exception
+    /**
+     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
+     */
+    public void shutdown()
     {
-        GenericDisplaySpecification displaySpec = 
-            new GenericDisplaySpecification();
-        
-        HashMap init = new HashMap();
-        init.put("use-random-colors", "true");
-        init.put("fixed-color", "0xffeeff");
-        init.put("background-color", null);
-        init.put("treetype", "pollo");
-        displaySpec.init(init);
-        
-        XmlEditor editor = new XmlEditor(null, displaySpec, -1);
-                    
-        XmlModel model = new XmlModel(0);
-        model.readFromResource(new File(
-            "c:\\Documents and Settings\\Administrator\\.toolbox.xml"));
-        
-        editor.setXmlModel(model);
-                
-        //launchInDialog(new JScrollPane(editor), UITestCase.SCREEN_ONE_HALF);
     }
 }
