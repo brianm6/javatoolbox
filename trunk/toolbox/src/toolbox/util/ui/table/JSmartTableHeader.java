@@ -8,21 +8,29 @@ import javax.swing.table.TableColumnModel;
 import toolbox.util.SwingUtil;
 
 /**
- * 
+ * JSmartTableHeader adds the following behavior.
+ * <p>
+ * <ul>
+ *   <li>Support for antialiased column headers
+ * </ul>
  */
 public class JSmartTableHeader extends JTableHeader
 {
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * 
+     * Creates a JSmartTableHeader 
      */
     public JSmartTableHeader()
     {
-        super();
     }
 
     /**
-     * @param cm
+     * Creates a JSmartTableHeader
+     * 
+     * @param cm Column model
      */
     public JSmartTableHeader(TableColumnModel cm)
     {
@@ -60,5 +68,4 @@ public class JSmartTableHeader extends JTableHeader
         SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
-
 }
