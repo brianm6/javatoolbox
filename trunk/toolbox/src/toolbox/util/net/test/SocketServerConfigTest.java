@@ -40,7 +40,7 @@ public class SocketServerConfigTest extends TestCase
     /**
      * Tests the load(File) method. 
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testLoadByFile() throws Exception
     {
@@ -114,7 +114,7 @@ public class SocketServerConfigTest extends TestCase
     /**
      * Tests the load(Properties) method. 
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testLoadByProps() throws Exception
     {

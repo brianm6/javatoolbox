@@ -33,7 +33,7 @@ public class AsyncConnectionHandlerTest extends TestCase
     /**
      * Entry point.
      * 
-     * @param args None
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -47,7 +47,7 @@ public class AsyncConnectionHandlerTest extends TestCase
     /**
      * Tests handle()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testHandle() throws Exception
     {

@@ -19,6 +19,10 @@ public class EchoSocketClient
     private static final Logger logger_ = 
         Logger.getLogger(EchoSocketClient.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Wrapped socket. 
      */
@@ -41,8 +45,8 @@ public class EchoSocketClient
     /**
      * Create socket client on localhost with given port.
      * 
-     * @param port Socket port
-     * @throws UnknownHostException when host not found
+     * @param port Socket port.
+     * @throws UnknownHostException when host not found.
      */
     public EchoSocketClient(int port) throws UnknownHostException
     {
@@ -53,8 +57,8 @@ public class EchoSocketClient
     /**
      * Creates socket client to given host/port. 
      *  
-     * @param hostname Hostname of machine to connect to
-     * @param port TCP port to connection to 
+     * @param hostname Hostname of machine to connect to.
+     * @param port TCP port to connection to.
      */
     public EchoSocketClient(String hostname, int port)
     {
@@ -84,9 +88,9 @@ public class EchoSocketClient
     /**
      * Sends a request to socket and reads the response.
      * 
-     * @param request Message to send
-     * @return Response from server
-     * @throws IOException on I/O error
+     * @param request Message to send.
+     * @return Response from server.
+     * @throws IOException on I/O error.
      */
     public String send(String request) throws IOException
     {
@@ -100,9 +104,9 @@ public class EchoSocketClient
     /**
      * Sends request x number of times. 
      * 
-     * @param request Message to send
-     * @param num Number of times to send the message
-     * @throws IOException on I/O error
+     * @param request Message to send.
+     * @param num Number of times to send the message.
+     * @throws IOException on I/O error.
      */
     public void sendMany(String request, int num) throws IOException 
     {
@@ -114,7 +118,7 @@ public class EchoSocketClient
     /**
      * Termines the connection by sending the TERMINATE token.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public void close() throws IOException
     {

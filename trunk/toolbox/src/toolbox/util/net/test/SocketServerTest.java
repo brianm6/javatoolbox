@@ -116,7 +116,7 @@ public class SocketServerTest extends TestCase
     /**
      * Stress tests start/stop of socket server. 
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSocketServerLifecycleStress() throws Exception
     {
@@ -135,7 +135,7 @@ public class SocketServerTest extends TestCase
     /**
      * Tests socket server with many clients. 
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSocketServerManyClients() throws Exception
     {
@@ -210,7 +210,7 @@ public class SocketServerTest extends TestCase
     /**
      * Tests firing of notification events exposed by ISocketServerListener.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFireNotification() throws Exception
     {
