@@ -5,15 +5,25 @@ import javax.swing.JComponent;
 import edu.berkeley.guir.prefuse.Display;
 import edu.berkeley.guir.prefuse.ItemRegistry;
 import edu.berkeley.guir.prefuse.action.RepaintAction;
+import edu.berkeley.guir.prefuse.action.assignment.Layout;
 import edu.berkeley.guir.prefuse.action.filter.GraphFilter;
 import edu.berkeley.guir.prefuse.activity.ActionList;
 import edu.berkeley.guir.prefuse.graph.Graph;
 import edu.berkeley.guir.prefuse.render.DefaultEdgeRenderer;
 import edu.berkeley.guir.prefuse.render.DefaultRendererFactory;
+import edu.berkeley.guir.prefuse.render.Renderer;
 import edu.berkeley.guir.prefuse.render.ShapeRenderer;
+import edu.berkeley.guir.prefuse.render.TextImageItemRenderer;
 import edu.berkeley.guir.prefuse.render.TextItemRenderer;
 import edu.berkeley.guir.prefusex.controls.DragControl;
+import edu.berkeley.guir.prefusex.distortion.FisheyeDistortion;
+import edu.berkeley.guir.prefusex.layout.BalloonTreeLayout;
+import edu.berkeley.guir.prefusex.layout.CircleLayout;
+import edu.berkeley.guir.prefusex.layout.ForceDirectedLayout;
+import edu.berkeley.guir.prefusex.layout.FruchtermanReingoldLayout;
+import edu.berkeley.guir.prefusex.layout.GridLayout;
 import edu.berkeley.guir.prefusex.layout.RandomLayout;
+import edu.berkeley.guir.prefusex.layout.ScatterplotLayout;
 
 import toolbox.graph.GraphView;
 
@@ -46,9 +56,16 @@ public class PrefuseGraphView implements GraphView
         ItemRegistry registry = new ItemRegistry(g);
         
         // set up a renderer such that nodes show text labels
-        TextItemRenderer nodeRenderer = new TextItemRenderer();
-        ShapeRenderer    edgeRenderer = new DefaultEdgeRenderer();
-        //nodeRenderer.setRenderType(ShapeRenderer.RENDER_TYPE_FILL);
+        TextImageItemRenderer nodeRenderer = new TextImageItemRenderer();
+        nodeRenderer.setRoundedCorner(5,5);
+        nodeRenderer.setVerticalPadding(2);
+        nodeRenderer.setHorizontalPadding(2);
+        nodeRenderer.setRenderType(ShapeRenderer.RENDER_TYPE_DRAW_AND_FILL);
+        
+        DefaultEdgeRenderer edgeRenderer = new DefaultEdgeRenderer();
+        edgeRenderer.setEdgeType(DefaultEdgeRenderer.EDGE_TYPE_CURVE);
+        edgeRenderer.setRenderType(DefaultEdgeRenderer.RENDER_TYPE_DRAW);
+        edgeRenderer.setWeightType(DefaultEdgeRenderer.WEIGHT_TYPE_LINEAR);
         
         // create a new renderer factory and associate it 
         // with the item registry
@@ -68,6 +85,10 @@ public class PrefuseGraphView implements GraphView
         ActionList actions = new ActionList(registry);
         actions = new ActionList(registry);
         actions.add(new GraphFilter());
+        //actions.add(new CircleLayout());
+        //actions.add(new FruchtermanReingoldLayout());
+        //actions.add(new ForceDirectedLayout(true));
+        //actions.add(new GridLayout(5,5));
         actions.add(new RandomLayout());
         actions.add(new RepaintAction());
         actions.runNow();
