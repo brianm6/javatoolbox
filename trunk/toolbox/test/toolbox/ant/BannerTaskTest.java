@@ -1,4 +1,4 @@
-package toolbox.ant.test;
+package toolbox.ant;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;

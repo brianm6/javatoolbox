@@ -1,4 +1,4 @@
-package toolbox.ant.test;
+package toolbox.ant;
 
 import java.io.File;
 
@@ -44,7 +44,7 @@ public class PropertyPromptTaskTest extends TestCase
     public void testPropertyPrompt() throws Exception
     {
         File f = ResourceUtil.getResourceAsTempFile(
-            "/toolbox/ant/test/PropertyPromptTaskTest.xml");
+            "/toolbox/ant/PropertyPromptTaskTest.xml");
         
         Main.main(new String[]{
             "-debug", 
