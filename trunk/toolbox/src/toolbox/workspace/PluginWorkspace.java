@@ -24,7 +24,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -53,6 +52,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
+import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
@@ -103,7 +103,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Plugin property used to identify a reference to the workspace's shared
      * statusbar
      */    
-    public  static final String PROP_STATUSBAR = "workspace.statusbar";
+    public static final String PROP_STATUSBAR = "workspace.statusbar";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -204,11 +204,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugin.startup(bootstrapMap_);
 
         // Create tab
-        JPanel pluginPanel = new JPanel(new BorderLayout());
+        //JPanel pluginPanel = new JPanel(new BorderLayout());
         
-        pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
+        //pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
         //tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
-        tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        //tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        
+        tabbedPane_.addTab(
+            plugin.getName(), 
+            plugin.getComponent(), 
+            ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+            
         //tabbedPane_.setSelectedIndex(0);
         
         // Restore unloaded preferences if they exist
@@ -255,11 +261,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugin.startup(bootstrapMap_);
 
         // Create tab
-        JPanel pluginPanel = new JPanel(new BorderLayout());
+        //JPanel pluginPanel = new JPanel(new BorderLayout());
         
-        pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
+        //pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
         //tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
-        tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        //tabbedPane_.addTab(plugin.getName(), pluginPanel, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        
+        tabbedPane_.addTab(
+            plugin.getName(), 
+            plugin.getComponent(), 
+            ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        
         //tabbedPane_.setSelectedIndex(0);
         
         // Restore preferences but first see if there is a set of unloaded 
@@ -314,7 +326,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * @param pluginClass Class name of plugin to remove
      * @throws Exception on error
      */
-    public void deregisterPlugin(String pluginClass) throws Exception
+    public void deregisterPlugin(String pluginClass, boolean removeTab) 
+        throws Exception
     {
         if (hasPlugin(pluginClass))
         {
@@ -326,7 +339,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             plugin.savePrefs(pluginNode);
             unloadedPrefs_.appendChild(pluginNode);
             
-            tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getName()));
+            if (removeTab)
+                tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getName()));
+                
             plugins_.remove(plugin.getName());
             plugin.shutdown();
         }
@@ -364,7 +379,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
         tabbedPane_ = 
             new JSmartTabbedPane(); //ImageCache.getIcon(ImageCache.IMAGE_DELETE));
-            
+        
+        tabbedPane_.addSmartTabbedPaneListener(new PluginTabbedPaneListener());
         contentPane.add(BorderLayout.CENTER, tabbedPane_);
 
         statusBar_ = new WorkspaceStatusBar();
@@ -752,7 +768,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // Listeners
     //--------------------------------------------------------------------------
 
     /**
@@ -769,6 +785,33 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             catch (Throwable t)
             {
                 ExceptionUtil.handleUI(t, logger_);
+            }
+        }
+    }
+
+    /**
+     * Listens for tab closing events, and deregisters the plugin for that 
+     * given tab.
+     */
+    class PluginTabbedPaneListener implements SmartTabbedPaneListener
+    {
+        /**
+         * @see toolbox.util.ui.tabbedpane.SmartTabbedPaneListener#tabClosing(
+         *      toolbox.util.ui.tabbedpane.JSmartTabbedPane, int)
+         */
+        public void tabClosing(JSmartTabbedPane tabbedPane, int tabIndex)
+        {
+            String name = tabbedPane.getTitleAt(tabIndex);
+            IPlugin plugin = (IPlugin) plugins_.get(name);
+            String clazz = plugin.getClass().getName(); 
+            
+            try
+            {
+                deregisterPlugin(clazz, false);
+            }
+            catch (Exception e)
+            {
+                ExceptionUtil.handleUI(e, logger_);
             }
         }
     }
