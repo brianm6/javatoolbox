@@ -2,11 +2,17 @@ package toolbox.util;
 
 import java.lang.reflect.Array;
 
+import org.apache.commons.beanutils.MethodUtils;
+import org.apache.log4j.Logger;
+
 /**
  * Array utility class
  */
 public final class ArrayUtil
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(ArrayUtil.class);
+    
     // Clover private constructor workaround
     static { new ArrayUtil(); }
     
@@ -184,37 +190,35 @@ public final class ArrayUtil
      */
     public static String toString(Object[] array, boolean onePerLine)
     {
-        StringBuffer sb = new StringBuffer("[" + 
-                                           array.length + 
-                                           "]{");
+        StringBuffer sb = new StringBuffer("[" + array.length + "]{");
 
         switch (array.length)
         {
-            case 0  : break;
-                      
-            case 1  : sb.append(array[0].toString());
-                      break;
-                      
-            default: 
-                        for (int i = 0; i < array.length - 1; i++)
-                        {
-                            if (i != 0)
-                                sb.append(", ");
+            case 0 : break;
             
-                            if (onePerLine)
-                                sb.append("\n");
+            case 1 : sb.append(array[0].toString()); break;
             
-                            sb.append(array[i].toString());
-                        }
-            
-                        if (array.length > 1)
-                            sb.append(", ");
-            
-                        if (onePerLine)
-                            sb.append("\n");
-            
-                        sb.append(array[array.length - 1].toString());
-                        break;
+            default:
+             
+                for (int i = 0; i < array.length - 1; i++)
+                {
+                    if (i != 0)
+                        sb.append(", ");
+    
+                    if (onePerLine)
+                        sb.append("\n");
+    
+                    sb.append(array[i].toString());
+                }
+    
+                if (array.length > 1)
+                    sb.append(", ");
+    
+                if (onePerLine)
+                    sb.append("\n");
+    
+                sb.append(array[array.length - 1].toString());
+                break;
         }
 
         sb.append("}");
@@ -419,5 +423,30 @@ public final class ArrayUtil
         }
             
         return result;
+    }
+    
+    /**
+     * Invokes a method on each element of an array
+     * 
+     * @param  array   Array of objects 
+     * @param  method  Method to invoke on each object
+     * @param  params  Parameters to pass to each method invocation
+     */    
+    public static void invoke(Object[] array, String method, Object[] params)
+    {
+        // TODO: Return array of exceptions instead of processing them?
+        //       Option to continue on exception
+        
+        for (int i=0; i<array.length; i++)
+        {
+            try
+            {
+                MethodUtils.invokeMethod(array[i], method, params);
+            }
+            catch (Exception e)
+            {
+                logger_.error("invoke", e);
+            }
+        }
     }
 }
