@@ -1,11 +1,11 @@
 package toolbox.plugin.xslfo;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Properties;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceUtil;
@@ -114,7 +114,7 @@ public class FOPProcessorTest extends TestCase
             FOProcessorFactory.createProcessor(
                 FOProcessorFactory.FO_IMPL_APACHE);
                 
-        fop.initialize(new Properties());
+        fop.initialize(MapUtils.EMPTY_MAP);
         
         StringInputStream input = new StringInputStream(foXML);
         ByteArrayOutputStream output = new ByteArrayOutputStream();            
@@ -171,7 +171,7 @@ public class FOPProcessorTest extends TestCase
                     FOProcessorFactory.createProcessor(
                         FOProcessorFactory.FO_IMPL_APACHE);
                             
-                fop.initialize(new Properties());
+                fop.initialize(MapUtils.EMPTY_MAP);
                     
                 StringInputStream input = new StringInputStream(foXML_);
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
