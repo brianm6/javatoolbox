@@ -24,7 +24,7 @@ public final class StringUtil
      * Static class...prevent construction
      */
     private StringUtil()
-    {
+    { 
     }
     
 
@@ -475,5 +475,37 @@ public final class StringUtil
         String[] tokens = new String[st.countTokens()];   
         for(int i=0; st.hasMoreTokens(); tokens[i++] = st.nextToken());
         return tokens;
+    }
+
+    /**
+     * Trims leading and trailing characters from a string
+     * 
+     * @param   s    String to trim
+     * @param   ch   Character to trim from string
+     * @return  Trimmed string
+     */     
+    public static String trim(String s, char ch)
+    {
+        int len = s.length();
+        
+        // empty string
+        if (len == 0)
+            return s;
+        
+        // nothing to trim
+        if (!s.startsWith(ch+"") && !s.endsWith(ch+""))
+            return s;
+
+        // trim on both sides        
+        int startPos = 0;
+        int endPos   = len - 1;
+        
+        while (startPos < len && s.charAt(startPos) == ch)
+            startPos++;                
+        
+        while (endPos >= startPos && s.charAt(endPos) == ch)
+            endPos--;
+        
+        return s.substring(startPos, endPos+1);
     }
 }
