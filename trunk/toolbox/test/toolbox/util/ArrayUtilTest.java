@@ -1036,7 +1036,7 @@ public class ArrayUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests
+    // Remaining Unit Tests
     //--------------------------------------------------------------------------
     
     /**
@@ -1218,6 +1218,56 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testInvokeFailure...");
         
         String[] buffers = new String[] {"a", "b"};
-        ArrayUtil.invoke(buffers, "bogus_method", new Object[] {"x"});
+        ArrayUtil.invoke(
+            buffers, 
+            "\n" + Figlet.getBanner("OK"), 
+            new Object[] {"x"});
+    }
+    
+    
+    /**
+     * Tests toList() for an empty array.
+     */
+    public void testToListZero()
+    {
+        logger_.info("Running testToListZero...");
+        
+        List result = ArrayUtil.toList(new String[0]);
+        assertNotNull("Result should not be null for an empty array", result);
+        assertTrue("Result should be empty", result.isEmpty());
+    }
+
+    
+    /**
+     * Tests toList() for an array with one element.
+     */
+    public void testToListOne()
+    {
+        logger_.info("Running testToListOne...");
+        
+        List result = ArrayUtil.toList(new String[] {"one"});
+        assertNotNull("Result should not be null", result);
+        assertEquals("Result should have one element", 1, result.size());
+        assertEquals("Contents not the same", "one", result.get(0));
+    }
+    
+    
+    /**
+     * Tests toList() for an array with many elements.
+     */
+    public void testToListMany()
+    {
+        logger_.info("Running testToListMany...");
+        
+        int max = 100;
+        String[] expected = new String[max];
+        for (int i = 0; i < max; i++)
+            expected[i] = i + "";
+        
+        List result = ArrayUtil.toList(expected);
+        assertNotNull("Result should not be null", result);
+        assertEquals("Sizes don't match", expected.length, result.size());
+        for (int i = 0; i < max; i++)
+            assertEquals("Contents not the same", expected[i], result.get(i));
     }
 }
