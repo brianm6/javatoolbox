@@ -8,5 +8,7 @@
     <classpathentry kind="lib" path="lib/jakarta-regexp-1.2.jar"/>
     <classpathentry kind="lib" path="lib/dom.jar"/>
     <classpathentry kind="lib" path="lib/EXML.jar"/>
+    <classpathentry kind="lib" path="lib/jode.jar"/>
+    <classpathentry kind="lib" path="lib/java2html.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
