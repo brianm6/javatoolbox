@@ -434,9 +434,6 @@ public class TailPane extends JPanel
      */    
     public class RegexActionListener implements ActionListener
     {
-        /**
-         * @param e  ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         {
             String s = getRegularExpression();
@@ -453,9 +450,6 @@ public class TailPane extends JPanel
      */    
     public class CutActionListener implements ActionListener
     {
-        /**
-         * @param e  ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         {
             String s = getCutExpression();
@@ -481,9 +475,6 @@ public class TailPane extends JPanel
         
         private String mode_;
             
-        /**
-         * Default constructor
-         */
         public StartStopAction(String mode)
         {
             super(mode);
@@ -492,11 +483,6 @@ public class TailPane extends JPanel
             putValue(SHORT_DESCRIPTION, "Starts/Stops the tail");
         }
     
-        /**
-         * Stops the tail if it is alraedy alive and then starts the tail
-         * 
-         * @param  e    ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         { 
             if (mode_.equals(MODE_START))
@@ -536,9 +522,6 @@ public class TailPane extends JPanel
         private static final String MODE_PAUSE   = "Pause";
         private static final String MODE_UNPAUSE = "Unpause";
             
-        /**
-         * Default constructor
-         */
         public PauseUnpauseAction()
         {
             super(MODE_PAUSE);
@@ -546,11 +529,6 @@ public class TailPane extends JPanel
             putValue(SHORT_DESCRIPTION, "Pause/Unpauses the tail");
         }
     
-        /**
-         * Pauses/unpauses the tail based on the current state
-         * 
-         * @param  e    ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         { 
             if (tail_.isPaused())
@@ -575,9 +553,6 @@ public class TailPane extends JPanel
      */
     private class CloseAction extends AbstractAction
     {
-        /**
-         * Default constructor
-         */
         public CloseAction()
         {
             super("Close");
@@ -585,11 +560,6 @@ public class TailPane extends JPanel
             putValue(SHORT_DESCRIPTION, "Closes the tail pane");
         }
     
-        /**
-         * Closes the tail pane
-         * 
-         * @param  e    ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         { 
             if (tail_.isPaused())
@@ -607,9 +577,6 @@ public class TailPane extends JPanel
      */
     private class ClearAction extends AbstractAction
     {
-        /**
-         * Default constructor
-         */
         public ClearAction()
         {
             super("Clear");
@@ -617,11 +584,6 @@ public class TailPane extends JPanel
             putValue(SHORT_DESCRIPTION, "Clears the output area");
         }
     
-        /**
-         * Clears the output area
-         * 
-         * @param  e    ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         { 
             tailArea_.setText("");
@@ -633,9 +595,6 @@ public class TailPane extends JPanel
      */
     private class AutoScrollAction extends AbstractAction
     {
-        /**
-         * Default constructor
-         */
         public AutoScrollAction()
         {
             super("Autoscroll");
@@ -643,11 +602,6 @@ public class TailPane extends JPanel
             putValue(SHORT_DESCRIPTION, "Toggles autoscroll");
         }
     
-        /**
-         * Toggle autoscroll
-         * 
-         * @param  e    ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         { 
             tailArea_.setAutoScroll(autoScrollBox_.isSelected()); 
@@ -659,9 +613,6 @@ public class TailPane extends JPanel
      */
     private class ShowLineNumbersAction extends AbstractAction
     {
-        /**
-         * Default constructor
-         */
         public ShowLineNumbersAction()
         {
             super("Line numbers");
@@ -670,11 +621,6 @@ public class TailPane extends JPanel
                 "Toggles display of line numbers in the output");
         }
     
-        /**
-         * Toggle line numbers
-         * 
-         * @param  e    ActionEvent
-         */
         public void actionPerformed(ActionEvent e)
         { 
             lineNumberDecorator_.setEnabled(!lineNumberDecorator_.isEnabled());
