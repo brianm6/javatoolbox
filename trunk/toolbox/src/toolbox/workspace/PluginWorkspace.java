@@ -11,8 +11,10 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -47,6 +49,7 @@ import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.collections.ObjectComparator;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
@@ -555,7 +558,18 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         pluginMenu_ = new JSmartMenu("Plugins");
         pluginMenu_.setMnemonic('l');
 
-        for (Iterator i = PluginDialog.getPluginList().iterator(); i.hasNext();)
+        //
+        // Get the list of plugins and sort it by plugin name
+        //
+        
+        List plugins = PluginDialog.getPluginList();
+        Collections.sort(plugins, new ObjectComparator("name"));
+        
+        //
+        // Iterate over plugin list and create the menu
+        //
+        
+        for (Iterator i = plugins.iterator(); i.hasNext();)
         {
             PluginMeta meta = (PluginMeta) i.next();
 
@@ -609,7 +623,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             pluginMenu_.add(mi);
         }
 
-
+        //
+        // As plugins are loaded/unloaded, the menu has to be updated to reflect
+        // the currently loaded state.
+        //
+        
         pluginHostManager_.getPluginHost().addPluginHostListener(
             new PluginHostListener()
             {
