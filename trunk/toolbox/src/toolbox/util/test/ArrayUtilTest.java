@@ -12,7 +12,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.RandomUtil;
 
 /**
- * Unit test for ArrayUtil
+ * Unit test for ArrayUtil.
  */
 public class ArrayUtilTest extends TestCase
 {
@@ -24,7 +24,7 @@ public class ArrayUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      *
      * @param args None recognized
      */
@@ -38,7 +38,7 @@ public class ArrayUtilTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Test subset() for subset equal to array
+     * Test subset() for subset equal to array.
      */
     public void testSubsetDoubleAll() 
     {
@@ -58,8 +58,9 @@ public class ArrayUtilTest extends TestCase
             assertEquals("values don't match", d[i], e[i], 0);
     }
 
+    
     /**
-     * Test subset() for empty array
+     * Test subset() for empty array.
      */
     public void testSubsetDoubleEmpty() 
     {
@@ -70,8 +71,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("subset should be empty", 0, e.length);
     }
 
+    
     /**
-     * Test subset() for subset first half of array
+     * Test subset() for subset first half of array.
      */
     public void testSubsetDoubleFirstHalf() 
     {
@@ -90,8 +92,9 @@ public class ArrayUtilTest extends TestCase
             assertEquals("values don't match", d[i], e[i], 0);
     }
 
+    
     /**
-     * Test subset() for array of length 1
+     * Test subset() for array of length 1.
      */
     public void testSubsetDoubleOne() 
     {
@@ -103,8 +106,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("values don't match", d[0], e[0], 0);
     }
 
+    
     /**
-     * Test subset() for subset second half of the array
+     * Test subset() for subset second half of the array.
      */
     public void testSubsetDoubleSecondHalf()
     {
@@ -129,8 +133,9 @@ public class ArrayUtilTest extends TestCase
         }
     }
 
+    
     /**
-     * Test subset(Object[]) for all
+     * Test subset(Object[]) for all.
      */
     public void testSubsetObjectAll() 
     {
@@ -147,8 +152,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("second index is incorrect", "two", subset[1]);
     }
 
+    
     /**
-     * Test subset(Object[]) for empty array of objects
+     * Test subset(Object[]) for empty array of objects.
      */
     public void testSubsetObjectEmpty() 
     {
@@ -159,8 +165,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("subset should be empty", 0, e.length);
     }
 
+    
     /**
-     * Test subset(Object[]) for array of length 1
+     * Test subset(Object[]) for array of length 1.
      */
     public void testSubsetObjectOne() 
     {
@@ -180,8 +187,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("values don't match", "c", e[0]);
     }
 
+    
     /**
-     * Tests subset(Object,int,int) for boundary conditions
+     * Tests subset(Object,int,int) for boundary conditions.
      */
     public void testSubsetOutOfBounds()
     {
@@ -247,8 +255,9 @@ public class ArrayUtilTest extends TestCase
 
     }
 
+    
     /**
-     * Tests toString() for empty array
+     * Tests toString() for empty array.
      */
     public void testToStringEmpty()
     {
@@ -258,8 +267,21 @@ public class ArrayUtilTest extends TestCase
         logger_.info(ArrayUtil.toString(s));
     }
 
+    
     /**
-     * Tests toString() for single element array with one per line = true
+     * Tests toString() for array with one element.
+     */
+    public void testToStringOne()
+    {
+        logger_.info("Running testToStringOne...");
+        
+        String[] s = new String[] { "blah" };
+        logger_.info(ArrayUtil.toString(s));
+    }
+    
+    
+    /**
+     * Tests toString() for single element array with one per line = true.
      */
     public void testToStringOneElementOnePerLine()
     {
@@ -270,8 +292,9 @@ public class ArrayUtilTest extends TestCase
         logger_.info(ArrayUtil.toString(s, false));        
     }
 
+    
     /**
-     * Tests toString() for one element per line
+     * Tests toString() for one element per line.
      */
     public void testToStringOnePerLine()
     {
@@ -292,7 +315,7 @@ public class ArrayUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests indexOf() for an empty array 
+     * Tests indexOf() for an empty array.
      */
     public void testIndexOfEmpty() 
     {
@@ -306,8 +329,9 @@ public class ArrayUtilTest extends TestCase
         assertTrue("Array is empty", idx == -1);
     }
 
+    
     /**
-     * Tests indexOf() for an array of length 1
+     * Tests indexOf() for an array of length 1.
      */
     public void testIndexOfOne()
     {
@@ -322,8 +346,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("Found at wrong index", 0, idx);
     }
 
+    
     /**
-     * Tests indexOf() for an array of length 1 where obj not found
+     * Tests indexOf() for an array of length 1 where obj not found.
      */
     public void testIndexOfOneNotFound()
     {
@@ -338,8 +363,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("Should not have found a match", -1, idx);
     }
 
+    
     /**
-     * Tests indexOf() for an array of length > 1
+     * Tests indexOf() for an array of length > 1.
      */
     public void testIndexOfMany()
     {
@@ -355,8 +381,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("Found at wrong index", 2, idx);
     }
 
+    
     /**
-     * Tests indexOf() for an array of length > 1 where obj not found
+     * Tests indexOf() for an array of length > 1 where obj not found.
      */
     public void testIndexOfManyNotFound()
     {
@@ -377,7 +404,7 @@ public class ArrayUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests contains() for an empty array
+     * Tests contains() for an empty array.
      */
     public void testContainsEmpty()
     {
@@ -387,8 +414,9 @@ public class ArrayUtilTest extends TestCase
             !ArrayUtil.contains(new String[0], "blah"));
     }
     
+    
     /**
-     * Tests contains() for object not found in an array of size one
+     * Tests contains() for object not found in an array of size one.
      */
     public void testContainsOneNotFound()
     {
@@ -398,8 +426,9 @@ public class ArrayUtilTest extends TestCase
             !ArrayUtil.contains(new String[] {"this"}, "dont match"));
     }
     
+    
     /**
-     * Tests contains() for object not found in an array of size > one
+     * Tests contains() for object not found in an array of size > one.
      */
     public void testContainsManyNotFound()
     {
@@ -409,8 +438,9 @@ public class ArrayUtilTest extends TestCase
             !ArrayUtil.contains(new String[] {"one", "two", "three" }, "zero"));
     }    
     
+    
     /**
-     * Tests contains() for object found in an array of size one
+     * Tests contains() for object found in an array of size one.
      */
     public void testContainsOne()
     {
@@ -420,8 +450,9 @@ public class ArrayUtilTest extends TestCase
             ArrayUtil.contains(new String[] {"this"}, "this"));
     }
     
+    
     /**
-     * Tests contains() for object found in an array of size > one
+     * Tests contains() for object found in an array of size > one.
      */
     public void testContainsMany()
     {
@@ -458,7 +489,7 @@ public class ArrayUtilTest extends TestCase
      */
     
     /**
-     * Tests concat() for two empty arrays
+     * Tests concat() for two empty arrays.
      */
     public void testConcatBothEmpty()
     {
@@ -474,8 +505,9 @@ public class ArrayUtilTest extends TestCase
             concatted.getClass().getComponentType());
     }
     
+    
     /**
-     * Tests concat() for two arrays, one of which is empty 
+     * Tests concat() for two arrays, one of which is empty.
      */
     public void testConcatEmptyOne()
     {
@@ -492,8 +524,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array element incorrect", "one", concatted[0]);
     }
 
+    
     /**
-     * Tests concat() for an empty head and a tail containing many elements
+     * Tests concat() for an empty head and a tail containing many elements.
      */
     public void testConcatEmptyMany()
     {
@@ -515,8 +548,9 @@ public class ArrayUtilTest extends TestCase
                 concatted[i]);
     }
 
+    
     /**
-     * Tests concat() for an a head containing one element and an empty tail
+     * Tests concat() for an a head containing one element and an empty tail.
      */
     public void testConcatOneEmpty()
     {
@@ -533,8 +567,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array element incorrect", "one", concatted[0]);
     }
 
+    
     /**
-     * Tests concat() for an head containing many elements and an empty tail
+     * Tests concat() for an head containing many elements and an empty tail.
      */
     public void testConcatManyEmpty()
     {
@@ -556,8 +591,9 @@ public class ArrayUtilTest extends TestCase
                 concatted[i]);
     }
  
+    
     /**
-     * Tests concat() for a head and tail each containing one element 
+     * Tests concat() for a head and tail each containing one element. 
      */
     public void testConcatBothOne()
     {
@@ -575,9 +611,10 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array element incorrect", "two", concatted[1]);
     }
 
+    
     /**
      * Tests concat() for an head containing many elements and tail containing
-     * one element
+     * one element.
      */
     public void testConcatManyOne()
     {
@@ -603,9 +640,10 @@ public class ArrayUtilTest extends TestCase
             concatted[i]);
     }
 
+    
     /**
      * Tests concat() for an tail containing many elements and head containing
-     * one element
+     * one element.
      */
     public void testConcatOneMany()
     {
@@ -631,8 +669,9 @@ public class ArrayUtilTest extends TestCase
 
     }
 
+    
     /**
-     * Tests concat() for both head and tail containing many elements
+     * Tests concat() for both head and tail containing many elements.
      */
     public void testConcatBothMany()
     {
@@ -663,7 +702,7 @@ public class ArrayUtilTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests insert() for inserting an object into an empty array
+     * Tests insert() for inserting an object into an empty array.
      */
     public void testInsertToEmptyArray()
     {
@@ -678,8 +717,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals(obj, result[0]);    
     }
     
+    
     /**
-     * Tests insert() for adding an object to a non-empty array
+     * Tests insert() for adding an object to a non-empty array.
      */
     public void testInsertToArray()
     {
@@ -696,8 +736,9 @@ public class ArrayUtilTest extends TestCase
         assertTrue(ArrayUtil.equals(expected, result));    
     }
     
+    
     /**
-     * Tests insertAt() for inserting an object into an empty array
+     * Tests insertAt() for inserting an object into an empty array.
      */
     public void testInsertAtToEmptyArray()
     {
@@ -712,8 +753,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals(obj, result[0]);    
     }
     
+    
     /**
-     * Tests insertAt() for adding an object to the front of a non-empty array
+     * Tests insertAt() for adding an object to the front of a non-empty array.
      */
     public void testInsertAtFront()
     {
@@ -729,8 +771,9 @@ public class ArrayUtilTest extends TestCase
         assertTrue(ArrayUtil.equals(expected, result));    
     }
     
+    
     /**
-     * Tests insertAt() for adding an object to the end of a non-empty array
+     * Tests insertAt() for adding an object to the end of a non-empty array.
      */
     public void testInsertAtBack()
     {
@@ -746,8 +789,9 @@ public class ArrayUtilTest extends TestCase
         assertTrue(ArrayUtil.equals(expected, result));    
     }
 
+    
     /**
-     * Tests insertAt() for adding an object to the middle of a non-empty array
+     * Tests insertAt() for adding an object to the middle of a non-empty array.
      */
     public void testInsertAtMiddle()
     {
@@ -768,7 +812,7 @@ public class ArrayUtilTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests remove() for removing from an empty array
+     * Tests remove() for removing from an empty array.
      */
     public void testRemoveEmpty()
     {
@@ -783,8 +827,9 @@ public class ArrayUtilTest extends TestCase
         assertTrue(result.getClass().getComponentType() == String.class);
     }
 
+    
     /**
-     * Tests remove() for removing the last element from an array
+     * Tests remove() for removing the last element from an array.
      */
     public void testRemoveOne()
     {
@@ -799,8 +844,9 @@ public class ArrayUtilTest extends TestCase
         assertTrue(result.getClass().getComponentType() == String.class);
     }
     
+    
     /**
-     * Tests remove() for removing the first element in an array of many
+     * Tests remove() for removing the first element in an array of many.
      */
     public void testRemoveHead()
     {
@@ -818,8 +864,9 @@ public class ArrayUtilTest extends TestCase
             assertEquals(strArray[i+1], result[i]);
     }
     
+    
     /**
-     * Tests remove() for removing the last element in an array of many
+     * Tests remove() for removing the last element in an array of many.
      */
     public void testRemoveTail()
     {
@@ -837,8 +884,9 @@ public class ArrayUtilTest extends TestCase
             assertEquals(strArray[i], result[i]);
     }
 
+    
     /**
-     * Tests remove() for removing the middle element
+     * Tests remove() for removing the middle element.
      */
     public void testRemoveMiddle()
     {
@@ -855,8 +903,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("tail", result[1]);
     }
 
+    
     /**
-     * Tests remove() for removing a buncha random elements
+     * Tests remove() for removing a buncha random elements.
      */
     public void testRemoveRandom()
     {
@@ -896,6 +945,7 @@ public class ArrayUtilTest extends TestCase
         for (int i=0; i<d.length; assertEquals(99.9d, d[i++], 0.0));
     }
     
+    
     /**
      * Tests init(int)
      */
@@ -909,6 +959,7 @@ public class ArrayUtilTest extends TestCase
         for (int i=0; i<d.length; assertEquals(99, d[i++]));
     }
     
+    
     /**
      * Tests toString(int[])
      */
@@ -919,6 +970,7 @@ public class ArrayUtilTest extends TestCase
         int[] i = new int[] {1, 2, 3, 4, 5};
         logger_.info(ArrayUtil.toString(i));        
     }
+    
 
     /**
      * Tests toString(double[])
@@ -931,8 +983,9 @@ public class ArrayUtilTest extends TestCase
         logger_.info(ArrayUtil.toString(d));        
     }
 
+    
     /**
-     * Tests add() for adding an object to an empty array
+     * Tests add() for adding an object to an empty array.
      */
     public void testAddToEmptyArray()
     {
@@ -947,8 +1000,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals(obj, result[0]);    
     }
     
+    
     /**
-     * Tests add() for adding an object to a non-empty array
+     * Tests add() for adding an object to a non-empty array.
      */
     public void testAddToArray()
     {
@@ -964,6 +1018,7 @@ public class ArrayUtilTest extends TestCase
         assertEquals(arr.length + 1, result.length);
         assertTrue(ArrayUtil.equals(expected, result));    
     }
+    
     
     /**
      * Tests equals() for by array reference and by array's contents reference
@@ -1007,8 +1062,9 @@ public class ArrayUtilTest extends TestCase
         assertTrue(ArrayUtil.equals(e1, e2));        
     }
     
+    
     /**
-     * Tests the isNullOrEmpty() method
+     * Tests the isNullOrEmpty() method.
      */
     public void testIsNullOrEmpty()
     {
@@ -1026,5 +1082,36 @@ public class ArrayUtilTest extends TestCase
             
         assertTrue("Should have returned false for non-empty array", 
             !ArrayUtil.isNullOrEmpty(oneArray));            
+    }
+    
+    
+    /**
+     * Tests invoke().
+     */
+    public void testInvoke()
+    {
+        logger_.info("Running testInvoke...");
+        
+        StringBuffer[] buffers = new StringBuffer[10];
+        
+        for(int i=0; i<buffers.length; i++)
+            buffers[i] = new StringBuffer("");
+        
+        ArrayUtil.invoke(buffers, "append", new Object[] { "x" });
+
+        for(int i=0; i<buffers.length; i++)
+            assertEquals("x", buffers[i].toString());
+    }
+
+    
+    /**
+     * Tests invoke() failure.
+     */
+    public void testInvokeFailure()
+    {
+        logger_.info("Running testInvokeFailure...");
+        
+        String[] buffers = new String[] { "a", "b" };
+        ArrayUtil.invoke(buffers, "bogus_method", new Object[] { "x" });
     }
 }
