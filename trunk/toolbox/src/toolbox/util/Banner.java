@@ -2256,20 +2256,18 @@ public class Banner
     "     $@\n" + 
     "     $@@";
     
-    /** 
-     * Logger 
-     */
+    /** Logger */
     private static final Logger logger_ = Logger.getLogger(Banner.class);
     
-    /** 
-     * Default font
-     */
+    /** Default font */
     private static final BannerFont FONT_STANDARD = 
         new BannerFont(FONT_STANDARD_DATA);
 
     // Clover private constructor workaround
     static { new Banner(); }
 
+    // TODO: Add more font files
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -2277,7 +2275,7 @@ public class Banner
     /**
      * Executes banner via Command line args
      * 
-     * @param args  String to turn into a banner
+     * @param  args  See printUsage()
      */
     public static void main(String args[])
     {
@@ -2556,7 +2554,8 @@ public class Banner
         if (leftJustify)
             result += line;
         else
-            result += scroll(line, (int) (splitWidth / 2 - getBannerWidth(line) / 2));
+            result += scroll(line, (int) 
+                (splitWidth / 2 - getBannerWidth(line) / 2));
             
         return result;
     }
