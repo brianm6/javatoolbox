@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates><template name="brc" description="**** brc" context="java" enabled="true" deleted="false">//--------------------------------------------------------------------------
+    //
+    //--------------------------------------------------------------------------</template><template name="lj" description="**** log4j" context="java" enabled="true" deleted="false">private static final Logger logger_ =
+	Logger.getLogger(${enclosing_type}.class);</template></templates>
