@@ -29,34 +29,12 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
 
 /**
- * JDBC Utility class that makes it easy to execute SQL statements and see the 
- * results as formatted text in a tabular layout. Connection pooling is turned
- * on by default and overcomes a failure with fast connect/disconnect when
- * using HSQL in server mode.
- * <p>
- * Sample usage:
- * <pre>
- * JDBCUtil.init("org.some.JDBCDriver", "jdbc:someurl", "username", "password");
- * String results = JDBCUtil.executeQuery("select * from users where age > 30");
- * System.out.println(results);
+ * JDBCSession is an attempt to remedy the singleton like limitations of 
+ * JDBCUtil. With the use of session names used to identify db sessions,
+ * any number of connections to any number of databases can be active at the
+ * same time.
  * 
- * int numRows = JDBCUtil.executeUpdate("delete from users where age < 30");
- * System.out.println(numrows + " rows deleted.");
- * JDBCUtil.shutdown();
- * </pre>
- * <p>
- * Sample Output: 
- * <pre>
- * USERNAME  AGE  TITLE
- * ---------------------------
- * jsmith    23   Consultant
- * abrown    34   Integrator
- * hsimpson  45   Misc.
- *    
- * 4 rows
- * </pre>
- * 
- * TODO: Add connection pooling to init methods with jar.
+ * @see toolbox.util.JDBCUtil
  */
 public final class JDBCSession
 {
@@ -67,26 +45,9 @@ public final class JDBCSession
     //--------------------------------------------------------------------------
 
     /**
-     * Classname of the commons-dbcp pooling JDBC driver.
-     */
-    private static final String CONN_POOL_DRIVER = 
-        "org.apache.commons.dbcp.PoolingDriver";
-    
-    /**
-     * URL prefix of the connection pooling JDBC driver.
-     */
-    private static final String CONN_POOL_URL_PREFIX = 
-        "jdbc:apache:commons:dbcp:"; 
-
-    /**
-     * Name of the connection pool for use exclusively by this class.
+     * Prefix of the connection pool for use exclusively by this class.
      */	
     private static final String CONN_POOL_NAME = "jdbcsession_";
-    
-    /**
-     * Connection pooling is turned on by default.
-     */
-    private static final boolean DEFAULT_POOLED = true;
 
     //--------------------------------------------------------------------------
     // Fields
@@ -134,7 +95,7 @@ public final class JDBCSession
                IllegalAccessException,
                InstantiationException 
     {
-        init(sessionName, driver, url, user, password, DEFAULT_POOLED);
+        init(sessionName, driver, url, user, password, JDBCUtil.DEFAULT_POOLED);
     }
 
     
@@ -191,10 +152,10 @@ public final class JDBCSession
                     false,  // readonly
                     true);  // autocommit
 	
-            Class.forName(CONN_POOL_DRIVER);
+            Class.forName(JDBCUtil.CONN_POOL_DRIVER);
 	        
             PoolingDriver poolDriver = (PoolingDriver)
-                DriverManager.getDriver(CONN_POOL_URL_PREFIX);
+                DriverManager.getDriver(JDBCUtil.CONN_POOL_URL_PREFIX);
 	        								  		
             poolDriver.registerPool(CONN_POOL_NAME + sessionName, connPool);
 	
@@ -203,8 +164,8 @@ public final class JDBCSession
             Properties connProps = new Properties();
             connProps.put("user", user);
             connProps.put("password", password);
-            connProps.put(
-                "url", CONN_POOL_URL_PREFIX + CONN_POOL_NAME + sessionName);
+            connProps.put("url", 
+                JDBCUtil.CONN_POOL_URL_PREFIX + CONN_POOL_NAME + sessionName);
             session.setConnProps(connProps);
         }
         
@@ -325,7 +286,8 @@ public final class JDBCSession
      * @return Connection ready for use.
      * @throws SQLException on SQL error.
      */
-    public static Connection getConnection(String sessionName) throws SQLException
+    public static Connection getConnection(String sessionName) 
+        throws SQLException
     {
         Session session = getSession(sessionName);
         
@@ -344,7 +306,8 @@ public final class JDBCSession
      * @return String[]
      * @throws SQLException on DB error.
      */    
-    public static String[] getTableNames(String sessionName) throws SQLException
+    public static String[] getTableNames(String sessionName) 
+        throws SQLException
     {
         Connection conn = getConnection(sessionName);
         DatabaseMetaData meta = conn.getMetaData();
@@ -395,8 +358,8 @@ public final class JDBCSession
     /**
      * Retrives the given session from the session map.
      * 
-     * @param sessionName
-     * @return
+     * @param sessionName Name of the sessio to retrieve.
+     * @return Session
      */
     public static Session getSession(String sessionName)
     {
@@ -411,10 +374,9 @@ public final class JDBCSession
     
     
     /**
-     * Retrives the given session from the session map.
+     * Returns the current number of active sessions.
      * 
-     * @param sessionName
-     * @return
+     * @return int
      */
     public static int getSessionCount()
     {
@@ -565,30 +527,52 @@ public final class JDBCSession
     // SessionInfo
     //--------------------------------------------------------------------------
     
+    /**
+     * Session is responsible for capturing data that is unique to a session.
+     */
     static class Session
     {
+        /**
+         * Unique name of this session. Essentially, the key.
+         */
         private String name_;
+        
+        /**
+         * Connectin properties used by this session.
+         */
         private Properties connProps_;
+        
+        /**
+         * JDBC driver used by this session.
+         */
         private Driver driver_;
+        
+        /**
+         * True if this session is to to use the pooled jdbc drivers.
+         */
         private boolean pooled_;
      
         
         /**
-         * Creates a SessionInfo.
+         * Creates a Session.
          * 
-         * @param name
-         * @param connProps
-         * @param driver
-         * @param pooled
+         * @param name Name of the session.
+         * @param connProps Connection properties.
+         * @param driver JDBC driver.
+         * @param pooled True to use pooling drivers, false otherwise.
          */
-        public Session(String name, Properties connProps, Driver driver,
+        public Session(
+            String name, 
+            Properties connProps, 
+            Driver driver,
             boolean pooled)
         {
-            name_ = name;
-            connProps_ = connProps;
-            driver_ = driver;
-            pooled_ = pooled;
+            setName(name);
+            setConnProps(connProps);
+            setDriver(driver);
+            setPooled(pooled);
         }
+        
         
         /**
          * Returns the connProps.
@@ -599,6 +583,8 @@ public final class JDBCSession
         {
             return connProps_;
         }
+        
+        
         /**
          * Sets the connProps.
          * 
@@ -608,6 +594,8 @@ public final class JDBCSession
         {
             connProps_ = connProps;
         }
+        
+        
         /**
          * Returns the driver.
          * 
@@ -617,6 +605,8 @@ public final class JDBCSession
         {
             return driver_;
         }
+        
+        
         /**
          * Sets the driver.
          * 
@@ -637,6 +627,8 @@ public final class JDBCSession
         {
             return pooled_;
         }
+        
+        
         /**
          * Sets the pooled.
          * 
@@ -646,6 +638,8 @@ public final class JDBCSession
         {
             pooled_ = pooled;
         }
+        
+        
         /**
          * Returns the name.
          * 
@@ -655,6 +649,8 @@ public final class JDBCSession
         {
             return name_;
         }
+        
+        
         /**
          * Sets the name.
          * 
@@ -665,6 +661,4 @@ public final class JDBCSession
             name_ = name;
         }
     }
-    
-
 }

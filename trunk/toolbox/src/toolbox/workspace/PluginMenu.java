@@ -111,12 +111,22 @@ public class PluginMenu extends JSmartMenu
     // LaunchPluginAction
     //--------------------------------------------------------------------------
     
+    /**
+     * LaunchPluginAction is responsible for launching the currently selected
+     * plugin and loading it into the workspace.
+     */
     class LaunchPluginAction extends AbstractAction 
     {
+        /**
+         * Creates a LaunchPluginAction.
+         * 
+         * @param name Name of the action.
+         */
         LaunchPluginAction(String name)
         {
             super(name);
         }
+        
         
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
@@ -162,6 +172,11 @@ public class PluginMenu extends JSmartMenu
     // PluginActivityListener
     //--------------------------------------------------------------------------
     
+    /**
+     * PluginActivityListener is responsible for keeping the state of the
+     * plugins in the menu in sync with their loaded state. A check appears 
+     * next to loaded plugins and is removed when/if the plugin is unloaded.
+     */
     class PluginActivityListener implements PluginHostListener
     {
         /**
@@ -171,11 +186,8 @@ public class PluginMenu extends JSmartMenu
          */
         public void pluginAdded(PluginHost pluginHost, IPlugin plugin)
         {
-            //logger_.debug(StringUtil.addBars("PLugin added " + plugin));
-
-            JSmartCheckBoxMenuItem mi =
-                (JSmartCheckBoxMenuItem) nameMap_.get(
-                    plugin.getPluginName());
+            JSmartCheckBoxMenuItem mi = (JSmartCheckBoxMenuItem) 
+                nameMap_.get(plugin.getPluginName());
 
             mi.setSelected(true);
         }
@@ -188,8 +200,6 @@ public class PluginMenu extends JSmartMenu
          */
         public void pluginRemoved(PluginHost pluginHost, IPlugin plugin)
         {
-            //logger_.debug(StringUtil.addBars("PLugin removed " + plugin));
-
             JCheckBoxMenuItem mi = (JCheckBoxMenuItem)
                 nameMap_.get(plugin.getPluginName());
 
