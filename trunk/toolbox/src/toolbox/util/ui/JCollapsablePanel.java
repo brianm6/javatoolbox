@@ -2,11 +2,14 @@ package toolbox.util.ui;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
@@ -65,6 +68,7 @@ public class JCollapsablePanel extends JHeaderPanel
     public JCollapsablePanel(Icon icon, String title)
     {
         super(icon, title);
+        makeCollapsable();        
     }
 
 
@@ -78,6 +82,7 @@ public class JCollapsablePanel extends JHeaderPanel
     public JCollapsablePanel(String title, JToolBar bar, JComponent content)
     {
         super(title, bar, content);
+        makeCollapsable();        
     }
 
 
@@ -93,6 +98,7 @@ public class JCollapsablePanel extends JHeaderPanel
         JComponent content)
     {
         super(icon, title, bar, content);
+        makeCollapsable();        
     }
 
     //--------------------------------------------------------------------------
@@ -100,7 +106,7 @@ public class JCollapsablePanel extends JHeaderPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the collapsed.
+     * Returns true if the panel is collapsed, false otherwise.
      * 
      * @return boolean
      */
@@ -111,17 +117,40 @@ public class JCollapsablePanel extends JHeaderPanel
     
     
     /**
-     * Sets the collapsed.
+     * Sets the collapsed state of the panel.
      * 
-     * @param collapsed The collapsed to set.
+     * @param collapsed True to collapse the panel, false to expand the panel.
      */
     public void setCollapsed(boolean collapsed)
     {
-        if (collapsed == isCollapsed())
-            return;
-            
-        new CollapseAction().toggle(); 
+        if (collapsed != isCollapsed())
+            toggle(); 
     }
+
+    
+    /**
+     * Toggles the collapsed state of the panel.
+     */
+    public void toggle()
+    {
+        if (collapsed_)
+        {
+            setContent(savedContent_);
+        }
+        else
+        {
+            savedContent_ = getContent();
+            setContent(new NullComponent());
+        }
+
+        collapsed_ = !collapsed_;
+        toggleButton_.setIcon(getCollapsedIcon());
+        toggleButton_.setRolloverIcon(getCollapsedIcon());
+
+        revalidate();
+        ((JComponent) getParent()).revalidate();
+    }
+    
     
     //--------------------------------------------------------------------------
     // Protected
@@ -138,6 +167,20 @@ public class JCollapsablePanel extends JHeaderPanel
         tb.add(toggleButton_);
         setToolBar(tb);
         setCollapsed(false);
+        
+        JPanel titleBar = getGradientPanel();
+
+        //
+        // Wire a doubleclick on the title bar to toggle the panel
+        //
+        titleBar.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent e)
+            {
+                if (e.getClickCount() == 2)
+                    toggle();
+            }
+        });
     }
 
 
@@ -154,7 +197,7 @@ public class JCollapsablePanel extends JHeaderPanel
                 ImageCache.getIcon(ImageCache.IMAGE_DOUBLE_ARROW_UP));
         
     }
-    
+
     //--------------------------------------------------------------------------
     // CollapseAction
     //--------------------------------------------------------------------------
@@ -180,30 +223,6 @@ public class JCollapsablePanel extends JHeaderPanel
         public void actionPerformed(ActionEvent e)
         {
             toggle();
-        }
-        
-        
-        /**
-         * Toggles the collapsed state of the panel.
-         */
-        public void toggle()
-        {
-            if (collapsed_)
-            {
-                setContent(savedContent_);
-            }
-            else
-            {
-                savedContent_ = getContent();
-                setContent(new NullComponent());
-            }
-
-            collapsed_ = !collapsed_;
-            toggleButton_.setIcon(getCollapsedIcon());
-            toggleButton_.setRolloverIcon(getCollapsedIcon());
-
-            revalidate();
-            ((JComponent) getParent()).revalidate();
         }
     }
 
