@@ -3,10 +3,10 @@ package toolbox.util.test;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
 import toolbox.util.ArrayUtil;
@@ -238,4 +238,19 @@ public class ClassUtilTest extends TestCase
         assertEquals(Integer.class, many[1]);
         assertEquals(ArrayList.class, many[2]);
     }
+    
+    /**
+     * Tests getClassLocation()
+     */
+    public void testGetClassLocation()
+    {
+        logger_.info("Running testGetClassLocation...");
+        
+        logger_.info(
+            "Class Location = " + ClassUtil.getClassLocation(Object.class));
+            
+        logger_.info(
+            "Class Location = " + ClassUtil.getClassLocation(ClassUtil.class));
+    }
+    
 }
