@@ -38,7 +38,7 @@ public class JFontChooserDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for JFontChooserDialog.
+     * Default constructor
      */
     public JFontChooserDialog()
     {
@@ -47,7 +47,7 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Constructor for JFontChooserDialog.
+     * Creates a JFontChooserDialog
      * 
      * @param  owner  Parent frame
      */
@@ -58,7 +58,7 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Constructor for JFontChooserDialog.
+     * Creates a JFontChooserDialog
      * 
      * @param  owner  Parent frame
      * @param  modal  Dialog is modal
@@ -70,7 +70,7 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Constructor for JFontChooserDialog.
+     * Creates a JFontChooserDialog
      * 
      * @param  owner        Parent frame
      * @param  modal        Set to true for a model dialog
@@ -84,7 +84,7 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Constructor for JFontChooserDialog.
+     * Creates a JFontChooserDialog
      * 
      * @param  owner        Parent frame
      * @param  modal        Set to true for a model dialog
@@ -100,7 +100,7 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Constructor for JFontChooserDialog.
+     * Creates a JFontChooserDialog
      * 
      * @param  owner  Parent frame
      * @param  title  Frame title
@@ -112,7 +112,7 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Constructor for JFontChooserDialog.
+     * Creates a JFontChooserDialog
      * 
      * @param  owner  Parent frame
      * @param  title  Frame title
@@ -151,7 +151,7 @@ public class JFontChooserDialog extends JDialog
         pack();
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Event Listener Support 
     //--------------------------------------------------------------------------
     

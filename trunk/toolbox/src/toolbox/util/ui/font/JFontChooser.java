@@ -96,8 +96,7 @@ public class JFontChooser extends JPanel
      * that a default list of styles{"Plain", "Bold", "Italic", "Bold Italic"}
      * and font sizes {8, 9, 10, 12, 14} will be used.
      * 
-     * @param initialFont see 
-     *        @link #JFontChooser(java.awt.Font, String[], int[])}
+     * @param  initialFont  Initial font to selected
      */
     public JFontChooser(Font initialFont)
     {
@@ -117,12 +116,12 @@ public class JFontChooser extends JPanel
      * 
      * @param initialFont 
      * 
-     *      Newly constructed JFontChooser's family, style, and size 
-     *      widgets will be set according to this value. This value may be 
-     *      null, in which case an initial font will be automatically created.
-     *      This auto-created font will have a family, style, and size 
-     *      corresponding to the first avaiable value in the widget form 
-     *      family, style, and size respectively.
+     *      Newly constructed JFontChooser's family, style, and size widgets 
+     *      will be set according to this value. This value may be null, in 
+     *      which case an initial font will be automatically created. This 
+     *      auto-created font will have a family, style, and size corresponding
+     *      to the first avaiable value in the widget form family, style, and 
+     *      size respectively.
      * 
      * @param styleDisplayNames
      *  
@@ -136,12 +135,12 @@ public class JFontChooser extends JPanel
      *      available to the user as a convenience for populating the font 
      *      size text field; all values must be greater than 0.
      * 
-     * @param  antiAlias  Turn on antialias
+     * @param antiAlias  Turns on antialiasing of fonts
      */    
     public JFontChooser(Font initialFont, 
-    					 String[] styleDisplayNames,
-        				 int[] predefinedSizes, 	
-        				 boolean antiAlias)
+                         String[] styleDisplayNames,
+                         int[] predefinedSizes,     
+                         boolean antiAlias)
     {
         buildView(initialFont, styleDisplayNames, predefinedSizes, antiAlias);
         wireView();
@@ -154,16 +153,16 @@ public class JFontChooser extends JPanel
     /**
      * Builds the GUI
      * 
-     * @param  initialFont          Initial font selected
-     * @param  styleDisplayNames    Font styles
-     * @param  predefinedSizes      Default set of font sizes
-     * @param  antiAlias            Turn on antialias
+     * @param  initialFont        Initial font selected
+     * @param  styleDisplayNames  Font styles
+     * @param  predefinedSizes    Default set of font sizes
+     * @param  antiAlias          Turn on antialias
      */
     protected void buildView(
-    	Font 		initialFont, 
-    	String[] 	styleDisplayNames,
-        int[] 		predefinedSizes, 
-        boolean 	antiAlias)
+        Font     initialFont, 
+        String[] styleDisplayNames,
+        int[]    predefinedSizes, 
+        boolean  antiAlias)
     {
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -267,6 +266,10 @@ public class JFontChooser extends JPanel
 
     /**
      * Wraps a component in a panel with a heading
+     * 
+     * @param  heading    Heading
+     * @param  component  Component to wrap with a heading
+     * @return Wrapped component as a JPanel
      */
     protected JPanel wrapWithHeading(String heading, JComponent component)
     {
@@ -297,12 +300,12 @@ public class JFontChooser extends JPanel
 
 
     /**
-     * @throws IllegalArgumentException thrown if 
+     * Validates predefinted font sizes
      * 
-     * <ul>
-     *   <li>predefinedSizes does not contain one or more integer values
-     *   <li>predefinedSizes contains any integers with a value of less than 1
-     * </ul>
+     * @param  predefinedSizes  Array of font sizes
+     * @throws IllegalArgumentException thrown if  predefinedSizes does not 
+     *         contain one or more integer values or if it contains any 
+     *         integers with a value of less than 1.
      */
     private Integer[] validateAndConvertPredefinedSizes(int[] predefinedSizes)
     {
@@ -329,7 +332,7 @@ public class JFontChooser extends JPanel
         return predefinedSizeIntegers;
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Event Listener Support
     //--------------------------------------------------------------------------
 
@@ -394,9 +397,9 @@ public class JFontChooser extends JPanel
     /**
      * Returns the currently selected font family
      * 
-     * @return  currently selected font family
-     * @throws  FontChooserException thrown if no font family is
-     *          currently selected
+     * @return  Currently selected font family
+     * @throws  FontChooserException thrown if no font family is currently 
+     *          selected
      */
     public String getSelectedFontFamily() throws FontChooserException
     {
@@ -415,8 +418,8 @@ public class JFontChooser extends JPanel
      * 
      * @return  Currently selected font style. This value will correspond to one
      *          of the font styles specified in {@link java.awt.Font}
-     * @throws  FontChooserException thrown if no font style is 
-     *          currently selected
+     * @throws  FontChooserException thrown if no font style is currently 
+     *          selected
      */
     public int getSelectedFontStyle() throws FontChooserException
     {
@@ -427,9 +430,9 @@ public class JFontChooser extends JPanel
     /**
      * Returns the currently selected font size.
      * 
-     * @return currently selected font size.
-     * @throws FontChooserException thrown if no font size is
-     *         currently specified
+     * @return Currently selected font size.
+     * @throws FontChooserException thrown if no font size is currently 
+     *         specified
      */
     public int getSelectedFontSize() throws FontChooserException 
     {
@@ -491,7 +494,7 @@ public class JFontChooser extends JPanel
     /**
      * Sets the currently selected font family.
      * 
-     * @param   family family to which selection should change
+     * @param   family  Family to which selection should change
      * @throws  IllegalArgumentException thrown if the supplied font family is
      *          not among the list of available font families
      */
@@ -532,7 +535,7 @@ public class JFontChooser extends JPanel
     /**
      * Sets the currently selected font size.
      * 
-     * @param size size to which selection should change
+     * @param  size  Size to which selection should change
      */
     public void setSelectedFontSize(int size)
     {
@@ -551,13 +554,13 @@ public class JFontChooser extends JPanel
     protected class FontSizeSynchronizer implements DocumentListener, 
         ListSelectionListener
     {
-        
         private JList list_;
         private JTextField textField_;
         private boolean updating_;
         
-        
         /**
+         * Creates a FontSizeSynchronizer
+         * 
          * @param   list        List containing predefined font sizes 
          * @param   textField   Text field in which font size is specified
          */
@@ -569,7 +572,10 @@ public class JFontChooser extends JPanel
 
 
         /** 
-         * @see javax.swing.event.ListSelectionListener 
+         * Called when a value is changed.
+         * 
+         * @param  e  List event that caused change in value
+         * @see    javax.swing.event.ListSelectionListener 
          */
         public void valueChanged(ListSelectionEvent e)
         {
@@ -619,6 +625,8 @@ public class JFontChooser extends JPanel
         
         /** 
          * Handles all DocumentEvents 
+         * 
+         * @param  e  Document event
          */
         protected void handle(DocumentEvent e)
         {
@@ -747,5 +755,3 @@ You should have received a copy of the GNU General Public License
 along with Follow; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-

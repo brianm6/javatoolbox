@@ -51,7 +51,8 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 
 /**
- * JFlipPane - panel with flipper like behavior
+ * JFlipPane is a panel with flipper like behavior to hide a and show any
+ * number of children.
  */
 public class JFlipPane extends JPanel
 {
@@ -721,7 +722,7 @@ public class JFlipPane extends JPanel
         }
     } 
     
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     //  Interface JFlipPaneListener 
     //--------------------------------------------------------------------------
     
@@ -876,7 +877,7 @@ public class JFlipPane extends JPanel
         } 
     }    
     
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     //  Class FlipPaneBorder 
     //--------------------------------------------------------------------------
         

@@ -65,7 +65,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
         return delegate_.getElementAt(index);
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Listener support 
     //--------------------------------------------------------------------------
     
