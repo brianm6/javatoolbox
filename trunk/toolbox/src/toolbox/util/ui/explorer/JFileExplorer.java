@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 import javax.swing.DefaultListModel;
-import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -150,11 +149,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
      * root element is saved between application instances.
      */
     private JComboBox rootsComboBox_;
-    
-    /**
-     * Drive icon used in the file roots combo box.
-     */
-    private Icon driveIcon_;
     
     /**
      * Popup menu for the file list.
