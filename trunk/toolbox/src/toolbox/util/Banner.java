@@ -2267,6 +2267,10 @@ public class Banner
     private static final BannerFont FONT_STANDARD = 
         new BannerFont(FONT_STANDARD_DATA);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+
     /**
      * Executes banner via Command line args
      * 
@@ -2824,7 +2828,7 @@ public class Banner
     }        
 }
 
-/**
+/*
  * Banner
  *
  * @author Benoit Rigaut CERN July 96

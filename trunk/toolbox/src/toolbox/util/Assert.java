@@ -12,7 +12,7 @@ package toolbox.util;
  *
  * @see AssertionException
  */
-public class Assert
+public final class Assert
 {
     /** 
      * Default assertion error message 
@@ -53,7 +53,6 @@ public class Assert
                 "> but was <" + doubleB + ">)");
         }
     }
-
 
     /**
      * Assert that two floats are equals within some tolerance.

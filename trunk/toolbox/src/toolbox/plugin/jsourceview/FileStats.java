@@ -41,9 +41,7 @@ public class FileStats
     //--------------------------------------------------------------------------
     
     /**
-     * Gets percentage of source code lines to total lines
-     * 
-     * @return percentage
+     * @return Percentage of source code lines to total lines
      */
     public int getPercent()
     {
@@ -54,7 +52,6 @@ public class FileStats
         else
             return 0;
     }
-
 
     /**
      * Adds file stat to existing statistics
@@ -70,52 +67,40 @@ public class FileStats
     }
 
     //--------------------------------------------------------------------------
-    //  Accessors/Mutators
+    //  Getters/Setters
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the blankLines.
-     * 
-     * @return int
+     * @return Number of blank lines
      */
     public int getBlankLines()
     {
         return blankLines_;
     }
 
-
     /**
-     * Returns the codeLines.
-     * 
-     * @return int
+     * @return Number of source code lines
      */
     public int getCodeLines()
     {
         return codeLines_;
     }
 
-
     /**
-     * Returns the commentLines.
-     * 
-     * @return int
+     * @return Number of comment lines
      */
     public int getCommentLines()
     {
         return commentLines_;
     }
 
-
     /**
-     * Returns the totalLines.
-     * 
-     * @return int
+     * @return Total number of lines
      */
     public int getTotalLines()
     {
         return totalLines_;
     }
-
 
     /**
      * Sets the blankLines.
@@ -127,7 +112,6 @@ public class FileStats
         blankLines_ = blankLines;
     }
 
-
     /**
      * Sets the codeLines.
      * 
@@ -138,7 +122,6 @@ public class FileStats
         codeLines_ = codeLines;
     }
 
-
     /**
      * Sets the commentLines.
      * 
@@ -148,7 +131,6 @@ public class FileStats
     {
         commentLines_ = commentLines;
     }
-
 
     /**
      * Sets the totalLines.

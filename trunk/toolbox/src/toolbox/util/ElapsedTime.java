@@ -130,35 +130,6 @@ public class ElapsedTime
     }
 
     //--------------------------------------------------------------------------
-    //  Private
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Calculates the elapsed time between the starting time and ending time
-     */
-    protected void recalc()
-    {
-        Assert.isTrue(
-            endTime_ >= startTime_, 
-            "Ending time " + endTime_ + 
-            " must be greater than or equal to the" +
-            "starting time " + startTime_);
-        
-        long delta;
-         
-        delta     = endTime_ - startTime_;
-        days_     = delta/DAY;
-        delta     = delta - (days_ * DAY);
-        hours_    = (int)(delta/HOUR);
-        delta     = delta - (hours_ * HOUR);
-        minutes_  = (int)(delta/MINUTE);
-        delta     = delta - (minutes_ * MINUTE);
-        seconds_  = (int)(delta/SECOND);
-        delta     = delta - (seconds_ * SECOND);
-        millis_   = (int)delta;
-    }
-
-    //--------------------------------------------------------------------------
     //  Public
     //--------------------------------------------------------------------------
     
@@ -295,6 +266,35 @@ public class ElapsedTime
             total += millis_;            
         
         return total;
+    }
+
+    //--------------------------------------------------------------------------
+    //  Private
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Calculates the elapsed time between the starting time and ending time
+     */
+    protected void recalc()
+    {
+        Assert.isTrue(
+            endTime_ >= startTime_, 
+            "Ending time " + endTime_ + 
+            " must be greater than or equal to the" +
+            "starting time " + startTime_);
+        
+        long delta;
+         
+        delta     = endTime_ - startTime_;
+        days_     = delta/DAY;
+        delta     = delta - (days_ * DAY);
+        hours_    = (int)(delta/HOUR);
+        delta     = delta - (hours_ * HOUR);
+        minutes_  = (int)(delta/MINUTE);
+        delta     = delta - (minutes_ * MINUTE);
+        seconds_  = (int)(delta/SECOND);
+        delta     = delta - (seconds_ * SECOND);
+        millis_   = (int)delta;
     }
     
     //--------------------------------------------------------------------------

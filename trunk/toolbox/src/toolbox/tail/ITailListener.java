@@ -1,7 +1,7 @@
 package toolbox.tail;
 
 /**
- * Interface exposing behavior that a tail generates
+ * Interface that allows notification of various Tail generated events
  */
 public interface ITailListener 
 {

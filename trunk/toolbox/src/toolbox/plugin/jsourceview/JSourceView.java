@@ -104,6 +104,10 @@ public class JSourceView extends JFrame implements ActionListener
         sourceFilter_.addFilter(new ExtensionFilter("h"));
     }
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
@@ -224,6 +228,7 @@ public class JSourceView extends JFrame implements ActionListener
     public void savePrefs(Properties prefs)
     {
         String dir = dirField_.getText();
+        
         if (!StringUtil.isNullOrEmpty(dir))
             prefs.setProperty("jsourceview.dir", dir.trim());
     }
@@ -236,6 +241,7 @@ public class JSourceView extends JFrame implements ActionListener
     public void applyPrefs(Properties prefs)
     {
         String dir = prefs.getProperty("jsourceview.dir");
+        
         if (!StringUtil.isNullOrEmpty(dir))
         {
             dirField_.setText(dir);
@@ -375,15 +381,6 @@ public class JSourceView extends JFrame implements ActionListener
         {
             file_ = dir;
         }
-                
-        /**
-         * Starts scanning directory on a separate thread
-         */
-        public void run()
-        {
-            findJavaFiles(file_);
-            setScanStatus("Done scanning.");
-        }
         
         /**
          * Finds all java files in the given directory
@@ -426,6 +423,19 @@ public class JSourceView extends JFrame implements ActionListener
         public void cancel()
         {
             cancel_ = true;
+        }
+        
+        //----------------------------------------------------------------------
+        // Runnable Interface
+        //----------------------------------------------------------------------
+                
+        /**
+         * Starts scanning directory on a separate thread
+         */
+        public void run()
+        {
+            findJavaFiles(file_);
+            setScanStatus("Done scanning.");
         }
     }
 

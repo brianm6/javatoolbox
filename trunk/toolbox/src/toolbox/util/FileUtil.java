@@ -313,15 +313,15 @@ public final class FileUtil
         }
     }
 
-
     /**
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
      * 
-     * @param    startingDir  Start directory for the search
-     * @param    filter       Filename filter criteria
-     * @return   List of filesnames as strings that match the filter from the 
-     *           start dir
+     * @param   startingDir  Start directory for the search
+     * @param   filter       Filename filter criteria
+     * 
+     * @return  List of filesnames as strings that match the filter from the 
+     *          start dir
      */
     public static List findFilesRecursively(
         String startingDir,
@@ -435,7 +435,7 @@ public final class FileUtil
      * /usr/home/user/orders.xml    => /usr/home/user
      * 
      * </pre>
- 
+     *
      * @param   filepath  Path including filename
      * @return  Just the path portion of the filepath
      */

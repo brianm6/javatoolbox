@@ -1,23 +1,11 @@
 package toolbox.jsourceview;
 
 /**
- * Finite state machine to parse a line of source code
- * The original source code was lost so this is the touched up
- * mess from the decompilation.
+ * Finite state machine to parse a line of source code. The original source 
+ * code was lost so this is the touched up mess from the decompilation.
  */
 public class Machine implements MachineConstants 
 {
-    //--------------------------------------------------------------------------
-    // Constructor
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor 
-     */
-    public Machine() 
-    {
-    }
-
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------

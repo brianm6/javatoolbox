@@ -18,7 +18,6 @@ import toolbox.util.StringUtil;
  */
 public class TreeTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(TreeTest.class);
     
@@ -27,6 +26,10 @@ public class TreeTest extends TestCase
      */
     private File rootDir_;
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      * 
@@ -35,20 +38,6 @@ public class TreeTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(TreeTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Constructor for TreeTest.
-     * 
-     * @param  arg0  Name
-     */
-    public TreeTest(String arg0)
-    {
-        super(arg0);
     }
 
     //--------------------------------------------------------------------------
@@ -262,7 +251,7 @@ public class TreeTest extends TestCase
         Tree tree = new Tree(new File("/"));
         tree.showTree();
         
-//        printNativeTree(rootDir_);
+        // printNativeTree(rootDir_);
     }
 
 

@@ -68,7 +68,10 @@ public class Tree
     private static final String JUNCTION = "+";
     private static final String ARM      = "---";
 
-    
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      *

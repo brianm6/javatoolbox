@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.Stringz;
 import toolbox.util.ThreadUtil;
 
 /**
@@ -34,7 +35,7 @@ public class Tail implements Runnable
     /** 
      * Number of line for initial backlog 
      */
-    public static final int NUM_LINES_BACKLOG = 10;
+    public static final int NUM_LINES_BACKLOG = 20;
 
     /** 
      * Tail listeners 
@@ -415,7 +416,7 @@ public class Tail implements Runnable
             try
             {
                 OutputStream os = (OutputStream)streams_.get(j);
-                os.write((line+"\n").getBytes());
+                os.write((line + Stringz.NL).getBytes());
                 os.flush();
             }
             catch (IOException e)
@@ -429,7 +430,7 @@ public class Tail implements Runnable
             try
             {
                 Writer w = (Writer)writers_.get(k);
-                w.write(line+"\n");
+                w.write(line + Stringz.NL);
                 w.flush();
             }
             catch (IOException e)

@@ -5,6 +5,9 @@ package toolbox.jsourceview;
  */
 public class LineScanner implements MachineConstants
 {
+    /**
+     * Debug flag
+     */
     private static boolean debug_;
     
     /** 
@@ -22,7 +25,7 @@ public class LineScanner implements MachineConstants
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a LineScanner
+     * Creates a LineScanner for the given line of source code
      * 
      * @param  line   Line of source code
      */
@@ -101,12 +104,9 @@ public class LineScanner implements MachineConstants
             
         return 0;
     }
-
     
     /**
-     * Returns the next token
-     * 
-     * @return  The next token 
+     * @return  Returns the next token 
      */
     public int getNextToken()
     {

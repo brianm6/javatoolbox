@@ -54,6 +54,10 @@ public class JTcpTunnel extends JFrame
     private JTextField  localPortField_;
     private JTextField  remoteHostField_;
     private JTextField  remortPortField_;
+ 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entry point

@@ -5,7 +5,7 @@ import java.lang.reflect.Array;
 /**
  * Array utility class
  */
-public class ArrayUtil
+public final class ArrayUtil
 {
     //--------------------------------------------------------------------------
     // Constructors
@@ -35,7 +35,6 @@ public class ArrayUtil
         return d;
     }
 
-
     /**
      * Initializes an array of ints with a given value
      * 
@@ -48,7 +47,6 @@ public class ArrayUtil
         for (int i = 0; i < d.length; d[i++] = value);
         return d;
     }
-
 
     /**
      * Returns subset of a given double array
@@ -85,7 +83,6 @@ public class ArrayUtil
 
         return sub;
     }
-
 
     /**
      * Returns subset of a given array of objects
@@ -128,7 +125,6 @@ public class ArrayUtil
         return subArray;
     }
 
-
     /**
      * Converts an array of doubles to a string. Good for debug output.
      * 
@@ -144,7 +140,6 @@ public class ArrayUtil
 
         return toString(wrapper);
     }
-
 
     /**
      * Converts an array of ints to a string. Good for debug output
@@ -175,7 +170,6 @@ public class ArrayUtil
         return toString(array, false);
     }
 
-
     /**
      * Converts an object array into a comma delimited string of 
      * each elements toString()
@@ -191,7 +185,6 @@ public class ArrayUtil
         StringBuffer sb = new StringBuffer("[" + 
                                            array.length + 
                                            "]{");
-
 
         switch (array.length)
         {
@@ -226,7 +219,6 @@ public class ArrayUtil
 
         return sb.toString();
     }
-
     
     /**
      * Determines if an object exists in a given array of objects.
@@ -255,7 +247,6 @@ public class ArrayUtil
         return -1;
     }
     
-    
     /**
      * Determines if an array of objects contains an object
      * 
@@ -267,7 +258,6 @@ public class ArrayUtil
     {
         return !(indexOf(array, obj) == -1);
     }
-    
 
     /**
      * Determines if an array is null or empty
@@ -280,7 +270,6 @@ public class ArrayUtil
     {
         return (array == null || array.length == 0);
     }
-    
 
     /**
      * Concats two arrays (one right after the other) with homogenous content.
@@ -301,7 +290,6 @@ public class ArrayUtil
         
         return result;
     } 
-    
     
     /**
      * Adds an element to the end of an existing array 
@@ -328,7 +316,6 @@ public class ArrayUtil
         return newArray;
     }
     
-    
     /**
      * Inserts an element to the beginning of an array. The component type of 
      * the array must be the same as that type of the element.
@@ -341,7 +328,6 @@ public class ArrayUtil
     {
         return insertAt(array, element, 0);
     }
-    
     
     /**
      * Inserts an element into the given position of an array. The component 
@@ -366,7 +352,6 @@ public class ArrayUtil
         System.arraycopy(array, index, newarray, index + 1, length - index);
         return newarray;
     }
-    
     
     /**
      * Determines if two given arrays are equal in length and content

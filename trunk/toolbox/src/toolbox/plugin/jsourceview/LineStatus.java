@@ -1,8 +1,8 @@
 package toolbox.jsourceview;
 
 /**
- * LineStatus represents the current status of a line of source while it
- * is being parsed.
+ * LineStatus represents the current status of a line of source while it is 
+ * being parsed.
  */
 public class LineStatus
 {
@@ -21,7 +21,7 @@ public class LineStatus
     //--------------------------------------------------------------------------
     
     /**
-     * Constuctor 
+     * Default constuctor 
      */
     public LineStatus()
     {
@@ -42,10 +42,9 @@ public class LineStatus
     {
         inComment_ = inComment;    
     }
-    
 
     /**
-     * @return  Is line in comment
+     * @return  Is line in a comment
      */    
     public boolean getInComment()
     {
@@ -61,7 +60,6 @@ public class LineStatus
     {
         countLine_ = countLine;
     }
-    
     
     /**
      * @return Count the line flag

@@ -104,6 +104,21 @@ public abstract class Console
         ps_  = os;
         lnr_ = new LineNumberReader(new InputStreamReader(is));                 
     }
+
+    //--------------------------------------------------------------------------
+    // Abstract
+    //--------------------------------------------------------------------------
+
+    /**
+     * Accessor for the command prompt
+     * 
+     * @return Command prompt
+     */
+    public abstract String getPrompt();
+ 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
  
     /**
      * This method must be called when ready to handle commands. The loop is 
@@ -179,17 +194,6 @@ public abstract class Console
         else
             ps_.println("Unknown command: " + cmd);
     }
-
-    //--------------------------------------------------------------------------
-    // Abstract
-    //--------------------------------------------------------------------------
-
-    /**
-     * Accessor for the command prompt
-     * 
-     * @return Command prompt
-     */
-    public abstract String getPrompt();
 
     //--------------------------------------------------------------------------
     // Private

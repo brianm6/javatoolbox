@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
  */
 public final class JDBCUtil
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
@@ -269,8 +268,8 @@ public final class JDBCUtil
      *       interface.
      * </pre>
      *
-     * @param    rs    Result set
-     * @return  The size of the result set
+     * @param   rs    Result set
+     * @return  Size of the result set
      * @throws  SQLException if an SQL error occurs
      */
     public static int getSize(ResultSet rs) throws SQLException 

@@ -9,10 +9,13 @@ import org.apache.log4j.Logger;
  */
 public class Main extends TailAdapter
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(Main.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint 
      * 
@@ -35,7 +38,7 @@ public class Main extends TailAdapter
     public Main(String args[])
     {
     
-        if(args.length == 0)
+        if (args.length == 0)
         {
             printUsage();
             return;
@@ -54,7 +57,7 @@ public class Main extends TailAdapter
             }
             catch (FileNotFoundException fnfe)
             {
-                logger_.error("constructor", fnfe);
+                logger_.error("Main", fnfe);
             }
         }
     }

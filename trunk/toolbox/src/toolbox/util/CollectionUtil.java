@@ -8,6 +8,10 @@ import java.util.HashSet;
  */
 public final class CollectionUtil
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for CollectionUtil.
      */
@@ -15,6 +19,9 @@ public final class CollectionUtil
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Assembles the union of a pair of collections
@@ -29,7 +36,6 @@ public final class CollectionUtil
         union.addAll(set2);
         return union;
     }
-
     
     /**
      * Assembles the intersection of a pair of collections
@@ -46,7 +52,6 @@ public final class CollectionUtil
         return intersection;
     }
 
-
     /**
      * Assembles the set difference of a pair of collections
      * 
@@ -60,7 +65,6 @@ public final class CollectionUtil
         difference.removeAll(set2);
         return difference;
     }
-
     
     /**
      * Determines if set2 is a subset of set1
