@@ -19,7 +19,7 @@ import toolbox.util.io.filter.ExtensionFilter;
 /**
  * Class related utility methods
  */
-public class ClassUtil
+public final class ClassUtil
 {
     private static final Logger logger_ = 
         Logger.getLogger(ClassUtil.class);
