@@ -40,6 +40,7 @@ import toolbox.util.ui.JSmartRadioButton;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.NativeBrowser;
+import toolbox.util.ui.SortedComboBoxModel;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.IPlugin;
@@ -239,7 +240,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         JPanel p = new JPanel(new ParagraphLayout(10, 10, 5, 5, 5, 5));
 
         p.add(new JSmartLabel("Project"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(projectCombo_ = new JSmartComboBox());
+        p.add(projectCombo_ = new JSmartComboBox(new SortedComboBoxModel()));
         projectCombo_.setEditable(true);
         projectCombo_.setAction(new ProjectChangedAction());
 
