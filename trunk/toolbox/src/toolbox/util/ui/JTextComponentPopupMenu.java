@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
@@ -79,11 +81,12 @@ public class JTextComponentPopupMenu extends JPopupMenu
         add(new JMenuItem(new PasteAction()));
         add(new JMenuItem(new SelectAllAction()));
         add(new JMenuItem(new SetFontAction()));
+        add(new JMenuItem(new FindAction(textComponent_)));
         textComponent_.addMouseListener(new JPopupListener(this));
     }
     
     //--------------------------------------------------------------------------
-    //  Action Inner Classes
+    //  Actions
     //--------------------------------------------------------------------------
 
     /**
@@ -189,4 +192,37 @@ public class JTextComponentPopupMenu extends JPopupMenu
             fontChooser.setVisible(true);        	
         }
     }
+    
+    
+	/**
+	 * Triggers activation of the Find Dialog box
+	 */    
+	protected class FindAction extends AbstractAction
+	{
+		public FindAction(JTextComponent textComp)
+		{
+			super("Find..");
+			final JTextComponent finalTextComp = textComp;
+			
+			// Bind Ctrl-F to activate the find action
+			textComp.addKeyListener( new KeyAdapter()
+			{
+				public void keyTyped(KeyEvent e)
+				{
+					if ((e.getKeyChar() == 6) &&  // F = 6th letter in alphabet
+						((KeyEvent.getKeyModifiersText(
+							e.getModifiers()).equals("Ctrl"))))
+							
+							actionPerformed(
+								new ActionEvent(finalTextComp, 0, "" ));
+				}
+			});
+		}
+        
+		public void actionPerformed(ActionEvent e)
+		{
+			JFindDialog findDialog = new JFindDialog(textComponent_);
+			findDialog.setVisible(true);
+		}
+	}
 }
