@@ -20,8 +20,13 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import org.jedit.syntax.TextAreaDefaults;
+
 import toolbox.jedit.DynamicTokenMarker;
 import toolbox.jedit.JEditTextArea;
+import toolbox.jedit.JEditTextAreaPopupMenu;
+import toolbox.jedit.JavaDefaults;
+import toolbox.util.SwingUtil;
 
 /**
  * Unit test for JEditTextArea
@@ -35,8 +40,9 @@ public class JEditTextAreaTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
+        SwingUtil.setPreferredLAF();
         TestRunner.run(JEditTextAreaTest.class);
     }
     
@@ -70,12 +76,18 @@ public class JEditTextAreaTest extends TestCase
         protected void buildView()
         {
            Container c = getContentPane();
+
+           TextAreaDefaults defaults = new JavaDefaults();
+           defaults.popup = new JEditTextAreaPopupMenu();
            
-           jeta_ = new JEditTextArea();
-           jeta_.setTokenMarker(new DynamicTokenMarker());
+           jeta_ = new JEditTextArea(new DynamicTokenMarker(), defaults);
+           ((JEditTextAreaPopupMenu) defaults.popup).setTextArea(jeta_);
+           ((JEditTextAreaPopupMenu) defaults.popup).buildView();
+
            c.add(BorderLayout.CENTER, new JScrollPane(jeta_));
            c.add(BorderLayout.SOUTH, buildControlView());
            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           
            pack();
         }
         
