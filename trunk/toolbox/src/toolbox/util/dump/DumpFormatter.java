@@ -25,8 +25,10 @@ public interface DumpFormatter
     public boolean shouldInclude(Field field);
     
     /**
-     * @return True if the inheritance tree should be shown for each object
-     *         traversed.
+     * Returns true if the inheritance tree should be shown for each object
+     * traversed, false otherwise.
+     * 
+     * @return Inheritance flag
      */
     public boolean showInheritance();
     
@@ -47,8 +49,17 @@ public interface DumpFormatter
     public String  formatClassName(Class clazz);
     
     /**
-     * @return  True if the fields in a class should be sorted alphabetically,
-     *          false otherwise.
+     * Returns true if the fields in a class should be sorted alphabetically,
+     * false otherwise.
+     * 
+     * @return Sort fields flag
      */
     public boolean sortFields();
+    
+    /**
+     * Formats a field name.
+     * 
+     * @return  Formatted field name
+     */
+    public String formatFieldName(String fieldName);
 }
