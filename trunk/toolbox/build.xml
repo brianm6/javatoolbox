@@ -281,6 +281,7 @@
                 <include name="hippolf.jar"/>
                 <include name="alloy.jar"/>
                 <include name="oyoahalf.jar"/>
+                <include name="squarenesslf.jar"/>
 
             </fileset>
         </unjar>
