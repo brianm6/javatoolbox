@@ -5,17 +5,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import net.sf.jode.decompiler.Decompiler;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.io.NullWriter;
 
 /**
- * Decompiler bridge to the Jode decompiler @ http://jode.sf.net. 
+ * Decompiler adapter for the Jode decompiler @ http://jode.sf.net. 
  */
-public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
+public class JodeDecompiler implements Decompiler
 {
     private static final Logger logger_ = 
         Logger.getLogger(JodeDecompiler.class);
@@ -25,9 +23,9 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
     //--------------------------------------------------------------------------
     
     /**
-     * Jode decompiler.
+     * Reference to Jode's implementation of a java decompiler.
      */
-    private Decompiler decompiler_;
+    private jode.decompiler.Decompiler decompiler_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -38,10 +36,12 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
      */
     public JodeDecompiler()
     {
-        decompiler_ = new Decompiler();
+        decompiler_ = new jode.decompiler.Decompiler();
         decompiler_.setOption("style", "pascal");
-        decompiler_.setOption("tabwidth", "4");
         decompiler_.setErr(new PrintWriter(new NullWriter()));
+        
+        // Tabwidth was removed in the latest version 
+        //decompiler_.setOption("tabwidth", "4");
     }
     
     //--------------------------------------------------------------------------
@@ -85,13 +85,8 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
             throw new DecompilerException(e);
         }
                 
-        // Nuke the tabs                
-        String javaSource = 
-            StringUtils.replace(javaWriter.toString(), "\t", "    ");
-                    
-        //logger_.debug("\n" + javaSource);    
-
-        return javaSource;
+        // Nuke the tabs. They're hardcoded as a width of 8 in jode.
+        return StringUtils.replace(javaWriter.toString(), "\t", "        ");
     }
     
     //--------------------------------------------------------------------------
@@ -99,6 +94,8 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
     //--------------------------------------------------------------------------
     
     /**
+     * Returns the name of this decompiler.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString()
