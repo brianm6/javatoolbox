@@ -991,7 +991,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         {
             try
             {
-                (new SavePreferencesAction(PluginWorkspace.this)).runAction();
+                (new SavePreferencesAction(PluginWorkspace.this)).savePrefs();
             }
             catch (Throwable t)
             {
