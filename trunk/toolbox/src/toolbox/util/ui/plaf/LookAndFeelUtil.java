@@ -39,7 +39,6 @@ import toolbox.util.ui.JSmartMenu;
  */
 public final class LookAndFeelUtil
 {
-    // TODO: Added themes for Tiny Look and Feel
     // TODO: Fix frame decoration for LAFs that don't support it
     // TODO: Gracefully fail when toolbox-lookandfeel.jar is not on the claspath
        
@@ -313,14 +312,14 @@ public final class LookAndFeelUtil
         Frame[] frames = Frame.getFrames();
         
         for (int i = 0; i < frames.length; i++)
-            SwingUtilities.updateComponentTreeUI(frames[i]);                    
+            SwingUtilities.updateComponentTreeUI(frames[i]);    
     }
 
     
     /**
      * Sets the Look and Feel to Metal.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public static void setMetalLAF() throws Exception
     {
@@ -334,7 +333,7 @@ public final class LookAndFeelUtil
     /**
      * Sets the Look and Feel to Motif/CDE.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */   
     public static void setMotifLAF() throws Exception
     {
@@ -362,7 +361,7 @@ public final class LookAndFeelUtil
     /**
      * Sets the Skin LAF.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public static void setSkinLAF() throws Exception
     { 
@@ -374,7 +373,7 @@ public final class LookAndFeelUtil
     /**
      * Sets the preferred Look and Feel.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public static void setPreferredLAF() throws Exception
     { 
@@ -418,13 +417,14 @@ public final class LookAndFeelUtil
             for (int i = 0; i < lafs.size(); i++)
             {    
                 LAFInfo info = new LAFInfo(lafs.get(i));
-
-                logger_.debug("Loaded " + info.getName());
                 
                 // Only install a look and feel once even if it occurs 
                 // multiple times in the configuration.
+                
                 if (!lookAndFeelMap_.containsKey(info.getName()))
-                {    
+                {
+                    logger_.debug("Installed " + info.getName());
+                    
                     UIManager.installLookAndFeel(
                         info.getName(), 
                         info.getClassName());
