@@ -6,21 +6,27 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * MockConsole
+ * MockConsole referenced by {@link DefaultCommandHandlerTest}.
  */
 public class MockConsole implements Console
 {
     private static final Logger logger_ = Logger.getLogger(MockConsole.class);
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a MockConsole.
      */
     public MockConsole()
     {
-        super();
     }
 
-
+    //--------------------------------------------------------------------------
+    // Console Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.util.ui.console.Console#getName()
      */
@@ -65,6 +71,23 @@ public class MockConsole implements Console
     }
 
 
+    /**
+     * @see toolbox.util.ui.console.Console#renderPrompt()
+     */
+    public void renderPrompt()
+    {
+    }
+
+    
+    /**
+     * @see toolbox.util.ui.console.Console#getPrompt()
+     */
+    public String getPrompt()
+    {
+        return "";
+    }
+    
+    
     /**
      * @see toolbox.util.ui.console.Console#setPrompt(java.lang.String)
      */
