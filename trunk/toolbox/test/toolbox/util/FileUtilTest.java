@@ -1,10 +1,16 @@
 package toolbox.util;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections.TransformerUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
@@ -735,11 +741,23 @@ public class FileUtilTest extends TestCase
         
         File tempDir = FileUtil.createTempDir();
         
-        String[] dirs = 
-            FileUtil.getTempDir().list(DirectoryFileFilter.INSTANCE);
-        
-        assertTrue(ArrayUtil.contains(dirs, tempDir.getName()));
-        FileUtil.removeDir(tempDir);
+        try
+        {
+            File[] fdirs = 
+                FileUtil.getTempDir().listFiles(
+                    (FileFilter) DirectoryFileFilter.INSTANCE);
+            
+            List names = ListUtils.transformedList(new ArrayList(), 
+                TransformerUtils.invokerTransformer("getName"));
+
+            ArrayUtil.drainTo(fdirs, names);
+            //logger_.debug("Dirs = " + ArrayUtil.toString(names.toArray()));
+            assertTrue(ArrayUtil.contains(names.toArray(), tempDir.getName()));
+        }
+        finally
+        {
+            FileUtils.forceDelete(tempDir);
+        }
     }
     
     
