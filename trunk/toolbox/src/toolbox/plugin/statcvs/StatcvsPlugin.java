@@ -181,6 +181,18 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     private JButtonGroup engineGroup_;
 
+    /**
+     * The cvs lib likes to dump alot of info to stdout and stderr so the
+     * streams are redirected temporarily to the output text area and then
+     * restored with the original System.out. 
+     */
+    private PrintStream savedSystemOut_;
+    
+    /**
+     * Ditto except for System.err.
+     */
+    private PrintStream savedSystemErr_;
+    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -536,6 +548,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
         cvsOut_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
         cvsErr_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
+        
+        savedSystemOut_ = System.out;
+        savedSystemErr_ = System.err;
     }
 
 
@@ -672,12 +687,25 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         {
             super(name, true, async, scope, statusBar);
 
+            
+            addPreAction(new AbstractAction()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    System.setOut(cvsOut_);
+                    System.setErr(cvsErr_);
+                }
+            });
+            
             addFinallyAction(new AbstractAction()
             {
                 public void actionPerformed(ActionEvent e)
                 {
                     cvsOut_.flush();
                     cvsErr_.flush();
+                    
+                    System.setOut(savedSystemOut_);
+                    System.setErr(savedSystemErr_);
                 }
             });
         }
