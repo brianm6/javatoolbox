@@ -16,17 +16,16 @@ import toolbox.util.ThreadUtil;
  * 
  * <pre>
  * 
- *   input  thread->         +--handleInput  <== input stream----+
+ *   input  thread-&gt;         +--handleInput  &lt;== input stream----+
  *                          /                                     \
- *   caller thread->  handle                                       connection
+ *   caller thread-&gt;  handle                                       connection
  *                          \                                     /
- *   output thread->         +--handleOutput ==> output stream---+
+ *   output thread-&gt;         +--handleOutput ==&gt; output stream---+
  * 
  * </pre>
  */
 public abstract class FullDuplexHandler implements IConnectionHandler
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(FullDuplexHandler.class);
 
@@ -47,18 +46,18 @@ public abstract class FullDuplexHandler implements IConnectionHandler
 
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a FullDuplexHandler
      */
     public FullDuplexHandler()
     {
     }
 
     //--------------------------------------------------------------------------
-    //  IConnectionHandler interface
+    // IConnectionHandler interface
     //--------------------------------------------------------------------------
 
     /**
@@ -80,7 +79,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     }
 
     //--------------------------------------------------------------------------
-    //  Abstract Methods
+    // Abstract Methods
     //--------------------------------------------------------------------------
     
     /**
@@ -127,7 +126,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
      * Convenience accessor for the input stream
      * 
      * @return Inputstream
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */    
     public InputStream getInputStream() throws IOException
     {
@@ -138,7 +137,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
      * Convenience accessor for the output stream
      * 
      * @return OutputStream
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public OutputStream getOutputStream() throws IOException
     {
