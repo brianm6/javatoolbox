@@ -32,7 +32,8 @@ public class DefaultThroughputMonitor implements ThroughputMonitor
     //--------------------------------------------------------------------------
 
     /** 
-     * Array of registered listeners. 
+     * Listeners interested in receiving notification on the throughput of the
+     * channel that this is associated with this monitor.
      */
     private ThroughputListener[] listeners_;
 
@@ -42,7 +43,7 @@ public class DefaultThroughputMonitor implements ThroughputMonitor
     private int interval_;
 
     /**
-     * Number of bytes transferred over the current interval.
+     * Number of bytes transferred since the start of the current sample.
      */
     private int bytesTransferred_;
     
@@ -56,7 +57,9 @@ public class DefaultThroughputMonitor implements ThroughputMonitor
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DefaultThroughputMonitor.
+     * Creates a DefaultThroughputMonitor with a notification of throughput
+     * every second. Call setMonitoringThroughput(true) to activate
+     * notifications.
      */
     public DefaultThroughputMonitor() 
     {
@@ -138,7 +141,8 @@ public class DefaultThroughputMonitor implements ThroughputMonitor
         }
         else 
         {
-            if (timer_ != null) {
+            if (timer_ != null) 
+            {
                 timer_.cancel();
                 timer_ = null;
             }
@@ -189,8 +193,8 @@ public class DefaultThroughputMonitor implements ThroughputMonitor
     //--------------------------------------------------------------------------
     
     /** 
-     * Task that collects samples on stream throughput and firesNotification
-     * to interested listeners.
+     * Task that attached to a timer and performs notification of channel
+     * througput to all registered listeners.
      */
     class ThroughputSampler extends TimerTask
     {

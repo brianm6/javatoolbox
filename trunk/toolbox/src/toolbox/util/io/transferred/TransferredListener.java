@@ -14,7 +14,8 @@ public interface TransferredListener
      * Notification that a given number of bytes have been transferred across
      * a channel.
      *
-     * @param event Event contains the bytes transferred details. 
+     * @param event Event that contains the details of the number of bytes
+     *        transferred. 
      */
     void bytesTransferred(TransferredEvent event);
 }

@@ -21,7 +21,7 @@ public class TransferredEvent
     private MonitoredChannel source_;
     
     /**
-     * Timestamp of the creation of the event.
+     * Timestamp of the creation of this event.
      */
     private Date timestamp_;
     
@@ -40,11 +40,13 @@ public class TransferredEvent
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TransferredEvent.
+     * Creates a TransferredEvent with a timestamp of the current time and the
+     * given parameters.
      * 
      * @param source Source of the event.
-     * @param sampleLength Event is generated every sampleLength bytes read.
-     * @param total Total number of bytes read.
+     * @param sampleLength Event is generated every number of sampleLength bytes
+     *        transferred.
+     * @param total Total number of bytes transferred.
      */
     public TransferredEvent(
         MonitoredChannel source, 
@@ -106,7 +108,7 @@ public class TransferredEvent
 
 
     /**
-     * Returns the timestamp of the data transfer.
+     * Returns the timestamp of this event.
      * 
      * @return Date
      */
@@ -117,7 +119,7 @@ public class TransferredEvent
 
 
     /**
-     * Sets the timestamp of the data transfer.
+     * Sets the timestamp of this event.
      * 
      * @param timestamp The timestamp to set.
      */

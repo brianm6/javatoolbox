@@ -3,7 +3,7 @@ package toolbox.util.io.transferred;
 import toolbox.util.io.MonitoredChannel;
 
 /**
- * TransferredMonitor outlines the interface necessary to monitor the bytes 
+ * TransferredMonitor describes the interface necessary to monitor the bytes 
  * transferred over an arbitrary data channel regardless of protocol, direction, 
  * or content.
  * 
@@ -13,32 +13,33 @@ import toolbox.util.io.MonitoredChannel;
 public interface TransferredMonitor extends MonitoredChannel 
 {
     /**
-     * Adds a listener to the list of transferred listeners.
+     * Adds a listener to this monitor.
      * 
-     * @param listener Transferred listener to add.
+     * @param listener Listener to receive notifications from this monitor.
      */
     void addTransferredListener(TransferredListener listener);
     
     
     /**
-     * Removes a listener from the list of transferred listeners.
+     * Removes a listener from this monitor.
      * 
-     * @param listener Transferred listener to remove.
+     * @param listener Listener that will no longer receive notifications from
+     *        this monitor.
      */
     void removeTransferredListener(TransferredListener listener);
     
     
     /**
-     * Sets the length of the number of bytes transferred at which to report
-     * the number of bytes transferred.
+     * Sets the number of transferred bytes between which notifications are sent
+     * to registered listeners.
      * 
-     * @param numBytes Length of the sample interval in number of bytes.
+     * @param numBytes Notifications are sent every numBytes transferred.
      */
     void setSampleLength(int numBytes);
     
     
     /**
-     * Returns the length of the sample in number of bytes.
+     * Returns the number of bytes transferred between each notification.
      * 
      * @return int
      */
@@ -46,16 +47,8 @@ public interface TransferredMonitor extends MonitoredChannel
     
     
     /**
-     * Notifies this monitor that a given number of bytes have been transferred
-     * across the channel.
-     * 
-     * @param count Number of bytes transferred.
-     */
-    public void newBytesTransferred(long count);
-
-
-    /**
-     * Returns the total number of bytes transferred.
+     * Returns the total number of bytes transferred as witnessed by this
+     * monitor.
      * 
      * @return long
      */

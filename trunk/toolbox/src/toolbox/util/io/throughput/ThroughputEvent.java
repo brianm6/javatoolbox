@@ -69,7 +69,8 @@ public class ThroughputEvent
      * 
      * @return int
      */
-    public int getThroughput() {
+    public int getThroughput() 
+    {
         return getBytesTransferred();
     }
     

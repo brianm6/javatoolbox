@@ -13,23 +13,24 @@ import toolbox.util.io.MonitoredChannel;
 public interface ThroughputMonitor extends MonitoredChannel 
 {
     /**
-     * Adds a listener to the list of throughput listeners.
+     * Adds a listener to this monitor.
      * 
-     * @param listener Throughput listener to add.
+     * @param listener Listener to receive notifications from this monitor.
      */
     void addThroughputListener(ThroughputListener listener);
     
     
     /**
-     * Removes a listener from the list of throughput listeners.
+     * Removes a listener from this monitor.
      * 
-     * @param listener Throughput listener to remove.
+     * @param listener Listener that will no longer receive notifications from
+     *        this monitor.
      */
     void removeThroughputListener(ThroughputListener listener);
     
     
     /**
-     * Sets the length of the sample interval to determine throughput.
+     * Sets the number of milliseconds between each throughput notification.
      * 
      * @param millis Length of the sample interval in milliseconds.
      */
@@ -37,7 +38,7 @@ public interface ThroughputMonitor extends MonitoredChannel
     
     
     /**
-     * Returns the length of the sample interval in milliseconds.
+     * Returns the number of milliseconds between each throughput notification.
      * 
      * @return int
      */
@@ -45,7 +46,8 @@ public interface ThroughputMonitor extends MonitoredChannel
     
     
     /**
-     * Turns on/off monitoring of channel throughput.
+     * Turns monitoring (generation of notification) of channel throughput on 
+     * and off.
      * 
      * @param monitor True to activate monitoring, false otherwise.
      */
@@ -59,13 +61,4 @@ public interface ThroughputMonitor extends MonitoredChannel
      * @return boolean
      */
     boolean isMonitoringThroughput();
-    
-    
-    /**
-     * Notifies this monitor that a given number of bytes have been transferred
-     * across the channel.
-     * 
-     * @param count Number of bytes transferred.
-     */
-    public void newBytesTransferred(long count); 
 }

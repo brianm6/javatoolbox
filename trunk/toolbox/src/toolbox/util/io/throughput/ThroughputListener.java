@@ -8,13 +8,13 @@ package toolbox.util.io.throughput;
  * @see toolbox.util.io.throughput.ThroughputEvent
  * @see toolbox.util.io.throughput.ThroughputMonitor 
  */
-public interface ThroughputListener {
-
+public interface ThroughputListener 
+{
     /**
-     * Notification of the number of bytes transfered through the stream
-     * over the last sample interval.
+     * Notification of the number of bytes transferred across the channel over
+     * the last sample interval.
      * 
-     * @param event Event containing the throughput details. 
+     * @param event Event containing the throughput information. 
      */
     void currentThroughput(ThroughputEvent event);
 }
