@@ -20,7 +20,8 @@
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
- * TODO: Figure out how to use forms
+ * TODO: Figure out how to use JGoodies forms
+ * TODO: Figure out how to use JGoodies data binding framework
  * TODO: Integrate new icons from 
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
  * TODO: Make plugins detachable
@@ -41,7 +42,6 @@
  * TODO: Add undo to TextToolsPlugin
  * TODO: Beef up junit plugin with junitx classes
  * TODO: Tunnel is wacked cuz of JSMartTextArea updates are on event dispatch thread.
- * TODO: Updated JDBCPlugin to use JDBCSession
  * TODO: apache geronimo twiddle = Console
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
@@ -113,6 +113,7 @@
       <action type="add"   >Added FH Look and Feel</action>
       <action type="update">Upgraded to commons-codec-1.3 and commons-net-1.2.2</action>
       <action type="add"   >Added abillity to look at query results in the QueryPlugin in a JTable</action>
+      <action type="update">Updated QueryPlugin to use JDBCSession instead of JDBCUtil for driver management</action>
     </release>
 
     <release version="2.0" date="June 2004">
