@@ -2,31 +2,26 @@ package toolbox.workspace.prefs;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import com.l2fprod.common.swing.JButtonBar;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.ImageCache;
-import toolbox.util.ui.JHeaderPanel;
+import toolbox.util.ui.JButtonGroup;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartDialog;
-import toolbox.util.ui.JSmartSplitPane;
-import toolbox.util.ui.tree.JSmartTree;
-import toolbox.util.ui.tree.SmartTreeCellRenderer;
+import toolbox.util.ui.JSmartToggleButton;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.PluginWorkspace;
 
@@ -40,7 +35,7 @@ import toolbox.workspace.PluginWorkspace;
  * 
  * @see toolbox.workspace.PluginWorkspace
  * @see toolbox.workspace.prefs.PreferencesManager
- * @see toolbox.workspace.prefs.Preferences
+ * @see toolbox.workspace.prefs.IConfigurator
  */
 public class PreferencesDialog extends JSmartDialog
 {
@@ -52,11 +47,15 @@ public class PreferencesDialog extends JSmartDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Preferences tree. Each node in the tree corresponds to a Preferences
-     * which is displayed on the right side of the dialog.
+     * Button bar on the left side of the dialog box.
      */
-    private JSmartTree tree_;
-
+    private JButtonBar navButtonBar_;
+    
+    /**
+     * Makes sure only one nav button is selected.
+     */
+    private JButtonGroup navButtonGroup_;
+    
     /**
      * Card panel used to switch out the currently visisble Preferences
      * based on which node in the tree is selected.
@@ -109,16 +108,16 @@ public class PreferencesDialog extends JSmartDialog
      * Adds a PreferenceView as a node in the tree and adds it to the stack of
      * cards in the card layout.
      * 
-     * @param view Preferences view to add to the prefs tree.
+     * @param prefs Preferences view to add to the prefs tree.
      */
-    public void registerView(Preferences view)
+    public void registerView(IConfigurator prefs)
     {
-        logger_.debug("Registering prefs view = " + view.getLabel());
+        logger_.debug("Registering prefs view = " + prefs.getLabel());
 
-        DefaultTreeModel model = (DefaultTreeModel) tree_.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        root.add(new DefaultMutableTreeNode(view));
-        cardPanel_.add(view.getView(), view.getLabel());
+        JSmartToggleButton b = new JSmartToggleButton(new ButtonAction(prefs));
+        navButtonGroup_.add(b);
+        navButtonBar_.add(b);
+        cardPanel_.add(prefs.getView(), prefs.getLabel());
     }
 
     //--------------------------------------------------------------------------
@@ -132,19 +131,14 @@ public class PreferencesDialog extends JSmartDialog
     {
         Container view = getContentPane();
         view.setLayout(new BorderLayout());
+        view.add(buildNavButtonBar(), BorderLayout.WEST);
+        view.add(buildCardPanel(), BorderLayout.CENTER);
+        view.add(buildButtonPanel(), BorderLayout.SOUTH);
 
-        JSmartSplitPane splitter =
-            new JSmartSplitPane(
-                JSmartSplitPane.HORIZONTAL_SPLIT,
-                buildTreePanel(),
-                cardPanel_ = new JPanel(
-                    cardLayout_ = new CardLayout()));
-
-        view.add(BorderLayout.CENTER, splitter);
-        view.add(BorderLayout.SOUTH, buildButtonPanel());
-
+        navButtonGroup_ = new JButtonGroup();
+        
         // Non-plugin based preferences
-        Preferences[] prefs = preferencesManager_.getPreferences();
+        IConfigurator[] prefs = preferencesManager_.getConfigurators();
         for (int i = 0; i < prefs.length; registerView(prefs[i++]));
 
         // Plugin based preferences
@@ -152,12 +146,8 @@ public class PreferencesDialog extends JSmartDialog
         
         for (int i = 0; i < plugins.length; i++)
         {
-            
             IPlugin plugin = plugins[i];
-            
-            logger_.debug("Checking " + plugin.getPluginName());
-            
-            Preferences p = plugin.getPreferences();
+            IConfigurator p = plugin.getConfigurator();
             
             if (p != null)
             {
@@ -165,12 +155,22 @@ public class PreferencesDialog extends JSmartDialog
                 registerView(p);
             }
         } 
-
-        SwingUtil.expandAll(tree_, true);
-        tree_.setSelectionRow(1);
     }
 
 
+    /**
+     * Builds the card panel that switches out panels based on the currently
+     * selected Preferences button.
+     */
+    protected JComponent buildCardPanel()
+    {
+        cardLayout_ = new CardLayout();
+        cardPanel_ = new JPanel(cardLayout_);
+        cardPanel_.setBorder(new EmptyBorder(10, 0, 0, 10));
+        return cardPanel_;
+    }
+
+    
     /**
      * Builds the ok/cancel/apply button panel.
      *
@@ -187,26 +187,37 @@ public class PreferencesDialog extends JSmartDialog
 
 
     /**
-     * Builds the tree panel with the preference views as children.
+     * Builds the button bar navigation panel. One Preferences per button.
      *
-     * @return JPanel
+     * @return JComponent
      */
-    protected JPanel buildTreePanel()
+    protected JComponent buildNavButtonBar()
     {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        DefaultTreeModel treeModel = new DefaultTreeModel(root);
-        tree_ = new JSmartTree(root);
-        tree_.setCellRenderer(new PrefsTreeCellRenderer());
-
-        JHeaderPanel p =
-            new JHeaderPanel(
-                ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
-                "Preferences",
-                null,
-                new JScrollPane(tree_));
-
-        tree_.addTreeSelectionListener(new PrefsTreeSelectionListener());
+        navButtonBar_ = new JButtonBar(SwingConstants.VERTICAL);
+        JPanel p = new JPanel(new BorderLayout());
+        p.setBorder(new EmptyBorder(10,10,0,5));
+        p.add(navButtonBar_, BorderLayout.CENTER);
         return p;
+    }
+
+    //--------------------------------------------------------------------------
+    // ButtonAction
+    //--------------------------------------------------------------------------
+    
+    class ButtonAction extends AbstractAction
+    {
+        ButtonAction(IConfigurator prefs)
+        {
+            super(prefs.getLabel(), prefs.getIcon());
+            putValue("prefs", prefs);
+        }
+
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            IConfigurator prefs = (IConfigurator) getValue("prefs");
+            cardLayout_.show(cardPanel_, prefs.getLabel());
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -224,13 +235,9 @@ public class PreferencesDialog extends JSmartDialog
         }
 
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
-            Preferences[] prefs = preferencesManager_.getPreferences();
+            IConfigurator[] prefs = preferencesManager_.getConfigurators();
             for (int i = 0; i < prefs.length; prefs[i++].onOK());
             dispose();
         }
@@ -251,13 +258,9 @@ public class PreferencesDialog extends JSmartDialog
         }
 
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
-            Preferences[] prefs = preferencesManager_.getPreferences();
+            IConfigurator[] prefs = preferencesManager_.getConfigurators();
             for (int i = 0; i < prefs.length; prefs[i++].onApply());
         }
     }
@@ -278,90 +281,11 @@ public class PreferencesDialog extends JSmartDialog
         }
 
         
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
-            Preferences[] prefs = preferencesManager_.getPreferences();
+            IConfigurator[] prefs = preferencesManager_.getConfigurators();
             for (int i = 0; i < prefs.length; prefs[i++].onCancel());
             dispose();
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // PrefsTreeCellRenderer
-    //--------------------------------------------------------------------------
-
-    /**
-     * Custom cell renderer for the prefs tree. The user object in each non-root
-     * node is expected to be an instance of Preferences. The label of the
-     * node is set to the name of the view.
-     */
-    class PrefsTreeCellRenderer extends SmartTreeCellRenderer
-    {
-        /**
-         * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
-         *      javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, 
-         *      int, boolean)
-         */
-        public Component getTreeCellRendererComponent(
-            JTree tree,
-            Object value,
-            boolean selected,
-            boolean expanded,
-            boolean leaf,
-            int row,
-            boolean hasFocus)
-        {
-            super.getTreeCellRendererComponent(
-                tree,
-                value,
-                selected,
-                expanded,
-                leaf,
-                row,
-                hasFocus);
-
-            DefaultMutableTreeNode d = (DefaultMutableTreeNode) value;
-
-            if (d.getUserObject() != null &&
-                d.getUserObject() instanceof Preferences)
-            {
-                Preferences pp = (Preferences) d.getUserObject();
-                setText(pp.getLabel());
-            }
-
-            return this;
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // PrefsTreeSelectionListener
-    //--------------------------------------------------------------------------
-
-    /**
-     * Activates PreferenceViews in the card stack based on the currently
-     * selected node.
-     */
-    class PrefsTreeSelectionListener implements TreeSelectionListener
-    {
-        /**
-         * @see javax.swing.event.TreeSelectionListener#valueChanged(
-         *      javax.swing.event.TreeSelectionEvent)
-         */
-        public void valueChanged(TreeSelectionEvent e)
-        {
-            DefaultMutableTreeNode node =
-                (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-
-            if (node.getUserObject() != null &&
-                node.getUserObject() instanceof Preferences)
-            {
-                Preferences pp = (Preferences) node.getUserObject();
-                cardLayout_.show(cardPanel_, pp.getLabel());
-            }
         }
     }
 }
