@@ -3,6 +3,9 @@ package toolbox.jdbc;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -34,6 +37,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -147,7 +151,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Default Constructor
+     * Creates a QueryPlugin
      */
     public QueryPlugin()
     {
@@ -212,6 +216,9 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         clearButton_ = new JButton(resultsArea_.new ClearAction());
         buttonPanel.add(clearButton_);
+        
+        buttonPanel.add(new JButton(new ListTablesAction()));
+        buttonPanel.add(new JButton(new ListColumnsAction()));
 
         // Root 
         setLayout(new BorderLayout());
@@ -219,20 +226,19 @@ public class QueryPlugin extends JPanel implements IPlugin
         dbConfigPane_ = new DBConfig(this);
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("JDBC Drivers", dbConfigPane_);
-        
+
         add(leftFlipPane_, BorderLayout.WEST);
         add(splitPane, BorderLayout.CENTER);                
         add(buttonPanel, BorderLayout.SOUTH);
     }
     
-    
     /**
      * Runs a query against the database and returns the results as a nicely 
      * formatted string.
      * 
-     * @param  sql  SQL query
+     * @param sql SQL query
      * @return Formatted results
-     * @see    JDBCUtil#format(ResultSet)
+     * @see JDBCUtil#format(ResultSet)
      */
     protected String executeSQL(String sql)
     {
@@ -273,7 +279,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Adds a sql statement to the popup menu history
      * 
-     * @param  sql  SQL statement to add to the history
+     * @param sql SQL statement to add to the history
      */
     protected void addToHistory(String sql)
     {
@@ -498,18 +504,49 @@ public class QueryPlugin extends JPanel implements IPlugin
             statusBar_.setStatus("Ctrl-up registered!");
         }
     }
-}
-
-
-// Wire CTRL-Enter to execute the query
-//sqlArea_.getPainter().addKeyListener( new KeyAdapter()
-//{
-//    public void keyTyped(KeyEvent e)
-//    {
-//        if ((e.getKeyChar() ==  '\n') && ((KeyEvent.getKeyModifiersText(
-//            e.getModifiers()).equals("Ctrl"))))
-//                (new ExecuteAction()).actionPerformed(
-//                    new ActionEvent(sqlArea_, 0, "" ));
-//    }
-//});
+    
+    /**
+     * Queries the DB metadata and dumps a list of the tables.
+     */
+    class ListTablesAction extends SmartAction
+    {
+        public ListTablesAction()
+        {
+            super("List Tables", true, false, null);
+        }
         
+        public void runAction(ActionEvent e) throws Exception
+        {
+            Connection conn = JDBCUtil.getConnection();
+            DatabaseMetaData meta = conn.getMetaData();
+            ResultSet rs = meta.getTables(null, null, null, null);
+            String tables = JDBCUtil.format(rs);
+            resultsArea_.append(tables);
+            JDBCUtil.releaseConnection(conn);
+        }
+    }
+
+    /**
+     * Queries the DB metadata and dumps a list of all columns. If a table 
+     * name is selected in the results area, then only the columns for the
+     * selected table are returned.
+     */    
+    class ListColumnsAction extends SmartAction
+    {
+        public ListColumnsAction()
+        {
+            super("List Columns", true, false, null);
+        }
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            Connection conn = JDBCUtil.getConnection();
+            DatabaseMetaData meta = conn.getMetaData();
+            String table = resultsArea_.getSelectedText();
+            ResultSet rs = meta.getColumns(null, null, table, null);
+            String tables = JDBCUtil.format(rs);
+            resultsArea_.append(tables);
+            JDBCUtil.releaseConnection(conn);
+        }
+    }
+}
