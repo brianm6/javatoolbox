@@ -14,6 +14,8 @@ public class FindClassTest extends TestCase
 {
     /**
      * Test entry point
+     * 
+     * @param  args  Args
      */
     public static void main(String[] args)
     {
@@ -24,7 +26,7 @@ public class FindClassTest extends TestCase
     /**
      * Arg constructor
      * 
-     * @param arg
+     * @param arg  Name
      */
     public FindClassTest(String arg)
     {
@@ -33,6 +35,8 @@ public class FindClassTest extends TestCase
     
     /**
      * Test finding a class in a jarfile
+     * 
+     * @throws  Exception on error
      */
     public void testFindInJar() throws Exception
     {

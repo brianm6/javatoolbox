@@ -12,6 +12,8 @@ public class MainTest extends TestCase
 {
     /**
      * Test entry point
+     * 
+     * @param  args  Args
      */
     public static void main(String[] args)
     {
@@ -22,7 +24,7 @@ public class MainTest extends TestCase
     /**
      * Arg constructor
      * 
-     * @param arg
+     * @param arg  Args
      */
     public MainTest(String arg)
     {
@@ -31,6 +33,8 @@ public class MainTest extends TestCase
     
     /**
      * Test finding a class in a jarfile
+     * 
+     * @throws Exception on error
      */
     public void testFindInJar() throws Exception
     {

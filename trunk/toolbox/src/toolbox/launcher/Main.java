@@ -12,7 +12,7 @@ import toolbox.util.ArrayUtil;
  */
 public class Main
 {
-    
+    /** program name to class file map **/
     private static HashMap programMap;
     
     static
@@ -32,6 +32,8 @@ public class Main
     
     /**
      * Entrypoint 
+     * 
+     * @param  args  Args
      */
     public static void main(String[] args)
     {
@@ -48,6 +50,8 @@ public class Main
     
     /**
      * Arg constructor 
+     * 
+     * @param  args  arguments
      */
     public Main(String[] args)
     {
@@ -58,61 +62,68 @@ public class Main
                 break;
                 
             default :
-            	
-            	if (!programMap.containsKey(args[0]))
-            		printUsage();
-            	else
-            	{
-            		String[] newArgs = new String[0];
-            		
-            		if(args.length > 1)
-            			newArgs = (String[]) ArrayUtil.subset(args, 1, args.length - 1);
-            			
-                	launch((String)programMap.get(args[0]), newArgs);
-            	} 
+                
+                if (!programMap.containsKey(args[0]))
+                    printUsage();
+                else
+                {
+                    String[] newArgs = new String[0];
+                    
+                    if(args.length > 1)
+                        newArgs = (String[]) ArrayUtil.subset(
+                            args, 1, args.length - 1);
+                        
+                    launch((String)programMap.get(args[0]), newArgs);
+                } 
                 break;
         }
         
     }
     
     /**
-     * Launches the programs 
+     * Launches the programs
+     * 
+     * @param  className   Name of class to launch
+     * @param  args        Arguments
      */
-  	protected void launch(String className, String[] args)
-  	{
-  		
-  		try 
-  		{
-			Class c = Class.forName(className);
-	  		Method m = c.getMethod("main", new Class[] { (new String[0]).getClass() });
-	  		m.invoke(null, new Object[] { args } );
-		} 
-		catch(SecurityException e) 
-		{
-			System.out.println("Error: " + e);
-			e.printStackTrace();
-		} 
-		catch(ClassNotFoundException e) 
-		{
-			System.out.println("Error: " + e);
-			e.printStackTrace();
-		} 
-		catch(NoSuchMethodException e) 
-		{
-			System.out.println("Error: " + e);
-			e.printStackTrace();
-		}
-		catch(IllegalAccessException e) 
-		{
-			System.out.println("Error: " + e);
-			e.printStackTrace();
-		} 
-		catch(InvocationTargetException e) 
-		{
-			System.out.println("Error: " + e);
-			e.printStackTrace();
-		}		
-  	}
+    protected void launch(String className, String[] args)
+    {
+          
+        try 
+        {
+            Class c = Class.forName(className);
+            
+            Method m = c.getMethod("main", 
+                new Class[] { (new String[0]).getClass() });
+                
+            m.invoke(null, new Object[] { args } );
+        } 
+        catch(SecurityException e) 
+        {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        } 
+        catch(ClassNotFoundException e) 
+        {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        } 
+        catch(NoSuchMethodException e) 
+        {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        }
+        catch(IllegalAccessException e) 
+        {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        } 
+        catch(InvocationTargetException e) 
+        {
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        }        
+    }
     
     
     /**
