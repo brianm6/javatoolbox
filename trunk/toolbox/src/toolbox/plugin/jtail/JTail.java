@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -251,7 +251,7 @@ public class JTail extends JFrame
             
             statusBar_.setStatus("Added tail for " + config.getFilename());
         }
-        catch (FileNotFoundException e)
+        catch (IOException e)
         {
             ExceptionUtil.handleUI(e, logger_);
         }
