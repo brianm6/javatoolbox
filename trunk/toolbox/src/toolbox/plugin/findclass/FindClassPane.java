@@ -57,6 +57,7 @@ import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
+import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * GUI for FindClass
@@ -94,7 +95,7 @@ public class JFindClass extends JFrame
     private FindClass            findClass_;
 
     // Status
-    private JStatusPane          statusBar_;
+    private IStatusBar statusBar_ = new JStatusPane();
     
     
     /** Result table columns */    
@@ -123,6 +124,9 @@ public class JFindClass extends JFrame
     {
         SwingUtil.setPreferredLAF();           
         JFindClass jfc = new JFindClass();
+        jfc.init();
+        jfc.setSize(800,600);
+        SwingUtil.centerWindow(jfc);        
         jfc.setVisible(true);
     }
 
@@ -131,13 +135,13 @@ public class JFindClass extends JFrame
     //--------------------------------------------------------------------------
 
     /**
-     * Constructor for JFindClass
+     * Default Constructor
      * 
      * @throws Exception on error
      */
-    public JFindClass() throws Exception
+    public JFindClass()
     {
-        this("JFindClass");
+        super("JFindClass");
     }
     
     /**
@@ -149,10 +153,6 @@ public class JFindClass extends JFrame
     public JFindClass(String title) throws Exception
     {
         super(title);
-        buildView();
-        init();
-        setSize(800,600);
-        SwingUtil.centerWindow(this);
     }
 
     //--------------------------------------------------------------------------
@@ -177,6 +177,14 @@ public class JFindClass extends JFrame
             ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
     }
 
+    /**
+     * @param statusBar
+     */
+    public void setStatusBar(IStatusBar statusBar)
+    {
+        statusBar_ = statusBar;
+    }
+
     //--------------------------------------------------------------------------
     //  Private
     //--------------------------------------------------------------------------
@@ -186,6 +194,7 @@ public class JFindClass extends JFrame
      */
     protected void init()
     {
+        buildView();
         findClass_ = new FindClass();
         findClass_.addFindClassListener(new FindClassHandler());        
         List targets = findClass_.getSearchTargets();
@@ -258,6 +267,7 @@ public class JFindClass extends JFrame
     {
         // Decpmpiler 
         JPanel decompilerPanel = new JPanel(new BorderLayout());
+        decompilerPanel.setFont(SwingUtil.getPreferredMonoFont());
         sourceArea_ = new JEditorPane();
         sourceArea_.setContentType("text/html");
         sourceArea_.setFont(SwingUtil.getPreferredMonoFont());
@@ -345,9 +355,9 @@ public class JFindClass extends JFrame
     protected void buildStatusBar()
     {
         // Status bar
-        statusBar_ = new JStatusPane();
-        statusBar_.setStatus("Enter a regular expression and hit Find!");
-        getContentPane().add(statusBar_, BorderLayout.SOUTH);
+        //statusBar_ = new JStatusPane();
+        //statusBar_.setStatus("Enter a regular expression and hit Find!");
+        //getContentPane().add(statusBar_, BorderLayout.SOUTH);
     }
 
     /**
@@ -705,13 +715,11 @@ public class JFindClass extends JFrame
         
         public void doSearch()
         {
-            String method = "[search] ";
-            
             try
             {
                 String search = searchField_.getText().trim();
                 
-                logger_.debug(method + "Searching for: " + search);
+                logger_.debug("Searching for: " + search);
                 
                 if (StringUtil.isNullOrEmpty(search))
                 {
