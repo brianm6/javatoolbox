@@ -12,43 +12,112 @@ import org.apache.log4j.Logger;
  */
 public class SQLFormatter
 {
+    // TODO: Change capitalize options to uppercase/lowercase/preservecase
+    // TODO: Change formatter to leave "select *" on the same line. Apply to all
+    
+    
     private static final Logger logger_ = Logger.getLogger(SQLFormatter.class);
     
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
     
+    /**
+     * Major SQL keywords.
+     */
     private static final String MAJOR_WORDS = 
         "|SELECT|FROM|WHERE|ORDER BY|GROUP BY|HAVING|UPDATE|SET|INSERT|INTO" +
         "|VALUES|DELETE|UNION|ALL|MINUS|";
                                               
-    
+    /**
+     * Minor SQL keywords.
+     */
     private static final String MINOR_WORDS = 
         "|COUNT|SUM|AVG|MIN|MAX|DISTINCT|AS|ANY|AND|OR|XOR|NOT|LIKE|IN|EXISTS" +
         "|IS|NULL|";
     
+    /**
+     * SQL function names.
+     */
     private static final String FUNCTION_WORDS = "|COUNT|SUM|AVG|MIN|MAX|";
+    
+    /**
+     * SQL subselect.
+     */
     private static final String SUB_SELECT = "|SELECT|";
+    
+    /**
+     * SQL escape token.
+     */
     private static final String ESCAPE_TOKEN = "\001";
+    
+    /**
+     * SQL delimiters.
+     */
     private static final String DELIMITERS = "(),";
     
+    /**
+     * Maximum number of indents.
+     */
     private static final int MAX_INDENTS = 16;
+    
+    /**
+     * Code for nothing.
+     */
     private static final int NOTHING = 0;
+    
+    /**
+     * Code for a space.
+     */
     private static final int SPACE = 1;
+    
+    /**
+     * Code for a new line character.
+     */
     private static final int NEW_LINE = 2;
     
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
+    /**
+     * Newline string.
+     */
     private String newLine_;
+    
+    /**
+     * Indentation string.
+     */
     private String indent_;
+    
+    /**
+     * Flag to capitalize major sql keywords.
+     */
     private boolean capitalizeMajor_;
+    
+    /**
+     * Flag to capitalize minor sql keywords.
+     */
     private boolean capitalizeMinor_;
+    
+    /**
+     * Flag to capitalize sql names.
+     */
     private boolean capitalizeNames_;
+    
+    /**
+     * Flag to insert a newline before a SQL "and" keyword.
+     */
     private boolean newLineBeforeAnd_;
+    
+    /**
+     * Flag to send debug output to the logger.
+     */
     private boolean debug_;
 
+    /**
+     * Escape characters.
+     */
     private String escapes_[][] = 
     {
         {"'", "'", "" }, 
@@ -57,12 +126,30 @@ public class SQLFormatter
         {"--", "\n" /*"\r\n"*/, "2"}
     };
     
+    // Indexes into escapes_
+    private static final int INDEX_ESCAPE_OPEN  = 0;
+    private static final int INDEX_ESCAPE_CLOSE = 1;
+    private static final int INDEX_ESCAPE_MISC  = 2;
+    
+    private static final String ESCAPE_TYPE_SINGLE_QUOTE = "";
+    private static final String ESCAPE_TYPE_DOUBLE_QUOTE = "";
+    private static final String ESCAPE_TYPE_SINGLE_LINE_COMMENT = "2";
+    private static final String ESCAPE_TYPE_COMMENT = "1";
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a SQLFormatter.
+     * Creates a SQLFormatter with the following defaults.
+     * <ul>
+     *  <li>Newline is \n
+     *  <li>Indent is 4 spaces
+     *  <li>Major and minor sql keywords are not capitalized
+     *  <li>SQL names are not capitalized
+     *  <li>New lines are inserted before an AND
+     *  <li>Debug is set to false
+     * </ul> 
      */
     public SQLFormatter()
     {
@@ -81,7 +168,8 @@ public class SQLFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the capMajor.
+     * Returns true if capitalization of major sql keywords is activated, false
+     * otherwise.
      * 
      * @return boolean
      */
@@ -92,7 +180,8 @@ public class SQLFormatter
     
     
     /**
-     * Returns the capMinor.
+     * Returns true if capitalization of minor sql keywords is activated, false
+     * otherwise.
      * 
      * @return boolean
      */
@@ -103,7 +192,8 @@ public class SQLFormatter
     
     
     /**
-     * Returns the capNames.
+     * Returns true if capitalization of sql names is activated, false 
+     * otherwise.
      * 
      * @return boolean
      */
@@ -114,7 +204,7 @@ public class SQLFormatter
     
     
     /**
-     * Returns the indent.
+     * Returns the string used for indentation.
      * 
      * @return String
      */
@@ -139,9 +229,9 @@ public class SQLFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * Used to turn on capitalization of major SQL keywords.
+     * Sets the capitalization of major SQL keywords.
      * 
-     * @param flag True to capitalize.
+     * @param flag True to capitalize, false otherwise.
      */
     public void setCapitalizeMajor(boolean flag)
     {
@@ -161,9 +251,9 @@ public class SQLFormatter
 
     
     /**
-     * Used to turn on capitalization of SQL names.
+     * Sets the capitalization of SQL names.
      * 
-     * @param flag True to capitalize.
+     * @param flag True to capitalize, false otherwise.
      */
     public void setCapitalizeNames(boolean flag)
     {
@@ -172,7 +262,7 @@ public class SQLFormatter
     
     
     /**
-     * Used to set the number of spaces for indentation.
+     * Set the number of spaces used for indentation.
      * 
      * @param i Number of spaces to use for indentation.
      */
@@ -186,7 +276,7 @@ public class SQLFormatter
 
     
     /**
-     * Sets flag to turn on new lines before an AND.
+     * Set the flag to turn on new lines before an AND.
      * 
      * @param flag True to embed a newline, false otherwise.
      */
@@ -230,154 +320,198 @@ public class SQLFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * Formats a SQL statement.
+     * Returns a formatted sql statement.
      * 
      * @param sql SQL statement to format.
      * @return Formatted SQL statement.
      */
     public String format(String sql)
     {
-        List vector = new ArrayList();
+        List list = new ArrayList();
         
-        for (int i = 0; i < sql.length(); i++)
+        for (int sqlIndex = 0, n = sql.length(); sqlIndex < n; sqlIndex++)
         {
-            for (int j = 0; j < escapes_.length; j++)
+            for (int j = 0, m = escapes_.length; j < m; j++)
             {
-                String s1 = escapes_[j][0];
-                String s3 = escapes_[j][1];
-                String s5 = escapes_[j][2];
+                String escapeOpen  = escapes_[j][INDEX_ESCAPE_OPEN];
+                String escapeClose = escapes_[j][INDEX_ESCAPE_CLOSE];
+                String escapeType  = escapes_[j][INDEX_ESCAPE_MISC];
                 
-                if (!sql.regionMatches(i, s1, 0, s1.length()))
+                if (!sql.regionMatches(
+                    sqlIndex, escapeOpen, 0, escapeOpen.length()))
                     continue;
                 
-                int j1 = i + s1.length();
-                int k1 = sql.indexOf(s3, j1);
+                // Index of the char after the escape open
+                int afterEscapeOpen = sqlIndex + escapeOpen.length();
                 
-                if (k1 == -1)
+                // Search for the escape closing that occurs after the escape open 
+                int escapeCloseIndex = sql.indexOf(escapeClose, afterEscapeOpen);
+                
+                // If closing character for escape sequence not found in the
+                // entire statement
+                if (escapeCloseIndex == -1) 
                 {
-                    k1 = sql.indexOf("\n", j1);
+                    // Search for a newline in the statement after the escaope open
+                    escapeCloseIndex = sql.indexOf("\n", afterEscapeOpen);
                     
-                    if (k1 == -1)
+                    // If newlne not found in statement
+                    if (escapeCloseIndex == -1) 
                     {
-                        k1 = sql.indexOf("\r", j1);
+                        // Search for a carraige return in the statement after
+                        // the escape open
+                        escapeCloseIndex = sql.indexOf("\r", afterEscapeOpen);
                         
-                        if (k1 == -1)
-                            k1 = sql.length() - 1;
+                        // If carraige return not found in statement
+                        if (escapeCloseIndex == -1)
+                        {
+                            // Set close index to the last char in the statement
+                            escapeCloseIndex = sql.length() - 1;
+                        }
                     }
                     
-                    k1++;
+                    escapeCloseIndex++;
                 } 
                 else
                 {
-                    k1 += s3.length();
+                    escapeCloseIndex += escapeClose.length();
                 }
                 
-                String s6 = sql.substring(i, k1);
+                // Extract the text between the escape open/close chars
+                String escapeText = sql.substring(sqlIndex, escapeCloseIndex);
                 
-                if (s5.equals("2"))
-                    s6 = "/*" + s6.trim().substring(2) + " */";
+                // If a single line comment starting with a --
+                if (escapeType.equals(ESCAPE_TYPE_SINGLE_LINE_COMMENT))
+                {
+                    // Embed the single line comment in a multi-line comment
+                    escapeText = 
+                        "/*" 
+                        + escapeText.trim().substring(2 /* length of -- */) 
+                        + " */";
+                }
                 
-                vector.add(s6);
-                String s7 = sql.substring(0, i);
-                String s8;
+                list.add(escapeText);
                 
-                if (k1 < sql.length())
-                    s8 = sql.substring(k1);
+                // String of the sql we have parsed up to this point
+                String sqlParsed = sql.substring(0, sqlIndex);
+                
+                // ???
+                String sqlUnparsed;
+                
+                // If there are more characters to parse after the escape's
+                // closing string
+                if (escapeCloseIndex < sql.length())
+                {
+                    // Extract the unparsed remainder of the sql statement
+                    sqlUnparsed = sql.substring(escapeCloseIndex);
+                }
                 else
-                    s8 = "";
+                {
+                    // Nothing left to parse
+                    sqlUnparsed = "";
+                }
                 
                 String s9 = "\001";
                 
-                if (!s5.equals(""))
+                // If the escape type is not a quote or double quote
+                if (!escapeType.equals(""))
                 {
-                    if (!s7.endsWith(" "))
+                    // If the last character parsed is not a space
+                    if (!sqlParsed.endsWith(" "))
+                    {
+                        // Prefix with a space
                         s9 = " " + s9;
-                    if (!s8.startsWith(" "))
+                    }
+                    
+                    // If unparsed sql starts with a space
+                    if (!sqlUnparsed.startsWith(" "))
+                    {
+                        // Suffix with a space
                         s9 = s9 + " ";
+                    }
                 }
                 
-                sql = s7 + s9 + s8;
+                sql = sqlParsed + s9 + sqlUnparsed;
                 break;
             }
 
         }
 
-        List vector1 = new ArrayList();
+        List list2 = new ArrayList();
         
         for (StringTokenizer st = new StringTokenizer(sql);
             st.hasMoreTokens();)
         {
-            String s2 = st.nextToken();
+            String sqlToken = st.nextToken();
 
-            for (StringTokenizer st1 = new StringTokenizer(s2, "(),", true);
+            for (StringTokenizer st1 = new StringTokenizer(sqlToken, "(),", true);
                 st1.hasMoreTokens();
-                vector1.add(st1.nextToken()));
+                list2.add(st1.nextToken()));
         }
 
-        for (int k = 0; k < vector1.size() - 1; k++)
+        for (int k = 0; k < list2.size() - 1; k++)
         {
             String s4 =
-                (String) vector1.get(k) + " " + (String) vector1.get(k + 1);
+                (String) list2.get(k) + " " + (String) list2.get(k + 1);
 
             if (isMajor(s4))
             {
-                vector1.set(k, s4);
-                vector1.remove(k + 1);
+                list2.set(k, s4);
+                list2.remove(k + 1);
             }
         }
 
-        int l = vector1.size();
-        String as[] = new String[l += 2];
-        as[0] = "";
-        as[l - 1] = "";
+        int l = list2.size();
+        String keywords[] = new String[l += 2];
+        keywords[0] = "";
+        keywords[l - 1] = "";
         
-        for (int i1 = 0; i1 < vector1.size(); i1++)
-            as[i1 + 1] = (String) vector1.get(i1);
+        for (int i1 = 0; i1 < list2.size(); i1++)
+            keywords[i1 + 1] = (String) list2.get(i1);
 
         int ai[] = new int[l];
         int ai1[] = new int[l];
         
-        for (int l1 = 0; l1 < l; l1++)
+        for (int keywordIndex = 0; keywordIndex < l; keywordIndex++)
         {
-            boolean flag = false;
+            boolean capitalize = false;
             
-            if (isMajor(as[l1]))
-                flag = capitalizeMajor_;
+            if (isMajor(keywords[keywordIndex]))
+                capitalize = capitalizeMajor_;
             
-            if (isMinor(as[l1]))
-                flag = capitalizeMinor_;
+            if (isMinor(keywords[keywordIndex]))
+                capitalize = capitalizeMinor_;
             
-            if (isName(as[l1]))
-                flag = capitalizeNames_;
+            if (isName(keywords[keywordIndex]))
+                capitalize = capitalizeNames_;
             
-            if (flag)
-                as[l1] = as[l1].toUpperCase();
+            if (capitalize)
+                keywords[keywordIndex] = keywords[keywordIndex].toUpperCase();
         }
 
         for (int i2 = 1; i2 < l - 1; i2++)
         {
             ai[i2] = 1;
-            if (isMajor(as[i2]))
+            if (isMajor(keywords[i2]))
             {
                 ai[i2 - 1] = 2;
                 ai[i2] = 2;
             }
-            else if (as[i2].equals(","))
+            else if (keywords[i2].equals(","))
             {
                 ai[i2] = 2;
                 ai[i2 - 1] = 0;
             }
-            else if (as[i2].equals("("))
+            else if (keywords[i2].equals("("))
             {
                 ai[i2] = 0;
-                if (isFunction(as[i2 - 1]) || isName(as[i2 - 1]))
+                if (isFunction(keywords[i2 - 1]) || isName(keywords[i2 - 1]))
                     ai[i2 - 1] = 0;
             }
-            else if (as[i2].equals(")"))
+            else if (keywords[i2].equals(")"))
             {    
                 ai[i2 - 1] = 0;
             }
-            else if (as[i2].equalsIgnoreCase("AND"))
+            else if (keywords[i2].equalsIgnoreCase("AND"))
             {    
                 if (newLineBeforeAnd_)
                     ai[i2 - 1] = 2;
@@ -392,7 +526,7 @@ public class SQLFormatter
         
         for (int k2 = 0; k2 < l; k2++)
         {
-            if (as[k2].equals(")"))
+            if (keywords[k2].equals(")"))
             {    
                 if (ai2[j2] == 0)
                 {
@@ -407,14 +541,14 @@ public class SQLFormatter
                 }
             }
             
-            if (isMajor(as[k2]))
+            if (isMajor(keywords[k2]))
                 ai1[k2] = j2 * 2;
             else
                 ai1[k2] = j2 * 2 + 1;
             
-            if (as[k2].equals("("))
+            if (keywords[k2].equals("("))
             {    
-                if (isSubSelect(as[k2 + 1]))
+                if (isSubSelect(keywords[k2 + 1]))
                 {
                     if (j2 < 16)
                         j2++;
@@ -440,17 +574,17 @@ public class SQLFormatter
             if (ai[l2 - 1] == 2)
                 sb.append(StringUtils.repeat(indent_, ai1[l2]));
             
-            sb.append(as[l2] + as1[ai[l2]]);
+            sb.append(keywords[l2] + as1[ai[l2]]);
         }
 
         sql = sb.toString();
         
-        for (int i3 = 0; i3 < vector.size(); i3++)
+        for (int i3 = 0; i3 < list.size(); i3++)
         {
             int j3 = sql.indexOf("\001");
             
             sql = sql.substring(0, j3)
-                  + (String) vector.get(i3)
+                  + (String) list.get(i3)
                   + sql.substring(j3 + 1);
         }
 
@@ -460,12 +594,12 @@ public class SQLFormatter
             sb1.append("Tokens:\n");
             
             for (int k3 = 1; k3 < l - 1; k3++)
-                sb1.append(ai1[k3] + " [" + as[k3] + "] " + ai[k3] + "\n");
+                sb1.append(ai1[k3] + " [" + keywords[k3] + "] " + ai[k3] + "\n");
 
             sb1.append("Escapes:\n");
             
-            for (int l3 = 0; l3 < vector.size(); l3++)
-                sb1.append((String) vector.get(l3) + "\n");
+            for (int l3 = 0; l3 < list.size(); l3++)
+                sb1.append((String) list.get(l3) + "\n");
 
             logger_.debug(sb1.toString());
         }
