@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
@@ -36,6 +35,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
@@ -45,15 +45,21 @@ import toolbox.util.ui.list.JSmartList;
  * JFontChooser is a UI component that provides the ability to select a font
  * and its associated characteristics. Characteristics include:
  * <ul>
- *  <li>Name
- *  <li>Size
- *  <li>Style (plain, bold, italic, bold + italic)
- *  <li>Antialiased
+ *  <li>Font name
+ *  <li>Font size
+ *  <li>Font style (plain, bold, italic, bold + italic)
+ *  <li>Antialiased rendering
  * </ul>
  * <br>
- * Additionally, fonts can be identified as monospaced by appearing as BOLD 
- * or have the font name rendered using the representative font in the font
- * selection list.
+ * Tips:
+ * <ul>
+ *  <li>Use setMonospaceEmphasized() to make fixed width fonts stand out in the 
+ *      font name list.
+ *  <li>Use setRenderedUsingFont() to render a font name with the name that it 
+ *      represents in the font name list.
+ * </ul>
+ * 
+ * @see toolbox.util.ui.font.JFontChooserDialog
  */
 public class JFontChooser extends JPanel
 {
@@ -68,6 +74,18 @@ public class JFontChooser extends JPanel
      */
     private static final int MAX_DIGITS_IN_FONT_SIZE = 3;
 
+    /**
+     * List of default font styles.
+     */
+    private static final String[] DEFAULT_STYLES = 
+        new String[] {"Plain", "Bold", "Italic", "Bold Italic"};
+    
+    /**
+     * List of default font sizes.
+     */
+    private static final int[] DEFAULT_SIZES = 
+        new int[] {7, 8, 9, 10, 11, 12, 14, 16, 18, 24, 36};
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -80,7 +98,7 @@ public class JFontChooser extends JPanel
     /**
      * Renderer for the font names in the list box.
      */
-    private ListCellRenderer fontFamilyCellRenderer_;
+    private FontFamilyCellRenderer fontFamilyCellRenderer_;
 
     /** 
      * FontStlyeList (subclass of JList) for font style. 
@@ -90,7 +108,7 @@ public class JFontChooser extends JPanel
     /** 
      * Font size textfield. The size cannot be fractional (must be an integer). 
      */
-    private JTextField fontSize_;
+    private JTextField fontSizeField_;
     
     /** 
      * List containing predefined font sizes. 
@@ -126,18 +144,17 @@ public class JFontChooser extends JPanel
 
 
     /**
-     * Like {@link #JFontChooser(java.awt.Font, String[], int[], boolean)}, 
-     * except that a default list of styles{"Plain", "Bold", "Italic", 
-     * "Bold Italic"} and font sizes {8, 9, 10, 12, 14} will be used.
+     * Creates a JFontChooser with the given font and a default list of styles 
+     * and font sizes.
      * 
      * @param initialFont Initial font to select.
      */
     public JFontChooser(Font initialFont)
     {
-        // Don't change the following two values without changing the javadocs
-        this(initialFont,
-            new String[] {"Plain", "Bold", "Italic", "Bold Italic"},
-            new int[] {7, 8, 9, 10, 11, 12, 14, 16, 18, 24, 36}, false);
+        this(initialFont, 
+            DEFAULT_STYLES, 
+            DEFAULT_SIZES, 
+            SwingUtil.getDefaultAntiAlias());
     }
 
 
@@ -184,7 +201,7 @@ public class JFontChooser extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      * 
      * @param initialFont Initial font selected.
      * @param styleDisplayNames Font styles.
@@ -252,15 +269,15 @@ public class JFontChooser extends JPanel
         add(antiAliasCheckBox_, gbc);
 
         // Configure font size field
-        fontSize_ = new JSmartTextField();
-        fontSize_.setColumns(4);
+        fontSizeField_ = new JSmartTextField();
+        fontSizeField_.setColumns(4);
         
         // Add to gridbag
         gbc.weightx    = 0.5;  gbc.weighty   = 0;
         gbc.gridx      = 3;    gbc.gridy     = 1;
         gbc.gridheight = 1;    gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        add(wrapWithHeading("Size", fontSize_), gbc);
+        add(wrapWithHeading("Size", fontSizeField_), gbc);
         
         // Configure font size list
         fontSizeList_ =
@@ -303,7 +320,7 @@ public class JFontChooser extends JPanel
         // fontFamilyList_.setSelectedValue(initialFont.getFamily(), true);
         fontFamilyList_.setSelectedValue(initialFont.getFontName(), true);
         fontStyleList_.setSelectedStyle(initialFont.getStyle());
-        fontSize_.setText(String.valueOf(initialFont.getSize()));
+        fontSizeField_.setText(String.valueOf(initialFont.getSize()));
     }
 
 
@@ -320,10 +337,10 @@ public class JFontChooser extends JPanel
         // Use FontSizeSynchronizer to ensure consistency between text field &
         // list for font size
         FontSizeSynchronizer fontSizeSynchronizer =
-            new FontSizeSynchronizer(fontSizeList_, fontSize_);
+            new FontSizeSynchronizer(fontSizeList_, fontSizeField_);
             
         fontSizeList_.addListSelectionListener(fontSizeSynchronizer);
-        fontSize_.getDocument().addDocumentListener(fontSizeSynchronizer);
+        fontSizeField_.getDocument().addDocumentListener(fontSizeSynchronizer);
     }
 
 
@@ -486,7 +503,7 @@ public class JFontChooser extends JPanel
      */
     public int getSelectedFontSize() throws FontChooserException 
     {
-        String fontSize = fontSize_.getText();
+        String fontSize = fontSizeField_.getText();
         
         if (StringUtils.isBlank(fontSize))
             throw new FontChooserException("No font size specified");
@@ -585,9 +602,57 @@ public class JFontChooser extends JPanel
      */
     public void setSelectedFontSize(int size)
     {
-        fontSize_.setText(String.valueOf(size));
+        fontSizeField_.setText(String.valueOf(size));
     }
 
+    
+    /**
+     * Sets the flag to render a font family cell using the font name occupying
+     * that cell.
+     * 
+     * @param b True to use the font, false to use the default font.
+     */
+    public void setRenderedUsingFont(boolean b)
+    {
+        fontFamilyCellRenderer_.setRenderedUsingFont(b);
+    }
+
+    
+    /**
+     * Returns true if a font family cell is rendered using the font name 
+     * occupying that cell. False otherwise.
+     *   
+     * @return boolean
+     */
+    public boolean isRenderedUsingFont()
+    {
+        return fontFamilyCellRenderer_.isRenderedUsingFont();
+    }
+    
+
+    /**
+     * Sets the flag to emphasize monospaced fonts in the font family list box
+     * by making them bold. 
+     * 
+     * @param b True to emphasize monospaced fonts, false otherwise.
+     */
+    public void setMonospaceEmphasized(boolean b)
+    {
+        fontFamilyCellRenderer_.setMonospacedEmphasized(b);
+    }
+    
+
+    /**
+     * Returns true if monospaced fonts are emphasized in the font family list
+     * box by being made bold. False otherwise.
+     * 
+     * @return booelean
+     */
+    public boolean isMonospaceEmphasized()
+    {
+        return fontFamilyCellRenderer_.isMonospacedEmphasized();
+    }
+    
     //--------------------------------------------------------------------------
     // FontSizeSynchronizer
     //--------------------------------------------------------------------------
@@ -600,9 +665,9 @@ public class JFontChooser extends JPanel
     protected class FontSizeSynchronizer implements DocumentListener, 
         ListSelectionListener
     {
-        private JList list_;
-        private JTextField textField_;
-        private boolean updating_;
+        private JList _list;
+        private JTextField _textField;
+        private boolean _updating;
         
         /**
          * Creates a FontSizeSynchronizer.
@@ -612,8 +677,8 @@ public class JFontChooser extends JPanel
          */
         public FontSizeSynchronizer(JList list, JTextField textField)
         {
-            list_ = list;
-            textField_ = textField;
+            _list = list;
+            _textField = textField;
         }
 
         
@@ -625,22 +690,24 @@ public class JFontChooser extends JPanel
          */
         public void valueChanged(ListSelectionEvent e)
         {
-            if (updating_)
+            if (_updating)
                 return;
 
             try
             {
-                updating_ = true;
-                Object selectedValue = ((JList) e.getSource()).getSelectedValue();
+                _updating = true;
+                
+                Object selectedValue = 
+                    ((JList) e.getSource()).getSelectedValue();
                     
                 if (selectedValue != null)
-                    textField_.setText(selectedValue.toString());
+                    _textField.setText(selectedValue.toString());
     
                 fireFontSelectionChanged();
             }
             finally
             {
-                updating_ = false;
+                _updating = false;
             }
         }
 
@@ -684,43 +751,43 @@ public class JFontChooser extends JPanel
         {
             Validate.notNull(e, "Document event is null");
             
-            if (updating_)
+            if (_updating)
                 return;
 
             
             try
             {
-                updating_ = true;
+                _updating = true;
                 boolean currentSizeWasInList = false;
                 Object listMember;
                 
                 Integer currentFontSizeInteger = 
-                    Integer.valueOf(textField_.getText());
+                    Integer.valueOf(_textField.getText());
                 
-                for (int i = 0; i < list_.getModel().getSize(); i++)
+                for (int i = 0; i < _list.getModel().getSize(); i++)
                 {
-                    listMember = list_.getModel().getElementAt(i);
+                    listMember = _list.getModel().getElementAt(i);
                     
                     if (listMember.equals(currentFontSizeInteger))
                     {
-                        list_.setSelectedValue(currentFontSizeInteger, true);
+                        _list.setSelectedValue(currentFontSizeInteger, true);
                         currentSizeWasInList = true;
                         break;
                     }
                 }
                 
                 if (!currentSizeWasInList)
-                    list_.clearSelection();
+                    _list.clearSelection();
                 
                 fireFontSelectionChanged();
             }
             catch (NumberFormatException nfe)
             {
-                list_.clearSelection();
+                _list.clearSelection();
             }
             finally
             {
-                updating_ = false;
+                _updating = false;
             }
         }
     }
@@ -761,8 +828,8 @@ public class JFontChooser extends JPanel
         {
             try
             {
-                phraseCanvas_.setPhrase(
-                    (String) fontFamilyList_.getSelectedValue());
+                phraseCanvas_.setPhrase((String) 
+                    fontFamilyList_.getSelectedValue());
                     
                 phraseCanvas_.setFont(JFontChooser.this.getSelectedFont());
                 phraseCanvas_.setAntiAlias(JFontChooser.this.isAntiAliased());
@@ -812,7 +879,7 @@ public class JFontChooser extends JPanel
     }
 }
 
-/**
+/*
 Based on work originally by:
 
 Copyright (C) 2000, 2001 Greg Merrill (greghmerrill@yahoo.com)
