@@ -101,6 +101,15 @@
         </table>
       </action>
 
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">Workspace</td>
+            <td>Added color as a visual cue to the workspace status bar for errors and warnings</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
 
     
