@@ -28,7 +28,7 @@
   xmlns:j="jelly:core"
   xmlns:u="jelly:util"
   xmlns:ant="jelly:ant"
-  xmlns:bsf="jelly:bsf">
+  xmlns:bsh="jelly:beanshell">
 
     <!-- =================================================================== -->
     <!-- GOAL : UPDATE-PROPS                                                 -->
@@ -117,48 +117,98 @@
     <!-- J N L P - D E P L O Y                                               -->
     <!-- =================================================================== -->
     <goal name="jnlp-deploy" description="Deploys the JNLP distribution to Tomcat">
+      
+      <!-- Fix the main jar in the jnlp file to occur before all the 3rd  -->
+      <!-- party jars so that the debug classes will be loaded from the   -->
+      <!-- main jar first.                                                -->
+      
+      <!--echoproperties/-->
+     
+      <bsh:script><![CDATA[
+        import java.util.*;
+        import java.io.*;
+        import nu.xom.*;
+         
+        //print("===== fixjnlp.bsh begin ========");
+        
+        String fs = File.separator+"";
+        
+        String inputFile = "target" + fs + "jnlp" + fs + "toolbox.jnlp";
+        
+        System.out.println("JNLP file = " + inputFile);
+        	
+        String outputFile = inputFile;
+        
+        //which(java.lang.Object.class);
+        //which(System.class);
+        //which("nu.xom.Builder");
+        //print(getClassPath());
+        
+        InputStream is = new FileInputStream(new File(inputFile));
+        
+        //print(is);
+        
+        Builder parser = new Builder();
+        Document doc = parser.build(is);
+        Element root = doc.getRootElement();
+        
+        //print(root.toXML());
+        
+        Element resources = root.getFirstChildElement("resources");
+        Element firstJar = resources.getFirstChildElement("jar");
+        Elements jars = resources.getChildElements("jar");
+        
+        for (int i = 0; i<jars.size(); i++)
+        { 
+          Element jar = jars.get(i);
+            
+          //print("Iterating..." + jar.toXML());
+          
+          Attribute main = jar.getAttribute("main");
+            
+          if (main != null)
+          {
+              System.out.println("Fixing jnlp file...");
+              jar.detach();
+              int idx = resources.indexOf(firstJar);
+              //print("index=" + idx);
+              resources.insertChild(jar, idx);
+              break;
+          }
+        }
+        
+        //print(resources.toXML()); 
+        
+        is.close();
+        
+        Writer w = new FileWriter(outputFile);
+        w.write(root.toXML());
+        w.close();
+        
+        //print("===== fixjnlp.bsh end ========");        
+        
+        ]]>
+      </bsh:script>
+
+      <!-- Copy everything over to the tomcat directory -->
       <copy todir="${toolbox.jnlp.deploy}" 
             verbose="true"
             quiet="false" 
             overwrite="false">
         <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
       </copy>
-    </goal> 
-
-
-    <!-- =================================================================== -->
-    <!-- POST : XDOC : REGISTER-REPORTS    jnlp:generate-jnlp"                                  -->
-    <!-- =================================================================== -->
-    <goal name="script"> 
-    
-        <echo>jnlp post goal</echo>
-        
-        <!-- Prints out the classpath -->        
-        <bsf:script language="beanshell"> <![CDATA[
-            print("[CLASSPATH]");
-            /*
-            sb = new StringBuffer();
-            cp = toolbox.getProperty("cp");
-            for (t = new StringTokenizer(cp, File.pathSeparator); t.hasMoreTokens(); )
-                sb.append(t.nextToken() + System.getProperty("line.separator"));
-            print(sb.toString());
-            */
-        ]]>
-        </bsf:script>
-       
     </goal>
-
 
 
     <!-- =================================================================== -->
     <!-- A L I A S E S                                                       -->
     <!-- =================================================================== -->
     <goal name="compile" description="Alias for java:compile">
-		<attainGoal name="java:compile"/>
+        <attainGoal name="java:compile"/>
     </goal>
       
     <goal name="jar" description="Alias for jar:install">
-    	<attainGoal name="jar:install"/>
+        <attainGoal name="jar:install"/>
     </goal>
 
 
