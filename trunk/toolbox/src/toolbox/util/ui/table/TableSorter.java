@@ -3,6 +3,7 @@ package toolbox.util.ui.table;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,6 +26,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+
+import org.apache.log4j.Logger;
 
 /**
  * TableSorter is a decorator for TableModels; adding sorting functionality to a
@@ -69,6 +72,8 @@ import javax.swing.table.TableModel;
 
 public class TableSorter extends AbstractTableModel
 {
+    private static final Logger logger_ = Logger.getLogger(TableSorter.class);
+    
     protected TableModel tableModel;
 
     public static final int DESCENDING = -1;
@@ -508,6 +513,14 @@ public class TableSorter extends AbstractTableModel
             TableColumnModel columnModel = h.getColumnModel();
             int viewColumn = columnModel.getColumnIndexAtX(e.getX());
             int column = columnModel.getColumn(viewColumn).getModelIndex();
+
+            // NOTE: Custom addition to TableSorter!
+            //       Only sort if the cursor does not indicate that the mouse 
+            //       is in the resize column zone.
+            if (h.getCursor().equals(
+                Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR)))
+                return;
+            
             if (column != -1)
             {
                 int status = getSortingStatus(column);
