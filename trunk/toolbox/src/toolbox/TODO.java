@@ -82,6 +82,7 @@ package toolbox;
  *  - Added TransferredMonitor component
  *  - Added MonitoredInput/OutputStream
  *  - Updated to commons-dbcp-1.2 and commons-pool-1.2
+ *  - Look and feel decorations flag now works but requires a restart
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
