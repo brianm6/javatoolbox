@@ -18,9 +18,7 @@ import toolbox.util.ArrayUtil;
  * </ul>
  * <p>
  * Usage:
- * 
- * <pre>
- * 
+ * <pre class="snippet">
  * // Plain old java bean with two properties, 'first' and 'last' 
  * class Name
  * {
