@@ -3,7 +3,6 @@ package toolbox.plugin.findclass;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -53,6 +52,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JCollapsablePanel;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
@@ -289,9 +289,10 @@ public class FindClassPane extends JPanel implements IPreferenced
         searchPanel.add(dupesButton_);
         searchPanel.add(new JSmartLabel("      "));
         searchPanel.add(ignoreCaseCheckBox_);
-         
-        return searchPanel;
-        //getContentPane().add(searchPanel, BorderLayout.NORTH);
+
+        JCollapsablePanel p = new JCollapsablePanel("Search");
+        p.setContent(searchPanel);
+        return p;
     }
 
     
@@ -338,7 +339,6 @@ public class FindClassPane extends JPanel implements IPreferenced
                 tb,
                 new JScrollPane(searchList_));
         
-        //pathPanel.setPreferredSize(new Dimension(100, 400));
         return header;
     }
 
@@ -548,7 +548,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         /**
          * When a class is found, add it to the result table.
          * 
-         * @param searchResult Info on class that was found
+         * @param searchResult Info on class that was found.
          * @see toolbox.findclass.FindClassListener#classFound(
          *      toolbox.findclass.FindClassResult)
          */
@@ -562,7 +562,7 @@ public class FindClassPane extends JPanel implements IPreferenced
          * When a target is searched, update the status bar and hilight the
          * archive being search in the search list.
          * 
-         * @param target Target that is being searched
+         * @param target Target that is being searched.
          * @see toolbox.findclass.FindClassListener#searchingTarget(
          *      java.lang.String)
          */
@@ -681,7 +681,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         /**
          * When a class is found, add it to the result table.
          * 
-         * @param  searchResult  Info on class that was found
+         * @param searchResult  Info on class that was found.
          */
         public void classFound(FindClassResult searchResult)
         {
@@ -710,7 +710,7 @@ public class FindClassPane extends JPanel implements IPreferenced
          * When a target is searched, update the status bar and hilight the
          * archive being search in the search list.
          * 
-         * @param  target  Target that is being searched
+         * @param target Target that is being searched.
          */
         public void searchingTarget(String target)
         {
@@ -756,7 +756,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         /**
          * Adds a directory to the path list.
          * 
-         * @param folder Directory to add
+         * @param folder Directory to add.
          */
         public void folderDoubleClicked(String folder)
         {
@@ -780,8 +780,8 @@ public class FindClassPane extends JPanel implements IPreferenced
         /**
          * Adds a file to the path list.
          * 
-         * @param  file  File to add
-         */       
+         * @param file File to add.
+         */
         public void fileDoubleClicked(String file)
         {
             if (ClassUtil.isArchive(file))
@@ -1073,7 +1073,7 @@ public class FindClassPane extends JPanel implements IPreferenced
          */
         void doSearch() throws RESyntaxException, IOException 
         {
-            logger_.debug("Searching for: " + search_);
+            logger_.debug("Searching for '" + search_ + "'");
             
             // Flip title
             putValue(NAME, CANCEL);
