@@ -7,12 +7,12 @@ import toolbox.util.service.Nameable;
 
 /**
  * A StateMachine simulates the activity of a deterministic finite state 
- * automata with anynumber of {@link State}s and the {@link Transition}s between
- * them. Instances can be created via the {@link StateMachineFactory} and 
- * activity can be monitored by implementing the {@link StateMachineListener}
- * interface.
+ * automata with any number of {@link State}s and the {@link Transition}s 
+ * between them. Instances can be created via the {@link StateMachineFactory} 
+ * and activity can be monitored by implementing the 
+ * {@link StateMachineListener} interface.
  * <p>
- * <b>Example:</b>
+ * <b>Example</b>
  * <pre class="snippet">
  *   
  *   // Lets simulate a rice cooker..

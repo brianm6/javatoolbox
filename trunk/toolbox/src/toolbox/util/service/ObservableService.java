@@ -4,7 +4,7 @@ import toolbox.util.statemachine.StateMachine;
 
 /**
  * ObservableService is a notification interface for Service implementors that
- * with to support dissemination of events via aa ServiceListener.
+ * wish to support the broadcast of events via a ServiceListener.
  * 
  * @see toolbox.util.service.ServiceNotifier
  */

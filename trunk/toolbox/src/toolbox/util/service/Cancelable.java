@@ -19,14 +19,14 @@ public interface Cancelable
     //--------------------------------------------------------------------------
     
     /**
-     * Requests that the implementor of this interface cancel the current task.
+     * Requests that the implementor of this interface cancel the current
+     * operation.
      */
     void cancel();
     
     
     /**
-     * Returns true if the implementor of this inteface has already been 
-     * canceled, false otherwise.
+     * Returns true if the operation has already been canceled, false otherwise.
      * 
      * @return boolean
      */
