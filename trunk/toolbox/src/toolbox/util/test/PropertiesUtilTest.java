@@ -28,7 +28,7 @@ public class PropertiesUtilTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -171,6 +171,8 @@ public class PropertiesUtilTest extends TestCase
     
     /**
      * Tests toString()
+     * 
+     * @throws IOException on I/O error
      */
     public void testToString() throws IOException
     {

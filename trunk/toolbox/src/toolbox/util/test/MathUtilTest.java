@@ -22,7 +22,7 @@ public class MathUtilTest extends TestCase
     /**
      * Starts the test case and runs the entire suite.
      *
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -36,7 +36,7 @@ public class MathUtilTest extends TestCase
     /**
      * Tests isEven()
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testIsEven() throws Exception
     {
@@ -53,7 +53,7 @@ public class MathUtilTest extends TestCase
     /**
      * Tests isOdd()
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testIsOdd() throws Exception
     {

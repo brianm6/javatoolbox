@@ -39,7 +39,7 @@ public class SwingUtilTest extends TestCase
     /**
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      * @throws Exception on LAF error
      */
     public static void main(String[] args) throws Exception

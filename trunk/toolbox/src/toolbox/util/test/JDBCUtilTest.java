@@ -37,7 +37,7 @@ public class JDBCUtilTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -50,8 +50,6 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests init()
-     * 
-     * @throws Exception
      */
     public void testInit()
     {
@@ -70,6 +68,8 @@ public class JDBCUtilTest extends TestCase
     
     /**
      * Tests getConnection()
+     * 
+     * @throws Exception on error
      */
     public void testGetConnection() throws Exception
     {
@@ -97,6 +97,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests executeQuery() on an empty table
+     * 
+     * @throws Exception on error
      */
     public void testExecuteQueryZero() throws Exception
     {
@@ -123,6 +125,8 @@ public class JDBCUtilTest extends TestCase
     
     /**
      * Tests executeQuery() on table with only one row of data
+     * 
+     * @throws Exception on error
      */
     public void testExecuteQueryOne() throws Exception
     {
@@ -151,6 +155,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests executeQuery() on table with many rows of data
+     * 
+     * @throws Exception on error
      */
     public void testExecuteQueryMany() throws Exception
     {
@@ -182,6 +188,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests executeQueryArray() on an empty table
+     * 
+     * @throws Exception on error
      */
     public void testExecuteQueryArrayZero() throws Exception
     {
@@ -211,6 +219,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests executeQueryArray() on table with only one row of data
+     * 
+     * @throws Exception on error
      */
     public void testExecuteQueryArrayOne() throws Exception
     {
@@ -242,6 +252,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests executeQueryArray() on table with many rows of data
+     * 
+     * @throws Exception on error
      */
     public void testExecuteQueryArrayMany() throws Exception
     {
@@ -278,6 +290,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests executeUpdate() for INSERT, UPDATE, and DELETE
+     * 
+     * @throws Exception on error
      */
     public void testExecuteUpdate() throws Exception
     {
@@ -318,6 +332,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests getSize() on an empty table
+     * 
+     * @throws Exception on error
      */
     public void testGetSizeZero() throws Exception
     {
@@ -358,6 +374,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests getSize() on a table with one row
+     * 
+     * @throws Exception on error
      */
     public void testGetSizeOne() throws Exception
     {
@@ -405,6 +423,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests getSize() on a table with one row
+     * 
+     * @throws Exception on error
      */
     public void testGetSizeMany() throws Exception
     {
@@ -447,6 +467,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests dropTable()
+     * 
+     * @throws Exception on error
      */
     public void testDropTable() throws Exception
     {

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.Banner;
 
 /**
- * Unit Test for Banner
+ * Unit test for Banner
  */
 public class BannerTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class BannerTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {

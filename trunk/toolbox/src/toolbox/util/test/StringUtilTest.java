@@ -28,7 +28,7 @@ public class StringUtilTest extends TestCase implements Stringz
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -36,7 +36,7 @@ public class StringUtilTest extends TestCase implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
     
     /**

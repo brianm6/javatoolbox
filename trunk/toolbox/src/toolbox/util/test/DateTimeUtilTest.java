@@ -25,7 +25,7 @@ public class DateTimeUtilTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -39,7 +39,7 @@ public class DateTimeUtilTest extends TestCase
     /**
      * Tests getBeginningOfDay()
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testGetBeginningOfDay() throws Exception
     {

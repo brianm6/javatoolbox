@@ -29,7 +29,7 @@ public class SocketUtilTest extends TestCase
     /**
      * Entrypoint
      *
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -74,7 +74,7 @@ public class SocketUtilTest extends TestCase
     /**
      * Tests connectWithRetry() for failure scenario
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testConnectWithRetryFailure() throws Exception
     {
@@ -115,7 +115,7 @@ public class SocketUtilTest extends TestCase
     /**
      * Tests getFreePort()
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */ 
     public void testGetFreePort() throws Exception
     {

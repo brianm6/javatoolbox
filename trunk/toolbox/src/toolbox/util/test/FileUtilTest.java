@@ -27,7 +27,7 @@ public class FileUtilTest extends TestCase
     /**
      * Runs the test case in text mode
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
