@@ -56,7 +56,7 @@
 	<classpathentry sourcepath="lib/src/skinlf-src.zip" kind="lib" path="lib/skinlf.jar"/>
 	<classpathentry sourcepath="K:/workspaces/workspace-lib/statcvs/src" kind="lib" path="lib/statcvs.jar"/>
 	<classpathentry sourcepath="lib/src/tinylaf-src.zip" kind="lib" path="lib/tinylaf.jar"/>
-	<classpathentry kind="lib" path="lib/toniclf.jar"/>
+	<classpathentry sourcepath="lib/src/toniclf-src.zip" kind="lib" path="lib/toniclf.jar"/>
 	<classpathentry kind="lib" path="lib/xep.jar"/>
 	<classpathentry sourcepath="lib/src/xercesImpl-src.zip" kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry sourcepath="lib/src/xml-apis-src.zip" kind="lib" path="lib/xml-apis.jar"/>
