@@ -355,7 +355,7 @@ public class ArrayUtil
      * @param  index     The index to insert the element before.
      * @return New array with element
      */
-    public static Object[] insertAt(Object array[], Object element, int index)
+    public static Object[] insertAt(Object[] array, Object element, int index)
     {
         int length = Array.getLength(array);
         
@@ -368,5 +368,33 @@ public class ArrayUtil
         Array.set(newarray, index, element);
         System.arraycopy(array, index, newarray, index + 1, length - index);
         return newarray;
+    }
+    
+    
+    /**
+     * Determines if two given arrays are equal in length and content
+     * 
+     * @param   array1  First array 
+     * @param   array2  Second array
+     * @return  True if the two arrays are equal by reference or equality and
+     *           each of the indices values are also equal by reference or 
+     * 			 equality, false otherwise.
+     */
+    public static boolean equals(Object[] array1, Object[] array2)
+    {
+        if (array1 == array2)
+        	return true;
+        	
+       	if (array1.length != array2.length)
+       		return false;
+       		
+       	for (int i=0; i<array1.length; i++)
+       	{
+       	    if (array1[i] != array2[i])
+       	        if (!array1[i].equals(array2[i]))
+       	        	return false;
+       	}
+       	
+       	return true;
     }
 }
