@@ -9,37 +9,51 @@ import java.net.UnknownHostException;
 import toolbox.util.SocketUtil;
 
 /**
- * Concrete implementation of an IConnection that wraps a socket.
+ * Concrete implementation of an {@link IConnection} that wraps a socket.
  */
 public class SocketConnection extends AbstractConnection implements IConnection
 {
-    /*
-    * TODO: Implement notification for connectionInterrupted
-    */
+    // TODO: Implement notification for connectionInterrupted
     
-    /** Retry interval defaults to 10 secs */
+    /** 
+     * Default retry interval is 10 seconds 
+     */
     private static final int DEFAULT_RETRY_INTERVAL = 10;
     
-    /** Socket being wrapped */
+    /** 
+     * Socket to manage 
+     */
     private Socket socket_;
 
-    /** Hostname of connection endpoint */
+    /** 
+     * Hostname or IP address of the connection endpoint 
+     */
     private String host_;
     
-    /** Port number of connection endpoint */
+    /** 
+     * Port number of connection endpoint 
+     */
     private int port_;
 
-    /** Flag for indefinite retry in case of connection failure */
+    /** 
+     * Flag to force reconnect if the connection is broken. The reconnect
+     * strategy will retry indefinitely. 
+     */
     private boolean forceConnect_;    
 
-    /** Retry interval for forceConnect is 10 secs */
+    /** 
+     * Interval in seconds between attempts to reconnect if the connection is 
+     * broken. 
+     */
     private int retryInterval_;
 
-    /** IsConnected flag */
+    /** 
+     * Connected state of the connection 
+     */
     private boolean connected_ = false;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -74,8 +88,8 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * @throws  IOException on I/O error
      * @throws  UnknownHostException on invalid hostname
      */
-    public SocketConnection(String host, int port) throws IOException, 
-        UnknownHostException
+    public SocketConnection(String host, int port) 
+        throws IOException, UnknownHostException
     {
         this(host, port, false);
     }
@@ -111,8 +125,9 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * @throws IOException on I/O error
      * @throws UnknownHostException on invalid hostname
      */
-    public SocketConnection(String host, int port, boolean forceConnect,
-        int retryInterval) throws IOException, UnknownHostException
+    public SocketConnection(
+        String host, int port, boolean forceConnect, int retryInterval) 
+            throws IOException, UnknownHostException
     {
        addConnectionListener(new InternalSocketConnectionListener());
        setHost(host);
@@ -123,7 +138,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     }
 
     //--------------------------------------------------------------------------
-    //  IConnection Interface
+    // IConnection Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -180,7 +195,9 @@ public class SocketConnection extends AbstractConnection implements IConnection
     }
 
     /**
-     * @return True if connected
+     * Returns true if connected, false otherwise
+     * 
+     * @return boolean
      */
     public boolean isConnected()
     {
@@ -209,14 +226,6 @@ public class SocketConnection extends AbstractConnection implements IConnection
     public Socket getSocket()
     {
         return socket_;
-    }
-    
-    /**
-     * @return  Stringified form
-     */
-    public String toString()
-    {
-        return getName() + " connection@" +getHost() + ":" + getPort();
     }
     
     /**
@@ -300,12 +309,26 @@ public class SocketConnection extends AbstractConnection implements IConnection
     }
 
     //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Return string containing the connection name, host, and port.
+     * 
+     * @return String
+     */
+    public String toString()
+    {
+        return getName() + " connection@" +getHost() + ":" + getPort();
+    }
+
+    //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
     
     /**
      * Internal socket connection listener that keeps track of the connected
-     * state based on generated events.
+     * state based on socket events.
      */
     class InternalSocketConnectionListener implements IConnectionListener 
     {
