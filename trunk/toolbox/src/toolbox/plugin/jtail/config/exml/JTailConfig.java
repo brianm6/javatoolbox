@@ -104,55 +104,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         IJTailConfig jtailConfig = new JTailConfig();
         
-        // Read optional window location
-        if ((jtailNode.getAttribute(ATTR_X) != null) &&
-            (jtailNode.getAttribute(ATTR_Y) != null))
-        {
-            Point location = new Point();
-            
-            location.x = 
-                Integer.parseInt(jtailNode.getAttribute(ATTR_X));
-                
-            location.y = 
-                Integer.parseInt(jtailNode.getAttribute(ATTR_Y));
-                
-            jtailConfig.setLocation(location);
-        }
-        else
-        {
-            ; // Set default location
-        }
-        
-        // Read optional window size
-        if ((jtailNode.getAttribute(ATTR_HEIGHT) != null) &&
-            (jtailNode.getAttribute(ATTR_WIDTH)!= null))
-        {
-            
-            Dimension size = new Dimension();
-            
-            size.height = Integer.parseInt(
-                jtailNode.getAttribute(ATTR_HEIGHT));
-                
-            size.width  = Integer.parseInt(
-                jtailNode.getAttribute(ATTR_WIDTH));
-                
-            jtailConfig.setSize(size);
-        }
-        else
-        {
-            ; // Set default size
-        }
-        
-        // Read optional directory
-        if (jtailNode.getAttribute(ATTR_DIR) != null)   
-        {
-            jtailConfig.setDirectory(jtailNode.getAttribute(ATTR_DIR));
-        }
-        else
-        {
-            ; // Set default directory
-        }
-        
         Element defaultsNode = jtailNode.getElement(ELEMENT_DEFAULTS);
         
         if (defaultsNode != null)

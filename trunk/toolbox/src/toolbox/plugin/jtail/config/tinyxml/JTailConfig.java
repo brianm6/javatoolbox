@@ -54,18 +54,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         // Root config node
         XMLNode jtailNode = new XMLNode(ELEMENT_JTAIL);
-        
-        // Size
-        jtailNode.addAttr(ATTR_HEIGHT, getSize().height + "");
-        jtailNode.addAttr(ATTR_WIDTH, getSize().width + "");
-        
-        // Location
-        jtailNode.addAttr(ATTR_X, getLocation().x + "");
-        jtailNode.addAttr(ATTR_Y, getLocation().y + "");
-
-        // Directory
-        if (getDirectory() != null)
-            jtailNode.addAttr(ATTR_DIR, getDirectory());
 
         // Defaults
         XMLNode defaultTailNode = ((TailPaneConfig) defaultConfig_).marshal();
@@ -97,46 +85,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     public static IJTailConfig unmarshal(XMLNode jtailNode) throws IOException 
     {
         IJTailConfig jtailConfig = new JTailConfig();
-        
-        // Read optional window location
-        String x = jtailNode.getAttr(ATTR_X);
-        String y = jtailNode.getAttr(ATTR_Y);
-        
-        if (x != null && y != null)
-        {
-            jtailConfig.setLocation(
-                new Point(Integer.parseInt(x), Integer.parseInt(y)));
-        }
-        else
-        {
-            jtailConfig.setLocation(new Point(100,100));
-        }
-        
-        // Read optional window size
-        String height = jtailNode.getAttr(ATTR_HEIGHT);
-        String width  = jtailNode.getAttr(ATTR_WIDTH);
-        
-        if (height != null && width != null)
-        {
-            jtailConfig.setSize(new Dimension(
-                Integer.parseInt(width),Integer.parseInt(height)));
-        }
-        else
-        {
-            jtailConfig.setSize(new Dimension(400,300));
-        }
-        
-        // Read optional directory
-        String dir = jtailNode.getAttr(ATTR_DIR);
-        
-        if (dir != null)   
-        {
-            jtailConfig.setDirectory(dir);
-        }
-        else
-        {
-            jtailConfig.setDirectory(System.getProperty("user.home"));
-        }
         
         XMLNode defaultsNode = jtailNode.getNode(ELEMENT_DEFAULTS);
         
