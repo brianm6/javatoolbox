@@ -50,8 +50,10 @@ public class JTailTabbedPane extends JSmartTabbedPane
      */
     public void newDataAvailable(TailPane tailPane)
     {
-        int index = indexOfComponent(tailPane);
-        setTitleAt(index, "* " + getTitleAt(index));
+        // TODO: Do something useful here -- visual cue.
+        
+        //int index = indexOfComponent(tailPane);
+        //setTitleAt(index, "* " + getTitleAt(index));
     }
 
 
