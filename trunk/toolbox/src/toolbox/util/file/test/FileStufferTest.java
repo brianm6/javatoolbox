@@ -60,16 +60,29 @@ public class FileStufferTest extends TestCase
         File outfile = new File(tmpDir, "outfile");
         FileStuffer fs = new FileStuffer(outfile, 500);
 
+		assertEquals(500, fs.getDelay());
+
         fs.start();
         
-        ThreadUtil.sleep(5000);
+        ThreadUtil.sleep(4000);
         
         fs.stop();
         
         String contents = FileUtil.getFileContents(outfile.getAbsolutePath());
 
-        System.out.println(contents);                                           
+        logger_.info("File contents: \n" + contents);                                           
         
         outfile.delete();
+    }
+    
+    /**
+     * Tests printUsage()
+     */
+    public void testPrintUsage()
+    {
+    	logger_.info("Running testPrintUsage...");
+    	
+    	// Passing in no args should trigger usage info to be displayed
+    	FileStuffer.main(new String[0]);
     }
 }
