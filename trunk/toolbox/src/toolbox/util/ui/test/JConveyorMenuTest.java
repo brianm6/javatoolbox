@@ -1,22 +1,19 @@
 package toolbox.util.ui.test;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.SwingUtil;
+import toolbox.junit.UITestCase;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenu;
@@ -25,13 +22,15 @@ import toolbox.util.ui.JSmartMenuItem;
 /**
  * Unit test for JConveyorMenu.
  */
-public class JConveyorMenuTest extends TestCase
+public class JConveyorMenuTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(JConveyorMenuTest.class);
 
     private static int cnt = 1;
-        
+    
+    private JMenu menu_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -40,11 +39,9 @@ public class JConveyorMenuTest extends TestCase
      * Entry point.
      * 
      * @param args None recognized
-     * @throws Exception on error
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
-        SwingUtil.setPreferredLAF();
         TestRunner.run(JConveyorMenuTest.class);
     }
     
@@ -59,53 +56,52 @@ public class JConveyorMenuTest extends TestCase
     {
         logger_.info("Running testJConveyorMenu...");
         
-        JDialog frame = new JDialog(new JFrame(), "testJConveyorMenu", true);
-        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                
+        menu_ = new JConveyorMenu("Menu", 5);
+        
         JMenuBar menuBar = new JMenuBar();
-        frame.setJMenuBar(menuBar);
-        
-        final JMenu menu = new JConveyorMenu("Menu", 5);
-        
-        menuBar.add(menu);
-        
+        menuBar.add(menu_);
         menuBar.add(new JSmartMenu(
             "Menu Items should start dropping off after 5 items"));
         
-        Container cp = frame.getContentPane();
-        cp.setLayout(new BorderLayout());
-
-        class DummyAction extends AbstractAction
-        {
-            public DummyAction()
-            {
-                super("Menu Item " + cnt++);
-            }
-            
-            public void actionPerformed(ActionEvent e)
-            {
-            }
-        }
-
-        class AddItemAction extends AbstractAction
-        {
-            public AddItemAction()
-            {
-                super("Add Item to Menu");
-            }
-                    
-            public void actionPerformed(ActionEvent e)
-            {
-                menu.add(new JSmartMenuItem(new DummyAction()));
-            }
-        
-        }
-        
+        JPanel cp = new JPanel(new BorderLayout());
         JButton add = new JSmartButton(new AddItemAction());
-        
         cp.add(BorderLayout.CENTER, add);
-        frame.pack();
-        SwingUtil.centerWindow(frame);
-        frame.setVisible(true);
+        
+        setMenuBar(menuBar);
+        launchInDialog(cp, SCREEN_ONE_THIRD);
+    }
+    
+    //--------------------------------------------------------------------------
+    // TestAction
+    //--------------------------------------------------------------------------
+    
+    class TestAction extends AbstractAction
+    {
+        public TestAction()
+        {
+            super("Menu Item " + cnt++);
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // AddItemAction
+    //--------------------------------------------------------------------------
+    
+    class AddItemAction extends AbstractAction
+    {
+        public AddItemAction()
+        {
+            super("Add Item to Menu");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            menu_.add(new JSmartMenuItem(new TestAction()));
+        }
+        
     }
 }
