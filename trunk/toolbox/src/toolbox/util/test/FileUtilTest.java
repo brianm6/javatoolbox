@@ -766,13 +766,49 @@ public class FileUtilTest extends TestCase
      */
     public void testGetLargestFile() throws Exception
     {
-        //logger_.info("Running testGetLargestFile...");
+        logger_.info("Running testGetLargestFile...");
         
-        // TODO: write me
+        File dir = FileUtil.createTempDir();
+        int maxFiles = 20;
         
-        //assertTrue(true);
+        try
+        {
+            int maxLen = 0;
+            
+            for (int i=0; i < maxFiles; i++)
+            {
+                File file = FileUtil.createTempFile(dir);
+                int len = RandomUtil.nextInt(1, 5000);
+                
+                if (len > maxLen)
+                    maxLen = len;
+                
+                String content = RandomUtil.nextString(len);
+                FileUtil.setFileContents(file, content, false);
+            }
+            
+            File largest = FileUtil.getLargestFile(dir.listFiles());
+            assertEquals(maxLen, largest.length());
+        }
+        finally
+        {
+            FileUtil.removeDir(dir);
+        }
     }
 
+    
+    /**
+     * Tests getLargestFile() for parameters null and empty array. 
+     * 
+     * @throws Exception on error.
+     */
+    public void testGetLargestFileNegative() throws Exception
+    {
+        logger_.info("Running testGetLargestFileNegative...");
+        assertNull(FileUtil.getLargestFile(new File[0]));
+        assertNull(FileUtil.getLargestFile(null));
+    }
+    
     
     /**
      * Tests getLongestFilename()
@@ -781,13 +817,33 @@ public class FileUtilTest extends TestCase
      */
     public void testGetLongestFilename() throws Exception
     {
-        //logger_.info("Running testGetLongestFilename...");
+        logger_.info("Running testGetLongestFilename...");
         
-        // TODO: write me
+        File longest = FileUtil.getLongestFilename(new File[] 
+        {
+            new File("a"),
+            new File("xyz"),
+            new File("ij"),
+            new File("")
+        });
         
-        //assertTrue(true);
+        assertEquals("xyz", longest.getName());
     }
 
+    
+    /**
+     * Tests getLongestFilename() for parameters null and empty array. 
+     * 
+     * @throws Exception on error.
+     */
+    public void testGetLongestFilenameNegative() throws Exception
+    {
+        logger_.info("Running testGetLongestFilenameNegative...");
+        assertNull(FileUtil.getLongestFilename(new File[0]));
+        assertNull(FileUtil.getLongestFilename(null));
+    }
+    
+    
     
     /**
      * Tests removeDir()
