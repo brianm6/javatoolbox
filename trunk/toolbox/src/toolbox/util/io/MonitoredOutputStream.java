@@ -6,6 +6,7 @@ import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ArrayUtil;
 import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputMonitor;
 import toolbox.util.io.transferred.DefaultTransferredMonitor;
@@ -34,6 +35,11 @@ public class MonitoredOutputStream extends FilterOutputStream
      */
     private String name_;
 
+    /**
+     * Output stream listeners.
+     */
+    private OutputStreamListener[] listeners_;
+    
     /**
      * Stream throughput monitor.
      */
@@ -72,6 +78,7 @@ public class MonitoredOutputStream extends FilterOutputStream
         setName(name);
         setThroughputMonitor(new DefaultThroughputMonitor());
         setTransferredMonitor(new DefaultTransferredMonitor());
+        listeners_ = new OutputStreamListener[0];
     }
     
     //--------------------------------------------------------------------------
@@ -79,175 +86,73 @@ public class MonitoredOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Writes byte to stream keeping track of the count.
+     * Updates monitors with the number of bytes transferred.
      * 
-     * @param b Byte to write. 
-     * @throws IOException on I/O error.
+     * @see java.io.OutputStream#write(int)
      */
     public void write(int b) throws IOException
     {
         super.write(b);
         throughputMonitor_.newBytesTransferred(1);
         transferredMonitor_.newBytesTransferred(1);
-        //transferredProxy_.bytesTransferred(1);
-        //fireByteWritten(b);
     }
 
     
     /**
-     * Hooks for when the stream is flushed.
+     * Causes firing of stream flushed event.
      * 
      * @see java.io.FilterOutputStream#flush()
      */
     public void flush() throws IOException
     {
         super.flush();
-//        fireStreamFlushed();
+        fireStreamFlushed();
     }
     
     
     /**
-     * Hooks for when the stream is closed.
+     * Causes firing of stream close event.
      * 
      * @see java.io.FilterOutputStream#close()
      */
     public void close() throws IOException
     {
-        try
-        {
-            super.close();
-        }
-        finally
-        {
-//            fireStreamClosed();
-        }
+        super.close();
+        fireStreamClosed();
     }
     
     //--------------------------------------------------------------------------
-    // ThroughputMonitor Interface
+    // Fire Notification Methods
     //--------------------------------------------------------------------------
     
     /** 
      * Fires notification that the stream was closed.
      */
-//    protected void fireStreamClosed()
-//    {
-//        switch (listeners_.length)
-//        {
-//            case 0 : return;
-//            case 1 : listeners_[0].streamClosed(this); return;
-//            default: for (int i = 0, n = listeners_.length; i < n; i++)
-//                        listeners_[i].streamClosed(this);
-//        }
-//    }
-//
-//    
-//    /** 
-//     * Fires notification that the stream was flushed.
-//     */
-//    protected void fireStreamFlushed()
-//    {
-//        switch (listeners_.length)
-//        {
-//            case 0 : return;
-//            case 1 : listeners_[0].streamFlushed(this); return;
-//            default: for (int i = 0, n = listeners_.length; i < n; i++)
-//                        listeners_[i].streamFlushed(this);
-//        }
-//    }
-
-    
-//    /** 
-//     * Fires notification that a byte was written to the stream.
-//     * 
-//     * @param b Byte written to stream.
-//     */
-//    protected void fireByteWritten(int b)
-//    {
-//        //
-//        // Throughput in bytes/second using various strategies for 
-//        // notification
-//        //
-//        
-//        // 4.7 million
-//        //for (int i=0, n=listeners_.size(); i<n; i++)
-//        //    ((Listener) listeners_.get(i)).byteWritten(this, b);  
-//        
-//        // 7.3 million
-//        //((Listener) listeners_.get(0)).byteWritten(this, b);
-//        
-//        // 10.5 million
-//        //if (listener == null)
-//        //    listener = (Listener) listeners_.get(0);
-//        //    
-//        //listener.byteWritten(this, b);
-//        
-//        // 7.9 million
-//        //if (larray == null)
-//        //{
-//        //    larray = new Listener[listeners_.size()];
-//        //    for (int i=0; i<larray.length; i++)
-//        //        larray[i] = (Listener) listeners_.get(i);
-//        //}
-//        
-//        //for (int i=0, n=larray.length; i<n; i++)
-//        //    larray[i].byteWritten(this, b);
-//                
-//        // 9.5 million                
-//        //        if (larray == null)
-//        //        {
-//        //            larray = new Listener[listeners_.size()];
-//        //            for (int i=0; i<larray.length; i++)
-//        //                larray[i] = (Listener) listeners_.get(i);
-//        //        }
-//        //        
-//        //        if (larray.length == 1)
-//        //            larray[0].byteWritten(this, b);
-//        //        else
-//        //            for (int i=0, n=larray.length; i<n; i++)
-//        //                larray[i].byteWritten(this, b);
-//        
-//        // 9.8 million
-//        //        if (listenerArray_.length == 1)
-//        //            listenerArray_[0].byteWritten(this, b);
-//        //        else
-//        //            for (int i=0, n=listenerArray_.length; i<n; i++)
-//        //                listenerArray_[i].byteWritten(this, b);
-//                
-//        // 9.3 million
-//        //for (int i=0, n=listenerArray_.length; i<n; i++)
-//        //    listenerArray_[i].byteWritten(this, b);
-//               
-//               
-//        // 18.1 million - no code        
-//        
-//        // 10.2 millions - best compromise
-//        switch (listeners_.length)
-//        {
-//            case 0 : return;
-//            case 1 : listeners_[0].byteWritten(this, b); return;
-//            default: for (int i = 0, n = listeners_.length; i < n; i++)
-//                        listeners_[i].byteWritten(this, b);
-//        }
-//    }
+    protected void fireStreamClosed()
+    {
+        switch (listeners_.length)
+        {
+            case 0 : return;
+            case 1 : listeners_[0].streamClosed(this); return;
+            default: for (int i = 0, n = listeners_.length; i < n; i++)
+                        listeners_[i].streamClosed(this);
+        }
+    }
 
     
     /** 
-     * Fires notification of stream throughput per sample period.
-     * 
-     * @param throughput Number of bytes written per sample period.
+     * Fires notification that the stream was flushed.
      */
-//    protected void fireStreamThroughput(float throughput)
-//    {
-//        switch (listeners_.length)
-//        {
-//            case 0 : return;
-//            case 1 : listeners_[0].streamThroughput(this, throughput); 
-//                     return;
-//            default: for (int i = 0, n = listeners_.length; i < n; i++)
-//                        listeners_[i].streamThroughput(this, throughput);
-//        }
-//    }
+    protected void fireStreamFlushed()
+    {
+        switch (listeners_.length)
+        {
+            case 0 : return;
+            case 1 : listeners_[0].streamFlushed(this); return;
+            default: for (int i = 0, n = listeners_.length; i < n; i++)
+                        listeners_[i].streamFlushed(this);
+        }
+    }
 
     //--------------------------------------------------------------------------
     // Public
@@ -318,6 +223,30 @@ public class MonitoredOutputStream extends FilterOutputStream
     {
         transferredMonitor_ = transferredMonitor;
     }
+
+    
+    /**
+     * Adds a Listener to the list of registered stream listeners.
+     * 
+     * @param listener Listener to register.
+     */
+    public void addOutputStreamListener(OutputStreamListener listener)
+    {
+        listeners_ = 
+            (OutputStreamListener[]) ArrayUtil.add(listeners_, listener);
+    }
+    
+    
+    /**
+     * Removes a Listener from the list of registered stream listeners.
+     * 
+     * @param listener Listener to remove.
+     */
+    public void removeOutputStreamListener(OutputStreamListener listener)
+    {
+        listeners_ = 
+            (OutputStreamListener[]) ArrayUtil.remove(listeners_, listener);
+    }
     
     //--------------------------------------------------------------------------
     // Interfaces
@@ -327,14 +256,14 @@ public class MonitoredOutputStream extends FilterOutputStream
      * Listener interface used to notify implementers of activity within the
      * stream.
      */
-    public interface Listener
+    public interface OutputStreamListener
     {
         /**
          * Notification that the stream has been closed.
          * 
          * @param stream Stream that was closed.
          */
-        void streamClosed(MonitoredOutputStream stream);
+        void streamClosed(OutputStream stream);
         
         
         /**
@@ -342,25 +271,80 @@ public class MonitoredOutputStream extends FilterOutputStream
          * 
          * @param stream Stream that was flushed.
          */
-        void streamFlushed(MonitoredOutputStream stream);
-        
-        
-        /**
-         * Notification that data was written to the stream.
-         * 
-         * @param stream Stream data was written to.
-         * @param b Byte written to the stream.
-         */
-        void byteWritten(MonitoredOutputStream stream, int b);
-        
-        
-        /**
-         * Notification of the number of bytes transfered through the stream
-         * over the last sample period.
-         * 
-         * @param stream Stream being monitored for throughput.
-         * @param bytesPerPeriod Number of bytes transferred over sample period.
-         */
-        void streamThroughput(MonitoredOutputStream stream, float bytesPerPeriod);
+        void streamFlushed(OutputStream stream);
     }
 }
+
+///** 
+//* Fires notification that a byte was written to the stream.
+//* 
+//* @param b Byte written to stream.
+//*/
+//protected void fireByteWritten(int b)
+//{
+// //
+// // Throughput in bytes/second using various strategies for 
+// // notification
+// //
+// 
+// // 4.7 million
+// //for (int i=0, n=listeners_.size(); i<n; i++)
+// //    ((Listener) listeners_.get(i)).byteWritten(this, b);  
+// 
+// // 7.3 million
+// //((Listener) listeners_.get(0)).byteWritten(this, b);
+// 
+// // 10.5 million
+// //if (listener == null)
+// //    listener = (Listener) listeners_.get(0);
+// //    
+// //listener.byteWritten(this, b);
+// 
+// // 7.9 million
+// //if (larray == null)
+// //{
+// //    larray = new Listener[listeners_.size()];
+// //    for (int i=0; i<larray.length; i++)
+// //        larray[i] = (Listener) listeners_.get(i);
+// //}
+// 
+// //for (int i=0, n=larray.length; i<n; i++)
+// //    larray[i].byteWritten(this, b);
+//         
+// // 9.5 million                
+// //        if (larray == null)
+// //        {
+// //            larray = new Listener[listeners_.size()];
+// //            for (int i=0; i<larray.length; i++)
+// //                larray[i] = (Listener) listeners_.get(i);
+// //        }
+// //        
+// //        if (larray.length == 1)
+// //            larray[0].byteWritten(this, b);
+// //        else
+// //            for (int i=0, n=larray.length; i<n; i++)
+// //                larray[i].byteWritten(this, b);
+// 
+// // 9.8 million
+// //        if (listenerArray_.length == 1)
+// //            listenerArray_[0].byteWritten(this, b);
+// //        else
+// //            for (int i=0, n=listenerArray_.length; i<n; i++)
+// //                listenerArray_[i].byteWritten(this, b);
+//         
+// // 9.3 million
+// //for (int i=0, n=listenerArray_.length; i<n; i++)
+// //    listenerArray_[i].byteWritten(this, b);
+//        
+//        
+// // 18.1 million - no code        
+// 
+// // 10.2 millions - best compromise
+// switch (listeners_.length)
+// {
+//     case 0 : return;
+//     case 1 : listeners_[0].byteWritten(this, b); return;
+//     default: for (int i = 0, n = listeners_.length; i < n; i++)
+//                 listeners_[i].byteWritten(this, b);
+// }
+//}
