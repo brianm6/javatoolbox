@@ -23,12 +23,12 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
+import toolbox.log4j.JTextAreaAppender;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JListPopupMenu;
-import toolbox.util.ui.JTextAreaAppender;
 import toolbox.util.ui.RegexListModelFilter;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
