@@ -15,6 +15,7 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Paint;
 
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -560,8 +561,22 @@ public class JHeaderPanel extends JPanel
     public static JButton createButton(Action action)
     {
         JButton jb = new JSmartButton(action);
-        jb.setText("");
+        prepButton(jb);
         return jb;
+    }
+
+    
+    /**
+     * Common prep procedure for button to play nice in a toolbar.
+     * 
+     * @param jb Button to prep.
+     */
+    private static void prepButton(AbstractButton jb)
+    {
+        jb.setFocusPainted(false);
+        jb.setRolloverIcon(jb.getIcon());
+        jb.setMargin(new Insets(0,0,0,0));
+        jb.setText(null);
     }
     
     
@@ -578,11 +593,8 @@ public class JHeaderPanel extends JPanel
     {
         JButton jb = new JSmartButton(action);
         jb.setIcon(icon);
-        jb.setFocusPainted(false);
         jb.setToolTipText(tooltip);
-        jb.setRolloverIcon(icon);
-        jb.setMargin(new Insets(0,0,0,0));
-        jb.setText(null);
+        prepButton(jb);
         return jb;
     }
 
@@ -603,11 +615,8 @@ public class JHeaderPanel extends JPanel
     {
         JSmartToggleButton jb = new JSmartToggleButton(action);
         jb.setIcon(icon);
-        jb.setFocusPainted(false);
         jb.setToolTipText(tooltip);
-        jb.setRolloverIcon(icon);
-        jb.setMargin(new Insets(0,0,0,0));
-        jb.setText(null);
+        prepButton(jb);
         return jb;
     }
 
@@ -653,7 +662,7 @@ public class JHeaderPanel extends JPanel
         String property)
     {
         JSmartToggleButton jb = new JSmartToggleButton(action);
-        jb.setText("");
+        prepButton(jb);
         jb.toggleOnProperty(propertyChangeSource, property);
         return jb;
     }
