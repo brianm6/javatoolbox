@@ -1,6 +1,7 @@
 package toolbox.workspace.prefs;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -10,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -19,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -64,6 +68,10 @@ public class PreferencesView extends JDialog implements ActionListener
      */
     private JSmartTree tree_;
     
+    JPanel cardPanel_;
+    CardLayout cardLayout_;
+    
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -93,13 +101,19 @@ public class PreferencesView extends JDialog implements ActionListener
         // Add to content pane
         JPanel view = new JPanel(new BorderLayout());
         
+        view.add(BorderLayout.CENTER, buildCardPanel());
         view.add(BorderLayout.WEST, buildTreePanel());
-        view.add(BorderLayout.CENTER, buildPreferencesPanel());
         view.add(BorderLayout.SOUTH, buildButtonPanel());
         
         setContentPane(view);
     }
 
+    protected JPanel buildCardPanel()
+    {
+        cardPanel_ = new JPanel(cardLayout_ = new CardLayout());
+        return cardPanel_;
+    }
+    
     
     /**
      * Builds the ok/cancel button panel.
@@ -115,32 +129,85 @@ public class PreferencesView extends JDialog implements ActionListener
         okButton.addActionListener(this);
         
         p.add(okButton);
+        p.add(new JSmartButton(new ApplyAction()));
         p.add(new JSmartButton(new DisposeAction("Cancel", this)));
         return p;
     }
     
-    class MyTreeCellRenderer extends SmartTreeCellRenderer
+    class ApplyAction extends AbstractAction
     {
-        public Component getTreeCellRendererComponent(JTree tree,
-            Object value, boolean selected, boolean expanded, boolean leaf,
-            int row, boolean hasFocus)
+        public ApplyAction()
         {
-            super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+            super("Apply");
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            System.out.println("applying!");
+        }
+    }
+    
+    class PrefsTreeCellRenderer extends SmartTreeCellRenderer
+    {
+        public Component getTreeCellRendererComponent(
+            JTree tree,
+            Object value, 
+            boolean selected, 
+            boolean expanded, 
+            boolean leaf,
+            int row, 
+            boolean hasFocus)
+        {
+            super.getTreeCellRendererComponent(
+                tree, 
+                value, 
+                selected, 
+                expanded, 
+                leaf, 
+                row, 
+                hasFocus);
             
             DefaultMutableTreeNode d = (DefaultMutableTreeNode) value;
             
-            if (leaf)
+            JComponent c = (JComponent) d.getUserObject();
+            
+            if (c != null)
             {
-                JComponent c = (JComponent) d.getUserObject();
                 System.out.println("Name = " + c.getName());
                 setText(c.getName());
+            }
+            else
+            {
+                setText("NULL");
             }
             
             return this; 
             
         }
-    };
+    }
     
+    class PrefsTreeSelectionListener implements TreeSelectionListener
+    {
+        public void valueChanged(TreeSelectionEvent e)
+        {
+            DefaultMutableTreeNode node = 
+                (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+            
+            JComponent c = (JComponent) node.getUserObject();
+            cardLayout_.show(cardPanel_, c.getName());
+        }
+    }
+    
+    public static void main(String[] args)
+    {
+        JDialog d = new PreferencesView(new Frame());
+        d.setVisible(true);
+        SwingUtil.centerWindow(d);
+        
+    }
     
     /**
      * Builds the tree panel with the preference views as children.
@@ -149,16 +216,26 @@ public class PreferencesView extends JDialog implements ActionListener
      */
     protected JPanel buildTreePanel()
     {
+        //cardPanel_ = new JPanel(cardLayout_ = new CardLayout());
+        JPanel proxyPanel = buildProxyPanel();
+        JSmartLabel lastPanel = new JSmartLabel("Last Config Panel");
+        lastPanel.setName("Lastl");
+
+        cardPanel_.add(proxyPanel, proxyPanel.getName());
+        cardPanel_.add(lastPanel, lastPanel.getName());
         
-        DefaultMutableTreeNode root_ = new DefaultMutableTreeNode();
+        JSmartLabel rootCard = new JSmartLabel("Prefs Card Panel");
+        rootCard.setName("Prefs");
+        
+        DefaultMutableTreeNode root_ = new DefaultMutableTreeNode(rootCard);
         DefaultTreeModel treeModel_ = new DefaultTreeModel(root_);
         tree_ = new JSmartTree(root_);
-        tree_.setCellRenderer(new DefaultTreeCellRenderer());
+        tree_.setCellRenderer(new PrefsTreeCellRenderer());
+         
+        root_.add(new DefaultMutableTreeNode(proxyPanel));
+        root_.add(new DefaultMutableTreeNode(lastPanel));
         
-        root_.add(new DefaultMutableTreeNode(buildPreferencesPanel()));
-        JSmartLabel jl = new JSmartLabel("Peekaboo");
-        jl.setName("Label");
-        root_.add(new DefaultMutableTreeNode(jl));
+        SwingUtil.expandAll(tree_, true);
         
         JHeaderPanel p = 
             new JHeaderPanel(
@@ -167,7 +244,7 @@ public class PreferencesView extends JDialog implements ActionListener
                 null,
                 new JScrollPane(tree_));
         
-        
+        tree_.addTreeSelectionListener(new PrefsTreeSelectionListener());
         return p;
     }
     
@@ -177,11 +254,11 @@ public class PreferencesView extends JDialog implements ActionListener
      *
      * @return Preferences panel.
      */
-    protected JPanel buildPreferencesPanel()
+    protected JPanel buildProxyPanel()
     {
         // Build and wire preferences panel
         JPanel prefPanel = new JPanel(new GridBagLayout());
-        prefPanel.setBorder(BorderFactory.createTitledBorder("Defaults"));
+        prefPanel.setBorder(BorderFactory.createTitledBorder("HTTP Proxy"));
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -192,26 +269,26 @@ public class PreferencesView extends JDialog implements ActionListener
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 4, 7, 4);
 
-        prefPanel.add(new JSmartLabel("AutoScroll", SwingConstants.RIGHT), gbc);
+        prefPanel.add(new JSmartLabel("Hostname", SwingConstants.RIGHT), gbc);
 
         gbc.gridx++;
-        prefPanel.add(new JSmartCheckBox(), gbc);
+        prefPanel.add(new JSmartTextField(14), gbc);
 
         gbc.gridy++;
         gbc.gridx--;
         prefPanel.add(
-            new JSmartLabel("Show Line Numbers", SwingConstants.RIGHT), gbc);
+            new JSmartLabel("Port", SwingConstants.RIGHT), gbc);
 
         gbc.gridx++;
-        prefPanel.add(new JSmartCheckBox(), gbc);
+        prefPanel.add(new JSmartTextField(14), gbc);
 
-        gbc.gridx--;
-        gbc.gridy++;
-        prefPanel.add(new JSmartLabel("Filter", SwingConstants.RIGHT), gbc);
-
-        gbc.gridx++;
-        gbc.fill = GridBagConstraints.NONE;
-        prefPanel.add(new JSmartTextField(12), gbc);
+//        gbc.gridx--;
+//        gbc.gridy++;
+//        prefPanel.add(new JSmartLabel("Filter", SwingConstants.RIGHT), gbc);
+//
+//        gbc.gridx++;
+//        gbc.fill = GridBagConstraints.NONE;
+//        prefPanel.add(new JSmartTextField(12), gbc);
 
         prefPanel.setName("Proxy");
         return prefPanel;
