@@ -690,13 +690,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
     /**
      * Sets the value the user has chosen. 
-     * @param newValue  the chosen value
-     *
-     * @see #getValue
-     * @beaninfo
-     *   preferred: true
-     *       bound: true
-     * description: The option pane's value object.
+     * 
+     * @param  newValue  the chosen value
+     * @see    #getValue
      */
     public void setValue(Object newValue)
     {
@@ -734,13 +730,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * otherwise a button is created for the element.
      *
      * @param newOptions an array of <code>Objects</code> that create the
-     *      buttons the user can click on, or arbitrary 
-     *      <code>Components</code> to add to the pane
-     *
-     * @see #getOptions
-     * @beaninfo
-     *       bound: true
-     * description: The option pane's options objects.
+     *                   buttons the user can click on, or arbitrary 
+     *                   <code>Components</code> to add to the pane
+     * @see   #getOptions
      */
     public void setOptions(Object[] newOptions)
     {
@@ -777,13 +769,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * that has the focus when the pane is initially displayed.
      *
      * @param newInitialValue the <code>Object</code> that gets the initial 
-     *                         keyboard focus
+     *                        keyboard focus
      *
-     * @see #getInitialValue
-     * @beaninfo
-     *   preferred: true
-     *       bound: true
-     * description: The option pane's initial value object.
+     * @see   #getInitialValue
      */
     public void setInitialValue(Object newInitialValue)
     {
@@ -814,18 +802,16 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * The message type is used by the Look and Feel to determine the
      * icon to display (if not supplied) as well as potentially how to
      * lay out the <code>parentComponent</code>.
+     * 
      * @param newType an integer specifying the kind of message to display:
-     *                <code>ERROR_MESSAGE</code>, <code>INFORMATION_MESSAGE</code>,
+     *                <code>ERROR_MESSAGE</code>, 
+     *                <code>INFORMATION_MESSAGE</code>,
      *                <code>WARNING_MESSAGE</code>,
-     *                <code>QUESTION_MESSAGE</code>, or <code>PLAIN_MESSAGE</code>
-     * @exception RuntimeException if <code>newType</code> is not one of the
-     *      legal values listed above
-    
-     * @see #getMessageType
-     * @beaninfo
-     *   preferred: true
-     *       bound: true
-     * description: The option pane's message type.
+     *                <code>QUESTION_MESSAGE</code>, or 
+     *                <code>PLAIN_MESSAGE</code>
+     * @exception     RuntimeException if <code>newType</code> is not one of the
+     *                legal values listed above
+     * @see           #getMessageType
      */
     public void setMessageType(int newType)
     {
@@ -863,20 +849,16 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * Sets the options to display. 
      * The option type is used by the Look and Feel to
      * determine what buttons to show (unless options are supplied).
-     * @param newType an integer specifying the options the L&F is to display:
-     *                  <code>DEFAULT_OPTION</code>, 
-     *          <code>YES_NO_OPTION</code>,
-     *          <code>YES_NO_CANCEL_OPTION</code>,
-     *                  or <code>OK_CANCEL_OPTION</code>
-     * @exception RuntimeException if <code>newType</code> is not one of
-     *      the legal values listed above
-     *
-     * @see #getOptionType
-     * @see #setOptions
-     * @beaninfo
-     *   preferred: true
-     *       bound: true
-     * description: The option pane's option type.
+     * 
+     * @param newType An integer specifying the options the L&F is to display:
+     *                <code>DEFAULT_OPTION</code>, 
+     *                <code>YES_NO_OPTION</code>,
+     *                <code>YES_NO_CANCEL_OPTION</code> or 
+     *                <code>OK_CANCEL_OPTION</code>
+     * @exception     RuntimeException if <code>newType</code> is not one of
+     *                the legal values listed above
+     * @see           #getOptionType
+     * @see           #setOptions
       */
     public void setOptionType(int newType)
     {
@@ -921,16 +903,13 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * <code>setInitialSelectionValue</code> to specify the initially-chosen
      * value. After the pane as been enabled, <code>inputValue</code> is 
      * set to the value the user has selected.
-     * @param newValues an array of <code>Objects</code> the user to be
-     *          displayed
-     *                  (usually in a list or combo-box) from which
+     * 
+     * @param newValues An array of <code>Objects</code> the user to be
+     *                  displayed (usually in a list or combo-box) from which
      *                  the user can make a selection
-     * @see #setWantsInput
-     * @see #setInitialSelectionValue
-     * @see #getSelectionValues
-     * @beaninfo
-     *       bound: true
-     * description: The option pane's selection values.
+     * @see   #setWantsInput
+     * @see   #setInitialSelectionValue
+     * @see   #getSelectionValues
      */
     public void setSelectionValues(Object[] newValues)
     {
@@ -961,12 +940,10 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     /**
      * Sets the input value that is initially displayed as selected to the user. 
      * Only used if <code>wantsInput</code> is true.
-     * @param newValue the initially selected value
-     * @see #setSelectionValues
-     * @see #getInitialSelectionValue
-     * @beaninfo
-     *       bound: true
-     * description: The option pane's initial selection value object.
+     * 
+     * @param  newValue  The initially selected value
+     * @see    #setSelectionValues
+     * @see    #getInitialSelectionValue
      */
     public void setInitialSelectionValue(Object newValue)
     {
@@ -1002,16 +979,12 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * input value initially displayed as selected to the user, use
      * <code>setInitialSelectionValue</code>.
      *
-     * @param newValue the <code>Object</code> used to set the
-     *      value that the user specified (usually in a text field)
-     * @see #setSelectionValues
-     * @see #setInitialSelectionValue
-     * @see #setWantsInput
-     * @see #getInputValue
-     * @beaninfo
-     *   preferred: true
-     *       bound: true
-     * description: The option pane's input value object.
+     * @param  newValue  The <code>Object</code> used to set the
+     *                   value that the user specified (usually in a text field)
+     * @see    #setSelectionValues
+     * @see    #setInitialSelectionValue
+     * @see    #setWantsInput
+     * @see    #getInputValue
      */
     public void setInputValue(Object newValue)
     {
@@ -1055,10 +1028,6 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      *
      * @see #setSelectionValues
      * @see #setInputValue
-     * @beaninfo
-     *   preferred: true
-     *       bound: true
-     * description: Flag which allows the user to input a value.
      */
     public void setWantsInput(boolean newValue)
     {
@@ -1072,13 +1041,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
     /**
      * Sets the option pane's message-object.
-     * @param newMessage the <code>Object</code> to display
-     * @see #getMessage
-     *
-     * @beaninfo
-     *   preferred: true
-     *   bound: true
-     * description: The optionpane's message object.
+     * 
+     * @param  newMessage   The <code>Object</code> to display
+     * @see    #getMessage
      */
     public void setMessage(Object newMessage) 
     {
