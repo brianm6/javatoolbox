@@ -330,17 +330,45 @@ public final class JDBCUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Formats a result set in a table like manner.
+     * Converts the contents of a result set into a two-dimentional array of
+     * data. Each cell in the table contains an instance of the data type
+     * returned from called ResultSet#getObject(). By default, column names
+     * are not included in the returned array.
      * 
-     * @param rs ResultSet to format.
-     * @return Contents of result set formatted in a table like format.
+     * @param rs ResultSet to convert to an array.
+     * @param includeColumnHeaders True to include column names as the first row
+     *        of the returned two-dimensional array, false otherwise.
+     * @return Object[][]
      * @throws SQLException on sql error.
+     * @see #toArray(ResultSet, boolean)
      */
     public static Object[][] toArray(ResultSet rs) throws SQLException
     {
+        return toArray(rs, false);
+    }
+    
+    
+    /**
+     * Converts the contents of a result set into a two-dimentional array of
+     * data. Each cell in the table contains an instance of the data type
+     * returned from called ResultSet#getObject().
+     * 
+     * @param rs ResultSet to convert to an array.
+     * @param includeColumnHeaders True to include column names as the first row
+     *        of the returned two-dimensional array, false otherwise.
+     * @return Object[][]
+     * @throws SQLException on sql error.
+     * @see #toArray(ResultSet)
+     */
+    public static Object[][] toArray(ResultSet rs, boolean includeColumnHeader) 
+        throws SQLException
+    {
         int numCols = rs.getMetaData().getColumnCount();
         List rows = new ArrayList();
-    
+
+        if (includeColumnHeader)
+            rows.add(getColumnNames(rs));
+        
         while (rs.next())
         {
             Object[] row = new Object[numCols];
@@ -366,7 +394,7 @@ public final class JDBCUtil
     
         return table;
     }
-
+    
 
     /**
      * Formats a results set in a table like manner.
@@ -396,7 +424,6 @@ public final class JDBCUtil
         }
         
         int numRows = 0;
-        ElapsedTime time = new ElapsedTime();
         List rows = new ArrayList();
         rows.add(header);
 
@@ -440,8 +467,6 @@ public final class JDBCUtil
             rows.add(row);
         }
 
-        time.setEndTime();
-
         for (int i = 0; i < colWidth.length; colWidth[i] = colWidth[i++] + 2);
 
         String[] dashes = new String[numCols];
@@ -469,6 +494,28 @@ public final class JDBCUtil
         return sb.toString();
     }
 
+    
+    /**
+     * Returns the names of the columns in a given ResultSet.
+     * 
+     * @param rs Result set.
+     * @return String[]
+     * @throws SQLException on error.
+     */
+    public static String[] getColumnNames(ResultSet rs) throws SQLException
+    {
+        int numCols = rs.getMetaData().getColumnCount();
+        String[] colNames = new String[numCols];
+        
+        for (int i = 1; i <= numCols; i++) 
+        {
+            String colName = rs.getMetaData().getColumnLabel(i).trim();
+            colNames[i-1] = StringUtils.isBlank(colName) ? "[NULL]" : colName;
+        }
+        
+        return colNames;
+    }
+    
     
     /**
      * Returns the size of a given result set. The position of the cursor is
