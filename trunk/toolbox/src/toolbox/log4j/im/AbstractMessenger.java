@@ -22,16 +22,22 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
 import toolbox.util.service.AbstractService;
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.Initializable;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * Abstract Instant Messenger client that supports login, send message, and
  * logout.
  */
-public abstract class AbstractMessenger extends AbstractService 
-    implements InstantMessenger
+public abstract class AbstractMessenger  
+    implements InstantMessenger, Initializable, Destroyable
 {
+    // TODO: Complete the state machine to include login, logout, send, etc
+    
     private static final Logger logger_ = 
         Logger.getLogger(AbstractMessenger.class);
     
@@ -83,6 +89,11 @@ public abstract class AbstractMessenger extends AbstractService
      * not get overwhelmed.
      */
     private int throttle_;
+    
+    /**
+     * State machine for this messenger.
+     */
+    private StateMachine machine_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -93,6 +104,8 @@ public abstract class AbstractMessenger extends AbstractService
      */
     protected AbstractMessenger()
     {
+        machine_ = AbstractService.createStateMachine(this);
+        machine_.reset();
     }
     
     //--------------------------------------------------------------------------
@@ -111,6 +124,18 @@ public abstract class AbstractMessenger extends AbstractService
     //--------------------------------------------------------------------------
 
     /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+
+    /**
      * Initializes this instant messenger. 
      * 
      * @param configuration Can contain an option property PROP_THROTTLE
@@ -118,7 +143,7 @@ public abstract class AbstractMessenger extends AbstractService
      */
     public void initialize(Map configuration) throws ServiceException 
     {
-        checkTransition(ServiceTransition.INITIALIZE);
+        machine_.checkTransition(ServiceTransition.INITIALIZE);
         
         invoker_ = new QueuedInvoker();
         protocols_ = ProtocolManager.getAvailableProtocols();
@@ -131,16 +156,19 @@ public abstract class AbstractMessenger extends AbstractService
                 PROP_THROTTLE, 
                 InstantMessengerAppender.DEFAULT_THROTTLE);
         
-        transition(ServiceTransition.INITIALIZE);
+        machine_.transition(ServiceTransition.INITIALIZE);
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy() throws ServiceException 
     {
-        checkTransition(ServiceTransition.DESTROY);
+        machine_.checkTransition(ServiceTransition.DESTROY);
         
         try
         {
@@ -151,7 +179,7 @@ public abstract class AbstractMessenger extends AbstractService
             throw new ServiceException(e);
         }
         
-        transition(ServiceTransition.DESTROY);
+        machine_.transition(ServiceTransition.DESTROY);
     }
     
     //--------------------------------------------------------------------------
