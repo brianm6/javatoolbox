@@ -130,7 +130,7 @@ public class DirectoryMonitor implements Startable
 
         monitor_ = 
             new Thread(new ActivityRunner(),
-                "DirectoryMonitor: " + directory_.getName());
+                "DirectoryMonitor[" + directory_.getName() + "]");
                         
         monitor_.start();
         machine_.transition(ServiceTransition.START);
@@ -145,22 +145,21 @@ public class DirectoryMonitor implements Startable
      */
     public void stop() throws ServiceException
     {
-        logger_.debug("Shutting down..");
-        
         machine_.checkTransition(ServiceTransition.STOP);
         
         try
         {
+            logger_.debug("Shutting down..");
+            machine_.transition(ServiceTransition.STOP);
+            
             // wait at most 10 secs for monitor to shutdown
             monitor_.join(10000);
+            monitor_ = null;
         }
         catch (InterruptedException e)
         {
             throw new ServiceException(e);
         }
-        
-        monitor_ = null;
-        machine_.transition(ServiceTransition.STOP);
     }
 
     
