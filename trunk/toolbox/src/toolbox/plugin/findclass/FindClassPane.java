@@ -21,7 +21,6 @@ import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -59,11 +58,11 @@ import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JStatusBar;
-import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.ThreadSafeTableModel;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.WorkspaceAction;
 
 /**
  * GUI for finding class files by regular expression from the classpath
@@ -123,7 +122,7 @@ public class JFindClass extends JFrame implements IPreferenced
     private static final int COL_SIZE      = 3;
     private static final int COL_TIMESTAMP = 4;
 
-    /** Prefix tacked onto the beginning of all properties assoc. with JTail */
+    /** Prefix tacked onto the beginning of all properties assoc w/ JTail */
     private static final String PROP_PREFIX = 
         ClassUtil.stripPackage(JFindClass.class.getName()).toLowerCase();
     
@@ -661,7 +660,7 @@ public class JFindClass extends JFrame implements IPreferenced
     /**
      * Searches for a class in the displayed classpaths
      */
-    protected class SearchCancelAction extends SmartAction
+    protected class SearchCancelAction extends WorkspaceAction
     {
         private static final String SEARCH = "Search";
         private static final String CANCEL = "Cancel";
@@ -674,7 +673,7 @@ public class JFindClass extends JFrame implements IPreferenced
          */        
         public SearchCancelAction()
         {
-            super(SEARCH, true, (JComponent) getContentPane());
+            super(SEARCH, true, null, statusBar_);
             putValue(MNEMONIC_KEY, new Integer('S'));    
             putValue(SHORT_DESCRIPTION, "Searches for a class");
         }
@@ -686,17 +685,13 @@ public class JFindClass extends JFrame implements IPreferenced
         {
             if (getValue(NAME).equals(SEARCH))
             {
-                statusBar_.setBusy("Searching...");
-                
-                //searchThread_ = 
-                //    ThreadUtil.run(SearchCancelAction.this, "doSearch", null);
-
                 search_ = searchField_.getText().trim();
                 
                 if (StringUtil.isNullOrEmpty(search_))
-                    statusBar_.setStatus("Enter class to search for");
+                    statusBar_.setWarning("Enter class to search for");
                 else
                 {
+                    statusBar_.setInfo("Searching...");
                     searchThread_ = Thread.currentThread();                
                     doSearch();
                 }
