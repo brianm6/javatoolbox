@@ -56,8 +56,8 @@ public class StringInputStream extends InputStream
     /**
      * Creates a StringInputStream
      * 
-     * @param  ignoreEOF    Ignores EOF (read blocks indefinitely if the end
-     *                      of the stream has been reached)
+     * @param  ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
+     *                   the stream has been reached)
      */
     public StringInputStream(boolean ignoreEOF)
     {
@@ -67,9 +67,9 @@ public class StringInputStream extends InputStream
     /**
      * Creates a StringInputStream
      * 
-     * @param  s            String to initialize stream with
-     * @param  ignoreEOF    Ignores EOF (read blocks indefinitely if the end
-     *                      of the stream has been reached)
+     * @param  s          String to initialize stream with
+     * @param  ignoreEOF  Ignores EOF (read blocks indefinitely if the end of 
+     *                    the stream has been reached)
      */
     public StringInputStream(String s, boolean ignoreEOF)
     {
@@ -79,14 +79,14 @@ public class StringInputStream extends InputStream
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden Methods from InputStream
+    //  Overridden from java.io.InputStream
     //--------------------------------------------------------------------------
     
     /**
      * Reads a byte from the stream
      *
-     * @return The current character or -1 if stream is empty
-     * @throws IOException if IO error occurs
+     * @return  The current character or -1 if stream is empty
+     * @throws  IOException if IO error occurs
      */
     public int read() throws IOException 
     {

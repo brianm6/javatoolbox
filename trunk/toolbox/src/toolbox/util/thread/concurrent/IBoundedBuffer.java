@@ -1,9 +1,8 @@
 package toolbox.util.thread.concurrent;
 
 /**
- * IBoundedBuffer.java
- *
- * Interface implemented by all synchronized lists of finite capacity.
+ * IBoundedBuffer is the interface implemented by all synchronized lists of 
+ * finite capacity.
  */
 public interface IBoundedBuffer
 {
@@ -12,20 +11,24 @@ public interface IBoundedBuffer
      */
     int count();
 
+
     /**
      * @return  Capacity
      */
     int capacity();
+
 
     /**
      * @return  True is buffer is full
      */
     boolean isFull();
 
+
     /**
      * @return  True if the buffer is empty
      */
     boolean isEmpty();
+
 
     /**
      * Puts object in the buffer
@@ -34,15 +37,17 @@ public interface IBoundedBuffer
      */
     void put(Object x);
 
+
     /**
      * Puts object in the buffer with a given timeout
      * 
-     * @param  x        Object to put
-     * @param  timeout  Timeout in ms to wait before returning
-     * @throws InterruptedException on interruption
-     * @throws Timeout when timed out
+     * @param   x        Object to put
+     * @param   timeout  Timeout in ms to wait before returning
+     * @throws  InterruptedException on interruption
+     * @throws  Timeout when timed out
      */
     void put(Object x, long timeout) throws InterruptedException, Timeout;
+
 
     /**
      * Takes an object from the buffer
@@ -51,13 +56,14 @@ public interface IBoundedBuffer
      */
     Object take();
 
+
     /**
      * Takes an object from the buffer waiting at most timeout ms
      * 
-     * @param  timeout  Most time to wait if buffer is empty
-     * @return Object taken from the buffer
-     * @throws InterruptedException on interruption
-     * @throws Timeout when timeout out
+     * @param   timeout  Most time to wait if buffer is empty
+     * @return  Object taken from the buffer
+     * @throws  InterruptedException on interruption
+     * @throws  Timeout when timeout out
      */
     Object take(long timeout) throws InterruptedException, Timeout;
 }

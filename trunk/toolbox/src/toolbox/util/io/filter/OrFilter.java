@@ -14,7 +14,7 @@ public class OrFilter extends CompoundFilter implements FilenameFilter
     //--------------------------------------------------------------------------
      
     /**
-     * Default Constructor
+     * Creates an OrFilter
      */
     public OrFilter()
     {
@@ -23,8 +23,8 @@ public class OrFilter extends CompoundFilter implements FilenameFilter
     /**
      * Creates a filter that ORs the given filters
      * 
-     * @param  filterOne   First filter
-     * @param  filterTwo   Second filter
+     * @param  filterOne  First filter
+     * @param  filterTwo  Second filter
      */   
     public OrFilter(FilenameFilter filterOne, FilenameFilter filterTwo)
     {

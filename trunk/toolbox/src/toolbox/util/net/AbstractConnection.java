@@ -8,9 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Abstract connection with support for listenter interface.
- * Subclasses are expected to call the fire* notification methods 
- * to satifsy the requirements of IConnectionListener
+ * Abstract connection with support for listenter interface. Subclasses are 
+ * expected to call the fire* notification methods to satifsy the requirements 
+ * of IConnectionListener
  */
 public abstract class AbstractConnection implements IConnection
 {
@@ -67,7 +67,7 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the connection name
+     * Sets Connection name
      * 
      * @param  name  Name
      */
@@ -101,9 +101,9 @@ public abstract class AbstractConnection implements IConnection
     }
 
     /**
-     * Fires notification of the connection having been closed
+     * Fires notification of Connection having been closed
      * 
-     * @param  connection   The connection that was closed
+     * @param  connection  Connection that was closed
      */    
     protected void fireConnectionClosed(IConnection connection)
     {
@@ -112,9 +112,9 @@ public abstract class AbstractConnection implements IConnection
     }
     
     /**
-     * Fires notification of the connection being closing
+     * Fires notification of Connection being closing
      * 
-     * @param  connection   The connection that is being closed
+     * @param  connection  Connection that is being closed
      */    
     protected void fireConnectionClosing(IConnection connection)
     {
@@ -123,9 +123,9 @@ public abstract class AbstractConnection implements IConnection
     }
     
     /**
-     * Fires notification that the connection was interrupted
+     * Fires notification that Connection was interrupted
      * 
-     * @param  connection   The connection that was interrupted
+     * @param  connection  Connection that was interrupted
      */    
     protected void fireConnectionInterrupted(IConnection connection)
     {
@@ -134,9 +134,9 @@ public abstract class AbstractConnection implements IConnection
     }
     
     /**
-     * Fires notification that the connection was started
+     * Fires notification that Connection was started
      * 
-     * @param  connection   The connection that was interrupted
+     * @param  connection  Connection that was started
      */    
     protected void fireConnectionStarted(IConnection connection)
     {

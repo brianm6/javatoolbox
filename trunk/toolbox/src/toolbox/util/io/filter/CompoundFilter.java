@@ -12,7 +12,11 @@ import java.util.List;
 public abstract class CompoundFilter implements FilenameFilter
 {
     private List filters_ = new ArrayList();
-    
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+        
     /**
      * Adds a filter
      * 
@@ -22,6 +26,10 @@ public abstract class CompoundFilter implements FilenameFilter
     {
         filters_.add(filter);        
     }
+    
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
     
     /**
      * @return Iterator over filters

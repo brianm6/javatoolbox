@@ -9,14 +9,18 @@ public class ConditionVariable
 {
     private Thread owner_ = null;
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
     /**
      * Releases the mutex and blocks the calling thread until the condition
      * variable is signaled.
      *
-     * @param    mutex        mutex used to test the condition.
-     * @throws   Mutex.NotOwnerException if the calling thread does not own 
-     *           the mutex.
-     * @throws   Mutex.UnderflowException if the mutex has not been acquired.
+     * @param   mutex  Mutex used to test the condition.
+     * @throws  Mutex.NotOwnerException if the calling thread does not own 
+     *          the mutex.
+     * @throws  Mutex.UnderflowException if the mutex has not been acquired.
      */
     public void condWait(Mutex mutex) throws Mutex.NotOwnerException, 
         Mutex.UnderflowException
@@ -45,14 +49,13 @@ public class ConditionVariable
      * Releases the mutex and blocks the calling thread until the condition
      * variable is signaled or the timeout period elapses.
      *
-     * @param    mutex        Mutex used to test the condition.
-     * @param    timeout      Maximum time to wait in milliseconds.
-     * @throws   Mutex.NotOwnerException if the calling thread does
-     *           not own the mutex.
-     * @throws   Mutex.UnderflowException if the mutex has not been
-     *           acquired. 
-     * @throws   InterruptedException if another thread interrupts
-     *           a blocked thread.
+     * @param    mutex    Mutex used to test the condition.
+     * @param    timeout  Maximum time to wait in milliseconds.
+     * @throws   Mutex.NotOwnerException if the calling thread does not own the 
+     *           mutex.
+     * @throws   Mutex.UnderflowException if the mutex has not been acquired. 
+     * @throws   InterruptedException if another thread interrupts a blocked 
+     *           thread.
      */
     public void condWait(Mutex mutex, long timeout) throws 
         Mutex.NotOwnerException, Mutex.UnderflowException, InterruptedException

@@ -10,32 +10,30 @@ import toolbox.util.thread.concurrent.Timeout;
 
 
 /**
- * VariableThreadPoolStrategy.java
- *
- * This class implements a variable-thread-strategy that is a combination of
- * thread-per-request at low request frequencies and a thread-pool strategy
- * at high request frequencies.  If no threads are created up front, so the
- * initial requests will incur thread creation penalities.  However, after a
- * thread has finished servicing a request, it will make an effort to service
- * any pending requests before it terminates.  Thus, the same thread can be
- * resused.  This reduces the number of threads to create during bursts of
- * requests.
+ * VariableThreadPoolStrategy implements a variable-thread-strategy that is a 
+ * combination of thread-per-request at low request frequencies and a 
+ * thread-pool strategy at high request frequencies.  If no threads are created 
+ * up front, so the initial requests will incur thread creation penalities.  
+ * However, after a thread has finished servicing a request, it will make an 
+ * effort to service any pending requests before it terminates.  Thus, the same 
+ * thread can be reused.  This reduces the number of threads to create during 
+ * bursts of requests.
  */
 public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
-    /** Default initial size **/
+    /** Default initial size */
     public static final int DEFAULT_INIT_SIZE = 0;
     
-    /** Default grow size **/
+    /** Default grow size */
     public static final int DEFAULT_GROW_SIZE = 5;
     
-    /** Default pool size **/
+    /** Default pool size */
     public static final int DEFAULT_POOL_SIZE = 100;
     
-    /** Default queue size **/
+    /** Default queue size */
     public static final int DEFAULT_QUEUE_SIZE = 100;
     
-    /** Default timeout in millis **/
+    /** Default timeout in millis */
     public static final int DEFAULT_TIMEOUT = 5000;
     
     private int initSize_;
@@ -78,11 +76,11 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      * Creates a variable thread pool of capacity poolSize, increment 
      * growSize, queueSize and thread timeout period.
      *
-     * @param    initSize    Number of threads initially created.
-     * @param    growSize    Number of threads per increment.
-     * @param    poolSize    Maximum number threads createable.
-     * @param    queueSize   Maximum number of buffered requests.
-     * @param    timeout     Timeout period to pickup pending requests.
+     * @param  initSize   Number of threads initially created.
+     * @param  growSize   Number of threads per increment.
+     * @param  poolSize   Maximum number threads createable.
+     * @param  queueSize  Maximum number of buffered requests.
+     * @param  timeout    Timeout period to pickup pending requests.
      */
     public VariableThreadPoolStrategy(int initSize, int growSize, int poolSize, 
                                       int queueSize, int timeout)
@@ -106,13 +104,13 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
 
     /**
-     * Publish the request by putting it on the request queue.  If the
-     * queue is full, the calling thread is blocked until a slot becomes
-     * available.  If no threads are available to process this request,
-     * create additional threads.
+     * Publish the request by putting it on the request queue.  If the queue is 
+     * full, the calling thread is blocked until a slot becomes available.  If 
+     * no threads are available to process this request, create additional 
+     * threads.
      *
-     * @param    request  Request to publish.
-     * @param    result   Holds the request result.
+     * @param  request  Request to publish.
+     * @param  result   Holds the request result.
      */
     public synchronized void service(IThreadable request, ReturnValue result)
     {
@@ -130,8 +128,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-     * Publish a null request for each thread in the pool to signal
-     * shutdown.
+     * Publish a null request for each thread in the pool to signal shutdown
      */
     public void shutdown()
     {
@@ -146,14 +143,12 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Strategy specific runnable for VariableThreadPool strategy.
      */
-    class VariableThreadPoolRunnable
-        implements java.lang.Runnable
+    class VariableThreadPoolRunnable implements Runnable
     {
-
         /**
          * Returns the next request or times out.
          *
-         * @return  the next request to proecess.
+         * @return  Next request to proecess.
          */
         protected Object take()
                        throws Timeout, InterruptedException
@@ -162,7 +157,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         }
 
 
-        /*
+        /**
          * Process requests unitil the queue is empty or timeout occurs.
          */
         public void run()
@@ -192,12 +187,10 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
             }
             catch (InterruptedException e)
             {
-
                 // ignore interruptions
             }
             catch (Timeout t)
             {
-
                 // no requests pending
             }
             finally
@@ -213,17 +206,17 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     class InitVariableThreadPoolRunnable extends VariableThreadPoolRunnable
     {
-
         /**
          * Returns the next request.
          *
-         * @return  the next request to proecess.
+         * @return  Next request to proecess.
          */
         protected Object take() throws Timeout, InterruptedException
         {
             return requestQueue_.take();
         }
     }
+    
     
     static class Task
     {

@@ -6,11 +6,11 @@ import java.io.FilenameFilter;
 import org.apache.log4j.Logger;
 
 /**
- * Filters files based on the file's extension
+ * ExtensionFilter filters files based on a file's extension
  */
 public class ExtensionFilter implements FilenameFilter
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ExtensionFilter.class);
         
@@ -24,15 +24,17 @@ public class ExtensionFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an Extension filter with the given file extension
+     * Creates an Extension filter with the given file extension. The extension
+     * can optionally contain the leading dot.
      * 
-     * @param  fileExtension   The file extension to filter on
+     * @param  fileExtension   File extension to filter on
      */   
     public ExtensionFilter(String fileExtension)
     {
         // add a dot just in case 
         if(!fileExtension.startsWith("."))
             fileExtension = "." + fileExtension;
+            
         extension_ = fileExtension;
     }
     

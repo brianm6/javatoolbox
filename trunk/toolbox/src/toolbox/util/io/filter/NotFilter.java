@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 /**
- * Logical NOT filter
+ * NotFilter logically negates a filter. Use to filter and retrieve inverse of
+ * a given filter's result set.
  */
 public class NotFilter implements FilenameFilter
 {

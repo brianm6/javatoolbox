@@ -3,15 +3,11 @@ package toolbox.util.thread;
 import toolbox.util.thread.concurrent.EventSemaphore;
 
 /**
- * ReturnValue
- *
- * This class enabled the retrieval of a requests return value.  It can be
+ * ReturnValue enables the retrieval of a requests return value. It can be
  * polled or blocked until the return value is available.
  */
 public final class ReturnValue
 {
-    // Constants to identify the state of the request.
-    
     /**
      * Pending state
      */
@@ -34,7 +30,10 @@ public final class ReturnValue
     private Listener listener_;
     private EventSemaphore available_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructs a new unavailable return value.
      */
@@ -49,7 +48,7 @@ public final class ReturnValue
     /**
      * Constructs a new return value with value. 
      *
-     * @param    value         the return value of the request.
+     * @param  value  Return value of the request.
      */
     public ReturnValue(Object value)
     {
@@ -62,31 +61,30 @@ public final class ReturnValue
     /**
      * Constructs a new return value with the listneer. 
      *
-     * @param    request          the corresponding request.
-     * @param    listener      the listener to notify when done.
+     * @param  request   Corresponding request.
+     * @param  listener  Listener to notify when done.
      */
     public ReturnValue(IThreadable request, Listener listener)
     {
-        this();
         request_ = request;
 
         if ((listener_ = listener) != null)
             listener_.pending(request);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns true if the result value is available for reading.
      *
-     * @return    true if the result value is available for reading.
+     * @return  True if the result value is available for reading.
      */
     public boolean isAvailable()
     {
-
-        //
         // If this return value is constructed with a value, there is
         // no need to allocate the event semaphore (expensive).
-        //
         return available_ == null || available_.posted();
     }
 
@@ -94,31 +92,18 @@ public final class ReturnValue
     /**
      * Returns the return value, blocking until it is available.
      *
-     * @return    Returns the return value, blocking until it is available.
+     * @return  Returns the return value, blocking until it is available.
      */
     public Object getValue()
     {
         if (isAvailable())
             return value_;
 
-        //
         // Wait for the value to be available.
-        //
         available_.waitFor();
 
         return value_;
     }
-
-
-    /**
-     * Gets the current state of the corresponding request.
-     *
-     * @return    the current state of the corresponding request.
-     */
-    int getState()
-    {
-        return state_;
-    } 
 
 
     /**
@@ -144,7 +129,7 @@ public final class ReturnValue
     /**
      * Assigns the return value.  This operation can only be called once.
      *
-     * @param   value         the return value for the request.
+     * @param   value  Return value for the request.
      * @throws  ValueAlreadyAssignedException if value was already assigned.
      */
     public void setValue(Object value) throws ValueAlreadyAssignedException
@@ -154,9 +139,7 @@ public final class ReturnValue
 
         state_ = FINISHED_STATE;
 
-        //
         // Signal the availability of the value.
-        //
         value_ = value;
 
         if (available_ != null)
@@ -165,12 +148,24 @@ public final class ReturnValue
             available_ = null;
         }
 
-        //
         // Trigger the finished callback handler if present.
-        //
         if (listener_ != null)
             listener_.finished(request_, value_);
     }
+
+    //--------------------------------------------------------------------------
+    // Package
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Gets the current state of the corresponding request.
+     *
+     * @return  Current state of the corresponding request.
+     */
+    int getState()
+    {
+        return state_;
+    } 
 
     //--------------------------------------------------------------------------
     // Interfaces
@@ -184,7 +179,7 @@ public final class ReturnValue
         /**
          * Signals reception of request.
          *
-         * @param  request    the pending request.
+         * @param  request  Pending request.
          */
         void pending(IThreadable request);
 
@@ -192,7 +187,7 @@ public final class ReturnValue
         /** 
          * Signals initiation of request.
          *
-         * @param  request    the initiated request.
+         * @param  request  Initiated request.
          */
         void started(IThreadable request);
 
@@ -200,8 +195,8 @@ public final class ReturnValue
         /**
          * Signals completion of request.
          *
-         * @param  request    the finished request.
-         * @param  result    the request result.
+         * @param  request  Finished request.
+         * @param  result   Request result.
          */
         void finished(IThreadable request, Object result);
     }
@@ -217,5 +212,4 @@ public final class ReturnValue
         extends RuntimeException
     {
     }
-
 }

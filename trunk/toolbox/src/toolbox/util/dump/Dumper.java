@@ -19,7 +19,7 @@ import org.apache.regexp.RESyntaxException;
  */
 public class Dumper
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(Dumper.class);
     
@@ -63,9 +63,9 @@ public class Dumper
     //--------------------------------------------------------------------------
     
     /**
-     * Default Constructor
+     * Creates a Dumper with the default BasicDumpFormatter
      * 
-     * @throws  RESyntaxException  on regular expression error
+     * @throws  RESyntaxException on regular expression error
      */
     public Dumper() throws RESyntaxException
     {
@@ -73,9 +73,9 @@ public class Dumper
     }   
 
     /**
-     * Creates an object Dumper
+     * Creates a Dumper with the given formatter
      * 
-     * @param    formatter  Dump formatting and output criteria
+     * @param  formatter  Dump formatting and output criteria
      */
     public Dumper(IDumpFormatter formatter)
     {
@@ -83,12 +83,12 @@ public class Dumper
     }
 
     //--------------------------------------------------------------------------
-    //  Static 
+    //  Public Static 
     //--------------------------------------------------------------------------
     
     /**
-     * Recursively (depth-first) dives down this object's
-     * attributes and converts them to a readable formatted string.
+     * Recursively (depth-first) dives down this object's attributes and 
+     * converts them to a readable formatted string.
      * 
      * @param  obj  Object to dump
      * @return String dump
@@ -99,8 +99,8 @@ public class Dumper
     }
 
     /**
-     * Recursively (depth-first) dives down this object's
-     * attributes and converts them to a readable formatted string.
+     * Recursively (depth-first) dives down this object's attributes and 
+     * converts them to a readable formatted string.
      * 
      * @param   obj          Object to dump
      * @param   maxDepth     Max number of levels to recurse down into the obj
@@ -148,16 +148,13 @@ public class Dumper
         maxDepth_ = maxDepth;
     }
 
-
-
     //--------------------------------------------------------------------------
     //  Private
     //--------------------------------------------------------------------------
     
     /**
-     * Non-static method to allow access to instance variables
-     * which in turn is required for multiple simultaneous threads
-     * without interference.
+     * Non-static method to allow access to instance variables which in turn is 
+     * required for multiple simultaneous threads without interference.
      * 
      * @param  obj  Object to dump
      * @return Stringified dump of object
@@ -192,10 +189,10 @@ public class Dumper
     /**
      * Recursively dumps an object
      *
-     * @param     obj       Object to dump
-     * @param     buffer    Dump buffer
-     * @param     depth     Recursion depth
-     * @throws    IllegalAccessException if attribute/method not accessible
+     * @param   obj     Object to dump
+     * @param   buffer  Dump buffer
+     * @param   depth   Recursion depth
+     * @throws  IllegalAccessException if attribute/method not accessible
      */
     private void dump(Object obj, StringBuffer buffer, String depth) 
         throws IllegalAccessException
@@ -228,11 +225,11 @@ public class Dumper
      * Calls itself recursively. Gets all attributes of obj and dumps relevant
      * data.
      * 
-     * @param     clazz     Class representing level in class hierarchy
-     * @param     obj       Object to dump
-     * @param     buffer    Dump buffer
-     * @param     depth        Recursion depth
-     * @throws    IllegalAccessException on illegal access
+     * @param   clazz   Class representing level in class hierarchy
+     * @param   obj     Object to dump
+     * @param   buffer  Dump buffer
+     * @param   depth   Recursion depth
+     * @throws  IllegalAccessException on illegal access
      */    
     private void dump(Class clazz,  Object obj, StringBuffer buffer,
         String depth) throws IllegalAccessException
@@ -314,8 +311,8 @@ public class Dumper
     /**
      * Appends the given classes inheritance tree to the dump buffer
      * 
-     * @param     clazz    Class for which to print the tree    
-     * @param     buffer   Dump buffer
+     * @param  clazz   Class for which to print the tree    
+     * @param  buffer  Dump buffer
      */
     public void appendInheritance(Class clazz, StringBuffer buffer)
     {
@@ -348,9 +345,9 @@ public class Dumper
     /**
      * Appends relevant information about this object to the buffer.
      * 
-     * @param obj       Object to append info for
-     * @param buffer    Dump buffer
-     * @param depth     Recursion depth
+     * @param  obj     Object to append info for
+     * @param  buffer  Dump buffer
+     * @param  depth   Recursion depth
      */
     private void appendObjectInfo(Object obj, StringBuffer buffer,
         String depth)
@@ -362,10 +359,10 @@ public class Dumper
     /**
      * Appends relevant information about this object to the buffer.
      * 
-     * @param obj       Object to append info for
-     * @param buffer    Dump buffer
-     * @param depth     Recursion depth
-     * @param label     Label
+     * @param  obj     Object to append info for
+     * @param  buffer  Dump buffer
+     * @param  depth   Recursion depth
+     * @param  label   Label
      */
     private void appendObjectInfo(Object obj, StringBuffer buffer,
         String depth, String label)
@@ -401,10 +398,10 @@ public class Dumper
     /**
      * Appends relevant information about this type to the buffer.
      * 
-     * @param  txt      Text
-     * @param  type     Class type
-     * @param  buffer   Dump buffer
-     * @param  depth    Recursion depth
+     * @param  txt     Text
+     * @param  type    Class type
+     * @param  buffer  Dump buffer
+     * @param  depth   Recursion depth
      */
     private void appendTypeInfo(String txt, Class type, StringBuffer buffer,
         String depth)
@@ -441,13 +438,12 @@ public class Dumper
             }
         }
     }
-
     
     /**
      * Translates modifiers passed as an INT to a STRING.
      * 
-     * @param      mod  Modifier
-     * @return     String modifier
+     * @param   mod  Modifier
+     * @return  String modifier
      */
     private String getModifiersAsString(int mod)
     {
@@ -488,12 +484,11 @@ public class Dumper
     /**
      * Appends to the object dump buffer
      * 
-     * @param buffer    Dump buffer
-     * @param txt       Text to append
-     * @param depth     Recursion Depth
+     * @param  buffer  Dump buffer
+     * @param  txt     Text to append
+     * @param  depth   Recursion Depth
      */
-    private final void append(StringBuffer buffer, String txt,
-        String depth)
+    private final void append(StringBuffer buffer, String txt, String depth)
     {
         indent(buffer, depth);
         buffer.append(txt);
@@ -503,8 +498,8 @@ public class Dumper
     /**
      * Indents based on recursion level
      * 
-     * @param buffer    Dump buffer
-     * @param depth     Levels of recursion
+     * @param  buffer  Dump buffer
+     * @param  depth   Levels of recursion
      */
     private final void indent(StringBuffer buffer, String depth)
     {
@@ -514,18 +509,17 @@ public class Dumper
     /**
      * Indents based on recursion level
      * 
-     * @param buffer    Dump buffer
-     * @param depth     Recursion depth
-     * @param label     Label to use
+     * @param  buffer  Dump buffer
+     * @param  depth   Recursion depth
+     * @param  label   Label to use
      */
-    private final void indent(StringBuffer buffer, String depth,
-        String label)
+    private final void indent(StringBuffer buffer, String depth, String label)
     {
         buffer.append(depth);
     }
 
     /**
-     * Show the hash Code?
+     * @return Show the hash Code?
      */
     private boolean showHashCode()
     {
@@ -533,7 +527,7 @@ public class Dumper
     }
 
     /**
-     * Show the class that a field is declared in
+     * @return Show the class that a field is declared in
      */
     private boolean showDeclaredIn()
     {
@@ -541,7 +535,7 @@ public class Dumper
     }
     
     /**
-     * Show the fields access modifiers 
+     * @return Show the fields access modifiers 
      */
     private boolean showAccessModifiers()
     {
@@ -549,7 +543,7 @@ public class Dumper
     }
 
     /**
-     * Show the actual type of an object (int -> Integer)
+     * @return Show the actual type of an object (int -> Integer)
      */
     private boolean showActualType()
     {
@@ -620,8 +614,8 @@ public class Dumper
         }
         
         /**
-         * @return     True if the object has been traversed previously, false
-         *             otherwise.
+         * @return  True if the object has been traversed previously, false
+         *          otherwise.
          */
         public boolean hasTraversed()
         {
@@ -631,7 +625,7 @@ public class Dumper
         /**
          * Set the flag for whether the object has been traversed already
          * 
-         * @param     traversed     Traversed flag
+         * @param  traversed  Traversed flag
          */
         public void setTraversed(boolean traversed)
         {
@@ -648,9 +642,9 @@ public class Dumper
     }
 
     /**
-     * Keeps information (value) stored for each object (key).
-     * Necessary in order to know wheather this object has been displayed
-     * before and by which label it can be referred to.
+     * Keeps information (value) stored for each object (key). Necessary in 
+     * order to know wheather this object has been displayed before and by 
+     * which label it can be referred to.
      */
     private class Cache
     {
@@ -699,7 +693,9 @@ public class Dumper
         }
     }
 
-
+    /** 
+     * Comparator for field names
+     */
     class FieldNameComparator implements Comparator
     {
         public int compare(Object o1, Object o2)
@@ -709,214 +705,4 @@ public class Dumper
             return name1.compareTo(name2);
         }
     }
-    
-    /**
-     * Converts carriage-returns to carriage-returns with the
-     * correct indentation.
-     *
-     * @param  txt       String
-     * @param  depth    Recursion depth
-     * @return String with correct indentation
-     */
-    /*
-    private String convertCRtoCRIndent(String txt, String depth)
-    {
-        StringTokenizer st = new StringTokenizer(txt, CR, true);
-        StringBuffer sb = new StringBuffer();
-        String s = null;
-
-        while (st.hasMoreTokens())
-        {
-            s = st.nextToken();
-
-            if (s.equals(CR))
-            {
-                sb.append(CR);
-                indent(sb, depth);
-            }
-            else
-            {
-                sb.append(s);
-            }
-        }
-        return sb.toString();
-    }
-    */
-
-
-        /**
-         * Appends relevant information about this field to the buffer.
-         *
-         * @param field
-         * @param buffer
-         * @param depth
-         */
-    //    private void appendFieldInfo(Object obj, Field field,
-    //        StringBuffer buffer, String depth)
-    //    {
-    //        //indent(buffer, depth);
-    //
-    //        buffer.append(depth);
-    //        buffer.append(BAR);
-    //        buffer.append(CR);
-    //        buffer.append(depth);
-    //        buffer.append(JUNCTION);
-    //        buffer.append(ARM);
-    //        buffer.append(field.getName());
-    //        buffer.append(" = ");
-    //
-    //
-    //        if (obj == null)
-    //        {
-    //            buffer.append("null");
-    //        }
-    //        else
-    //        {
-    //            Object value = obj.toString();
-    //            buffer.append(value == null ? "null" : value);
-    //        }
-    //
-    //        if (showDeclaredIn())
-    //        {
-    //            buffer.append("\t\t\t");
-    //            buffer.append("(declared in  ");
-    //            buffer.append(field.getDeclaringClass().getName());
-    //        }
-    //
-    //        if (showAccessModifiers())
-    //        {
-    //            buffer.append("\t\t");
-    //            buffer.append(getModifiersAsString(field.getModifiers()));
-    //        }
-    //
-    //        buffer.append(CR);
-    //    
-    
-
 }
-
-//            if (i == (fields.length - 1) && fields.length > 1 )
-//            {
-//                // At end and more then one dir
-//                buffer.append(SPACER);
-//            }
-//            else if (fields.length > 1)
-//            {
-//                // More than one dir
-//                buffer.append(BAR);
-//            }
-//            else
-//            {
-//                // Not at end
-//                buffer.append(SPACER);
-//            }
-
-
-//            if (showDeclaredIn())
-//            {
-//                buffer.append("\t\t\t");
-//                buffer.append("(declared in  ");
-//                buffer.append(field.getDeclaringClass().getName());
-//            }
-//
-//            if (showAccessModifiers())
-//            {
-//                buffer.append("\t\t");
-//                buffer.append(getModifiersAsString(field.getModifiers()));
-//            }
-
-
-    /////////////////////////////////////////////////////////////////
-
-    //appendObjectInfo(value, buffer, depth /*, label*/ );
-
-    //if ((!type.isPrimitive()) && (value != null))
-    //{
-        /*
-
-        // Type is non-primitive (primitives have been
-        // printed and that's enough)
-        if (cache_.hasTraversed(value))
-        {
-            //indent(buffer, depth);
-            //                    buffer.append("[Visited ");
-          //                    buffer.append(cache_.getInfo(value).getLabel());
-            //                    buffer.append("]");
-            //                    buffer.append(CR);
-        }
-        else
-        {
-            buffer.append(CR);
-
-            ObjectInfo objInfo = cache_.getInfo(value);
-
-            if (objInfo != null)
-                objInfo.setTraversed(true);
-
-            //if (depth < MAX_REC_DEPTH)
-            //{
-                //dump(value, buffer, depth  + BAR );
-            //}
-            //else
-            //{
-            //    throw new RuntimeException(
-            //        "<recursed beyond limit ["+
-            //        MAX_REC_DEPTH + "] - error>");
-            //}
-
-                                // Recurse
-        //                    if (i == (fields.length -2 && fields.length > 1 ))
-            //                    {
-            //                        // At end and more then one dir
-            //                        dump(value, buffer, depth + SPACER);
-            //                    }
-            //                    else if (fields.length > 1)
-            //                    {
-            //                        // More than one dir
-            //                        dump(value, buffer, depth + BAR);
-            //                    }
-            //                    else
-            //                    {
-            //                        // Not at end
-            //                        dump(value, buffer, depth + SPACER);
-
-            dump(value, buffer, depth + BAR);
-
-            //                    }
-        }
-        */
-
-    //}
-    //else
-    //    ; //buffer.append(CR);
-//}
-
-
-
-
-//if (depth < MAX_REC_DEPTH)
-//{
-    //dump(value, buffer, depth  + BAR );
-//}
-//else
-//{
-//    throw new RuntimeException(
-//        "<recursed beyond limit ["+
-//        MAX_REC_DEPTH + "] - error>");
-//}
-
-// Recurse
-//                    if (i == (fields.length -2/*&& fields.length > 1 */))
-//                    {
-//                        // At end and more then one dir
-//                        dump(value, buffer, depth + SPACER);
-//                    }
-//                    else if (fields.length > 1)
-//                    {
-//                        // More than one dir
-//                        dump(value, buffer, depth + BAR);
-//                    }
-//                    else
-//                    {
-//                        // Not at end
-//                        dump(value, buffer, depth + SPACER);

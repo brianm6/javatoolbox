@@ -9,9 +9,7 @@ import toolbox.util.thread.concurrent.IBoundedBuffer;
 
 
 /**
- * ThreadPoolStrategy.java
- *
- * This class implements a thread-pool strategy that puts requests on a
+ * ThreadPoolStrategy implements a thread-pool strategy that puts requests on a
  * queue for one or more worker threads to extract.  Since all the threads
  * are created up front, the thread creation penalty is incurred on startup
  * and is thus better suited for bursty situations.  However, since a bounded
@@ -53,8 +51,8 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      * Creates a thread pool consisting of poolSize threads and a queue
      * of queueSize.
      *
-     * @param    poolSize    the number of threads in the pool.
-     * @param    queueSize    the maximum number of buffered requests.
+     * @param  poolSize   Number of threads in the pool.
+     * @param  queueSize  Maximum number of buffered requests.
      */
     public ThreadPoolStrategy(int poolSize, int queueSize)
     {
@@ -73,8 +71,8 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      * queue is full, the calling thread is blocked until a slot becomes
      * available.
      *
-     * @param    request        the request to publish.
-     * @param    result            holds the request result.
+     * @param   request  Request to publish.
+     * @param   result   Holds the request result.
      */
     public void service(IThreadable request, ReturnValue result)
     {
@@ -83,8 +81,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /** 
-     * Publish a null request for each thread in the pool to signal
-     * shutdown.
+     * Publish a null request for each thread in the pool to signal shutdown
      */
     public void shutdown()
     {

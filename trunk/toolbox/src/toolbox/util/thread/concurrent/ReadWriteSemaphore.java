@@ -1,9 +1,7 @@
 package toolbox.util.thread.concurrent;
 
 /**
- * ReadWriteSemaphore.java
- *
- * This class implements a synchronization semaphore limits access to a
+ * ReadWriteSemaphore implements a synchronization semaphore limits access to a
  * resource to a single writer or multiple readers.
  */
 public class ReadWriteSemaphore
@@ -14,10 +12,13 @@ public class ReadWriteSemaphore
     private int writeLocks_;
     private ConditionVariable condition_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-   * Constructs a new semaphore with no readers or writers.
-   */
+     * Constructs a new semaphore with no readers or writers.
+     */
     public ReadWriteSemaphore()
     {
         readLocks_ = 0;
@@ -27,11 +28,14 @@ public class ReadWriteSemaphore
         condition_ = new ConditionVariable();
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
-   * Attempts to obtain a read lock, blocking if a write lock exists.
-   * Multiple threads can obtain a read lock.
-   */
+     * Attempts to obtain a read lock, blocking if a write lock exists.
+     * Multiple threads can obtain a read lock.
+     */
     public void readLock()
     {
         try
@@ -65,8 +69,8 @@ public class ReadWriteSemaphore
 
 
     /**
-   * Releases the read lock owned by the calling thread.
-   */
+     * Releases the read lock owned by the calling thread.
+     */
     public void readUnlock()
     {
         try
@@ -84,10 +88,10 @@ public class ReadWriteSemaphore
 
 
     /**
-   * Attempts to obtain a read lock, but does not block if write lock exists.
-   *
-   * @return    true if the read lock was obtained, false otherwise.
-   */
+     * Attempts to obtain a read lock, but does not block if write lock exists.
+     *
+     * @return  True if the read lock was obtained, false otherwise.
+     */
     public boolean tryReadLock()
     {
         try
@@ -118,9 +122,9 @@ public class ReadWriteSemaphore
 
 
     /**
-   * Attempts to obtain a write lock, blocking if a read lock or write lock 
-   * exists.  Only a single thread can own a write lock at any time.
-   */
+     * Attempts to obtain a write lock, blocking if a read lock or write lock 
+     * exists.  Only a single thread can own a write lock at any time.
+     */
     public void writeLock()
     {
         write_.lock();
@@ -142,8 +146,8 @@ public class ReadWriteSemaphore
 
 
     /**
-   * Releases the write lock owned by the calling thread.
-   */
+     * Releases the write lock owned by the calling thread.
+     */
     public void writeUnlock()
     {
         try
@@ -163,11 +167,11 @@ public class ReadWriteSemaphore
 
 
     /**
-   * Attempts to obtain a write lock, but does not block if read or write
-   * lock exists.
-   *
-   * @return    true if the write lock was obtained, false otherwise.
-   */
+     * Attempts to obtain a write lock, but does not block if read or write
+     * lock exists.
+     *
+     * @return  True if the write lock was obtained, false otherwise.
+     */
     public boolean tryWriteLock()
     {
         boolean locked = false;

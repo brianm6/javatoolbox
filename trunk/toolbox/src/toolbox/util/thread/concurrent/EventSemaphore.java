@@ -11,7 +11,10 @@ public class EventSemaphore
     private boolean posted_;
     private ConditionVariable event_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructs a new event semaphore in the unposted state. 
      */
@@ -34,7 +37,10 @@ public class EventSemaphore
         event_ = new ConditionVariable();
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Clears the event semaphore causing all future waiting threads to block
      * until the event semaphore is posted again.
@@ -96,9 +102,9 @@ public class EventSemaphore
      * Blocks the calling thread until this event semaphore is posted or
      * the supplied timeout elapses.
      *
-     * @param     timeout   Timeout to wait in milliseconds
-     * @throws    InterruptedException if another thread interrupts
-     *            a blocked thread.
+     * @param   timeout   Timeout to wait in milliseconds
+     * @throws  InterruptedException if another thread interrupts a blocked 
+     *          thread.
      */
     public void waitFor(long timeout) throws InterruptedException
     {
@@ -118,7 +124,7 @@ public class EventSemaphore
     /**
      * Returns true if this event semaphore is in a posted state.
      *
-     * @return    true if this event semaphore is in a posted state.
+     * @return  True if this event semaphore is in a posted state.
      */
     public synchronized boolean posted()
     {

@@ -27,13 +27,13 @@ import toolbox.util.RollingCounter;
  * 
  * </pre>
  */
-public class WrappingWriter extends Writer implements 
-    RollingCounter.IRollingCounterListener
+public class WrappingWriter extends Writer 
+    implements RollingCounter.IRollingCounterListener
 {
     /** 
      * Default width to wrap at 
      */
-    public static final int    DEFAULT_WIDTH   = 80;
+    public static final int DEFAULT_WIDTH   = 80;
     
     /** 
      * Default prefix for each line 
@@ -92,7 +92,7 @@ public class WrappingWriter extends Writer implements
     /**
      * Creates a wrapping writer with default with of <code>DEFAULT_WIDTH</code>
      * 
-     * @param  writer  The writer to decorate
+     * @param  writer  Writer to decorate
      */ 
     public WrappingWriter(Writer writer)
     {
@@ -104,7 +104,7 @@ public class WrappingWriter extends Writer implements
      * Creates a wrapping writer with the given width and no prefix/suffix
      * decorators
      * 
-     * @param  writer  The writer to decorate
+     * @param  writer  Writer to decorate
      * @param  width   Number of characters after which a line will be wrapped
      */ 
     public WrappingWriter(Writer writer, int width)
@@ -116,7 +116,7 @@ public class WrappingWriter extends Writer implements
     /**
      * Creates a wrapping writer
      * 
-     * @param  writer  The writer to decorate
+     * @param  writer  Writer to decorate
      * @param  width   Number of characters after which a line will be wrapped
      * @param  prefix  Decorator prepended to beginning of each line
      * @param  suffix  Decorator appended to the end of each line
@@ -139,7 +139,7 @@ public class WrappingWriter extends Writer implements
     }
 
     //--------------------------------------------------------------------------
-    //  Overriden Methods from OutputStream
+    //  Overriden from java.io.OutputStream
     //--------------------------------------------------------------------------
 
     /**

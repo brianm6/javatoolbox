@@ -4,16 +4,17 @@ import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ReturnValue;
 
 /**
- * AbstractDispatcherStrategy.java
- *
- * This class encapsulates the threading policy for request processing.
- * Implementations of this class can choose how a request is processed,
- * single threaded, thread-per-request, thread-pool, etc.  The default
- * implementation processes the request in the current thread.
+ * AbstractDispatcherStrategy encapsulates a threading policy for request 
+ * processing. Implementations of this class can choose how a request is 
+ * processed, single threaded, thread-per-request, thread-pool, etc.  The 
+ * default implementation processes the request in the current thread.
  */
 public abstract class AbstractDispatcherStrategy
 {
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Publish the request by processing it in the current thread.
      *
