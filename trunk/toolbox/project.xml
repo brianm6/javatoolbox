@@ -848,13 +848,20 @@
       <type>plugin</type>
     </dependency>
    
-	<dependency>
+    <dependency>
       <groupId>jblanket</groupId>
       <artifactId>maven-jblanket-plugin</artifactId>
       <version>1.0.0503</version>
       <type>plugin</type>
     </dependency>    
-      
+
+    <dependency>
+      <groupId>maven-plugins</groupId>
+      <artifactId>maven-findbugs-plugin</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>plugin</type>
+    </dependency>    
+
   </dependencies>  
   
   <!-- ===================================================================== -->
