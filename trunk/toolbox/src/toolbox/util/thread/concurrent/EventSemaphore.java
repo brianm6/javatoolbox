@@ -3,7 +3,7 @@ package toolbox.util.thread.concurrent;
 /**
  * This class implements an event synchronization semaphore.  Threads will
  * block on this semaphore until the desired condition is fulfilled at which
- * time the semaphore will be 'posted' 
+ * time the semaphore will be 'posted'. 
  */
 public class EventSemaphore
 {

@@ -5,8 +5,19 @@ package toolbox.util.thread.concurrent;
  */
 public class CountingSemaphore
 {
+    /**
+     * Current count.
+     */
     private int count_;
+    
+    /**
+     * Maximum count.
+     */
     private int maximum_;
+    
+    /**
+     * Internal delegate.
+     */
     private EventSemaphore event_;
 
     //--------------------------------------------------------------------------
@@ -21,8 +32,9 @@ public class CountingSemaphore
         this(0);
     }
 
+    
     /**
-     * Constructor with initial count.
+     * Creates a CountingSemaphore with an initial count.
      * 
      * @param initial Initial count
      */
@@ -31,8 +43,9 @@ public class CountingSemaphore
         this(initial, Integer.MAX_VALUE);
     }
 
+    
     /**
-     * Constructor with count and max count.
+     * Creates a CountingSemaphore with the given options.
      * 
      * @param initial Initial count
      * @param maximum Max count
@@ -53,7 +66,7 @@ public class CountingSemaphore
     //--------------------------------------------------------------------------
     
     /**
-     * Obtains lock
+     * Obtains the lock.
      */
     public void lock()
     {
@@ -74,18 +87,20 @@ public class CountingSemaphore
         }
     }
 
+    
     /**
-     * Obtains a lock
+     * Synonym for lock().
      */
     public void obtain()
     {
         lock();
     }
 
+    
     /**
-     * Tries to obtail a lock
+     * Tries to obtain a lock.
      * 
-     * @param howMany Count to obtail
+     * @param howMany Count to obtain
      * @return True if lock obtained, false otherwise
      */
     public synchronized boolean tryLock(int howMany)
@@ -100,8 +115,9 @@ public class CountingSemaphore
         return false;
     }
 
+    
     /**
-     * Tries to obtain the lock
+     * Tries to obtain the lock.
      * 
      * @return True if successful, false otherwise
      */
@@ -110,8 +126,9 @@ public class CountingSemaphore
         return tryLock(1);
     }
 
+    
     /**
-     * Releases the lock
+     * Releases the lock.
      * 
      * @param howMany Count to unlock
      */
@@ -125,16 +142,18 @@ public class CountingSemaphore
         event_.post();
     }
 
+    
     /**
-     * Unlocks
+     * Release a single lock.
      */
     public void unlock()
     {
         unlock(1);
     }
 
+    
     /**
-     * Releases lock
+     * Releases lock.
      * 
      * @param howMany Count of how many to release
      */
@@ -143,14 +162,16 @@ public class CountingSemaphore
         unlock(howMany);
     }
 
+    
     /**
-     * Releases a lock
+     * Releases a lock.
      */
     public void release()
     {
         release(1);
     }
 
+    
     /**
      * Returns the semaphore count.
      * 
@@ -161,6 +182,7 @@ public class CountingSemaphore
         return count_;
     }
 
+    
     /**
      * Returns the maximum count.
      * 

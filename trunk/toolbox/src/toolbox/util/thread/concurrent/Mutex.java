@@ -136,14 +136,14 @@ public class Mutex
     //--------------------------------------------------------------------------
     
     /**
-     * Exception when not an owner
+     * Exception thrown when not an owner.
      */
     public static class NotOwnerException extends RuntimeException
     {
     }
 
     /**
-     * Exception when underflow occurs
+     * Exception thrown when an underflow occurs.
      */
     public static class UnderflowException extends RuntimeException
     {
