@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 
 /**
@@ -34,7 +35,14 @@ public class JMemoryMonitor extends JComponent
 {
     private static final Logger logger_ = 
         Logger.getLogger(JMemoryMonitor.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Test string for determining dimensions appropriate for max display.
+     */
     private static final String TEST_STRING = "999/999Mb";
     
     //--------------------------------------------------------------------------
@@ -71,7 +79,7 @@ public class JMemoryMonitor extends JComponent
     //--------------------------------------------------------------------------
         
     /**
-     * Creates a JMemoryMonitor
+     * Creates a JMemoryMonitor.
      */
     public JMemoryMonitor()
     {
@@ -98,6 +106,12 @@ public class JMemoryMonitor extends JComponent
     {
         labelFont_ = UIManager.getFont("Label.font");
         
+        // GTK+ LAF returns null for this
+        if (labelFont_ == null)
+            labelFont_ = FontUtil.getPreferredSerifFont();
+        
+        logger_.debug("Label font: " + labelFont_);
+        
         setDoubleBuffered(true);
         setForeground(UIManager.getColor("Label.foreground"));
         setBackground(UIManager.getColor("Label.background"));
@@ -105,9 +119,17 @@ public class JMemoryMonitor extends JComponent
         
         FontRenderContext frc = new FontRenderContext(null,false,false);
         lineMetrics_ = labelFont_.getLineMetrics(TEST_STRING, frc);
-        
+
         progressBackground_ = UIManager.getColor("ScrollBar.thumb");
         progressForeground_ = UIManager.getColor("ScrollBar.thumbHighlight");
+
+        // =====================================================================
+        // WORKAROUND: GTK LAF does not have these props so just use labels 
+        if (progressBackground_ == null)
+            progressBackground_ = getBackground();
+        if (progressForeground_ == null)
+            progressForeground_ = getForeground();
+        // =====================================================================
         
         setPreferredSize(new Dimension(75,15));
     }
