@@ -192,13 +192,17 @@ public class JSmartTextArea extends JTextArea implements AntiAliased
         {
             super.append(str);
          
-            int len = getText().length();
+            int len = getDocument().getLength();
 
             // Let the pruning begin...            
             if (len > capacity_)
-                setText(getText().substring((pruningFactor_/100) * len));  
+            {
+                int nlen = (int) ((float)pruningFactor_/100 * len);
+                logger_.debug("Pruning " + len + " to " + nlen);
+                setText(getText().substring(nlen));
+            }  
                
-            if (isAutoScroll())
+            if (isAutoScroll() && str.indexOf('\n') >= 0)
                 scrollToEnd();
         }
         else
