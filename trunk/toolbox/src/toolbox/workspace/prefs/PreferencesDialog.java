@@ -103,6 +103,7 @@ public class PreferencesDialog extends JDialog
         preferencesManager_ = preferencesManager;
         buildView();
         pack();
+        SwingUtil.setSizeAsPercentage(this, 20, -20); // May have to tweak later
         SwingUtil.centerWindow(parent, this);
     }
 
@@ -269,7 +270,6 @@ public class PreferencesDialog extends JDialog
          */
         public void actionPerformed(ActionEvent e)
         {
-            System.out.println("cancel");
             PreferencesView[] prefs = preferencesManager_.getPreferences();
             for (int i = 0; i < prefs.length; prefs[i++].onCancel());
             dispose();
