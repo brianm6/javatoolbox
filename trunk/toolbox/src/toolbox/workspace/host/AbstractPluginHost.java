@@ -4,21 +4,24 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.workspace.IPlugin;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Abstract implementation of an PluginHost that captures behavior common to 
  * all PluginHost concrete implementations. 
  */
-public abstract class AbstractPluginHost implements PluginHost
+public abstract class AbstractPluginHost implements PluginHost, IPreferenced
 {
     private static final Logger logger_ = 
         Logger.getLogger(AbstractPluginHost.class);
-    
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -247,5 +250,23 @@ public abstract class AbstractPluginHost implements PluginHost
     public PluginHostListener[] getPluginHostListeners()
     {
         return pluginHostListeners_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+    }
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
     }
 }
