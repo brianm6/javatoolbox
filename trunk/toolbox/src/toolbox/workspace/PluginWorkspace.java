@@ -57,6 +57,7 @@ import toolbox.workspace.host.PluginHost;
 import toolbox.workspace.host.PluginHostListener;
 import toolbox.workspace.host.PluginHostManager;
 import toolbox.workspace.prefs.PreferencesDialog;
+import toolbox.workspace.prefs.PreferencesManager;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on a
@@ -159,6 +160,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Manages the plugin host.
      */
     private PluginHostManager pluginHostManager_;
+
+    /**
+     * Manages workspace preferences.
+     */
+    private PreferencesManager preferencesManager_;
 
     /**
      * Plugin menu.
@@ -381,6 +387,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         return statusBar_;
     }
+    
+    
+    /**
+     * Returns the preferences manager.
+     * 
+     * @return PreferencesManager
+     */
+    PreferencesManager getPreferencesManager()
+    {
+        return preferencesManager_;
+    }
 
     //--------------------------------------------------------------------------
     // Protected
@@ -393,6 +410,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pluginHostManager_ = new PluginHostManager(this);
+        preferencesManager_ = new PreferencesManager();
 
         //
         // Have to build log menu here cuz buildView() requires it to set
@@ -515,7 +533,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
              */
             public void actionPerformed(ActionEvent e)
             {
-                new PreferencesDialog(PluginWorkspace.this).setVisible(true);
+                new PreferencesDialog(
+                    PluginWorkspace.this, 
+                    preferencesManager_).setVisible(true);
             }
         });
 
@@ -800,6 +820,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         LookAndFeelUtil.savePrefs(root);
 
         //
+        // Save prefs managed by the PreferencesManager
+        //
+        preferencesManager_.savePrefs(root);
+        
+        //
         // Save loaded plugin prefs
         //
         for (int i = 0; i < getPluginHost().getPlugins().length; i++)
@@ -866,7 +891,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
 
@@ -929,6 +954,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
         logMenu_.setLogLevel(level);
 
+        //
+        // Restore prefs stored by the Preferences dialog
+        //
+        preferencesManager_.applyPrefs(root);
+        
         if (root != null)
         {
             //
