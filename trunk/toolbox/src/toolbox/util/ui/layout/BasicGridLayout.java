@@ -11,18 +11,21 @@ import java.awt.Rectangle;
  */
 public class BasicGridLayout extends ConstraintLayout
 {
-    protected int hGap_, vGap_;
-    protected int rows_, cols_, reqRows_, reqCols_;
-    protected int[] rowHeights_, colWidths_;
+    private int hGap_, vGap_;
+    private int rows_, cols_, reqRows_, reqCols_;
+    private int[] rowHeights_, colWidths_;
     protected int alignment_ = Alignment.NORTHWEST;
     protected int fill_ = Alignment.FILL_BOTH;
-    protected int colWeight_ = 0;
-    protected int rowWeight = 0;
+    private int colWeight_ = 0;
+    private int rowWeight_ = 0;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Default constructor
+     */
     public BasicGridLayout()
     {
         this(0, 1, 2, 2);
@@ -114,12 +117,12 @@ public class BasicGridLayout extends ConstraintLayout
 
     public void setRowWeight(int rowWeight)
     {
-        this.rowWeight = rowWeight;
+        this.rowWeight_ = rowWeight;
     }
 
     public int getRowWeight()
     {
-        return rowWeight;
+        return rowWeight_;
     }
 
     //--------------------------------------------------------------------------
@@ -277,29 +280,29 @@ public class BasicGridLayout extends ConstraintLayout
                         int col = index % cols_;
                         int x, y;
 
-                        x =
-                            insets.left
-                                + sumArray(colWidths_, hGap_, col)
-                                + hMargin_;
-                        y =
-                            insets.top
-                                + sumArray(rowHeights_, vGap_, row)
-                                + vMargin_;
+                        x = insets.left + 
+                            sumArray(colWidths_, hGap_, col) + 
+                            hMargin_;
+                            
+                        y = insets.top + 
+                            sumArray(rowHeights_, vGap_, row) + 
+                            vMargin_;
+                            
                         if (col > 0)
                             x += hGap_;
+                            
                         if (row > 0)
                             y += vGap_;
-                        Rectangle cell =
-                            new Rectangle(
-                                x,
-                                y,
-                                colWidths_[col],
-                                rowHeights_[row]);
+                            
+                        Rectangle cell = new Rectangle(
+                            x, y, colWidths_[col], rowHeights_[row]);
+                            
                         Alignment.alignInCell(
                             r,
                             cell,
                             alignmentFor(c, row, col),
                             fillFor(c, row, col));
+                            
                         c.setBounds(r.x, r.y, r.width, r.height);
                         index++;
                     }
