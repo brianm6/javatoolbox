@@ -176,7 +176,7 @@
             debug="${project.debug}" 
             optimize="${optimize}" 
             target="${javavm}" 
-            fork="no"
+            fork="yes"
             failonerror="${project.failonerror}">
             
             <classpath refid="project.class.path"/>
@@ -240,6 +240,15 @@
             dest      ="${classes}" 
             overwrite ="false" />
 
+        <unjar 
+        	src       ="${lib}/commons-beanutils.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/commons-logging.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
                              
         <jar 
         	jarfile ="${dist}/toolbox.jar" 
