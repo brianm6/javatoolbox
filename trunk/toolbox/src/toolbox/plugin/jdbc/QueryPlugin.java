@@ -55,6 +55,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.db.SQLFormatter;
+import toolbox.util.db.SQLFormatterView;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JConveyorMenu;
@@ -204,6 +205,16 @@ public class QueryPlugin extends JPanel implements IPlugin
      * Database configuration panel.
      */
     private DBConfig dbConfigPane_;
+    
+    /**
+     * Pretty prints SQL statements.
+     */
+    private SQLFormatter formatter_;
+
+    /**
+     * View to edit the sql formatter.
+     */
+    private SQLFormatterView formatterView_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -253,6 +264,28 @@ public class QueryPlugin extends JPanel implements IPlugin
         return sqlEditor_;
     }
 
+    
+    /**
+     * Returns the formatter.
+     * 
+     * @return SQLFormatter
+     */
+    public SQLFormatter getFormatter()
+    {
+        return formatter_;
+    }
+    
+    
+    /**
+     * Sets the formatter.
+     * 
+     * @param formatter The formatter to set.
+     */
+    public void setFormatter(SQLFormatter formatter)
+    {
+        formatter_ = formatter;
+    }
+    
     
     /**
      * Gets the active sql statement(s) based on the cursor position, selection
@@ -370,10 +403,16 @@ public class QueryPlugin extends JPanel implements IPlugin
                 buildResultsArea());
 
         setLayout(new BorderLayout());
+        
         dbConfigPane_ = new DBConfig(this);
+        formatter_ = new SQLFormatter();
+        formatterView_ = new SQLFormatterView(formatter_);
+        
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("Databases", dbConfigPane_);
         leftFlipPane_.addFlipper("Reference", buildSQLReferencePane());
+        leftFlipPane_.addFlipper("Formatter", formatterView_);
+        
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);
     }
@@ -663,7 +702,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element root =
             XOMUtil.getFirstChildElement(
@@ -686,13 +725,17 @@ public class QueryPlugin extends JPanel implements IPlugin
         resultsArea_.applyPrefs(root);
         sqlEditor_.applyPrefs(root);
         areaSplitPane_.applyPrefs(root);
+        formatter_.applyPrefs(root);
+        
+        // Update the view
+        formatterView_.setFormatter(formatter_);
     }
 
 
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_QUERY_PLUGIN);
 
@@ -712,6 +755,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlEditor_.savePrefs(root);
         
         areaSplitPane_.savePrefs(root);
+        formatter_.savePrefs(root);
 
         XOMUtil.insertOrReplace(prefs, root);
     }
