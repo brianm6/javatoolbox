@@ -23,7 +23,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.AbstractPlugin;
 
 /**
- * Beanshell Plugin.
+ * Interactive <a href=http://www.beanshell.org>Beanshell<a> Plugin.
  */
 public class BeanShellPlugin extends AbstractPlugin
 {
