@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.ui.plugin.IPreferenced;
 
 /**
  * Extends the functionality of JTextArea by adding:
@@ -23,21 +24,33 @@ import toolbox.util.ThreadUtil;
  *  <li>Anti-aliased text</li>
  * </ul>
  */
-public class JSmartTextArea extends JTextArea
+public class JSmartTextArea extends JTextArea // implements IPreferenced
 {
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
     
-    private JPopupMenu          popup_;
-    private JCheckBoxMenuItem   autoScrollItem_;
-    private JCheckBoxMenuItem   antiAliasItem_;
+    /** 
+     * Popup menu for this component 
+     */
+    private JPopupMenu popup_;
+    
+    /**
+     * Check box that toggles autoscroll
+     */
+    private JCheckBoxMenuItem  autoScrollItem_;
+    
+    /** 
+     * Check box that toggles antialiasing of text
+     */
+    private JCheckBoxMenuItem  antiAliasItem_;
     
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor
+     * Creates a JSmartTextArea with autoscroll and antialias turned off by
+     * default.
      */
     public JSmartTextArea()
     {
@@ -45,7 +58,8 @@ public class JSmartTextArea extends JTextArea
     }
 
     /**
-     * Creates a JSmartTextArea with the given text
+     * Creates a JSmartTextArea with the given text and autoscroll and antialias
+     * turned off by default.
      * 
      * @param text  Initial text of textarea
      */
@@ -107,7 +121,7 @@ public class JSmartTextArea extends JTextArea
      * @param   str  String to append
      * @see     javax.swing.JTextArea#append(String)
      */
-    public void append(String str)
+    public void append(final String str)
     {
         if (SwingUtilities.isEventDispatchThread())
         {
@@ -118,10 +132,13 @@ public class JSmartTextArea extends JTextArea
         }
         else
         {
-            ThreadUtil.MethodRunner runner = new ThreadUtil.MethodRunner(
-                this, "append", new String[] { str } );    
-                
-            SwingUtilities.invokeLater(runner);
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    append(str);
+                }
+            });
         }
     }
     
