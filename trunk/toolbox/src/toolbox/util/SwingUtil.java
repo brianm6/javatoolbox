@@ -13,6 +13,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Window;
+import java.util.Enumeration;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -20,7 +21,10 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
@@ -431,7 +435,6 @@ public final class SwingUtil
         return menu;
     }
     
-    
     //--------------------------------------------------------------------------
     // AntiAliased
     //--------------------------------------------------------------------------
@@ -503,4 +506,54 @@ public final class SwingUtil
             (antiAliased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
                        : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     }
+    
+    //--------------------------------------------------------------------------
+    // JTree
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Expands or collapses all the nodes in a tree.
+     *
+     * @param tree JTree to affect.
+     * @param expand True to expand all nodes, false to collapse all nodes.
+     */
+    public static void expandAll(JTree tree, boolean expand)
+    {
+        TreeNode root = (TreeNode) tree.getModel().getRoot();
+        expandAll(tree, new TreePath(root), expand);
+    }
+
+    
+    /**
+     * Expands or collapses all the nodes in a tree.
+     *
+     * @param tree JTree to affect.
+     * @param parent The node from which to collapse or expand all children.
+     * @param expand True to expand child nodes, false to collapse.
+     */
+    public static void expandAll(JTree tree, TreePath parent, boolean expand)
+    {
+        // Traverse children
+        TreeNode node = (TreeNode) parent.getLastPathComponent();
+        
+        if (node.getChildCount() >= 0)
+        {
+            for (Enumeration e = node.children(); e.hasMoreElements();)
+            {
+                TreeNode n = (TreeNode) e.nextElement();
+                TreePath path = parent.pathByAddingChild(n);
+                expandAll(tree, path, expand);
+            }
+        }
+
+        // Expansion or collapse must be done bottom-up
+        if (expand)
+        {
+            tree.expandPath(parent);
+        }
+        else
+        {
+            tree.collapsePath(parent);
+        }
+    }    
 }
