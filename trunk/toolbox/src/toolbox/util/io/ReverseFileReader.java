@@ -40,14 +40,14 @@ public class ReverseFileReader extends Reader
     // Overrides java.io.Reader
     //--------------------------------------------------------------------------
     
-    /**
+    /*
      * @see java.io.Reader#read()
      */
     public int read() throws IOException
     {
         int ch = -1;
         
-        if (pointer_ != -1)
+        if (pointer_ >= 0)
         {
             file_.seek(pointer_);
             ch = file_.read();
@@ -56,8 +56,16 @@ public class ReverseFileReader extends Reader
         
         return ch;
     }
-    
-    /**
+
+    /*
+     * @see java.io.Reader#read(char[])
+     */    
+    public int read(char cbuf[]) throws IOException 
+    {
+        return read(cbuf, 0, cbuf.length);
+    }
+        
+    /*
      * @see java.io.Reader#read(char[], int, int)
      */
     public int read(char[] cbuf, int off, int len) throws IOException
@@ -75,20 +83,55 @@ public class ReverseFileReader extends Reader
         return len;
     }
     
-    /**
+    /*
      * @see java.io.Reader#close()
      */
     public void close() throws IOException
     {
         file_.close();
     }
-
+    
+    /**
+     * Skips in reverse direction
+     * 
+     * @see java.io.Reader#skip(long)
+     */
+    public long skip(long n) throws IOException 
+    {
+        long skipped;
+        
+        if (n > pointer_)
+        {
+            // Attempting to go before beginning of file
+            skipped = pointer_;
+            pointer_ = 0;
+        }
+        else
+        {
+            skipped = n;
+            pointer_ -= n;
+        }
+        
+        return skipped;
+    }
+    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
         
     /**
-     * Reads the next previous line starting at the end of the file
+     * Reads the next line from the file in the reverse direction. 
+     * <p>
+     * Given the following file with the carat denoting the current file
+     * pointer:
+     * <pre>
+     * First line
+     * Second line
+     * Last line
+     *         ^
+     * 
+     * A call to readLine() will return the string "enil tsaL"
+     * </pre>
      * 
      * @return Line as string or null if the beginning of file has been reached.
      * @throws IOException on I/O error
@@ -98,44 +141,26 @@ public class ReverseFileReader extends Reader
         String line = null;
         StringBuffer sb = new StringBuffer();
         
-        //logger_.debug("Pointer before: " + pointer_);
-        
         while (pointer_ >= 0 )
         {
-            file_.seek(pointer_);
-            
-            int i = file_.read();
-            char c = (char) i; 
-            
-            //logger_.debug("Read char: " + c);
+            int i = read();
+            char c = (char) i;
             
             if (c == '\n')
             {
-                // Hit a new line. Bundle up the current buffer and return  
-                line = sb.reverse().toString();
-                --pointer_;
+                line = sb.toString();
                 break;
             }
-            else if (pointer_ == 0)
+            else if (pointer_ == -1)
             {
-                // Hit the beginning of the file
                 sb.append(c);
-                line = sb.reverse().toString();
-                
-                // Cause subsequent calls to return null
-                pointer_ = -1; 
-                
+                line = sb.toString();
                 break;
             }
             else
             {
-                // Business as usual...collect in buffer
                 sb.append(c);
-                --pointer_;
             }
-            
-            //logger_.debug(
-            //  "Pointer after: " + pointer_ + "'" + sb.toString() + "'");
         }
         
         return line;
