@@ -3,9 +3,8 @@ package toolbox.util.net;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
+import toolbox.util.ArrayUtil;
 
 /**
  * Abstract connection with support for listenter interface. Subclasses are 
@@ -17,7 +16,7 @@ public abstract class AbstractConnection implements IConnection
     /**
      * List of connection listeners
      */
-    private List listeners_ = new ArrayList();
+    private IConnectionListener[] listeners_ = new IConnectionListener[0];
 
     /**
      * Connection's name
@@ -87,7 +86,7 @@ public abstract class AbstractConnection implements IConnection
      */
     public void addConnectionListener(IConnectionListener listener)
     {
-        listeners_.add(listener);
+        listeners_ = (IConnectionListener[])ArrayUtil.add(listeners_, listener);
     }
 
     /**
@@ -97,7 +96,8 @@ public abstract class AbstractConnection implements IConnection
      */
     public void removeConnectionListener(IConnectionListener listener)
     {
-        listeners_.remove(listener);
+        listeners_ = 
+            (IConnectionListener[])ArrayUtil.remove(listeners_, listener);
     }
 
     /**
@@ -107,8 +107,8 @@ public abstract class AbstractConnection implements IConnection
      */    
     protected void fireConnectionClosed(IConnection connection)
     {
-        for (Iterator i=listeners_.iterator(); i.hasNext(); )
-            ((IConnectionListener)i.next()).connectionClosed(connection);
+        for (int i=0; i<listeners_.length; 
+            listeners_[i++].connectionClosed(connection));
     }
     
     /**
@@ -118,8 +118,8 @@ public abstract class AbstractConnection implements IConnection
      */    
     protected void fireConnectionClosing(IConnection connection)
     {
-        for (Iterator i=listeners_.iterator(); i.hasNext(); )
-            ((IConnectionListener)i.next()).connectionClosing(connection);
+        for (int i=0; i<listeners_.length; 
+            listeners_[i++].connectionClosing(connection));
     }
     
     /**
@@ -129,8 +129,8 @@ public abstract class AbstractConnection implements IConnection
      */    
     protected void fireConnectionInterrupted(IConnection connection)
     {
-        for (Iterator i=listeners_.iterator(); i.hasNext(); )
-            ((IConnectionListener)i.next()).connectionInterrupted(connection);
+        for (int i=0; i<listeners_.length; 
+            listeners_[i++].connectionInterrupted(connection));
     }
     
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractConnection implements IConnection
      */    
     protected void fireConnectionStarted(IConnection connection)
     {
-        for (Iterator i=listeners_.iterator(); i.hasNext(); )
-            ((IConnectionListener)i.next()).connectionStarted(connection);
+        for (int i=0; i<listeners_.length; 
+            listeners_[i++].connectionStarted(connection));
     }
 }
