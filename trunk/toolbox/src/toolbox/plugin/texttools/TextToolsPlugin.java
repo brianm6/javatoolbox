@@ -289,7 +289,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element root =
             XOMUtil.getFirstChildElement(
@@ -327,7 +327,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
 
