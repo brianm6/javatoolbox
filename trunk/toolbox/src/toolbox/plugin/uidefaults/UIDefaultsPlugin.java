@@ -42,8 +42,8 @@ import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.workspace.IPlugin;
 
 /**
- * Shows UIDefaults for each widget in Swing's library for a given 
- * Look and Feel.
+ * Shows UIDefaults for each widget in Swing's library for a given Look and
+ * Feel.
  * 
  * @author Unascribed
  */
@@ -52,6 +52,10 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     private static final Logger logger_ =
         Logger.getLogger(UIDefaultsPlugin.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * One tab per Swing component.
      */
@@ -178,13 +182,10 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     private void buildView()
     {
-        //if (params != null)
-        //  statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
-        
         setLayout(new BorderLayout());
         tabbedPane_ = getTabbedPane();
         add(tabbedPane_);
@@ -276,8 +277,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     /**
      * Adds components as tabs to the given tabbed pane.
      *
-     * @param pane Tabbed pane
-     * @param components Components to add
+     * @param pane Tabbed pane.
+     * @param components Components to add.
      */
     private void addComponentTabs(JTabbedPane pane, Map components)
     {
@@ -347,6 +348,12 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         private String[] columnNames_;
         private Object[][] rowData_;
 
+        /**
+         * Creates a MyTableModel.
+         *
+         * @param rowData Row data.
+         * @param columnNames Column names.
+         */
         public MyTableModel(Object[][] rowData, String[] columnNames)
         {
             rowData_     = rowData;
@@ -401,12 +408,21 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
      */
     class SampleRenderer extends JSmartLabel implements TableCellRenderer
     {
+        /**
+         * Creates a SampleRenderer.
+         */
         public SampleRenderer()
         {
             setHorizontalAlignment(SwingConstants.CENTER);
             setOpaque(true); // MUST do this for background to show up.
         }
 
+        
+        /**
+         * @see javax.swing.table.TableCellRenderer#
+         *      getTableCellRendererComponent(javax.swing.JTable, 
+         *      java.lang.Object, boolean, boolean, int, int)
+         */
         public Component getTableCellRendererComponent(
             JTable table,
             Object sample,
