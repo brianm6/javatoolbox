@@ -3,14 +3,12 @@ package toolbox.workspace.prefs;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,15 +26,13 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
-import toolbox.util.ui.action.DisposeAction;
-import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
 
 /**
  * Workspace preferences dialog box.
  */
-public class PreferencesDialog extends JDialog implements ActionListener
+public class PreferencesDialog extends JDialog
 {
     private static final Logger logger_ =
         Logger.getLogger(PreferencesDialog.class);
@@ -58,17 +54,22 @@ public class PreferencesDialog extends JDialog implements ActionListener
      */
     private JSmartTree tree_;
     
-    JPanel cardPanel_;
-    CardLayout cardLayout_;
+    private JPanel cardPanel_;
+    private CardLayout cardLayout_;
 
+    private PreferencesManager preferencesManager_;
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     public static void main(String[] args) throws Exception
     {
-        LookAndFeelUtil.setPreferredLAF();
+        //LookAndFeelUtil.setPreferredLAF();
         
         JFrame frame = new JFrame();
         SwingUtil.centerWindow(frame);
-        JDialog d = new PreferencesDialog(frame);
+        JDialog d = new PreferencesDialog(frame, new PreferencesManager());
         d.setVisible(true);
         SwingUtil.centerWindow(d);
         
@@ -84,9 +85,12 @@ public class PreferencesDialog extends JDialog implements ActionListener
      *
      * @param parent Parent frame.
      */
-    public PreferencesDialog(Frame parent)
+    public PreferencesDialog(
+        Frame parent, 
+        PreferencesManager preferencesManager)
     {
         super(parent, "Toolbox Preferences", true);
+        preferencesManager_ = preferencesManager;
         buildView();
         pack();
         SwingUtil.centerWindow(parent, this);
@@ -96,13 +100,20 @@ public class PreferencesDialog extends JDialog implements ActionListener
     // Public
     //--------------------------------------------------------------------------
     
-    public void registerPane(PreferencesView pane)
+    public void registerView(PreferencesView view)
     {
+        logger_.debug("Registering prefs view = " + view.getLabel());
+        
         DefaultTreeModel model = (DefaultTreeModel) tree_.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        root.add(new DefaultMutableTreeNode(pane));
+        root.add(new DefaultMutableTreeNode(view));
         
-        cardPanel_.add(pane.getView(), pane.getLabel());
+        // Since the view is created by the PlugWorkspace during initialization,
+        // the look and feel may have changed so we have to update it manually.
+        
+        // SwingUtilities.updateComponentTreeUI(view.getView());
+        
+        cardPanel_.add(view.getView(), view.getLabel());
     }
     
     //--------------------------------------------------------------------------
@@ -114,50 +125,92 @@ public class PreferencesDialog extends JDialog implements ActionListener
      */
     protected void buildView()
     {
-        JPanel view = new JPanel(new BorderLayout());
+        Container view = getContentPane();
+        view.setLayout(new BorderLayout());
         
         JSmartSplitPane splitter = 
             new JSmartSplitPane(
                 JSmartSplitPane.HORIZONTAL_SPLIT,
                 buildTreePanel(),
-                buildCardPanel());
+                cardPanel_ = new JPanel(
+                    cardLayout_ = new CardLayout()));
         
         view.add(BorderLayout.CENTER, splitter);
         view.add(BorderLayout.SOUTH, buildButtonPanel());
+        //setContentPane(view);
         
-        registerPane(new ProxyView());
-        
-        setContentPane(view);
+        PreferencesView[] prefs = preferencesManager_.getPreferences();
+        for (int i = 0; i < prefs.length; registerView(prefs[i++]));
         
         SwingUtil.expandAll(tree_, true);
     }
 
     
-    protected JPanel buildCardPanel()
-    {
-        cardPanel_ = new JPanel(cardLayout_ = new CardLayout());
-        return cardPanel_;
-    }
-    
-    
     /**
-     * Builds the ok/cancel button panel.
+     * Builds the ok/cancel/apply button panel.
      * 
      * @return JPanel
      */
     protected JPanel buildButtonPanel()
     {
-        // Build and wire button panel
         JPanel p = new JPanel(new FlowLayout());
-        JButton okButton = new JSmartButton(ACTION_OK);
-        okButton.setActionCommand(ACTION_OK);
-        okButton.addActionListener(this);
-        
-        p.add(okButton);
+        p.add(new JSmartButton(new OKAction()));
         p.add(new JSmartButton(new ApplyAction()));
-        p.add(new JSmartButton(new DisposeAction("Cancel", this)));
+        p.add(new JSmartButton(new CancelAction()));
         return p;
     }
+
+    
+    /**
+     * Builds the tree panel with the preference views as children.
+     * 
+     * @return JPanel
+     */
+    protected JPanel buildTreePanel()
+    {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+        DefaultTreeModel treeModel = new DefaultTreeModel(root);
+        tree_ = new JSmartTree(root);
+        tree_.setCellRenderer(new PrefsTreeCellRenderer());
+        
+        JHeaderPanel p = 
+            new JHeaderPanel(
+                ImageCache.getIcon(ImageCache.IMAGE_CONFIG), 
+                "Preferences",
+                null,
+                new JScrollPane(tree_));
+        
+        tree_.addTreeSelectionListener(new PrefsTreeSelectionListener());
+        return p;
+    }
+    
+    //--------------------------------------------------------------------------
+    // OKAction
+    //--------------------------------------------------------------------------
+    
+    class OKAction extends AbstractAction
+    {
+        public OKAction()
+        {
+            super("OK");
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            System.out.println("ok!");
+            PreferencesView[] prefs = preferencesManager_.getPreferences();
+            for (int i = 0; i < prefs.length; prefs[i++].onOK());
+            dispose();
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // ApplyAction
+    //--------------------------------------------------------------------------
     
     class ApplyAction extends AbstractAction
     {
@@ -167,13 +220,44 @@ public class PreferencesDialog extends JDialog implements ActionListener
         }
         
         /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
             System.out.println("applying!");
+            PreferencesView[] prefs = preferencesManager_.getPreferences();
+            for (int i = 0; i < prefs.length; prefs[i++].onApply());
         }
     }
+
+    //--------------------------------------------------------------------------
+    // CancelAction
+    //--------------------------------------------------------------------------
+    
+    class CancelAction extends AbstractAction
+    {
+        public CancelAction()
+        {
+            super("Cancel");
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            System.out.println("cancel");
+            PreferencesView[] prefs = preferencesManager_.getPreferences();
+            for (int i = 0; i < prefs.length; prefs[i++].onCancel());
+            dispose();
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // PrefsTreeCellRenderer
+    //--------------------------------------------------------------------------
     
     class PrefsTreeCellRenderer extends SmartTreeCellRenderer
     {
@@ -209,65 +293,23 @@ public class PreferencesDialog extends JDialog implements ActionListener
         }
     }
     
+    //--------------------------------------------------------------------------
+    // PrefsTreeSelectionListener
+    //--------------------------------------------------------------------------
+    
     class PrefsTreeSelectionListener implements TreeSelectionListener
     {
         public void valueChanged(TreeSelectionEvent e)
         {
             DefaultMutableTreeNode node = 
                 (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-            
-            JComponent c = (JComponent) node.getUserObject();
-            cardLayout_.show(cardPanel_, c.getName());
-        }
-    }
-    
-    /**
-     * Builds the tree panel with the preference views as children.
-     * 
-     * @return JPanel
-     */
-    protected JPanel buildTreePanel()
-    {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        DefaultTreeModel treeModel = new DefaultTreeModel(root);
-        tree_ = new JSmartTree(root);
-        tree_.setCellRenderer(new PrefsTreeCellRenderer());
-        
-        JHeaderPanel p = 
-            new JHeaderPanel(
-                ImageCache.getIcon(ImageCache.IMAGE_CONFIG), 
-                "Preferences",
-                null,
-                new JScrollPane(tree_));
-        
-        tree_.addTreeSelectionListener(new PrefsTreeSelectionListener());
-        return p;
-    }
 
-    //--------------------------------------------------------------------------
-    // ActionListener Interface
-    //--------------------------------------------------------------------------
-
-    /**
-     * @see java.awt.event.ActionListener#actionPerformed(
-     *      java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        String action = e.getActionCommand();
-
-        if (action.equals(ACTION_OK))
-        {
-            dispose();
-        }
-        else if (action.equals(ACTION_CANCEL))
-        {
-            dispose();
-        }
-        else
-        {
-            logger_.warn(
-                "No handler in actionPerformed() for command " + action);
+            if (node.getUserObject() != null && 
+                node.getUserObject() instanceof PreferencesView)
+            {
+                PreferencesView pp = (PreferencesView) node.getUserObject();
+                cardLayout_.show(cardPanel_, pp.getLabel());
+            }
         }
     }
 }
