@@ -1,7 +1,3 @@
-// =============================================================================
-// CVS client - retrieves password from system property
-// =============================================================================
-
 /*****************************************************************************
  * Sun Public License Notice
  *
@@ -19,14 +15,19 @@
 package org.netbeans.lib.cvsclient.commandLine;
 
 import java.io.*;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.ResourceBundle;
 
 import org.netbeans.lib.cvsclient.*;
+import org.netbeans.lib.cvsclient.CVSRoot;
 import org.netbeans.lib.cvsclient.admin.*;
 import org.netbeans.lib.cvsclient.command.*;
+import org.netbeans.lib.cvsclient.commandLine.command.CommandProvider;
 import org.netbeans.lib.cvsclient.connection.*;
-import org.netbeans.lib.cvsclient.util.Logger;
-
-import toolbox.util.StringUtil;
+import org.netbeans.lib.cvsclient.connection.StandardScrambler;
+import org.netbeans.lib.cvsclient.event.CVSListener;
 
 /**
  * An implementation of the standard CVS client utility (command line tool)
@@ -35,12 +36,9 @@ import toolbox.util.StringUtil;
  */
 public class CVSCommand {
     
-    static
-    {
-        System.out.println(StringUtil.addBars(
-            "Loaded debug org.netbeans.lib.cvsclient.commandLine.CVSCommand"));
-    }
-    
+    private static final String HELP_OPTIONS = "--help-options"; // NOI18N
+    private static final String HELP_COMMANDS = "--help-commands"; // NOI18N
+    private static final String HELP_SYNONYMS = "--help-synonyms"; // NOI18N
     
     /**
      * The path to the repository on the server
@@ -67,98 +65,21 @@ public class CVSCommand {
      * particular command.
      */
     private GlobalOptions globalOptions;
-
+    
     /**
-     * A struct containing the various bits of information in a CVS root
-     * string, allowing easy retrieval of individual items of information
+     * The port number that is used to connect to the remote server.
+     * It is taken into account only when it's value is greater then zero.
      */
-    private static class CVSRoot {
-        public String connectionType;
-        public String user;
-        public String host;
-        public String repository;
-        public int port = 2401;
-
-        public CVSRoot(String root) throws IllegalArgumentException {
-            
-            if (!root.startsWith(":"))
-                throw new IllegalArgumentException(
-                    "CVSROOT must start with a colon: " + root);
-
-            int oldColonPosition = 0;
-            int colonPosition = root.indexOf(':', 1);
-            
-            if (colonPosition == -1)
-                throw new IllegalArgumentException(
-                    "Could not find ending color for protocol: " + root);
-                
-            connectionType = root.substring(oldColonPosition + 1, colonPosition);
-            oldColonPosition = colonPosition;
-            colonPosition = root.indexOf('@', colonPosition + 1);
-            
-            if (colonPosition == -1)
-                throw new IllegalArgumentException(
-                    "Could not fund @ separator between user and hostnname: " + 
-                        root);
-                
-            user = root.substring(oldColonPosition + 1, colonPosition);
-            oldColonPosition = colonPosition;
-            colonPosition = root.indexOf(':', colonPosition + 1);
-            
-            if (colonPosition == -1)
-                throw new IllegalArgumentException(
-                    "Could not fund colon after hostname: " + root);
-                
-            host = root.substring(oldColonPosition + 1, colonPosition);
-            
-            Logger.logOutput("Repository scanned from pos " + 
-                (colonPosition + 1) + ": " + root.substring(colonPosition+1));
-            
-            repository = root.substring(colonPosition + 1);
-            boolean isNumber = true;
-            int index = 0;
-            String numString = "";
-            
-            while (isNumber) {
-                try {
-                    int num = Integer.parseInt(repository.substring(index, index + 1));
-                    numString = numString + Integer.toString(num);
-                    index = index + 1;
-                }
-                catch (NumberFormatException exc) {
-                    isNumber = false;
-                }
-            }
-            
-            if (numString.length() > 0) {
-                try {
-                    port = Integer.parseInt(numString);
-                    
-                    repository = root.substring(
-                        colonPosition + 
-                        1 +                  // skip over colon 
-                        numString.length() + // skip over port
-                        1,                   // skip over color
-                        root.length());      // to end of string
-                }
-                catch (NumberFormatException exc) {
-                }
-            }
-
-            if (connectionType == null || user == null || host == null ||
-                    repository == null)
-                throw new IllegalArgumentException();
-        }
-    }
+    private int port = 0;
 
     /**
      * Execute a configured CVS command
      * @param command the command to execute
      * @throws CommandException if there is an error running the command
      */
-    public void executeCommand(Command command)
+    public boolean executeCommand(Command command)
             throws CommandException, AuthenticationException {
-        client.executeCommand(command, globalOptions);
+        return client.executeCommand(command, globalOptions);
     }
 
     public void setRepository(String repository) {
@@ -174,48 +95,27 @@ public class CVSCommand {
     }
 
     /**
-     * This handles the "server" connection
+     * Creates the connection and the client and connects.
      */
-    private void connectToServer(PrintStream stdout, PrintStream stderr)
-            throws AuthenticationException {
-        ServerConnection c = new ServerConnection();
-        connection = c;
-        c.setRepository(repository);
-        c.open();
-
-        client = new Client(c, new StandardAdminHandler());
-
+    private void connect(CVSRoot root, String password) throws IllegalArgumentException,
+                                                               AuthenticationException,
+                                                               CommandAbortedException {
+        connection = ConnectionFactory.getConnection(root);
+        if (CVSRoot.METHOD_PSERVER.equals(root.getMethod())) {
+            ((PServerConnection) connection).setEncodedPassword(password);
+            if (port > 0) ((PServerConnection) connection).setPort(port);
+        }
+        connection.open();
+        
+        client = new Client(connection, new StandardAdminHandler());
         client.setLocalPath(localPath);
-
-        // add a listener to the client
-        client.getEventManager().addCVSListener(new BasicListener(stdout, stderr));
     }
-
-    /**
-     * This handles "pserver" connection
-     */
-    private void connectToServer(String userName, String encodedPassword,
-                                 String hostName, int port,
-                                 PrintStream stdout, PrintStream stderr)
-            throws AuthenticationException {
-                
-        //System.out.println("connectToServer encoded pw: " + encodedPassword);
-               
-        PServerConnection c = new PServerConnection();
-        connection = c;
-        c.setUserName(userName);
-        c.setEncodedPassword(encodedPassword);
-        c.setHostName(hostName);
-        c.setRepository(repository);
-        c.setPort(port);
-        c.open();
-
-        client = new Client(c, new StandardAdminHandler());
-
-        client.setLocalPath(localPath);
-
-        // add a listener to the client
-        client.getEventManager().addCVSListener(new BasicListener(stdout, stderr));
+    
+    private void addListener(CVSListener listener) {
+        if (client != null) {
+            // add a listener to the client
+            client.getEventManager().addCVSListener(listener);
+        }
     }
 
     private void close(PrintStream stderr) {
@@ -233,11 +133,14 @@ public class CVSCommand {
      * the CVS directory
      * @return the CVSRoot string
      */
-    private static String getCVSRoot() {
+    private static String getCVSRoot(String workingDir) {
         String root = null;
         BufferedReader r = null;
+        if (workingDir == null) {
+            workingDir = System.getProperty("user.dir");
+        }
         try {
-            File f = new File(System.getProperty("user.dir"));
+            File f = new File(workingDir);
             File rootFile = new File(f, "CVS/Root");
             if (rootFile.exists()) {
                 r = new BufferedReader(new FileReader(rootFile));
@@ -271,28 +174,14 @@ public class CVSCommand {
     private static int processGlobalOptions(String[] args,
                                             GlobalOptions globalOptions,
                                             PrintStream stderr) {
-        final String getOptString = "Hrwd:z:";
+        final String getOptString = globalOptions.getOptString();
         GetOpt go = new GetOpt(args, getOptString);
         int ch = -1;
         boolean usagePrint = false;
-        while ((ch = go.getopt()) != GetOpt.optEOF) {
-            if ((char)ch == 'H')
-                usagePrint = true;
-            else if ((char)ch == 'r')
-                globalOptions.setCheckedOutFilesReadOnly(true);
-            else if ((char)ch == 'w')
-                globalOptions.setCheckedOutFilesReadOnly(false);
-            else if ((char)ch == 'd')
-                globalOptions.setCVSRoot(go.optArgGet());
-            else if ((char)ch == 'z') {
-                globalOptions.setUseGzip(true);
-                // we just ignore the zip level but include it for
-                // completeness
-                /*Object zipLevel =*/ go.optArgGet();
-            }
-            else {
-                usagePrint = true;
-            }
+        while ((ch = go.getopt()) != go.optEOF) {
+            //System.out.println("Global option '"+((char) ch)+"', '"+go.optArgGet()+"'");
+            boolean success = globalOptions.setCVSCommand((char) ch, go.optArgGet());
+            if (!success) usagePrint = true;
         }
         if (usagePrint) {
             showUsage(stderr);
@@ -302,7 +191,12 @@ public class CVSCommand {
     }
 
     private static void showUsage(PrintStream stderr) {
-        stderr.println("Usage: cvs [global options] command [options]");
+        String usageStr = ResourceBundle.getBundle(CVSCommand.class.getPackage().getName()+".Bundle").getString("MSG_HelpUsage"); // NOI18N
+        stderr.println(MessageFormat.format(usageStr, new Object[] { HELP_OPTIONS, HELP_COMMANDS, HELP_SYNONYMS }));
+        //stderr.println("Usage: cvs [global options] command [command-options-and-arguments]");
+        //stderr.println("       specify "+HELP_OPTIONS+" for a list of options");
+        //stderr.println("       specify "+HELP_COMMANDS+" for a list of commands");
+        //stderr.println("       specify "+HELP_SYNONYMS+" for a list of command synonyms");
     }
 
     /**
@@ -313,42 +207,21 @@ public class CVSCommand {
      * @param hostName the host
      */
     private static boolean performLogin(String userName, String hostName,
-                                     String repository, int port,
-                                     GlobalOptions globalOptions) {
-                                         
-        Logger.logOutput("Repository=" + repository);
-                                                 
+                                        String repository, int port,
+                                        GlobalOptions globalOptions) {
         PServerConnection c = new PServerConnection();
         c.setUserName(userName);
         String password = null;
-        
-       
-        // =====================================================================
-        // OVERRIDE : Override getting of password via command line if one is
-        //            specified in the property cvs.password.
-          
-        String overridePassword = System.getProperty("cvs.password");
-        
-        if (overridePassword != null)
-        {
-            System.out.println("Using cvs.password...");
-            password = overridePassword;
+        try {
+            BufferedReader in = new BufferedReader(new
+                    InputStreamReader(System.in));
+            System.out.print("Enter password: ");
+            password = in.readLine();
         }
-        else
-        {
-            try {
-                BufferedReader in = new BufferedReader(new
-                        InputStreamReader(System.in));
-                System.out.print("Enter password: ");
-                password = in.readLine();
-            }
-            catch (IOException e) {
-                System.err.println("Could not read password: " + e);
-                return false;
-            }
+        catch (IOException e) {
+            System.err.println("Could not read password: " + e);
+            return false;
         }
-        
-        // =====================================================================
 
         String encodedPassword = StandardScrambler.getInstance().scramble(
                 password);
@@ -361,8 +234,6 @@ public class CVSCommand {
         }
         catch (AuthenticationException e) {
             System.err.println("Could not login to host " + hostName);
-            System.err.println(e.getMessage());
-            //e.printStackTrace();
             return false;
         }
         // was successful, so write the appropriate file out
@@ -381,7 +252,7 @@ public class CVSCommand {
                 writer.close();
             }
             else {
-                File tempFile = File.createTempFile("cvs", "tmp");
+                File tempFile = File.createTempFile("cvs", "tmp", globalOptions.getTempDir());
                 reader = new BufferedReader(new FileReader(passFile));
                 writer = new BufferedWriter(new FileWriter(tempFile));
                 String line;
@@ -396,7 +267,7 @@ public class CVSCommand {
                 }
                 reader.close();
                 writer.close();
-                File temp2File = File.createTempFile("cvs", "tmp");
+                File temp2File = File.createTempFile("cvs", "tmp", globalOptions.getTempDir());
                 passFile.renameTo(temp2File);
                 tempFile.renameTo(passFile);
                 temp2File.delete();
@@ -433,7 +304,7 @@ public class CVSCommand {
      * @param CVSRoot the CVS root for which the password is being searched
      * @return the password, scrambled
      */
-    private static String lookupPassword(String CVSRoot, PrintStream stderr) {
+    private static String lookupPassword(String CVSRoot, String CVSRootWithPort, PrintStream stderr) {
         File passFile = new File(System.getProperty("cvs.passfile",
                                                     System.getProperty("user.home") +
                                                     "/.cvspass"));
@@ -445,8 +316,12 @@ public class CVSCommand {
             reader = new BufferedReader(new FileReader(passFile));
             String line;
             while ((line = reader.readLine()) != null) {
+                if (line.startsWith("/1 ")) line = line.substring("/1 ".length());
                 if (line.startsWith(CVSRoot)) {
                     password = line.substring(CVSRoot.length() + 1);
+                    break;
+                } else if (line.startsWith(CVSRootWithPort)) {
+                    password = line.substring(CVSRootWithPort.length() + 1);
                     break;
                 }
             }
@@ -465,6 +340,9 @@ public class CVSCommand {
                 }
             }
         }
+        if (password == null) {
+            stderr.println("Didn't find password for CVSROOT '"+CVSRoot+"'.");
+        }
         return password;
     }
 
@@ -474,9 +352,9 @@ public class CVSCommand {
     public static void main(String[] args) {
         if (processCommand(args, null, System.getProperty("user.dir"),
                            System.out, System.err)) {
-            //System.exit(0);
+            System.exit(0);
         } else {
-            //System.exit(1);
+            System.exit(1);
         }
     }
     
@@ -486,16 +364,51 @@ public class CVSCommand {
      * the JVM and provides command output.
      * @param args The command with options
      * @param files The files to execute the command on.
+     * @param localPath The local working directory
      * @param stdout The standard output of the command
      * @param stderr The error output of the command.
      */
     public static boolean processCommand(String[] args, File[] files, String localPath,
                                          PrintStream stdout, PrintStream stderr) {
+        return processCommand(args, files, localPath, 0, stdout, stderr);
+    }
+    
+    /**
+     * Process the CVS command passed in args[] array with all necessary options.
+     * The only difference from main() method is, that this method does not exit
+     * the JVM and provides command output.
+     * @param args The command with options
+     * @param files The files to execute the command on.
+     * @param localPath The local working directory
+     * @param port The port number that is used to connect to the remote server.
+     *             It is taken into account only when it's value is greater then zero.
+     * @param stdout The standard output of the command
+     * @param stderr The error output of the command.
+     * @return whether the command was processed successfully
+     */
+    public static boolean processCommand(String[] args, File[] files, String localPath,
+                                         int port, PrintStream stdout, PrintStream stderr) {
+        // Provide help if requested
+        if (args.length > 0) {
+            if (HELP_OPTIONS.equals(args[0])) {
+                printHelpOptions(stdout);
+                return true;
+            } else if (HELP_COMMANDS.equals(args[0])) {
+                printHelpCommands(stdout);
+                return true;
+            } else if (HELP_SYNONYMS.equals(args[0])) {
+                printHelpSynonyms(stdout);
+                return true;
+            }
+        }
+        try { // Adjust the local path
+            localPath = new File(localPath).getCanonicalPath();
+        } catch (IOException ioex) {}
         // Set up the CVSRoot. Note that it might still be null after this
         // call if the user has decided to set it with the -d command line
         // global option
         GlobalOptions globalOptions = new GlobalOptions();
-        globalOptions.setCVSRoot(getCVSRoot());
+        globalOptions.setCVSRoot(getCVSRoot(localPath));
 
         // Set up any global options specified. These occur before the
         // name of the command to run
@@ -507,6 +420,16 @@ public class CVSCommand {
         catch (IllegalArgumentException e) {
             stderr.println("Invalid argument: " + e);
             return false;
+        }
+        
+        if (globalOptions.isShowHelp()) {
+            printHelp(commandIndex, args, stdout, stderr);
+            return true;
+        }
+        
+        if (globalOptions.isShowVersion()) {
+            printVersion(stdout, stderr);
+            return true;
         }
 
         // if we don't have a CVS root by now, the user has messed up
@@ -522,13 +445,13 @@ public class CVSCommand {
         CVSRoot root = null;
         final String cvsRoot = globalOptions.getCVSRoot();
         try {
-            root = new CVSRoot(cvsRoot);
+            root = CVSRoot.parse(cvsRoot);
         }
         catch (IllegalArgumentException e) {
             stderr.println("Incorrect format for CVSRoot: " + cvsRoot +
-                           "\nThe correct format is: :<connection-type>:user@host:<repository path>" +
-                           "\nwhere <connection-type> is pserver and <repository path> is the " +
-                           "path to the cvs repository on the server.");
+                           "\nThe correct format is: "+
+                           "[:method:][[user][:password]@][hostname:[port]]/path/to/repository" +
+                           "\nwhere \"method\" is pserver.");
             return false;
         }
 
@@ -540,13 +463,14 @@ public class CVSCommand {
 
         final String command = args[commandIndex];
         if (command.equals("login")) {
-            if (root.connectionType.equals("pserver")) {
-                return performLogin(root.user, root.host, root.repository, root.port,
+            if (CVSRoot.METHOD_PSERVER.equals(root.getMethod())) {
+                return performLogin(root.getUserName(), root.getHostName(),
+                                    root.getRepository(), root.getPort(),
                                     globalOptions);
             }
             else {
                 stderr.println("login does not apply for connection type " +
-                               "\'" + root.connectionType + "\'");
+                               "\'" + root.getMethod() + "\'");
                 return false;
             }
         }
@@ -556,7 +480,7 @@ public class CVSCommand {
 
         Command c = null;
         try {
-            c = CommandFactory.getCommand(command, args, ++commandIndex);
+            c = CommandFactory.getDefault().createCommand(command, args, ++commandIndex, globalOptions, localPath);
         }
         catch (IllegalArgumentException e) {
             stderr.println("Illegal argument: " + e.getMessage());
@@ -569,22 +493,50 @@ public class CVSCommand {
 
         String password = null;
 
-        if (root.connectionType.equals("pserver"))
-            password = lookupPassword(cvsRoot, stderr);
+        if (CVSRoot.METHOD_PSERVER.equals(root.getMethod())) {
+            password = root.getPassword();
+            if (password != null) {
+                password = StandardScrambler.getInstance().scramble(password);
+            } else {
+                if (port > 0) root.setPort(port);
+                password = lookupPassword(cvsRoot, root.toString(), stderr);
+                if (password == null) {
+                    password = StandardScrambler.getInstance().scramble(""); // an empty password
+                }
+            }
+        }
         CVSCommand cvsCommand = new CVSCommand();
         cvsCommand.setGlobalOptions(globalOptions);
-        cvsCommand.setRepository(root.repository);
+        cvsCommand.setRepository(root.getRepository());
+        if (port > 0) {
+            cvsCommand.port = port;
+        }
         // the local path is just the path where we executed the
         // command. This is the case for command-line CVS but not
         // usually for GUI front-ends
         cvsCommand.setLocalPath(localPath);
         try {
-            if (root.connectionType.equals("pserver"))
-                cvsCommand.connectToServer(root.user, password, root.host, root.port,
-                                           stdout, stderr);
-            else
-                cvsCommand.connectToServer(stdout, stderr);
-            cvsCommand.executeCommand(c);
+            cvsCommand.connect(root, password);
+            
+            CVSListener list;
+            if (c instanceof ListenerProvider)
+            {
+                list = ((ListenerProvider)c).createCVSListener(stdout, stderr);
+            } else {
+                list = new BasicListener(stdout, stderr);
+            }
+            cvsCommand.addListener(list);
+            boolean status = cvsCommand.executeCommand(c);
+            return status;
+        }
+        catch (AuthenticationException aex) {
+            stderr.println(aex.getLocalizedMessage());
+            return false;
+        }
+        catch (CommandAbortedException caex) {
+            stderr.println("Error: " + caex);
+            Thread.currentThread().interrupt();
+            return false;
         }
         catch (Exception t) {
             stderr.println("Error: " + t);
@@ -596,6 +548,99 @@ public class CVSCommand {
                 cvsCommand.close(stderr);
             }
         }
-        return true;
     }
+    
+    private static void printHelpOptions(PrintStream stdout) {
+        String options = ResourceBundle.getBundle(CVSCommand.class.getPackage().getName()+".Bundle").getString("MSG_HelpOptions"); // NOI18N
+        stdout.println(options);
+    }
+    
+    private static void printHelpCommands(PrintStream stdout) {
+        String msg = ResourceBundle.getBundle(CVSCommand.class.getPackage().getName()+".Bundle").getString("MSG_CVSCommands"); // NOI18N
+        stdout.println(msg);
+        CommandProvider[] providers = CommandFactory.getDefault().getCommandProviders();
+        Arrays.sort(providers, new CommandProvidersComparator());
+        int maxNameLength = 0;
+        for (int i = 0; i < providers.length; i++) {
+            int l = providers[i].getName().length();
+            if (maxNameLength < l) {
+                maxNameLength = l;
+            }
+        }
+        maxNameLength += 2; // Two spaces from the longest name
+        for (int i = 0; i < providers.length; i++) {
+            stdout.print("\t"+providers[i].getName());
+            char spaces[] = new char[maxNameLength - providers[i].getName().length()];
+            Arrays.fill(spaces, ' ');
+            stdout.print(new String(spaces));
+            providers[i].printShortDescription(stdout);
+            stdout.println();
+        }
+    }
+    
+    private static void printHelpSynonyms(PrintStream stdout) {
+        String msg = ResourceBundle.getBundle(CVSCommand.class.getPackage().getName()+".Bundle").getString("MSG_CVSSynonyms"); // NOI18N
+        stdout.println(msg);
+        CommandProvider[] providers = CommandFactory.getDefault().getCommandProviders();
+        Arrays.sort(providers, new CommandProvidersComparator());
+        int maxNameLength = 0;
+        for (int i = 0; i < providers.length; i++) {
+            int l = providers[i].getName().length();
+            if (maxNameLength < l) {
+                maxNameLength = l;
+            }
+        }
+        maxNameLength += 2; // Two spaces from the longest name
+        for (int i = 0; i < providers.length; i++) {
+            String[] synonyms = providers[i].getSynonyms();
+            if (synonyms.length > 0) {
+                stdout.print("\t"+providers[i].getName());
+                char spaces[] = new char[maxNameLength - providers[i].getName().length()];
+                Arrays.fill(spaces, ' ');
+                stdout.print(new String(spaces));
+                for (int j = 0; j < synonyms.length; j++) {
+                    stdout.print(synonyms[j]+" ");
+                }
+                stdout.println();
+            }
+        }
+    }
+    
+    private static void printHelp(int commandIndex, String[] args,
+                                  PrintStream stdout, PrintStream stderr) {
+        if (commandIndex >= args.length) {
+            showUsage(stdout);
+        } else {
+            String cmdName = args[commandIndex];
+            CommandProvider provider = CommandFactory.getDefault().getCommandProvider(cmdName);
+            if (provider == null) {
+                printUnknownCommand(cmdName, stderr);
+            } else {
+                provider.printLongDescription(stdout);
+            }
+        }
+    }
+    
+    private static void printVersion(PrintStream stdout, PrintStream stderr) {
+        String version = CVSCommand.class.getPackage().getSpecificationVersion();
+        stdout.println("Java Concurrent Versions System (JavaCVS) "+version+" (client)");
+    }
+    
+    private static void printUnknownCommand(String commandName, PrintStream out) {
+        String msg = ResourceBundle.getBundle(CVSCommand.class.getPackage().getName()+".Bundle").getString("MSG_UnknownCommand"); // NOI18N
+        out.println(MessageFormat.format(msg, new Object[] { commandName }));
+        printHelpCommands(out);
+    }
+    
+    private static final class CommandProvidersComparator implements Comparator {
+        
+        public int compare(Object o1, Object o2) {
+            if (!(o1 instanceof CommandProvider) || !(o2 instanceof CommandProvider)) {
+                throw new IllegalArgumentException("Can not compare objects "+o1+" and "+o2);
+            }
+            return ((CommandProvider) o1).getName().compareTo(((CommandProvider) o2).getName());
+        }
+        
+    }
+    
 }
