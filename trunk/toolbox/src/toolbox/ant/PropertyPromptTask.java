@@ -27,21 +27,20 @@ import org.apache.tools.ant.Task;
  */
 public class PropertyPromptTask extends Task
 {
-    private String propertyname;    // required
-    private String defaultvalue;
-    private String proposedValue;   // required
-    private String prompttext;      // required
-    private String promptcharacter;
-    private int timeout;
-
-    private boolean useExistingValue;
+    private String  propertyName_;    // required
+    private String  defaultValue_;
+    private String  proposedValue_;   // required
+    private String  promptText_;      // required
+    private String  promptCharacter_;
+    private int     timeout_;
+    private boolean useExistingValue_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
         
     /**
-     * PropertyPromptTask default constructor.
+     * Creates a ProprertyPromptTask
      */
     public PropertyPromptTask()
     {
@@ -62,96 +61,13 @@ public class PropertyPromptTask extends Task
     }
     
     /**
-     * Run the PropertyPromptTask task.
-     * 
-     * @throws BuildException on build error
-     */
-    public void execute() throws BuildException
-    {
-        initTimeout();
-        proposedValue = project.getProperty(propertyname);
-        String currentValue = defaultvalue;
-        
-        if (currentValue == "" && proposedValue != null)
-        {
-            currentValue = proposedValue;
-        }
-        
-        if (!((useExistingValue == true) && (proposedValue != null)))
-        {
-            if (timeout > -1)
-            {
-
-                log("Prompting user for " + propertyname + ". " + 
-                    getDefaultMessage(), Project.MSG_VERBOSE);
-                    
-                StringBuffer prompt = new StringBuffer();
-                //prompt.append("\n");
-                prompt.append(prompttext);
-                prompt.append(" [");
-                prompt.append(currentValue);
-                prompt.append("] ");
-                prompt.append(promptcharacter);
-                prompt.append(" ");
-                System.out.print(prompt.toString());
-                System.out.flush();
-
-                // future version should have hooks for validation of user input
-                TimedBufferedReader reader =
-                    new TimedBufferedReader(new InputStreamReader(System.in));
-                    
-                reader.setTimeout(timeout);
-                reader.setDefaultString(defaultvalue);
-                
-                try
-                {
-                    proposedValue = reader.readLine();
-                }
-                catch (IOException e)
-                {
-                    log("Prompt failed. Using default.");
-                    proposedValue = defaultvalue;
-                }
-
-                if (proposedValue.equals("") && !defaultvalue.equals(""))
-                    proposedValue = defaultvalue;
-
-                if (!proposedValue.equals(""))
-                {
-                    /*
-                     * According to the mailing list, properties are API mutable
-                     * (as opposed to user-properties and the use of multiple
-                     * <property> tags to 'mutate' property values).
-                     */
-                    project.setProperty(propertyname, proposedValue);
-                }
-            }
-        }
-    }
-    
-    /**
-     * Returns a string to be inserted in the log message
-     * indicating whether a default response was specified
-     * in the build file.
-     */
-    private String getDefaultMessage()
-    {
-        if (defaultvalue == "")
-        {
-            return "No default response specified.";
-        }
-        else
-            return "Default response is " + defaultvalue + ".";
-    }
-    
-    /**
      * Returns defaultValue specified in this task for the Property being set.
      * 
      * @return String
      */
     public String getDefaultvalue()
     {
-        return defaultvalue;
+        return defaultValue_;
     }
     
     /**
@@ -160,7 +76,7 @@ public class PropertyPromptTask extends Task
      */
     public String getPromptcharacter()
     {
-        return promptcharacter;
+        return promptCharacter_;
     }
     
     /**
@@ -170,7 +86,7 @@ public class PropertyPromptTask extends Task
      */
     public String getPrompttext()
     {
-        return prompttext;
+        return promptText_;
     }
     
     /**
@@ -181,47 +97,7 @@ public class PropertyPromptTask extends Task
      */
     public String getPropertyname()
     {
-        return propertyname;
-    }
-    
-    /**
-     * Initializes this task.
-     */
-    public void init()
-    {
-        super.init();
-        initTimeout();
-        defaultvalue = "";
-        promptcharacter = "?";
-        useExistingValue = false;
-    }
-    
-    /**
-     * Insert the method's description here.
-     */
-    private void initTimeout()
-    {
-        String timeoutProperty = project.getProperty("promptTimeout");
-
-        if (timeoutProperty == null)
-        {
-            timeout = 0;
-        }
-        else
-        {
-            try
-            {
-                timeout = Integer.parseInt(timeoutProperty);
-            }
-            catch (NumberFormatException e)
-            {
-                log(
-                    "Invalid promptTimeout value: "
-                        + timeoutProperty
-                        + ". Using default (wait indefinitely).");
-                timeout = 0;
-            }
-        }
+        return propertyName_;
     }
     
     /**
@@ -231,7 +107,7 @@ public class PropertyPromptTask extends Task
      */
     public boolean isUseExistingValue()
     {
-        return useExistingValue;
+        return useExistingValue_;
     }
     
     /**
@@ -241,7 +117,7 @@ public class PropertyPromptTask extends Task
      */
     public void setDefaultvalue(String newDefaultvalue)
     {
-        defaultvalue = newDefaultvalue;
+        defaultValue_ = newDefaultvalue;
     }
     
     /**
@@ -252,7 +128,7 @@ public class PropertyPromptTask extends Task
      */
     public void setPromptcharacter(String newPromptcharacter)
     {
-        promptcharacter = newPromptcharacter;
+        promptCharacter_ = newPromptcharacter;
     }
     
     /**
@@ -262,7 +138,7 @@ public class PropertyPromptTask extends Task
      */
     public void setPrompttext(String newPrompttext)
     {
-        prompttext = newPrompttext;
+        promptText_ = newPrompttext;
     }
     
     /**
@@ -272,7 +148,7 @@ public class PropertyPromptTask extends Task
      */
     public void setPropertyname(String newPropertyname)
     {
-        propertyname = newPropertyname;
+        propertyName_ = newPropertyname;
     }
     
     /**
@@ -282,7 +158,137 @@ public class PropertyPromptTask extends Task
      */
     public void setUseExistingValue(boolean newUseExistingValue)
     {
-        useExistingValue = newUseExistingValue;
+        useExistingValue_ = newUseExistingValue;
+    }
+
+    //--------------------------------------------------------------------------
+    // Overrides org.apache.tools.ant.Task
+    //--------------------------------------------------------------------------
+
+    /**
+     * Initializes this task.
+     */
+    public void init()
+    {
+        super.init();
+        initTimeout();
+        defaultValue_ = "";
+        promptCharacter_ = "?";
+        useExistingValue_ = false;
+    }
+    
+    /**
+     * Run the PropertyPromptTask task.
+     * 
+     * @throws BuildException on build error
+     */
+    public void execute() throws BuildException
+    {
+        initTimeout();
+        proposedValue_ = project.getProperty(propertyName_);
+        String currentValue = defaultValue_;
+        
+        if (currentValue == "" && proposedValue_ != null)
+        {
+            currentValue = proposedValue_;
+        }
+        
+        if (!((useExistingValue_ == true) && (proposedValue_ != null)))
+        {
+            if (timeout_ > -1)
+            {
+
+                log("Prompting user for " + propertyName_ + ". " + 
+                    getDefaultMessage(), Project.MSG_VERBOSE);
+                    
+                StringBuffer prompt = new StringBuffer();
+                //prompt.append("\n");
+                prompt.append(promptText_);
+                prompt.append(" [");
+                prompt.append(currentValue);
+                prompt.append("] ");
+                prompt.append(promptCharacter_);
+                prompt.append(" ");
+                System.out.print(prompt.toString());
+                System.out.flush();
+
+                // future version should have hooks for validation of user input
+                TimedBufferedReader reader =
+                    new TimedBufferedReader(new InputStreamReader(System.in));
+                    
+                reader.setTimeout(timeout_);
+                reader.setDefaultString(defaultValue_);
+                
+                try
+                {
+                    proposedValue_ = reader.readLine();
+                }
+                catch (IOException e)
+                {
+                    log("Prompt failed. Using default.");
+                    proposedValue_ = defaultValue_;
+                }
+
+                if (proposedValue_.equals("") && !defaultValue_.equals(""))
+                    proposedValue_ = defaultValue_;
+
+                if (!proposedValue_.equals(""))
+                {
+                    /*
+                     * According to the mailing list, properties are API mutable
+                     * (as opposed to user-properties and the use of multiple
+                     * <property> tags to 'mutate' property values).
+                     */
+                    project.setProperty(propertyName_, proposedValue_);
+                }
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+
+    /**
+     * Initializes the timeout
+     */
+    protected void initTimeout()
+    {
+        String timeoutProperty = project.getProperty("promptTimeout");
+
+        if (timeoutProperty == null)
+        {
+            timeout_ = 0;
+        }
+        else
+        {
+            try
+            {
+                timeout_ = Integer.parseInt(timeoutProperty);
+            }
+            catch (NumberFormatException e)
+            {
+                log(
+                    "Invalid promptTimeout value: "
+                        + timeoutProperty
+                        + ". Using default (wait indefinitely).");
+                timeout_ = 0;
+            }
+        }
+    }
+
+    /**
+     * Returns a string to be inserted in the log message indicating whether a 
+     * default response was specified in the build file.
+     * 
+     * @return Message
+     */
+    private String getDefaultMessage()
+    {
+        if (defaultValue_ == "")
+            return "No default response specified.";
+        else
+            return "Default response is " + defaultValue_ + ".";
     }
 
     //--------------------------------------------------------------------------
@@ -304,10 +310,14 @@ public class PropertyPromptTask extends Task
         private int timeout = 0;
         private String defaultString = "";
 
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
          * TimedBufferedReader constructor.
          * 
-         * @param in Reader
+         * @param in Reader to chain
          */
         TimedBufferedReader(Reader in)
         {
@@ -317,7 +327,7 @@ public class PropertyPromptTask extends Task
         /**
          * TimedBufferedReader constructor.
          * 
-         * @param in Reader
+         * @param in Reader to chain
          * @param sz int Size of the input buffer.
          */
         TimedBufferedReader(Reader in, int sz)
@@ -325,6 +335,10 @@ public class PropertyPromptTask extends Task
             super(in, sz);
         }
 
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
+        
         /**
          * Sets number of seconds to block for input.
          * 
@@ -345,6 +359,10 @@ public class PropertyPromptTask extends Task
             defaultString = str;
         }
 
+        //----------------------------------------------------------------------
+        // Overrides java.io.BufferedReader
+        //----------------------------------------------------------------------
+        
         /**
          * @see java.io.BufferedReader#readLine()
          */
