@@ -38,7 +38,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     public void startup(Map props)
     {
         super.startup(props);
-        tabPanel_ = new JSmartTabbedPane(true);     
+        tabPanel_ = new JSmartTabbedPane(true);
         tabPanel_.addSmartTabbedPaneListener(new TabPanelListener());
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -73,19 +73,19 @@ public class TabbedPluginHost extends AbstractPluginHost
     
     
     /**
-     * @see toolbox.workspace.host.AbstractPluginHost#importPlugin(toolbox.workspace.IPlugin)
+     * @see toolbox.workspace.host.AbstractPluginHost#importPlugin(
+     *      toolbox.workspace.IPlugin)
      */
     public void importPlugin(IPlugin plugin)
     {
         super.importPlugin(plugin);
-
-        // Create tab
         tabPanel_.addTab(plugin.getPluginName(), plugin.getComponent());
     }    
 
     
     /**
-     * @see toolbox.workspace.host.AbstractPluginHost#exportPlugin(toolbox.workspace.IPlugin)
+     * @see toolbox.workspace.host.AbstractPluginHost#exportPlugin(
+     *      toolbox.workspace.IPlugin)
      */
     public void exportPlugin(IPlugin plugin)
     {
