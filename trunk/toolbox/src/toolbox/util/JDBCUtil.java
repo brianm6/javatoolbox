@@ -1,17 +1,12 @@
 package toolbox.util;
 
-import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -22,13 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.dbcp.DriverManagerConnectionFactory;
-import org.apache.commons.dbcp.PoolableConnectionFactory;
-import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.pool.ObjectPool;
-import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
 
 /**
@@ -59,7 +48,7 @@ import org.apache.log4j.Logger;
  * 4 rows
  * </pre>
  * 
- * TODO: Add connection pooling to init methods with jar.
+ * @see toolbox.util.JDBCSession 
  */
 public final class JDBCUtil
 {
@@ -70,59 +59,28 @@ public final class JDBCUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Classname of the commons-dbcp pooling JDBC driver.
-     */
-    public static final String CONN_POOL_DRIVER = 
-        "org.apache.commons.dbcp.PoolingDriver";
-    
-    /**
-     * URL prefix of the connection pooling JDBC driver.
-     */
-    public static final String CONN_POOL_URL_PREFIX = 
-        "jdbc:apache:commons:dbcp:"; 
-
-    /**
      * Connection pooling is turned on by default.
      */
     public static final boolean DEFAULT_POOLED = true;
     
     /**
-     * Name of the connection pool for use exclusively by this class.
-     */	
-    private static final String CONN_POOL_NAME = "jdbcutil";
-    
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /** 
-     * JDBC connection properties that contains username, password, etc. 
+     * Name of the internal session used exclusively by this class.
      */
-    private static Properties connProps_;
- 
-    /**
-     * Instance of the JDBC driver.
-     */   
-    private static Driver driver_;
-
-    /**
-     * Flag to used the pooled jdbc drviers.
-     */
-    private static boolean pooled_ = false;
-
+    public static final String SESSION_NAME = "jdbcutil";
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Singleton - prevent construction.
+     * Prevent construction of this static singleton utility class.
      */
     private JDBCUtil()
     {
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Delegates to JDBCSession
     //--------------------------------------------------------------------------
 
     /**
@@ -149,9 +107,10 @@ public final class JDBCUtil
                IllegalAccessException,
                InstantiationException 
     {
-        init(driver, url, user, password, DEFAULT_POOLED);
+        JDBCSession.init(
+            SESSION_NAME, driver, url, user, password, DEFAULT_POOLED);
     }
-
+    
     
     /**
      * Initialzies the JDBC properties. Must be called before any of the other
@@ -178,54 +137,13 @@ public final class JDBCUtil
                IllegalAccessException,
                InstantiationException 
     {
-        pooled_ = pooled;
-        
-        if (!pooled_)
-        {
-            driver_ = (Driver) Class.forName(driver).newInstance();
-            
-            connProps_ = new Properties();
-            connProps_.put("user", user);
-            connProps_.put("password", password);
-            connProps_.put("url", url);
-        }
-        else
-        {
-            Class.forName(driver);
-            ObjectPool connPool = new GenericObjectPool(null);
-        
-            PoolableConnectionFactory pconnFactory = 
-                new PoolableConnectionFactory(
-                    new DriverManagerConnectionFactory(url, user, password), 
-                    connPool, 
-                    null, 
-                    null, 
-                    false,  // readonly
-                    true);  // autocommit
-	
-            Class.forName(CONN_POOL_DRIVER);
-	        
-            PoolingDriver poolDriver = (PoolingDriver)
-                DriverManager.getDriver(CONN_POOL_URL_PREFIX);
-	        								  		
-            poolDriver.registerPool(CONN_POOL_NAME, connPool);
-	
-            driver_ = poolDriver;
-	        
-            connProps_ = new Properties();
-            connProps_.put("user", user);
-            connProps_.put("password", password);
-            connProps_.put("url", CONN_POOL_URL_PREFIX + CONN_POOL_NAME); 
-        }
-        
-        Connection conn = getConnection();
-        DatabaseMetaData meta = conn.getMetaData();
-        
-        logger_.debug("DB Connect: " + 
-            meta.getDatabaseProductName() + 
-                meta.getDatabaseProductVersion());
-            
-        releaseConnection(conn);
+        JDBCSession.init(
+            SESSION_NAME,
+            driver,
+            url,
+            user,
+            password,
+            pooled);
     }
 
     
@@ -256,7 +174,14 @@ public final class JDBCUtil
                IllegalAccessException, 
                InstantiationException
     {
-        init(new String[] {jarFile}, driver, url, user, password, false);
+        JDBCSession.init(
+            SESSION_NAME, 
+            new String[] {jarFile}, 
+            driver, 
+            url, 
+            user, 
+            password); 
+            //false);
     }
     
     
@@ -288,37 +213,14 @@ public final class JDBCUtil
                IllegalAccessException,
                InstantiationException
     {
-        pooled_ = pooled;
-        
-        // jarFiles[] -> jarURLs[]
-        URL[] jarURLs = new URL[jarFiles.length];
-        for (int i = 0; i< jarFiles.length; i++)
-            jarURLs[i] = new File(jarFiles[i]).toURL();
-        
-        URLClassLoader ucl = new URLClassLoader(jarURLs);
-        Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
-        driver_ = new JDBCUtil.DriverProxy(d);
-        DriverManager.registerDriver(driver_);
-
-        // Blah
-        driver_.acceptsURL("jdbc");
-        driver_.getMajorVersion();
-        driver_.getMinorVersion();
-        driver_.jdbcCompliant();
-        
-        connProps_ = new Properties();
-        connProps_.put("user", user);
-        connProps_.put("password", password);
-        connProps_.put("url", url);
-        
-        Connection conn = getConnection();
-        DatabaseMetaData meta = conn.getMetaData();
-        
-        logger_.debug("Connected to " + 
-            meta.getDatabaseProductName() + 
-                meta.getDatabaseProductVersion());
-            
-        releaseConnection(conn);
+        JDBCSession.init(
+            SESSION_NAME, 
+            jarFiles, 
+            driver, 
+            url, 
+            user, 
+            password); 
+            //false);
     }
     
     
@@ -330,15 +232,7 @@ public final class JDBCUtil
      */
     public static Connection getConnection() throws SQLException
     {
-        if (connProps_ == null)
-            throw new IllegalStateException(
-                "Must call init() first to set the JDBC configuration.");
-        
-        Connection conn =        
-            DriverManager.getConnection(
-                connProps_.getProperty("url"), connProps_);
-                        
-        return conn;
+        return JDBCSession.getConnection(SESSION_NAME);
     }
 
     
@@ -350,21 +244,7 @@ public final class JDBCUtil
      */    
     public static String[] getTableNames() throws SQLException
     {
-        Connection conn = JDBCUtil.getConnection();
-        DatabaseMetaData meta = conn.getMetaData();
-        ResultSet rs = meta.getTables(null, null, null, null);
-        ResultSetMetaData rsmeta = rs.getMetaData();
-        int cnt = rsmeta.getColumnCount();
-        List tables = new ArrayList();
-        
-        while (rs.next())
-        {
-            String tableName = rs.getString("TABLE_NAME");
-            tables.add(tableName);
-        }        
-        
-        JDBCUtil.releaseConnection(conn);
-        return (String[]) tables.toArray(new String[0]);
+        return JDBCSession.getTableNames(SESSION_NAME);
     }
 
 
@@ -377,23 +257,7 @@ public final class JDBCUtil
      **/   
     public static int executeUpdate(String sql) throws SQLException
     {
-        Connection conn = null;
-        Statement stmt = null;
-        int rows = -1;
-        
-        try 
-        {
-            conn = getConnection();    
-            stmt = conn.createStatement();
-            rows = stmt.executeUpdate(prepSQL(sql));
-        } 
-        finally 
-        {
-            close(stmt);
-            releaseConnection(conn); 
-        }
-        
-        return rows;
+        return JDBCSession.executeUpdate(SESSION_NAME, sql);
     }   
     
     
@@ -408,14 +272,7 @@ public final class JDBCUtil
     public static int executeCount(String sqlCountStmt) 
         throws SQLException, IllegalArgumentException
     {
-        // Validate that the sql stmt is selecting a count
-        String[] tokens = StringUtils.split(sqlCountStmt);
-        Validate.isTrue(tokens.length > 2, "Not a valid SQL count statement");
-        Validate.isTrue(tokens[0].equalsIgnoreCase("select"));
-        Validate.isTrue(tokens[1].toLowerCase().startsWith("count"));
-        
-        Object[][] results = executeQueryArray(prepSQL(sqlCountStmt));
-        return Integer.parseInt(results[0][0].toString());
+        return JDBCSession.executeCount(SESSION_NAME, sqlCountStmt);
     }
     
     
@@ -429,26 +286,7 @@ public final class JDBCUtil
      */
     public static String executeQuery(String sql) throws SQLException
     {
-        String formattedResults = null;
-        Connection conn = null;
-        ResultSet results = null;
-        PreparedStatement stmt = null;
-        
-        try
-        {
-            conn = getConnection();
-            stmt = conn.prepareStatement(prepSQL(sql));
-            results = stmt.executeQuery();
-            formattedResults = format(results);
-        }
-        finally
-        {
-            close(stmt);
-            close(results);
-            releaseConnection(conn); 
-        }
-        
-        return formattedResults;
+        return JDBCSession.executeQuery(SESSION_NAME, sql);
     } 
 
     
@@ -462,29 +300,35 @@ public final class JDBCUtil
      */
     public static Object[][] executeQueryArray(String sql) throws SQLException
     {
-        Object[][] data = null;
-        Connection conn = null;
-        ResultSet results = null;
-        PreparedStatement stmt = null;
-
-        try
-        {
-            conn = getConnection();
-            stmt = conn.prepareStatement(prepSQL(sql));
-            results = stmt.executeQuery();
-            data = toArray(results);
-        }
-        finally
-        {
-            close(results);
-            close(stmt);
-            releaseConnection(conn);
-        }
-
-        return data;
+        return JDBCSession.executeQueryArray(SESSION_NAME, sql);
     }
 
+    
+    /**
+     * Drops table w/o any complaints.
+     * 
+     * @param table Name of table to drop.
+     */
+    public static void dropTable(String table)
+    {
+        JDBCSession.dropTable(SESSION_NAME, table);
+    }
 
+    
+    /**
+     * Deregisters the current driver. Must call init() to use again.
+     * 
+     * @throws SQLException on SQL error.
+     */
+    public static void shutdown() throws SQLException 
+    {
+        JDBCSession.shutdown(SESSION_NAME);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Formats a result set in a table like manner.
      * 
@@ -667,27 +511,6 @@ public final class JDBCUtil
 
     
     /**
-     * Drops table w/o any complaints.
-     * 
-     * @param table Name of table to drop.
-     */
-    public static void dropTable(String table)
-    {
-        if (table == null)
-            return;
-            
-        try
-        {
-            executeUpdate("drop table " + table);
-        }
-        catch (SQLException e)
-        {
-            ; // Quiet please
-        }
-    }
-
-    
-    /**
      * Closes a ResultSet w/o any complaining.
      * 
      * @param rs Resultset to close.
@@ -755,32 +578,6 @@ public final class JDBCUtil
         }
     }
     
-    
-    /**
-     * Deregisters the current driver. Must call init() to use again.
-     * 
-     * @throws SQLException on SQL error.
-     */
-    public static void shutdown() throws SQLException 
-    {
-        if (pooled_) 
-        {
-            PoolingDriver pd = (PoolingDriver) driver_;
-            
-            try 
-            {
-                pd.closePool(CONN_POOL_NAME);
-            }
-            catch (Exception e) 
-            {
-                logger_.error(e);
-            }
-        }
-        
-        driver_ = null;
-        connProps_ = null;        
-    }
-
     
     /**
      * Sends DriverManager debug output to System.out.
