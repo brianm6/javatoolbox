@@ -3,27 +3,27 @@ package toolbox.jsourceview;
 import toolbox.util.collections.AsMap;
 
 /**
- * FileStats represents the statistics gathered for one or more source files
+ * FileStats represents the statistics gathered for one or more source files.
  */
 public class FileStats
 {
     /** 
-     * Total number of lines in file 
+     * Total number of lines in file. 
      */    
     private int totalLines_;
     
     /** 
-     * Number of comment lines in file 
+     * Number of comment lines in file. 
      */
     private int commentLines_;
     
     /** 
-     * Number of code lines in file 
+     * Number of code lines in file. 
      */
     private int codeLines_;
     
     /** 
-     * Number of blank lines in file 
+     * Number of blank lines in file .
      */
     private int blankLines_;
     
@@ -39,7 +39,7 @@ public class FileStats
     //--------------------------------------------------------------------------
         
     /**
-     * Creates a FileStats
+     * Creates a FileStats.
      */
     public FileStats()
     {
@@ -50,7 +50,7 @@ public class FileStats
     //--------------------------------------------------------------------------
     
     /**
-     * Returns percentage of source code lines to total lines
+     * Returns percentage of source code lines to total lines.
      * 
      * @return Percent of source to total
      */
@@ -64,8 +64,9 @@ public class FileStats
             return 0;
     }
 
+    
     /**
-     * Adds file stat to existing statistics
+     * Adds file stat to existing statistics.
      * 
      * @param filestats Filestats to add
      */
@@ -78,40 +79,45 @@ public class FileStats
         thrownOutLines_ += filestats.getThrownOutLines();
     }
 
+    
     /**
-     * Increments total lines by one
+     * Increments total lines by one.
      */
     public void incrementTotalLines()
     {
         ++totalLines_;
     }
 
+    
     /**
-     * Increments comment lines by one
+     * Increments comment lines by one.
      */
     public void incrementCommentLines()
     {
         ++commentLines_;
     }
 
+    
     /**
-     * Increments real code lines by one
+     * Increments real code lines by one.
      */
     public void incrementCodeLines()
     {
         ++codeLines_;
     }
 
+    
     /**
-     * Increments blank lines by one
+     * Increments blank lines by one.
      */
     public void incrementBlankLines()
     {
         ++blankLines_;
     }
     
+    
     /**
-     * Increments the thrown out lines by one
+     * Increments the thrown out lines by one.
      */
     public void incrementThrownOutLines()
     {
@@ -123,7 +129,7 @@ public class FileStats
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the number of blank lines
+     * Returns the number of blank lines.
      * 
      * @return int
      */
@@ -132,8 +138,9 @@ public class FileStats
         return blankLines_;
     }
 
+    
     /**
-     * Return the number of source code lines
+     * Return the number of source code lines.
      * 
      * @return int
      */
@@ -142,8 +149,9 @@ public class FileStats
         return codeLines_;
     }
 
+    
     /**
-     * Returns the number of comment lines
+     * Returns the number of comment lines.
      * 
      * @return int
      */
@@ -152,8 +160,9 @@ public class FileStats
         return commentLines_;
     }
 
+    
     /**
-     * Returns the total number of lines
+     * Returns the total number of lines.
      * 
      * @return int
      */
@@ -162,8 +171,9 @@ public class FileStats
         return totalLines_;
     }
 
+    
     /**
-     * Returns the number of lines thrown out
+     * Returns the number of lines thrown out.
      * 
      * @return int
      */

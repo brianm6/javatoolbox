@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ResourceUtil;
 
 /**
- * Collects source code statistics
+ * Collects source code statistics.
  */
 public class StatsCollector
 {
@@ -21,12 +21,12 @@ public class StatsCollector
         Logger.getLogger(StatsCollector.class);
     
     /** 
-     * List of collectors that will analyze the source code 
+     * List of collectors that will analyze the source code. 
      */
     private List collectors_;
     
     /** 
-     * Current line of source code being analyzed 
+     * Current line of source code being analyzed. 
      */        
     private String line_;
             
@@ -35,7 +35,7 @@ public class StatsCollector
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a StatsCollector
+     * Creates a StatsCollector.
      */
     public StatsCollector()
     {
@@ -47,7 +47,7 @@ public class StatsCollector
     //--------------------------------------------------------------------------
 
     /**
-     * Scans a given file and generates statistics
+     * Scans a given file and generates statistics.
      * 
      * @param filename Name of the file
      * @return File statistics
@@ -63,8 +63,9 @@ public class StatsCollector
         return stats; 
     }
     
+    
     /**
-     * Scans a given file and generates statistics
+     * Scans a given file and generates statistics.
      * 
      * @param reader Source of source code
      * @return File statistics
@@ -142,12 +143,12 @@ public class StatsCollector
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // ImportCollector
     //--------------------------------------------------------------------------
     
     /**
      * Collector which identifies import statements and classifies them as
-     * "throw out" lines of code
+     * "throw out" lines of code.
      */
     class ImportCollector implements CodeCollector
     {
@@ -165,6 +166,10 @@ public class StatsCollector
         }
     }
 
+    //--------------------------------------------------------------------------
+    // BraceCollector
+    //--------------------------------------------------------------------------
+    
     /**
      * Collector which identifies braces that occupy an entire line and 
      * classifies the line as "thrown out".
@@ -185,6 +190,10 @@ public class StatsCollector
         }
     }
     
+    //--------------------------------------------------------------------------
+    // BlankCollector
+    //--------------------------------------------------------------------------
+    
     /**
      * Collector which identifies empty lines of code also considered
      * whitespace.
@@ -204,7 +213,11 @@ public class StatsCollector
             return done;
         }
     }
-    
+
+    //--------------------------------------------------------------------------
+    // TotalCollector
+    //--------------------------------------------------------------------------
+
     /**
      * Collector which counts every line of source code regardless of its
      * categorization.
@@ -218,8 +231,12 @@ public class StatsCollector
         }
     }
 
+    //--------------------------------------------------------------------------
+    // RealCodeCollector
+    //--------------------------------------------------------------------------
+
     /**
-     * Collector which identifies "real" lines of source code
+     * Collector which identifies "real" lines of source code.
      */
     class RealCodeCollector implements CodeCollector
     {
@@ -246,6 +263,10 @@ public class StatsCollector
         }
     }
     
+    //--------------------------------------------------------------------------
+    // CommentBeginEndCollector
+    //--------------------------------------------------------------------------
+    
     /**
      * Collector which identifies starting an ending tags for comments 
      * occupying a line all by themselves. These lines are categorized as 
@@ -266,5 +287,4 @@ public class StatsCollector
             return done;
         }
     }
-    
 }

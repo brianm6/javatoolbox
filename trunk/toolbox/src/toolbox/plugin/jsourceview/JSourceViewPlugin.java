@@ -11,12 +11,12 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * Plugin wrapper for JSourceView
+ * Plugin wrapper for JSourceView.
  */
 public class JSourceViewPlugin implements IPlugin
 {
     /** 
-     * Delegate 
+     * Delegate. 
      */
     private JSourceView delegate_;
     
@@ -32,6 +32,7 @@ public class JSourceViewPlugin implements IPlugin
         return "JSourceview";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -40,6 +41,7 @@ public class JSourceViewPlugin implements IPlugin
         return delegate_;
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -48,6 +50,7 @@ public class JSourceViewPlugin implements IPlugin
         return "Provides statistics on java source code.";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#startup(Map)
      */
@@ -62,6 +65,7 @@ public class JSourceViewPlugin implements IPlugin
         delegate_.setStatusBar(statusBar);
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -69,6 +73,7 @@ public class JSourceViewPlugin implements IPlugin
     {
         delegate_.applyPrefs(prefs);    
     }
+    
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
@@ -78,6 +83,7 @@ public class JSourceViewPlugin implements IPlugin
         delegate_.savePrefs(prefs);
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */

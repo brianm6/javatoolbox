@@ -1,22 +1,22 @@
 package toolbox.jsourceview;
 
 /**
- * LineScanner tokenizes a line of source code
+ * LineScanner tokenizes a line of source code.
  */
 public class LineScanner implements MachineConstants
 {
     /**
-     * Debug flag
+     * Debug flag.
      */
     private static boolean debug_;
     
     /** 
-     * Line of source code 
+     * Line of source code. 
      */
     private String line_;
     
     /** 
-     * Current position 
+     * Current position.
      */
     private int position_;
     
@@ -25,11 +25,12 @@ public class LineScanner implements MachineConstants
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a LineScanner
+     * Creates a LineScanner.
      */
     public LineScanner()
     {
     }
+    
     
     /**
      * Creates a LineScanner for the given line of source code. Assumes tabs
@@ -47,7 +48,7 @@ public class LineScanner implements MachineConstants
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the current line
+     * Sets the current line.
      * 
      * @param line Line of source code
      */
@@ -57,8 +58,9 @@ public class LineScanner implements MachineConstants
         position_ = 0;
     }
 
+    
     /**
-     * Peeks to next token in the line
+     * Peeks to next token in the line.
      * 
      * @return State of machine
      */
@@ -124,8 +126,9 @@ public class LineScanner implements MachineConstants
         return 0;
     }
     
+    
     /**
-     * Returns the next token
+     * Returns the next token.
      * 
      * @return token 
      */

@@ -11,7 +11,7 @@ import toolbox.jsourceview.FileStats;
 import toolbox.jsourceview.StatsCollector;
 
 /**
- * Unit test for StatsCollector
+ * Unit test for StatsCollector.
  */
 public class StatsCollectorTest extends TestCase
 {
@@ -23,7 +23,7 @@ public class StatsCollectorTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -37,7 +37,7 @@ public class StatsCollectorTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests getStats() on an empty file
+     * Tests getStats() on an empty file.
      * 
      * @throws Exception on error
      */
@@ -56,8 +56,9 @@ public class StatsCollectorTest extends TestCase
         assertEquals(0, stats.getPercent());
     }
 
+    
     /**
-     * Tests getStats() on a small java file
+     * Tests getStats() on a small java file.
      * 
      * @throws Exception on error
      */

@@ -21,7 +21,7 @@ public class LineStatus
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a LineStatus 
+     * Creates a LineStatus. 
      */
     public LineStatus()
     {
@@ -34,7 +34,7 @@ public class LineStatus
     //--------------------------------------------------------------------------
     
     /**
-     * Mutator for in comment flag
+     * Mutator for in comment flag.
      * 
      * @param inComment True if the line is in a comment, false otherwise
      */    
@@ -43,8 +43,9 @@ public class LineStatus
         inComment_ = inComment;    
     }
 
+    
     /**
-     * Returns true if the line is in a comment, false otherwise
+     * Returns true if the line is in a comment, false otherwise.
      * 
      * @return Is line in a comment
      */    
@@ -53,8 +54,9 @@ public class LineStatus
         return inComment_;
     }
     
+    
     /**
-     * Mutator for countLine flag
+     * Mutator for countLine flag.
      * 
      * @param countLine Should the line be counted
      */
@@ -62,6 +64,7 @@ public class LineStatus
     {
         countLine_ = countLine;
     }
+    
     
     /**
      * Returns true if the line is considered a real line of code, false

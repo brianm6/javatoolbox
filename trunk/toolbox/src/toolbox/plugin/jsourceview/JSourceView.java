@@ -78,12 +78,12 @@ public class JSourceView extends JPanel implements IPreferenced
         Logger.getLogger(JSourceView.class);
 
 	/**
-	 * XML: Root preferences element
+	 * XML: Root preferences element.
 	 */
     private static final String NODE_JSOURCEVIEW_PLUGIN = "JSourceViewPlugin";
     
     /**
-     * XML: Attribute of JSourceViewPlugin that stores the current directory
+     * XML: Attribute of JSourceViewPlugin that stores the current directory.
      */
     private static final String ATTR_LAST_DIR = "dir";
     
@@ -101,7 +101,7 @@ public class JSourceView extends JPanel implements IPreferenced
     private static final int COL_PERCENTAGE = 8;
 
     /** 
-     * Table column names 
+     * Table column names.
      */    
     private static String colNames_[] = 
     {
@@ -140,12 +140,12 @@ public class JSourceView extends JPanel implements IPreferenced
     private ParserWorker  parserWorker_;
 
     /** 
-     * Workspace status bar (in addition to the two we're already got) 
+     * Workspace status bar (in addition to the two we're already got). 
      */
     private IStatusBar workspaceStatusBar_;
     
     /** 
-     * Filter to identify source files 
+     * Filter to identify source files. 
      */
     private static OrFilter sourceFilter_;
     
@@ -154,7 +154,7 @@ public class JSourceView extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSourceView
+     * Creates a JSourceView.
      */    
     public JSourceView()
     {
@@ -166,7 +166,7 @@ public class JSourceView extends JPanel implements IPreferenced
 	//--------------------------------------------------------------------------
     
 	/**
-	 * Sets the text of the scan status
+	 * Sets the text of the scan status.
 	 * 
 	 * @param status Status of the scan activity
 	 */
@@ -175,8 +175,9 @@ public class JSourceView extends JPanel implements IPreferenced
 		scanStatusLabel_.setText(status);
 	}
 
+    
 	/**
-	 * Sets the text of the parse status
+	 * Sets the text of the parse status.
 	 * 
 	 * @param status Status of the parse activity
 	 */
@@ -185,6 +186,7 @@ public class JSourceView extends JPanel implements IPreferenced
 		parseStatusLabel_.setText(status);
 	}
 
+    
     /**
      * Workspace status bar!
      * 
@@ -218,6 +220,7 @@ public class JSourceView extends JPanel implements IPreferenced
         dirField_.setCaretPosition(0);
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -231,13 +234,12 @@ public class JSourceView extends JPanel implements IPreferenced
         XOMUtil.insertOrReplace(prefs, root);
     }
 
-
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -304,8 +306,9 @@ public class JSourceView extends JPanel implements IPreferenced
         sourceFilter_.addFilter(new ExtensionFilter("h"));
     }
     
+    
     /**
-     * Tweaks the table columns for width and extents
+     * Tweaks the table columns for width and extents.
      */
     protected void tweakTable()
     {
@@ -355,8 +358,9 @@ public class JSourceView extends JPanel implements IPreferenced
         table_.setTableHeader(new JSmartTableHeader(columnModel));
     }
     
+    
     /**
-     * Returns the menubar
+     * Returns the menubar.
      * 
      * @return Menubar
      */
@@ -371,7 +375,7 @@ public class JSourceView extends JPanel implements IPreferenced
     }
         
     //--------------------------------------------------------------------------
-    // Actions
+    // SearchAction
     //--------------------------------------------------------------------------
 
     /**
@@ -435,6 +439,10 @@ public class JSourceView extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // PickDirectoryAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Allows user to pick a source directory through the file chooser instead 
      * of typing one in.
@@ -457,8 +465,12 @@ public class JSourceView extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SaveResultsAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Saves the results table to a file
+     * Saves the results table to a file.
      */
     class SaveResultsAction extends SmartAction
     {
@@ -477,7 +489,7 @@ public class JSourceView extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  ScanDirWorker Inner Class
+    // ScanDirWorker
     //--------------------------------------------------------------------------
     
     /** 
@@ -486,17 +498,17 @@ public class JSourceView extends JPanel implements IPreferenced
     class ScanDirWorker implements Runnable
     {
         /** 
-         * Directory to scan recursively for source files 
+         * Directory to scan recursively for source files. 
          */
         private File dir_;
 
         /** 
-         * Cancel flag 
+         * Cancel flag. 
          */
         private boolean cancel_;
         
         /** 
-         * Filter for list on directories 
+         * Filter for list on directories. 
          */
         private FilenameFilter dirFilter_;
         
@@ -505,7 +517,7 @@ public class JSourceView extends JPanel implements IPreferenced
         //----------------------------------------------------------------------
         
         /**
-         * Creates a scanner
+         * Creates a scanner.
          * 
          * @param dir Directory root to scan
          */
@@ -552,8 +564,9 @@ public class JSourceView extends JPanel implements IPreferenced
             }
         }
 
+        
         /** 
-         * Cancels the scanning activity
+         * Cancels the scanning activity.
          */
         protected void cancel()
         {
@@ -565,7 +578,7 @@ public class JSourceView extends JPanel implements IPreferenced
         //----------------------------------------------------------------------
                 
         /**
-         * Starts the scanning activity on a separate thread
+         * Starts the scanning activity on a separate thread.
          */
         public void run()
         {
@@ -575,11 +588,11 @@ public class JSourceView extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // ParserWorker Inner Class
+    // ParserWorker
     //--------------------------------------------------------------------------
 
     /**
-     * Pops files off of the work queue and parses them to gather stats
+     * Pops files off of the work queue and parses them to gather stats.
      */
     class ParserWorker implements Runnable
     {
@@ -658,7 +671,7 @@ public class JSourceView extends JPanel implements IPreferenced
         }
         
         /** 
-         * Cancels the parsing activity
+         * Cancels the parsing activity.
          */
         public void cancel()
         {
@@ -669,11 +682,11 @@ public class JSourceView extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // Inner Class: TableCellRenderer
+    // TableCellRenderer
     //--------------------------------------------------------------------------
         
     /**
-     * Renderer for the contents of the table
+     * Renderer for the contents of the table.
      */   
     class TableCellRenderer extends SmartTableCellRenderer
     {
