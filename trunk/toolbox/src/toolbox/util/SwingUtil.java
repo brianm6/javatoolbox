@@ -92,7 +92,7 @@ public final class SwingUtil
      * @param percentWidth Percent width from 1 to 100.
      * @param percentHeight Percent height from 1 to 100.
      */
-    public static void setWindowSizeAsPercentage(Window w, int percentWidth,
+    public static void setSizeAsDesktopPercentage(Window w, int percentWidth,
         int percentHeight)
     {
         Dimension desktopSize = w.getToolkit().getScreenSize();
@@ -169,7 +169,7 @@ public final class SwingUtil
      * @param widthPercentage Percentage to increase the width.
      * @param heightPercentage Percentage to increase the height.
      */
-    public static void setSizeAsPercentage(
+    public static void setSizeAsWindowPercentage(
         Window w,
         int widthPercentage,
         int heightPercentage)

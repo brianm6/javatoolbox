@@ -170,27 +170,27 @@ public class UITestCase extends TestCase
         {
             case SCREEN_FULL : 
                 
-                SwingUtil.setWindowSizeAsPercentage(dlg, 100, 100);
+                SwingUtil.setSizeAsDesktopPercentage(dlg, 100, 100);
                 break;
                 
             case SCREEN_ONE_HALF :
                 
-                SwingUtil.setWindowSizeAsPercentage(dlg, 50, 50);
+                SwingUtil.setSizeAsDesktopPercentage(dlg, 50, 50);
                 break;
                 
             case SCREEN_ONE_THIRD :
                 
-                SwingUtil.setWindowSizeAsPercentage(dlg, 33, 33);
+                SwingUtil.setSizeAsDesktopPercentage(dlg, 33, 33);
                 break;
                 
             case SCREEN_TWO_THIRDS :
                 
-                SwingUtil.setWindowSizeAsPercentage(dlg, 66, 66);
+                SwingUtil.setSizeAsDesktopPercentage(dlg, 66, 66);
                 break;
                 
             case SCREEN_THREE_QUARTERS :
                 
-                SwingUtil.setWindowSizeAsPercentage(dlg, 75, 75);
+                SwingUtil.setSizeAsDesktopPercentage(dlg, 75, 75);
                 break;
             
             case SCREEN_PACK :
