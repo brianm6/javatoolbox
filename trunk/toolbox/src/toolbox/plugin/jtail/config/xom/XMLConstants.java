@@ -8,29 +8,41 @@ import toolbox.util.ui.JSmartTextArea;
  */
 public interface XMLConstants
 {
-    // JTail XML element
+    /**
+     * JTail XML element.
+     */
     String NODE_JTAIL = "JTail";
         
-    // Defaults XML element
+    /**
+     * Defaults XML element.
+     */
     String NODE_DEFAULTS = "Defaults";
 
-    // Tail XML element
+    /**
+     * Tail XML element.
+     */
     String NODE_TAIL          = "Tail";
-    String   ATTR_AUTOSCROLL  = JSmartTextArea.PROP_AUTOTAIL;
-    String   ATTR_LINENUMBERS = "showLineNumbers";
-    String   ATTR_ANTIALIAS   = AntiAliased.PROP_ANTIALIAS;
-    String   ATTR_AUTOSTART   = "autoStart";
-    String   NODE_FILE        = "File";
-    String     ATTR_FILENAME  = "name";
+    String   ATTR_AUTOTAIL    =   JSmartTextArea.PROP_AUTOTAIL;
+    String   ATTR_LINENUMBERS =   "showLineNumbers";
+    String   ATTR_ANTIALIASED =   AntiAliased.PROP_ANTIALIAS;
+    String   ATTR_AUTOSTART   =   "autoStart";
+    String   NODE_FILE        =   "File";
+    String     ATTR_FILENAME  =     "name";
     
-    // Font XML element
+    /**
+     * Font XML element.
+     */
     String NODE_FONT = "Font";
 
-    // Regular expression XML element
+    /** 
+     * Regular expression XML element.
+     */
     String NODE_REGULAR_EXPRESSION = "Regex";
-    String ATTR_EXPRESSION = "expression";
-    String ATTR_MATCH_CASE = "matchCase";
+    String   ATTR_EXPRESSION       =   "expression";
+    String   ATTR_MATCH_CASE       =   "matchCase";
     
-    // Cut expression XML element
+    /**
+     * Cut expression XML element.
+     */
     String NODE_CUT_EXPRESSION = "Cut";
 }

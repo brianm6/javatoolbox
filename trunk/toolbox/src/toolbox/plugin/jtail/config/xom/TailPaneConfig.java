@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.plugin.jtail.config.ITailPaneConfig;
 import toolbox.util.FontUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
@@ -55,48 +54,46 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
      */
     private String cutExpression_;
 
-    // TODO: Following attribs need to be migrated out of here -----------------
-    
     /**
-     * Font for the textarea. Should migrate to textarea preferences.
+     * Font for the textarea.
      */
     private Font font_;
     
     /**
-     * Flag to turn smooth fonts on/off. Should migrate to textarea preferences.
+     * Flag to turn smooth fonts on/off.
      */
     private boolean antiAlias_;
     
     /**
-     * Autoscroll flag. Should migrate to textarea preferences.
+     * Autotail flag.
      */
-    private boolean autoScroll_;
+    private boolean autoTail_;
     
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TailPaneConfig.
+     * Creates a TailPaneConfig using default values.
      */
     public TailPaneConfig()
     {
-        this(new String[0], // file
-             true,          // autoscroll
-             false,         // show linenumbers
-             SwingUtil.getDefaultAntiAlias(), // antialias
-             FontUtil.getPreferredMonoFont(), // font
-             "",            // Regular exp
-             "",            // Cut exp
-             true);         // autostart
+        this(new String[0],
+             DEFAULT_AUTOTAIL,
+             DEFAULT_LINENUMBERS,
+             DEFAULT_ANTIALIAS,
+             FontUtil.getPreferredMonoFont(),
+             DEFAULT_REGEX,
+             DEFAULT_CUT_EXPRESSION,
+             DEFAULT_AUTOSTART);
     }
 
 
     /**
-     * Creates TailConfig with given parameters
+     * Creates TailConfig with the given parameters.
      * 
      * @param files Files to tail.
-     * @param autoScroll Turn on autoscroll.
+     * @param autoTail Turn on autotailing of output.
      * @param showLineNumbers Shows line numbers in output.
      * @param antiAlias Antialias text in output area.
      * @param font Font of display text area.
@@ -107,7 +104,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
      */
     public TailPaneConfig(
         String[] files, 
-        boolean autoScroll, 
+        boolean autoTail, 
         boolean showLineNumbers, 
         boolean antiAlias, 
         Font font,
@@ -116,7 +113,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         boolean autoStart)
     {
         setFilenames(files);
-        setAutoTail(autoScroll);
+        setAutoTail(autoTail);
         setShowLineNumbers(showLineNumbers);
         setAntiAliased(antiAlias);
         setFont(font);
@@ -138,7 +135,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
        
         setAutoTail(
             XOMUtil.getBooleanAttribute(
-                root, ATTR_AUTOSCROLL, DEFAULT_AUTOTAIL));
+                root, ATTR_AUTOTAIL, DEFAULT_AUTOTAIL));
         
         setShowLineNumbers(
             XOMUtil.getBooleanAttribute(
@@ -146,7 +143,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         
         setAntiAliased(
             XOMUtil.getBooleanAttribute(
-                root, ATTR_ANTIALIAS, DEFAULT_ANTIALIAS));
+                root, ATTR_ANTIALIASED, DEFAULT_ANTIALIAS));
 
         setAutoStart(
             XOMUtil.getBooleanAttribute(
@@ -186,8 +183,8 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         root.addAttribute(
             new Attribute(ATTR_LINENUMBERS, isShowLineNumbers() + ""));
         
-        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoTail() + ""));
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
+        root.addAttribute(new Attribute(ATTR_AUTOTAIL, isAutoTail() + ""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIASED, isAntiAliased() + ""));
         root.addAttribute(new Attribute(ATTR_AUTOSTART, isAutoStart() + ""));
 
         for (int i = 0; i < filenames_.length; i++)
@@ -248,7 +245,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
      */
     public boolean isAutoTail()
     {
-        return autoScroll_;
+        return autoTail_;
     }
 
     
@@ -273,9 +270,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAutoTail(boolean)
      */
-    public void setAutoTail(boolean autoScroll)
+    public void setAutoTail(boolean autoTail)
     {
-        autoScroll_ = autoScroll;
+        autoTail_ = autoTail;
     }
 
     
