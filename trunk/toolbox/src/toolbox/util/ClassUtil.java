@@ -256,10 +256,8 @@ public final class ClassUtil
      */
     public static String pathToPackage(String path)
     {
-        String packageName = path.replace('/', '.').replace('\\', '.');
-        
-        if (packageName.endsWith("."))
-            packageName = packageName.substring(0, packageName.length() -  1);
+        String packageName = 
+            StringUtil.trim(path.replace('/', '.').replace('\\', '.'), '.');
             
         return packageName;
     }
