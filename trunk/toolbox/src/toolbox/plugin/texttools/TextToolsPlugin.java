@@ -62,12 +62,12 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     // TODO: Add checkbox/combo to set type of text (xml, java) and syntax 
     //       hilite as appropriate.
     
+    public static final Logger logger_ = 
+        Logger.getLogger(TextToolsPlugin.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    public static final Logger logger_ =
-        Logger.getLogger(TextToolsPlugin.class);   
     
     // XML Preferences
     private static final String NODE_TEXTTOOLS_PLUGIN   = "TextToolsPlugin";
@@ -125,7 +125,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /** 
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -168,7 +168,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      * of the input area is returned, otherwise only the selected text is 
      * returned.
      * 
-     * @return Input text to process
+     * @return Input text to process.
      */
     protected String getInputText()
     {
@@ -300,6 +300,9 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     class SortAction extends AbstractAction
     {
+        /**
+         * Creates a SortAction.
+         */
         SortAction()
         {
             super("Sort");
@@ -307,6 +310,11 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             putValue(SHORT_DESCRIPTION, "Sorts the text");
         }
     
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();        
@@ -341,6 +349,9 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     class BannerAction extends SmartAction
     {
+        /**
+         * Creates a BannerAction.
+         */
         BannerAction()
         {
             super("Banner", true, false, null);
@@ -348,6 +359,11 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             putValue(SHORT_DESCRIPTION, "Creates an ascii text banner");
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             String[] lines = StringUtil.tokenize(getInputText(), StringUtil.NL);
@@ -366,13 +382,21 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     class QuoteAction extends AbstractAction
     {
+        /**
+         * Creates a QuoteAction.
+         */
         QuoteAction()
         {
             super("Quote");
             putValue(MNEMONIC_KEY, new Integer('Q'));
             putValue(SHORT_DESCRIPTION, "Encloses text in quotes");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();        
@@ -406,13 +430,21 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     class WrapAction extends AbstractAction
     {
+        /**
+         * Creates a WrapAction.
+         */
         WrapAction()
         {
             super("Wrap");
             putValue(MNEMONIC_KEY, new Integer('W'));
             putValue(SHORT_DESCRIPTION, "Wraps text before quoting");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();
@@ -452,15 +484,30 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     class FilterFlipper extends JPanel
     {
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
+        
         private JTextField filterField_;
         private String[] cache_;
         private TextChangedListener docListener_;
+        
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
         
         FilterFlipper()
         {
             buildView();
         }
         
+        //----------------------------------------------------------------------
+        // Protected
+        //----------------------------------------------------------------------
+        
+        /**
+         * Constructs the user interface.
+         */
         protected void buildView()
         {
             setLayout(new FlowLayout());
@@ -473,6 +520,12 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             docListener_ = new TextChangedListener();
         }
         
+        
+        /**
+         * Filters text based on a regular expression.
+         * 
+         * @param regex Regular expression.
+         */
         protected void filter(String regex)
         {
             statusBar_.setStatus("RE: '" + regex + "'");
@@ -534,6 +587,10 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         {
             private String oldValue_ = "";
         
+            /**
+             * @see java.awt.event.KeyListener#keyReleased(
+             *      java.awt.event.KeyEvent)
+             */
             public void keyReleased(KeyEvent e)
             {
                 super.keyReleased(e);
@@ -559,21 +616,39 @@ public class TextToolsPlugin extends JPanel implements IPlugin
          */
         class TextChangedListener implements DocumentListener
         {
+            /**
+             * @see javax.swing.event.DocumentListener#changedUpdate(
+             *      javax.swing.event.DocumentEvent)
+             */
             public void changedUpdate(DocumentEvent e)
             { 
                 crud("changed ");
             }
 
+            
+            /**
+             * @see javax.swing.event.DocumentListener#insertUpdate(
+             *      javax.swing.event.DocumentEvent)
+             */
             public void insertUpdate(DocumentEvent e)
             {
                 crud("insert ");
             }
             
+            
+            /**
+             * @see javax.swing.event.DocumentListener#removeUpdate(
+             *      javax.swing.event.DocumentEvent)
+             */
             public void removeUpdate(DocumentEvent e)
             {
                 crud("remove ");
             }
             
+            
+            /**
+             * @param s String
+             */
             protected void crud(String s)
             {
                 s.toString();
@@ -594,11 +669,18 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     {
         private JTextField  delimiterField_;
         
+        /**
+         * Creates a TokenizerFlipper.
+         */
         TokenizerFlipper()
         {
             buildView();
         }
+
         
+        /**
+         * Constructs the user interface. 
+         */
         void buildView()
         {
             setLayout(new FlowLayout());
@@ -619,11 +701,19 @@ public class TextToolsPlugin extends JPanel implements IPlugin
          */
         class TokenizeAction extends AbstractAction
         {
+            /**
+             * Creates a TokenizeAction.
+             */
             TokenizeAction()
             {
                 super("Tokenize");
             }
+
             
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 StringTokenizer st = 
@@ -647,14 +737,24 @@ public class TextToolsPlugin extends JPanel implements IPlugin
          */
         class SingleLineAction extends AbstractAction
         {
+            /**
+             * Creates a SingleLineAction.
+             */
             SingleLineAction()
             {
                 super("Convert to single line");
             }
-                       
+
+            
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
-                StringTokenizer st = new StringTokenizer(getInputText(), StringUtil.NL);
+                StringTokenizer st = 
+                    new StringTokenizer(getInputText(), StringUtil.NL);
+                
                 StringBuffer sb = new StringBuffer();
                     
                 while (st.hasMoreElements())
@@ -674,11 +774,18 @@ public class TextToolsPlugin extends JPanel implements IPlugin
      */
     class CodecFlipper extends JPanel
     {
+        /**
+         * Creates a CodecFlipper.
+         */
         CodecFlipper()
         {
             buildView();
         }
         
+        
+        /**
+         * Constructs the user interface. 
+         */
         void buildView()
         {
             setLayout(new FlowLayout());
@@ -694,13 +801,24 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // Base64EncodeAction
         //----------------------------------------------------------------------
 
+        /**
+         * Base64 encodes the current selection.
+         */
         class Base64EncodeAction extends AbstractAction
         {
+            /**
+             * Creates a Base64EncodeAction.
+             */
             Base64EncodeAction()
             {
                 super("Base64 Encode");
             }
+
             
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 byte[] b = Base64.encodeBase64(getInputText().getBytes());
@@ -712,13 +830,24 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // Base64DecodeAction
         //----------------------------------------------------------------------
 
+        /**
+         * Base64 decodes the current selection.
+         */
         class Base64DecodeAction extends AbstractAction
         {
+            /**
+             * Creates a Base64DecodeAction.
+             */
             Base64DecodeAction()
             {
                 super("Base64 Decode");
             }
-                       
+
+            
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 byte[] b = Base64.decodeBase64(getInputText().getBytes());
@@ -730,13 +859,24 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // HTMLEncodeAction
         //----------------------------------------------------------------------
 
+        /**
+         * HTML encodes the current selection.
+         */
         class HTMLEncodeAction extends AbstractAction
         {
+            /**
+             * Creates a HTMLEncodeAction.
+             */
             HTMLEncodeAction()
             {
                 super("HTML Encode");
             }
             
+            
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 outputArea_.setText(
@@ -748,13 +888,24 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // HTMLDecodeAction
         //----------------------------------------------------------------------
 
+        /**
+         * HTML decodes the current selection.
+         */
         class HTMLDecodeAction extends AbstractAction
         {
+            /**
+             * Creates a HTMLDecodeAction.
+             */
             HTMLDecodeAction()
             {
                 super("HTML Decode");
             }
+
             
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 outputArea_.setText(
@@ -766,13 +917,24 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // XMLEncodeAction
         //----------------------------------------------------------------------
 
+        /**
+         * XML encodes the current selection.
+         */
         class XMLEncodeAction extends AbstractAction
         {
+            /**
+             * Creates a XMLEncodeAction.
+             */
             XMLEncodeAction()
             {
                 super("XML Encode");
             }
+
             
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 outputArea_.setText(
@@ -784,13 +946,24 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         // XMLDecodeAction
         //----------------------------------------------------------------------
         
+        /**
+         * XML decode the current selection.
+         */
         class XMLDecodeAction extends AbstractAction
         {
+            /**
+             * Creates a XMLDecodeAction.
+             */
             XMLDecodeAction()
             {
                 super("XML Decode");
             }
+
             
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(
+             *      java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e)
             {
                 outputArea_.setText(
