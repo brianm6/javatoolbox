@@ -90,7 +90,7 @@ public class ReadWriteSemaphore
     /**
      * Attempts to obtain a read lock, but does not block if write lock exists.
      *
-     * @return  True if the read lock was obtained, false otherwise.
+     * @return True if the read lock was obtained, false otherwise.
      */
     public boolean tryReadLock()
     {
@@ -170,7 +170,7 @@ public class ReadWriteSemaphore
      * Attempts to obtain a write lock, but does not block if read or write
      * lock exists.
      *
-     * @return  True if the write lock was obtained, false otherwise.
+     * @return True if the write lock was obtained, false otherwise.
      */
     public boolean tryWriteLock()
     {

@@ -14,7 +14,7 @@ public class CountingSemaphore
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a CountingSemaphore.
      */
     public CountingSemaphore()
     {
@@ -22,9 +22,9 @@ public class CountingSemaphore
     }
 
     /**
-     * Constructor with initial count
+     * Constructor with initial count.
      * 
-     * @param  initial  Initial count
+     * @param initial Initial count
      */
     public CountingSemaphore(int initial)
     {
@@ -32,10 +32,10 @@ public class CountingSemaphore
     }
 
     /**
-     * Constructor with count and max count
+     * Constructor with count and max count.
      * 
-     * @param  initial  Initial count
-     * @param  maximum  Max count
+     * @param initial Initial count
+     * @param maximum Max count
      */
     public CountingSemaphore(int initial, int maximum)
     {
@@ -85,7 +85,7 @@ public class CountingSemaphore
     /**
      * Tries to obtail a lock
      * 
-     * @param  howMany  Count to obtail
+     * @param howMany Count to obtail
      * @return True if lock obtained, false otherwise
      */
     public synchronized boolean tryLock(int howMany)
@@ -103,7 +103,7 @@ public class CountingSemaphore
     /**
      * Tries to obtain the lock
      * 
-     * @return  True if successful, false otherwise
+     * @return True if successful, false otherwise
      */
     public boolean tryLock()
     {
@@ -113,7 +113,7 @@ public class CountingSemaphore
     /**
      * Releases the lock
      * 
-     * @param  howMany  Count to unlock
+     * @param howMany Count to unlock
      */
     public synchronized void unlock(int howMany)
     {
@@ -136,7 +136,7 @@ public class CountingSemaphore
     /**
      * Releases lock
      * 
-     * @param  howMany  Count of how many to release
+     * @param howMany Count of how many to release
      */
     public void release(int howMany)
     {
@@ -152,7 +152,9 @@ public class CountingSemaphore
     }
 
     /**
-     * @return Count of semaphore
+     * Returns the semaphore count.
+     * 
+     * @return int
      */
     public synchronized int count()
     {
@@ -160,7 +162,9 @@ public class CountingSemaphore
     }
 
     /**
-     * @return  Max count
+     * Returns the maximum count.
+     * 
+     * @return int
      */
     public synchronized int maximum()
     {

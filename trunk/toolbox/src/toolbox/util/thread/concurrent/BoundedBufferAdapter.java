@@ -22,8 +22,8 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      * Constructs a new BoundedBufferAdapter with the specified buffer and
      * capacity.
      *
-     * @param  buffer    List implementation of the buffer.
-     * @param  capacity  Maximum number of elements allowed.
+     * @param buffer List implementation of the buffer.
+     * @param capacity Maximum number of elements allowed.
      */
     public BoundedBufferAdapter(List buffer, int capacity)
     {
@@ -41,7 +41,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns the number of elements in this buffer.
      *
-     * @return  Number of elements in this buffer.
+     * @return Number of elements in this buffer.
      */
     public int count()
     {
@@ -61,7 +61,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns the maximum number of elements containable in this buffer.
      *
-     * @return  Maximum number of elements containable in this buffer.
+     * @return Maximum number of elements containable in this buffer.
      */
     public int capacity()
     {
@@ -72,7 +72,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns true if this buffer is full.
      *
-     * @return  True if this buffer is full.
+     * @return True if this buffer is full.
      */
     public boolean isFull()
     {
@@ -92,7 +92,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
     /**
      * Returns true if this buffer is empty.
      *
-     * @return  True if this buffer is empty.
+     * @return True if this buffer is empty.
      */
     public boolean isEmpty()
     {
@@ -113,7 +113,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      * Add x to this buffer if the buffer's capacity has not been reached.
      * Otherwise, block until a slot is available.
      *
-     * @param  x  Object to add to buffer.
+     * @param x Object to add to buffer.
      */
     public void put(Object x)
     {
@@ -138,11 +138,11 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      * Add x to this buffer if the buffer's capacity has not been reached.
      * Otherwise, block until a slot is available or the timeout period elapses.
      *
-     * @param   x        Object to add to buffer.
-     * @param   timeout  Maximum time to wait in milliseconds.
-     * @throws  InterruptedException if another thread interrupts a blocked 
-     *          thread.
-     * @throws  Timeout if the timeout period elapsed.
+     * @param x Object to add to buffer.
+     * @param timeout Maximum time to wait in milliseconds.
+     * @throws InterruptedException if another thread interrupts a blocked 
+     *         thread.
+     * @throws Timeout if the timeout period elapsed.
      */
     public void put(Object x, long timeout) throws InterruptedException, Timeout
     {
@@ -172,7 +172,7 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      * Return the next element in this buffer or block the calling thread until
      * one is available.
      * 
-     * @return  Object  Taken
+     * @return Object Taken
      */
     public Object take()
     {
@@ -199,10 +199,10 @@ public class BoundedBufferAdapter implements IBoundedBuffer
      * Return the next element in this buffer or block the calling thread until
      * one is available or the timeout period elapses.
      * 
-     * @param   timeout    Maximum time to wait in milliseconds.
-     * @return  Object taken from buffer
-     * @throws  InterruptedException on interruption
-     * @throws  Timeout if the timeout period elapsed.
+     * @param timeout Maximum time to wait in milliseconds.
+     * @return Object taken from buffer
+     * @throws InterruptedException on interruption
+     * @throws Timeout if the timeout period elapsed.
      */
     public Object take(long timeout) throws InterruptedException, Timeout
     {

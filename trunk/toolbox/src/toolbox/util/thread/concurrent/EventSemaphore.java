@@ -27,8 +27,8 @@ public class EventSemaphore
     /**
      * Constructs a new event semaphore in the 'posted' state.
      *
-     * @param  posted  True if this event semaphore should be posted
-     *                 on creation, false otherwise.
+     * @param posted True if this event semaphore should be posted on creation, 
+     *        false otherwise.
      */
     public EventSemaphore(boolean posted)
     {
@@ -102,9 +102,9 @@ public class EventSemaphore
      * Blocks the calling thread until this event semaphore is posted or
      * the supplied timeout elapses.
      *
-     * @param   timeout   Timeout to wait in milliseconds
-     * @throws  InterruptedException if another thread interrupts a blocked 
-     *          thread.
+     * @param timeout Timeout to wait in milliseconds
+     * @throws InterruptedException if another thread interrupts a blocked 
+     *         thread.
      */
     public void waitFor(long timeout) throws InterruptedException
     {
@@ -124,7 +124,7 @@ public class EventSemaphore
     /**
      * Returns true if this event semaphore is in a posted state.
      *
-     * @return  True if this event semaphore is in a posted state.
+     * @return True if this event semaphore is in a posted state.
      */
     public synchronized boolean posted()
     {
