@@ -7,22 +7,22 @@
     <!--=============================-->
     <!--            PREP             -->
     <!--=============================-->
-    <!-- prepare standard environment -->
     <target name="prep">
 
         <tstamp/>
 
         <!-- project properties -->
-        <property name="top" location="."/>
-        <property name="src" location="${top}/src"/>
-        <property name="dist" location="${top}/dist"/>
-        <property name="classes" location="${top}/classes"/>
-        <property name="resources" location="${top}/resources"/>
-        <property name="targets" location="${top}/targets"/>
-        <property name="lib" location="${top}/lib"/>
-        <property name="test" location="${top}/test"/>
+        <property name="top"        location="."/>
+        <property name="src"        location="${top}/src"/>
+        <property name="dist"       location="${top}/dist"/>
+        <property name="classes"    location="${top}/classes"/>
+        <property name="resources"  location="${top}/resources"/>
+        <property name="targets"    location="${top}/targets"/>
+        <property name="lib"        location="${top}/lib"/>
+        <property name="test"       location="${top}/test"/>
         
-        <property name="project.init.message" value="${ant.project.name} project initialized"/>
+        <property name="project.init.message" 
+                  value="${ant.project.name} project initialized"/>
 
         <!-- make common directories -->
         <mkdir dir="${targets}"/>
@@ -89,13 +89,12 @@
         
         <property name="runtime.classpath" refid="runtime.class.path"/>
 
-        <echo message="environment complete on ${os.type} ${localhost.name}"/>
+        <echo message="Environment complete on ${os.type}"/>
     </target>
 
     <!--=============================-->
     <!--            ENV              -->
     <!--=============================-->
-    <!-- configure environment -->
     <target name="env" depends="prep,post">
         <echo message="${ant.project.name} environment configured"/>
     </target>
@@ -124,12 +123,17 @@
     <!--=============================-->
     <!--             ALL             -->
     <!--=============================-->
-    <target name="all" depends="init,compile,jar,dist" description="Builds everything!"/>
+    <target name="all" 
+            depends="init,compile,jar,dist" 
+            description="Builds everything! (init, compile, jar, dist)"/>
 
     <!--=============================-->
     <!--            CLEAN            -->
     <!--=============================-->
-    <target name="clean" depends="env" description="Cleans remnants of the build process">
+    <target name="clean" 
+            depends="env" 
+            description="Cleans remnants of the build process">
+            
         <delete dir="${dist}" verbose="false" quiet="off"/>
         <delete dir="${classes}" verbose="false" quiet="off"/>
     </target>
@@ -137,7 +141,9 @@
     <!--=============================-->
     <!--           COMPILE           -->
     <!--=============================-->
-    <target name="compile" depends="init" description="Compiles the source code">
+    <target name="compile" 
+            depends="init" 
+            description="Compiles the source code">
     
         <javac 
             srcdir="${src}" 
@@ -156,7 +162,9 @@
     <!--=============================-->
     <!--             JAR             -->
     <!--=============================-->
-    <target name="jar" depends="compile" description="Creates jar worthy of distribution">
+    <target name="jar" 
+            depends="compile" 
+            description="Creates jar worthy of distribution">
 
         <delete verbose="true">
             <fileset dir="${dist}" includes="**/*.jar"/>
@@ -185,13 +193,17 @@
     <!--=============================-->
     <!--           JAR-SRC           -->
     <!--=============================-->
-    <target name="jar-src" depends="init" description="Create jar containing only source code">
-        <jar jarfile="${dist}/toolbox-src.jar">
+    <target name="jar-src" 
+            depends="init" 
+            description="Create jar containing only source code">
+        
+        <zip zipfile="${dist}/toolbox-src.jar">
             <fileset dir="${top}" includes="src/**/*.java"/>
             <fileset dir="${top}" includes="src/**/*.MF"/>
             <fileset dir="${top}" includes="build.xml"/>
             <fileset dir="${top}" includes="resources/**/*"/>
-        </jar>
+        </zip>
+        
     </target>
 
 
@@ -214,7 +226,9 @@
     <!--=============================-->
     <!--            TEST             -->
     <!--=============================-->
-    <target name="junit" depends="init" description="Executes unit tests and generates report">
+    <target name="junit" 
+            depends="init" 
+            description="Executes unit tests and generates report">
 
         <mkdir dir="${test}"/>
         
@@ -254,4 +268,20 @@
         
     </target>
 
+    <!--=============================-->
+    <!--         SHOWREPORT          -->
+    <!--=============================-->
+    <target name="showreport"
+            depends="init" 
+            description="Launches the report from the unit tests">
+        
+        <echo message="OS=${os.name}"/>
+        
+        <exec executable="cmd.exe" os="Windows NT">
+            <arg line="/c start ${test}/html/index.html"/>
+        </exec>            
+            
+    </target>
+
+    
 </project>
