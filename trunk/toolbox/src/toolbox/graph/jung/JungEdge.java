@@ -1,7 +1,5 @@
 package toolbox.graph.jung;
 
-import edu.uci.ics.jung.graph.Edge;
-import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.Vertex;
 import edu.uci.ics.jung.graph.impl.DirectedSparseEdge;
 
@@ -17,7 +15,7 @@ public class JungEdge implements toolbox.graph.Edge
     /**
      * Jung lib version of an edge.
      */
-    private Edge edge_;
+    private DirectedSparseEdge edge_;
  
     //--------------------------------------------------------------------------
     // Constructors
@@ -34,8 +32,27 @@ public class JungEdge implements toolbox.graph.Edge
         Vertex fromVertex = (Vertex) from.getDelegate();
         Vertex toVertex   = (Vertex) to.getDelegate();
         edge_ = new DirectedSparseEdge(fromVertex, toVertex);
-        Graph graph = (Graph) fromVertex.getGraph();
-        graph.addEdge(edge_);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Edge Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.graph.Edge#getDestination()
+     */
+    public toolbox.graph.Vertex getDestination()
+    {
+        return JungGraphLib.lookupVertex(edge_.getDest());
+    }
+    
+    
+    /**
+     * @see toolbox.graph.Edge#getSource()
+     */
+    public toolbox.graph.Vertex getSource()
+    {
+        return JungGraphLib.lookupVertex(edge_.getSource());
     }
     
     //--------------------------------------------------------------------------
