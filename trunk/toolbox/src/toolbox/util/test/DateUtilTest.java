@@ -522,4 +522,14 @@ public class DateUtilTest extends TestCase
         assertEquals(0, c.get(Calendar.SECOND));
         assertEquals(0, c.get(Calendar.MILLISECOND));
     }    
+    
+    
+    /**
+     * Tests format()
+     */
+    public void testFormat()
+    {
+        logger_.info("Running testFormat...");
+        logger_.info("Formatted date: " + DateUtil.format(new Date()));       
+    }
 }
