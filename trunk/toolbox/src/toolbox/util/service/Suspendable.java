@@ -3,7 +3,7 @@ package toolbox.util.service;
 /**
  * A Suspendable service can suspend and resume operation at will.
  */              
-public interface Suspendable
+public interface Suspendable extends ServiceNature
 {
     /**
      * Suspends the service indefinitely. Once a service is suspended, it has to

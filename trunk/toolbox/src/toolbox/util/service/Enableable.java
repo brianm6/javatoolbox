@@ -3,7 +3,7 @@ package toolbox.util.service;
 /**
  * An Enableable object supports an enabled and disabled state. 
  */
-public interface Enableable
+public interface Enableable extends ServiceNature
 {
     //--------------------------------------------------------------------------
     // Constants
