@@ -111,6 +111,7 @@ public class JTail extends JFrame
     {
         JTail jtail = new JTail();
         jtail.setVisible(true);
+        jtail.applyConfiguration();
     }
 
     //--------------------------------------------------------------------------
@@ -157,7 +158,6 @@ public class JTail extends JFrame
             wireView();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
             loadConfiguration();
-            applyConfiguration();
         }
         catch (Exception e)
         {
@@ -325,6 +325,7 @@ public class JTail extends JFrame
         
         // Tails left running since last save
         ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
+        
         for (int i=0; i< tailPaneConfigs.length; i++)
         {
             ITailPaneConfig config = tailPaneConfigs[i];
@@ -332,7 +333,7 @@ public class JTail extends JFrame
             // Apply defaults if any
             if (config.getFont() == null)
                 config.setFont(jtailConfig_.getDefaultConfig().getFont());
-                
+            
             addTail(config);
         }
     }    
@@ -396,7 +397,7 @@ public class JTail extends JFrame
             config.setAntiAlias(defaults.isAntiAlias());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
-                
+            
             addTail(config);
         }
         
@@ -426,7 +427,7 @@ public class JTail extends JFrame
             config.setAntiAlias(defaults.isAntiAlias());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
-                
+            
             addTail(config);
         }
     }
