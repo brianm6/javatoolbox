@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -35,6 +34,7 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.table.AutoTailAction;
 import toolbox.util.ui.table.JSmartTable;
@@ -331,6 +331,8 @@ public class JSourceView extends JPanel implements IPreferenced
         
         if (!StringUtil.isNullOrBlank(dirField_.getText()))
             lastDir_ = new File(dirField_.getText());
+        
+        table_.applyPrefs(root);
     }
 
     
@@ -343,7 +345,9 @@ public class JSourceView extends JPanel implements IPreferenced
         
         root.addAttribute(
             new Attribute(ATTR_LAST_DIR, dirField_.getText().trim()));
-            
+        
+        table_.savePrefs(root);
+        
         XOMUtil.insertOrReplace(prefs, root);
     }
 
@@ -408,12 +412,13 @@ public class JSourceView extends JPanel implements IPreferenced
                 "Show Pie Chart", 
                 new ShowPieChartAction());
 
-        JToggleButton tail = 
+        JSmartToggleButton tail = 
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
                 "Auto scroll",
                 new AutoTailAction(table_));
-            
+        tail.toggleOnProperty(table_, "autotail");
+        
         JButton save =
             JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_SAVE),
