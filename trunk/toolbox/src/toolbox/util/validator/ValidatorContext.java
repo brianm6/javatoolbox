@@ -13,7 +13,7 @@ import org.apache.commons.collections.Predicate;
  *   <li>Serves as a repository of validation results from any number of
  *       constraints evaluated in a validation plan.
  *   <li>Decides whether an entity is deemded valid based on the results of a
- *       validation plan.
+ *       validation constraint.
  *   <li>Contains the failfast option used to prematurely terminate a validation
  *       plan as soon as the first failure is encountered.
  * </ul>

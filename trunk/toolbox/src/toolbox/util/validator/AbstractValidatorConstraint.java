@@ -2,8 +2,8 @@ package toolbox.util.validator;
 
 /**
  * AbstractValidatorConstraint is an abstract implementation of
- * ValidatorConstraint that assumes responsiblity of the failfast behavior
- * during the validation process.
+ * {@link ValidatorConstraint} that assumes responsiblity of implementing the 
+ * failfast feature during the validation process.
  */
 public abstract class AbstractValidatorConstraint implements ValidatorConstraint
 {

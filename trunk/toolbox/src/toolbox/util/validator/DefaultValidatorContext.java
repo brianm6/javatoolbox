@@ -9,16 +9,16 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.functors.TruePredicate;
 
 /**
- * Default implemenation of a {@link ValidatorContext}.
+ * Default implementation of a {@link ValidatorContext}.
  */
 public class DefaultValidatorContext implements ValidatorContext
 {
     //--------------------------------------------------------------------------
-    // Defaults
+    // Default Constants
     //--------------------------------------------------------------------------
 
     /**
-     * Failfast is true be default.
+     * Failfast is enabled by default.
      */
     private boolean DEFAULT_FAILFAST = true;
 
@@ -27,29 +27,31 @@ public class DefaultValidatorContext implements ValidatorContext
     //--------------------------------------------------------------------------
 
     /**
-     * Failures that occurred during validation.
+     * List of failures that occurred during validation.
      */
-    private List failures;
+    private List failures_;
     
     /**
-     * Warnings generated during validation.
+     * List of warnings generated during validation.
      */
-    private List warnings;
+    private List warnings_;
     
     /**
-     * Flag to fail validation fast.
+     * Flag to enable the failfast feature.
      */
-    private boolean failFast;
+    private boolean failFast_;
     
     /**
-     * Arbitrary objects that are participants in the validation process.
+     * A map of arbitrary objects that are participants in the validation 
+     * process. Individual {@link ValidatorConstraint}s should know which 
+     * participants to lookup to evaulate themselves.
      */
-    private Map participants;
+    private Map participants_;
     
     /**
      * Evaluation of this constraint performs the validation.
      */
-    private Predicate constraint;
+    private Predicate constraint_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -60,9 +62,9 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public DefaultValidatorContext()
     {
-        failures = new ArrayList(1);
-        warnings = new ArrayList(0);
-        participants = new HashMap();
+        failures_ = new ArrayList(1);
+        warnings_ = new ArrayList(0);
+        participants_ = new HashMap();
         reset();
     }
 
@@ -75,11 +77,11 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public void reset()
     {
-        failures.clear();
-        warnings.clear();
-        participants.clear();
-        failFast = DEFAULT_FAILFAST;
-        constraint = TruePredicate.INSTANCE;
+        failures_.clear();
+        warnings_.clear();
+        participants_.clear();
+        failFast_ = DEFAULT_FAILFAST;
+        constraint_ = TruePredicate.INSTANCE;
     }
 
     //--------------------------------------------------------------------------
@@ -100,7 +102,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public List getFailures()
     {
-        return failures;
+        return failures_;
     }
 
 
@@ -109,7 +111,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public List getWarnings()
     {
-        return warnings;
+        return warnings_;
     }
 
 
@@ -118,16 +120,16 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public boolean isFailFast()
     {
-        return failFast;
+        return failFast_;
     }
 
 
     /**
      * @see toolbox.util.validator.ValidatorContext#setFailFast(boolean)
      */
-    public void setFailFast(boolean b)
+    public void setFailFast(boolean failfast)
     {
-        failFast = b;
+        failFast_ = failfast;
     }
 
 
@@ -137,7 +139,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public void addParticipant(Object key, Object participant)
     {
-        participants.put(key, participant);
+        participants_.put(key, participant);
     }
 
 
@@ -147,7 +149,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public Object getParticipant(Object key)
     {
-        return participants.get(key);
+        return participants_.get(key);
     }
 
 
@@ -157,7 +159,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public void removeParticipant(Object key)
     {
-        participants.remove(key);
+        participants_.remove(key);
     }
 
 
@@ -167,7 +169,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public void addFailure(String failure)
     {
-        failures.add(new Reason(failure));
+        failures_.add(new Reason(failure));
     }
 
 
@@ -177,7 +179,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public void addFailure(String failure, Throwable cause)
     {
-        failures.add(new Reason(failure, cause));
+        failures_.add(new Reason(failure, cause));
     }
 
 
@@ -187,7 +189,7 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public void addWarning(String warning)
     {
-        warnings.add(new Reason(warning));
+        warnings_.add(new Reason(warning));
     }
 
 
@@ -197,25 +199,25 @@ public class DefaultValidatorContext implements ValidatorContext
      */
     public void addWarning(String warning, Throwable cause)
     {
-        warnings.add(new Reason(warning, cause));
+        warnings_.add(new Reason(warning, cause));
     }
 
 
     /**
-     * @see toolbox.util.validator.ValidatorContext#getRule()
+     * @see toolbox.util.validator.ValidatorContext#getConstraint()
      */
     public Predicate getConstraint()
     {
-        return constraint;
+        return constraint_;
     }
 
 
     /**
-     * @see toolbox.util.validator.ValidatorContext#setRule(
-     *      toolbox.util.validator.ValidatorConstraint)
+     * @see toolbox.util.validator.ValidatorContext#setConstraint(
+     *      org.apache.commons.collections.Predicate)
      */
     public void setConstraint(Predicate constraint)
     {
-        this.constraint = constraint;
+        constraint_ = constraint;
     }
 }

@@ -3,8 +3,8 @@ package toolbox.util.validator;
 import org.apache.commons.collections.Predicate;
 
 /**
- * AbstractValidator is an abstract implementation of a Validator that makes
- * the validation process more convenient by building and validating the 
+ * AbstractValidator is an abstract implementation of a {@link Validator}that
+ * makes the validation process more convenient by building and validating the
  * constraint in a single step.
  */
 public abstract class AbstractValidator implements Validator

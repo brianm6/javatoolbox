@@ -4,7 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
- * A reason is a failure or a warning.
+ * A Reason is represents the text and/or stacktrace explaining a failure or a 
+ * warning generated during the validation process.
  */
 public final class Reason
 {
@@ -15,12 +16,12 @@ public final class Reason
     /**
      * Explanation of the warning or failure.
      */
-    private String message;
+    private String message_;
     
     /**
      * Cause of this warning or failure.
      */
-    private Throwable cause;
+    private Throwable cause_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -56,8 +57,8 @@ public final class Reason
      */
     public Reason(String message, Throwable cause)
     {
-        this.message = message;
-        this.cause = cause;
+        message_ = message;
+        cause_ = cause;
     }
 
     //--------------------------------------------------------------------------
@@ -74,15 +75,15 @@ public final class Reason
     {
         StringBuffer sb = new StringBuffer();
 
-        if (!StringUtils.isBlank(message))
-            sb.append(message);
+        if (!StringUtils.isBlank(message_))
+            sb.append(message_);
 
-        if (cause != null)
+        if (cause_ != null)
         {
             if (sb.length() > 0)
                 sb.append("\n");
-            sb.append(cause.getLocalizedMessage() + "\n");
-            sb.append(ExceptionUtils.getFullStackTrace(cause));
+            sb.append(cause_.getLocalizedMessage() + "\n");
+            sb.append(ExceptionUtils.getFullStackTrace(cause_));
         }
 
         if (sb.length() == 0)
