@@ -330,4 +330,20 @@ public class WrappingWriterTest extends TestCase
         logger_.info(s);
         assertEquals("strings don't match", expected, s);
     }
+    
+    /**
+     * Tests toString()
+     * 
+     * @throws Exception on error
+     */
+    public void testToString() throws Exception
+    {
+        logger_.info("Running testToString...");
+        
+        StringWriter sw = new StringWriter(); 
+        WrappingWriter ww = new WrappingWriter(sw, 3, "[", "]");
+        ww.write("we're testing toSTring");
+        logger_.info(ww.toString());        
+        ww.close();
+    }
 }
