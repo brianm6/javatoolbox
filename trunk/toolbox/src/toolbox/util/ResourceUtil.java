@@ -12,7 +12,6 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.apache.commons.io.CopyUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
@@ -228,7 +227,7 @@ public final class ResourceUtil
             f = FileUtil.createTempFile();
             f.deleteOnExit();
             os = new FileOutputStream(f);
-            CopyUtils.copy(is, os);
+            IOUtils.copy(is, os);
         }
         finally
         {
