@@ -1,24 +1,25 @@
 package toolbox.util.random;
 
 /**
- * SequenceEndedException is responsible for _____.
+ * SequenceEndedException is thrown when a non-repeating sequence no longer has
+ * any more unique values to offer.
+ * 
+ * @see toolbox.util.random.RandomSequence 
  */
 public class SequenceEndedException extends Exception
 {
-
     /**
      * Creates a SequenceEndedException.
      */
     public SequenceEndedException()
     {
-        super();
     }
 
 
     /**
      * Creates a SequenceEndedException.
      * 
-     * @param message
+     * @param message Error message.
      */
     public SequenceEndedException(String message)
     {
@@ -29,7 +30,7 @@ public class SequenceEndedException extends Exception
     /**
      * Creates a SequenceEndedException.
      * 
-     * @param cause
+     * @param cause Cause.
      */
     public SequenceEndedException(Throwable cause)
     {
@@ -40,8 +41,8 @@ public class SequenceEndedException extends Exception
     /**
      * Creates a SequenceEndedException.
      * 
-     * @param message
-     * @param cause
+     * @param message Error message.
+     * @param cause Cause
      */
     public SequenceEndedException(String message, Throwable cause)
     {
