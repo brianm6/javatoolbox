@@ -21,7 +21,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
- * Unit test for JSmartTextArea
+ * Unit test for JSmartTextArea.
  */
 public class JSmartTextAreaTest extends TestCase
 {
@@ -33,9 +33,9 @@ public class JSmartTextAreaTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Entry point
+     * Entry point.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
@@ -64,6 +64,7 @@ public class JSmartTextAreaTest extends TestCase
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
     }
+    
     
     /**
      * Tests savePrefs() and applyPrefs()

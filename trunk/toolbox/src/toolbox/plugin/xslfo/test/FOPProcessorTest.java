@@ -129,7 +129,7 @@ public class FOPProcessorTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // RenderRequest
     //--------------------------------------------------------------------------
 
     /**
@@ -137,8 +137,8 @@ public class FOPProcessorTest extends TestCase
      */    
     class RenderRequest implements Runnable
     {
-        int cnt_;
-        String foXML_;
+        private int cnt_;
+        private String foXML_;
 
         RenderRequest(int cnt, String foXML)
         {
@@ -146,6 +146,10 @@ public class FOPProcessorTest extends TestCase
             foXML_ = foXML;
         }
 
+        //----------------------------------------------------------------------
+        // Runnable Interface 
+        //----------------------------------------------------------------------
+        
         public void run()
         {
             try
@@ -168,7 +172,8 @@ public class FOPProcessorTest extends TestCase
                 assertNotNull(pdfBytes);
                 assertTrue(pdfBytes.length > 0);
                     
-                logger_.info("Input FO: " + foXML_.length() + 
+                logger_.info(
+                    "Input FO: " + foXML_.length() + 
                     " --> Output PDF: " + pdfBytes.length);
             }
             catch (Exception e)

@@ -16,7 +16,7 @@ import toolbox.util.ui.AntiAliased;
  * JSmartTtree adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Antialised text
  * </ul>
  * 
  * @see SmartTreeCellRender

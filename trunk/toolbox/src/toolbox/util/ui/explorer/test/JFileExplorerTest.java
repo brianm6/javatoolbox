@@ -24,7 +24,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 
 /**
- * Unit test for JFileExplorer
+ * Unit test for JFileExplorer.
  */
 public class JFileExplorerTest extends TestCase
 {
@@ -36,9 +36,9 @@ public class JFileExplorerTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
@@ -52,7 +52,7 @@ public class JFileExplorerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Tests JFileExplorer
+     * Tests JFileExplorer.
      */
     public void testJFileExplorer()
     {
@@ -70,7 +70,7 @@ public class JFileExplorerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test dialog
+     * Test dialog.
      */
     static class TestDialog extends JDialog 
         implements JFileExplorerListener, ActionListener

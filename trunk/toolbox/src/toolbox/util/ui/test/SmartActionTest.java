@@ -21,7 +21,7 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 
 /**
- * Unit test for SmartAction 
+ * Unit test for SmartAction. 
  */
 public class SmartActionTest extends TestCase
 {
@@ -29,7 +29,7 @@ public class SmartActionTest extends TestCase
         Logger.getLogger(SmartActionTest.class);
         
     /** 
-     * Time to simulate action execution doing work 
+     * Time to simulate action execution doing work. 
      */        
     private int delay_ = 3000;
             
@@ -38,9 +38,10 @@ public class SmartActionTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
+     * @throws Exception on error.
      */
     public static void main(String[] args) throws Exception
     {
@@ -52,7 +53,6 @@ public class SmartActionTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
-
     /**
      * There are four scenarios to test the SmartAction for:
      * <ul>
@@ -61,6 +61,8 @@ public class SmartActionTest extends TestCase
      * <li>Asynchronous call that completes successfully
      * <li>Asynchronous call that results in an error (exception is thrown)
      * </ul>
+     * 
+     * @throws Exception on error.
      */    
     public void testSmartAction() throws Exception
     {
@@ -79,7 +81,10 @@ public class SmartActionTest extends TestCase
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Builds the GUI.
+     */
     protected JPanel buildButtonPanel()
     {
         JPanel p = new JPanel(new GridLayout(4,4));
@@ -99,7 +104,7 @@ public class SmartActionTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // SyncTimedNoProbsAction
     //--------------------------------------------------------------------------
     
     class SyncTimedNoProbsAction extends SmartAction
@@ -116,6 +121,10 @@ public class SmartActionTest extends TestCase
             ThreadUtil.sleep(delay_);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // SyncTimedThrowingAction 
+    //--------------------------------------------------------------------------
     
     class SyncTimedThrowingAction extends SmartAction
     {
@@ -135,6 +144,10 @@ public class SmartActionTest extends TestCase
         }
     }
 
+    //--------------------------------------------------------------------------
+    // AsyncTimedNoProbsAction 
+    //--------------------------------------------------------------------------
+    
     class AsyncTimedNoProbsAction extends SmartAction
     {
         public AsyncTimedNoProbsAction(
@@ -149,6 +162,10 @@ public class SmartActionTest extends TestCase
             ThreadUtil.sleep(delay_);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // AsyncTimedThrowingAction 
+    //--------------------------------------------------------------------------
     
     class AsyncTimedThrowingAction extends SmartAction
     {

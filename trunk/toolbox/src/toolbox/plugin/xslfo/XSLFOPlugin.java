@@ -83,7 +83,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     /**
      * XML: Node for PDFViewer preferences.
      */
-    private static final String NODE_PDF_VIEWER   = "PDFViewer";
+    private static final String NODE_PDF_VIEWER = "PDFViewer";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -334,7 +334,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      * @param inputStream Stream to read PDF bytes from
      * @throws Exception on error
      */
-    private void viewPDFEmbedded(InputStream inputStream) throws Exception
+    protected void viewPDFEmbedded(InputStream inputStream) throws Exception
     {
         if (viewer_ == null)
         {

@@ -15,7 +15,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
 
 /**
- * Unit test for JSmartOptionPane
+ * Unit test for JSmartOptionPane.
  */
 public class JSmartOptionPaneTest extends TestCase
 {
@@ -36,9 +36,9 @@ public class JSmartOptionPaneTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entry point
+     * Entry point.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */    
     public static void main(String[] args)
     {
@@ -46,11 +46,11 @@ public class JSmartOptionPaneTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Setup
+    // Overrides TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Setup 
+     * Creates the detail portion of the test message. 
      */
     public void setUp()
     {
@@ -63,7 +63,7 @@ public class JSmartOptionPaneTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests showMessageDialog() for defaults 
+     * Tests showMessageDialog() for defaults. 
      */
     public void testShowDetailedMessageDialogDefault()
     {
@@ -73,10 +73,11 @@ public class JSmartOptionPaneTest extends TestCase
             PARENT, MSG_TEXT, MSG_DETAIL);
     }
     
+    
     /**
-     * Tests showMessageDialog() for error msg type
+     * Tests showMessageDialog() for error msg type.
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */ 
     public void testShowDetailedMessageDialogError() throws Exception
     {
@@ -87,10 +88,11 @@ public class JSmartOptionPaneTest extends TestCase
             PARENT, MSG_TEXT, MSG_DETAIL, MSG_TITLE, JOptionPane.ERROR_MESSAGE);
     }
     
+    
     /**
-     * Tests showMessageDialog() for variable paramteres
+     * Tests showMessageDialog() for variable parameters.
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testShowDetailedMessageDialogParams() throws Exception
     {
@@ -102,10 +104,11 @@ public class JSmartOptionPaneTest extends TestCase
                 JOptionPane.WARNING_MESSAGE);    
     }
     
+    
     /**
      * Tests showExceptionMessageDialog()
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testShowExceptionMessageDialog()  throws Exception
     {
@@ -116,8 +119,9 @@ public class JSmartOptionPaneTest extends TestCase
             new Exception("testing"));
     }
     
+    
     /**
-     * Tests for a detailed message with a large number of rows
+     * Tests for a detailed message with a large number of rows.
      */
     public void testShowDetailedMessageDialogLotsOfRows()
     {

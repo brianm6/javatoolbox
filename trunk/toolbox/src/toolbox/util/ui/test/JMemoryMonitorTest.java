@@ -20,7 +20,7 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 
 /**
- * Unit test for JMemoryMonitor
+ * Unit test for JMemoryMonitor.
  */
 public class JMemoryMonitorTest extends TestCase
 {
@@ -32,9 +32,9 @@ public class JMemoryMonitorTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Entry point
+     * Entry point.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
@@ -48,7 +48,7 @@ public class JMemoryMonitorTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the memory monitor
+     * Tests the memory monitor.
      */
     public void testMemoryMonitor()
     {

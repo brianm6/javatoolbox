@@ -22,9 +22,8 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 
-
 /**
- * Unit test for JConveyorMenu
+ * Unit test for JConveyorMenu.
  */
 public class JConveyorMenuTest extends TestCase
 {
@@ -38,7 +37,7 @@ public class JConveyorMenuTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      * @throws Exception on error
@@ -54,7 +53,7 @@ public class JConveyorMenuTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Makes sure menu behaves like a conveyor belt
+     * Makes sure menu behaves like a conveyor belt.
      */
     public void testJConveyorMenu()
     {
