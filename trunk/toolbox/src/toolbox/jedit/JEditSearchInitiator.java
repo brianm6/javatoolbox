@@ -11,7 +11,14 @@ import toolbox.util.ui.JFindDialog;
  */
 public class JEditSearchInitiator implements JFindDialog.SearchInitiator
 {
+    /**
+     * String to search for
+     */
     private String searchString_;
+    
+    /**
+     * Search text container
+     */
     private JEditTextArea jeta_;
     
     //--------------------------------------------------------------------------
@@ -31,7 +38,7 @@ public class JEditSearchInitiator implements JFindDialog.SearchInitiator
     }
 
     //--------------------------------------------------------------------------
-    // SearchInitiator Interface
+    // JFindDialog.SearchInitiator Interface
     //--------------------------------------------------------------------------
         
     public String getSearchString()
