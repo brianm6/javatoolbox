@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -33,7 +32,6 @@ import nu.xom.Node;
 import nu.xom.ParseException;
 import nu.xom.Serializer;
 
-import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -49,8 +47,8 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
-import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
-import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
+import toolbox.workspace.host.PluginHost;
+import toolbox.workspace.host.PluginHostManager;
 import toolbox.workspace.lookandfeel.LookAndFeelException;
 import toolbox.workspace.lookandfeel.LookAndFeelManager;
 
@@ -109,11 +107,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
      
     /** 
-     * Plugins are added to this tab panel in order or registration 
-     */
-    private JSmartTabbedPane tabbedPane_;
-    
-    /** 
      * Status bar at bottom of screen 
      */
     private IStatusBar statusBar_;
@@ -127,11 +120,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Preferences stored as XML 
      */
     private Element prefs_;
-    
-    /** 
-     * Map of (pluginName:String, pluginInstance:IPlugin) 
-     */
-    private Map plugins_;
     
     /** 
      * Default initialization map for all plugins. Passed into IPlugin.startup() 
@@ -157,6 +145,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Maps Log Level -> JCheckBoxMenuItem
      */
     private Map levelMap_;
+    
+    /**
+     * Manages the plugin host
+     */
+    private PluginHostManager pluginHostManager_;
     
     //--------------------------------------------------------------------------
     // Main 
@@ -216,18 +209,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     public void registerPlugin(IPlugin plugin) throws Exception
     {
-        // Add to registry    
-        plugins_.put(plugin.getPluginName(), plugin);
-
-        // Init plugin
-        plugin.startup(bootstrapMap_);
-
-        // Create tab
-        tabbedPane_.addTab(
-            plugin.getPluginName(), 
-            plugin.getComponent(), 
-            ImageCache.getIcon(ImageCache.IMAGE_CROSS));
-            
+        pluginHostManager_.getPluginHost().addPlugin(plugin);
+        
         // Restore unloaded preferences if they exist
         Element workspaceNode = 
             prefs_.getFirstChildElement(NODE_WORKSPACE);
@@ -265,17 +248,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     public void registerPlugin(IPlugin plugin, Element prefs) throws Exception
     {
-        // Add to registry    
-        plugins_.put(plugin.getPluginName(), plugin);
-
-        // Init plugin
-        plugin.startup(bootstrapMap_);
-
-        // Create tab
-        tabbedPane_.addTab(
-            plugin.getPluginName(), 
-            plugin.getComponent(), 
-            ImageCache.getIcon(ImageCache.IMAGE_CROSS));
+        pluginHostManager_.getPluginHost().addPlugin(plugin);
         
         // Restore preferences but first see if there is a set of unloaded 
         // prefs for this plugin hanging around
@@ -291,13 +264,15 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     public void registerPlugin(String pluginClass) throws Exception
     {
-        // Make sure this plugin hasn't already been loaded
-        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
-            if (i.next().getClass().getName().equals(pluginClass))
-                return;                
-        
-        IPlugin plugin = (IPlugin) Class.forName(pluginClass).newInstance();
-        registerPlugin(plugin);
+        if (!pluginHostManager_.getPluginHost().hasPlugin(pluginClass))
+        {    
+            IPlugin plugin = (IPlugin) Class.forName(pluginClass).newInstance();
+            registerPlugin(plugin);
+        }
+        else
+        {
+            logger_.warn("Plugin " + pluginClass + " already loaded.");
+        }
     }
 
     /**
@@ -342,18 +317,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             plugin.savePrefs(pluginNode);
             unloadedPrefs_.appendChild(pluginNode);
             
-            if (removeTab)
-                tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getPluginName()));
-                
-            plugins_.remove(plugin.getPluginName());
-            plugin.shutdown();
+            pluginHostManager_.getPluginHost().removePlugin(plugin);
         }
         else
         {
             logger_.warn("Plugin " + pluginClass + " was not found.");
         }
     }
-
+    
     //--------------------------------------------------------------------------
     // Package
     //--------------------------------------------------------------------------
@@ -379,29 +350,39 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        plugins_ = new SequencedHashMap(); 
         lafManager_ = new LookAndFeelManager();
         levelMap_ = new HashMap();
+        
+        pluginHostManager_ = new PluginHostManager();
+        
+        // TODO: Use plugin host in props file
+        //pluginHostManager_.installPluginHost(PluginHostManager.HOST_TABBED);
     }
+    
     
     /**
      * Builds the GUI
      */
-    protected void buildView()
+    protected void buildView() throws PluginException
     {
-        tabbedPane_ = new JSmartTabbedPane();
-        tabbedPane_.addSmartTabbedPaneListener(new PluginTabbedPaneListener());
-
         statusBar_ = new WorkspaceStatusBar();
         statusBar_.setStatus("Howdy pardner!");
+
+        bootstrapMap_ = new HashMap(1);
+        bootstrapMap_.put(PROP_STATUSBAR, statusBar_);
+                
+        //pluginHost_.startup(bootstrapMap_);
+        
+        pluginHostManager_.setPluginHost(PluginHostManager.HOST_TABBED);
         
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add(BorderLayout.CENTER, tabbedPane_);
-        contentPane.add(BorderLayout.SOUTH, (Component) statusBar_);
         
-        bootstrapMap_ = new HashMap(1);
-        bootstrapMap_.put(PROP_STATUSBAR, statusBar_);
+        contentPane.add(
+            pluginHostManager_.getPluginRecepticle(), BorderLayout.CENTER);
+        
+        contentPane.add(
+            (Component) statusBar_, BorderLayout.SOUTH);
         
         setJMenuBar(createMenuBar());
         
@@ -410,6 +391,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         setIconImage(ImageCache.getImage(ImageCache.IMAGE_TOOLBOX));
     }
 
+    
     /**
      * Creates and configures the menu bar
      * 
@@ -425,6 +407,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         return menubar;
     }
 
+    
     /**
      * Creates the File menu 
      * 
@@ -450,51 +433,63 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         JMenu menu = new JSmartMenu("Preferences");
         menu.setMnemonic('P');
-
         menu.add(new JSmartMenuItem(new SavePreferencesAction()));
 
         smoothFontsCheckBoxItem_ = 
             new JSmartCheckBoxMenuItem(new AntiAliasAction());
 
         menu.add(smoothFontsCheckBoxItem_);
+        menu.add(pluginHostManager_.createMenu());
+        
         return menu;
     }
 
-	/**
-	 * Creates the Logging menu 
-	 * 
-	 * @return JMenu
-	 */
-	protected JMenu createLoggingMenu()
-	{
-		JMenu fileMenu = new JSmartMenu("Logging");
-		fileMenu.setMnemonic('L');
-		
-		ButtonGroup group = new ButtonGroup();
-		
-		Level[] levels = new Level[]
-		{
+    
+    /**
+     * Creates the Logging menu 
+     * 
+     * @return JMenu
+     */
+    protected JMenu createLoggingMenu()
+    {
+        JMenu fileMenu = new JSmartMenu("Logging");
+        fileMenu.setMnemonic('L');
+        
+        ButtonGroup group = new ButtonGroup();
+        
+        Level[] levels = new Level[]
+        {
             Level.ALL, 
             Level.DEBUG, 
             Level.INFO, 
             Level.ERROR, 
             Level.FATAL, 
             Level.OFF
-		};
-		
-		for (int i=0; i<levels.length; i++)
-		{
-		    JCheckBoxMenuItem cbmi =
-		    	new JSmartCheckBoxMenuItem(new SetLogLevelAction(levels[i]));
-		    
-		    levelMap_.put(levels[i], cbmi);
-			group.add(cbmi);
-			fileMenu.add(cbmi);
-		}
-		
-		return fileMenu;            
-	}
+        };
+        
+        for (int i=0; i<levels.length; i++)
+        {
+            JCheckBoxMenuItem cbmi =
+                new JSmartCheckBoxMenuItem(new SetLogLevelAction(levels[i]));
+            
+            levelMap_.put(levels[i], cbmi);
+            group.add(cbmi);
+            fileMenu.add(cbmi);
+        }
+        
+        return fileMenu;            
+    }
 
+    /**
+     * Returns the plugin host
+     * 
+     * @return PluginHost
+     */
+    protected PluginHost getPluginHost()
+    {
+        return pluginHostManager_.getPluginHost();
+    }
+    
     /**
      * Determines if a plugin is active given its FQN
      * 
@@ -503,12 +498,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected boolean hasPlugin(String pluginClass) 
     {
-        for (Iterator i = plugins_.values().iterator(); i.hasNext();)
-            if (i.next().getClass().getName().equals(pluginClass))
-                return true;
-        
-        return false;
+        return getPluginHost().hasPlugin(pluginClass);
     }
+    
     
     /**
      * Returns a plugin given its class name
@@ -518,16 +510,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected IPlugin getPluginByClass(String pluginClass)
     {
-        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
-        {
-            IPlugin plugin = (IPlugin) i.next();
-            if (plugin.getClass().getName().equals(pluginClass))
-                return plugin;
-        }        
-        
-        return null;
+        return getPluginHost().getPlugin(pluginClass);
     }
 
+    
     /**
      * Loads the workspace and plugin preferences from $user.home/.toolbox.xml
      */
@@ -616,8 +602,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
 
         // Save currently selected tab
-        root.addAttribute(
-            new Attribute(ATTR_SELECTED_TAB,tabbedPane_.getSelectedIndex()+""));
+        
+        // Fix me!!!
+        //root.addAttribute(
+        //    new Attribute(ATTR_SELECTED_TAB,tabbedPane_.getSelectedIndex()+""));
 
         // Save smooth fonts flag
         root.addAttribute(
@@ -633,9 +621,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         lafManager_.savePrefs(root);
         
         // Save loaded plugin prefs
-        for (Iterator i = plugins_.values().iterator(); i.hasNext();)
+        //for (Iterator i = plugins_.values().iterator(); i.hasNext();)
+        for (int i = 0; i < getPluginHost().getPlugins().length; i++)
         {
-            IPlugin plugin = (IPlugin) i.next();
+            IPlugin plugin = getPluginHost().getPlugins()[i];
             Element pluginNode = new Element(NODE_PLUGIN);
             
             pluginNode.addAttribute(
@@ -734,18 +723,18 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, 800),
             XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, 600));
 
-		Level level = 
-			Level.toLevel(
-		        XOMUtil.getStringAttribute(
-		            root, ATTR_LOG_LEVEL, 
-		                Logger.getLogger("toolbox").getLevel().toString()));
+        Level level = 
+            Level.toLevel(
+                XOMUtil.getStringAttribute(
+                    root, ATTR_LOG_LEVEL, 
+                        Logger.getLogger("toolbox").getLevel().toString()));
 
-		new SetLogLevelAction(level).actionPerformed(
-		    new ActionEvent(this, 1, ""));
-		
-		JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) levelMap_.get(level);
-		cbmi.setSelected(true);
-		
+        new SetLogLevelAction(level).actionPerformed(
+            new ActionEvent(this, 1, ""));
+        
+        JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) levelMap_.get(level);
+        cbmi.setSelected(true);
+        
         lafManager_.selectOnMenu();
         
         if (root != null)
@@ -782,8 +771,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             }
 
             // Restore last selected tab
-            tabbedPane_.setSelectedIndex(
-                XOMUtil.getIntegerAttribute(root, ATTR_SELECTED_TAB, -1));
+            
+            // Fix me!!!
+            //tabbedPane_.setSelectedIndex(
+            //    XOMUtil.getIntegerAttribute(root, ATTR_SELECTED_TAB, -1));
         }
         else
         {
@@ -792,22 +783,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }       
 
-    //--------------------------------------------------------------------------
-    // Package
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Returns the plugins.
-     * 
-     * @return Map of plugins
-     */
-    Map getPlugins()
-    {
-        return plugins_;
-    }
     
     //--------------------------------------------------------------------------
-    // Listeners
+    // CloseWindowListener
     //--------------------------------------------------------------------------
 
     /**
@@ -828,33 +806,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-    /**
-     * Listens for tab closing events, and deregisters the plugin for that 
-     * given tab.
-     */
-    class PluginTabbedPaneListener implements SmartTabbedPaneListener
-    {
-        /**
-         * @see toolbox.util.ui.tabbedpane.SmartTabbedPaneListener#tabClosing(
-         *      toolbox.util.ui.tabbedpane.JSmartTabbedPane, int)
-         */
-        public void tabClosing(JSmartTabbedPane tabbedPane, int tabIndex)
-        {
-            String name = tabbedPane.getTitleAt(tabIndex);
-            IPlugin plugin = (IPlugin) plugins_.get(name);
-            String clazz = plugin.getClass().getName(); 
-            
-            try
-            {
-                deregisterPlugin(clazz, false);
-            }
-            catch (Exception e)
-            {
-                ExceptionUtil.handleUI(e, logger_);
-            }
-        }
-    }
-
+    
     //--------------------------------------------------------------------------
     // ExitAction
     //--------------------------------------------------------------------------
@@ -882,9 +834,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-	//--------------------------------------------------------------------------
-	// PluginsAction
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // PluginsAction
+    //--------------------------------------------------------------------------
 
     /**
      * Adds/removes plugins to/from the plugin frame
@@ -904,9 +856,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-	//--------------------------------------------------------------------------
-	// SavePreferencesAction
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // SavePreferencesAction
+    //--------------------------------------------------------------------------
 
     /**
      * Saves the preferences for the workspaces in addition to all the
@@ -929,9 +881,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-	//--------------------------------------------------------------------------
-	// GarbageCollectAction
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // GarbageCollectAction
+    //--------------------------------------------------------------------------
 
     /**
      * Triggers garbage collection
@@ -974,9 +926,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-	//--------------------------------------------------------------------------
-	// AntiAliasAction
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // AntiAliasAction
+    //--------------------------------------------------------------------------
 
     /**
      * Toggles smooth fonts  
@@ -1001,36 +953,36 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-	//--------------------------------------------------------------------------
-	// SetLogLevelAction
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // SetLogLevelAction
+    //--------------------------------------------------------------------------
 
-	/**
-	 * Action to set the logging level
-	 */
-	class SetLogLevelAction extends AbstractAction
-	{
-		private Level level_;
-	    
-		/**
-		 * Creates a SetLogLevelAction
-		 * 
-		 * @param level Logging level to activate
-		 */
-		SetLogLevelAction(Level level)
-		{
-		    super(level.toString());
-			level_ = level;
-		}
-	    
-		/**
-		 * @see java.awt.event.ActionListener#actionPerformed(
-		 *      java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(ActionEvent arg0)
-		{
-		    Logger logger = Logger.getLogger("toolbox");
-		    logger.setLevel(level_);
-		}
-	}
+    /**
+     * Action to set the logging level
+     */
+    class SetLogLevelAction extends AbstractAction
+    {
+        private Level level_;
+        
+        /**
+         * Creates a SetLogLevelAction
+         * 
+         * @param level Logging level to activate
+         */
+        SetLogLevelAction(Level level)
+        {
+            super(level.toString());
+            level_ = level;
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent arg0)
+        {
+            Logger logger = Logger.getLogger("toolbox");
+            logger.setLevel(level_);
+        }
+    }
 }
