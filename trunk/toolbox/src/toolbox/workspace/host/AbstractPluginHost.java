@@ -88,7 +88,7 @@ public abstract class AbstractPluginHost implements PluginHost
     {
         logger_.debug("importPlugin: " + plugin.getClass().getName());
         
-        plugins_.put(plugin.getPluginName(), plugin);
+        plugins_.put(plugin.getClass().getName(), plugin);
     }
     
     
@@ -100,7 +100,7 @@ public abstract class AbstractPluginHost implements PluginHost
     {
         logger_.debug("exportPlugin: " + plugin.getClass().getName());
         
-        plugins_.remove(plugin.getPluginName());        
+        plugins_.remove(plugin.getClass().getName());        
     }    
 
     
