@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -21,10 +24,12 @@ import multivalent.gui.VScrollbar;
 import multivalent.std.ui.ForwardBack;
 import multivalent.std.ui.Multipage;
 
+import toolbox.util.FileUtil;
+import toolbox.util.collections.CaseInsensetiveSet;
 import toolbox.util.ui.JSmartButton;
 
 /**
- * Multivalent Viewer is a wrapper for the multivalent pdf viewer component.
+ * A  Viewer is a wrapper for the multivalent pdf viewer component.
  */
 public class MultivalentViewer extends JPanel implements DocumentViewer
 {
@@ -36,6 +41,11 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      * PDF browser component.
      */
     private Browser browser_;
+    
+    /**
+     * Set of supported file extensions.
+     */
+    private Set extensions_; 
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -58,6 +68,9 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public void startup(Map init)
     {
+        extensions_ = new CaseInsensetiveSet(new HashSet());
+        extensions_.addAll(Arrays.asList(
+            new String[] {"pdf", "html", "htm", "dvi", "xml"}));
     }
     
     
@@ -94,7 +107,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public String[] getViewableFileTypes()
     {
-        return new String[] {"pdf", "xml"};
+        return (String[]) extensions_.toArray();
     }    
 
 
@@ -103,7 +116,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public boolean canView(File file)
     {
-        return true;
+        return extensions_.contains(FileUtil.getExtension(file));
     }
     
     
