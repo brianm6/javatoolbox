@@ -19,32 +19,21 @@ import toolbox.util.ThreadUtil;
  */
 public class SocketUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(SocketUtilTest.class);
 
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint
      *
-     * @param  args  Arguments
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(SocketUtilTest.class);
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-            
-    /**
-     * Constructor for SocketUtilTest.
-     * 
-     * @param name  Name
-     */
-    public SocketUtilTest(String name)
-    {
-        super(name);
     }
 
     //--------------------------------------------------------------------------
@@ -139,4 +128,65 @@ public class SocketUtilTest extends TestCase
             assertTrue("Free port cannot be zero", freePort > 0);
         }
     }
+    
+    /**
+     * Tests close(Socket)
+     * 
+     * @throws Exception on error
+     */
+    public void testCloseSocket() throws Exception
+    {
+        logger_.info("Running testCloseSocket...");
+        
+        int port = SocketUtil.getFreePort();
+        ServerSocket ss = new ServerSocket(port);
+        Thread serverThread = ThreadUtil.run(ss, "accept", new Object[0]);
+
+        // Revisit
+        // ThreadUtil.sleep(1000);
+
+        // Close connected socket                
+        Socket socket = new Socket("localhost", port);
+        SocketUtil.close(socket);
+        
+        // Close null socket
+        socket = null;
+        SocketUtil.close(socket);
+        
+        serverThread.join();
+    }
+    
+    /**
+     * Tests close(ServerSocket)
+     * 
+     * @throws Exception on error
+     */
+    public void testCloseServerSocket() throws Exception
+    {
+        // TODO: Complete this unit test: testCloseServerSocket()
+        logger_.info("Running testCloseServerSocket...");
+        
+//        int port = SocketUtil.getFreePort();
+//        ServerSocket ss = new ServerSocket(port);
+//        Thread serverThread = ThreadUtil.run(ss, "accept", new Object[0]);
+//
+//        //Revisit
+//        ThreadUtil.sleep(5000);
+//
+//        SocketUtil.close(ss);
+        
+//
+//        // Close connected socket                
+//        Socket socket = new Socket("localhost", port);
+//        SocketUtil.close(socket);
+//        
+//        // Close null socket
+//        socket = null;
+//        SocketUtil.close(socket);
+        
+        //serverThread.join();
+    }
+    
+    
+    
 }
