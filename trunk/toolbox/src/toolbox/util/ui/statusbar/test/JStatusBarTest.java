@@ -78,7 +78,7 @@ public class JStatusBarTest extends UITestCase
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(BorderLayout.SOUTH, status);
-        
+        p.add(createPropertySheet(progressBar), BorderLayout.NORTH);
         launchInDialog(p, SCREEN_ONE_HALF);
     }
 }
