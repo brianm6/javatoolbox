@@ -209,6 +209,7 @@ public class DBConfig extends JPanel implements IPreferenced
 
         add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
         add(new JSmartButton(new ConnectAction()));
+        add(new JSmartButton(new DisconnectAction()));
     }
 
     //--------------------------------------------------------------------------
@@ -248,6 +249,14 @@ public class DBConfig extends JPanel implements IPreferenced
                 "org.hsqldb.jdbcDriver",
                 "jdbc:hsqldb:<database>",
                 "SA",
+                ""));
+
+            profileCombo_.addItem(new DBProfile(
+                "MySQL",
+                "",
+                "org.gjt.mm.mysql.Driver",
+                "jdbc:mysql://<host>/<db>",
+                "",
                 ""));
         }
         else
@@ -328,6 +337,29 @@ public class DBConfig extends JPanel implements IPreferenced
             }
          
             statusBar_.setInfo("Connected to the database!");
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // DisconnectAction
+    //--------------------------------------------------------------------------
+
+    /**
+     * Disconnects from the database.
+     */
+    class DisconnectAction extends WorkspaceAction
+    {
+        DisconnectAction()  
+        {
+            super("Disconnect", false, plugin_.getComponent(), statusBar_);
+            putValue(SHORT_DESCRIPTION, "Disconnects from the database.");
+        }
+    
+        public void runAction(ActionEvent e) throws Exception
+        {
+            statusBar_.setInfo("Disconnecting from the database...");
+            JDBCUtil.shutdown();
+            statusBar_.setInfo("Disconnected from the database.");
         }
     }
 
