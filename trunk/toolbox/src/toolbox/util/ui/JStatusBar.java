@@ -16,14 +16,11 @@ import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * JStatusBar is a simple component to show a text message as status.
- * 
- * <pre>
- * TODO: Add RMB accessible status history
- * TODO: Add log4j like prioity with visual cues (TBD)
- * </pre>
  */
 public class JStatusBar extends JPanel implements IStatusBar
 {
+    // TODO: Replace with toolbox.util.ui.statusbar.JStatusBar
+    
     private JLabel statusLabel_;
 
     //--------------------------------------------------------------------------
