@@ -1,6 +1,7 @@
 package toolbox.workspace.prefs;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -11,18 +12,32 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.SwingConstants;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreeCellRenderer;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.action.DisposeAction;
+import toolbox.util.ui.tree.JSmartTree;
+import toolbox.util.ui.tree.SmartTreeCellRenderer;
 
 /**
  * Workspace preferences dialog box.
@@ -39,11 +54,16 @@ public class PreferencesView extends JDialog implements ActionListener
     private static final String ACTION_OK     = "OK";
     private static final String ACTION_CANCEL = "Cancel";
 
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
 
-
+    /**
+     * Preferences tree.
+     */
+    private JSmartTree tree_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -62,35 +82,87 @@ public class PreferencesView extends JDialog implements ActionListener
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Build View
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
-        // Build and wire button panel
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        JButton okButton = new JSmartButton(ACTION_OK);
-        okButton.setActionCommand(ACTION_OK);
-        okButton.addActionListener(this);
-
-        JButton cancelButton = new JSmartButton(new DisposeAction(this));
-        cancelButton.setText("Cancel");
-        //cancelButton.addActionListener(this);
-
-        buttonPanel.add(okButton);
-        buttonPanel.add(cancelButton);
-
         // Add to content pane
         JPanel view = new JPanel(new BorderLayout());
+        
+        view.add(BorderLayout.WEST, buildTreePanel());
         view.add(BorderLayout.CENTER, buildPreferencesPanel());
-        view.add(BorderLayout.SOUTH, buttonPanel);
+        view.add(BorderLayout.SOUTH, buildButtonPanel());
+        
         setContentPane(view);
     }
 
-
+    
+    /**
+     * Builds the ok/cancel button panel.
+     * 
+     * @return JPanel
+     */
+    protected JPanel buildButtonPanel()
+    {
+        // Build and wire button panel
+        JPanel p = new JPanel(new FlowLayout());
+        JButton okButton = new JSmartButton(ACTION_OK);
+        okButton.setActionCommand(ACTION_OK);
+        okButton.addActionListener(this);
+        
+        p.add(okButton);
+        p.add(new JSmartButton(new DisposeAction("Cancel", this)));
+        return p;
+    }
+    
+    class MyTreeCellRenderer extends SmartTreeCellRenderer
+    {
+        public Component getTreeCellRendererComponent(JTree tree,
+            Object value, boolean selected, boolean expanded, boolean leaf,
+            int row, boolean hasFocus)
+        {
+            DefaultMutableTreeNode d = (DefaultMutableTreeNode) value;
+            JComponent c = (JComponent) d.getUserObject();
+            setText(c.getName());
+            return this;
+            
+        }
+    };
+    
+    
+    /**
+     * Builds the tree panel with the preference views as children.
+     * 
+     * @return JPanel
+     */
+    protected JPanel buildTreePanel()
+    {
+        
+        DefaultMutableTreeNode root_ = new DefaultMutableTreeNode();
+        DefaultTreeModel treeModel_ = new DefaultTreeModel(root_);
+        tree_ = new JSmartTree(root_);
+        
+        root_.add(new DefaultMutableTreeNode(buildPreferencesPanel()));
+        JSmartLabel jl = new JSmartLabel("Peekaboo");
+        jl.setName("Label");
+        root_.add(new DefaultMutableTreeNode(jl));
+        
+        JHeaderPanel p = 
+            new JHeaderPanel(
+                ImageCache.getIcon(ImageCache.IMAGE_CONFIG), 
+                "Preferences",
+                null,
+                new JScrollPane(tree_));
+        
+        tree_.setCellRenderer(new MyTreeCellRenderer());
+        return p;
+    }
+    
+    
     /**
      * Builds the preferences panel.
      *
@@ -132,6 +204,7 @@ public class PreferencesView extends JDialog implements ActionListener
         gbc.fill = GridBagConstraints.NONE;
         prefPanel.add(new JSmartTextField(12), gbc);
 
+        prefPanel.setName("Proxy");
         return prefPanel;
     }
 
