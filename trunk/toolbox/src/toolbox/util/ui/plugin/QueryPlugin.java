@@ -44,15 +44,29 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
-    /** Property key for history */
-    public static final String KEY_HISTORY  = "query.plugin.history";
-    /** Property key for driver name */
-    public static final String KEY_DRIVER   = "query.plugin.driver";
-    /** Property key for driver URL */
-    public static final String KEY_URL      = "query.plugin.url";
-    /** Property key for user */
-    public static final String KEY_USER     = "query.plugin.user";
-    /** Property key for password */
+    /** 
+     * Property key for history 
+     */
+    public static final String KEY_HISTORY = "query.plugin.history";
+    
+    /** 
+     * Property key for driver name 
+     */
+    public static final String KEY_DRIVER = "query.plugin.driver";
+    
+    /** 
+     * Property key for driver URL 
+     */
+    public static final String KEY_URL = "query.plugin.url";
+    
+    /** 
+     * Property key for user 
+     */
+    public static final String KEY_USER = "query.plugin.user";
+    
+    /** 
+     * Property key for password 
+     */
     public static final String KEY_PASSWORD = "query.plugin.password";
     
     /**
@@ -221,6 +235,8 @@ public class QueryPlugin extends JPanel implements IPlugin
 
     /**
      * Adds a sql statement to the popup menu history
+     * 
+     * @param  sql  SQL statement to add to the history
      */
     protected void addToHistory(String sql)
     {
@@ -234,6 +250,8 @@ public class QueryPlugin extends JPanel implements IPlugin
 
     /**
      * Set status
+     * 
+     * @param  status  Status text
      */    
     protected void setStatus(String status)
     {
@@ -315,6 +333,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         // Munge all SQL statements into one string and save
         StringBuffer sb = new StringBuffer("");
+        
         for (Iterator i =  sqlHistory_.values().iterator(); i.hasNext(); )
         {
             String sql = (String) i.next();
