@@ -21,7 +21,7 @@ public class EchoConnectionHandler implements IConnectionHandler
         Logger.getLogger(EchoConnectionHandler.class);
     
     /** 
-     * Token to terminate the connection 
+     * Token to terminate the connection. 
      */
     public static final String TOKEN_TERMINATE = "terminate";
     
@@ -30,7 +30,7 @@ public class EchoConnectionHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an EchoConnectionHandler
+     * Creates an EchoConnectionHandler.
      */
     public EchoConnectionHandler()
     {

@@ -12,7 +12,7 @@ import toolbox.util.net.IConnection;
 import toolbox.util.net.StringConnection;
 
 /**
- * Unit test for StringConnection
+ * Unit test for StringConnection.
  */
 public class StringConnectionTest extends TestCase
 {
@@ -24,7 +24,7 @@ public class StringConnectionTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      *
      * @param args None recognized
      */
@@ -38,7 +38,7 @@ public class StringConnectionTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests constructors
+     * Tests constructors.
      */
     public void testConstructors()
     {
@@ -48,6 +48,7 @@ public class StringConnectionTest extends TestCase
         assertNotNull(new StringConnection("string"));
     }
 
+    
     /**
      * Tests getInputStream()
      * 
@@ -63,6 +64,7 @@ public class StringConnectionTest extends TestCase
         assertNotNull(is);
     }
 
+    
     /**
      * Tests getOutputStream()
      * 
@@ -77,8 +79,9 @@ public class StringConnectionTest extends TestCase
         assertNotNull(os);
     }
     
+    
     /**
-     * Tests the isConnected() method
+     * Tests the isConnected() method.
      * 
      * @throws Exception on error
      */
@@ -95,10 +98,11 @@ public class StringConnectionTest extends TestCase
         conn.close();
     }
     
+    
     /**
      * Tests getOutputString()
      * 
-     * @throws Exception
+     * @throws Exception on error.
      */
     public void testGetOutputString() throws Exception
     {

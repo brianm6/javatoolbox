@@ -19,7 +19,7 @@ import toolbox.util.thread.ThreadDispatcher;
 import toolbox.util.thread.strategy.ThreadPoolStrategy;
 
 /**
- * Unit test for AsyncConnectionHandler
+ * Unit test for AsyncConnectionHandler.
  */
 public class AsyncConnectionHandlerTest extends TestCase
 {
@@ -31,9 +31,9 @@ public class AsyncConnectionHandlerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entry point
+     * Entry point.
      * 
-     * @param  args  None
+     * @param args None
      */
     public static void main(String[] args)
     {
@@ -47,7 +47,7 @@ public class AsyncConnectionHandlerTest extends TestCase
     /**
      * Tests handle()
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */
     public void testHandle() throws Exception
     {
@@ -56,7 +56,7 @@ public class AsyncConnectionHandlerTest extends TestCase
         final String helloWorld = "hello world!";
         
         /**
-         * Dummy connection handler
+         * Dummy connection handler.
          */ 
         class TestConnectionHandler implements IConnectionHandler
         {
@@ -71,24 +71,24 @@ public class AsyncConnectionHandlerTest extends TestCase
         }
 
         /**
-         * Dummy connection 
+         * Dummy connection.
          */
         class TestConnection extends AbstractConnection implements IConnection
         {
             /**
-             * Opens the connection
+             * Opens the connection.
              */
             public void connect(){};
             
             /**
-             * Closes the connection 
+             * Closes the connection. 
              */
             public void close() throws IOException {};
             
             /**
-             * Accessor for the connections input stream
+             * Accessor for the connections input stream.
              * 
-             * @return  InputStream
+             * @return InputStream
              */
             public InputStream getInputStream() throws IOException 
             { 
@@ -96,9 +96,9 @@ public class AsyncConnectionHandlerTest extends TestCase
             }
             
             /**
-             * Accessor for the connections output stream
+             * Accessor for the connections output stream.
              * 
-             * @return  OutputStream
+             * @return OutputStream
              */
             public OutputStream getOutputStream() throws IOException 
             { 

@@ -17,7 +17,7 @@ import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * Unit test for SocketServer
+ * Unit test for SocketServer.
  */
 public class SocketServerTest extends TestCase
 {
@@ -29,7 +29,7 @@ public class SocketServerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized 
      */
@@ -43,7 +43,7 @@ public class SocketServerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests simple ping pong between client and server
+     * Tests simple ping pong between client and server.
      * 
      * @throws Exception on error
      */
@@ -85,8 +85,9 @@ public class SocketServerTest extends TestCase
         server.stop();
     }
     
+    
     /**
-     * Tests SocketServer lifecycle state transitions
+     * Tests SocketServer lifecycle state transitions.
      * 
      * @throws Exception on error
      */
@@ -111,8 +112,9 @@ public class SocketServerTest extends TestCase
         ss.stop();
     }
     
+    
     /**
-     * Stress tests start/stop of socket server 
+     * Stress tests start/stop of socket server. 
      * 
      * @throws Exception on error
      */
@@ -129,8 +131,9 @@ public class SocketServerTest extends TestCase
         }
     }
      
+    
     /**
-     * Tests socket server with many clients 
+     * Tests socket server with many clients. 
      * 
      * @throws Exception on error
      */
@@ -194,8 +197,9 @@ public class SocketServerTest extends TestCase
         ss.stop();
     }
     
+    
     /**
-     * Tests firing of notification events exposed by ISocketServerListener
+     * Tests firing of notification events exposed by ISocketServerListener.
      * 
      * @throws Exception on error
      */

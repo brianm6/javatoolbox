@@ -12,7 +12,7 @@ import java.net.UnknownHostException;
 import org.apache.log4j.Logger;
 
 /**
- * Simple socket client for the EchoConnectionHandler
+ * Simple socket client for the EchoConnectionHandler.
  */
 public class EchoSocketClient
 {
@@ -20,17 +20,17 @@ public class EchoSocketClient
         Logger.getLogger(EchoSocketClient.class);
     
     /** 
-     * Wrapped socket 
+     * Wrapped socket. 
      */
     private Socket socket_;
     
     /**
-     * Writes to the connection
+     * Writes to the connection.
      */
     private PrintWriter writer_;
     
     /**
-     * Reads from the connection
+     * Reads from the connection.
      */
     private LineNumberReader reader_;
     
@@ -39,7 +39,7 @@ public class EchoSocketClient
     //--------------------------------------------------------------------------
     
     /**
-     * Create socket client on localhost with given port
+     * Create socket client on localhost with given port.
      * 
      * @param port Socket port
      * @throws UnknownHostException when host not found
@@ -49,8 +49,9 @@ public class EchoSocketClient
         this(InetAddress.getLocalHost().getHostAddress(), port);
     }
     
+    
     /**
-     * Creates socket client to given host/port 
+     * Creates socket client to given host/port. 
      *  
      * @param hostname Hostname of machine to connect to
      * @param port TCP port to connection to 
@@ -81,7 +82,7 @@ public class EchoSocketClient
     //--------------------------------------------------------------------------
     
     /**
-     * Sends a request to socket and reads the response
+     * Sends a request to socket and reads the response.
      * 
      * @param request Message to send
      * @return Response from server
@@ -95,8 +96,9 @@ public class EchoSocketClient
         return response;
     }
     
+    
     /**
-     * Sends request x number of times 
+     * Sends request x number of times. 
      * 
      * @param request Message to send
      * @param num Number of times to send the message
@@ -108,8 +110,9 @@ public class EchoSocketClient
             send(request + i);  
     }
     
+    
     /**
-     * Termines the connection by sending the TERMINATE token
+     * Termines the connection by sending the TERMINATE token.
      * 
      * @throws IOException on I/O error
      */

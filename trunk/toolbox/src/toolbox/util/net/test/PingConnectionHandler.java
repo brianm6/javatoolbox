@@ -32,7 +32,7 @@ public class PingConnectionHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a PingConnectionHandler
+     * Creates a PingConnectionHandler.
      */
     public PingConnectionHandler()
     {

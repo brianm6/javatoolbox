@@ -6,17 +6,25 @@ import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
 
 /**
- * NullConnectionHandler
+ * NullConnectionHandler.
  */
 public class NullConnectionHandler implements IConnectionHandler
 {
+    //--------------------------------------------------------------------------
+    // Constructors 
+    //--------------------------------------------------------------------------
+    
     /**
-     * Creates a NullConnectionHandler
+     * Creates a NullConnectionHandler.
      */
     public NullConnectionHandler()
     {
     }
 
+    //--------------------------------------------------------------------------
+    // IConnectionHandler Interface 
+    //--------------------------------------------------------------------------
+    
     /**
      * @see IConnectionHandler#handle(IConnection)
      */

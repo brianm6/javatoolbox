@@ -19,7 +19,7 @@ import toolbox.util.net.DefaultConnectionListener;
 import toolbox.util.net.SocketConnection;
 
 /**
- * Unit test for SocketConnection
+ * Unit test for SocketConnection.
  */
 public class SocketConnectionTest extends TestCase
 {
@@ -31,7 +31,7 @@ public class SocketConnectionTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      */
@@ -45,7 +45,7 @@ public class SocketConnectionTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the default constructor
+     * Tests the default constructor.
      * 
      * @throws Exception on error
      */
@@ -62,9 +62,10 @@ public class SocketConnectionTest extends TestCase
         sc.connect();
         sc.close();
     }
-        
+       
+    
     /**
-     * Tests the (host,port) constructor
+     * Tests the (host,port) constructor.
      * 
      * @throws Exception on error
      */    
@@ -81,9 +82,10 @@ public class SocketConnectionTest extends TestCase
         sc.connect();
         sc.close();
     }
-        
+     
+    
     /**
-     * Tests the force connect constructor
+     * Tests the force connect constructor.
      * 
      * @throws Exception on error
      */    
@@ -128,8 +130,9 @@ public class SocketConnectionTest extends TestCase
         server.stop();
     }        
    
+    
     /**
-     * Tests the getInputStream() method
+     * Tests the getInputStream() method.
      * 
      * @throws Exception on error
      */
@@ -151,8 +154,9 @@ public class SocketConnectionTest extends TestCase
         s.stop();
     }
 
+    
     /**
-     * Tests the getOutputStream() method
+     * Tests the getOutputStream() method.
      * 
      * @throws Exception on error
      */
@@ -174,8 +178,9 @@ public class SocketConnectionTest extends TestCase
         server.stop();
     }
 
+    
     /**
-     * Tests the notifications genereated by IConnectionListener
+     * Tests the notifications genereated by IConnectionListener.
      * 
      * @throws Exception on error
      */
@@ -203,8 +208,9 @@ public class SocketConnectionTest extends TestCase
         s.stop();
     }
 
+    
     /**
-     * Tests SocketConnection lifecycle
+     * Tests SocketConnection lifecycle.
      * 
      * @throws Exception on error
      */
@@ -243,8 +249,9 @@ public class SocketConnectionTest extends TestCase
         s.stop();
     }
 
+    
     /**
-     * Tests the isConnected() method
+     * Tests the isConnected() method.
      * 
      * @throws Exception on error
      */
@@ -284,7 +291,7 @@ public class SocketConnectionTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Internal test socket server
+     * Internal test socket server.
      */
     class Server implements Runnable
     {
@@ -299,15 +306,16 @@ public class SocketConnectionTest extends TestCase
         //----------------------------------------------------------------------
                             
         /**
-         * Creates a non-longlived server with an arbitrary port 
+         * Creates a non-longlived server with an arbitrary port. 
          */
         public Server()
         {
             this(0,false);
         }
 
+        
         /**
-         * Creates a long lived Server
+         * Creates a long lived Server.
          * 
          * @param longLived Long lived server
          */
@@ -316,8 +324,9 @@ public class SocketConnectionTest extends TestCase
             this(0, longLived);
         }
 
+        
         /**
-         * Creates a Server
+         * Creates a Server.
          * 
          * @param port Server port
          * @param longLived Long lived server
@@ -334,7 +343,7 @@ public class SocketConnectionTest extends TestCase
         //----------------------------------------------------------------------
         
         /**
-         * Starts the socket server
+         * Starts the socket server.
          * 
          * @throws IOException on I/O error
          */
@@ -346,8 +355,9 @@ public class SocketConnectionTest extends TestCase
             t.start();
         }
 
+        
         /**
-         * Stops the socket server
+         * Stops the socket server.
          * 
          * @throws IOException on I/O error
          */
@@ -357,8 +367,9 @@ public class SocketConnectionTest extends TestCase
             socket_.close();
         }
 
+        
         /**
-         * Retrieves the server socket port
+         * Retrieves the server socket port.
          * 
          * @return int
          */
@@ -366,6 +377,7 @@ public class SocketConnectionTest extends TestCase
         {
             return socket_.getLocalPort();
         }
+        
         
         /**
          * Once called, will not return until the socket server is ready to
@@ -383,7 +395,7 @@ public class SocketConnectionTest extends TestCase
         //----------------------------------------------------------------------
         
         /**
-         * Runs server on thread
+         * Runs server on thread.
          */
         public void run()
         {

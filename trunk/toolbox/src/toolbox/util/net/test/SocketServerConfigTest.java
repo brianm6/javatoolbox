@@ -12,7 +12,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * Unit test for SocketServerConfig
+ * Unit test for SocketServerConfig.
  */
 public class SocketServerConfigTest extends TestCase
 {
@@ -24,9 +24,9 @@ public class SocketServerConfigTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint 
+     * Entrypoint.
      * 
-     * @param args None
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -38,7 +38,7 @@ public class SocketServerConfigTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the load(File) method 
+     * Tests the load(File) method. 
      * 
      * @throws Exception on error
      */
@@ -110,8 +110,9 @@ public class SocketServerConfigTest extends TestCase
         }
     }
     
+    
     /**
-     * Tests the load(Properties) method 
+     * Tests the load(Properties) method. 
      * 
      * @throws Exception on error
      */
