@@ -24,7 +24,7 @@ public abstract class AbstractConnection implements IConnection
     private String name_ = "";
         
     //--------------------------------------------------------------------------
-    //  IConnection Abstract methods 
+    // IConnection Abstract methods 
     //--------------------------------------------------------------------------
     
     /**
@@ -48,7 +48,7 @@ public abstract class AbstractConnection implements IConnection
     public abstract OutputStream getOutputStream() throws IOException;
 
     //--------------------------------------------------------------------------
-    //  IConnection implemented methods
+    // IConnection implemented methods
     //--------------------------------------------------------------------------
     
     /**
@@ -76,7 +76,7 @@ public abstract class AbstractConnection implements IConnection
     }
 
     //--------------------------------------------------------------------------
-    //  Support for IConnectionListener interface
+    // IConnectionListener Event Notification Support
     //--------------------------------------------------------------------------
 
     /**

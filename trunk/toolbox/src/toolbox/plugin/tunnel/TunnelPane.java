@@ -117,7 +117,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a JTcpTunnelPane
      */
     public JTcpTunnelPane()
     {
@@ -125,7 +125,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     }
         
     /**
-     * Creates a JTCPTunnel with the given parameters
+     * Creates a JTcpTunnelPane with the given parameters
      * 
      * @param  listenPort   Port to listen on
      * @param  remoteHost   Host to tunnel to

@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
  */
 public class EchoSocketClient
 {
-    /** Logger **/
     public static final Logger logger_ = 
         Logger.getLogger(EchoSocketClient.class);
     
@@ -25,8 +24,14 @@ public class EchoSocketClient
      */
     private Socket socket_;
     
+    /**
+     * Writes to the connection
+     */
     private PrintWriter writer_;
     
+    /**
+     * Reads from the connection
+     */
     private LineNumberReader reader_;
     
     //--------------------------------------------------------------------------

@@ -4,33 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Used to collect the results of a single run of the findclass application
+ * FindClassCollector is used to collect the results of the execution of 
+ * FindClass.
  */
 public class FindClassCollector extends FindClassAdapter
 {
-    /** Storage for search results **/
-    private List results_ = new ArrayList();
+    /** 
+     * Storage for search results 
+     */
+    private List results_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a FindClassCollector
      */
     public FindClassCollector()
     {
+        results_ = new ArrayList();
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from FindClassAdapter
+    // Overrides FindClassAdapter
     //--------------------------------------------------------------------------
         
     /**
-     * Implemenation of IFindClassListener.
-     * Class has been found
-     * 
-     * @param  result  What was found
+     * @see toolbox.findclass.IFindClassListener#classFound(
+     *          toolbox.findclass.FindClassResult)
      */
     public void classFound(FindClassResult result)
     {

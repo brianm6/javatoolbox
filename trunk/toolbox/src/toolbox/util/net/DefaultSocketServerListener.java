@@ -14,17 +14,29 @@ public class DefaultSocketServerListener implements ISocketServerListener
 {
     private static final Logger logger_ =
         Logger.getLogger(DefaultSocketServerListener.class);
-        
+    
+    /**
+     * Queue for accepted events
+     */    
     private BlockingQueue accepted_ = new BlockingQueue();
+    
+    /**
+     * Queue for started evetnts
+     */
     private BlockingQueue started_  = new BlockingQueue();
     
     //--------------------------------------------------------------------------
     // ISocketServerListener Interface
     //--------------------------------------------------------------------------
-        
+
+    /**
+     * @see toolbox.util.net.ISocketServerListener#socketAccepted(
+     *          java.net.Socket, toolbox.util.net.IConnection)
+     */
     public void socketAccepted(Socket socket, IConnection connection)
     {
-        //SocketServerTest.logger_.info("Listener notified of accept on socket " + socket);
+        //SocketServerTest.logger_.info(
+        //  "Listener notified of accept on socket " + socket);
         
         try
         {
@@ -36,6 +48,10 @@ public class DefaultSocketServerListener implements ISocketServerListener
         }
     }
     
+    /**
+     * @see toolbox.util.net.ISocketServerListener#serverStarted(
+     *          toolbox.util.net.SocketServer)
+     */
     public void serverStarted(SocketServer server)
     {
         try
@@ -53,7 +69,9 @@ public class DefaultSocketServerListener implements ISocketServerListener
     //--------------------------------------------------------------------------
     
     /**
-     * @return Socket after it has been accepted
+     * Wait for a server socket to accept()
+     * 
+     * @return Connection after its socket has been accepted
      * @throws InterruptedException on error
      */
     public IConnection waitForAccept() throws InterruptedException
@@ -62,6 +80,8 @@ public class DefaultSocketServerListener implements ISocketServerListener
     }
     
     /**
+     * Waits for a server socket to startup successfully.
+     * 
      * @return Socket server after it has been started 
      * @throws InterruptedException on error
      */

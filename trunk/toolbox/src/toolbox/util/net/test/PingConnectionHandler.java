@@ -32,7 +32,7 @@ public class PingConnectionHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a PingConnectionHandler
      */
     public PingConnectionHandler()
     {
@@ -41,7 +41,11 @@ public class PingConnectionHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     // IConnectionHandler Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see toolbox.util.net.IConnectionHandler#handle(
+     *          toolbox.util.net.IConnection)
+     */
     public Object handle(IConnection conn)
     {
         logger_.info("ping->handle()");

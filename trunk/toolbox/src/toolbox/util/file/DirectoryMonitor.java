@@ -20,30 +20,42 @@ public class DirectoryMonitor
     private static Logger logger_ = 
         Logger.getLogger(DirectoryMonitor.class);
 
-    /** Notification list */
+    /** 
+     * Directory listeners 
+     */
     private List listeners_ = new ArrayList();
     
-    /** File activities that this monitor will provide notification for */
+    /** 
+     * File activities that this monitor will provide notification for 
+     */
     private List activities_ = new ArrayList();
 
-    /** Delay interval in ms used to check for new activity */
+    /** 
+     * Delay interval in millis used to check for new activity. Defaults to 5sec 
+     */
     private int delay_ = 5000;
 
-    /** Termination flag */
+    /** 
+     * Shutdown flag for file activity thread 
+     */
     private boolean shutdown_ = false;
 
-    /** Directory to monitor */
+    /** 
+     * Directory to monitor 
+     */
     private File directory_;
 
-    /** Thread that the activities are dispatched on */
+    /** 
+     * Thread that IFileActivity implementors are dispatched on 
+     */
     private Thread monitor_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DirectoryMonitor with the given directory and selection policy
+     * Creates a DirectoryMonitor with the given directory
      * 
      * @param  dir  Directory to monitor for file activity
      */
@@ -216,10 +228,10 @@ public class DirectoryMonitor
             // Check termination flag
             while (!shutdown_)
             {
-                // Loop thourh each activity
+                // Loop through each activity
                 for (Iterator i = activities_.iterator(); i.hasNext(); )
                 {
-                    IFileActivity activity = (IFileActivity)i.next();
+                    IFileActivity activity = (IFileActivity) i.next();
                     
                     File[] activeFiles = activity.getFiles(getDirectory());
              

@@ -24,11 +24,34 @@ public class Main extends FindClassAdapter
     private static final Logger logger_ = 
         Logger.getLogger(Main.class);
 
-    private PrintWriter writer_;    
-    private int         numFound_;
-    private boolean     caseSensetive_;
-    private boolean     showTargets_;    
-    private String      classToFind_;
+    /**
+     * Writer that output is sent to
+     */
+    private PrintWriter writer_;
+    
+    /**
+     * Number of classes found that match the search criteria
+     */    
+    private int numFound_;
+    
+    /**
+     * Case sensetivity search flag
+     */
+    private boolean caseSensetive_;
+    
+    /**
+     * Flag to show the list of search targets 
+     */
+    private boolean showTargets_;
+    
+    /**
+     * Search string expressed as a regular expression
+     */    
+    private String classToFind_;
+    
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * FindClass entry point
@@ -230,7 +253,7 @@ public class Main extends FindClassAdapter
     }
  
     //--------------------------------------------------------------------------
-    //  Overridden from FindClassAdapter
+    // Overrides FindClassAdapter
     //--------------------------------------------------------------------------
  
     /**

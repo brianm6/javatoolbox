@@ -47,7 +47,7 @@ public class FindClassResult
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a FindClassResult
+     * Creates a FindClassResult with the given attributes
      * 
      * @param  searchString   Original search string
      * @param  classLocation  Location where class was found (jar/path)

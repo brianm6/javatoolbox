@@ -84,40 +84,64 @@ public class TcpTunnel implements TcpTunnelListener
     private static final Logger logger_ = 
         Logger.getLogger(TcpTunnel.class);
 
-    /** Stream name for event inputstream */
-    private static final String STREAM_IN  = "in";
+    /** 
+     * Stream name for event inputstream 
+     */
+    private static final String STREAM_IN = "in";
     
-    /** Stream name for event outputstream */
+    /** 
+     * Stream name for event outputstream 
+     */
     private static final String STREAM_OUT = "out";
 
-    /** Server socket for tunnel port on localhost */
+    /** 
+     * Server socket for tunnel port on localhost 
+     */
     private ServerSocket ss_;
 
-    /** Tunnel port on localhost */
+    /** 
+     * Tunnel port on localhost 
+     */
     private int listenPort_;
     
-    /** Flag to shutdown */
+    /** 
+     * Flag to shutdown 
+     */
     private boolean stopped_ = false;
 
-    /** Intended recipient hostname */    
+    /** 
+     * Intended recipient hostname 
+     */    
     private String remoteHost_;
     
-    /** Intended recipient port */
+    /** 
+     * Intended recipient port 
+     */
     private int remotePort_;
     
-    /** Listeners of tunnel events */
+    /** 
+     * Listeners of tunnel events 
+     */
     private List listeners_;
     
-    /** Total number of incoming bytes */
+    /** 
+     * Total number of incoming bytes 
+     */
     private int inTotal_;
     
-    /** Total number of outgoing bytes */
+    /** 
+     * Total number of outgoing bytes 
+     */
     private int outTotal_;
 
-    /** Sink for incoming data from the remote host */
+    /** 
+     * Sink for incoming data from the remote host 
+     */
     private OutputStream incomingSink_;
     
-    /** Sink for outgoing data to the remote host */
+    /** 
+     * Sink for outgoing data to the remote host 
+     */
     private OutputStream outgoingSink_;
         
     //--------------------------------------------------------------------------

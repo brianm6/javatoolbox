@@ -20,7 +20,9 @@ public class EchoConnectionHandler implements IConnectionHandler
     private static final Logger logger_ = 
         Logger.getLogger(EchoConnectionHandler.class);
     
-    /** Terminate token */
+    /** 
+     * Token to terminate the connection 
+     */
     public static final String TOKEN_TERMINATE = "terminate";
     
     //--------------------------------------------------------------------------
@@ -37,7 +39,11 @@ public class EchoConnectionHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     //  IConnectionHandler Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see toolbox.util.net.IConnectionHandler#handle(
+     *          toolbox.util.net.IConnection)
+     */
     public Object handle(IConnection conn)
     {
         try

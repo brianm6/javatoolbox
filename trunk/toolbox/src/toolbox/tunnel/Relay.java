@@ -13,23 +13,33 @@ import toolbox.util.StreamUtil;
  */
 public class Relay implements Runnable
 {
-    /** Size of data window */
+    /** 
+     * Size of data window 
+     */
     private static final int BUFFER_SIZE = 1024;
 
-    /** InputStream data is read from */    
+    /** 
+     * InputStream data is read from 
+     */    
     private InputStream in_;
     
-    /** OutputStream data is forwarded to */
+    /** 
+     * OutputStream data is forwarded to 
+     */
     private OutputStream out_;
     
-    /** Number of bytes transferred */
+    /** 
+     * Number of bytes transferred 
+     */
     private int count_;
     
-    /** Copy buffer */    
+    /** 
+     * Copy buffer 
+     */    
     private byte[] buffer_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
@@ -47,7 +57,7 @@ public class Relay implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    //  Runnable Interface
+    // Runnable Interface
     //--------------------------------------------------------------------------
     
     /**

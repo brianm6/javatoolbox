@@ -29,7 +29,7 @@ public class JFindClassPlugin implements IPlugin
     //--------------------------------------------------------------------------
     
     /** 
-     * Default Constructor 
+     * Creates a JFindClassPlugin 
      */
     public JFindClassPlugin()
     {

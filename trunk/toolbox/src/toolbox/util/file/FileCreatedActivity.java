@@ -24,7 +24,7 @@ public class FileCreatedActivity implements IFileActivity
     //--------------------------------------------------------------------------
         
     /**
-     * Constructor for FileCreatedActivity.
+     * Creates a FileCreatedActivity.
      */
     public FileCreatedActivity()
     {
@@ -72,7 +72,7 @@ public class FileCreatedActivity implements IFileActivity
             if (!diff.isEmpty())
             {
                 // List of new files to return    
-                newFiles = (File[])diff.toArray(newFiles);
+                newFiles = (File[]) diff.toArray(newFiles);
                 
                 // Update snapshot in history map to that of the current
                 snapshots_.put(dir, current);

@@ -12,11 +12,10 @@ import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 
 /**
- * Encapsulates configuration properties for a Socket Server
+ * Encapsulates configuration properties for a {@link SocketServer}
  */
 public class SocketServerConfig
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(SocketServerConfig.class);
 
@@ -119,7 +118,7 @@ public class SocketServerConfig
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -133,7 +132,7 @@ public class SocketServerConfig
     /**
      * Creates a socket server configuration with the given properties
      * 
-     * @param    props    Properties
+     * @param props Properties
      */
     public SocketServerConfig(Properties props)
     {
@@ -144,8 +143,8 @@ public class SocketServerConfig
      * Creates a socket server configuration with the 
      * properties from the given file
      * 
-     * @param   file    Properties file to read configuration from
-     * @throws  IOException on I/O error
+     * @param file Properties file to read configuration from
+     * @throws IOException on I/O error
      */
     public SocketServerConfig(String file) throws IOException
     {
@@ -159,8 +158,8 @@ public class SocketServerConfig
     /**
      * Loads configuration properties from a file on the classpath
      * 
-     * @param    file    Properties file on the classpath
-     * @throws   IOException on I/O error
+     * @param file Properties file on the classpath
+     * @throws IOException on I/O error
      */
     public void load(String file) throws IOException
     {
@@ -188,7 +187,7 @@ public class SocketServerConfig
     /**
      * Loads configuration properties from an existing set of properties 
      *
-     * @param    props    Properties
+     * @param props Properties
      */
     public void load(Properties props)
     {
@@ -225,7 +224,7 @@ public class SocketServerConfig
     /**
      * Accessor for server socket port
      * 
-     * @return    int
+     * @return int
      */
     public int getServerPort()
     {
@@ -235,7 +234,7 @@ public class SocketServerConfig
     /**
      * Mutator for server socket port
      * 
-     * @param    port    Server socket port
+     * @param port Server socket port
      */
     public void setServerPort(int port)
     {
@@ -245,7 +244,7 @@ public class SocketServerConfig
     /**
      * Accessor for the max number of active connections (threads)
      * 
-     * @return    int
+     * @return int
      */
     public int getActiveConnections()
     {
@@ -255,7 +254,7 @@ public class SocketServerConfig
     /**
      * Mutator for the max number of active connections
      * 
-     * @param    activeConnections    Max active connections
+     * @param activeConnections Max active connections
      */
     public void setActiveConnections(int activeConnections)
     {
@@ -265,7 +264,7 @@ public class SocketServerConfig
     /**
      * Accessor for the max number of connections in the socket waiting queue
      * 
-     * @return    int
+     * @return int
      */
     public int getSocketQueueSize()
     {
@@ -275,7 +274,7 @@ public class SocketServerConfig
     /**
      * Mutator for the max number of connections in the socket waiting queue
      * 
-     * @param    socketQueueSize        Max number of queued sockets
+     * @param socketQueueSize Max number of queued sockets
      */
     public void setSocketQueueSize(int socketQueueSize)
     {
@@ -285,7 +284,7 @@ public class SocketServerConfig
     /**
      * Accessor for the max number of connections in the handler waiting queue
      * 
-     * @return    int
+     * @return int
      */
     public int getHandlerQueueSize()
     {
@@ -295,7 +294,7 @@ public class SocketServerConfig
     /**
      * Mutator for the max number of connections in the handler waiting queue
      * 
-     * @param    handlerQueueSize    Max number of queued handlers
+     * @param handlerQueueSize Max number of queued handlers
      */
     public void setHandlerQueueSize(int handlerQueueSize)
     {
@@ -305,7 +304,7 @@ public class SocketServerConfig
     /**
      * Accessor for the server socket timeout
      * 
-     * @return    int
+     * @return int
      */
     public int getSocketTimeout()
     {
@@ -315,7 +314,7 @@ public class SocketServerConfig
     /**
      * Mutator for the server socket timeout
      * 
-     * @param    socketTimeout    Server socket timeout
+     * @param socketTimeout Server socket timeout
      */
     public void setSocketTimeout(int socketTimeout)
     {
@@ -325,7 +324,7 @@ public class SocketServerConfig
     /**
      * Returns IConnectionHandler class
      * 
-     * @return    IConnectionHandler
+     * @return IConnectionHandler
      */
     public IConnectionHandler getConnectionHandler()
     {
@@ -364,7 +363,7 @@ public class SocketServerConfig
     /** 
      * Returns type of connection handler 
      * 
-     * @return    String
+     * @return String
      */
     public String getConnectionHandlerType()
     {
@@ -374,8 +373,7 @@ public class SocketServerConfig
     /**
      * Sets connection handler type.
      * 
-     * @param  type  String containing FQN of class implementing 
-     *               IConnectionHandler
+     * @param type String contining FQN of class implementing IConnectionHandler
      */
     public void setConnectionHandlerType(String type)
     {
@@ -403,11 +401,13 @@ public class SocketServerConfig
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
 
     /**
-     * @return Configuration as a string
+     * Returns the configuration as a string
+     * 
+     * @return String
      */
     public String toString()
     {
