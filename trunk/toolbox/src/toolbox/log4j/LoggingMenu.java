@@ -1,4 +1,4 @@
-package toolbox.workspace;
+package toolbox.log4j;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -30,6 +30,7 @@ import toolbox.util.ui.JSmartCheckBoxMenuItem;
 import toolbox.util.ui.JSmartFrame;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Log4J specific logging menu that allows easy changing of the log level and
