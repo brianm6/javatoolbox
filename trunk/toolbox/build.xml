@@ -15,7 +15,7 @@
 
         <tstamp/>
 
-        <!-- project properties -->
+        <!-- Directories from the root -->
         <property name="top"        location="."/>
         <property name="src"        location="${top}/src"/>
         <property name="dist"       location="${top}/dist"/>
@@ -25,13 +25,21 @@
         <property name="lib"        location="${top}/lib"/>
         <property name="test"       location="${top}/test"/>
         <property name="build"      location="${top}/build"/>
+        <property name="doc"        location="${top}/doc"/>
+        
+        <!-- Directories in /build -->
         <property name="build.lib"  location="${build}/lib"/>
         <property name="build.conf" location="${build}/conf"/>
-        <property name="doc"        location="${top}/doc"/>
+        
+        <!-- Directories in /doc -->
+        <property name="javadoc"    location="${doc}/javadoc"/>
+		<property name="clover"     location="${doc}/clover"/>        
         <property name="junit"      location="${doc}/junit"/>
+        
+        <!-- Directories in /doc/junit -->
         <property name="junit.xml"  location="${junit}/xml"/>
         <property name="junit.html" location="${junit}/html"/>
-        <property name="clover"     location="${doc}/clover"/>
+        
         
         <property name="project.init.message" 
                   value="${ant.project.name} project initialized"/>
@@ -49,7 +57,7 @@
         <!-- set standard properties -->
         <property name="javavm" value="1.2"/>
         
-        <!-- property name="build.compiler" value="jikes"/ -->
+        <!-- Compiler Settings -->
         <property name="build.compiler.fulldepend" value="true"/>
         <property name="project.failonerror" value="true"/>
         <property name="project.debug" value="on"/>
@@ -57,27 +65,28 @@
         <property name="toolbox.id" value=""/>
         <property name="toolbox.rundir" location="."/>
         <property name="toolbox.junit.log" value="test.log"/>
-        
+		<!-- property name="build.compiler" value="jikes"/ -->        
+		
         <!-- define project tools classpath -->
         <path id="project.tools.path">
             <fileset dir="${top}/lib">
-                <include name="**/*.jar"/>
-                <include name="**/*.zip"/>
+                <include name="*.jar"/>
+                <include name="*.zip"/>
             </fileset>
         </path>
 
         <!-- define common build classpath -->
         <path id="common.class.path">
-            <fileset dir="${targets}">
+        
+            <!--fileset dir="${targets}">
                 <include name="**/*.jar"/>
                 <include name="**/*.zip"/>
-            </fileset>
+            </fileset-->
 
-            <fileset dir="${lib}">
-                <include name="**/*.jar"/>
-                <include name="**/*.zip"/>
-            </fileset>
-
+            <!--fileset dir="${lib}">
+                <include name="*.jar"/>
+                <include name="*.zip"/>
+            </fileset-->
 
             <path refid="project.tools.path"/>
         </path>
@@ -404,16 +413,17 @@
     	    description="Generates javadocs">
     
 	    <mkdir dir="${doc}"/>
+	    <mkdir dir="${javadoc}"/>
 	    
     	<delete>
-            <fileset dir="${doc}" includes="**/**"/>
+            <fileset dir="${javadoc}" includes="**/**"/>
     	</delete>
             	
         <javadoc 
             access="private" 
             author="true"
             classpath="${common.classpath}"
-            destdir="${doc}"
+            destdir="${javadoc}"
             doctitle="Toolbox" 
             nodeprecated="false"
             nodeprecatedlist="false" 
@@ -517,6 +527,11 @@
     <!--=============================-->
     <!--        CLOVER.INIT          -->
     <!--=============================-->
+    <!--taskdef name="clover" 
+             classname="org.apache.tools.ant.taskdefs.CloverCompilerAdapter"
+             classpath="build/lib/clover.jar"/-->
+    
+    
     <target name="clover.init" 
             depends="init"
             description="Initalizes clover environment">
@@ -603,10 +618,13 @@
     <!--        CLOVER.CLEAN         -->
     <!--=============================-->
     <target name="clover.clean"
+    		depends="clover.init"
             description="Removes clover generated files">
                     
-        <delete dir="${clover}" verbose="false" quiet="off"/>
-        <delete dir="${clover}"/>
+        <delete verbose="true" quiet="off">
+        	<fileset dir="${clover}" includes="*.*"/>	
+        </delete>
+        
     </target>
     
     
@@ -658,6 +676,54 @@
         </exec>            
                 
     </target>
+
+    <!--=============================--> 
+    <!--          CVSLOG             -->
+    <!--=============================-->
+	<target name="cvslog" depends="init">
+
+		<delete file="${top}/.cvspass" verbose="true"/>
+			
+		<input message="Enter CVS password:" addproperty="cvs.password"/>	
+
+		<cvspass password="${cvs.password}"
+		         cvsroot=":pserver:analogue@hemisfear.dyndns.org:k:/cvs/cvsrep"
+		         passfile="${top}/.cvspass"/>
+				 
+	 	<loadfile property="cvspass" srcFile="${top}/.cvspass"/>				 
+	 	<echo message="${cvspass}"/>
+				 
+		<cvs cvsroot=":pserver:analogue@hemisfear.dyndns.org:k:/cvs/cvsrep"
+		     output="${doc}/statcvs/cvs.log"
+		     command="log"
+		     passfile="${top}/.cvspass"/>
+
+		<delete file="${top}/.cvspass"/>
+	
+	</target>
+			
+
+    <!--=============================--> 
+    <!--          STATCVS            -->
+    <!--=============================-->
+	<taskdef name="statcvs" 
+	         classname="net.sf.statcvs.ant.StatCvsTask"
+	         classpath="build/lib/statcvs.jar"/>
+	
+    <target name="statcvs" 
+    		depends="init, cvslog"
+    		description="Generates a report with CVS statistics">
+    		
+	    <statcvs 
+	        projectName="Toolbox"
+	        projectDirectory="${top}"
+	        cvsLogFile="${doc}/statcvs/cvs.log"
+	        outputDirectory="${doc}/statcvs"
+	        cssFile="http://statcvs.sf.net/stats/statcvs.css"
+	        showCredits="no"/>
+	        
+	</target>
+
 
     <!--=============================--> 
     <!--       OBFUSCATE             -->
