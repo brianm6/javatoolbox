@@ -5,10 +5,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import toolbox.util.Platform;
 
 /**
- * FileNode is a TreeNode that has special behavior when used to compare to
- * another FileNode. The equality is based on the name of the file and also
- * takes into account the platform. If running on a unix system, the file
- * comparison is case-insensetive.
+ * FileNode is a TreeNode that has specific behavior when compared to another 
+ * FileNode. The equality is based on the name of the file and also takes into 
+ * account the platform. If running on a unix system, the filename comparison 
+ * is case-insensetive.
+ * 
+ * @see toolbox.util.ui.explorer.JFileExplorer
  */
 public class FileNode extends DefaultMutableTreeNode
 {
@@ -19,7 +21,7 @@ public class FileNode extends DefaultMutableTreeNode
     /**
      * Creates a FileNode.
      *
-     * @param userObject Object to associate with the file node.
+     * @param userObject Object to associate with this file node.
      */
     public FileNode(Object userObject)
     {

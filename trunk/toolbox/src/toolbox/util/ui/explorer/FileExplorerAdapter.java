@@ -2,6 +2,8 @@ package toolbox.util.ui.explorer;
 
 /**
  * Adapter class for FileExplorerListener.
+ * 
+ * @see toolbox.util.ui.explorer.JFileExplorer
  */
 public class FileExplorerAdapter implements FileExplorerListener
 {
