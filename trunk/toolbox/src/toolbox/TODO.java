@@ -7,7 +7,6 @@ package toolbox;
  * TODO: Move Tomcat server to booger2
  * TODO: Figure out how to launch web browser consistently for build.xml
  * TODO: Add vizant for visualization of build dependencies
- * TODO: Add package.html to all packages
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Integrate automatic build number generation into the build process.
  * TODO: Get PropertyPrompt working properly
@@ -17,6 +16,7 @@ package toolbox;
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
  * TODO: Add sql helpers to jdbc plugin
+ * TODO: Add rest of menu to jdbc plugin input area
  * 
  * </pre>
  */
