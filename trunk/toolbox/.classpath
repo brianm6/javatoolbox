@@ -31,7 +31,6 @@
     <classpathentry kind="lib" path="lib/commons-cli.jar"/>
     <classpathentry kind="lib" path="build/lib/clover.jar"/>
     <classpathentry kind="lib" path="lib/hsqldb.jar" sourcepath="/toolbox/lib/src/hsqldb-src.zip"/>
-    <classpathentry kind="lib" path="lib/classworlds.jar" sourcepath="G:/java/dev/classworlds-1.0-beta-3/src/java/main"/>
     <classpathentry kind="lib" path="lib/commons-io.jar" sourcepath="/toolbox/lib/src/commons-io-src.zip"/>
     <classpathentry kind="lib" path="lib/cvslib.jar"/>
     <classpathentry kind="lib" path="lib/ant.jar"/>
@@ -43,5 +42,6 @@
     <classpathentry kind="lib" path="lib/xml-apis.jar" sourcepath="/toolbox/lib/src/xml-apis-src.zip"/>
     <classpathentry kind="lib" path="lib/xom.jar" sourcepath="/toolbox/lib/src/xom-src.zip"/>
     <classpathentry kind="lib" path="lib/jaimlib.jar"/>
+    <classpathentry kind="lib" path="lib/bsh.jar" sourcepath="/toolbox/lib/src/bsh-src.zip"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
