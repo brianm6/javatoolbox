@@ -201,10 +201,19 @@ public class SearchTargetPanel extends JHeaderPanel
          */
         public void actionPerformed(ActionEvent e)
         {
+            addClasspathTargets();
+        }
+        
+        
+        /**
+         * Convenience method to call directly from non-event based source.
+         */
+        public void addClasspathTargets()
+        {
             String[] cp = ClassUtil.getClassPathElements();
 
             for (int i = 0; i < cp.length; 
-            	searchListModel_.addElement(cp[i++]));
+                searchListModel_.addElement(cp[i++]));
         }
     }
 
