@@ -3,6 +3,7 @@ package toolbox.util.ui.plugin;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -15,6 +16,7 @@ import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -22,6 +24,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -29,6 +32,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JTextComponentPopupMenu;
 
 /**
@@ -43,13 +47,18 @@ public class QueryPlugin extends JPanel implements IPlugin
     /** 
      * Key to the history of SQL statements
      */
-    public static final String KEY_HISTORY = "querypanel.history";
+    public static final String KEY_HISTORY  = "query.plugin.history";
+    public static final String KEY_DRIVER   = "query.plugin.driver";
+    public static final String KEY_URL      = "query.plugin.url";
+    public static final String KEY_USER     = "query.plugin.user";
+    public static final String KEY_PASSWORD = "query.plugin.password";
     
     /**
      * Newline character
      */    
     public static final String NEWLINE = "\n";
 
+    // SQL query & results stuff
     private IStatusBar  statusBar_;    
     private JTextArea   inputArea_;
     private JTextArea   outputArea_;
@@ -57,6 +66,12 @@ public class QueryPlugin extends JPanel implements IPlugin
     private JButton     clearButton_;
     private JPopupMenu  sqlPopup_;
     private Map         sqlHistory_;
+   
+    // JDBC config stuff 
+    private JTextField driverField_;
+    private JTextField urlField_;
+    private JTextField userField_;
+    private JTextField passwordField_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -102,8 +117,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             public void keyTyped(KeyEvent e)
             {
-                if ((e.getKeyChar() ==  '\n') &&
-                    ((e.getKeyModifiersText(e.getModifiers()).equals("Ctrl"))))
+                if ((e.getKeyChar() ==  '\n') && ((KeyEvent.getKeyModifiersText(
+                    e.getModifiers()).equals("Ctrl"))))
                         (new RunQueryAction()).actionPerformed(
                             new ActionEvent(inputArea_, 0, "" ));
             }
@@ -118,9 +133,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 new JScrollPane(inputArea_), 
                 new JScrollPane(outputArea_));
 
-        setLayout(new BorderLayout());            
-        add(splitPane, BorderLayout.CENTER);
-
+        // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
             
         queryButton_ = new JButton(new RunQueryAction());
@@ -128,10 +141,40 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         clearButton_ = new JButton(new ClearAction());
         buttonPanel.add(clearButton_);
-                
+
+        // Root 
+        setLayout(new BorderLayout());
+        add(buildConfigView(), BorderLayout.NORTH);
+        add(splitPane, BorderLayout.CENTER);                
         add(buttonPanel, BorderLayout.SOUTH);
     }
     
+    /**
+     * Builds the Configuration view in a Flip pane
+     * 
+     * @return JPanel
+     */
+    protected JPanel buildConfigView()
+    {
+        JPanel cp = new JPanel(new GridLayout(4,2));
+        
+        cp.add(new JLabel("Driver"));
+        cp.add(driverField_ = new JTextField(""));
+       
+        cp.add(new JLabel("URL"));
+        cp.add(urlField_ = new JTextField(""));
+        
+        cp.add(new JLabel("User"));
+        cp.add(userField_ = new JTextField(""));
+         
+        cp.add(new JLabel("Password"));
+        cp.add(passwordField_ = new JTextField(""));
+
+        JFlipPane jfp = new JFlipPane(JFlipPane.TOP);
+        jfp.addFlipper("JDBC Config", cp);
+        jfp.setExpanded(false);
+        return jfp;
+    }
     
     /**
      * Runs a query against the database and 
@@ -186,7 +229,6 @@ public class QueryPlugin extends JPanel implements IPlugin
             sqlPopup_.add(menuItem);
         }
     }
-
 
     /**
      * Set status
@@ -243,18 +285,22 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         String history = prefs.getProperty(KEY_HISTORY);
         
-        if (StringUtil.isNullOrEmpty(history))
-            return;
+        if (!StringUtil.isNullOrEmpty(history))
+        {            
+            String[] historyItems = StringUtil.tokenize(history, "|");
+    
+            logger_.debug(method + 
+                "Restoring " + historyItems.length + "sql stmts to history.");
             
-        String[] historyItems = StringUtil.tokenize(history, "|");
-
-        logger_.debug(method + 
-            "Restoring " + historyItems.length + "sql stmts to history.");
-        
-        for (int i=0; i<historyItems.length; i++)
-            addToHistory(historyItems[i]);
+            for (int i=0; i<historyItems.length; i++)
+                addToHistory(historyItems[i]);
+        }
+            
+        driverField_.setText(prefs.getProperty(KEY_DRIVER, "??"));
+        urlField_.setText(prefs.getProperty(KEY_URL, "??"));
+        userField_.setText(prefs.getProperty(KEY_USER, "??"));
+        passwordField_.setText(prefs.getProperty(KEY_PASSWORD, "??"));
     }
-
 
     /**
      * Restores the of the sqlPopupMenu from a Properties object
@@ -264,16 +310,20 @@ public class QueryPlugin extends JPanel implements IPlugin
     public void savePrefs(Properties prefs)
     {
         String method = "[savPrf] ";
-        
+
+        // Munge all SQL statements into one string and save
         StringBuffer sb = new StringBuffer("");
-        
         for (Iterator i =  sqlHistory_.values().iterator(); i.hasNext(); )
         {
             String sql = (String) i.next();
             sb.append(sql + "|");
         }
         
-        prefs.put(KEY_HISTORY, sb.toString());
+        prefs.setProperty(KEY_HISTORY, sb.toString());
+        prefs.setProperty(KEY_DRIVER, driverField_.getText().trim());
+        prefs.setProperty(KEY_URL, urlField_.getText().trim());
+        prefs.setProperty(KEY_USER, userField_.getText().trim());
+        prefs.setProperty(KEY_PASSWORD, passwordField_.getText().trim());
     }
 
     /**
