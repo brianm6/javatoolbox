@@ -26,7 +26,7 @@ public class WrappingWriterTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args none recognized
+     * @param args None recognized
      */    
     public static void main(String[] args)
     {
@@ -34,7 +34,7 @@ public class WrappingWriterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
     
     /**

@@ -40,7 +40,7 @@ public class StringInputStream extends InputStream implements Stringz
     private boolean ignoreEOF_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
@@ -54,7 +54,7 @@ public class StringInputStream extends InputStream implements Stringz
     /**
      * Creates a StringInputStream with the passed string
      *
-     * @param  s  String to initialize stream with
+     * @param s String to initialize stream with
      */
     public StringInputStream(String s)
     {
@@ -64,8 +64,8 @@ public class StringInputStream extends InputStream implements Stringz
     /**
      * Creates a StringInputStream
      * 
-     * @param  ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
-     *                   the stream has been reached)
+     * @param ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
+     *        the stream has been reached)
      */
     public StringInputStream(boolean ignoreEOF)
     {
@@ -75,9 +75,9 @@ public class StringInputStream extends InputStream implements Stringz
     /**
      * Creates a StringInputStream
      * 
-     * @param  s          String to initialize stream with
-     * @param  ignoreEOF  Ignores EOF (read blocks indefinitely if the end of 
-     *                    the stream has been reached)
+     * @param s String to initialize stream with
+     * @param ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
+     *        the stream has been reached)
      */
     public StringInputStream(String s, boolean ignoreEOF)
     {
@@ -87,14 +87,14 @@ public class StringInputStream extends InputStream implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.io.InputStream
+    // Overrides java.io.InputStream
     //--------------------------------------------------------------------------
     
     /**
      * Reads a byte from the stream
      *
-     * @return  The current character or -1 if stream is empty
-     * @throws  IOException if IO error occurs
+     * @return The current character or -1 if stream is empty
+     * @throws IOException if I/O error occurs
      */
     public int read() throws IOException 
     {
@@ -125,10 +125,10 @@ public class StringInputStream extends InputStream implements Stringz
     
     /**
      * Returns number of bytes available to read from the stream without 
-     * blocking
+     * blocking.
      * 
-     * @return  Number of bytes available
-     * @throws  IOException on IO error
+     * @return Number of bytes available
+     * @throws IOException on I/O error
      */
     public int available() throws IOException
     {
@@ -142,7 +142,7 @@ public class StringInputStream extends InputStream implements Stringz
     /**
      * Appends a string to the end of the input stream
      * 
-     * @param  s  String to append
+     * @param s String to append
      */
     public synchronized void append(String s)
     {
@@ -158,7 +158,7 @@ public class StringInputStream extends InputStream implements Stringz
     /**
      * Sets the flag to ignore EOF
      * 
-     * @param  ignoreEOF   True to ignore EOF, false otherwise
+     * @param ignoreEOF True to ignore EOF, false otherwise
      */   
     public void setIgnoreEOF(boolean ignoreEOF)
     {
@@ -168,7 +168,10 @@ public class StringInputStream extends InputStream implements Stringz
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString()
     {
         String unread = buffer_.substring(index_);

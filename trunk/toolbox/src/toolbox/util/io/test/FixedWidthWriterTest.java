@@ -25,7 +25,7 @@ public class FixedWidthWriterTest extends TestCase
     /**
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -199,7 +199,7 @@ public class FixedWidthWriterTest extends TestCase
     /**
      * Tests the write() method
      * 
-     * @throws  IOException on error
+     * @throws IOException on error
      */
     public void testWrite() throws IOException
     {

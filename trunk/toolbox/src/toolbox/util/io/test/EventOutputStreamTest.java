@@ -32,7 +32,7 @@ public class EventOutputStreamTest extends TestCase
     /**
      * Entrypoint   
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -40,7 +40,7 @@ public class EventOutputStreamTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
        
     /**
@@ -186,10 +186,10 @@ public class EventOutputStreamTest extends TestCase
      * Stuffs a stream with a packet of random data as fast as possible for a 
      * given duration of time.
      * 
-     * @param   os          OutputStream to stuff
-     * @param   packetSize  Number of bytes to stuff per write
-     * @param   duration    Number of seconds to stuff the stream
-     * @throws  IOException on I/O error
+     * @param os OutputStream to stuff
+     * @param packetSize Number of bytes to stuff per write
+     * @param duration Number of seconds to stuff the stream
+     * @throws IOException on I/O error
      */
     protected void stuffStream(OutputStream os, int packetSize, int duration)
         throws IOException

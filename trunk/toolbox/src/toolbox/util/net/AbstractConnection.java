@@ -66,9 +66,9 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Sets Connection name
+     * Sets the connection name
      * 
-     * @param  name  Name
+     * @param name Connection name
      */
     public void setName(String name)
     {
@@ -82,7 +82,7 @@ public abstract class AbstractConnection implements IConnection
     /**
      * Adds a connection to the list of listeners
      * 
-     * @param  listener  Listener to add
+     * @param listener Listener to add
      */
     public void addConnectionListener(IConnectionListener listener)
     {
@@ -92,7 +92,7 @@ public abstract class AbstractConnection implements IConnection
     /**
      * Removes a connection from the list of listeners
      * 
-     * @param  listener  Listener to remove
+     * @param listener Listener to remove
      */
     public void removeConnectionListener(IConnectionListener listener)
     {
@@ -103,7 +103,7 @@ public abstract class AbstractConnection implements IConnection
     /**
      * Fires notification of Connection having been closed
      * 
-     * @param  connection  Connection that was closed
+     * @param connection Connection that was closed
      */    
     protected void fireConnectionClosed(IConnection connection)
     {
@@ -114,7 +114,7 @@ public abstract class AbstractConnection implements IConnection
     /**
      * Fires notification of Connection being closing
      * 
-     * @param  connection  Connection that is being closed
+     * @param connection Connection that is being closed
      */    
     protected void fireConnectionClosing(IConnection connection)
     {
@@ -125,7 +125,7 @@ public abstract class AbstractConnection implements IConnection
     /**
      * Fires notification that Connection was interrupted
      * 
-     * @param  connection  Connection that was interrupted
+     * @param connection Connection that was interrupted
      */    
     protected void fireConnectionInterrupted(IConnection connection)
     {
@@ -136,7 +136,7 @@ public abstract class AbstractConnection implements IConnection
     /**
      * Fires notification that Connection was started
      * 
-     * @param  connection  Connection that was started
+     * @param connection Connection that was started
      */    
     protected void fireConnectionStarted(IConnection connection)
     {

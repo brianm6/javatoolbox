@@ -23,7 +23,7 @@ public class MulticastOutputStreamTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args None
+     * @param args None recognized
      */
     public static void main(String[] args)
     {

@@ -24,7 +24,7 @@ public class RegexFilterReaderTest extends TestCase
     /**
      * Entrypoint
      *
-     * @param  args  Arguments
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -32,7 +32,7 @@ public class RegexFilterReaderTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
     
     /**

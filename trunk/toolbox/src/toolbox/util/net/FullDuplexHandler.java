@@ -64,8 +64,8 @@ public abstract class FullDuplexHandler implements IConnectionHandler
      * Handles a connection by taking the input/output streams and 
      * spawning them off into separate threads of execution.
      * 
-     * @param   conn   Connection to read/write messages to/from
-     * @return  Null
+     * @param conn Connection to read/write messages to/from
+     * @return Null
      */
     public final Object handle(IConnection conn) 
     {
@@ -99,13 +99,13 @@ public abstract class FullDuplexHandler implements IConnectionHandler
 
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
     
     /**
      * Mutator for the connection
      * 
-     * @param newConnection   The connection
+     * @param newConnection The connection
      */
     public void setConnection(IConnection newConnection)
     {

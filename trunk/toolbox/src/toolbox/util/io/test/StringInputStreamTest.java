@@ -24,7 +24,7 @@ public class StringInputStreamTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -32,7 +32,7 @@ public class StringInputStreamTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
         
     /**
@@ -153,10 +153,10 @@ public class StringInputStreamTest extends TestCase
     /**
      * Stuffs a stream
      * 
-     * @param  sis         Stream to stuff
-     * @param  delay       Delay in ms
-     * @param  s           String being stuffed
-     * @param  iterations  Number of iterations
+     * @param sis Stream to stuff
+     * @param delay Delay in ms
+     * @param s String being stuffed
+     * @param iterations Number of iterations
      */
     public void stuffStream(StringInputStream sis, int delay, String s, 
         int iterations) 

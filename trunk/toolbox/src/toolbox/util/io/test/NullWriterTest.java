@@ -24,7 +24,7 @@ public class NullWriterTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param args None
      */
     public static void main(String[] args)
     {
@@ -32,7 +32,7 @@ public class NullWriterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
     
     /**

@@ -24,7 +24,7 @@ public class PositionReaderTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param args None
      */
     public static void main(String[] args)
     {
@@ -32,7 +32,7 @@ public class PositionReaderTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
         
     /**

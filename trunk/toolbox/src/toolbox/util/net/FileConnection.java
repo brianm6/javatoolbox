@@ -44,7 +44,7 @@ public class FileConnection extends AbstractConnection implements IConnection
     private boolean connected_ = false;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -59,12 +59,12 @@ public class FileConnection extends AbstractConnection implements IConnection
      * Creates a FileConnection with a single file for input and another file
      * for output.
      * 
-     * @param  inputFile   File tied to the input stream
-     * @param  outputFile  File tied to the output stream
+     * @param inputFile File tied to the input stream
+     * @param outputFile File tied to the output stream
      */
     public FileConnection(File inputFile, File outputFile)
     {
-        inputFile_  = inputFile;
+        inputFile_ = inputFile;
         outputFile_ = outputFile;
         addConnectionListener(new InternalFileConnectionListener());
         connected_ = true;
@@ -73,9 +73,9 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Creates a FileConnection with the given input and output file names
      * 
-     * @param   inputFile  File tied to the input stream
-     * @param   outputFile File tied to the output stream
-     * @throws  IOException on I/O error
+     * @param inputFile File tied to the input stream
+     * @param outputFile File tied to the output stream
+     * @throws IOException on I/O error
      */
     public FileConnection(String inputFile, String outputFile) 
         throws IOException 
@@ -84,7 +84,7 @@ public class FileConnection extends AbstractConnection implements IConnection
     }
 
     //--------------------------------------------------------------------------
-    //  IConnection Interface
+    // IConnection Interface
     //--------------------------------------------------------------------------
     
     /**

@@ -30,7 +30,7 @@ public class OrFilterTest extends TestCase
     /** 
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -38,11 +38,13 @@ public class OrFilterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from TestCase
+    // Overrides TestCase
     //--------------------------------------------------------------------------
     
     /** 
      * Create a temporary directory with files to use for testing
+     * 
+     * @throws Exception on error
      */
     protected void setUp() throws Exception
     {
@@ -54,7 +56,9 @@ public class OrFilterTest extends TestCase
     }
 
     /**
-     * Clean up temporary directory 
+     * Clean up temporary directory
+     * 
+     * @throws Exception on error 
      */
     protected void tearDown() throws Exception
     {
@@ -64,7 +68,7 @@ public class OrFilterTest extends TestCase
     }
    
     //--------------------------------------------------------------------------
-    //  Unit Tests
+    // Unit Tests
     //--------------------------------------------------------------------------
     
     /**

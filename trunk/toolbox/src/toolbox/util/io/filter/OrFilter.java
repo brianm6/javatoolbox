@@ -23,8 +23,8 @@ public class OrFilter extends CompoundFilter implements FilenameFilter
     /**
      * Creates a filter that ORs the given filters
      * 
-     * @param  filterOne  First filter
-     * @param  filterTwo  Second filter
+     * @param filterOne First filter
+     * @param filterTwo Second filter
      */   
     public OrFilter(FilenameFilter filterOne, FilenameFilter filterTwo)
     {
@@ -39,9 +39,9 @@ public class OrFilter extends CompoundFilter implements FilenameFilter
     /**
      * Accepts files based on the logical OR of the added filters
      * 
-     * @param    dir   Directory file is contained in
-     * @param    name  Name of file
-     * @return   True if logical OR is true, false otherwise
+     * @param dir Directory file is contained in
+     * @param name Name of file
+     * @return True if logical OR is true, false otherwise
      */
     public boolean accept(File dir,String name)
     {

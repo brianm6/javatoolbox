@@ -207,13 +207,13 @@ public class WrappingWriter extends Writer
     }
     
     //--------------------------------------------------------------------------
-    // Interface RollingCounter.IRollingCounterListener
+    // RollingCounter.IRollingCounterListener Interface
     //--------------------------------------------------------------------------
 
     /**
      * Counter has rolled back to the beginning of the range
      * 
-     * @param  rc  Counter that was rolled
+     * @param rc Counter that was rolled
      */
     public void afterRoll(RollingCounter rc)
     {
@@ -224,7 +224,7 @@ public class WrappingWriter extends Writer
     /**
      * Counter is about to roll to the beginning of the range
      * 
-     * @param  rc  Counter being rolled
+     * @param rc Counter being rolled
      */
     public void beforeRoll(RollingCounter rc)
     {
@@ -243,7 +243,9 @@ public class WrappingWriter extends Writer
     //--------------------------------------------------------------------------
 
     /**
-     * @return Dump to string
+     * Returns a dump of the writer attributes and contents.
+     * 
+     * @return String
      */    
     public String toString()
     {

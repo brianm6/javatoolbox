@@ -19,14 +19,14 @@ public class ExtensionFilter implements FilenameFilter
     private String extension_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
      * Creates an Extension filter with the given file extension. The extension
      * can optionally contain the leading dot.
      * 
-     * @param  fileExtension  File extension to filter on
+     * @param fileExtension File extension to filter on
      */   
     public ExtensionFilter(String fileExtension)
     {
@@ -38,15 +38,15 @@ public class ExtensionFilter implements FilenameFilter
     }
     
     //--------------------------------------------------------------------------
-    //  FilenameFilter Interface
+    // FilenameFilter Interface
     //--------------------------------------------------------------------------
     
     /**
      * Filter out a files by extension
      * 
-     * @param   dir   Directory file is contained in
-     * @param   name  Name of file
-     * @return  True if the file matches the extension, false otherwise
+     * @param dir Directory file is contained in
+     * @param name Name of file
+     * @return True if the file matches the extension, false otherwise
      */
     public boolean accept(File dir, String name)
     {

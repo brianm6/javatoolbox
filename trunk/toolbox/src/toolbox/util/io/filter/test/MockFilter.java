@@ -4,20 +4,24 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 /**
- * Hard wired boolean filter set in the constructor 
+ * Filter thats sole purpose is to return a predetermined value when asked to
+ * accept() a file. 
  */
 public class MockFilter implements FilenameFilter
 {
+    /**
+     * Value the mock filter to return on calls to accept()
+     */
     private boolean accept_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Cretes an MockFilter
+     * Creates a MockFilter
      * 
-     * @param  accept  Static accept criteria
+     * @param accept Static accept criteria
      */
     public MockFilter(boolean accept)
     {
@@ -25,15 +29,15 @@ public class MockFilter implements FilenameFilter
     }
     
     //--------------------------------------------------------------------------
-    //  FilenameFilter Interface
+    // FilenameFilter Interface
     //--------------------------------------------------------------------------
     
     /**
-     * Accepts files that that meet the criteria of filterOne AND filterTwo
+     * Returns accept_
      * 
-     * @param   dir   Directory file is contained in
-     * @param   name  Name of file
-     * @return  Boolean 
+     * @param dir Directory file is contained in
+     * @param name Name of file
+     * @return boolean 
      */
     public boolean accept(File dir, String name)
     {        

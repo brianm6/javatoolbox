@@ -18,7 +18,9 @@ public class NotFilterTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(NotFilterTest.class);
      
-    /** Test directory for filtering files */
+    /** 
+     * Directory for files used by the filtering tests 
+     */
     private File testDir_;
      
     //--------------------------------------------------------------------------
@@ -28,7 +30,7 @@ public class NotFilterTest extends TestCase
     /** 
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -40,7 +42,9 @@ public class NotFilterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Create a temporary directory with files to use for testing
+     * Creates a temporary directory with files to use for testing
+     * 
+     * @throws Exception on error
      */
     protected void setUp() throws Exception
     {
@@ -52,7 +56,9 @@ public class NotFilterTest extends TestCase
     }
 
     /**
-     * Clean up temporary directory 
+     * Cleans up the temporary directory
+     * 
+     * @throws Exception on error 
      */
     protected void tearDown() throws Exception
     {

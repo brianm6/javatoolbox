@@ -47,7 +47,7 @@ public class StringOutputStream extends OutputStream
     /**
      * Write a single character
      *
-     * @param  outputChar  Character to write to the stream
+     * @param outputChar Character to write to the stream
      */
     public void write(int outputChar)
     {
@@ -60,9 +60,9 @@ public class StringOutputStream extends OutputStream
     //--------------------------------------------------------------------------
 
     /**
-     * Output buffer
+     * Returns the contents of the the stream
      * 
-     * @return Output as a string.
+     * @return String
      */
     public String toString()
     {
@@ -74,7 +74,7 @@ public class StringOutputStream extends OutputStream
     //--------------------------------------------------------------------------
         
     /**
-     * Stringbuffer backing the stream
+     * Returns the StringBuffer backing the stream
      * 
      * @return StringBuffer
      */
