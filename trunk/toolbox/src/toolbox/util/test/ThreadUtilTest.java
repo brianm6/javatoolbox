@@ -331,7 +331,7 @@ public class ThreadUtilTest extends TestCase
     /**
      * Tests stop() with a timeout 
      * 
-     * @throws Exception
+     * @throws Exception on error
      */
     public void testStopTimeout() throws Exception
     {
@@ -379,9 +379,6 @@ public class ThreadUtilTest extends TestCase
         private boolean pingPrimitiveCalled_;
         private boolean pingInnerCalled_;
                
-        /**
-         * Default constructor
-         */
         public Tester()
         {
             pingSimpleCalled_    = false;
@@ -569,7 +566,10 @@ public class ThreadUtilTest extends TestCase
             this.pingSimpleCalled_ = pingSimpleCalled;
         }
     }
-    
+
+    /**
+     * Delays execution for a number of milliseconds
+     */    
     class DelayedRunner implements Runnable
     {
         private int delay_;
@@ -579,9 +579,6 @@ public class ThreadUtilTest extends TestCase
             delay_ = delay;           
         }
      
-        /**
-         * Just goes to sleep for delay_ milliseconds 
-         */   
         public void run()
         {
             ThreadUtil.sleep(delay_);
