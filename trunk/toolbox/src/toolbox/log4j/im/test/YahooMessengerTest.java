@@ -5,6 +5,7 @@ import java.util.Properties;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
@@ -21,6 +22,22 @@ public class YahooMessengerTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(YahooMessengerTest.class);
+
+    /**
+     * Yahoo user that will receive all test messages
+     */
+    private static final String recipient_ = "analogue";
+    
+    /**
+     * Yahoo user that the messages will originate from
+     */
+    private static final String FROM_USER = "supahfuzz";
+    
+    /**
+     * Password of the FROM_USER
+     */
+    private static final String FROM_PASSWORD = "techno"; 
+    
         
     //--------------------------------------------------------------------------
     // Main
@@ -29,7 +46,7 @@ public class YahooMessengerTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -53,10 +70,12 @@ public class YahooMessengerTest extends TestCase
         messenger.initialize(new Properties());
         
         logger_.debug("Before login...");
-        messenger.login("supahfuzz", "techno");
+        messenger.login(FROM_USER, FROM_PASSWORD);
         
         logger_.debug("Before send...");
-        messenger.send("analogue", "Hello from the testLifeCycle unit test.");
+        messenger.send(recipient_, "Hello from the testLifeCycle unit test.");
+        
+        ThreadUtil.sleep(5000);
         
         logger_.debug("Before logout...");
         messenger.logout();
@@ -78,13 +97,12 @@ public class YahooMessengerTest extends TestCase
         
         InstantMessenger messenger = new YahooMessenger();
         messenger.initialize(new Properties());
-        messenger.login("supahfuzz", "techno");
+        messenger.login(FROM_USER, FROM_PASSWORD);
         
         for (int i=0; i<100; i++)
         {
-            ThreadUtil.sleep(300);  // throttle
             messenger.send(
-                "analogue", "This is message number " + (i+1) + " of 100");
+                recipient_, "This is message number " + (i+1) + " of 100");
         }
         
         messenger.logout();
@@ -100,15 +118,17 @@ public class YahooMessengerTest extends TestCase
     public void testConfigByXML() throws Exception
     {
         logger_.info("Running testConfigByXML...");
-        
+
+        String appenderName = "testXMLInit_appender";
+        String loggerName   = "testXMLInit_logger";
+
         String xmlConfig = 
             ResourceUtil.getResourceAsString(
                 "/toolbox/log4j/im/test/YahooMessengerTest.xml");
-        
-        //BasicConfigurator.resetConfiguration();
+
+        // Load config from xml file        
         DOMConfigurator.configure(XMLUtil.loadElement(xmlConfig));
-        
-        Logger logger = Logger.getLogger("testXMLInit_logger");
+        Logger logger = Logger.getLogger(loggerName);
         
         logger.debug("debug");
         logger.info("info");
@@ -117,6 +137,10 @@ public class YahooMessengerTest extends TestCase
         
         ThreadUtil.sleep(2000);
         
-        Logger.getRootLogger().removeAppender("testXMLInit_appender");
+        // Cleanup
+        Appender appender = logger.getAppender(appenderName);
+        logger_.info("Closing appender " + appender.getName());
+        appender.close();
+        logger.removeAppender(appenderName);
     }
 }
