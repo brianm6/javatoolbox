@@ -15,8 +15,10 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
+import toolbox.util.RandomUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
+import toolbox.util.StringUtil;
 
 /**
  * Unit test for ResourceUtilTest.
@@ -202,6 +204,23 @@ public class ResourceUtilTest extends TestCase
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
     }
 
+
+    /**
+     * Tests getResourceAsString() on a text file.
+     * 
+     * @throws Exception on error.
+     */
+    public void testGetResourceAsString() throws Exception
+    {
+        logger_.info("Running testGetResourceAsString...");
+        
+        String data = ResourceUtil.getResourceAsString(FILE_TEXT);
+        assertNotNull("data is null", data);
+        String contents = new String(data);
+        logger_.info("Resource: " + contents);
+        assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
+    }
+    
     
     /**
      * Tests getResourceAsTempFile() on a text file.
@@ -281,24 +300,21 @@ public class ResourceUtilTest extends TestCase
     {
         logger_.info("Running testExportToClass...");
         
-        //String treeOpen  = "images" + File.separator + "tree_open.gif";
-        //
-        //String filename = "TreeOpenGIF.java";
-        //    
-        //String javaSrc = ResourceUtil.exportToClass(
-        //    treeOpen, 
-        //    "toolbox.util.ui", 
-        //    "TreeOpenGIF",
-        //    FileUtil.getTempDir());
-        //
-        //logger_.info("Wrote TreeOpenGIF.java to " + 
-        //    FileUtil.getTempDir().getAbsolutePath() + " \n" + javaSrc);
-        //    
-        //String compareSrc = FileUtil.getFileContents(
-        //    FileUtil.getTempDir().getAbsolutePath() + 
-        //    File.separator +
-        //    filename);
-        //    
-        //assertEquals("files don't match" , javaSrc, compareSrc);
+        String treeOpen  = FILE_IMAGE;
+        
+        String classfile = RandomUtil.nextString(10);
+        
+        String javaSrc = 
+            ResourceUtil.exportToClass(
+              FILE_IMAGE,
+              "resourceutil.test",
+              classfile,
+              FileUtil.getTempDir());
+
+        logger_.info("Wrote " + classfile + ".java to " + 
+            FileUtil.getTempDir().getCanonicalPath() + "\n" + 
+            StringUtil.addBars(javaSrc.substring(0, 200) + "..."));
+        
+        FileUtil.delete(new File(FileUtil.getTempDir(), classfile + ".java"));
     }
 }
