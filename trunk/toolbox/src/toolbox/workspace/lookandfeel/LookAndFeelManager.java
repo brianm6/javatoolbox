@@ -151,15 +151,19 @@ public class LookAndFeelManager
             ATTR_CLASS, 
             null /*UIManager.getCrossPlatformLookAndFeelClassName()*/);
 
-        if (StringUtil.isNullOrEmpty(lookAndFeelClassName))
-            throw new IllegalArgumentException(
-                "Look and feel class " + lookAndFeelClassName + " is invalid.");
- 
-        logger_.debug(
-            "LookAndFeel class read from prefs " + lookAndFeelClassName);
-
-        setLookAndFeel(lookAndFeelClassName);
-        SwingUtil.propagateChangeInLAF();
+        if (!StringUtil.isNullOrEmpty(lookAndFeelClassName))
+        {
+	        logger_.debug(
+	            "LookAndFeel class read from prefs " + lookAndFeelClassName);
+	
+	        setLookAndFeel(lookAndFeelClassName);
+	        SwingUtil.propagateChangeInLAF();
+        }
+        else
+        {   
+			logger_.warn("Skipping setting of look and feel");
+        }
+            
     }
 
 
