@@ -371,9 +371,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         bootstrapMap_ = new HashMap(1);
         bootstrapMap_.put(PROP_STATUSBAR, statusBar_);
                 
-        //pluginHost_.startup(bootstrapMap_);
-        
-        pluginHostManager_.setPluginHost(PluginHostManager.HOST_TABBED);
+        pluginHostManager_.setPluginHost(
+            PluginHostManager.HOST_TABBED,
+            bootstrapMap_);
         
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
