@@ -87,7 +87,7 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
         boolean isSelected)
     {
 
-        logger_.debug("Layout out label in " + getClass().getName());
+        //logger_.debug("Layout out label in " + getClass().getName());
         
         textRect.x = 0;
         textRect.y = 0;
