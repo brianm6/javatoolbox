@@ -41,6 +41,7 @@ import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
+import toolbox.util.service.ServiceException;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartLabel;
@@ -541,7 +542,7 @@ public class TailPane extends JHeaderPanel
      * @param file File to aggregate.
      * @throws IOException on I/O error.
      */
-    public void aggregate(String file) throws IOException
+    public void aggregate(String file) throws ServiceException, IOException
     {
         TailContext tc = new TailContext(file);
         tc.init();
@@ -956,9 +957,9 @@ public class TailPane extends JHeaderPanel
             {
                 Tail tail = contexts_[i].getTail();
 
-                if (tail.isPaused())
+                if (tail.isSuspended())
                 {
-                    tail.unpause();
+                    tail.resume();
                     //putValue(Action.NAME, MODE_PAUSE);
 
                     statusBar_.setInfo("Unpaused tail for " +
@@ -966,7 +967,7 @@ public class TailPane extends JHeaderPanel
                 }
                 else
                 {
-                    tail.pause();
+                    tail.suspend();
                     //putValue(Action.NAME, MODE_UNPAUSE);
                     statusBar_.setInfo("Paused tail for " +
                         tail.getFile().getCanonicalPath());
@@ -1005,10 +1006,10 @@ public class TailPane extends JHeaderPanel
             {
                 Tail tail = contexts_[i].getTail();
 
-                if (tail.isPaused())
-                    tail.unpause();
+                if (tail.isSuspended())
+                    tail.resume();
 
-                if (tail.isAlive())
+                if (tail.isRunning())
                     tail.stop();
             }
 

@@ -1,10 +1,11 @@
 package toolbox.tail;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.OutputStreamWriter;
 
 import org.apache.log4j.Logger;
+
+import toolbox.util.service.ServiceException;
 
 /**
  * Tails one or more files.
@@ -58,9 +59,9 @@ public class Main extends TailAdapter
 
                 tail.start();
             }
-            catch (FileNotFoundException fnfe)
+            catch (ServiceException se)
             {
-                logger_.error("Main", fnfe);
+                logger_.error("Main", se);
             }
         }
     }

@@ -217,11 +217,11 @@ public class TailTest extends TestCase
         listener.waitForStart();
         ThreadUtil.sleep(1000);
         
-        tail.pause();
+        tail.suspend();
         listener.waitForPause();
         ThreadUtil.sleep(1000);
         
-        tail.unpause();
+        tail.resume();
         listener.waitForUnpause();
         ThreadUtil.sleep(1000);
         
@@ -278,15 +278,15 @@ public class TailTest extends TestCase
         ThreadUtil.sleep(d);
         
         // Pause twice
-        tail.pause();
+        tail.suspend();
         listener.waitForPause();
-        tail.pause();
+        tail.suspend();
         ThreadUtil.sleep(d);
         
         // Unpause twice
-        tail.unpause();
+        tail.resume();
         listener.waitForUnpause();
-        tail.unpause();
+        tail.resume();
         ThreadUtil.sleep(d);
         
         // Stop twice
@@ -298,7 +298,7 @@ public class TailTest extends TestCase
         
         tail.start();
         listener.waitForStart();
-        tail.pause();
+        tail.suspend();
         listener.waitForPause();
         tail.stop();
         listener.waitForStop();

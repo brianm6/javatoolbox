@@ -18,6 +18,9 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.io.NullWriter;
 import toolbox.util.io.ReverseFileReader;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.Startable;
+import toolbox.util.service.Suspendable;
 
 /**
  * Tail is similar to the Unix "tail -f" command used to tail or follow the end
@@ -50,10 +53,8 @@ import toolbox.util.io.ReverseFileReader;
  * tail.start();
  * </pre>
  */
-public class Tail
+public class Tail implements Startable, Suspendable
 {
-    // TODO: Implements Startable, Suspendable
-    
     private static final Logger logger_ = Logger.getLogger(Tail.class);
 
     //--------------------------------------------------------------------------
@@ -133,6 +134,130 @@ public class Tail
     }
 
     //--------------------------------------------------------------------------
+    // Startable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Starts the tail.
+     * 
+     * @see toolbox.util.service.Startable#start()
+     */
+    public void start() throws ServiceException
+    {
+        if (!isRunning())
+        {
+            String name = "Tail-" + (isFile() ? file_.getName() : threadName_);
+            tailer_ = new Thread(new Tailer(), name);
+            
+            try
+            {
+                connect();
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                throw new ServiceException(fnfe);
+            }
+            
+            tailer_.start();
+            fireTailStarted();
+        }
+        else
+            logger_.warn("Tail is already running");
+    }
+
+
+    /**
+     * Stops the tail.
+     * 
+     * @see toolbox.util.service.Startable#stop()
+     */
+    public void stop()
+    {
+        if (isRunning())
+        {
+            try
+            {
+                pendingShutdown_ = true;
+
+                if (isSuspended())
+                    resume();
+
+                ThreadUtil.stop(tailer_);
+
+                // Change of plans..when the tail is stopped,
+                // don't close the stream.
+
+                //IOUtils.closeQuietly(reader_);
+            }
+            finally
+            {
+                tailer_ = null;
+                pendingShutdown_ = false;
+                fireTailStopped();
+            }
+        }
+        else
+            logger_.warn("Tail is already stopped");
+    }
+
+
+    /**
+     * Returns true if the tail is running, false otherwise. This has no
+     * bearing on whether the tail is paused or not.
+     *
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return (tailer_ != null && tailer_.isAlive());
+    }
+    
+    //--------------------------------------------------------------------------
+    // Suspendable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns true if the tail is paused, false otherwise.
+     *
+     * @see toolbox.util.service.Suspendable#isSuspended()
+     */
+    public boolean isSuspended()
+    {
+        return paused_;
+    }
+    
+    
+    /**
+     * Pauses the tail.
+     * 
+     * @see toolbox.util.service.Suspendable#suspend()
+     */
+    public void suspend()
+    {
+        if (isRunning() && !isSuspended())
+            paused_ = true;
+    }
+
+
+    /**
+     * Unpauses the tail.
+     * 
+     * @see toolbox.util.service.Suspendable#resume()
+     */
+    public void resume()
+    {
+        if (isRunning() && isSuspended())
+        {
+            paused_ = false;
+
+            synchronized (this)
+            {
+                notify();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
@@ -165,109 +290,6 @@ public class Tail
 
         sink_   = writeTo;
         threadName_ = threadName;
-    }
-
-
-    /**
-     * Returns true if the tail is running, false otherwise. This has no
-     * bearing on whether the tail is paused or not.
-     *
-     * @return boolean
-     */
-    public boolean isAlive()
-    {
-        return (tailer_ != null && tailer_.isAlive());
-    }
-
-
-    /**
-     * Starts the tail.
-     *
-     * @throws FileNotFoundException on file error.
-     */
-    public void start() throws FileNotFoundException
-    {
-        if (!isAlive())
-        {
-            String name = "Tail-" + (isFile() ? file_.getName() : threadName_);
-            tailer_ = new Thread(new Tailer(), name);
-            connect();
-            tailer_.start();
-            fireTailStarted();
-        }
-        else
-            logger_.warn("Tail is already running");
-    }
-
-
-    /**
-     * Stops the tail.
-     */
-    public void stop()
-    {
-        if (isAlive())
-        {
-            try
-            {
-                pendingShutdown_ = true;
-
-                if (isPaused())
-                    unpause();
-
-                ThreadUtil.stop(tailer_);
-
-                // Change of plans..when the tail is stopped,
-                // don't close the stream.
-
-                //IOUtils.closeQuietly(reader_);
-            }
-            finally
-            {
-                tailer_ = null;
-                pendingShutdown_ = false;
-                fireTailStopped();
-            }
-        }
-        else
-            logger_.warn("Tail is already stopped");
-    }
-
-
-    /**
-     * Pauses the tail.
-     */
-    public void pause()
-    {
-        if (isAlive() && !isPaused())
-            paused_ = true;
-    }
-
-
-    /**
-     * Unpauses the tail.
-     */
-    public void unpause()
-    {
-        if (isAlive() && isPaused())
-        {
-            paused_ = false;
-
-            synchronized (this)
-            {
-                notify();
-            }
-        }
-    }
-
-
-    /**
-     * Returns true if the tail is paused, false otherwise.
-     *
-     * @return boolean
-     */
-    public boolean isPaused()
-    {
-        return paused_;
     }
 
 
@@ -320,6 +342,8 @@ public class Tail
     //--------------------------------------------------------------------------
 
     /**
+     * Dumps tail a debug string.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString()
