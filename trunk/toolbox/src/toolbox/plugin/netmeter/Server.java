@@ -85,7 +85,7 @@ public class Server extends AbstractService
      */
     public Server(int port)
     {
-        port_ = port;
+        setPort(port);
     }
 
     //--------------------------------------------------------------------------
@@ -114,15 +114,13 @@ public class Server extends AbstractService
     }
         
     //--------------------------------------------------------------------------
-    // Protected  
+    // Service Interface
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Initializes the server.
-     * 
-     * @throws IOException on I/O error.
+     * @see toolbox.util.service.AbstractService#initialize()
      */
-    protected void init() throws IOException
+    public void initialize() throws ServiceException
     {
         SocketServerConfig config = new SocketServerConfig();
         config.setName("NetMeterServer");
@@ -137,14 +135,14 @@ public class Server extends AbstractService
         // Add listener so we can grab references to the created 
         // IConnectionHandlers for cleanup on shutdown.
         //
+        
         serverListener_ = new ServerListener();        
         server_.addSocketServerListener(serverListener_);
+        
+        super.initialize();
     }
-
-    //--------------------------------------------------------------------------
-    // Service Interface
-    //--------------------------------------------------------------------------
-
+    
+    
     /**
      * @see toolbox.util.service.Service#start()
      */
@@ -152,18 +150,12 @@ public class Server extends AbstractService
     {
         try
         {
-            if (server_ == null)
-                init();
-                
             server_.start();
+            super.start();
         }
         catch (IOException ioe)
         {
             throw new ServiceException(ioe);
-        }
-        finally
-        {
-            super.start();
         }
     }
 

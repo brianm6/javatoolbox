@@ -54,13 +54,15 @@ public class ServerView extends JHeaderPanel implements ServiceListener
      * Creates a new ServerView.
      * 
      * @param server Server to attach to the view.
+     * @throws ServiceException on construction error.
      */
-    public ServerView(Server server)
+    public ServerView(Server server) throws ServiceException
     {
         super("Server");
         server_ = server;
-        server_.addServiceListener(this);
         buildView();
+        server_.addServiceListener(this);
+        server_.initialize();
     }
     
     //--------------------------------------------------------------------------
@@ -116,6 +118,16 @@ public class ServerView extends JHeaderPanel implements ServiceListener
     //--------------------------------------------------------------------------
     // ServiceListener Interface
     //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.ServiceListener#serviceInitialized(
+     *      toolbox.util.service.Service)
+     */
+    public void serviceInitialized(Service service) throws ServiceException
+    {
+        statusField_.setText("Initialized");
+    }
+
     
     /**
      * @see toolbox.util.service.ServiceListener#serviceStarted(
