@@ -81,20 +81,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      */
     public static TailPaneConfig unmarshal(Element tail) throws IOException 
     {
-        
-        // DEBUG
-        
-        Attributes attribs = tail.getAttributeObjects();
-        
-        while (attribs.hasMoreElements())
-        {
-            Attribute attrib = attribs.next();
-            
-            logger_.debug("[unmars] " + attrib.getName() + " : " + 
-                attrib.getValue());
-        }
-        
-        // REAL 
+        String method = "[unmars ] ";
         
         TailPaneConfig config = new TailPaneConfig();
         
