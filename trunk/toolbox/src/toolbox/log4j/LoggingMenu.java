@@ -32,25 +32,48 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.IPreferenced;
 
 /**
- * Log4J specific logging menu that allows easy changing of the log level. The
- * log output can also be redirected to a gui console, standard out, or a file.
+ * Log4J specific logging menu that allows you to do the following.
+ * 
+ * <ul>
+ *  <li>Change the logger level
+ *  <li>Append log output to stdout/stderr (console)
+ *  <li>Pop up a new window and send logger output to it.
+ *  <li>Append log output to a file.
+ * </ul>
  */
 public class LoggingMenu extends JSmartMenu implements IPreferenced
 {
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
 
-    // Preferences
     private static final String NODE_LOGGING_MENU     = "LoggingMenu";
     private static final String   ATTR_LEVEL          = "level";
     private static final String   ATTR_LOG_TO_CONSOLE = "logToConsole";
     private static final String   ATTR_LOG_TO_WINDOW  = "logToWindow";
     
-    // Default preferences
-    private static final String DEFAULT_LEVEL = Level.ERROR.toString();
+    //--------------------------------------------------------------------------
+    // Default Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * The default log level is ERROR.
+     */
+    private static final String  DEFAULT_LEVEL = Level.ERROR.toString();
+    
+    /**
+     * Logging to the console is turned off by default.
+     */
     private static final boolean DEFAULT_LOG_TO_CONSOLE = false;
+    
+    /**
+     * Logging to window is turned off by default.
+     */
     private static final boolean DEFAULT_LOG_TO_WINDOW = false;
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
     /**
      * Name of the toolbox logger in /resources/log4j.xml.
@@ -255,7 +278,6 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
          */
         private Level level_;
         
-        
         /**
          * Creates a SetLogLevelAction.
          * 
@@ -301,6 +323,9 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
             super("Log to Console");
         }
         
+        //----------------------------------------------------------------------
+        // ActionListener Interface
+        //----------------------------------------------------------------------
         
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
@@ -341,6 +366,10 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
      */
     class LogToWindowAction extends AbstractAction
     {
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
          * Creates a LogToWindowAction.
          */
@@ -349,6 +378,9 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
             super("Log to Window");
         }
         
+        //----------------------------------------------------------------------
+        // ActionListener Interface
+        //----------------------------------------------------------------------
         
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
@@ -377,6 +409,10 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
          */
         class LoggingWindow extends JSmartFrame
         {
+            //------------------------------------------------------------------
+            // Fields
+            //------------------------------------------------------------------
+            
             /**
              * Logging output sent to this text area.
              */
@@ -387,6 +423,9 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
              */
             private JTextAreaAppender appender_;
             
+            //------------------------------------------------------------------
+            // Constructors
+            //------------------------------------------------------------------
             
             /**
              * Creates a LoggingWindow.
@@ -400,7 +439,9 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
                 addWindowListener(new WindowListener());
             }
     
-            
+            //------------------------------------------------------------------
+            // Buids UI 
+            //------------------------------------------------------------------
             /**
              * Constructs the user interface. 
              */
@@ -417,7 +458,14 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
                 cp.add(new JScrollPane(area_), BorderLayout.CENTER);
             }
             
+            //------------------------------------------------------------------
+            // WindowListener
+            //------------------------------------------------------------------
             
+            /**
+             * On window close, the appender is removed from the logger and then
+             * closed.
+             */
             class WindowListener extends WindowAdapter
             {
                 /**
