@@ -77,7 +77,7 @@ public class JButtonGroup extends ButtonGroup
     /**
      * Adds an array of buttons to the group.
      * 
-     * @param buttons Array of <code>AbstractButton</code>s
+     * @param buttons Array of <code>AbstractButton</code>s.
      */
     public void add(AbstractButton[] buttons)
     {
@@ -92,7 +92,7 @@ public class JButtonGroup extends ButtonGroup
     /**
      * Removes a button from the group.
      * 
-     * @param button Button to be removed
+     * @param button Button to be removed.
      */
     public void remove(AbstractButton button)
     {
@@ -109,7 +109,7 @@ public class JButtonGroup extends ButtonGroup
     /**
      * Removes all the buttons in the array from the group.
      * 
-     * @param buttons Array of <code>AbstractButton</code>s
+     * @param buttons Array of <code>AbstractButton</code>s.
      */
     public void remove(AbstractButton[] buttons)
     {
@@ -141,7 +141,7 @@ public class JButtonGroup extends ButtonGroup
      * 
      * @param model <code>ButtonModel</code> reference.
      * @param selected <code>boolean</code> representing the selection state of 
-     *        the button
+     *        the button.
      */
     public void setSelected(ButtonModel model, boolean selected)
     {
@@ -163,7 +163,7 @@ public class JButtonGroup extends ButtonGroup
      * null.
      * 
      * @param model <code>ButtonModel</code> that should belong to a button in 
-     *        the group
+     *        the group.
      * @return <code>AbstractButton</code> reference whose model is 
      *         <code>model</code> if the button belongs to the group, 
      *         <code>null</code> otherwise.
