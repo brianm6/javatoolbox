@@ -29,97 +29,97 @@ import toolbox.util.io.ReverseFileReader;
  * the key events occuring in the tail's lifecycle.
  * <p>
  * To tail a file and send the output to System.out:
- * 
+ *
  * <pre>
  *  Tail tail = new Tail();
- * 
+ *
  * // Tail server.log and send output to stdout
  * tail.follow(
- *     new File("server.log"), 
+ *     new File("server.log"),
  *     new OutputStreamWriter(System.out));
- * 
+ *
  * // Starts tailer thread; returns immediately
  * tail.start();
- * 
- * // Later on... 
+ *
+ * // Later on...
  * tail.pause();
  * tail.unpause();
- * 
- * // All done..cleanup 
+ *
+ * // All done..cleanup
  * tail.stop();
- * 
+ *
  * // Change of mind...wheee
- * tail.start();  
+ * tail.start();
  * </pre>
  */
 public class Tail
 {
     private static final Logger logger_ = Logger.getLogger(Tail.class);
-    
+
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    /** 
+
+    /**
      * Default number of lines to print from the bottom of an existing file
-     * when a new tail is started. 
-     */ 
+     * when a new tail is started.
+     */
     public static final int DEFAULT_BACKLOG = 20;
 
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
-    /** 
-     * Tail listeners. 
-     */ 
+
+    /**
+     * Tail listeners.
+     */
     private TailListener[] listeners_;
-    
-    /** 
-     * Writer where tail output is sent. 
-     */ 
+
+    /**
+     * Writer where tail output is sent.
+     */
     private Writer sink_;
 
-    /** 
-     * Thread attached to the tailing behavior. 
-     */ 
+    /**
+     * Thread attached to the tailing behavior.
+     */
     private Thread tailer_;
 
-    /** 
-     * Reader which is the source of data that is tailed. 
+    /**
+     * Reader which is the source of data that is tailed.
      */
     private BufferedReader reader_;
-    
-    /** 
-     * File which is the source of data that is tailed. 
-     */ 
+
+    /**
+     * File which is the source of data that is tailed.
+     */
     private File file_;
 
-    /** 
-     * Number of lines to print from the bottom of an existing file when a new 
-     * tail is started. 
+    /**
+     * Number of lines to print from the bottom of an existing file when a new
+     * tail is started.
      */
     private int backlog_;
-     
-    /** 
-     * Paused state of the tail (not thread!). 
+
+    /**
+     * Paused state of the tail (not thread!).
      */
     private boolean paused_;
 
-    /** 
-     * Flag that notifies tail to shutdown gracefully. 
-     */ 
+    /**
+     * Flag that notifies tail to shutdown gracefully.
+     */
     private boolean pendingShutdown_;
-    
-    /** 
-     * Thread name..mostly for debugging. 
+
+    /**
+     * Thread name..mostly for debugging.
      */
     private String threadName_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a Tail.
      */
@@ -135,10 +135,10 @@ public class Tail
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Follows the given file sending the tail output to the writer.
-     * 
+     *
      * @param readFrom File to tail.
      * @param writeTo Writer to send tail output to.
      */
@@ -148,42 +148,42 @@ public class Tail
         sink_ = writeTo;
     }
 
-    
+
     /**
      * Follows the given reader sending the tail output to the writer.
-     * 
+     *
      * @param readFrom Reader to follow.
      * @param writeTo Writer to send the tail output to.
      * @param threadName Will name the thread. Useful for debugging.
      */
-    public void follow(Reader readFrom, Writer writeTo, String threadName) 
+    public void follow(Reader readFrom, Writer writeTo, String threadName)
     {
         if (readFrom instanceof BufferedReader)
             reader_ = (BufferedReader) readFrom;
         else
-            reader_ = new BufferedReader(readFrom);            
-            
+            reader_ = new BufferedReader(readFrom);
+
         sink_   = writeTo;
         threadName_ = threadName;
     }
-    
-    
+
+
     /**
-     * Returns true if the tail is running, false otherwise. This has no 
+     * Returns true if the tail is running, false otherwise. This has no
      * bearing on whether the tail is paused or not.
-     * 
+     *
      * @return boolean
      */
     public boolean isAlive()
     {
         return (tailer_ != null && tailer_.isAlive());
     }
-    
-    
+
+
     /**
      * Starts the tail.
-     * 
-     * @throws FileNotFoundException on file error
+     *
+     * @throws FileNotFoundException on file error.
      */
     public void start() throws FileNotFoundException
     {
@@ -199,7 +199,7 @@ public class Tail
             logger_.warn("Tail is already running");
     }
 
-    
+
     /**
      * Stops the tail.
      */
@@ -210,15 +210,15 @@ public class Tail
             try
             {
                 pendingShutdown_ = true;
-                
+
                 if (isPaused())
                     unpause();
 
                 ThreadUtil.stop(tailer_);
-                
-                // Change of plans..when the tail is stopped, 
+
+                // Change of plans..when the tail is stopped,
                 // don't close the stream.
-                
+
                 //StreamUtil.close(reader_);
             }
             finally
@@ -232,7 +232,7 @@ public class Tail
             logger_.warn("Tail is already stopped");
     }
 
-    
+
     /**
      * Pauses the tail.
      */
@@ -242,27 +242,27 @@ public class Tail
             paused_ = true;
     }
 
-    
+
     /**
-     * Unpauses the tail. 
+     * Unpauses the tail.
      */
     public void unpause()
     {
         if (isAlive() && isPaused())
         {
             paused_ = false;
-            
+
             synchronized (this)
             {
                 notify();
             }
         }
     }
-    
-    
+
+
     /**
      * Returns true if the tail is paused, false otherwise.
-     * 
+     *
      * @return boolean
      */
     public boolean isPaused()
@@ -270,11 +270,11 @@ public class Tail
         return paused_;
     }
 
-    
+
     /**
-     * Returns the number of backlog lines to print when initially tailing a 
+     * Returns the number of backlog lines to print when initially tailing a
      * file.
-     * 
+     *
      * @return int
      */
     public int getBacklog()
@@ -282,32 +282,32 @@ public class Tail
         return backlog_;
     }
 
-    
+
     /**
      * Sets the number of lines to backlog.
-     * 
-     * @param i Number of backlog lines to print when initially tailing a file
+     *
+     * @param i Number of backlog lines to print when initially tailing a file.
      */
     public void setBacklog(int i)
     {
         backlog_ = i;
     }
 
-    
+
     /**
      * Returns true if tailing a file, false if tailing a reader.
-     * 
+     *
      * @return boolean
      */
     public boolean isFile()
     {
-        return file_ != null;        
+        return file_ != null;
     }
 
-    
+
     /**
      * Returns the file being tailed.
-     * 
+     *
      * @return File
      */
     public File getFile()
@@ -356,10 +356,10 @@ public class Tail
         }
     }
 
-    
+
     /**
      * Shows the backlog of the file being followed.
-     * 
+     *
      * @throws IOException on I/O error.
      * @throws FileNotFoundException on non-existant file.
      */
@@ -369,28 +369,28 @@ public class Tail
         {
             ReverseFileReader reverser = new ReverseFileReader(file_);
             Stack backlog = new Stack();
-                            
+
             for (int i = 0; i < backlog_; i++)
             {
                 String line = reverser.readLineNormal();
-                
+
                 if (line != null)
                     backlog.push(line);
                 else
                     break;
             }
-            
+
             while (!backlog.isEmpty())
                 fireNextLine((String) backlog.pop());
-                
+
             reverser.close();
         }
     }
 
-    
+
     /**
      * Connects to the available source for data. Reader or File.
-     * 
+     *
      * @throws FileNotFoundException if file not found.
      */
     protected void connect() throws FileNotFoundException
@@ -407,7 +407,7 @@ public class Tail
 
     /**
      * Adds a listener to the tail.
-     * 
+     *
      * @param listener Listener to add.
      */
     public void addTailListener(TailListener listener)
@@ -415,21 +415,21 @@ public class Tail
         listeners_ = (TailListener[]) ArrayUtil.add(listeners_, listener);
     }
 
-    
+
     /**
      * Removes a listener from the tail.
-     * 
+     *
      * @param listener Listener to remove.
      */
     public void removeTailListener(TailListener listener)
     {
         listeners_ = (TailListener[]) ArrayUtil.remove(listeners_, listener);
     }
-    
-    
+
+
     /**
      * Fires event for availability of the next line of the tail.
-     * 
+     *
      * @param line Next line of the tail.
      */
     protected void fireNextLine(String line)
@@ -443,7 +443,7 @@ public class Tail
         {
             logger_.error("fireNextLine", e);
         }
-        
+
         for (int i = 0; i < listeners_.length; i++)
         {
             try
@@ -457,7 +457,7 @@ public class Tail
         }
     }
 
-    
+
     /**
      * Fires event when tail is stopped.
      */
@@ -465,8 +465,8 @@ public class Tail
     {
         ArrayUtil.invoke(listeners_, "tailStopped", new Object[] {this});
     }
-    
-    
+
+
     /**
      * Fires event when tail is started.
      */
@@ -474,8 +474,8 @@ public class Tail
     {
         ArrayUtil.invoke(listeners_, "tailStarted", new Object[] {this});
     }
-    
-    
+
+
     /**
      * Fires event when tail has reached the end of stream/reader/etc.
      */
@@ -483,28 +483,28 @@ public class Tail
     {
         ArrayUtil.invoke(listeners_, "tailEnded", new Object[] {this});
     }
-    
-    
+
+
     /**
-     * Fires an event when the tail is unpaused. 
+     * Fires an event when the tail is unpaused.
      */
     protected void fireTailUnpaused()
     {
         ArrayUtil.invoke(listeners_, "tailUnpaused", new Object[] {this});
     }
-    
-    
+
+
     /**
-     * Fires an event when the tail is paused. 
+     * Fires an event when the tail is paused.
      */
     protected void fireTailPaused()
     {
         ArrayUtil.invoke(listeners_, "tailPaused", new Object[] {this});
     }
 
-    
+
     /**
-     * Fires an event when the tail is re-attached to its source. 
+     * Fires an event when the tail is re-attached to its source.
      */
     protected void fireReattached()
     {
@@ -517,7 +517,7 @@ public class Tail
 
     /**
      * Continuous tailer.
-     */        
+     */
     class Tailer implements Runnable
     {
         /**
@@ -528,7 +528,7 @@ public class Tail
             try
             {
                 showBacklog();
-                
+
                 int strikes             = 0;
                 Date preTimeStamp       = null;
                 Date resetTimeStamp     = null;
@@ -536,25 +536,25 @@ public class Tail
                 int resetThreshHold     = 5000;
 
                 // Seek to end of file
-                if (isFile()) 
-                    reader_.skip(Integer.MAX_VALUE);          
-                                      
+                if (isFile())
+                    reader_.skip(Integer.MAX_VALUE);
+
                 while (!pendingShutdown_)
                 {
                     checkPaused();
-                    
+
                     //logger_.info("Tail:before readLine()");
-                    
+
                     String line = reader_.readLine();
-    
+
                     //logger_.info("Tail:readLine(): " + line);
-    
+
                     if (line != null)
                     {
                         fireNextLine(line);
                         strikes = 0;
                     }
-                    else    
+                    else
                     {
                         // check if stream was closed and then reactivated
                         if (strikes == timestampThreshHold && isFile())
@@ -565,32 +565,32 @@ public class Tail
                         else if (strikes == resetThreshHold && isFile())
                         {
                             //logger_.debug(method + "reset threshold met");
-                            
-                            // check timestamps   
+
+                            // check timestamps
                             resetTimeStamp = new Date(file_.lastModified());
-                            
+
                             // if there wasa activity, the timestamp would be
                             // newer.
                             if (resetTimeStamp.after(preTimeStamp))
                             {
                                 // reset the stream and resume...
-                                reader_ = 
+                                reader_ =
                                     new BufferedReader(new FileReader(file_));
-                                
+
                                 fireReattached();
-                                
+
                                 logger_.debug(
                                     "Re-attached to " + file_.getName());
                             }
                             else
                             {
-                                ; // logger_.debug(method + 
+                                ; // logger_.debug(method +
                                   //    "Failed criterai for reset");
                             }
-                                
+
                             strikes = 0;
                         }
-                        
+
                         ThreadUtil.sleep(1);
                         strikes++;
                     }
