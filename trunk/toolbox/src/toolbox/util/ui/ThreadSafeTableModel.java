@@ -184,7 +184,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
     /**
      * Interface for IBatchQueueListner
      */
-    public void notify(Object[] elements)
+    public void nextBatch(Object[] elements)
     {
         // Elements just popped off the queue. Add on event dispatch thread
         SwingUtilities.invokeLater(new AddRows(elements));
