@@ -76,6 +76,7 @@
  * =============================================================================
  *                              FindClassPlugin
  * =============================================================================
+ * TODO: Show jar manifest
  * TODO: Make table cells editable for text that doesn't fit in cell
  * TODO: Add option to have decompiler dump to one textarea or multiple tabs
  * TODO: Update JSMartList so that scroll on demand is an option
