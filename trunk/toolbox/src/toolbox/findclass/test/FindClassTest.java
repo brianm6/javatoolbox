@@ -61,7 +61,8 @@ public class FindClassTest extends TestCase
                 finder.findClass(searchFor, false), true);
 
         logger_.info("Results: " + results);
-        assertTrue("Couldn't find " + searchFor, results.indexOf(searchFor)>=0);
+        assertTrue("Couldn't find " + searchFor, 
+                results.indexOf(searchFor) >= 0);
     }
     
     
@@ -151,7 +152,7 @@ public class FindClassTest extends TestCase
         // Add search targets as both file and directory
         finder.addSearchTarget(new File("."));
         
-        for (Iterator i = added.iterator(); i.hasNext(); )
+        for (Iterator i = added.iterator(); i.hasNext();)
         {    
             String s = (String) i.next();
             

@@ -83,9 +83,12 @@ public class JEditTextAreaTest extends UITestCase
         private JComboBox bgCombo_;
         private Map clut_;
                         
+        /**
+         * Creates a JEditTester. 
+         */
         public JEditTester()
         {
-            super( (JFrame) null, "testJEditTextArea", true);
+            super((JFrame) null, "testJEditTextArea", true);
             buildView();
             
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -94,22 +97,30 @@ public class JEditTextAreaTest extends UITestCase
         }
         
         
+        /**
+         * Constructs the user interface. 
+         */
         protected void buildView()
         {
-           Container c = getContentPane();
+            Container c = getContentPane();
 
-           TextAreaDefaults defaults = new JavaDefaults();
-           defaults.popup = new JEditPopupMenu();
-           
-           jeta_ = new JEditTextArea(new XMLTokenMarker(), defaults);
-           ((JEditPopupMenu) defaults.popup).setTextArea(jeta_);
-           ((JEditPopupMenu) defaults.popup).buildView();
+            TextAreaDefaults defaults = new JavaDefaults();
+            defaults.popup = new JEditPopupMenu();
 
-           c.add(BorderLayout.CENTER, new JScrollPane(jeta_));
-           c.add(BorderLayout.SOUTH, buildControlView());
+            jeta_ = new JEditTextArea(new XMLTokenMarker(), defaults);
+            ((JEditPopupMenu) defaults.popup).setTextArea(jeta_);
+            ((JEditPopupMenu) defaults.popup).buildView();
+
+            c.add(BorderLayout.CENTER, new JScrollPane(jeta_));
+            c.add(BorderLayout.SOUTH, buildControlView());
         }
         
         
+        /**
+         * Constructs the controls portion of the GUI.
+         * 
+         * @return JPanel
+         */
         protected JPanel buildControlView() 
         {
             clut_ = new HashMap();
@@ -122,12 +133,12 @@ public class JEditTextAreaTest extends UITestCase
             p.add(new JSmartLabel("Foreground"));
             
             p.add(fgCombo_ = new JSmartComboBox(
-                new String [] {"red", "green", "blue"} ));
+                new String [] {"red", "green", "blue"}));
             
             p.add(new JSmartLabel("Background"));
             
             p.add(bgCombo_ = new JSmartComboBox(
-                new String [] {"red", "green", "blue"} ));
+                new String [] {"red", "green", "blue"}));
             
             fgCombo_.addActionListener(this);
             bgCombo_.addActionListener(this);
@@ -135,6 +146,10 @@ public class JEditTextAreaTest extends UITestCase
         }
         
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             Object obj = e.getSource();

@@ -24,7 +24,7 @@ public class Machine implements MachineConstants
         
         do
         {
-            switch(i) 
+            switch (i) 
             {
                 //=============================================================
                                 

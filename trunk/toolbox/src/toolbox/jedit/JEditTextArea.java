@@ -53,15 +53,22 @@ import toolbox.workspace.IPreferenced;
 public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     implements MouseWheelListener, AntiAliased, IPreferenced
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(JEditTextArea.class);
+    private static final Logger logger_ = Logger.getLogger(JEditTextArea.class);
 
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
     // Preferences
     private static final String NODE_JEDITTEXTAREA = "JEditTextArea";
     private static final String   ATTR_ANTIALIAS   = "antialias";
     private static final String   ATTR_WHEELUNIT   = "mousewheelunit";
     private static final String   ATTR_TABSIZE     = "tabsize";
     private static final String NODE_FONT          = "Font";
+    
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
     
     /**
      * Number of lines to scroll per mouse wheel scroll.
@@ -102,7 +109,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         
         addMouseWheelListener(this);
             
-        // Some more useful keybindings...reuse actions from the popup menu            
+        // Some more useful keybindings...reuse actions from the popup menu.            
         getInputHandler().addKeyBinding(
             "C+A", new JEditActions.SelectAllAction(this));
             
@@ -170,7 +177,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     public int getTabSize()
     {
         return ((Integer) getDocument().getProperty(
-            PlainDocument.tabSizeAttribute)).intValue();
+                PlainDocument.tabSizeAttribute)).intValue();
     }
 
     //--------------------------------------------------------------------------
@@ -244,8 +251,8 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     {
         Element root = new Element(NODE_JEDITTEXTAREA);
         root.addAttribute(new Attribute(ATTR_TABSIZE, getTabSize() + ""));
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased()+""));
-        root.addAttribute(new Attribute(ATTR_WHEELUNIT, mouseWheelUnit_+""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
+        root.addAttribute(new Attribute(ATTR_WHEELUNIT, mouseWheelUnit_ + ""));
         root.appendChild(FontUtil.toElement(getPainter().getFont()));
         prefs.appendChild(root);
     }

@@ -27,12 +27,12 @@ public class JavaDefaults extends TextAreaDefaults
         caretVisible = true;
         caretBlinks = false;
         blockCaret = true;
-        electricScroll=2;
+        electricScroll = 2;
         cols = 80;
         rows = 25;
         styles = getSyntaxStyles();
-        eolMarkers=false;
-        paintInvalid=false;
+        eolMarkers = false;
+        paintInvalid = false;
         popup = new JEditPopupMenu();
 
         // Same        
