@@ -78,7 +78,7 @@
 	<classpathentry sourcepath="lib/src/xercesImpl-src.zip" kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry sourcepath="lib/src/xml-apis-src.zip" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry sourcepath="lib/src/xom-src.zip" kind="lib" path="lib/xom.jar"/>
-	<classpathentry kind="lib" path="lib/xplookandfeel.jar"/>
+	<classpathentry sourcepath="lib/src/xplookandfeel-src.zip" kind="lib" path="lib/xplookandfeel.jar"/>
 	<classpathentry sourcepath="lib/src/xt-src.zip" kind="lib" path="lib/xt.jar"/>
 	<classpathentry kind="lib" path="lib/webwindow.jar"/>
 	<classpathentry kind="output" path="classes"/>
