@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * StringUtilTest
+ * StringUtil Unit Test
  */
 public class StringUtilTest extends TestCase
 {
