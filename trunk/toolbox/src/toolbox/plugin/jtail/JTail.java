@@ -131,18 +131,8 @@ public class JTail extends JFrame
      */
     public JTail()
     {
-        this("JTail");
-    }
-
-    /**
-     * Creates a JTail with the given title
-     * 
-     * @param title  Window title
-     */
-    public JTail(String title)
-    {
-        super(title);
-        init();
+        super("JTail");
+        init();        
     }
 
     //--------------------------------------------------------------------------
@@ -201,22 +191,23 @@ public class JTail extends JFrame
         getContentPane().add(BorderLayout.WEST, flipPane_);
         getContentPane().add(BorderLayout.CENTER, tabbedPane_);
         
-        setJMenuBar(createMenuBar());
+        setJMenuBar(buildMenuBar());
     }
     
     /**
-     * Creates the menu bar
+     * Builds the menu bar
      * 
      * @return Menu bar
      */
-    protected JMenuBar createMenuBar()
+    protected JMenuBar buildMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu   = new JMenu("File");
         fileMenu.setMnemonic('F');
         fileMenu.add(new PreferencesAction());
         fileMenu.add(new SetFontAction());
-        fileMenu.add(new TailSystemOut());
+        fileMenu.add(new TailSystemOutAction());
+        fileMenu.add(new TailLog4JAction());
         fileMenu.addSeparator();
         fileMenu.add(new SaveAction());
         
@@ -386,9 +377,9 @@ public class JTail extends JFrame
                 
                 Action a = (Action) menuItem.getAction();
                 
-                if (a instanceof TailRecent) 
+                if (a instanceof TailRecentAction) 
                 {
-                    TailRecent action = (TailRecent) menuItem.getAction();
+                    TailRecentAction action = (TailRecentAction) menuItem.getAction();
                     
                     ITailPaneConfig config = 
                         (ITailPaneConfig) action.getValue("config");
@@ -469,7 +460,7 @@ public class JTail extends JFrame
                 config = TailPaneConfig.unmarshal(
                     parser.parseXML(new StringReader(xmlConfig)));
 
-                recentMenu_.add(new TailRecent(config));
+                recentMenu_.add(new TailRecentAction(config));
             }
             catch (IOException ioe)
             {
@@ -549,7 +540,7 @@ public class JTail extends JFrame
             tailMap_.remove(closeButton);
             
             // Add the closed tail to the recent menu
-            recentMenu_.add(new TailRecent(pane.getConfiguration()));
+            recentMenu_.add(new TailRecentAction(pane.getConfiguration()));
             
             statusBar_.setStatus(
                 "Closed " + pane.getConfiguration().getFilename());
@@ -575,11 +566,11 @@ public class JTail extends JFrame
      * When a file is selectect from the Recent menu, this action tails the 
      * file and removes that item from the recent menu.
      */
-    private class TailRecent extends AbstractAction
+    private class TailRecentAction extends AbstractAction
     {
         private ITailPaneConfig config_;
         
-        public TailRecent(ITailPaneConfig config)
+        public TailRecentAction(ITailPaneConfig config)
         {
             super(config.getFilename());
             config_ = config;
@@ -610,7 +601,7 @@ public class JTail extends JFrame
             for (int i=items.length-1; i >= 0; i--)
             {
                 JMenuItem menuItem = (JMenuItem) items[i];
-                if (menuItem.getAction() instanceof TailRecent)
+                if (menuItem.getAction() instanceof TailRecentAction)
                     recentMenu_.remove(menuItem);
             }
         }
@@ -784,9 +775,9 @@ public class JTail extends JFrame
     /**
      * Adds a tail of the System.out stream
      */
-    private class TailSystemOut extends AbstractAction
+    private class TailSystemOutAction extends AbstractAction
     {
-        public TailSystemOut()
+        public TailSystemOutAction()
         {
             super("Tail System.out");
             putValue(MNEMONIC_KEY, new Integer('o'));
@@ -804,7 +795,36 @@ public class JTail extends JFrame
             config.setAutoScroll(true);
             config.setAutoStart(true);
             config.setCutExpression("");
-            config.setFilename("System.out");
+            config.setFilename(TailPane.LOG_SYSTEM_OUT);
+            config.setFont(SwingUtil.getPreferredMonoFont());
+            config.setRegularExpression("");
+            config.setShowLineNumbers(false);
+            addTail(config);
+        }
+    }
+    
+    /**
+     * Adds a tail for Log4J attached to the "toolbox" logger
+     */
+    private class TailLog4JAction extends AbstractAction
+    {
+        public TailLog4JAction()
+        {
+            super("Tail Log4J");
+            putValue(MNEMONIC_KEY, new Integer('j'));
+
+            putValue(ACCELERATOR_KEY, 
+                KeyStroke.getKeyStroke(KeyEvent.VK_J, Event.CTRL_MASK));
+        }
+                
+        public void actionPerformed(ActionEvent e)
+        {
+            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            config.setAntiAlias(false);
+            config.setAutoScroll(true);
+            config.setAutoStart(true);
+            config.setCutExpression("");
+            config.setFilename(TailPane.LOG_LOG4J);
             config.setFont(SwingUtil.getPreferredMonoFont());
             config.setRegularExpression("");
             config.setShowLineNumbers(false);
