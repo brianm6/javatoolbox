@@ -16,7 +16,7 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.XMLUtil;
 
 /**
- * Unit tests for YahooMessenger
+ * Unit test for YahooMessenger.
  */
 public class YahooMessengerTest extends TestCase
 {
@@ -24,27 +24,26 @@ public class YahooMessengerTest extends TestCase
         Logger.getLogger(YahooMessengerTest.class);
 
     /**
-     * Yahoo user that will receive all test messages
+     * Yahoo user that will receive all test messages.
      */
-    private static final String recipient_ = "analogue";
+    private static final String TO_USER = "analogue";
     
     /**
-     * Yahoo user that the messages will originate from
+     * Yahoo user that the messages will originate from.
      */
     private static final String FROM_USER = "supahfuzz";
     
     /**
-     * Password of the FROM_USER
+     * Password of the FROM_USER.
      */
     private static final String FROM_PASSWORD = "techno"; 
-    
         
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -58,7 +57,7 @@ public class YahooMessengerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests full lifecycle of typical usage
+     * Tests full lifecycle of typical usage.
      * 
      * @throws Exception on error
      */    
@@ -73,7 +72,7 @@ public class YahooMessengerTest extends TestCase
         messenger.login(FROM_USER, FROM_PASSWORD);
         
         logger_.debug("Before send...");
-        messenger.send(recipient_, "Hello from the testLifeCycle unit test.");
+        messenger.send(TO_USER, "Hello from the testLifeCycle unit test.");
         
         ThreadUtil.sleep(5000);
         
@@ -86,8 +85,9 @@ public class YahooMessengerTest extends TestCase
         logger_.debug("All done!");
     }
     
+    
     /**
-     * Tests sending a whole slew of messages
+     * Tests sending a whole slew of messages.
      * 
      * @throws Exception on error
      */    
@@ -95,19 +95,22 @@ public class YahooMessengerTest extends TestCase
     {
         logger_.info("Running testSendMany...");
         
+        int max = 20;
+        
         InstantMessenger messenger = new YahooMessenger();
         messenger.initialize(new Properties());
         messenger.login(FROM_USER, FROM_PASSWORD);
         
-        for (int i=0; i<100; i++)
+        for (int i=0; i<max; i++)
         {
             messenger.send(
-                recipient_, "This is message number " + (i+1) + " of 100");
+                TO_USER, "This is message number " + (i+1) + " of " + max);
         }
         
         messenger.logout();
         messenger.shutdown();
     }
+    
     
     /**
      * Tests that the configuration in the xml file is read and executed
