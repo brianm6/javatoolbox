@@ -7,10 +7,10 @@ import java.util.List;
 import edu.emory.mathcs.util.concurrent.BlockingQueue;
 
 import toolbox.util.ThreadUtil;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.Nameable;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 
@@ -75,7 +75,7 @@ public class BatchingQueueReader implements Startable, Nameable
         setName(name);
         queue_ = queue;
         listeners_ = new ArrayList();
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------

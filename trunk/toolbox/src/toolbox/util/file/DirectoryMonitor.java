@@ -9,10 +9,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 
@@ -102,7 +102,7 @@ public class DirectoryMonitor implements Startable
      */
     public DirectoryMonitor(File dir)
     {
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
         listeners_ = new ArrayList();
         activities_ = new ArrayList();
         setDirectory(dir);

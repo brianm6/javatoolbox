@@ -21,12 +21,12 @@ import org.apache.log4j.helpers.LogLog;
 import toolbox.util.ThreadUtil;
 import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.Destroyable;
 import toolbox.util.service.Initializable;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.statemachine.StateMachine;
 
 /**
@@ -104,7 +104,7 @@ public abstract class AbstractMessenger
      */
     protected AbstractMessenger()
     {
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
         machine_.reset();
     }
     

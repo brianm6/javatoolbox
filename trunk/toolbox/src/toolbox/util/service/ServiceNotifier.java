@@ -31,7 +31,7 @@ public class ServiceNotifier implements ObservableService
      * 
      * @param service Service instance.
      */
-    protected ServiceNotifier(Service service)
+    public ServiceNotifier(Service service)
     {
         service_ = service;
     }

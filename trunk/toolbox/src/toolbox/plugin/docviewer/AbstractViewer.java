@@ -1,7 +1,7 @@
 package toolbox.plugin.docviewer;
 
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.statemachine.StateMachine;
 
 /**
@@ -35,7 +35,7 @@ public abstract class AbstractViewer implements DocumentViewer
     public AbstractViewer(String name)
     {
         setName(name);
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------

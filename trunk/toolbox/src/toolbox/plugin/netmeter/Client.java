@@ -16,12 +16,17 @@ import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
 import toolbox.util.net.SocketConnection;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.Destroyable;
 import toolbox.util.service.Initializable;
+import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceListener;
+import toolbox.util.service.ServiceNotifier;
+import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * Client is a non-UI component that behaves as a Service. Its sole purpose is
@@ -31,7 +36,8 @@ import toolbox.util.service.Startable;
  * 
  * @see toolbox.plugin.netmeter.Server
  */
-public class Client extends AbstractService
+public class Client implements Initializable, Startable, Destroyable, 
+    ObservableService
 {
     private static final Logger logger_ = Logger.getLogger(Client.class);
     
@@ -80,6 +86,16 @@ public class Client extends AbstractService
      */
     private Thread clientThread_;
     
+    /**
+     * State machine for this client.
+     */
+    private StateMachine machine_;
+    
+    /**
+     * Notifier for service related events.
+     */
+    private ServiceNotifier notifier_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -116,7 +132,6 @@ public class Client extends AbstractService
         ThreadUtil.sleep(10000);
         
         c.stop();
-        
     }
     
     //--------------------------------------------------------------------------
@@ -143,12 +158,9 @@ public class Client extends AbstractService
      */
     public Client(String hostname, int port) throws ServiceException
     {
-        super(new Class[] {
-            Startable.class, 
-            Initializable.class,
-            Destroyable.class
-        });
-    
+        machine_ = ServiceUtil.createStateMachine(this);
+        notifier_ = new ServiceNotifier(this);
+        
         setHostname(hostname);
         setPort(port);
         setBandwidth(new Bandwidth(50000, 50000, Bandwidth.TYPE_BOTH));
@@ -239,6 +251,18 @@ public class Client extends AbstractService
         if (tos_ != null)
             tos_.setBandwidth(bandwidth);
     }
+
+    //--------------------------------------------------------------------------
+    // Service Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
+    }
     
     //--------------------------------------------------------------------------
     // Initializable Interface 
@@ -249,9 +273,9 @@ public class Client extends AbstractService
      */
     public void initialize(Map configuration) throws ServiceException
     {
-        checkTransition(ServiceTransition.INITIALIZE);
+        machine_.checkTransition(ServiceTransition.INITIALIZE);
         monitor_ = new DefaultThroughputMonitor();
-        transition(ServiceTransition.INITIALIZE);
+        machine_.transition(ServiceTransition.INITIALIZE);
     }
     
     //--------------------------------------------------------------------------
@@ -263,7 +287,7 @@ public class Client extends AbstractService
      */
     public void start() throws ServiceException
     {
-        checkTransition(ServiceTransition.START);
+        machine_.checkTransition(ServiceTransition.START);
         
         clientThread_ = new Thread(new Runnable()
         {
@@ -317,7 +341,7 @@ public class Client extends AbstractService
         }
         
         clientThread_.start();
-        transition(ServiceTransition.START);
+        machine_.transition(ServiceTransition.START);
     }
 
 
@@ -326,10 +350,19 @@ public class Client extends AbstractService
      */
     public void stop() throws ServiceException
     {
-        checkTransition(ServiceTransition.STOP);
+        machine_.checkTransition(ServiceTransition.STOP);
         monitor_.setMonitoringThroughput(false);
         ThreadUtil.join(clientThread_);
-        transition(ServiceTransition.STOP);
+        machine_.transition(ServiceTransition.STOP);
+    }
+
+    
+    /**
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return getState() == ServiceState.RUNNING;
     }
     
     //--------------------------------------------------------------------------
@@ -341,38 +374,31 @@ public class Client extends AbstractService
      */
     public void destroy() throws ServiceException
     {
-        checkTransition(ServiceTransition.DESTROY);
-        transition(ServiceTransition.DESTROY);
+        machine_.checkTransition(ServiceTransition.DESTROY);
+        machine_.transition(ServiceTransition.DESTROY);
     }
     
     //--------------------------------------------------------------------------
-    // Suspendable Interface
+    // ObservableService Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.Suspendable#suspend()
+     * @see toolbox.util.service.ObservableService#addServiceListener(
+     *      toolbox.util.service.ServiceListener)
      */
-    public void suspend() throws ServiceException
+    public void addServiceListener(ServiceListener listener)
     {
-        throw new IllegalStateException("Pause not supported");
+        notifier_.addServiceListener(listener);
     }
 
 
     /**
-     * @see toolbox.util.service.Suspendable#resume()
+     * @see toolbox.util.service.ObservableService#removeServiceListener(
+     *      toolbox.util.service.ServiceListener)
      */
-    public void resume() throws ServiceException
+    public void removeServiceListener(ServiceListener listener)
     {
-        throw new IllegalStateException("Resume not supported");
-    }
-
-
-    /**
-     * @see toolbox.util.service.Suspendable#isSuspended()
-     */
-    public boolean isSuspended()
-    {
-        throw new IllegalStateException("Pause not supported");
+        notifier_.removeServiceListener(listener);
     }
     
     //--------------------------------------------------------------------------

@@ -59,14 +59,5 @@ public class ClientTest extends TestCase
         {
             logger_.debug("SUCCESS: " + ise);
         }
-        
-        try
-        {
-            c.suspend();
-        }
-        catch (IllegalStateException ise)
-        {
-            logger_.debug("SUCCESS: " + ise);
-        }
     }
 }

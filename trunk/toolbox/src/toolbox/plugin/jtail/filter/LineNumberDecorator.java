@@ -3,11 +3,9 @@ package toolbox.plugin.jtail.filter;
 import java.awt.Color;
 import java.util.List;
 
-import javax.swing.JTextPane;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
-import javax.swing.text.StyledDocument;
 
 /**
  * Appends a line number to the beginning of the line.

@@ -23,10 +23,10 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.io.PrintableOutputStream;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPreferenced;
@@ -276,7 +276,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public TcpTunnel(int listenPort, String remoteHost, int remotePort)
     {
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
         listeners_  = new ArrayList();
         inTotal_    = 0;
         outTotal_   = 0;

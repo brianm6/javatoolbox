@@ -10,11 +10,11 @@ import toolbox.util.net.IConnectionHandler;
 import toolbox.util.net.ISocketServerListener;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.Initializable;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 
@@ -24,7 +24,7 @@ import toolbox.util.statemachine.StateMachine;
  * 
  * @see toolbox.plugin.netmeter.Client
  */
-public class Server /*extends ServiceNotifier*/ implements Startable, Initializable
+public class Server implements Startable, Initializable
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -100,7 +100,7 @@ public class Server /*extends ServiceNotifier*/ implements Startable, Initializa
         setPort(port);
         
         // Create a state machine that adheres to the natures of this server
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------

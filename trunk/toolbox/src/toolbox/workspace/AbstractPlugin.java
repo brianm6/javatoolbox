@@ -1,11 +1,11 @@
 package toolbox.workspace;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.prefs.IConfigurator;
 
@@ -38,7 +38,7 @@ public abstract class AbstractPlugin implements IPlugin
      */
     protected AbstractPlugin()
     {
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
     }
     
     //--------------------------------------------------------------------------

@@ -27,10 +27,10 @@ import toolbox.util.PreferencedUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPreferenced;
@@ -239,7 +239,7 @@ public class DBBenchmark implements Startable, IPreferenced
         plugin_ = plugin;
         initDB_ = initDB;
         writer_ = writer;
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------

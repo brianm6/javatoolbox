@@ -12,9 +12,9 @@ import org.apache.commons.lang.math.RandomUtils;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 
@@ -148,7 +148,7 @@ public class FileStuffer implements Startable
     public FileStuffer(File file, int delay, IStuffProvider stuffer,
         boolean openClose)
     {
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
         setFile(file);
         setDelay(delay);
         stuffer_   = stuffer;        

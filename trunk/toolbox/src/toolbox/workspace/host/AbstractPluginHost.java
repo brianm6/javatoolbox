@@ -10,10 +10,10 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
@@ -71,7 +71,7 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
      */
     protected AbstractPluginHost()
     {
-        machine_ = AbstractService.createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
     }
     
     //--------------------------------------------------------------------------

@@ -1,169 +1,20 @@
 package toolbox.util.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.statemachine.StateMachine;
-import toolbox.util.statemachine.StateMachineFactory;
 
 /**
  * Abstract base class for Service implementors.
  */
-public abstract class AbstractService implements Startable, Initializable,
-    Suspendable, Destroyable
+public abstract class AbstractService 
+    implements Startable, Initializable, Suspendable, Destroyable
 {
-    private static final Logger logger_ = Logger.getLogger(AbstractService.class);
-    
-    // TODO: Left off here!
-
-    public static StateMachine createStateMachine(Class[] serviceNatures)
-    {
-        StateMachine machine = 
-            StateMachineFactory.createStateMachine("ServiceStateMachine");
-
-        Set natures = new HashSet();
-        CollectionUtils.addAll(natures, serviceNatures);
-
-        Set initDestroy = new HashSet(
-            Arrays.asList(new Class[] {Initializable.class, Destroyable.class}));
-
-        // Initializable/Destroyable -------------------------------------------
-        
-        if (CollectionUtils.isEqualCollection(natures, initDestroy))
-        {
-            // uninit    --> init
-            // init      --> destroyed
-            // destroyed --> init
-            
-            machine.addState(ServiceState.UNINITIALIZED);
-            machine.addState(ServiceState.INITIALIZED);
-            machine.addState(ServiceState.DESTROYED);
-            
-            machine.setBeginState(ServiceState.UNINITIALIZED);
-            
-            machine.addTransition(
-                ServiceTransition.INITIALIZE, 
-                ServiceState.UNINITIALIZED, 
-                ServiceState.INITIALIZED);
-            
-            machine.addTransition(
-                ServiceTransition.DESTROY, 
-                ServiceState.INITIALIZED,
-                ServiceState.DESTROYED);
-                
-            machine.addTransition(
-                ServiceTransition.INITIALIZE, 
-                ServiceState.DESTROYED, 
-                ServiceState.INITIALIZED);
-            
-            machine.reset();
-            return machine;
-        }            
-        
-        
-        if (ArrayUtil.contains(serviceNatures, Startable.class))
-        {
-            machine.addState(ServiceState.RUNNING);
-            machine.addState(ServiceState.STOPPED);
-            machine.setBeginState(ServiceState.STOPPED);
-            
-            machine.addTransition(
-                ServiceTransition.START, 
-                ServiceState.STOPPED, 
-                ServiceState.RUNNING);
-            
-            machine.addTransition(
-                ServiceTransition.STOP, 
-                ServiceState.RUNNING,
-                ServiceState.STOPPED);
-        }
-        
-        if (ArrayUtil.contains(serviceNatures,Suspendable.class))
-        {
-            machine.addState(ServiceState.SUSPENDED);
-            
-            machine.addTransition(
-                ServiceTransition.SUSPEND, 
-                ServiceState.RUNNING, 
-                ServiceState.SUSPENDED);
-            
-            machine.addTransition(
-                ServiceTransition.RESUME, 
-                ServiceState.SUSPENDED,
-                ServiceState.RUNNING);
-        }
-        
-        if (ArrayUtil.contains(serviceNatures, Initializable.class))
-        {
-            machine.addState(ServiceState.UNINITIALIZED);
-            machine.addState(ServiceState.INITIALIZED);
-            machine.setBeginState(ServiceState.UNINITIALIZED);
-            
-            machine.addTransition(
-                ServiceTransition.INITIALIZE, 
-                ServiceState.UNINITIALIZED, 
-                ServiceState.INITIALIZED);
-            
-            machine.addTransition(
-                ServiceTransition.START, 
-                ServiceState.INITIALIZED,
-                ServiceState.RUNNING);
-        }
-        
-        if (ArrayUtil.contains(serviceNatures, Destroyable.class))
-        {
-            machine.addState(ServiceState.DESTROYED);
-            
-            machine.addTransition(
-                ServiceTransition.DESTROY, 
-                ServiceState.STOPPED, 
-                ServiceState.DESTROYED);
-            
-            if ((ArrayUtil.contains(serviceNatures, Initializable.class)))
-            {
-                machine.addTransition(
-                    ServiceTransition.DESTROY, 
-                    ServiceState.INITIALIZED, 
-                    ServiceState.DESTROYED);
-            }
-        }
-        
-        machine.reset();
-        return machine;
-    }
-
-    
-    public static StateMachine createStateMachine(Service serviceNature)
-    {
-        List natures = new ArrayList();
-        
-        if (serviceNature instanceof Startable)
-            natures.add(Startable.class);
-
-        if (serviceNature instanceof Suspendable)
-            natures.add(Suspendable.class);
-
-        if (serviceNature instanceof Initializable)
-            natures.add(Initializable.class);
-
-        if (serviceNature instanceof Destroyable)
-            natures.add(Destroyable.class);
-
-        logger_.debug("Natures: " + ArrayUtil.toString(natures.toArray()));
-        return createStateMachine((Class[]) natures.toArray(new Class[0]));
-    }
-    
-    //--------------------------------------------------------------------------
-    // Constants
-    //--------------------------------------------------------------------------
+    private static final Logger logger_ = 
+        Logger.getLogger(AbstractService.class);
     
     /**
      * Strict state transitions are turned off by default.
@@ -304,7 +155,7 @@ public abstract class AbstractService implements Startable, Initializable,
      */
     protected AbstractService()
     {
-        machine_ = createStateMachine(this);
+        machine_ = ServiceUtil.createStateMachine(this);
     }
     
     
@@ -315,7 +166,7 @@ public abstract class AbstractService implements Startable, Initializable,
      */
     protected AbstractService(Class[] natures)
     {
-        machine_ = createStateMachine(natures);
+        machine_ = ServiceUtil.createStateMachine(natures);
     }
 
     //--------------------------------------------------------------------------

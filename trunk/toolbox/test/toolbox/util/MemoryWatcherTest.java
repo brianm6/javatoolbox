@@ -7,9 +7,7 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for MemoryWatcher.
- * 
- * @see toolbox.util.MemoryWatcher
+ * Unit test for {@link toolbox.util.MemoryWatcher}.
  */
 public class MemoryWatcherTest extends TestCase
 {
@@ -37,6 +35,7 @@ public class MemoryWatcherTest extends TestCase
         mw.initialize(MapUtils.EMPTY_MAP);
         mw.start();
         ThreadUtil.sleep(3000);
+        assertTrue(mw.isRunning());
         logger_.info("Min = " + mw.getMin());
         logger_.info("Max = " + mw.getMax());
         mw.stop();

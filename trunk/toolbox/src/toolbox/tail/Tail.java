@@ -18,10 +18,10 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.io.NullWriter;
 import toolbox.util.io.ReverseFileReader;
-import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.service.Suspendable;
 import toolbox.util.statemachine.StateMachine;
@@ -134,7 +134,7 @@ public class Tail implements Startable, Suspendable
         sink_            = new NullWriter();
         pendingShutdown_ = false;
         backlog_         = DEFAULT_BACKLOG;
-        machine_         = AbstractService.createStateMachine(this);
+        machine_         = ServiceUtil.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------

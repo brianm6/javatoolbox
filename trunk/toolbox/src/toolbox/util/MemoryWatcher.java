@@ -4,15 +4,20 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.service.AbstractService;
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.Initializable;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.ServiceUtil;
+import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * MemoryWatcher is a service that monitors memory in realtime and is able to 
  * provide the min and max memory consumption over a period of time.
  */
-public class MemoryWatcher extends AbstractService
+public class MemoryWatcher implements Initializable, Startable, Destroyable 
 {
     private static final Logger logger_ = Logger.getLogger(MemoryWatcher.class);
     
@@ -35,6 +40,11 @@ public class MemoryWatcher extends AbstractService
      */
     private Thread runner_;
     
+    /**
+     * State machine for this memory watcher.
+     */
+    private StateMachine machine_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -46,6 +56,7 @@ public class MemoryWatcher extends AbstractService
     {
         min_ = 0;
         max_ = 0;
+        machine_ = ServiceUtil.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------
@@ -76,48 +87,63 @@ public class MemoryWatcher extends AbstractService
     //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return (ServiceState) machine_.getState();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
 
     /**
      * Resets this MemoryWatcher so it can be started again.
      * 
-     * @see toolbox.util.service.AbstractService#initialize(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map configuration) throws ServiceException
     {
-        checkTransition(ServiceTransition.INITIALIZE);
+        machine_.checkTransition(ServiceTransition.INITIALIZE);
         
         System.gc();
         long currentFree = Runtime.getRuntime().freeMemory();
         long currentAlloc = Runtime.getRuntime().totalMemory();
         min_ = max_ = (currentAlloc - currentFree);
         
-        transition(ServiceTransition.INITIALIZE);
+        machine_.transition(ServiceTransition.INITIALIZE);
     }
     
+    //--------------------------------------------------------------------------
+    // Startable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.service.AbstractService#start()
+     * @see toolbox.util.service.Startable#start()
      */
     public void start() throws ServiceException
     {
-        checkTransition(ServiceTransition.START);
+        machine_.checkTransition(ServiceTransition.START);
         
         runner_ = new Thread(new Runner());
         runner_.start();
         
-        transition(ServiceTransition.START);
+        machine_.transition(ServiceTransition.START);
     }
 
     
     /**
      * Stops monitoring memory consumption.
-     * 
-     * @see toolbox.util.service.AbstractService#stop()
+     *
+     * @see toolbox.util.service.Startable#stop()
      */
     public void stop() throws ServiceException
     {
-        checkTransition(ServiceTransition.STOP);
-        transition(ServiceTransition.STOP);
+        machine_.checkTransition(ServiceTransition.STOP);
+        machine_.transition(ServiceTransition.STOP);
         
         try
         {
@@ -131,16 +157,28 @@ public class MemoryWatcher extends AbstractService
     
     
     /**
-     * @see toolbox.util.service.AbstractService#destroy()
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return getState() == ServiceState.RUNNING;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Destroyable#destroy()
      */
     public void destroy() throws ServiceException
     {
-        checkTransition(ServiceTransition.DESTROY);
+        machine_.checkTransition(ServiceTransition.DESTROY);
         
         if (runner_ != null)
             ThreadUtil.stop(runner_, 1000);
         
-        transition(ServiceTransition.DESTROY);
+        machine_.transition(ServiceTransition.DESTROY);
     }
     
     //--------------------------------------------------------------------------
