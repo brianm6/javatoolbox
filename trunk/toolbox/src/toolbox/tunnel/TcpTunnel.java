@@ -5,14 +5,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * A <code>TcpTunnel</code> object listens on the given port,
- * and once <code>Start</code> is pressed, will forward all bytes
+ * A TcpTunnel object listens on the given port,
+ * and once Start is pressed, will forward all bytes
  * to the given host and port.
  */
 public class TcpTunnel
 {
 	/**
 	 * Entrypoint 
+     * 
+     * @param  args  [0] = listenport
+     *               [1] = host to tunnel to
+     *               [2] = port to tunnel to
+     * @throws IOException on IO error
 	 */
     public static void main(String args[]) throws IOException
     {
@@ -28,7 +33,8 @@ public class TcpTunnel
         String tunnelhost = args[1];
         int tunnelport = Integer.parseInt(args[2]);
 
-        System.out.println("TcpTunnel: ready to rock and roll on port " + listenport);
+        System.out.println("TcpTunnel: ready to rock and roll on port " + 
+            listenport);
 
         ServerSocket ss = new ServerSocket(listenport);
 
@@ -45,8 +51,8 @@ public class TcpTunnel
                                tunnelhost);
 
             // relay the stuff thru
-            new Relay(sc.getInputStream(), st.getOutputStream(), null).start();
-            new Relay(st.getInputStream(), sc.getOutputStream(), null).start();
+            new Relay(sc.getInputStream(), st.getOutputStream()).start();
+            new Relay(st.getInputStream(), sc.getOutputStream()).start();
 
             // that's it .. they're off; now I go back to my stuff.
         }
