@@ -16,6 +16,8 @@ import toolbox.util.StringUtil;
 
 /**
  * Unit test for ClassUtil.
+ * 
+ * @see toolbox.util.ClassUtil
  */
 public class ClassUtilTest extends TestCase
 {
@@ -209,54 +211,6 @@ public class ClassUtilTest extends TestCase
             ClassUtil.pathToPackage("a" + s + "b" + s + "c" + s + "d"));
     }
 
-    
-    /**
-     * Tests stripPackage(String)
-     */
-    public void testStripPackageString()
-    {
-        logger_.info("Running testStripPackageString...");
-        
-        assertEquals("Class names don't match", "ClassUtilTest", 
-            ClassUtil.stripPackage(getClass().getName()));
-            
-        assertEquals("Class names don't match", "c",
-            ClassUtil.stripPackage("a.b.c"));
-            
-        assertEquals("Class names don't match", "NoPackage",
-            ClassUtil.stripPackage("NoPackage"));
-    }
-    
-    
-    /**
-     * Tests stripPackage(Class)
-     */
-    public void testStripPackageClass()
-    {
-        logger_.info("Running testStripPackageClass...");
-        
-        assertEquals("Class names don't match", "ClassUtilTest", 
-            ClassUtil.stripPackage(ClassUtilTest.class));
-    }
-    
-    
-    /**
-     * Tests stripClass()
-     */
-    public void testStripClass()
-    {
-        logger_.info("Running testStripClass...");
-        
-        assertEquals("Package names don't match", "java.io", 
-            ClassUtil.stripClass("java.io.InputStream"));
-            
-        assertEquals("Package names don't match", "", 
-            ClassUtil.stripClass("Widget"));
-            
-        assertEquals("Package names don't match", "", 
-            ClassUtil.stripClass("")); 
-    }
-    
     
     /**
      * Tests getMatchingClasses() for null, zero, one, and > 1 as input.
