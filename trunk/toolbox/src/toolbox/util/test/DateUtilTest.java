@@ -6,6 +6,8 @@ import java.util.Date;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.AssertionException;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.DateUtil;
@@ -15,6 +17,8 @@ import toolbox.util.DateUtil;
  */
 public class DateUtilTest extends TestCase
 {
+    private static final Logger logger_ = Logger.getLogger(DateUtilTest.class);
+    
     /**
      * Entrypoint
      *
@@ -41,6 +45,8 @@ public class DateUtilTest extends TestCase
      */
     public void testGetDifferenceInDays()
     {
+        logger_.info("Testing getDifferenceInDays()");
+        
         assertEquals(
             "Difference should be zero days",
             0,
@@ -94,7 +100,8 @@ public class DateUtilTest extends TestCase
      */
     public void testGetDifferenceInWeeks()
     {
-
+        logger_.info("Testing getDifferenceInWeeks()");
+        
         assertEquals(
             "Difference should be zero weeks",
             0,
@@ -137,8 +144,9 @@ public class DateUtilTest extends TestCase
      */
     public void testIsBefore() throws Exception
     {
-
-        /** daily difference **/
+        logger_.info("Testing isBefore()");
+        
+        // Daily difference
         assertTrue(
             "Before same date should be false",
             !DateUtil.isBefore(new Date(), new Date()));
@@ -159,7 +167,7 @@ public class DateUtilTest extends TestCase
                 !DateUtil.isBefore(now, then));
         }
 
-        /** monthly difference **/
+        // Monthly difference
         {
             Date now = new Date();
             Date then = DateUtil.addWeeks((Date)now.clone(), 8);
@@ -176,7 +184,7 @@ public class DateUtilTest extends TestCase
                 !DateUtil.isBefore(now, then));
         }
 
-        /** yearly differecnce **/
+        // Yearly difference
         {
             Date now = new Date();
             Date then = DateUtil.addWeeks((Date)now.clone(), 60);
@@ -199,7 +207,8 @@ public class DateUtilTest extends TestCase
      */
     public void testIsBetween()
     {
-
+        logger_.info("Testing isBetween()");
+        
         Date beginRange = DateUtil.addWeeks(DateUtil.today(),-1);
         Date endRange   = DateUtil.addWeeks(DateUtil.today(), 1);
 
@@ -233,7 +242,8 @@ public class DateUtilTest extends TestCase
      */
     public void testRoundToWeeks() throws Exception
     {
-
+        logger_.info("Testing roundToWeeks()");
+        
         assertEquals(
             "Number of weeks in 0 days should be 0",
             0,
@@ -278,6 +288,8 @@ public class DateUtilTest extends TestCase
      */
     public void testAddDays()
     {
+        logger_.info("Testing addDays()");
+        
         Date today = new Date();
         Date tomorrow = DateUtil.addDays(new Date(), 1);
         DateUtil.addDays(tomorrow, -1);
@@ -290,6 +302,8 @@ public class DateUtilTest extends TestCase
      */
     public void testCompare()
     {
+        logger_.info("Testing compare()");
+        
         Date today = new Date();
         Date tomorrow = DateUtil.addDays(new Date(), 1);
         Date yesterday = DateUtil.addDays(new Date(), -1);
@@ -298,4 +312,44 @@ public class DateUtilTest extends TestCase
         assertTrue(DateUtil.compare(today, tomorrow) < 0);
         assertTrue(DateUtil.compare(tomorrow, yesterday) > 0);       
     }
+    
+    
+    /**
+     * Tests addWeeks()
+     */
+    public void testAddWeeks()
+    {
+        logger_.info("Testing addWeeks()");
+        
+        Date today = new Date();
+        int weeks = 3;
+        int days = weeks * 7;
+        
+        Date futureWeeks = DateUtil.addWeeks(new Date(), weeks);
+        Date futureDays  = DateUtil.addDays(new Date(), days);
+        
+        assertTrue(DateUtil.equals(futureWeeks, futureDays));
+    }
+ 
+ 
+    /**
+     * Tests copy()   
+     */
+    public void testCopy()
+    {
+        logger_.info("Testing copy()");
+        
+        Date today = new Date();
+        Date copy = DateUtil.copy(today);
+        assertTrue(DateUtil.equals(today, copy));
+    }
+    
+    
+    /**
+     * Tests equals()
+     */
+    public void testXXX()
+    {
+    }
+    
 }
