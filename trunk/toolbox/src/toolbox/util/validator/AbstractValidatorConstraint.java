@@ -1,0 +1,29 @@
+package toolbox.util.validator;
+
+/**
+ * AbstractValidatorConstraint is an abstract implementation of
+ * ValidatorConstraint that assumes responsiblity of the failfast behavior
+ * during the validation process.
+ */
+public abstract class AbstractValidatorConstraint implements ValidatorConstraint
+{
+    //--------------------------------------------------------------------------
+    // Predicate Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public final boolean evaluate(Object object)
+    {
+        ValidatorContext context = (ValidatorContext) object;
+        validate(context);
+
+        // Terminate evaluation of the expression if failfast is turned on and
+        // we also have an invalid context...
+        if (context.isFailFast() && !context.isValid())
+            return false;
+        else
+            return true;
+    }
+}
