@@ -42,7 +42,7 @@ public class FileStuffer implements Runnable
     /** 
      * Flag to open/close file instead of append/flush.
      */
-    private boolean openClose_ = false;
+    private boolean openClose_;
 
     /** 
      * File stuffer.
@@ -285,14 +285,14 @@ public class FileStuffer implements Runnable
     //--------------------------------------------------------------------------
  
     /**
-     * Default implementation of IStuffProvider interface
+     * Default implementation of IStuffProvider interface.
      */
     static class DefaultStuffProvider implements IStuffProvider
     {
         private int cnt_ = 0;
         
         /**
-         * Default stuff provider
+         * Default stuff provider.
          * 
          * @return  Line number plus time
          */

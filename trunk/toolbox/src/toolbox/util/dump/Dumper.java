@@ -29,8 +29,11 @@ public class Dumper implements Stringz
     // TODO: Allow option to leave out nulls
     // TODO: Add interface to support custom dumpers for specific types of objs
         
-    private static final Logger logger_ = 
-        Logger.getLogger(Dumper.class);
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
+    private static final Logger logger_ = Logger.getLogger(Dumper.class);
     
     // Strings for ascii tree branches    
     private static final String BAR      = "|   ";
@@ -38,22 +41,26 @@ public class Dumper implements Stringz
     private static final String ARM      = "---";
 
     /** 
-     * Max length of right hand value 
+     * Max length of right hand value. 
      */
     private static final int MAX_PRESENTABLE_LENGTH = 100;
 
     /** 
-     * Maximum depth to traverse into the object graph 
+     * Maximum depth to traverse into the object graph. 
      */
     private int maxDepth_ = Integer.MAX_VALUE;
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+        
     /** 
-     * Caches objects which have already been traversed 
+     * Caches objects which have already been traversed. 
      */
     private ObjectCache cache_ = new ObjectCache();
     
     /** 
-     * Dump formatter and configuration 
+     * Dump formatter and configuration. 
      */
     private DumpFormatter formatter_;
 
@@ -62,20 +69,21 @@ public class Dumper implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a Dumper with the default BasicDumpFormatter
-     * 
-     * @throws  RESyntaxException on regular expression error
-     */
+	 * Creates a Dumper with the default BasicDumpFormatter.
+	 * 
+	 * @throws RESyntaxException on regular expression error
+	 */
     private Dumper() throws RESyntaxException
     {
-        this (new BasicDumpFormatter());
-    }   
+        this(new BasicDumpFormatter());
+    }
 
+    
     /**
-     * Creates a Dumper with the given formatter
-     * 
-     * @param  formatter  Dump formatting and output NLiteria
-     */
+	 * Creates a Dumper with the given formatter.
+	 * 
+	 * @param formatter Dump formatting and output NLiteria
+	 */
     public Dumper(DumpFormatter formatter)
     {
         formatter_ = formatter;
@@ -86,24 +94,27 @@ public class Dumper implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Traverses an object graph and dumps it to a string using a tree structure 
-     * 
-     * @param   obj  Object to dump
-     * @return  String dump
-     */
+	 * Traverses an object graph and dumps it to a string using a tree
+	 * structure.
+	 * 
+	 * @param obj Object to dump
+	 * @return String dump
+	 */
     public static String dump(Object obj)
     {
         return dump(obj, Integer.MAX_VALUE);
     }
 
+    
     /**
-     * Traverses an object graph and dumps it to a string using a tree structure
-     * with the given maximum depth of traversal from the root object. 
-     * 
-     * @param   obj       Object to dump
-     * @param   maxDepth  Max number of levels to recurse down into the obj
-     * @return  Object dumped as a tree 
-     */
+	 * Traverses an object graph and dumps it to a string using a tree
+	 * structure with the given maximum depth of traversal from the root
+	 * object.
+	 * 
+	 * @param obj Object to dump
+	 * @param maxDepth Max number of levels to recurse down into the obj
+	 * @return Object dumped as a tree
+	 */
     public static String dump(Object obj, int maxDepth)
     {
         String result = null;
@@ -123,17 +134,18 @@ public class Dumper implements Stringz
         
         return result;
     }
+
     
     /**
-     * Traverses an object graph and dumps it to a string using a tree structure
-     * with the given maximum depth of traversal from the root object and
-     * formater.
-     * 
-     * @param   obj       Object to dump
-     * @param   maxDepth  Max number of levels to recurse down into the obj
-     * @param   formatter Dump formatter
-     * @return  Object dumped as a tree 
-     */
+	 * Traverses an object graph and dumps it to a string using a tree
+	 * structure with the given maximum depth of traversal from the root object
+	 * and formater.
+	 * 
+	 * @param obj Object to dump
+	 * @param maxDepth Max number of levels to recurse down into the obj
+	 * @param formatter Dump formatter
+	 * @return Object dumped as a tree
+	 */
     public static String dump(Object obj, int maxDepth, DumpFormatter formatter)
     {
         Dumper dumper = new Dumper(formatter);
@@ -156,6 +168,7 @@ public class Dumper implements Stringz
         return maxDepth_;
     }
 
+    
     /**
      * Sets the maxDepth.
      * 
@@ -171,12 +184,12 @@ public class Dumper implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Non-static method to allow access to instance variables which in turn is 
-     * required for multiple simultaneous threads without interference.
-     * 
-     * @param  obj  Object to dump
-     * @return Stringified dump of object
-     */
+	 * Non-static method to allow access to instance variables which in turn is
+	 * required for multiple simultaneous threads without interference.
+	 * 
+	 * @param obj Object to dump
+	 * @return Stringified dump of object
+	 */
     protected String nonStaticDumpObject(Object obj)
     {
         StringBuffer buffer = new StringBuffer();
@@ -205,15 +218,16 @@ public class Dumper implements Stringz
         return buffer.toString();
     }
 
+    
     /**
-     * Traverses an object and its children to generate a tree like structure
-     * of the object graphs and the values of its elements.
-     *
-     * @param   obj     Object to dump
-     * @param   buffer  Dump buffer
-     * @param   depth   Recursion depth
-     * @throws  IllegalAccessException if attribute/method not accessible
-     */
+	 * Traverses an object and its children to generate a tree like structure
+	 * of the object graphs and the values of its elements.
+	 * 
+	 * @param obj Object to dump
+	 * @param buffer Dump buffer
+	 * @param depth Recursion depth
+	 * @throws IllegalAccessException if attribute/method not accessible
+	 */
     protected void dump(Object obj, StringBuffer buffer, String depth) 
         throws IllegalAccessException
     {
@@ -242,14 +256,15 @@ public class Dumper implements Stringz
         }
     }
 
+    
     /**
-     * Dumps an array or collection class
-     *
-     * @param   obj     Object to dump
-     * @param   buffer  Dump buffer
-     * @param   depth   Recursion depth
-     * @throws  IllegalAccessException if attribute/method not accessible
-     */
+	 * Dumps an array or collection class.
+	 * 
+	 * @param obj Object to dump
+	 * @param buffer Dump buffer
+	 * @param depth Recursion depth
+	 * @throws IllegalAccessException if attribute/method not accessible
+	 */
     protected void dump(
         Field arrayField, 
         Object[] array, 
@@ -275,16 +290,17 @@ public class Dumper implements Stringz
         }
     }
 
+    
     /**
-     * Calls itself recursively. Gets all attributes of obj and dumps relevant
-     * data.
-     * 
-     * @param   clazz   Class representing level in class hierarchy
-     * @param   obj     Object to dump
-     * @param   buffer  Dump buffer
-     * @param   depth   Recursion depth
-     * @throws  IllegalAccessException on illegal access
-     */    
+	 * Calls itself recursively. Gets all attributes of obj and dumps relevant
+	 * data.
+	 * 
+	 * @param clazz Class representing level in class hierarchy
+	 * @param obj Object to dump
+	 * @param buffer Dump buffer
+	 * @param depth Recursion depth
+	 * @throws IllegalAccessException on illegal access
+	 */    
     protected void dump(
         Class clazz,  
         Object obj, 
@@ -368,24 +384,26 @@ public class Dumper implements Stringz
         }
     }
 
+    
     /**
-     * Determines if we're reached the maxnumber of levels specified to 
-     * traverse down the object hierarchy
-     * 
-     * @param   Current indentation string (or depth)
-     * @return  True if we should not go down any deeper, false otherwise
-     */
+	 * Determines if we're reached the maxnumber of levels specified to
+	 * traverse down the object hierarchy.
+	 * 
+	 * @param Current indentation string (or depth)
+	 * @return True if we should not go down any deeper, false otherwise
+	 */
     protected boolean reachedMaxDepth(String depth)
     {
         return !((depth + BAR).length()/4 < maxDepth_);        
     }
 
+    
     /**
-     * Check if the object has already been traversed, if not flip the bit
-     * cause we're about to traverse it!
-     * 
-     * @param  value  Object to check for traversal
-     */
+	 * Check if the object has already been traversed, if not flip the bit
+	 * cause we're about to traverse it!
+	 * 
+	 * @param value Object to check for traversal
+	 */
     protected void checkTraversed(Object value)
     {
         ObjectInfo objInfo = cache_.getInfo(value);
@@ -394,12 +412,13 @@ public class Dumper implements Stringz
             objInfo.setTraversed(true);
     }
 
+    
     /**
-     * Convenience method to Create an ASCII tree branch
-     * 
-     * @param   depth  Current indentation string
-     * @return  ASCII branch
-     */
+	 * Convenience method to Create an ASCII tree branch.
+	 * 
+	 * @param depth Current indentation string
+	 * @return ASCII branch
+	 */
     protected String makeBranch(String depth)
     {
         StringBuffer sb = new StringBuffer();
@@ -415,14 +434,15 @@ public class Dumper implements Stringz
         return sb.toString();
     }
 
+    
     /**
-     * Makes an object's value presentable in a concise manner. If certain
-     * conditions are true, then substitutes are used in order to simplify
-     * readability.
-     * 
-     * @param   obj  Object to make presentable
-     * @return  Object's value is a presentable string
-     */
+	 * Makes an object's value presentable in a concise manner. If certain
+	 * conditions are true, then substitutes are used in order to simplify
+	 * readability.
+	 * 
+	 * @param obj Object to make presentable
+	 * @return Object's value is a presentable string
+	 */
     protected String makePresentable(Object obj)
     {
         String result = null;
@@ -471,12 +491,13 @@ public class Dumper implements Stringz
         return result;
     }
 
+    
     /**
-     * Appends the given classes inheritance tree to the dump buffer
-     * 
-     * @param  clazz   Class for which to print the tree    
-     * @param  buffer  Dump buffer
-     */
+	 * Appends the given classes inheritance tree to the dump buffer.
+	 * 
+	 * @param clazz Class for which to print the tree
+	 * @param buffer Dump buffer
+	 */
     protected void appendInheritance(Class clazz, StringBuffer buffer)
     {
         if (formatter_.showInheritance())
@@ -510,7 +531,7 @@ public class Dumper implements Stringz
     //--------------------------------------------------------------------------
     
     /** 
-     * Comparator for field names
+     * Comparator for field names.
      */
     class FieldNameComparator implements Comparator
     {

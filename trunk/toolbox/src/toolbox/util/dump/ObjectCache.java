@@ -15,10 +15,14 @@ import java.util.Map;
  */
 public class ObjectCache
 {
-    /** Sequence number assigned to objects in the cache */
+    /** 
+     * Sequence number assigned to objects in the cache 
+     */
     private int label_ = 0;
     
-    /**  Map of object->objectinfo */
+    /**  
+     * Map of object->objectinfo. 
+     */
     private Map visitedMap_ = new HashMap();
     
     //--------------------------------------------------------------------------
@@ -28,20 +32,21 @@ public class ObjectCache
     /**
      * Puts an object as a key in the cache. Its value is null. 
      * 
-     * @param obj
+     * @param obj Puts obj as a key with a null value.
      */
     public void put(Object obj)
     {
         put(obj, null);    
     }
     
+    
     /**
-     * Puts an object as the key and its generated ObjectInfo as the value
-     * into the cache. The field is necessary to populate an ObjectInfo.
-     * 
-     * @param  obj    Object to put in the cache
-     * @param  field  The field that the object refers to
-     */
+	 * Puts an object as the key and its generated ObjectInfo as the value into
+	 * the cache. The field is necessary to populate an ObjectInfo.
+	 * 
+	 * @param obj Object to put in the cache
+	 * @param field The field that the object refers to
+	 */
     public void put(Object obj, Field field)
     {
         if (obj == null)
@@ -50,13 +55,14 @@ public class ObjectCache
         visitedMap_.put(obj, 
             new ObjectInfo(obj, label_ + "", field));
     }
+
     
     /**
-     * Retrieves the ObjectInfo for a given object
-     * 
-     * @param   obj  Object to get info for
-     * @return  ObjectInfo for the passed in object
-     */
+	 * Retrieves the ObjectInfo for a given object.
+	 * 
+	 * @param obj Object to get info for
+	 * @return ObjectInfo for the passed in object
+	 */
     public ObjectInfo getInfo(Object obj)
     {
         if (obj == null)
@@ -67,13 +73,14 @@ public class ObjectCache
             return objInfo;
         }
     }
+
     
     /**
-     * Determines if an object is already present in the cache
-     * 
-     * @param   obj  Object to test for presence
-     * @return  True if the cache contains the object, false otherwise
-     */
+	 * Determines if an object is already present in the cache.
+	 * 
+	 * @param obj Object to test for presence
+	 * @return True if the cache contains the object, false otherwise
+	 */
     public boolean contains(Object obj)
     {
         if (obj == null)
@@ -81,13 +88,14 @@ public class ObjectCache
             
         return visitedMap_.containsKey(obj);
     }
+
     
     /**
-     * Determines if an object has already been traversed
-     * 
-     * @param   obj  Object to test for traversal
-     * @return  True if the object has been traverse, false otherwise.
-     */
+	 * Determines if an object has already been traversed.
+	 * 
+	 * @param obj Object to test for traversal
+	 * @return True if the object has been traverse, false otherwise.
+	 */
     public boolean hasTraversed(Object obj)
     {
         if (obj == null)

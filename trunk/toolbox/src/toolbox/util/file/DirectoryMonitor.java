@@ -23,23 +23,23 @@ public class DirectoryMonitor
     /** 
      * Directory listeners. 
      */
-    private List listeners_ = new ArrayList();
+    private List listeners_;
     
     /** 
      * File activities that this monitor will provide notification for. 
      */
-    private List activities_ = new ArrayList();
+    private List activities_;
 
     /** 
      * Delay interval in millis used to check for new activity. 
      * Defaults to 5sec. 
      */
-    private int delay_ = 5000;
+    private int delay_;
 
     /** 
      * Shutdown flag for file activity thread. 
      */
-    private boolean shutdown_ = false;
+    private boolean shutdown_;
 
     /** 
      * Directory to monitor. 
@@ -63,10 +63,14 @@ public class DirectoryMonitor
     public DirectoryMonitor(File dir)
     {
         setDirectory(dir);
+        
+        listeners_ = new ArrayList();
+        activities_ = new ArrayList();
+        delay_ = 5000;
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
     
     /**
@@ -107,7 +111,7 @@ public class DirectoryMonitor
 
     
     /**
-     * Accessor for delay.
+     * Returns the polling delay in milliseconds.
      *
      * @return int
      */
@@ -118,9 +122,9 @@ public class DirectoryMonitor
 
     
     /**
-     * Mutator for delay.
+     * Sets the polling delay in milliseconds.
      *
-     * @param newDelay    Delay
+     * @param newDelay Delay
      */
     public void setDelay(int newDelay)
     {
@@ -129,7 +133,7 @@ public class DirectoryMonitor
 
     
     /**
-     * Returns the directory.
+     * Returns the directory being monitored for activity.
      * 
      * @return File
      */
@@ -140,9 +144,9 @@ public class DirectoryMonitor
 
     
     /**
-     * Sets the directory.
+     * Sets the directory being monitored for activity.
      * 
-     * @param directory The directory to set
+     * @param directory The directory to monitor.
      */
     public void setDirectory(File directory)
     {
@@ -195,11 +199,11 @@ public class DirectoryMonitor
 
     
     /**
-     * Removes a listener from the list that is notified each time
-     * a file becomes available.
-     *
-     * @param listener Listener to remove from the notification list
-     */
+	 * Removes a listener from the list that is notified each time a file
+	 * becomes available.
+	 * 
+	 * @param listener Listener to remove from the notification list
+	 */
     public void removeDirectoryListener(IDirectoryListener listener)
     {
         listeners_.remove(listener);
@@ -218,7 +222,7 @@ public class DirectoryMonitor
     }
 
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // ActivityRunner
     //--------------------------------------------------------------------------
     
     /**

@@ -20,7 +20,7 @@ public class FileComparator implements Comparator
     public static final int COMPARE_DATE = 3; // File timestamp
     
 	/**
-	 * Field to compare.
+	 * Field to compare by. See COMPARE_* constants.
 	 */    
     private int compareBy_;
     

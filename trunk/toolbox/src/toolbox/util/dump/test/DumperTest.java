@@ -16,21 +16,20 @@ import toolbox.util.dump.BasicDumpFormatter;
 import toolbox.util.dump.Dumper;
 
 /**
- * Unit test for ObjectDumper
+ * Unit test for Dumper.
  */
 public class DumperTest extends TestCase implements Stringz
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(DumperTest.class);
+    private static final Logger logger_ = Logger.getLogger(DumperTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -38,7 +37,7 @@ public class DumperTest extends TestCase implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from junit.framework.TestCase
+    // Overrides TestCase
     //--------------------------------------------------------------------------
 
     /**
@@ -55,7 +54,7 @@ public class DumperTest extends TestCase implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Tests an empty class
+     * Tests an empty class.
      */
     public void testDumpEmptyObject()
     {
@@ -63,8 +62,9 @@ public class DumperTest extends TestCase implements Stringz
         logger_.info("\n\n" + Dumper.dump(new EmptyClass()));
     }
 
+    
     /**
-     * Tests a class with simple fields 
+     * Tests a class with simple fields. 
      */
     public void testDumpSimpleObject()
     {
@@ -72,8 +72,9 @@ public class DumperTest extends TestCase implements Stringz
         logger_.info("\n\n" + Dumper.dump(new Address()));
     }
 
+    
     /**
-     * Tests object dumper for a simple test case
+     * Tests object dumper for a simple test case.
      */
     public void testDumpNestedObject()
     {
@@ -81,8 +82,9 @@ public class DumperTest extends TestCase implements Stringz
         logger_.info("\n\n" + Dumper.dump(new Employee()));            
     }
     
+    
     /**
-     * Tests dump of JFrame
+     * Tests dump of JFrame.
      */
     public void testDumpJFrame()
     {
@@ -90,8 +92,9 @@ public class DumperTest extends TestCase implements Stringz
         logger_.info("\n\n" + Dumper.dump(new JFrame()));
     }
     
+    
     /**
-     * Tests dump of duplicate objects existing in the object graph
+     * Tests dump of duplicate objects existing in the object graph.
      */
     public void testDumpMultipleReferences()
     {
@@ -99,8 +102,9 @@ public class DumperTest extends TestCase implements Stringz
         logger_.info("\n\n" + Dumper.dump(new MultipleReferences()));        
     }
     
+    
     /** 
-     * Tests dump of object with a constraining maxDepth
+     * Tests dump of object with a constraining maxDepth.
      */
     public void testDumpMaxDepth()
     { 
@@ -118,8 +122,9 @@ public class DumperTest extends TestCase implements Stringz
             Dumper.dump(emp, 3));        
     }
     
+    
     /**
-     * Tests dumping of collection classes
+     * Tests dumping of collection classes.
      */    
     public void testDumpCollection()
     {
@@ -149,12 +154,13 @@ public class DumperTest extends TestCase implements Stringz
         logger_.info("\n\n" + Dumper.dump(new CollectionDump()));
     }
 
+    
     /**
      * Tests dump(obj, depth, formatter). Creates a new formatter and adds
      * lastName_ to the list of fields to be excluded. Verifies lastName_
      * does not show up in the dump!
      * 
-     * @throws  Exception on error
+     * @throws Exception on error
      */ 
     public void testDumpObjectDepthFormatter() throws Exception
     {
@@ -168,8 +174,9 @@ public class DumperTest extends TestCase implements Stringz
         assertTrue(dump.indexOf("lastName_") < 0);        
     }
      
+    
     /**
-     * Tests legacy version 
+     * Tests legacy version. 
      */   
     public void testLegacy()
     {

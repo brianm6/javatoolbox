@@ -27,7 +27,7 @@ public class DirectoryMonitorTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -43,7 +43,7 @@ public class DirectoryMonitorTest extends TestCase
     /**
      * Tests the DirectoryMonitor. 
      * 
-     * @throws  Exception on IO error
+     * @throws Exception on IO error
      */
     public void testDirectoryMonitor() throws Exception
     {
