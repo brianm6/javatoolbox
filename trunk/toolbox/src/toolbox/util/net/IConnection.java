@@ -5,15 +5,33 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Generic Connection interface with I/O streams
+ * Common interface for a generic connection
  */
 public interface IConnection
 {
     /**
-     * Opens the connection
+     * Returns connection name for easy identification
+     * 
+     * @return  Connection name
      */
-    public void open();
+    public String getName();
 
+    
+    /**
+     * Connects to an endpoint
+     * 
+     * @throws  IOException on I/O error
+     */
+    public void connect() throws IOException;
+
+
+    /**
+     * Checks the connection to the endpoint has been establisthed
+     * 
+     * @return  True if connected, false otherwise
+     */
+    public boolean isConnected();
+    
 
     /**
      * Closes the connection 
@@ -26,8 +44,8 @@ public interface IConnection
     /**
      * Accessor for the connections' input stream
      * 
-     * @return    InputStream
-     * @throws    IOException on I/O error
+     * @return  InputStream
+     * @throws  IOException on I/O error
      */
     public InputStream getInputStream() throws IOException;
 
@@ -35,8 +53,24 @@ public interface IConnection
     /**
      * Accessor for the connections' output stream
      * 
-     * @return    OutputStream
-     * @throws    IOException on I/O error
+     * @return  OutputStream
+     * @throws  IOException on I/O error
      */
     public OutputStream getOutputStream() throws IOException;
+    
+    
+    /**
+     * Adds a listener to the connection
+     * 
+     * @param  listener  Connection listener to add
+     */
+    public void addConnectionListener(IConnectionListener listener);
+
+
+    /**
+     * Removes a listener from the connection
+     * 
+     * @param  listener  Connection listener to remove
+     */
+    public void removeConnectionListener(IConnectionListener listener);
 }
