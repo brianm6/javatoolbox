@@ -163,7 +163,7 @@ public class Client implements Initializable, Startable, Destroyable,
         
         setHostname(hostname);
         setPort(port);
-        setBandwidth(new Bandwidth(50000, 50000, Bandwidth.TYPE_BOTH));
+        setBandwidth(new Bandwidth(500, 500, Bandwidth.TYPE_BOTH));
     }
 
     //--------------------------------------------------------------------------
@@ -351,9 +351,9 @@ public class Client implements Initializable, Startable, Destroyable,
     public void stop() throws ServiceException
     {
         machine_.checkTransition(ServiceTransition.STOP);
+        machine_.transition(ServiceTransition.STOP);
         monitor_.setMonitoringThroughput(false);
         ThreadUtil.join(clientThread_);
-        machine_.transition(ServiceTransition.STOP);
     }
 
     
