@@ -12,14 +12,13 @@ import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.xml.XMLNode;
 
-
 /**
  * Tiny XML implemenation of IJTailConfig interface that marshals
  * configuration information to/from XML
  */
 public class JTailConfig implements IJTailConfig, XMLConstants
 { 
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JTailConfig.class);
     

@@ -95,7 +95,7 @@ public class TailPane extends JPanel
      */
     public TailPane(ITailPaneConfig config) throws FileNotFoundException
     {
-        buildView();
+        buildView(config);
         buildFilters();        
         setConfiguration(config);                
         init();
@@ -139,16 +139,16 @@ public class TailPane extends JPanel
         tail_.addTailListener(new TailListener());
         tail_.setTailFile(config_.getFilename());
 
-        // Start tail through action so button states are OK        
-        startButton_.getAction().actionPerformed(
-            new ActionEvent(this, 0, "Start"));
+        // Start tail through action so button states are OK
+        if (config_.isAutoStart())
+            startButton_.getAction().actionPerformed(
+            	new ActionEvent(this, 0, "Start"));
     }
-
     
     /**
      * Builds the GUI
      */    
-    protected void buildView()
+    protected void buildView(ITailPaneConfig config)
     {
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
@@ -156,11 +156,16 @@ public class TailPane extends JPanel
         
         clearButton_    = new JButton(new ClearAction());
         pauseButton_    = new JButton(new PauseUnpauseAction());
-        startButton_    = new JButton(new StartStopAction());
+        
+        String startMode =  config.isAutoStart() ? 
+        					StartStopAction.MODE_STOP :
+        					StartStopAction.MODE_START;
+        
+        startButton_    = new JButton(new StartStopAction(startMode));
         closeButton_    = new JButton(new CloseAction());
         autoScrollBox_  = new JCheckBox(new AutoScrollAction());
         lineNumbersBox_ = new JCheckBox(new ShowLineNumbersAction());
-        regexField_    = new JTextField(5);
+        regexField_     = new JTextField(5);
         cutField_       = new JTextField(5);
 
         //regexField_.addKeyListener(new RegexKeyListener());
@@ -197,7 +202,6 @@ public class TailPane extends JPanel
             regexFilter_ = new RegexLineFilter();
             regexFilter_.setEnabled(false);
             filters_.add(regexFilter_);
-            
         }
         catch (RESyntaxException re)
         {
@@ -222,8 +226,7 @@ public class TailPane extends JPanel
     {
         return regexField_.getText().trim();
     }
-    
-    
+        
     /**
      * Sets the filter text
      * 
@@ -251,11 +254,10 @@ public class TailPane extends JPanel
         return cutField_.getText().trim();
     }
     
-    
     /**
      * Sets the cut text
      * 
-     * @param  cit  Cut text. Example: 1-10 cuts columns one through ten.
+     * @param  cut  Cut text. Example: 1-10 cuts columns one through ten.
      */
     protected void setCutExpression(String cut)
     {
@@ -270,7 +272,6 @@ public class TailPane extends JPanel
             logger_.info("Invalid cut expression: " + cut);
         }
     }
-
 
     //--------------------------------------------------------------------------
     // Public
@@ -299,7 +300,6 @@ public class TailPane extends JPanel
         setCutExpression(config_.getCutExpression());
     }
 
-
     /**
      * Gets the configuration
      * 
@@ -314,9 +314,9 @@ public class TailPane extends JPanel
         config_.setAntiAlias(tailArea_.isAntiAlias());
         config_.setRegularExpression(getRegularExpression());
         config_.setCutExpression(getCutExpression());
+        config_.setAutoStart(tail_.isAlive());
         return config_;
     }    
-
 
     /**
      * @return Close button
@@ -409,7 +409,6 @@ public class TailPane extends JPanel
         }
     }
 
-
     /**
      * Enabled dynamic filtering based on regex as it is typed
      */    
@@ -428,7 +427,6 @@ public class TailPane extends JPanel
                 setRegularExpression(getRegularExpression());
         }
     }
-
 
     /**
      * Enabled dynamic filtering based on regex as it is typed
@@ -461,14 +459,15 @@ public class TailPane extends JPanel
         private static final String MODE_START = "Start";
         private static final String MODE_STOP  = "Stop";
         
-        private String mode_ = MODE_START;
+        private String mode_;
             
         /**
          * Default constructor
          */
-        public StartStopAction()
+        public StartStopAction(String mode)
         {
-            super(MODE_START);
+            super(mode);
+            mode_ = mode;
             putValue(MNEMONIC_KEY, new Integer('S'));
             putValue(SHORT_DESCRIPTION, "Starts/Stops the tail");
         }
@@ -509,7 +508,6 @@ public class TailPane extends JPanel
         }
     }
 
-
     /**
      * Pauses/unpauses the tail
      */
@@ -548,7 +546,6 @@ public class TailPane extends JPanel
             }
         }
     }
-    
 
     /**
      * Closes the tail pane
@@ -580,7 +577,6 @@ public class TailPane extends JPanel
         }
     }
 
-
     /**
      * Clears the output area
      */
@@ -606,7 +602,6 @@ public class TailPane extends JPanel
             tailArea_.setText("");
         }
     }
-
     
     /**
      * Toggles autoscroll of the output text area
@@ -633,7 +628,6 @@ public class TailPane extends JPanel
             tailArea_.setAutoScroll(autoScrollBox_.isSelected()); 
         }
     }
-
 
     /**
      * Toggles line numbers in the output area

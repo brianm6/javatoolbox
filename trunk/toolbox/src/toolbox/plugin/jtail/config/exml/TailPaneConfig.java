@@ -342,4 +342,22 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         cutExpression_ = cutExpression;
     }
     
+	/* (non-Javadoc)
+     * @see toolbox.jtail.config.ITailPaneConfig#isAutoStart()
+     */
+    public boolean isAutoStart()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+	/* (non-Javadoc)
+     * @see toolbox.jtail.config.ITailPaneConfig#setAutoStart(boolean)
+     */
+    public void setAutoStart(boolean autoStart)
+    {
+        // TODO Auto-generated method stub
+
+    }
+    
 }

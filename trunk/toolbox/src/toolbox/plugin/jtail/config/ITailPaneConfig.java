@@ -8,23 +8,27 @@ import java.awt.Font;
 public interface ITailPaneConfig
 {
     /** Default antialis is false */
-    public static final boolean DEFAULT_ANTIALIAS       = false;    
+    public static final boolean DEFAULT_ANTIALIAS = false;    
     
     /** Default autoscroll is true */
-    public static final boolean DEFAULT_AUTOSCROLL      = true;
+    public static final boolean DEFAULT_AUTOSCROLL = true;
     
     /** Default show line number is false */
-    public static final boolean DEFAULT_LINENUMBERS     = false;
+    public static final boolean DEFAULT_LINENUMBERS = false;
+    
+    /** Default autostart is true */
+    public static final boolean DEFAULT_AUTOSTART = true;
     
     /** Default regular expression is empty string */
-    public static final String  DEFAULT_REGEX           = "";
+    public static final String  DEFAULT_REGEX = "";
     
     /** Default match case on regular expression is false */
     public static final boolean DEFAULT_REGEX_MATCHCASE = false;
     
     /** Default cut expression is empty string */
-    public static final String  DEFAULT_CUT_EXPRESSION  = "";
+    public static final String  DEFAULT_CUT_EXPRESSION = "";
 
+	
     /**
      * Returns the autoScroll nature of the text area.
      * 
@@ -136,4 +140,20 @@ public interface ITailPaneConfig
      * @param  b  True to turn antialias on, false otherwise
      */
     public void setAntiAlias(boolean b);
+    
+    
+	/**
+	 * Mutator for the autostart flag
+	 * 
+	 * @param  autoStart  True to turn autostart on, false otherwise
+	 */
+	public void setAutoStart(boolean autoStart);
+	
+	
+	/**
+	 * Accessor for the autostart flag
+	 * 
+	 * @return  Autostart flag
+	 */
+	public boolean isAutoStart();
 }

@@ -6,18 +6,17 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.ITailPaneConfig;
+import toolbox.util.SwingUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.xml.XMLNode;
 
-
 /**
- * TailConfig is a data object that captures the configuration of a
- * given tail instance with the ability to marshal itself to and from 
- * XML format. 
+ * TailConfig is a data object that captures the configuration of a given tail 
+ * instance with the ability to marshal itself to and from XML format. 
  */
 public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(TailPaneConfig.class);
     
@@ -25,6 +24,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     private boolean autoScroll_;
     private boolean showLineNumbers_;
     private boolean antiAlias_;
+    private boolean autoStart_;
     private Font    font_;
     private String  regularExpression_;
     private String  cutExpression_;
@@ -52,10 +52,11 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * @param  regularExpression  Optional filter (regular expression) 
      *                            for weeding out junk
      * @param  cutExpression      Optional expression for removing columns
+     * @param  autoStart          Autostarts tailing (starts it)
      */
     public TailPaneConfig(String file, boolean autoScroll, 
         boolean showLineNumbers, boolean antiAlias, Font font,
-        String regularExpression, String cutExpression)
+        String regularExpression, String cutExpression, boolean autoStart)
     {
         setFilename(file);
         setAutoScroll(autoScroll);
@@ -64,6 +65,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         setFont(font);
         setRegularExpression(regularExpression);
         setCutExpression(cutExpression);
+        setAutoStart(autoStart);
     }
 
     //--------------------------------------------------------------------------
@@ -105,6 +107,13 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
             config.setAntiAlias(new Boolean(antiAlias).booleanValue());
         else
             config.setAntiAlias(DEFAULT_ANTIALIAS);
+
+		// Optional autoStart attribute
+		String autoStart = tail.getAttr(ATTR_AUTOSTART);
+		if (autoStart != null)
+			config.setAutoStart(new Boolean(autoStart).booleanValue());
+		else
+			config.setAutoStart(DEFAULT_AUTOSTART);
         
         // Handle optional font element    
         XMLNode fontNode = tail.getNode(ELEMENT_FONT);
@@ -118,8 +127,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         }
         else
         {
-            // TODO: what is the default font?
-            config.setFont(null);    
+            config.setFont(SwingUtil.getPreferredMonoFont());    
         }
         
         // Handle optional regular expression element
@@ -151,7 +159,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * TailConfig -> XML
      * <pre>
      * 
-     * Tail
+     * Tail attr = [file, autoscroll, lineNumbes, antialias, autostart]
      *   |
      *   +--Font
      *   |
@@ -175,6 +183,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         tail.addAttr(ATTR_AUTOSCROLL, isAutoScroll() + "");
         tail.addAttr(ATTR_LINENUMBERS, isShowLineNumbers() + "");
         tail.addAttr(ATTR_ANTIALIAS, isAntiAlias() + "");
+        tail.addAttr(ATTR_AUTOSTART, isAutoStart() + "");
         
         // Font element    
         XMLNode fontNode = new XMLNode(ELEMENT_FONT);
@@ -198,7 +207,10 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         return tail;
     }
 
-
+	//--------------------------------------------------------------------------
+    // Overridden from java.lang.Object 
+    //--------------------------------------------------------------------------
+    
     /**
      * @return String representation
      */
@@ -356,5 +368,25 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     public void setAntiAlias(boolean b)
     {
         antiAlias_ = b;
+    }
+    
+    
+    /**
+     * @return boolean
+     */
+    public boolean isAutoStart()
+    {
+        return autoStart_;
+    }
+
+
+    /**
+     * Sets the autoStart.
+     * 
+     * @param autoStart The autoStart to set
+     */
+    public void setAutoStart(boolean autoStart)
+    {
+        autoStart_ = autoStart;
     }
 }

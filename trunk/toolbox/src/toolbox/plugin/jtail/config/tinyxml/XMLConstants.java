@@ -22,6 +22,7 @@ public interface XMLConstants
     public static final String ATTR_AUTOSCROLL  = "autoScroll";
     public static final String ATTR_LINENUMBERS = "showLineNumbers";
     public static final String ATTR_ANTIALIAS   = "antiAlias";
+    public static final String ATTR_AUTOSTART   = "autoStart";
     
     // Font XML element
     public static final String ELEMENT_FONT     = "Font";
