@@ -12,12 +12,13 @@ import javax.swing.JToggleButton;
 import toolbox.util.SwingUtil;
 
 /**
- * JSmartToggleButton adds the following behavior.
+ * <code>JSmartToggleButton<code> adds the following behavior.
  * <p>
  * <ul>
  *   <li>Support for antialised text
- *   <li>Supports listening for a property change in another component
- *       for instances where the state of the button resides elsewhere.
+ *   <li>Supports toggling on a property change event for instances where the 
+ *       state of the button must be kept in sync with a flag beloging to 
+ *       another component.
  * </ul>
  */
 public class JSmartToggleButton extends JToggleButton implements AntiAliased
