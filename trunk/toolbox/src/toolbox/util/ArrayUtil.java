@@ -14,15 +14,12 @@ public final class ArrayUtil
 {
     private static final Logger logger_ = Logger.getLogger(ArrayUtil.class);
     
-    // Clover private constructor workaround
-    static { new ArrayUtil(); }
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private ArrayUtil()
     {
@@ -136,7 +133,7 @@ public final class ArrayUtil
      * @param array Array to extract subset from.
      * @param startIndex Starting index of the subset (zero based).
      * @param endIndex Ending index (inclusive).
-     * @return Subset of the array
+     * @return Subset of the array.
      * @throws IllegalArgumentException if indices are out of bounds.
      */
     public static Object[] subset(Object[] array, int startIndex, int endIndex)
@@ -202,8 +199,8 @@ public final class ArrayUtil
 
     
     /**
-     * Converts an array of objects into a comma delimited single line 
-     * string of each elements toString().
+     * Converts an array of objects into a comma delimited single line string 
+     * of each elements toString().
      *
      * @param array Array of objects to stringify.
      * @return String of comma delimited array elements toString().
@@ -296,7 +293,7 @@ public final class ArrayUtil
      * 
      * @param array Array of objects to search.
      * @param obj Object to search for.
-     * @param c Comparator to use for equality test.
+     * @param c Comparator to use for equivalence.
      * @return -1 if the object is not found, otherwise the index of the first 
      *         matching object.
      */
