@@ -4,15 +4,16 @@ import java.io.File;
 import java.io.FileFilter;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.OrFileFilter;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.io.filter.ExtensionFilter;
-import toolbox.util.io.filter.OrFilter;
+import toolbox.util.io.filter.RegexFileFilter;
+import toolbox.util.service.Cancelable;
 
 /** 
  * Scans file system recursively for files containing source code.
  */
-class SourceScanner implements Runnable
+public class SourceScanner implements Runnable, Cancelable
 {
     //--------------------------------------------------------------------------
     // Fields 
@@ -31,12 +32,12 @@ class SourceScanner implements Runnable
     /** 
      * Cancel flag. 
      */
-    private boolean cancel_;
+    private boolean canceled_;
     
     /** 
      * File filter used to identify source files. 
      */
-    private static OrFilter sourceFilter_;
+    private static OrFileFilter sourceFilter_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -50,16 +51,15 @@ class SourceScanner implements Runnable
      */
     SourceScanner(JSourceView view, File dir)
     {
-        dir_  = dir;
-        this.sourceView_ = view;
-        cancel_ = false;
+        dir_        = dir;
+        sourceView_ = view;
+        canceled_   = false;
         
-        sourceFilter_ = new OrFilter();
-        sourceFilter_.addFilter(new ExtensionFilter("c"));
-        sourceFilter_.addFilter(new ExtensionFilter("cpp"));
-        sourceFilter_.addFilter(new ExtensionFilter("java"));
-        sourceFilter_.addFilter(new ExtensionFilter("h"));
-        
+        sourceFilter_ = new OrFileFilter();
+        sourceFilter_.addFileFilter(new RegexFileFilter(".c$", false));
+        sourceFilter_.addFileFilter(new RegexFileFilter(".cpp$", false));
+        sourceFilter_.addFileFilter(new RegexFileFilter(".java$", false));
+        sourceFilter_.addFileFilter(new RegexFileFilter(".h$", false));
     }
     
     //--------------------------------------------------------------------------
@@ -75,11 +75,11 @@ class SourceScanner implements Runnable
     protected void findJavaFiles(File dir)
     {
         // Short circuit if operation canceled
-        if (cancel_)
+        if (isCanceled())
             return;
             
         // Process files in current directory
-        File srcFiles[] = dir.listFiles(sourceFilter_);
+        File[] srcFiles = dir.listFiles((FileFilter) sourceFilter_);
         
         if (!ArrayUtil.isNullOrEmpty(srcFiles))
             for (int i = 0; i < srcFiles.length; i++)
@@ -99,13 +99,25 @@ class SourceScanner implements Runnable
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Cancelable Interface
+    //--------------------------------------------------------------------------
     
     /** 
      * Cancels the scanning activity.
      */
-    protected void cancel()
+    public void cancel()
     {
-        cancel_ = true;
+        canceled_ = true;
+    }
+    
+    
+    /**
+     * @see toolbox.util.service.Cancelable#isCanceled()
+     */
+    public boolean isCanceled()
+    {
+        return canceled_;
     }
     
     //--------------------------------------------------------------------------

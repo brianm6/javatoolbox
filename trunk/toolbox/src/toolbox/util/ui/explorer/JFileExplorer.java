@@ -31,7 +31,10 @@ import javax.swing.tree.TreeSelectionModel;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -41,7 +44,6 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileComparator;
-import toolbox.util.io.filter.FileOnlyFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartMenuItem;
@@ -113,7 +115,17 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     public static final Icon ICON = 
         ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED);
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
+    /** 
+     * Filter to identify files (versus directories).
+     */
+    private static final IOFileFilter FILTER_FILEONLY = 
+        new NotFileFilter(DirectoryFileFilter.INSTANCE);
+
     //--------------------------------------------------------------------------
     // IPreferenced Constants
     //--------------------------------------------------------------------------
@@ -830,7 +842,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         DefaultListModel model = (DefaultListModel) fileList_.getModel();
         model.clear();
         File f = new File(path);
-        File[] files = f.listFiles(FileOnlyFilter.INSTANCE);
+        File[] files = f.listFiles((FileFilter) FILTER_FILEONLY);
         Arrays.sort(files, FileComparator.COMPARE_NAME);
         
         for (int i = 0; i < files.length; i++)

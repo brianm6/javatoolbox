@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Unit test for {@link toolbox.util.io.filter.RegexFilter}.
+ * Unit test for {@link toolbox.util.io.filter.RegexFileFilter}.
  */
 public class RegexFileFilterTest extends TestCase
 {

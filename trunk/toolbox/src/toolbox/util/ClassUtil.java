@@ -1,6 +1,7 @@
 package toolbox.util;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,10 +19,11 @@ import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.io.filter.ExtensionFilter;
+import toolbox.util.io.filter.RegexFileFilter;
 
 /**
  * Class related utility methods that complements
@@ -31,6 +33,16 @@ public final class ClassUtil
 {
     private static final Logger logger_ = Logger.getLogger(ClassUtil.class);
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Filter for class files.
+     */
+    private static final IOFileFilter FILTER_CLASS = 
+        new RegexFileFilter(".class$", false);
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -124,7 +136,7 @@ public final class ClassUtil
                 {
                     // Filter out only the class files
                     File[] classnames = 
-                        file.listFiles(new ExtensionFilter(".class"));
+                        file.listFiles((FileFilter) FILTER_CLASS);
                     
                     for (int j = 0; j < classnames.length; j++)
                     {
@@ -217,8 +229,7 @@ public final class ClassUtil
                 pathElement = FileUtil.trailWithSeparator(pathElement);
                 
                 // Get all class files       
-                List classFiles = FileUtil.find(
-                    pathElement, new ExtensionFilter(".class"));
+                List classFiles = FileUtil.find(pathElement, FILTER_CLASS);
                        
                 // Roundup parent directories and tag as package names
                 for (Iterator c = classFiles.iterator(); c.hasNext();)

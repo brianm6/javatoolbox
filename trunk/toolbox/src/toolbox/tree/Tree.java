@@ -2,7 +2,6 @@ package toolbox.tree;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -21,7 +20,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.ArrayUtil;
@@ -29,9 +31,7 @@ import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.file.FileComparator;
-import toolbox.util.io.filter.AndFilter;
-import toolbox.util.io.filter.FileOnlyFilter;
-import toolbox.util.io.filter.RegexFilter;
+import toolbox.util.io.filter.RegexFileFilter;
 
 /**
  * Generates a graphical representation of a directory structure using ascii
@@ -184,7 +184,7 @@ public class Tree
     /** 
      * Filter to identify files. 
      */
-    private FilenameFilter fileFilter_;
+    private IOFileFilter fileFilter_;
     
     /** 
      * Flag to toggle the showing of files. 
@@ -576,14 +576,14 @@ public class Tree
         showFiles_ = useRegex | showDate_ | showSize_ ? true : showFiles;
         
         if (showFiles_)
-            fileFilter_ = FileOnlyFilter.INSTANCE;
+            fileFilter_ = new NotFileFilter(DirectoryFileFilter.INSTANCE);
         
         if (useRegex)
         {
             fileFilter_ = 
-                new AndFilter(
+                new AndFileFilter(
                     fileFilter_, 
-                    new RegexFilter(regex_, false));  // TODO: expose case sensetivity?
+                    new RegexFileFilter(regex_, false));  // TODO: expose case sensetivity?
         }
 
         sortByMap_ = new HashMap();
@@ -657,7 +657,7 @@ public class Tree
         // Print files
         if (showFiles_)
         {
-            File[] files = rootDir.listFiles(fileFilter_);
+            File[] files = rootDir.listFiles( (FileFilter) fileFilter_);
             Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
             
             int longestName = -1; // Number of spaces occupied by longest fname 
