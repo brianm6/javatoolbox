@@ -4,7 +4,16 @@ import junit.runner.ClassPathTestCollector;
 
 /**
  * An implementation of a TestCollector that considers a class to be a test 
- * class when it ends with the pattern "Test" in its name.
+ * class when it ends with the pattern "Test" in its name. It also cannot be
+ * an anonymous class.
+ * <p>
+ * 
+ * <ul>
+ *  <li>MyTest.class is a valid testcase
+ *  <li>MyTestCase.class is not a valid testcase
+ *  <li>TestClass1.class is not a valid testcase
+ *  <li>MyTest$InnerTest.class is not a valid testcase
+ * </ul>
  */
 public class FileTestCollector extends ClassPathTestCollector 
 {

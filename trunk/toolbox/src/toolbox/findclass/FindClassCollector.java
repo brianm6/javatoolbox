@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * FindClassCollector is used to collect the results of the execution of 
- * FindClass.
+ * FindClassCollector collects the results of a FindClass operation.
  */
 public class FindClassCollector extends FindClassAdapter
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Storage for search results. 
      */
@@ -44,7 +47,7 @@ public class FindClassCollector extends FindClassAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Returns array of find class results. 
+     * Returns an array of FindClassResult objects. 
      * 
      * @return FindClassResult[]
      */
@@ -56,9 +59,10 @@ public class FindClassCollector extends FindClassAdapter
     
     
     /**
-     * Clears the contents of the colletor.
+     * Clears the contents of the colletor and returns the number of elements
+     * cleared.
      * 
-     * @return Number of elements cleared
+     * @return int
      */
     public int clear() 
     {

@@ -15,6 +15,12 @@ import toolbox.util.ClassUtil;
  * Filter that identifies only those tests suitable for execution under Clover.
  * Uses the javaassist library to do additional class inheritance and interface
  * implementation checks.
+ * 
+ * <ul>
+ * <li>Rejects classes that extends UITestCase(can't run swing tests unattended)
+ * <li>Rejects classes that implement StandAloneTestCase (tests which advertise
+ *     that they like to be run standalone or in an attended manner).
+ * </ul>
  */
 public class CloverTestFilter extends BasicTestFilter
 {
@@ -64,8 +70,8 @@ public class CloverTestFilter extends BasicTestFilter
     //--------------------------------------------------------------------------
 
     /**
-     * Rejects classes that exend UITestCase.
-     * Rejects classes that implement StandAloneTestCase.
+     * Rejects classes that exetnd UITestCase and also rejects classes that 
+     * implement StandAloneTestCase.
      *
      * @see junitx.util.TestFilter#include(java.lang.Class)
      */

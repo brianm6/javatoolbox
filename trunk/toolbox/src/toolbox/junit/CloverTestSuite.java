@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
  * A test suite that includes only those unit tests suitable for execution under
  * Clover. This excludes all user interface and non-stand alone unit tests
  * explicitly.
+ * 
+ * @see toolbox.junit.CloverTestFilter
  */
 public class CloverTestSuite extends TestSuite
 {
