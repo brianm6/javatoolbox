@@ -59,10 +59,10 @@ public class PhraseCanvas extends JComponent
         Color color,
         boolean antiAlias)
     {
-        phrase_    = phrase;
-        font_      = font;
-        color_     = color;
-        antiAlias_ = antiAlias;
+        setPhrase(phrase);
+        setFont(font);
+        setColor(color);
+        setAntiAlias(antiAlias);
     }
 
     //--------------------------------------------------------------------------
