@@ -35,11 +35,11 @@ import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
-import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
+import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * GUI front end to the tail
@@ -69,7 +69,7 @@ public class JTail extends JFrame
      * Status bar at the bottom of the screen that shows the status of
      * varioys activities
      */
-    private JStatusPane statusBar_;    
+    private IStatusBar statusBar_;    
     
     /**
      * Main menu bar that includes functionality not found else where 
@@ -140,11 +140,25 @@ public class JTail extends JFrame
     }
 
     //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets the status bar
+     * 
+     * @param  statusBar  Shared status bar
+     */
+    public void setStatusBar(IStatusBar statusBar)
+    {
+        statusBar_ = statusBar;
+    }
+
+    //--------------------------------------------------------------------------
     //  Private
     //--------------------------------------------------------------------------
     
     /** 
-     * Initializes program
+     * Initializes JTail
      */
     protected void init()
     {
@@ -160,9 +174,7 @@ public class JTail extends JFrame
         }
         catch (Exception e)
         {
-            System.err.println("Error: " + e.getMessage());
-            System.err.println(ExceptionUtil.getStackTrace(e));
-            System.exit(1);
+            ExceptionUtil.handleUI(e, logger_);
         }
     }
 
@@ -183,8 +195,8 @@ public class JTail extends JFrame
         getContentPane().add(BorderLayout.WEST, flipPane_);
         getContentPane().add(BorderLayout.CENTER, tabbedPane_);
         
-        statusBar_ = new JStatusPane();
-        getContentPane().add(BorderLayout.SOUTH, statusBar_);
+        //statusBar_ = new JStatusPane();
+        //getContentPane().add(BorderLayout.SOUTH, (Component) statusBar_);
         
         setJMenuBar(createMenuBar());
     }
@@ -229,7 +241,7 @@ public class JTail extends JFrame
         try
         {
             logger_.debug(method + "\n" + config);
-            TailPane tailPane = new TailPane(config);
+            TailPane tailPane = new TailPane(config, statusBar_);
  
             JButton closeButton = tailPane.getCloseButton();
             
@@ -242,11 +254,12 @@ public class JTail extends JFrame
             
             tabbedPane_.addTab(config.getFilename(), tailPane);
             tabbedPane_.setSelectedComponent(tailPane);
+            
+            statusBar_.setStatus("Added tail for " + config.getFilename());
         }
         catch (FileNotFoundException e)
         {
-            logger_.error(e.getMessage(), e);            
-            JSmartOptionPane.showExceptionMessageDialog(this, e);
+            ExceptionUtil.handleUI(e, logger_);
         }
     }
 
@@ -399,8 +412,6 @@ public class JTail extends JFrame
             
             addTail(config);
         }
-        
-        
     }
     
     
@@ -454,6 +465,9 @@ public class JTail extends JFrame
             
             // Save the configuration since the tail is gone
             saveConfiguration();
+            
+            statusBar_.setStatus(
+                "Closed " + pane.getConfiguration().getFilename());
         }
     }
 
