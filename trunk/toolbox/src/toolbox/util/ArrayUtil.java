@@ -272,4 +272,25 @@ public class ArrayUtil
         return (array == null || array.length == 0);
     }
     
+
+    /**
+     * Concats two arrays (one right after the other) with homogenous content.
+     * Arrays must contain elements of the same type!
+     * 
+     * @param   head  Array at front
+     * @param   tail  Array at back
+     * @result  Concatenated array
+     */
+    public static Object[] concat(Object[] head, Object[] tail)
+    {
+        int      len    = head.length + tail.length;
+        Class    clazz  = head.getClass().getComponentType();
+        Object[] result = (Object[])Array.newInstance(clazz, len);
+        
+        System.arraycopy(head, 0, result, 0, head.length);
+        System.arraycopy(tail, 0, result, head.length, tail.length);
+        
+        return result;
+    } 
+    
 }
