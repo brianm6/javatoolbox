@@ -13,6 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.functors.AndPredicate;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import toolbox.clearcase.IAudit;
 import toolbox.clearcase.IAuditResult;
@@ -28,6 +29,9 @@ import toolbox.util.FileUtil;
  */
 public class ContainsTabsAudit implements IAudit
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(ContainsTabsAudit.class);
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -134,23 +138,25 @@ public class ContainsTabsAudit implements IAudit
         public boolean evaluate(Object object)
         {
             VersionedFile file = (VersionedFile) object;
+            int numTabs = 0;
+            
             try
             {
                 String s = FileUtil.getFileContents(file.getName());
-                int numTabs = StringUtils.countMatches(s, "\t");
-                tabCountMap_.put(file, new Integer(numTabs));
+                numTabs = StringUtils.countMatches(s, "\t");
+                if (numTabs > 0)
+                    tabCountMap_.put(file, new Integer(numTabs));
             }
             catch (FileNotFoundException e)
             {
-                e.printStackTrace();
+                logger_.error(e);
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                logger_.error(e);
             }
             
-            Revision rev = (Revision) file.getRevisions().iterator().next();
-            return StringUtils.isBlank(rev.getComment());
+            return numTabs > 0;
         }
     }
 }
