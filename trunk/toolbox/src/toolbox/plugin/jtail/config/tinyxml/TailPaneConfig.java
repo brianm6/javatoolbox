@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.SwingUtil;
-import toolbox.util.collections.AsMap;
 import toolbox.util.xml.XMLNode;
 
 /**
@@ -41,6 +40,14 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      */
     public TailPaneConfig()
     {
+        this(   "",         // file
+                true,       // autoscroll
+                false,      // show linenumbers
+                false,      // antialias
+                SwingUtil.getPreferredMonoFont(), // font
+                "",         // Regular exp
+                "",         // Cut exp
+                true );     // autostart
     }
 
     /**
@@ -223,7 +230,18 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      */
     public String toString()
     {
-        return AsMap.of(this).toString();
+        String s = null;
+        
+        try
+        {
+            s = marshal().toString();
+        }
+        catch (Exception ioe)
+        {
+            logger_.error("toString", ioe);
+        }
+        
+        return s;
     }
 
     //--------------------------------------------------------------------------
