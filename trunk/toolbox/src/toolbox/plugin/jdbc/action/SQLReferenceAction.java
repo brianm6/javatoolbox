@@ -40,9 +40,11 @@ public class SQLReferenceAction extends BaseAction
      */
     public void runAction(ActionEvent e)
     {
-        String sqlRef = File.separator +
-            FileUtil.trailWithSeparator(ClassUtil.packageToPath(
-                ClassUtils.getPackageName(QueryPlugin.class))) + "sqlref.txt";
+        String sqlRef = 
+            File.separator + FileUtil.trailWithSeparator(
+                ClassUtil.packageToPath(
+                    ClassUtils.getPackageName(QueryPlugin.class))) 
+                    + "sqlref.txt";
 
         sqlRef = sqlRef.replace(File.separatorChar, '/');
 
