@@ -2,14 +2,16 @@ package toolbox.test;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 import org.apache.log4j.BasicConfigurator;
 import toolbox.util.io.test.StringInputStreamTest;
 import toolbox.util.io.test.StringOutputStreamTest;
 import toolbox.util.test.ArrayUtilTest;
 import toolbox.util.test.AssertTest;
+import toolbox.util.test.ConsoleTest;
 import toolbox.util.test.FileUtilTest;
+import toolbox.util.test.RandomUtilTest;
 import toolbox.util.test.ResourceUtilTest;
+import toolbox.util.test.SocketUtilTest;
 import toolbox.util.test.StreamUtilTest;
 import toolbox.util.test.StringUtilTest;
 import toolbox.util.test.ThreadUtilTest;
@@ -35,18 +37,21 @@ public class RegressionTest
     public static Test suite()
     {
         BasicConfigurator.configure();
-                
+        
         TestSuite suite = new TestSuite();
          
         // util
         suite.addTest(new TestSuite(ArrayUtilTest.class));
+        suite.addTest(new TestSuite(AssertTest.class));        
+        suite.addTest(new TestSuite(ConsoleTest.class));
+        suite.addTest(new TestSuite(FileUtilTest.class));        
+        suite.addTest(new TestSuite(RandomUtilTest.class));
         suite.addTest(new TestSuite(ResourceUtilTest.class));
+        suite.addTest(new TestSuite(SocketUtilTest.class));
+        suite.addTest(new TestSuite(StreamUtilTest.class));        
+        suite.addTest(new TestSuite(StringUtilTest.class));        
         suite.addTest(new TestSuite(ThreadUtilTest.class));
-        suite.addTest(new TestSuite(StreamUtilTest.class));
-        suite.addTest(new TestSuite(FileUtilTest.class));
-        suite.addTest(new TestSuite(AssertTest.class));
-        suite.addTest(new TestSuite(StringUtilTest.class));
-        
+                
         // util.io
         suite.addTest(new TestSuite(StringInputStreamTest.class));
         suite.addTest(new TestSuite(StringOutputStreamTest.class));        
