@@ -44,16 +44,18 @@ public class ExecuteAllAction extends BaseAction
      */
     public void runAction(ActionEvent e) throws Exception
     {
-        String sqlText = getPlugin().getSQLEditor().getText().trim();
+        QueryPlugin plugin = getPlugin();
+        
+        String sqlText = plugin.getSQLEditor().getText().trim();
         
         if (StringUtils.isBlank(sqlText))
         {
-            getPlugin().getStatusBar().setWarning(
+            plugin.getStatusBar().setWarning(
                 "Enter SQL statements to execute into the editor first.");
         }
         else
         {
-            getPlugin().getStatusBar().setInfo("Executing...");
+            plugin.getStatusBar().setInfo("Executing...");
             
             String[] stmts = 
                 StringUtils.split(sqlText, QueryPlugin.SQL_TERMINATOR);
@@ -68,16 +70,16 @@ public class ExecuteAllAction extends BaseAction
                 try
                 {
                     stmts[i] = stmts[i].trim();
-                    String results = getPlugin().executeSQL(stmts[i]);
+                    String results = plugin.executeSQL(stmts[i]);
                     
                     if (!StringUtil.isMultiline(results))
                     {
                         String command = StringUtils.split(stmts[i])[0];
-                        getPlugin().getResultsArea().append(command + " ");
+                        plugin.getResultsArea().append(command + " ");
                     }
                     else
                     {
-                        getPlugin().getResultsArea().append("\n");
+                        plugin.getResultsArea().append("\n");
                         
                         //resultsArea_.append(
                         //    "Multline found..skipping command : " + 
@@ -85,7 +87,7 @@ public class ExecuteAllAction extends BaseAction
                     }
                     
                     //resultsArea_.append(StringUtil.addBars(results) + "\n");
-                    getPlugin().getResultsArea().append(results + "\n");
+                    plugin.getResultsArea().append(results + "\n");
                     
                     //StringOutputStream sos = new StringOutputStream();
                     //HexDump.dump(results.getBytes(), 0, sos, 0);
@@ -101,7 +103,7 @@ public class ExecuteAllAction extends BaseAction
                         (StringUtil.tokenize(results, StringUtil.NL).length < 
                             QueryPlugin.AUTO_SCROLL_THRESHOLD))
                     {
-                        getPlugin().getResultsArea().scrollToEnd();
+                        plugin.getResultsArea().scrollToEnd();
                     }
                 }
                 catch (Exception ex)
@@ -133,7 +135,7 @@ public class ExecuteAllAction extends BaseAction
                 }
             }
 
-            getPlugin().getStatusBar().setInfo("Done");
+            plugin.getStatusBar().setInfo("Done");
         }
     }
 }

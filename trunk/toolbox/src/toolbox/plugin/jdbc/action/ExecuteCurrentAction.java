@@ -58,10 +58,9 @@ public class ExecuteCurrentAction extends BaseAction
         QueryPlugin plugin = getPlugin();
         JEditTextArea sqlEditor = plugin.getSQLEditor();
         IStatusBar statusBar = plugin.getStatusBar();
-        
-        // Check for a text selection first
         String sql = sqlEditor.getSelectedText();
-
+        
+        // Check for a text selection first.
         // If no text is selected, then execute the current statement. This
         // assumes we are on the first line of the statement and that there
         // is a semicolon somewhere to tell us where the statement ends.
@@ -93,8 +92,8 @@ public class ExecuteCurrentAction extends BaseAction
             }
 
             // If no terminating semicolon for the statement is found, then
-            // assume only the current line contains the entire sql
-            // statement to execute.
+            // assume only the current line contains the entire sql statement to
+            // execute.
             sql = stmt.toString();
         }
 
@@ -106,7 +105,8 @@ public class ExecuteCurrentAction extends BaseAction
         {
             statusBar.setInfo("Executing...");
             String results = plugin.executeSQL(sql);
-            plugin.getResultsArea().append(results + "\n");
+            
+            //plugin.getResultsArea().append(results + "\n");
 
             if ((!StringUtils.isBlank(results)) &&
                 (StringUtil.tokenize(results, StringUtil.NL).length < 
