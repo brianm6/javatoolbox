@@ -249,6 +249,9 @@ public final class ThreadUtil
 
             if (params_ == null)
                 params_ = new Object[0];
+                
+            if (clazzes_ == null)
+                clazzes_ = new Class[0];
             
             // Have to verify method is legit here because after run(), there
             // is no opportunity to let the caller know that the passed params
@@ -273,11 +276,7 @@ public final class ThreadUtil
         {
             try
             {  
-                if (clazzes_ == null)
-                    MethodUtils.invokeMethod(target_, method_, params_);    
-                else
-                    MethodUtils.invokeMethod(target_, method_, params_, 
-                        clazzes_);    
+                MethodUtils.invokeMethod(target_, method_, params_, clazzes_);    
             }
             catch (NoSuchMethodException nsme)
             {
