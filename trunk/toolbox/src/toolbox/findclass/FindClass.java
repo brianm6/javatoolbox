@@ -80,7 +80,7 @@ public class FindClass
      */
     public FindClass() 
     {
-        addFindClassListener(defaultCollector_);
+        addSearchListener(defaultCollector_);
     }
 
     //--------------------------------------------------------------------------
@@ -133,6 +133,8 @@ public class FindClass
                 break;                    
             }
         }
+        
+        fireSearchCompleted();
         
         return defaultCollector_.getResults();
     }
@@ -202,7 +204,7 @@ public class FindClass
     /**
      * Removes all search targets
      */
-    public void removeAllSearchTargets()
+    public void removeSearchTargets()
     {
         searchTargets_.clear();
     }
@@ -400,9 +402,10 @@ public class FindClass
     //--------------------------------------------------------------------------
 
     /**
-     * Called when a class is found by the various search methods
+     * Called when a class is found matching the search criteria
      *
-     * @param  result   Details of what, what, when the class was found
+     * @param  result  Detailed information on the class including location,
+     *                 size, name, etc.
      */
     protected void fireClassFound(FindClassResult result)
     {
@@ -411,7 +414,17 @@ public class FindClass
     }
 
     /**
-     * Called when a class is found by the various search methods
+     * Called when a search has been completed.
+     */
+    protected void fireSearchCompleted()
+    {
+        for(int i=0, n = findListeners_.size(); i<n; i++)
+           ((IFindClassListener)
+               findListeners_.get(i)).searchCompleted(classToFind_);
+    }
+
+    /**
+     * Called when a search target is about to be searched.
      *
      * @param  target  Target being searched
      */
@@ -431,22 +444,30 @@ public class FindClass
     }
  
     /**
-     * Adds a listener to the notification list
+     * Adds a search listener to the list of interested listeners. 
      * 
      * @param listener Listener to add
      */   
-    public void addFindClassListener(IFindClassListener listener)
+    public void addSearchListener(IFindClassListener listener)
     {
         findListeners_.add(listener);        
     }
     
     /**
-     * Removes a listener from the notification list 
+     * Removes a search listener from the list of interested listeners. 
      * 
      * @param listener Listener to remove
      */
-    public void removeFindClassListener(IFindClassListener listener)
+    public void removeSearchListener(IFindClassListener listener)
     {
         findListeners_.remove(listener);
+    }
+    
+    /**
+     * Removes all search listeners from the list of interested listeners.
+     */
+    public void removeSearchListeners()
+    {
+        findListeners_.clear();
     }
 }
