@@ -236,7 +236,7 @@
             overwrite ="false" />
 
         <unjar 
-        	src       ="${lib}/commons-lang-1.0-rc1.jar" 
+        	src       ="${lib}/commons-lang.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
 
