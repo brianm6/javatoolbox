@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ClassUtil;
 import toolbox.workspace.IPlugin;
 
 /**
@@ -49,7 +50,7 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public void startup(Map props)
     {
-        //logger_.debug("startup");
+        logger_.debug("Starting up " + ClassUtil.stripPackage(getClass()));
         
         // Make sure map is ordered by insertion.
         plugins_ = new LinkedHashMap();
@@ -66,7 +67,8 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public void addPlugin(IPlugin plugin)
     {
-        logger_.debug("addPlugin: " + plugin.getClass().getName());
+        logger_.debug("Adding plugin " + 
+            ClassUtil.stripPackage(plugin.getClass()));
         
         plugin.startup(init_);
         importPlugin(plugin);
@@ -83,7 +85,8 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public void removePlugin(IPlugin plugin)
     {
-        logger_.debug("removePlugin: " + plugin.getClass().getName());
+        logger_.debug("Removing plugin " + 
+            ClassUtil.stripPackage(plugin.getClass()));
         
         exportPlugin(plugin);
         plugin.shutdown();
@@ -98,7 +101,8 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public void importPlugin(IPlugin plugin)
     {
-        logger_.debug("importPlugin: " + plugin.getClass().getName());
+        logger_.debug("Importing plugin " + 
+            ClassUtil.stripPackage(plugin.getClass()));
         
         plugins_.put(plugin.getClass().getName(), plugin);
     }
@@ -110,7 +114,8 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public void exportPlugin(IPlugin plugin)
     {
-        logger_.debug("exportPlugin: " + plugin.getClass().getName());
+        logger_.debug("Exporting plugin " + 
+            ClassUtil.stripPackage(plugin.getClass().getName()));
         
         plugins_.remove(plugin.getClass().getName());        
     }    
@@ -176,7 +181,7 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public void shutdown()
     {
-        logger_.debug("shutdown");
+        logger_.debug("Shutting down " + ClassUtil.stripPackage(getClass()));
         
         plugins_.clear();
         plugins_ = null;
@@ -214,6 +219,8 @@ public abstract class AbstractPluginHost implements PluginHost
 
     /**
      * Fires an event when a plugin is added.
+     * 
+     * @param plugin Added plugin.
      */
     protected void firePluginAdded(IPlugin plugin)
     {
@@ -224,6 +231,8 @@ public abstract class AbstractPluginHost implements PluginHost
 
     /**
      * Fires an event when a plugin is removed.
+     * 
+     * @param plugin Removed plugin.
      */
     protected void firePluginRemoved(IPlugin plugin)
     {
