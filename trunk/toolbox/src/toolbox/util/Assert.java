@@ -19,6 +19,9 @@ public final class Assert
      */
     private static final String DEFAULT_MSG = "";
 
+    // Clover private constructor workaround
+    static { new Assert(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

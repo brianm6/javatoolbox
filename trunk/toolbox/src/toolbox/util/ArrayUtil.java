@@ -7,6 +7,9 @@ import java.lang.reflect.Array;
  */
 public final class ArrayUtil
 {
+    // Clover private constructor workaround
+    static { new ArrayUtil(); }
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -156,7 +159,6 @@ public final class ArrayUtil
 
         return toString(wrapper);
     }
-
 
     /**
      * Converts an array of objects into a comma delimited single line 

@@ -2267,6 +2267,9 @@ public class Banner
     private static final BannerFont FONT_STANDARD = 
         new BannerFont(FONT_STANDARD_DATA);
 
+    // Clover private constructor workaround
+    static { new Banner(); }
+
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -2338,14 +2341,14 @@ public class Banner
                         printUsage();
                         System.out.println("\nError: '" + option.getValue() + 
                             "' is not a valid line width.");
-                        return; //System.exit(0);
+                        return;
                     }
                 }
                 else if (opt.equals(helpOption.getOpt())  ||
                          opt.equals(helpOption2.getOpt()))
                 {
                     printUsage();
-                    return; //System.exit(0);
+                    return;
                 }
             }
 
@@ -2355,7 +2358,7 @@ public class Banner
                 case  0: 
                 
                     printUsage(); 
-                    return; //System.exit(0);
+                    return;
                     
                 
                 default:

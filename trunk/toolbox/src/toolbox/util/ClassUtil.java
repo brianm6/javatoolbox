@@ -24,6 +24,9 @@ public final class ClassUtil
     private static final Logger logger_ = 
         Logger.getLogger(ClassUtil.class);
 
+    // Clover private constructor workaround
+    static { new ClassUtil(); }
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
