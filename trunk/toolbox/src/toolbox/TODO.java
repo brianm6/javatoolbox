@@ -19,7 +19,6 @@ package toolbox;
  * TODO: Really pick apart JSmartTextArea and figure out a good way optimizing
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
- * TODO: Convert all gifs to pngs.
  * TODO: Separate unit tests from main source branch + reconfig maven.
  * TODO: Add a filled bar mode to JSourceView
  * =============================================================================
