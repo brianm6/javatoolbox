@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
@@ -613,5 +614,255 @@ public final class JDBCUtil
         {
             return driver_.jdbcCompliant();
         }
+    }    
+    
+    
+    /**
+     * Formats a SQL statement.
+     * 
+     * @param sql SQL statement to format. Must be syntactically valid.
+     * @return Formatted SQL statement.
+     */
+    public static String formatSQL(String sql)
+    {
+        String[]  tokenString             = new String[10000];
+        boolean   inQuotes                = false;
+        boolean[] commaLineBreakStatement = new boolean[10000];
+        boolean[] indentBracket           = new boolean[10000];
+        int       numberOfSpaces          = 3;
+        int       bracketLevel            = 0;
+        String    formattedSQL            = "";
+        int       currentToken            = 1;
+        
+        // These should be configurable
+        String  quoteChar       = "'";
+        boolean suppressSpaces  = true;
+        boolean formatCase      = true;
+        boolean showLevel       = false;
+        
+        commaLineBreakStatement[0] = true;
+        indentBracket[0] = true;
+        tokenString[0] = " ";
+        inQuotes = false;
+        
+        StringTokenizer st = 
+            new StringTokenizer(sql, ",() \n \t " + quoteChar, true);
+        
+        while (st.hasMoreTokens())
+        {
+            tokenString[currentToken] = st.nextToken();
+
+            if (tokenString[currentToken].equals("\n")
+                || tokenString[currentToken].equals("\t"))
+                tokenString[currentToken] = " ";
+
+            if (tokenString[currentToken].equals(quoteChar))
+                inQuotes = !inQuotes;
+
+            if (!suppressSpaces
+                || inQuotes
+                || !tokenString[currentToken].equals(" ")
+                || !tokenString[currentToken - 1].equals(" "))
+            {
+                currentToken++;
+            }
+        }
+        
+        int numberOfTokens = currentToken;
+        inQuotes = false;
+        
+        for (currentToken = 1; currentToken < numberOfTokens; currentToken++)
+        {
+            int linebreakbefore = 0;
+            int linebreakafter = 0;
+            boolean reduceSpacesBefore = false;
+            boolean reduceSpacesAfter = false;
+            boolean addSpacesBefore = false;
+            boolean addSpacesAfter = false;
+            boolean upperCaseToken = false;
+            
+            if (tokenString[currentToken].equals(quoteChar))
+                inQuotes = !inQuotes;
+            
+            if (!inQuotes)
+            {
+                if (tokenString[currentToken].equalsIgnoreCase("Select"))
+                {
+                    linebreakafter = 1;
+                    reduceSpacesBefore = true;
+                    addSpacesAfter = true;
+                    upperCaseToken = true;
+                    commaLineBreakStatement[bracketLevel] = true;
+                }
+                
+                if (tokenString[currentToken].equalsIgnoreCase("from")
+                    || tokenString[currentToken].equalsIgnoreCase("where")
+                    || tokenString[currentToken].equalsIgnoreCase("group")
+                    || tokenString[currentToken].equalsIgnoreCase("having")
+                    || tokenString[currentToken].equalsIgnoreCase("sort")
+                    || tokenString[currentToken].equalsIgnoreCase("update")
+                    || tokenString[currentToken].equalsIgnoreCase("create")
+                    || tokenString[currentToken].equalsIgnoreCase("insert")
+                    || tokenString[currentToken].equalsIgnoreCase("delete")
+                    || tokenString[currentToken].equalsIgnoreCase("inner")
+                    || tokenString[currentToken].equalsIgnoreCase("union")
+                    || tokenString[currentToken].equalsIgnoreCase("left")
+                    || tokenString[currentToken].equalsIgnoreCase("full")
+                    || tokenString[currentToken].equalsIgnoreCase("comment")    
+                    || tokenString[currentToken].equalsIgnoreCase("right"))
+                {
+                    reduceSpacesBefore = true;
+                    addSpacesAfter = true;
+                    linebreakbefore = 1;
+                    upperCaseToken = true;
+                }
+                
+                if (tokenString[currentToken].equalsIgnoreCase("case"))
+                {
+                    addSpacesAfter = true;
+                    upperCaseToken = true;
+                }
+                
+                if (tokenString[currentToken].equalsIgnoreCase("when")
+                    || tokenString[currentToken].equalsIgnoreCase("then")
+                    || tokenString[currentToken].equalsIgnoreCase("else")
+                    || tokenString[currentToken].equalsIgnoreCase("and")
+                    || tokenString[currentToken].equalsIgnoreCase("or")
+                    || tokenString[currentToken].equalsIgnoreCase("set")
+                    //|| tokenString[currentToken].equalsIgnoreCase("like")                        
+                    //|| tokenString[currentToken].equalsIgnoreCase("on")
+                    )
+                {
+                    linebreakbefore = 1;
+                    upperCaseToken = true;
+                }
+                
+                if (tokenString[currentToken].equals(")"))
+                {
+                    if (indentBracket[bracketLevel])
+                    {
+                        linebreakbefore = 1;
+                        linebreakafter = 1;
+                        reduceSpacesBefore = true;
+                    }
+
+                    bracketLevel--;
+
+                    if (bracketLevel < 0)
+                        bracketLevel = 0;
+                }
+                
+                if (tokenString[currentToken].equalsIgnoreCase("end"))
+                {
+                    linebreakbefore = 1;
+                    linebreakafter = 1;
+                    reduceSpacesBefore = true;
+                    upperCaseToken = true;
+                }
+                
+                if (tokenString[currentToken].equals("("))
+                {
+                    bracketLevel++;
+                    indentBracket[bracketLevel] = false;
+                    commaLineBreakStatement[bracketLevel] = false;
+                    boolean searchedTokenfound = false;
+                    boolean otherTokenFound = false;
+                    int j;
+                    
+                    for (j = currentToken;
+                        j < numberOfTokens
+                            && !searchedTokenfound
+                            && !otherTokenFound;
+                        j++)
+                    {
+                        if (tokenString[j].equalsIgnoreCase("Select"))
+                        {
+                            linebreakbefore = 1;
+                            indentBracket[bracketLevel] = true;
+                            addSpacesAfter = true;
+                            searchedTokenfound = true;
+                        }
+
+                        if (!tokenString[j].equals("(")
+                            && !tokenString[j].equals(" "))
+                            otherTokenFound = true;
+                    }
+
+                    j = currentToken;
+                    searchedTokenfound = false;
+                    
+                    for (otherTokenFound = false;
+                        j > 1 && !searchedTokenfound && !otherTokenFound;
+                        j--)
+                    {
+                        if (tokenString[j].equalsIgnoreCase("where")
+                            || tokenString[j].equalsIgnoreCase("and")
+                            || tokenString[j].equalsIgnoreCase("or"))
+                        {
+                            linebreakbefore = 1;
+                            linebreakafter = 1;
+                            indentBracket[bracketLevel] = true;
+                            addSpacesAfter = true;
+                            searchedTokenfound = true;
+                        }
+
+                        if (!tokenString[j].equals("(")
+                            && !tokenString[j].equals(" "))
+                            otherTokenFound = true;
+                    }
+                }
+                
+                if (tokenString[currentToken].equals(",") && 
+                        commaLineBreakStatement[bracketLevel])
+                    linebreakafter = 1;
+                
+                if (reduceSpacesBefore)
+                    numberOfSpaces -= 8;
+                
+                if (addSpacesBefore)
+                    numberOfSpaces += 8;
+                
+                for (int j = 1; j <= linebreakbefore; j++)
+                {
+                    formattedSQL += "\n";
+
+                    for (int i = 0; i < numberOfSpaces; i++)
+                    {
+                        if (showLevel && i % 8 == 0)
+                            formattedSQL += "|";
+
+                        formattedSQL += " ";
+                    }
+                }
+            }
+            
+            if (inQuotes)
+                formattedSQL += tokenString[currentToken];
+            else if (upperCaseToken && formatCase)
+                formattedSQL += tokenString[currentToken].toUpperCase();
+            else
+                formattedSQL += tokenString[currentToken].toLowerCase();
+            
+            if (reduceSpacesAfter)
+                numberOfSpaces -= 8;
+            
+            if (addSpacesAfter)
+                numberOfSpaces += 8;
+            
+            for (int j = 1; j <= linebreakafter; j++)
+            {
+                formattedSQL += "\n";
+
+                for (int i = 0; i < numberOfSpaces; i++)
+                {
+                    if (showLevel && i % 8 == 0)
+                        formattedSQL += "|";
+
+                    formattedSQL += " ";
+                }
+            }
+        }
+
+        return formattedSQL;
     }    
 }
