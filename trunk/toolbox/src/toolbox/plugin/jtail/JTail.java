@@ -27,9 +27,9 @@ import nu.xom.Elements;
 import org.apache.log4j.Logger;
 
 import toolbox.plugin.jtail.config.IJTailConfig;
-import toolbox.plugin.jtail.config.ITailPaneConfig;
+import toolbox.plugin.jtail.config.ITailViewConfig;
 import toolbox.plugin.jtail.config.xom.JTailConfig;
-import toolbox.plugin.jtail.config.xom.TailPaneConfig;
+import toolbox.plugin.jtail.config.xom.TailViewConfig;
 import toolbox.plugin.jtail.filter.DynamicFilterView;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
@@ -106,7 +106,7 @@ public class JTail extends JPanel implements IPreferenced
     /** 
      * File explorer flipper that allows the user to select a file to tail. 
      */
-    private FileSelectionPane fileSelectionPane_;
+    private FileSelectionView fileSelectionPane_;
 
     /** 
      * Tab panel that contains each tail as a single tab. 
@@ -180,7 +180,7 @@ public class JTail extends JPanel implements IPreferenced
      * @param config TailPane configuration.
      * @return String
      */
-    public static String makeTabLabel(ITailPaneConfig config)
+    public static String makeTabLabel(ITailViewConfig config)
     {
         StringBuffer tabname = new StringBuffer();
         String[] filenames = config.getFilenames();
@@ -210,7 +210,7 @@ public class JTail extends JPanel implements IPreferenced
      * @param config TailPane configuration.
      * @return String
      */
-    public static String makeTabToolTip(ITailPaneConfig config)
+    public static String makeTabToolTip(ITailViewConfig config)
     {
         StringBuffer tabname = new StringBuffer();
         String[] filenames = config.getFilenames();
@@ -258,7 +258,7 @@ public class JTail extends JPanel implements IPreferenced
     protected void buildView()
     {
         setLayout(new BorderLayout());
-        fileSelectionPane_ = new FileSelectionPane();
+        fileSelectionPane_ = new FileSelectionView();
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         
         flipPane_.addFlipper(
@@ -316,7 +316,7 @@ public class JTail extends JPanel implements IPreferenced
      * @param config Tail configuration.
      * @throws IOException on I/O error.
      */     
-    protected void addTail(ITailPaneConfig config) throws IOException
+    protected void addTail(ITailViewConfig config) throws IOException
     {
         TailPane tailPane = new TailPane(config, statusBar_);
             
@@ -340,7 +340,7 @@ public class JTail extends JPanel implements IPreferenced
         statusBar_.setInfo("Added tail for " + 
             ArrayUtil.toString(config.getFilenames(), false));
             
-        tailPane.addTailPaneListener(tabbedPane_);
+        tailPane.addTailViewListener(tabbedPane_);
     }
     
     
@@ -374,10 +374,10 @@ public class JTail extends JPanel implements IPreferenced
     /**
      * Returns the configuration of currently selected tail in the tabbed pane.
      * 
-     * @return ITailPaneConfig.
+     * @return ITailViewConfig.
      * @throws IOException on I/O error.  
      */
-    protected ITailPaneConfig getSelectedConfig() throws IOException
+    protected ITailViewConfig getSelectedConfig() throws IOException
     {
         return getSelectedTail().getConfiguration();
     }
@@ -403,11 +403,11 @@ public class JTail extends JPanel implements IPreferenced
         // Restore tails left running since last save.
         //
         
-        ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
+        ITailViewConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
         
         for (int i = 0; i < tailPaneConfigs.length; i++)
         {
-            ITailPaneConfig config = tailPaneConfigs[i];
+            ITailViewConfig config = tailPaneConfigs[i];
             
             // Apply defaults if any
             if (config.getFont() == null)
@@ -431,7 +431,7 @@ public class JTail extends JPanel implements IPreferenced
         for (int i = 0, n = recentTails.size(); i < n; i++)
         {
             Element recentTail = recentTails.get(i);
-            TailPaneConfig config = new TailPaneConfig();
+            TailViewConfig config = new TailViewConfig();
             config.applyPrefs(recentTail);
             recentMenu_.add(new TailRecentAction(config));
         }
@@ -445,14 +445,14 @@ public class JTail extends JPanel implements IPreferenced
     {
         Element root = new Element(NODE_JTAIL_PLUGIN);
         
-        ITailPaneConfig configs[] = new ITailPaneConfig[0];
+        ITailViewConfig configs[] = new ITailViewConfig[0];
         
         for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             TailPane tailPane = (TailPane) entry.getValue();            
-            ITailPaneConfig config = tailPane.getConfiguration();
-            configs = (ITailPaneConfig[]) ArrayUtil.add(configs, config);    
+            ITailViewConfig config = tailPane.getConfiguration();
+            configs = (ITailViewConfig[]) ArrayUtil.add(configs, config);    
         }
         
         jtailConfig_.setTailConfigs(configs);
@@ -474,8 +474,8 @@ public class JTail extends JPanel implements IPreferenced
             
             if (action instanceof TailRecentAction) 
             {
-                ITailPaneConfig config = 
-                    (ITailPaneConfig) action.getValue("config");
+                ITailViewConfig config = 
+                    (ITailViewConfig) action.getValue("config");
 
                 Element recentTail = new Element(NODE_RECENT_TAIL);
                 config.savePrefs(recentTail);
@@ -502,8 +502,8 @@ public class JTail extends JPanel implements IPreferenced
          */
         public void fileDoubleClicked(String file)
         {
-            ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
-            ITailPaneConfig config = new TailPaneConfig();
+            ITailViewConfig defaults = jtailConfig_.getDefaultConfig();
+            ITailViewConfig config = new TailViewConfig();
             
             config.setFilenames(new String[] {file});
             config.setAutoTail(defaults.isAutoTail());
@@ -547,8 +547,8 @@ public class JTail extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
-            ITailPaneConfig config = new TailPaneConfig();
+            ITailViewConfig defaults = jtailConfig_.getDefaultConfig();
+            ITailViewConfig config = new TailViewConfig();
             
             config.setFilenames(new String[] 
             {
@@ -627,7 +627,7 @@ public class JTail extends JPanel implements IPreferenced
         {
             Object closeButton = e.getSource();
             TailPane pane = (TailPane) tailMap_.get(closeButton);
-            pane.removeTailPaneListener(tabbedPane_);
+            pane.removeTailViewListener(tabbedPane_);
             tabbedPane_.remove(pane);        
             tailMap_.remove(closeButton);
             
@@ -653,14 +653,14 @@ public class JTail extends JPanel implements IPreferenced
         /**
          * Tail configuration.
          */
-        private ITailPaneConfig config_;
+        private ITailViewConfig config_;
         
         /**
          * Creates a TailRecentAction.
          * 
          * @param config Tail configuration.
          */
-        TailRecentAction(ITailPaneConfig config)
+        TailRecentAction(ITailViewConfig config)
         {
             super(config.getFilenames()[0], true, false, null);
             config_ = config;
@@ -830,7 +830,7 @@ public class JTail extends JPanel implements IPreferenced
             try
             {
                 // Apply current settings
-                ITailPaneConfig config = getSelectedConfig();
+                ITailViewConfig config = getSelectedConfig();
                 config.setFont(fontChooser.getSelectedFont());
                 config.setAntiAliased(fontChooser.isAntiAliased());
                 getSelectedTail().setConfiguration(config);
@@ -853,7 +853,7 @@ public class JTail extends JPanel implements IPreferenced
         public void cancelButtonPressed(JFontChooser fontChooser)
         {
             // Restore saved state
-            ITailPaneConfig config;
+            ITailViewConfig config;
             
             try
             {
@@ -878,7 +878,7 @@ public class JTail extends JPanel implements IPreferenced
             try
             {
                 // Use new settings
-                ITailPaneConfig config = getSelectedConfig();
+                ITailViewConfig config = getSelectedConfig();
                 config.setFont(fontChooser.getSelectedFont());
                 config.setAntiAliased(fontChooser.isAntiAliased());
                 getSelectedTail().setConfiguration(config);
@@ -969,7 +969,7 @@ public class JTail extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            ITailPaneConfig config = new TailPaneConfig();
+            ITailViewConfig config = new TailViewConfig();
             config.setAntiAliased(false);
             config.setAutoTail(true);
             config.setAutoStart(true);
@@ -1010,7 +1010,7 @@ public class JTail extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            ITailPaneConfig config = new TailPaneConfig();
+            ITailViewConfig config = new TailViewConfig();
             config.setAntiAliased(false);
             config.setAutoTail(true);
             config.setAutoStart(true);

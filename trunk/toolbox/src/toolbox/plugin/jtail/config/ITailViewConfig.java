@@ -5,12 +5,12 @@ import java.awt.Font;
 import toolbox.workspace.IPreferenced;
 
 /**
- * ITailPaneConfig describes the interface necessary to configure a TailPane.
+ * ITailViewConfig describes the interface necessary to configure a TailPane.
  */
-public interface ITailPaneConfig extends IPreferenced
+public interface ITailViewConfig extends IPreferenced
 {
     //--------------------------------------------------------------------------
-    // Constants
+    // Defaults Constants
     //--------------------------------------------------------------------------
     
     /** 
@@ -179,3 +179,30 @@ public interface ITailPaneConfig extends IPreferenced
      */
     boolean isAutoStart();
 }
+
+/*
+================================================================================
+CVS History as ITailViewConfig.java
+================================================================================
+1.18 2004/08/11 Updated config methods to javabean naming conventions
+1.17 2004/01/31 Moved JTail plugin from toolbox.jtail to toolbox.plugin.jtail.
+1.16 2004/01/25 Javadoc updates
+1.15 2004/01/07 Checkstyle updates
+1.14 2003/11/23 Removed redundant public modifier
+1.13 2003/10/06 Workspace moved toolbox.workspace
+1.12 2003/09/18 Fixed isAntiAlias() -> isAntiAliased() javadoc
+1.11 2003/09/13 Javadoc updates
+1.10 2003/07/09 Added ability to aggregate multiple tails within a single 
+                TailPane
+1.9  2003/06/21 Changed preference persistence strategy from a properties based
+                file to an XML document.
+1.8  2003/03/24 Removed tabs
+1.7  2003/03/15 Tailpane now remembers state of tail (start/stopped) between 
+                sessions.
+1.6  2003/01/06 Formatting updates
+1.5  2002/12/04 Checkstyle updates
+1.4  2002/11/11 Renamed filter to regular expression and added cut expression
+1.3  2002/08/25 Added antialias
+1.2  2002/08/24 Javadoc updates
+1.1  2002/08/14 Initial version
+*/

@@ -27,7 +27,7 @@ import org.apache.log4j.TTCCLayout;
 import org.apache.log4j.WriterAppender;
 import org.apache.regexp.RESyntaxException;
 
-import toolbox.plugin.jtail.config.ITailPaneConfig;
+import toolbox.plugin.jtail.config.ITailViewConfig;
 import toolbox.plugin.jtail.filter.CutLineFilter;
 import toolbox.plugin.jtail.filter.ILineFilter;
 import toolbox.plugin.jtail.filter.LineNumberDecorator;
@@ -201,7 +201,7 @@ public class TailPane extends JHeaderPanel
     /**
      * TailPane configuration.
      */
-    private ITailPaneConfig config_;
+    private ITailViewConfig config_;
 
     /**
      * List of listeners interested in newData() and tailAggregated().
@@ -221,7 +221,7 @@ public class TailPane extends JHeaderPanel
      * @throws IOException if an I/O error occurs.
      */
     public TailPane(
-        ITailPaneConfig config, 
+        ITailViewConfig config, 
         IStatusBar statusBar) throws IOException, FileNotFoundException
     {
         super(config.getFilenames()[0]);
@@ -282,7 +282,7 @@ public class TailPane extends JHeaderPanel
      *
      * @param config Tailpane configuration.
      */
-    protected void buildView(ITailPaneConfig config)
+    protected void buildView(ITailViewConfig config)
     {
         JPanel p = new JPanel(new BorderLayout());
         JToolBar tb = JHeaderPanel.createToolBar();
@@ -476,11 +476,11 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the configuration.
+     * Sets this tail view's configuration.
      *
-     * @param config Tail configuration.
+     * @param config Tail view configuration.
      */
-    public void setConfiguration(ITailPaneConfig config)
+    public void setConfiguration(ITailViewConfig config)
     {
         config_ = config;
         //tailArea_.setAutoTail(config_.isAutoTail());
@@ -493,12 +493,12 @@ public class TailPane extends JHeaderPanel
 
 
     /**
-     * Gets the configuration.
+     * Gets this tail view's configuration.
      *
-     * @return TailConfig.
+     * @return ITailViewConfig
      * @throws IOException on I/O error.
      */
-    public ITailPaneConfig getConfiguration() throws IOException
+    public ITailViewConfig getConfiguration() throws IOException
     {
         // Make sure configuration up to date
         //config_.setAutoTail(tailArea_.isAutoTail());
@@ -584,9 +584,9 @@ public class TailPane extends JHeaderPanel
     /**
      * Adds a listener.
      *
-     * @param listener TailViewListener.
+     * @param listener TailViewListener to add.
      */
-    public void addTailPaneListener(TailViewListener listener)
+    public void addTailViewListener(TailViewListener listener)
     {
         listeners_ = (TailViewListener[]) ArrayUtil.add(listeners_, listener);
     }
@@ -595,9 +595,9 @@ public class TailPane extends JHeaderPanel
     /**
      * Removes a listener.
      *
-     * @param listener TailViewListener.
+     * @param listener TailViewListener to remove.
      */
-    public void removeTailPaneListener(TailViewListener listener)
+    public void removeTailViewListener(TailViewListener listener)
     {
         listeners_ = (TailViewListener[])
             ArrayUtil.remove(listeners_, listener);

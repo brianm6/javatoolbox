@@ -13,7 +13,7 @@ import toolbox.util.ui.explorer.JFileExplorer;
  * Custom file explorer panel for JTail. Just adds a "Tail" button to the
  * bottom of the panel.
  */
-public class FileSelectionPane extends JPanel
+public class FileSelectionView extends JPanel
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -31,7 +31,7 @@ public class FileSelectionPane extends JPanel
     
     /**
      * Button that will tail the currently selected file and aggregate the 
-     * output with the currently active TailPane.
+     * output with the currently active TailView.
      */
     private JButton aggregateButton_;
     
@@ -40,20 +40,20 @@ public class FileSelectionPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FileSelectionPane.
+     * Creates a FileSelectionView.
      */
-    public FileSelectionPane()
+    public FileSelectionView()
     {
         this(null);
     }
     
     
     /**
-     * Creates a FileSelectionPane with the given directory selected.
+     * Creates a FileSelectionView with the given directory selected.
      *
      * @param dir Directory to select by default.
      */
-    public FileSelectionPane(String dir)
+    public FileSelectionView(String dir)
     {
         super(new BorderLayout(), false);
         buildView();
@@ -91,7 +91,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Returns the file explorer.
      * 
-     * @return File explorer.
+     * @return JFileExplorer
      */
     public JFileExplorer getFileExplorer()
     {
@@ -102,7 +102,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Returns the tail button.
      * 
-     * @return Tail button.
+     * @return JButton
      */
     public JButton getTailButton()
     {
@@ -113,7 +113,7 @@ public class FileSelectionPane extends JPanel
     /**
      * Returns the aggregate button.
      * 
-     * @return Aggregate button.
+     * @return JButton
      */
     public JButton getAggregateButton()
     {

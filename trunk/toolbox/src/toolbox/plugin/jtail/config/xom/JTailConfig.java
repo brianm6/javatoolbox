@@ -6,7 +6,7 @@ import nu.xom.Elements;
 import org.apache.log4j.Logger;
 
 import toolbox.plugin.jtail.config.IJTailConfig;
-import toolbox.plugin.jtail.config.ITailPaneConfig;
+import toolbox.plugin.jtail.config.ITailViewConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
@@ -24,14 +24,14 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Tail pane configurations.
+     * Tail view configurations.
      */
-    private ITailPaneConfig[] tailPaneConfigs_;
+    private ITailViewConfig[] tailViewConfigs_;
     
     /**
-     * Default tail pane configuration.
+     * Default tail view configuration.
      */
-    private ITailPaneConfig defaultConfig_;
+    private ITailViewConfig defaultConfig_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -42,8 +42,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
      */
     public JTailConfig()
     {
-        defaultConfig_ = new TailPaneConfig();
-        tailPaneConfigs_ = new TailPaneConfig[0];
+        defaultConfig_ = new TailViewConfig();
+        tailViewConfigs_ = new TailViewConfig[0];
     }
 
     //--------------------------------------------------------------------------
@@ -52,9 +52,9 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 
     /**
      * @see toolbox.plugin.jtail.config.IJTailConfig#setDefaultConfig(
-     *      toolbox.plugin.jtail.config.ITailPaneConfig)
+     *      toolbox.plugin.jtail.config.ITailViewConfig)
      */
-    public void setDefaultConfig(ITailPaneConfig defaultConfig)
+    public void setDefaultConfig(ITailViewConfig defaultConfig)
     {
         defaultConfig_ = defaultConfig;
     }
@@ -63,7 +63,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     /**
      * @see toolbox.plugin.jtail.config.IJTailConfig#getDefaultConfig()
      */
-    public ITailPaneConfig getDefaultConfig()
+    public ITailViewConfig getDefaultConfig()
     {
         return defaultConfig_;
     }
@@ -72,19 +72,19 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     /**
      * @see toolbox.plugin.jtail.config.IJTailConfig#getTailConfigs()
      */
-    public ITailPaneConfig[] getTailConfigs()
+    public ITailViewConfig[] getTailConfigs()
     {
-        return tailPaneConfigs_;
+        return tailViewConfigs_;
     }
 
     
     /**
      * @see toolbox.plugin.jtail.config.IJTailConfig#setTailConfigs(
-     *      toolbox.plugin.jtail.config.ITailPaneConfig[])
+     *      toolbox.plugin.jtail.config.ITailViewConfig[])
      */
-    public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs)
+    public void setTailConfigs(ITailViewConfig[] tailViewConfigs)
     {
-        tailPaneConfigs_ = tailPaneConfigs;
+        tailViewConfigs_ = tailViewConfigs;
     }
     
     //--------------------------------------------------------------------------
@@ -102,25 +102,25 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
         {
             // Defaults
             Element defaultsNode = root.getFirstChildElement(NODE_DEFAULTS);
-            TailPaneConfig defaultTail = new TailPaneConfig();
+            TailViewConfig defaultTail = new TailViewConfig();
             defaultTail.applyPrefs(defaultsNode);
             setDefaultConfig(defaultTail);
     
             // List of tails                        
-            ITailPaneConfig[] tailPaneConfigs = new ITailPaneConfig[0];
+            ITailViewConfig[] tailViewConfigs = new ITailViewConfig[0];
             Elements tails = root.getChildElements(NODE_TAIL);
             
             for (int i = 0; i < tails.size(); i++)
             {
-                TailPaneConfig tpc = new TailPaneConfig();
+                TailViewConfig tvc = new TailViewConfig();
                 Element tail = tails.get(i);
-                tpc.applyPrefs(tail);
+                tvc.applyPrefs(tail);
                 
-                tailPaneConfigs = (ITailPaneConfig[])
-                    ArrayUtil.add(tailPaneConfigs, tpc);
+                tailViewConfigs = (ITailViewConfig[])
+                    ArrayUtil.add(tailViewConfigs, tvc);
             }
     
-            setTailConfigs(tailPaneConfigs);
+            setTailConfigs(tailViewConfigs);
         }
     }
     
@@ -136,10 +136,10 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
         root.appendChild(defaultsNode);
         defaultConfig_.savePrefs(defaultsNode);
 
-        for (int i = 0; i < tailPaneConfigs_.length; i++)
+        for (int i = 0; i < tailViewConfigs_.length; i++)
         { 
             Element tail = new Element(NODE_TAIL);
-            tailPaneConfigs_[i].savePrefs(tail);
+            tailViewConfigs_[i].savePrefs(tail);
             root.appendChild(tail);
         }
         

@@ -8,33 +8,33 @@ import toolbox.workspace.IPreferenced;
 public interface IJTailConfig extends IPreferenced
 {
     /**
-     * Returns the default tail pane configuration.
+     * Returns the default tail view configuration.
      * 
-     * @return Default configuration.
+     * @return ITailViewConfig
      */
-    ITailPaneConfig getDefaultConfig();
+    ITailViewConfig getDefaultConfig();
 
     
     /**
-     * Sets the default tail pane configuration.
+     * Sets the default tail view configuration.
      * 
-     * @param config Default tail pane configuration.
+     * @param config Default tail view configuration.
      */
-    void setDefaultConfig(ITailPaneConfig config);
+    void setDefaultConfig(ITailViewConfig config);
 
     
     /**
-     * Returns the tailPaneConfigs.
+     * Returns the array of tail view configurations.
      * 
-     * @return Array of tail pain configurations.
+     * @return ITailViewConfig[]
      */
-    ITailPaneConfig[] getTailConfigs();
+    ITailViewConfig[] getTailConfigs();
 
     
     /**
-     * Sets the list of tail pane configurations.
+     * Sets the list of tail view configurations.
      * 
-     * @param tailPaneConfigs Tail pane configurations.
+     * @param tailViewConfigs Tail view configurations.
      */
-    void setTailConfigs(ITailPaneConfig[] tailPaneConfigs);
+    void setTailConfigs(ITailViewConfig[] tailViewConfigs);
 }
