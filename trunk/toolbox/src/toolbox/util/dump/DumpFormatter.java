@@ -3,8 +3,8 @@ package toolbox.util.dump;
 import java.lang.reflect.Field;
 
 /**
- * DumpFormatter defines the configurable dump and formatting options exposed 
- * by the object dumper.
+ * DumpFormatter defines the configurable dump and formatting options 
+ * recognized by {@link Dumper}.
  */
 public interface DumpFormatter
 {

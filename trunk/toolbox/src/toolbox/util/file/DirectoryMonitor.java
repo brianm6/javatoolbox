@@ -13,42 +13,29 @@ import toolbox.util.ThreadUtil;
 /**
  * DirectoryMonitor monitors a given directory for the availability of files
  * based on a configurable selection criteria. Interested parties can register
- * interest in these files by implementing the IDirectoryListener interface.
+ * for notification by implementing the {@link IDirectoryListener} interface.
  */
 public class DirectoryMonitor
 {
-    /** Logger */
     private static Logger logger_ = 
         Logger.getLogger(DirectoryMonitor.class);
 
-    /** 
-     * Notification list 
-     */
+    /** Notification list */
     private List listeners_ = new ArrayList();
     
-    /** 
-     * File activities that this monitor will provide notification for  
-     */
+    /** File activities that this monitor will provide notification for */
     private List activities_ = new ArrayList();
 
-    /** 
-     * Delay interval in ms used to check for new activity 
-     */
+    /** Delay interval in ms used to check for new activity */
     private int delay_ = 5000;
 
-    /** 
-     * Termination flag 
-     */
+    /** Termination flag */
     private boolean shutdown_ = false;
 
-    /** 
-     * Directory to monitor 
-     */
+    /** Directory to monitor */
     private File directory_;
 
-    /** 
-     * Thread that the activities are dispatched on 
-     */
+    /** Thread that the activities are dispatched on */
     private Thread monitor_;
     
     //--------------------------------------------------------------------------

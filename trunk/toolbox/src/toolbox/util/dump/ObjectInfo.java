@@ -7,15 +7,14 @@ import java.lang.reflect.Field;
  */
 public class ObjectInfo
 {
-    /**
-     * Object being traversed
-     */
+    /** Object being traversed */
     private Object object_;
     
-    /**
-     * Traversal flag
-     */
+    /** Traversal flag */
     private boolean traversed_;
+
+    /** Field that the object as associated with in its parent class */
+    private Field field_;
     
     /**
      * Unique sequence number for referring back to multiple references
@@ -23,10 +22,6 @@ public class ObjectInfo
      */
     private String seqNum_;
     
-    /**
-     * Field that the object as associated with in its parent class
-     */
-    private Field field_;
     
     //--------------------------------------------------------------------------
     // Constructors

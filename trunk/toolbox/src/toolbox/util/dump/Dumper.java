@@ -17,44 +17,39 @@ import toolbox.util.Stringz;
  * Dumper is a simple but useful utility used to dump a graph of java objects
  * to an ASCII tree like structure in a format that is easily recognizable. It 
  * is great for acquainting oneself with unfamiliar code or as a helpful
- * debugging aid to find out just what all may hanging around your object tree. 
+ * debugging aid to find out just what all may hanging around your object tree.
  * 
- * <pre>
- * TODO: Fix dangling tail
- * TODO: Add option to have refences to already traversed objects generate
- *       unique labels to they can be referenced. (ugly but useful)
- * TODO: Allow option to leave out nulls
- * TODO: Add interface to support custom dumpers for specific types of objects.
- * </pre>
+ * @see BasicDumpFormatter 
  */
 public class Dumper implements Stringz
 {
+    /*
+    * TODO: Fix dangling tail
+    * TODO: Add option to have refences to already traversed objects generate
+    *       unique labels to they can be referenced. (ugly but useful)
+    * TODO: Allow option to leave out nulls
+    * TODO: Add interface to support custom dumpers for specific types of objs
+    */
+        
     private static final Logger logger_ = 
         Logger.getLogger(Dumper.class);
-
-    /**
-     * Max length of right hand value
-     */
-    private static final int MAX_PRESENTABLE_LENGTH = 100;
-
-    /** 
-     * Maximum depth to traverse into the object graph
-     */
-    private int maxDepth_ = Integer.MAX_VALUE;
-
-    /**
-     * Caches objects which have already been traversed
-     */
-    private ObjectCache cache_ = new ObjectCache();
     
-    /**
-     * Dump formatter and configuration
-     */
-    private DumpFormatter formatter_;
-    
+    // Strings for ascii tree branches    
     private static final String BAR      = "|   ";
     private static final String JUNCTION = "+";
     private static final String ARM      = "---";
+
+    /** Max length of right hand value */
+    private static final int MAX_PRESENTABLE_LENGTH = 100;
+
+    /** Maximum depth to traverse into the object graph */
+    private int maxDepth_ = Integer.MAX_VALUE;
+
+    /** Caches objects which have already been traversed */
+    private ObjectCache cache_ = new ObjectCache();
+    
+    /** Dump formatter and configuration */
+    private DumpFormatter formatter_;
 
     //--------------------------------------------------------------------------
     //  Constructors

@@ -12,7 +12,7 @@ import org.apache.regexp.RESyntaxException;
 import toolbox.util.ClassUtil;
 
 /**
- * Basic implementation of the {@link Dumper} interface
+ * Basic implementation of the {@link DumpFormatter} interface
  */
 public class BasicDumpFormatter implements DumpFormatter
 {

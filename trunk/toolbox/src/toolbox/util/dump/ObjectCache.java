@@ -8,20 +8,17 @@ import java.util.Map;
  * Keeps information (value) stored for each object (key). Necessary in order 
  * to know wheather this object has been displayed before and by which label it 
  * can be referred to. 
- * 
- * key   = object
+ * <p>
+ * key   = object 
+ * <br>
  * value = ObjectInfo(object)
  */
 public class ObjectCache
 {
-    /** 
-     * Sequence number assigned to objects in the cache 
-     */
+    /** Sequence number assigned to objects in the cache */
     private int label_ = 0;
     
-    /** 
-     * Map of object->objectinfo 
-     */
+    /**  Map of object->objectinfo */
     private Map visitedMap_ = new HashMap();
     
     //--------------------------------------------------------------------------
