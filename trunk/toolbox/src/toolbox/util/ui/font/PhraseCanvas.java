@@ -1,6 +1,5 @@
 package toolbox.util.ui.font;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -9,11 +8,13 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JComponent;
+
 /**
  * Component for displaying a "phrase" (a brief, one or two word String) 
  * using a particular font & a particular color.
  */
-public class PhraseCanvas extends Canvas
+public class PhraseCanvas extends JComponent
 {
     protected Color     color_;        
     protected String    phrase_;
