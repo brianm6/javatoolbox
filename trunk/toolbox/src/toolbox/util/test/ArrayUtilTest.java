@@ -1,18 +1,21 @@
 package toolbox.util.test;
 
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
+import toolbox.util.RandomUtil;
 
 /**
- * ArrayUtil unit test class
+ * Unit test for ArrayUtil
  */
 public class ArrayUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ArrayUtilTest.class);
 
@@ -21,9 +24,9 @@ public class ArrayUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Starts the test case and runs the entire suite.
+     * Entrypoint
      *
-     * @param args An array of unused command-line arguments
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -31,7 +34,7 @@ public class ArrayUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Subset Unit Tests
+    // Unit Tests: subset()
     //--------------------------------------------------------------------------
 
     /**
@@ -178,7 +181,7 @@ public class ArrayUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // toString Unit Tests
+    // Unit Tests: toString()
     //--------------------------------------------------------------------------
         
     /**
@@ -244,7 +247,7 @@ public class ArrayUtilTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // IndexOf Unit Tests
+    // Unit Tests: indexOf()
     //--------------------------------------------------------------------------
     
     /**
@@ -329,7 +332,7 @@ public class ArrayUtilTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Contains Unit Tests
+    // Unit Tests: contains()
     //--------------------------------------------------------------------------
     
     /**
@@ -388,7 +391,7 @@ public class ArrayUtilTest extends TestCase
     }    
 
     //--------------------------------------------------------------------------
-    // Concat Unit Tests
+    // Unit Tests: concat()
     //--------------------------------------------------------------------------
 
     /*
@@ -615,7 +618,7 @@ public class ArrayUtilTest extends TestCase
     }   
 
     //--------------------------------------------------------------------------
-    // Insert/InsertAt Unit Tests
+    // Unit Tests: insert() / insertAt()
     //--------------------------------------------------------------------------
 
     /**
@@ -720,7 +723,123 @@ public class ArrayUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Remaining Unit Tests
+    // Unit Tests: remove()
+    //--------------------------------------------------------------------------
+
+    /**
+     * Tests remove() for removing from an empty array
+     */
+    public void testRemoveEmpty()
+    {
+        logger_.info("Running testRemoveEmpty...");
+        
+        String[] strArray = new String[0];
+        String   s = "duke";
+    
+        Object[] result = ArrayUtil.remove(strArray, s);
+    
+        assertEquals("Array should be empty empty", 0, result.length);
+        assertTrue(result.getClass().getComponentType() == String.class);
+    }
+
+    /**
+     * Tests remove() for removing the last element from an array
+     */
+    public void testRemoveOne()
+    {
+        logger_.info("Running testRemoveOne...");
+        
+        String   s = "duke";
+        String[] strArray = new String[] { s };
+        
+        String[] result = (String[]) ArrayUtil.remove(strArray, s);
+        
+        assertEquals(0, result.length);
+        assertTrue(result.getClass().getComponentType() == String.class);
+    }
+    
+    /**
+     * Tests remove() for removing the first element in an array of many
+     */
+    public void testRemoveHead()
+    {
+        logger_.info("Running testRemoveHead...");
+        
+        String s = "head";
+        String[] strArray = new String[] { s, "one", "two", "three", "tail"};
+        
+        String[] result = (String[]) ArrayUtil.remove(strArray, s);
+        
+        assertEquals(strArray.length - 1, result.length);
+        assertTrue(result.getClass().getComponentType() == String.class);
+        
+        for (int i=0; i<strArray.length - 1; i++)
+            assertEquals(strArray[i+1], result[i]);
+    }
+    
+    /**
+     * Tests remove() for removing the last element in an array of many
+     */
+    public void testRemoveTail()
+    {
+        logger_.info("Running testRemoveTail...");
+        
+        String tail = "tail";
+        String[] strArray = new String[] { "head", "one", "two", "three", tail};
+        
+        String[] result = (String[]) ArrayUtil.remove(strArray, tail);
+        
+        assertEquals(strArray.length - 1, result.length);
+        assertTrue(result.getClass().getComponentType() == String.class);
+        
+        for (int i=0; i<strArray.length - 1; i++)
+            assertEquals(strArray[i], result[i]);
+    }
+
+    /**
+     * Tests remove() for removing the middle element
+     */
+    public void testRemoveMiddle()
+    {
+        logger_.info("Running testRemoveHead...");
+        
+        String middle = "middle";
+        String[] strArray = new String[] { "head", middle, "tail"};
+        
+        String[] result = (String[]) ArrayUtil.remove(strArray, middle);
+        
+        assertEquals(strArray.length - 1, result.length);
+        assertTrue(result.getClass().getComponentType() == String.class);
+        assertEquals("head", result[0]);
+        assertEquals("tail", result[1]);
+    }
+
+    /**
+     * Tests remove() for removing a buncha random elements
+     */
+    public void testRemoveRandom()
+    {
+        logger_.info("Running testRemoveHead...");
+
+        List keys = new ArrayList();
+        
+        for (int i=0; i<100; i++)
+            keys.add("key" + i);
+                
+        String[] data = (String[]) keys.toArray(new String[0]);
+        
+        while (!keys.isEmpty())
+        {
+            int i = RandomUtil.nextInt(0, keys.size() - 1);
+            data = (String[]) ArrayUtil.remove(data, (String) keys.get(i));
+            keys.remove(i);            
+        }
+        
+        assertEquals(0, data.length);
+    }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
     //--------------------------------------------------------------------------
     
     /**
