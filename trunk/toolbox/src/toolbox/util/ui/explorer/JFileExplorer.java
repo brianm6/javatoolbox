@@ -17,7 +17,6 @@
  */
 package toolbox.util.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -38,7 +37,6 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -61,6 +59,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
+import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.images.HardDriveGIF;
@@ -96,6 +95,10 @@ public class JFileExplorer extends JPanel
     /** Collection of listeners **/
     private List fileExplorerListeners_ = new ArrayList();
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Default constructor
      */
@@ -117,6 +120,9 @@ public class JFileExplorer extends JPanel
         buildView(verticalSplitter);
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /**
      * Builds the GUI 
@@ -235,7 +241,7 @@ public class JFileExplorer extends JPanel
      */
     private void setTreeRoot(String root)
     {
-        rootNode_ = new SmartTreeNode(root);
+        rootNode_ = new FileNode(root);
         
         if (treeModel_ != null)
             treeModel_.setRoot(rootNode_);
@@ -308,7 +314,7 @@ public class JFileExplorer extends JPanel
         DefaultMutableTreeNode childNode = null;
         for (int i = 0; i < folderList.length; i++)
         {
-            childNode = new SmartTreeNode(folderList[i]);
+            childNode = new FileNode(folderList[i]);
             
             // Only insert if it doesn't already exist.
             boolean shouldAdd = true;
@@ -451,6 +457,267 @@ public class JFileExplorer extends JPanel
     }
 
 
+
+
+    /**
+     * Adds a JFileExplorerListener
+     *
+     * @param  listener   The listener to add
+     */
+    public void addJFileExplorerListener(JFileExplorerListener listener)
+    {
+        fileExplorerListeners_.add(listener);
+    }
+
+
+    /**
+     * Removes a JFileExplorerListener
+     *
+     * @param  listener  The listener to remove
+     */
+    public void removeJFileExplorerListener(JFileExplorerListener listener)
+    {
+        fileExplorerListeners_.remove(listener);
+    }
+
+
+    /**
+     * Fires an event when a file is double clicked by the user
+     */
+    protected void fireFileDoubleClicked()
+    {
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        {
+             JFileExplorerListener listener = (JFileExplorerListener)i.next();
+             listener.fileDoubleClicked(getFilePath());
+        }
+    }
+
+    
+    /**
+     * Fires an event when a directory is selected
+     * 
+     * @param  folder  Folder that was selected
+     */
+    protected void fireFolderSelected(String folder)
+    {
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        {
+             JFileExplorerListener listener = (JFileExplorerListener)i.next();
+             listener.folderSelected(folder);
+        }
+    }
+
+    
+    /**
+     * Fire an event when a directory is double clicked
+     * 
+     * @param  folder  Folder that was double clicked
+     */
+    protected void fireFolderDoubleClicked(String folder)
+    {
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
+        {
+             JFileExplorerListener listener = (JFileExplorerListener)i.next();
+             listener.folderDoubleClicked(folder); 
+        }
+    }
+
+    
+    /**
+     * Selects the given folder. Folder is a fully qualified directory structure
+     * starting from the file root. 
+     * <pre>
+     *  
+     * Windows folder : c:\home\stuff   
+     * Unix folder    : /usr/export/home
+     * 
+     * </pre>
+     * @param  path  Folder to select. Must be absolute in absolute form 
+     *               from the root.
+     */
+    public void selectFolder(String path)
+    {
+        String method = "[selFld] ";
+        
+        String[] pathTokens = StringUtil.tokenize(path, File.separator);
+        
+        if (Platform.isUnix())
+        {
+            //logger_.debug(method + "Platform = unix");
+            
+            if (path.startsWith(File.separator))
+            {
+                // Set root to "/"
+                pathTokens = (String[]) 
+                    ArrayUtil.insert(pathTokens, File.separator);
+            }
+            else
+            {
+                throw new IllegalArgumentException("Path must begin with /");
+            }
+        }
+        else // if (Platform.isWindows())
+        {
+            // Treat all other platforms like windows
+            
+            //logger_.debug(method + "Platform = windows");
+                        
+            if (path.startsWith(File.separator))
+            {
+                // Update the root since the path separator was stripped by
+                // the tokenizer
+                pathTokens[0] = getDefaultRoot();
+            }
+            else
+            {
+                // Root drive a possibility
+                File   root  = new File(path.substring(0,3));
+                
+                if (ArrayUtil.contains(File.listRoots(), root))
+                {
+                    // Update the root since the path separator was stripped
+                    // by the tokenizer
+                    pathTokens[0] = root.toString();
+                }
+                else
+                {
+                    // Root not found in list
+                    throw new IllegalArgumentException(method + 
+                        "Root could not be determined in path " + path);
+                }
+            }
+        }
+
+        logger_.debug(method + 
+            "Path Tokens = " + ArrayUtil.toString(pathTokens));
+        
+        DefaultTreeModel model = (DefaultTreeModel)tree_.getModel();
+        FileNode root = (FileNode) model.getRoot();
+
+        // Discover path by iterating over pathTokens 
+        // and building a TreePath dynamically
+        if (root.equals(new FileNode(pathTokens[0])))
+        {
+            FileNode current = root;
+            
+            //logger_.debug(method + 
+            //  "Current " + current + " children: " + current.getChildCount());
+            
+            // Starts at 1 to skip over root
+            for(int i=1; i<pathTokens.length; i++) 
+            {
+                if (current.getChildCount() == 0)
+                {
+                    // Expand node on demand
+                    String partialPath = "";
+                    for (int j=0; j< i; j++) 
+                    {
+                        if (pathTokens[j].endsWith(File.separator))
+                            pathTokens[j] = pathTokens[j].substring(0, 
+                                pathTokens[j].length() -1);
+                            
+                        partialPath = partialPath + 
+                            pathTokens[j] + File.separator;
+                    }
+                        
+                    //logger_.debug(method + "Partial path = "  + partialPath);    
+                        
+                    setTreeFolders(partialPath, current);
+                }
+                
+                FileNode child = new FileNode(pathTokens[i]);
+                child.setParent(current);
+                int idx = current.getIndex(child);
+                
+                //logger_.debug(method + 
+                //    "node " + current + " found at index " + idx);
+                    
+                current = (FileNode) current.getChildAt(idx);
+            }
+            
+            TreePath tp = new TreePath(current.getPath());
+            tree_.setSelectionPath(tp);
+            tree_.scrollPathToVisible(tp);
+        }
+        else
+            throw new IllegalArgumentException("Root didnt match in model!");
+    }
+
+    
+    /**
+     * @return Dimension
+     */
+    public Dimension getPreferredSize()
+    {
+        return new Dimension(200, 400);
+    }
+    
+    //--------------------------------------------------------------------------
+    //  INNER CLASSES
+    //--------------------------------------------------------------------------
+    
+    /**
+     * FileNode
+     */
+    public class FileNode extends DefaultMutableTreeNode
+    {
+        /**
+         * Constructor for FileNode.
+         */
+        public FileNode()
+        {
+            super();
+        }
+    
+        /**
+         * Constructor for FileNode.
+         * 
+         * @param userObject
+         */
+        public FileNode(Object userObject)
+        {
+            super(userObject);
+        }
+    
+        /**
+         * Constructor for FileNode.
+         * 
+         * @param userObject
+         * @param allowsChildren
+         */
+        public FileNode(Object userObject, boolean allowsChildren)
+        {
+            super(userObject, allowsChildren);
+        }
+        
+        /**
+         * Compares based on directory/file name. Is sensetive to the host
+         * platform w.r.t. case sensetivity
+         * 
+         * @param  obj  Object to compare
+         */
+        public boolean equals(Object obj)
+        {
+            if (!(obj instanceof DefaultMutableTreeNode))
+                return false;
+            
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)obj;
+            
+            String file1 = (String)getUserObject();
+            String file2 = (String)node.getUserObject();
+            
+            if (Platform.isUnix())
+            {
+                return file1.equals(file2);
+            }
+            else
+            {
+                return file1.equalsIgnoreCase(file2);
+            }
+        }
+    }
+    
     /**
      * Inner class that compares file names for sorting.
      */
@@ -504,13 +771,13 @@ public class JFileExplorer extends JPanel
             {
                 setIcon(getDriveIcon());
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 logger_.fatal("getListCellRenderer", e);
             }
             
-            this.setBackground(isSelected ? Color.blue : Color.white);
-            this.setForeground(isSelected ? Color.white : Color.black);
+            setBackground(isSelected ? Color.blue : Color.white);
+            setForeground(isSelected ? Color.white : Color.black);
             return this;
         }
     }
@@ -624,7 +891,7 @@ public class JFileExplorer extends JPanel
 
 
     /**
-     * Inner class for filtering only folders.
+     * Inner class for filtering only folders
      */
     private class JFileExplorerFolderFilter implements FileFilter
     {
@@ -636,7 +903,7 @@ public class JFileExplorer extends JPanel
          */
         public boolean accept(File file)
         {
-               return file.isDirectory();
+            return file.isDirectory();
         }
     }
 
@@ -649,352 +916,13 @@ public class JFileExplorer extends JPanel
         /**
          * Accepts only files
          *
-         * @param  file  File to scrutinize
-         * @return  True if file is accepted, false otherwise
+         * @param   file  File to scrutinize
+         * @return  True if file is really a file (not a directory), 
+         *          false otherwise
          */
         public boolean accept(File file)
         {
             return !file.isDirectory();
-        }
-    }
-
-
-    /**
-     * Adds a JFileExplorerListener
-     *
-     * @param  listener   The listener to add
-     */
-    public void addJFileExplorerListener(JFileExplorerListener listener)
-    {
-        fileExplorerListeners_.add(listener);
-    }
-
-
-    /**
-     * Removes a JFileExplorerListener
-     *
-     * @param  listener  The listener to remove
-     */
-    public void removeJFileExplorerListener(JFileExplorerListener listener)
-    {
-        fileExplorerListeners_.remove(listener);
-    }
-
-
-    /**
-     * Fires an event when a file is double clicked by the user
-     */
-    protected void fireFileDoubleClicked()
-    {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.fileDoubleClicked(getFilePath());
-        }
-    }
-
-    
-    /**
-     * Fires an event when a directory is selected
-     * 
-     * @param  folder  Folder that was selected
-     */
-    protected void fireFolderSelected(String folder)
-    {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.folderSelected(folder);
-        }
-    }
-
-    
-    /**
-     * Fire an event when a directory is double clicked
-     * 
-     * @param  folder  Folder that was double clicked
-     */
-    protected void fireFolderDoubleClicked(String folder)
-    {
-        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.folderDoubleClicked(folder); 
-        }
-    }
-
-    
-    /**
-     * Selects the given folder. Folder is a fully qualified directory structure
-     * starting from the file root. 
-     * 
-     * Windows folder : c:\home\stuff   
-     * Unix folder    : /usr/export/home
-     * 
-     * @param  folder  Folder to select. Must be absolute from a root.
-     */
-    public void selectFolder(String folder)
-    {
-        String[] pathTokens = StringUtil.tokenize(folder, File.separator);
-     
-        if(pathTokens[0].endsWith(":"))
-            pathTokens[0] = pathTokens[0] + File.separator;
-            
-        logger_.debug("Path Tokens: " + ArrayUtil.toString(pathTokens));
-        
-        DefaultTreeModel model = (DefaultTreeModel)tree_.getModel();
-        
-        SmartTreeNode root = (SmartTreeNode) model.getRoot();
-        
-        
-        if (root.getUserObject().equals(pathTokens[0]))
-        {
-            SmartTreeNode current = root;
-            logger_.debug("Current " + current + " children = " + current.getChildCount());
-            
-            
-            for(int i=1; i<pathTokens.length; i++)
-            {
-                if (current.getChildCount() == 0)
-                {
-                    // expand node on demand
-                    
-                    String partialPath = "";
-                    for (int j=0; j< i; j++)
-                    {
-                        if (pathTokens[j].endsWith(File.separator))
-                            pathTokens[j] = pathTokens[j].substring(0, pathTokens[j].length() -1);
-                            
-                        partialPath = partialPath + pathTokens[j] + File.separator;
-                    }
-                        
-                    logger_.debug("Partialpath = "  + partialPath);    
-                        
-                    setTreeFolders(partialPath, current);
-                }
-                
-                
-                SmartTreeNode child = new SmartTreeNode(pathTokens[i]);
-                child.setParent(current);
-                int idx = current.getIndex(child);
-                logger_.debug("node " + current + " found at index " + idx);
-                current = (SmartTreeNode)current.getChildAt(idx);
-            }
-            
-            TreePath tp = new TreePath(current.getPath());
-            tree_.setSelectionPath(tp);
-            tree_.scrollPathToVisible(tp);
-                
-        }
-        else
-            System.out.println("Root didnt match in model!!!!!");
-        
-        
-        //logger.debug("Treepath in listener");            
-        //dumpTreePath(path);
-        
-        //DefaultMutableTreeNode currentNode =
-        //    (DefaultMutableTreeNode) (path.getLastPathComponent());
-
-        // Should optimize
-//        s.append(o[0]);
-//        for (int i = 1; i < o.length; i++)
-//        {
-//            if (!o[i - 1].toString().endsWith(File.separator))
-//                s.append(File.separator);
-//            s.append(o[i]);
-//        }
-
-
-        //setTreeFolders(folder, rootNode);
-        //setFileList(folder);
-        
-        //fireFolderSelected(s.toString());
-        
-//        StringTokenizer st = new StringTokenizer(folder, File.separator);
-//        List pathList = new ArrayList();
-//        
-//        while(st.hasMoreTokens())
-//        {
-//            String token = st.nextToken();
-//            if(token.length() == 2 && token.endsWith(":"))
-//                token += File.separator;
-//            logger_.debug("[selectFolder] " + token);
-//            
-//            pathList.add(new SmartTreeNode(token));
-//
-//            DefaultMutableTreeNode[] nodes = 
-//                new SmartTreeNode[pathList.size()];
-//            
-//            for(int i=0; i<pathList.size(); i++)
-//                nodes[i] = new SmartTreeNode(pathList.get(i));
-//            
-//            TreePath treePath = new TreePath(nodes);
-//
-//            {                
-//                StringBuffer s = new StringBuffer();
-//                Object[] currNodes = treePath.getPath();
-//    
-//                DefaultMutableTreeNode currentNode =
-//                    (DefaultMutableTreeNode) (treePath.getLastPathComponent());
-//    
-//                // Should optimize
-//                s.append(currNodes[0]);
-//                for (int i = 1; i < currNodes.length; i++)
-//                {
-//                    if (!currNodes[i - 1].toString().endsWith(File.separator))
-//                        s.append(File.separator);
-//                    s.append(currNodes[i]);
-//                }
-//    
-//                String localFolder = s.toString();
-//                setTreeFolders(localFolder, currentNode);
-//                setFileList(localFolder);
-//                
-//                //fireFolderSelected(folder);
-//            }
-//
-//            
-//            tree_.expandPath(treePath);
-//            tree_.makeVisible(treePath);        
-//            tree_.setSelectionPath(treePath);
-//            
-//        }
-//        
-//        TreePath current = tree_.getSelectionPath();
-//        logger_.debug("[selectFolder] Should be selected: " + 
-//            ArrayUtil.toString(current.getPath())); 
-        
-//        TreePath path = new TreePath();
-//        path.getPathComponent();
-    }
-
-    
-    /**
-     * @param  folder  ???
-     */
-    public void selectFolder2(String folder)
-    {
-        String sep = null;
-        
-        if (folder.startsWith("/"))    
-        {
-            /* unix */
-            sep = "/";    
-        }
-        else
-        {
-            /* assume windows */
-            sep = "\\";
-             
-             /* chop drive letter off */
-             String drive = folder.substring(0,3);
-             folder = folder.substring(3);           
-    
-            logger_.debug("drive=" + drive);
-
-            rootsComboBox_.setSelectedItem(
-                new File(drive.toUpperCase()));            
-                
-            //setFileList(drive);
-
-            //clear();
-            //setTreeRoot(drive);
-            //setTreeFolders(folder, null);             
-             //setCurrentPath(folder);
-        }
-        
-        StringTokenizer st = new StringTokenizer(folder, sep);
-        
-        DefaultMutableTreeNode current = rootNode_;
- 
-         TreePath tp = new TreePath(rootNode_);
-         tree_.expandPath(tp);
-                
-        while(st.hasMoreTokens())
-        {
-            String nextNode = st.nextToken();
-             tp = tp.pathByAddingChild(new SmartTreeNode(nextNode));
-            logger_.debug(nextNode);
-            tree_.expandPath(tp);  
-            tree_.setSelectionPath(tp);          
-        }
-        
-        logger_.debug("Treepath in select()");
-        dumpTreePath(tp);
-        
-        //tree.setSelectionPath(tp);
-        
-    }
-
-
-    /**
-     * DUmps treepath to logger
-     * 
-     * @param  tp  Treepath to dump
-     */
-    protected void dumpTreePath(TreePath tp)
-    {
-        Object nodes[] = tp.getPath();
-        
-        for(int i=0; i<nodes.length; i++)
-            logger_.debug("Node " + i + "\tClass " + 
-                nodes[i].getClass().getName() + "\tString " + 
-                    nodes[i].toString());
-    }
-    
-    public Dimension getPreferredSize()
-    {
-        return new Dimension(200, 400);
-    }
-    
-    
-    /**
-     * SmartTreeNode
-     */
-    public class SmartTreeNode extends DefaultMutableTreeNode
-    {
-    
-        /**
-         * Constructor for SmartTreeNode.
-         */
-        public SmartTreeNode()
-        {
-            super();
-        }
-    
-        /**
-         * Constructor for SmartTreeNode.
-         * @param userObject
-         */
-        public SmartTreeNode(Object userObject)
-        {
-            super(userObject);
-        }
-    
-        /**
-         * Constructor for SmartTreeNode.
-         * @param userObject
-         * @param allowsChildren
-         */
-        public SmartTreeNode(Object userObject, boolean allowsChildren)
-        {
-            super(userObject, allowsChildren);
-        }
-        
-        /**
-         * Allows node comparision on the equality of the user objects instead
-         * of the reference equality specified in Object.equals()
-         * 
-         * @param  obj  Object to compare
-         */
-        public boolean equals(Object obj)
-        {
-            if (!(obj instanceof DefaultMutableTreeNode))
-                return false;
-            
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)obj;
-            return getUserObject().equals(node.getUserObject());
         }
     }
 }
