@@ -130,7 +130,7 @@ public class JMultiSplitPane extends JPanel
     class MyComponentListener extends ComponentAdapter
     {
         /**
-         * @see java.awt.event.ComponentAdapter#componentShown(
+         * @see java.awt.event.ComponentListener#componentResized(
          *      java.awt.event.ComponentEvent)
          */
         public void componentResized(ComponentEvent e)
