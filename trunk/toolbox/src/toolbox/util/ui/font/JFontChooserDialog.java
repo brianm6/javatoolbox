@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class JFontChooserDialog extends JDialog
 {
-    /** Logger **/
+    /** Logger */
     private  static final Logger logger_ = 
         Logger.getLogger(JFontChooserDialog.class);
         
@@ -49,7 +49,7 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner  Parent frame
+     * @param  owner  Parent frame
      */
     public JFontChooserDialog(Frame owner)
     {
@@ -60,8 +60,8 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner Parent frame
-     * @param modal Dialog is modal
+     * @param  owner  Parent frame
+     * @param  modal  Dialog is modal
      */
     public JFontChooserDialog(Frame owner, boolean modal)
     {
@@ -72,9 +72,9 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param   owner           Parent frame
-     * @param   modal           Set to true for a model dialog
-     * @param   defaultFont    Font to select by default
+     * @param  owner        Parent frame
+     * @param  modal        Set to true for a model dialog
+     * @param  defaultFont  Font to select by default
      */
     public JFontChooserDialog(Frame owner, boolean modal,
         Font defaultFont)
@@ -82,13 +82,14 @@ public class JFontChooserDialog extends JDialog
         this(owner, modal, defaultFont, false);
     }
 
+
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param   owner           Parent frame
-     * @param   modal           Set to true for a model dialog
-     * @param   defaultFont     Font to select by default
-     * @param   antiAlias       Turns antialias on
+     * @param  owner        Parent frame
+     * @param  modal        Set to true for a model dialog
+     * @param  defaultFont  Font to select by default
+     * @param  antiAlias    Turns antialias on
      */
     public JFontChooserDialog(Frame owner, boolean modal,
         Font defaultFont, boolean antiAlias)
@@ -98,12 +99,11 @@ public class JFontChooserDialog extends JDialog
     }
 
 
-
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner  Parent frame
-     * @param title  Frame title
+     * @param  owner  Parent frame
+     * @param  title  Frame title
      */
     public JFontChooserDialog(Frame owner, String title)
     {
@@ -114,9 +114,9 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner  Parent frame
-     * @param title  Frame title
-     * @param modal  Modal dialog
+     * @param  owner  Parent frame
+     * @param  title  Frame title
+     * @param  modal  Modal dialog
      */
     public JFontChooserDialog(Frame owner, String title, boolean modal)
     {
@@ -125,7 +125,7 @@ public class JFontChooserDialog extends JDialog
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------
     
     /**
@@ -151,7 +151,10 @@ public class JFontChooserDialog extends JDialog
         pack();
     }
 
-
+	//--------------------------------------------------------------------------
+    // Listener Support 
+    //--------------------------------------------------------------------------
+    
     /**
      * Adds a listener
      * 

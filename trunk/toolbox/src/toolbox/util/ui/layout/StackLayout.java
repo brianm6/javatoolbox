@@ -31,9 +31,9 @@ public class StackLayout extends ConstraintLayout
     //--------------------------------------------------------------------------
     
     /**
-     * @param  fill         Fill
-     * @param  alignment    Alignment
-     * @return Alignment
+     * @param   fill       Fill
+     * @param   alignment  Alignment
+     * @return  Alignment
      */
     public static Integer alignment(int fill, int alignment)
     {
@@ -47,8 +47,8 @@ public class StackLayout extends ConstraintLayout
     /**
      * Sets constraint
      * 
-     * @param  c            Component
-     * @param  constraint   Constraint object
+     * @param  c           Component
+     * @param  constraint  Constraint object
      */ 
     public void setConstraint(Component c, Object constraint)
     {
@@ -62,9 +62,9 @@ public class StackLayout extends ConstraintLayout
     /**
      * Measures layout
      * 
-     * @param  target       Target container
-     * @param  dimension    Dimension
-     * @param  type         Type
+     * @param  target     Target container
+     * @param  dimension  Dimension
+     * @param  type       Type
      */
     public void measureLayout(Container target, Dimension dimension, int type)
     {

@@ -41,7 +41,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden Methods from AbstractListModel
+    //  Overridden from javax.swing.AbstractListModel
     //--------------------------------------------------------------------------
 
     /**
@@ -65,6 +65,10 @@ public abstract class AbstractListModelFilter extends AbstractListModel
         return delegate_.getElementAt(index);
     }
 
+	//--------------------------------------------------------------------------
+    // Listener support 
+    //--------------------------------------------------------------------------
+    
     /**
      * Adds a data listener
      * 

@@ -67,12 +67,12 @@ import toolbox.util.ui.images.TreeCloseGIF;
 import toolbox.util.ui.images.TreeOpenGIF;
 
 /**
- * Tree based file browser widget ripped from
- * an open-source project and heavily modded.
+ * Tree based file browser widget based on an open-source project and heavily 
+ * updated.
  */
 public class JFileExplorer extends JPanel
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JFileExplorer.class);
 
@@ -288,7 +288,7 @@ public class JFileExplorer extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from Component
+    //  Overridden from java.awt.Component
     //--------------------------------------------------------------------------
     
     /**
@@ -306,7 +306,7 @@ public class JFileExplorer extends JPanel
     /**
      * Adds a JFileExplorerListener
      *
-     * @param  listener   The listener to add
+     * @param  listener  Listener to add
      */
     public void addJFileExplorerListener(JFileExplorerListener listener)
     {
@@ -317,7 +317,7 @@ public class JFileExplorer extends JPanel
     /**
      * Removes a JFileExplorerListener
      *
-     * @param  listener  The listener to remove
+     * @param  listener  Listener to remove
      */
     public void removeJFileExplorerListener(JFileExplorerListener listener)
     {
@@ -635,7 +635,7 @@ public class JFileExplorer extends JPanel
         /**
          * Constructor for FileNode.
          * 
-         * @param userObject  Object to associate with the file node
+         * @param  userObject  Object to associate with the file node
          */
         public FileNode(Object userObject)
         {
@@ -645,8 +645,8 @@ public class JFileExplorer extends JPanel
         /**
          * Constructor for FileNode.
          * 
-         * @param userObject       User object
-         * @param allowsChildren   Should node allow children
+         * @param  userObject      User object
+         * @param  allowsChildren  Should node allow children
          */
         public FileNode(Object userObject, boolean allowsChildren)
         {
@@ -718,12 +718,12 @@ public class JFileExplorer extends JPanel
         /**
          * Gets the renderer for the list cell
          *
-         * @param  list         JList
-         * @param  value        Value
-         * @param  index        Index
-         * @param  isSelected   boolean
-         * @param  cellHasFocus boolean
-         * @return Component
+         * @param   list          JList
+         * @param   value         Value
+         * @param   index         Index
+         * @param   isSelected    boolean
+         * @param   cellHasFocus  boolean
+         * @return  Component
          */
         public Component getListCellRendererComponent(JList list,
             Object value, int index, boolean isSelected, boolean cellHasFocus)

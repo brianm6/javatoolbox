@@ -26,8 +26,8 @@ public class GridLayoutPlus extends BasicGridLayout
     /**
      * Creates a GridLayoutPlus
      * 
-     * @param  rows     Number of rows
-     * @param  cols     Number of columns
+     * @param  rows  Number of rows
+     * @param  cols  Number of columns
      */
     public GridLayoutPlus(int rows, int cols)
     {
@@ -37,10 +37,10 @@ public class GridLayoutPlus extends BasicGridLayout
     /**
      * Creates a GridLayoutPlus
      * 
-     * @param  rows     Number of rows
-     * @param  cols     Number of columns
-     * @param  hGap     Horizontal gap
-     * @param  vGap     Vertical gap
+     * @param  rows  Number of rows
+     * @param  cols  Number of columns
+     * @param  hGap  Horizontal gap
+     * @param  vGap  Vertical gap
      */
     public GridLayoutPlus(int rows, int cols, int hGap, int vGap)
     {
@@ -75,8 +75,8 @@ public class GridLayoutPlus extends BasicGridLayout
     /**
      * Sets the row weight
      * 
-     * @param  row      Row number
-     * @param  weight   Row weight
+     * @param  row     Row number
+     * @param  weight  Row weight
      */
     public void setRowWeight(int row, int weight)
     {
@@ -86,8 +86,8 @@ public class GridLayoutPlus extends BasicGridLayout
     /**
      * Sets the column weight
      * 
-     * @param  col      Column number
-     * @param  weight   Column weight
+     * @param  col     Column number
+     * @param  weight  Column weight
      */
     public void setColWeight(int col, int weight)
     {
@@ -97,8 +97,8 @@ public class GridLayoutPlus extends BasicGridLayout
     /**
      * Sets column alignment
      * 
-     * @param  col      Column number
-     * @param  v        Alignment
+     * @param  col  Column number
+     * @param  v    Alignment
      */
     public void setColAlignment(int col, int v)
     {
@@ -108,8 +108,8 @@ public class GridLayoutPlus extends BasicGridLayout
     /**
      * Adds the specified named component to the layout.
      * 
-     * @param   name    String name
-     * @param   comp    Component to be added
+     * @param   name  String name
+     * @param   comp  Component to be added
      */
     public void addLayoutComponent(String name, Component comp)
     {
@@ -118,7 +118,7 @@ public class GridLayoutPlus extends BasicGridLayout
     /**
      * Removes the specified component from the layout.
      * 
-     * @param   comp    Component to be removed
+     * @param  comp  Component to be removed
      */
     public void removeLayoutComponent(Component comp)
     {

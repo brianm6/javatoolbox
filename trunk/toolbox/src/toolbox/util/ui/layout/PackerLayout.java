@@ -80,10 +80,10 @@ public class PackerLayout extends ConstraintLayout implements Direction
     /**
      * Creates a PackerLayout
      *
-     * @param   hGap        Horizontal gap
-     * @param   vGap        Vertical gap
-     * @param   hMargin     Horizontal margin
-     * @param   vMargin     Vertical margin
+     * @param  hGap     Horizontal gap
+     * @param  vGap     Vertical gap
+     * @param  hMargin  Horizontal margin
+     * @param  vMargin  Vertical margin
      */
     public PackerLayout(int hGap, int vGap, int hMargin, int vMargin)
     {
@@ -100,9 +100,9 @@ public class PackerLayout extends ConstraintLayout implements Direction
     /**
      * Measures layout
      * 
-     * @param  target       Target container
-     * @param  dimension    Dimension
-     * @param  type         Type
+     * @param  target     Target container
+     * @param  dimension  Dimension
+     * @param  type       Type
      */
     public void measureLayout(Container target, Dimension dimension, int type)
     {

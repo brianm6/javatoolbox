@@ -29,22 +29,22 @@ public class PhraseCanvas extends JComponent
      * Constructs a new PhraseCanvas with the supplied phrase, font, and 
      * color.
      * 
-     * @param   phrase      Phrase to be displayed in this PhraseCanvas
-     * @param   font        Font to use when rendering the phrase
-     * @param   color       Color to use when rendering the phrase
-     * @param   antiAlias   Antialias fonts
+     * @param  phrase     Phrase to be displayed in this PhraseCanvas
+     * @param  font       Font to use when rendering the phrase
+     * @param  color      Color to use when rendering the phrase
+     * @param  antiAlias  Antialias fonts
      */
     public PhraseCanvas(String phrase, Font font, Color color, 
         boolean antiAlias)
     {
-        phrase_ = phrase;
-        font_ = font;
-        color_ = color;
+        phrase_    = phrase;
+        font_      = font;
+        color_     = color;
         antiAlias_ = antiAlias;
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
 
     /** 

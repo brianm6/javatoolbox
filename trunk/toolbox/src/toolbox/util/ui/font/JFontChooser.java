@@ -78,7 +78,6 @@ public class JFontChooser extends JPanel
      */
     private int maxNumCharsInFontSize_ = 3;
 
-
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -139,16 +138,17 @@ public class JFontChooser extends JPanel
      * 
      * @param  antiAlias  Turn on antialias
      */    
-    public JFontChooser(Font initialFont, String[] styleDisplayNames,
-        int[] predefinedSizes, boolean antiAlias)
+    public JFontChooser(Font initialFont, 
+    					 String[] styleDisplayNames,
+        				 int[] predefinedSizes, 	
+        				 boolean antiAlias)
     {
-        
         buildView(initialFont, styleDisplayNames, predefinedSizes, antiAlias);
         wireView();
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------
 
     /**
@@ -157,9 +157,13 @@ public class JFontChooser extends JPanel
      * @param  initialFont          Initial font selected
      * @param  styleDisplayNames    Font styles
      * @param  predefinedSizes      Default set of font sizes
+     * @param  antiAlias            Turn on antialias
      */
-    protected void buildView(Font initialFont, String[] styleDisplayNames,
-        int[] predefinedSizes, boolean antiAlias)
+    protected void buildView(
+    	Font 		initialFont, 
+    	String[] 	styleDisplayNames,
+        int[] 		predefinedSizes, 
+        boolean 	antiAlias)
     {
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -325,6 +329,9 @@ public class JFontChooser extends JPanel
         return predefinedSizeIntegers;
     }
 
+	//--------------------------------------------------------------------------
+    // Event Listener Support
+    //--------------------------------------------------------------------------
 
     /**
      * Adds an listener to this JFontChooser
@@ -360,6 +367,9 @@ public class JFontChooser extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // Public 
+    //--------------------------------------------------------------------------
     
     /**
      * @return Antialias flag

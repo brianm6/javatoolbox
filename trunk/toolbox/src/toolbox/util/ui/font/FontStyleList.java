@@ -5,8 +5,8 @@ import java.awt.Font;
 import javax.swing.JList;
 
 /**
- * Represents a list of the four font styles: plain, bold, italic, and 
- * bold italic
+ * Represents a list of the four font styles: plain, bold, italic, and bold 
+ * italic
  */
 public class FontStyleList extends JList
 {
@@ -34,41 +34,15 @@ public class FontStyleList extends JList
     }
     
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public 
     //--------------------------------------------------------------------------
     
     /**
-     * Validates style display names
+     * Returns currently selected font style
      * 
-     * @param  styleDisplayNames  Style display names
-     * @return String array
-     */
-    private static String[] 
-        validateStyleDisplayNames(String[] styleDisplayNames)
-    {
-        if (styleDisplayNames == null)
-            throw new IllegalArgumentException(
-                "String[] styleDisplayNames may not be null");
-    
-        if (styleDisplayNames.length != 4)
-            throw new IllegalArgumentException(
-                "String[] styleDisplayNames must have a length of 4");
-
-        for (int i = 0; i < styleDisplayNames.length; i++)
-        {
-            if (styleDisplayNames[i] == null)
-                throw new IllegalArgumentException(
-                    "No member of String[] styleDisplayNames may be null");
-        }
-        
-        return styleDisplayNames;
-    }
-    
-    
-    /**
-     * @return currently selected font style
-     * @throws FontChooserException thrown if no font style is 
-     *         currently selected
+     * @return  currently selected font style
+     * @throws  FontChooserException thrown if no font style is currently 
+     *          selected
      */
     public int getSelectedStyle() throws FontChooserException
     {
@@ -87,7 +61,6 @@ public class FontStyleList extends JList
                     "No font style is currently selected");
         }
     }
-    
     
     /**
      * Change the currently selected style in this FontStyleList
@@ -117,4 +90,35 @@ public class FontStyleList extends JList
                     "int style must come from java.awt.Font");
         }
     }
+    
+	//--------------------------------------------------------------------------
+	//  Private
+	//--------------------------------------------------------------------------
+    
+	/**
+	 * Validates style display names
+	 * 
+	 * @param   styleDisplayNames  Style display names
+	 * @return  String array
+	 */
+	private static String[] 
+		validateStyleDisplayNames(String[] styleDisplayNames)
+	{
+		if (styleDisplayNames == null)
+			throw new IllegalArgumentException(
+				"String[] styleDisplayNames may not be null");
+    
+		if (styleDisplayNames.length != 4)
+			throw new IllegalArgumentException(
+				"String[] styleDisplayNames must have a length of 4");
+
+		for (int i = 0; i < styleDisplayNames.length; i++)
+		{
+			if (styleDisplayNames[i] == null)
+				throw new IllegalArgumentException(
+					"No member of String[] styleDisplayNames may be null");
+		}
+        
+		return styleDisplayNames;
+	}
 }

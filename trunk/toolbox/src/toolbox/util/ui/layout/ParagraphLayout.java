@@ -67,12 +67,12 @@ public class ParagraphLayout extends ConstraintLayout
     /**
      * Creates a new paragraph layout
      * 
-     * @param   hMargin     Horizontal margin
-     * @param   vMargin     Vertical margin
-     * @param   hGapMajor   Horizontal gap major
-     * @param   vGapMajor   Vertical gap major
-     * @param   hGapMinor   Horizontal gap minor
-     * @param   vGapMinor   Vertical gap minor
+     * @param  hMargin    Horizontal margin
+     * @param  vMargin    Vertical margin
+     * @param  hGapMajor  Horizontal gap major
+     * @param  vGapMajor  Vertical gap major
+     * @param  hGapMinor  Horizontal gap minor
+     * @param  vGapMinor  Vertical gap minor
      */
     public ParagraphLayout(
         int hMargin,
@@ -97,9 +97,9 @@ public class ParagraphLayout extends ConstraintLayout
     /**
      * Measures layout
      * 
-     * @param  target       Target container
-     * @param  dimension    Dimension
-     * @param  type         Type
+     * @param  target     Target container
+     * @param  dimension  Dimension
+     * @param  type       Type
      */
     public void measureLayout(Container target, Dimension dimension, int type)
     {
