@@ -16,7 +16,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.JListPopupMenu;
 
 /**
- * Unit test for JListPopupMenuTest
+ * Unit test for JListPopupMenu
  */
 public class JListPopupMenuTest extends TestCase
 {
@@ -31,9 +31,11 @@ public class JListPopupMenuTest extends TestCase
      * Entry point
      * 
      * @param  args  None
+     * @throws Exception on error
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
+        SwingUtil.setPreferredLAF();
         TestRunner.run(JListPopupMenuTest.class);
     }
     

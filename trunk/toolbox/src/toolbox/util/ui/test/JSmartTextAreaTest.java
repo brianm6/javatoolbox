@@ -30,9 +30,11 @@ public class JSmartTextAreaTest extends TestCase
      * Entry point
      * 
      * @param  args  None recognized
+     * @throws Exception on error
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
+        SwingUtil.setPreferredLAF();
         TestRunner.run(JSmartTextAreaTest.class);
     }
 
