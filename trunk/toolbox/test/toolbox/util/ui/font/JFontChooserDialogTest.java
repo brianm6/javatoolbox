@@ -258,8 +258,26 @@ public class JFontChooserDialogTest extends UITestCase
                     JFontChooser.NAME_FONT_CHOOSER)).getSource();
         
         chooser.setRenderedUsingFont(true);
-        chooser.setMonospaceEmphasized(true);
+        chooser.setMonospaceEmphasized(false);
         fontList_.repaint();
         ThreadUtil.sleep(3000);
     }
+    
+    /**
+     * Tests
+     */
+    public void testRenderUsingMonospaceEmphasis()
+    {
+        logger_.info("Running testRenderUsingMonospaceEmphasis...");
+        
+        JFontChooser chooser = (JFontChooser) 
+            new JComponentOperator(dialog_, 
+                new NameComponentChooser(
+                    JFontChooser.NAME_FONT_CHOOSER)).getSource();
+        
+        chooser.setRenderedUsingFont(false);
+        chooser.setMonospaceEmphasized(true);
+        fontList_.repaint();
+        ThreadUtil.sleep(3000);
+    }    
 }
