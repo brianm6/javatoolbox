@@ -1,5 +1,10 @@
 package toolbox.util.thread.concurrent;
 
+import org.apache.log4j.Logger;
+
+import EDU.oswego.cs.dl.util.concurrent.CondVar;
+import EDU.oswego.cs.dl.util.concurrent.Mutex;
+
 /**
  * This class implements an event synchronization semaphore.  Threads will
  * block on this semaphore until the desired condition is fulfilled at which
@@ -7,6 +12,9 @@ package toolbox.util.thread.concurrent;
  */
 public class EventSemaphore
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(EventSemaphore.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -24,7 +32,7 @@ public class EventSemaphore
     /**
      * Event causing semaphore to be posted.
      */
-    private ConditionVariable event_;
+    private CondVar event_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -49,7 +57,7 @@ public class EventSemaphore
     {
         posted_ = posted;
         mutex_ = new Mutex();
-        event_ = new ConditionVariable();
+        event_ = new CondVar(mutex_);
     }
 
     //--------------------------------------------------------------------------
@@ -75,9 +83,16 @@ public class EventSemaphore
         if (!posted_)
         {
             posted_ = true;
-            mutex_.lock();
-            event_.condBroadcast();
-            mutex_.unlock();
+            try
+            {
+                mutex_.acquire();
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
+            event_.broadcast();
+            mutex_.release();
         }
     }
 
@@ -89,9 +104,16 @@ public class EventSemaphore
     public synchronized void pulse()
     {
         posted_ = false;
-        mutex_.lock();
-        event_.condBroadcast();
-        mutex_.unlock();
+        try
+        {
+            mutex_.acquire();
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
+        event_.broadcast();
+        mutex_.release();
     }
 
 
@@ -105,11 +127,25 @@ public class EventSemaphore
             if (posted_)
                 return;
             else
-                mutex_.lock();
+                try
+                {
+                    mutex_.acquire();
+                }
+                catch (InterruptedException e)
+                {
+                    logger_.error(e);
+                }
         }
 
-        event_.condWait(mutex_);
-        mutex_.unlock();
+        try
+        {
+            event_.await();
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
+        mutex_.release();
     }
 
 
@@ -128,11 +164,11 @@ public class EventSemaphore
             if (posted_)
                 return;
             else
-                mutex_.lock();
+                mutex_.acquire();
         }
 
-        event_.condWait(mutex_, timeout);
-        mutex_.unlock();
+        event_.timedwait(timeout);
+        mutex_.release();
     }
 
 

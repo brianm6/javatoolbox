@@ -1,12 +1,12 @@
 package toolbox.util.thread.strategy;
 
-import java.util.ArrayList;
+import EDU.oswego.cs.dl.util.concurrent.BoundedBuffer;
+import EDU.oswego.cs.dl.util.concurrent.TimeoutException;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ReturnValue;
-import toolbox.util.thread.concurrent.BoundedBufferAdapter;
-import toolbox.util.thread.concurrent.IBoundedBuffer;
-import toolbox.util.thread.concurrent.Timeout;
 
 /**
  * VariableThreadPoolStrategy implements a variable-thread-strategy that is a 
@@ -20,6 +20,9 @@ import toolbox.util.thread.concurrent.Timeout;
  */
 public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(VariableThreadPoolStrategy.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -48,6 +51,12 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      * Default timeout in millis. 
      */
     public static final int DEFAULT_TIMEOUT = 5000;
+
+    /**
+     * Static task that is put on the request queue to signify a shutdown.
+     */
+    public static final VariableThreadPoolStrategy.Task SHUTDOWN_TASK = 
+        new VariableThreadPoolStrategy.Task();
     
     //--------------------------------------------------------------------------
     // Fields
@@ -96,7 +105,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Request queue.
      */
-    private IBoundedBuffer requestQueue_;
+    private BoundedBuffer requestQueue_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -154,7 +163,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         poolSize_ = poolSize;
         timeout_ = timeout;
         runnable_ = new VariableThreadPoolRunnable();
-        requestQueue_ = new BoundedBufferAdapter(new ArrayList(), queueSize);
+        requestQueue_ = new BoundedBuffer(queueSize);
 
         // Create the initial threads with a runnable that never times out.
         Runnable initRunnable = new InitVariableThreadPoolRunnable();
@@ -176,7 +185,14 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     public synchronized void service(IThreadable request, ReturnValue result)
     {
-        requestQueue_.put(new Task(request, result));
+        try
+        {
+            requestQueue_.put(new Task(request, result));
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
         ++pendingSize_;
 
         if (busySize_ + pendingSize_ >= currentSize_)
@@ -194,7 +210,14 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     public void shutdown()
     {
         for (int i = 0; i < currentSize_; ++i)
-            requestQueue_.put(null);
+            try
+            {
+                requestQueue_.put(SHUTDOWN_TASK);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
     }
 
     //--------------------------------------------------------------------------
@@ -210,12 +233,12 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          * Returns the next request or times out.
          *
          * @return Next request to proecess.
-         * @throws Timeout on timeout.
+         * @throws TimeoutException on timeout.
          * @throws InterruptedException on interruption.
          */
-        protected Object take() throws Timeout, InterruptedException
+        protected Object take() throws TimeoutException, InterruptedException
         {
-            return requestQueue_.take(timeout_);
+            return requestQueue_.poll(timeout_);
         }
 
 
@@ -228,7 +251,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
             {
                 Task task = null;
 
-                while ((task = (Task) take()) != null)
+                while ((task = (Task) take()) != SHUTDOWN_TASK)
                 {
                     try
                     {
@@ -251,10 +274,6 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
             {
                 ; // ignore interruptions
             }
-            catch (Timeout t)
-            {
-                ; // no requests pending
-            }
             finally
             {
                 --currentSize_;
@@ -275,10 +294,10 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          * Returns the next request.
          *
          * @return Next request to proecess.
-         * @throws Timeout on timeout.
+         * @throws TimeoutException on timeout.
          * @throws InterruptedException when interrupted.
          */
-        protected Object take() throws Timeout, InterruptedException
+        protected Object take() throws TimeoutException, InterruptedException
         {
             return requestQueue_.take();
         }
@@ -302,6 +321,15 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          * Return value of the request.
          */
         private ReturnValue result_;
+
+        
+        /**
+         * Creates a Task.
+         */
+        public Task()
+        {
+        }
+        
         
         /**
          * Creates a Task.

@@ -1,12 +1,11 @@
 package toolbox.util.thread.strategy;
 
-import java.util.ArrayList;
+import EDU.oswego.cs.dl.util.concurrent.BoundedBuffer;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ReturnValue;
-import toolbox.util.thread.concurrent.BoundedBufferAdapter;
-import toolbox.util.thread.concurrent.IBoundedBuffer;
-
 
 /**
  * ThreadPoolStrategy implements a thread-pool strategy that puts requests on a
@@ -19,6 +18,9 @@ import toolbox.util.thread.concurrent.IBoundedBuffer;
  */
 public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(ThreadPoolStrategy.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -33,6 +35,12 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     public static final int DEFAULT_QUEUE_SIZE = 100;
     
+    /**
+     * Static task that is put on the request queue to signify a shutdown.
+     */
+    public static final ThreadPoolStrategy.Task SHUTDOWN_TASK = 
+        new ThreadPoolStrategy.Task();
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -50,7 +58,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Queue for requests.
      */
-    private IBoundedBuffer requestQueue_;
+    private BoundedBuffer requestQueue_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -76,7 +84,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     {
         poolSize_ = poolSize;
         runnable_ = new ThreadPoolRunnable();
-        requestQueue_ = new BoundedBufferAdapter(new ArrayList(), queueSize);
+        requestQueue_ = new BoundedBuffer(queueSize); 
         createThreads(poolSize_, runnable_);
     }
 
@@ -93,7 +101,14 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     public void service(IThreadable request, ReturnValue result)
     {
-        requestQueue_.put(new Task(request, result));
+        try
+        {
+            requestQueue_.put(new Task(request, result));
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
 
 
@@ -103,7 +118,14 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     public void shutdown()
     {
         for (int i = 0; i < poolSize_; ++i)
-            requestQueue_.put(null);
+            try
+            {
+                requestQueue_.put(SHUTDOWN_TASK);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
     }
 
     //--------------------------------------------------------------------------
@@ -125,6 +147,15 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
          */
         private ReturnValue result_;
 
+        
+        /**
+         * Creates a Task.
+         */
+        public Task()
+        {
+        }
+
+        
         /**
          * Creates a Task.
          * 
@@ -156,17 +187,25 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
         {
             Task task = null;
 
-            while ((task = (Task) requestQueue_.take()) != null)
+            try
             {
-                try
+                // TODO: SHUTDOWN
+                while ((task = (Task) requestQueue_.take()) != SHUTDOWN_TASK)
                 {
-                    setStarted(task.result_);
-                    setResult(task.result_, process(task.request_));
+                    try
+                    {
+                        setStarted(task.result_);
+                        setResult(task.result_, process(task.request_));
+                    }
+                    catch (Exception e)
+                    {
+                        setResult(task.result_, e);
+                    }
                 }
-                catch (Exception e)
-                {
-                    setResult(task.result_, e);
-                }
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
             }
         }
     }
