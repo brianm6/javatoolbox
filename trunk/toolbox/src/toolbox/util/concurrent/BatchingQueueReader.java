@@ -5,12 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import toolbox.util.ThreadUtil;
+import toolbox.util.service.Startable;
 
 /**
  * Reads as much content off a queue as possible (batch mode) and delivers in a
  * single call to IBatchingQueueListener.nextBatch().
  */
-public class BatchingQueueReader
+public class BatchingQueueReader implements Startable
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -78,6 +79,7 @@ public class BatchingQueueReader
      * Stops the reader.
      *
      * @throws IllegalStateException if the reader has already been stopped.
+     * @see toolbox.util.service.Startable#stop()
      */
     public synchronized void stop() throws IllegalStateException
     {
@@ -98,6 +100,7 @@ public class BatchingQueueReader
      * Starts the reader.
      *
      * @throws IllegalStateException if the reader is already started.
+     * @see toolbox.util.service.Startable#start()
      */
     public synchronized void start() throws IllegalStateException
     {
@@ -114,6 +117,15 @@ public class BatchingQueueReader
         }
     }
 
+    
+    /**
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return started_;
+    }
+    
     //--------------------------------------------------------------------------
     // Event Notification
     //--------------------------------------------------------------------------
