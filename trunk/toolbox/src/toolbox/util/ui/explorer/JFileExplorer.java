@@ -207,7 +207,6 @@ public class JFileExplorer extends JPanel
                 }
                 else
                 {
-                    // Root drive a possibility
                     File root  = new File(path.substring(0,3));
                     
                     if (ArrayUtil.contains(File.listRoots(), root))
@@ -216,13 +215,19 @@ public class JFileExplorer extends JPanel
                         // by the tokenizer
                         pathTokens[0] = root.toString();
                         
-                        // Switch to different drive if necessary
-                        rootsComboBox_.setSelectedItem(new File(pathTokens[0]));
+                        String currentRoot = 
+                            rootsComboBox_.getSelectedItem().toString();
                         
-                        logger_.debug(
-                            "Switching to root " + 
+                        // Only change combo box if drive has changed
+                        if (!currentRoot.equals(pathTokens[0]))
+                        {
+                            rootsComboBox_.setSelectedItem(
+                                new File(pathTokens[0]));
+                            
+                            logger_.debug("Switching to root " + 
                                 rootsComboBox_.getSelectedItem() + 
                                     " in path " + path);
+                        }
                     }
                     else
                     {
@@ -245,16 +250,14 @@ public class JFileExplorer extends JPanel
             {
                 FileNode current = root;
                 
-                //logger_.debug(method + 
-                //  "Current " + current + " children: " + current.getChildCount());
-                
-                // Starts at 1 to skip over root
+                // Starts at 1 to skip over root which is zero
                 for(int i=1; i<pathTokens.length; i++) 
                 {
                     if (current.getChildCount() == 0)
                     {
                         // Expand node on demand
                         String partialPath = "";
+                        
                         for (int j=0; j< i; j++) 
                         {
                             if (pathTokens[j].endsWith(File.separator))
@@ -265,18 +268,12 @@ public class JFileExplorer extends JPanel
                                 pathTokens[j] + File.separator;
                         }
                             
-                        //logger_.debug(method + "Partial path = "  + partialPath);
-                            
                         setTreeFolders(partialPath, current);
                     }
                     
                     FileNode child = new FileNode(pathTokens[i]);
                     child.setParent(current);
                     int idx = current.getIndex(child);
-                    
-                    //logger_.debug(method + 
-                    //    "node " + current + " found at index " + idx);
-                        
                     current = (FileNode) current.getChildAt(idx);
                 }
                 
@@ -311,16 +308,14 @@ public class JFileExplorer extends JPanel
     {
         String path = getCurrentPath();
         if (!StringUtil.isNullOrEmpty(path))
-            props.setProperty(prefix + ".explorer.path", path);
+            props.setProperty(prefix + PROP_PATH, path);
             
         String file = (String) fileList_.getSelectedValue();
         if (!StringUtil.isNullOrEmpty(file))
-            props.setProperty(prefix + ".explorer.file", file);
+            props.setProperty(prefix + PROP_FILE, file);
             
-        int dividerLoc = splitPane_.getDividerLocation();
-        PropertiesUtil.setInteger(
-            props, prefix + ".explorer.dividerlocation", dividerLoc);
-        
+        PropertiesUtil.setInteger(props, prefix + PROP_DIVIDER, 
+            splitPane_.getDividerLocation());
     }
     
     /**
