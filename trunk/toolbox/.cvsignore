@@ -11,3 +11,5 @@ System.out
 target
 junit*.properties
 *.log
+.externalToolBuilders
+.clover
