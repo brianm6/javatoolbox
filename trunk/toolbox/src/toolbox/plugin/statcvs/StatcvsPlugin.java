@@ -41,7 +41,6 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.NativeBrowser;
-import toolbox.util.ui.JSmartTextArea.ClearAction;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.IPlugin;
