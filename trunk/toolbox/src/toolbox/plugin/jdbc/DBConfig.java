@@ -412,7 +412,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
-                    passwordField_.getText());
+                    String.valueOf(passwordField_.getPassword()));
             }
             else
             {
@@ -421,7 +421,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
-                    passwordField_.getText());
+                    String.valueOf(passwordField_.getPassword()));
             }
        
             statusBar_.setInfo("Connected to the database!");
@@ -498,7 +498,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     profile.setDriver(driverField_.getText());
                     profile.setUrl(urlField_.getText());
                     profile.setUsername(userField_.getText());
-                    profile.setPassword(passwordField_.getText());
+                    profile.setPassword(
+                        String.valueOf(passwordField_.getPassword()));
                     found |= true;
                     break;
                 }
@@ -512,7 +513,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
-                    passwordField_.getText());
+                    String.valueOf(passwordField_.getPassword()));
                     
                 profileCombo_.addItem(profile);
                 profileCombo_.setSelectedItem(profile);    
