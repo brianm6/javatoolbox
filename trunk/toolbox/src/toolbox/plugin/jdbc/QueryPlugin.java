@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -21,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.table.DefaultTableModel;
 
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -49,6 +52,7 @@ import toolbox.plugin.jdbc.action.ShowResultsFilterAction;
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
+import toolbox.util.JDBCSession;
 import toolbox.util.JDBCUtil;
 import toolbox.util.PreferencedUtil;
 import toolbox.util.ResourceUtil;
@@ -422,7 +426,46 @@ public class QueryPlugin extends JPanel implements IPlugin
         if (lower.startsWith("select"))
         {
             // Execute select statement
-            metaResults = JDBCUtil.executeQuery(sql);
+            String formattedResults = null;
+            Object[][] tableResults = null;
+            Connection conn = null;
+            PreparedStatement stmt = null;
+            ResultSet resultSet = null;
+            String session = dbConfigPane_.getSession();
+            
+            try
+            {
+                conn = JDBCSession.getConnection(session);
+                
+                stmt = 
+                    conn.prepareStatement(
+                        sql, 
+                        ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                        ResultSet.CONCUR_READ_ONLY);
+                
+                resultSet = stmt.executeQuery();
+                formattedResults = JDBCUtil.format(resultSet);
+                resultSet.beforeFirst();
+                tableResults = JDBCUtil.toArray(resultSet, false);
+                
+                // Output to textarea
+                resultsArea_.append(formattedResults);
+                
+                // Output to table
+                DefaultTableModel dtm = 
+                    (DefaultTableModel) resultsTable_.getModel();
+                
+                String[] columnNames = JDBCUtil.getColumnNames(resultSet);
+                dtm.setDataVector(tableResults, columnNames);
+                
+                metaResults = formattedResults;
+            }
+            finally
+            {
+                JDBCUtil.close(stmt);
+                JDBCUtil.close(resultSet);
+                JDBCUtil.releaseConnection(conn); 
+            }
         }
         else if (lower.startsWith("insert") ||
                  lower.startsWith("delete") ||
@@ -676,18 +719,15 @@ public class QueryPlugin extends JPanel implements IPlugin
         toolbar.add(clear);
 
         resultsLayout_ = new CardLayout();
-        
         resultsCardPanel_ = new JPanel(resultsLayout_);
         
         resultsTable_ = new JSmartTable(10,10);
-
+        resultsTable_.setFont(FontUtil.getPreferredMonoFont());
+        
         resultsCardPanel_.add(new JScrollPane(resultsTable_), CARD_TABLE);
         resultsCardPanel_.add(new JScrollPane(resultsArea_), CARD_TEXTAREA);
-                
         resultsAreaPanel.add(BorderLayout.CENTER, resultsCardPanel_);
-        
         resultsLayout_.show(resultsCardPanel_, CARD_TEXTAREA);
-        
         return new JHeaderPanel("Results", toolbar, resultsCardPanel_);
     }
 
