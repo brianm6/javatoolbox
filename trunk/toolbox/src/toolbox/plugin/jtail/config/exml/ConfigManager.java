@@ -35,6 +35,8 @@ public class ConfigManager implements IConfigManager
      */
     public void save(IJTailConfig jtailConfig)
     {
+        String method = "[save  ] ";
+        
         JTailConfig config = (JTailConfig)jtailConfig;
         
         String userHome = System.getProperty("user.home");
@@ -47,7 +49,7 @@ public class ConfigManager implements IConfigManager
             document.setRoot(config.marshal());
             document.write(configFile);
             
-            logger_.debug("\n" + document);
+            logger_.debug(method + "\n" + document);
         }
         catch (IOException ioe)
         {

@@ -44,6 +44,8 @@ public class ConfigManager implements IConfigManager
      */
     public void save(IJTailConfig jtailConfig)
     {
+        String method = "[save  ] ";
+        
         JTailConfig config = (JTailConfig)jtailConfig;
         
         String userHome = System.getProperty("user.home");
@@ -54,7 +56,7 @@ public class ConfigManager implements IConfigManager
         {
             String xmlString = config.marshal().toString();
             FileUtil.setFileContents(configFile, xmlString, false);
-            logger_.debug("\n" + xmlString);
+            logger_.debug(method + "\n" + xmlString);
         }
         catch (IOException ioe)
         {
@@ -67,6 +69,8 @@ public class ConfigManager implements IConfigManager
      */
     public IJTailConfig load()
     {
+        String method = "[load  ] ";
+        
         String userHome = System.getProperty("user.home");
         String filename = userHome + File.separator + CONFIG_FILE;
         File    xmlFile = new File(filename);
@@ -86,7 +90,7 @@ public class ConfigManager implements IConfigManager
                 
         if (!xmlFile.exists())
         {
-            logger_.debug("No XML configuration present. Using defaults.");
+            logger_.debug(method + "No XML configuration present. Using defaults.");
         }
         else if (!xmlFile.canRead())
         {
