@@ -2,25 +2,22 @@ package toolbox.util.ui.statusbar.test;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.junit.UITestCase;
 import toolbox.util.RandomUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
  * Unit test for JStatusBar.
  */
-public class JStatusBarTest extends TestCase
+public class JStatusBarTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(JStatusBarTest.class);
@@ -30,14 +27,12 @@ public class JStatusBarTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint 
+     * Entrypoint. 
      * 
      * @param args None recognized
-     * @throws Exception on error
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
-        SwingUtil.setPreferredLAF();
         TestRunner.run(JStatusBarTest.class);   
     }
 
@@ -46,7 +41,7 @@ public class JStatusBarTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests JStatusBar
+     * Tests JStatusBar.
      * 
      * @throws Exception on error
      */    
@@ -58,7 +53,7 @@ public class JStatusBarTest extends TestCase
 
         // Relative, twice normal
         status.addStatusComponent(
-            new JLabel(" Relative x2 "), JStatusBar.RELATIVE, 2);
+            new JSmartLabel(" Relative x2 "), JStatusBar.RELATIVE, 2);
         
         // Relative normal
         status.addStatusComponent(
@@ -81,12 +76,9 @@ public class JStatusBarTest extends TestCase
         progressBar.setValue(RandomUtil.nextInt(1, 100));
         status.addStatusComponent(progressBar);
 
-        JDialog frame = new JDialog(new JFrame(), "JStatusBar Test", true);
-        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(BorderLayout.SOUTH, status);
-        frame.setSize(700, 150);
-        SwingUtil.centerWindow(frame);
-        frame.setVisible(true);
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(BorderLayout.SOUTH, status);
+        
+        launchInDialog(p, SCREEN_ONE_HALF);
     }
 }
