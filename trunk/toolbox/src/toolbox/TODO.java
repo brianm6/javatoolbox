@@ -1,6 +1,8 @@
 package toolbox;
 
 /**
+ * Just a place where TODOs are lumped...
+ * <pre>
  * TODO: SSH on CVS
  * TODO: Move Tomcat server to booger2
  * TODO: Upgrade to checkstyle 3.0
@@ -8,6 +10,7 @@ package toolbox;
  * TODO: Add vizant for visualization of build dependencies
  * TODO: "Recent" menu type component
  * TODO: Add package.html to all packages
+ * </pre>
  */
 public class TODO
 {
