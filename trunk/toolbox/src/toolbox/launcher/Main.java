@@ -18,7 +18,7 @@ import toolbox.util.ArrayUtil;
 public class Main
 {
     /** 
-     * Program name to class file map 
+     * Program name to class file map.
      */
     private static Map programMap_;
     
@@ -43,10 +43,10 @@ public class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint 
+     * Entrypoint.
      * 
-     * @param  args[0]    Program name
-     *         args[1..n] Program arguments
+     * @param args[0] Program name
+     *        args[1..n] Program arguments
      */
     public static void main(String[] args)
     {
@@ -58,10 +58,10 @@ public class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Creates the launcher with the given arguments
+     * Creates the launcher with the given arguments.
      * 
-     * @param  args  First index is program name, remaining args are passed on
-     *               to the program that is launched
+     * @param args First index is program name, remaining args are passed on
+     *        to the program that is launched
      */
     public Main(String[] args)
     {
@@ -98,7 +98,7 @@ public class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Launches a toolbox executable with the given classname and arguments
+     * Launches a toolbox executable with the given classname and arguments.
      * 
      * @param className Name of class to launch
      * @param args Arguments
@@ -121,8 +121,9 @@ public class Main
         }        
     }
     
+    
     /**
-     * Prints launcher usage
+     * Prints launcher usage.
      */
     protected void printUsage()
     {

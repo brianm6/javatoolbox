@@ -36,7 +36,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     
     /**
-     * Default throttle delay is 500 ms for sending of subsequent messages
+     * Default throttle delay is 500 ms for sending of subsequent messages.
      */
     public static final int DEFAULT_THROTTLE = 500;
     
@@ -45,27 +45,27 @@ public class InstantMessengerAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
         
     /**
-     * IM network specific instant messenger interface
+     * IM network specific instant messenger interface.
      */
     private InstantMessenger messenger_;
     
     /**
-     * Identifies the IM network to send messages to. (AOL, Yahoo, etc)
+     * Identifies the IM network to send messages to. (AOL, Yahoo, etc).
      */
     private String messengerType_;
     
     /**
-     * Username to logon the the IM network
+     * Username to logon the the IM network.
      */
     private String username_;
     
     /**
-     * Clear text password used for authentication
+     * Clear text password used for authentication.
      */
     private String password_;
     
     /**
-     * Username of the online buddy to send the log messages to 
+     * Username of the online buddy to send the log messages to. 
      */
     private String recipient_;
 
@@ -80,7 +80,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an InstantMessengerAppender
+     * Creates an InstantMessengerAppender.
      */
     public InstantMessengerAppender()
     {
@@ -102,8 +102,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
         messengerType_ = string;
     }
 
+
     /**
-     * Sets the password 
+     * Sets the password. 
      * 
      * @param string Cleartext password
      */
@@ -112,8 +113,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
         password_ = string;
     }
 
+
     /**
-     * Sets the recipients username
+     * Sets the recipients username.
      * 
      * @param string Recipient
      */
@@ -122,8 +124,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
         recipient_ = string;
     }
 
+
     /**
-     * Sets the username
+     * Sets the username.
      * 
      * @param string Username to use for the message origin
      */
@@ -132,8 +135,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
         username_ = string;
     }
 
+
     /**
-     * Sets the throttle in milliseconds between message sends
+     * Sets the throttle in milliseconds between message sends.
      * 
      * @param throttle Delay in milliseconds between sending of successive 
      *        instant messages.
@@ -148,13 +152,14 @@ public class InstantMessengerAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
 
     /** 
-     * Initializes the appender
+     * Initializes the appender.
      */
     protected void init()
     {
         throttle_ = 0;
         messenger_ = InstantMessengerFactory.create(messengerType_);
     }
+
 
     /** 
      * Connects to the instant messenger server and authenticates the user.
@@ -226,6 +231,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
             LogLog.error("close", e);
         }
     }
+
 
     /**
      * @see org.apache.log4j.Appender#requiresLayout()

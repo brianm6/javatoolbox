@@ -11,18 +11,18 @@ import org.apache.log4j.spi.LoggingEvent;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
- * A Log4J appender that dumps into a text area
+ * A Log4J appender that dumps into a text area.
  */
 public class JTextAreaAppender extends AppenderSkeleton
     implements DocumentListener
 {
     /** 
-     * Text area that logging statements are directed to 
+     * Text area that logging statements are directed to. 
      */ 
     private JSmartTextArea textArea_;
     
     /** 
-     * Layout for logging statements 
+     * Layout for logging statements.
      */ 
     private PatternLayout layout_;
 
@@ -31,7 +31,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     
     /** 
-     * Creates a new text area appender
+     * Creates a new text area appender.
      */
     public JTextAreaAppender()
     {
@@ -68,6 +68,7 @@ public class JTextAreaAppender extends AppenderSkeleton
         textArea_.append(layout_.format(loggingEvent));
     }
 
+
     /** 
      * Returns whether we need a layout.
      * 
@@ -77,6 +78,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     {
         return false;
     }
+
 
     /** 
      * Closes this appender (does nothing).
@@ -98,6 +100,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     {
     }
 
+
     /** 
      * Does nothing.
      * 
@@ -106,6 +109,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     public void removeUpdate(DocumentEvent event)
     {
     }
+
 
     /** 
      * Sets the caret position to the end of the text in the text component.

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.launcher.LAFLauncher;
 
 /**
- * Unit test for LAFLauncher
+ * Unit test for LAFLauncher.
  */
 public class LAFLauncherTest extends TestCase
 {
@@ -20,9 +20,9 @@ public class LAFLauncherTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -34,7 +34,7 @@ public class LAFLauncherTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests main() with no args for the target class
+     * Tests main() with no args for the target class.
      * 
      * @throws Exception on error 
      */
@@ -46,8 +46,9 @@ public class LAFLauncherTest extends TestCase
         LAFLauncher.main(new String[] { target });
     }
     
+    
     /**
-     * Tests main() with one args for the target class
+     * Tests main() with one args for the target class.
      * 
      * @throws Exception on error 
      */
@@ -59,8 +60,9 @@ public class LAFLauncherTest extends TestCase
         LAFLauncher.main(new String[] { target, "showclasspath" });
     }
 
+
     /**
-     * Tests main() with > 1 args
+     * Tests main() with > 1 args.
      * 
      * @throws Exception on error 
      */
@@ -72,6 +74,7 @@ public class LAFLauncherTest extends TestCase
         LAFLauncher.main(
             new String[] { target, "banner", "testing", "LAFLauncher"});
     }
+    
     
     /**
      * Tests printUsage()

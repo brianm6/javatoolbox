@@ -21,7 +21,7 @@ import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
 
 /**
- * Yahoo Instant Messenger client that supports login, send message, and logout.
+ * AIM Instant Messenger client that supports login, send message, and logout.
  */
 public class AIMMessenger implements InstantMessenger
 {
@@ -29,37 +29,37 @@ public class AIMMessenger implements InstantMessenger
      //       implementation of a Log4J appender.
     
     /** 
-     * Return code for a successful connection 
+     * Return code for a successful connection. 
      */
     public static final String CONNECT_SUCCEEDED = "Connect succeeded!";
     
     /** 
-     * Return code for a failed connection 
+     * Return code for a failed connection.
      */
     public static final String CONNECT_FAILED = "Connect failed!";
     
     /** 
-     * Available instant messaging protocols 
+     * Available instant messaging protocols. 
      */
     private Protocol[] protocols;
     
     /** 
-     * Yahoo instant messaging protocol 
+     * AIM instant messaging protocol.
      */
     private Protocol aim_;
     
     /** 
-     * Listener for client and server side generated Yahoo events 
+     * Listener for client and server side generated Yahoo events. 
      */
     private AIMListener listener_;
     
     /** 
-     * Flag that tracks the connection state 
+     * Flag that tracks the connection state.
      */
     private boolean connected_;
     
     /** 
-     * Invoker used to handle the sending of messages 
+     * Invoker used to handle the sending of messages. 
      */
     private Invoker invoker_;
     
@@ -74,7 +74,7 @@ public class AIMMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a YahooMessenger
+     * Creates an AIMMessenger.
      */
     public AIMMessenger()
     {
@@ -98,6 +98,7 @@ public class AIMMessenger implements InstantMessenger
         throttle_ = PropertiesUtil.getInteger(
             props, PROP_THROTTLE, InstantMessengerAppender.DEFAULT_THROTTLE);
     }
+
 
     /**
      * Synchronized method since whole send/recv is async. Waiters in the
@@ -138,9 +139,10 @@ public class AIMMessenger implements InstantMessenger
             throw new InstantMessengerException(e);    
         }
     }
-
+    
+    
     /**
-     * Logs out from yahoo. 
+     * Logs out from AIM. 
      */
     public void logout() throws InstantMessengerException
     {
@@ -166,6 +168,7 @@ public class AIMMessenger implements InstantMessenger
             throw new InstantMessengerException(e);
         }
     }
+    
     
     /**
      * Sends message to the recipient using a queue invoker strategy.
@@ -205,6 +208,7 @@ public class AIMMessenger implements InstantMessenger
         }
     }
 
+
     /**
      * @see toolbox.log4j.im.InstantMessenger#shutdown()
      */
@@ -220,6 +224,7 @@ public class AIMMessenger implements InstantMessenger
         }
     }
     
+        
     /**
      * @see toolbox.log4j.im.InstantMessenger#isConnected()
      */
@@ -233,17 +238,17 @@ public class AIMMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /** 
-     * Listener for client and server side generated Yahoo events 
+     * Listener for client and server side generated Yahoo events. 
      */
     class AIMListener extends IMAdapter
     {
         /** 
-         * Login success and failures both go in this queue 
+         * Login success and failures both go in this queue.
          */
         BlockingQueue connected_;
         
         /** 
-         * Disconnect notification goes into this queue 
+         * Disconnect notification goes into this queue. 
          */
         BlockingQueue disconnected_;
         
@@ -252,7 +257,7 @@ public class AIMMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /** 
-         * Creates a YahooListener
+         * Creates an AIMListener
          */
         public AIMListener()
         {
@@ -265,7 +270,7 @@ public class AIMMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /**
-         * Waits for a connect (failure or success)
+         * Waits for a connect (failure or success).
          * 
          * @return CONNECT_SUCCEEDED or CONNECT_FAILED
          * @throws InterruptedException if interrupted while pulling from the 
@@ -276,8 +281,9 @@ public class AIMMessenger implements InstantMessenger
             return (String) connected_.pull();
         }
 
+
         /**
-         * Waits for a successful disconnect
+         * Waits for a successful disconnect.
          * 
          * @return Protocol that was disconnected.
          * @throws InterruptedExceptin if interrupted while pulling from the 
@@ -301,6 +307,7 @@ public class AIMMessenger implements InstantMessenger
             connected_.push(CONNECT_SUCCEEDED);
         }
         
+        
         /**
          * @see hamsam.api.IMListener#connectFailed(
          *      hamsam.protocol.Protocol, java.lang.String)
@@ -311,7 +318,8 @@ public class AIMMessenger implements InstantMessenger
             LogLog.debug("Connect to Yahoo failed: " + reasonMessage);
             connected_.push(CONNECT_FAILED);
         }
-        
+       
+       
         /**
          * @see hamsam.api.IMListener#connecting(hamsam.protocol.Protocol)
          */
@@ -319,6 +327,7 @@ public class AIMMessenger implements InstantMessenger
         {
             LogLog.debug("Connecting to Yahoo...");
         }
+
 
         /**
          * @see hamsam.api.IMListener#disconnected(hamsam.protocol.Protocol)
@@ -328,6 +337,7 @@ public class AIMMessenger implements InstantMessenger
             disconnected_.push(protocol);
             LogLog.debug("Disconnected from Yahoo");
         }
+
         
         /**
          * @see hamsam.api.IMListener#protocolMessageReceived(

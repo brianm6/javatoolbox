@@ -20,10 +20,10 @@ public class LAFLauncher
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  [0]    = Name of class to launch
-     *               [1..n] = Command line arguments
+     * @param args [0] = Name of class to launch
+     *            [1..n] = Command line arguments
      * @throws Exception on error
      */
     public static void main(String args[]) throws Exception
@@ -55,7 +55,7 @@ public class LAFLauncher
     //--------------------------------------------------------------------------
     
     /**
-     * Prints program usage
+     * Prints program usage.
      */
     private static void printUsage()
     {
@@ -68,11 +68,12 @@ public class LAFLauncher
             " org.myapp.Main -debug blah");
     }
 
+
     /**
-     * Launches target class
+     * Launches target class.
      * 
-     * @param  target  Name of class with main() to launch 
-     * @param  args    Array of arguments
+     * @param target Name of class with main() to launch 
+     * @param args Array of arguments
      * @throws Exception on error
      */
     private static void launch(String target, String[] args) throws Exception

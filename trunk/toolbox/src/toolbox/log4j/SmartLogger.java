@@ -6,7 +6,7 @@ import org.apache.log4j.Priority;
 import toolbox.util.StringUtil;
 
 /**
- * Log4J Utility Class
+ * Log4J Utility Class.
  */
 public class SmartLogger
 {
@@ -17,7 +17,7 @@ public class SmartLogger
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent contruction
+     * Prevent contruction.
      */
     private SmartLogger()
     {
@@ -31,32 +31,34 @@ public class SmartLogger
      * Logs each individual line of a string (delimited by a newline character)
      * separately.
      * 
-     * @param  logger  Logger to use
-     * @param  msg     Multiline object to log
+     * @param logger Logger to use
+     * @param msg Multiline object to log
      */
     public static void debug(Logger logger, Object msg)
     {
         log(logger, Priority.DEBUG, msg);
     }
     
+    
     /**
      * Logs each individual line of a string (delimited by a newline character)
      * separately.
      * 
-     * @param  logger  Logger to use
-     * @param  msg     Multiline object to log
+     * @param logger Logger to use
+     * @param msg Multiline object to log
      */
     public static void info(Logger logger, Object msg)
     {
         log(logger, Priority.INFO, msg);
     }
     
+    
     /**
      * Logs each individual line of a string (delimited by a newline character)
      * separately.
      * 
-     * @param  logger  Logger to use
-     * @param  msg     Multiline object to log
+     * @param logger Logger to use
+     * @param msg Multiline object to log
      * 
      * TODO: fix this pile of mess!
      */

@@ -21,10 +21,11 @@ import toolbox.util.ArrayUtil;
  */
 public class AcrobatViewer extends JPanel implements DocumentViewer
 {
-    private static final Logger logger_ = Logger.getLogger(AcrobatViewer.class);
+    private static final Logger logger_ = 
+    	Logger.getLogger(AcrobatViewer.class);
     
     /**
-     * Acrobat viewer component
+     * Acrobat viewer component.
      */
     private Viewer viewer_;
     
@@ -33,7 +34,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an AcrobatViewer
+     * Creates an AcrobatViewer.
      */
     public AcrobatViewer()
     {
@@ -62,8 +63,9 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
         }
     }
     
+    
     /**
-     * Opens a file for viewing
+     * Opens a file for viewing.
      * 
      * @param file File to view
      */
@@ -82,6 +84,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
             throw new DocumentViewerException(e);
         }
     }
+    
     
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#view(java.io.InputStream)
@@ -113,6 +116,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
         }        
     }
     
+    
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#getViewableFileTypes()
      */
@@ -121,6 +125,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
         return new String[] {"pdf"};
     }    
 
+
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#isViewable(java.lang.String)
      */
@@ -128,6 +133,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     {
         return ArrayUtil.contains(getViewableFileTypes(), fileType);
     }
+
     
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#getComponent()
@@ -136,6 +142,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     {
         return this;
     }
+
 
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#shutdown()

@@ -11,7 +11,8 @@ import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
 
 /**
- * ServerConnectionHandler
+ * ServerConnectionHandler is a server side connection handler for incoming
+ * client requests. 
  */
 public class ServerConnectionHandler implements IConnectionHandler
 {

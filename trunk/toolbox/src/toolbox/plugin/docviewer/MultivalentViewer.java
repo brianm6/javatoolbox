@@ -29,7 +29,7 @@ import toolbox.util.ui.JSmartButton;
 public class MultivalentViewer extends JPanel implements DocumentViewer
 {
     /**
-     * PDF browser component
+     * PDF browser component.
      */
     private Browser browser_;
     
@@ -38,7 +38,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a multivalent viewer
+     * Creates a multivalent viewer.
      */
     public MultivalentViewer()
     {
@@ -56,6 +56,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     {
     }
     
+    
     /**
      * Opens a file for viewing
      * 
@@ -67,6 +68,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
         repaint();
     }
     
+    
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#view(java.io.InputStream)
      */
@@ -74,6 +76,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     {
         throw new RuntimeException("Not supported");
     }
+    
     
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#getViewableFileTypes()
@@ -83,13 +86,15 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
         return new String[] {"pdf"};
     }    
 
-    /** (non-Javadoc)
+
+    /**
      * @see toolbox.plugin.pdf.DocumentViewer#isViewable(java.lang.String)
      */
     public boolean isViewable(String fileType)
     {
         return ArrayUtil.contains(getViewableFileTypes(), fileType);
     }
+    
     
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#getComponent()
@@ -98,6 +103,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     {
         return this;
     }
+
 
     /**
      * @see toolbox.plugin.pdf.DocumentViewer#shutdown()
@@ -111,7 +117,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-	 * Builds the GUI
+	 * Builds the GUI.
 	 */
     protected void buildView()
     {

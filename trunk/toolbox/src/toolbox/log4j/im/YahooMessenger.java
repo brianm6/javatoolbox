@@ -28,22 +28,22 @@ public class YahooMessenger implements InstantMessenger
      //       implementation of a Log4J appender.
     
     /** 
-     * Return code for a successful connection 
+     * Return code for a successful connection. 
      */
     public static final String CONNECT_SUCCEEDED = "Connect succeeded!";
     
     /** 
-     * Return code for a failed connection 
+     * Return code for a failed connection.
      */
     public static final String CONNECT_FAILED = "Connect failed!";
     
     /** 
-     * Available instant messaging protocols 
+     * Available instant messaging protocols. 
      */
     private Protocol[] protocols;
     
     /** 
-     * Yahoo instant messaging protocol 
+     * Yahoo instant messaging protocol.
      */
     private Protocol yahoo_;
     
@@ -53,12 +53,12 @@ public class YahooMessenger implements InstantMessenger
     private YahooListener listener_;
     
     /** 
-     * Flag that tracks the connection state 
+     * Flag that tracks the connection state. 
      */
     private boolean connected_;
     
     /** 
-     * Invoker used to handle the sending of messages 
+     * Invoker used to handle the sending of messages. 
      */
     private Invoker invoker_;
     
@@ -73,7 +73,7 @@ public class YahooMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a YahooMessenger
+     * Creates a YahooMessenger.
      */
     public YahooMessenger()
     {
@@ -96,6 +96,7 @@ public class YahooMessenger implements InstantMessenger
         throttle_ = PropertiesUtil.getInteger(
             props, PROP_THROTTLE, InstantMessengerAppender.DEFAULT_THROTTLE);
     }
+
 
     /**
      * Synchronized method since whole send/recv is async. Waiters in the
@@ -137,6 +138,7 @@ public class YahooMessenger implements InstantMessenger
         }
     }
 
+
     /**
      * Logs out from yahoo. 
      */
@@ -164,6 +166,7 @@ public class YahooMessenger implements InstantMessenger
             throw new InstantMessengerException(e);
         }
     }
+
     
     /**
      * Sends message to the recipient using a queue invoker strategy.
@@ -203,6 +206,7 @@ public class YahooMessenger implements InstantMessenger
         }
     }
 
+
     /**
      * @see toolbox.log4j.im.InstantMessenger#shutdown()
      */
@@ -217,6 +221,7 @@ public class YahooMessenger implements InstantMessenger
             throw new InstantMessengerException(e);
         }
     }
+
     
     /**
      * @see toolbox.log4j.im.InstantMessenger#isConnected()
@@ -231,17 +236,17 @@ public class YahooMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /** 
-     * Listener for client and server side generated Yahoo events 
+     * Listener for client and server side generated Yahoo events. 
      */
     class YahooListener extends IMAdapter
     {
         /** 
-         * Login success and failures both go in this queue 
+         * Login success and failures both go in this queue.
          */
         BlockingQueue connected_;
         
         /** 
-         * Disconnect notification goes into this queue 
+         * Disconnect notification goes into this queue.
          */
         BlockingQueue disconnected_;
         
@@ -250,7 +255,7 @@ public class YahooMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /** 
-         * Creates a YahooListener
+         * Creates a YahooListener.
          */
         public YahooListener()
         {
@@ -274,8 +279,9 @@ public class YahooMessenger implements InstantMessenger
             return (String) connected_.pull();
         }
 
+
         /**
-         * Waits for a successful disconnect
+         * Waits for a successful disconnect.
          * 
          * @return Protocol that was disconnected.
          * @throws InterruptedExceptin if interrupted while pulling from the 
@@ -298,6 +304,7 @@ public class YahooMessenger implements InstantMessenger
             LogLog.debug("Connected to Yahoo!");
             connected_.push(CONNECT_SUCCEEDED);
         }
+
         
         /**
          * @see hamsam.api.IMListener#connectFailed(
@@ -309,6 +316,7 @@ public class YahooMessenger implements InstantMessenger
             LogLog.debug("Connect to Yahoo failed: " + reasonMessage);
             connected_.push(CONNECT_FAILED);
         }
+
         
         /**
          * @see hamsam.api.IMListener#connecting(hamsam.protocol.Protocol)
@@ -318,6 +326,7 @@ public class YahooMessenger implements InstantMessenger
             LogLog.debug("Connecting to Yahoo...");
         }
 
+
         /**
          * @see hamsam.api.IMListener#disconnected(hamsam.protocol.Protocol)
          */
@@ -326,6 +335,7 @@ public class YahooMessenger implements InstantMessenger
             disconnected_.push(protocol);
             LogLog.debug("Disconnected from Yahoo");
         }
+
         
         /**
          * @see hamsam.api.IMListener#protocolMessageReceived(

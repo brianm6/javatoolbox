@@ -19,7 +19,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.IPlugin;
 
 /**
- * Beanshell Plugin
+ * Beanshell Plugin.
  */
 public class BeanShellPlugin extends JPanel implements IPlugin
 {
@@ -28,8 +28,7 @@ public class BeanShellPlugin extends JPanel implements IPlugin
     
     private JSmartTextArea output_;
     private JConsole console_;
-    
-    
+        
     //--------------------------------------------------------------------------
     // IPlugin Interface 
     //--------------------------------------------------------------------------
@@ -42,6 +41,7 @@ public class BeanShellPlugin extends JPanel implements IPlugin
         return "Bean Shell";
     }
 
+
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -49,6 +49,7 @@ public class BeanShellPlugin extends JPanel implements IPlugin
     {
         return this;
     }
+
 
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
@@ -58,6 +59,7 @@ public class BeanShellPlugin extends JPanel implements IPlugin
         return "Beanshell Console";
     }
 
+
     /**
      * @see toolbox.workspace.IPlugin#startup(java.util.Map)
      */
@@ -65,6 +67,7 @@ public class BeanShellPlugin extends JPanel implements IPlugin
     {
         buildView();
     }
+
 
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
@@ -83,6 +86,7 @@ public class BeanShellPlugin extends JPanel implements IPlugin
     public void applyPrefs(Element prefs) throws Exception
     {
     }
+
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)

@@ -3,14 +3,15 @@ package toolbox.log4j.im;
 import java.util.Properties;
 
 /**
- * Common instant messgener interface
+ * Common instant messgener interface.
  */
 public interface InstantMessenger
 {
     /**
-     * Property for the delay between successive messages
+     * Property for the delay between successive messages.
      */
     public static final String PROP_THROTTLE = "throttle";
+    
     
     /**
      * Initializes the instant messenger with any properties needed for the
@@ -22,6 +23,7 @@ public interface InstantMessenger
     public void initialize(Properties props)
         throws InstantMessengerException;
     
+    
     /**
      * Logs the given user onto the instant messaging service.
      * 
@@ -31,6 +33,7 @@ public interface InstantMessenger
      */
     public void login(String username, String password) 
         throws InstantMessengerException;
+    
     
     /**
      * Sends an instant message to the given recipient.
@@ -42,6 +45,7 @@ public interface InstantMessenger
     public void send(String recipient, String message)
         throws InstantMessengerException;
     
+    
     /**
      * Logs the user off of the instant messaging system.
      * 
@@ -49,12 +53,14 @@ public interface InstantMessenger
      */
     public void logout() throws InstantMessengerException;
     
+    
     /**
-     * Shuts down the client
+     * Shuts down the client.
      * 
      * @throws InstantMessengerException if an error occurs during shutdown
      */
     public void shutdown() throws InstantMessengerException;
+    
     
     /**
      * Returns true if we're successfully connected to the instant messaging

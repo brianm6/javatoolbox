@@ -28,32 +28,32 @@ public class AOLMessenger implements InstantMessenger
      //       implementation of a Log4J appender.
     
     /** 
-     * Return code for a successful connection 
+     * Return code for a successful connection. 
      */
     public static final String CONNECT_SUCCEEDED = "Connect succeeded!";
     
     /** 
-     * Return code for a failed connection 
+     * Return code for a failed connection. 
      */
     public static final String CONNECT_FAILED = "Connect failed!";
     
     /** 
-     * Connection to the AOL instant messaging server 
+     * Connection to the AOL instant messaging server. 
      */
     private JaimConnection connection_;
     
     /** 
-     * Listener for server side generated AOL events 
+     * Listener for server side generated AOL events.
      */
     private AOLListener listener_;
     
     /** 
-     * Flag that tracks the connection state 
+     * Flag that tracks the connection state.
      */
     private boolean connected_;
     
     /** 
-     * Invoker used to handle the sending of messages 
+     * Invoker used to handle the sending of messages. 
      */
     private Invoker invoker_;
     
@@ -62,7 +62,7 @@ public class AOLMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /**
-     * Creates an AOLMessenger
+     * Creates an AOLMessenger.
      */
     public AOLMessenger()
     {
@@ -97,6 +97,7 @@ public class AOLMessenger implements InstantMessenger
         }
     }
 
+
     /**
      * Synchronized method since whole send/recv is async. Waiters in the
      * queue will return immediately because the connected_ flag gets checked
@@ -124,8 +125,9 @@ public class AOLMessenger implements InstantMessenger
         }
     }
 
+
     /**
-     * Logs out from AOL
+     * Logs out from AOL.
      *
      * @see toolbox.log4j.im.InstantMessenger#logout()
      */
@@ -134,6 +136,7 @@ public class AOLMessenger implements InstantMessenger
         connection_.logOut();
         connected_ = false;
     }
+    
     
     /**
      * Sends message to the recipient using a queue invoker strategy.
@@ -166,6 +169,7 @@ public class AOLMessenger implements InstantMessenger
         }
     }
 
+    
     /**
      * @see toolbox.log4j.im.InstantMessenger#shutdown()
      */
@@ -182,6 +186,7 @@ public class AOLMessenger implements InstantMessenger
         }
     }
     
+    
     /**
      * @see toolbox.log4j.im.InstantMessenger#isConnected()
      */
@@ -195,17 +200,17 @@ public class AOLMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /** 
-     * Listener for server generated AOL events 
+     * Listener for server generated AOL events. 
      */
     class AOLListener implements JaimEventListener
     {
         /** 
-         * Login success and failures both go in this queue 
+         * Login success and failures both go in this queue. 
          */
         BlockingQueue loginQueue_;
         
         /** 
-         * Disconnect notification goes into this queue 
+         * Disconnect notification goes into this queue. 
          */
         BlockingQueue disconnected_;
         
@@ -214,7 +219,7 @@ public class AOLMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /** 
-         * Creates an AOLListener
+         * Creates an AOLListener.
          */
         public AOLListener()
         {
@@ -227,7 +232,7 @@ public class AOLMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /**
-         * Waits for a login (failure or success)
+         * Waits for a login (failure or success).
          * 
          * @return TocResponse signalling login completion
          * @throws InterruptedException if interrupted while pulling from the 
@@ -238,8 +243,9 @@ public class AOLMessenger implements InstantMessenger
             return (TocResponse) loginQueue_.pull();
         }
 
+
         /**
-         * Waits for a successful disconnect
+         * Waits for a successful disconnect.
          * 
          * @return Protocol that was disconnected.
          * @throws InterruptedExceptin if interrupted while pulling from the 

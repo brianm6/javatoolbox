@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.launcher.Main;
 
 /**
- * Unit test for Main 
+ * Unit test for Main.
  */
 public class MainTest extends TestCase
 {
@@ -32,6 +32,7 @@ public class MainTest extends TestCase
         logger_.info("Running testMain...");
         Main.main(new String[] {"showclasspath" });
     }
+
 
     public void testMainNegative()
     {

@@ -8,7 +8,7 @@ import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
 /**
- * Server
+ * NetMeter Server.
  */
 public class Server extends JPanel implements Service
 {
@@ -19,6 +19,9 @@ public class Server extends JPanel implements Service
     // Constrcutors 
     //--------------------------------------------------------------------------
     
+    /**
+     * Creates a Server.
+     */
     public Server()
     {
     }
@@ -27,6 +30,11 @@ public class Server extends JPanel implements Service
     // Protected  
     //--------------------------------------------------------------------------
     
+    /**
+     * Initializes the server.
+     * 
+     * @throws IOException on I/O error
+     */
     protected void init() throws IOException
     {
         SocketServerConfig config = new SocketServerConfig();
@@ -61,6 +69,7 @@ public class Server extends JPanel implements Service
         }
     }
 
+
     /**
      * @see toolbox.plugin.netmeter.Service#stop()
      */
@@ -76,6 +85,7 @@ public class Server extends JPanel implements Service
         }
     }
 
+
     /**
      * @see toolbox.plugin.netmeter.Service#pause()
      */
@@ -83,6 +93,7 @@ public class Server extends JPanel implements Service
     {
         throw new UnsupportedOperationException("Pause not supported");
     }
+
 
     /**
      * @see toolbox.plugin.netmeter.Service#resume()
@@ -92,6 +103,7 @@ public class Server extends JPanel implements Service
         throw new UnsupportedOperationException("Resume not supported");
     }
 
+
     /**
      * @see toolbox.plugin.netmeter.Service#isRunning()
      */
@@ -99,6 +111,7 @@ public class Server extends JPanel implements Service
     {
         throw new UnsupportedOperationException("isRunning not supported");
     }
+
 
     /**
      * @see toolbox.plugin.netmeter.Service#isPaused()

@@ -21,7 +21,7 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * PDF Viewer Plugin
+ * PDF Viewer Plugin.
  */ 
 public class PDFPlugin extends JPanel implements IPlugin
 {
@@ -33,12 +33,12 @@ public class PDFPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /** 
-     * Root preferences node for this plugin
+     * Root preferences node for this plugin.
      */
     private static final String NODE_PDF_PLUGIN = "PDFPlugin";
     
     /**
-     * Node for PDFViewer preferences
+     * Node for PDFViewer preferences.
      */
     private static final String NODE_PDF_VIEWER   = "PDFViewer";
     
@@ -47,27 +47,27 @@ public class PDFPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /** 
-     * Flip panel that houses the file explorer 
+     * Flip panel that houses the file explorer. 
      */
     private JFlipPane flipPane_;    
     
     /** 
-     * Shared status bar with plugin host 
+     * Shared status bar with plugin host.
      */
     private IStatusBar statusBar_;
     
     /** 
-     * XML output pane 
+     * XML output pane.
      */
     private JPanel outputPanel_;
     
     /**
-     * Document viewer
+     * Document viewer.
      */    
     private DocumentViewer viewer_;
     
     /** 
-     * File explorer used to open XML files 
+     * File explorer used to open XML files. 
      */
     private JFileExplorer explorer_;
 
@@ -77,7 +77,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a PDF Plugin
+     * Creates a PDF Plugin.
      */
     public PDFPlugin()
     {
@@ -88,7 +88,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -101,9 +101,10 @@ public class PDFPlugin extends JPanel implements IPlugin
         add(BorderLayout.WEST, flipPane_);
         add(BorderLayout.CENTER, outputPanel_);
     }
+    
 
     /**
-     * Views a PDF using an embedded java pdf viewer
+     * Views a PDF using an embedded java pdf viewer.
      * 
      * @param file File to view with the embedded PDF viewer
      * @throws Exception on error
@@ -204,7 +205,7 @@ public class PDFPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Populates file that is double clicked on in the text area
+     * Populates file that is double clicked on in the text area.
      */
     class FileSelectionListener extends JFileExplorerAdapter
     {

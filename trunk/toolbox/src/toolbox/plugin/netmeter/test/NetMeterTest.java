@@ -7,10 +7,7 @@ import toolbox.plugin.netmeter.Client;
 import toolbox.plugin.netmeter.Server;
 
 /**
- * 
- *
- * 
- * 
+ * Unit test for NetMeter. 
  */
 public class NetMeterTest extends TestCase
 {

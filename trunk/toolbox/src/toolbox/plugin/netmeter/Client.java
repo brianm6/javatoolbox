@@ -12,7 +12,7 @@ import toolbox.util.io.EventOutputStream;
 import toolbox.util.net.SocketConnection;
 
 /**
- * Client 
+ * NetMeter Client 
  */
 public class Client extends JPanel implements Service
 {
@@ -25,6 +25,9 @@ public class Client extends JPanel implements Service
     // Constructors 
     //--------------------------------------------------------------------------
     
+    /**
+     * Creates a Client.
+     */
     public Client()
     {
     }
@@ -68,12 +71,14 @@ public class Client extends JPanel implements Service
         }
     }
 
+
     /**
      * @see toolbox.plugin.netmeter.Service#stop()
      */
     public void stop() throws ServiceException
     {
     }
+
 
     /**
      * @see toolbox.plugin.netmeter.Service#pause()
@@ -82,12 +87,14 @@ public class Client extends JPanel implements Service
     {
     }
 
+
     /**
      * @see toolbox.plugin.netmeter.Service#resume()
      */
     public void resume() throws ServiceException
     {
     }
+
 
     /**
      * @see toolbox.plugin.netmeter.Service#isRunning()
@@ -96,6 +103,7 @@ public class Client extends JPanel implements Service
     {
         return false;
     }
+
 
     /**
      * @see toolbox.plugin.netmeter.Service#isPaused()

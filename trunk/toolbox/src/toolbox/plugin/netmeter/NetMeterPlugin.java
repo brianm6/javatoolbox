@@ -9,7 +9,7 @@ import nu.xom.Element;
 import toolbox.workspace.IPlugin;
 
 /**
- * NetMeter Plugin
+ * NetMeter Plugin.
  */
 public class NetMeterPlugin extends JPanel implements IPlugin
 {
@@ -18,7 +18,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a NetMeterPlugin
+     * Creates a NetMeterPlugin.
      */
     public NetMeterPlugin()
     {
@@ -29,7 +29,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     public void buildView()
     {
