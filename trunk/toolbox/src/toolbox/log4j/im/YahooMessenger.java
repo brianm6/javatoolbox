@@ -24,8 +24,12 @@ import toolbox.util.invoker.QueuedInvoker;
  */
 public class YahooMessenger implements InstantMessenger
 {
-     // NOTE: Cannot use Log4J logging since this is included in the 
-     //       implementation of a Log4J appender.
+    // NOTE: Cannot use Log4J logging since this is included in the 
+    //       implementation of a Log4J appender.
+    
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
     
     /** 
      * Return code for a successful connection. 
@@ -36,6 +40,10 @@ public class YahooMessenger implements InstantMessenger
      * Return code for a failed connection.
      */
     public static final String CONNECT_FAILED = "Connect failed!";
+
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
     
     /** 
      * Available instant messaging protocols. 
@@ -48,7 +56,7 @@ public class YahooMessenger implements InstantMessenger
     private Protocol yahoo_;
     
     /** 
-     * Listener for client and server side generated Yahoo events 
+     * Listener for client and server side generated Yahoo events. 
      */
     private YahooListener listener_;
     
@@ -232,7 +240,7 @@ public class YahooMessenger implements InstantMessenger
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // YahooListener
     //--------------------------------------------------------------------------
     
     /** 
@@ -268,7 +276,7 @@ public class YahooMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /**
-         * Waits for a connect (failure or success)
+         * Waits for a connect (failure or success).
          * 
          * @return CONNECT_SUCCEEDED or CONNECT_FAILED
          * @throws InterruptedException if interrupted while pulling from the 

@@ -6,10 +6,29 @@ package toolbox.rtelnet;
  */
 public class RemoteTelnetInfo
 {
+    /**
+     * Hostname of the machine we're telnetting to.
+     */
     private String hostname_;
-    private int    port_;
+    
+    /**
+     * Telnet port on the hostname.
+     */
+    private int port_;
+    
+    /**
+     * Username for authentication.
+     */
     private String username_;
+    
+    /**
+     * Password for username.
+     */
     private String password_;
+    
+    /**
+     * Command to execute in the remote shell.
+     */
     private String command_;
 
     //--------------------------------------------------------------------------
@@ -58,6 +77,7 @@ public class RemoteTelnetInfo
         return command_;
     }
 
+    
     /**
      * Returns the hostname.
      * 
@@ -68,6 +88,7 @@ public class RemoteTelnetInfo
         return hostname_;
     }
 
+    
     /**
      * Returns the password.
      * 
@@ -78,6 +99,7 @@ public class RemoteTelnetInfo
         return password_;
     }
 
+    
     /**
      * Returns the telnet port.
      * 
@@ -88,6 +110,7 @@ public class RemoteTelnetInfo
         return port_;
     }
 
+    
     /**
      * Returns the username.
      * 
@@ -98,6 +121,7 @@ public class RemoteTelnetInfo
         return username_;
     }
 
+    
     /**
      * Sets the command.
      * 
@@ -108,6 +132,7 @@ public class RemoteTelnetInfo
         command_ = command;
     }
 
+    
     /**
      * Sets the hostname.
      * 
@@ -118,6 +143,7 @@ public class RemoteTelnetInfo
         hostname_ = hostname;
     }
 
+    
     /**
      * Sets the password.
      * 
@@ -128,6 +154,7 @@ public class RemoteTelnetInfo
         password_ = password;
     }
 
+    
     /**
      * Sets the port.
      * 
@@ -138,6 +165,7 @@ public class RemoteTelnetInfo
         port_ = port;
     }
 
+    
     /**
      * Sets the username.
      * 
@@ -148,8 +176,9 @@ public class RemoteTelnetInfo
         username_ = username;
     }
 
+    
     //--------------------------------------------------------------------------
-    // Overridden from java.lang.Object  
+    // Overrides java.lang.Object  
     //--------------------------------------------------------------------------
     
     /**

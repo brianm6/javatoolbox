@@ -37,7 +37,7 @@ public class RemoteTelnet
     private RemoteTelnetInfo options_;
     
     //--------------------------------------------------------------------------
-    // Entry point
+    // Main
     //--------------------------------------------------------------------------
     
     /**
@@ -48,8 +48,8 @@ public class RemoteTelnet
      *             -p password  Telnet password
      *             -c command   Telnet command
      * 
-     * @throws IOException on IO error
-     * @throws ParseException on parse error
+     * @throws IOException on I/O error.
+     * @throws ParseException on command line parsing error.
      */
     public static void main(String[] args) throws IOException, ParseException
     {
@@ -58,7 +58,7 @@ public class RemoteTelnet
         
         Options cliOptions = new Options();
         Option  hostname = new Option("h", "hostname", true , "Hostname");
-        Option  port     = new Option("o", "port"    , false, "Port");
+        //Option  port     = new Option("o", "port"    , false, "Port");
         Option  username = new Option("u", "username", true , "Username");
         Option  password = new Option("p", "password", true , "Password");
         Option  command  = new Option("c", "command" , true , "Command");
@@ -115,10 +115,14 @@ public class RemoteTelnet
      * @param username Login user
      * @param password Cleartext password
      * @param command Command to execute on remote host
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */ 
-    public RemoteTelnet(String hostname, int port, String username,
-        String password, String command) throws IOException
+    public RemoteTelnet(
+            String hostname, 
+            int port, 
+            String username,
+			String password, 
+            String command) throws IOException
     {
         this(new RemoteTelnetInfo(hostname, port, username, password, command));
     }
@@ -128,7 +132,7 @@ public class RemoteTelnet
      * Creates a remote telnet with the given options.
      * 
      * @param options Telnet info
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public RemoteTelnet(RemoteTelnetInfo options) throws IOException
     {
@@ -142,8 +146,8 @@ public class RemoteTelnet
     /**
      * Telnets to the remote host and executes the command.
      * 
-     * @throws SocketException on socket error
-     * @throws IOException on IO error
+     * @throws SocketException on socket communication error.
+     * @throws IOException on I/O error
      */    
     public void execute() throws SocketException, IOException
     {
@@ -183,7 +187,7 @@ public class RemoteTelnet
      * Enables interactive telnet.
      * 
      * @param telnet Telnet client
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public void commandLoop(RemoteTelnetClient telnet) throws IOException
     {
@@ -204,7 +208,7 @@ public class RemoteTelnet
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
         
     /**
@@ -227,9 +231,9 @@ public class RemoteTelnet
      * Verifies that the telnet options are valid. Prompts the user via
      * the command line if an option is missing or invalid.
      * 
-     * @throws IOException on error
+     * @throws IOException on I/O error.
      */
-    private void verifyOptions() throws IOException
+    protected void verifyOptions() throws IOException
     {
         if (StringUtil.isNullOrEmpty(options_.getHostname()))
             options_.setHostname(queryUser("Hostname: "));
@@ -253,6 +257,7 @@ public class RemoteTelnet
      * 
      * @param prompt Prompt that the user is presented with
      * @return Value that the user typed in
+     * @throws IOException on I/O error.
      */
     private String queryUser(String prompt) throws IOException
     {

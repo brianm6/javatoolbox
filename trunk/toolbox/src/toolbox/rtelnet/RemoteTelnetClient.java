@@ -42,11 +42,12 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
         }
     }
 
+    
     /**
      * Sends a command to the telnet host to be executed.
      * 
      * @param command Command to execute
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */    
     public void sendCommand(String command) throws IOException
     {
@@ -84,16 +85,16 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     }
     
     //--------------------------------------------------------------------------
-    // Overridden from org.apache.commons.net.telnet.TelnetClient 
+    // Overrids org.apache.commons.net.telnet.TelnetClient 
     //--------------------------------------------------------------------------
     
     /**
-     * Hook into connect method to start up the output stream reader.
+     * Hook into the connect method to start up the output stream reader.
      * 
      * @param hostname Hostname to connect to
      * @param port Telnet port on host
      * @throws SocketException on socket error
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public void connect(String hostname, int port)
         throws SocketException, IOException
