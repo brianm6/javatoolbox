@@ -3,6 +3,8 @@ package toolbox.util.ui;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
+import toolbox.util.Assert;
+
 /**
  * JMenu that works like a conveyor belt. New items get inserted at the top
  * of the menu and items get pushed off the bottom of the menu when the 
@@ -30,6 +32,7 @@ public class JConveyorMenu extends JSmartMenu
         this("", capacity);
     }
 
+    
     /**
      * Creates a JConveyorMenu.
      * 
@@ -40,6 +43,21 @@ public class JConveyorMenu extends JSmartMenu
     public JConveyorMenu(String title, int capacity)
     {
         super(title);
+        capacity_ = capacity;    
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets the max capacity of the popup menu.
+     * 
+     * @param capacity Capacity > 0
+     */
+    public void setCapacity(int capacity)
+    {
+        Assert.isTrue(capacity > 0, "Capacity must be > 0");
         capacity_ = capacity;    
     }
     
