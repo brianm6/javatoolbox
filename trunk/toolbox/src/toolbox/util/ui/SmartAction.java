@@ -56,28 +56,44 @@ public abstract class SmartAction extends AbstractAction
     private static final Logger logger_ = 
         Logger.getLogger(SmartAction.class);
 
-    /** Surround the action with a try/catch block? */
+    /** 
+     * Surround the action with a try/catch block? 
+     */
     private boolean tryCatch_;
     
-    /** Execute action asynchronously? */
+    /** 
+     * Execute action asynchronously? 
+     */
     private boolean async_;
     
-    /** Set the cursor to busy while action executing */
+    /** 
+     * Set the cursor to busy while action executing 
+     */
     private boolean busyCursor_;
     
-    /** Root component on which to set the busy cursor on */
+    /** 
+     * Root component on which to set the busy cursor on 
+     */
     private Component scope_;
 
-    /** Caught exception if one was thrown */
+    /** 
+     * Caught exception if one was thrown 
+     */
     private Throwable caught_;
     
-    /** List of actions to execute before this action */
+    /** 
+     * List of actions to execute before this action 
+     */
     private List preActions_;
     
-    /** List of actions to execute (regardless of failure) after this action */
+    /** 
+     * List of actions to execute (regardless of failure) after this action 
+     */
     private List finallyActions_;
     
-    /** List of actions to execute if an exception is thrown */
+    /** 
+     * List of actions to execute if an exception is thrown 
+     */
     private List errorActions_;
 
     //--------------------------------------------------------------------------
@@ -120,7 +136,7 @@ public abstract class SmartAction extends AbstractAction
     } 
     
     //--------------------------------------------------------------------------
-    // java.awt.event.ActionListener Interface
+    // ActionListener Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -169,7 +185,7 @@ public abstract class SmartAction extends AbstractAction
     }
 
     //--------------------------------------------------------------------------
-    // Abstract 
+    // Abstract Methods 
     //--------------------------------------------------------------------------
         
     /**
