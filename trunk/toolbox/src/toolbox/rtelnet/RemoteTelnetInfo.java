@@ -3,9 +3,21 @@ package toolbox.rtelnet;
 /**
  * RemoteTelnetInfo is a data object that stores information needed to
  * identify, authenticate, and drive a telnet session.
+ * 
+ * @see toolbox.rtelnet.RemoteTelnet
+ * @see toolbox.rtelnet.RemoteTelnetClient
  */
 public class RemoteTelnetInfo
 {
+    //--------------------------------------------------------------------------
+    // Defaults
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default telnet port as defined in the RFC is 23.
+     */
+    public static final int DEFAULT_TELNET_PORT = 23;
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -40,11 +52,11 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor. Sets telnet port to 23.
+     * Creates a RemoteTelnetInfo using the default telnet port.
      */    
     public RemoteTelnetInfo()
     {
-        setPort(23);
+        setPort(DEFAULT_TELNET_PORT);
     }
     
     
@@ -57,8 +69,12 @@ public class RemoteTelnetInfo
      * @param password Password.
      * @param command Command to execute.
      */
-    public RemoteTelnetInfo(String hostname, int port, String username, 
-        String password, String command)
+    public RemoteTelnetInfo(
+        String hostname, 
+        int port, 
+        String username, 
+        String password, 
+        String command)
     {
         setHostname(hostname);
         setPort(port);
@@ -179,7 +195,6 @@ public class RemoteTelnetInfo
     {
         username_ = username;
     }
-
     
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object  

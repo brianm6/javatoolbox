@@ -31,7 +31,7 @@ public class RemoteTelnet
     /** 
      * Used to read missing telnet info from the standard in. 
      */
-    private LineNumberReader lnr_;
+    private LineNumberReader reader_;
     
     /** 
      * Remote telnet authentication, connection, command information. 
@@ -265,9 +265,9 @@ public class RemoteTelnet
     {
         System.out.print(prompt);
 
-        if (lnr_ == null)
-            lnr_ = new LineNumberReader(new InputStreamReader(System.in));
+        if (reader_ == null)
+            reader_ = new LineNumberReader(new InputStreamReader(System.in));
             
-        return lnr_.readLine();    
+        return reader_.readLine();    
     }
 }

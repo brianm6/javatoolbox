@@ -11,6 +11,9 @@ import toolbox.util.ThreadUtil;
  * RemoteTelnetClient is a specialization of the commons.net.TelnetClient 
  * with additional behavior to enable the easy submission of telnet commands 
  * and listening for certain keywords in the telnet command's response.
+ * 
+ * @see toolbox.rtelnet.RemoteTelnet
+ * @see toolbox.rtelnet.RemoteTelnetInfo
  */
 public class RemoteTelnetClient extends TelnetClient implements Runnable
 {
