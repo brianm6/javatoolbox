@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.plugin.jdbc.QueryPlugin;
-import toolbox.util.StringUtil;
 import toolbox.workspace.IStatusBar;
 
 /**
@@ -91,29 +90,56 @@ public class ExecuteCurrentAction extends BaseAction
                 }
             }
 
+            
+            for (int i = curr - 1; i >= 0; i--)
+            {
+                String line = sqlEditor.getLineText(i);
+                int termPos = line.lastIndexOf(plugin.getSqlTerminator());
+                
+                // Terminator is the last char on the line..break out
+                if (termPos == line.length() - 1)
+                    break;
+                
+                // Terminator is somewhere in the line...break out
+                else if (termPos >= 0)
+                {
+                    stmt.insert(0, line.substring(termPos + 1));
+                    break;
+                }
+                
+                // Terminator not found, keep searching up...
+                else
+                {
+                    stmt.insert(0, line);
+                }
+            }
+            
             // If no terminating semicolon for the statement is found, then
             // assume only the current line contains the entire sql statement to
             // execute.
             sql = stmt.toString();
         }
 
-        if (StringUtils.isBlank(sql))
-        {
-            statusBar.setInfo("Enter SQL to execute");
-        }
-        else
-        {
-            statusBar.setInfo("Executing...");
-            String results = plugin.executeSQL(sql);
-            
-            //plugin.getResultsArea().append(results + "\n");
-
-            if ((!StringUtils.isBlank(results)) &&
-                (StringUtil.tokenize(results, StringUtil.NL).length 
-                    < plugin.getAutoScrollThreshold()))
-                plugin.getResultsArea().scrollToEnd();
-
-            statusBar.setInfo("Done");
-        }
+        
+        plugin.getResultsArea().setText(sql);
+        
+//        if (StringUtils.isBlank(sql))
+//        {
+//            statusBar.setInfo("Enter SQL to execute");
+//        }
+//        else
+//        {
+//            statusBar.setInfo("Executing...");
+//            String results = plugin.executeSQL(sql);
+//            
+//            //plugin.getResultsArea().append(results + "\n");
+//
+//            if ((!StringUtils.isBlank(results)) &&
+//                (StringUtil.tokenize(results, StringUtil.NL).length 
+//                    < plugin.getAutoScrollThreshold()))
+//                plugin.getResultsArea().scrollToEnd();
+//
+//            statusBar.setInfo("Done");
+//        }
     }
 }
