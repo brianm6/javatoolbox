@@ -25,6 +25,8 @@ package toolbox;
  * TODO: Add tile and cascade to Desktop plugin host
  * TODO: Integrate new icons from 
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
+ * TODO: Make plugins detachable
+ * TODO: Write log4j pattern layout that combines class name and method
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -75,6 +77,7 @@ package toolbox;
  *  - SQL stmts in editor popup menu are now formatted multiline
  *  - Connect/Disconnect buttons in JDBCPlugin merged into a single button 
  *  - SearchTargetPanel extracted from FindClassPane as top level class
+ *  - Added tooltips to the plugin menu items
  * 
  * February 2004
  * 	- Add Plugin menu
