@@ -77,7 +77,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     private JComboBox profileCombo_;
     
     /**
-     * Jar containing the jdbc driver if not already on the classpath.
+     * Jar containing the jdbc driver if not already on the classpath. Multiple
+     * jar files can be specified using a comma as a separator.
      */
     private JTextField jarField_;
     
@@ -240,26 +241,34 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                 ""));
         
             profileCombo_.addItem(new DBProfile(
-                "Oracle",
-                "",
-                "oracle.jdbc.driver.OracleDriver",
-                "jdbc:oracle:thin:@<host>:<port>:<sid>",
-                "",
-                ""));
-            
-            profileCombo_.addItem(new DBProfile(
                 "HSQL",
                 "",
                 "org.hsqldb.jdbcDriver",
                 "jdbc:hsqldb:<database>",
                 "SA",
                 ""));
-
+            
+            profileCombo_.addItem(new DBProfile(
+                "McKoi",
+                "mkjdbc.jar",
+                "com.mckoi.JDBCDriver",
+                "jdbc:mckoi://<host>/",
+                "",
+                ""));
+            
             profileCombo_.addItem(new DBProfile(
                 "MySQL",
                 "",
                 "org.gjt.mm.mysql.Driver",
                 "jdbc:mysql://<host>/<db>",
+                "",
+                ""));
+            
+            profileCombo_.addItem(new DBProfile(
+                "Oracle",
+                "",
+                "oracle.jdbc.driver.OracleDriver",
+                "jdbc:oracle:thin:@<host>:<port>:<sid>",
                 "",
                 ""));
         }
@@ -291,16 +300,20 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     {
         Element dbConfig = new Element(NODE_DBCONFIG);
         
-        dbConfig.addAttribute(
-            new Attribute(ATTR_SELECTED, 
-            profileCombo_.getSelectedIndex() + ""));
             
         for (int i = 0, n = profileCombo_.getItemCount(); i < n; i++)
         {
+            
             DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
-            dbConfig.appendChild(profile.toDOM());
+            if (!StringUtil.isNullOrBlank(profile.getProfileName()))
+                dbConfig.appendChild(profile.toDOM());
         }
-       
+
+        if (dbConfig.getChildCount() > 0)
+            dbConfig.addAttribute(
+                new Attribute(ATTR_SELECTED, 
+                profileCombo_.getSelectedIndex() + ""));
+
         prefs.appendChild(dbConfig);        
     }
     
@@ -342,7 +355,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             else
             {
                 JDBCUtil.init(
-                    jarField_.getText(),
+                    StringUtil.tokenize(jarField_.getText(), ","),
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
@@ -527,7 +540,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             
             if (!found)
             {
-                statusBar_.setWarning("Profile " + current + " does not exist.");
+                statusBar_.setWarning(
+                    "Profile " + current + " does not exist.");
             }   
         }
     }
@@ -537,7 +551,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Allows user to pick a source directory through the file chooser instead 
+     * Allows user to pick jdbc driver jar file through the file chooser instead 
      * of typing one in.
      */
     class JarChooserAction extends SmartAction
