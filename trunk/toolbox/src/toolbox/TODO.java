@@ -23,8 +23,6 @@ package toolbox;
  * TODO: DocViewer: Make double click automatically use the last viewer used 
  *                  for that extension. If none, then use the first viewer in
  *                  the list.
- * TODO: DocViewer: Add properties fiel viewer using JEdit
- * TODO: DocViewer: Add xml fiel viewer using JEdit
  * =============================================================================
  * TODO: FindClass: Fix cancel bug that renders search unresponsive.
  * TODO: FindClass: Add ears/wars to the target filter
