@@ -3,12 +3,17 @@ package toolbox.plugin.findclass;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
+import javax.swing.table.TableModel;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ClassUtils;
@@ -208,45 +213,52 @@ public class DecompilerPanel extends JHeaderPanel
                 {
                     if (ClassUtil.isArchive(location))
                     {   
-                        // Build up a jar url pointing to the class 
-                        // file inside the jar
-                        StringBuffer sb = new StringBuffer();
-                        sb.append("jar:file:");
-                        sb.append(new File(location).getCanonicalPath());
-                        sb.append("!/");
-                        sb.append(clazz.replace('.', '/'));
-                        sb.append(".class");
                     
-                        // jar:file:/c:/crap/my.jar!/com/company/MyClass.class"
-                        logger_.debug("JAR URL=" + sb);
-                    
-                        // TODO: Also extract all anonymous/innerclasses
+                        // Collect all inner and anonymous innerclasses since 
+                        // they're requires as Files to by the decompiler.
                         
-                        URL url = new URL(sb.toString());
+                        TableModel m = resultTable_.getModel();
+                        List innerClasses = new ArrayList();
                         
-                        logger_.debug("URL as file=" + url.getFile());
-                        logger_.debug("Class file len=" + 
-                            url.openConnection().getContentLength());
-                    
-                        // Extract the class file as an array of bytes
-                        byte[] bytecode = IOUtils.toByteArray(
-                            url.openConnection().getInputStream());
-                    
-                        // Write out class file to the temp dir on disk 
-                        // (least common denominator so that all decompilers 
-                        // can get to it.
-                        File tempClassFile = 
-                            new File(FileUtil.getTempDir(), 
-                                ClassUtils.getShortClassName(clazz) + ".class");
+                        for (int i = 0; i < m.getRowCount(); i++)
+                        {
+                            String innerClass = (String) 
+                                resultTable_.getModel().getValueAt(i, 
+                                    ResultsTableModel.COL_CLASS);
+                            
+                            if (innerClass.startsWith(clazz + "$")) 
+                            {
+                                // Make sure the inner class comes from the same 
+                                // source as the parent class
+                                
+                                String innerClassLoc = (String) 
+                                    resultTable_.getModel().getValueAt(
+                                        i, ResultsTableModel.COL_SOURCE); 
+    
+                                if (location.equals(innerClassLoc))
+                                {    
+                                    logger_.debug(
+                                        "Found inner class: " + innerClass);
+                                    
+                                    innerClasses.add(
+                                        extractClassFile(location, innerClass));
+                                }
+                            }
+                        }
+                                        
+                        File classFile = extractClassFile(location, clazz);
                         
-                        FileUtil.setFileContents(
-                            tempClassFile.getCanonicalPath(), bytecode, false);
-                    
                         // Do some decompiling...
-                        source = d.decompile(tempClassFile);
+                        source = d.decompile(classFile);
                         
                         // Cleanup
-                        FileUtil.delete(tempClassFile.getCanonicalPath());
+                        FileUtil.delete(classFile);
+                        
+                        for (Iterator iter = innerClasses.iterator(); 
+                             iter.hasNext();)
+                        {
+                            FileUtil.delete((File) iter.next());
+                        }
                     }
                     else
                     {                   
@@ -255,7 +267,73 @@ public class DecompilerPanel extends JHeaderPanel
                 }
 
                 addTab(clazz, source);
-            }           
+            }
+        }
+        
+        
+        /**
+         * Extracts a class file from a jar and writes it to the temp directory
+         * also returning the handle to the file.
+         * 
+         * @param location Absolute path of the jar file.
+         * @param clazz FQCN name of the class file to extract.
+         * @return File
+         * @throws IOException on I/O error.
+         */
+        protected File extractClassFile(String location, String clazz)
+            throws IOException
+        {
+            // Build up a jar url pointing to the class file inside the jar
+            
+            StringBuffer sb = new StringBuffer();
+            sb.append("jar:file:");
+            sb.append(new File(location).getCanonicalPath());
+            sb.append("!/");
+            sb.append(clazz.replace('.', '/'));
+            sb.append(".class");
+        
+            // jar:file:/c:/crap/my.jar!/com/company/MyClass.class"
+            //logger_.debug("JAR URL=" + sb);
+        
+            URL url = new URL(sb.toString());
+            
+            //logger_.debug("URL as file=" + url.getFile());
+            //logger_.debug("Class file len=" + 
+            //    url.openConnection().getContentLength());
+        
+            // Extract the class file as an array of bytes
+            byte[] bytecode = IOUtils.toByteArray(
+                url.openConnection().getInputStream());
+        
+            // Write out class file to the temp dir on disk 
+            // (least common denominator so that all decompilers 
+            // can get to it.
+            
+            String shortName = null;
+ 
+            // Innerclass is a little tricky...
+            if (ClassUtil.isInnerClass(clazz))
+            {
+                int innerClassSep = clazz.lastIndexOf("$");
+                String innerClass = clazz.substring(innerClassSep);
+                String parentClass = clazz.substring(0, innerClassSep);
+                shortName = ClassUtils.getShortClassName(parentClass);
+                shortName = shortName + innerClass;
+            }
+            else
+            {
+                shortName = ClassUtils.getShortClassName(clazz);
+            }
+           
+            File tempClassFile = 
+                new File(FileUtil.getTempDir(), shortName + ".class");
+            
+            FileUtil.setFileContents(
+                tempClassFile.getCanonicalPath(), bytecode, false);
+            
+            logger_.debug("Wrote " + tempClassFile.getAbsolutePath());
+            
+            return tempClassFile;
         }
     }
 }
