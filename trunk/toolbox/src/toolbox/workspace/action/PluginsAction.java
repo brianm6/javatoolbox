@@ -20,23 +20,23 @@ public class PluginsAction extends BaseAction
     
     /**
      * Creates a PluginsAction.
+     * 
+     * @param workspace Plugin workspace.
      */
     public PluginsAction(PluginWorkspace workspace)
     {
-        super(workspace);
-        putValue(Action.NAME, "Plugins..");
+        super(workspace, "Plugins..");
         putValue(Action.MNEMONIC_KEY, new Integer('P'));
     }
 
     //--------------------------------------------------------------------------
-    // ActionListener Interface
+    // SmartAction Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(
-     *      java.awt.event.ActionEvent)
+     * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent ae)
+    public void runAction(ActionEvent e) throws Exception
     {
         JDialog dialog = new PluginDialog(getWorkspace());
         dialog.setVisible(true);

@@ -3,7 +3,6 @@ package toolbox.workspace.action;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
@@ -34,19 +33,17 @@ public class SmoothFontsAction extends BaseAction
      */
     public SmoothFontsAction(PluginWorkspace workspace)
     {
-        super(workspace);
-        putValue(Action.NAME, "Smooth Fonts");
+        super(workspace, "Smooth Fonts");
     }
 
     //--------------------------------------------------------------------------
-    // ActionListener Interface
+    // SmartAction Interfac
     //--------------------------------------------------------------------------
     
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(
-     *      java.awt.event.ActionEvent)
+     * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e)
+    public void runAction(ActionEvent e) throws Exception
     {
         // TODO: Figure out where menus aren't adhering.
 

@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
@@ -26,25 +25,23 @@ public class AboutAction extends BaseAction
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a AboutAction.
+     * Creates an AboutAction.
      * 
      * @param workspace Plugin workspace.
      */
     public AboutAction(PluginWorkspace workspace)
     {
-        super(workspace);
-        putValue(Action.NAME, "About");
+        super(workspace, "About");
     }
 
     //--------------------------------------------------------------------------
-    // ActionListener Interface
+    // SmartAction Interface
     //--------------------------------------------------------------------------
-    
+
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(
-     *      java.awt.event.ActionEvent)
+     * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e)
+    public void runAction(ActionEvent e) throws Exception
     {
         String message = "Java Toolbox";
         Properties p = new Properties();
@@ -52,22 +49,22 @@ public class AboutAction extends BaseAction
         try
         {
             p.load(ResourceUtil.getResource("version.properties"));
-            
-            if (!p.isEmpty())
-            {
-                message = 
-                    message 
-                    + " v. " 
-                    + p.getProperty("toolbox.version") 
-                    + " Build " 
-                    + p.getProperty("toolbox.build.number")
-                    + " Date "  
-                    + p.getProperty("toolbox.build.date");
-            }
         }
-        catch (IOException ioe)
+        catch(IOException ioe)
         {
             logger_.error(ioe);
+        }
+        
+        if (!p.isEmpty())
+        {
+            message = 
+                message 
+                + " v. " 
+                + p.getProperty("toolbox.version") 
+                + " Build " 
+                + p.getProperty("toolbox.build.number")
+                + " Date "  
+                + p.getProperty("toolbox.build.date");
         }
         
         JSmartOptionPane.showMessageDialog(

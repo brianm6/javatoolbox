@@ -29,19 +29,16 @@ public class ExitAction extends BaseAction
      */
     public ExitAction(PluginWorkspace workspace)
     {
-        super(workspace);
-        putValue(Action.NAME, PluginWorkspace.LABEL_EXIT_MENUITEM);
+        super(workspace, PluginWorkspace.LABEL_EXIT_MENUITEM);
         putValue(Action.MNEMONIC_KEY, new Integer('X'));
     }
-
 
     /**
      * Routes method invocation to exit().
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(
-     *      java.awt.event.ActionEvent)
+     * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent ae)
+    public void runAction(ActionEvent e) throws Exception
     {
         exit();
     }
@@ -67,7 +64,7 @@ public class ExitAction extends BaseAction
         try
         {
             // Save all preferences first...
-            (new SavePreferencesAction(getWorkspace())).runAction();
+            (new SavePreferencesAction(getWorkspace())).savePrefs();
             
             // Release resources retained by the plugins by "destroying" them
             IPlugin[] plugins = getWorkspace().getPluginHost().getPlugins();

@@ -1,24 +1,23 @@
 package toolbox.workspace.action;
 
-import javax.swing.AbstractAction;
-
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.WorkspaceAction;
 
 /**
- * Base class action for workspace actions that don't require SmartAction or
- * WorkspaceAction behavior.
+ * Base class action for actions used internally by the workspace.
  */
-public abstract class BaseAction extends AbstractAction
+public abstract class BaseAction extends WorkspaceAction
 { 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a AboutAction.
+     * Creates a BaseAction
      */
-    public BaseAction(PluginWorkspace workspace)
+    public BaseAction(PluginWorkspace workspace, String name)
     {
+        super(name, false, null, null);
         putValue("workspace", workspace);
     }
 

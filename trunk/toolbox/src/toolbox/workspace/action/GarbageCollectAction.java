@@ -24,8 +24,7 @@ public class GarbageCollectAction extends BaseAction
      */
     public GarbageCollectAction(PluginWorkspace workspace)
     {
-        super(workspace);
-        putValue(Action.NAME, "Run GC");
+        super(workspace, "Run GC");
         putValue(Action.MNEMONIC_KEY, new Integer('G'));
     }
 
@@ -34,10 +33,23 @@ public class GarbageCollectAction extends BaseAction
     //--------------------------------------------------------------------------
     
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(
-     *      java.awt.event.ActionEvent)
+     * Delegates to <code>runGC()</code>.
+     * 
+     * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e)
+    public void runAction(ActionEvent e) throws Exception
+    {
+        runGC();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * Runs garbage collection.
+     */
+    public void runGC()
     {
         long freeMem  = Runtime.getRuntime().freeMemory();
         long totalMem = Runtime.getRuntime().totalMemory();

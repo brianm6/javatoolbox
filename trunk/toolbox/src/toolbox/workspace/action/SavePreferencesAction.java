@@ -6,51 +6,48 @@ import javax.swing.Action;
 
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ui.ImageCache;
 import toolbox.workspace.PluginWorkspace;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Saves the preferences for the workspace, plugins, and various other 
  * IPreferenced implementors to an XML document. 
  */
-public class SavePreferencesAction extends WorkspaceAction
+public class SavePreferencesAction extends BaseAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-   
-    /**
-     * Reference to the PluginWorkspace.
-     */
-    private final PluginWorkspace workspace_;
-
+    private static final Logger logger_ = 
+        Logger.getLogger(SavePreferencesAction.class);
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
      * Creates a SavePreferencesAction.
+     * 
+     * @param workspace Plugin workspace.
      */
     public SavePreferencesAction(PluginWorkspace workspace)
     {
-        super("Save prefs", false, null, null);
-        workspace_ = workspace;
+        super(workspace, "Save Preferences");
         putValue(Action.MNEMONIC_KEY, new Integer('S'));
         putValue(Action.SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_SAVE));
     }
 
     //--------------------------------------------------------------------------
-    // SmartAction Abstract Class
+    // SmartAction Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.SmartAction#runAction(
-     *      java.awt.event.ActionEvent)
+     * Delegates to savePrefs().
+     * 
+     * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
      */
     public void runAction(ActionEvent e) throws Exception
     {
-        runAction();
+        savePrefs();
     }
  
     //--------------------------------------------------------------------------
@@ -59,9 +56,11 @@ public class SavePreferencesAction extends WorkspaceAction
     
     /**
      * Convenience method when called without an ActionEvent.
+     * 
+     * @throws Exception on error.
      */
-    public void runAction() throws Exception
+    public void savePrefs() throws Exception
     {
-        workspace_.savePrefs((Element) workspace_.getPreferences() /*.getParent() */);
+        getWorkspace().savePrefs((Element) getWorkspace().getPreferences());
     }
 }
