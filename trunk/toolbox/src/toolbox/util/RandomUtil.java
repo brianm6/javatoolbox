@@ -20,8 +20,9 @@ public final class RandomUtil
     {
     }
 
+
     /**
-     * Generates a random integer in the range [0..MAX_INT]
+     * Generates an unsigned random integer in the range [0..MAX_INT]
      * 
      * @return    int
      */
@@ -29,6 +30,7 @@ public final class RandomUtil
     {
         return Math.abs(r.nextInt());
     }
+
 
     /**
      * Generates a random integer in the range [0..ceiling]
@@ -38,8 +40,9 @@ public final class RandomUtil
      */
     public static int nextInt(int ceiling)
     {
-        return (nextInt() % ceiling);
+        return (nextInt() % (ceiling+1));
     }
+
 
     /**
      * Generates a random integer in the range [floor..ceiling]
@@ -55,6 +58,7 @@ public final class RandomUtil
             
         return floor + (nextInt(ceiling - floor));
     }
+
     
     /**
      * Generates a random lowercase alpha character in the range [a..z]
@@ -63,8 +67,9 @@ public final class RandomUtil
      */
     public static char nextLowerAlpha()
     {
-        return alphaChars.charAt(nextInt(alphaChars.length()));
+        return alphaChars.charAt(nextInt(alphaChars.length()-1));
     }
+
     
     /**
      * Generates a random uppercase alpha character in the range [A..Z]
@@ -75,6 +80,7 @@ public final class RandomUtil
     {
         return Character.toUpperCase(nextLowerAlpha());
     }
+
     
     /**
      * Generates a random alpha character in the range [a..z, A..Z]
@@ -88,6 +94,7 @@ public final class RandomUtil
             c = Character.toUpperCase(c);
         return c;
     }
+
     
     /**
      * Generates a random double
