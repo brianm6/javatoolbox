@@ -1,6 +1,8 @@
 package toolbox.util;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -171,6 +173,13 @@ public final class SwingUtil
     public static void setDefaultCursor(Component c)
     {
         c.setCursor(Cursor.getDefaultCursor());
+        
+        if (c instanceof Container)
+        {
+            Component[] comps = ((Container) c).getComponents();
+            for (int i=0; i<comps.length; setDefaultCursor(comps[i++]));
+        }
+        
     }
 
     /**
@@ -178,9 +187,19 @@ public final class SwingUtil
      * 
      * @param  c  Component
      */
-    public static void setWaitCursor(Component c)
+    public static int setWaitCursor(Component c)
     {
+        int cnt = 1;
+        
         c.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        
+        if (c instanceof Container)
+        {
+            Component[] comps = ((Container) c).getComponents();
+            for (int i=0; i<comps.length; cnt += setWaitCursor(comps[i++]));
+        }
+        
+        return cnt;
     }
     
     //--------------------------------------------------------------------------
@@ -329,8 +348,11 @@ public final class SwingUtil
      */
     public static void setPreferredLAF() throws Exception
     { 
+//        UIManager.setLookAndFeel(
+//            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
+
         UIManager.setLookAndFeel(
-            "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
+            "com.stefankrause.xplookandfeel.XPLookAndFeel");            
     }
 
     /**
@@ -554,6 +576,19 @@ public final class SwingUtil
     {
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(component);
+        return panel;    
+    }
+
+    /**
+     * Wraps a component tightly in a JPanel using BorderLayout
+     *
+     * @param  component  Component to wrap
+     * @return JPanel 
+     */    
+    public static JPanel wrapTight(JComponent component)
+    {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(BorderLayout.CENTER, component);
         return panel;    
     }
 
