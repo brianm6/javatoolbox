@@ -426,7 +426,7 @@ public class FindClass
                 
             dotted = searchTarget.substring(pathName.length());
             
-            logger_.debug("file = " + dotted);
+            //logger_.debug("file = " + dotted);
             
             if (regExp_.match(dotted))
             {
