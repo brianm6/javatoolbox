@@ -7,9 +7,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.font.TextAttribute;
-import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -283,72 +283,104 @@ public class SwingUtil
     // Internal Frame Stuff
     //--------------------------------------------------------------------------
     
-    /**
-     * Tiles windows on a desktop
+    /** 
+     * Tiles internal frames upon the desktop. 
+     * 
+     * @param  desktop  Desktop on which to tile windows
+     * 
+     * <pre>
+     * 
+     * Based upon the following tiling algorithm:
+     * 
+     * - take the sqroot of the total frames rounded down, that gives 
+     *   the number of columns.
      *
-     * @param  desktop  JDesktop
+     * - divide the total frames by the # of columns to get the # 
+     *   of rows in each column, and any remainder is distributed 
+     *   amongst the remaining rows from right to left)
+     *
+     * eg)
+     *     1  frame,  remainder 0, 1 row
+     *     2  frames, remainder 0, 2 rows
+     *     3  frames, remainder 0, 3 rows
+     *     4  frames, remainder 0, 2 rows x 2 columns
+     *     5  frames, remainder 1, 2 rows in column I, 
+     *                             3 rows in column II
+     *     10 frames, remainder 1, 3 rows in column I, 
+     *                             3 rows in column II, 
+     *                             4 rows in column III
+     *     16 frames, 4 rows x 4 columns
+     * 
+     * Pseudocode:
+     * 
+     *     while (frames) 
+     *     { 
+     *         numCols = (int)sqrt(totalFrames);
+     *         numRows = totalFrames / numCols;
+     *         remainder = totalFrames % numCols;
+     * 
+     *         if ((numCols-curCol) <= remainder) 
+     *             numRows++; // add an extra row for this column
+     *     }
+     * 
+     * </pre>
      */
     public static void tile(JDesktopPane desktop)
     {
-        String method = "[tile  ] ";
+        Rectangle viewP = desktop.getBounds();
+        int totalNonIconFrames = 0;
+        JInternalFrame[] frames = desktop.getAllFrames();
         
-        // How many frames do we have?
-        JInternalFrame[] allframes = desktop.getAllFrames();
-        int count = allframes.length;
-        
-        if (count == 0)
-            return;
-
-        // Determine the necessary grid size
-        int sqrt = (int) Math.sqrt(count);
-        int rows = sqrt;
-        int cols = sqrt;
-        
-        if (rows * cols < count)
+        for (int i = 0; i < frames.length; i++)
         {
-            cols++;
-            
-            if (rows * cols < count)
-                rows++;
+            if (!frames[i].isIcon())
+            { 
+                // don't include iconified frames...
+                totalNonIconFrames++;
+            }
         }
 
-        // Define some initial values for size & location
-        Dimension size = desktop.getSize();
-        logger_.debug(method + "Desktop size: " + size);
-        
-        int w = size.width / cols;
-        int h = size.height / rows;
-        int x = 0;
-        int y = 0;
+        int curCol = 0;
+        int curRow = 0;
+        int i = 0;
 
-        // Iterate over the frames, deiconifying any iconified frames and then
-        // relocating & resizing each
-        for (int i = 0; i < rows; i++)
+        if (totalNonIconFrames > 0)
         {
-            for (int j = 0; j < cols && ((i * cols) + j < count); j++)
+            // compute number of columns and rows then tile the frames
+            int numCols = (int) Math.sqrt(totalNonIconFrames);
+
+            int frameWidth = viewP.width / numCols;
+
+            for (curCol = 0; curCol < numCols; curCol++)
             {
-                JInternalFrame f = allframes[(i * cols) + j];
+                int numRows = totalNonIconFrames / numCols;
+                int remainder = totalNonIconFrames % numCols;
 
-                if ((f.isClosed() == false) && (f.isIcon() == true))
+                if ((numCols - curCol) <= remainder)
+                    numRows++; // add an extra row for this guy
+
+                int frameHeight = viewP.height / numRows;
+
+                for (curRow = 0; curRow < numRows; curRow++)
                 {
-                    try
-                    {
-                        f.setIcon(false);
+                    while (frames[i].isIcon())
+                    { 
+                        // find the next visible frame
+                        i++;
                     }
-                    catch (PropertyVetoException ex)
-                    {
-                        // Ignore
-                    }
-                }
 
-                desktop.getDesktopManager().resizeFrame(f, x, y, w, h);
-                x += w;
+                    frames[i].setBounds(
+                        curCol * frameWidth,
+                        curRow * frameHeight,
+                        frameWidth,
+                        frameHeight);
+
+                    i++;
+                }
             }
-            
-            y += h; // start the next row
-            x = 0;
         }
     }
+    
     
     //--------------------------------------------------------------------------
     //  Widget/Layout Stuff

@@ -115,7 +115,7 @@ public class SwingUtilTest extends TestCase
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    SwingUtil.tileInternalFrames(desktop_);
+                    SwingUtil.tile(desktop_);
                 }
             });
             
