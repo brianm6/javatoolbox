@@ -9,21 +9,24 @@ import hamsam.net.ProxyInfo;
 import hamsam.protocol.Protocol;
 import hamsam.protocol.ProtocolManager;
 
-import java.util.Properties;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.helpers.LogLog;
 
-import toolbox.util.PropertiesUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
+import toolbox.util.service.AbstractService;
+import toolbox.util.service.ServiceException;
 
 /**
  * Abstract Instant Messenger client that supports login, send message, and
  * logout.
  */
-public abstract class AbstractMessenger implements InstantMessenger
+public abstract class AbstractMessenger extends AbstractService 
+    implements InstantMessenger
 {
     //--------------------------------------------------------------------------
     // Constants
@@ -75,29 +78,80 @@ public abstract class AbstractMessenger implements InstantMessenger
     private int throttle_;
 
     //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates an AbstractMessenger with strict service state transitions.
+     */
+    protected AbstractMessenger()
+    {
+        super(true);
+    }
+    
+    //--------------------------------------------------------------------------
     // Abstract
     //--------------------------------------------------------------------------
 
+    /**
+     * Returns the index into the array of protocols to use for this messenger.
+     * 
+     * @return int
+     */
     public abstract int getProtocol();
 
     //--------------------------------------------------------------------------
-    // InstantMessenger Interface
+    // Service Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.log4j.im.InstantMessenger#initialize(java.util.Properties)
+     * Initializes this instant messenger. 
+     * 
+     * @param configuration Can contain an option property PROP_THROTTLE
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void initialize(Properties props)
+    public void initialize(Map configuration) throws ServiceException 
     {
         invoker_ = new QueuedInvoker();
         protocols_ = ProtocolManager.getAvailableProtocols();
         messenger_ = protocols_[getProtocol()];
         messenger_.setListener(listener_ = new MessengerListener());
 
-        throttle_ = PropertiesUtil.getInteger(
-            props, PROP_THROTTLE, InstantMessengerAppender.DEFAULT_THROTTLE);
+        throttle_ = 
+            MapUtils.getIntValue(
+                configuration, 
+                PROP_THROTTLE, 
+                InstantMessengerAppender.DEFAULT_THROTTLE);
+        
+        super.initialize(configuration);
+        
+        // Honor service state transitions
+        super.start();
     }
 
+    
+    /**
+     * @see toolbox.util.service.Destroyable#destroy()
+     */
+    public void destroy() throws ServiceException 
+    {
+        try
+        {
+            invoker_.shutdown();
+            
+            // Honor strict state transitions
+            super.stop();
+            super.destroy();
+        }
+        catch (Exception e)
+        {
+            throw new ServiceException(e);
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // InstantMessenger Interface
+    //--------------------------------------------------------------------------
 
     /**
      * Synchronized method since whole send/recv is async. Waiters in the
@@ -210,22 +264,6 @@ public abstract class AbstractMessenger implements InstantMessenger
         catch (Exception e)
         {
             LogLog.error("send", e);
-        }
-    }
-
-
-    /**
-     * @see toolbox.log4j.im.InstantMessenger#shutdown()
-     */
-    public void shutdown() throws InstantMessengerException
-    {
-        try
-        {
-            invoker_.shutdown();
-        }
-        catch (Exception e)
-        {
-            throw new InstantMessengerException(e);
         }
     }
 

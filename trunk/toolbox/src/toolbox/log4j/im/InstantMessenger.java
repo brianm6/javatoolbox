@@ -1,11 +1,11 @@
 package toolbox.log4j.im;
 
-import java.util.Properties;
+import toolbox.util.service.Service;
 
 /**
  * Common instant messenger interface.
  */
-public interface InstantMessenger
+public interface InstantMessenger extends Service
 {
     //--------------------------------------------------------------------------
     // Constants
@@ -27,8 +27,8 @@ public interface InstantMessenger
      * @param props Initialization properties.
      * @throws InstantMessengerException on initialization error.
      */
-    void initialize(Properties props)
-        throws InstantMessengerException;
+    //void initialize(Properties props)
+    //    throws InstantMessengerException;
     
     
     /**
@@ -66,7 +66,7 @@ public interface InstantMessenger
      * 
      * @throws InstantMessengerException if an error occurs during shutdown.
      */
-    void shutdown() throws InstantMessengerException;
+    //void shutdown() throws InstantMessengerException;
     
     
     /**

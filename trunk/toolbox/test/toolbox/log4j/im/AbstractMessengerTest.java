@@ -72,7 +72,7 @@ public abstract class AbstractMessengerTest extends TestCase implements
         messenger.logout();
         
         logger_.debug("Before shutdown...");
-        messenger.shutdown();
+        messenger.destroy();
         
         logger_.debug("All done!");
     }
@@ -101,7 +101,7 @@ public abstract class AbstractMessengerTest extends TestCase implements
         }
         
         messenger.logout();
-        messenger.shutdown();
+        messenger.destroy();
     }
     
     

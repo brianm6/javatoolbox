@@ -1,23 +1,15 @@
 package toolbox.log4j.im;
 
-import java.util.Properties;
+import toolbox.util.service.ServiceAdapter;
 
 /**
  * NullMessenger for mock/testing purposes. 
  */
-public class NullMessenger implements InstantMessenger
+public class NullMessenger extends ServiceAdapter implements InstantMessenger
 {
     //--------------------------------------------------------------------------
     // InstantMessenger Interface 
     //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.log4j.im.InstantMessenger#initialize(java.util.Properties)
-     */
-    public void initialize(Properties props) throws InstantMessengerException
-    {
-    }
-
     
     /**
      * @see toolbox.log4j.im.InstantMessenger#login(java.lang.String,
@@ -43,14 +35,6 @@ public class NullMessenger implements InstantMessenger
      * @see toolbox.log4j.im.InstantMessenger#logout()
      */
     public void logout() throws InstantMessengerException
-    {
-    }
-
-    
-    /**
-     * @see toolbox.log4j.im.InstantMessenger#shutdown()
-     */
-    public void shutdown() throws InstantMessengerException
     {
     }
 

@@ -1,10 +1,13 @@
 package toolbox.log4j.im;
 
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
+
+import toolbox.util.service.ServiceException;
 
 /**
  * InstantMessengerAppender is a Log4J appender capable of sending logging
@@ -173,10 +176,18 @@ public class InstantMessengerAppender extends AppenderSkeleton
             
         LogLog.debug("Connect called: username=" + username_);
         
-        Properties props = new Properties();
+        Map props = new HashMap(1);
         props.put(InstantMessenger.PROP_THROTTLE, throttle_ + "");
         
-        messenger_.initialize(props);
+        try 
+        {
+            messenger_.initialize(props);
+        } 
+        catch (ServiceException e) 
+        {
+            throw new InstantMessengerException(e);
+        }
+        
         messenger_.login(username_, password_);
     }
 
@@ -224,9 +235,9 @@ public class InstantMessengerAppender extends AppenderSkeleton
         try
         {
             messenger_.logout();
-            messenger_.shutdown();
+            messenger_.destroy();
         }
-        catch (InstantMessengerException e)
+        catch (Exception e)
         {
             LogLog.error("close", e);
         }
