@@ -12,12 +12,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 
 /**
- * Extends <code>javax.swing.ButtonGroup</code> to provide methods that allow
+ * Extends {@link javax.swing.ButtonGroup} to provide methods that allow 
  * working with button references instead of button models.
  * 
  * @author Daniel Tofan
  * @version 1.0 April 2003
- * @see ButtonGroup
+ * @see javax.swing.ButtonGroup
  */
 public class JButtonGroup extends ButtonGroup
 {

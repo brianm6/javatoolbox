@@ -36,7 +36,7 @@ public class JFindDialog extends JSmartDialog
     private JTextField findField_;
 
     /**
-     * Search client.
+     * Component that initiated the search.
      */
     private SearchInitiator initiator_;
 

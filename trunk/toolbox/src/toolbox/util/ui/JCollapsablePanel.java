@@ -24,7 +24,8 @@ import toolbox.workspace.IPreferenced;
  * Extension of JHeaderPanel that allows the panels contents to be collapsed
  * using a button in the header.
  * <p>
- * Supports persistence of the following properties:
+ * Supports persistence of the following properties via the IPreferenced 
+ * interface:
  * <ul>
  *   <li>Collapsed state
  * </ul>
@@ -38,16 +39,25 @@ public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
     // Javabean Constants
     //--------------------------------------------------------------------------
 
-    public static final String PROPERTY_COLLAPSED = "collapsed";
+    /**
+     * Javabean property for the collapsed state.
+     */
+    public static final String PROP_COLLAPSED = "collapsed";
     
     //--------------------------------------------------------------------------
     // Preferenced Constants
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Name of the root node for this collapsable panel's saved preferences.
+     */
     public static final String NODE_JCOLLAPSABLEPANEL = "JCollapsablePanel";
     
+    /**
+     * Array of javabean property names that can be saved as preferences.
+     */
     public static final String[] SAVED_PROPERTIES = 
-        new String[] {PROPERTY_COLLAPSED};
+        new String[] {PROP_COLLAPSED};
     
     //--------------------------------------------------------------------------
     // Fields
@@ -152,7 +162,7 @@ public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
         if (collapsed != isCollapsed())
             toggle(); 
         
-        firePropertyChange(PROPERTY_COLLAPSED, !collapsed, collapsed);
+        firePropertyChange(PROP_COLLAPSED, !collapsed, collapsed);
     }
 
     

@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.apache.commons.lang.Validate;
+
 import toolbox.util.ui.AntiAliased;
 
 /**
@@ -36,6 +38,7 @@ public class AntiAliasAction extends AbstractAction
     public AntiAliasAction(Component component)
     {
         super("AntiAlias");
+        Validate.isTrue(component instanceof AntiAliased);
         component_ = component;
     }
 

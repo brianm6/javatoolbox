@@ -6,7 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 /**
- * NullAction.
+ * NullAction is for those times when no action is a good action.
  */
 public class NullAction extends AbstractAction
 {
@@ -25,7 +25,7 @@ public class NullAction extends AbstractAction
     /**
      * Creates a NullAction.
      * 
-     * @param name
+     * @param name Name of the action.
      */
     public NullAction(String name)
     {

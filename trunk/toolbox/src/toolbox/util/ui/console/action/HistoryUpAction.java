@@ -16,11 +16,8 @@ import javax.swing.AbstractAction;
 
 import toolbox.util.ui.console.UIConsole;
 
-
 /**
  * Scrolls up through the command history.
- * 
- * @author Semir Patel
  */
 public class HistoryUpAction extends AbstractAction 
 {
@@ -62,9 +59,12 @@ public class HistoryUpAction extends AbstractAction
         console_ = console;
     }
     
+    //--------------------------------------------------------------------------
+    // ActionListener Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see javax.swing.AbstractAction#actionPerformed(
+     * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0)

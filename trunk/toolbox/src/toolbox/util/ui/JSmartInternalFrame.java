@@ -17,7 +17,7 @@ import toolbox.workspace.IPreferenced;
 public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
 {
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     private static final String NODE_JFRAME = "JInternalFrame";

@@ -18,7 +18,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.beans.BeanPropertyFilter;
 
-
+/**
+ * Property sheet for a Javabean. Shows javabean properties in a property sheet
+ * and allows editing.
+ */
 public class BeanSheet extends PropertySheetPanel
 {
     private static final Logger logger_ = Logger.getLogger(BeanSheet.class);
@@ -28,7 +31,7 @@ public class BeanSheet extends PropertySheetPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Javabean
+     * Javabean to display in this property sheet.
      */
     private Object bean_;
     
@@ -98,5 +101,4 @@ public class BeanSheet extends PropertySheetPanel
             p.writeToObject(bean_);
         }
     }
-    
 }

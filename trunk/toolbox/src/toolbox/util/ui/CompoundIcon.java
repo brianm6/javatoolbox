@@ -13,7 +13,7 @@ import org.apache.commons.lang.Validate;
  * CompoundIcon creates a new icon from two existing icons given a horizontal
  * or vertical orientation.
  * 
- * <pre>
+ * <pre class="snippet">
  * 
  *   +---+---+
  *   | 1 | 2 |   Join horizontally
