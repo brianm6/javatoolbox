@@ -39,7 +39,6 @@
  * TODO: Find out why Tiny LAFs are not working
  * TODO: Checkout SIGAR http://www.hyperic.net/downloads/sigar-download.htm
  * TODO: Added rename/delete file to JFileExplorer file list.
- * TODO: Update to latest statcvs
  * TODO: Redo ObservableService using decorator pattern
  * TODO: Look into JXTA shell
  * TODO: Implements Service Transitions using Aspects
@@ -115,13 +114,15 @@
     <!-- =================================================================== -->    
 
 	<release version="2.0" date="October 2004">
+
       <action type="add"   >Util - Added ClassUtils.findInPath() to find executables on the system path</action>
       <action type="add"   >Util - Added Create and Delete directory to the JFileExplorer popup menu</action>
       <action type="update">FindClassPlugin - Updated Jad decompiler to support decompilation of inner classes</action>
       <action type="update">Util - Updated the default StateMachine interface to support retrieval of transitions to and from a given state</action>
       <action type="update">Util - Replaced toolbox.util.io.filter.DirectoryFilter with the equivalent class from commons-io</action>
       <action type="update">Util - Consolidated FileUtils.findFiles() and FindClass.findFilesRecurseively() into FileUtils.find()</action>
-      
+      <action type="update">Lib - Upgraded to statcvs-0.2.1, jfreechart-0.9.21, and jcommon-0.9.6</action>
+
 	</release>
 
     <!-- =================================================================== -->
@@ -130,33 +131,9 @@
     
     <release version="2.0" date="September 2004">
 
-      <action type="update">
-        <table style="color:red">
-          <tr>
-            <td width="100">All</td>
-            <td>Made sure all passwords are not saved as clear text</td>
-          </tr>
-        </table>
-      </action>
-
-      <action type="update">
-        <table>
-          <tr>
-            <td width="100">Workspace</td>
-            <td>Added color as a visual cue to the workspace status bar for errors and warnings</td>
-          </tr>
-        </table>
-      </action>
-
-      <action type="update">
-        <table>
-          <tr>
-            <td width="100">TextToolsPlugin</td>
-            <td>Added property sheets to configure the XML, Java, and HTML formatters to the preferences dialog</td>
-          </tr>
-        </table>
-      </action>
-
+      <action type="update">All - Made sure all passwords are not saved as clear text</action>
+      <action type="update">Workspace - Added color as a visual cue to the workspace status bar for errors and warnings</action>
+      <action type="update">TextToolsPlugin - Added property sheets to configure the XML, Java, and HTML formatters to the preferences dialog</action>
       <action type="update">
         <table>
           <tr>
