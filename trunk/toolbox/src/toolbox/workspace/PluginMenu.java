@@ -67,8 +67,6 @@ public class PluginMenu extends JSmartMenu
     
     /**
      * Creates the Plugin menu.
-     *
-     * @return JMenu
      */
     protected void buildView()
     {
