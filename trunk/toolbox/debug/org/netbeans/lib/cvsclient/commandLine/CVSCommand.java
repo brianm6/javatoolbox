@@ -20,6 +20,7 @@ import org.netbeans.lib.cvsclient.*;
 import org.netbeans.lib.cvsclient.admin.*;
 import org.netbeans.lib.cvsclient.command.*;
 import org.netbeans.lib.cvsclient.connection.*;
+import org.netbeans.lib.cvsclient.util.Logger;
 
 /**
  * An implementation of the standard CVS client utility (command line tool)
@@ -65,28 +66,45 @@ public class CVSCommand {
         public int port = 2401;
 
         public CVSRoot(String root) throws IllegalArgumentException {
+            
             if (!root.startsWith(":"))
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(
+                    "CVSROOT must start with a colon: " + root);
 
             int oldColonPosition = 0;
             int colonPosition = root.indexOf(':', 1);
+            
             if (colonPosition == -1)
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(
+                    "Could not find ending color for protocol: " + root);
+                
             connectionType = root.substring(oldColonPosition + 1, colonPosition);
             oldColonPosition = colonPosition;
             colonPosition = root.indexOf('@', colonPosition + 1);
+            
             if (colonPosition == -1)
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(
+                    "Could not fund @ separator between user and hostnname: " + 
+                        root);
+                
             user = root.substring(oldColonPosition + 1, colonPosition);
             oldColonPosition = colonPosition;
             colonPosition = root.indexOf(':', colonPosition + 1);
+            
             if (colonPosition == -1)
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(
+                    "Could not fund colon after hostname: " + root);
+                
             host = root.substring(oldColonPosition + 1, colonPosition);
+            
+            Logger.logOutput("Repository scanned from pos " + 
+                (colonPosition + 1) + ": " + root.substring(colonPosition+1));
+            
             repository = root.substring(colonPosition + 1);
             boolean isNumber = true;
             int index = 0;
             String numString = "";
+            
             while (isNumber) {
                 try {
                     int num = Integer.parseInt(repository.substring(index, index + 1));
@@ -97,10 +115,17 @@ public class CVSCommand {
                     isNumber = false;
                 }
             }
+            
             if (numString.length() > 0) {
                 try {
                     port = Integer.parseInt(numString);
-                    repository = root.substring(numString.length());
+                    
+                    repository = root.substring(
+                        colonPosition + 
+                        1 +                  // skip over colon 
+                        numString.length() + // skip over port
+                        1,                   // skip over color
+                        root.length());      // to end of string
                 }
                 catch (NumberFormatException exc) {
                 }
@@ -276,6 +301,9 @@ public class CVSCommand {
     private static boolean performLogin(String userName, String hostName,
                                      String repository, int port,
                                      GlobalOptions globalOptions) {
+                                         
+        Logger.logOutput("Repository=" + repository);
+                                                 
         PServerConnection c = new PServerConnection();
         c.setUserName(userName);
         String password = null;
@@ -284,7 +312,7 @@ public class CVSCommand {
        
         // HACK : Override getting of password via command line if one is
         //        specified in the property cvs.password.
-         
+          
         if (overridePassword != null)
         {
             System.out.println("Using cvs.password...");
