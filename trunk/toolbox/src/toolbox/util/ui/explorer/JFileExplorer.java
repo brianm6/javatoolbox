@@ -54,6 +54,7 @@ import toolbox.util.io.filter.FileFilter;
  * 
  * <pre>
  * TODO: Update scrollToVisible() to not hide the parent
+ * TODO: Add filter for file list
  * </pre>
  */
 public class JFileExplorer extends JPanel
