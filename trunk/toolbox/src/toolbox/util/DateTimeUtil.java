@@ -42,6 +42,18 @@ public final class DateTimeUtil
         DateFormat df = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
         return df.format(d);
     }
+
+	/**
+	 * Formats a timestamp down to the second
+	 *  
+	 * @param d Date to format
+	 * @return Date/time in dashed MM-dd-yyyy hh:mm:ss a format
+	 */
+	public static String formatToSecond(Date d)
+	{
+		DateFormat df = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a");
+		return df.format(d);
+	}
     
     /**
      * Adds individual time components to a date. The original date is returned 
