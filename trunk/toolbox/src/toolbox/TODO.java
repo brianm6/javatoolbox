@@ -24,7 +24,6 @@ package toolbox;
  * TODO: Updated JFreeChart to 0.9.18
  * TODO: Update to latest Multivalent
  * TODO: Figure out how to use forms
- * TODO: Alphasort plugin menu
  * TODO: Add tile and cascade to Desktop plugin host
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
@@ -60,6 +59,7 @@ package toolbox;
  * - Integrate statcvs-xml from berlios
  * - Add HTTP proxy support to preferences dialog. 
  * - Figure out how to put separators on the main javadocs page
+ * - Alphasort plugin menu
  * ============================================================================= 
  * </pre>
  */
