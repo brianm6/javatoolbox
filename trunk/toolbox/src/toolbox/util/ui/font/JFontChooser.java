@@ -180,7 +180,7 @@ public class JFontChooser extends JPanel
         fontFamilyList_.setVisibleRowCount(8);
 
         // Add to gridbag
-        gbc.weightx    = 1; gbc.weighty   = 0.75;
+        gbc.weightx    = 1; gbc.weighty   = 1;
         gbc.gridx      = 1; gbc.gridy     = 1;
         gbc.gridheight = 3; gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.BOTH;
@@ -192,7 +192,7 @@ public class JFontChooser extends JPanel
         fontStyleList_.setVisibleRowCount(4);
 
         // Add to gridbag
-        gbc.weightx    = 0.75; gbc.weighty   = 0.75;
+        gbc.weightx    = 0.75; gbc.weighty   = 1;
         gbc.gridx      = 2;    gbc.gridy     = 1;
         gbc.gridheight = 2;    gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 10, 0, 0);
@@ -203,7 +203,7 @@ public class JFontChooser extends JPanel
         setAntiAlias(antiAlias);
 
         // Add to gridbag
-        gbc.weightx    = 0.75; gbc.weighty   = 0.0;
+        gbc.weightx    = 0.75; gbc.weighty   = 0s;
         gbc.gridx      = 2;    gbc.gridy     = 3;
         gbc.gridheight = 1;    gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -226,11 +226,11 @@ public class JFontChooser extends JPanel
             new JList(validateAndConvertPredefinedSizes(predefinedSizes));
             
         fontSizeList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        fontSizeList_.setVisibleRowCount(1);
+        fontSizeList_.setVisibleRowCount(4);
         fontSizeList_.setCellRenderer(new ListCellRenderer());
         
         // Add to gridbag
-        gbc.weightx    = 0.5; gbc.weighty   = 0.75;
+        gbc.weightx    = 0.5; gbc.weighty   = 1;
         gbc.gridx      = 3;   gbc.gridy     = 2;
         gbc.gridheight = 2;   gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 10, 0, 0);
@@ -479,7 +479,7 @@ public class JFontChooser extends JPanel
      */
     public void setSelectedFont(Font font)
     {
-        setSelectedFontFamily(font.getFamily());
+        setSelectedFontFamily(font.getName());
         setSelectedFontStyle(font.getStyle());
         setSelectedFontSize(font.getSize());
     }
