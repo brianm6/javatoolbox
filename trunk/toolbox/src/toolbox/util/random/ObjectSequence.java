@@ -6,8 +6,19 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 
 /**
- * ObjectSequence is responsible for generating a repeating/non-repeating 
+ * ObjectSequence is responsible for generating a repeating or non-repeating 
  * sequence of objects from a given list of objects.
+ * <p>
+ * <b>Example</b>
+ * <pre class="snippet">
+ *   List words = new ArrayList();
+ *   words.add("java");
+ *   words.add("kava");
+ *   words.add("guava");
+ *   
+ *   RandomSequence r = new ObjectSequence(words, false);
+ *   String s = (String) r.nextValue();
+ * </pre>
  */
 public class ObjectSequence extends AbstractSequence 
     implements RandomSequence
