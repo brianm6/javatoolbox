@@ -4,6 +4,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.text.*;
 import javax.swing.JComponent;
 import java.awt.event.MouseEvent;
+import java.awt.font.FontRenderContext;
 import java.awt.*;
 
 //
@@ -60,10 +61,10 @@ public class TextAreaPainter extends JComponent implements TabExpander
     * Returns if this component can be traversed by pressing the
     * Tab key. This returns false.
     */
-   public final boolean isManagingFocus()
-   {
-      return false;
-   }
+   //public final boolean isManagingFocus()
+   //{
+   //   return false;
+   //}
 
    /**
     * Returns the syntax styles used to paint colorized text. Entry <i>n</i>
