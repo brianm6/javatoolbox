@@ -89,6 +89,12 @@ public final class LookAndFeelUtil
      * Checkbox group for the menu items.
      */
     private static JButtonGroup group_;
+
+    /**
+     * The set of look and feels provided with the JRE by default before we go
+     * in and start polluting it.
+     */
+    private static UIManager.LookAndFeelInfo[] baseLAFs_;
     
     //--------------------------------------------------------------------------
     // Static Initializer
@@ -99,6 +105,7 @@ public final class LookAndFeelUtil
         lookAndFeelMap_ = new HashMap();
         menuItemMap_ = new HashMap();
         lookAndFeels_ = new ArrayList();
+        baseLAFs_ = UIManager.getInstalledLookAndFeels();
         initLookAndFeels();
     }
     
@@ -443,10 +450,7 @@ public final class LookAndFeelUtil
         f.pack();
         f.setVisible(true);
     }
-    
-    //--------------------------------------------------------------------------
-    // Protected
-    //--------------------------------------------------------------------------
+
     
     /**
      * Initializes and installs the look and feels read from lookandfeel.xml.
@@ -460,6 +464,10 @@ public final class LookAndFeelUtil
             is = ResourceUtil.getResource(FILE_LOOKANDFEEL_CONFIG);
             Element root = new Builder().build(is).getRootElement();
             Elements lafs = root.getChildElements(NODE_LOOKANDFEEL);
+            
+            //
+            // Append LAFs from lookandfeel.xml
+            //
             
             for (int i = 0; i < lafs.size(); i++)
             {    
@@ -480,6 +488,32 @@ public final class LookAndFeelUtil
                 lookAndFeelMap_.put(info.getName(), info);
                 lookAndFeels_.add(info);
             }
+            
+            //
+            // Append LAFs that are already installed by the JRE
+            //
+            
+            for (int i = 0; i < baseLAFs_.length; i++)
+            {    
+                LAFInfo info = new LAFInfo();
+                info.setAction(ActivateLookAndFeelAction.class.getName());
+                info.setClassName(baseLAFs_[i].getClassName());
+                info.setName(baseLAFs_[i].getName());
+                info.getProperties().put("group.name", "Sun");
+                
+                if (!lookAndFeelMap_.containsKey(info.getName()))
+                {
+                    logger_.debug("Installed " + info.getName());
+                    
+                    UIManager.installLookAndFeel(
+                        info.getName(), 
+                        info.getClassName());
+                }
+                
+                lookAndFeelMap_.put(info.getName(), info);
+                lookAndFeels_.add(info);
+            }
+            
         }
         catch (Exception ioe)
         {
