@@ -292,6 +292,6 @@ public final class ResourceUtil
 
 		System.out.println(template);
 		
-		FileUtil.writeToFile(className+".java",template, false);
+		FileUtil.setFileContents(className+".java",template, false);
 	}
 }
