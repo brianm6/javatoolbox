@@ -3,6 +3,7 @@ package toolbox.util;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ConnectException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -106,5 +107,21 @@ public class SocketUtil
     public static boolean isReasonSocketClosed(SocketException se)
     {
         return se.getMessage().equalsIgnoreCase(MSG_SOCKET_CLOSED);
+    }
+
+    
+    /**
+     * Returns a "free" port on the local host which is guaranteed not to be
+     * occupied by existing services.
+     * 
+     * @return  Port number
+     * @throws  IOException on IO error
+     */
+    public static int getFreePort() throws IOException
+    {
+        ServerSocket server = new ServerSocket(0);
+        int port = server.getLocalPort();
+        server.close();
+        return port;
     }
 }
