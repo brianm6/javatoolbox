@@ -124,12 +124,12 @@
     <!--=============================-->
     <!--             ALL             -->
     <!--=============================-->
-    <target name="all" depends="init,compile,jar,dist"/>
+    <target name="all" depends="init,compile,jar,dist" description="Builds everything!"/>
 
     <!--=============================-->
     <!--            CLEAN            -->
     <!--=============================-->
-    <target name="clean" depends="env">
+    <target name="clean" depends="env" description="Cleans remnants of the build process">
         <delete dir="${dist}" verbose="false" quiet="off"/>
         <delete dir="${classes}" verbose="false" quiet="off"/>
     </target>
@@ -137,7 +137,7 @@
     <!--=============================-->
     <!--           COMPILE           -->
     <!--=============================-->
-    <target name="compile" depends="init">
+    <target name="compile" depends="init" description="Compiles the source code">
     
         <javac 
             srcdir="${src}" 
@@ -156,7 +156,7 @@
     <!--=============================-->
     <!--             JAR             -->
     <!--=============================-->
-    <target name="jar" depends="compile">
+    <target name="jar" depends="compile" description="Creates jar worthy of distribution">
 
         <delete verbose="true">
             <fileset dir="${dist}" includes="**/*.jar"/>
@@ -185,10 +185,11 @@
     <!--=============================-->
     <!--           JAR_SRC           -->
     <!--=============================-->
-    <target name="jar_src" depends="init">
+    <target name="jar-src" depends="init" description="Create jar containing only source code">
         <jar jarfile="${dist}/toolbox-src.jar">
             <fileset dir="${src}" includes="**/*.java"/>
-            <fileset dir="${top}" includes="**/*.xml"/>
+            <fileset dir="${top}" includes="build.xml"/>
+            <fileset dir="${top}" includes="resources/**/*"/>
         </jar>
     </target>
 
@@ -212,11 +213,15 @@
     <!--=============================-->
     <!--            TEST             -->
     <!--=============================-->
-    <target name="junit" depends="init">
+    <target name="junit" depends="init" description="Executes unit tests and generates report">
 
         <mkdir dir="${test}"/>
         
-        <junit printSummary="no" haltonfailure="no">
+        <delete>
+            <fileset dir="${test}" includes="**/TEST*.xml"></fileset>
+        </delete>
+        
+        <junit printSummary="yes" haltonfailure="no">
 
             <classpath>
                 <pathelement path="${classes}" />
@@ -227,16 +232,25 @@
                 </fileset>
             </classpath>
             
-            <formatter type="plain" usefile="no"/>
+            <formatter type="xml"/>
             
-          <batchtest fork="no" todir="${test}">
-            <fileset dir="${src}">
-              <include name="**/*Test.java" />
-              <exclude name="**/RegressionTest.java" />
-            </fileset>
-          </batchtest>
+            <batchtest fork="no" todir="${test}">
+                <fileset dir="${src}">
+                    <include name="**/*Test.java" />
+                    <exclude name="**/RegressionTest.java" />
+                </fileset>
+            </batchtest>
           
         </junit>
+
+
+        <junitreport todir="./test">
+            <fileset dir="./test">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="./test/html"/>
+        </junitreport>        
+        
         
         <!--
         <junit printsummary="yes" haltonfailure="yes">
@@ -259,10 +273,6 @@
           </batchtest>
         </junit>
         -->
-    
-        
     </target>
-    
-    
 
 </project>
