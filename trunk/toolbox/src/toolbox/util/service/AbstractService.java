@@ -8,30 +8,6 @@ import toolbox.util.ArrayUtil;
 public abstract class AbstractService implements Service
 {
     //--------------------------------------------------------------------------
-    // Constants
-    //--------------------------------------------------------------------------
-    
-//    private static final int STATE_NONE     = -1;
-//    private static final int STATE_INIT     = 0;
-//    private static final int STATE_RUNNING  = 1;
-//    private static final int STATE_STOPPED  = 2;
-//    private static final int STATE_PAUSED   = 3;
-//    private static final int STATE_SHUTDOWN = 4;
-//    private static final int STATE_MAX      = 5;
-//    
-//    private static final String[] STATES; 
-//
-//    static
-//    {
-//        STATES = new String[STATE_MAX];
-//        STATES[STATE_INIT]     = "initialized";
-//        STATES[STATE_RUNNING]  = "running";
-//        STATES[STATE_STOPPED]  = "stopped";
-//        STATES[STATE_PAUSED]   = "paused";
-//        STATES[STATE_SHUTDOWN] = "shutdown";
-//    }
-
-    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
 
@@ -39,7 +15,12 @@ public abstract class AbstractService implements Service
      * State of the service.
      */
     private ServiceState state_;
-    
+
+    /**
+     * Previous state of the service.
+     */
+    private ServiceState previousState_;
+
     /**
      * Array of listeners interested in events that this service generates.
      */
@@ -52,8 +33,9 @@ public abstract class AbstractService implements Service
     /**
      * Default constructor.
      */
-    public AbstractService()
+    protected AbstractService()
     {
+        setPreviousState(ServiceState.UNINITIALIZED);
         setState(ServiceState.UNINITIALIZED);
         listeners_ = new ServiceListener[0];
     }
@@ -71,6 +53,7 @@ public abstract class AbstractService implements Service
     {
         return state_;
     }
+
     
     /**
      * Sets the value of state.
@@ -79,7 +62,30 @@ public abstract class AbstractService implements Service
      */
     public void setState(ServiceState state)
     {
+        setPreviousState(getState());
         state_ = state;
+    }
+
+    
+    /**
+     * Returns the previousState.
+     * 
+     * @return ServiceState
+     */
+    public ServiceState getPreviousState()
+    {
+        return previousState_;
+    }
+    
+    
+    /**
+     * Sets the previousState.
+     * 
+     * @param previousState The previousState to set.
+     */
+    public void setPreviousState(ServiceState previousState)
+    {
+        previousState_ = previousState;
     }
     
     //--------------------------------------------------------------------------
@@ -92,7 +98,7 @@ public abstract class AbstractService implements Service
     public void initialize() throws ServiceException
     {
         setState(ServiceState.INITIALIZED);
-        fireServiceChanged();
+        fireServiceStateChanged();
     }
     
     
@@ -105,27 +111,11 @@ public abstract class AbstractService implements Service
             getState() == ServiceState.STOPPED)
         {    
             setState(ServiceState.RUNNING);
-            fireServiceChanged();
+            fireServiceStateChanged();
         }
         else
             throw new IllegalStateException(
                 "Cannot start service from the current state of " + getState());
-    }
-
-    
-    /**
-     * @see toolbox.util.service.Service#stop()
-     */
-    public void stop() throws ServiceException
-    {
-        if (getState() == ServiceState.RUNNING)
-        {
-            setState(ServiceState.STOPPED);
-            fireServiceChanged();
-        }
-        else
-            throw new IllegalStateException(
-                "Cannot stop service from the current state of " + getState());
     }
 
     
@@ -137,7 +127,7 @@ public abstract class AbstractService implements Service
         if (getState() == ServiceState.RUNNING)
         {
             setState(ServiceState.SUSPENDED);
-            fireServiceChanged();
+            fireServiceStateChanged();
         }
         else
             throw new IllegalStateException(
@@ -153,11 +143,43 @@ public abstract class AbstractService implements Service
         if (getState() == ServiceState.SUSPENDED)
         {
             setState(ServiceState.RUNNING);
-            fireServiceChanged();
+            fireServiceStateChanged();
         }
         else
             throw new IllegalStateException(
                 "Cannot resume service from the current state of " + getState());
+    }
+
+    
+    /**
+     * @see toolbox.util.service.Service#stop()
+     */
+    public void stop() throws ServiceException
+    {
+        if (getState() == ServiceState.RUNNING)
+        {
+            setState(ServiceState.STOPPED);
+            fireServiceStateChanged();
+        }
+        else
+            throw new IllegalStateException(
+                "Cannot stop service from the current state of " + getState());
+    }
+
+    
+    /**
+     * @see toolbox.util.service.Service#destroy()
+     */
+    public void destroy() throws ServiceException
+    {
+        if (getState() == ServiceState.STOPPED)
+        {
+            setState(ServiceState.DESTROYED);
+            fireServiceStateChanged();
+        }
+        else
+            throw new IllegalStateException(
+                "Cannot stop service from the current state of " + getState());
     }
 
     
@@ -175,7 +197,7 @@ public abstract class AbstractService implements Service
      */
     public boolean isSuspended()
     {
-        return state_ == ServiceState.SUSPENDED;
+        return getState() == ServiceState.SUSPENDED;
     }
 
     
@@ -207,58 +229,9 @@ public abstract class AbstractService implements Service
      * 
      * @throws ServiceException on service related error.
      */
-    protected void fireServiceChanged() throws ServiceException
+    protected void fireServiceStateChanged() throws ServiceException
     {
         for (int i = 0; i < listeners_.length; 
-            listeners_[i++].serviceChanged(this));
+            listeners_[i++].serviceStateChanged(this));
     }
-
-    
-//    /**
-//     * Notifies registered listeners that the service has started.
-//     * 
-//     * @throws ServiceException on service related error.
-//     */
-//    protected void fireServiceStarted() throws ServiceException
-//    {
-//        for (int i = 0; i < listeners_.length; 
-//            listeners_[i++].serviceStarted(this));
-//    }
-//
-//    
-//    /**
-//     * Notifies registered listeners that the service has stopped.
-//     * 
-//     * @throws ServiceException on service related error.
-//     */
-//    protected void fireServiceStopped() throws ServiceException
-//    {
-//        for (int i = 0; i < listeners_.length;
-//            listeners_[i++].serviceStopped(this));
-//    }
-//
-//    
-//    /**
-//     * Notifies registered listeners that the service has been paused.
-//     * 
-//     * @throws ServiceException on service related error.
-//     */
-//    protected void fireServicePaused() throws ServiceException
-//    {
-//        for (int i = 0; i < listeners_.length;
-//            listeners_[i++].servicePaused(this));
-//    }
-//
-//    
-//    /**
-//     * Notifies registered listeners that the service has been resumed.
-//     * 
-//     * @throws ServiceException on service related error.
-//     */
-//    protected void fireServiceResumed() throws ServiceException
-//    {
-//        for (int i = 0; i < listeners_.length;
-//            listeners_[i++].serviceResumed(this));
-//    }
-
 }
