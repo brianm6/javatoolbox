@@ -12,25 +12,20 @@ import toolbox.util.ThreadUtil;
  */
 public class BatchingQueueReader
 {
-    /** 
-     * Queue to read elements from
-     */
+    /** Queue to read elements from */
     private BlockingQueue queue_;
     
-    /**
-     * Started flag
-     */
+    /** Started flag */
     private boolean started_ = false;
     
-    /** 
-     * Queue Listeners 
-     */
+    /** Queue Listeners */
     private List listeners_ = new ArrayList();    
 
-    /**
-     * Worker thread
-     */
+    /** Batch thread */
     private Thread worker_;
+    
+    /** Friendly name assigned to the batch thread */
+    private String name_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -43,7 +38,19 @@ public class BatchingQueueReader
      */
     public BatchingQueueReader(BlockingQueue queue)
     {
+        this(queue, "BatchingQueueReader");
+    }
+
+    /**
+     * Constructor for BatchingQueueReader
+     * 
+     * @param  queue  Queue to read in batch mode from
+     * @param  name   Friendly name assigned to the batch thread
+     */
+    public BatchingQueueReader(BlockingQueue queue, String name)
+    {
         queue_ = queue;
+        name_  = name;        
     }
 
     //--------------------------------------------------------------------------
@@ -79,7 +86,7 @@ public class BatchingQueueReader
         if (!started_)
         {
             started_  = true;
-            worker_ = new Thread(new Worker(), "BatchingQueueReader");
+            worker_ = new Thread(new Worker(), name_);
             worker_.start(); 
         }
         else
@@ -137,12 +144,13 @@ public class BatchingQueueReader
     //--------------------------------------------------------------------------
     // Inner Classes
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Reads objects off the queue in as large blocks as possible and notifies
+     * listeners that the next batch is available.
+     */    
     class Worker implements Runnable
     {
-        /**
-         * Runs the reader
-         */
         public void run()
         {
             //logger_.debug(method + "Batching queue reader started!");
