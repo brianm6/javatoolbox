@@ -8,7 +8,14 @@ import org.apache.log4j.Logger;
 import org.w3c.tidy.Tidy;
 
 /**
- * Formatter for HTML.
+ * HTML formatter that uses Tidy internally.
+ * <pre class="snippet">
+ * Usage:
+ * 
+ * Formatter f = new HTMLFormatter();
+ * String html = getSomeHTML();
+ * String formattedHTML = f.format(html);
+ * </pre>
  */
 public class HTMLFormatter extends AbstractFormatter
 {

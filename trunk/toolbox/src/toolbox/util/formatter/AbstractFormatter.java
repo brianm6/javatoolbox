@@ -8,10 +8,13 @@ import toolbox.util.service.ServiceException;
 
 /**
  * Abstract formatter that takes care of non-formatter related housekeeping 
- * stuff. This base class requires that only the 
- * <code>format(InputStream, OutputStream)<code> be implemented by subclasses.
+ * stuff.
+ * <br>
+ *  This base class requires that only the 
+ * <code>format(InputStream, OutputStream)</code> be implemented by subclasses.
+ * <br>
  * The other various signatures are implemented here and all funnel to the
- * <code>format(InputStream, OutputStream)<code> implementation.
+ * <code>format(InputStream, OutputStream)</code> implementation.
  */
 public abstract class AbstractFormatter implements Formatter
 {

@@ -9,7 +9,15 @@ import org.apache.log4j.Logger;
 import toolbox.util.XMLUtil;
 
 /**
- * Formatter for XML.
+ * XML formatter that uses Xerces internally.
+ * 
+ * <pre class="snippet">
+ * Usage:
+ * 
+ * Formatter f = new XMLFormatter();
+ * String xml = getSomeXML();
+ * String formattedXML = f.format(xml);
+ * </pre>
  */
 public class XMLFormatter extends AbstractFormatter
 {

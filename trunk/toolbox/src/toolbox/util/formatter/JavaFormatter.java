@@ -12,7 +12,14 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Formatter for java source code.
+ * Java source code formatter that uses Jalopy internally.
+ * <pre class="snippet">
+ * Usage:
+ * 
+ * Formatter f = new JavaFormatter();
+ * String sourceCode = getSomeJavaCode();
+ * String formattedCode = f.format(sourceCode);
+ * </pre>
  */
 public class JavaFormatter extends AbstractFormatter
 {
