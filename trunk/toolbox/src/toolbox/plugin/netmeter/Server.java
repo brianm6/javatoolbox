@@ -3,6 +3,7 @@ package toolbox.plugin.netmeter;
 import java.io.IOException;
 import java.net.Socket;
 
+import toolbox.util.net.AsyncConnectionHandler;
 import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
 import toolbox.util.net.ISocketServerListener;
@@ -112,7 +113,18 @@ public class Server extends AbstractService
     {
         port_ = port;
     }
-        
+    
+    
+    /**
+     * Returns the internal socket server.
+     * 
+     * @return SocketServer
+     */
+    public SocketServer getSocketServer() 
+    {
+        return server_;
+    }
+    
     //--------------------------------------------------------------------------
     // Service Interface
     //--------------------------------------------------------------------------
@@ -129,7 +141,7 @@ public class Server extends AbstractService
         config.setConnectionHandlerType(
             "toolbox.plugin.netmeter.ServerConnectionHandler");
         
-        server_ = new SocketServer(config);
+        server_ = new MySocketServer(config);
         
         //
         // Add listener so we can grab references to the created 
@@ -142,6 +154,31 @@ public class Server extends AbstractService
         super.initialize();
     }
     
+    //--------------------------------------------------------------------------
+    // MySocketServer
+    //--------------------------------------------------------------------------
+    
+    class MySocketServer extends SocketServer 
+    {
+        
+        public MySocketServer(SocketServerConfig config) 
+        {
+            super(config);
+        }
+        
+        /**
+         * @see toolbox.util.net.SocketServer#getConnectionHandler()
+         */
+        public IConnectionHandler getConnectionHandler()
+        {
+            AsyncConnectionHandler async = 
+                (AsyncConnectionHandler) super.getConnectionHandler();
+            
+            ServerConnectionHandler handler = new ServerConnectionHandler();
+            async.setConnectionHandler(handler);
+            return async;
+        }
+    }
     
     /**
      * @see toolbox.util.service.Service#start()
