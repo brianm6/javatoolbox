@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,13 +24,17 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.ResourceCloser;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * JTcpTunnel tunnels TCP traffic between a port on the localhost and a port
@@ -45,7 +51,7 @@ public class JTcpTunnelPane extends JPanel
     private int         tunnelPort_;
     private JTextArea   listenText_;
     private JTextArea   tunnelText_;
-    private JLabel      status_;
+    private IStatusBar  statusBar_;
     private JSplitPane  splitter_;
     private JButton     clearButton_;
 
@@ -132,6 +138,16 @@ public class JTcpTunnelPane extends JPanel
         return tunnelText_;
     }
 
+    /**
+     * Sets the status bar
+     *
+     * @param statusBar  Statusbar
+     */
+    public void setStatusBar(IStatusBar statusBar)
+    {
+        statusBar_ = statusBar;
+    }
+
     //--------------------------------------------------------------------------
     //  Private
     //--------------------------------------------------------------------------
@@ -193,7 +209,6 @@ public class JTcpTunnelPane extends JPanel
         buttonPanel.add(clearButton_ = new JButton(new ClearAction()));
         
         actionPanel.add(BorderLayout.CENTER, buttonPanel);
-        actionPanel.add(BorderLayout.SOUTH, status_ = new JLabel());
         add(BorderLayout.SOUTH, actionPanel);
         
         //===================== WEST ==========================================
@@ -333,12 +348,12 @@ public class JTcpTunnelPane extends JPanel
         	if (server_ != null)
         	{
         		if (server_.isAlive())
-        			status_.setText("Could not kill server.");
+        			statusBar_.setStatus("Could not kill server.");
         		else
-                    status_.setText("Server may have stopped.");
+                    statusBar_.setStatus("Server may have stopped.");
         	}
         	else
-                status_.setText("Server stopped.");
+                statusBar_.setStatus("Server stopped.");
         }
     }
     
@@ -351,21 +366,13 @@ public class JTcpTunnelPane extends JPanel
      */
     class TunnelRunner implements Runnable
     {
-        ServerSocket ss_;
+        ServerSocket serverSocket_;
         boolean stop_ = false;
         
         public void stop()
         {
-            try
-            {
-                stop_ = true;
-                ss_.close();    
-            }
-            catch (IOException e)
-            {
-                logger_.debug("stop", e);
-            }
-            
+            stop_ = true;
+            ResourceCloser.close(serverSocket_);    
         }
         
         /**
@@ -373,12 +380,12 @@ public class JTcpTunnelPane extends JPanel
          */
         public void run()
         {
-            ss_ = null;
+            serverSocket_ = null;
 
             try
             {
-                ss_ = new ServerSocket(getListenPort());
-                ss_.setSoTimeout(2000);
+                serverSocket_ = new ServerSocket(getListenPort());
+                serverSocket_.setSoTimeout(2000);
             }
             catch (IOException ioe)
             {
@@ -389,35 +396,57 @@ public class JTcpTunnelPane extends JPanel
             {
                 try
                 {
-                    status_.setText("Listening for connections on port " + 
+                    statusBar_.setStatus("Listening for connections on port " + 
                         getListenPort());
 
                     // accept the connection from my client
-                    if (!ss_.isClosed())
+                    if (!serverSocket_.isClosed())
                     {
-                        Socket sc = ss_.accept();
+                        Socket sc = serverSocket_.accept();
     
                         // connect to the thing I'm tunnelling for
-                        Socket st = new Socket(getTunnelHost(), getTunnelPort());
+                        Socket st = new Socket(getTunnelHost(),getTunnelPort());
                         
-                        status_.setText("Tunnelling port "+ getListenPort()+ 
-                                        " to port " + getTunnelPort() + 
-                                        " on host " + getTunnelHost() + 
-                                        " ...");
+                        statusBar_.setStatus(
+                            "Tunnelling port "+ getListenPort()+ 
+                            " to port " + getTunnelPort() + 
+                            " on host " + getTunnelHost() + " ...");
     
-                        // relay the stuff thru
-                        new Relay(sc.getInputStream(), st.getOutputStream(), 
-                            getListenText()).start();
-                                  
-                        new Relay(st.getInputStream(), sc.getOutputStream(), 
-                            getTunnelText()).start();
+                        // relay the stuff thru. Make multicast output streams
+                        // that send to the socket and also to the textarea
+                        // for each direction
+                            
+                        MulticastOutputStream tos = new MulticastOutputStream();
+                        tos.addStream(st.getOutputStream());
+                        
+                        tos.addStream(
+                            new JTextAreaOutputStream(getListenText()));
+                        
+                        MulticastOutputStream sos = new MulticastOutputStream();
+                        sos.addStream(sc.getOutputStream());
+                        
+                        sos.addStream(
+                            new JTextAreaOutputStream(getTunnelText()));
+                        
+//                        new Relay(sc.getInputStream(), tos).start();
+//                        new Relay(st.getInputStream(), sos).start();
+
+                        new Thread(
+                            new Relay(
+                                new BufferedInputStream(sc.getInputStream()), 
+                                new BufferedOutputStream(tos))).start();
+                            
+                        new Thread(
+                            new Relay(
+                                new BufferedInputStream(st.getInputStream()), 
+                                new BufferedOutputStream(sos))).start();
 
                         // that's it .. they're off
                     }
                 }
                 catch (SocketTimeoutException ste)
                 {
-                    // NOOP
+                    logger_.warn("run", ste);
                 }
                 catch (Exception e)
                 {
