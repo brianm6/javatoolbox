@@ -1,4 +1,4 @@
-package toolbox.util.ui;
+package toolbox.util.ui.list;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JList;
+
+import toolbox.util.ui.JPopupListener;
+import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.JSmartPopupMenu;
 
 /**
  * PopupMenu for a JList

@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JListPopupMenu;
+import toolbox.util.ui.list.JListPopupMenu;
 
 /**
  * Unit test for JListPopupMenu

@@ -36,9 +36,9 @@ import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.collections.ObjectComparator;
-import toolbox.util.ui.JListPopupMenu;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 
 /**
