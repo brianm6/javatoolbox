@@ -9,21 +9,29 @@ import javax.swing.JMenuItem;
 import toolbox.util.SwingUtil;
 
 /**
- * 
+ * JSmartMenuItem adds the following behavior.
+ * <p>
+ * <ul>
+ *   <li>Support for antialised text
+ * </ul>
  */
 public class JSmartMenuItem extends JMenuItem implements AntiAliased
 {
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * 
+     * Creates a JSmartMenuItem
      */
     public JSmartMenuItem()
     {
-        super();
     }
 
     /**
-     * @param text
+     * Creates a JSmartMenuItem
+     * 
+     * @param text Menu item text
      */
     public JSmartMenuItem(String text)
     {
@@ -31,8 +39,10 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     }
 
     /**
-     * @param text
-     * @param mnemonic
+     * Creates a JSmartMenuItem
+     * 
+     * @param text Menu item text
+     * @param mnemonic Text mnemonic
      */
     public JSmartMenuItem(String text, int mnemonic)
     {
@@ -40,7 +50,9 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     }
 
     /**
-     * @param a
+     * Creates a JSmartMenuItem
+     * 
+     * @param a Action activated by the selection of this menu item
      */
     public JSmartMenuItem(Action a)
     {
@@ -48,7 +60,9 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     }
 
     /**
-     * @param icon
+     * Creates a JSmartMenuItem
+     * 
+     * @param icon Menu item icon
      */
     public JSmartMenuItem(Icon icon)
     {
@@ -56,8 +70,10 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     }
 
     /**
-     * @param text
-     * @param icon
+     * Creates a JSmartMenuItem
+     * 
+     * @param text Menu item text
+     * @param icon Menu item icon
      */
     public JSmartMenuItem(String text, Icon icon)
     {

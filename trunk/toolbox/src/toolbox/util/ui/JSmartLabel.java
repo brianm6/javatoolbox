@@ -9,12 +9,14 @@ import javax.swing.JLabel;
 import toolbox.util.SwingUtil;
 
 /**
- * JSmartLabel 
+ * JSmartLabel adds the following behavior.
+ * <p>
+ * <ul>
+ *   <li>Support for antialised text
+ * </ul>
  */
 public class JSmartLabel extends JLabel implements AntiAliased
 {
-    private boolean antialiased_ = SwingUtil.isAntiAliased();
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -27,7 +29,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
     }
     
     /**
-     * @param text
+     * Creates a JSmartLabel
+     * 
+     * @param text Label text
      */
     public JSmartLabel(String text)
     {
@@ -35,7 +39,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
     }
 
     /**
-     * @param image
+     * Creates a JSmartLabel
+     * 
+     * @param image Label image
      */
     public JSmartLabel(Icon image)
     {
@@ -43,8 +49,10 @@ public class JSmartLabel extends JLabel implements AntiAliased
     }
 
     /**
-     * @param image
-     * @param horizontalAlignment
+     * Creates a JSmartLabel
+     * 
+     * @param image Label image
+     * @param horizontalAlignment Text alignment
      */
     public JSmartLabel(Icon image, int horizontalAlignment)
     {
@@ -52,9 +60,11 @@ public class JSmartLabel extends JLabel implements AntiAliased
     }
 
     /**
-     * @param text
-     * @param icon
-     * @param horizontalAlignment
+     * Creates a JSmartLabel
+     * 
+     * @param text Label text
+     * @param icon Label icon
+     * @param horizontalAlignment Text alignment
      */
     public JSmartLabel(String text, Icon icon, int horizontalAlignment)
     {
@@ -62,8 +72,10 @@ public class JSmartLabel extends JLabel implements AntiAliased
     }
 
     /**
-     * @param text
-     * @param horizontalAlignment
+     * Creates a JSmartLabel
+     * 
+     * @param text Label text
+     * @param horizontalAlignment Text alignment
      */
     public JSmartLabel(String text, int horizontalAlignment)
     {
@@ -79,7 +91,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
      */
     public boolean isAntiAliased()
     {
-        return antialiased_;
+        return SwingUtil.isAntiAliased();
     }
 
     /**
@@ -87,7 +99,6 @@ public class JSmartLabel extends JLabel implements AntiAliased
      */
     public void setAntiAliased(boolean b)
     {
-        antialiased_ = b;
     }
 
     //--------------------------------------------------------------------------
@@ -116,7 +127,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
      */
     public void paintComponent(Graphics gc)
     {
-        SwingUtil.makeAntiAliased(gc, antialiased_);
+        SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
 }
