@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -44,6 +43,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
@@ -132,6 +132,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     private FOProcessor xepProcessor_;
 
+    /**
+     * Splitter between the xmlArea and the outputPanel
+     */
     private JSmartSplitPane splitPane_;
     
     //--------------------------------------------------------------------------
@@ -247,14 +250,14 @@ public class XSLFOPlugin extends JPanel implements IPlugin
                 outputPanel_);
         
         JPanel buttonPane = new JPanel(new FlowLayout());
-        buttonPane.add(new JButton(new FormatAction()));
-        buttonPane.add(new JButton(new FOPAWTAction()));
-        buttonPane.add(new JButton(new FOPRenderAction()));
-        buttonPane.add(new JButton(new FOPLaunchAction()));
-        buttonPane.add(new JButton(new FOPExportToPDFAction()));
-        buttonPane.add(new JButton(new FOPExportToPostscriptAction()));
-        buttonPane.add(new JButton(new XEPRenderAction()));
-        buttonPane.add(new JButton(new XEPLaunchAction()));
+        buttonPane.add(new JSmartButton(new FormatAction()));
+        buttonPane.add(new JSmartButton(new FOPAWTAction()));
+        buttonPane.add(new JSmartButton(new FOPRenderAction()));
+        buttonPane.add(new JSmartButton(new FOPLaunchAction()));
+        buttonPane.add(new JSmartButton(new FOPExportToPDFAction()));
+        buttonPane.add(new JSmartButton(new FOPExportToPostscriptAction()));
+        buttonPane.add(new JSmartButton(new XEPRenderAction()));
+        buttonPane.add(new JSmartButton(new XEPLaunchAction()));
         
         add(BorderLayout.WEST, flipPane_);
         add(BorderLayout.CENTER, splitPane_);
