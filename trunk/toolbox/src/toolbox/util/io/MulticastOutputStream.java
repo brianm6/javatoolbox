@@ -9,15 +9,12 @@ import java.util.List;
 
 /**
  * MulticastOutputStream is an OutputStream that has multicast behavior. 
- * Multiple streams can be added to a MulticastOutputStream group so that
- * writes to the MulticastOutputStream will be channeled to each stream in
- * the group.
+ * Multiple streams can be added to a multicast group so that writes to the 
+ * MulticastOutputStream will be channeled to each stream in the group.
  */
 public class MulticastOutputStream extends FilterOutputStream
 {
-    /**
-     * Members fo the multicast group of streams
-     */
+    /** Members fo the multicast group of streams */
     private List streams_ = new ArrayList();
 
     //--------------------------------------------------------------------------
@@ -81,21 +78,6 @@ public class MulticastOutputStream extends FilterOutputStream
     {
         for (Iterator e = streams_.iterator(); e.hasNext();)
             ((OutputStream) e.next()).write(b);
-    }
-
-    /**
-     * Writes bytes to each stream in the multicast group
-     * 
-     * @param  data    Bytes to write
-     * @param  offset  Offset into data to start from
-     * @param  length  Number of bytes to write from offset
-     * @throws IOException on IO error
-     */
-    public synchronized void write(byte[] data, int offset, int length)
-        throws IOException
-    {
-        for (Iterator e = streams_.iterator(); e.hasNext();)
-            ((OutputStream) e.next()).write(data, offset, length);
     }
 
     /**
