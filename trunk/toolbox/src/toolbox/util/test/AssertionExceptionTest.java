@@ -5,7 +5,6 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.Assert;
 import toolbox.util.AssertionException;
 
 /**
@@ -34,7 +33,7 @@ public class AssertionExceptionTest extends TestCase
     /**
      * Constructor for AssertionExceptionTest.
      * 
-     * @param arg0  Name
+     * @param  arg0  Test name
      */
     public AssertionExceptionTest(String arg0)
     {
