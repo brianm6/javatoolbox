@@ -3,7 +3,6 @@ package toolbox.workspace;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -21,7 +20,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import nu.xom.Attribute;
@@ -48,6 +46,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
+import toolbox.util.ui.JSmartFrame;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
@@ -61,7 +60,7 @@ import toolbox.workspace.prefs.PreferencesManager;
  * tab panel. All pluggable GUI components must implements the IPlugin
  * interface as a base set of functionality to be hosted by PluginWorkspace.
  */
-public class PluginWorkspace extends JFrame implements IPreferenced
+public class PluginWorkspace extends JSmartFrame implements IPreferenced
 {
     private static final Logger logger_ =
         Logger.getLogger(PluginWorkspace.class);
@@ -685,29 +684,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * Save preferences of all contained instances of IPreferenced.
+     * 
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_WORKSPACE);
 
-        boolean maxxed =
-            (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
-
-        root.addAttribute(new Attribute(ATTR_MAXXED, maxxed + ""));
-
-        if (!maxxed)
-        {
-            // Save window location
-            root.addAttribute(new Attribute(ATTR_XCOORD, getLocation().x + ""));
-            root.addAttribute(new Attribute(ATTR_YCOORD, getLocation().y + ""));
-
-            // Save window size
-            root.addAttribute(new Attribute(ATTR_WIDTH, getSize().width + ""));
-            root.addAttribute(
-                new Attribute(ATTR_HEIGHT, getSize().height + ""));
-        }
-
+        // Let superclass handle saving frame size and location
+        super.savePrefs(root);
+        
         //
         // Save currently selected tab
         //
@@ -822,6 +809,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
 
     /**
+     * Apply preferences of all contained instances of IPreferenced.
+     * 
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
@@ -846,36 +835,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         new UseDecorationsAction().actionPerformed(
             new ActionEvent(decorationsCheckBoxItem_, -1, null));
 
-        //setUndecorated(decorationsCheckBoxItem_.isSelected());
-
-        boolean maxxed = XOMUtil.getBooleanAttribute(root, ATTR_MAXXED, false);
-
-        //
-        // Frame has to be visible before it can be maximized so just queue
-        // this bad boy up on the event queue
-        //
-        if (maxxed)
-        {
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    setExtendedState(Frame.MAXIMIZED_BOTH);
-                }
-            });
-
-        }
-
-        //
-        // Set size/loc regardless of maximized state since this will be used
-        // as the restored state. Restore window location and size
-        //
-        setBounds(
-            XOMUtil.getIntegerAttribute(root, ATTR_XCOORD, 0),
-            XOMUtil.getIntegerAttribute(root, ATTR_YCOORD, 0),
-            XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, 800),
-            XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, 600));
-
+        // Let superclass impl handle frame size, location, maximized
+        super.applyPrefs(root);
+        
         //
         // Restore log level even if it conflicts with log4j.xml
         //
@@ -956,7 +918,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 "Root preferences object is empty.We're starting from scratch");
         }
     }
-
 
     //--------------------------------------------------------------------------
     // CloseWindowListener
