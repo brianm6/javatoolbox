@@ -137,6 +137,20 @@ public final class FontUtil
         return serifFont_;               
     }
 
+    
+    /**
+     * Increases a fonts size by the given number of units.
+     * 
+     * @param font Font to base increased size on.
+     * @param units The number of units to increase the size.
+     * @return Font with the increased size.
+     */
+    public static Font increaseSize(Font font, int units)
+    {
+        Font f = font.deriveFont(font.getSize() + units);
+        return f;
+    }
+    
     //--------------------------------------------------------------------------
     // Private 
     //--------------------------------------------------------------------------
