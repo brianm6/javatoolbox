@@ -121,7 +121,7 @@ public class Tail
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a Tail
+     * Creates a Tail.
      */
     public Tail()
     {
@@ -154,6 +154,7 @@ public class Tail
      * 
      * @param readFrom Reader to follow.
      * @param writeTo Writer to send the tail output to.
+     * @param threadName Will name the thread. Useful for debugging.
      */
     public void follow(Reader readFrom, Writer writeTo, String threadName) 
     {
@@ -253,7 +254,7 @@ public class Tail
         {
             paused_ = false;
             
-            synchronized(this)
+            synchronized (this)
             {
                 notify();
             }
@@ -341,7 +342,7 @@ public class Tail
         {
             fireTailPaused();
 
-            synchronized(this)
+            synchronized (this)
             {
                 try
                 {
@@ -371,7 +372,7 @@ public class Tail
             ReverseFileReader reverser = new ReverseFileReader(file_);
             Stack backlog = new Stack();
                             
-            for (int i=0; i < backlog_; i++)
+            for (int i = 0; i < backlog_; i++)
             {
                 String line = reverser.readLineNormal();
                 
@@ -382,7 +383,7 @@ public class Tail
             }
             
             while (!backlog.isEmpty())
-                fireNextLine((String)backlog.pop());
+                fireNextLine((String) backlog.pop());
                 
             reverser.close();
         }
@@ -445,7 +446,7 @@ public class Tail
             logger_.error("fireNextLine", e);
         }
         
-        for (int i = 0; i< listeners_.length; i++)
+        for (int i = 0; i < listeners_.length; i++)
         {
             try
             {
@@ -464,7 +465,7 @@ public class Tail
      */
     protected void fireTailStopped()
     {
-        ArrayUtil.invoke(listeners_, "tailStopped", new Object[] { this });
+        ArrayUtil.invoke(listeners_, "tailStopped", new Object[] {this});
     }
     
     
@@ -473,7 +474,7 @@ public class Tail
      */
     protected void fireTailStarted()
     {
-        ArrayUtil.invoke(listeners_, "tailStarted", new Object[] { this });
+        ArrayUtil.invoke(listeners_, "tailStarted", new Object[] {this});
     }
     
     
@@ -482,7 +483,7 @@ public class Tail
      */
     protected void fireTailEnded()
     {
-        ArrayUtil.invoke(listeners_, "tailEnded", new Object[] { this });
+        ArrayUtil.invoke(listeners_, "tailEnded", new Object[] {this});
     }
     
     
@@ -491,7 +492,7 @@ public class Tail
      */
     protected void fireTailUnpaused()
     {
-        ArrayUtil.invoke(listeners_, "tailUnpaused", new Object[] { this });
+        ArrayUtil.invoke(listeners_, "tailUnpaused", new Object[] {this});
     }
     
     
@@ -500,7 +501,7 @@ public class Tail
      */
     protected void fireTailPaused()
     {
-        ArrayUtil.invoke(listeners_, "tailPaused", new Object[] { this });
+        ArrayUtil.invoke(listeners_, "tailPaused", new Object[] {this});
     }
 
     
@@ -509,7 +510,7 @@ public class Tail
      */
     protected void fireReattached()
     {
-        ArrayUtil.invoke(listeners_, "tailReattached", new Object[] { this });
+        ArrayUtil.invoke(listeners_, "tailReattached", new Object[] {this});
     }
 
     //--------------------------------------------------------------------------
@@ -521,6 +522,9 @@ public class Tail
      */        
     class Tailer implements Runnable
     {
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             try
