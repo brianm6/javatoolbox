@@ -129,4 +129,31 @@ public interface PluginHost
      * simply calling startup() after shutdown().
      */
     void shutdown();
+    
+    //--------------------------------------------------------------------------
+    // Event Notification
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a PluginHostListener.
+     *
+     * @param listener Listener to add.
+     */
+    public void addPluginHostListener(PluginHostListener listener);
+    
+
+    /**
+     * Removes a PluginHostListener.
+     *
+     * @param listener Listener to remove.
+     */
+    public void removePluginHostListener(PluginHostListener listener);
+
+    
+    /**
+     * Retrieves a list of the  PluginHostListeners.
+     *
+     * @return PluginHostListener[]
+     */
+    public PluginHostListener[] getPluginHostListeners();
 }
