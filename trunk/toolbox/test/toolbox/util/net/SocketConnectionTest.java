@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import EDU.oswego.cs.dl.util.concurrent.Mutex;
+import edu.emory.mathcs.util.concurrent.Semaphore;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -15,12 +15,9 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.concurrent.BlockingQueue;
 
 /**
- * Unit test for SocketConnection.
- * 
- * @see toolbox.util.net.SocketConnection
+ * Unit test for {@link toolbox.util.net.SocketConnection}.
  */
 public class SocketConnectionTest extends TestCase
 {
@@ -96,7 +93,9 @@ public class SocketConnectionTest extends TestCase
         
         final int port = SocketUtil.getFreePort();
         Server server = new Server(port, false);
-        final Mutex mutex = new Mutex();
+        final Semaphore mutex = new Semaphore(1);
+        
+        mutex.acquire();
         
         new Thread(new Runnable()
         {
@@ -104,9 +103,6 @@ public class SocketConnectionTest extends TestCase
             {
                 try
                 {   
-                    logger_.info("Mutex : acquired by client");
-                    
-                    mutex.acquire();
                     SocketConnection sc = 
                         new SocketConnection("localhost", port, true, 2);
                         
@@ -121,8 +117,6 @@ public class SocketConnectionTest extends TestCase
                 }
             }
         }).start();
-        
-        ThreadUtil.sleep(6000);
         
         server.start();
         logger_.info("Mutex : server waiting to acquire...");
@@ -296,7 +290,7 @@ public class SocketConnectionTest extends TestCase
      */
     class Server implements Runnable
     {
-        private BlockingQueue serverStarted_;
+        private Semaphore serverStarted_;
         private ServerSocket socket_;
         private boolean longLived_ = false;
         private int port_;
@@ -336,7 +330,16 @@ public class SocketConnectionTest extends TestCase
         {
             port_ = port;
             longLived_ = longLived;
-            serverStarted_ = new BlockingQueue();
+            serverStarted_ = new Semaphore(1);
+            try
+            {
+                serverStarted_.acquire();
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
+            
         }
 
         //----------------------------------------------------------------------
@@ -351,7 +354,6 @@ public class SocketConnectionTest extends TestCase
         public void start() throws IOException
         {
             socket_ = new ServerSocket(port_);
-            
             Thread t = new Thread(this);
             t.start();
         }
@@ -388,7 +390,7 @@ public class SocketConnectionTest extends TestCase
          */
         public void waitForStart() throws InterruptedException
         {
-            serverStarted_.pull();
+            serverStarted_.acquire();
         }
         
         //----------------------------------------------------------------------
@@ -405,10 +407,10 @@ public class SocketConnectionTest extends TestCase
                 try
                 {
                     logger_.info("Server: Waiting to accept...");
-                    serverStarted_.push("Started");
                     
                     if (!socket_.isClosed())
                     {
+                        serverStarted_.release();
                         socket_.accept();
                         keepGoing_ = longLived_;
                         logger_.info("Server: After accept..");
