@@ -21,6 +21,12 @@ public class FOPProcessorTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(FOPProcessorTest.class);
 
+    /**
+     * File containing sample xslfo content suitable for testing
+     */
+    private static final String FILE_TEST_XSLFO = 
+        "/toolbox/util/xslfo/test/FOPProcessorTest.fo";
+
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -40,73 +46,50 @@ public class FOPProcessorTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests renderPDF()
+     * Tests renderPDF() with successive calls in parallel
      *  
      * @throws Exception on error
      */
-    public void testRenderPDF() throws Exception
+    public void testRenderPDFInParallel() throws Exception
     {
-        logger_.info("Running testRenderPDF...");
+        logger_.info("Running testRenderPDFInParallel...");
         
-        final String foXML = new String(
-            ResourceUtil.getResourceAsBytes(
-                "/toolbox/util/xslfo/test/FOPProcessorTest.fo"));
+        String foXML = new String(
+            ResourceUtil.getResourceAsBytes(FILE_TEST_XSLFO));
 
-        class RenderRequest implements Runnable
+        int iterations = 10;
+        Thread threads[] = new Thread[iterations];
+
+        for (int i = 0; i < iterations; i++)
         {
-            int cnt_;
-
-            public RenderRequest(int cnt)
-            {
-                cnt_ = cnt;
-            }
-
-            public void run()
-            {
-                try
-                {
-                    // Weirdness: ILog's don't work from this thread
-                    logger_.info("Request " + cnt_+ " processing...");
-                     
-                    FOProcessor fop = 
-                        FOProcessorFactory.createProcessor(
-                            FOProcessorFactory.FO_IMPL_APACHE);
-                            
-                    fop.initialize(new Properties());
-                    
-                    StringInputStream input = new StringInputStream(foXML);
-                    ByteArrayOutputStream output = new ByteArrayOutputStream();            
-                    fop.renderPDF(input, output);
-                    byte[] pdfBytes = output.toByteArray();
-                    
-                    logger_.info("Request " + cnt_ + " done!");
-
-                    assertNotNull(pdfBytes);
-                    assertTrue(pdfBytes.length > 0);
-                    
-                    logger_.info("Input FO: " + foXML.length() + 
-                        " --> Output PDF: " + pdfBytes.length);
-                }
-                catch (Exception e)
-                {
-                    logger_.error(e.getMessage(), e);
-                }
-            }
-        }
-
-        int NUM = 10;
-
-        Thread t[] = new Thread[NUM];
-
-        for (int i = 0; i < NUM; i++)
-        {
-            t[i] = new Thread(new RenderRequest(i));
-            t[i].start();
+            threads[i] = new Thread(new RenderRequest(i, foXML));
+            threads[i].start();
         }
 
         // Wait for all to complete
-        for (int i = 0; i < NUM; i++)
-            t[i].join();
+        for (int i = 0; i < iterations; i++)
+        {
+            logger_.info("Waiting for thread " + i + " to complete...");
+            threads[i].join();
+        }
+    }
+
+    /**
+     * Tests renderPDF() with successive calls in sequence
+     *  
+     * @throws Exception on error
+     */
+    public void testRenderPDFInSequence() throws Exception
+    {
+        logger_.info("Running testRenderPDFInSequence...");
+        
+        int iterations = 10;
+        
+        String foXML = 
+            new String(ResourceUtil.getResourceAsBytes(FILE_TEST_XSLFO));
+
+        for (int i = 0; i < iterations; i++)
+            new RenderRequest(i, foXML).run();
     }
     
     /**
@@ -118,9 +101,8 @@ public class FOPProcessorTest extends TestCase
     {
         logger_.info("Running testRenderPostscript...");
         
-        final String foXML = new String(
-            ResourceUtil.getResourceAsBytes(
-                "/toolbox/util/xslfo/test/FOPProcessorTest.fo"));
+        String foXML = new String(
+            ResourceUtil.getResourceAsBytes(FILE_TEST_XSLFO));
 
         logger_.info("Rendering...");
          
@@ -142,5 +124,55 @@ public class FOPProcessorTest extends TestCase
         
         logger_.info("Input FO: " + foXML.length() + 
             " --> Output Postscript: " + psBytes.length);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+
+    /**
+     * PDF render request
+     */    
+    class RenderRequest implements Runnable
+    {
+        int cnt_;
+        String foXML_;
+
+        RenderRequest(int cnt, String foXML)
+        {
+            cnt_ = cnt;
+            foXML_ = foXML;
+        }
+
+        public void run()
+        {
+            try
+            {
+                logger_.info("Request " + cnt_+ " processing...");
+                     
+                FOProcessor fop = 
+                    FOProcessorFactory.createProcessor(
+                        FOProcessorFactory.FO_IMPL_APACHE);
+                            
+                fop.initialize(new Properties());
+                    
+                StringInputStream input = new StringInputStream(foXML_);
+                ByteArrayOutputStream output = new ByteArrayOutputStream();            
+                fop.renderPDF(input, output);
+                byte[] pdfBytes = output.toByteArray();
+                    
+                logger_.info("Render request " + cnt_ + " to PDF done!");
+
+                assertNotNull(pdfBytes);
+                assertTrue(pdfBytes.length > 0);
+                    
+                logger_.info("Input FO: " + foXML_.length() + 
+                    " --> Output PDF: " + pdfBytes.length);
+            }
+            catch (Exception e)
+            {
+                logger_.error(e.getMessage(), e);
+            }
+        }
     }
 }
