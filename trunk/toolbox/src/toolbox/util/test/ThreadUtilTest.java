@@ -345,6 +345,23 @@ public class ThreadUtilTest extends TestCase
         logger_.info(et);
     }
 
+    /**
+     * Tests toString() 
+     * 
+     * @throws Exception on error
+     */
+    public void testToString() throws Exception
+    {
+        logger_.info("Running testToString...");
+        
+        Thread t = new Thread(new DelayedRunner(100));
+        logger_.info("toString() before start()\n" + ThreadUtil.toString(t));
+        t.start();
+        logger_.info("toString() after start()\n" + ThreadUtil.toString(t));
+        t.join();
+        logger_.info("toString() after join()\n" + ThreadUtil.toString(t));        
+    }
+
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
