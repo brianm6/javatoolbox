@@ -2,6 +2,7 @@ package toolbox.util.ui.font;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -41,6 +42,7 @@ public class FontSelectionDialog extends JDialog
         this(null);
     }
 
+
     /**
      * Constructor for FontSelectionDialog.
      * 
@@ -50,6 +52,7 @@ public class FontSelectionDialog extends JDialog
     {
         this(owner, true);
     }
+
 
     /**
      * Constructor for FontSelectionDialog.
@@ -62,6 +65,22 @@ public class FontSelectionDialog extends JDialog
         this(owner, "", modal);
     }
 
+
+    /**
+     * Constructor for FontSelectionDialog.
+     * 
+     * @param   owner           Parent frame
+     * @param   modal           Set to true for a model dialog
+     * @param   defaultFont    Font to select by default
+     */
+    public FontSelectionDialog(Frame owner, boolean modal,
+        Font defaultFont)
+    {
+        this(owner, "", modal);
+        fontPanel_.setSelectedFont(defaultFont);
+    }
+
+
     /**
      * Constructor for FontSelectionDialog.
      * 
@@ -73,8 +92,10 @@ public class FontSelectionDialog extends JDialog
         this(owner, title, true);
     }
 
+
     /**
      * Constructor for FontSelectionDialog.
+     * 
      * @param owner
      * @param title
      * @param modal
@@ -84,6 +105,7 @@ public class FontSelectionDialog extends JDialog
         super(owner, title, modal);
         buildView();
     }
+
     
     /**
      * Builds the GUI
@@ -108,6 +130,7 @@ public class FontSelectionDialog extends JDialog
         pack();
     }
 
+
     /**
      * Adds a listener
      */
@@ -116,6 +139,7 @@ public class FontSelectionDialog extends JDialog
         listeners_.add(listener);
     }
 
+
     /**
      * Removes a listener
      */
@@ -123,6 +147,7 @@ public class FontSelectionDialog extends JDialog
     {
         listeners_.remove(listener);
     }
+
     
     /**
      * Action when the OK button is pressed
@@ -132,9 +157,11 @@ public class FontSelectionDialog extends JDialog
         public OKAction()
         {
             super("OK");
-            putValue(MNEMONIC_KEY, new Integer('O'));
+            
+            putValue(MNEMONIC_KEY, new Integer('o'));
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+
         }
     
         /**
@@ -148,6 +175,7 @@ public class FontSelectionDialog extends JDialog
             dispose();
         }
     }
+
 
     /**
      * Action when the apply button is pressed
@@ -171,6 +199,7 @@ public class FontSelectionDialog extends JDialog
                 ((IFontDialogListener)i.next()).applyButtonPressed(fontPanel_);
         }
     }
+
 
     /**
      * Action when the Cancel button is pressed
