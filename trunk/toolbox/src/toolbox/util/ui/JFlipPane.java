@@ -435,15 +435,6 @@ public class JFlipPane extends JPanel
 
 
     /**
-     * @return  Currently selected/active flipper
-     */
-    protected JComponent getCurrent()
-    {
-        return current_;
-    } 
-
-
-    /**
      * Mutator for the dimension
      * 
      * @param  dimension  New dimension
