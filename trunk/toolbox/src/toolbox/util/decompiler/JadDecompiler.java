@@ -47,7 +47,7 @@ public class JadDecompiler extends AbstractDecompiler
      * 
      * @return boolean
      */
-    private static boolean isFound()
+    public static boolean isFound()
     {
         if (executableFound_ == null)
             executableFound_ = 
