@@ -40,7 +40,7 @@ public class RandomUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests nextAlpha()
+     * Tests nextAlpha().
      */
     public void testNextAlpha() 
     {
@@ -66,7 +66,7 @@ public class RandomUtilTest extends TestCase
 
     
     /**
-     * Tests nextUpperAlpha()
+     * Tests nextUpperAlpha().
      */
     public void testNextUpperAlpha() 
     {
@@ -94,7 +94,7 @@ public class RandomUtilTest extends TestCase
 
 
     /**
-     * Tests nextLowerAlpha()
+     * Tests nextLowerAlpha().
      */
     public void testNextLowerAlpha() 
     {
@@ -122,7 +122,7 @@ public class RandomUtilTest extends TestCase
 
     
     /**
-     * Tests nextInt() with no upper boundary
+     * Tests nextInt() with no upper boundary.
      */
     public void testNextInt()
     {
@@ -179,7 +179,7 @@ public class RandomUtilTest extends TestCase
     
     
     /**
-     * Tests nextInt() with a small ceiling boundary
+     * Tests nextInt() with a small ceiling boundary.
      */
     public void testNextIntCeilingSmall()
     {   
@@ -216,7 +216,7 @@ public class RandomUtilTest extends TestCase
 
 
     /**
-     * Tests nextInt() with a floor and ceiling boundary
+     * Tests nextInt() with a floor and ceiling boundary.
      */
     public void testNextIntFloorCeiling()
     {
@@ -254,7 +254,7 @@ public class RandomUtilTest extends TestCase
    
     
     /**
-     * Tests nextInt() with a floor and ceiling boundary span of only 1
+     * Tests nextInt() with a floor and ceiling boundary span of only 1.
      */
     public void testNextIntFloorCeilingOne()
     {
@@ -293,7 +293,7 @@ public class RandomUtilTest extends TestCase
 
     
     /**
-     * Tests nextBoolean()
+     * Tests nextBoolean().
      */
     public void testNextBoolean()
     {
@@ -305,7 +305,7 @@ public class RandomUtilTest extends TestCase
     
     
     /**
-     * Tests nextElement() for an empty array
+     * Tests nextElement() for an empty array.
      */
     public void testNextElementArrayEmpty()
     {
@@ -316,7 +316,7 @@ public class RandomUtilTest extends TestCase
 
     
     /**
-     * Tests nextElement() for a single element array
+     * Tests nextElement() for a single element array.
      */
     public void testNextElementArrayOne()
     {
@@ -327,7 +327,7 @@ public class RandomUtilTest extends TestCase
 
 
     /**
-     * Tests nextElement() for an array length > 1
+     * Tests nextElement() for an array length > 1.
      */
     public void testNextElementArrayMany()
     {
@@ -346,8 +346,9 @@ public class RandomUtilTest extends TestCase
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
 
+    
     /**
-     * Tests nextElement() for an empty list
+     * Tests nextElement() for an empty list.
      */
     public void testNextElementListEmpty()
     {
@@ -358,7 +359,7 @@ public class RandomUtilTest extends TestCase
 
     
     /**
-     * Tests nextElement() for a single element list
+     * Tests nextElement() for a single element list.
      */
     public void testNextElementListOne()
     {
@@ -371,7 +372,7 @@ public class RandomUtilTest extends TestCase
 
 
     /**
-     * Tests nextElement() for an list length > 1
+     * Tests nextElement() for an list length > 1.
      */
     public void testNextElementListMany()
     {
@@ -395,7 +396,7 @@ public class RandomUtilTest extends TestCase
     
     
     /**
-     * Tests nextDouble()
+     * Tests nextDouble().
      */
     public void testNextDouble()
     {
@@ -405,7 +406,7 @@ public class RandomUtilTest extends TestCase
 
 
     /**
-     * Tests nextDouble(ceiling)
+     * Tests nextDouble(ceiling).
      */
     public void testNextDoubleCeiling()
     {
@@ -423,7 +424,7 @@ public class RandomUtilTest extends TestCase
     
     
     /**
-     * Tests nextByte()
+     * Tests nextByte().
      */
     public void testNextByte()
     {
@@ -447,7 +448,7 @@ public class RandomUtilTest extends TestCase
     
     
     /**
-     * Test nextString()
+     * Test nextString().
      */
     public void testNextString()
     {
