@@ -15,8 +15,8 @@ import junit.runner.TestCollector;
 import toolbox.util.ClassUtil;
 
 /**
- * Test collector that will find JUnit tests embeded in jar/zip files on the 
- * classpath.
+ * JarTestCollector finds JUnit tests embeded in jar/zip files that are 
+ * specified in the CLASSPATH.
  */
 public class JarTestCollector implements TestCollector
 {
@@ -42,9 +42,9 @@ public class JarTestCollector implements TestCollector
      */
     public Enumeration collectTests()
     {
-        String classPath = System.getProperty("java.class.path");
+        String classpath = ClassUtil.getClasspath();
         Vector result    = new Vector();
-        List   archives  = getArchives(classPath);
+        List   archives  = getArchives(classpath);
         
         collectFilesInJars(archives, result);
         return result.elements();
@@ -89,8 +89,6 @@ public class JarTestCollector implements TestCollector
         for (Iterator i = archives.iterator(); i.hasNext();)
         {
             String archive = (String) i.next();
-                
-            //System.out.println("Archive=" + archive);
             
             try
             {
@@ -99,7 +97,7 @@ public class JarTestCollector implements TestCollector
             catch (IOException e)
             {
                 System.err.println(e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }
@@ -140,7 +138,7 @@ public class JarTestCollector implements TestCollector
         catch (Exception e) 
         { 
             System.err.println("Error: Could not locate " + jarName + ".");
-            e.printStackTrace();
+            //e.printStackTrace();
             return;
         }
         finally 
