@@ -9,21 +9,30 @@ import javax.swing.JCheckBoxMenuItem;
 import toolbox.util.SwingUtil;
 
 /**
- * 
+ * JSmartCheckBoxMenuItem adds the following behavior.
+ * <p>
+ * <ul>
+ *   <li>Support for antialised text
+ * </ul>
  */
 public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
+    implements AntiAliased
 {
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * 
+     * Creates a JSmartCheckBoxMenuItem
      */
     public JSmartCheckBoxMenuItem()
     {
-        super();
     }
 
     /**
-     * @param text
+     * Creates a JSmartCheckBoxMenuItem
+     * 
+     * @param text Checkbox text
      */
     public JSmartCheckBoxMenuItem(String text)
     {
@@ -31,8 +40,10 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     }
 
     /**
-     * @param text
-     * @param b
+     * Creates a JSmartCheckBoxMenuItem
+     * 
+     * @param text Checkbox text
+     * @param b Checked state
      */
     public JSmartCheckBoxMenuItem(String text, boolean b)
     {
@@ -40,7 +51,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     }
 
     /**
-     * @param a
+     * Creates a JSmartCheckedBoxMenuItem
+     * 
+     * @param a Action activated when the check box is toggled
      */
     public JSmartCheckBoxMenuItem(Action a)
     {
@@ -48,7 +61,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     }
 
     /**
-     * @param icon
+     * Creates a JSmartCheckBoxMenuItem
+     * 
+     * @param icon Checkbox icon
      */
     public JSmartCheckBoxMenuItem(Icon icon)
     {
@@ -56,8 +71,10 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     }
 
     /**
-     * @param text
-     * @param icon
+     * Creates a JSmartCheckBoxMenuItem
+     * 
+     * @param text Checkbox text
+     * @param icon Checkbox icon
      */
     public JSmartCheckBoxMenuItem(String text, Icon icon)
     {
@@ -65,9 +82,11 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     }
 
     /**
-     * @param text
-     * @param icon
-     * @param b
+     * Creates a JSmartCheckBoxMenuItem
+     * 
+     * @param text Checkbox text
+     * @param icon Checkbox icon
+     * @param b Checked state
      */
     public JSmartCheckBoxMenuItem(String text, Icon icon, boolean b)
     {
@@ -81,7 +100,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAlias()
      */
-    public boolean isAntiAlias()
+    public boolean isAntiAliased()
     {
         return SwingUtil.isAntiAliased();
     }
@@ -89,7 +108,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */
-    public void setAntiAlias(boolean b)
+    public void setAntiAliased(boolean b)
     {
     }
     
@@ -102,8 +121,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public void paintComponent(Graphics gc)
     {
-        SwingUtil.makeAntiAliased(gc, isAntiAlias());
+        SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
-
 }

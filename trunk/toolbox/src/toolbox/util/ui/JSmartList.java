@@ -15,7 +15,7 @@ import toolbox.util.SwingUtil;
  *   <li>Support for antialised text
  * </ul>
  */
-public class JSmartList extends JList
+public class JSmartList extends JList implements AntiAliased
 {
     //--------------------------------------------------------------------------
     // Constructors

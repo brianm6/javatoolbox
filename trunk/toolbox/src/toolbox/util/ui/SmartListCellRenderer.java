@@ -14,6 +14,7 @@ import toolbox.util.SwingUtil;
  * </ul>
  */
 public class SmartListCellRenderer extends DefaultListCellRenderer
+    implements AntiAliased
 {
     //--------------------------------------------------------------------------
     // Constructors

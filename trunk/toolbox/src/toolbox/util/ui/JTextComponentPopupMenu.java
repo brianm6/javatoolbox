@@ -11,7 +11,6 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
@@ -28,7 +27,7 @@ import toolbox.util.ui.font.JFontChooserDialog;
 /**
  * Popup menu with commonly used functionality for JTextComponent subclasses.
  */
-public class JTextComponentPopupMenu extends JPopupMenu
+public class JTextComponentPopupMenu extends JSmartPopupMenu
 {
     private static final Logger logger_ =
         Logger.getLogger(JTextComponentPopupMenu.class); 

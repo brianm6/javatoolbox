@@ -43,9 +43,10 @@ import toolbox.util.SwingUtil;
 
 /**
  * JSmartOptionPane (mutated JOptionPane to support dialogs with a flippable 
- * detailed message area)
+ * detailed message area).
  */
-public class JSmartOptionPane extends JOptionPane implements ActionListener
+public class JSmartOptionPane extends JOptionPane implements ActionListener,
+    AntiAliased
 {
     private static final Logger logger_ = 
         Logger.getLogger(JSmartOptionPane.class);

@@ -14,6 +14,7 @@ import toolbox.util.SwingUtil;
  * </ul>
  */
 public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
+    implements AntiAliased
 {
     //--------------------------------------------------------------------------
     // Constructors

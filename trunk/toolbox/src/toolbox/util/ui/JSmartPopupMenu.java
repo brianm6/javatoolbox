@@ -13,7 +13,7 @@ import toolbox.util.SwingUtil;
  *   <li>Support for antialised text
  * </ul>
  */
-public class JSmartPopupMenu extends JPopupMenu
+public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
 {
     //--------------------------------------------------------------------------
     // Constructors
