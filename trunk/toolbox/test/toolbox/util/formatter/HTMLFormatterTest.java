@@ -3,6 +3,8 @@ package toolbox.util.formatter;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
@@ -117,5 +119,26 @@ public class HTMLFormatterTest extends TestCase
         assertNotNull(out);
         logger_.info(StringUtil.banner(out));
         assertNotSame(HTML_OBFUSCATED, out);
+    }
+
+    
+    public void testPreferenced() throws Exception
+    {
+        logger_.info("Running testPreferenced...");
+        
+        HTMLFormatter f = new HTMLFormatter();
+        f.setIndent(10);
+        f.setWrapLength(200);
+        
+        Element prefs = new Element("root");
+        f.savePrefs(prefs);
+        
+        logger_.debug(StringUtil.banner(prefs.toXML()));
+        
+        HTMLFormatter f2 = new HTMLFormatter();
+        f2.applyPrefs(prefs);
+        
+        assertEquals(f.getIndent(), f2.getIndent());
+        assertEquals(f.getWrapLength(), f2.getWrapLength());
     }
 }
