@@ -10,31 +10,32 @@ import toolbox.util.ArrayUtil;
  * Main class referenced by MANIFEST.MF in toolbox.jar. Provides convenient
  * way to run toolbox executables via 
  * <pre>
- * java -jar toolbox.jar [program name]
+ * java -jar toolbox.jar [program name] [program args]
  * </pre>
  */
 public class Main
 {
     /** program name to class file map **/
-    private static HashMap programMap;
+    private static HashMap programMap_;
     
     static
     {
         /* map program names to class names */
-        programMap = new HashMap(10);
+        programMap_ = new HashMap(10);
         
-        programMap.put("findclass",     "toolbox.findclass.Main");
-        programMap.put("jfindclass",    "toolbox.findclass.JFindClass");
-        programMap.put("showclasspath", "toolbox.showclasspath.Main");
-        programMap.put("showpath",      "toolbox.showpath.Main");
-        programMap.put("jsourceview",   "toolbox.jsourceview.JSourceView");
-        programMap.put("jtail",         "toolbox.jtail.JTail");
-        programMap.put("tail",          "toolbox.tail.Main");
-        programMap.put("jtcptunnel",    "toolbox.tunnel.JTcpTunnel");
-        programMap.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
-        programMap.put("tree",          "toolbox.tree.Tree");
-        programMap.put("sqlviewer",     "toolbox.sqlviewer.SQLViewer");
+        programMap_.put("findclass",     "toolbox.findclass.Main");
+        programMap_.put("jfindclass",    "toolbox.findclass.JFindClass");
+        programMap_.put("showclasspath", "toolbox.showclasspath.Main");
+        programMap_.put("showpath",      "toolbox.showpath.Main");
+        programMap_.put("jsourceview",   "toolbox.jsourceview.JSourceView");
+        programMap_.put("jtail",         "toolbox.jtail.JTail");
+        programMap_.put("tail",          "toolbox.tail.Main");
+        programMap_.put("jtcptunnel",    "toolbox.tunnel.JTcpTunnel");
+        programMap_.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
+        programMap_.put("tree",          "toolbox.tree.Tree");
+        programMap_.put("sqlviewer",     "toolbox.sqlviewer.SQLViewer");
     }
+
     
     /**
      * Entrypoint 
@@ -46,18 +47,12 @@ public class Main
         Main launcher = new Main(args);
     }
     
-    /**
-     * Constructor for Main.
-     */
-    public Main()
-    {
-        super();
-    }
     
     /**
-     * Arg constructor 
+     * Creates the launcher with the given arguments
      * 
-     * @param  args  arguments
+     * @param  args  First index is program name, remaining args are passed on
+     *               to the program that is launched
      */
     public Main(String[] args)
     {
@@ -69,17 +64,22 @@ public class Main
                 
             default :
                 
-                if (!programMap.containsKey(args[0]))
+                if (!programMap_.containsKey(args[0]))
+                {
+                    // Program not recognized
                     printUsage();
+                }
                 else
                 {
+                    // Get new arg list minus the first element
                     String[] newArgs = new String[0];
                     
-                    if(args.length > 1)
+                    if (args.length > 1)
                         newArgs = (String[]) ArrayUtil.subset(
                             args, 1, args.length - 1);
-                        
-                    launch((String)programMap.get(args[0]), newArgs);
+                  
+                    // Launch program      
+                    launch((String)programMap_.get(args[0]), newArgs);
                 } 
                 break;
         }
