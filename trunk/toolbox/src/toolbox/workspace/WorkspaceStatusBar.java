@@ -1,21 +1,31 @@
 package toolbox.util.ui.plugin;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JMemoryMonitor;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
- * Specialization of JStatusBar with pre-assembled components including a 
- * status text compartment and a progress bar compartment for long running 
- * operations.
+ * Specialization of JStatusBar with pre-assembled components.
+ * <br> 
+ * This includes:
+ * <ul>
+ *   <li>Area to display arbitrary status text
+ *   <li>Progress bar for long running operations
+ *   <li>Memory usage bar
+ *   <li>Quick-click icon to trigger garbage collection
+ * </ul> 
  */
 public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
 {
     /** 
-     * Progress bar for indicating execution is in progress 
+     * Progress bar for indicating execution of an operation is in progress 
      */
     private JProgressBar progressBar_;
     
@@ -48,8 +58,19 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         progressBar_ = new JProgressBar();
         status_ = new JLabel("Howdy pardner!");
 
+        JLabel gc = new JLabel(ImageCache.getIcon(ImageCache.IMAGE_TRASHCAN));
+        
+        gc.addMouseListener(new MouseAdapter()
+        {
+            public void mousePressed(MouseEvent e)
+            {
+                System.gc();
+            }
+        });
+
         addStatusComponent(status_, RELATIVE, 1);
         addStatusComponent(new JMemoryMonitor(), FIXED, 100);
+        addStatusComponent(gc);
         addStatusComponent(progressBar_, FIXED, 100);    
         
         // Repaint interval.
