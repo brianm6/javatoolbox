@@ -150,9 +150,9 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JFlipPane with the given position
+     * Creates a JFlipPane with the given position.
      * 
-     * @param  position  Position (JFlipPane.[TOP|LEFT|BOTTOM|RIGHT])
+     * @param position Position (JFlipPane.[TOP|LEFT|BOTTOM|RIGHT])
      */
     public JFlipPane(String position)
     {
@@ -169,10 +169,10 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Adds the given flipper to the JFlipPane
+     * Adds the given flipper to the JFlipPane.
      * 
-     * @param  name     Name of the flipper
-     * @param  flipper  Flipper to add
+     * @param name Name of the flipper
+     * @param flipper Flipper to add
      */
     public void addFlipper(String name, JComponent flipper)
     {
@@ -235,10 +235,11 @@ public class JFlipPane extends JPanel
         repaint();
     } 
 
+
     /**
-     * Removes the given flipper from the flipPane
+     * Removes the given flipper from the flipPane.
      * 
-     * @param  flipper  Flipper to remove
+     * @param flipper Flipper to remove
      */
     public void removeFlipper(JComponent flipper)
     {
@@ -256,10 +257,11 @@ public class JFlipPane extends JPanel
         revalidate();
     } 
 
+
     /**
-     * Sets the currently selected flipper
+     * Sets the currently selected flipper.
      * 
-     * @param  flipper  Flipper to select
+     * @param flipper Flipper to select
      */
     public void setActiveFlipper(JComponent flipper)
     {
@@ -291,36 +293,40 @@ public class JFlipPane extends JPanel
         flipCardPanel_.repaint();
     } 
 
+
     /**
-     * Sets the active flipper by name
+     * Sets the active flipper by name.
      * 
-     * @param name  Name of the flipper to activate
+     * @param name Name of the flipper to activate
      */
     public void setActiveFlipper(String name)
     {
        setActiveFlipper((JComponent) flippers_.get(name)); 
     }
 
+
     /**
-     * Returns the currently active flipper
+     * Returns the currently active flipper.
      * 
-     * @return  Currently active flipper
+     * @return Currently active flipper
      */
     public JComponent getActiveFlipper()
     {
         return current_;    
     }
 
+
     /**
-     * Determines if a flipper is selected
+     * Determines if a flipper is selected.
      * 
-     * @param   flipper  Flipper to test if selected
-     * @return  True if the given flipper is selected, false otherwise
+     * @param flipper Flipper to test if selected
+     * @return True if the given flipper is selected, false otherwise
      */
     public boolean isFlipperActive(JComponent flipper)
     {
         return current_ == flipper;
     } 
+
 
     /**
      * Toggles the flipper from its current state to the opposite state.
@@ -346,10 +352,11 @@ public class JFlipPane extends JPanel
         }
     }
 
+
     /**
-     * Sets the flip pane to its expanded state
+     * Sets the flip pane to its expanded state.
      * 
-     * @param  b  True to expand, false to collapse
+     * @param b True to expand, false to collapse
      */
     public void setExpanded(boolean b)
     {
@@ -368,7 +375,7 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Preferred size
+     * Preferred size.
      * 
      * @return Dimension that reflects the preferred size of the flip pane.
      *         The preferred size varies based on whether the flip pane is
@@ -448,6 +455,7 @@ public class JFlipPane extends JPanel
         repaint();
     }
 
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -471,27 +479,29 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a flip pane listener
+     * Adds a flip pane listener.
      * 
-     * @param  listener  Listener to add
+     * @param listener Listener to add
      */
     public void addFlipPaneListener(FlipPaneListener listener)
     {
         listeners_.add(listener);
     }
 
+
     /**
-     * Removes a flip pane listener
+     * Removes a flip pane listener.
      * 
-     * @param  listener  Listener to remove
+     * @param listener Listener to remove
      */
     public void removeFlipPaneListener(FlipPaneListener listener)
     {
         listeners_.remove(listener);
     }
 
+
     /**
-     * Fires notification that the flippane was expanded
+     * Fires notification that the flippane was expanded.
      */
     protected void fireFlipperExpanded()
     {
@@ -504,8 +514,9 @@ public class JFlipPane extends JPanel
         }
     }
     
+    
     /**
-     * Fires notification that the flippane was collapsed
+     * Fires notification that the flippane was collapsed.
      */
     protected void fireFlipperCollapsed()
     {
@@ -523,7 +534,7 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -582,10 +593,11 @@ public class JFlipPane extends JPanel
         add(BorderLayout.CENTER, flipCardPanel_);
     }
 
+
     /**
-     * Mutator for the dimension
+     * Mutator for the dimension.
      * 
-     * @param  dimension  New dimension
+     * @param dimension New dimension
      */
     protected void setDimension(int dimension)
     {
@@ -598,21 +610,23 @@ public class JFlipPane extends JPanel
             
     } 
 
+
     /**
-     * Returns flippane's collapsed state
+     * Returns flippane's collapsed state.
      * 
-     * @return  True if the flipPane is collapsed, false otherwise
+     * @return True if the flipPane is collapsed, false otherwise
      */    
     protected boolean isCollapsed()
     {
         return !ArrayUtil.contains(getComponents(), flipCardPanel_);
     }
 
+
     /**
-     * Returns the button wired to the given flipper
+     * Returns the button wired to the given flipper.
      * 
-     * @param   flipper  Flipper to find button for
-     * @return  Button that activates the flipper 
+     * @param flipper Flipper to find button for
+     * @return Button that activates the flipper 
      */
     protected JToggleButton getButtonFor(JComponent flipper)
     {
@@ -637,27 +651,29 @@ public class JFlipPane extends JPanel
         return null;
     }
 
+
     /**
      * Returns if the specified event is the popup trigger event. This 
      * implements precisely defined behavior, as opposed to 
      * MouseEvent.isPopupTrigger().
      * 
-     * @param   evt     Event
-     * @return  True if popup trigger, false otherwise
+     * @param evt Event
+     * @return True if popup trigger, false otherwise
      */
     protected boolean isPopupTrigger(MouseEvent evt)
     {
         return ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0);
     } 
 
+
     /**
      * Shows the specified popup menu, ensuring it is displayed within the 
      * bounds of the screen.
      * 
-     * @param  popup  Popup menu
-     * @param  comp   Component to show it for
-     * @param  x      x coordinate
-     * @param  y      y coordinate
+     * @param popup Popup menu
+     * @param comp Component to show it for
+     * @param x X coordinate
+     * @param y Y coordinate
      */
     protected void showPopupMenu(
         JPopupMenu popup, 
@@ -705,18 +721,19 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Returns flippane dimension 
+     * Returns flippane dimension. 
      * 
-     * @return  Dimension (width if position is left/right  or height if 
-     *          position is top/bottom)
+     * @return Dimension (width if position is left/right  or height if 
+     *         position is top/bottom)
      */
     protected int getDimension()
     {
         return dimension_;
     }
 
+
     /**
-     * Return the position (left, right, top, bottom)
+     * Return the position (left, right, top, bottom).
      * 
      * @return String
      */            
@@ -725,8 +742,9 @@ public class JFlipPane extends JPanel
         return position_;
     }            
 
+
     /**
-     * Returns the Popup button
+     * Returns the Popup button.
      * 
      * @return JButton
      */
@@ -735,8 +753,9 @@ public class JFlipPane extends JPanel
         return popupButton_;
     }
 
+
     /**
-     * Returns the close button
+     * Returns the close button.
      * 
      * @return JButton
      */
@@ -750,7 +769,7 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Handles expanding/collapsing of a flipper
+     * Handles expanding/collapsing of a flipper.
      */
     class FlipperHandler implements ActionListener
     {
@@ -790,8 +809,9 @@ public class JFlipPane extends JPanel
         }
     } 
 
+
     /**
-     * Mouse handler to show popup menu
+     * Mouse handler to show popup menu.
      */
     class PopupHandler extends MouseAdapter
     {

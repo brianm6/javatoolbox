@@ -25,9 +25,9 @@ public class FlipPaneBorder implements Border
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FlipPaneBorder for the given position
+     * Creates a FlipPaneBorder for the given position.
      * 
-     * @param  position  JFlipPane.[BOTTOM|RIGHT|TOP|LEFT]
+     * @param position JFlipPane.[BOTTOM|RIGHT|TOP|LEFT]
      */
     FlipPaneBorder(String position)
     {
@@ -44,14 +44,14 @@ public class FlipPaneBorder implements Border
     //--------------------------------------------------------------------------
     
     /**
-     * Paints the border
+     * Paints the border.
      * 
-     * @param  c       Component to paint
-     * @param  g       Graphics device
-     * @param  x       X coord
-     * @param  y       Y coord
-     * @param  width   Width
-     * @param  height  Height
+     * @param c Component to paint
+     * @param g Graphics device
+     * @param x X coord
+     * @param y Y coord
+     * @param width Width
+     * @param height Height
      */
     public void paintBorder(Component c, Graphics g, int x, int y, 
         int width, int height)
@@ -73,19 +73,21 @@ public class FlipPaneBorder implements Border
                 height);
     } 
 
+
     /**
-     * Retrieves border insets
+     * Retrieves border insets.
      * 
-     * @param   c   Component
-     * @return  Border insets
+     * @param c Component
+     * @return Border insets
      */
     public Insets getBorderInsets(Component c)
     {
         return insets_;
     } 
     
+    
     /**
-     * @return True if border is opaque, false otherwise
+     * @return True if border is opaque, false otherwise.
      */
     public boolean isBorderOpaque()
     {
@@ -97,7 +99,7 @@ public class FlipPaneBorder implements Border
     //--------------------------------------------------------------------------
     
     /**
-     * Paints horizontal border
+     * Paints horizontal border.
      */
     private void paintHorizBorder(Graphics g, int x, int y, int width)
     {
@@ -117,8 +119,9 @@ public class FlipPaneBorder implements Border
         }
     } 
     
+    
     /**
-     * Paints vertical border
+     * Paints vertical border.
      */
     private void paintVertBorder(Graphics g, int x, int y, int height)
     {
@@ -138,8 +141,9 @@ public class FlipPaneBorder implements Border
         }
     } 
 
+
     /**
-     * Updates colors
+     * Updates colors.
      */
     private void updateColors()
     {

@@ -13,11 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 /**
- * Card like panel for use in JFlipPane that houses all the flippers
+ * Card like panel for use in JFlipPane that houses all the flippers.
  */
 public class FlipCardPanel extends JPanel
 {
-    /** Flippane encompassing this panel */
+    /** 
+     * Flippane encompassing this panel 
+     */
     private JFlipPane flipPane_;
     
     //--------------------------------------------------------------------------
@@ -25,9 +27,9 @@ public class FlipCardPanel extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FlipCardPanel
+     * Creates a FlipCardPanel.
      * 
-     * @param  flipPane  Enclosing JFlipPane
+     * @param flipPane Enclosing JFlipPane
      */
     public FlipCardPanel(JFlipPane flipPane)
     {
@@ -43,9 +45,9 @@ public class FlipCardPanel extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Shows the card with the given name
+     * Shows the card with the given name.
      * 
-     * @param  name  Name of the card
+     * @param name Name of the card
      */
     void showCard(String name)
     {
@@ -57,19 +59,20 @@ public class FlipCardPanel extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * @return  Minimum size
+     * @return Minimum size
      */
     public Dimension getMinimumSize()
     {
         return new Dimension(0,0);
     } 
     
+    
     /**
      * Returns the preferred size of the flippane. Takes the width of the 
      * button bar and the current width of the flipper (assuming its LEFT or
      * RIGHT), adds them together and thats it.
      * 
-     * @return  Preferred size of the flippane
+     * @return Preferred size of the flippane
      */
     public Dimension getPreferredSize()
     {
@@ -112,7 +115,7 @@ public class FlipCardPanel extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Mouse handler for resizing of the pane
+     * Mouse handler for resizing of the pane.
      */
     class ResizeMouseHandler extends MouseAdapter implements MouseMotionListener
     {
@@ -124,7 +127,7 @@ public class FlipCardPanel extends JPanel
          * Takes an image of the flip pane dimension (height or width) and 
          * the point that the mouse started to be dragged
          * 
-         * @param  evt  Mouse pressed event
+         * @param evt Mouse pressed event
          */
         public void mousePressed(MouseEvent evt)
         {
@@ -134,11 +137,12 @@ public class FlipCardPanel extends JPanel
             dragStart_ = evt.getPoint();
         } 
         
+        
         /** 
          * Changes mouse cursor based on location over the draggable part of 
          * the border
          * 
-         * @param  evt  Mouse moved event
+         * @param evt Mouse moved event
          */
         public void mouseMoved(MouseEvent evt)
         {
@@ -194,11 +198,12 @@ public class FlipCardPanel extends JPanel
             setCursor(Cursor.getPredefinedCursor(cursor));
         } 
         
+        
         /**
          * Sets dimension on flippane if the mouse is dragged. This causes
-         * the flippane to resize dynamically with the drag
+         * the flippane to resize dynamically with the drag.
          * 
-         * @param  evt  Mouse dragged event
+         * @param evt Mouse dragged event
          */
         public void mouseDragged(MouseEvent evt)
         {
@@ -247,11 +252,12 @@ public class FlipCardPanel extends JPanel
             //validate();
         } 
         
+        
         /**
          * Reset the mouse cursor to the normal cursor once dragging is
          * is completed.
          * 
-         * @param  evet  Mouse exited event 
+         * @param evt Mouse exited event 
          */
         public void mouseExited(MouseEvent evt)
         {

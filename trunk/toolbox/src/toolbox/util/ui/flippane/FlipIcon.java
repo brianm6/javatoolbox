@@ -34,11 +34,11 @@ public class FlipIcon implements Icon
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FlipIcon
+     * Creates a FlipIcon.
      * 
-     * @param   rotate  [NONE|CW|CCW]
-     * @param   font    Font to use for rendering
-     * @param   text    Text of icon
+     * @param rotate [NONE|CW|CCW]
+     * @param font Font to use for rendering
+     * @param text Text of icon
      */
     public FlipIcon(int rotate, Font font, String text)
     {
@@ -83,7 +83,7 @@ public class FlipIcon implements Icon
     } 
 
     /**
-     * @return  Icon height
+     * @return Icon height
      */
     public int getIconHeight()
     {
@@ -92,12 +92,12 @@ public class FlipIcon implements Icon
     } 
 
     /**
-     * Renders the icon on the graphics
+     * Renders the icon on the graphics.
      * 
-     * @param  c  Component
-     * @param  g  Graphics
-     * @param  x  X coord
-     * @param  y  y coord
+     * @param c Component
+     * @param g Graphics
+     * @param x X coord
+     * @param y y coord
      */
     public void paintIcon(Component c, Graphics g, int x, int y)
     {
