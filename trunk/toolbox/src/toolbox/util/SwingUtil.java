@@ -81,6 +81,9 @@ public final class SwingUtil
         UIManager.installLookAndFeel("TinyLookAndFeel", 
             "de.muntjak.tinylookandfeel.TinyLookAndFeel");
         
+        //UIManager.installLookAndFeel("GTK+",
+        //    "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        
         //UIManager.installLookAndFeel("Oyoaha",    
         //    "com.oyoaha.swing.plaf.oyoaha.OyoahaLookAndFeel");
 
@@ -632,5 +635,10 @@ public final class SwingUtil
             RenderingHints.KEY_TEXT_ANTIALIASING,
             (antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
                        : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
+    }
+    
+    public static final boolean isAntiAliasGlobal()
+    {
+        return true;
     }
 }
