@@ -215,7 +215,7 @@
     <!-- =================================================================== -->
     <!-- JNLP-DEPLOY                                                         -->
     <!-- =================================================================== -->
-    <goal name="jnlp-deploy" description="Deploys the JNLP distribution to Tomcat">
+    <goal name="jnlp-deploy" description="Deploys the Webstart app to ${toolbox.jnlp.deploy}">
 
       <!-- Fix the main jar in the jnlp file to occur before all the 3rd  -->
       <!-- party jars so that the debug classes will be loaded from the   -->
@@ -230,6 +230,8 @@
 
         //print("===== fixjnlp.bsh begin ========");
 
+        try
+        {
         String fs = File.separator+"";
 
         String inputFile = "target" + fs + "jnlp" + fs + "toolbox.jnlp";
@@ -245,6 +247,9 @@
 
         InputStream is = new FileInputStream(new File(inputFile));
 
+        if (is == null)
+            System.out.println("File not found: " + inputFile);
+        
         //print(is);
 
         Builder parser = new Builder();
@@ -257,7 +262,7 @@
         Element firstJar = resources.getFirstChildElement("jar");
         Elements jars = resources.getChildElements("jar");
 
-        for (int i = 0; i<jars.size(); i++)
+        for (int i = 0, n = jars.size(); i < n; i++)
         {
           Element jar = jars.get(i);
 
@@ -268,10 +273,18 @@
           if (main != null)
           {
               System.out.println("Fixing jnlp file...");
-              jar.detach();
+              
               int idx = resources.indexOf(firstJar);
-              //print("index=" + idx);
-              resources.insertChild(jar, idx);
+              if (idx == -1)
+              {
+                  System.out.println("The JNLP file seems to be already fixed!");
+              }
+              else
+              {
+                  jar.detach();
+                  //print("index=" + idx);
+                  resources.insertChild(jar, idx);
+              }
               break;
           }
         }
@@ -283,22 +296,58 @@
         Writer w = new FileWriter(outputFile);
         w.write(root.toXML());
         w.close();
-
+        
         //print("===== fixjnlp.bsh end ========");
-
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
         ]]>
       </bsh:script>
 
       <!-- Copy everything over to the tomcat directory -->
+      
       <copy todir="${toolbox.jnlp.deploy}"
             verbose="true"
             quiet="false"
             overwrite="false">
+        <fileset dir="${basedir}/target/jnlp" includes="*.jar">
+          <exclude name="*-.jar"/>
+        </fileset>
+      </copy>
 
-        <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
+      <!-- Workaround for maven 1.0.2 problem with jar file version names -->      
+      <copy todir="${toolbox.jnlp.deploy}"
+            verbose="true"
+            quiet="false"
+            overwrite="false">
+        <fileset dir="${basedir}/target/jnlp" includes="*-override-.jar"/>
+        <mapper type="glob" from="*-override-.jar" to="*.jar"/>
+      </copy>
+
+      
+      <copy todir="${toolbox.jnlp.deploy}"
+            verbose="true"
+            quiet="false"
+            overwrite="false">
+        <fileset dir="${basedir}/target/jnlp">
+          <include name="*-.jar"/>
+          <exclude name="*-override-*.jar"/>
+        </fileset>
+        <mapper type="glob" from="*-.jar" to="*.jar"/>
+      </copy>
+
+      
+      <copy todir="${toolbox.jnlp.deploy}"
+            verbose="true"
+            quiet="false"
+            overwrite="false">
+        <fileset dir="${basedir}/target/jnlp" includes="*.jnlp"/>
         <fileset dir="${basedir}/resources/toolbox/util/ui/images"
                  includes="Toolbox.gif"/>
       </copy>
+        
     </goal>
 
 
