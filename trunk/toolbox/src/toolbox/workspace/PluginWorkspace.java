@@ -111,8 +111,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     /**
      * Create a new PluginWorkspace
      * 
-     * @param  plugins  Fully qualified names of classes that implment the
-     *                  IPlugin interface
      * @throws Exception on error
      */
     public PluginWorkspace() throws Exception

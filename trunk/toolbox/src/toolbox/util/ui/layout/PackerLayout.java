@@ -11,55 +11,99 @@ import java.awt.Rectangle;
  */
 public class PackerLayout extends ConstraintLayout implements Direction
 {
+    /***/
     public static final Integer LEFT_TOP =
         new Integer((Direction.LEFT << 8) | Alignment.TOP);
+        
+    /***/        
     public static final Integer LEFT_CENTER =
         new Integer((Direction.LEFT << 8) | Alignment.CENTER);
+        
+    /***/        
     public static final Integer LEFT_BOTTOM =
         new Integer((Direction.LEFT << 8) | Alignment.BOTTOM);
+        
+    /***/        
     public static final Integer RIGHT_TOP =
         new Integer((Direction.RIGHT << 8) | Alignment.TOP);
+        
+    /***/        
     public static final Integer RIGHT_CENTER =
         new Integer((Direction.RIGHT << 8) | Alignment.CENTER);
+        
+    /***/        
     public static final Integer RIGHT_BOTTOM =
         new Integer((Direction.RIGHT << 8) | Alignment.BOTTOM);
 
+    /***/
     public static final Integer TOP_LEFT =
         new Integer((Direction.TOP << 8) | Alignment.LEFT);
+        
+    /***/        
     public static final Integer TOP_CENTER =
         new Integer((Direction.TOP << 8) | Alignment.CENTER);
+        
+    /***/        
     public static final Integer TOP_RIGHT =
         new Integer((Direction.TOP << 8) | Alignment.RIGHT);
+        
+    /***/        
     public static final Integer BOTTOM_LEFT =
         new Integer((Direction.BOTTOM << 8) | Alignment.LEFT);
+        
+    /***/        
     public static final Integer BOTTOM_CENTER =
         new Integer((Direction.BOTTOM << 8) | Alignment.CENTER);
+        
+    /***/        
     public static final Integer BOTTOM_RIGHT =
         new Integer((Direction.BOTTOM << 8) | Alignment.RIGHT);
 
+    /***/
     public static final Integer LEFT_TOP_FILL =
         new Integer((Direction.LEFT << 8) | Alignment.TOP | 0x80);
+        
+    /***/        
     public static final Integer LEFT_CENTER_FILL =
         new Integer((Direction.LEFT << 8) | Alignment.CENTER | 0x80);
+        
+    /***/        
     public static final Integer LEFT_BOTTOM_FILL =
         new Integer((Direction.LEFT << 8) | Alignment.BOTTOM | 0x80);
+        
+    /***/        
     public static final Integer RIGHT_TOP_FILL =
         new Integer((Direction.RIGHT << 8) | Alignment.TOP | 0x80);
+        
+    /***/        
     public static final Integer RIGHT_CENTER_FILL =
         new Integer((Direction.RIGHT << 8) | Alignment.CENTER | 0x80);
+        
+    /***/        
     public static final Integer RIGHT_BOTTOM_FILL =
         new Integer((Direction.RIGHT << 8) | Alignment.BOTTOM | 0x80);
 
+    /***/
     public static final Integer TOP_LEFT_FILL =
         new Integer((Direction.TOP << 8) | Alignment.LEFT | 0x80);
+        
+    /***/        
     public static final Integer TOP_CENTER_FILL =
         new Integer((Direction.TOP << 8) | Alignment.CENTER | 0x80);
+        
+    /***/        
     public static final Integer TOP_RIGHT_FILL =
         new Integer((Direction.TOP << 8) | Alignment.RIGHT | 0x80);
+        
+    /***/        
     public static final Integer BOTTOM_LEFT_FILL =
         new Integer((Direction.BOTTOM << 8) | Alignment.LEFT | 0x80);
+        
+    /***/        
     public static final Integer BOTTOM_CENTER_FILL =
         new Integer((Direction.BOTTOM << 8) | Alignment.CENTER | 0x80);
+        
+    /***/        
     public static final Integer BOTTOM_RIGHT_FILL =
         new Integer((Direction.BOTTOM << 8) | Alignment.RIGHT | 0x80);
 
