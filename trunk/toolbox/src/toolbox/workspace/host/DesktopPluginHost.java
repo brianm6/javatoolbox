@@ -205,7 +205,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
     /**
      * @see toolbox.workspace.host.PluginHost#getComponent()
      */
-    public JComponent getComponent()
+    public JComponent getView()
     {
         return desktop_;
     }

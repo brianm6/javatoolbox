@@ -179,10 +179,10 @@ public class PluginHostManager
             {
                 throw new PluginException(e1);
             }
-            recepticle_.remove(previous.getComponent());
+            recepticle_.remove(previous.getView());
         }
 
-        recepticle_.add(current_.getComponent());
+        recepticle_.add(current_.getView());
     }
 
 
@@ -306,9 +306,9 @@ public class PluginHostManager
                     null, "Plugin host " + selected + " is already active.");
             }
 
-            recepticle_.remove(current_.getComponent());
+            recepticle_.remove(current_.getView());
             transferAssets(current_, newPluginHost_);
-            recepticle_.add(newPluginHost_.getComponent());
+            recepticle_.add(newPluginHost_.getView());
             current_ = newPluginHost_;
             recepticle_.validate();
 

@@ -172,7 +172,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     /**
      * @see toolbox.workspace.host.PluginHost#getComponent()
      */
-    public JComponent getComponent()
+    public JComponent getView()
     {
         return tabPanel_;
     }

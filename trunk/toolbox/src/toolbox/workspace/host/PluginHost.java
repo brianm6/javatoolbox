@@ -25,9 +25,9 @@ public interface PluginHost extends IPreferenced, Nameable, Destroyable,
     // IPreferenced Constants
     //--------------------------------------------------------------------------
     
-    public static final String NODE_PLUGINHOST = "PluginHost";
-    public static final String ATTR_CLASS = "class";
-    public static final String NODE_FRAME = "PluginFrame";
+    public static final String NODE_PLUGINHOST  = "PluginHost";
+    public static final String ATTR_CLASS       = "class";
+    public static final String NODE_FRAME       = "PluginFrame";
     public static final String ATTR_PLUGIN_NAME = "name";
 
     //--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ public interface PluginHost extends IPreferenced, Nameable, Destroyable,
      * 
      * @return JComponent
      */
-    JComponent getComponent();
+    JComponent getView();
 
     
     /**
