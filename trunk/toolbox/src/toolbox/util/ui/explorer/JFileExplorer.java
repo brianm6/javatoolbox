@@ -541,8 +541,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderDoubleClicked(String folder)
     {
-        // TODO: Should be protected
-        
         for (int i = 0; i < fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].folderDoubleClicked(folder));
     }
