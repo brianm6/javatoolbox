@@ -96,6 +96,7 @@ public class JFontChooserDialog extends JDialog
     {
         this(owner, "Select Font", modal);
         fontChooser_.setSelectedFont(defaultFont);
+        fontChooser_.setAntiAlias(antiAlias);
     }
 
 
@@ -253,7 +254,6 @@ public class JFontChooserDialog extends JDialog
          */
         public void actionPerformed(ActionEvent e)
         {
-            IFontChooserDialogListener listener = null;
             for (Iterator i = listeners_.iterator(); i.hasNext(); )
                 ((IFontChooserDialogListener)i.next()).
                     cancelButtonPressed(fontChooser_);

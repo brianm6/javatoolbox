@@ -88,7 +88,7 @@ public class SocketUtilTest extends TestCase
         logger_.info("Running testConnectWithRetryFailure...");
         
         // try to connect to non-existant socket
-        Socket socket = SocketUtil.connectWithRetry(
+        SocketUtil.connectWithRetry(
             InetAddress.getLocalHost().getHostAddress(), 
             55555, 1, 5);
     }

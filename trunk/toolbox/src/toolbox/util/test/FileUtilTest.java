@@ -79,7 +79,7 @@ public class FileUtilTest extends TestCase
         
         // Use temp file name to create a file
         FileUtil.setFileContents(tempFile, "this is a temp file", false);
-        String contents = FileUtil.getFileContents(tempFile); 
+        FileUtil.getFileContents(tempFile); 
         File file = new File(tempFile);
         file.delete();
         

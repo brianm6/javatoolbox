@@ -2734,7 +2734,6 @@ public class Banner
             font_ = new char[256][][];
             BufferedReader data = null;
             String dummyS;
-            char dummyC;
             int dummyI;
             
             try

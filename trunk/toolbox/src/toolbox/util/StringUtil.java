@@ -364,7 +364,7 @@ public final class StringUtil
      */
     public static String wrap(String s, boolean border)
     {
-        return wrap(s, 80, true);
+        return wrap(s, 80, border);
     }
 
     
@@ -380,7 +380,10 @@ public final class StringUtil
      */
     public static String wrap(String s, int width, boolean border)
     {
-        return wrap(s, width, "[", "]");    
+        if (border)
+            return wrap(s, width, "[", "]");    
+        else
+            return wrap(s, width, "", "");
     }
 
     

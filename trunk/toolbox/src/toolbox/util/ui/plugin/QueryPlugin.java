@@ -142,7 +142,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         outputArea_ = new JTextArea();
         outputArea_.setFont(SwingUtil.getPreferredMonoFont());
-        JPopupMenu popup = new JTextComponentPopupMenu(outputArea_);
+        new JTextComponentPopupMenu(outputArea_);
         
         JSplitPane splitPane = 
             new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -331,8 +331,6 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
-        String method = "[savPrf] ";
-
         // Munge all SQL statements into one string and save
         StringBuffer sb = new StringBuffer("");
         

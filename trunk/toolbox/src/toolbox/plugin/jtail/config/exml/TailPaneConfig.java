@@ -76,8 +76,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      */
     public static TailPaneConfig unmarshal(Element tail) throws IOException 
     {
-        String method = "[unmars ] ";
-        
         TailPaneConfig config = new TailPaneConfig();
         
         // Handle tail element
@@ -346,7 +344,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      */
     public boolean isAutoStart()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -355,6 +352,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      */
     public void setAutoStart(boolean autoStart)
     {
-        // TODO Auto-generated method stub
+        // Do something later
     }
 }

@@ -32,6 +32,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import toolbox.util.Assert;
+
 
 /**
  * Component that allows the selection of a font
@@ -390,7 +392,7 @@ public class JFontChooser extends JPanel
      */
     public void setAntiAlias(boolean b)
     {
-        antiAliasCheckBox_.setSelected(true);
+        antiAliasCheckBox_.setSelected(b);
     }
     
     
@@ -630,6 +632,8 @@ public class JFontChooser extends JPanel
          */
         protected void handle(DocumentEvent e)
         {
+            Assert.notNull(e);
+            
             if (updating_)
                 return;
 

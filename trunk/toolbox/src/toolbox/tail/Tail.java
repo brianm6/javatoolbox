@@ -593,9 +593,6 @@ public class Tail implements Runnable
             }
 
             lnr.reset();
-
-            boolean atEnd = false;
-
             int strikes = 0;
 
             Date preTimeStamp = null;

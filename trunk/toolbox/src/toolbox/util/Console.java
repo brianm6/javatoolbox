@@ -168,8 +168,6 @@ public abstract class Console
      */
     public void handleCommand(String cmd)
     {
-        String result = null;
-        
         if(cmd.equals(CMD_QUIT) || cmd.equals(CMD_EXIT))
             commandQuit();
         else if (cmd.equals(CMD_CLASSPATH))

@@ -86,7 +86,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
             new JScrollPane(packageList_ = new JList(filterModel_)));
             
         packageList_.setFont(SwingUtil.getPreferredMonoFont());
-        JListPopupMenu popup = new JListPopupMenu(packageList_);
+        new JListPopupMenu(packageList_);
         filterField_.setFont(SwingUtil.getPreferredMonoFont());
         filterField_.addKeyListener(new FilterKeyListener());
 

@@ -58,7 +58,7 @@ public class JListPopupMenuTest extends TestCase
         cp.setLayout(new BorderLayout());
         
         JList list = new JList(new String[] { "one", "two", "three", "four"});
-        JListPopupMenu menu = new JListPopupMenu(list);
+        new JListPopupMenu(list);
         
         cp.add(new JScrollPane(list));
         frame.pack();

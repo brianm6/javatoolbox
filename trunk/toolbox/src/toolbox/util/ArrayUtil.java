@@ -241,8 +241,7 @@ public class ArrayUtil
     {
         if (array.length == 0)
             return -1;
-            
-        boolean found = false;
+        
         int idx = 0;
         
         while (idx < array.length)

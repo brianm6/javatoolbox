@@ -156,8 +156,6 @@ public class BatchingQueueReader
          */
         public void run()
         {
-            String method = "[run   ] ";
-            
             //logger_.debug(method + "Batching queue reader started!");
                     
             while (started_)

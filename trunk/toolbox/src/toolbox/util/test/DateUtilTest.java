@@ -309,7 +309,6 @@ public class DateUtilTest extends TestCase
     {
         logger_.info("Running testAddWeeks...");
         
-        Date today = new Date();
         int weeks = 3;
         int days = weeks * 7;
         

@@ -240,8 +240,6 @@ public final class FileUtil
             is = new BufferedInputStream(new FileInputStream(srcFile));
             os = new BufferedOutputStream(new FileOutputStream(destFile));
 
-            int c;
-
             // copy contents
             while (is.available() > 0)
                 os.write(is.read());

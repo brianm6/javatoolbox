@@ -319,7 +319,7 @@ public class JFlipPane extends JPanel
      */
     public JToggleButton getButtonFor(JComponent flipper)
     {
-        String method = "[butFor] ";
+        //String method = "[butFor] ";
         
         //logger_.debug(method + 
         //  "Button count=" + buttonGroup_.getButtonCount());
@@ -381,7 +381,7 @@ public class JFlipPane extends JPanel
      */   
     public Dimension getPreferredSize()
     {
-        String method = "[prfSiz] ";
+        //String method = "[prfSiz] ";
         
         Dimension pref;
         
@@ -1229,7 +1229,7 @@ public class JFlipPane extends JPanel
          */
         public Dimension getPreferredSize()
         {
-            String method = "[prfSiz] ";
+            //String method = "[prfSiz] ";
             
             Dimension pref;
             

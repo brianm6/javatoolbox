@@ -111,7 +111,7 @@ public class DoubleUtilTest extends TestCase
 
         try
         {
-            double e = DoubleUtil.median(d);
+            DoubleUtil.median(d);
             fail("media should have failed for an empty set");
         }
         catch (IllegalArgumentException e)

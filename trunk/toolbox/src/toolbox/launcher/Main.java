@@ -44,7 +44,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        Main launcher = new Main(args);
+        new Main(args);
     }
     
     //--------------------------------------------------------------------------

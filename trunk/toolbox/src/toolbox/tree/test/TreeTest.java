@@ -346,9 +346,16 @@ public class TreeTest extends TestCase
         logger_.info("Running testConstructors...");
         
         Tree t = new Tree(FileUtil.getTempDir());
+        assertNotNull(t);
+        
         Tree t2 = new Tree(FileUtil.getTempDir(), true);
+        assertNotNull(t2);
+        
         Tree t3 = new Tree(FileUtil.getTempDir(), new StringWriter());
+        assertNotNull(t3);
+        
         Tree t4 = new Tree(FileUtil.getTempDir(), new StringWriter());        
+        assertNotNull(t4);
     }
     
     //--------------------------------------------------------------------------

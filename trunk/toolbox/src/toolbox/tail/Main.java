@@ -20,7 +20,7 @@ public class Main extends TailAdapter
      */    
     public static void main(String args[])
     {
-        Main tail = new Main(args);
+        new Main(args);
     }
 
     //--------------------------------------------------------------------------

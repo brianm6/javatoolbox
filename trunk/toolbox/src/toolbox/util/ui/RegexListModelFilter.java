@@ -84,7 +84,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     {
         super(delegate);
         matchCase_ = matchCase;        
-        setRegex(MATCH_ALL);
+        setRegex(regex);
     }
 
     //--------------------------------------------------------------------------

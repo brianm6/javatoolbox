@@ -3,15 +3,14 @@ package toolbox.jtail.config.exml;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import electric.xml.Document;
 import electric.xml.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
-import toolbox.util.SwingUtil;
 
 /**
  * Configuration manager for Electric XML persistence strategy
@@ -80,14 +79,6 @@ public class ConfigManager implements IConfigManager
         
         if (!xmlFile.exists())
         {
-            TailPaneConfig crap = new TailPaneConfig(
-                null,
-                ITailPaneConfig.DEFAULT_AUTOSCROLL,
-                ITailPaneConfig.DEFAULT_LINENUMBERS,
-                ITailPaneConfig.DEFAULT_ANTIALIAS,
-                SwingUtil.getPreferredMonoFont(),
-                ITailPaneConfig.DEFAULT_REGEX);
-
             jtailConfig.setDefaultConfig(defaultConfig);            
             jtailConfig.setTailConfigs(new TailPaneConfig[0]);
 

@@ -395,8 +395,6 @@ public class TailPane extends JPanel
          */
         public void nextBatch(Object[] objs)
         {
-            String method = "[nxtBat] ";
-            
             // Iterate over each line delivered            
             for (int i=0; i<objs.length; i++)
             {

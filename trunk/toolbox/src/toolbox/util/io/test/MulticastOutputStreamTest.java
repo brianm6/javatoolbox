@@ -146,8 +146,6 @@ public class MulticastOutputStreamTest extends TestCase
     {
         logger_.info("Running testClose...");
         
-        String testString = "hello";
-        
         StringOutputStream[] streams = new StringOutputStream[10];
         MulticastOutputStream mos = new MulticastOutputStream();
                 
@@ -168,8 +166,6 @@ public class MulticastOutputStreamTest extends TestCase
     public void testFlush() throws Exception
     {
         logger_.info("Running testFlush...");
-        
-        String testString = "hello";
         
         StringOutputStream[] streams = new StringOutputStream[10];
         MulticastOutputStream mos = new MulticastOutputStream();

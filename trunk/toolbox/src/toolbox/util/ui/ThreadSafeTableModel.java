@@ -119,8 +119,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
      */
     public void addRow(Vector vector)
     {
-        String method = "[addRow] ";
-        
         if (!SwingUtilities.isEventDispatchThread())
         {
             // If not event dispatch thread, push to queue         
@@ -148,8 +146,6 @@ public class ThreadSafeTableModel extends DefaultTableModel
      */
     public void addRows(Object[] rows)
     {
-        String method = "[addRws] ";
-                
         if(!SwingUtilities.isEventDispatchThread())
         {
             // If not event dispatch thread, push rows to queue

@@ -364,7 +364,7 @@ public class SocketConnectionTest extends TestCase
                 try
                 {
                     logger_.info("Server: Waiting to accept...");
-                    Socket sock = socket_.accept();
+                    socket_.accept();
                     keepGoing_ = longLived_;
                     logger_.info("Server: After accept..");
                 }

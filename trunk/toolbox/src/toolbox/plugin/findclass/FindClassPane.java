@@ -641,7 +641,7 @@ public class JFindClass extends JFrame
                         
                     StringReader javaReader = new StringReader(javaSource);
                     StringWriter htmlWriter = new StringWriter();
-                    Java2Html converter = new Java2Html(javaReader, htmlWriter);
+                    new Java2Html(javaReader, htmlWriter);
                     
                     sourceArea_.setText(htmlWriter.toString());
                     sourceArea_.setCaretPosition(0);

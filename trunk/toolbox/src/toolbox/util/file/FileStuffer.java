@@ -146,8 +146,6 @@ public class FileStuffer implements Runnable
                 pw = new PrintWriter(new BufferedWriter(
                         new FileWriter(getFile())));
                         
-                int c = 1;
-                
                 while (!stop_)
                 {
                     pw.println(stuffer_.getStuff());
@@ -157,8 +155,6 @@ public class FileStuffer implements Runnable
             }
             else
             {
-                 int c = 1;
-                 
                  while (!stop_)
                  {
                     pw = new PrintWriter(new FileWriter(getFile(), true));

@@ -286,7 +286,8 @@ public class ThreadUtilTest extends TestCase
         public void pingComplex(Writer pw,  Integer i, Integer i2, String s)
         {
             pingComplexCalled_ = true;
-            logger_.info("Called write delayed!");
+            logger_.info("Called write delayed with " + 
+                pw + i + " " + i2 + " " + s);
         }
         
         /**
@@ -295,7 +296,9 @@ public class ThreadUtilTest extends TestCase
         public void pingPrimitive(int a, /*char c,*/ boolean b, long l, float f)
         {
             pingPrimitiveCalled_ = true;
-            logger_.info("Called pingPrimitive!");
+            
+            logger_.info("Called pingPrimitive with " + 
+                a + " " + b + " " + l + " " + f);
         }
         
         /**
