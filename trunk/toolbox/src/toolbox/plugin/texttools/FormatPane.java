@@ -63,7 +63,7 @@ public class FormatPane extends JPanel
     }
 
     //----------------------------------------------------------------------
-    // FormatHTMLAction
+    // FormatAction
     //----------------------------------------------------------------------
 
     class FormatAction extends SmartAction
