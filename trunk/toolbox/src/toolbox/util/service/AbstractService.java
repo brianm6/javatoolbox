@@ -6,12 +6,35 @@ import java.util.Map;
 import org.apache.commons.collections.keyvalue.MultiKey;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.statemachine.StateMachine;
+import toolbox.util.statemachine.StateMachineFactory;
 
 /**
  * Abstract base class for Service implementors.
  */
 public abstract class AbstractService implements Service
 {
+    static
+    {
+        StateMachine machine = 
+            StateMachineFactory.createStateMachine("start-stop");
+        
+        machine.addState(ServiceState.RUNNING);
+        machine.addState(ServiceState.STOPPED);
+        machine.setBeginState(ServiceState.STOPPED);
+        
+        machine.addTransition(
+            ServiceTransition.START, 
+            ServiceState.STOPPED, 
+            ServiceState.RUNNING);
+        
+        machine.addTransition(
+            ServiceTransition.STOP, 
+            ServiceState.RUNNING,
+            ServiceState.STOPPED); 
+    }
+    
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
