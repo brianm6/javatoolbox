@@ -276,9 +276,9 @@ public class Client extends AbstractService
 
 
     /**
-     * @see toolbox.util.service.Service#pause()
+     * @see toolbox.util.service.Service#suspend()
      */
-    public void pause() throws ServiceException
+    public void suspend() throws ServiceException
     {
         throw new IllegalArgumentException("Pause not supported");
     }
@@ -303,9 +303,9 @@ public class Client extends AbstractService
 
 
     /**
-     * @see toolbox.util.service.Service#isPaused()
+     * @see toolbox.util.service.Service#isSuspended()
      */
-    public boolean isPaused()
+    public boolean isSuspended()
     {
         throw new IllegalArgumentException("Pause not supported");
     }
@@ -329,7 +329,9 @@ public class Client extends AbstractService
         public void currentThroughput(ThroughputEvent event)
         {
             logger_.info(
-                "Client thruput: " + nf.format(event.getThroughput()) + " bytes/s");
+                "Client thruput: " 
+                + nf.format(event.getThroughput()) 
+                + " bytes/s");
         }
     }
 }

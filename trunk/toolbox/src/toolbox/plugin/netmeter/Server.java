@@ -181,9 +181,9 @@ public class Server extends AbstractService
 
 
     /**
-     * @see toolbox.util.service.Service#pause()
+     * @see toolbox.util.service.Service#suspend()
      */
-    public void pause() throws ServiceException
+    public void suspend() throws ServiceException
     {
         throw new UnsupportedOperationException("Pause not supported");
     }
@@ -208,11 +208,19 @@ public class Server extends AbstractService
 
 
     /**
-     * @see toolbox.util.service.Service#isPaused()
+     * @see toolbox.util.service.Service#isSuspended()
      */
-    public boolean isPaused()
+    public boolean isSuspended()
     {
         throw new UnsupportedOperationException("isPaused not supported");
+    }
+    
+    
+    /**
+     * @see toolbox.util.service.Destroyable#destroy()
+     */
+    public void destroy() throws ServiceException
+    {
     }
     
     //--------------------------------------------------------------------------
