@@ -16,31 +16,46 @@ import toolbox.util.io.StringOutputStream;
 public class XOMUtil
 {
     /**
-     * Gets the integer value from a node
+     * Gets the integer value from a node with the option to have a default
+     * value returned when one or more of the following conditions are true.
+     * <ul>
+     *   <li>Node is null
+     *   <li>Node does not have a value
+     *   <li>Node value is not a valid integer
+     * </ul>
      * 
-     * @param   node          Node containing value
-     * @param   defaultValue  Value to return if the node is null or does not
-     *                        contain a value
-     * @return  int
+     * @param node Node containing value
+     * @param defaultValue Value to return if the node is null or does not
+     * contain a value
+     * @return int
      */
     public static int getInteger(Element node, int defaultValue)
     {
         int intValue = defaultValue;
         
         if (node != null && !StringUtil.isNullOrBlank(node.getValue()))
-            intValue = Integer.parseInt(node.getValue());
+        {
+            try
+            {
+                intValue = Integer.parseInt(node.getValue());
+            }
+            catch (NumberFormatException nfe)
+            {
+                // return default
+            }
+        }
             
         return intValue;
     }
     
     
     /**
-     * Gets the string value from a node
+     * Gets the string value from a node.
      * 
-     * @param   node          Node containing value
-     * @param   defaultValue  Value to return if the node is null or does not
-     *                        contain a value
-     * @return  String
+     * @param node Node containing value
+     * @param defaultValue Value to return if the node is null or does not
+     * contain a value
+     * @return String
      */
     public static String getString(Element node, String defaultValue)
     {
@@ -54,12 +69,12 @@ public class XOMUtil
 
 
     /**
-     * Gets the boolean value from a node
+     * Gets the boolean value from a node.
      * 
-     * @param   node          Node containing value
-     * @param   defaultValue  Value to return if the node is null or does not
-     *                        contain a value
-     * @return  boolean
+     * @param node Node containing a boolean value
+     * @param defaultValue Value to return if the node is null or does not
+     * contain a value
+     * @return boolean
      */
     public static boolean getBoolean(Element node, boolean defaultValue)
     {
@@ -73,13 +88,20 @@ public class XOMUtil
 
 
     /**
-     * Gets a node's attribute as an integer
+     * Gets a node's attribute as an integer. A default value is returned any
+     * of the following conditions are true.
+     * <ul>
+     *   <li>node is null
+     *   <li>attribute name is null
+     *   <li>nodes does not have an attribute of the matching name
+     *   <li>attribute's value is not a valid integer 
+     * <ul>
      * 
-     * @param   node          Node containing the attribute
-     * @param   attribute     Name of the attribute
-     * @param   defaultValue  Value to return if the attribute does not exist
-     *                        or does not contain a value
-     * @return  int
+     * @param node Node containing the attribute
+     * @param attribute Name of the attribute
+     * @param defaultValue Value to return if the attribute does not exist or 
+     * does not contain a value
+     * @return int
      */
     public static int getIntegerAttribute(
         Element node, 
@@ -89,20 +111,26 @@ public class XOMUtil
         int intValue = defaultValue;
         
         if (node != null && node.getAttributeValue(attribute) != null)
-            intValue = Integer.parseInt(node.getAttributeValue(attribute));
+            try
+            {
+                intValue = Integer.parseInt(node.getAttributeValue(attribute));
+            }
+            catch (NumberFormatException nfe)
+            {
+            }
             
         return intValue;
     }
 
 
     /**
-     * Gets a node's attribute as a boolean
+     * Gets a node's attribute as a boolean.
      * 
-     * @param   node          Node containing the attribute
-     * @param   attribute     Name of the attribute
-     * @param   defaultValue  Value to return if the attribute does not exist
-     *                        or does not contain a value
-     * @return  boolean
+     * @param node Node containing the attribute
+     * @param attribute Name of the attribute
+     * @param defaultValue Value to return if the attribute does not exist
+     * or does not contain a value
+     * @return boolean
      */
     public static boolean getBooleanAttribute(
         Element node, String attribute, boolean defaultValue)
@@ -118,13 +146,13 @@ public class XOMUtil
 
 
     /**
-     * Gets a node's attribute as a string
+     * Gets a node's attribute as a string.
      * 
-     * @param   node          Node containing the attribute
-     * @param   attribute     Name of the attribute
-     * @param   defaultValue  Value to return if the attribute does not exist
-     *                        or does not contain a value
-     * @return  String
+     * @param node Node containing the attribute
+     * @param attribute Name of the attribute
+     * @param defaultValue Value to return if the attribute does not exist
+     * or does not contain a value
+     * @return String
      */
     public static String getStringAttribute(
         Element node, String attribute, String defaultValue)
@@ -148,7 +176,7 @@ public class XOMUtil
      * replace or insert a single node.
      * 
      * @param parent Parent node
-     * @param child  Child node
+     * @param child Child node
      */
     public static void insertOrReplace(Element parent, Element child)
     {
@@ -173,7 +201,7 @@ public class XOMUtil
     /**
      * Converts a XOM DOM node into its XML equivalent.
      * 
-     * @param  node Node to convert to XML
+     * @param node Node to convert to XML
      * @return Node as XML
      * @throws IOException on I/O error
      */
@@ -187,12 +215,13 @@ public class XOMUtil
         return sos.toString();
     }
     
+    
     /**
      * Gets the first named child element from a given node. If the node is 
      * null or the child does not exist, then the defaultNode is returned 
      * instead.
      * 
-     * @param node        Node to retrieve child element from
+     * @param node Node to retrieve child element from
      * @param elementName Name of child element
      * @param defaultNode Returned if child element is not found
      * @return First child element if it exists, or defaultNode otherwise
@@ -204,7 +233,7 @@ public class XOMUtil
     {
         Element child = null;
         
-        if (node == null)
+        if (node == null || elementName == null)
             child = defaultNode;
         else    
             child = node.getFirstChildElement(elementName);
