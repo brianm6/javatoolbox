@@ -24,7 +24,7 @@ public class BlockingInvokerTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -39,7 +39,7 @@ public class BlockingInvokerTest extends TestCase
      * Tests that a call to invoke(Runnable) method blocks for >= the amount of 
      * time that it takes to execute the method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeRunnable() throws Exception
     {
@@ -51,6 +51,7 @@ public class BlockingInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable);
         time.setEndTime();
+        invoker.shutdown();
 
         assertTrue("Method was not invoked", invokable.wasInvoked());
 
@@ -64,7 +65,7 @@ public class BlockingInvokerTest extends TestCase
      * Tests that a call to invoke(Object, Method, Object[]) blocks for >= the 
      * amount of time that it takes to execute the method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeReflectively() throws Exception
     {
@@ -76,7 +77,8 @@ public class BlockingInvokerTest extends TestCase
         ElapsedTime time = new ElapsedTime();
         invoker.invoke(invokable, "run", null);
         time.setEndTime();
-
+        invoker.shutdown();
+        
         assertTrue("Method was not invoked", invokable.wasInvoked());
 
         assertTrue(
@@ -88,7 +90,7 @@ public class BlockingInvokerTest extends TestCase
     /**
      * Stress tests invoke()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeStressTest() throws Exception
     {
@@ -112,5 +114,7 @@ public class BlockingInvokerTest extends TestCase
         {
             assertTrue("Method was not invoked", invokables[i].wasInvoked());
         }
+        
+        invoker.shutdown();
     }
 }
