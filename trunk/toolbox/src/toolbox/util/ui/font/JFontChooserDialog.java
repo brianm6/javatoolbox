@@ -62,7 +62,7 @@ public class JFontChooserDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a JFontChooserDialog
      */
     public JFontChooserDialog()
     {
@@ -143,7 +143,7 @@ public class JFontChooserDialog extends JDialog
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -159,8 +159,8 @@ public class JFontChooserDialog extends JDialog
         okButton_     = new JButton(new OKAction());
         cancelButton_ = new JButton(new CancelAction());
         applyButton_  = new JButton(new ApplyAction());
-        JPanel buttonPanel = new JPanel(new FlowLayout());
         
+        JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(okButton_);
         buttonPanel.add(applyButton_);        
         buttonPanel.add(cancelButton_);
@@ -228,9 +228,9 @@ public class JFontChooserDialog extends JDialog
     /**
      * Notifies listeners that OK was selected and disposes of the dialog box.
      */
-    private class OKAction extends AbstractAction
+    class OKAction extends AbstractAction
     {
-        public OKAction()
+        OKAction()
         {
             super("OK");
             
@@ -252,9 +252,9 @@ public class JFontChooserDialog extends JDialog
     /**
      * Notifies listeners that the apply was selected
      */
-    private class ApplyAction extends AbstractAction
+    class ApplyAction extends AbstractAction
     {
-        public ApplyAction()
+        ApplyAction()
         {
             super("Apply");
             putValue(MNEMONIC_KEY, new Integer('A'));
@@ -274,9 +274,9 @@ public class JFontChooserDialog extends JDialog
      * Notifies listeners that cancel was selected and disposes of the
      * dialog box.
      */
-    private class CancelAction extends AbstractAction
+    class CancelAction extends AbstractAction
     {
-        public CancelAction()
+        CancelAction()
         {
             super("Cancel");
             putValue(MNEMONIC_KEY, new Integer('C'));
