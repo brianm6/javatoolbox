@@ -18,4 +18,9 @@ public interface IFindClassListener
      * @param  target  Name of the target directory or archive
      */
     public void searchingTarget(String target);
+    
+    /**
+     * Notification that a search was cancelled
+     */
+    public void searchCancelled();
 }
