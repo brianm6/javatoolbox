@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Category;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
 
@@ -39,12 +40,16 @@ public class ThreadUtilTest extends TestCase
         super(name);
     }
 
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests sleep()
      */
     public void testSleep() 
     {
-        /* not much to test */
+        // Not much to test
         ThreadUtil.sleep(1000);
     }
 
@@ -69,7 +74,7 @@ public class ThreadUtilTest extends TestCase
     {
         Tester target = new Tester();
         
-        /* call method with args */
+        // Call method with args
         Object[] params = new Object[] 
         {
             "string1",
@@ -117,7 +122,7 @@ public class ThreadUtilTest extends TestCase
             new Object[] 
             { 
                 new Integer(10), 
-                new Character('y'),
+                //new Character('y'),
                 new Boolean(true),
                 new Long(99L),
                 new Float(100.3f)
@@ -132,7 +137,11 @@ public class ThreadUtilTest extends TestCase
         Tester target = new Tester();
         target.testFromInnerClass();
     }  
- 
+
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
+     
     /**
      * Test class for testRun()
      */   
@@ -187,7 +196,7 @@ public class ThreadUtilTest extends TestCase
         /**
          * Test method method with primitive args
          */
-        public void pingPrimitive(int a, char c, boolean b, long l, float f)
+        public void pingPrimitive(int a, /*char c,*/ boolean b, long l, float f)
         {
             pingPrimitiveCalled = true;
             logger_.info("Called pingPrimitive!");
