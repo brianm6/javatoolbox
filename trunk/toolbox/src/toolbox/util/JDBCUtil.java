@@ -72,24 +72,24 @@ public final class JDBCUtil
     /**
      * Classname of the commons-dbcp pooling JDBC driver.
      */
-    private static final String CONN_POOL_DRIVER = 
+    public static final String CONN_POOL_DRIVER = 
         "org.apache.commons.dbcp.PoolingDriver";
     
     /**
      * URL prefix of the connection pooling JDBC driver.
      */
-    private static final String CONN_POOL_URL_PREFIX = 
+    public static final String CONN_POOL_URL_PREFIX = 
         "jdbc:apache:commons:dbcp:"; 
 
+    /**
+     * Connection pooling is turned on by default.
+     */
+    public static final boolean DEFAULT_POOLED = true;
+    
     /**
      * Name of the connection pool for use exclusively by this class.
      */	
     private static final String CONN_POOL_NAME = "jdbcutil";
-    
-    /**
-     * Connection pooling is turned on by default.
-     */
-    private static final boolean DEFAULT_POOLED = true;
     
     //--------------------------------------------------------------------------
     // Fields
