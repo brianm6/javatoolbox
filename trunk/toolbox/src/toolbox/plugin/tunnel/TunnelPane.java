@@ -38,7 +38,7 @@ import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 
 /**
- * Panel which houses the majority of the UI controls. 
+ * User interface view of of the TCP Tunnel. 
  */
 public class TunnelPane extends JPanel implements IPreferenced
 {
@@ -223,7 +223,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI 
+     * Constructors the user interface. 
      */
     protected void buildView()
     {
@@ -237,7 +237,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     
             localLabel_ = 
                 new JSmartLabel("Sent to Remote Host", JLabel.CENTER);
-    
+            
             remoteLabel_ = 
                 new JSmartLabel("Received from Remote Host", JLabel.CENTER);
     
