@@ -31,10 +31,9 @@ import toolbox.util.ui.plaf.LookAndFeelUtil;
 /**
  * Test case that is a base class for tests associated with some manual user
  * interface sequence of events. UITestCase is a 'marker' class used by
- * {@link CloverTestSuite} to exclude unit tests not suitable for unattended
- * execution.
+ * {@link toolbox.junit.CloverTestSuite} to exclude unit tests not suitable for
+ * unattended execution.
  * 
- * @see toolbox.junit.CloverTestSuite
  * @see toolbox.junit.CloverTestFilter
  */
 public class UITestCase extends TestCase

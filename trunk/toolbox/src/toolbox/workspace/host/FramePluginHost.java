@@ -184,7 +184,7 @@ public class FramePluginHost extends AbstractPluginHost implements PluginHost,
     
     
     /**
-     * @see toolbox.workspace.host.PluginHost#getComponent()
+     * @see toolbox.workspace.host.PluginHost#getView()
      */
     public JComponent getView()
     {

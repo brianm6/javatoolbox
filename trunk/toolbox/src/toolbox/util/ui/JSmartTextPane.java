@@ -172,7 +172,9 @@ public class JSmartTextPane extends JTextPane implements AntiAliased
 
     
     /**
-     * @return
+     * Returns true if line wrapping is enabled, false otherwise.
+     * 
+     * @return boolean
      */
     protected boolean isLineWrap()
     {
@@ -181,7 +183,9 @@ public class JSmartTextPane extends JTextPane implements AntiAliased
     
     
     /**
-     * @param lineWrap
+     * Sets line wrapping.
+     * 
+     * @param lineWrap True to enable, false otherwise.
      */
     protected void setLineWrap(boolean lineWrap)
     {

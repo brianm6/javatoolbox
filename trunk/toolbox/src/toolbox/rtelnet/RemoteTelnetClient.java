@@ -180,8 +180,8 @@ public class RemoteTelnetClient extends TelnetClient
     class MyTransferredListener implements TransferredListener
     {
         /**
-         * @see toolbox.util.io.transferred.TransferredListener#
-         *      bytesTransferred(toolbox.util.io.transferred.TransferredEvent)
+         * @see toolbox.util.io.transferred.TransferredListener
+         *      #bytesTransferred(toolbox.util.io.transferred.TransferredEvent)
          */
         public void bytesTransferred(TransferredEvent event)
         {

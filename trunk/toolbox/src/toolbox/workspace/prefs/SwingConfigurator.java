@@ -15,12 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.commons.lang.StringUtils;
 
-import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartCheckBox;

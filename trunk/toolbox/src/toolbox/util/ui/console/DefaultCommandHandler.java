@@ -127,7 +127,7 @@ public class DefaultCommandHandler implements CommandHandler
     
     /**
      * @see toolbox.util.ui.console.CommandHandler#handleCommand(
-     *      toolbox.console.Console, java.lang.String)
+     *      toolbox.util.ui.console.Console, java.lang.String)
      */
     public void handleCommand(Console console, String cmd)
         throws Exception

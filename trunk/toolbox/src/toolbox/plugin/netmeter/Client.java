@@ -95,7 +95,7 @@ public class Client implements Initializable, Startable, Destroyable,
     //--------------------------------------------------------------------------
     
     /**
-     * Launches the standalone console based client.<br>
+     * Launches the standalone console based client.<p>
      * Example:<br> 
      * <code>
      * java toolbox.plugin.netmeter.Client localhost 9999
