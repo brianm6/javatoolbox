@@ -88,6 +88,8 @@ import toolbox.workspace.IPreferenced;
  */
 public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
 {
+    // TODO: Make start async
+    
     private static final Logger logger_ = Logger.getLogger(TcpTunnel.class);
 
     //--------------------------------------------------------------------------
