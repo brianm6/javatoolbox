@@ -1,11 +1,14 @@
 package toolbox.jtail.config.xom;
 
 import java.awt.Font;
-
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+import nu.xom.Elements;
+
+import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.FontUtil;
@@ -23,7 +26,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     private static final Logger logger_ =
         Logger.getLogger(TailPaneConfig.class);
     
-    private String  filename_;
+    private String[]  filenames_;
     private boolean autoScroll_;
     private boolean showLineNumbers_;
     private boolean antiAlias_;
@@ -41,7 +44,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
      */
     public TailPaneConfig()
     {
-        this(   "",         // file
+        this(   new String[0], // file
                 true,       // autoscroll
                 false,      // show linenumbers
                 false,      // antialias
@@ -54,7 +57,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     /**
      * Creates TailConfig with given parameters
      * 
-     * @param  file               File to tail
+     * @param  files              Files to tail
      * @param  autoScroll         Turn on autoscroll
      * @param  showLineNumbers    Shows line numbers in output
      * @param  antiAlias          Antialias text in output area
@@ -65,7 +68,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
      * @param  autoStart          Autostarts tailing (starts it)
      */
     public TailPaneConfig(
-        String file, 
+        String[] files, 
         boolean autoScroll, 
         boolean showLineNumbers, 
         boolean antiAlias, 
@@ -74,7 +77,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         String cutExpression, 
         boolean autoStart)
     {
-        setFilename(file);
+        setFilenames(files);
         setAutoScroll(autoScroll);
         setShowLineNumbers(showLineNumbers);
         setAntiAlias(antiAlias);
@@ -95,10 +98,6 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     {
         Element root = prefs.getFirstChildElement(NODE_TAIL);
        
-        setFilename(
-            XOMUtil.getStringAttribute(
-                root, ATTR_FILE, ""));
-        
         setAutoScroll(
             XOMUtil.getBooleanAttribute(
                 root, ATTR_AUTOSCROLL, DEFAULT_AUTOSCROLL));
@@ -117,6 +116,12 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
 
         if (root != null)
         {
+            List filenames = new ArrayList();
+            Elements files = root.getChildElements(NODE_FILE);
+            for (int i=0; i<files.size(); i++)
+                filenames.add(files.get(i).getAttributeValue(ATTR_FILENAME));
+            setFilenames((String[]) filenames.toArray(new String[0]));
+
             setFont(
                 FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
             
@@ -136,16 +141,20 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_TAIL);
-        
-        if (getFilename() != null)
-            root.addAttribute(new Attribute(ATTR_FILE, getFilename()));
-        
+
         root.addAttribute(
             new Attribute(ATTR_LINENUMBERS,isShowLineNumbers()+""));
         
         root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));    
         root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias() + ""));
         root.addAttribute(new Attribute(ATTR_AUTOSTART, isAutoStart() + ""));
+
+        for (int i=0; i<filenames_.length; i++)
+        {
+            Element file = new Element(NODE_FILE);
+            file.addAttribute(new Attribute(ATTR_FILENAME, filenames_[i]));
+            root.appendChild(file);
+        }        
         
         Element fontNode = FontUtil.toElement(getFont());
         Element regexNode = new Element(NODE_REGULAR_EXPRESSION);
@@ -199,9 +208,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return autoScroll_;
     }
 
-    public String getFilename()
+    public String[] getFilenames()
     {
-        return filename_;
+        return filenames_;
     }
 
     public boolean isShowLineNumbers()
@@ -214,9 +223,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         autoScroll_ = autoScroll;
     }
 
-    public void setFilename(String filename)
+    public void setFilenames(String[] filenames)
     {
-        filename_ = filename;
+        filenames_ = filenames;
     }
 
     public void setShowLineNumbers(boolean showLineNumbers)

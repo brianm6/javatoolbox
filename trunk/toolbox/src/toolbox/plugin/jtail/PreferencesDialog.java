@@ -27,6 +27,8 @@ import toolbox.jtail.config.IJTailConfig;
  */
 public class PreferencesDialog extends JDialog implements ActionListener
 {
+    // TODO: Finish UI for setting the defaults
+    
     private static final Logger logger_ =
         Logger.getLogger(PreferencesDialog.class);
     

@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +22,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Element;
 import nu.xom.Elements;
+
+import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
@@ -40,6 +39,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
@@ -49,21 +49,46 @@ import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * JTail is a GUI front end for {@link toolbox.tail.Tail}.
+ * JTail is a GUI front end for {@link toolbox.tail.Tail}. <p>
+ * Features include:
+ * <ul>
+ *   <li>Tabbed window interface (one tab per tail)
+ *   <li>Ability to include/exclude lines from the output based on matching a
+ *       regular expression
+ *   <li>Line numbering
+ *   <li>Ranges of columns can be excluded with a simple cut expression
+ *   <li>Multiple tails can be aggregated so that the output for all tails goes 
+ *       to a single textarea
+ *   <li>Fully configurable font size, color, antialiasing, etc that are 
+ *       persisted between sessions
+ *   <li>Remembers most recently tailed files
+ *   <li>Simple file explorer interface is used to select files
+ *   <li>Saves snapshot of entire configuration so that upon re-entering the 
+ *       application, it looks like you never left.       
+ * </ul>
  */
 public class JTail extends JFrame implements IPreferenced
 {
-     // TODO: Add configurable "aggregator" for existing tails 
-
     private static final Logger logger_ = 
         Logger.getLogger(JTail.class);
-    
+
+    /**
+     * XML: Root node for JTail preferences
+     */
     private static final String NODE_JTAIL_PLUGIN = "JTailPlugin";
+    
+    /**
+     * XML: Node that contains 0..n RecentTail nodes 
+     */
     private static final String NODE_RECENT       = "Recent";
+    
+    /**
+     * XML: Node that contains all tail information to re-hydrate a given tail
+     */
     private static final String NODE_RECENT_TAIL  = "RecentTail";
          
     /** 
-     * Presents list of recently tailed files 
+     * Menu of recently tailed files. A tail becomes 'recent' when it is closed. 
      */
     private JMenu recentMenu_;
 
@@ -78,7 +103,7 @@ public class JTail extends JFrame implements IPreferenced
     private JTabbedPane tabbedPane_;
 
     /** 
-     * Flip panel that houses the file explorer 
+     * Flip pane that houses the file explorer 
      */
     private JFlipPane flipPane_;
 
@@ -88,8 +113,7 @@ public class JTail extends JFrame implements IPreferenced
     private Map tailMap_;
     
     /** 
-     * Status bar at the bottom of the screen that shows the status of various 
-     * activities
+     * Reference to the workspace statusbar
      */
     private IStatusBar statusBar_;    
     
@@ -100,10 +124,8 @@ public class JTail extends JFrame implements IPreferenced
     private boolean testMode_ = true;
     
     /** 
-     * Data object that captures all known application settings/preferences. 
-     * The ConfigManager is responsible for saving/loading this object between
-     * application instances.
-     */
+     * Data object that captures all known application settings/preferences.
+     */ 
     private IJTailConfig jtailConfig_;            
         
     //--------------------------------------------------------------------------
@@ -138,8 +160,7 @@ public class JTail extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /** 
-     * Initializes JTail: builds the GUI, wires the events, and loads the
-     * configuration
+     * Initializes JTail by building the GUI and wiring the events
      */
     protected void init()
     {
@@ -147,11 +168,9 @@ public class JTail extends JFrame implements IPreferenced
         {
             tailMap_  = new HashMap();
             jtailConfig_ = new JTailConfig();
-            
             buildView();
             wireView();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
-            //loadConfiguration();
         }
         catch (Exception e)
         {
@@ -174,7 +193,6 @@ public class JTail extends JFrame implements IPreferenced
 
         getContentPane().add(BorderLayout.WEST, flipPane_);
         getContentPane().add(BorderLayout.CENTER, tabbedPane_);
-        
         getContentPane().add(BorderLayout.NORTH, buildMenuBar());
     }
     
@@ -213,42 +231,30 @@ public class JTail extends JFrame implements IPreferenced
      * Adds a tail of the given configuration to the output area
      * 
      * @param  config  Tail configuration
+     * @throws IOException on I/O error
      */     
-    protected void addTail(ITailPaneConfig config)
+    protected void addTail(ITailPaneConfig config) throws IOException
     {
-        try
-        {
-            logger_.debug(config);
-            TailPane tailPane = new TailPane(config, statusBar_);
- 
-            JButton closeButton = tailPane.getCloseButton();
+        TailPane tailPane = new TailPane(config, statusBar_);
             
-            // Create map of (closeButton, tailPane) so that the 
-            // tail pane can be reassociated if it needs to be 
-            // removed from the tabbed pane
-            tailMap_.put(closeButton, tailPane);
-            
-            closeButton.addActionListener(new CloseButtonListener());
-            
-            tabbedPane_.addTab(
-                FileUtil.stripPath(config.getFilename()), tailPane);
-                
-            tabbedPane_.setToolTipTextAt(
-                tabbedPane_.getTabCount()-1, config.getFilename());
-            
-                
-            tabbedPane_.setSelectedComponent(tailPane);
-            
-            statusBar_.setStatus("Added tail for " + config.getFilename());
-        }
-        catch (IOException e)
-        {
-            ExceptionUtil.handleUI(e, logger_);
-        }
+        // Create a map of [closeButton->tailPane] so that the tail pane can be 
+        // reassociated if it needs to be removed from the tabbed pane
+        
+        JButton closeButton = tailPane.getCloseButton();
+        tailMap_.put(closeButton, tailPane);
+        closeButton.addActionListener(new CloseButtonListener());
+        
+        // Tab config
+        tabbedPane_.addTab(makeTabLabel(config), tailPane);
+        tabbedPane_.setToolTipTextAt(
+            tabbedPane_.getTabCount()-1, makeTabLabel(config));
+        tabbedPane_.setSelectedComponent(tailPane);
+        statusBar_.setStatus("Added tail for " + 
+            ArrayUtil.toString(config.getFilenames(), false));
     }
     
     /**
-     * Adds listeners
+     * Wires event listeners
      */
     protected void wireView()
     {
@@ -257,10 +263,15 @@ public class JTail extends JFrame implements IPreferenced
             
         fileSelectionPane_.getTailButton().
             addActionListener(new TailButtonListener());
+            
+        fileSelectionPane_.getAggregateButton().
+            addActionListener(new AggregateButtonListener());
     }
     
     /**
-     * @return  Currently selected tail in the tabbed pane
+     * Returns the currently selected TailPane 
+     * 
+     * @return TailPane
      */
     protected TailPane getSelectedTail()
     {
@@ -268,12 +279,36 @@ public class JTail extends JFrame implements IPreferenced
     }
     
     /**
-     * @return  Configuration of currently selected tail in the tabbed pane
+     * Returns the configuration of currently selected tail in the tabbed pane
+     * 
+     * @return ITailPaneConfig  
      */
-    protected ITailPaneConfig getSelectedConfig()
+    protected ITailPaneConfig getSelectedConfig() throws IOException
     {
         return getSelectedTail().getConfiguration();
     }
+    
+    /**
+     * Makes an easy to read label for the TailPane tab
+     * 
+     * @param config TailPane configuration
+     * @return Label
+     */
+    protected String makeTabLabel(ITailPaneConfig config)
+    {
+        StringBuffer tabname = new StringBuffer();
+        String[] filenames = config.getFilenames();
+        tabname.append("<html><center>");
+        for (int i=0; i<filenames.length; i++)
+        {
+            tabname.append(FileUtil.stripPath(filenames[i]));
+            if (i+1 < filenames.length)
+                tabname.append("<br>");
+        }
+        tabname.append("</center></html>");
+        
+        return tabname.toString();
+    }    
     
     //--------------------------------------------------------------------------
     // IPreferenced Interface
@@ -284,42 +319,42 @@ public class JTail extends JFrame implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        if (prefs != null)
-        {
-            Element root = prefs.getFirstChildElement(NODE_JTAIL_PLUGIN);
-
-            if (root != null)
-            {
-                jtailConfig_.applyPrefs(root);
-                
-                // Tails left running since last save
-                ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
-                
-                for (int i=0; i< tailPaneConfigs.length; i++)
-                {
-                    ITailPaneConfig config = tailPaneConfigs[i];
-                    
-                    // Apply defaults if any
-                    if (config.getFont() == null)
-                        config.setFont(jtailConfig_.getDefaultConfig().getFont());
-                    
-                    addTail(config);
-                }
+        if (prefs == null)
+            return;
             
-                fileSelectionPane_.getFileExplorer().applyPrefs(root);
-                flipPane_.applyPrefs(root);
+        Element root = prefs.getFirstChildElement(NODE_JTAIL_PLUGIN);
+
+        if (root == null)
+            return;
+        
+        jtailConfig_.applyPrefs(root);
+        
+        // Tails left running since last save
+        ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
+        
+        for (int i=0; i< tailPaneConfigs.length; i++)
+        {
+            ITailPaneConfig config = tailPaneConfigs[i];
+            
+            // Apply defaults if any
+            if (config.getFont() == null)
+                config.setFont(jtailConfig_.getDefaultConfig().getFont());
+            
+            addTail(config);
+        }
     
-                Element recent = root.getFirstChildElement(NODE_RECENT);
-                Elements recentTails = recent.getChildElements(NODE_RECENT_TAIL);
-                    
-                for (int i=0, n=recentTails.size(); i<n; i++)
-                {
-                    Element recentTail = recentTails.get(i);
-                    TailPaneConfig config = new TailPaneConfig();
-                    config.applyPrefs(recentTail);
-                    recentMenu_.add(new TailRecentAction(config));
-                }
-            }
+        fileSelectionPane_.getFileExplorer().applyPrefs(root);
+        flipPane_.applyPrefs(root);
+
+        Element recent = root.getFirstChildElement(NODE_RECENT);
+        Elements recentTails = recent.getChildElements(NODE_RECENT_TAIL);
+            
+        for (int i=0, n=recentTails.size(); i<n; i++)
+        {
+            Element recentTail = recentTails.get(i);
+            TailPaneConfig config = new TailPaneConfig();
+            config.applyPrefs(recentTail);
+            recentMenu_.add(new TailRecentAction(config));
         }
     }
     
@@ -343,8 +378,6 @@ public class JTail extends JFrame implements IPreferenced
         jtailConfig_.setTailConfigs(configs);
         
         jtailConfig_.savePrefs(root);
-        
-        //configManager_.save(jtailConfig_);
         
         // Other preferenced components
         fileSelectionPane_.getFileExplorer().savePrefs(root);
@@ -382,36 +415,48 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Adds a tail for a file double clicked by the user via the file explorer
      */
-    private class FileSelectionListener extends JFileExplorerAdapter
+    class FileSelectionListener extends JFileExplorerAdapter
     {
         public void fileDoubleClicked(String file)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
             
             ITailPaneConfig config = new TailPaneConfig();
-            config.setFilename(file);
+            config.setFilenames(new String[] { file } );
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
             config.setAntiAlias(defaults.isAntiAlias());
             config.setFont(defaults.getFont());
             config.setRegularExpression(defaults.getRegularExpression());
             
-            addTail(config);
+            try
+            {
+                addTail(config);
+            }
+            catch (IOException e)
+            {
+                ExceptionUtil.handleUI(e, logger_);
+            }
         }
     }
     
     /**
      * Adds a tail for the currently selected file in the file explorer
      */
-    private class TailButtonListener implements ActionListener
+    class TailButtonListener extends SmartAction
     {
-        public void actionPerformed(ActionEvent e)
+        TailButtonListener()
+        {
+            super("Tail", true, false, null);
+        }
+        
+        public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
             ITailPaneConfig config = new TailPaneConfig();
             
-            config.setFilename(
-                fileSelectionPane_.getFileExplorer().getFilePath());
+            config.setFilenames(new String[] 
+                {fileSelectionPane_.getFileExplorer().getFilePath() } );
                 
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
@@ -423,21 +468,43 @@ public class JTail extends JFrame implements IPreferenced
             addTail(config);
         }
     }
+
+    /**
+     * Aggregates a file to an existing tail
+     */
+    class AggregateButtonListener extends SmartAction
+    {
+        AggregateButtonListener()
+        {
+            super("Aggregate", true, false, null);    
+        }
+
+        public void runAction(ActionEvent e) throws Exception
+        {
+            String file = fileSelectionPane_.getFileExplorer().getFilePath();
+            TailPane tailPane = getSelectedTail();
+            tailPane.aggregate(file);
+        }
+    }
+
     
     /**
      * Removes a tail once the close button is clicked on the tail pane
      */
-    private class CloseButtonListener implements ActionListener
+    class CloseButtonListener extends SmartAction
     {
+        CloseButtonListener()
+        {
+            super("Close", true, false, null);
+        }
+        
         /**
          * The source is the closeButton on the tail pane. 
          * Get the tailPane from the tailMap using the button as
          * the key and then temove the tail pane from the tabbed pane
          * and them remove the tailpane from the tailmap itself.
-         * 
-         * @param  e  ActionEvent
          */
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             Object closeButton = e.getSource();
             TailPane pane = (TailPane)tailMap_.get(closeButton);
@@ -447,8 +514,8 @@ public class JTail extends JFrame implements IPreferenced
             // Add the closed tail to the recent menu
             recentMenu_.add(new TailRecentAction(pane.getConfiguration()));
             
-            statusBar_.setStatus(
-                "Closed " + pane.getConfiguration().getFilename());
+            statusBar_.setStatus("Closed " + 
+                ArrayUtil.toString(pane.getConfiguration().getFilenames()));
         }
     }
 
@@ -461,18 +528,18 @@ public class JTail extends JFrame implements IPreferenced
      * When a file is selectect from the Recent menu, this action tails the 
      * file and removes that item from the recent menu.
      */
-    private class TailRecentAction extends AbstractAction
+    class TailRecentAction extends SmartAction
     {
         private ITailPaneConfig config_;
         
-        public TailRecentAction(ITailPaneConfig config)
+        TailRecentAction(ITailPaneConfig config)
         {
-            super(config.getFilename());
+            super(config.getFilenames()[0], true, false, null);
             config_ = config;
             putValue("config", config_);
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             addTail(config_);
             recentMenu_.remove((Component) e.getSource());
@@ -482,9 +549,9 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Clears the Recent menu
      */
-    private class ClearRecentAction extends AbstractAction
+    class ClearRecentAction extends AbstractAction
     {
-        public ClearRecentAction()
+        ClearRecentAction()
         {
             super("Clear");
         }
@@ -506,9 +573,9 @@ public class JTail extends JFrame implements IPreferenced
      * Generates a file with intermittent output so that the file can be
      * tailed for testing purposes. The file is created is $user.home
      */
-    private class CreateFileAction extends AbstractAction
+    class CreateFileAction extends AbstractAction
     {
-        public CreateFileAction()
+        CreateFileAction()
         {
             super("Create test file");
             putValue(MNEMONIC_KEY, new Integer('C'));
@@ -535,15 +602,15 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Pops up a font selection dialog to change the font
      */
-    private class SetFontAction extends AbstractAction 
+    class SetFontAction extends SmartAction 
         implements IFontChooserDialogListener
     {
         private Font lastFont_;
         private boolean lastAntiAlias_;
         
-        public SetFontAction()
+        SetFontAction()
         {
-            super("Set font ..");
+            super("Set font ..", true, false, null);
             putValue(MNEMONIC_KEY, new Integer('t'));
             
             putValue(SHORT_DESCRIPTION, 
@@ -553,7 +620,7 @@ public class JTail extends JFrame implements IPreferenced
                 KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
         }
     
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             // Remember state just in case user cancels operation
             lastFont_      = getSelectedConfig().getFont();
@@ -589,15 +656,27 @@ public class JTail extends JFrame implements IPreferenced
             {
                 ExceptionUtil.handleUI(fse, logger_);
             }
+            catch (IOException ioe)
+            {
+                ExceptionUtil.handleUI(ioe, logger_);
+            }
         }
 
         public void cancelButtonPressed(JFontChooser fontChooser)
         {
             // Restore saved state
-            ITailPaneConfig config = getSelectedConfig();
-            config.setFont(lastFont_);            
-            config.setAntiAlias(lastAntiAlias_);
-            getSelectedTail().setConfiguration(config);
+            ITailPaneConfig config;
+            try
+            {
+                config = getSelectedConfig();
+                config.setFont(lastFont_);            
+                config.setAntiAlias(lastAntiAlias_);
+                getSelectedTail().setConfiguration(config);
+            }
+            catch (IOException e)
+            {
+                ExceptionUtil.handleUI(e, logger_);
+            }
         }
         
         public void okButtonPressed(JFontChooser fontChooser)
@@ -614,15 +693,19 @@ public class JTail extends JFrame implements IPreferenced
             {
                 ExceptionUtil.handleUI(fse, logger_);
             }
+            catch (IOException e)
+            {
+                ExceptionUtil.handleUI(e, logger_);
+            }
         }
     }
     
     /**
      * Pops up the preferences dialog
      */
-    private class PreferencesAction extends AbstractAction 
+    class PreferencesAction extends AbstractAction 
     {
-        public PreferencesAction()
+        PreferencesAction()
         {
             super("Preferences ..");
             putValue(MNEMONIC_KEY, new Integer('P'));
@@ -649,11 +732,11 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Adds a tail of the System.out stream
      */
-    private class TailSystemOutAction extends AbstractAction
+    class TailSystemOutAction extends SmartAction
     {
-        public TailSystemOutAction()
+        TailSystemOutAction()
         {
-            super("Tail System.out");
+            super("Tail System.out", true, false, null);
             putValue(MNEMONIC_KEY, new Integer('o'));
             
             putValue(ACCELERATOR_KEY, 
@@ -662,14 +745,14 @@ public class JTail extends JFrame implements IPreferenced
                     Event.CTRL_MASK));
         }
                 
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig config = new TailPaneConfig();
             config.setAntiAlias(false);
             config.setAutoScroll(true);
             config.setAutoStart(true);
             config.setCutExpression("");
-            config.setFilename(TailPane.LOG_SYSTEM_OUT);
+            config.setFilenames(new String[] {TailPane.LOG_SYSTEM_OUT});
             config.setFont(SwingUtil.getPreferredMonoFont());
             config.setRegularExpression("");
             config.setShowLineNumbers(false);
@@ -680,25 +763,25 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Adds a tail for Log4J attached to the "toolbox" logger
      */
-    private class TailLog4JAction extends AbstractAction
+    class TailLog4JAction extends SmartAction
     {
-        public TailLog4JAction()
+        TailLog4JAction()
         {
-            super("Tail Log4J");
+            super("Tail Log4J", true, false, null);
             putValue(MNEMONIC_KEY, new Integer('j'));
 
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_J, Event.CTRL_MASK));
         }
                 
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             ITailPaneConfig config = new TailPaneConfig();
             config.setAntiAlias(false);
             config.setAutoScroll(true);
             config.setAutoStart(true);
             config.setCutExpression("");
-            config.setFilename(TailPane.LOG_LOG4J);
+            config.setFilenames(new String[] {TailPane.LOG_LOG4J});
             config.setFont(SwingUtil.getPreferredMonoFont());
             config.setRegularExpression("");
             config.setShowLineNumbers(false);

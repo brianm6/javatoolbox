@@ -40,11 +40,11 @@ public interface ITailPaneConfig extends IPreferenced
 
 
     /**
-     * Returns the filename that is being tailed.
+     * Returns an array of filenames, each of which is being tailed
      * 
-     * @return String
+     * @return String[]
      */
-    public String getFilename();
+    public String[] getFilenames();
 
 
     /**
@@ -64,11 +64,11 @@ public interface ITailPaneConfig extends IPreferenced
 
 
     /**
-     * Sets the name of the file being tailed
+     * Sets the names of the file being tailed
      * 
-     * @param filename The filename to set
+     * @param filenames Filenames 
      */
-    public void setFilename(String filename);
+    public void setFilenames(String[] filenames);
 
 
     /**

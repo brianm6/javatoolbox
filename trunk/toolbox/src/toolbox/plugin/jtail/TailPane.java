@@ -38,6 +38,7 @@ import toolbox.jtail.filter.LineNumberDecorator;
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
+import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
@@ -46,10 +47,43 @@ import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * A UI component that serves as the view for the tailing of a single file. 
+ * A UI component that serves as the view for the tailing one or more files to
+ * a single output textarea.
+ * <p>
+ * Design: TailPane that aggregates the tail output from 3 separate files   
+ * <pre>
+ *
+ *                       (2)
+ *          (1)          Tail         (3)
+ *      TailListener   Listener  TailListener
+ *                  \     |     / 
+ *                   \    |    /                pushes lines (originating from Tail)
+ *                    \   |   /
+ *                     v  v  v
+ *                      Queue                   (concentrator for our purposes)
+ *                        ^
+ *                        |  
+ *                        |                     pops lines one at a time
+ *                        |
+ *                BatchingQueueReader           (aggregates lines)
+ *                        |
+ *                        |
+ *                        |                     provides block of lines to (batched)
+ *                        |
+ *                        v
+ *                TailQueueListener
+ *                        |
+ *                        |
+ *                        |                     append block of lines
+ *                        |
+ *                        v
+ *                    TextArea
+ *
+ *</pre>
  */
 public class TailPane extends JPanel
 {
@@ -58,7 +92,6 @@ public class TailPane extends JPanel
      *       applied/persisted to the tailpane!
      * TODO: Color code keywords
      * TODO: Color code time lapse delays
-     * TODO: Move button panel to its own flippane
      * TODO: Add option to tail the whole file from the beginning
      * TODO: Create filter that will accept a beanshell script 
      */
@@ -66,73 +99,119 @@ public class TailPane extends JPanel
     private static final Logger logger_ = 
         Logger.getLogger(TailPane.class);
     
-    /** Special tail type for System.out */
+    /** 
+     * Special tail type for System.out 
+     */
     public static final String LOG_SYSTEM_OUT = "[System.out]";
     
-    /** Specital tail type for Log4J */
+    /** 
+     * Specital tail type for Log4J 
+     */
     public static final String LOG_LOG4J = "[Log4J]";
 
-    /** Start button text for dual action button start/stop */
+    /** 
+     * Start button text for dual action button start/stop 
+     */
     private static final String MODE_START = "Start";
     
-    /** Stop button text for dual action button start/stop */
+    /** 
+     * Stop button text for dual action button start/stop 
+     */
     private static final String MODE_STOP  = "Stop";
 
-    /** Reference to workspace status bar */
+    /** 
+     * Reference to workspace status bar 
+     */
     private IStatusBar statusBar_;
     
-    /** Tail output is appended into this text area */
+    /** 
+     * Tail output is appended into this text area 
+     */
     private JSmartTextArea tailArea_;
     
-    /** Clears the output text area */
+    /** 
+     * Clears the output text area 
+     */
     private JButton clearButton_;
     
-    /** Dual action button that handles pause/unpause of tail */
+    /** 
+     * Dual action button that handles pause/unpause of tail 
+     */
     private JButton pauseButton_;
     
-    /** Dual action button that handles start/stop of tail */
+    /** 
+     * Dual action button that handles start/stop of tail 
+     */
     private JButton startButton_;
     
-    /** Closes the tail (also triggers adding the tail to the recent menu) */
+    /** 
+     * Closes the tail (also triggers adding the tail to the recent menu) 
+     */
     private JButton closeButton_;
     
-    /** Checkbox to toggle auto scrolling of the output text area */
+    /** 
+     * Checkbox to toggle auto scrolling of the output text area 
+     */
     private JCheckBox autoScrollBox_;
     
-    /** Checkbox to toggles the inclusion of lines numbers in the tail output*/
+    /** 
+     * Checkbox to toggles the inclusion of lines numbers in the tail output
+     */
     private JCheckBox lineNumbersBox_;
     
-    /** Regular expression filter field that includes matching lines */ 
+    /** 
+     * Regular expression filter field that includes matching lines 
+     */ 
     private JTextField regexField_;
     
-    /** Cut expression filter field that chops columns from a line */
+    /** 
+     * Cut expression filter field that chops columns from a line 
+     */
     private JTextField cutField_;
 
-    /** Lines are places in this queue for the UI component to pick up from */
+    /** 
+     * Lines are places in this queue for the UI component to pick up from 
+     */
     private BlockingQueue queue_;
     
-    /** Optimization to read lines from the queue in batch instead of one'zies*/ 
+    /** 
+     * Optimization to read lines from the queue in batch instead of one'zies
+     */ 
     private BatchingQueueReader queueReader_;
     
-    /** Listener for queue events */
+    /** 
+     * Listener for queue events 
+     */
     private TailQueueListener queueListener_;
     
-    /** List of filters that are applied to each line */
+    /** 
+     * List of filters that are applied to each line 
+     */
     private List filters_ = new ArrayList();
     
-    /** Filter that includes lines matching a regular expression */ 
+    /** 
+     * Filter that includes lines matching a regular expression 
+     */ 
     private RegexLineFilter regexFilter_;
     
-    /** Filter that cuts columns from a line */
+    /** 
+     * Filter that cuts columns from a line 
+     */
     private CutLineFilter cutFilter_;
     
-    /** Filter that adds a line number to the beginning of each line */
+    /** 
+     * Filter that adds a line number to the beginning of each line 
+     */
     private LineNumberDecorator lineNumberDecorator_;
 
-    /** The non-UI tail component */    
-    private Tail tail_;
+    /** 
+     * Contexts for the individual tails that are aggregated by this TailPane
+     */
+    private TailContext[] contexts_;
 
-    /** Tail configuration */
+    /** 
+     * TailPane configuration 
+     */
     private ITailPaneConfig config_;
     
     //--------------------------------------------------------------------------
@@ -175,59 +254,23 @@ public class TailPane extends JPanel
      */
     protected void init() throws IOException, FileNotFoundException
     {
-        //
-        //                      Queue 
-        //                        ^
-        //                        |  
-        //                        |   pops lines from (individually)
-        //                        |
-        //                BatchingQueueReader
-        //                        |
-        //                        |
-        //                        |   provides lines to (batched)
-        //                        |
-        //                        v
-        //                TailQueueListener
-        //
-        
-        String file = config_.getFilename();
-        
         queue_          = new BlockingQueue();
         queueListener_  = new TailQueueListener();        
-        queueReader_    = new BatchingQueueReader(
-                              queue_,file + "-BatchingQueueReader");
-                                        
+        queueReader_    = new BatchingQueueReader(queue_, 
+                              ArrayUtil.toString(config_.getFilenames()) + 
+                              "-BatchingQueueReader");
+                                            
         queueReader_.addBatchingQueueListener(queueListener_);
         queueReader_.start();
         
-        // Setup tail
-        tail_ = new Tail();
-        tail_.addTailListener(new TailListener());
-         
-        if (file.equals(LOG_SYSTEM_OUT))
+        String[] filenames = config_.getFilenames();
+        contexts_ = new TailContext[0];
+        
+        for (int i=0; i<filenames.length; i++)
         {
-            PipedOutputStream pos = new PipedOutputStream();
-            PipedInputStream  pis = new PipedInputStream(pos);
-            PrintStream ps = new PrintStream(pos, true);
-            System.setOut(ps);
-            tail_.follow(new InputStreamReader(pis), new NullWriter(), file);
-            logger_.debug("Tailing System.out...");
-        }
-        else if (file.equals(LOG_LOG4J))
-        {
-            PipedOutputStream pos = new PipedOutputStream();
-            PipedInputStream  pis = new PipedInputStream(pos);
-            WriterAppender appender = new WriterAppender(new TTCCLayout(), pos);
-            appender.setImmediateFlush(true);
-            appender.setThreshold(Priority.DEBUG);
-            appender.setName("toolbox-stream-appender");
-            LogManager.getLogger("toolbox").addAppender(appender);
-            tail_.follow(new InputStreamReader(pis), new NullWriter(), file);
-            logger_.debug("Tailing Log4J...");                
-        }
-        else
-        {
-            tail_.follow(new File(file), new NullWriter());
+            TailContext tc = new TailContext(filenames[i]);
+            contexts_ = (TailContext[]) ArrayUtil.add(contexts_, tc);
+            tc.init();
         }
     }
     
@@ -393,7 +436,7 @@ public class TailPane extends JPanel
      * 
      * @return TailConfig
      */
-    public ITailPaneConfig getConfiguration()
+    public ITailPaneConfig getConfiguration() throws IOException
     {
         // Make sure configuration up to date
         config_.setAutoScroll(autoScrollBox_.isSelected());
@@ -402,6 +445,14 @@ public class TailPane extends JPanel
         config_.setAntiAlias(tailArea_.isAntiAlias());
         config_.setRegularExpression(getRegularExpression());
         config_.setCutExpression(getCutExpression());
+        
+        String files[] = new String[0];
+        
+        for (int i=0; i<contexts_.length; i++)
+            files = (String[]) ArrayUtil.add(
+                files, contexts_[i].getTail().getFile().getCanonicalPath());
+                
+        config_.setFilenames(files);
         
         config_.setAutoStart(
             startButton_.getText().equals(MODE_START) ? false : true);
@@ -417,6 +468,14 @@ public class TailPane extends JPanel
     public JButton getCloseButton()
     {
         return closeButton_;
+    }
+
+    public void aggregate(String file) throws IOException
+    {
+        TailContext tc = new TailContext(file);
+        tc.init();
+        contexts_ = (TailContext[]) ArrayUtil.add(contexts_, tc);
+        tc.getTail().start();
     }
 
     //--------------------------------------------------------------------------
@@ -439,6 +498,62 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
+ 
+    public class TailContext
+    {
+        //private static final Logger logger_ = Logger.getLogger(TailContext.class);
+    
+        private String filename_;
+        private Tail tail_;
+            
+        public TailContext(String filename)
+        {
+            filename_ = filename;
+        }
+
+        public void init() throws IOException
+        {
+            
+            // Setup tail
+            tail_ = new Tail();
+            tail_.addTailListener(new TailListener());
+             
+            if (filename_.equals(TailPane.LOG_SYSTEM_OUT))
+            {
+                PipedOutputStream pos = new PipedOutputStream();
+                PipedInputStream  pis = new PipedInputStream(pos);
+                PrintStream ps = new PrintStream(pos, true);
+                System.setOut(ps);
+                tail_.follow(new InputStreamReader(pis), new NullWriter(), filename_);
+                logger_.debug("Tailing System.out...");
+            }
+            else if (filename_.equals(TailPane.LOG_LOG4J))
+            {
+                PipedOutputStream pos = new PipedOutputStream();
+                PipedInputStream  pis = new PipedInputStream(pos);
+                WriterAppender appender = new WriterAppender(new TTCCLayout(), pos);
+                appender.setImmediateFlush(true);
+                appender.setThreshold(Priority.DEBUG);
+                appender.setName("toolbox-stream-appender");
+                LogManager.getLogger("toolbox").addAppender(appender);
+                tail_.follow(new InputStreamReader(pis), new NullWriter(), filename_);
+                logger_.debug("Tailing Log4J...");                
+            }
+            else
+            {
+                tail_.follow(new File(filename_), new NullWriter());
+            }
+        }
+        
+        /**
+         * @return
+         */
+        public Tail getTail()
+        {
+            return tail_;
+        }
+    } 
+
     
     /**
      * Listener for tail
@@ -569,13 +684,16 @@ public class TailPane extends JPanel
                 try
                 {
                     init();
-                    tail_.start();
+                    for (int i=0; i<contexts_.length; i++)
+                        contexts_[i].getTail().start();
+                        
                     mode_ = MODE_STOP;
                     putValue(Action.NAME, mode_);
                     pauseButton_.setEnabled(true);
                     //queueListener_.resetLines();
                     statusBar_.setStatus(
-                        "Started tail for " + config_.getFilename());
+                        "Started tail for " + 
+                            contexts_[0].getTail().getFile().getCanonicalPath());
                 }
                 catch (IOException ioe)
                 {
@@ -588,13 +706,19 @@ public class TailPane extends JPanel
             //
             else
             {
-                tail_.stop();
                 queueReader_.stop();
+                
+                for (int i=0; i<contexts_.length; i++)
+                {
+                    contexts_[i].getTail().stop();
+                }                    
+                
                 mode_ = MODE_START;
                 putValue(Action.NAME, mode_);                
                 pauseButton_.setEnabled(false);
                 statusBar_.setStatus(
-                    "Stopped tail for " + config_.getFilename());
+                    "Stopped tail for " + 
+                        ArrayUtil.toString(config_.getFilenames()));
             }
         }
     }
@@ -602,33 +726,40 @@ public class TailPane extends JPanel
     /**
      * Pauses/unpauses the tail
      */
-    class PauseUnpauseAction extends AbstractAction
+    class PauseUnpauseAction extends SmartAction
     {
         private static final String MODE_PAUSE   = "Pause";
         private static final String MODE_UNPAUSE = "Unpause";
             
         PauseUnpauseAction()
         {
-            super(MODE_PAUSE);
+            super(MODE_PAUSE, true, false, null);
             putValue(MNEMONIC_KEY, new Integer('P'));
             putValue(SHORT_DESCRIPTION, "Pause/Unpauses the tail");
         }
     
-        public void actionPerformed(ActionEvent e)
-        { 
-            if (tail_.isPaused())
+        public void runAction(ActionEvent e) throws Exception
+        {
+            for (int i=0; i<contexts_.length; i++)
             {
-                tail_.unpause();
-                putValue(Action.NAME, MODE_PAUSE);
-                statusBar_.setStatus(
-                    "Unpaused tail for " + config_.getFilename());              
-            }
-            else
-            {
-                tail_.pause();
-                putValue(Action.NAME, MODE_UNPAUSE);
-                statusBar_.setStatus(
-                    "Paused tail for " + config_.getFilename());
+                Tail tail = contexts_[i].getTail();
+            
+                if (tail.isPaused())
+                {
+                    tail.unpause();
+                    putValue(Action.NAME, MODE_PAUSE);
+                    
+                    statusBar_.setStatus(
+                        "Unpaused tail for " + 
+                            tail.getFile().getCanonicalPath());              
+                }
+                else
+                {
+                    tail.pause();
+                    putValue(Action.NAME, MODE_UNPAUSE);
+                    statusBar_.setStatus(
+                        "Paused tail for " + tail.getFile().getCanonicalPath());
+                }
             }
         }
     }
@@ -647,13 +778,19 @@ public class TailPane extends JPanel
     
         public void actionPerformed(ActionEvent e)
         { 
-            if (tail_.isPaused())
-                tail_.unpause();
+            for (int i=0; i<contexts_.length; i++)
+            {
+                Tail tail = contexts_[i].getTail();
                 
-            if (tail_.isAlive())
-                tail_.stop();
-                
-            statusBar_.setStatus("Closed tail for " + config_.getFilename());
+                if (tail.isPaused())
+                    tail.unpause();
+                    
+                if (tail.isAlive())
+                    tail.stop();
+            }
+            
+            // TODO: Fix for multiple files    
+            statusBar_.setStatus("Closed tail for "+config_.getFilenames()[0]);
         }
     }
 

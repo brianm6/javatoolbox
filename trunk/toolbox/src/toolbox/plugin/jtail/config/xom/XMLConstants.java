@@ -17,12 +17,13 @@ public interface XMLConstants
     public static final String NODE_DEFAULTS = "Defaults";
 
     // Tail XML element
-    public static final String NODE_TAIL     = "Tail";
-    public static final String ATTR_FILE        = "file";
-    public static final String ATTR_AUTOSCROLL  = "autoScroll";
-    public static final String ATTR_LINENUMBERS = "showLineNumbers";
-    public static final String ATTR_ANTIALIAS   = "antiAlias";
-    public static final String ATTR_AUTOSTART   = "autoStart";
+    public static final String NODE_TAIL          = "Tail";
+    public static final String   ATTR_AUTOSCROLL  = "autoScroll";
+    public static final String   ATTR_LINENUMBERS = "showLineNumbers";
+    public static final String   ATTR_ANTIALIAS   = "antiAlias";
+    public static final String   ATTR_AUTOSTART   = "autoStart";
+    public static final String   NODE_FILE        = "File";
+    public static final String     ATTR_FILENAME  = "name";
     
     // Font XML element
     public static final String NODE_FONT        = "Font";

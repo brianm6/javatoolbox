@@ -14,9 +14,6 @@ import toolbox.util.ui.JFileExplorer;
  */
 public class FileSelectionPane extends JPanel
 {
-    //private static final Logger logger_ =
-    //    Logger.getLogger(FileSelectionPane.class);
-
     /**
      * File explorer used to select the file to tail
      */    
@@ -27,12 +24,18 @@ public class FileSelectionPane extends JPanel
      */
     private JButton tailButton_;
     
+    /**
+     * Button that will tail the currently selected file and aggregate the 
+     * output with the currently active TailPane
+     */
+    private JButton aggregateButton_;
+    
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a FileSelectionPane
      */
     public FileSelectionPane()
     {
@@ -69,7 +72,9 @@ public class FileSelectionPane extends JPanel
         // Button panel    
         JPanel buttonPanel = new JPanel(new FlowLayout());
         tailButton_ = new JButton("Tail");
+        aggregateButton_ = new JButton("Aggregate");
         buttonPanel.add(tailButton_);
+        buttonPanel.add(aggregateButton_);
         add(buttonPanel, BorderLayout.SOUTH);
     }
     
@@ -95,5 +100,15 @@ public class FileSelectionPane extends JPanel
     public JButton getTailButton()
     {
         return tailButton_;
+    }
+
+    /**
+     * Returns the aggregate button.
+     * 
+     * @return Aggregate button
+     */
+    public JButton getAggregateButton()
+    {
+        return aggregateButton_;
     }
 }
