@@ -46,7 +46,7 @@ import toolbox.util.ui.font.JFontChooserDialog;
  */
 public class JTail extends JFrame
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JTail.class);
 
@@ -107,8 +107,9 @@ public class JTail extends JFrame
      * 
      * @param  args  None recognized
      */
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
+        SwingUtil.setPreferredLAF();        
         JTail jtail = new JTail();
         jtail.setVisible(true);
         jtail.applyConfiguration();
@@ -149,8 +150,6 @@ public class JTail extends JFrame
     {
         try
         {
-            SwingUtil.setPreferredLAF();
-            
             // Init variables
             tailMap_  = new HashMap();
             

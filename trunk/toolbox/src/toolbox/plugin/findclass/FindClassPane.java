@@ -16,7 +16,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java2html.Java2Html;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
@@ -38,9 +37,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import org.apache.log4j.Logger;
+
 import net.sf.jode.decompiler.Decompiler;
 
-import org.apache.log4j.Logger;
+import java2html.Java2Html;
 
 import toolbox.util.DateTimeUtil;
 import toolbox.util.MathUtil;
@@ -116,6 +117,7 @@ public class JFindClass extends JFrame
      */    
     public static void main(String[] args) throws Exception
     {
+        SwingUtil.setPreferredLAF();           
         JFindClass jfc = new JFindClass();
         jfc.setVisible(true);
     }
@@ -144,7 +146,6 @@ public class JFindClass extends JFrame
     public JFindClass(String title) throws Exception
     {
         super(title);
-        SwingUtil.setPreferredLAF();        
         buildView();
         init();
         setSize(800,600);
