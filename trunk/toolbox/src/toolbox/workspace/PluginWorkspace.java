@@ -1,7 +1,6 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -37,7 +36,6 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
-import toolbox.util.ResourceCloser;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
@@ -55,10 +53,10 @@ import toolbox.util.SwingUtil;
  * TODO: Make webstart enabled
  * TODO: Added close icon to plugin tabs
  * TODO: Add differentiation between maximized and sized frame 
- * TODO: Save last selected plugin on shutdown and restore on startup
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Abstraction for concrete regular expression engine implementation
- * 
+ * TODO: Convert project build and layout to Maven
+ * TODO: Use Quilt for JUnit Test coverage instead of Clover 
  * </pre>
  */
 public class PluginWorkspace extends JFrame implements IStatusBar
@@ -101,6 +99,10 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     private Map plugins_ = new SequencedHashMap();
 
+    //--------------------------------------------------------------------------
+    // Main 
+    //--------------------------------------------------------------------------
+    
     /**
      * Entrypoint 
      * 
@@ -486,7 +488,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     }
     
     //--------------------------------------------------------------------------
-    //  IStatusBar Interface
+    //  Implements IStatusBar
     //--------------------------------------------------------------------------
     
     /**
