@@ -22,6 +22,16 @@ import org.apache.log4j.Logger;
 public class RemoteTelnet
 {
     private static final Logger logger_ = Logger.getLogger(RemoteTelnet.class);
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Separator for (submit command, wait for response) pairs submitted to
+     * the program via the -c switch.
+     */
+    private static final char COMMAND_SEPARATOR = '|';
     
     //--------------------------------------------------------------------------
     // Fields
@@ -49,7 +59,7 @@ public class RemoteTelnet
      * -h host:port Host and port to telnet to
      * -u username  Telnet username    
      * -p password  Telnet password
-     * -c command   Telnet command
+     * -c command   Telnet command/response pairs
      * </pre>
      * 
      * @throws IOException on I/O error.
@@ -175,7 +185,33 @@ public class RemoteTelnet
         //telnet.sendCommand("export DISPLAY=" + 
         //    InetAddress.getLocalHost().getHostAddress() + ":0");
         
-        telnet.sendCommand(options_.getCommand());
+        String[] tokens = 
+            StringUtils.split(options_.getCommand(), COMMAND_SEPARATOR);
+        
+        switch (tokens.length)
+        {
+            case 0: 
+                System.out.println("No commands specified");
+                printUsage();
+                break;
+                
+            case 1:
+                telnet.sendCommand(tokens[0]);
+                break;
+                
+            default:
+                
+                for (int i = 0; i < tokens.length; i+=2)
+                {
+                    telnet.sendCommand(tokens[i]);
+                    Thread.sleep(1000);
+                    if (i + 1 < tokens.length)
+                        telnet.waitFor(tokens[i+1]);
+                }
+            
+                break;
+        }
+        
         logger_.debug("Sending AYT...");
         telnet.sendAYT(10000);
         telnet.disconnect();
