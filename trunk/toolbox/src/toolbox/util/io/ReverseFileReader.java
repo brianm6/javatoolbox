@@ -8,6 +8,8 @@ import java.io.Reader;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.StringUtil;
+
 /**
  * Reads a file efficiently in reverse order.
  */
@@ -164,5 +166,30 @@ public class ReverseFileReader extends Reader
         }
         
         return line;
+    }
+    
+    /**
+     * Reads the next line from the file in reverse direction, but with the
+     * contents of the line in normal reading order.
+     * 
+     * <p>
+     * Given the following file with the carat denoting the current file
+     * pointer:
+     * <pre>
+     * First line
+     * Second line
+     * Last line
+     *         ^
+     * 
+     * A call to readLineNormal() will return the string "Last line"
+     * </pre>
+     * 
+     * @return Line as string or null if the beginning of file has been reached.
+     * @throws IOException on I/O error
+     */
+    public String readLineNormal() throws IOException
+    {
+        String line = readLine();
+        return (line != null ? StringUtil.reverse(line) : line);
     }
 }
