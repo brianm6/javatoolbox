@@ -49,60 +49,90 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * GUI component that encompasses the tailing activity of a single file.
+ * A UI component that serves as the view for the tailing of a single file. 
  */
 public class TailPane extends JPanel
 {
     /*
-    * TOOD: Figure why anti alias select from font chooser dialog does not get
-    *       applied/persisted to the tailpane!
-    * TODO: Color code keywords
-    * TODO: Color code time lapse delays
-    * TODO: Move button panel to its own flippane
-    * TODO: Add option to tail the whole file from the beginning
-    */
+     * TODO: Figure why anti alias select from font chooser dialog does not get
+     *       applied/persisted to the tailpane!
+     * TODO: Color code keywords
+     * TODO: Color code time lapse delays
+     * TODO: Move button panel to its own flippane
+     * TODO: Add option to tail the whole file from the beginning
+     * TODO: Create filter that will accept a beanshell script 
+     */
      
     private static final Logger logger_ = 
         Logger.getLogger(TailPane.class);
     
-    // Special types of Logs that aren't "Files"
+    /** Special tail type for System.out */
     public static final String LOG_SYSTEM_OUT = "[System.out]";
-    public static final String LOG_LOG4J      = "[Log4J]";
-
-    private static final String MODE_START = "Start";
-    private static final String MODE_STOP  = "Stop";
     
+    /** Specital tail type for Log4J */
+    public static final String LOG_LOG4J = "[Log4J]";
+
+    /** Start button text for dual action button start/stop */
+    private static final String MODE_START = "Start";
+    
+    /** Stop button text for dual action button start/stop */
+    private static final String MODE_STOP  = "Stop";
+
+    /** Reference to workspace status bar */
+    private IStatusBar statusBar_;
+    
+    /** Tail output is appended into this text area */
+    private JSmartTextArea tailArea_;
+    
+    /** Clears the output text area */
     private JButton clearButton_;
+    
+    /** Dual action button that handles pause/unpause of tail */
     private JButton pauseButton_;
+    
+    /** Dual action button that handles start/stop of tail */
     private JButton startButton_;
+    
+    /** Closes the tail (also triggers adding the tail to the recent menu) */
     private JButton closeButton_;
     
+    /** Checkbox to toggle auto scrolling of the output text area */
     private JCheckBox autoScrollBox_;
+    
+    /** Checkbox to toggles the inclusion of lines numbers in the tail output*/
     private JCheckBox lineNumbersBox_;
     
+    /** Regular expression filter field that includes matching lines */ 
     private JTextField regexField_;
+    
+    /** Cut expression filter field that chops columns from a line */
     private JTextField cutField_;
 
-    private BlockingQueue       queue_;
-    private BatchingQueueReader queueReader_;
-    private TailQueueListener   queueListener_;
+    /** Lines are places in this queue for the UI component to pick up from */
+    private BlockingQueue queue_;
     
+    /** Optimization to read lines from the queue in batch instead of one'zies*/ 
+    private BatchingQueueReader queueReader_;
+    
+    /** Listener for queue events */
+    private TailQueueListener queueListener_;
+    
+    /** List of filters that are applied to each line */
     private List filters_ = new ArrayList();
     
-    // Decorators and filters 
-    private RegexLineFilter     regexFilter_;
-    private CutLineFilter       cutFilter_;
+    /** Filter that includes lines matching a regular expression */ 
+    private RegexLineFilter regexFilter_;
+    
+    /** Filter that cuts columns from a line */
+    private CutLineFilter cutFilter_;
+    
+    /** Filter that adds a line number to the beginning of each line */
     private LineNumberDecorator lineNumberDecorator_;
-    
-    private IStatusBar  statusBar_;
-    
-    /** Output for tail */
-    private JSmartTextArea tailArea_;
 
-    /** The tailer */    
+    /** The non-UI tail component */    
     private Tail tail_;
 
-    /** Configuration */
+    /** Tail configuration */
     private ITailPaneConfig config_;
     
     //--------------------------------------------------------------------------
@@ -164,15 +194,15 @@ public class TailPane extends JPanel
         
         queue_          = new BlockingQueue();
         queueListener_  = new TailQueueListener();        
-        queueReader_    = new BatchingQueueReader(queue_, file + "-BatchingQueueReader");        
+        queueReader_    = new BatchingQueueReader(
+                              queue_,file + "-BatchingQueueReader");
+                                        
         queueReader_.addBatchingQueueListener(queueListener_);
         queueReader_.start();
         
         // Setup tail
         tail_ = new Tail();
         tail_.addTailListener(new TailListener());
-        
-        
          
         if (file.equals(LOG_SYSTEM_OUT))
         {
@@ -235,7 +265,7 @@ public class TailPane extends JPanel
         buttonPanel.add(closeButton_);
         buttonPanel.add(autoScrollBox_);
         buttonPanel.add(lineNumbersBox_);
-        buttonPanel.add(new JLabel("Filter"));
+        buttonPanel.add(new JLabel("Include filter"));
         buttonPanel.add(regexField_);
         buttonPanel.add(new JLabel("Cut"));
         buttonPanel.add(cutField_);
@@ -274,6 +304,8 @@ public class TailPane extends JPanel
     }
 
     /**
+     * Returns regular expression filter 
+     * 
      * @return Filter text
      */
     protected String getRegularExpression()
@@ -301,7 +333,9 @@ public class TailPane extends JPanel
     }
 
     /**
-     * @return Cut text
+     * Returns the cut expression
+     * 
+     * @return Cut expression
      */
     protected String getCutExpression()
     {
@@ -376,6 +410,8 @@ public class TailPane extends JPanel
     }    
 
     /**
+     * Returns the close button
+     * 
      * @return Close button
      */
     public JButton getCloseButton()
@@ -468,7 +504,8 @@ public class TailPane extends JPanel
     }
 
     /**
-     * Enables dynamic filtering based on regex as it is typed
+     * Listens for changes in the regular expression (user must press enter) and
+     * applies the new regular expression accordingly.
      */    
     public class RegexActionListener implements ActionListener
     {
@@ -481,14 +518,14 @@ public class TailPane extends JPanel
             else
             {
                 setRegularExpression(getRegularExpression());
-                statusBar_.setStatus("Now matching regular expression: " + s);
+                statusBar_.setStatus("Filtering on regular expression: " + s);
             }
-                
         }
     }
 
     /**
-     * Enabled dynamic filtering based on regex as it is typed
+     * Listens for changes in the cut expression (user must press enter) and
+     * applies the new cut expression accordingly.
      */    
     public class CutActionListener implements ActionListener
     {
