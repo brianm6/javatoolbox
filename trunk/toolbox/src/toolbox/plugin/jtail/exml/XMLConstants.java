@@ -11,7 +11,8 @@ public interface XMLConstants
     public static final String ATTR_WIDTH    = "width";
     public static final String ATTR_X        = "x";
     public static final String ATTR_Y        = "y";
-    
+    public static final String ATTR_DIR      = "dir";
+        
     // Defaults XML element
     public static final String ELEMENT_DEFAULTS = "Defaults";
 
