@@ -30,6 +30,15 @@ public class EchoConnectionHandler implements IConnectionHandler
     public static final String TOKEN_TERMINATE = "terminate";
     
     //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Quiet flag.
+     */
+    private boolean quiet_;
+    
+    //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
     
@@ -38,6 +47,18 @@ public class EchoConnectionHandler implements IConnectionHandler
      */
     public EchoConnectionHandler()
     {
+        this(false);
+    }
+    
+    
+    /**
+     * Creates an EchoConnectionHandler.
+     * 
+     * @param quiet True for quiet, false otherwise.
+     */
+    public EchoConnectionHandler(boolean quiet)
+    {
+        quiet_ = quiet;
     }
     
     //--------------------------------------------------------------------------
@@ -62,7 +83,8 @@ public class EchoConnectionHandler implements IConnectionHandler
             while (!terminate) 
             {
                 String request = br.readLine();
-                logger_.info("Echo: " + request);
+                if (quiet_) 
+                    logger_.info("Echo: " + request);
                 pw.println(request);
                 pw.flush();
                 
@@ -82,5 +104,30 @@ public class EchoConnectionHandler implements IConnectionHandler
         }
         
         return null;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns true if the handler shoudl not generate any debug outout.
+     *
+     * @return boolean
+     */
+    public boolean isQuiet()
+    {
+        return quiet_;
+    }
+    
+    
+    /**
+     * Sets the quite flag.
+     *
+     * @param quiet Set to true to stop debug output.
+     */
+    public void setQuiet(boolean quiet)
+    {
+        quiet_ = quiet;
     }
 }
