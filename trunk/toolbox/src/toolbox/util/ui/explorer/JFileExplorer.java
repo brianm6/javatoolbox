@@ -43,15 +43,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.FileUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.list.JSmartList;
@@ -967,19 +968,35 @@ public class JFileExplorer extends JPanel implements IPreferenced
                             
                             if (!StringUtils.isBlank(newName))
                             {
-                                File f = new File(path);
-                                f.renameTo(new File(newName));
-         
-                                String folder = getCurrentPath();
-                                String file   = FileUtil.stripPath(getFilePath());
+                                File from = new File(path);
+                                File parent = from.getParentFile();
+                                File to = new File(parent, newName);
                                 
-                                new DriveComboListener().itemStateChanged(
-                                    new ItemEvent(getRootsComboBox(), 0, null, 
-                                        ItemEvent.ITEM_STATE_CHANGED));
-                                        
-                                selectFolder(folder);
-                                setFileList(folder);
-                                getFileList().setSelectedValue(file, true);
+                                logger_.debug("From: " + from + "  To: " + to);
+                                
+                                boolean success  = from.renameTo(to);
+         
+                                if (success)
+                                {
+                                    String folder = to.getAbsolutePath();
+                                    
+                                    new DriveComboListener().itemStateChanged(
+                                        new ItemEvent(getRootsComboBox(), 0, null, 
+                                            ItemEvent.SELECTED));
+                                            
+                                    selectFolder(folder);
+                                    
+                                    //setFileList(folder);
+                                    //getFileList().setSelectedValue(file, true);
+                                }
+                                else
+                                {
+                                    JSmartOptionPane.showMessageDialog(
+                                        SwingUtil.getFrameAncestor(JFileExplorer.this),
+                                        "File rename failed",
+                                        "Error - Rename",
+                                        JOptionPane.ERROR_MESSAGE);
+                                }
                             }
                         }
                     });
