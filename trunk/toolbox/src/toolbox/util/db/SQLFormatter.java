@@ -12,11 +12,11 @@ import org.apache.log4j.Logger;
  */
 public class SQLFormatter
 {
+    private static final Logger logger_ = Logger.getLogger(SQLFormatter.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-
-    private static final Logger logger_ = Logger.getLogger(SQLFormatter.class);
     
     private static final String MAJOR_WORDS = 
         "|SELECT|FROM|WHERE|ORDER BY|GROUP BY|HAVING|UPDATE|SET|INSERT|INTO" +
@@ -43,10 +43,10 @@ public class SQLFormatter
     
     private String newLine_;
     private String indent_;
-    private boolean capMajor_;
-    private boolean capMinor_;
-    private boolean capNames_;
-    private boolean newLineAnd_;
+    private boolean capitalizeMajor_;
+    private boolean capitalizeMinor_;
+    private boolean capitalizeNames_;
+    private boolean newLineBeforeAnd_;
     private boolean debug_;
 
     private String escapes_[][] = 
@@ -66,13 +66,152 @@ public class SQLFormatter
      */
     public SQLFormatter()
     {
-        newLine_     = "\n"; //System.getProperty("line.separator");
-        indent_      = "    ";
-        capMajor_    = false;
-        capMinor_    = false;
-        capNames_    = false;
-        newLineAnd_  = true;
-        debug_       = false;
+        setNewLine("\n");
+        setIndent(4);
+        setCapitalizeMajor(false);
+        setCapitalizeMinor(false);
+        setCapitalizeNames(false);
+        setNewLineBeforeAnd(true);
+        setDebug(false);
+    }
+
+    
+    //--------------------------------------------------------------------------
+    // Accessors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the capMajor.
+     * 
+     * @return boolean
+     */
+    public boolean isCapitalizeMajor()
+    {
+        return capitalizeMajor_;
+    }
+    
+    
+    /**
+     * Returns the capMinor.
+     * 
+     * @return boolean
+     */
+    public boolean isCapitalizeMinor()
+    {
+        return capitalizeMinor_;
+    }
+    
+    
+    /**
+     * Returns the capNames.
+     * 
+     * @return boolean
+     */
+    public boolean isCapitalizeNames()
+    {
+        return capitalizeNames_;
+    }
+    
+    
+    /**
+     * Returns the indent.
+     * 
+     * @return String
+     */
+    public String getIndent()
+    {
+        return indent_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Mutators
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Used to turn on capitalization of major SQL keywords.
+     * 
+     * @param flag True to capitalize.
+     */
+    public void setCapitalizeMajor(boolean flag)
+    {
+        capitalizeMajor_ = flag;
+    }
+    
+    
+    /**
+     * Sets the capitalization of minor sql keywords.
+     * 
+     * @param flag True to capitalize, false otherwise.
+     */
+    public void setCapitalizeMinor(boolean flag)
+    {
+        capitalizeMinor_ = flag;
+    }
+
+    
+    /**
+     * Used to turn on capitalization of SQL names.
+     * 
+     * @param flag True to capitalize.
+     */
+    public void setCapitalizeNames(boolean flag)
+    {
+        capitalizeNames_ = flag;
+    }
+    
+    
+    /**
+     * Used to set the number of spaces for indentation.
+     * 
+     * @param i Number of spaces to use for indentation.
+     */
+    public void setIndent(int i)
+    {
+        if (i < 0)
+            indent_ = "\t";
+        else
+            indent_ = StringUtils.repeat(" ", i);
+    }
+
+    
+    /**
+     * Sets flag to turn on new lines before an AND.
+     * 
+     * @param flag True to embed a newline, false otherwise.
+     */
+    public void setNewLineBeforeAnd(boolean flag)
+    {
+        newLineBeforeAnd_ = flag;
+    }
+
+    
+    /**
+     * Sets the new line string (The default value is the same as that of
+     * the current operating system).
+     * 
+     * @param s String representing this platforms newline character.
+     */
+    public void setNewLine(String s)
+    {
+        for (int i = 0; i < escapes_.length; i++)
+        {
+            for (int j = 0; j < escapes_[0].length; j++)
+                if (escapes_[i][j].equals(newLine_))
+                    escapes_[i][j] = s;
+        }
+
+        newLine_ = s;
+    }
+
+    
+    /**
+     * Sets the debug flag.
+     * 
+     * @param flag Debug flag.
+     */
+    public void setDebug(boolean flag)
+    {
+        debug_ = flag;
     }
     
     //--------------------------------------------------------------------------
@@ -192,13 +331,13 @@ public class SQLFormatter
             boolean flag = false;
             
             if (isMajor(as[l1]))
-                flag = capMajor_;
+                flag = capitalizeMajor_;
             
             if (isMinor(as[l1]))
-                flag = capMinor_;
+                flag = capitalizeMinor_;
             
             if (isName(as[l1]))
-                flag = capNames_;
+                flag = capitalizeNames_;
             
             if (flag)
                 as[l1] = as[l1].toUpperCase();
@@ -229,7 +368,7 @@ public class SQLFormatter
             }
             else if (as[i2].equalsIgnoreCase("AND"))
             {    
-                if (newLineAnd_)
+                if (newLineBeforeAnd_)
                     ai[i2 - 1] = 2;
                 else
                     ai[i2] = 2;
@@ -323,85 +462,8 @@ public class SQLFormatter
         return sql;
     }
 
-    
-    /**
-     * Sets flag to turn on new lines before an AND.
-     * 
-     * @param flag True to embed a newline, false otherwise.
-     */
-    public void setNewLineBeforeAnd(boolean flag)
-    {
-        newLineAnd_ = flag;
-    }
-
-    
-    /**
-     * Sets the new line string (The default value is the same as that of
-     * the current operating system).
-     * 
-     * @param s String representing this platforms newline character.
-     */
-    public void setNewLine(String s)
-    {
-        for (int i = 0; i < escapes_.length; i++)
-        {
-            for (int j = 0; j < escapes_[0].length; j++)
-                if (escapes_[i][j].equals(newLine_))
-                    escapes_[i][j] = s;
-        }
-
-        newLine_ = s;
-    }
-
-    
-    /**
-     * Used to turn on capitalization of major SQL keywords.
-     * 
-     * @param flag True to capitalize.
-     */
-    public void setCapitalizeMajor(boolean flag)
-    {
-        capMajor_ = flag;
-    }
-
-    
-    /**
-     * Used to turn on capitalization of SQL names.
-     * 
-     * @param flag True to capitalize.
-     */
-    public void setCapitalizeNames(boolean flag)
-    {
-        capNames_ = flag;
-    }
-
-    
-    /**
-     * Used to set the number of spaces for indentation.
-     * 
-     * @param i Number of spaces to use for indentation.
-     */
-    public void setIndent(int i)
-    {
-        if (i < 0)
-            indent_ = "\t";
-        else
-            indent_ = StringUtils.repeat(" ", i);
-    }
-
-    
-    /**
-     * Sets the debug flag.
-     * 
-     * @param flag Debug flag.
-     */
-    public void setDebug(boolean flag)
-    {
-        debug_ = flag;
-    }
-    
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -410,7 +472,7 @@ public class SQLFormatter
      * @param s SQL name.
      * @return boolean
      */
-    private static boolean isName(String s)
+    protected static boolean isName(String s)
     {
         return !isIn(s, MAJOR_WORDS) && !isIn(s, MINOR_WORDS);
     }
@@ -422,7 +484,7 @@ public class SQLFormatter
      * @param s SQL function. 
      * @return boolean
      */
-    private static boolean isFunction(String s)
+    protected static boolean isFunction(String s)
     {
         return isIn(s, FUNCTION_WORDS);
     }
@@ -434,7 +496,7 @@ public class SQLFormatter
      * @param s SQL keyword.
      * @return boolean
      */
-    private static boolean isMinor(String s)
+    protected static boolean isMinor(String s)
     {
         return isIn(s, MINOR_WORDS);
     }
@@ -447,7 +509,7 @@ public class SQLFormatter
      * @param s1 String with embedded tokens.
      * @return boolean
      */
-    private static boolean isIn(String s, String s1)
+    protected static boolean isIn(String s, String s1)
     {
         return s1.indexOf("|" + s.toUpperCase() + "|") > -1;
     }
@@ -459,20 +521,9 @@ public class SQLFormatter
      * @param s SQL subselect.
      * @return boolean
      */
-    private static boolean isSubSelect(String s)
+    protected static boolean isSubSelect(String s)
     {
         return isIn(s, SUB_SELECT);
-    }
-
-    
-    /**
-     * Sets the capitalization of minor sql keywords.
-     * 
-     * @param flag True to capitalize, false otherwise.
-     */
-    public void setCapitalizeMinor(boolean flag)
-    {
-        capMinor_ = flag;
     }
 
     
@@ -482,7 +533,7 @@ public class SQLFormatter
      * @param s SQL keyword.
      * @return boolean
      */
-    private static boolean isMajor(String s)
+    protected static boolean isMajor(String s)
     {
         return isIn(s, MAJOR_WORDS);
     }
