@@ -5,8 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.uci.ics.jung.visualization.FRLayout;
+import edu.uci.ics.jung.visualization.ISOMLayout;
+import edu.uci.ics.jung.visualization.Layout;
 import edu.uci.ics.jung.visualization.SpringLayout;
 import edu.uci.ics.jung.visualization.contrib.CircleLayout;
+import edu.uci.ics.jung.visualization.contrib.DAGLayout;
+import edu.uci.ics.jung.visualization.contrib.KKLayout;
 
 import toolbox.graph.Edge;
 import toolbox.graph.Graph;
@@ -87,8 +92,18 @@ public class JungGraphLib implements GraphLib
             (edu.uci.ics.jung.graph.Graph) graph.getDelegate();
         
         List layouts = new ArrayList();
-        layouts.add(new JungLayout(new CircleLayout(g))); 
-        layouts.add(new JungLayout(new SpringLayout(g)));
+        layouts.add(new JungLayout("Circle", new CircleLayout(g))); 
+        layouts.add(new JungLayout("Spring", new SpringLayout(g)));
+        layouts.add(new JungLayout("FR", new FRLayout(g)));
+        
+        DAGLayout dag = new DAGLayout(g);
+        dag.setForceMultiplier(1);
+        dag.setRepulsionRange(100);
+        dag.setStretch(1);
+        
+        layouts.add(new JungLayout("DAG", dag));
+        layouts.add(new JungLayout("KK", new KKLayout(g)));
+        layouts.add(new JungLayout("ISOM", new ISOMLayout(g)));
         return layouts;
     }
 
