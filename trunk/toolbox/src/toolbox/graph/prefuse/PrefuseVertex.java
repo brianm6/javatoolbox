@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import edu.berkeley.guir.prefuse.graph.DefaultNode;
-import edu.berkeley.guir.prefuse.graph.Graph;
 import edu.berkeley.guir.prefuse.graph.Node;
 
 import org.apache.log4j.Logger;
@@ -40,11 +39,7 @@ public class PrefuseVertex implements toolbox.graph.Vertex
     {
         // Create delegate
         vertex_ = new DefaultNode();
-        vertex_.setAttribute("label", label);
-        
-        // Add to graph
-        Graph g = (Graph) graph.getDelegate();
-        g.addNode(vertex_);
+        setText(label);
     }
 
     //--------------------------------------------------------------------------
@@ -65,6 +60,24 @@ public class PrefuseVertex implements toolbox.graph.Vertex
         }
         
         return result;
+    }
+    
+    
+    /**
+     * @see toolbox.graph.Vertex#getText()
+     */
+    public String getText()
+    {
+        return vertex_.getAttribute("label");
+    }
+    
+    
+    /**
+     * @see toolbox.graph.Vertex#setText(java.lang.String)
+     */
+    public void setText(String text)
+    {
+        vertex_.setAttribute("label", text);
     }
     
     //--------------------------------------------------------------------------
