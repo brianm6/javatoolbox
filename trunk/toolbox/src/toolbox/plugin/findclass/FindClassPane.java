@@ -70,8 +70,8 @@ import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * UI for finding class files by regular expression from the classpath
- * or any arbitrary java archive or directory.
+ * UI for finding class files by regular expression from the classpath or any 
+ * arbitrary java archive or directory.
  */
 public class JFindClass extends JFrame implements IPreferenced
 {
@@ -90,39 +90,112 @@ public class JFindClass extends JFrame implements IPreferenced
     private static final String   ATTR_HILITE_MATCHES  = "highlightmatches";
     private static final String NODE_TOP_FLIPPANE      = "TopFlipPane";
     private static final String NODE_LEFT_FLIPPANE     = "LeftFlipPane";
- 
 
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
 
-    // Search    
-    private JTextField           searchField_;
-    private JButton              searchButton_;
-    private JButton              dupesButton_;
-    private JCheckBox            ignoreCaseCheckBox_;
-    private JCheckBox            showPathCheckBox_;
-    private JCheckBox            hiliteMatchesCheckBox_;
+    // Search
+    
+    /**
+     * Allows for input of the search text.
+     */
+    private JTextField searchField_;
+    
+    /**
+     * Executes the search.
+     */
+    private JButton searchButton_;
+    
+    /**
+     * Executes a search for duplicate classes in the list of targets.
+     */
+    private JButton dupesButton_;
+    
+    /**
+     * Allows user to toggle case sensetivity in the search.
+     */
+    private JCheckBox ignoreCaseCheckBox_;
+    
+    /**
+     * Allows user to toggle the display of the path (thus shortening) the 
+     * contents of the 'Source' column.
+     */
+    private JCheckBox showPathCheckBox_;
+    
+    /**
+     * Allows user to toggle partial string hiliting of the search string
+     * within each search result.
+     */
+    private JCheckBox hiliteMatchesCheckBox_;
    
-    // Left flip pane            
-    private JFlipPane            leftFlipPane_;
-    private JFileExplorer        fileExplorer_;
+    // Left flip pane
+    
+    /**
+     * Flipper that houses the file explorer.
+     */
+    private JFlipPane leftFlipPane_;
+    
+    /**
+     * File explorer used to add additional jar/directory search targets.
+     */
+    private JFileExplorer fileExplorer_;
     
     // Top flip pane
-    private JFlipPane            topFlipPane_;
-    private JList                searchList_;
-    private DefaultListModel     searchListModel_;
-    private JPopupMenu           searchPopupMenu_;
+    
+    /**
+     * Flipper that houses the search targets panel and the decompiler panel. 
+     */
+    private JFlipPane topFlipPane_;
+    
+    /**
+     * List containing the jars/directories that are included in the search.
+     */
+    private JList searchList_;
+    
+    /**
+     * Data model for the list of search targets.
+     */
+    private DefaultListModel searchListModel_;
+    
+    /**
+     * Popup menu activated by right clicking on the search target list. 
+     * Allows the user to clear the list or remove individual entries.
+     */
+    private JPopupMenu searchPopupMenu_;
 
-    // Results    
-    private JTable               resultTable_;
-    private ResultsTableModel    resultTableModel_;
-    private TableSorter          resultTableSorter_;    
-    private JScrollPane          resultPane_;
-    private FindClass            findClass_;
+    // Results
+    
+    /**
+     * Table that displays the results of the search.
+     */
+    private JTable resultTable_;
+    
+    /**
+     * Data model for the list of search results.
+     */
+    private ResultsTableModel resultTableModel_;
+    
+    /**
+     * Enables sorting in the search results table by clicking on the table
+     * column header.
+     */
+    private TableSorter resultTableSorter_;
+    
+    /**
+     * Scroller for the results.
+     */
+    private JScrollPane resultPane_;
+    
+    /**
+     * Non-UI component used to do the actual grunt work of the search.
+     */
+    private FindClass findClass_;
 
-    // Status
-    private IStatusBar           statusBar_;
+    /**
+     * Status bar shared with the workspace.
+     */
+    private IStatusBar statusBar_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -436,7 +509,7 @@ public class JFindClass extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  SearchListener
+    // SearchListener
     //--------------------------------------------------------------------------
 
     /**
