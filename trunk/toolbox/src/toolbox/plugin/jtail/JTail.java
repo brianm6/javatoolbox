@@ -15,14 +15,15 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.border.EmptyBorder;
 
 import org.apache.log4j.Category;
 import toolbox.jtail.config.IConfigManager;
@@ -141,49 +142,17 @@ public class JTail extends JFrame
         
         fileSelectionPane_ = new FileSelectionPane();
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper("File Explorer", fileSelectionPane_);
+        flipPane_.addFlipper("File Eplorer", fileSelectionPane_);
         
         tabbedPane_ = new JTailTabbedPane();
 
-//        rootSplitPane_ = 
-//            new JSplitPane(
-//                JSplitPane.HORIZONTAL_SPLIT,
-//                flipPane_, 
-//                tabbedPane_);                
-
-//        rootSplitPane_.setOneTouchExpandable(true);
-
         getContentPane().add(BorderLayout.WEST, flipPane_);
         getContentPane().add(BorderLayout.CENTER, tabbedPane_);
-
-//        getContentPane().add(BorderLayout.CENTER, rootSplitPane_);
-  
-//        getContentPane().add(BorderLayout.WEST, flipPane_);
-//        getContentPane().add(BorderLayout.CENTER, tabbedPane_);     
         
         statusBar_ = new JSmartStatusBar();
         getContentPane().add(BorderLayout.SOUTH, statusBar_);
         
         setJMenuBar(createMenuBar());
-        
-//        flipPane_.addFlipPaneListener(new JFlipPane.JFlipPaneListener()
-//        {
-//            public void collapsed(JFlipPane flipPane)
-//            {
-//                //logger_.debug("Repainting cuz flipper collapsed");
-//                //getContentPane().validate();
-//                //rootSplitPane_.revalidate();
-//                //rootSplitPane_.resetToPreferredSizes();
-//            }
-//
-//            public void expanded(JFlipPane flipPane)
-//            {
-//                //logger_.debug("Repainting cuz flipper expanded");
-//                //getContentPane().validate();
-//                //rootSplitPane_.revalidate();
-//                //rootSplitPane_.resetToPreferredSizes();
-//            }
-//        });
     }
     
     
