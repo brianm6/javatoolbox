@@ -91,34 +91,34 @@ public class FontStyleList extends JList
         }
     }
     
-	//--------------------------------------------------------------------------
-	//  Private
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //  Private
+    //--------------------------------------------------------------------------
     
-	/**
-	 * Validates style display names
-	 * 
-	 * @param   styleDisplayNames  Style display names
-	 * @return  String array
-	 */
-	private static String[] 
-		validateStyleDisplayNames(String[] styleDisplayNames)
-	{
-		if (styleDisplayNames == null)
-			throw new IllegalArgumentException(
-				"String[] styleDisplayNames may not be null");
+    /**
+     * Validates style display names
+     * 
+     * @param   styleDisplayNames  Style display names
+     * @return  String array
+     */
+    private static String[] 
+        validateStyleDisplayNames(String[] styleDisplayNames)
+    {
+        if (styleDisplayNames == null)
+            throw new IllegalArgumentException(
+                "String[] styleDisplayNames may not be null");
     
-		if (styleDisplayNames.length != 4)
-			throw new IllegalArgumentException(
-				"String[] styleDisplayNames must have a length of 4");
+        if (styleDisplayNames.length != 4)
+            throw new IllegalArgumentException(
+                "String[] styleDisplayNames must have a length of 4");
 
-		for (int i = 0; i < styleDisplayNames.length; i++)
-		{
-			if (styleDisplayNames[i] == null)
-				throw new IllegalArgumentException(
-					"No member of String[] styleDisplayNames may be null");
-		}
+        for (int i = 0; i < styleDisplayNames.length; i++)
+        {
+            if (styleDisplayNames[i] == null)
+                throw new IllegalArgumentException(
+                    "No member of String[] styleDisplayNames may be null");
+        }
         
-		return styleDisplayNames;
-	}
+        return styleDisplayNames;
+    }
 }

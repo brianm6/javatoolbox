@@ -50,8 +50,8 @@ public class JTcpTunnelPlugin implements IPlugin
         menu.add(new JMenuItem(jtcpTunnelPane_.new StopTunnelAction()));
         menu.add(new JMenuItem(jtcpTunnelPane_.new ClearAction()));
         
-		JMenuBar jmb = new JMenuBar();
-		jmb.add(menu);
+        JMenuBar jmb = new JMenuBar();
+        jmb.add(menu);
 
         return jmb;
     }

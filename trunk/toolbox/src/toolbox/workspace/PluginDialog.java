@@ -40,14 +40,12 @@ import toolbox.util.ui.JListPopupMenu;
  */
 public class ManagePluginsDialog extends JDialog
 {
-    private JButton removeButton_;
-
-    private JButton addButton_;
-
     /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(ManagePluginsDialog.class);
-        
+    
+    private JButton removeButton_;
+    private JButton addButton_;
     private PluginWorkspace parent_;
     
     private JList activeList_;
@@ -122,12 +120,12 @@ public class ManagePluginsDialog extends JDialog
         gbc.anchor     = GridBagConstraints.SOUTH;
         gbc.insets     = new Insets(5,0,5,0);
         midButtonPanel.add(
-        	addButton_ = new JButton(new AddNewPluginAction()), gbc);
+            addButton_ = new JButton(new AddNewPluginAction()), gbc);
         
         gbc.gridy++;
         gbc.anchor     = GridBagConstraints.NORTH;
         midButtonPanel.add(
-        	removeButton_ = new JButton(new RemovePluginAction()), gbc);
+            removeButton_ = new JButton(new RemovePluginAction()), gbc);
 
         // Lists and buttons
         JPanel listPanel = new JPanel(new GridBagLayout());
@@ -293,8 +291,8 @@ public class ManagePluginsDialog extends JDialog
             }
         }
         
-		removeButton_.setEnabled(activeModel_.size() > 0);
-		addButton_.setEnabled(inactiveModel_.size() > 0);
+        removeButton_.setEnabled(activeModel_.size() > 0);
+        addButton_.setEnabled(inactiveModel_.size() > 0);
     }
     
     /**

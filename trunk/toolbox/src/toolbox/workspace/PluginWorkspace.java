@@ -55,12 +55,12 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
-    private static final String FILE_PREFS      = ".toolbox.properties";
-    private static final String KEY_WIDTH       = "pluginframe.width";
-    private static final String KEY_HEIGHT      = "pluginframe.height";
-    private static final String KEY_XCOORD      = "pluginframe.xcoord";
-    private static final String KEY_YCOORD      = "pluginframe.ycoord";
-    private static final String KEY_PLUGINS     = "pluginframe.plugins";
+    private static final String FILE_PREFS  = ".toolbox.properties";
+    private static final String KEY_WIDTH   = "pluginframe.width";
+    private static final String KEY_HEIGHT  = "pluginframe.height";
+    private static final String KEY_XCOORD  = "pluginframe.xcoord";
+    private static final String KEY_YCOORD  = "pluginframe.ycoord";
+    private static final String KEY_PLUGINS = "pluginframe.plugins";
     
     /**
      * Plugins are added to this tab panel in order or registration
@@ -151,7 +151,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         // Create tab
         JPanel pluginPanel = new JPanel(new BorderLayout());
         if (plugin.getMenuBar() != null)
-        	pluginPanel.add(BorderLayout.NORTH, plugin.getMenuBar());
+            pluginPanel.add(BorderLayout.NORTH, plugin.getMenuBar());
         pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
         tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
         tabbedPane_.setSelectedIndex(0);
@@ -197,8 +197,8 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         }
         else
         {
-        	logger_.warn("deregisterPlugin: Plugin " + pluginClass + 
-        		" not found.");
+            logger_.warn("deregisterPlugin: Plugin " + pluginClass + 
+                " not found.");
         }
     }
 
@@ -485,9 +485,9 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         }
     }
 
-	/**
-	 * Post initialization of the GUI after the frame has been realized
-	 */    
+    /**
+     * Post initialization of the GUI after the frame has been realized
+     */    
     class PostInit implements Runnable
     {
         public PostInit()
@@ -614,4 +614,4 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             dialog.setVisible(true);    
         }
     }
-}    
+}

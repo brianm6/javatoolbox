@@ -6,6 +6,7 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -27,7 +28,7 @@ public class JListPopupMenuTest extends TestCase
         TestRunner.run(JListPopupMenuTest.class);
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
     
@@ -41,7 +42,7 @@ public class JListPopupMenuTest extends TestCase
         super(arg0);
     }
     
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Unit Tests 
     //--------------------------------------------------------------------------
         
@@ -61,7 +62,7 @@ public class JListPopupMenuTest extends TestCase
         
         cp.add(new JScrollPane(list));
         frame.pack();
-		SwingUtil.centerWindow(frame);
+        SwingUtil.centerWindow(frame);
         frame.setVisible(true);
     }
 }

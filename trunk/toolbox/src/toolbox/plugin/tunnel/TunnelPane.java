@@ -264,7 +264,7 @@ public class JTcpTunnelPane extends JPanel
             try
             {
                 listenPort_ = 
-                	Integer.parseInt(localPortField_.getText().trim());
+                    Integer.parseInt(localPortField_.getText().trim());
                     
                 tunnelHost_ = remoteHostField_.getText().trim();
                 
@@ -275,9 +275,9 @@ public class JTcpTunnelPane extends JPanel
                     throw new IllegalArgumentException(
                         "Please specify the tunnel hostname");
                         
-				// Start the server
-				Thread server = new Thread(new TunnelRunner());
-				server.start();
+                // Start the server
+                Thread server = new Thread(new TunnelRunner());
+                server.start();
             } 
             catch (Exception ex)
             {

@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartTextArea;
 
@@ -26,7 +27,7 @@ public class JSmartTextAreaTest extends TestCase
         TestRunner.run(JSmartTextAreaTest.class);
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
     
