@@ -64,17 +64,17 @@ public class PluginDialog extends JSmartDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Contains static list of all the plugins.
+     * Name of the file that contains a list of all the plugins.
      */
     public static final String FILE_PLUGINS = "/toolbox/workspace/plugins.xml";
 
     /**
-     * Plugin Node from plugins.xml.
+     * Root node in <code>FILE_PLUGINS</code>.
      */
     public static final String NODE_PLUGIN = "Plugin";
 
     /**
-     * Class Attribute from plugins.xml.
+     * Class attribute for <code>NODE_PLUGIN</code>.
      */
     public static final String ATTR_CLASS = "class";
 
@@ -258,8 +258,8 @@ public class PluginDialog extends JSmartDialog
             activeModel_.addElement(meta);
         }
 
-        removeButton_.setEnabled(activeModel_.size() > 0);
-        addButton_.setEnabled(inactiveModel_.size() > 0);
+        removeButton_.setEnabled(!activeModel_.isEmpty());
+        addButton_.setEnabled(!inactiveModel_.isEmpty());
         activeList_.setSelectedIndex(0);
     }
 
@@ -368,8 +368,8 @@ public class PluginDialog extends JSmartDialog
         for (int i = 0; i < legitPlugins.size(); i++)
             inactiveModel_.addElement(legitPlugins.get(i));
 
-        removeButton_.setEnabled(activeModel_.size() > 0);
-        addButton_.setEnabled(inactiveModel_.size() > 0);
+        removeButton_.setEnabled(!activeModel_.isEmpty());
+        addButton_.setEnabled(!inactiveModel_.isEmpty());
     }
 
     //--------------------------------------------------------------------------
@@ -640,8 +640,8 @@ public class PluginDialog extends JSmartDialog
             for (int i = 0; i < legitPlugins.size(); i++)
                 inactiveModel_.addElement(legitPlugins.get(i));
 
-            removeButton_.setEnabled(activeModel_.size() > 0);
-            addButton_.setEnabled(inactiveModel_.size() > 0);
+            removeButton_.setEnabled(!activeModel_.isEmpty());
+            addButton_.setEnabled(!inactiveModel_.isEmpty());
         }
     }
 }
