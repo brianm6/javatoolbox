@@ -43,6 +43,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
+import toolbox.util.PropertiesUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.filter.DirectoryFilter;
@@ -62,22 +63,28 @@ public class JFileExplorer extends JPanel
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorer.class);
 
+    // Saved component properties
+    private static final String PROP_PATH = ".explorer.path";
+    private static final String PROP_FILE = ".explorer.file";
+    private static final String PROP_DIVIDER = ".explorer.dividerlocation";
+
+    // Models
+    private DefaultListModel        listModel_;
+    private DefaultMutableTreeNode  rootNode_;
+    private DefaultTreeModel        treeModel_;
+
+    // Views        
+    private JSplitPane  splitPane_;
+    private JList       fileList_;
+    private JTree       tree_;
     private JComboBox   rootsComboBox_;
     private JPopupMenu  folderPopup_;
 
-    private DefaultListModel        listModel_;
-    private DefaultMutableTreeNode  rootNode_;
-    
-    private JList            fileList_;
-    private JTree            tree_;
-    private DefaultTreeModel treeModel_;
-    private String           root_;
-    private String           currentPath_;
-    private Icon             driveIcon_;
+    private String root_;
+    private String currentPath_;
+    private Icon   driveIcon_;
 
-    /**
-     * Collection of listeners 
-     */
+    /** Collection of listeners */ 
     private List fileExplorerListeners_ = new ArrayList();
 
     //--------------------------------------------------------------------------
@@ -263,6 +270,10 @@ public class JFileExplorer extends JPanel
             throw new IllegalArgumentException("Root didnt match in model!");
     }
 
+    //--------------------------------------------------------------------------
+    // Preferences Support
+    //--------------------------------------------------------------------------
+
     /**
      * Saves preferences to a properties object
      * 
@@ -280,6 +291,11 @@ public class JFileExplorer extends JPanel
         String file = (String) fileList_.getSelectedValue();
         if (!StringUtil.isNullOrEmpty(file))
             props.setProperty(prefix + ".explorer.file", file);
+            
+        int dividerLoc = splitPane_.getDividerLocation();
+        PropertiesUtil.setInteger(
+            props, prefix + ".explorer.dividerlocation", dividerLoc);
+        
     }
     
     /**
@@ -290,13 +306,21 @@ public class JFileExplorer extends JPanel
      */    
     public void applyPrefs(Properties props, String prefix)
     {
-        String path = props.getProperty(prefix + ".explorer.path");
+        // Restore expanded directory
+        String path = props.getProperty(prefix + PROP_PATH);
         if (!StringUtil.isNullOrEmpty(path))
             selectFolder(path);
-            
-        String file = props.getProperty(prefix + ".explorer.file");
+        
+        // Restore selected file    
+        String file = props.getProperty(prefix + PROP_FILE);
         if (!StringUtil.isNullOrEmpty(file))
             fileList_.setSelectedValue(file, true);
+        
+        // Restore divider location    
+        int dividerLoc = PropertiesUtil.getInteger(
+            props, prefix + PROP_DIVIDER, 150);
+            
+        splitPane_.setDividerLocation(dividerLoc);    
     }
 
     //--------------------------------------------------------------------------
@@ -341,10 +365,7 @@ public class JFileExplorer extends JPanel
     protected void fireFileDoubleClicked()
     {
         for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.fileDoubleClicked(getFilePath());
-        }
+             ((JFileExplorerListener)i.next()).fileDoubleClicked(getFilePath());
     }
     
     /**
@@ -355,10 +376,7 @@ public class JFileExplorer extends JPanel
     protected void fireFolderSelected(String folder)
     {
         for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.folderSelected(folder);
-        }
+             ((JFileExplorerListener)i.next()).folderSelected(folder);
     }
     
     /**
@@ -369,10 +387,7 @@ public class JFileExplorer extends JPanel
     protected void fireFolderDoubleClicked(String folder)
     {
         for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
-        {
-             JFileExplorerListener listener = (JFileExplorerListener)i.next();
-             listener.folderDoubleClicked(folder); 
-        }
+             ((JFileExplorerListener)i.next()).folderDoubleClicked(folder); 
     }
 
     //--------------------------------------------------------------------------
@@ -386,7 +401,7 @@ public class JFileExplorer extends JPanel
      */
     protected void buildView(boolean verticalSplitter)
     {
-        // File system roots 
+        // File system roots combobox
         rootsComboBox_ = new JComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
         rootsComboBox_.addItemListener(new FileRootItemListener());
@@ -436,14 +451,12 @@ public class JFileExplorer extends JPanel
         setTreeFolders(getDefaultRoot(), null);
         JScrollPane foldersScrollPane = new JScrollPane(tree_);
 
-        JSplitPane  splitPane;
-
         // Configurable splitter orientation
         if (verticalSplitter)
-            splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+            splitPane_ = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 foldersScrollPane, filesScrollPane);
         else
-            splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+            splitPane_ = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 foldersScrollPane, filesScrollPane);
 
         GridBagLayout gridbag = new GridBagLayout();
@@ -468,10 +481,10 @@ public class JFileExplorer extends JPanel
         constraints.weighty = 100;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.anchor = GridBagConstraints.CENTER;
-        gridbag.setConstraints(splitPane, constraints);
-        add(splitPane);
+        gridbag.setConstraints(splitPane_, constraints);
+        add(splitPane_);
               
-        splitPane.setDividerLocation(150);
+        splitPane_.setDividerLocation(150);
     }
 
     /**
@@ -702,7 +715,7 @@ public class JFileExplorer extends JPanel
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
      */
-    private class DriveIconCellRenderer extends JLabel 
+    private class DriveIconCellRenderer extends JLabel
         implements ListCellRenderer
     {
         /**
