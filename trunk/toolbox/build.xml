@@ -608,7 +608,7 @@
         
         <property 
             name="cvsroot" 
-            value=":pserver:analogue@hemisfear.dyndns.org:2401/k//cvs/cvsrep"/>
+            value=":pserver:analogue@hemisfear.dyndns.org:4802/c//cvs/cvsrep"/>
         
         <cvspass password = "${cvs.password}"
                  cvsroot  = "${cvsroot}"
