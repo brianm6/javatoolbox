@@ -1,7 +1,6 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.Component;
-import java.util.Properties;
 
 /**
  * IPlugin defines the interface for any plugins that can hosted by the 
@@ -18,7 +17,7 @@ import java.util.Properties;
  * 
  * @see PluginWorkspace
  */
-public interface IPlugin
+public interface IPlugin extends IPreferenced
 {
     /**
      * Friendly name of the plugin used for identification in workspace.
@@ -43,23 +42,6 @@ public interface IPlugin
      * Initializes the plugin
      */
     public void init();
-    
-    /**
-     * Provides an opportunity from the plugin to save its persistent
-     * preferences in a set of Properties hosted by the plugin host.
-     * 
-     * @param  prefs  Properties object to save plugin specific preferences to.
-     */
-    public void savePrefs(Properties prefs);
-    
-    /**
-     * The plugin can read saved persistent properties to initialize itself
-     * once the plugin host is materialized.
-     * 
-     * @param  prefs  Properties object from which to read plugin specific
-     *                properties.
-     */
-    public void applyPrefs(Properties prefs);
     
     /**
      * Sets the status bar. The plugin can use the passed object as a
