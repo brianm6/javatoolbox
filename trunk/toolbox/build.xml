@@ -205,15 +205,15 @@
         	dest      ="${classes}" 
         	overwrite ="false" />
         	
-        <unjar 
+        <!--unjar 
         	src       ="${lib}/EXML.jar" 
             dest      ="${classes}" 
-            overwrite ="false" />
+            overwrite ="false" /-->
 
-        <unjar 
+        <!--unjar 
         	src       ="${lib}/dom.jar" 
             dest      ="${classes}" 
-            overwrite ="false" />
+            overwrite ="false" /-->
 
         <unjar 
         	src       ="${lib}/java2html.jar" 
@@ -222,6 +222,11 @@
 
         <unjar 
         	src       ="${lib}/jode.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/metouia.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
                              
@@ -281,10 +286,14 @@
     	    depends="init"
     	    description="Generates javadocs">
     
+	    <mkdir dir="${doc}"/>
+	    
     	<delete>
             <fileset dir="${doc}" includes="**/**"/>
     	</delete>
     	
+        
+            	
         <javadoc 
             access="private" 
             author="true"
