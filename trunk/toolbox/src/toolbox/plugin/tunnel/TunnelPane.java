@@ -42,6 +42,8 @@ public class JTcpTunnelPane extends JPanel
     private IStatusBar  statusBar_;
     private JSplitPane  splitter_;
     private JButton     clearButton_;
+    private JLabel      remoteLabel_;
+    private JLabel      localLabel_;
 
     private JTextField  listenPortField_;
     private JTextField  remoteHostField_;
@@ -151,14 +153,14 @@ public class JTcpTunnelPane extends JPanel
 
             JPanel labelPanel = new JPanel(new GridLayout(1,2));
     
-            JLabel localLabel = 
+            localLabel_ = 
                 new JLabel("Sent to Remote Host", JLabel.CENTER);
     
-            JLabel remoteLabel = 
+            remoteLabel_ = 
                 new JLabel("Received from Remote Host", JLabel.CENTER);
     
-            labelPanel.add(localLabel);
-            labelPanel.add(remoteLabel);
+            labelPanel.add(localLabel_);
+            labelPanel.add(remoteLabel_);
     
             outputPane.add(BorderLayout.NORTH, labelPanel);
         
@@ -300,6 +302,20 @@ public class JTcpTunnelPane extends JPanel
         public void statusChanged(TcpTunnel tunnel, String status)
         {
             statusBar_.setStatus(status);
+        }
+
+        public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
+            int totalBytesRead)
+        {
+            localLabel_.setText("Sent to Remote Host: " + connBytesRead +
+                " conn  " + totalBytesRead + " total");
+        }
+
+        public void bytesWritten(TcpTunnel tunnel, int connBytesWritten,
+            int totalBytesWritten)
+        {
+            remoteLabel_.setText("Received from Remote Host: " + 
+                connBytesWritten + " conn  " + totalBytesWritten + " total");
         }
 
         public void actionPerformed(ActionEvent e)
