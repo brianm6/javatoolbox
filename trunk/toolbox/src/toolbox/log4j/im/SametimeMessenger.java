@@ -284,10 +284,10 @@ public class SametimeMessenger implements InstantMessenger
         {
             LogLog.debug("Logged in");
         
-            String myName = 
-                communityService_.getLogin().
-                    getMyUserInstance().
-                        getDisplayName();
+//            String myName = 
+//                communityService_.getLogin().
+//                    getMyUserInstance().
+//                        getDisplayName();
                                              
             messagingService_ = (InstantMessagingService)
                 session_.getCompApi(InstantMessagingService.COMP_NAME);
