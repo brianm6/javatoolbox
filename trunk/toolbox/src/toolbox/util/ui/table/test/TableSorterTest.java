@@ -19,7 +19,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.table.TableSorter;
 
 /**
- * Unit test for TableSorter
+ * Unit test for TableSorter.
  */
 public class TableSorterTest extends TestCase
 {
@@ -33,7 +33,7 @@ public class TableSorterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      * @throws Exception on error
@@ -49,7 +49,7 @@ public class TableSorterTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the features of the TableSorter
+     * Tests the features of the TableSorter.
      */
     public void testTableSorter()
     {

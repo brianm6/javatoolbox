@@ -10,7 +10,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 
-
 import toolbox.util.SwingUtil;
 import toolbox.workspace.IPlugin;
 
@@ -39,7 +38,7 @@ public class DesktopPluginHost extends AbstractPluginHost
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.PluginHost#startup(java.util.Map)
+     * @see toolbox.workspace.host.PluginHost#startup(java.util.Map)
      */
     public void startup(Map props)
     {
@@ -48,8 +47,10 @@ public class DesktopPluginHost extends AbstractPluginHost
         desktop_ = new JDesktopPane();
         pluginToFrameMap_ = new HashMap();
         
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+            public void run() 
+            {
                 SwingUtil.tile(desktop_);
             }
         });
@@ -57,7 +58,8 @@ public class DesktopPluginHost extends AbstractPluginHost
 
     
     /**
-     * @see toolbox.workspace.PluginHost#addPlugin(toolbox.workspace.IPlugin)
+     * @see toolbox.workspace.host.PluginHost#addPlugin(
+     *      toolbox.workspace.IPlugin)
      */
     public void addPlugin(IPlugin plugin)
     {
@@ -66,7 +68,8 @@ public class DesktopPluginHost extends AbstractPluginHost
 
     
     /**
-     * @see toolbox.workspace.PluginHost#removePlugin(toolbox.workspace.IPlugin)
+     * @see toolbox.workspace.host.PluginHost#removePlugin(
+     *      toolbox.workspace.IPlugin)
      */
     public void removePlugin(IPlugin plugin)
     {
@@ -75,7 +78,8 @@ public class DesktopPluginHost extends AbstractPluginHost
 
     
     /**
-     * @see toolbox.workspace.host.AbstractPluginHost#importPlugin(toolbox.workspace.IPlugin)
+     * @see toolbox.workspace.host.AbstractPluginHost#importPlugin(
+     *      toolbox.workspace.IPlugin)
      */
     public void importPlugin(IPlugin plugin)
     {
@@ -105,7 +109,8 @@ public class DesktopPluginHost extends AbstractPluginHost
 
     
     /**
-     * @see toolbox.workspace.host.AbstractPluginHost#exportPlugin(toolbox.workspace.IPlugin)
+     * @see toolbox.workspace.host.AbstractPluginHost#exportPlugin(
+     *      toolbox.workspace.IPlugin)
      */
     public void exportPlugin(IPlugin plugin)
     {
@@ -117,7 +122,7 @@ public class DesktopPluginHost extends AbstractPluginHost
     
     
     /**
-     * @see toolbox.workspace.PluginHost#shutdown()
+     * @see toolbox.workspace.host.PluginHost#shutdown()
      */
     public void shutdown()
     {
