@@ -1,4 +1,4 @@
-package toolbox.util.ui.plugin;
+package toolbox.plugin.statcvs;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
