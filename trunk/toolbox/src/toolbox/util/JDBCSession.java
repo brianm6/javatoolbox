@@ -10,7 +10,6 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -332,20 +331,27 @@ public final class JDBCSession
     public static String[] getTableNames(String sessionName) 
         throws SQLException
     {
-        Connection conn = getConnection(sessionName);
-        DatabaseMetaData meta = conn.getMetaData();
-        ResultSet rs = meta.getTables(null, null, null, null);
-        ResultSetMetaData rsmeta = rs.getMetaData();
-        int cnt = rsmeta.getColumnCount();
         List tables = new ArrayList();
-        
-        while (rs.next())
+        Connection conn = null;
+        ResultSet rs = null;
+
+        try 
         {
-            String tableName = rs.getString("TABLE_NAME");
-            tables.add(tableName);
-        }        
+            conn = getConnection(sessionName);
+            rs = conn.getMetaData().getTables(null, null, null, null);
+            
+            while (rs.next())
+            {
+                String tableName = rs.getString("TABLE_NAME");
+                tables.add(tableName);
+            }
+        }
+        finally
+        {
+            JDBCUtil.close(rs);
+            JDBCUtil.releaseConnection(conn);
+        }
         
-        JDBCUtil.releaseConnection(conn);
         return (String[]) tables.toArray(new String[0]);
     }
 
@@ -361,16 +367,18 @@ public final class JDBCSession
         throws SQLException
     {
         Connection conn = null;
+        Statement stmt = null;
         int rows = -1;
         
         try 
         {
             conn = getConnection(sessionName);    
-            Statement stmt = conn.createStatement();
-            rows = stmt.executeUpdate(sql);
+            stmt = conn.createStatement();
+            rows = stmt.executeUpdate(prepSQL(sql));
         } 
         finally 
         {
+            JDBCUtil.close(stmt);
             JDBCUtil.releaseConnection(conn); 
         }
         
@@ -389,10 +397,14 @@ public final class JDBCSession
         Session session = (Session) sessionMap_.get(sessionName);
         
         if (session == null)
+        {
             throw new IllegalArgumentException(
                 "Session " + sessionName + " not found.");
+        }
         else
+        {
             return session;
+        }
     }
     
     
@@ -442,16 +454,20 @@ public final class JDBCSession
     {
         String formattedResults = null;
         Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet results = null;
         
         try
         {
             conn = getConnection(sessionName);
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet results = stmt.executeQuery();
+            stmt = conn.prepareStatement(prepSQL(sql));
+            results = stmt.executeQuery();
             formattedResults = JDBCUtil.format(results);
         }
         finally
         {
+            JDBCUtil.close(stmt);
+            JDBCUtil.close(results);
             JDBCUtil.releaseConnection(conn); 
         }
         
@@ -473,17 +489,19 @@ public final class JDBCSession
         Object[][] data = null;
         Connection conn = null;
         PreparedStatement stmt = null;
+        ResultSet rs = null;
 
         try
         {
             conn = getConnection(sessionName);
-            stmt = conn.prepareStatement(sql);
-            ResultSet results = stmt.executeQuery();
-            data = JDBCUtil.toArray(results);
+            stmt = conn.prepareStatement(prepSQL(sql));
+            rs = stmt.executeQuery();
+            data = JDBCUtil.toArray(rs);
         }
         finally
         {
             JDBCUtil.close(stmt);
+            JDBCUtil.close(rs);
             JDBCUtil.releaseConnection(conn);
         }
 
@@ -544,6 +562,22 @@ public final class JDBCSession
             session.setConnProps(null);
             sessionMap_.remove(sessionName);
         }
+    }
+    
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Trims whitespace and remove trailing semicolon if any from the given
+     * sql statement.
+     * 
+     * @param sql SQL statement to prepare for execution.
+     * @return String
+     */
+    private static final String prepSQL(String sql) 
+    {
+        return sql = StringUtils.chomp(sql.trim(), ";");
     }
     
     //--------------------------------------------------------------------------
