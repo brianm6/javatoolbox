@@ -6,7 +6,7 @@ import java.io.FilenameFilter;
 import org.apache.log4j.Logger;
 
 /**
- * ExtensionFilter filters files based on a file's extension
+ * ExtensionFilter filters files based on a file's extension.
  */
 public class ExtensionFilter implements FilenameFilter
 {
@@ -14,7 +14,7 @@ public class ExtensionFilter implements FilenameFilter
         Logger.getLogger(ExtensionFilter.class);
         
     /** 
-     * Extension to filter on 
+     * Extension to filter on. 
      */
     private String extension_;
     
@@ -42,7 +42,7 @@ public class ExtensionFilter implements FilenameFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Filter out a files by extension
+     * Filter out a files by extension.
      * 
      * @param dir Directory file is contained in
      * @param name Name of file

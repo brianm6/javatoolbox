@@ -25,17 +25,17 @@ public class StringInputStream extends InputStream implements Stringz
         Logger.getLogger(StringInputStream.class);
     
     /** 
-     * Current position in stream 
+     * Current position in the stream. 
      */
     private int index_;
 
     /** 
-     * Stream buffer 
+     * Stream buffer. 
      */
     private StringBuffer buffer_;
 
     /** 
-     * Flag to ignore the EOF 
+     * Flag to ignore the EOF. 
      */
     private boolean ignoreEOF_;
 
@@ -44,15 +44,16 @@ public class StringInputStream extends InputStream implements Stringz
     //--------------------------------------------------------------------------
 
     /**
-     * Creates an empty StringInputStream
+     * Creates an empty StringInputStream.
      */
     public StringInputStream()
     {
         this("", false);
     }
 
+    
     /**
-     * Creates a StringInputStream with the passed string
+     * Creates a StringInputStream with the passed string.
      *
      * @param s String to initialize stream with
      */
@@ -61,8 +62,9 @@ public class StringInputStream extends InputStream implements Stringz
         this(s, false);
     }
 
+    
     /**
-     * Creates a StringInputStream
+     * Creates a StringInputStream.
      * 
      * @param ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
      *        the stream has been reached)
@@ -72,8 +74,9 @@ public class StringInputStream extends InputStream implements Stringz
         this("", ignoreEOF);
     }
     
+    
     /**
-     * Creates a StringInputStream
+     * Creates a StringInputStream.
      * 
      * @param s String to initialize stream with
      * @param ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
@@ -91,7 +94,7 @@ public class StringInputStream extends InputStream implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Reads a byte from the stream
+     * Reads a byte from the stream.
      *
      * @return The current character or -1 if stream is empty
      * @throws IOException if I/O error occurs
@@ -123,6 +126,7 @@ public class StringInputStream extends InputStream implements Stringz
         return c;
     }
     
+    
     /**
      * Returns number of bytes available to read from the stream without 
      * blocking.
@@ -140,7 +144,7 @@ public class StringInputStream extends InputStream implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Appends a string to the end of the input stream
+     * Appends a string to the end of the input stream.
      * 
      * @param s String to append
      */
@@ -155,8 +159,9 @@ public class StringInputStream extends InputStream implements Stringz
         }
     }   
  
+    
     /**
-     * Sets the flag to ignore EOF
+     * Sets the flag to ignore EOF.
      * 
      * @param ignoreEOF True to ignore EOF, false otherwise
      */   

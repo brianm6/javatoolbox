@@ -19,12 +19,12 @@ public class ReverseFileReader extends Reader
         Logger.getLogger(ReverseFileReader.class);
 
     /** 
-     * File to read in reverse order 
+     * File to read in reverse order. 
      */        
     private RandomAccessFile file_;
     
     /** 
-     * Current position in the file 
+     * Current position in the file. 
      */
     private long pointer_;
 
@@ -33,7 +33,7 @@ public class ReverseFileReader extends Reader
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a ReverseFileReader
+     * Creates a ReverseFileReader.
      * 
      * @param file File to read in reverse order
      * @throws IOException on I/O error
@@ -66,6 +66,7 @@ public class ReverseFileReader extends Reader
         return ch;
     }
 
+    
     /**
      * @see java.io.Reader#read(char[])
      */    
@@ -73,7 +74,8 @@ public class ReverseFileReader extends Reader
     {
         return read(cbuf, 0, cbuf.length);
     }
-        
+    
+    
     /**
      * @see java.io.Reader#read(char[], int, int)
      */
@@ -92,6 +94,7 @@ public class ReverseFileReader extends Reader
         return len;
     }
     
+    
     /**
      * @see java.io.Reader#close()
      */
@@ -99,6 +102,7 @@ public class ReverseFileReader extends Reader
     {
         file_.close();
     }
+    
     
     /**
      * Skips in reverse direction
@@ -174,6 +178,7 @@ public class ReverseFileReader extends Reader
         
         return line;
     }
+    
     
     /**
      * Reads the next line from the file in reverse direction, but with the

@@ -24,29 +24,29 @@ public class ResourceUtilTest extends TestCase
         Logger.getLogger(ResourceUtilTest.class);
     
     /**
-     * String embedded in FILE_TEXT used to verify correctness
+     * String embedded in FILE_TEXT used to verify correctness.
      */
     private static final String MATCH_STRING = "ResourceUtil";
     
     /**
-     * URL to test getResource() via HTTP 
+     * URL to test getResource() via HTTP. 
      */
     private static final String TEST_URL = "http://www.yahoo.com/index.html";
     
     /**
-     * Text file to load as a resource
+     * Text file to load as a resource.
      */
     private static final String FILE_TEXT = 
         "/toolbox/util/test/ResourceUtilTest_Text.txt";
         
     /**
-     * Binary file to load as a resource
+     * Binary file to load as a resource.
      */
     private static final String FILE_BINARY =
         "/toolbox/util/test/ResourceUtilTest_Binary.dat";
         
     /**
-     * Image file to load as a resource
+     * Image file to load as a resource.
      */
     private static final String FILE_IMAGE = 
         "/toolbox/util/test/ResourceUtilTest_Image.gif";
@@ -56,7 +56,7 @@ public class ResourceUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -70,7 +70,7 @@ public class ResourceUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the exportToClass() method
+     * Tests the exportToClass() method.
      * 
      * @throws Exception on error
      */
@@ -99,8 +99,9 @@ public class ResourceUtilTest extends TestCase
         //assertEquals("files don't match" , javaSrc, compareSrc);
     }
     
+    
     /**
-     * Tests getResource() on a text file
+     * Tests getResource() on a text file.
      * 
      * @throws Exception on error
      */
@@ -115,8 +116,9 @@ public class ResourceUtilTest extends TestCase
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
     }
     
+    
     /**
-     * Tests getResourceAsBytes() on a text file
+     * Tests getResourceAsBytes() on a text file.
      * 
      * @throws Exception on error
      */
@@ -131,8 +133,9 @@ public class ResourceUtilTest extends TestCase
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
     }
 
+    
     /**
-     * Tests getResourceAsIcon() on a GIF file
+     * Tests getResourceAsIcon() on a GIF file.
      * 
      * @throws Exception on error
      */
@@ -146,8 +149,9 @@ public class ResourceUtilTest extends TestCase
         assertTrue(icon.getIconWidth() > 0);
     }
 
+    
     /**
-     * Tests getResourceAsImage() on a GIF file
+     * Tests getResourceAsImage() on a GIF file.
      * 
      * @throws Exception on error
      */
@@ -166,8 +170,9 @@ public class ResourceUtilTest extends TestCase
         assertTrue(image.getWidth(null) > 0);
     }
     
+    
     /**
-     * Tests getResource() on a HTTP URL
+     * Tests getResource() on a HTTP URL.
      * 
      * @throws Exception on error
      */
