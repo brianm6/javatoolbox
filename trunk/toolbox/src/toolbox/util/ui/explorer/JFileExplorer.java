@@ -4,11 +4,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Enumeration;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
@@ -18,6 +20,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -35,17 +38,25 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.FileOnlyFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartSplitPane;
+import toolbox.util.ui.explorer.action.DeleteDirAction;
+import toolbox.util.ui.explorer.action.DeleteFileAction;
+import toolbox.util.ui.explorer.action.RefreshAction;
+import toolbox.util.ui.explorer.action.RenameDirAction;
+import toolbox.util.ui.explorer.action.RenameFileAction;
+import toolbox.util.ui.explorer.action.UpOneLevelAction;
 import toolbox.util.ui.explorer.listener.DirTreeMouseListener;
 import toolbox.util.ui.explorer.listener.DirTreeSelectionListener;
 import toolbox.util.ui.explorer.listener.DriveComboListener;
 import toolbox.util.ui.explorer.listener.FileListMouseListener;
 import toolbox.util.ui.explorer.listener.FileListSelectionListener;
+import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.SmartListCellRenderer;
 import toolbox.util.ui.tree.JSmartTree;
@@ -53,8 +64,7 @@ import toolbox.util.ui.tree.SmartTreeCellRenderer;
 import toolbox.workspace.IPreferenced;
 
 /**
- * File explorer UI component that supports a number of features. Heavily
- * modified and enhanced from the original sourced from the Jext project.
+ * Simple file system explorer. 
  * <p>
  * Features:
  * <ul>
@@ -67,8 +77,21 @@ import toolbox.workspace.IPreferenced;
  *       <li>File double-click
  *     </ul>
  *   <li>Infobar with file attributes
- *   <li>Refresh button
- *   <li>Rename directory
+ *   <li>Popup menu
+ * </ul>
+ * <p>
+ * Hotkeys:
+ * <ul>
+ *   <li>Del - Delete
+ *   <li>F2  - Rename
+ *   <li>F5  - Refresh
+ *   <li>Backspace - Up one level 
+ * </ul>
+ * <p>
+ * Persistent Preferences:
+ * <ul>
+ *   <li>Splitter location
+ *   <li>Last selected directory and file.
  * </ul>
  * 
  * @see toolbox.util.ui.explorer.FileExplorerListener
@@ -116,11 +139,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
     // Model--------------------------------------------------------------------
     
     /**
-     * Model for the file list.
-     */
-    private DefaultListModel listModel_;
-    
-    /**
      * Model for the root node of the directory tree.
      */
     private DefaultMutableTreeNode rootNode_;
@@ -166,12 +184,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
      * Popup menu for the directory tree.
      */
     private JPopupMenu folderPopup_;
-    
-    /**
-     * File information bar displayed at the bottom of the component. Displays
-     * file size, last modified date, and read/write status.
-     */
-    private InfoBar infoBar_;
     
 
     // Event -------------------------------------------------------------------
@@ -545,7 +557,175 @@ public class JFileExplorer extends JPanel implements IPreferenced
         for (int i = 0; i < fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].folderDoubleClicked(folder));
     }
+    
+    //--------------------------------------------------------------------------
+    // Builders
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Constructs the user interface. 
+     * 
+     * @param verticalSplitter Splitter orientation.
+     */
+    protected void buildView(boolean verticalSplitter)
+    {
+        // File system roots combobox
+        rootsComboBox_ = new JSmartComboBox(File.listRoots());
+        rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
+        rootsComboBox_.addItemListener(new DriveComboListener(this));
+        rootsComboBox_.setRenderer(new DriveIconCellRenderer());
+        
+        buildFileList();
 
+        // Set up our Tree
+        setTreeRoot(getDefaultRoot());
+
+        buildDirectoryTree();
+        
+        setTreeFolders(getDefaultRoot(), null);
+
+        // Configurable splitter orientation
+        splitPane_ = new JSmartSplitPane(
+            verticalSplitter 
+                ? JSplitPane.HORIZONTAL_SPLIT 
+                : JSplitPane.VERTICAL_SPLIT,
+            new JScrollPane(tree_), 
+            new JScrollPane(fileList_));
+            
+        GridBagLayout gridbag = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();        
+        setLayout(gridbag);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.NORTH;
+        gridbag.setConstraints(rootsComboBox_, constraints);
+        add(rootsComboBox_);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 100;
+        constraints.weighty = 100;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.CENTER;
+        gridbag.setConstraints(splitPane_, constraints);
+        add(splitPane_);
+              
+        InfoBar infoBar = new InfoBar(this);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 100;
+        constraints.weighty = 000;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.SOUTH;
+        gridbag.setConstraints(infoBar, constraints);
+        add(infoBar);
+              
+        addFileExplorerListener(infoBar.new InfoBarUpdater());              
+        splitPane_.setDividerLocation(150);
+    }
+
+
+    /**
+     * Builds the tree that represents the fie system directories.
+     */
+    protected void buildDirectoryTree()
+    {
+        // Load tree icons        
+        DefaultTreeCellRenderer renderer = new SmartTreeCellRenderer();
+        renderer.setClosedIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
+        renderer.setOpenIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
+        renderer.setLeafIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED));
+
+        // Directory tree
+        treeModel_ = new DefaultTreeModel(rootNode_);
+        tree_ = new JSmartTree(treeModel_);
+        tree_.setEditable(false);
+        
+        tree_.getSelectionModel().setSelectionMode(
+            TreeSelectionModel.SINGLE_TREE_SELECTION);
+            
+        tree_.setRootVisible(true);
+        tree_.setScrollsOnExpand(true);
+        
+        treeSelectionListener_ = new DirTreeSelectionListener(this);
+        tree_.addTreeSelectionListener(treeSelectionListener_);
+        tree_.addMouseListener(new DirTreeMouseListener(this));
+        
+        tree_.setCellRenderer(renderer);
+        tree_.putClientProperty("JTree.lineStyle", "Angled");
+
+        // Add keybindings
+        SwingUtil.bindKey(
+            tree_, 
+            new DeleteDirAction(this), 
+            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+        
+        SwingUtil.bindKey(
+            tree_,
+            new RefreshAction(this),
+            KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        
+        SwingUtil.bindKey(
+            tree_,
+            new RenameDirAction(this),
+            KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+        
+        SwingUtil.bindKey(
+            tree_,
+            new UpOneLevelAction(this),
+            KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+    }
+
+
+    /**
+     * Builds the list that shows the files in for the currently selected node
+     * in the directory tree.
+     */
+    protected void buildFileList()
+    {
+        // File list
+        fileList_ = new JSmartList();
+        fileList_.setModel(new DefaultListModel());
+        fileList_.addMouseListener(new FileListMouseListener(this));
+        fileList_.addListSelectionListener(new FileListSelectionListener(this));
+        setFileList(getDefaultRoot());
+        fileList_.setFixedCellHeight(15);
+        JListPopupMenu popup = new JListPopupMenu(fileList_);
+        
+        AbstractAction deleteFileAction = new DeleteFileAction(this);
+        popup.add(deleteFileAction);
+        
+        SwingUtil.bindKey(
+            fileList_,
+            deleteFileAction,
+            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+        
+        SwingUtil.bindKey(
+            fileList_,
+            new RefreshAction(this),
+            KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        
+        SwingUtil.bindKey(
+            fileList_,
+            new RenameFileAction(this),
+            KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+
+        SwingUtil.bindKey(
+            fileList_,
+            new UpOneLevelAction(this),
+            KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+
+    }
+    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -595,108 +775,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
 
     
     /**
-     * Constructs the user interface. 
-     * 
-     * @param verticalSplitter Splitter orientation.
-     */
-    protected void buildView(boolean verticalSplitter)
-    {
-        // File system roots combobox
-        rootsComboBox_ = new JSmartComboBox(File.listRoots());
-        rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
-        rootsComboBox_.addItemListener(new DriveComboListener(this));
-        rootsComboBox_.setRenderer(new DriveIconCellRenderer());
-        
-        // File list
-        fileList_ = new JSmartList();
-        fileList_.setModel(listModel_ = new DefaultListModel());
-        fileList_.addMouseListener(new FileListMouseListener(this));
-        fileList_.addListSelectionListener(new FileListSelectionListener(this));
-        setFileList(getDefaultRoot());
-        fileList_.setFixedCellHeight(15);
-        JScrollPane filesScrollPane = new JScrollPane(fileList_);
-
-        // Set up our Tree
-        setTreeRoot(getDefaultRoot());
-
-        // Load tree icons        
-        DefaultTreeCellRenderer renderer = new SmartTreeCellRenderer();
-        renderer.setClosedIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
-        renderer.setOpenIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_OPEN));
-        renderer.setLeafIcon(ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED));
-
-        // Directory tree
-        treeModel_ = new DefaultTreeModel(rootNode_);
-        tree_ = new JSmartTree(treeModel_);
-        tree_.setEditable(false);
-        
-        tree_.getSelectionModel().setSelectionMode(
-            TreeSelectionModel.SINGLE_TREE_SELECTION);
-            
-        tree_.setRootVisible(true);
-        tree_.setScrollsOnExpand(true);
-        
-        treeSelectionListener_ = new DirTreeSelectionListener(this);
-        tree_.addTreeSelectionListener(treeSelectionListener_);
-        tree_.addMouseListener(new DirTreeMouseListener(this));
-        
-        tree_.setCellRenderer(renderer);
-        tree_.putClientProperty("JTree.lineStyle", "Angled");
-
-        setTreeFolders(getDefaultRoot(), null);
-        JScrollPane foldersScrollPane = new JScrollPane(tree_);
-
-        // Configurable splitter orientation
-        if (verticalSplitter)
-            splitPane_ = new JSmartSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                foldersScrollPane, filesScrollPane);
-        else
-            splitPane_ = new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT,
-                foldersScrollPane, filesScrollPane);
-
-        GridBagLayout gridbag = new GridBagLayout();
-        GridBagConstraints constraints = new GridBagConstraints();        
-        setLayout(gridbag);
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.weightx = 0;
-        constraints.weighty = 0;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.anchor = GridBagConstraints.NORTH;
-        gridbag.setConstraints(rootsComboBox_, constraints);
-        add(rootsComboBox_);
-
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.weightx = 100;
-        constraints.weighty = 100;
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.anchor = GridBagConstraints.CENTER;
-        gridbag.setConstraints(splitPane_, constraints);
-        add(splitPane_);
-              
-        infoBar_ = new InfoBar(this);
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.weightx = 100;
-        constraints.weighty = 000;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.anchor = GridBagConstraints.SOUTH;
-        gridbag.setConstraints(infoBar_, constraints);
-        add(infoBar_);
-              
-        addFileExplorerListener(infoBar_.new InfoBarUpdater());              
-        splitPane_.setDividerLocation(150);
-    }
-
-
-    /**
      * Sets the root for the JTree.
      *
      * @param root Root of the tree.
@@ -743,13 +821,14 @@ public class JFileExplorer extends JPanel implements IPreferenced
     protected void setFileList(String path)
     {
         setCurrentPath(path);
-        listModel_.clear();
+        DefaultListModel model = (DefaultListModel) fileList_.getModel();
+        model.clear();
         File f = new File(path);
-        File[] files = f.listFiles(new FileOnlyFilter());
+        File[] files = f.listFiles(FileOnlyFilter.INSTANCE);
         Arrays.sort(files, FileComparator.COMPARE_NAME);
         
         for (int i = 0; i < files.length; i++)
-            listModel_.addElement(files[i].getName());
+            model.addElement(files[i].getName());
     }
 
 
