@@ -48,7 +48,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.addDays(now, 1);
+            Date then = DateUtil.addDays((Date)now.clone(), 1);
             assertEquals(
                 "Differense should be 1 days",
                 1,
@@ -57,7 +57,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.addWeeks(now, 1);
+            Date then = DateUtil.addWeeks((Date)now.clone(), 1);
             assertEquals(
                 "Differense should be 7 days",
                 7,
@@ -66,7 +66,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.addWeeks(now, 4);
+            Date then = DateUtil.addWeeks((Date)now.clone(), 4);
             assertEquals(
                 "Differense should be 28 days",
                 28,
@@ -77,7 +77,7 @@ public class DateUtilTest extends TestCase
         try
         {
             Date now = new Date();
-            Date then = DateUtil.addWeeks(now, 4);
+            Date then = DateUtil.addWeeks((Date)now.clone(), 4);
             DateUtil.getDifferenceInDays(then, now);
             fail("should have failed for dates out of order");
         }
@@ -102,7 +102,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.addWeeks(now, 1);
+            Date then = DateUtil.addWeeks((Date)now.clone(), 1);
             assertEquals(
                 "Differense should be 1 weeks",
                 1,
@@ -111,7 +111,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.addWeeks(now, 7);
+            Date then = DateUtil.addWeeks((Date)now.clone(), 7);
             assertEquals(
                 "Differense should be 7 weeks",
                 7,
@@ -145,7 +145,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.addDays(now, 1);
+            Date then = DateUtil.addDays((Date)now.clone(), 1);
             assertTrue(
                 "Is before should be true for days",
                 DateUtil.isBefore(now, then));
@@ -153,7 +153,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.subtractDays(now, 1);
+            Date then = DateUtil.subtractDays((Date)now.clone(), 1);
             assertTrue(
                 "Is before should be false for days",
                 !DateUtil.isBefore(now, then));
@@ -162,7 +162,7 @@ public class DateUtilTest extends TestCase
         /** monthly difference **/
         {
             Date now = new Date();
-            Date then = DateUtil.addWeeks(now, 8);
+            Date then = DateUtil.addWeeks((Date)now.clone(), 8);
             assertTrue(
                 "Is before should be true for months",
                 DateUtil.isBefore(now, then));
@@ -170,7 +170,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.subtractDays(now, 60);
+            Date then = DateUtil.subtractDays((Date)now.clone(), 60);
             assertTrue(
                 "Is before should be false for months",
                 !DateUtil.isBefore(now, then));
@@ -179,7 +179,7 @@ public class DateUtilTest extends TestCase
         /** yearly differecnce **/
         {
             Date now = new Date();
-            Date then = DateUtil.addWeeks(now, 60);
+            Date then = DateUtil.addWeeks((Date)now.clone(), 60);
             assertTrue(
                 "Is before should be true for years",
                 DateUtil.isBefore(now, then));
@@ -187,7 +187,7 @@ public class DateUtilTest extends TestCase
 
         {
             Date now = new Date();
-            Date then = DateUtil.subtractDays(now, 500);
+            Date then = DateUtil.subtractDays((Date)now.clone(), 500);
             assertTrue(
                 "Is before should be false for years",
                 !DateUtil.isBefore(now, then));
