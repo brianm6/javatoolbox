@@ -2,15 +2,11 @@ package toolbox.junit;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -28,7 +24,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JHeaderPanel;
-import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
@@ -242,41 +237,45 @@ public class UITestCase extends TestCase
         final PropertySheetPanel propSheet = new PropertySheetPanel();
         propSheet.setMode(PropertySheet.VIEW_AS_CATEGORIES);
         propSheet.setProperties(beanInfo.getPropertyDescriptors());
-        
-        //PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
-        //System.out.println(ArrayUtil.toString(pds, true));
-        //
-        //System.out.println(beanInfo.getBeanDescriptor().getBeanClass());
-        //
-        //for (int i=0; i<pds.length; i++)
-        //{
-        //    PropertyDescriptor pd = pds[i];
-        //    System.out.println(pd.getDisplayName());
-        //}
-        
         propSheet.readFromObject(bean);
         
-        JButton updateButton = new JSmartButton(new AbstractAction()
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JScrollPane(propSheet), BorderLayout.CENTER);
+        
+        JHeaderPanel headerPanel = 
+            new JHeaderPanel(
+                "JavaBean Properties of " + bean.getClass().getName(), 
+                null, 
+                panel);
+        
+        //
+        // Changes to property sheet are immediately applied to the bean
+        //
+        propSheet.addPropertySheetChangeListener(new PropertyChangeListener()
         {
-            {
-                putValue(Action.NAME, "Update");
-            }
-            
-            public void actionPerformed(ActionEvent e)
+            public void propertyChange(PropertyChangeEvent evt)
             {
                 propSheet.writeToObject(bean);
             }
         });
         
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(propSheet, BorderLayout.CENTER);
-        panel.add(updateButton, BorderLayout.SOUTH);
+        //
+        // Changes to the bean are immediately applied to the propertysheet
+        // 
+        if (bean instanceof Component)
+        {
+            Component c = (Component) bean;
+            
+            c.addPropertyChangeListener(new PropertyChangeListener()
+            {
+                public void propertyChange(PropertyChangeEvent evt)
+                {
+                    propSheet.readFromObject(bean);
+                }
+            });
+        }
         
-        JHeaderPanel p = 
-            new JHeaderPanel(
-                "Property Sheet - " + bean.getClass().getName(), null, panel);
-        
-        return p;
+        return headerPanel;
     }
     
     
