@@ -4,20 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import toolbox.util.service.Nameable;
+
 /**
  * IConnection models the basic characteristics of a bi-directional stream
  * based connection.
  */
-public interface IConnection
+public interface IConnection extends Nameable
 {
-    /**
-     * Returns connection name for easy identification.
-     * 
-     * @return Connection name.
-     */
-    String getName();
-
-    
     /**
      * Connects to an endpoint.
      * 

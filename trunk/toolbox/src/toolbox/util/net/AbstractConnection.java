@@ -52,27 +52,24 @@ public abstract class AbstractConnection implements IConnection
     public abstract OutputStream getOutputStream() throws IOException;
 
     //--------------------------------------------------------------------------
-    // IConnection implemented methods
+    // Nameable Interface
     //--------------------------------------------------------------------------
     
     /**
      * Returns name used to easily identify connection's context.
      * 
-     * @return Connection Name.
+     * @see toolbox.util.service.Nameable#getName()
      */
     public String getName()
     {
         return name_;
     }
 
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
     
     /**
      * Sets the connection name.
      * 
-     * @param name Connection name.
+     * @see toolbox.util.service.Nameable#setName(java.lang.String)
      */
     public void setName(String name)
     {
