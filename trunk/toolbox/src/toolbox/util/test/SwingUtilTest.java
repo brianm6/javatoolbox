@@ -119,9 +119,22 @@ public class SwingUtilTest extends TestCase
                 }
             });
             
+            JMenuItem cascadeItem = new JMenuItem("Cascade");
+            cascadeItem.setMnemonic(KeyEvent.VK_C);
+            
+            cascadeItem.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    SwingUtil.cascade(desktop_);
+                }
+            });
+
+
             
             menu.add(menuItem);
             menu.add(tileItem);
+            menu.add(cascadeItem);
             menuBar.add(menu);
             return menuBar;
         }
