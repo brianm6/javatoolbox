@@ -20,7 +20,7 @@ import org.apache.log4j.spi.LoggingEvent;
  *     &lt;param name=&quot;Username&quot;  value=&quot;my_username&quot;/&gt;
  *     &lt;param name=&quot;Password&quot;  value=&quot;my_password&quot;/&gt;
  *     &lt;param name=&quot;Recipient&quot; value=&quot;my_recipient&quot;/&gt;
- *     &lt;param name=&quot;Delay&quot;     value=&quot;500&quot;/&gt;
+ *     &lt;param name=&quot;Throttle&quot;     value=&quot;500&quot;/&gt;
  * &lt;/appender&gt;
  *  
  * &lt;logger name=&quot;errorlogger&quot;&gt;
@@ -31,6 +31,19 @@ import org.apache.log4j.spi.LoggingEvent;
  */
 public class InstantMessengerAppender extends AppenderSkeleton
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Default throttle delay is 500 ms for sending of subsequent messages
+     */
+    public static final int DEFAULT_THROTTLE = 500;
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+        
     /**
      * IM network specific instant messenger interface
      */
@@ -60,8 +73,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
      * Forced delay in milliseconds between instant messages. Set to zero for
      * no delay.
      */
-    private long delay_;
-    
+    private int throttle_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -72,6 +84,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
      */
     public InstantMessengerAppender()
     {
+        throttle_ = DEFAULT_THROTTLE;
     }
 
     //--------------------------------------------------------------------------
@@ -120,14 +133,14 @@ public class InstantMessengerAppender extends AppenderSkeleton
     }
 
     /**
-     * Sets the delay in milliseconds
+     * Sets the throttle in milliseconds between message sends
      * 
-     * @param delay Delay in milliseconds between sending of successive instant
-     *              messages.
+     * @param throttle Delay in milliseconds between sending of successive 
+     *        instant messages.
      */
-    public void setDelay(long delay)
+    public void setThrottle(int throttle)
     {
-        delay_ = delay;
+        throttle_ = throttle;
     }
 
     //--------------------------------------------------------------------------
@@ -139,7 +152,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
      */
     protected void init()
     {
-        delay_ = 0;
+        throttle_ = 0;
         messenger_ = InstantMessengerFactory.create(messengerType_);
     }
 
@@ -156,7 +169,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
         LogLog.debug("Connect called: username=" + username_);
         
         Properties props = new Properties();
-        props.put(InstantMessenger.PROP_DELAY, delay_+"");
+        props.put(InstantMessenger.PROP_THROTTLE, throttle_+"");
         
         messenger_.initialize(props);
         messenger_.login(username_, password_);

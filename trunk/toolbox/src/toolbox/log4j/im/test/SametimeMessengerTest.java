@@ -56,7 +56,7 @@ public class SametimeMessengerTest extends TestCase
         
         logger_.debug("Before init...");   
         Properties props = new Properties();
-        props.setProperty(InstantMessenger.PROP_DELAY, 500+"");  
+        props.setProperty(InstantMessenger.PROP_THROTTLE, 500+"");  
         messenger.initialize(props);
         
         logger_.debug("Before login...");    
@@ -87,7 +87,7 @@ public class SametimeMessengerTest extends TestCase
         
         InstantMessenger messenger = new SametimeMessenger();
         Properties props = new Properties();
-        props.setProperty(InstantMessenger.PROP_DELAY, 500+"");  
+        props.setProperty(InstantMessenger.PROP_THROTTLE, 500+"");  
 
         messenger.login("supahfuzzy", "techno");
         

@@ -13,6 +13,7 @@
     	<param name="Username"  value="supahfuzz"/>
     	<param name="Password"  value="techno"/>
     	<param name="Recipient" value="analogue"/>
+    	<param name="Throttle"  value="500"/>
 	   
    	</appender>
 

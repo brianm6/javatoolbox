@@ -97,7 +97,7 @@ public class SametimeMessenger implements InstantMessenger
      */
     public void initialize(Properties props) throws InstantMessengerException
     {
-        long delay = PropertiesUtil.getLong(props, PROP_DELAY, 1000);
+        long delay = PropertiesUtil.getLong(props, PROP_THROTTLE, 1000);
         invoker_    = new QueuedInvoker(delay);
   
         try

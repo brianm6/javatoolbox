@@ -77,9 +77,10 @@ public class AOLMessenger implements InstantMessenger
      */
     public void initialize(Properties props) throws InstantMessengerException
     {
-        long delay = PropertiesUtil.getLong(props, PROP_DELAY, 750);
+        int delay = PropertiesUtil.getInteger(
+            props, PROP_THROTTLE, InstantMessengerAppender.DEFAULT_THROTTLE);
         
-        invoker_    = new QueuedInvoker(delay);
+        invoker_ = new QueuedInvoker(delay);
         connection_ = new JaimConnection("toc.oscar.aol.com", 9898);
         listener_   = new AOLListener();
         

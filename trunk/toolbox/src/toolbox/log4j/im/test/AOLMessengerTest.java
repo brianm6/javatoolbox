@@ -23,6 +23,22 @@ public class AOLMessengerTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(AOLMessengerTest.class);
         
+    /**
+     * Yahoo user that will receive all test messages
+     */
+    private static final String TO_USER = "analogue";
+    
+    /**
+     * Yahoo user that the messages will originate from
+     */
+    private static final String FROM_USER = "supahfuzzy";
+    
+    /**
+     * Password of the FROM_USER
+     */
+    private static final String FROM_PASSWORD = "techno"; 
+        
+        
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -30,7 +46,7 @@ public class AOLMessengerTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -46,24 +62,22 @@ public class AOLMessengerTest extends TestCase
      * 
      * @throws Exception on error
      */    
-    public void xtestLifeCycle() throws Exception
+    public void testLifeCycle() throws Exception
     {
-        LogLog.setInternalDebugging(true);
+        //LogLog.setInternalDebugging(true);
         
         logger_.info("Running testLifeCycle...");
         
         InstantMessenger messenger = new AOLMessenger();
         
         logger_.debug("Before init...");   
-        Properties props = new Properties();
-        props.setProperty(InstantMessenger.PROP_DELAY, 500+"");  
-        messenger.initialize(props);
+        messenger.initialize(new Properties());
         
         logger_.debug("Before login...");    
-        messenger.login("supahfuzzy", "techno");
+        messenger.login(FROM_USER, FROM_PASSWORD);
         
         logger_.debug("Before send...");     
-        messenger.send("analogue", "Hello from the " + 
+        messenger.send(TO_USER, "Hello from the " + 
             getClass().getName() + ".testLifeCycle unit test."); 
         ThreadUtil.sleep(10000);
         
@@ -87,7 +101,7 @@ public class AOLMessengerTest extends TestCase
         
         InstantMessenger messenger = new AOLMessenger();
         Properties props = new Properties();
-        props.setProperty(InstantMessenger.PROP_DELAY, 500+"");  
+        props.setProperty(InstantMessenger.PROP_THROTTLE, 500+"");  
 
         messenger.login("supahfuzzy", "techno");
         
