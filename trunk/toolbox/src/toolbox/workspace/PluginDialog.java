@@ -126,7 +126,7 @@ public class PluginDialog extends JSmartDialog
      *
      * @param parent Plugin workspace.
      */
-    protected PluginDialog(PluginWorkspace parent)
+    public PluginDialog(PluginWorkspace parent)
     {
         super(parent, "Manage Plugins", false);
         workspace_ = parent;

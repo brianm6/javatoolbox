@@ -15,6 +15,7 @@ import org.netbeans.jemmy.operators.JPopupMenuOperator;
 
 import toolbox.junit.testcase.UITestCase;
 import toolbox.util.FileUtil;
+import toolbox.workspace.action.ExitAction;
 
 /**
  * Unit test for PluginWorkspace.
@@ -74,7 +75,7 @@ public class PluginWorkspaceTest extends UITestCase
      */
     protected void tearDown() throws Exception
     {
-        workspace_.new ExitAction().actionPerformed(
+        new ExitAction(workspace_).actionPerformed(
             new ActionEvent(this, 10, "exit"));
     }
     

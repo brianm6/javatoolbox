@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -33,15 +32,12 @@ import nu.xom.Serializer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.LoggingMenu;
 import toolbox.log4j.SmartLogger;
-import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
@@ -50,6 +46,12 @@ import toolbox.util.ui.JSmartFrame;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
+import toolbox.workspace.action.AboutAction;
+import toolbox.workspace.action.ExitAction;
+import toolbox.workspace.action.GarbageCollectAction;
+import toolbox.workspace.action.PluginsAction;
+import toolbox.workspace.action.SavePreferencesAction;
+import toolbox.workspace.action.SmoothFontsAction;
 import toolbox.workspace.host.PluginHost;
 import toolbox.workspace.host.PluginHostManager;
 import toolbox.workspace.prefs.PreferencesDialog;
@@ -416,20 +418,20 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         return prefs_.getFirstChildElement(NODE_WORKSPACE);
     }
 
-    //--------------------------------------------------------------------------
-    // Package
-    //--------------------------------------------------------------------------
-
+    
     /**
      * Returns the shared workspace status bar.
      *
      * @return Status bar.
      */
-    IStatusBar getStatusBar()
+    public IStatusBar getStatusBar()
     {
         return statusBar_;
     }
-
+    
+    //--------------------------------------------------------------------------
+    // Package
+    //--------------------------------------------------------------------------
 
     /**
      * Returns the preferences manager.
@@ -557,6 +559,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         menubar.add(createPreferencesMenu());
         menubar.add(new PluginMenu(this));
         menubar.add(logMenu_);
+        menubar.add(createHelpMenu());
         return menubar;
     }
 
@@ -570,13 +573,27 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     {
         JMenu fileMenu = new JSmartMenu(LABEL_FILE_MENU);
         fileMenu.setMnemonic('F');
-        fileMenu.add(new JSmartMenuItem(new PluginsAction()));
-        fileMenu.add(new JSmartMenuItem(new GarbageCollectAction()));
-        fileMenu.add(new JSmartMenuItem(new ExitAction()));
+        fileMenu.add(new JSmartMenuItem(new PluginsAction(this)));
+        fileMenu.add(new JSmartMenuItem(new GarbageCollectAction(this)));
+        fileMenu.add(new JSmartMenuItem(new ExitAction(this)));
         return fileMenu;
     }
 
+    
+    /**
+     * Creates the Help menu.
+     *
+     * @return JMenu
+     */
+    protected JMenu createHelpMenu()
+    {
+        JMenu helpMenu = new JSmartMenu("Help");
+        helpMenu.setMnemonic('H');
+        helpMenu.add(new JSmartMenuItem(new AboutAction(this)));
+        return helpMenu;
+    }
 
+    
     /**
      * Creates the preferences menu.
      *
@@ -586,11 +603,11 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     {
         JMenu menu = new JSmartMenu(LABEL_PREFERENCES_MENU);
         menu.setMnemonic('P');
-        menu.add(new JSmartMenuItem(new SavePreferencesAction()));
+        menu.add(new JSmartMenuItem(new SavePreferencesAction(this)));
 
         smoothFontsCheckBoxItem_ =
             new JSmartCheckBoxMenuItem(
-                new SmoothFontsAction());
+                new SmoothFontsAction(this));
 
         decorationsCheckBoxItem_ =
             new JSmartCheckBoxMenuItem(
@@ -864,7 +881,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         smoothFontsCheckBoxItem_.setSelected(
             XOMUtil.getBooleanAttribute(root, ATTR_SMOOTH_FONTS, false));
 
-        new SmoothFontsAction().actionPerformed(
+        new SmoothFontsAction(this).actionPerformed(
             new ActionEvent(smoothFontsCheckBoxItem_, -1, null));
 
         //
@@ -970,6 +987,15 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     class CloseWindowListener extends WindowAdapter
     {
         /**
+         * Creates a CloseWindowListener.
+         * 
+         * @param workspace
+         */
+        CloseWindowListener()
+        {
+        }
+
+        /**
          * @see java.awt.event.WindowListener#windowClosing(
          *      java.awt.event.WindowEvent)
          */
@@ -977,232 +1003,16 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         {
             try
             {
-                savePrefs(prefs_);
+                (new SavePreferencesAction(PluginWorkspace.this)).runAction();
             }
             catch (Throwable t)
             {
-                ExceptionUtil.handleUI(t, logger_);
+                ExceptionUtil.handleUI(t, PluginWorkspace.logger_);
             }
         }
     }
-
-
-    //--------------------------------------------------------------------------
-    // ExitAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Exits the appication.
-     */
-    class ExitAction extends AbstractAction
-    {
-        /**
-         * Creates a ExitAction.
-         */
-        ExitAction()
-        {
-            super(LABEL_EXIT_MENUITEM);
-            putValue(Action.MNEMONIC_KEY, new Integer('X'));
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent ae)
-        {
-            new CloseWindowListener().windowClosing(
-                new WindowEvent(PluginWorkspace.this, 0));
-
-            setVisible(false);
-            dispose();
-            logger_.debug("Goodbye!");
-            LogManager.shutdown();
-            System.exit(0);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // PluginsAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Brings up a dialog box that used to adds/remove plugins. The newer
-     * PluginMenu is much easier though. 
-     */
-    class PluginsAction extends AbstractAction
-    {
-        /**
-         * Creates a PluginsAction.
-         */
-        PluginsAction()
-        {
-            super("Plugins..");
-            putValue(Action.MNEMONIC_KEY, new Integer('P'));
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent ae)
-        {
-            JDialog dialog = new PluginDialog(PluginWorkspace.this);
-            dialog.setVisible(true);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // SavePreferencesAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Saves the preferences for the workspaces in addition to all the active
-     * plugins.
-     */
-    class SavePreferencesAction extends WorkspaceAction
-    {
-        /**
-         * Creates a SavePreferencesAction.
-         */
-        SavePreferencesAction()
-        {
-            super("Save prefs", false, null, null);
-            putValue(Action.MNEMONIC_KEY, new Integer('S'));
-
-            putValue(Action.SMALL_ICON,
-                ImageCache.getIcon(ImageCache.IMAGE_SAVE));
-        }
-
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            savePrefs(prefs_);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // GarbageCollectAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Triggers garbage collection.
-     */
-    class GarbageCollectAction extends WorkspaceAction
-    {
-        /**
-         * Creates a GarbageCollectAction.
-         */
-        GarbageCollectAction()
-        {
-            super("Run GC", false, null, null);
-            putValue(Action.MNEMONIC_KEY, new Integer('G'));
-
-        }
-
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            long freeMem  = Runtime.getRuntime().freeMemory();
-            long totalMem = Runtime.getRuntime().totalMemory();
-            long maxMem   = Runtime.getRuntime().maxMemory();
-            long beforeUsedMem  = (totalMem - freeMem) / 1000;
-
-            ElapsedTime time = new ElapsedTime();
-            System.gc();
-            time.setEndTime();
-
-            freeMem  = Runtime.getRuntime().freeMemory();
-            totalMem = Runtime.getRuntime().totalMemory();
-            maxMem   = Runtime.getRuntime().maxMemory();
-            long afterUsedMem  = (totalMem - freeMem) / 1000;
-
-            statusBar_.setInfo("" +
-                "<html>" + "<font color='black'>" +
-                  "Finished GC in " + time + ".   " +
-                  "Used Before: " + beforeUsedMem + "K   " +
-                  "After: "     + afterUsedMem  + "K   " +
-                  "Freed:<b>"   + (beforeUsedMem - afterUsedMem) + "K</b>   " +
-                  "Total:     " + totalMem / 1000 + "K   " +
-                  "Max: "       + maxMem / 1000   + "K   " +
-                  "</font>" +
-                "</html>");
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // SmoothFontsAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Toggles smooth fonts.
-     */
-    class SmoothFontsAction extends AbstractAction
-    {
-        /**
-         * Creates a SmoothFontAction.
-         */
-        SmoothFontsAction()
-        {
-            super("Smooth Fonts");
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            // TODO: Figure out where menus aren't adhering.
-
-            JCheckBoxMenuItem cb = (JCheckBoxMenuItem) e.getSource();
-            boolean b = cb.isSelected();
-            SwingUtil.setDefaultAntiAlias(b);
-            Component[] comps = getRootPane().getComponents();
-
-            for (int i = 0; i < comps.length;
-                SwingUtil.setAntiAliased(comps[i++], b));
-
-//            SwingUtil.setAntiAliased(getJMenuBar(), b);
-//
-            for (int i = 0; i < getJMenuBar().getMenuCount(); i++)
-            {
-                JMenu menu = getJMenuBar().getMenu(i);
-                SwingUtil.setAntiAliased(menu, b);
-
-				// WORKAROUND: Try/catch added as workaround for FH LookAndFeel
-				//             throwing NPE.
-                try
-                {
-                    for (int j = 0; j < menu.getItemCount(); j++)
-                        SwingUtil.setAntiAliased(menu.getMenuComponent(j), b);
-                }
-                catch (Exception ex)
-                {
-                    logger_.error(ex);
-                }
-            }
-
-            PluginWorkspace.this.repaint();
-        }
-    }
-
-
-    //--------------------------------------------------------------------------
-    // UseDecorationsAction
-    //--------------------------------------------------------------------------
-
+    
+    
     /**
      * Toggles using the Look and Feel frame and dialog border decorations.
      */
