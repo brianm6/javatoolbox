@@ -33,9 +33,12 @@ public class Banner
     "Permission is hereby given to modify this font, as long as the\n" + 
     "modifier's name is placed on a comment line.\n" + 
     "\n" + 
-    "Modified by Paul Burton <solution@earthlink.net> 12/96 to include new parameter\n" + 
-    "supported by FIGlet and FIGWin.  May also be slightly modified for better use\n" + 
-    "of new full-width/kern/smush alternatives, but default output is NOT changed.\n" + 
+    "Modified by Paul Burton <solution@earthlink.net> " +
+    "12/96 to include new parameter\n" + 
+    "supported by FIGlet and FIGWin." + 
+    " May also be slightly modified for better use\n" + 
+    "of new full-width/kern/smush alternatives, " +
+    "but default output is NOT changed.\n" + 
     " $@\n" + 
     " $@\n" + 
     " $@\n" + 
@@ -2350,7 +2353,7 @@ public class Banner
      */
     public static String convert(String message)
     {
-        return convert(message, FONT_STANDARD, false, true, Integer.MAX_VALUE);    
+        return convert(message, FONT_STANDARD, false, true, Integer.MAX_VALUE);
     }    
     
     
@@ -2435,7 +2438,7 @@ public class Banner
         String result = "";
         
         // for each line
-        for (int l = 0; l < font.height; l++)
+        for (int l = 0; l < font.height_; l++)
         { 
             // for each char
             for (int c = 0; c < message.length(); c++) 
@@ -2463,7 +2466,7 @@ public class Banner
         int h = 0;
         
         if (message == "")
-            for (int i = 0; i < font.height; i++)
+            for (int i = 0; i < font.height_; i++)
                 message += " \n";
                 
         StringTokenizer st = new StringTokenizer(message, "\n");
@@ -2491,13 +2494,13 @@ public class Banner
      */ 
     static class BannerFont
     {
-        public char hardblank;
-        public int height = -1;
-        public int heightWithoutDescenders = -1;
-        public int maxLine = -1;
-        public int smushMode = -1;
-        public char font[][][] = null;
-        public String fontName = null;
+        private char hardblank_;
+        private int height_ = -1;
+        private int heightWithoutDescenders_ = -1;
+        private int maxLine_ = -1;
+        private int smushMode_ = -1;
+        private char font_[][][] = null;
+        private String fontName_ = null;
 
         //----------------------------------------------------------------------
         //  Constructors
@@ -2542,7 +2545,7 @@ public class Banner
          */
         public char[][][] getFont()
         {
-            return font;
+            return font_;
         }
     
         /**
@@ -2551,7 +2554,7 @@ public class Banner
          */
         public char[][] getChar(int c)
         {
-            return font[c];
+            return font_[c];
         }
     
         /**
@@ -2561,10 +2564,10 @@ public class Banner
          */
         public String getCharLineString(int c, int l)
         {
-            if (font[c][l] == null)
+            if (font_[c][l] == null)
                 return null;
             else
-                return new String(font[c][l]);
+                return new String(font_[c][l]);
         }
 
         //----------------------------------------------------------------------
@@ -2572,13 +2575,13 @@ public class Banner
         //----------------------------------------------------------------------
         
         /**
-         * Reads figlet font data from an inputstream
+         * Reads figlet font_ data from an inputstream
          * 
          * @param  is  Inputstream to read font data from
          */
         protected void readFont(Reader reader)
         {
-            font = new char[256][][];
+            font_ = new char[256][][];
             BufferedReader data = null;
             String dummyS;
             char dummyC;
@@ -2591,20 +2594,20 @@ public class Banner
                 dummyS = data.readLine();
                 StringTokenizer st = new StringTokenizer(dummyS, " ");
                 String s = st.nextToken();
-                hardblank = s.charAt(s.length() - 1);
-                height = Integer.parseInt(st.nextToken());
-                heightWithoutDescenders = Integer.parseInt(st.nextToken());
-                maxLine = Integer.parseInt(st.nextToken());
-                smushMode = Integer.parseInt(st.nextToken());
+                hardblank_ = s.charAt(s.length() - 1);
+                height_ = Integer.parseInt(st.nextToken());
+                heightWithoutDescenders_ = Integer.parseInt(st.nextToken());
+                maxLine_ = Integer.parseInt(st.nextToken());
+                smushMode_ = Integer.parseInt(st.nextToken());
                 dummyI = Integer.parseInt(st.nextToken());
     
-                // try to read the font name as the first word of
+                // try to read the font_ name as the first word of
                 // the first comment line, but this is not standardized !
                 st = new StringTokenizer(data.readLine(), " ");
                 if (st.hasMoreElements())
-                    fontName = st.nextToken();
+                    fontName_ = st.nextToken();
                 else
-                    fontName = "";
+                    fontName_ = "";
     
                 // skip the comments
                 for (int i = 0; i < dummyI - 1; i++) 
@@ -2614,7 +2617,7 @@ public class Banner
                 for (int i = 32; i < 256; i++)
                 { 
                     //System.out.print(i+":");
-                    for (int h = 0; h < height; h++)
+                    for (int h = 0; h < height_; h++)
                     {
                         dummyS = data.readLine();
                         
@@ -2644,20 +2647,20 @@ public class Banner
                             }
                             
                             if (h == 0)
-                                font[i] = new char[height][];
+                                font_[i] = new char[height_][];
                                 
                             int t =
-                                dummyS.length() -1- ((h == height - 1) ? 1 : 0);
+                                dummyS.length()-1-((h == height_ - 1) ? 1 : 0);
                                 
-                            if (height == 1)
+                            if (height_ == 1)
                                 t++;
                                 
-                            font[i][h] = new char[t];
+                            font_[i][h] = new char[t];
                             
                             for (int l = 0; l < t; l++)
                             {
                                 char a = dummyS.charAt(l);
-                                font[i][h][l] = (a == hardblank) ? ' ' : a;
+                                font_[i][h][l] = (a == hardblank_) ? ' ' : a;
                             }
                         }
                     }
