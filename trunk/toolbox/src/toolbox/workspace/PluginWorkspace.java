@@ -38,6 +38,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
 import toolbox.util.ResourceCloser;
+import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 
@@ -395,7 +396,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         }
         finally
         {
-            ResourceCloser.close(fos);
+            StreamUtil.close(fos);
         }
         
         SmartLogger.debug(logger_, PropertiesUtil.toString(prefs_));

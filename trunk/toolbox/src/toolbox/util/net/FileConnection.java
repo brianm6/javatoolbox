@@ -11,6 +11,7 @@ import java.io.OutputStream;
 
 import toolbox.util.Assert;
 import toolbox.util.ResourceCloser;
+import toolbox.util.StreamUtil;
 
 /**
  * Concrete implementation of an IConnection that wraps a file
@@ -119,10 +120,10 @@ public class FileConnection extends AbstractConnection implements IConnection
         fireConnectionClosing(this);
         
         if (inputStream_ != null)
-            ResourceCloser.close(inputStream_);
+            StreamUtil.close(inputStream_);
             
         if (outputStream_ != null)
-            ResourceCloser.close(outputStream_);
+            StreamUtil.close(outputStream_);
             
         fireConnectionClosed(this);
     }

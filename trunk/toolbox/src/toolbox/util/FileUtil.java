@@ -127,7 +127,7 @@ public final class FileUtil
         }
         finally
         {
-            ResourceCloser.close(is);
+            StreamUtil.close(is);
         }
 
         byte[] buffer = new byte[byteBuffer.size()];

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceCloser;
 import toolbox.util.ResourceUtil;
+import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 
@@ -181,7 +182,7 @@ public class SocketServerConfig
         }
         finally
         {
-            ResourceCloser.close(is);
+            StreamUtil.close(is);
         }
     }
 

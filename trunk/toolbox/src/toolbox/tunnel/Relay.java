@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import toolbox.util.ResourceCloser;
+import toolbox.util.StreamUtil;
 
 /**
  * A Relay object is used by TcpTunnel and JTcpTunnel to relay bytes from an
@@ -63,8 +64,8 @@ public class Relay implements Runnable
         }
         finally
         {
-            ResourceCloser.close(in_);
-            ResourceCloser.close(out_);
+            StreamUtil.close(in_);
+            StreamUtil.close(out_);
         }
     }
 }
