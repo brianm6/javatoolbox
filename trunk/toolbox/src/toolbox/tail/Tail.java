@@ -424,7 +424,7 @@ public class Tail implements Runnable
             try
             {
                 OutputStream os = (OutputStream)streams_.get(j);
-                os.write(line.getBytes());
+                os.write((line+"\n").getBytes());
                 os.flush();
             }
             catch (IOException e)
@@ -438,7 +438,7 @@ public class Tail implements Runnable
             try
             {
                 Writer w = (Writer)writers_.get(k);
-                w.write(line);
+                w.write(line+"\n");
                 w.flush();
             }
             catch (IOException e)
