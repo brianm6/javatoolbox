@@ -9,9 +9,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.graph.Edge;
 import toolbox.graph.Graph;
-import toolbox.graph.GraphFactory;
+import toolbox.graph.GraphLib;
 import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
+import toolbox.graph.prefuse.PrefuseGraphLib;
 import toolbox.junit.testcase.UITestCase;
 import toolbox.util.RandomUtil;
 
@@ -31,12 +32,18 @@ public class JungTest extends UITestCase
     {
         logger_.info("Running testJung1...");
         
-        GraphFactory factory = new JungGraphFactory();
+        GraphLib factory = new PrefuseGraphLib();
         Graph graph = factory.createGraph();
         
         Vertex sun = factory.createVertex(graph, "sun");
+        graph.addVertex(sun);
+        
         Vertex moon = factory.createVertex(graph, "moon");
+        graph.addVertex(moon);
+        
         Edge edge = factory.createEdge(sun, moon);
+        graph.addEdge(edge);
+        
         GraphView view = factory.createView(graph);
         
         launchInDialog(view.getComponent()); //, SCREEN_TWO_THIRDS);
@@ -47,24 +54,28 @@ public class JungTest extends UITestCase
     {
         logger_.info("Running testJung2...");
         
-        GraphFactory factory = new JungGraphFactory();
-        Graph graph = factory.createGraph();
+        GraphLib lib = new PrefuseGraphLib();
+        Graph graph = lib.createGraph();
         
         List nodes = new ArrayList();
         
-        for (int i = 0; i < 50; i++) 
-             nodes.add(factory.createVertex(graph, i + 1 + ""));
+        for (int i = 0; i < 50; i++)
+        {
+            Vertex v = lib.createVertex(graph, i + 1 + "");
+            nodes.add(v);
+            graph.addVertex(v);
+        }
         
         for (int i = 0; i < 50; i++)
         {
             Vertex from = (Vertex) nodes.get(i);
             Vertex to = (Vertex) RandomUtil.nextElement(nodes);
-            Edge edge = factory.createEdge(from, to);
+            Edge edge = lib.createEdge(from, to);
+            graph.addEdge(edge);
         }
         
-        GraphView view = factory.createView(graph);
+        GraphView view = lib.createView(graph);
         
-        launchInDialog(view.getComponent()); //, SCREEN_TWO_THIRDS);
-        //Thread.currentThread().join();
+        launchInDialog(view.getComponent());
     }
 }
