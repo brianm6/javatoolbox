@@ -17,6 +17,7 @@ import toolbox.tail.TailListener;
 import toolbox.tail.Tail;
 import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
+import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
@@ -167,6 +168,7 @@ public class TailTest extends TestCase
         finally
         {
             stuffer.stop();
+            StreamUtil.close(sink);
             FileUtil.delete(ffile);
         }
     }
