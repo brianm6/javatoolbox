@@ -62,6 +62,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     private static final Logger logger_ = 
         Logger.getLogger(XSLFOPlugin.class);
 
+    /** Prefix passed to sub components when asked to save their preferences */
+    private static final String PREFS_PREFIX =  
+        ClassUtil.stripPackage(XSLFOPlugin.class.getName()).toLowerCase();
+        
     /**
      * Flip panel that houses the file explorer 
      */
@@ -209,7 +213,6 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         ((JEditTextAreaPopupMenu) defaults_.popup).buildView();
         
         xmlArea_.setTokenMarker(new XMLTokenMarker());
-        //xmlArea_.setFont(SwingUtil.getPreferredMonoFont());
         
         setLayout(new BorderLayout());
         explorer_ = new JFileExplorer(false);
@@ -385,9 +388,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
-        explorer_.savePrefs(prefs, 
-            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
-            
+        explorer_.savePrefs(prefs, PREFS_PREFIX);
+        flipPane_.savePrefs(prefs, PREFS_PREFIX);
+        
         if (!StringUtil.isNullOrEmpty(acrobatPath_))
             prefs.setProperty("xslfoplugin.acrobat.path", acrobatPath_);
     }
@@ -397,8 +400,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
-        explorer_.applyPrefs(prefs, 
-            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
+        explorer_.applyPrefs(prefs, PREFS_PREFIX);
+        flipPane_.applyPrefs(prefs, PREFS_PREFIX);
         
         acrobatPath_ = prefs.getProperty("xslfoplugin.acrobat.path", null);
     }
