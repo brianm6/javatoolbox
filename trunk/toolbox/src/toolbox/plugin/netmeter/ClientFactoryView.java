@@ -1,71 +1,111 @@
 package toolbox.plugin.netmeter;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import toolbox.util.ArrayUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * 
+ * ClientFactoryView.
  */
 public class ClientFactoryView extends JPanel
 {
-    private JTextField serverHostnameField_;
-    private JTextField serverPortField_;
-    private JButton createButton_;
-    private ClientDelivery[] listeners_;
+    /**
+     * Parent plugin.
+     */
+    private NetMeterPlugin plugin_;
     
-    public ClientFactoryView()
-    {
-        listeners_ = new ClientDelivery[0];
+    /**
+     * Server hostname field.
+     */
+    private JTextField serverHostnameField_;
+    
+    /**
+     * Server port field.
+     */
+    private JTextField serverPortField_;
+    
+    /**
+     * Button that triggers creation of a new ClientView.
+     */
+    private JButton createButton_;
         
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a ClientFactoryView.
+     * 
+     * @param plugin NetMeterPlugin.
+     */
+    public ClientFactoryView(NetMeterPlugin plugin)
+    {
+        plugin_ = plugin;
         buildView();
     }
     
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Builds the GUI.
+     */
     protected void buildView()
     {
+        setBorder(BorderFactory.createEtchedBorder());
         setLayout(new BorderLayout());
         
-        JPanel inputPanel = new JPanel(new ParagraphLayout());
+        JLabel title = new JSmartLabel(
+                "  Client Factory", 
+                Color.LIGHT_GRAY, 
+                Color.WHITE); 
         
+        FontUtil.setBold(title);
+
+        JPanel inputPanel = new JPanel(new ParagraphLayout());
         inputPanel.add(new JSmartLabel("Server Hostname"), 
             ParagraphLayout.NEW_PARAGRAPH);
         
-        inputPanel.add(serverHostnameField_ = new JSmartTextField(20));
+        serverHostnameField_ = new JSmartTextField(12);
+        serverHostnameField_.setText(NetMeterPlugin.DEFAULT_HOSTNAME);
+        inputPanel.add(serverHostnameField_);
         
         inputPanel.add(new JSmartLabel("Server Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
         
-        inputPanel.add(serverPortField_ = new JSmartTextField(6));
+        serverPortField_ = new JSmartTextField(6);
+        serverPortField_.setText(NetMeterPlugin.DEFAULT_PORT+"");
+        inputPanel.add(serverPortField_);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(createButton_ = new JSmartButton(new CreateAction()));
         
+        JPanel pp = new JPanel(new BorderLayout());
+        pp.add(title, BorderLayout.CENTER);
         
+        add(title, BorderLayout.NORTH);
         add(inputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
     }
     
-    public void addRecipient(ClientDelivery recipient)
-    {
-        listeners_ = (ClientDelivery[]) ArrayUtil.add(listeners_, recipient);
-    }
-    
-    protected void fireClientCreated(ClientView clientView)
-    {
-        for(int i=0; i<listeners_.length; i++)
-            listeners_[i].acceptDelivery(clientView);
-    }
+    //--------------------------------------------------------------------------
+    // CreateAction
+    //--------------------------------------------------------------------------
     
     class CreateAction extends AbstractAction
     {
@@ -81,16 +121,7 @@ public class ClientFactoryView extends JPanel
                 Integer.parseInt(serverPortField_.getText()));
             
             ClientView clientView = new ClientView(client);
-            
-            fireClientCreated(clientView);
+            plugin_.addCompartment(clientView);
         }
     }
-       
-    
-    
-    interface ClientDelivery
-    {
-        void acceptDelivery(ClientView clientView);
-    }
 }
-
