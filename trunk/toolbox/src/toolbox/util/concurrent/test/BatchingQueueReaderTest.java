@@ -6,7 +6,6 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
@@ -52,7 +51,6 @@ public class BatchingQueueReaderTest extends TestCase
     {
         batches_ = new BlockingQueue();        
     }
-
     
     //--------------------------------------------------------------------------
     //  Unit Tests
@@ -110,19 +108,27 @@ public class BatchingQueueReaderTest extends TestCase
         bqr.addBatchingQueueListener(queueListener);
         bqr.start();
         
+        logger_.info("Queue reader started...");
+        
         Object[] batch = (Object[]) batches_.pull();
+        
+        logger_.info("Pulled next batch from queue...");
         
         assertEquals(batch[0], "one");
         assertEquals(batch[1], "two");
         assertEquals(batch[2], "three");
         
+        logger_.info("About to stop ...");
+        
         bqr.stop();
         
         assertTrue(q.size() == 0);
         
+        logger_.info("About to restart...");
+        
         bqr.start();
         
-        ThreadUtil.sleep(2000);
+        logger_.info("About to stop again...");
         
         bqr.stop();
         
@@ -134,9 +140,10 @@ public class BatchingQueueReaderTest extends TestCase
         
         logger_.info(q);
         
+        logger_.info("About to start 3rd time...");
+        
         bqr.start();
         
-        ThreadUtil.sleep(1000);
         logger_.info(q);        
         
         Object[] batch2 = (Object[]) batches_.pull();
@@ -188,15 +195,13 @@ public class BatchingQueueReaderTest extends TestCase
         try
         {
             r.stop();
-            fail("Reader should be be able to be stopped twice");
+            fail("Reader should not be able to be stopped twice");
         }
         catch (IllegalStateException ise)
         {
             assertTrue(true);
         }        
     }
-
-
     
     //--------------------------------------------------------------------------
     // Helper Classes
