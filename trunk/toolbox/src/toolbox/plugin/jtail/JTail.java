@@ -162,6 +162,7 @@ public class JTail extends JFrame
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu   = new JMenu("File");
         fileMenu.setMnemonic('F');
+        fileMenu.add(new PreferencesAction());
         fileMenu.add(new SetFontAction());
         fileMenu.addSeparator();
         fileMenu.add(new SaveAction());
@@ -569,6 +570,39 @@ public class JTail extends JFrame
                 JSmartOptionPane.showExceptionMessageDialog(
                     JTail.this, fse);
             }
+        }
+    }
+    
+    
+    /**
+     * Preferences action
+     */
+    private class PreferencesAction extends AbstractAction 
+    {
+        public PreferencesAction()
+        {
+            super("Preferences ..");
+            putValue(MNEMONIC_KEY, new Integer('P'));
+            
+            putValue(SHORT_DESCRIPTION, 
+                "View/change the default preferences");
+                
+            putValue(ACCELERATOR_KEY, 
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+        }
+    
+        /**
+         * Pops up the Font selection dialog
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            // Show font selection dialog with font from the current
+            // tail set as the default selected font
+            PreferencesDialog pd = 
+                new PreferencesDialog(JTail.this, jtailConfig_);
+                
+            SwingUtil.centerWindow(pd);
+            pd.setVisible(true);
         }
     }
 }
