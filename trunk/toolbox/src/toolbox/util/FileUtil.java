@@ -26,8 +26,7 @@ import toolbox.util.io.filter.DirectoryFilter;
  */
 public final class FileUtil
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(FileUtil.class);
+    private static final Logger logger_ = Logger.getLogger(FileUtil.class);
 
     // Clover private constructor workaround
     static { new FileUtil(); }
@@ -268,6 +267,37 @@ public final class FileUtil
 
     
     /**
+     * Creates a temporary file for arbitrary use based on the system's 
+     * temporary directory. The returned string is absolute in form and the
+     * caller is responsible for deleting the file once it is no longer needed.
+     *
+     * @return Temporary file.
+     * @throws IOException on I/O error.
+     */
+    public static File createTempFile() throws IOException
+    {
+        return createTempFile(getTempDir());
+    }
+
+    
+    /**
+     * Creates a temporary file in the given directory.
+     * 
+     * @param forDir Directory to create the temporary file in. The directory
+     *        must already exist and have the proper permissions for file
+     *        creation.
+     * @return Tempory file.
+     * @throws IOException on I/O error.
+     */
+    public static File createTempFile(File forDir) throws IOException
+    {
+        File f = File.createTempFile("temp", "", forDir);
+        f.delete();
+        return f;
+    }
+    
+    
+    /**
      * Retrieves a suitable temporary file name for arbitrary use based on the 
      * system's temporary directory. The returned string is absolute in form.
      *
@@ -289,11 +319,7 @@ public final class FileUtil
      */
     public static String createTempFilename(File forDir) throws IOException
     {
-        // Create temp file, delete it, and return the name 
-        File tmpFile = File.createTempFile("temp", "", forDir);
-        String filename = tmpFile.getCanonicalPath();
-        tmpFile.delete();
-        return filename;
+        return createTempFile(forDir).getCanonicalPath();
     }
 
     
