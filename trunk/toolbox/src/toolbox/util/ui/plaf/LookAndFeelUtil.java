@@ -55,13 +55,7 @@ public final class LookAndFeelUtil
     // Constants
     //--------------------------------------------------------------------------
 
-    // XML nodes & attributes
     private static final String NODE_LOOKANDFEEL = "LookAndFeel";
-    private static final String   ATTR_NAME      = "name";
-    private static final String   ATTR_CLASS     = "class";
-    private static final String   ATTR_ACTION    = "action";
-    private static final String   NODE_PROPERTY  = "Property";
-    private static final String     ATTR_VALUE   = "value";
 
     /**
      * XML configuration file containing the list of look and feels supported
@@ -112,7 +106,7 @@ public final class LookAndFeelUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private LookAndFeelUtil()
     {
