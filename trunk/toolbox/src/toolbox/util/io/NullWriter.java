@@ -3,12 +3,12 @@ package toolbox.util.io;
 import java.io.Writer;
 
 /**
- * NullWriter eats all characters written to it.
+ * NullWriter sends all characters written to it to /dev/null
  */
 public class NullWriter extends Writer
 {
     //--------------------------------------------------------------------------
-    //  Overridden from java.io.InputStream
+    //  Overridden from java.io.Writer
     //--------------------------------------------------------------------------
     
     /**
