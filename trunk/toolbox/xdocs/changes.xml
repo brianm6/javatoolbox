@@ -119,6 +119,8 @@
         <!-- =================================================================== -->
 
         <release version="2.0" date="November 2004">
+            <action type="update">Util - JDBCSession updated to support init() with pooling and jar file</action>
+            <action type="update">Workspace - Upgraded to Infonode Look and Feel 1.2.0 with three available themes</action>
         </release>
 
         <!-- =================================================================== -->
