@@ -6,7 +6,7 @@ package toolbox.util.random;
  * been generated for a non-repeating sequence, a SequenceEndedException is
  * thrown to on subsequent calls to nextValue().
  */
-interface RandomSequence
+public interface RandomSequence
 {
     /**
      * Returns the next value in the sequence.
