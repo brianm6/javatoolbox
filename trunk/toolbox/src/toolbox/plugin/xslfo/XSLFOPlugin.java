@@ -227,7 +227,7 @@ public class XSLFOPlugin extends AbstractPlugin
                 JFileChooser jfc = new JFileChooser();
                 
                 if (jfc.showOpenDialog(
-                        SwingUtil.getFrameAncestor(getComponent())) == 
+                        SwingUtil.getFrameAncestor(getView())) == 
                             JFileChooser.APPROVE_OPTION) 
                 {
                     pdfViewerPath_ = jfc.getSelectedFile().getCanonicalPath();
@@ -359,9 +359,9 @@ public class XSLFOPlugin extends AbstractPlugin
 
 
     /**
-     * @see toolbox.workspace.IPlugin#getComponent()
+     * @see toolbox.workspace.IPlugin#getView()
      */
-    public JComponent getComponent()
+    public JComponent getView()
     {
         return view_;
     }
@@ -549,7 +549,7 @@ public class XSLFOPlugin extends AbstractPlugin
          */
         FOPRenderAction()
         {
-            super("Render with FOP", true, getComponent(), statusBar_);
+            super("Render with FOP", true, getView(), statusBar_);
         }
         
         
@@ -582,7 +582,7 @@ public class XSLFOPlugin extends AbstractPlugin
          */
         FOPLaunchAction()
         {
-            super("Launch with FOP", true, getComponent(), statusBar_);
+            super("Launch with FOP", true, getView(), statusBar_);
         }
         
         
@@ -667,7 +667,7 @@ public class XSLFOPlugin extends AbstractPlugin
          */
         XEPRenderAction()
         {
-            super("Render with XEP", true, getComponent(), statusBar_);
+            super("Render with XEP", true, getView(), statusBar_);
         }
         
         
@@ -698,7 +698,7 @@ public class XSLFOPlugin extends AbstractPlugin
          */
         XEPLaunchAction()
         {
-            super("Launch with XEP", true, getComponent(), statusBar_);
+            super("Launch with XEP", true, getView(), statusBar_);
         }
         
         

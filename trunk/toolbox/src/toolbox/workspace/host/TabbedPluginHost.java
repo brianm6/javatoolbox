@@ -128,7 +128,7 @@ public class TabbedPluginHost extends AbstractPluginHost
     {
         super.importPlugin(plugin);
         
-        JComponent comp = plugin.getComponent();
+        JComponent comp = plugin.getView();
         tabPanel_.addTab(plugin.getPluginName(), comp);
         uiComponentMap_.put(comp, plugin);
         setSelectedPlugin(plugin);

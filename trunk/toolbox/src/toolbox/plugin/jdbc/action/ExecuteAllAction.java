@@ -39,7 +39,7 @@ public class ExecuteAllAction extends BaseAction
             plugin, 
             "Execute All SQL", 
             true, 
-            plugin.getComponent(),
+            plugin.getView(),
             plugin.getStatusBar());
         
         putValue(MNEMONIC_KEY, new Integer('E'));

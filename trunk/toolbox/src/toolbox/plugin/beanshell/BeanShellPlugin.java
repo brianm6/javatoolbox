@@ -101,9 +101,9 @@ public class BeanShellPlugin extends AbstractPlugin
 
 
     /**
-     * @see toolbox.workspace.IPlugin#getComponent()
+     * @see toolbox.workspace.IPlugin#getView()
      */
-    public JComponent getComponent()
+    public JComponent getView()
     {
         return view_;
     }

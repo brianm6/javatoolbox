@@ -41,7 +41,7 @@ public class ExecuteCurrentAction extends BaseAction
             plugin, 
             "Execute sql statement", 
             true, 
-            plugin.getComponent(), 
+            plugin.getView(), 
             plugin.getStatusBar());
     }
 

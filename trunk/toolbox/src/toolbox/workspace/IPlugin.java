@@ -23,25 +23,25 @@ import toolbox.util.service.Initializable;
 public interface IPlugin extends Initializable, Destroyable, IPreferenced
 {
     /**
-     * Friendly name of the plugin used for identification in workspace.
+     * Friendly name of the plugin used for identification in the workspace.
      * 
-     * @return Name of the plugin.
+     * @return String
      */
     String getPluginName();
 
     
     /**
-     * Returns a short description of the plugin.
+     * Returns a short description of this plugin.
      * 
-     * @return Short description of the plugin.
+     * @return String
      */
     String getDescription();
 
     
     /**
-     * Component that represents the graphical view of the plugin.
+     * User interface component of this plugin.
      * 
-     * @return GUI component of the plugin.
+     * @return JComponent
      */
-    JComponent getComponent();
+    JComponent getView();
 }

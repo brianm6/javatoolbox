@@ -401,7 +401,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
          */
         ConnectDisconnectAction(String mode)  
         {
-            super(plugin_, mode, false, plugin_.getComponent(), statusBar_);
+            super(plugin_, mode, false, plugin_.getView(), statusBar_);
             
             putValue(SHORT_DESCRIPTION, 
                 "Connects/disconnects from the database");

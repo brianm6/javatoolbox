@@ -172,7 +172,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
                                     true);
         
         frame.getContentPane().setLayout(new BorderLayout());
-        JComponent c = plugin.getComponent();
+        JComponent c = plugin.getView();
         frame.getContentPane().add(c, BorderLayout.CENTER);
         desktop_.add(frame);
         
