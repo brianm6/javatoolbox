@@ -8,7 +8,11 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.StringOutputStream;
+import toolbox.util.io.transferred.TransferredEvent;
+import toolbox.util.io.transferred.TransferredListener;
+import toolbox.util.io.transferred.TransferredMonitor;
 
 /**
  * RemoteTelnetClient is a specialization of the commons.net.TelnetClient 
@@ -33,9 +37,15 @@ public class RemoteTelnetClient extends TelnetClient
     private StringOutputStream responseStream_;
    
     /**
-     * Current position into the input read from the telnet input stream.
+     * Current position into the response read from the telnets input stream.
      */
     private int responseIndex_;
+
+    /**
+     * Monitors bytes received from telnet server so response can be parsed via
+     * event notification instead of polling.
+     */
+    private MonitoredOutputStream mosStream_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -48,6 +58,21 @@ public class RemoteTelnetClient extends TelnetClient
     {
         responseIndex_ = 0;
         responseStream_ = new StringOutputStream();
+        mosStream_ = new MonitoredOutputStream(responseStream_);
+        TransferredMonitor monitor = mosStream_.getTransferredMonitor();
+        monitor.setSampleLength(1);
+        monitor.addTransferredListener(new MyTransferredListener());
+    }
+    
+    class MyTransferredListener implements TransferredListener
+    {
+        public void bytesTransferred(TransferredEvent event)
+        {
+            synchronized(responseStream_)
+            {
+                responseStream_.notify();
+            }
+        }
     }
     
     //--------------------------------------------------------------------------
@@ -75,9 +100,16 @@ public class RemoteTelnetClient extends TelnetClient
             }
             else
             {
-                // TODO: Use wait/notify instead
+                //ThreadUtil.sleep(1);
                 
-                ThreadUtil.sleep(1);
+                try
+                {
+                    responseStream_.wait();
+                }
+                catch (InterruptedException e)
+                {
+                    logger_.error(e);
+                }
             }
 
         }
@@ -98,7 +130,7 @@ public class RemoteTelnetClient extends TelnetClient
         
         // TODO: We need to sleep only long enough to make sure that all the
         //       output for the submitted command has been written back to 
-        //       use, the telnet client. Research RFC on how to do this.
+        //       us, the telnet client. Research RFC on how to do this.
         //  
         //   OR: Add ability to sense when the stream is dormant over a given
         //       period of time.
