@@ -20,7 +20,7 @@ import toolbox.util.ui.layout.ParagraphLayout;
  * <ul>
  * <li>ClientFactoryView is a UI component.
  * <li>ClientFactoryView fields input from the user to configure a ClientView.
- * <li>ClientFactoryView can create any number of ClientViews
+ * <li>ClientFactoryView can create any number of ClientViews.
  * <li>ClientFactoryView hands newly created ClientViews back to the 
  *     NetMeterPlugin.
  * </ul>
@@ -57,7 +57,9 @@ public class ClientFactoryView extends JHeaderPanel
      */
     public ClientFactoryView(NetMeterPlugin plugin)
     {
-        super(ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE), "Client Factory");
+        super(ImageCache.getIcon(
+            ImageCache.IMAGE_HARD_DRIVE), "Client Factory");
+        
         plugin_ = plugin;
         buildView();
     }
