@@ -21,6 +21,7 @@ package toolbox;
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Convert all gifs to pngs.
+ * TODO: Add RMB popup to text fields.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
