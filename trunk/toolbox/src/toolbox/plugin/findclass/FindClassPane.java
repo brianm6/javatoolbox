@@ -28,6 +28,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -50,6 +52,7 @@ import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
@@ -118,18 +121,6 @@ public class FindClassPane extends JPanel implements IPreferenced
      */
     private JCheckBox ignoreCaseCheckBox_;
     
-    /**
-     * Allows user to toggle the display of the path (thus shortening) the 
-     * contents of the 'Source' column.
-     */
-    private JCheckBox showPathCheckBox_;
-    
-    /**
-     * Allows user to toggle partial string hiliting of the search string
-     * within each search result.
-     */
-    private JCheckBox hiliteMatchesCheckBox_;
-   
     // Left flip pane
     
     /**
@@ -187,6 +178,18 @@ public class FindClassPane extends JPanel implements IPreferenced
      * Scroller for the results.
      */
     private JScrollPane resultPane_;
+
+    /**
+     * Allows user to toggle partial string hiliting of the search string
+     * within each search result.
+     */
+    private JToggleButton hiliteToggleButton_;
+
+    /**
+     * Allows user to toggle the display of the path (thus shortening) the 
+     * contents of the 'Source' column.
+     */
+    private JToggleButton showPathToggleButton_;
     
     /**
      * Non-UI component used to do the actual grunt work of the search.
@@ -245,13 +248,13 @@ public class FindClassPane extends JPanel implements IPreferenced
         //buildSearchPanel();
         
         // Top flip pane (classpath & decompiler) - center - north
-        buildTopFlipPane();
+        buildSearchTargetDecompilerFlipPane();
         
         // SearchResults - center - center
-        buildSearchResultsPanel();
+        buildResultsTablePanel();
         
         // Left flip pane with file explorer - west
-        buildLeftFlipPane();
+        buildExplorerFlipPane();
     }
 
     
@@ -262,7 +265,7 @@ public class FindClassPane extends JPanel implements IPreferenced
      * 
      * @return Search panel.
      */    
-    protected JPanel buildSearchPanel()
+    protected JPanel buildSearchInputPanel()
     {
         // Search Panel
         
@@ -278,8 +281,6 @@ public class FindClassPane extends JPanel implements IPreferenced
         searchButton_          = new JSmartButton(searchAction);
         dupesButton_           = new JSmartButton(new FindDupesAction());
         ignoreCaseCheckBox_    = new JSmartCheckBox("Ignore Case", true);
-        showPathCheckBox_      = new JSmartCheckBox("Show Path", true);
-        hiliteMatchesCheckBox_ = new JSmartCheckBox("Highlight Match", true);
         
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchPanel.add(searchLabel);
@@ -288,14 +289,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         searchPanel.add(dupesButton_);
         searchPanel.add(new JSmartLabel("      "));
         searchPanel.add(ignoreCaseCheckBox_);
-        searchPanel.add(showPathCheckBox_);
-        searchPanel.add(hiliteMatchesCheckBox_);
-     
-        // Make sure table repaints if hilite/show path is toggled
-        Action repaintAction = new TableRepaintAction();
-        showPathCheckBox_.addActionListener(repaintAction);
-        hiliteMatchesCheckBox_.addActionListener(repaintAction);
-        
+         
         return searchPanel;
         //getContentPane().add(searchPanel, BorderLayout.NORTH);
     }
@@ -305,9 +299,9 @@ public class FindClassPane extends JPanel implements IPreferenced
      * Builds the Classpath panel which shows all paths/archives that have been
      * targeted for the current search.
      * 
-     * @return Classpath Panel
+     * @return Classpath Panel.
      */
-    protected JPanel buildClasspathFlipper()
+    protected JPanel buildSearchTargetFlipper()
     {
         searchListModel_ = new DefaultListModel(); 
         searchList_ = new JSmartList(searchListModel_);
@@ -316,15 +310,36 @@ public class FindClassPane extends JPanel implements IPreferenced
         searchPopupMenu_ = new JSmartPopupMenu();
         searchPopupMenu_.add(new JSmartMenuItem(new ClearTargetsAction()));
         searchPopupMenu_.add(new JSmartMenuItem(new RemoveTargetsAction()));
+        
         searchPopupMenu_.add(
             new JSmartMenuItem(new AddClasspathTargetAction()));
                     
         searchList_.addMouseListener(new JPopupListener(searchPopupMenu_));
         
-        JPanel pathPanel = new JPanel(new BorderLayout());
-        pathPanel.add(new JScrollPane(searchList_), BorderLayout.CENTER);
-        pathPanel.setPreferredSize(new Dimension(100, 400));
-        return pathPanel;
+        JToolBar tb = JHeaderPanel.createToolBar();
+        tb.add(JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_TABLES),
+            "Add classpath",
+            new AddClasspathTargetAction()));
+        
+        tb.add(JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_DELETE),
+            "Remove search target",
+            new RemoveTargetsAction()));
+        
+        tb.add(JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
+            "Clear",
+            new ClearTargetsAction()));
+        
+        JHeaderPanel header = 
+            new JHeaderPanel(
+                "Search Targets", 
+                tb,
+                new JScrollPane(searchList_));
+        
+        //pathPanel.setPreferredSize(new Dimension(100, 400));
+        return header;
     }
 
     
@@ -332,16 +347,16 @@ public class FindClassPane extends JPanel implements IPreferenced
      * Builds the flippane at the top of the application which contains the
      * Classpath and Decompiler panels.
      * 
-     * @return Top flip pane
+     * @return Top flip pane.
      */
-    protected JPanel buildTopFlipPane()
+    protected JPanel buildSearchTargetDecompilerFlipPane()
     {
-        JPanel pathPanel = buildClasspathFlipper();        
+        JPanel pathPanel = buildSearchTargetFlipper();        
         JPanel decompilerPanel = new DecompilerPanel(resultTable_);
                 
         // Top flip pane
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
-        topFlipPane_.addFlipper("Classpath", pathPanel);
+        topFlipPane_.addFlipper("Search Targets", pathPanel);
         topFlipPane_.addFlipper("Decompiler", decompilerPanel);
         topFlipPane_.setActiveFlipper(pathPanel);
         return topFlipPane_;
@@ -353,7 +368,7 @@ public class FindClassPane extends JPanel implements IPreferenced
      * a JTable. Once a result is selected, it can optionally be decompiled
      * and have the resulting source code appear in the Decompiler panel.
      */
-    protected void buildSearchResultsPanel()
+    protected void buildResultsTablePanel()
     {
         // Setup sortable table
         resultTableModel_  = new ResultsTableModel();
@@ -363,12 +378,24 @@ public class FindClassPane extends JPanel implements IPreferenced
         resultTableSorter_.addMouseListenerToHeaderInTable(resultTable_);
         tweakTable();
         
-        JHeaderPanel resultPanel = new JHeaderPanel("Results");
-        resultPanel.setContent(resultPane_);
+        hiliteToggleButton_ = JHeaderPanel.createToggleButton(
+            ImageCache.getIcon(ImageCache.IMAGE_BRACES),
+            "Highlight matches",
+            new TableRepaintAction());
+        
+        showPathToggleButton_ = JHeaderPanel.createToggleButton(
+            ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED),
+            "Show full path archive path",
+            new TableRepaintAction());
+        
+        JToolBar tb = JHeaderPanel.createToolBar();
+        tb.add(showPathToggleButton_);
+        tb.add(hiliteToggleButton_);
+        JHeaderPanel resultPanel = new JHeaderPanel("Results", tb, resultPane_);
        
         JPanel glue = new JPanel(new BorderLayout());
-        glue.add(BorderLayout.NORTH, buildSearchPanel());
-        glue.add(BorderLayout.SOUTH, buildTopFlipPane());
+        glue.add(BorderLayout.NORTH, buildSearchInputPanel());
+        glue.add(BorderLayout.SOUTH, buildSearchTargetDecompilerFlipPane());
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(BorderLayout.NORTH, glue);
@@ -383,7 +410,7 @@ public class FindClassPane extends JPanel implements IPreferenced
      * explorer can be used to add additional search targets to the Classpath
      * panel.
      */
-    protected void buildLeftFlipPane()
+    protected void buildExplorerFlipPane()
     {
         // Left flip pane - file explorer
         fileExplorer_ = new JFileExplorer(false);
@@ -447,10 +474,10 @@ public class FindClassPane extends JPanel implements IPreferenced
         ignoreCaseCheckBox_.setSelected(
             XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
             
-        showPathCheckBox_.setSelected(
+        showPathToggleButton_.setSelected(
             XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
 
-        hiliteMatchesCheckBox_.setSelected(
+        hiliteToggleButton_.setSelected(
             XOMUtil.getBooleanAttribute(root, ATTR_HILITE_MATCHES, false));
             
         searchField_.setText(
@@ -493,10 +520,10 @@ public class FindClassPane extends JPanel implements IPreferenced
             ATTR_IGNORECASE, ignoreCaseCheckBox_.isSelected() + ""));
 
         root.addAttribute(new Attribute(
-            ATTR_SHOWPATH, showPathCheckBox_.isSelected() + ""));
+            ATTR_SHOWPATH, showPathToggleButton_.isSelected() + ""));
 
         root.addAttribute(new Attribute(
-            ATTR_HILITE_MATCHES, hiliteMatchesCheckBox_.isSelected() + ""));
+            ATTR_HILITE_MATCHES, hiliteToggleButton_.isSelected() + ""));
 
         root.addAttribute(new Attribute(
             ATTR_SEARCH, searchField_.getText().trim()));
@@ -866,7 +893,7 @@ public class FindClassPane extends JPanel implements IPreferenced
                     break;
                     
                 case ResultsTableModel.COL_SOURCE:
-                    if (!showPathCheckBox_.isSelected())
+                    if (!showPathToggleButton_.isSelected())
                         setValue(FileUtil.stripPath(text));
                     else
                         setValue(text);
@@ -875,7 +902,7 @@ public class FindClassPane extends JPanel implements IPreferenced
                 case ResultsTableModel.COL_CLASS:
                 
                     // Hilight search string match in the entire classes' FQCN
-                    if (hiliteMatchesCheckBox_.isSelected())
+                    if (hiliteToggleButton_.isSelected())
                     {
                         // Apparently, the number value has to pulled from the 
                         // sorted model instead of the base model while 
