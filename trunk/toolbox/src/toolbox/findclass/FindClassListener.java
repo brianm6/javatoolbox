@@ -1,12 +1,14 @@
 package toolbox.findclass;
 
+/**
+ * Interface for classes interested in listening to Findclass events
+ */
 public interface IFindClassListener
 {
     /**
      * Class has been found
      * 
-     * @param  location    Location of where the class was found
-     * @param  classFound  Name of the class that matched the search criteria
+     * @param  searchResult  Results on class that was found
      */
     public void classFound(FindClassResult searchResult);
 }

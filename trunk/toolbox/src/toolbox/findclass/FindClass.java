@@ -27,19 +27,38 @@ public class FindClass
     /** Logger **/
     private static final Category logger_ = Category.getInstance(Main.class);
     
-    private String      classToFind_;
-    private String[]    classpath_;
-    private boolean     ignoreCase_;
-    private String      fileSeparator = System.getProperty("file.separator");
+    /** Class to find **/
+    private String classToFind_;
+    
+    /** Class path to search on **/
+    private String[] classpath_;
+    
+    /** Ignore case in search criteria **/
+    private boolean ignoreCase_;
+    
+    /** System file separator **/
+    private String fileSeparator_ = System.getProperty("file.separator");
 
-    /** File filters **/
-    private FilenameFilter jarFilter_       = new ExtensionFilter(".jar");
-    private FilenameFilter zipFilter_       = new ExtensionFilter(".zip");
-    private FilenameFilter classFilter_     = new ExtensionFilter(".class");
-    private FilenameFilter archiveFilter_   = new CompositeFilter(jarFilter_, zipFilter_);
+    /** Filter for jar files **/
+    private FilenameFilter jarFilter_ = new ExtensionFilter(".jar");
+    
+    /** Filter for zip files **/
+    private FilenameFilter zipFilter_ = new ExtensionFilter(".zip");
+    
+    /** Filter for clas files **/
+    private FilenameFilter classFilter_ = new ExtensionFilter(".class");
+    
+    /** Filter for archives **/
+    private FilenameFilter archiveFilter_ = 
+        new CompositeFilter(jarFilter_, zipFilter_);
+    
+    /** Filter for directories **/
     private FilenameFilter directoryFilter_ = new DirectoryFilter();
 
-    /** if this system property is set to anything, then debug output will be generated **/    
+    /** 
+     * if this system property is set to anything, 
+     * then debug output will be generated 
+     */    
     private static final String debugProp_ = "findclass.debug";
 
     /** regular expression matcher **/
@@ -64,6 +83,7 @@ public class FindClass
      * 
      * @param   classToFind     Regular expression for class to find
      * @param   ignoreCase      Ignores case in search
+     * @return  Array of FindClassResults
      */
     public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
     { 
@@ -97,7 +117,7 @@ public class FindClass
         searchList.addAll(getArchiveTargets());
 
         /* convert search list to an array */
-        classpath_ = (String[])searchList.toArray(new String[0]);
+        classpath_ = (String[]) searchList.toArray(new String[0]);
         
         if (logger_.isDebugEnabled())
         {
@@ -177,11 +197,12 @@ public class FindClass
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
      * 
-     * @param    startDir    Start directory for the search
+     * @param    startingDir Start directory for the search
      * @param    filter      Filename filter criteria
      * @return   List of files that match the filter from the start dir
      */    
-    protected List findFilesRecursively(String startingDir, FilenameFilter filter)
+    protected List findFilesRecursively(String startingDir, 
+        FilenameFilter filter)
     {
         File f = new File(startingDir);
         ArrayList basket = new ArrayList(20);
@@ -189,8 +210,8 @@ public class FindClass
         if (f.exists() && f.isDirectory()) 
         { 
             /* smack a trailing / on the start dir */
-            if (!startingDir.endsWith(fileSeparator))
-                startingDir += fileSeparator;
+            if (!startingDir.endsWith(fileSeparator_))
+                startingDir += fileSeparator_;
             
             /* process files */
             String[] files = f.list(filter);
@@ -206,7 +227,9 @@ public class FindClass
                         
             for(int i=0; i<dirs.length; i++)
             {
-                List subBasket = findFilesRecursively(startingDir + dirs[i], filter);
+                List subBasket = 
+                    findFilesRecursively(startingDir + dirs[i], filter);
+                    
                 basket.addAll(subBasket);
             }
         }
@@ -218,6 +241,7 @@ public class FindClass
      * Finds class in a given jar file
      * 
      * @param   jarName     the name of the jar file to search
+     * @throws  Exception on error
      */
     protected void findInArchive(String jarName) throws Exception 
     { 
@@ -257,8 +281,8 @@ public class FindClass
     protected void findInPath(String pathName) 
     { 
         /* tack a slash on the end */
-        if (!pathName.endsWith( fileSeparator ))
-            pathName += fileSeparator;
+        if (!pathName.endsWith( fileSeparator_ ))
+            pathName += fileSeparator_;
 
         
         /* regular expression search */
@@ -268,7 +292,9 @@ public class FindClass
         {
             String fileName = (String)i.next();
             String dotted = fileName.replace(File.separatorChar, '.');
-            dotted = StringUtil.truncate(dotted, fileName.length() - ".class".length());
+            
+            dotted = StringUtil.truncate(
+                dotted, fileName.length() - ".class".length());
             
             logger_.debug("file=" + dotted);
             
@@ -296,8 +322,8 @@ public class FindClass
     /**
      * Called when a class is found by the various search methods
      *
-     * @param  clazz        Class that was found
-     * @param  clazzSource  Where the class was found (dir, zip, etc)
+     * @param  whereFound   Where the class was found (dir, zip, etc)
+     * @param  whatFound    Class that was found
      */
     protected void fireClassFound(String whereFound, String whatFound)
     {
@@ -318,6 +344,8 @@ public class FindClass
  
     /**
      * Adds a listener to the notification list
+     * 
+     * @param listener Listener to add
      */   
     public void addFindClassListener(IFindClassListener listener)
     {
@@ -326,6 +354,8 @@ public class FindClass
     
     /**
      * Removes a listener from the notification list 
+     * 
+     * @param listener Listener to remove
      */
     public void removeFindClassListener(IFindClassListener listener)
     {

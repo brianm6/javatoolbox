@@ -19,7 +19,7 @@ public class Main implements IFindClassListener
     /**
      * FindClass entry point
      * 
-     * @param   args[]  Args
+     * @param   args   Args
      */
     public static void main(String args[])
     {
@@ -53,8 +53,8 @@ public class Main implements IFindClassListener
                 
                 case  1: classToFind = args[0]; 
                          ignoreCase = false;
-                         finder.findClass(classToFind, ignoreCase);                
-                         break;
+                         finder.findClass(classToFind, ignoreCase);                 
+                         break; 
             }
         }
         else 
@@ -66,11 +66,14 @@ public class Main implements IFindClassListener
      */
     private static void printUsage()
     {
-        System.out.println("FindClass searches for all occurrences of a class in");
-        System.out.println("your classpath and archives visible from the current");
-        System.out.println("directory.");
+        System.out.println("FindClass searches for all occurrences of a class");
+        System.out.println("in your classpath and archives visible from the");
+        System.out.println("current directory.");
         System.out.println();
-        System.out.println("Usage  : java toolbox.findclass.Main -cs <regular expression>");
+        
+        System.out.println("Usage  : java toolbox.findclass.Main -cs " +
+                           "<regular expression>");
+                           
         System.out.println("Options: -cs => Case sensetive search");
     }
  
