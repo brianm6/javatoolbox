@@ -18,10 +18,9 @@ import toolbox.util.ui.JFlipPane;
  */
 public class JFlipPaneTest extends JFrame
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JFlipPaneTest.class);
-
 
     /**
      * Entry point
@@ -32,6 +31,7 @@ public class JFlipPaneTest extends JFrame
     {
         JFrame frame = new JFlipPaneTest();
         frame.setSize(400,400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
