@@ -8,7 +8,7 @@ import java.util.Properties;
 public final class PropertiesUtil
 {
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
@@ -19,7 +19,7 @@ public final class PropertiesUtil
     }
     
     //--------------------------------------------------------------------------
-    //  Static Methods
+    // Public
     //--------------------------------------------------------------------------
     
     /**
@@ -30,9 +30,9 @@ public final class PropertiesUtil
      * @param  name          Name of the property
      * @param  defaultValue  Default value if property is not present or invalid
      * @return True          if property represents the string "true". 
-     *          False         if the  property represents the string "false". 
-     *          Default value if the property is non-existant or an error is
-     *                        encountered.
+     *         False         if the  property represents the string "false". 
+     *         Default value if the property is non-existant or an error is
+     *                       encountered.
      */
     public static boolean getBoolean(Properties props, String name, 
         boolean defaultValue)
@@ -54,6 +54,7 @@ public final class PropertiesUtil
         return b;
     }   
     
+    
     /**
      * Sets a boolean property in a properties object
      * 
@@ -67,15 +68,16 @@ public final class PropertiesUtil
         props.setProperty(name, value + "");   
     }
     
+    
     /**
      * Gets an signed integer value from a properties object.
      * 
      * @param  props         Properties to retrieve integer from
      * @param  name          Name of the property
      * @param  defaultValue  Default value if property is not present 
-     *                        or invalid
+     *                       or invalid
      * @return Integer if property exists and is a valid integer, default
-     *          value otherwise. 
+     *         value otherwise. 
      */
     public static int getInteger(
         Properties props, String name, int defaultValue)
@@ -97,6 +99,7 @@ public final class PropertiesUtil
         
         return i;
     }   
+    
     
     /**
      * Sets an integer property in a properties object

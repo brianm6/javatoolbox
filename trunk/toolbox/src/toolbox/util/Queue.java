@@ -8,8 +8,13 @@ import java.util.List;
  */
 public class Queue
 {
+    /** Backing store for the queue */
     private List store_ = new ArrayList();
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a Queue
      */    
@@ -17,6 +22,9 @@ public class Queue
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Adds an object to the back of the queue
@@ -71,6 +79,7 @@ public class Queue
         return store_.size() == 0;
     }
     
+    
     /**
      * Returns size of queue
      * 
@@ -80,5 +89,4 @@ public class Queue
     {
         return store_.size();
     }
-    
 }
