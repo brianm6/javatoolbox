@@ -2,8 +2,7 @@
 
 <!--
  * TODO: SSH on CVS
- * TODO: Move Tomcat server to booger2
- * TODO: Add vizant for visualization of build dependencies
+ * TODO: Move Tomcat server to goober2
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Get PropertyPrompt working properly
  * TODO: Fix tailing of Log4j in JTail
@@ -18,7 +17,6 @@
  * TODO: Writer a proper multisplit pane.
  * TODO: Integrate new icons from 
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
- * TODO: Make plugins detachable
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Investigate JModalWindow
  * TODO: Update banner with more external fonts.
@@ -32,7 +30,6 @@
  * TODO: Save db profiles to a separate file.
  * TODO: Add undo to TextToolsPlugin
  * TODO: Beef up junit plugin with junitx classes
- * TODO: apache geronimo twiddle = Console
  * TODO: Write a CVS log formatter to append logs to bottom of a file.
  * TODO: Get jode decompiler to work on File input.
  * TODO: Fix broken stop on JTail
@@ -54,7 +51,6 @@
  * TODO: Add a way to change the lookand feel font globally - partially working
  * TODO: http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
- * TODO: Checkout FlexDock on java.net
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
  * TODO: Add search and replace to text editors
  * TODO: Ctrl-S in Save Dialog box should remember where it was last opened up
