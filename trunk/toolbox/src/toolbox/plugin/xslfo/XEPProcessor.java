@@ -1,5 +1,6 @@
 package toolbox.util.xslfo;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -11,18 +12,12 @@ import org.apache.fop.apps.Driver;
 
 import toolbox.util.FileUtil;
 import toolbox.util.StreamUtil;
-import toolbox.util.io.StringInputStream;
 
 /**
  * Interface to access the RenderX XSLFO processor
  */
 public class XEPProcessor implements FOProcessor
 {
-    /** 
-     * Main interface class to FOP 
-     */
-    private Driver driver_;
-
     //--------------------------------------------------------------------------
     // Interface FOProcessor
     //--------------------------------------------------------------------------
@@ -69,7 +64,7 @@ public class XEPProcessor implements FOProcessor
     public byte[] renderPDF(String foXML) throws Exception
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        renderPDF(new StringInputStream(foXML), baos);        
+        renderPDF(new ByteArrayInputStream(foXML.getBytes("UTF-8")), baos);        
         return baos.toByteArray();
     }
 }
