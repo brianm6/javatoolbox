@@ -3,6 +3,8 @@ package toolbox.util;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -13,6 +15,8 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
+import toolbox.util.random.RandomSequence;
+import toolbox.util.random.RandomSequenceFactory;
 
 /**
  * Unit test for {@link toolbox.util.ClassUtil}.
@@ -374,5 +378,66 @@ public class ClassUtilTest extends TestCase
         assertTrue(ClassUtil.isInnerClass("one$two"));
         assertTrue(ClassUtil.isInnerClass("one$two$three"));
         
+    }
+    
+    
+    /**
+     * Tests toClass() for null input.
+     */
+    public void testToClassNull() 
+    {
+        logger_.info("Running testToClassNull...");
+        assertEquals(0, ClassUtil.toClass((Object[]) null).length);
+    }
+    
+    
+    /**
+     * Tests toClass() for empty array input.
+     */
+    public void testToClassZero() 
+    {
+        logger_.info("Running testToClassZero...");
+        assertEquals(0, ClassUtil.toClass(new String[0]).length);
+    }
+    
+    
+    /**
+     * Tests toClass() for an array of size = 1.
+     */
+    public void testToClassOne() 
+    {
+        logger_.info("Running testToClassOne...");
+        
+        Class[] result = ClassUtil.toClass(new String[] {"hello"});
+        assertEquals(1, result.length);
+        assertEquals(result[0], String.class);
+    }
+    
+    
+    /**
+     * Tests toClass() for an array of size > 1.
+     */
+    public void testToClassMany() 
+    {
+        logger_.info("Running testToClassMany...");
+        
+        List choices = new ArrayList();
+        choices.add(new String("hello"));
+        choices.add(new Date());
+        choices.add(new Integer(45));
+        choices.add(new ArrayList());
+        
+        RandomSequence sequence = RandomSequenceFactory.create(choices, false);
+        
+        Object[] input = new Object[RandomUtil.nextInt(100, 200)];
+        
+        for (int i = 0; i < input.length; i++)
+            input[i] = sequence.nextValue();
+        
+        Class[] result = ClassUtil.toClass(input);
+        assertEquals(input.length, result.length);
+        
+        for (int i = 0; i < input.length; i++)
+            assertEquals(input[i].getClass(), result[i]);
     }
 }
