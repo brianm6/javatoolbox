@@ -26,7 +26,7 @@ public interface IPlugin extends IPreferenced
      * 
      * @return Name of the plugin (tab text)
      */
-    public String getName();
+    public String getPluginName();
     
     /**
      * Component that represents the graphical view of the plugin

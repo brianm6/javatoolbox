@@ -313,9 +313,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see java.awt.Component#getName()
+     * @see toolbox.util.ui.plugin.IPlugin#getPluginName()
      */
-    public String getName()
+    public String getPluginName()
     {
         return "JDBC Query";
     }

@@ -211,14 +211,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     public void registerPlugin(IPlugin plugin) throws Exception
     {
         // Add to registry    
-        plugins_.put(plugin.getName(), plugin);
+        plugins_.put(plugin.getPluginName(), plugin);
 
         // Init plugin
         plugin.startup(bootstrapMap_);
 
         // Create tab
         tabbedPane_.addTab(
-            plugin.getName(), 
+            plugin.getPluginName(), 
             plugin.getComponent(), 
             ImageCache.getIcon(ImageCache.IMAGE_CROSS));
             
@@ -260,14 +260,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     public void registerPlugin(IPlugin plugin, Element prefs) throws Exception
     {
         // Add to registry    
-        plugins_.put(plugin.getName(), plugin);
+        plugins_.put(plugin.getPluginName(), plugin);
 
         // Init plugin
         plugin.startup(bootstrapMap_);
 
         // Create tab
         tabbedPane_.addTab(
-            plugin.getName(), 
+            plugin.getPluginName(), 
             plugin.getComponent(), 
             ImageCache.getIcon(ImageCache.IMAGE_CROSS));
         
@@ -337,9 +337,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             unloadedPrefs_.appendChild(pluginNode);
             
             if (removeTab)
-                tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getName()));
+                tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getPluginName()));
                 
-            plugins_.remove(plugin.getName());
+            plugins_.remove(plugin.getPluginName());
             plugin.shutdown();
         }
         else

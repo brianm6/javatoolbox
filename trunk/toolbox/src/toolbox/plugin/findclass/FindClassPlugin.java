@@ -41,9 +41,9 @@ public class JFindClassPlugin implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getName()
+     * @see toolbox.util.ui.plugin.IPlugin#getPluginName()
      */
-    public String getName()
+    public String getPluginName()
     {
         return "Find Class";
     }

@@ -376,11 +376,11 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
-    
+
     /**
-     * @see java.awt.Component#getName()
+     * @see toolbox.util.ui.plugin.IPlugin#getPluginName()
      */
-    public String getName()
+    public String getPluginName()
     {
         return "XSL-FO";
     }

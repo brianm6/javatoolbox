@@ -364,7 +364,7 @@ public class ManagePluginsDialog extends JDialog
         
         public String getName()
         {
-            return getPlugin().getName();    
+            return getPlugin().getPluginName();    
         }
         
         public IPlugin getPlugin()

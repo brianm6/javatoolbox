@@ -175,9 +175,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     }
     
     /**
-     * @see java.awt.Component#getName()
+     * @see toolbox.util.ui.plugin.IPlugin#getPluginName()
      */
-    public String getName()
+    public String getPluginName()
     {
         return "Text Tools";
     }
