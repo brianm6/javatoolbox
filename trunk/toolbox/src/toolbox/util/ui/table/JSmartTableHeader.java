@@ -19,21 +19,30 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.AntiAliased;
 
 /**
- * JSmartTableHeader adds the following behavior to JTableHeader.
- * <p>
+ * JSmartTableHeader adds the following features to the default implementation
+ * of JTableHeader.<p>
  * <ul>
- *   <li>Antialiased column headers
- *   <li>Double clicking on a column's divider resizes it to its minimum width
+ *   <li>AntiAliased column headers
+ *   <li>Column resizes to minimum width by double clicking on the column 
+ *       divider +/- a few pixels to the left or the right.
  * </ul>
  * Works best with table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
  */
 public class JSmartTableHeader extends JTableHeader implements AntiAliased
 {
-    // TODO: Make single click on header sort
-    // TODO: Make right click on header autoresize
-    
     private static final Logger logger_ = 
         Logger.getLogger(JSmartTableHeader.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Maximum number of horizontal pixels from the divider that the mouse can 
+     * be clicked double clicked to trigger an automatic resize of the column.
+     * Defaults to 3 pixels.
+     */
+    private static final int RESIZE_PROXIMITY = 3;
     
     //--------------------------------------------------------------------------
     // Fields
@@ -154,8 +163,8 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
 
 
     /**
-     * Gets the column to be resized if the mouse click occured close enough
-     * to the column divider.
+     * Gets the column to be resized if the mouse click occured close enough to
+     * the column divider.
      * 
      * @param p Point of mouse click.
      * @param column Column number.
@@ -172,7 +181,9 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
         }
         
         Rectangle r = getHeaderRect(column);
-        r.grow(-3, 0);  // distance from divider to qualify as a auto-resize
+        
+        // increase to proximity from divider to qualify as a auto-resize
+        r.grow(-RESIZE_PROXIMITY, 0);  
         
         if (r.contains(p))
         {
