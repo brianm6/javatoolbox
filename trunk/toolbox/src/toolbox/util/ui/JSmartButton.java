@@ -12,8 +12,10 @@ import toolbox.util.SwingUtil;
  * JSmartButton adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *  <li>Support for antialised text
  * </ul>
+ * 
+ * @see toolbox.util.SwingUtil
  */
 public class JSmartButton extends JButton implements AntiAliased
 {
@@ -108,6 +110,9 @@ public class JSmartButton extends JButton implements AntiAliased
     //--------------------------------------------------------------------------
 
     /**
+     * Activates antialiasing on the Graphics if enabled before delegating 
+     * painting to the super classes implementation. 
+     * 
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
     public void paintComponent(Graphics gc)

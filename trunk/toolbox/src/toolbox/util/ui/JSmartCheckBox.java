@@ -17,6 +17,7 @@ import toolbox.util.SwingUtil;
  * <ul>
  *   <li>Support for antialised text
  * </ul>
+ * @see toolbox.util.SwingUtil
  */
 public class JSmartCheckBox extends JCheckBox implements AntiAliased
 {
@@ -170,6 +171,9 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
     //--------------------------------------------------------------------------
 
     /**
+     * Activates antialiasing on the Graphics if enabled before delegating 
+     * painting to the super classes implementation. 
+     * 
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
     public void paintComponent(Graphics gc)
