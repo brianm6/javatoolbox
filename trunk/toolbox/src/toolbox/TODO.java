@@ -19,10 +19,19 @@ package toolbox;
  * TODO: Add history to statusbar.
  * TODO: Add icons to statusbar.
  * 
- * TODO: FindClass: Add option to have decompiler dump to one textarea or multiple tabs
- * TODO: FindClass: Have decompiler text area rembember font setting if dump to tabs
+ * TODO: FindClass: Fix cancel bug that renders search unresponsive.
+ * TODO: FindClass: Add ears/wars to the target filter
+ * TODO: FindClass: Make table cells editable for text that doesn't fit in cell 
+ * TODO: FindClass: Add option to have decompiler dump to one textarea or 
+ *                   multiple tabs
+ * TODO: FindClass: Update JSMartList so that scroll on demand is an option
+ * TODO:            Update JSmartTable so that scroll on deman is an option
+ *  
+ * TODO: FindClass: Have decompiler text area rembember font setting if dump 
+ *                   to tabs
  * TODO: FindClass: Add a way to close all tabs in the decompiler 
- * TODO: FindClass: Add toggle for tab heading to be FQCN or just the class name
+ * TODO: FindClass: Add toggle for tab heading to be FQCN or just the 
+ *                   class name
  * TODO: FindClass: Add decompile on select
  * TODO: FindClass: Add additional search criteria: A extends B, A implements C.
  * </pre>
