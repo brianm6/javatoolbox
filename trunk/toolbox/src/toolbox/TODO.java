@@ -21,6 +21,7 @@ package toolbox;
  *       model is a possiblity.
  * TODO: Convert all gifs to pngs.
  * TODO: Separate unit tests from main source branch + reconfig maven.
+ * TODO: Add a filled bar mode to JSourceView
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
