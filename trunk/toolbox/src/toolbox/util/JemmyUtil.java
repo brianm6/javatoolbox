@@ -42,11 +42,11 @@ public class JemmyUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Convenience method to find a button operatator withing a given container
+     * Convenience method to find a button operator within a given container
      * operator.
      * 
-     * @param operator 
-     * @param name
+     * @param operator Container operator. 
+     * @param name Name of the button (not its label).
      * @return
      */
     public static JButtonOperator findButton(
