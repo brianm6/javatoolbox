@@ -35,6 +35,7 @@ public class MultivalentTextViewer extends TextViewer
      */
     public MultivalentTextViewer()
     {
+        super("Multivalent Text Viewer");
     }
 
     //--------------------------------------------------------------------------
@@ -44,13 +45,13 @@ public class MultivalentTextViewer extends TextViewer
     /**
      * Builds the list of viewable file types.
      * 
-     * @see toolbox.plugin.docviewer.TextViewer#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map init) throws DocumentViewerException
+    public void initialize(Map init)
     {
-        super.startup(init);
-        
+        super.initialize(init);
         extensions_ = new CaseInsensetiveSet(new HashSet());
+        
         extensions_.addAll(Arrays.asList(
             new String[] {"pdf", "html", "htm", "dvi", "xml"}));
     }
@@ -62,15 +63,6 @@ public class MultivalentTextViewer extends TextViewer
     public boolean canView(File file)
     {
         return extensions_.contains(FileUtil.getExtension(file));
-    }
-    
-    
-    /**
-     * @see toolbox.plugin.docviewer.TextViewer#getName()
-     */
-    public String getName()
-    {
-        return "Multivalent Text Viewer";
     }
 
     

@@ -16,7 +16,7 @@ import toolbox.util.ui.JSmartTextArea;
 /**
  * A viewer to for text documents.
  */
-public class TextViewer implements DocumentViewer
+public class TextViewer extends AbstractViewer
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -42,6 +42,18 @@ public class TextViewer implements DocumentViewer
      */
     public TextViewer()
     {
+        this("Text Viewer");
+    }
+    
+    
+    /**
+     * Creates a TextViewer.
+     * 
+     * @param name Name of this viewer.
+     */
+    public TextViewer(String name)
+    {
+        super(name);
     }
 
     //--------------------------------------------------------------------------
@@ -60,19 +72,22 @@ public class TextViewer implements DocumentViewer
     }
     
     //--------------------------------------------------------------------------
-    // DocumentViewer Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map init) throws DocumentViewerException
+    public void initialize(Map init)
     {
         textArea_ = new JSmartTextArea();
         textArea_.setAntiAliased(SwingUtil.getDefaultAntiAlias());
         scroller_ = new JScrollPane(textArea_);
     }
 
+    //--------------------------------------------------------------------------
+    // DocumentViewer Interface
+    //--------------------------------------------------------------------------
     
     /**
      * Reads in the file via a Reader and displays it in the textarea.
@@ -138,20 +153,15 @@ public class TextViewer implements DocumentViewer
         return scroller_;
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public String getName()
+    public void destroy()
     {
-        return "Text Viewer";
-    }
-
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
-     */
-    public void shutdown()
-    {
+        ; // No-op
     }
 }

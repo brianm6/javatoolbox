@@ -22,7 +22,7 @@ import toolbox.util.FontUtil;
 /**
  * XML document viewer that uses Pollo for rendering the document.
  */
-public class PolloViewer implements DocumentViewer
+public class PolloViewer extends AbstractViewer
 {
     private static final Logger logger_ = Logger.getLogger(PolloViewer.class);
     
@@ -39,6 +39,18 @@ public class PolloViewer implements DocumentViewer
      * Scrollpane wrapping the XmlEditor.
      */
     private JScrollPane scroller_;
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a PolloViewer.
+     */
+    public PolloViewer()
+    {
+        super("Pollo");
+    }
     
     //--------------------------------------------------------------------------
     // Protected 
@@ -77,25 +89,20 @@ public class PolloViewer implements DocumentViewer
     }
     
     //--------------------------------------------------------------------------
-    // DocumentViewer Interface 
+    // Initializable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map init) throws DocumentViewerException
+    public void initialize(Map init)
     {
+        ; // No-op
     }
     
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
-     */
-    public String getName()
-    {
-        return "Pollo";
-    }
-
+    //--------------------------------------------------------------------------
+    // DocumentViewer Interface 
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.plugin.docviewer.DocumentViewer#getComponent()
@@ -154,13 +161,17 @@ public class PolloViewer implements DocumentViewer
      */
     public void view(InputStream is) throws DocumentViewerException
     {
+        throw new IllegalArgumentException("view(InputStream) not supported");
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
         scroller_ = null;
         editor_ = null;

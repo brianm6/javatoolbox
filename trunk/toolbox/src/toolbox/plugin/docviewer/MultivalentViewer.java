@@ -64,9 +64,9 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
+     * @see toolbox.plugin.docviewer.DocumentViewer#initialize(java.util.Map)
      */
-    public void startup(Map init)
+    public void initialize(Map init)
     {
         extensions_ = new CaseInsensetiveSet(new HashSet());
         extensions_.addAll(Arrays.asList(
@@ -148,9 +148,9 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
 
 
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
+     * @see toolbox.plugin.docviewer.DocumentViewer#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
         browser_ = null;
     }

@@ -29,11 +29,12 @@ import toolbox.jedit.JavaDefaults;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.StreamUtil;
+import toolbox.util.service.ServiceException;
 
 /**
  * A viewer to for popular text formats with syntax hiliting.
  */
-public class JEditViewer implements DocumentViewer
+public class JEditViewer extends AbstractViewer
 {
     private static final Logger logger_ = Logger.getLogger(JEditViewer.class);
     
@@ -97,6 +98,7 @@ public class JEditViewer implements DocumentViewer
      */
     public JEditViewer()
     {
+        super("JEdit Viewer");
     }
 
     //--------------------------------------------------------------------------
@@ -155,18 +157,22 @@ public class JEditViewer implements DocumentViewer
         
         textArea_.getPainter().setFont(FontUtil.getPreferredMonoFont());
     }
+
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
+    public void initialize(Map configuration) throws ServiceException
+    {
+        ; // No-op
+    }
     
     //--------------------------------------------------------------------------
     // DocumentViewer Interface
     //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
-     */
-    public void startup(Map init) throws DocumentViewerException
-    {
-    }
-
     
     /**
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
@@ -240,21 +246,16 @@ public class JEditViewer implements DocumentViewer
         return textArea_;
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public String getName()
+    public void destroy()
     {
-        return "JEdit Viewer";
-    }
-
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
-     */
-    public void shutdown()
-    {
+        textArea_.setText("");
         textArea_ = null;
     }
 }

@@ -17,12 +17,13 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.service.ServiceException;
 
 /**
  * AcrobatViewer is a wrapper for the Acrobat JavaBean which is used to render
  * and view PDF documents.
  */
-public class AcrobatViewer extends JPanel implements DocumentViewer
+public class AcrobatViewer extends AbstractViewer
 {
     private static final Logger logger_ = Logger.getLogger(AcrobatViewer.class);
     
@@ -34,6 +35,11 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
      * Acrobat viewer component.
      */
     private Viewer viewer_;
+
+    /**
+     * Component used by this viewer.
+     */
+    private JPanel panel_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -44,6 +50,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
      */
     public AcrobatViewer()
     {
+        super("Acrobat");
     }
     
     //--------------------------------------------------------------------------
@@ -60,9 +67,9 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
             try
             {
                 Viewer.setEnableDebug(true);
-                setLayout(new BorderLayout());
+                panel_ = new JPanel(new BorderLayout());
                 viewer_ = new Viewer();
-                add(BorderLayout.CENTER, viewer_);
+                panel_.add(viewer_, BorderLayout.CENTER);
             }
             catch (Exception e)
             {
@@ -71,27 +78,21 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
         }
     }
     
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
+    public void initialize(Map init) throws ServiceException 
+    {
+        ; // No-op
+    }
     
     //--------------------------------------------------------------------------
     // DocumentViewer Interface
     //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
-     */
-    public void startup(Map init) throws DocumentViewerException 
-    {
-    }
-    
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
-     */
-    public String getName()
-    {
-        return "Acrobat";
-    }
-    
     
     /**
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
@@ -174,16 +175,20 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     public JComponent getComponent()
     {
         lazyLoad();
-        return this;
+        return panel_;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
         viewer_.deactivate();
         viewer_ = null;
+        panel_ = null;
     }
 }

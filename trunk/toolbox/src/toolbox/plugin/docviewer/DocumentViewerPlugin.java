@@ -214,7 +214,8 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     
     /**
      * Builds the list of document viewers by scanning the current package for
-     * classes ending in the string "Viewer".
+     * classes ending in the string "Viewer" and not containing the string
+     * "Abstract".
      */
     protected void buildViewerList()
     {
@@ -230,7 +231,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         {
             String fqcn = classes[i];
             
-            if (fqcn.endsWith("Viewer"))
+            if (fqcn.endsWith("Viewer") && fqcn.indexOf("Abstract") < 0)
             {
                 try
                 {
@@ -284,7 +285,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
             {
                 Class c = (Class) classList.get(i);
                 DocumentViewer viewer = (DocumentViewer) c.newInstance();
-                viewer.startup(new HashMap());
+                viewer.initialize(new HashMap());
                 viewers_.add(viewer);
             }
             catch (Exception e)
@@ -351,7 +352,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
             try
             {
                 DocumentViewer dv = (DocumentViewer) i.next();
-                dv.shutdown();
+                dv.destroy();
                 dv = null;
             }
             catch (Exception e)

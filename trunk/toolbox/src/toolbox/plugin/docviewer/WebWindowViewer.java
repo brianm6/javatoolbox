@@ -37,7 +37,7 @@ import toolbox.util.ui.JSmartTextField;
 /**
  * HTML document viewer that uses the WebWindow java component.
  */
-public class WebWindowViewer implements DocumentViewer
+public class WebWindowViewer extends AbstractViewer
 {
     private static final Logger logger_ = 
         Logger.getLogger(WebWindowViewer.class);
@@ -75,6 +75,7 @@ public class WebWindowViewer implements DocumentViewer
      */
     public WebWindowViewer()
     {
+        super("Web Window");
     }
 
     //--------------------------------------------------------------------------
@@ -96,23 +97,26 @@ public class WebWindowViewer implements DocumentViewer
             viewerPane_ = new JPanel(new BorderLayout());
             viewerPane_.add(webWindow_, BorderLayout.CENTER);
             
-            locationPanel_ = new LocationPanel();
+            locationPanel_ = new LocationView();
             viewerPane_.add(locationPanel_, BorderLayout.NORTH);
         }
     }
-    
+
     //--------------------------------------------------------------------------
-    // DocumentViewer Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map init) throws DocumentViewerException
+    public void initialize(Map init)
     {
         // Delegated to lazyLoad()
     }
 
+    //--------------------------------------------------------------------------
+    // DocumentViewer Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
@@ -171,20 +175,14 @@ public class WebWindowViewer implements DocumentViewer
         return viewerPane_;
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public String getName()
-    {
-        return "Web Window";
-    }
-
-    
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
-     */
-    public void shutdown()
+    public void destroy()
     {
         locationPanel_ = null;
         webPane_ = null;
@@ -193,13 +191,13 @@ public class WebWindowViewer implements DocumentViewer
     }
     
     //--------------------------------------------------------------------------
-    // LocationPanel 
+    // LocationView 
     //--------------------------------------------------------------------------
     
     /**
      * Allows entry of a URL and a button to load the URL.
      */
-    class LocationPanel extends JPanel implements KeyListener, ActionListener
+    class LocationView extends JPanel implements KeyListener, ActionListener
     {
         //----------------------------------------------------------------------
         // Fields
@@ -220,9 +218,9 @@ public class WebWindowViewer implements DocumentViewer
         //----------------------------------------------------------------------
         
         /**
-         * Creates a LocationPanel.
+         * Creates a LocationView.
          */
-        LocationPanel()
+        LocationView()
         {
             setLayout(new FlowLayout());
             goButton_ = new JSmartButton("Go");

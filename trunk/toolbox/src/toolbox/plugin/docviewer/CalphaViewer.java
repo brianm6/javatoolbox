@@ -22,12 +22,13 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.service.ServiceException;
 import toolbox.util.ui.JSmartButton;
 
 /**
  * HTML document viewer that uses the Calpha HTML component.
  */
-public class CalphaViewer implements DocumentViewer
+public class CalphaViewer extends AbstractViewer
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -52,16 +53,17 @@ public class CalphaViewer implements DocumentViewer
      */
     public CalphaViewer()
     {
+        super("HTML Viewer");
     }
 
     //--------------------------------------------------------------------------
-    // DocumentViewer Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map init) throws DocumentViewerException
+    public void initialize(Map init) throws ServiceException
     {
         CalHTMLPreferences prefs = new CalHTMLPreferences();
         
@@ -103,7 +105,10 @@ public class CalphaViewer implements DocumentViewer
         
         viewerPane_.add(buttonPane, BorderLayout.NORTH);
     }
-
+    
+    //--------------------------------------------------------------------------
+    // DocumentViewer Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
@@ -157,23 +162,18 @@ public class CalphaViewer implements DocumentViewer
         return viewerPane_;
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public String getName()
+    public void destroy() throws ServiceException
     {
-        return "HTML Viewer";
+        ; // no-op
     }
-
     
-    /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#shutdown()
-     */
-    public void shutdown()
-    {
-    }
-
     //--------------------------------------------------------------------------
     // SmartHTMLPane
     //--------------------------------------------------------------------------
