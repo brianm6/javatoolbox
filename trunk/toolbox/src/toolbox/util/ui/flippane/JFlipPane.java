@@ -1,8 +1,10 @@
+
 package toolbox.util.ui.flippane;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -19,8 +21,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -34,16 +38,19 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.BeanUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
+import toolbox.util.ui.VerticalLabelUI;
 import toolbox.workspace.IPreferenced;
 
 /**
- * JFlipPane is a panel with flipper like behavior to hide a and show any
- * number of children.
+ * JFlipPane is a panel with flipper like behavior to hide a and show any number
+ * of children.
  */
 public class JFlipPane extends JPanel implements IPreferenced
 {
@@ -76,7 +83,7 @@ public class JFlipPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     // Directional Constants
     //--------------------------------------------------------------------------
-    
+
     /**
      * Flippane attached to the top wall.
      */
@@ -95,7 +102,7 @@ public class JFlipPane extends JPanel implements IPreferenced
     /**
      * Flippane attached to the right wall.
      */
-    public static final String RIGHT  = "right";
+    public static final String RIGHT = "right";
 
     /**
      * Draggable splitpane like splitter bar width.
@@ -107,15 +114,15 @@ public class JFlipPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * The wall of the enclosing panel that the flippane is attached to.
-     * Values include left, right, top, and bottom.
+     * The wall of the enclosing panel that the flippane is attached to. Values
+     * include left, right, top, and bottom.
      */
     private String position_;
 
     /**
      * The dimension_ is the width of the flippane if the position_ is left or
-     * right. Conversely, the dimension_ is the height of the flippane when
-     * the position is top or bottom.
+     * right. Conversely, the dimension_ is the height of the flippane when the
+     * position is top or bottom.
      */
     private int dimension_;
 
@@ -156,9 +163,10 @@ public class JFlipPane extends JPanel implements IPreferenced
     private Map flippers_;
 
     // Not really used
-    private JButton         popupButton_;
-    private JToggleButton   nullButton_;
-    private JPopupMenu      popup_;
+    private JButton popupButton_;
+    private JToggleButton nullButton_;
+    private JPopupMenu popup_;
+
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -166,57 +174,67 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Creates a JFlipPane with the given position.
-     *
+     * 
      * @param position Position (JFlipPane.[TOP|LEFT|BOTTOM|RIGHT])
      */
     public JFlipPane(String position)
     {
-        position_  = position;
+        position_ = position;
         dimension_ = 0;
-        flippers_  = new HashMap();
+        flippers_ = new HashMap();
         listeners_ = new ArrayList();
 
         buildView();
     }
 
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
 
-    /**
-     * Adds the given flipper to the JFlipPane.
-     *
-     * @param name Name of the flipper.
-     * @param flipper Flipper to add.
-     */
-    public void addFlipper(String name, JComponent flipper)
+    public void addFlipper(Icon icon, String name, JComponent flipper)
     {
         flipper.setName(name);
+        flippers_.put(name, flipper);      // Add to internal map
+        flipCardPanel_.add(name, flipper); // Add to card panel
+        int rotation;                      // Figure out rotation
 
-        // Add to internal map
-        flippers_.put(name, flipper);
-
-        // Add to card panel
-        flipCardPanel_.add(name, flipper);
-
-        // Figure out rotation of text for button
-        int rotation;
-        if (position_.equals(JFlipPane.TOP) ||
-            position_.equals(JFlipPane.BOTTOM))
+        if (position_.equals(JFlipPane.TOP)
+            || position_.equals(JFlipPane.BOTTOM))
             rotation = FlipIcon.NONE;
         else if (position_.equals(JFlipPane.LEFT))
             rotation = FlipIcon.CCW;
         else if (position_.equals(JFlipPane.RIGHT))
             rotation = FlipIcon.CW;
         else
-            throw new IllegalArgumentException(
-                "Invalid position: " + position_);
+            throw new IllegalArgumentException("Invalid position: " + position_);
 
         // Create the button
         JToggleButton button = new JToggleButton();
         button.setMargin(new Insets(0, 0, 0, 0));
         button.setRequestFocusEnabled(false);
-        button.setIcon(new FlipIcon(rotation, button.getFont(), name));
+
+//        if (icon != null)
+//        {
+//            Icon textIcon = new FlipIcon(FlipIcon.NONE, button.getFont(), name);
+//            icon = new CompoundIcon(icon, textIcon, 0);
+//
+//        }
+//        else
+//        {
+//            icon = new FlipIcon(rotation, button.getFont(), name);
+//        }
+
+        //button.setIcon(icon);
+        
+        JLabel label = new JLabel(name);
+        if (icon != null)
+            label.setIcon(icon);
+        label.setFont(button.getFont());
+        label.setUI(new VerticalLabelUI(false));
+        
+        button.setLayout(new BorderLayout());
+        button.add(BorderLayout.CENTER, label);
         button.setActionCommand(name);
         button.addActionListener(new FlipperHandler());
         button.setName(name);
@@ -251,8 +269,20 @@ public class JFlipPane extends JPanel implements IPreferenced
 
 
     /**
+     * Adds the given flipper to the JFlipPane.
+     * 
+     * @param name Name of the flipper.
+     * @param flipper Flipper to add.
+     */
+    public void addFlipper(String name, JComponent flipper)
+    {
+        addFlipper(null, name, flipper);
+    }
+
+
+    /**
      * Removes the given flipper from the flipPane.
-     *
+     * 
      * @param flipper Flipper to remove.
      */
     public void removeFlipper(JComponent flipper)
@@ -273,7 +303,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Sets the currently selected flipper.
-     *
+     * 
      * @param flipper Flipper to select.
      */
     public void setActiveFlipper(JComponent flipper)
@@ -307,7 +337,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Sets the active flipper by name.
-     *
+     * 
      * @param name Name of the flipper to activate.
      */
     public void setActiveFlipper(String name)
@@ -318,7 +348,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Returns the currently active flipper.
-     *
+     * 
      * @return Currently active flipper.
      */
     public JComponent getActiveFlipper()
@@ -329,7 +359,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Determines if a flipper is selected.
-     *
+     * 
      * @param flipper Flipper to test if selected.
      * @return True if the given flipper is selected, false otherwise.
      */
@@ -340,8 +370,8 @@ public class JFlipPane extends JPanel implements IPreferenced
 
 
     /**
-     * Toggles the flipper from its current state to the opposite state.
-     * Also notifies all FlipPaneListeners.
+     * Toggles the flipper from its current state to the opposite state. Also
+     * notifies all FlipPaneListeners.
      */
     public void toggleFlipper()
     {
@@ -372,7 +402,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Sets the flip pane to its expanded state.
-     *
+     * 
      * @param b True to expand, false to collapse.
      */
     public void setExpanded(boolean b)
@@ -387,16 +417,17 @@ public class JFlipPane extends JPanel implements IPreferenced
         }
     }
 
+
     //--------------------------------------------------------------------------
     // Overrides javax.swing.JComponent
     //--------------------------------------------------------------------------
 
     /**
      * Preferred size.
-     *
-     * @return Dimension that reflects the preferred size of the flip pane.
-     *         The preferred size varies based on whether the flip pane is
-     *         expanded or collapsed.
+     * 
+     * @return Dimension that reflects the preferred size of the flip pane. The
+     *         preferred size varies based on whether the flip pane is expanded
+     *         or collapsed.
      */
     public Dimension getPreferredSize()
     {
@@ -404,11 +435,16 @@ public class JFlipPane extends JPanel implements IPreferenced
 
         if (!isCollapsed())
         {
-            int width = buttonPanel_.getPreferredSize().width +
-                        flipCardPanel_.getPreferredSize().width;
+            logger_.debug(StringUtil.banner(BeanUtil.toString(buttonPanel_)));
+            
+            //if (buttonPanel_.getPreferredSize() == null)
+                buttonPanel_.setPreferredSize(new Dimension(32,32));
+                
+            int width = buttonPanel_.getPreferredSize().width
+                + flipCardPanel_.getPreferredSize().width;
 
-            int height = buttonPanel_.getPreferredSize().height +
-                         flipCardPanel_.getPreferredSize().height;
+            int height = buttonPanel_.getPreferredSize().height
+                + flipCardPanel_.getPreferredSize().height;
 
             pref = new Dimension(width, height);
 
@@ -424,19 +460,20 @@ public class JFlipPane extends JPanel implements IPreferenced
         return pref;
     }
 
-//        public Dimension getMinimumSize()
-//        {
-//            if (isCollapsed())
-//                return buttonPanel_.getMinimumSize();
-//            else
-//                return new Dimension(200, 0);
-//        }
-//
-//
-//        public Dimension getMaximumSize()
-//        {
-//            return getPreferredSize();
-//        }
+
+    //        public Dimension getMinimumSize()
+    //        {
+    //            if (isCollapsed())
+    //                return buttonPanel_.getMinimumSize();
+    //            else
+    //                return new Dimension(200, 0);
+    //        }
+    //
+    //
+    //        public Dimension getMaximumSize()
+    //        {
+    //            return getPreferredSize();
+    //        }
 
     //--------------------------------------------------------------------------
     // IPreferenced Interface
@@ -447,8 +484,9 @@ public class JFlipPane extends JPanel implements IPreferenced
      */
     public void applyPrefs(Element prefs)
     {
-        Element root = XOMUtil.getFirstChildElement(
-            prefs, NODE_JFLIPPANE, new Element(NODE_JFLIPPANE));
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, NODE_JFLIPPANE, new Element(NODE_JFLIPPANE));
 
         int dim = XOMUtil.getIntegerAttribute(root, ATTR_DIMENSION, 100);
 
@@ -458,8 +496,9 @@ public class JFlipPane extends JPanel implements IPreferenced
 
         setDimension(dim);
 
-        boolean collapsed =
-            XOMUtil.getBooleanAttribute(root, ATTR_COLLAPSED, false);
+        boolean collapsed = 
+            XOMUtil.getBooleanAttribute(
+                root, ATTR_COLLAPSED, false);
 
         if (collapsed != isCollapsed())
             toggleFlipper();
@@ -495,13 +534,14 @@ public class JFlipPane extends JPanel implements IPreferenced
         XOMUtil.insertOrReplace(prefs, flipPane);
     }
 
+
     //--------------------------------------------------------------------------
     // Event Notification Support
     //--------------------------------------------------------------------------
 
     /**
      * Adds a flip pane listener.
-     *
+     * 
      * @param listener Listener to add.
      */
     public void addFlipPaneListener(FlipPaneListener listener)
@@ -512,7 +552,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Removes a flip pane listener.
-     *
+     * 
      * @param listener Listener to remove.
      */
     public void removeFlipPaneListener(FlipPaneListener listener)
@@ -550,6 +590,7 @@ public class JFlipPane extends JPanel implements IPreferenced
         }
     }
 
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -559,7 +600,9 @@ public class JFlipPane extends JPanel implements IPreferenced
      */
     protected void buildView()
     {
-        buttonPanel_ = new JPanel(new FlipButtonLayout(this));
+        //buttonPanel_ = new JPanel(new FlipButtonLayout(this));
+        
+        buttonPanel_ = new JPanel(new FlowLayout());
         buttonPanel_.addMouseListener(new PopupHandler());
 
         closeButton_ = new JSmartButton(
@@ -568,8 +611,8 @@ public class JFlipPane extends JPanel implements IPreferenced
         closeButton_.setToolTipText("Close");
 
         int left;
-        if (position_.equals(JFlipPane.RIGHT) ||
-            position_.equals(JFlipPane.LEFT))
+        if (position_.equals(JFlipPane.RIGHT)
+            || position_.equals(JFlipPane.LEFT))
             left = 1;
         else
             left = 0;
@@ -586,7 +629,7 @@ public class JFlipPane extends JPanel implements IPreferenced
         closeButton_.addActionListener(new FlipperHandler());
 
         // Popup button
-        popupButton_ =
+        popupButton_ = 
             new JSmartButton(ImageCache.getIcon(ImageCache.IMAGE_TRIANGLE));
 
         popupButton_.setRequestFocusEnabled(false);
@@ -624,7 +667,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Mutator for the dimension.
-     *
+     * 
      * @param dimension New dimension.
      */
     protected void setDimension(int dimension)
@@ -641,7 +684,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Returns flippane's collapsed state.
-     *
+     * 
      * @return True if the flipPane is collapsed, false otherwise.
      */
     protected boolean isCollapsed()
@@ -652,7 +695,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Returns the button wired to the given flipper.
-     *
+     * 
      * @param flipper Flipper to find button for.
      * @return Button that activates the flipper.
      */
@@ -667,7 +710,7 @@ public class JFlipPane extends JPanel implements IPreferenced
             JComponent c = (JComponent) e.nextElement();
             if (c instanceof JToggleButton)
             {
-                if (c.getName() != null)  // skip over invisible button
+                if (c.getName() != null) // skip over invisible button
                 {
                     //logger_.debug("button " + c);
                     if (c.getName().equals(flipper.getName()))
@@ -684,7 +727,7 @@ public class JFlipPane extends JPanel implements IPreferenced
      * Returns if the specified event is the popup trigger event. This
      * implements precisely defined behavior, as opposed to
      * MouseEvent.isPopupTrigger().
-     *
+     * 
      * @param evt Event.
      * @return True if popup trigger, false otherwise.
      */
@@ -697,22 +740,18 @@ public class JFlipPane extends JPanel implements IPreferenced
     /**
      * Shows the specified popup menu, ensuring it is displayed within the
      * bounds of the screen.
-     *
+     * 
      * @param popup Popup menu.
      * @param comp Component to show it for.
      * @param x X coordinate.
      * @param y Y coordinate.
      */
-    protected void showPopupMenu(
-        JPopupMenu popup,
-        Component comp,
-        int x,
-        int y)
+    protected void showPopupMenu(JPopupMenu popup, Component comp, int x, int y)
     {
         Point p = new Point(x, y);
         SwingUtilities.convertPointToScreen(p, comp);
 
-        Dimension size   = popup.getPreferredSize();
+        Dimension size = popup.getPreferredSize();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
         boolean horiz = false;
@@ -744,15 +783,16 @@ public class JFlipPane extends JPanel implements IPreferenced
         popup.show(comp, x, y);
     }
 
+
     //--------------------------------------------------------------------------
     // Accessors
     //--------------------------------------------------------------------------
 
     /**
      * Returns flippane dimension.
-     *
-     * @return Dimension (width if position is left/right  or height if
-     *         position is top/bottom).
+     * 
+     * @return Dimension (width if position is left/right or height if position
+     *         is top/bottom).
      */
     protected int getDimension()
     {
@@ -762,7 +802,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Return the position (left, right, top, bottom).
-     *
+     * 
      * @return String
      */
     protected String getPosition()
@@ -773,7 +813,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Returns the Popup button.
-     *
+     * 
      * @return JButton
      */
     protected JButton getPopupButton()
@@ -784,7 +824,7 @@ public class JFlipPane extends JPanel implements IPreferenced
 
     /**
      * Returns the close button.
-     *
+     * 
      * @return JButton
      */
     protected JButton getCloseButton()
@@ -861,9 +901,9 @@ public class JFlipPane extends JPanel implements IPreferenced
                 else
                 {
                     showPopupMenu(
-                        popup_,
-                        (Component) evt.getSource(),
-                        evt.getX(),
+                        popup_, 
+                        (Component) evt.getSource(), 
+                        evt.getX(), 
                         evt.getY());
                 }
             }
@@ -872,28 +912,24 @@ public class JFlipPane extends JPanel implements IPreferenced
 }
 
 /*
-Revision History before before change of package name
-================================================================================
-revision 1.19  2003/04/16 02:12:47  analogue  Added saving/restoring of
-                                              preferences. Still need to verify.
-revision 1.18  2003/04/15 11:41:52  analogue  Removed method name debugs
-revision 1.17  2003/04/14 01:42:01  analogue  Added T O D O for saved/restore
-revision 1.16  2003/04/08 23:09:07  analogue  Coding standard updates
-revision 1.15  2003/03/28 08:38:34  analogue  Removed unused code
-revision 1.14  2003/03/27 04:14:27  analogue  Axed loadIcon() and updated to
-                                              load gifs via ResourceUtil
-revision 1.13  2003/03/23 05:03:56  analogue  Removed tabs
-revision 1.12  2003/03/15 03:59:52  analogue  Checkstyle updates
-revision 1.11  2002/12/24 06:26:56  analogue  None
-revision 1.10  2002/12/09 09:02:11  analogue  Checkstyle updates
-revision 1.9   2002/11/02 02:23:27  analogue  Updated log4j to 1.2.7
-revision 1.8   2002/11/02 01:38:37  analogue  Updated imports
-revision 1.7   2002/10/23 02:12:48  analogue  Updated imports`
-revision 1.6   2002/09/06 05:29:09  analogue  Added method names to debug
-revision 1.5   2002/09/04 03:32:56  analogue  Less logging
-revision 1.4   2002/08/24 05:18:56  analogue  Javadoc updates
-revision 1.3   2002/08/23 02:51:39  analogue  Removed getCurrent()
-revision 1.2   2002/08/22 05:35:01  analogue  Debug
-revision 1.1   2002/08/21 03:41:30  analogue  Initial version
-================================================================================
-*/
+ * Revision History before before change of package name
+ * ================================================================================
+ * revision 1.19 2003/04/16 02:12:47 analogue Added saving/restoring of
+ * preferences. Still need to verify. revision 1.18 2003/04/15 11:41:52 analogue
+ * Removed method name debugs revision 1.17 2003/04/14 01:42:01 analogue Added T
+ * O D O for saved/restore revision 1.16 2003/04/08 23:09:07 analogue Coding
+ * standard updates revision 1.15 2003/03/28 08:38:34 analogue Removed unused
+ * code revision 1.14 2003/03/27 04:14:27 analogue Axed loadIcon() and updated
+ * to load gifs via ResourceUtil revision 1.13 2003/03/23 05:03:56 analogue
+ * Removed tabs revision 1.12 2003/03/15 03:59:52 analogue Checkstyle updates
+ * revision 1.11 2002/12/24 06:26:56 analogue None revision 1.10 2002/12/09
+ * 09:02:11 analogue Checkstyle updates revision 1.9 2002/11/02 02:23:27
+ * analogue Updated log4j to 1.2.7 revision 1.8 2002/11/02 01:38:37 analogue
+ * Updated imports revision 1.7 2002/10/23 02:12:48 analogue Updated imports`
+ * revision 1.6 2002/09/06 05:29:09 analogue Added method names to debug
+ * revision 1.5 2002/09/04 03:32:56 analogue Less logging revision 1.4
+ * 2002/08/24 05:18:56 analogue Javadoc updates revision 1.3 2002/08/23 02:51:39
+ * analogue Removed getCurrent() revision 1.2 2002/08/22 05:35:01 analogue Debug
+ * revision 1.1 2002/08/21 03:41:30 analogue Initial version
+ * ================================================================================
+ */
