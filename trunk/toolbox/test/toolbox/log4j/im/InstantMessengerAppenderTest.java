@@ -7,7 +7,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
-import toolbox.junit.StandaloneTestCase;
+import toolbox.junit.testcase.StandaloneTestCase;
 import toolbox.util.ThreadUtil;
 
 /**

@@ -7,7 +7,7 @@ import junit.textui.TestRunner;
 
 import org.apache.tools.ant.Main;
 
-import toolbox.junit.StandaloneTestCase;
+import toolbox.junit.testcase.StandaloneTestCase;
 import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
 

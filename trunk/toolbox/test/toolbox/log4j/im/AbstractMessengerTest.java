@@ -8,7 +8,7 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import toolbox.junit.StandaloneTestCase;
+import toolbox.junit.testcase.StandaloneTestCase;
 import toolbox.util.ResourceUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XMLUtil;

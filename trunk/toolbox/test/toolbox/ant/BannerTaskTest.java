@@ -5,7 +5,7 @@ import junit.textui.TestRunner;
 
 import org.apache.tools.ant.Main;
 
-import toolbox.junit.StandaloneTestCase;
+import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
  * Unit test for BannerTask. This test is marked as standalone because the call

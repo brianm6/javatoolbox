@@ -5,7 +5,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.junit.StandaloneTestCase;
+import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
  * Unit test for LAFLauncher.

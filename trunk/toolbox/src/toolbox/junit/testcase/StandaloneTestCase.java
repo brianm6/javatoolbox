@@ -1,4 +1,4 @@
-package toolbox.junit;
+package toolbox.junit.testcase;
 
 /**
  * Marker interface to tag test cases which can only be run standalone and are
