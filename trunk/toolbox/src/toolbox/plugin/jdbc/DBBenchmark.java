@@ -326,7 +326,7 @@ public class DBBenchmark
     public DBBenchmark(String url, String user, String password, boolean init)
     {
         this(url, user, password, init, 
-            new PrintWriter(new OutputStreamWriter(System.out)));
+            new PrintWriter(new OutputStreamWriter(System.out), true));
     }   
 
     
@@ -360,7 +360,6 @@ public class DBBenchmark
                 createDatabase(url, user, password);
                 writer_.println("done.\n");
                 writer_.println("Complete: " + new java.util.Date());
-                writer_.flush();
             }
 
             writer_.println("* Starting Benchmark Run *");
@@ -491,8 +490,6 @@ public class DBBenchmark
             catch (Exception ex2)
             {
             }
-
-            writer_.flush();
         }
     }
 
@@ -576,7 +573,6 @@ public class DBBenchmark
         txCount_ = 0;
         failedTx_ = 0;
         memoryWatcher_.reset();
-        writer_.flush();
     }
 
     
@@ -626,8 +622,6 @@ public class DBBenchmark
             }
         }
         
-        writer_.flush();
-        
         try
         {
             int accountsnb = 0;
@@ -658,7 +652,6 @@ public class DBBenchmark
         }
 
         writer_.println("Dropping old tables if they exist...");
-        writer_.flush();
         
         try
         {
@@ -691,7 +684,6 @@ public class DBBenchmark
         }
 
         writer_.println("Creating tables...");
-        writer_.flush();
         
         try
         {
@@ -773,7 +765,6 @@ public class DBBenchmark
         }
 
         writer_.println("Deleting table contents in case Drop didn't work...");
-        writer_.flush();
         
         try
         {
@@ -825,7 +816,6 @@ public class DBBenchmark
             }
 
             writer_.println("Populating branches table...");
-            writer_.flush();
             
             for (int i = 0; i < numBranches_ * tps_; i++)
             {
@@ -860,7 +850,6 @@ public class DBBenchmark
             }
 
             writer_.println("Populating tellers table...");
-            writer_.flush();
             
             for (int i = 0; i < numTellers_ * tps_; i++)
             {
@@ -896,7 +885,6 @@ public class DBBenchmark
             }
 
             writer_.println("Populating accounts table...");
-            writer_.flush();
             
             for (int i = 0; i < numAccounts_ * tps_; i++)
             {
@@ -939,7 +927,6 @@ public class DBBenchmark
             ex.printStackTrace(writer_);
         }
 
-        writer_.flush();
         connectClose(conn);
     }
  
