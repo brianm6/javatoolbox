@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.text.Document;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -41,6 +42,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
 
+    // XML structure for saving preferences.
     private static final String NODE_JSMARTTEXTAREA   = "JSmartTextArea";
     private static final String   ATTR_AUTOSCROLL     = "autoscroll";
     private static final String   ATTR_ANTIALIAS      = "antialias";
@@ -133,11 +135,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     public JSmartTextArea(String text, boolean autoScroll, boolean antiAlias)
     {
         super(text);
-        buildView();
+        init();
         setAutoScroll(autoScroll);
         setAntiAliased(antiAlias);
-        setCapacity(Integer.MAX_VALUE);
-        setPruneFactor(0);
     }
 
     
@@ -150,8 +150,65 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     public JSmartTextArea(int rows, int columns)
     {
         super(rows, columns);
+        init();
     }
 
+
+    /**
+     * Creates a JSmartTextArea.
+     * 
+     * @param text Initial text.
+     * @param rows Number of rows.
+     * @param columns Number of columns
+     */
+    public JSmartTextArea(String text, int rows, int columns)
+    {
+        super(text, rows, columns);
+        init();
+    }
+
+    
+    /**
+     * Creates a JSmartTextArea from a Document.
+     * 
+     * @param doc Document
+     */
+    public JSmartTextArea(Document doc)
+    {
+        super(doc);
+        init();
+    }
+
+    
+    /**
+     * Creates a JSmartTextArea from a Document.
+     * 
+     * @param doc Document
+     * @param text Initial text.
+     * @param rows Number of rows.
+     * @param columns Number of columns.
+     */
+    public JSmartTextArea(Document doc, String text, int rows, int columns)
+    {
+        super(doc, text, rows, columns);
+        init();
+        setAntiAliased(true);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Protected 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * JSmartTextArea specific initialization routine for the constructors.
+     */
+    protected void init()
+    {
+        buildView();
+        setCapacity(Integer.MAX_VALUE);
+        setPruneFactor(0);
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface 
     //--------------------------------------------------------------------------
