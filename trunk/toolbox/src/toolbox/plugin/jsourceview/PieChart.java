@@ -8,12 +8,10 @@ import javax.swing.UIManager;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Pie3DPlot;
-import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.labels.StandardPieItemLabelGenerator;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.DefaultPieDataset;
 import org.jfree.data.PieDataset;
-
-import toolbox.util.FontUtil;
 
 /**
  * Pie chart that visualizes source code categories.
@@ -71,11 +69,22 @@ public class PieChart extends JPanel
         
         int total = stats_.getTotalLines();
         
-        result.setValue("Comments", percent(stats_.getCommentLines(), total));
-        result.setValue("Source code", percent(stats_.getCodeLines(), total));
-        result.setValue("Thrown out", percent(stats_.getThrownOutLines(), 
-            total));
-        result.setValue("Blank Lines", percent(stats_.getBlankLines(), total));
+        result.setValue(
+            "Comments", 
+            percent(stats_.getCommentLines(), total));
+        
+        result.setValue(
+            "Source code", 
+            percent(stats_.getCodeLines(), total));
+        
+        result.setValue(
+            "Thrown out", 
+            percent(stats_.getThrownOutLines(), total));
+        
+        result.setValue(
+            "Blank Lines", 
+            percent(stats_.getBlankLines(), total));
+        
         return result;
     }
 
@@ -112,14 +121,19 @@ public class PieChart extends JPanel
         //chart.setBackgroundPaint(Colors.getColor("light steel blue"));
         
         chart.setBackgroundPaint(UIManager.getColor("JOptionFrame.background"));
-        Pie3DPlot plot = (Pie3DPlot) chart.getPlot();
+        PiePlot3D plot = (PiePlot3D) chart.getPlot();
         
         //plot.setStartAngle(270);
         //plot.setDirection(Rotation.CLOCKWISE);
         
         plot.setForegroundAlpha(0.5f);
-        plot.setSectionLabelType(PiePlot.NAME_AND_PERCENT_LABELS);
-        plot.setSectionLabelFont(FontUtil.getPreferredSerifFont());
+        
+        // TODO: Format labels correctly like 27%
+        plot.setLabelGenerator(
+            new StandardPieItemLabelGenerator("{0} = {1}"));
+        
+        //plot.setSectionLabelType(PiePlot.NAME_AND_PERCENT_LABELS);
+        //plot.setSectionLabelFont(FontUtil.getPreferredSerifFont());
         
         //plot.setExplodePercent(1, 20.0);
         //plot.setCircular(true);
