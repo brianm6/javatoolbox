@@ -30,6 +30,8 @@ public class LineWrapAction extends AbstractTextComponentAction
             area, 
             "Wrap Lines", 
             ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP));
+        
+        putValue(SHORT_DESCRIPTION, "Toggles line wrapping");
     }
     
     //--------------------------------------------------------------------------
