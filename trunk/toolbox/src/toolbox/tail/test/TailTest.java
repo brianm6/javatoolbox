@@ -24,12 +24,11 @@ import toolbox.util.file.FileStuffer;
 import toolbox.util.io.NullWriter;
 
 /**
- * Unit test for Tail
+ * Unit test for Tail.
  */
 public class TailTest extends TestCase
 {
-    public static final Logger logger_ =
-        Logger.getLogger(TailTest.class);
+    public static final Logger logger_ = Logger.getLogger(TailTest.class);
 
     /** 
      * Word list used for test data 
@@ -41,9 +40,9 @@ public class TailTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -55,7 +54,7 @@ public class TailTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor - builds the word list
+     * Default constructor - builds the word list.
      */
     public TailTest()
     {
@@ -85,7 +84,7 @@ public class TailTest extends TestCase
      */
     
     /**
-     * Tests tailing of a files backlog for a specific number of lines
+     * Tests tailing of a files backlog for a specific number of lines.
      * 
      * @throws Exception on error
      */
@@ -93,7 +92,7 @@ public class TailTest extends TestCase
     {
         logger_.info("Running testTailBacklog...");
 
-        String file = FileUtil.createTempFilename();
+        File file = FileUtil.createTempFile();
         
         try
         {
@@ -105,7 +104,7 @@ public class TailTest extends TestCase
             TestTailListener listener = new TestTailListener();
                    
             Tail tail = new Tail();
-            tail.follow(new File(file), new NullWriter());
+            tail.follow(file, new NullWriter());
             tail.setBacklog(backlog);
             tail.addTailListener(listener);
             tail.start();
@@ -133,8 +132,9 @@ public class TailTest extends TestCase
         logger_.info("Done!");
     }
 
+    
     /**
-     * Tests tailing a file
+     * Tests tailing a file.
      * 
      * @throws Exception on error
      */
@@ -142,8 +142,7 @@ public class TailTest extends TestCase
     {
         logger_.info("Running testTailFile...");
        
-        String file = FileUtil.createTempFilename();
-        File   ffile = new File(file);
+        File ffile = FileUtil.createTempFile();
         FileStuffer stuffer = new FileStuffer(ffile, 250);
         Writer sink = null;
          
@@ -168,12 +167,13 @@ public class TailTest extends TestCase
         finally
         {
             stuffer.stop();
-            FileUtil.delete(file);
+            FileUtil.delete(ffile);
         }
     }
     
+    
     /**
-     * Tests the lifecycle of a Tail object (start/stop/pause/unpause)
+     * Tests the lifecycle of a Tail object (start/stop/pause/unpause).
      * 
      * @throws Exception on error
      */
@@ -227,6 +227,7 @@ public class TailTest extends TestCase
         tail.removeTailListener(listener);
     }
 
+    
     /**
      * Tests tailing of a stream
      * 
@@ -297,15 +298,18 @@ public class TailTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Writes output to a writer in a delayed fashion
+     * Writes output to a writer in a delayed fashion.
      * 
      * @param writer Writer to send output to
      * @param iterations Number of times to iterate
      * @param delay Delay between writes in seconds
      * @param value String to send to writer
      */                
-    public void writeDelayed(PipedWriter writer, int iterations, 
-        int delay, String value)
+    public void writeDelayed(
+            PipedWriter writer, 
+            int iterations, 
+			int delay, 
+            String value)
     {
         logger_.info("Running writeDelayed...");
         
@@ -321,6 +325,7 @@ public class TailTest extends TestCase
         pw.close();
     }
     
+    
     /**
      * Creates a paragraph full of random words.
      * 
@@ -335,8 +340,9 @@ public class TailTest extends TestCase
         return sb.toString();
     }
     
+    
     /**
-     * Creates a sentence full of random words
+     * Creates a sentence full of random words.
      * 
      * @return Sentence
      */
