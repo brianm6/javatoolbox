@@ -8,38 +8,30 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * String based implementation of an IConnection
+ * String based implementation of an {@link IConnection}.
  */
 public class StringConnection extends AbstractConnection implements IConnection
 {
-    /** 
-     * Input stream 
-     */
+    /** Input stream */
     private StringInputStream sis_;
 
-    /** 
-     * Output stream 
-     */
+    /** Output stream */
     private StringOutputStream sos_;
     
-    /**
-     * Connected flag
-     */
+    /** Connected flag */
     private boolean connected_;
-    
 
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for StringConnection
+     * Default constructor
      */
     public StringConnection()
     {
         this("");
     }
-
 
     /**
      * Creates a StringConnection with the given input string
@@ -55,50 +47,29 @@ public class StringConnection extends AbstractConnection implements IConnection
     }
 
     //--------------------------------------------------------------------------
-    //  IConnection interface
+    //  IConnection Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see IConnection#open()
-     */
     public void connect()
     {
-        // nothing to do
         connected_ = true;
     }
 
-
-    /**
-     * @see IConnection#close()
-     */
     public void close() throws IOException
     {
-        // nothing to do
         connected_ = false;
     }
 
-
-    /**
-     * @see IConnection#getInputStream()
-     */
     public InputStream getInputStream() throws IOException
     {
         return sis_;
     }
 
-
-    /**
-     * @see IConnection#getOutputStream()
-     */
     public OutputStream getOutputStream() throws IOException
     {
         return sos_;
     }
 
-
-    /**
-     * @see IConnection#isConnected()
-     */
     public boolean isConnected()
     {
         return connected_;
@@ -109,9 +80,7 @@ public class StringConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Returns output stream as a string
-     * 
-     * @return  String
+     * @return Output stream as a string
      */
     public String getOutputString()
     {
