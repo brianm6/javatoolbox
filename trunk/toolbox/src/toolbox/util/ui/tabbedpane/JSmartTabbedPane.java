@@ -12,11 +12,8 @@ import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.ui.event.DebugComponentListener;
-import toolbox.util.ui.event.DebugContainerListener;
-import toolbox.util.ui.event.DebugPropertyChangeListener;
 
-/***
+/**
  * A JTabbedPane which has an icon on each tab to close the tab.
  */
 public class JSmartTabbedPane extends JTabbedPane
@@ -38,13 +35,11 @@ public class JSmartTabbedPane extends JTabbedPane
      */
     public JSmartTabbedPane()
     {
-        //setUI(new SmartTabbedPaneUI(SwingConstants.RIGHT));
+        setUI(new SmartTabbedPaneUI(SwingConstants.LEFT));
         addMouseListener(new MouseListener());
-        addPropertyChangeListener(new DebugPropertyChangeListener());
-        addComponentListener(new DebugComponentListener());
-        addContainerListener(new DebugContainerListener());
-        
         listeners_ = new SmartTabbedPaneListener[0];
+        
+        //addPropertyChangeListener(new DebugPropertyChangeListener());
     }
 
     //--------------------------------------------------------------------------
@@ -73,10 +68,6 @@ public class JSmartTabbedPane extends JTabbedPane
     public void addTab(String title, Component component, Icon extraIcon)
     {
         super.addTab(title, new SmartTabbedPaneIcon(extraIcon), component);
-        
-        // TODO: move this somewhere where it is only executed once
-        if (!(getUI() instanceof SmartTabbedPaneUI)) 
-            setUI(new SmartTabbedPaneUI(SwingConstants.LEFT));
     }
 
     //--------------------------------------------------------------------------
