@@ -28,11 +28,12 @@ public class Main
         programMap.put("showclasspath", "toolbox.showclasspath.Main");
         programMap.put("showpath",      "toolbox.showpath.Main");
         programMap.put("jsourceview",   "toolbox.jsourceview.JSourceView");
-        programMap.put("jtail",         "toolbox.jtail.Main");
+        programMap.put("jtail",         "toolbox.jtail.JTail");
         programMap.put("tail",          "toolbox.tail.Main");
         programMap.put("jtcptunnel",    "toolbox.tunnel.JTcpTunnel");
         programMap.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
         programMap.put("tree",          "toolbox.tree.Tree");
+        programMap.put("sqlviewer",     "toolbox.sqlviewer.SQLViewer");
     }
     
     /**
@@ -151,7 +152,8 @@ public class Main
             "       jfindclass    => gui version of findclass       \n" +
             "       jsourceview   => java code counter              \n" +
             "       jtail         => java tailer (GUI)              \n" +
-            "       jtcptunnel    => tcp tunnel  (GUI)              \n" );
+            "       jtcptunnel    => tcp tunnel  (GUI)              \n" +
+            "       sqlviewer     => unmangles sql statements       \n" );
     }
     
 }
