@@ -4,35 +4,35 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 /**
- * Interface for JTail configuration preferences
+ * Interface used for the persistence of the JTail application's preferences.
  */
 public interface IJTailConfig
 {
     /**
      * Returns the default tail pane configuration
      * 
-     * @return ITailPaneConfiguration
+     * @return  Default configuration
      */
     public ITailPaneConfig getDefaultConfig();
 
     /**
-     * Returns the location.
+     * Returns the location of the window
      * 
-     * @return Point
+     * @return  Location of the window
      */
     public Point getLocation();
 
     /**
-     * Returns the size.
+     * Returns the size of the window
      * 
-     * @return Dimension
+     * @return  Size of the window
      */
     public Dimension getSize();
 
     /**
      * Returns the last directory selecting in the file explorer pane
      *
-     * @return  String
+     * @return  Last selected directory
      */
     public String getDirectory();
 
@@ -46,36 +46,35 @@ public interface IJTailConfig
     /**
      * Sets the default tail pane configuration
      * 
-     * @param config  The default tail pane configuration
+     * @param config  Default tail pane configuration
      */
     public void setDefaultConfig(ITailPaneConfig config);
 
     /**
-     * Sets the location.
+     * Sets the location of the window
      * 
-     * @param location The location to set
+     * @param  location  Location of the window
      */
     public void setLocation(Point location);
 
     /**
-     * Sets the size.
+     * Sets the size of the window
      * 
-     * @param size The size to set
+     * @param  size  Size of the window
      */
     public void setSize(Dimension size);
     
     /**
      * Returns the tailPaneConfigs.
      * 
-     * @return ITailPaneConfig[]
+     * @return  Array of tail pain configurations
      */
     public ITailPaneConfig[] getTailConfigs();
 
     /**
-     * Sets the tailPaneConfigs.
+     * Sets the list of tail pane configurations
      * 
-     * @param tailPaneConfigs The tailPaneConfigs to set
+     * @param tailPaneConfigs  Tail pane configurations
      */
     public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs);
-    
 }
