@@ -64,14 +64,14 @@ import toolbox.util.ui.plugin.IStatusBar;
 /**
  * GUI for finding class files by regular expression from the classpath
  * or any arbitrary java archive or directory.
- * 
- * <pre>
- * TODO: Update tablecell renderer to highlight the matching substring
- * TODO: Add sorting to table
- * </pre>
  */
 public class JFindClass extends JFrame
 {
+    /*
+     * TODO: Update tablecell renderer to highlight the matching substring
+     * TODO: Add sorting to table
+     */
+    
     private static final Logger logger_ = 
         Logger.getLogger(JFindClass.class);
 
@@ -119,12 +119,14 @@ public class JFindClass extends JFrame
     private static final int COL_SIZE      = 3;
     private static final int COL_TIMESTAMP = 4;
 
-    /** 
-     * Prefix tacked onto the beginning of all properties associated with JTail
-     */ 
+    /** Prefix tacked onto the beginning of all properties assoc. with JTail */
     private static final String PROP_PREFIX = 
         ClassUtil.stripPackage(JFindClass.class.getName()).toLowerCase();
     
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+        
     /**
      * Entrypoint
      * 
@@ -147,21 +149,18 @@ public class JFindClass extends JFrame
 
     /**
      * Default Constructor
-     * 
-     * @throws Exception on error
      */
     public JFindClass()
     {
-        super("JFindClass");
+        this("JFindClass");
     }
     
     /**
      * Constructor for JFindClass
      * 
      * @param  title  Window title
-     * @throws Exception on error
      */
-    public JFindClass(String title) throws Exception
+    public JFindClass(String title)
     {
         super(title);
     }
@@ -171,7 +170,9 @@ public class JFindClass extends JFrame
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
+     * Sets the status bar
+     * 
+     * @param  statusBar  Status bar
      */
     public void setStatusBar(IStatusBar statusBar)
     {
@@ -290,7 +291,7 @@ public class JFindClass extends JFrame
             
         JButton decompileButton = new JButton(new DecompileAction());
         JPanel decompilerPanel = new JPanel(new BorderLayout());
-        decompilerPanel.add(BorderLayout.CENTER, new JScrollPane(sourceArea_));
+        decompilerPanel.add(BorderLayout.CENTER, sourceArea_);
         decompilerPanel.add(BorderLayout.SOUTH, decompileButton);
         decompilerPanel.setPreferredSize(new Dimension(100, 400));
         
@@ -410,21 +411,11 @@ public class JFindClass extends JFrame
         column.setMinWidth(150);
         column.setPreferredWidth(150);
         column.setMaxWidth(300);
-        
-        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(0) , 
-            new AlternatingCellRenderer());
 
-        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(1) , 
-            new AlternatingCellRenderer());
-
-        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(2) , 
-            new AlternatingCellRenderer());
-
-        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(3) , 
-            new AlternatingCellRenderer());
-            
-        resultTable_.setDefaultRenderer(resultTable_.getColumnClass(4) , 
-            new AlternatingCellRenderer());
+        // Set alternating row renderer
+        for (int i=0; i < resultColumns_.length; i++)
+            resultTable_.setDefaultRenderer(resultTable_.getColumnClass(i), 
+                new AlternatingCellRenderer());
     }
 
     //--------------------------------------------------------------------------
@@ -459,7 +450,8 @@ public class JFindClass extends JFrame
         }
         
         /**
-         * When a target is searched, update the status bar
+         * When a target is searched, update the status bar and hilight the
+         * archive being search in the search list.
          * 
          * @param  target  Target that is being searched
          */
@@ -482,7 +474,7 @@ public class JFindClass extends JFrame
          */
         public void searchCancelled()
         {
-            statusBar_.setStatus("Search cancelled");
+            statusBar_.setStatus("Search canceled");
         }    
     }
     
@@ -568,18 +560,21 @@ public class JFindClass extends JFrame
 
             if (isSelected)
             {
-                super.setForeground(table.getSelectionForeground());
-                super.setBackground(table.getSelectionBackground());
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
             }
             else
             {
-                super.setForeground(table.getForeground());
+                setForeground(table.getForeground());
 
-                // Alternate colors                
+                // Alternate row background colors colors
+                                
                 if (MathUtil.isEven(row))
-                    super.setBackground(table.getBackground());
+                    setBackground(table.getBackground());
                 else
-                    super.setBackground(new Color(240,240,240));
+                    setBackground(new Color(240,240,240));
+                    
+                
             }
 
             if (hasFocus)
@@ -589,10 +584,10 @@ public class JFindClass extends JFrame
                     
                 if (table.isCellEditable(row, column))
                 {
-                    super.setForeground(
+                    setForeground(
                         UIManager.getColor("Table.focusCellForeground"));
                         
-                    super.setBackground(
+                    setBackground(
                         UIManager.getColor("Table.focusCellBackground"));
                 }
             }
