@@ -1,7 +1,3 @@
-/**
- * Copyright 2002, Southwest Airlines
- * All Rights Reserved
- */
 package toolbox.util.net.test;
 
 import java.io.IOException;

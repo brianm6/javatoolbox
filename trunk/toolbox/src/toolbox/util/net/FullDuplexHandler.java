@@ -1,10 +1,4 @@
-/**
- * Copyright 2002, Southwest Airlines
- * All Rights Reserved
- */
 package toolbox.util.net;
-
-import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
@@ -74,18 +68,10 @@ public abstract class FullDuplexHandler implements IConnectionHandler
         logger_.info(method + "handle called");
         
         // Startup input/output stream handlers on separate threads
-        inputStreamThread_  =
-             ThreadUtil.run(this, "handleInput", null);
-             
-        outputStreamThread_ = 
-            ThreadUtil.run(this, "handleOutput", null);
+        inputStreamThread_  = ThreadUtil.run(this, "handleInput", null);
+        outputStreamThread_ = ThreadUtil.run(this, "handleOutput", null);
         
         return null;
-    }
-
-    public void crap(InputStream is)
-    {
-        logger_.info("crap called");   
     }
 
     //--------------------------------------------------------------------------
