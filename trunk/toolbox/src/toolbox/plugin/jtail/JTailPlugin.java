@@ -87,7 +87,7 @@ public class JTailPlugin implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
-        jtail_.saveConfiguration();
+        jtail_.saveConfiguration(prefs);
     }
 
     /**
@@ -95,7 +95,7 @@ public class JTailPlugin implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
-        jtail_.applyConfiguration();
+        jtail_.applyConfiguration(prefs);
     }
 
     /**
@@ -114,6 +114,6 @@ public class JTailPlugin implements IPlugin
      */
     public void shutdown()
     {
-        jtail_.saveConfiguration();
+        jtail_.saveConfiguration(null);
     }
 }
