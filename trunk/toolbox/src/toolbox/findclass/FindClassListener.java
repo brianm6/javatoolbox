@@ -10,7 +10,7 @@ public interface IFindClassListener
      * 
      * @param searchResult Results on class that was found
      */
-    public void classFound(FindClassResult searchResult);
+    void classFound(FindClassResult searchResult);
     
     
     /**
@@ -18,7 +18,7 @@ public interface IFindClassListener
      * 
      * @param search Search text
      */
-    public void searchCompleted(String search);
+    void searchCompleted(String search);
     
     
     /**
@@ -26,11 +26,11 @@ public interface IFindClassListener
      * 
      * @param target Name of the target directory or archive
      */
-    public void searchingTarget(String target);
+    void searchingTarget(String target);
     
     
     /**
      * Notification that a search was cancelled.
      */
-    public void searchCancelled();
+    void searchCancelled();
 }
