@@ -110,14 +110,9 @@ public final class Bandwidth
      */
     public Bandwidth(int bandwidth, int averageBandwidth, String type)
     {
-        type_ = type;
-        origBandwidth_ = bandwidth;
-        origAverageBandwidth_ = averageBandwidth;
-        bandwidthPerTick_ = bandwidth / TICKS_PER_SECOND;
-        
-        // to ensure new connections stay throttled
-        if (averageBandwidth > 0 && bandwidthPerTick_ < 1)
-            bandwidthPerTick_ = 1; 
+        setType(type); 
+        setAverageBandwidth(averageBandwidth);
+        updateBandwidth(bandwidth);
         
         timeStarted_ = System.currentTimeMillis();
         
@@ -136,13 +131,40 @@ public final class Bandwidth
     //--------------------------------------------------------------------------
     
     /**
+     * @param type
+     */
+    protected void setType(String type)
+    {
+        type_ = type;
+    }
+
+    /**
+     * @param averageBandwidth
+     */
+    protected void setAverageBandwidth(int averageBandwidth)
+    {
+        origAverageBandwidth_ = averageBandwidth;
+    }
+
+    
+    /**
+     * 
+     * @return
+     */
+    protected int getAverageBandwidth() 
+    {
+        return origAverageBandwidth_;
+    }
+    
+    
+    /**
      * Returns the current bandwidth per second allowed.
      * 
      * @return int
      */
     public int getCurrentBandwidthPerSecondAllowed()
     {
-        return TICKS_PER_SECOND * bandwidthPerTick_;
+        return TICKS_PER_SECOND * getBandwidthPerTick();
     }
 
 
@@ -190,6 +212,29 @@ public final class Bandwidth
         bandwidthPerTick_ = bandwidthPerTick;
     }
 
+    /**
+     * @param i
+     */
+    public void updateBandwidth(int bandwidth)
+    {
+        logger_.debug("Bandwidth updated = " + bandwidth);
+        
+        origBandwidth_ = bandwidth;
+        
+        setBandwidthPerTick(origBandwidth_ / TICKS_PER_SECOND);
+        
+        // to ensure new connections stay throttled
+        //if (averageBandwidth > 0 && bandwidthPerTick_ < 1)
+        
+        if (getAverageBandwidth() > 0 && getBandwidthPerTick() < 1)
+            setBandwidthPerTick(1); 
+    }
+    
+    
+    public int getBandwidth() 
+    {
+        return origBandwidth_;
+    }
     
     /**
      * Account for bandwidth already used for input.
