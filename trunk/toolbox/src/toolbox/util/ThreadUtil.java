@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.collections.AsMap;
+
 /**
  * Utility class for thread related stuff
  */
@@ -146,6 +148,26 @@ public final class ThreadUtil
     }
 
     /**
+     * Dumps a threads public information to a string for printing/debug
+     * purposes.
+     * 
+     * @param t Thread to stringify
+     * @return String
+     */
+    public static String toString(Thread t)
+    {
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append(StringUtil.repeat("=", 80) + "\n");
+        sb.append("Thread Info - " + t.getName() + "\n");
+        sb.append(StringUtil.repeat("-", 80) + "\n");
+        sb.append(AsMap.of(t).toString() + "\n");
+        sb.append(StringUtil.repeat("=", 80) + "\n");
+        
+        return sb.toString();
+    }
+
+    /**
      * Runs an objects method in a separate thread 
      * 
      * @param   target      Object which contains method to run
@@ -213,16 +235,24 @@ public final class ThreadUtil
      */        
     public static class MethodRunner implements Runnable
     {
-        /** Name of method to execute */
+        /** 
+         * Name of method to execute 
+         */
         private String method_;
         
-        /** Object to execute the method on */
+        /** 
+         * Object to execute the method on 
+         */
         private Object target_;
         
-        /** Parameters to pass on the method invocation */
+        /** 
+         * Parameters to pass on the method invocation 
+         */
         private Object[] params_;
 
-        /** Parameter types */
+        /** 
+         * Parameter types 
+         */
         private Class[] clazzes_;
 
         //----------------------------------------------------------------------
