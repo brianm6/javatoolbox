@@ -47,12 +47,12 @@ import toolbox.util.ui.flippane.JFlipPane;
  * <p>
  * Features:
  * <ul>
- *   <li>Sorting text alphabetically
- *   <li>Filtering text dynamically using regular expressions
- *   <li>Tokenizing strings
- *   <li>Base64 encoding/decoding
- *   <li>Banner
- *   <li>XML/HTML escaping/unescaping
+ *   <li>Sorts text alphabetically
+ *   <li>Filters text dynamically using a regular expressions
+ *   <li>Tokenizes strings
+ *   <li>Creates Figlet banners
+ *   <li>Encodes/decodes Base64
+ *   <li>Escapes/unescapes XML and HTML
  * </ul>
  */ 
 public class TextPlugin extends JPanel implements IPlugin, Stringz
@@ -63,15 +63,11 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     public static final Logger logger_ =
         Logger.getLogger(TextPlugin.class);   
     
-    /**
-     * XML: Root node for preferenes
-     */
-    private static final String NODE_TEXTTOOLS_PLUGIN = "TextToolsPlugin";
-    
-    /**
-     * XML: Attribute for the divider between the input and output panes
-     */
-    private static final String ATTR_DIVIDER_LOCATION = "dividerLocation";
+    // XML Preferences
+    private static final String NODE_TEXTTOOLS_PLUGIN   = "TextToolsPlugin";
+    private static final String   ATTR_DIVIDER_LOCATION = "dividerLocation";
+    private static final String   NODE_INPUT_TEXTAREA   = "InputTextArea";
+    private static final String   NODE_OUTPUT_TEXTAREA  = "OutputTextArea";
     
     /** 
      * Reference to the workspace status bar 
@@ -207,12 +203,20 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     
     public void applyPrefs(Element prefs) 
     {
-        Element root = XOMUtil.getFirstChildElement(
-            prefs, NODE_TEXTTOOLS_PLUGIN, new Element(NODE_TEXTTOOLS_PLUGIN));
+        Element root = 
+            XOMUtil.getFirstChildElement(prefs, NODE_TEXTTOOLS_PLUGIN, 
+                new Element(NODE_TEXTTOOLS_PLUGIN));
 
         topFlipPane_.applyPrefs(root);
-        outputArea_.applyPrefs(root);
         
+        inputArea_.applyPrefs(
+            XOMUtil.getFirstChildElement(root, NODE_INPUT_TEXTAREA, 
+                new Element(NODE_INPUT_TEXTAREA)));
+
+        outputArea_.applyPrefs(
+            XOMUtil.getFirstChildElement(root, NODE_OUTPUT_TEXTAREA, 
+                new Element(NODE_OUTPUT_TEXTAREA)));
+       
         final int dividerLocation = 
             XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER_LOCATION, 150);
 
@@ -231,10 +235,18 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
         
         root.addAttribute(new Attribute(
-            ATTR_DIVIDER_LOCATION,splitter_.getDividerLocation()+""));
+            ATTR_DIVIDER_LOCATION, splitter_.getDividerLocation()+""));
             
         topFlipPane_.savePrefs(root);
-        outputArea_.savePrefs(root);
+        
+        Element input = new Element(NODE_INPUT_TEXTAREA);
+        outputArea_.savePrefs(input);
+        root.appendChild(input);
+        
+        Element output = new Element(NODE_OUTPUT_TEXTAREA);
+        outputArea_.savePrefs(output);
+        root.appendChild(output);
+        
         XOMUtil.insertOrReplace(prefs, root);
     }
     
@@ -456,6 +468,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             add(new JButton(new SingleLineAction()));
         }
         
+        /** 
+         * Tokenizes the string in the input text area with the entered 
+         * delimiter and dumps the result to the output text area.
+         */
         class TokenizeAction extends AbstractAction
         {
             TokenizeAction()
@@ -476,6 +492,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        /** 
+         * Compresses multiple lines in the input text area to a single line
+         * in the output text area.
+         */
         class SingleLineAction extends AbstractAction
         {
             SingleLineAction()
