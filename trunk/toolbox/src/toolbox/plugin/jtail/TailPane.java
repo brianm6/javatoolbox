@@ -13,12 +13,11 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.LogManager;
@@ -42,14 +41,16 @@ import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
-import toolbox.util.ui.JSmartButton;
-import toolbox.util.ui.JSmartCheckBox;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.textarea.AutoScrollAction;
 import toolbox.util.ui.textarea.ClearAction;
+import toolbox.util.ui.textarea.LineWrapAction;
 import toolbox.workspace.IStatusBar;
 
 /**
@@ -87,7 +88,7 @@ import toolbox.workspace.IStatusBar;
  *
  *</pre>
  */
-public class TailPane extends JPanel
+public class TailPane extends JHeaderPanel
 {
     /*
      * TODO: Color code keywords
@@ -112,16 +113,6 @@ public class TailPane extends JPanel
      */
     public static final String LOG_LOG4J = "[Log4J]";
 
-    /** 
-     * Start button text for dual action button start/stop. 
-     */
-    private static final String MODE_START = "Start";
-    
-    /** 
-     * Stop button text for dual action button start/stop. 
-     */
-    private static final String MODE_STOP  = "Stop";
-
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -137,29 +128,24 @@ public class TailPane extends JPanel
     private JSmartTextArea tailArea_;
     
     /** 
-     * Dual action button that handles pause/unpause of tail. 
+     * Toggle button that handles pause/unpause of tail. 
      */
-    private JButton pauseButton_;
+    private JSmartToggleButton pauseButton_;
     
     /** 
-     * Dual action button that handles start/stop of tail. 
+     * Start the tail. 
      */
     private JButton startButton_;
+    
+    /**
+     * Stops the tail.
+     */
+    private JButton stopButton_;
     
     /** 
      * Closes the tail (also triggers adding the tail to the recent menu). 
      */
     private JButton closeButton_;
-    
-    /** 
-     * Checkbox to toggle auto scrolling of the output text area. 
-     */
-    private JSmartCheckBox autoScrollBox_;
-    
-    /** 
-     * Checkbox to toggles the inclusion of lines numbers in the tail output.
-     */
-    private JCheckBox lineNumbersBox_;
     
     /** 
      * Regular expression filter field that includes matching lines. 
@@ -220,6 +206,7 @@ public class TailPane extends JPanel
      * List of listeners interested in newData() and tailAggregated().
      */
     private ITailPaneListener[] tailPaneListeners_;
+
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -236,6 +223,7 @@ public class TailPane extends JPanel
     public TailPane(ITailPaneConfig config, IStatusBar statusBar) 
         throws IOException, FileNotFoundException
     {
+        super(config.getFilenames()[0]);
         statusBar_ = statusBar;
         tailPaneListeners_ = new ITailPaneListener[0];
         buildView(config);
@@ -244,8 +232,15 @@ public class TailPane extends JPanel
         
         // Start tail through action so button states are OK
         if (config_.isAutoStart())
+        {
             startButton_.getAction().actionPerformed(
                 new ActionEvent(this, 0, "Start"));
+        }
+        else
+        {
+            pauseButton_.setEnabled(false);
+            stopButton_.setEnabled(false);
+        }
     }
     
     //--------------------------------------------------------------------------
@@ -287,43 +282,92 @@ public class TailPane extends JPanel
      */    
     protected void buildView(ITailPaneConfig config)
     {
+        JPanel p = new JPanel(new BorderLayout());
+        JToolBar tb = JHeaderPanel.createToolBar();
+        
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(FontUtil.getPreferredMonoFont());
         
-        JButton clearButton = new JSmartButton(new ClearAction(tailArea_));
-        pauseButton_ = new JSmartButton(new PauseUnpauseAction());
+        JButton clearButton = JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
+            "Clears the output",
+            new ClearAction(tailArea_));
         
-        String startMode =  
-            config.isAutoStart() ? MODE_START : MODE_STOP;
+        pauseButton_ = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_PAUSE),
+                "Pause/Resume",
+                new PauseUnpauseAction());
         
-        startButton_    = new JSmartButton(new StartStopAction(startMode));
-        closeButton_    = new JSmartButton(new CloseAction());
+        startButton_ = 
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_PLAY),
+                "Starts the tail",
+                new StartAction());
+
+        stopButton_ = 
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_STOP),
+                "Stops the tail",
+                new StopAction());
         
-        autoScrollBox_  = new JSmartCheckBox(new AutoScrollAction(tailArea_));
-        autoScrollBox_.toggleOnProperty(tailArea_, "autoscroll");
+        closeButton_ = 
+            JHeaderPanel.createButton(
+                ImageCache.getIcon(ImageCache.IMAGE_DELETE),
+                "Close tail",
+                new CloseAction());
         
-        lineNumbersBox_ = new JSmartCheckBox(new ShowLineNumbersAction());
-        regexField_     = new JSmartTextField(5);
-        cutField_       = new JSmartTextField(5);
+        JSmartToggleButton autoScrollButton = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_LOCK),
+                "Autoscroll",
+                new AutoScrollAction(tailArea_),
+                tailArea_,
+                "autoscroll");
+
+        JSmartToggleButton wrapLinesButton = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP),
+                "Wrap Lines",
+                new LineWrapAction(tailArea_),
+                tailArea_,
+                "lineWrap");
+        
+        JSmartToggleButton showLineNumbersButton = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_BRACES),
+                "Line Numbers",
+                new ShowLineNumbersAction(),
+                tailArea_,
+                "lineNumbers");
+        
+        tb.add(startButton_);
+        tb.add(pauseButton_);
+        tb.add(stopButton_);
+        tb.addSeparator();
+        tb.add(clearButton);
+        tb.add(wrapLinesButton);
+        tb.add(autoScrollButton);
+        tb.add(showLineNumbersButton);
+        tb.add(closeButton_);
+        
+        regexField_ = new JSmartTextField(5);
+        cutField_ = new JSmartTextField(5);
 
         regexField_.addActionListener(new RegexActionListener());
         cutField_.addActionListener(new CutActionListener());
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(startButton_);
-        buttonPanel.add(pauseButton_);
-        buttonPanel.add(clearButton);
-        buttonPanel.add(closeButton_);
-        buttonPanel.add(autoScrollBox_);
-        buttonPanel.add(lineNumbersBox_);
         buttonPanel.add(new JSmartLabel("Include filter"));
         buttonPanel.add(regexField_);
         buttonPanel.add(new JSmartLabel("Cut"));
         buttonPanel.add(cutField_);
         
-        setLayout(new BorderLayout());
-        add(new JScrollPane(tailArea_), BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        p.add(new JScrollPane(tailArea_), BorderLayout.CENTER);
+        p.add(buttonPanel, BorderLayout.SOUTH);
+        
+        setContent(p);
+        setToolBar(tb);
     }
  
     
@@ -336,7 +380,9 @@ public class TailPane extends JPanel
         
         try
         {
+            //
             // Filter based on regular expression
+            //
             regexFilter_ = new RegexLineFilter();
             regexFilter_.setEnabled(false);
             filters_[0] = regexFilter_;
@@ -346,12 +392,16 @@ public class TailPane extends JPanel
             ExceptionUtil.handleUI(re, logger_);
         }
         
+        //
         // Cut filter
+        //
         cutFilter_ = new CutLineFilter();
         cutFilter_.setEnabled(false);
         filters_[1] = cutFilter_;
         
+        //
         // Show line numbers
+        //
         lineNumberDecorator_ = new LineNumberDecorator();
         lineNumberDecorator_.setEnabled(false);
         filters_[2] = lineNumberDecorator_;
@@ -431,17 +481,10 @@ public class TailPane extends JPanel
     public void setConfiguration(ITailPaneConfig config)
     {
         config_ = config;
-
-        autoScrollBox_.setSelected(config_.isAutoScroll());
         tailArea_.setAutoScroll(config_.isAutoScroll());
-        
-        boolean lineNumbers = config_.isShowLineNumbers();
-        lineNumbersBox_.setSelected(lineNumbers);
-        lineNumberDecorator_.setEnabled(lineNumbers);
-        
+        lineNumberDecorator_.setEnabled(config_.isShowLineNumbers());
         tailArea_.setFont(config_.getFont());
         tailArea_.setAntiAliased(config.isAntiAliased());
-        
         setRegularExpression(config_.getRegularExpression());
         setCutExpression(config_.getCutExpression());
     }
@@ -456,8 +499,8 @@ public class TailPane extends JPanel
     public ITailPaneConfig getConfiguration() throws IOException
     {
         // Make sure configuration up to date
-        config_.setAutoScroll(autoScrollBox_.isSelected());
-        config_.setShowLineNumbers(lineNumbersBox_.isSelected());
+        config_.setAutoScroll(tailArea_.isAutoScroll());
+        config_.setShowLineNumbers(lineNumberDecorator_.isEnabled());
         config_.setFont(tailArea_.getFont());
         config_.setAntiAlias(tailArea_.isAntiAliased());
         config_.setRegularExpression(getRegularExpression());
@@ -475,9 +518,7 @@ public class TailPane extends JPanel
         }
                 
         config_.setFilenames(files);
-        
-        config_.setAutoStart(
-            startButton_.getText().equals(MODE_START) ? false : true);
+        config_.setAutoStart(startButton_.isEnabled());
             
         return config_;
     }    
@@ -820,27 +861,22 @@ public class TailPane extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    // StartStopAction
+    // StartAction
     //--------------------------------------------------------------------------
     
     /**
-     * Dual mode action that starts/stops the tail.
+     * Starts the tail.
      */
-    class StartStopAction extends SmartAction
+    class StartAction extends SmartAction
     {
-        private String mode_;
-            
         /**
-         * Creates a StartStopAction.
-         * 
-         * @param mode Label of the button.
+         * Creates a StartAction.
          */
-        StartStopAction(String mode)
+        StartAction()
         {
-            super(mode, true, false, null);
-            mode_ = mode;
+            super(null, true, false, null);
             putValue(MNEMONIC_KEY, new Integer('S'));
-            putValue(SHORT_DESCRIPTION, "Starts/Stops the tail");
+            putValue(SHORT_DESCRIPTION, "Starts the tail");
         }
         
         
@@ -850,45 +886,59 @@ public class TailPane extends JPanel
          */
         public void runAction(ActionEvent e) throws Exception
         { 
-            if (mode_.equals(MODE_START))
-            {
-                //
-                // Start
-                //
-                
-                init();
-                
-                for (int i = 0;
-                    i < contexts_.length;
-                    contexts_[i++].getTail().start());
-                
-                mode_ = MODE_STOP;
-                putValue(Action.NAME, mode_);
-                pauseButton_.setEnabled(true);
-                statusBar_.setInfo("Started tail for " + 
-                    ArrayUtil.toString(config_.getFilenames()));
-            }
-            else
-            {
-                //
-                // Stop
-                //
-                
-                queueReader_.stop();
-                
-                for (int i = 0;
-                    i < contexts_.length;
-                    contexts_[i++].getTail().stop());
-                
-                mode_ = MODE_START;
-                putValue(Action.NAME, mode_);                
-                pauseButton_.setEnabled(false);
-                statusBar_.setInfo("Stopped tail for " + 
-                    ArrayUtil.toString(config_.getFilenames()));
-            }
+            init();
+            
+            for (int i = 0;
+                i < contexts_.length;
+                contexts_[i++].getTail().start());
+            
+            pauseButton_.setEnabled(true);
+            stopButton_.setEnabled(true);
+            startButton_.setEnabled(false);
+            
+            statusBar_.setInfo("Started tail for " + 
+                ArrayUtil.toString(config_.getFilenames()));
         }
     }
+    
 
+    /**
+     * Stops the tail.
+     */
+    class StopAction extends SmartAction
+    {
+        /**
+         * Creates a StopAction.
+         */
+        StopAction()
+        {
+            super(null, true, false, null);
+            putValue(MNEMONIC_KEY, new Integer('S'));
+            putValue(SHORT_DESCRIPTION, "Stops the tail");
+        }
+        
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
+        { 
+            queueReader_.stop();
+            
+            for (int i = 0;
+                i < contexts_.length;
+                contexts_[i++].getTail().stop());
+            
+            pauseButton_.setEnabled(false);
+            startButton_.setEnabled(true);
+            stopButton_.setEnabled(false);
+            
+            statusBar_.setInfo("Stopped tail for " + 
+                ArrayUtil.toString(config_.getFilenames()));
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // PauseUnpauseAction
     //--------------------------------------------------------------------------
@@ -925,7 +975,7 @@ public class TailPane extends JPanel
                 if (tail.isPaused())
                 {
                     tail.unpause();
-                    putValue(Action.NAME, MODE_PAUSE);
+                    //putValue(Action.NAME, MODE_PAUSE);
                     
                     statusBar_.setInfo("Unpaused tail for " + 
                         tail.getFile().getCanonicalPath());              
@@ -933,7 +983,7 @@ public class TailPane extends JPanel
                 else
                 {
                     tail.pause();
-                    putValue(Action.NAME, MODE_UNPAUSE);
+                    //putValue(Action.NAME, MODE_UNPAUSE);
                     statusBar_.setInfo("Paused tail for " + 
                         tail.getFile().getCanonicalPath());
                 }
