@@ -1,4 +1,4 @@
-package toolbox.junit;
+package toolbox.plugin.junit;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -24,6 +24,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
+import toolbox.junit.PackageTester;
 import toolbox.log4j.JTextAreaAppender;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
