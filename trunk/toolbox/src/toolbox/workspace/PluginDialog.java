@@ -604,9 +604,9 @@ public class ManagePluginsDialog extends JDialog
             legitPlugins.add(new PluginMeta(
                 "toolbox.util.xslfo.XSLFOPlugin"));
             legitPlugins.add(new PluginMeta(
-                "toolbox.util.ui.plugin.StatcvsPlugin"));
+                "toolbox.plugin.statcvs.StatcvsPlugin"));
             legitPlugins.add(new PluginMeta(
-                "toolbox.util.ui.plugin.TextPlugin"));
+                "toolbox.plugin.texttools.TextToolsPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.plugin.pdf.PDFPlugin"));
             legitPlugins.add(new PluginMeta(
@@ -626,7 +626,7 @@ public class ManagePluginsDialog extends JDialog
             //legitPlugins.add(new PluginMeta(
             //    "toolbox.plugin.beanshell.BeanShellPlugin"));
             legitPlugins.add(new PluginMeta(
-                "toolbox.util.ui.plugin.UIDefaultsPlugin"));
+                "toolbox.plugin.uidefaults.UIDefaultsPlugin"));
 
             // Exclude the plugins that are already loaded                
             for (int j=0; j<workspace_.getPluginHost().getPlugins().length; j++)     
