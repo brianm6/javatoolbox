@@ -1,7 +1,7 @@
 package toolbox.plugin.jdbc;
 
 /**
- * QueryPluginConstants is responsible for ___.
+ * Constants for the QueryPlugin.
  */
 public interface QueryPluginConstants
 {
@@ -27,8 +27,7 @@ public interface QueryPluginConstants
      * Boolean property that appends errors to the output console instead of an
      * error dialog box.
      */
-    static final String PROP_SEND_ERROR_TO_CONSOLE = 
-        "sendErrorToConsole";
+    static final String PROP_SEND_ERROR_TO_CONSOLE = "sendErrorToConsole";
 
     /**
      * Property that continues execution of a batch of SQL statements regardless
@@ -45,14 +44,19 @@ public interface QueryPluginConstants
      * Property that specifies the number of lines necessary as output for 
      * the console to scroll to the bottom.
      */
-    static final String PROP_AUTOSCROLL_THRESHOLD = 
-        "autoScrollThreshold";
+    static final String PROP_AUTOSCROLL_THRESHOLD = "autoScrollThreshold";
 
     /**
      * Attribute of QueryPlugin that stores the max number of entries in the sql
      * history popup menu before getting truncated.
      */
     static final String PROP_MAX_HISTORY = "maxHistory";
+
+    /**
+     * Boolean property that controls whether the executed sql statement is
+     * shown in the results immediately before the sql statement's output. 
+     */
+    static final String PROP_SQL_IN_RESULTS = "showSqlInResults";
     
     /**
      * List of javabean properties that are persisted.
@@ -62,7 +66,8 @@ public interface QueryPluginConstants
         PROP_CONTINUE_ON_ERROR,
         PROP_SQL_TERMINATOR,
         PROP_AUTOSCROLL_THRESHOLD,
-        PROP_MAX_HISTORY
+        PROP_MAX_HISTORY,
+        PROP_SQL_IN_RESULTS
     };
 
     //--------------------------------------------------------------------------
