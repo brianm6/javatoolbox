@@ -57,19 +57,19 @@ import toolbox.workspace.IStatusBar;
  * A UI component that serves as the view for the tailing one or more files to
  * a single output textarea.
  * <p>
- * Design: TailPane that aggregates the tail output from 3 separate files   
+ * Design: TailPane that aggregates the tail output from 3 separate files
  * <pre>
  *
  *                       (2)
  *          (1)          Tail         (3)
  *      TailListener   Listener  TailListener
- *                  \     |     / 
+ *                  \     |     /
  *                   \    |    /            pushes lines (originating from Tail)
  *                    \   |   /
  *                     v  v  v
  *                      Queue               (concentrator for our purposes)
  *                        ^
- *                        |  
+ *                        |
  *                        |                 pops lines one at a time
  *                        |
  *                BatchingQueueReader       (aggregates lines)
@@ -94,22 +94,22 @@ public class TailPane extends JHeaderPanel
      * TODO: Color code keywords
      * TODO: Color code time lapse delays
      * TODO: Add option to tail the whole file from the beginning
-     * TODO: Create filter that will accept a beanshell script 
+     * TODO: Create filter that will accept a beanshell script
      */
-    
+
     private static final Logger logger_ = Logger.getLogger(TailPane.class);
 
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
-    /** 
-     * Special tail type for System.out. 
+
+    /**
+     * Special tail type for System.out.
      */
     public static final String LOG_SYSTEM_OUT = "[System.out]";
-    
-    /** 
-     * Specital tail type for Log4J. 
+
+    /**
+     * Specital tail type for Log4J.
      */
     public static final String LOG_LOG4J = "[Log4J]";
 
@@ -117,109 +117,109 @@ public class TailPane extends JHeaderPanel
     // Fields
     //--------------------------------------------------------------------------
 
-    /** 
-     * Reference to workspace status bar. 
+    /**
+     * Reference to workspace status bar.
      */
     private IStatusBar statusBar_;
-    
-    /** 
-     * Tail output is appended into this text area. 
+
+    /**
+     * Tail output is appended into this text area.
      */
     private JSmartTextArea tailArea_;
-    
-    /** 
-     * Toggle button that handles pause/unpause of tail. 
+
+    /**
+     * Toggle button that handles pause/unpause of tail.
      */
     private JSmartToggleButton pauseButton_;
-    
-    /** 
-     * Start the tail. 
+
+    /**
+     * Start the tail.
      */
     private JButton startButton_;
-    
+
     /**
      * Stops the tail.
      */
     private JButton stopButton_;
-    
-    /** 
-     * Closes the tail (also triggers adding the tail to the recent menu). 
+
+    /**
+     * Closes the tail (also triggers adding the tail to the recent menu).
      */
     private JButton closeButton_;
-    
-    /** 
-     * Regular expression filter field that includes matching lines. 
-     */ 
+
+    /**
+     * Regular expression filter field that includes matching lines.
+     */
     private JTextField regexField_;
-    
-    /** 
+
+    /**
      * Cut expression filter field that chops columns from a line.
      */
     private JTextField cutField_;
 
-    /** 
-     * Lines are places in this queue for the UI component to pick up from. 
+    /**
+     * Lines are places in this queue for the UI component to pick up from.
      */
     private BlockingQueue queue_;
-    
-    /** 
+
+    /**
      * Optimization to read lines from the queue in batch instead of one'zies.
-     */ 
+     */
     private BatchingQueueReader queueReader_;
-    
-    /** 
+
+    /**
      * Listener for queue events.
      */
     private TailQueueListener queueListener_;
-    
-    /** 
-     * List of filters that are applied to each line. 
+
+    /**
+     * List of filters that are applied to each line.
      */
     private ILineFilter[] filters_;
-    
-    /** 
-     * Filter that includes lines matching a regular expression. 
-     */ 
+
+    /**
+     * Filter that includes lines matching a regular expression.
+     */
     private RegexLineFilter regexFilter_;
-    
-    /** 
+
+    /**
      * Filter that cuts columns from a line.
      */
     private CutLineFilter cutFilter_;
-    
-    /** 
-     * Filter that adds a line number to the beginning of each line. 
+
+    /**
+     * Filter that adds a line number to the beginning of each line.
      */
     private LineNumberDecorator lineNumberDecorator_;
 
-    /** 
+    /**
      * Contexts for the individual tails that are aggregated by this TailPane.
      */
     private TailContext[] contexts_;
 
-    /** 
+    /**
      * TailPane configuration.
      */
     private ITailPaneConfig config_;
-    
+
     /**
      * List of listeners interested in newData() and tailAggregated().
      */
     private TailPaneListener[] tailPaneListeners_;
-    
+
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
-        
-    /** 
+
+    /**
      * Creates a TailPane with the given configuration.
-     * 
+     *
      * @param config Details of the tail configuration.
      * @param statusBar Status bar.
      * @throws FileNotFoundException if file not found.
      * @throws IOException if an I/O error occurs.
      */
-    public TailPane(ITailPaneConfig config, IStatusBar statusBar) throws 
+    public TailPane(ITailPaneConfig config, IStatusBar statusBar) throws
         IOException, FileNotFoundException
     {
         super(config.getFilenames()[0]);
@@ -227,9 +227,9 @@ public class TailPane extends JHeaderPanel
         tailPaneListeners_ = new TailPaneListener[0];
         contexts_ = new TailContext[0];
         buildView(config);
-        buildFilters();        
-        setConfiguration(config);                
-        
+        buildFilters();
+        setConfiguration(config);
+
         // Start tail through action so button states are OK
         if (config_.isAutoStart())
         {
@@ -242,30 +242,30 @@ public class TailPane extends JHeaderPanel
             stopButton_.setEnabled(false);
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Initializes the tail.
-     * 
+     *
      * @throws IOException if problems occur tailed System.out
      */
     protected void init() throws IOException
     {
         queue_          = new BlockingQueue();
-        queueListener_  = new TailQueueListener();        
-        queueReader_    = new BatchingQueueReader(queue_, 
-                              ArrayUtil.toString(config_.getFilenames()) + 
+        queueListener_  = new TailQueueListener();
+        queueReader_    = new BatchingQueueReader(queue_,
+                              ArrayUtil.toString(config_.getFilenames()) +
                               "-BatchingQueueReader");
-                                            
+
         queueReader_.addBatchingQueueListener(queueListener_);
         queueReader_.start();
-        
+
         String[] filenames = config_.getFilenames();
         //contexts_ = new TailContext[0];
-        
+
         for (int i = 0; i < filenames.length; i++)
         {
             TailContext tc = new TailContext(filenames[i]);
@@ -273,51 +273,51 @@ public class TailPane extends JHeaderPanel
             tc.init();
         }
     }
-    
-    
+
+
     /**
      * Builds the GUI.
-     * 
+     *
      * @param config Tailpane configuration.
-     */    
+     */
     protected void buildView(ITailPaneConfig config)
     {
         JPanel p = new JPanel(new BorderLayout());
         JToolBar tb = JHeaderPanel.createToolBar();
-        
+
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(FontUtil.getPreferredMonoFont());
-        
+
         JButton clearButton = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
             "Clears the output",
             new ClearAction(tailArea_));
-        
-        pauseButton_ = 
+
+        pauseButton_ =
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_PAUSE),
                 "Pause/Resume",
                 new PauseUnpauseAction());
-        
-        startButton_ = 
+
+        startButton_ =
             JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_PLAY),
                 "Starts the tail",
                 new StartAction());
 
-        stopButton_ = 
+        stopButton_ =
             JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_STOP),
                 "Stops the tail",
                 new StopAction());
-        
-        closeButton_ = 
+
+        closeButton_ =
             JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_DELETE),
                 "Close tail",
                 new CloseAction());
-        
-        JSmartToggleButton autoScrollButton = 
+
+        JSmartToggleButton autoScrollButton =
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
                 "Autoscroll",
@@ -325,22 +325,22 @@ public class TailPane extends JHeaderPanel
                 tailArea_,
                 "autoscroll");
 
-        JSmartToggleButton wrapLinesButton = 
+        JSmartToggleButton wrapLinesButton =
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP),
                 "Wrap Lines",
                 new LineWrapAction(tailArea_),
                 tailArea_,
                 "lineWrap");
-        
-        JSmartToggleButton showLineNumbersButton = 
+
+        JSmartToggleButton showLineNumbersButton =
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_BRACES),
                 "Line Numbers",
                 new ShowLineNumbersAction(),
                 tailArea_,
                 "lineNumbers");
-        
+
         tb.add(startButton_);
         tb.add(pauseButton_);
         tb.add(stopButton_);
@@ -350,34 +350,34 @@ public class TailPane extends JHeaderPanel
         tb.add(autoScrollButton);
         tb.add(showLineNumbersButton);
         tb.add(closeButton_);
-        
+
         regexField_ = new JSmartTextField(5);
         cutField_ = new JSmartTextField(5);
 
         regexField_.addActionListener(new RegexActionListener());
         cutField_.addActionListener(new CutActionListener());
-        
+
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(new JSmartLabel("Include filter"));
         buttonPanel.add(regexField_);
         buttonPanel.add(new JSmartLabel("Cut"));
         buttonPanel.add(cutField_);
-        
+
         p.add(new JScrollPane(tailArea_), BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
-        
+
         setContent(p);
         setToolBar(tb);
     }
- 
-    
+
+
     /**
      * Sets up appropriate filters based on configuration.
      */
     protected void buildFilters()
     {
         filters_ = new ILineFilter[3];
-        
+
         try
         {
             //
@@ -391,14 +391,14 @@ public class TailPane extends JHeaderPanel
         {
             ExceptionUtil.handleUI(re, logger_);
         }
-        
+
         //
         // Cut filter
         //
         cutFilter_ = new CutLineFilter();
         cutFilter_.setEnabled(false);
         filters_[1] = cutFilter_;
-        
+
         //
         // Show line numbers
         //
@@ -407,28 +407,28 @@ public class TailPane extends JHeaderPanel
         filters_[2] = lineNumberDecorator_;
     }
 
-    
+
     /**
-     * Returns regular expression filter. 
-     * 
+     * Returns regular expression filter.
+     *
      * @return Filter text.
      */
     protected String getRegularExpression()
     {
         return regexField_.getText().trim();
     }
-        
-    
+
+
     /**
      * Sets the filter text.
-     * 
+     *
      * @param filter Filter text as a regular expression.
      */
     protected void setRegularExpression(String filter)
     {
         try
-        {  
-            regexFilter_.setEnabled(true);            
+        {
+            regexFilter_.setEnabled(true);
             regexField_.setText(filter);
             regexFilter_.setRegularExpression(filter);
         }
@@ -438,21 +438,21 @@ public class TailPane extends JHeaderPanel
         }
     }
 
-    
+
     /**
      * Returns the cut expression.
-     * 
+     *
      * @return Cut expression.
      */
     protected String getCutExpression()
     {
         return cutField_.getText().trim();
     }
-    
-    
+
+
     /**
      * Sets the cut text.
-     * 
+     *
      * @param cut Cut text. Example: 1-10 cuts columns one through ten.
      */
     protected void setCutExpression(String cut)
@@ -460,8 +460,8 @@ public class TailPane extends JHeaderPanel
         try
         {
             cutFilter_.setCut(cut);
-            cutFilter_.setEnabled(true);        
-            cutField_.setText(cut);            
+            cutFilter_.setEnabled(true);
+            cutField_.setText(cut);
         }
         catch (IllegalArgumentException e)
         {
@@ -472,10 +472,10 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Sets the configuration.
-     * 
+     *
      * @param config Tail configuration.
      */
     public void setConfiguration(ITailPaneConfig config)
@@ -489,10 +489,10 @@ public class TailPane extends JHeaderPanel
         setCutExpression(config_.getCutExpression());
     }
 
-    
+
     /**
      * Gets the configuration.
-     * 
+     *
      * @return TailConfig.
      * @throws IOException on I/O error.
      */
@@ -505,28 +505,28 @@ public class TailPane extends JHeaderPanel
         config_.setAntiAlias(tailArea_.isAntiAliased());
         config_.setRegularExpression(getRegularExpression());
         config_.setCutExpression(getCutExpression());
-        
+
         String files[] = new String[0];
-        
+
         for (int i = 0; i < contexts_.length; i++)
-        {    
+        {
             File f = contexts_[i].getTail().getFile();
-            
+
             // TODO: Fix me. Temp fix for handlding non-file based tails
-            files = (String[]) ArrayUtil.add(files, 
+            files = (String[]) ArrayUtil.add(files,
                 (f == null) ? "[Log4J]" : f.getCanonicalPath());
         }
-                
+
         config_.setFilenames(files);
         config_.setAutoStart(startButton_.isEnabled());
-            
-        return config_;
-    }    
 
-    
+        return config_;
+    }
+
+
     /**
      * Returns the close button.
-     * 
+     *
      * @return Close button.
      */
     public JButton getCloseButton()
@@ -534,10 +534,10 @@ public class TailPane extends JHeaderPanel
         return closeButton_;
     }
 
-    
+
     /**
      * Aggregates a file into an existing tail.
-     * 
+     *
      * @param file File to aggregate.
      * @throws IOException on I/O error.
      */
@@ -553,87 +553,87 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
     //  TailPaneListener Interface & Supporting Event Methods
     //--------------------------------------------------------------------------
-    
+
     /**
      * Fires notifications of new tail data available.
-     * 
+     *
      * @param tailPane Tailpane.
      */
     protected void fireNewDataAvailable(TailPane tailPane)
     {
         // TODO: Nothing is firing this event!
-        
+
         for (int i = 0; i < tailPaneListeners_.length; i++)
-            tailPaneListeners_[i].newDataAvailable(tailPane);        
+            tailPaneListeners_[i].newDataAvailable(tailPane);
     }
 
-    
+
     /**
      * Fires notification of a tail being aggregated into an existing tail.
-     * 
+     *
      * @param tailPane Tailpane.
      */
     public void fireTailAggregated(TailPane tailPane)
     {
         for (int i = 0; i < tailPaneListeners_.length; i++)
-            tailPaneListeners_[i].tailAggregated(tailPane);        
+            tailPaneListeners_[i].tailAggregated(tailPane);
     }
 
-    
+
     /**
      * Adds a listener.
-     * 
+     *
      * @param listener TailPaneListener.
      */
     public void addTailPaneListener(TailPaneListener listener)
     {
-        tailPaneListeners_ = 
+        tailPaneListeners_ =
             (TailPaneListener[]) ArrayUtil.add(tailPaneListeners_, listener);
     }
-    
-    
+
+
     /**
      * Removes a listener.
-     * 
+     *
      * @param listener TailPaneListener.
      */
     public void removeTailPaneListener(TailPaneListener listener)
     {
-        tailPaneListeners_ = (TailPaneListener[]) 
+        tailPaneListeners_ = (TailPaneListener[])
             ArrayUtil.remove(tailPaneListeners_, listener);
     }
-    
+
     //--------------------------------------------------------------------------
     // TailContext
     //--------------------------------------------------------------------------
 
     /**
      * TailContext represents a single logical tail in a TailPane that may
-     * contain multiple aggregate tails. 
-     * <p> 
+     * contain multiple aggregate tails.
+     * <p>
      * TailPane(Tail1 + Tail2 + Tail) = Aggregate Tail
      * <p>
      * Each Tail is represented as a single TailContext
-     */ 
+     */
     public class TailContext
     {
         /**
          * File to tail.
          */
         private String filename_;
-        
+
         /**
          * Does all the work.
          */
         private Tail tail_;
-        
+
         //----------------------------------------------------------------------
         // Constructors
         //----------------------------------------------------------------------
-            
+
         /**
          * Creates a TailContext.
-         * 
+         *
          * @param filename File to tail.
          */
         public TailContext(String filename)
@@ -644,54 +644,54 @@ public class TailPane extends JHeaderPanel
         //----------------------------------------------------------------------
         // Public
         //----------------------------------------------------------------------
-        
+
         /**
          * Initializes the context.
-         * 
+         *
          * @throws IOException on I/O error.
          */
         public void init() throws IOException
         {
             // Figure out what type of tail we're dealing with and let 'er rip
-            
+
             tail_ = new Tail();
             tail_.addTailListener(new TailListener());
-             
+
             if (filename_.equals(TailPane.LOG_SYSTEM_OUT))
             {
                 PipedOutputStream pos = new PipedOutputStream();
                 PipedInputStream  pis = new PipedInputStream(pos);
                 PrintStream ps = new PrintStream(pos, true);
                 System.setOut(ps);
-                
+
                 tail_.follow(
                     new InputStreamReader(pis), new NullWriter(), filename_);
-                    
+
                 logger_.debug("Tailing System.out...");
             }
             else if (filename_.equals(TailPane.LOG_LOG4J))
             {
                 PipedOutputStream pos = new PipedOutputStream();
                 PipedInputStream  pis = new PipedInputStream(pos);
-                
-                WriterAppender appender = 
+
+                WriterAppender appender =
                     new WriterAppender(new TTCCLayout(), pos);
-                
-                
+
+
                 //appender.setImmediateFlush(true);
                 //appender.setThreshold(Priority.DEBUG);
                 appender.setName("toolbox-stream-appender");
                 LogManager.getLogger("toolbox").addAppender(appender);
-                
+
                 tail_.follow(
                     new InputStreamReader(pis), new NullWriter(), filename_);
-                    
+
                 logger_.debug("Tailing Log4J...");
-                
-                SwingUtilities.invokeLater(new Runnable() 
+
+                SwingUtilities.invokeLater(new Runnable()
                 {
                     public void run()
-                    { 
+                    {
                         try
                         {
                             logger_.info(
@@ -710,8 +710,8 @@ public class TailPane extends JHeaderPanel
                 tail_.follow(new File(filename_), new NullWriter());
             }
         }
-        
-        
+
+
         /**
          * @return Tail
          */
@@ -719,12 +719,12 @@ public class TailPane extends JHeaderPanel
         {
             return tail_;
         }
-    } 
+    }
 
     //--------------------------------------------------------------------------
     // TailListener
     //--------------------------------------------------------------------------
-    
+
     /**
      * Listener for tail.
      */
@@ -733,7 +733,7 @@ public class TailPane extends JHeaderPanel
         /**
          * Called when next line of input is available. When a new line is
          * available, just push it on the shared queue.
-         * 
+         *
          * @param tail Origin of event.
          * @param line Next line read.
          */
@@ -741,8 +741,8 @@ public class TailPane extends JHeaderPanel
         {
             queue_.push(line);
         }
-        
-        
+
+
         /**
          * @see toolbox.tail.TailAdapter#tailReattached(toolbox.tail.Tail)
          */
@@ -752,13 +752,13 @@ public class TailPane extends JHeaderPanel
                 "Tail reattached to " + tail.getFile().getName());
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // TailQueueListener
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Pops groups of messages off the queue (as many as can be read without 
+     * Pops groups of messages off the queue (as many as can be read without
      * waiting) and consolidates before sending then to the textarea.
      */
     class TailQueueListener implements IBatchingQueueListener
@@ -773,7 +773,7 @@ public class TailPane extends JHeaderPanel
          */
         public void nextBatch(Object[] objs)
         {
-            // Iterate over each line delivered            
+            // Iterate over each line delivered
             for (int i = 0; i < objs.length; i++)
             {
                 String line = (String) objs[i];
@@ -783,7 +783,7 @@ public class TailPane extends JHeaderPanel
                     line = filters_[j].filter(line);
 
                 if (line != null)
-                    tailArea_.append(line + "\n");                 
+                    tailArea_.append(line + "\n");
             }
         }
     }
@@ -791,11 +791,11 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
     // RegexActionListener
     //--------------------------------------------------------------------------
-    
+
     /**
      * Listens for changes in the regular expression (user must press enter) and
      * applies the new regular expression accordingly.
-     */    
+     */
     class RegexActionListener implements ActionListener
     {
         /**
@@ -805,7 +805,7 @@ public class TailPane extends JHeaderPanel
         public void actionPerformed(ActionEvent e)
         {
             String s = getRegularExpression();
-            
+
             if (StringUtil.isNullOrEmpty(s))
                 regexFilter_.setEnabled(false);
             else
@@ -819,11 +819,11 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
     // CutActionListener
     //--------------------------------------------------------------------------
-    
+
     /**
      * Listens for changes in the cut expression (user must press enter) and
      * applies the new cut expression accordingly.
-     */    
+     */
     class CutActionListener implements ActionListener
     {
         /**
@@ -833,7 +833,7 @@ public class TailPane extends JHeaderPanel
         public void actionPerformed(ActionEvent e)
         {
             String s = getCutExpression();
-            
+
             if (StringUtil.isNullOrEmpty(s))
                 cutFilter_.setEnabled(false);
             else
@@ -844,7 +844,7 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
     // StartAction
     //--------------------------------------------------------------------------
-    
+
     /**
      * Starts the tail.
      */
@@ -859,29 +859,32 @@ public class TailPane extends JHeaderPanel
             putValue(MNEMONIC_KEY, new Integer('S'));
             putValue(SHORT_DESCRIPTION, "Starts the tail");
         }
-        
-        
+
+
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
          *      java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
-        { 
+        {
             init();
-            
+
             for (int i = 0;
                 i < contexts_.length;
                 contexts_[i++].getTail().start());
-            
+
             pauseButton_.setEnabled(true);
             stopButton_.setEnabled(true);
             startButton_.setEnabled(false);
-            
-            statusBar_.setInfo("Started tail for " + 
+
+            statusBar_.setInfo("Started tail for " +
                 ArrayUtil.toString(config_.getFilenames()));
         }
     }
-    
+
+    //--------------------------------------------------------------------------
+    // StopAction
+    //--------------------------------------------------------------------------
 
     /**
      * Stops the tail.
@@ -897,33 +900,33 @@ public class TailPane extends JHeaderPanel
             putValue(MNEMONIC_KEY, new Integer('S'));
             putValue(SHORT_DESCRIPTION, "Stops the tail");
         }
-        
-        
+
+
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
          *      java.awt.event.ActionEvent)
          */
         public void runAction(ActionEvent e) throws Exception
-        { 
+        {
             queueReader_.stop();
-            
+
             for (int i = 0;
                 i < contexts_.length;
                 contexts_[i++].getTail().stop());
-            
+
             pauseButton_.setEnabled(false);
             startButton_.setEnabled(true);
             stopButton_.setEnabled(false);
-            
-            statusBar_.setInfo("Stopped tail for " + 
+
+            statusBar_.setInfo("Stopped tail for " +
                 ArrayUtil.toString(config_.getFilenames()));
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // PauseUnpauseAction
     //--------------------------------------------------------------------------
-    
+
     /**
      * Pauses/unpauses the tail.
      */
@@ -931,7 +934,7 @@ public class TailPane extends JHeaderPanel
     {
         private static final String MODE_PAUSE   = "Pause";
         private static final String MODE_UNPAUSE = "Unpause";
-            
+
         /**
          * Creates a PauseUnpauseAction.
          */
@@ -942,7 +945,7 @@ public class TailPane extends JHeaderPanel
             putValue(SHORT_DESCRIPTION, "Pause/Unpauses the tail");
         }
 
-        
+
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
          *      java.awt.event.ActionEvent)
@@ -952,20 +955,20 @@ public class TailPane extends JHeaderPanel
             for (int i = 0; i < contexts_.length; i++)
             {
                 Tail tail = contexts_[i].getTail();
-            
+
                 if (tail.isPaused())
                 {
                     tail.unpause();
                     //putValue(Action.NAME, MODE_PAUSE);
-                    
-                    statusBar_.setInfo("Unpaused tail for " + 
-                        tail.getFile().getCanonicalPath());              
+
+                    statusBar_.setInfo("Unpaused tail for " +
+                        tail.getFile().getCanonicalPath());
                 }
                 else
                 {
                     tail.pause();
                     //putValue(Action.NAME, MODE_UNPAUSE);
-                    statusBar_.setInfo("Paused tail for " + 
+                    statusBar_.setInfo("Paused tail for " +
                         tail.getFile().getCanonicalPath());
                 }
             }
@@ -975,7 +978,7 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
     // CloseAction
     //--------------------------------------------------------------------------
-    
+
     /**
      * Closes the tail pane.
      */
@@ -991,25 +994,25 @@ public class TailPane extends JHeaderPanel
             putValue(SHORT_DESCRIPTION, "Closes the tail pane");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
-        { 
+        {
             for (int i = 0; i < contexts_.length; i++)
             {
                 Tail tail = contexts_[i].getTail();
-                
+
                 if (tail.isPaused())
                     tail.unpause();
-                    
+
                 if (tail.isAlive())
                     tail.stop();
             }
-            
-            statusBar_.setInfo("Closed tail for " + 
+
+            statusBar_.setInfo("Closed tail for " +
                 ArrayUtil.toString(config_.getFilenames()));
         }
     }
@@ -1017,7 +1020,7 @@ public class TailPane extends JHeaderPanel
     //--------------------------------------------------------------------------
     // ShowLineNumbersAction
     //--------------------------------------------------------------------------
-    
+
     /**
      * Toggles line numbers in the output area.
      */
@@ -1030,17 +1033,17 @@ public class TailPane extends JHeaderPanel
         {
             super("Line numbers");
             putValue(MNEMONIC_KEY, new Integer('L'));
-            putValue(SHORT_DESCRIPTION, 
+            putValue(SHORT_DESCRIPTION,
                 "Toggles display of line numbers in the output");
         }
 
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
-        { 
+        {
             lineNumberDecorator_.setEnabled(!lineNumberDecorator_.isEnabled());
         }
     }
