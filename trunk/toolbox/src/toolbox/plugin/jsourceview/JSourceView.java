@@ -39,8 +39,8 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * JSourceView gathers statistics on one or more source files and presents
- * them in a table format for viewing.
+ * JSourceView gathers statistics on one or more source files and presents them
+ * in a table format for viewing.
  */
 public class JSourceView extends JPanel implements IPreferenced
 {
@@ -48,17 +48,20 @@ public class JSourceView extends JPanel implements IPreferenced
     // TODO: Add chart for visualization
     // TODO: Custom table cell renders to color code unusually high or low 
     //       numbers, etc
+    
 
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-            
-    private static final Logger logger_ = 
-        Logger.getLogger(JSourceView.class);
 
-	/**
-	 * XML: Root preferences element.
-	 */
+    /**
+     * Logger.
+     */
+    private static final Logger logger_ = Logger.getLogger(JSourceView.class);
+
+    /**
+     * XML: Root preferences element.
+     */
     private static final String NODE_JSOURCEVIEW_PLUGIN = "JSourceViewPlugin";
     
     /**
@@ -76,9 +79,9 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     protected static final String LABEL_CANCEL = "Cancel";
 
-	/**
+    /**
      * Row number column.
-	 */
+     */
     protected static final int COL_NUM = 0;
     
     /**
@@ -224,36 +227,36 @@ public class JSourceView extends JPanel implements IPreferenced
         buildView();
     }
 
-	//--------------------------------------------------------------------------
-	// Public 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // Public 
+    //--------------------------------------------------------------------------
     
-	/**
-	 * Sets the text of the scan status.
-	 * 
-	 * @param status Status of the scan activity
-	 */
-	public void setScanStatus(String status)
-	{
-		scanStatusLabel_.setText(status);
-	}
+    /**
+     * Sets the text of the scan status.
+     * 
+     * @param status Status of the scan activity.
+     */
+    public void setScanStatus(String status)
+    {
+        scanStatusLabel_.setText(status);
+    }
 
     
-	/**
-	 * Sets the text of the parse status.
-	 * 
-	 * @param status Status of the parse activity
-	 */
-	public void setParseStatus(String status)
-	{
-		parseStatusLabel_.setText(status);
-	}
+    /**
+     * Sets the text of the parse status.
+     * 
+     * @param status Status of the parse activity.
+     */
+    public void setParseStatus(String status)
+    {
+        parseStatusLabel_.setText(status);
+    }
 
     
     /**
      * Workspace status bar!
      * 
-     * @param statusBar Workspace statusbar
+     * @param statusBar Workspace statusbar.
      */
     public void setStatusBar(IStatusBar statusBar)
     {
@@ -298,9 +301,9 @@ public class JSourceView extends JPanel implements IPreferenced
         return tableSorter_;
     }
     
-	//--------------------------------------------------------------------------
-	// IPreferenced Interface
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -336,7 +339,7 @@ public class JSourceView extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -456,11 +459,19 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     class SearchAction extends WorkspaceAction
     {
+        /**
+         * Creates a new SearchAction. 
+         */
         SearchAction()
         {
             super(LABEL_GO, true, null, workspaceStatusBar_);
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             if (goButton_.getText().equals(LABEL_GO))
@@ -471,12 +482,12 @@ public class JSourceView extends JPanel implements IPreferenced
                 tableModel_.setRowCount(0);
             
                 // To avoid a whole mess of sorting going on while the table is
-                // being populated, just disable the sorter temporarily. This is 
-                // turned back on when the parser thread completes
+                // being populated, just disable the sorter temporarily. This
+                // is turned back on when the parser thread completes.
                 tableSorter_.setEnabled(false);
             
                 scanDirWorker_ = 
-                    new SourceScanner(JSourceView.this,new File(dir));
+                    new SourceScanner(JSourceView.this, new File(dir));
                 
                 scanDirThread_ = new Thread(scanDirWorker_);
                 scanDirThread_.start();
@@ -523,18 +534,26 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     class PickDirectoryAction extends SmartAction
     {
+        /**
+         * Creates a new PickDirectoryAction. 
+         */
         PickDirectoryAction()
         {
             super("...", true, false, null);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             
-            if (chooser.showDialog(JSourceView.this, "Select Directory") == 
-                JFileChooser.APPROVE_OPTION)
+            if (chooser.showDialog(JSourceView.this, "Select Directory") 
+                == JFileChooser.APPROVE_OPTION)
                 dirField_.setText(chooser.getSelectedFile().getCanonicalPath());
         }
     }
@@ -550,11 +569,19 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     class SaveResultsAction extends SmartAction
     {
+        /**
+         * Creates a SaveResultsAction.
+         */
         SaveResultsAction()
         {
             super("Save Results ...", true, false, null);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             String s = JOptionPane.showInputDialog("Save to file");
