@@ -23,9 +23,7 @@ import toolbox.util.Assert;
 
 /**
  * A panel which contains multiple JComponents, held apart by JSplitPanes.
- *
- * @author matso
- **/
+ */
 public class JMultiSplitPane extends JPanel
 {
     private static final Logger logger_ =
@@ -39,12 +37,10 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
         
     /**
-     * Create a multiplitpane with the given orientation and dividerSize.
-     * orientation is one of JSplitPane.VERTICAL_SPLIT or
-     * JSplitPane.HORIZONTAL_SPLIT
+     * Create a multiplitpane with the given orientation and dividerSize
      * 
-     * @param orientation top/bottom or left/right split
-     * @param dividerSize size of split-pane dividers.
+     * @param  orientation  JSplitPane.[HORIZONTAL|VERTICAL]_SPLIT
+     * @param  dividerSize  Size of the splitpane dividers
      */
     public JMultiSplitPane(int orientation, int dividerSize)
     {
@@ -54,28 +50,27 @@ public class JMultiSplitPane extends JPanel
             orientation != JSplitPane.VERTICAL_SPLIT)
         {
             throw new IllegalArgumentException(
-                "orientation must be one of "  + 
+                "Orientation must be one of "  + 
                 "JSplitPane.HORIZONTAL_SPLIT or " + 
                 "JSplitPane.VERTICAL_SPLIT");
-        };
+        }
 
         orientation_ = orientation;
         dividerSize_ = dividerSize;
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Overridden from java.awt.Container
     //--------------------------------------------------------------------------
     
     /** 
-     * Add comp last. If I'm empty, simply add it, otherwise push a
-     * JSplitPane on top, taking the current contents and placing it
-     * as top/left component and adding comp as bottom/right component.
-     * <p>
-     * The component adding will be deferred using
+     * Adds a component to the multisplitpane. If I'm empty, simply add it, 
+     * otherwise push a JSplitPane on top, taking the current contents and 
+     * placing it as top/left component and adding comp as bottom/right 
+     * component. The adding of the component will be deferred using 
      * {@link javax.swing.SwingUtilities#invokeLater}.
      *
-     * @param comp component to add.
+     * @param  comp  Component to add
      */
     public void add(JComponent comp)
     {
@@ -83,41 +78,63 @@ public class JMultiSplitPane extends JPanel
     }
 
     /**
-     * Remove given component. 
-     * Removal will be deferred using
-     * {@link javax.swing.SwingUtilities#invokeLater}.
+     * Removes a component from the multisplitpane. Removal is be deferred 
+     * using {@link javax.swing.SwingUtilities#invokeLater}.
      *
-     * @param comp component to add.
+     * @param  comp  Component to remove
      */
     public void remove(JComponent comp)
     {
-        SwingUtilities.invokeLater(new SubComponent(comp));
+        SwingUtilities.invokeLater(new RemoveComponent(comp));
     }
 
     /**
-     * Set the divider size of all JSplitPane to sz.
-     *
-     * @param sz new size for all dividers.
+     * Components of the multisplitpane
+     * 
+     * @return  Contents of the multisplitpane. The order is the order by
+     *          which they should be added in order to get the same ordering.
      */
-    public void setDividerSize(int sz)
+    public Component[] getComponents()
     {
-        logger_.debug("setSplitWidth " + sz);
+        Vector vec = new java.util.Vector();
+        
+        if (getComponentCount() > 0)
+            doGetComponents(vec, getComponent(0));
+        
+        Component[] carr = new Component[vec.size()];
+        Enumeration e = vec.elements();
+        int i = 0;
+        
+        while (e.hasMoreElements())
+            carr[i++] = (java.awt.Component) e.nextElement();
+        
+        return carr;
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets the split pane divider size
+     *
+     * @param size  New size for all dividers.
+     */
+    public void setDividerSize(int size)
+    {
+        logger_.debug("setSplitWidth " + size);
      
-        dividerSize_ = sz;
+        dividerSize_ = size;
         
         // run through contents and set the splitpane separators width
         if (getComponentCount() > 0)
-        {
             doSetSplitWidth(getComponent(0));
-        }
         
         revalidate();
     }
 
     /**
-     * Return current size of JSplitPane dividers.
-     * 
-     * @return size of dividers.
+     * @return Size of the split pane divider
      */
     public int getDividerSize()
     {
@@ -125,10 +142,7 @@ public class JMultiSplitPane extends JPanel
     }
 
     /** 
-     * Returns orientation, either JSplitPane.HORIZONTAL_SPLIT or
-     * JSplitPane.VERTICAL_SPLIT.
-     *
-     * @return oriontation
+     * @return Splitpane orientation
      */
     public int getOrientation() 
     {
@@ -136,33 +150,22 @@ public class JMultiSplitPane extends JPanel
     }
     
     /**
-     * Return the current dividerlocations. 
+     * @return Array of divider locations
      */
     public int[] getDividerLocations()
     {
         IntVector ivec = new IntVector();
         
         if (getComponentCount() == 1)
-        {
             doGetDividerLocations(ivec, getComponent(0));
-        }
+        
         return ivec.getArray();
     }
 
-    private void doGetDividerLocations(IntVector ivec,
-        Component comp)
-    {
-        if (comp instanceof JSplitPane)
-        {
-            JSplitPane jsp = (JSplitPane) comp;
-            ivec.add(jsp.getDividerLocation());
-            doGetDividerLocations(ivec, jsp.getTopComponent());
-            doGetDividerLocations(ivec, jsp.getBottomComponent());
-        }
-    }
-
     /**
-     * Set dividerlocations. 
+     * Set the divider locations
+     * 
+     * @param  locs  Array of divider locations
      */
     public void setDividerLocations(final int[] locs)
     {
@@ -171,9 +174,7 @@ public class JMultiSplitPane extends JPanel
             public void run()
             {
                 if (getComponentCount() > 0)
-                {
                     doSetDividerLocations(locs, 0, getComponent(0));
-                }
             }
         });
     }
@@ -182,11 +183,37 @@ public class JMultiSplitPane extends JPanel
     // Private
     //--------------------------------------------------------------------------
     
-    private int doSetDividerLocations(int[] locs, int index, Component comp)
+    /**
+     * Gets divider locations
+     * 
+     * @param  ivec       Vector of divider locations (populated on exit)
+     * @param  splitpane  JSplitPane
+     */
+    private void doGetDividerLocations(IntVector ivec, Component splitpane)
     {
-        if (comp instanceof JSplitPane)
+        if (splitpane instanceof JSplitPane)
         {
-            JSplitPane jsp = (JSplitPane) comp;
+            JSplitPane jsp = (JSplitPane) splitpane;
+            ivec.add(jsp.getDividerLocation());
+            doGetDividerLocations(ivec, jsp.getTopComponent());
+            doGetDividerLocations(ivec, jsp.getBottomComponent());
+        }
+    }
+
+    /**
+     * Sets divider locations
+     * 
+     * @param  locs       Divider locations to set
+     * @param  index      Index
+     * @param  splitPane  JSplitPane
+     * @return Index
+     */
+    private int doSetDividerLocations(int[] locs, int index, 
+        Component splitpane)
+    {
+        if (splitpane instanceof JSplitPane)
+        {
+            JSplitPane jsp = (JSplitPane) splitpane;
             
             // make sure the index is ok
             if (index < locs.length)
@@ -200,64 +227,57 @@ public class JMultiSplitPane extends JPanel
                             locs, index, jsp.getBottomComponent());
             }
         }
+        
         return index;
     }
 
     /**
-     * Return the contents of the MSP. The order is the order by
-     * which they should be added in order to get the same ordering.
+     * Gets the components
+     * 
+     * @param  vec        Vector
+     * @param  splitpane  JSplitPane
      */
-    public Component[] getComponents()
+    private void doGetComponents(Vector vec, Component splitpane)
     {
-        Vector vec = new java.util.Vector();
-        
-        if (getComponentCount() > 0)
+        if (splitpane instanceof JSplitPane)
         {
-            doGetComponents(vec, getComponent(0));
-        }
-        
-        Component[] carr = new Component[vec.size()];
-        Enumeration e = vec.elements();
-        int i = 0;
-        
-        while (e.hasMoreElements())
-        {
-            carr[i++] = (java.awt.Component) e.nextElement();
-        }
-        
-        return carr;
-    }
-
-    private void doGetComponents(Vector vec, Component comp)
-    {
-        if (comp instanceof JSplitPane)
-        {
-            JSplitPane jsp = (JSplitPane) comp;
+            JSplitPane jsp = (JSplitPane) splitpane;
             doGetComponents(vec, jsp.getTopComponent());
             doGetComponents(vec, jsp.getBottomComponent());
         }
         else
         {
-            vec.addElement(comp);
+            vec.addElement(splitpane);
         }
     }
 
-    private void doSetSplitWidth(Component comp)
+    /**
+     * Sets the split width
+     * 
+     * @param  splitpane  JSplitPane
+     */
+    private void doSetSplitWidth(Component splitpane)
     {
-        if (comp instanceof JSplitPane)
+        if (splitpane instanceof JSplitPane)
         {
-            JSplitPane jsp = (JSplitPane) comp;
+            JSplitPane jsp = (JSplitPane) splitpane;
             jsp.setDividerSize(dividerSize_);
             doSetSplitWidth(jsp.getTopComponent());
             doSetSplitWidth(jsp.getBottomComponent());
         }
     }
 
+    /**
+     * Adds a component
+     * 
+     * @param  comp  Component to add
+     */
     private void addComponent(JComponent comp)
     {
         logger_.debug("addComponent " + comp);
 
         int n = getComponentCount();
+        
         if (n == 0)
         {
             // just add it
@@ -282,9 +302,12 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
-    // subtract a component. Bit more tricky than add, as we have to
-    // find the component first
-    private void subComponent(JComponent comp)
+    /**
+     * Remove a component
+     * 
+     * @param  comp  Component to remove
+     */
+    private void removeComponent(JComponent comp)
     {
         logger_.debug("subComponent " + comp);
             
@@ -297,7 +320,8 @@ public class JMultiSplitPane extends JPanel
         }
         else
         {
-            Assert.isTrue(cont instanceof JSplitPane,"container not a splitpane!");
+            Assert.isTrue(
+                cont instanceof JSplitPane,"container not a splitpane!");
             
             JSplitPane split = (JSplitPane) cont;
             Container parent = split.getParent();
@@ -316,6 +340,13 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
+    /**
+     * Replaces a component in its parent
+     * 
+     * @param  parent  Parent container
+     * @param  split   Splitpane
+     * @param  comp    Component to replace
+     */
     private void replaceInParent(Container parent, JSplitPane split, 
         Component comp)
     {
@@ -328,18 +359,15 @@ public class JMultiSplitPane extends JPanel
         }
         else
         {
-            Assert.isTrue(parent instanceof JSplitPane,"parent not a JSplitPane!");
+            Assert.isTrue(
+                parent instanceof JSplitPane, "parent not a JSplitPane!");
             
-            JSplitPane split_parent = (JSplitPane) parent;
+            JSplitPane splitParent = (JSplitPane) parent;
             
-            if (split_parent.getTopComponent() == split)
-            {
-                split_parent.setTopComponent(comp);
-            }
+            if (splitParent.getTopComponent() == split)
+                splitParent.setTopComponent(comp);
             else
-            {
-                split_parent.setBottomComponent(comp);
-            }
+                splitParent.setBottomComponent(comp);
         }
     }
 
@@ -347,6 +375,9 @@ public class JMultiSplitPane extends JPanel
     // Inner Classes
     //--------------------------------------------------------------------------
 
+    /**
+     * Adds a component to the multisplit pane
+     */
     private class AddComponent implements Runnable
     {
         private JComponent comp_;
@@ -363,28 +394,28 @@ public class JMultiSplitPane extends JPanel
         }
     }
     
-    private class SubComponent implements Runnable
+    /**
+     * Removes a component from the multisplitpane
+     */
+    private class RemoveComponent implements Runnable
     {
         private JComponent comp_;
                 
-        SubComponent(JComponent comp)
+        RemoveComponent(JComponent comp)
         {
             comp_ = comp;
         }
         
         public void run()
         {
-            subComponent(comp_);
+            removeComponent(comp_);
             revalidate();
         }
     }
 
-
     /**
      * A simple dynamic vector of ints.
-     * 
-     * @author matso
-     **/
+     */
     public class IntVector
     {
         private static final int STARTING_SIZE = 8;
@@ -402,14 +433,18 @@ public class JMultiSplitPane extends JPanel
 
         /**
          * Arg constructor
+         * 
+         * @param initialSize  Initial size
          */
-        public IntVector(int start_size)
+        public IntVector(int initialSize)
         {
-            arr_ = new int[start_size];
+            arr_ = new int[initialSize];
         }
 
         /** 
          * Add an int last 
+         * 
+         * @param  v  int
          */
         public void add(int v)
         {
@@ -429,15 +464,18 @@ public class JMultiSplitPane extends JPanel
                 }
                 else
                 {
-                    int[] tmp_arr = new int[arr_.length * 2];
-                    System.arraycopy(arr_, 0, tmp_arr, 0, arr_.length);
-                    arr_ = tmp_arr;
+                    int[] tmp = new int[arr_.length * 2];
+                    System.arraycopy(arr_, 0, tmp, 0, arr_.length);
+                    arr_ = tmp;
                 }
             }
             
             arr_[end_++] = v;
         }
 
+        /**
+         * @return int at the front
+         */
         public int front()
         {
             if (start_ >= end_)
@@ -446,6 +484,9 @@ public class JMultiSplitPane extends JPanel
             return arr_[start_];
         }
 
+        /**
+         * @return int popped from the front
+         */
         public int popFront()
         {
             if (start_ >= end_)
@@ -454,6 +495,9 @@ public class JMultiSplitPane extends JPanel
             return arr_[start_++];
         }
 
+        /**
+         * @return Last int in array
+         */
         public int back()
         {
             if (start_ >= end_)
@@ -461,7 +505,10 @@ public class JMultiSplitPane extends JPanel
                 
             return arr_[end_ - 1];
         }
-        
+
+        /**
+         * @return Last element 
+         */        
         public int popBack()
         {
             if (start_ >= end_)
@@ -470,6 +517,9 @@ public class JMultiSplitPane extends JPanel
             return arr_[--end_];
         }
 
+        /**
+         * @return Array representation
+         */
         public int[] getArray()
         {
             int[] res = new int[size()];
@@ -482,18 +532,22 @@ public class JMultiSplitPane extends JPanel
             return res;
         }
 
+        /**
+         * @return Size of vector
+         */
         public int size()
         {
             return end_ - start_;
         }
 
+        /**
+         * Resets vector
+         */
         public void clean()
         {
             start_ = end_ = 0;
         }
     }
-
-
 
     //--------------------------------------------------------------------------
     // Entry Point
@@ -502,9 +556,14 @@ public class JMultiSplitPane extends JPanel
     private static int serial = 0;
     private static int splitWidth = 10;
     
+    /**
+     * Entrypoint
+     * 
+     * @param   args  None recognized
+     * @throws  IOException on error
+     */
     public static void main(String[] args) throws IOException
     {
-        
         JFrame f = new JFrame("MultiSplitPane Test");
         f.getContentPane().setLayout(new GridLayout());
         
@@ -564,25 +623,3 @@ public class JMultiSplitPane extends JPanel
         f.show();
     }
 }
-
-/**
- * CSGC - Client-Server Game Core
- * Copyright (C) 1998 Mats Olsson
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
- * 
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
- * 
- * matso@dtek.chalmers.se
- */
