@@ -173,13 +173,13 @@ public class DBConfig extends JPanel implements IPreferenced
         jarField_.setToolTipText(
             "Only use if the JDBC driver is not on the classpath");
         
-        JButton jarChooserButton_ = new JSmartButton(new JarChooserAction());
+        JButton jarChooserButton = new JSmartButton(new JarChooserAction());
         
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         
         Dimension d = new Dimension(12, jarField_.getPreferredSize().height);
-        jarChooserButton_.setPreferredSize(d);
+        jarChooserButton.setPreferredSize(d);
         
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -190,7 +190,7 @@ public class DBConfig extends JPanel implements IPreferenced
         jarPanel.add(jarField_, gbc);
         gbc.gridx = 2;
         gbc.weightx = 1;
-        jarPanel.add(jarChooserButton_, gbc);
+        jarPanel.add(jarChooserButton, gbc);
 
         add(new JSmartLabel("Jar"), ParagraphLayout.NEW_PARAGRAPH);
         add(jarPanel);
