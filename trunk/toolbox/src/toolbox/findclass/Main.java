@@ -234,60 +234,44 @@ public class Main extends FindClassAdapter
      */
     private void printUsage()
     {
-        writer_.println("FindClass searches for all occurrences of a class");
-        writer_.println("in your classpath and archives visible from the");
-        writer_.println("current directory.");
-        writer_.println();
-        
-        writer_.println("Usage  : java toolbox.findclass.Main [-c -t -h] " +
-                           "<classToFind>");
-                           
-        writer_.println("Options: -c, --caseSensetive => Case sensetive search");
-        writer_.println("         -t, --targets       => Lists search targets");
-        writer_.println("         -h, --help          => Print help");
-        writer_.println("         <classToFind>       => Name of class to find. Can be a regular expression or "); 
-        writer_.println("                                substring occurring anywhere in the FQN of a class.");
-        
+        String usage = 
+        "NAME\n"
+        + "    findClass - finds classes in directories, jars, and the CLASSPATH\n"
+        + "\n"
+        + "    Search order:\n"
+        + "    1. Jars and directories in the CLASSPATH\n"
+        + "    2. Current directory\n"
+        + "    3. Jars that exist in the current directory and subdirectories (recursive)\n"
+        + "       \n"
+        + "    The regular expression is evaluated against the fully qualified class name.\n"
+        + "                   \n"
+        + "SYNOPSIS\n"
+        + "\n"
+        + "    findclass [-h] [-c] [-t] <regular expression>  \n"
+        + "\n"
+        + "OPTIONS\n"
+        + "\n"
+        + "    -h  --help           Displays this help message\n"
+        + "    -c  --caseSensetive  Case sensetive regular expression\n"
+        + "    -t  --targets        List search targets\n"
+        + "\n"
+        + "EXAMPLES\n"
+        + "\n"
+        + "    Example 1: Search for classes matching java.lang.Object\n"
+        + "\n"
+        + "        " + getClass().getName() + " java.lang.Object\n"
+        + "\n"
+        + "    Example 2: Search for classes ending in Proxy (match case)\n"
+        + "\n"
+        + "        " + getClass().getName() + " -c Proxy$\n"
+        + "\n"
+        + "    Example 3: Search for all classes in package org.gnu and list search targets\n"
+        + "       \n"
+        + "        " + getClass().getName() + " -t org.gnu\n";
+
+        writer_.print(usage);
         writer_.flush();
     }
- 
-/*
-     
-NAME
-    findClass - finds classes in directories, jars, and the CLASSPATH
-
-    Search order:
-    1. Jars and directories in the CLASSPATH
-    2. Current directory
-    3. Jars that exist in the current directory and subdirectories (recursive)
-       
-    The regular expression is evaluated against the fully qualified class name.
-                   
-SYNOPSIS
-
-    findclass [-h] [-c] [-t] <regular expression>  
-
-OPTIONS
-
-    -h  --help           Displays this help message
-    -c  --caseSensetive  Case sensetive regular expression
-    -t  --targets        List search targets
-
-EXAMPLES
-
-    Example 1: Search for classes containing java.lang in their FQCN.
-
-        toolbox.findclass.Main java.lang
-
-    Example 2: Search for classes ending in Proxy (case sensetive)
-
-        toolbox.findclass.Main -c Proxy$
-
-    Example 3: Search for all classes and also list the search targets.
-
-        toolbox.findclass.Main -t .*
-    
-*/
     
     //--------------------------------------------------------------------------
     // Overrides FindClassAdapter
