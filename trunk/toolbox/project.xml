@@ -510,6 +510,15 @@
     </dependency>
 
     <dependency>
+      <id>qdox</id>
+      <version>LATEST</version>
+      <url>http://qdox.codehaus.org</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+    
+    <dependency>
       <id>saxon</id>
       <version/>
       <properties>

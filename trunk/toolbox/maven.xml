@@ -1,6 +1,6 @@
 <!-- ===========================================================================
 
-  Maven Custom Goals for the Java Toolbox    
+  Maven Custom Goals for the Java Toolbox
 
 ============================================================================ -->
 
@@ -15,15 +15,15 @@
     <!-- =================================================================== -->
     <!-- [PRE] JAVA:COMPILE                                                  -->
     <!-- =================================================================== -->
-    <preGoal name="java:compile"> 
-        
-       <!-- Piggybacks the debug source tree onto the compile goal -->
-       <path id="debug.src" location="${basedir}/debug"/> 
-       <maven:addPath id="maven.compile.src.set" refid="debug.src"/> 
-        
-    </preGoal> 
+    <preGoal name="java:compile">
 
-    
+       <!-- Piggybacks the debug source tree onto the compile goal -->
+       <path id="debug.src" location="${basedir}/debug"/>
+       <maven:addPath id="maven.compile.src.set" refid="debug.src"/>
+
+    </preGoal>
+
+
     <!-- =================================================================== -->
     <!-- CVS-UPDATE                                                          -->
     <!-- =================================================================== -->
@@ -31,12 +31,12 @@
 
       <mkdir dir="${basedir}/src"/>
       <j:set var="dest" value="${basedir}/src"/>
-    
+
       <!-- Update from CVS -->
       <cvs command     = "update -d"
            dest        = "${dest}"
            failonerror = "false"/>
-           <!-- noexec  = "true" -->         
+           <!-- noexec  = "true" -->
     </goal>
 
 
@@ -44,55 +44,55 @@
     <!-- JNLP-DEPLOY                                                         -->
     <!-- =================================================================== -->
     <goal name="jnlp-deploy" description="Deploys the JNLP distribution to Tomcat">
-      
+
       <!-- Fix the main jar in the jnlp file to occur before all the 3rd  -->
       <!-- party jars so that the debug classes will be loaded from the   -->
       <!-- main jar first.                                                -->
-      
+
       <!--echoproperties/-->
-     
+
       <bsh:script><![CDATA[
         import java.util.*;
         import java.io.*;
         import nu.xom.*;
-         
+
         //print("===== fixjnlp.bsh begin ========");
-        
+
         String fs = File.separator+"";
-        
+
         String inputFile = "target" + fs + "jnlp" + fs + "toolbox.jnlp";
-        
+
         System.out.println("JNLP file = " + inputFile);
-        	
+
         String outputFile = inputFile;
-        
+
         //which(java.lang.Object.class);
         //which(System.class);
         //which("nu.xom.Builder");
         //print(getClassPath());
-        
+
         InputStream is = new FileInputStream(new File(inputFile));
-        
+
         //print(is);
-        
+
         Builder parser = new Builder();
         Document doc = parser.build(is);
         Element root = doc.getRootElement();
-        
+
         //print(root.toXML());
-        
+
         Element resources = root.getFirstChildElement("resources");
         Element firstJar = resources.getFirstChildElement("jar");
         Elements jars = resources.getChildElements("jar");
-        
+
         for (int i = 0; i<jars.size(); i++)
-        { 
+        {
           Element jar = jars.get(i);
-            
+
           //print("Iterating..." + jar.toXML());
-          
+
           Attribute main = jar.getAttribute("main");
-            
+
           if (main != null)
           {
               System.out.println("Fixing jnlp file...");
@@ -103,28 +103,28 @@
               break;
           }
         }
-        
-        //print(resources.toXML()); 
-        
+
+        //print(resources.toXML());
+
         is.close();
-        
+
         Writer w = new FileWriter(outputFile);
         w.write(root.toXML());
         w.close();
-        
-        //print("===== fixjnlp.bsh end ========");        
-        
+
+        //print("===== fixjnlp.bsh end ========");
+
         ]]>
       </bsh:script>
 
       <!-- Copy everything over to the tomcat directory -->
-      <copy todir="${toolbox.jnlp.deploy}" 
+      <copy todir="${toolbox.jnlp.deploy}"
             verbose="true"
-            quiet="false" 
+            quiet="false"
             overwrite="false">
-          
+
         <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
-        <fileset dir="${basedir}/resources/toolbox/util/ui/images" 
+        <fileset dir="${basedir}/resources/toolbox/util/ui/images"
                  includes="Toolbox.gif"/>
       </copy>
     </goal>
@@ -138,7 +138,7 @@
         <copy todir="${sysenv.USERPROFILE}" verbose="true" overwrite="true">
             <fileset dir="${basedir}" includes="build.properties"/>
         </copy>
-    </goal> 
+    </goal>
 
 
     <!-- =================================================================== -->
@@ -150,13 +150,13 @@
                              Project Build Help
 ================================================================================
 
-Scope: 
+Scope:
 
   Maven goals for the Java Toolbox
 
 Commands:
 
-  clean         Deletes residual class files, jars, directories generated by 
+  clean         Deletes residual class files, jars, directories generated by
                 the build process.
   compile       Compiles the project only.
   cvs-update    Does a cvs update of the project.
@@ -178,46 +178,46 @@ Commands:
 ================================================================================
         </echo>
     </goal>
-    
+
     <!-- =================================================================== -->
     <!-- UMLGRAPH                                                            -->
     <!-- =================================================================== -->
     <goal name="umlgraph" description="Generates UML class diagrams">
-        
-        <!-- TODO: This task is unfinished because dot is not implemented    --> 
+
+        <!-- TODO: This task is unfinished because dot is not implemented    -->
         <!--       in java. Maybe finish if dot ever gets ported.            -->
-        
+
         <path id="umlgraph.classpath">
             <fileset dir="${basedir}/lib">
                 <include name="*.jar"/>
                 <include name="*.zip"/>
             </fileset>
         </path>
-        
+
         <!--
-		<pathconvert 
-		    targetos="windows" 
-		    property="umlgraph.classpath" 
-		    refid="umlgraph.classpath"/>
-		    
-		    
+    <pathconvert
+        targetos="windows"
+        property="umlgraph.classpath"
+        refid="umlgraph.classpath"/>
+
+
             doclet           = "UmlGraph"
             docletpath       = "${basedir}/build/lib/umlgraph.jar"
-		    
+
                 <param name="-operations" value=""/>
                 <param name="-visibility" value=""/>
                 <param name="-types" value=""/>
                 <param name="-qualify"/>
-		    
+
         <echo>classpath=${umlgraph.classpathy}</echo>
         -->
-        
-        <javadoc 
+
+        <javadoc
             sourcepath       = "${basedir}/src"
             packagenames     = "toolbox.findclass.*"
             classpathref     = "umlgraph.classpath"
             verbose          = "false">
-            
+
             <doclet name="UmlGraph" path="${basedir}/build/lib/umlgraph.jar">
                 <param name="-all"/>
                 <param name="-bgcolor" value="lightgray"/>
@@ -227,32 +227,32 @@ Commands:
                 <param name="-nodefillcolor" value="lightblue"/>
                 <param name="-nodefontcolor" value="blue"/>
                 <param name="-edgecolor" value="white"/>
-                
-            </doclet>    
+
+            </doclet>
         </javadoc>
-            
-		<exec executable="dot">
-		    <arg value="-Tgif"/>
-		    <arg value="graph.dot"/>
-		    <arg value="-ograph.gif"/>
-		</exec>            
+
+    <exec executable="dot">
+        <arg value="-Tgif"/>
+        <arg value="graph.dot"/>
+        <arg value="-ograph.gif"/>
+    </exec>
     </goal>
 
-    
+
     <!-- =================================================================== -->
     <!-- FATJAR:ALL                                                          -->
     <!-- =================================================================== -->
-    <goal name="fatjar:all" 
+    <goal name="fatjar:all"
           description = "Creates all fatjars and distributes them.">
-        
+
         <attainGoal name="fatjar:clean"/>
         <attainGoal name="fatjar:toolbox"/>
         <attainGoal name="fatjar:laf"/>
         <attainGoal name="fatjar:xslfo"/>
         <attainGoal name="fatjar:dist"/>
-    </goal>    
-        
-        
+    </goal>
+
+
     <!-- =================================================================== -->
     <!-- FATJAR:CLEAN                                                        -->
     <!-- =================================================================== -->
@@ -260,8 +260,8 @@ Commands:
           description = "Cleans fatjar workarea.">
         <delete dir="${basedir}/target/fatjar" verbose="false"/>
     </goal>
-    
-    
+
+
     <!-- =================================================================== -->
     <!-- FATJAR:TOOLBOX                                                      -->
     <!-- =================================================================== -->
@@ -295,24 +295,25 @@ Commands:
                 <include name="statcvs.jar"/>
 
                 <!-- Doc viewer plugin -->
-                <include name="webwindow.jar"/>
                 <include name="calphahtml.jar"/>
+                <include name="javassist.jar"/>
                 <include name="jaxen.jar"/>
                 <include name="pollo.jar"/>
-                <include name="javassist.jar"/>
-                <include name="matra.jar"/>                
+                <include name="qdox.jar"/>
+                <include name="matra.jar"/>
+                <include name="webwindow.jar"/>
 
                 <!-- ===== Apache Commons ===== -->
                 <include name="commons-beanutils.jar"/>
                 <include name="commons-cli.jar"/>
                 <include name="commons-codec.jar"/>
                 <include name="commons-collections.jar"/>
-                <include name="commons-dbcp.jar"/>                
+                <include name="commons-dbcp.jar"/>
                 <include name="commons-io.jar"/>
                 <include name="commons-lang.jar"/>
                 <include name="commons-logging.jar"/>
                 <include name="commons-net.jar"/>
-                <include name="commons-pool.jar"/>                
+                <include name="commons-pool.jar"/>
                 <include name="jakarta-regexp.jar"/>
 
                 <!-- ===== Log4j IM Appenders ==== -->
@@ -342,13 +343,13 @@ Commands:
             <!-- The INDEX.LIST file from xom.jar somehow confuses the   -->
             <!-- Class-Path directive in the manifest so it is excluded  -->
             <!-- for this reason.                                        -->
-            <fileset dir="${stage}" 
+            <fileset dir="${stage}"
                      excludes="META-INF/INDEX.LIST"/>
         </jar>
 
     </goal>
 
-    
+
     <!-- =================================================================== -->
     <!-- FATJAR:LAF                                                          -->
     <!-- =================================================================== -->
@@ -362,10 +363,10 @@ Commands:
         <delete verbose="true" failonerror="false" >
             <fileset dir="${dist}" includes="toolbox-lookandfeel.jar"/>
         </delete>
-        
+
         <!-- Unjar all jars to staging area -->
         <unjar dest="${stage}" overwrite="true">
-            
+
             <fileset dir="${basedir}/lib">
 
                 <!-- ===== Look and Feels ==== -->
@@ -382,7 +383,7 @@ Commands:
                 <include name="oyoahalf.jar"/>
                 <include name="squarenesslf.jar"/>
                 <include name="napkinlf.jar"/>
-                <include name="3dlf.jar"/>                
+                <include name="3dlf.jar"/>
 
             </fileset>
         </unjar>
@@ -401,18 +402,18 @@ Commands:
         </jar>
 
     </goal>
-    
-    
+
+
     <!-- =================================================================== -->
     <!-- FATJAR:XSLFO                                                        -->
     <!-- =================================================================== -->
-    <goal name="fatjar:xslfo" 
+    <goal name="fatjar:xslfo"
           description = "Creates toolbox-xslfo.jar.">
 
         <j:set var="dist" value="${basedir}/target/fatjar"/>
         <j:set var="stage" value="${basedir}/target/fatjar/xslfo"/>
         <mkdir dir="${stage}"/>
-        
+
         <delete verbose="true">
             <fileset dir="${dist}" includes="toolbox-xslfo.jar"/>
         </delete>
@@ -447,13 +448,13 @@ Commands:
     <!-- =================================================================== -->
     <!-- FATJAR:DIST                                                         -->
     <!-- =================================================================== -->
-    <goal name="fatjar:dist" 
+    <goal name="fatjar:dist"
           description = "Distributes the fatjars to a local directory.">
-        
+
         <!-- Copy toolbox class files to staging area -->
         <copy todir="${toolbox.fatjar.dist}" overwrite="yes">
             <fileset dir="${basedir}/target/fatjar/" includes="*.jar"/>
         </copy>
-    </goal>    
+    </goal>
 
 </project>
