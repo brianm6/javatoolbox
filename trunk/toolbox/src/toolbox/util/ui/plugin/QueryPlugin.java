@@ -31,6 +31,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.TryCatchAction;
 import toolbox.util.ui.JTextComponentPopupMenu;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -337,7 +338,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteAction extends AbstractAction
+    private class ExecuteAction extends TryCatchAction
     {
         public ExecuteAction()
         {
@@ -346,7 +347,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
         }
     
-        public void actionPerformed(ActionEvent e)
+        public void tryActionPerformed(ActionEvent e)
         {
             String sql = sqlArea_.getText();        
             
