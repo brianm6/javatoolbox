@@ -9,6 +9,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.AntiAliased;
 
 /**
  * JSmartTable adds the following behavior.
@@ -21,7 +22,7 @@ import toolbox.util.SwingUtil;
  * @see JSmartTableModel
  * @see SmartTableCellRender
  */
-public class JSmartTable extends JTable
+public class JSmartTable extends JTable implements AntiAliased
 {
     //--------------------------------------------------------------------------
     // Constructors

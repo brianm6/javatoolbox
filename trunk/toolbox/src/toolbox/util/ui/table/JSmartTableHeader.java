@@ -6,6 +6,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.AntiAliased;
 
 /**
  * JSmartTableHeader adds the following behavior.
@@ -14,7 +15,7 @@ import toolbox.util.SwingUtil;
  *   <li>Support for antialiased column headers
  * </ul>
  */
-public class JSmartTableHeader extends JTableHeader
+public class JSmartTableHeader extends JTableHeader implements AntiAliased
 {
     //--------------------------------------------------------------------------
     // Constructors
