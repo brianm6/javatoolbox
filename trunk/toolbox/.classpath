@@ -36,6 +36,7 @@
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/jode-src.zip" kind="lib" path="lib/jode.jar"/>
 	<classpathentry kind="lib" path="lib/jreversepro.jar"/>
+	<classpathentry kind="lib" path="lib/jtidy.jar"/>
 	<classpathentry sourcepath="lib/src/junit-src.zip" kind="lib" path="lib/junit.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
 	<classpathentry kind="lib" path="lib/kunststoff.jar"/>
