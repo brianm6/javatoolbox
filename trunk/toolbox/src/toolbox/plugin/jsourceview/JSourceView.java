@@ -8,7 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -17,7 +16,6 @@ import java.text.NumberFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -33,10 +31,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
@@ -59,11 +57,10 @@ import toolbox.util.ui.table.TableSorter;
  * JSourceView gathers statistics on one or more source files and presents
  * them in a table format for viewing.
  */
-public class JSourceView extends JFrame implements ActionListener, IPreferenced
+public class JSourceView extends JPanel implements IPreferenced
 {
     // TODO: Update Queue to BlockingQueue
     // TODO: Figure out how to save table column sizes
-    // TODO: Convert actionPerformed() to Actions
     // TODO: Add chart for visualization
     // TODO: Custom table cell renders to color code unusually high or low 
     //       numbers, etc
@@ -99,6 +96,22 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     private static final int COL_TOTAL      = 7;
     private static final int COL_PERCENTAGE = 8;
 
+    /** 
+     * Table column names 
+     */    
+    private static String colNames_[] = 
+    {
+        "Num",
+        "Directory", 
+        "File", 
+        "Code", 
+        "Comments", 
+        "Blank",
+        "Thrown Out", 
+        "Total", 
+        "Percentage"
+    };
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -111,7 +124,6 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     
     private JMenuBar    menuBar_;
     private JMenuItem   saveMenuItem_;
-    private JMenuItem   aboutMenuItem_;
     
     private JTable          table_;
     private SmartTableModel tableModel_;
@@ -129,27 +141,6 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     private IStatusBar workspaceStatusBar_;
     
     /** 
-     * Platform path separator 
-     */
-    private String pathSeparator_;
-
-    /** 
-     * Table column names 
-     */    
-    private String colNames_[] = 
-    {
-        "Num",
-        "Directory", 
-        "File", 
-        "Code", 
-        "Comments", 
-        "Blank",
-        "Thrown Out", 
-        "Total", 
-        "Percentage"
-    };
-    
-    /** 
      * Filter to identify source files 
      */
     private static OrFilter sourceFilter_;
@@ -163,7 +154,6 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
      */    
     public JSourceView()
     {
-        super("JSourceView");
         buildView();
     }
 
@@ -204,32 +194,6 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         // bar (not available yet in buildView()).
         goButton_.setAction(new SearchAction());
         dirField_.setAction(new SearchAction());
-    }
-
-    //--------------------------------------------------------------------------
-    // ActionListener Interface
-    //--------------------------------------------------------------------------
-
-    /**
-     * Handles actions from the GUI
-     *
-     * @param  actionevent  Action to handle
-     */
-    public void actionPerformed(ActionEvent actionevent)
-    {
-        Object obj = actionevent.getSource();
-        
-        try
-        {
-            if (obj == saveMenuItem_)
-                saveResults();
-            else if (obj == aboutMenuItem_)
-                showAbout();
-        }
-        catch (Exception e)
-        {
-            ExceptionUtil.handleUI(e, logger_);
-        }
     }
 
 	//--------------------------------------------------------------------------
@@ -273,6 +237,8 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
      */
     protected void buildView()
     {
+        setLayout(new BorderLayout());
+        
         dirField_ = new JTextField(25);
         goButton_ = new JButton();
         pickDirButton_ = new JButton(new PickDirectoryAction());
@@ -281,7 +247,6 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         scanStatusLabel_ = new JLabel(" ");
         parseStatusLabel_ = new JLabel(" ");
         menuBar_ = new JMenuBar();
-        pathSeparator_ = System.getProperty("file.separator");
         
         topPanel.setLayout(new FlowLayout());
         topPanel.add(new JLabel("Directory"));
@@ -317,18 +282,17 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         
         tweakTable();
         
-        getContentPane().add(topPanel, BorderLayout.NORTH);
-        getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
+        add(new JScrollPane(table_), BorderLayout.CENTER);
         
         JPanel jpanel = new JPanel();
         jpanel.setLayout(new BorderLayout());
         jpanel.add(scanStatusLabel_, BorderLayout.NORTH);
         jpanel.add(parseStatusLabel_, BorderLayout.SOUTH);
-        getContentPane().add(jpanel, BorderLayout.SOUTH);
+        add(jpanel, BorderLayout.SOUTH);
         
-        setJMenuBar(createMenuBar());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        //setJMenuBar(createMenuBar());
+        
         sourceFilter_ = new OrFilter();
         sourceFilter_.addFilter(new ExtensionFilter("c"));
         sourceFilter_.addFilter(new ExtensionFilter("cpp"));
@@ -393,55 +357,13 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     protected JMenuBar createMenuBar()
     {
         JMenu jmenu = new JMenu("File");
-        JMenu jmenu1 = new JMenu("Help");
-        
-        saveMenuItem_ = new JMenuItem("Save");
-        saveMenuItem_.addActionListener(this);
-        
+        saveMenuItem_ = new JMenuItem(new SaveResultsAction());
         jmenu.add(saveMenuItem_);
-        jmenu.addSeparator();
-        
-        aboutMenuItem_ = new JMenuItem("About");
-        aboutMenuItem_.addActionListener(this);
-        
-        jmenu1.add(aboutMenuItem_);
-        
         menuBar_.add(jmenu);
-        menuBar_.add(jmenu1);
         
         return menuBar_;
     }
-
-    /**
-     * Saves the results to a file
-     * 
-     * @throws IOException on error
-     */
-    protected void saveResults() throws IOException
-    {
-        String s = JOptionPane.showInputDialog("Save to file");
         
-        if (s.length() > 0)
-            tableModel_.saveToFile(s);
-    }
-    
-    /**
-     * Shows About dialog box
-     */
-    protected void showAbout()
-    {
-        JOptionPane.showMessageDialog(null, 
-            "E-mail: analogue@yahoo.com\n" + 
-            "Webpage: http://members.tripod.com/analogue73\n" + 
-            "Usage: Just enter the starting directory and hit Go button.\n" + 
-            "Program will recurse through all subdirs and count lines\n" + 
-            "in all .java, .cpp, .c, and .h files.\n\n" +
-            "Comments/bugs/etc appreciated.\n\n" + 
-            "Disclaimer: This thing was hacked together over a few hours. " +
-            "Use at your own risk.", 
-            "About JSourceView", 1);
-    }
-    
     //--------------------------------------------------------------------------
     // Actions
     //--------------------------------------------------------------------------
@@ -523,9 +445,28 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             
-            if (chooser.showDialog(getContentPane(), "Select Directory") == 
+            if (chooser.showDialog(JSourceView.this, "Select Directory") == 
                 JFileChooser.APPROVE_OPTION)
                 dirField_.setText(chooser.getSelectedFile().getCanonicalPath());
+        }
+    }
+
+    /**
+     * Saves the results table to a file
+     */
+    class SaveResultsAction extends SmartAction
+    {
+        SaveResultsAction()
+        {
+            super("Save Results ...", true, false, null);
+        }
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            String s = JOptionPane.showInputDialog("Save to file");
+        
+            if (s.length() > 0)
+                tableModel_.saveToFile(s);
         }
     }
 
