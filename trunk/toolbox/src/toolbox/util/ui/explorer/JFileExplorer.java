@@ -46,6 +46,7 @@ import nu.xom.Element;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -60,7 +61,6 @@ import toolbox.util.ui.statusbar.JStatusBar;
 public class JFileExplorer extends JPanel implements IPreferenced
 {
     // TODO: Add filter for file list
-    // TODO: Add refresh button
     
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorer.class);
@@ -160,6 +160,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
 
     /**
      * Returns the current file path.
+     * <p> 
+     * Example: /tmp/work/Foo.java
      *
      * @return String
      */
@@ -168,7 +170,12 @@ public class JFileExplorer extends JPanel implements IPreferenced
         StringBuffer s = new StringBuffer();
         s.append(getCurrentPath());
         s.append(File.separator);
-        s.append(fileList_.getSelectedValue().toString());
+        Object file = fileList_.getSelectedValue();
+        
+        // Handle case where no file is selected. Return only the path
+        if (file != null)
+            s.append(file.toString());
+            
         return s.toString();
     }
     
@@ -886,6 +893,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         private JLabel sizeLabel_;
         private JLabel modifiedLabel_;
         private JLabel attribLabel_;
+        private JLabel refreshLabel_;
         private DecimalFormat df_;
         
         InfoBar()
@@ -899,10 +907,31 @@ public class JFileExplorer extends JPanel implements IPreferenced
             modifiedLabel_.setHorizontalAlignment(SwingConstants.CENTER);
             
             attribLabel_ = new JLabel();
+
+            refreshLabel_ = 
+                new JLabel(ImageCache.getIcon(ImageCache.IMAGE_REFRESH));
+            
+            refreshLabel_.addMouseListener(new MouseAdapter()
+            {
+                public void mousePressed(MouseEvent e)
+                {
+                    String folder = getCurrentPath();
+                    String file   = FileUtil.stripPath(getFilePath());
+                    
+                    new DriveComboListener().itemStateChanged(
+                        new ItemEvent(rootsComboBox_, 0, null, 
+                            ItemEvent.ITEM_STATE_CHANGED));
+                            
+                    selectFolder(folder);
+                    setFileList(folder);
+                    fileList_.setSelectedValue(file, true);
+                }
+            });
             
             addStatusComponent(sizeLabel_, false);
             addStatusComponent(modifiedLabel_, true);
             addStatusComponent(attribLabel_, false);
+            addStatusComponent(refreshLabel_, false);
         }
         
         public void showInfo(File file)
