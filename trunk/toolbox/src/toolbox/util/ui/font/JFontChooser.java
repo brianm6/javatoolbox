@@ -85,6 +85,17 @@ public class JFontChooser extends JPanel
      */
     private static final int[] DEFAULT_SIZES = 
         new int[] {7, 8, 9, 10, 11, 12, 14, 16, 18, 24, 36};
+
+    
+    //--------------------------------------------------------------------------
+    // UI Name Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String NAME_FONT_LIST = "fontfamily.list";
+    public static final String NAME_STYLE_LIST = "fontStyle.list";
+    public static final String NAME_ANTIALIAS_CHECKBOX = "antialias.checkbox";
+    public static final String NAME_SIZE_FIELD = "size.field";
+    public static final String NAME_SIZE_LIST = "size.list";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -237,7 +248,8 @@ public class JFontChooser extends JPanel
         fontFamilyList_.setVisibleRowCount(8);
         fontFamilyCellRenderer_ = new FontFamilyCellRenderer();
         fontFamilyList_.setCellRenderer(fontFamilyCellRenderer_);
-
+        fontFamilyList_.setName(NAME_FONT_LIST);
+        
         // Add to gridbag
         gbc.weightx    = 1; gbc.weighty   = 1;
         gbc.gridx      = 1; gbc.gridy     = 1;
@@ -249,6 +261,7 @@ public class JFontChooser extends JPanel
         fontStyleList_ = new FontStyleList(styleDisplayNames);
         fontStyleList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontStyleList_.setVisibleRowCount(4);
+        fontStyleList_.setName(NAME_STYLE_LIST);
 
         // Add to gridbag
         gbc.weightx    = 0.75; gbc.weighty   = 1;
@@ -259,6 +272,7 @@ public class JFontChooser extends JPanel
 
         // Configure anti-alias checkbox
         antiAliasCheckBox_ = new JSmartCheckBox(new AntiAliasAction());
+        antiAliasCheckBox_.setName(NAME_ANTIALIAS_CHECKBOX);
         setAntiAliased(antiAlias);
 
         // Add to gridbag
@@ -271,6 +285,7 @@ public class JFontChooser extends JPanel
         // Configure font size field
         fontSizeField_ = new JSmartTextField();
         fontSizeField_.setColumns(4);
+        fontSizeField_.setName(NAME_SIZE_FIELD);
         
         // Add to gridbag
         gbc.weightx    = 0.5;  gbc.weighty   = 0;
@@ -285,6 +300,7 @@ public class JFontChooser extends JPanel
             
         fontSizeList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontSizeList_.setVisibleRowCount(4);
+        fontSizeList_.setName(NAME_SIZE_LIST);
         
         // Add to gridbag
         gbc.weightx    = 0.5; gbc.weighty   = 1;
