@@ -2,8 +2,6 @@ package toolbox.util.ui.explorer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import toolbox.util.Platform;
 
 /**
