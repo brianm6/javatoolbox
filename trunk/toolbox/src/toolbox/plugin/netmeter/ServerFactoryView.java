@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -12,16 +11,17 @@ import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
  * ServerFactoryView concepts.
  * <ul>
- * <li>ServerFactoryView is a UI component.
- * <li>ServerFactoryView fields input from the user to configure a ServerView.
- * <li>ServerFactoryView can create any number of ServerViews
- * <li>ServerFactoryView hands newly created ServerViews back to the 
- *     NetMeterPlugin.
+ *  <li>ServerFactoryView is a UI component.
+ *  <li>ServerFactoryView fields input from the user to configure a ServerView.
+ *  <li>ServerFactoryView can create any number of ServerViews
+ *  <li>ServerFactoryView hands newly created ServerViews back to the 
+ *      NetMeterPlugin.
  * </ul>
  * 
  * @see ServerFactoryView
@@ -96,22 +96,22 @@ public class ServerFactoryView extends JHeaderPanel
     /**
      * CreateAction create a ServerView.
      */
-    class CreateAction extends AbstractAction
+    class CreateAction extends SmartAction
     {
         /**
          * Creates a CreateAction.
          */
         public CreateAction()
         {
-            super("Create Server");
+            super("Create Server", true, false, null);
         }
 
         
         /**
-         * @see java.awt.event.ActionListener#actionPerformed(
+         * @see toolbox.util.ui.SmartAction#runAction(
          *      java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             Server server = new Server(
                 Integer.parseInt(serverPortField_.getText()));
