@@ -16,7 +16,9 @@ public class QueuedInvoker implements Invoker
     private static final Logger logger_ = 
         Logger.getLogger(QueuedInvoker.class);
     
-    /** Work queue */
+    /** 
+     * Queue of Runnables waiting to be invoked 
+     */
     private BlockingQueue queue_;
 
     //--------------------------------------------------------------------------
@@ -24,9 +26,19 @@ public class QueuedInvoker implements Invoker
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a queued invoker
+     * Creates a queued invoker with no delay between invocations
      */
     public QueuedInvoker()
+    {
+        this(0);
+    }    
+
+    /**
+     * Creates a queued invoker
+     * 
+     * @param  millis  Delay in milliseconds between invocations
+     */
+    public QueuedInvoker(final long millis)
     {
         queue_ = new BlockingQueue();
 
@@ -41,6 +53,7 @@ public class QueuedInvoker implements Invoker
                     {
                         Runnable r = (Runnable) queue_.pull();
                         r.run();
+                        Thread.sleep(millis);
                     }
                     catch (InterruptedException ie)
                     {
