@@ -93,13 +93,6 @@
   </LookAndFeel>
 
   <LookAndFeel
-      name="FH"
-      class="com.shfarr.ui.plaf.fh.FhLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
-      <Property name="group.name" value="Others"/>
-  </LookAndFeel>
-
-  <LookAndFeel
       name="Napkin"
       class="napkin.NapkinLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
@@ -511,6 +504,37 @@
       <Property name="group.name"   value="Infonode"/>
       <Property name="theme.class"  value="net.infonode.gui.laf.InfoNodeLookAndFeelThemes"/>
       <Property name="theme.method" value="getGrayTheme"/>
+  </LookAndFeel>
+
+  <!-- ==================================================================== -->
+  <!-- FH Look and Feels                                                    -->
+  <!-- ==================================================================== -->
+
+  <LookAndFeel
+      name="Classic"
+      class="com.shfarr.ui.plaf.fh.FhLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateFHLookAndFeelAction">
+
+      <Property name="group.name" value="FH"/>
+      <Property name="theme.name" value="Classic ( built in )"/>
+  </LookAndFeel>
+
+  <LookAndFeel
+      name="Flat"
+      class="com.shfarr.ui.plaf.fh.FhLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateFHLookAndFeelAction">
+
+      <Property name="group.name" value="FH"/>
+      <Property name="theme.name" value="Flat ( built in )"/>
+  </LookAndFeel>
+
+  <LookAndFeel
+      name="Flat with Shadows"
+      class="com.shfarr.ui.plaf.fh.FhLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateFHLookAndFeelAction">
+
+      <Property name="group.name" value="FH"/>
+      <Property name="theme.name" value="Flat with shadows ( built in )"/>
   </LookAndFeel>
 
   <!-- ==================================================================== -->
