@@ -31,7 +31,9 @@ import toolbox.workspace.PluginWorkspace;
 
 /**
  * Plugin host that associates each plugin with a JInternalFrame. Multiple
- * plugins are accessible in an MDI manner because of the parent JDesktopPane. 
+ * plugins are accessible in an MDI manner because of the parent JDesktopPane.
+ * 
+ * @see toolbox.workspace.host.TabbedPluginHost 
  */
 public class DesktopPluginHost extends AbstractPluginHost 
     implements IPreferenced
@@ -51,12 +53,12 @@ public class DesktopPluginHost extends AbstractPluginHost
     /**
      * Maps IPlugin -> JInternalFrame.
      */
-    private BidiMap pluginToFrameMap_;
+    private BidiMap pluginMap_;
     
     /**
      * Maps JInternalFrame -> IPlugin. 
      */
-    private BidiMap frameToPluginMap_;
+    private BidiMap frameMap_;
 
     /**
      * Parent workspace.
@@ -77,8 +79,8 @@ public class DesktopPluginHost extends AbstractPluginHost
 
         workspace_ = (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
         desktop_ = new JDesktopPane();
-        pluginToFrameMap_ = new DualHashBidiMap();
-        frameToPluginMap_ = pluginToFrameMap_.inverseBidiMap();
+        pluginMap_ = new DualHashBidiMap();
+        frameMap_ = pluginMap_.inverseBidiMap();
         
         /*
         SwingUtilities.invokeLater(new Runnable() 
@@ -153,7 +155,7 @@ public class DesktopPluginHost extends AbstractPluginHost
         
         frame.setVisible(true);
         frame.moveToFront();
-        pluginToFrameMap_.put(plugin, frame);
+        pluginMap_.put(plugin, frame);
 
         if (c.getMinimumSize().height == 0 || c.getMinimumSize().width == 0)
             c.setMinimumSize(new Dimension(300, 200));
@@ -171,7 +173,7 @@ public class DesktopPluginHost extends AbstractPluginHost
             public void internalFrameClosed(InternalFrameEvent e)
             {
                 JInternalFrame jif = e.getInternalFrame();
-                IPlugin plugin = (IPlugin) frameToPluginMap_.get(jif);
+                IPlugin plugin = (IPlugin) frameMap_.get(jif);
                 
                 //
                 // Delegate removal of the plugin to the workspace since we
@@ -179,7 +181,6 @@ public class DesktopPluginHost extends AbstractPluginHost
                 // happend (XML prefs, etc) that need to be saved at this
                 // level.
                 //
-                
                 
                 try
                 {
@@ -201,8 +202,8 @@ public class DesktopPluginHost extends AbstractPluginHost
      */
     public void exportPlugin(IPlugin plugin)
     {
-        desktop_.remove((JComponent) pluginToFrameMap_.get(plugin));
-        pluginToFrameMap_.remove(plugin);
+        desktop_.remove((JComponent) pluginMap_.get(plugin));
+        pluginMap_.remove(plugin);
         
         super.exportPlugin(plugin);
     }    
@@ -223,7 +224,7 @@ public class DesktopPluginHost extends AbstractPluginHost
      */
     public void setSelectedPlugin(IPlugin plugin)
     {
-        JInternalFrame jif = (JInternalFrame) pluginToFrameMap_.get(plugin);
+        JInternalFrame jif = (JInternalFrame) pluginMap_.get(plugin);
         jif.moveToFront();
         
         try
@@ -242,7 +243,7 @@ public class DesktopPluginHost extends AbstractPluginHost
      */
     public IPlugin getSelectedPlugin()
     {
-        return (IPlugin) frameToPluginMap_.get(desktop_.getSelectedFrame());
+        return (IPlugin) frameMap_.get(desktop_.getSelectedFrame());
     }
     
     
@@ -263,8 +264,8 @@ public class DesktopPluginHost extends AbstractPluginHost
         desktop_.removeAll();
         desktop_ = null;
         
-        pluginToFrameMap_.clear();
-        pluginToFrameMap_ = null;
+        pluginMap_.clear();
+        pluginMap_ = null;
         
         super.shutdown();
     }
@@ -286,13 +287,13 @@ public class DesktopPluginHost extends AbstractPluginHost
         //
         // Associated a plugin class with an internal frame
         //
-        for (Iterator i = pluginToFrameMap_.keySet().iterator(); i.hasNext();)
+        for (Iterator i = pluginMap_.keySet().iterator(); i.hasNext();)
         {
             IPlugin plugin = (IPlugin) i.next();
             
             class2Frame.put(
                 plugin.getClass().getName(), 
-                pluginToFrameMap_.get(plugin));
+                pluginMap_.get(plugin));
         }
         
         Element root = XOMUtil.getFirstChildElement(
@@ -345,10 +346,10 @@ public class DesktopPluginHost extends AbstractPluginHost
         Element root = new Element(NODE_PLUGINHOST);
         root.addAttribute(new Attribute(ATTR_CLASS, getClass().getName()));
 
-        for (Iterator i = frameToPluginMap_.keySet().iterator(); i.hasNext();)
+        for (Iterator i = frameMap_.keySet().iterator(); i.hasNext();)
         {
             JSmartInternalFrame sif = (JSmartInternalFrame) i.next();
-            IPlugin plugin = (IPlugin) frameToPluginMap_.get(sif);
+            IPlugin plugin = (IPlugin) frameMap_.get(sif);
             Element frame = new Element(NODE_FRAME);
             
             frame.addAttribute(new Attribute(
