@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -33,6 +35,7 @@ import org.jedit.syntax.XMLTokenMarker;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.XMLDefaults;
+import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
@@ -142,6 +145,11 @@ public class XSLFOPlugin extends AbstractPlugin
      */
     private JSmartSplitPane splitPane_;
     
+    /**
+     * Subcomponents that implement IPreferenced.
+     */
+    private List subPref_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -158,7 +166,7 @@ public class XSLFOPlugin extends AbstractPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -195,17 +203,24 @@ public class XSLFOPlugin extends AbstractPlugin
         view_.add(BorderLayout.WEST, flipPane_);
         view_.add(BorderLayout.CENTER, splitPane_);
         view_.add(BorderLayout.SOUTH, buttonPane);
+
+        // Roundup all components that get tickled when saving/applying prefs 
+        subPref_ = new ArrayList();
+        subPref_.add(explorer_);
+        subPref_.add(flipPane_);
+        subPref_.add(xmlArea_);
+        subPref_.add(splitPane_);
     }
 
 
     /**
      * Launches Adobe Acrobat Reader on the given file.
      * 
-     * @param outfile File to open in PDF viewer
+     * @param outfile File to open in the PDF viewer.
      */
     protected void viewPDFExternal(String outfile)
     {
-        if (StringUtils.isEmpty(pdfViewerPath_))
+        if (StringUtils.isBlank(pdfViewerPath_))
         {
             try
             {
@@ -244,8 +259,8 @@ public class XSLFOPlugin extends AbstractPlugin
     /**
      * Views a PDF using an embedded java pdf viewer.
      * 
-     * @param file File to view with the embedded PDF viewer
-     * @throws Exception on error
+     * @param file File to view with the embedded PDF viewer.
+     * @throws Exception on error.
      */
     protected void viewPDFEmbedded(File file) throws Exception
     {
@@ -256,8 +271,8 @@ public class XSLFOPlugin extends AbstractPlugin
     /**
      * Views a PDF using an embedded java pdf viewer.
      * 
-     * @param inputStream Stream to read PDF bytes from
-     * @throws Exception on error
+     * @param inputStream Stream to read PDF bytes from.
+     * @throws Exception on error.
      */
     protected void viewPDFEmbedded(InputStream inputStream) throws Exception
     {
@@ -269,7 +284,6 @@ public class XSLFOPlugin extends AbstractPlugin
         }
         
         viewer_.setDocumentInputStream(inputStream);        
-        
         viewer_.execMenuItem("FitVisibleWidth");
     }
 
@@ -283,8 +297,9 @@ public class XSLFOPlugin extends AbstractPlugin
     {
         if (fopProcessor_ == null)
         {
-            fopProcessor_ = FOProcessorFactory.createProcessor(
-                FOProcessorFactory.FO_IMPL_APACHE);
+            fopProcessor_ = 
+                FOProcessorFactory.createProcessor(
+                    FOProcessorFactory.FO_IMPL_APACHE);
               
             fopProcessor_.initialize(new Properties());
         }
@@ -302,8 +317,9 @@ public class XSLFOPlugin extends AbstractPlugin
     {
         if (xepProcessor_ == null)
         {
-            xepProcessor_ = FOProcessorFactory.createProcessor(
-                FOProcessorFactory.FO_IMPL_RENDERX);
+            xepProcessor_ = 
+                FOProcessorFactory.createProcessor(
+                    FOProcessorFactory.FO_IMPL_RENDERX);
               
             xepProcessor_.initialize(new Properties());
         }
@@ -388,10 +404,7 @@ public class XSLFOPlugin extends AbstractPlugin
             XOMUtil.getFirstChildElement(
                 prefs, NODE_XSLFO_PLUGIN, new Element(NODE_XSLFO_PLUGIN));    
         
-        explorer_.applyPrefs(root);
-        flipPane_.applyPrefs(root);
-        xmlArea_.applyPrefs(root);
-        splitPane_.applyPrefs(root);
+        ArrayUtil.invoke(subPref_.toArray(), "applyPrefs", new Object[] {root});
             
         pdfViewerPath_ = XOMUtil.getString(
             root.getFirstChildElement(NODE_PDF_VIEWER), null);
@@ -421,11 +434,7 @@ public class XSLFOPlugin extends AbstractPlugin
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_XSLFO_PLUGIN);
-        
-        explorer_.savePrefs(root);
-        flipPane_.savePrefs(root);
-        xmlArea_.savePrefs(root);
-        splitPane_.savePrefs(root);
+        ArrayUtil.invoke(subPref_.toArray(), "savePrefs", new Object[] {root});
         
         if (!StringUtils.isEmpty(pdfViewerPath_))
         {
