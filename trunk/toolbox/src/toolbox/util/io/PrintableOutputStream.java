@@ -6,6 +6,8 @@ import java.io.OutputStream;
 
 import org.apache.commons.lang.StringUtils;
 
+import toolbox.util.service.Enableable;
+
 /**
  * A {@link java.io.OutputStream} that filters out non-printable characters
  * and replaces them with a printable one. The tab and newline characters are
@@ -22,13 +24,14 @@ import org.apache.commons.lang.StringUtils;
  * pos.write(binaryByteArray);  
  * pos.close();
  * 
- * // Prints out all ASCII chars with binary chars replaced with a period. 
+ * // Prints out all ASCII chars with nonprintable chars replaced with a period. 
  * System.out.println(sos.toString()); 
  * </pre>
  * 
  * @see java.io.OutputStream
  */
-public class PrintableOutputStream extends FilterOutputStream
+public class PrintableOutputStream extends FilterOutputStream 
+    implements Enableable
 {
     // TODO: Allow exempt characters to be specified at runtime.
     // TODO: Allow customizable replacement characters with a map.
@@ -40,10 +43,11 @@ public class PrintableOutputStream extends FilterOutputStream
     /**
      * Replacement string for characters that are discarded.
      */
-    private String replacement_;
+    private String substitute_;
     
     /**
-     * Flag for enabling/disabling the filter criteria.
+     * Flag for enabling/disabling the printable character criteria. When
+     * not enabled, this stream is effectively a transparent passthrough.
      */
     private boolean enabled_;
     
@@ -52,7 +56,8 @@ public class PrintableOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a PrintableOutputStream.
+     * Creates a PrintableOutputStream that is enabled by default and discards
+     * all non-printable characters.
      * 
      * @param out OutputStream to filter.
      */
@@ -67,17 +72,17 @@ public class PrintableOutputStream extends FilterOutputStream
      * 
      * @param out OutputStream to filter.
      * @param enabled Enables the filter.
-     * @param replacement Replacement character. Null to discard the filtered
+     * @param substitute Replacement character. Null to discard the filtered
      *        characters.
      */
     public PrintableOutputStream(
         OutputStream out, 
         boolean enabled, 
-        String replacement)
+        String substitute)
     {
         super(out);
         setEnabled(enabled);
-        setReplacement(replacement);
+        setSubstitute(substitute);
     }
     
     //--------------------------------------------------------------------------
@@ -97,12 +102,12 @@ public class PrintableOutputStream extends FilterOutputStream
             super.write(b);
         else if ((b >=  32 && b <= 126) || c == '\n' || c == '\t') 
             super.write(b);
-        else if (!StringUtils.isEmpty(replacement_))
-            out.write(replacement_.getBytes()); 
+        else if (!StringUtils.isEmpty(substitute_))
+            out.write(substitute_.getBytes()); 
     }
     
     //--------------------------------------------------------------------------
-    // Public
+    // Enabeable Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -126,15 +131,29 @@ public class PrintableOutputStream extends FilterOutputStream
         enabled_ = enabled;
     }
     
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the replacement string. Set to the empty string to discard 
      * completely.
      *  
-     * @param replacement The non-printable character replacement string.
+     * @param substitute The non-printable character replacement string.
      */
-    public void setReplacement(String replacement)
+    public void setSubstitute(String substitute)
     {
-        replacement_ = replacement;
+        substitute_ = substitute;
+    }
+    
+    
+    /**
+     * Returns the substitute string for non-printable characters.
+     * 
+     * @return String
+     */
+    public String getSubstitute()
+    {
+        return substitute_;
     }
 }
