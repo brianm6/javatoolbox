@@ -498,4 +498,16 @@ public final class StringUtil
         
         return s.substring(startPos, endPos+1);
     }
+    
+    /**
+     * Determines if a string is multiline (contains one or more carraige
+     * returns).
+     * 
+     * @param   s  String to inspect
+     * @return  True if a multiline string, false otherwise.
+     */
+    public static boolean isMultiline(String s)
+    {
+        return s.indexOf("\n") >= 0;
+    }
 }
