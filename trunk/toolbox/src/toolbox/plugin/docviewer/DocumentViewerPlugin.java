@@ -157,7 +157,7 @@ public class PDFPlugin extends JPanel implements IPlugin
      */
     public String getPluginName()
     {
-        return "PDF";
+        return "PDF Viewer";
     }
 
     /**
