@@ -1,8 +1,6 @@
 package toolbox.util;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -94,48 +92,6 @@ public final class ResourceCloser
     }
     
     
-    /**
-     * Closes a writer quietly
-     * 
-     * @param  writer  Writer to close
-     */    
-    public static void close(Writer writer)
-    {
-        if (writer != null)
-        {
-            try
-            {
-                writer.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn("An error occurred while closing a Writer.", e);
-            }
-        }
-    }
-
-
-    /**
-     * Closes a reader quietly
-     * 
-     * @param  reader  Reader to close
-     */    
-    public static void close(Reader reader)
-    {
-        if (reader != null)
-        {
-            try
-            {
-                reader.close();
-            }
-            catch (IOException e)
-            {
-                logger_.warn("An error occurred while closing a Reader.", e);
-            }
-        }
-    }
-
-
     /**
      * Removes an EJB quietly
      *
