@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import toolbox.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Converts an Object into a Map.  The keys are the properties (get/set method 
@@ -346,8 +346,10 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
             Entry e = (Entry) (i.next());
             try
             {
-                buf.append(StringUtil.left(e.getKey().toString(), maxLen) + 
-                    ": " + e.getValue());
+                buf.append(
+                    StringUtils.rightPad(e.getKey().toString(), maxLen) 
+                    + ": " 
+                    + e.getValue());
                     
                 if (j < max)
                     buf.append("\n");

@@ -484,7 +484,7 @@ public final class JDBCUtil
             String[] row = (String[]) i.next();
 
             for (int j = 0; j < row.length; j++) 
-                sb.append(StringUtil.left(row[j], colWidth[j]));
+                sb.append(StringUtils.rightPad(row[j], colWidth[j]));
             
             sb.append("\n");
         }

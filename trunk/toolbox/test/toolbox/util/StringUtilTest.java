@@ -46,55 +46,13 @@ public class StringUtilTest extends TestCase
         logger_.info("Running testRightForTruncation...");
 
         String s = "HELLO";
-
-        String a1 = "   HELLO";
-        String a2 = "333HELLO";
-        String a3 = "HELLO";
         String a4 = "HELL";
-        String b1 = StringUtil.right(s, 8, ' ');
-        String b2 = StringUtil.right(s, 8, '3');
-        String b3 = StringUtil.right(s, 4, ' ');
         String b4 = StringUtil.right(s, 4, ' ', true);
-  
-        if (!a1.equals(b1))
-            fail("ERROR RIGHT 1");
-
-        if (!a2.equals(b2))
-            fail("ERROR RIGHT 2");
-
-        if (!a3.equals(b3))
-            fail("ERROR RIGHT 3");
-
+        
         if (!a4.equals(b4))
             fail("ERROR RIGHT 4");
     }
-
     
-    /**
-     * Tests right(int, width).
-     */
-    public void testRightForInt()
-    {
-        logger_.info("Running testRightForInt...");
-        
-        assertEquals("  345", StringUtil.right(345, 5));
-        assertEquals("345", StringUtil.right(345, 3));
-        assertEquals("345", StringUtil.right(345, 2));        
-    }
-
-    
-    /**
-     * Tests right(String, width).
-     */
-    public void testRightForString()
-    {
-        logger_.info("Running testRightForString...");
-        
-        assertEquals("  345", StringUtil.right("345", 5));
-        assertEquals("345", StringUtil.right("345", 3));
-        assertEquals("345", StringUtil.right("345", 2));        
-    }
-
     //--------------------------------------------------------------------------
     // left() Unit Tests
     //--------------------------------------------------------------------------
@@ -107,40 +65,11 @@ public class StringUtilTest extends TestCase
         logger_.info("Running testLeftForTruncation...");
 
         String s = "HELLO";
-
-        String a1 = "HELLO   ";
-        String a2 = "HELLO333";
-        String a3 = "HELLO";
         String a4 = "HELL";
-        String b1 = StringUtil.left(s, 8, ' ');
-        String b2 = StringUtil.left(s, 8, '3');
-        String b3 = StringUtil.left(s, 4, ' ');
         String b4 = StringUtil.left(s, 4, ' ', true);
-
-        if (!a1.equals(b1))
-            fail("ERROR LEFT 1");
-
-        if (!a2.equals(b2))
-            fail("ERROR LEFT 2");
-
-        if (!a3.equals(b3))
-            fail("ERROR LEFT 3");
 
         if (!a4.equals(b4))
             fail("ERROR LEFT 4");
-    }
-
-    
-    /**
-     * Tests left(int, width).
-     */
-    public void testLeftForInt()
-    {
-        logger_.info("Running testLeftForInt...");
-        
-        assertEquals("345  ", StringUtil.left(345, 5));
-        assertEquals("345", StringUtil.left(345, 3));
-        assertEquals("345", StringUtil.left(345, 2));        
     }
 
     //--------------------------------------------------------------------------

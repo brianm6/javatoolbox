@@ -28,21 +28,24 @@ public final class StringUtil
     //--------------------------------------------------------------------------
     
     /** 
-     * Line break. 
+     * Horizontal separator.
      */
     public static final String BR = StringUtils.repeat("=", 80);
     
     /** 
-     * New line.
+     * New line string.
      */
     public static final String NL = "\n"; 
-    //System.getProperty("line.separator");
     
     /** 
-     * Break with newline. 
+     * Horizontal separator with a new line. 
      */
     public static final String BRNL = BR + NL;
 
+    //--------------------------------------------------------------------------
+    // Defaults Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Default wrap length is 80.
      */
@@ -58,17 +61,12 @@ public final class StringUtil
      */
     public static final int DEFAULT_INDENT_LENGTH = 2;
     
-    /**
-     * Clover private constructor workaround
-     */
-    static { new StringUtil(); }
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private StringUtil()
     { 
@@ -77,53 +75,6 @@ public final class StringUtil
     //--------------------------------------------------------------------------
     // Left
     //--------------------------------------------------------------------------
-    
-    /**
-     * Left justifies a string representing an integer with a given width. The
-     * num is converted to a string which is padded with space characters on
-     * the right to the given width. If the string representing the integer is
-     * greater than width then the string is returned. A space is used by
-     * default as the padding character.
-     * 
-     * @param num Number to format.
-     * @param width Width of string.
-     * @return Left justified string.
-     */
-    public static String left(int num, int width)
-    {
-        return left(Integer.toString(num), width);
-    }
-
-    
-    /**
-     * Left justifies a string within the given width. The string is padded
-     * with space characters on the right to given width. Strings longer than
-     * the width are returned unaltered.
-     * 
-     * @param str String to left.
-     * @param width Max width.
-     * @return Left justified string.
-     */
-    public static String left(String str, int width)
-    {
-        return left(str, width, ' ');
-    }
-
-    
-    /**
-     * Left justifies a string to a given width using a pad character. Strings
-     * longer than the width are returned unaltered.
-     * 
-     * @param str String to justify.
-     * @param width Width of resulting screen.
-     * @param padChar Character to use for padding.
-     * @return String of length width containing the given string on the left.
-     */
-    public static String left(String str, int width, char padChar)
-    {
-        return left(str, width, padChar, false);
-    }
-
     
     /**
      * Left justifies a string to a given width using a pad character. Strings
@@ -142,76 +93,13 @@ public final class StringUtil
         char padChar,
         boolean doTruncate)
     {
-        final int strLen = str.length();
-        String justStr = str;
-
-        if (strLen > width)
-        {
-            if (doTruncate)
-                justStr = str.substring(0, width);
-        }
-        else if (strLen < width)
-        {
-            StringBuffer bf = new StringBuffer(width);
-            bf.append(str);
-            
-            for (int idx = strLen; idx < width; ++idx)
-                bf.append(padChar);
-            
-            justStr = bf.toString();
-        }
-
-        return justStr;
+        String s = StringUtils.rightPad(str, width, padChar);
+        return (doTruncate && s.length() > width) ? s.substring(0, width) : s;
     }
 
     //--------------------------------------------------------------------------
     // Right
     //--------------------------------------------------------------------------
-    
-    /**
-     * Right justifies a string representing an integer within the given width.
-     * The num is converted to a string which is padded with space characters
-     * on the left to the given width. If the string representing the integer
-     * is greater than width then the unaltered string is returned.
-     * 
-     * @param num Number to right justify.
-     * @param width Max width.
-     * @return Right justified string.
-     */
-    public static String right(int num, int width)
-    {
-        return right(Integer.toString(num), width);
-    }
-
-
-    /**
-     * Right justifies a string to the given width using spaces. If the string
-     * is longer than the width then the string is returned unaltered.
-     * 
-     * @param str String to right justify.
-     * @param width Width of justified string.
-     * @return Right justified string.
-     */
-    public static String right(String str, int width)
-    {
-        return right(str, width, ' ');
-    }
-
-    
-    /**
-     * Right justifies a string to the given width and pad character. If the
-     * string is longer than the width, the string is returned unalteded.
-     * 
-     * @param str String to right justify.
-     * @param width Width of justified string.
-     * @param padChar Pad character.
-     * @return Right justified string.
-     */
-    public static String right(String str, int width, char padChar)
-    {
-        return right(str, width, padChar, false);
-    }
-
     
     /**
      * Right justifies a string to a given width using a pad character. If the
@@ -231,26 +119,8 @@ public final class StringUtil
         char padChar,
         boolean doTruncate)
     {
-        int strLen = str.length();
-        String justStr = str;
-
-        if (strLen > width)
-        {
-            if (doTruncate)
-                justStr = str.substring(0, width);
-        }
-        else if (strLen < width)
-        {
-            StringBuffer bf = new StringBuffer(width);
-            
-            for (int idx = strLen; idx < width; ++idx)
-                bf.append(padChar);
-            
-            bf.append(str);
-            justStr = bf.toString();
-        }
-
-        return justStr;
+        String s = StringUtils.leftPad(str, width, padChar);
+        return (doTruncate && s.length() > width) ? s.substring(0, width) : s;
     }
 
     //--------------------------------------------------------------------------
@@ -261,7 +131,7 @@ public final class StringUtil
      * Wraps a string to a default width of 80.
      * 
      * @param s String to wrap.
-     * @return Wrapped string.
+     * @return String
      */    
     public static String wrap(String s)
     {
@@ -273,14 +143,17 @@ public final class StringUtil
      * Wraps a string to a default width of 80. The beginnning of line and end
      * of line are decorated with brackets to create a box effect if the border
      * flag is set.
-     * 
+     * <p>
+     * <b>Example:</b>
      * <pre>
-     *  [some text here] [more text here]
-       </pre>
+     *   [this string is wr]
+     *   [apped around and ]
+     *   [around and around]
+     * </pre>
      * 
      * @param s String to wrap.
      * @param border True to enclose wrapped text in brackets.
-     * @return Wrapped string with box decoration.
+     * @return String
      */
     public static String wrap(String s, boolean border)
     {
@@ -296,7 +169,7 @@ public final class StringUtil
      * @param s String to wrap.
      * @param width Width to wrap the string.
      * @param border Should the wrapped text be decorated with a border?
-     * @return Wrapped string.
+     * @return String
      */
     public static String wrap(String s, int width, boolean border)
     {
@@ -312,7 +185,7 @@ public final class StringUtil
      * 
      * @param s String to wrap.
      * @param width Width to wrap the string.
-     * @return Wrapped string.
+     * @return String
      */
     public static String wrap(String s, int width)
     {
@@ -327,7 +200,7 @@ public final class StringUtil
      * @param width Width to wrap the string.
      * @param prefix Prefix before each line.
      * @param suffix Suffix after each line.
-     * @return Wrapped string.
+     * @return String
      */
     public static String wrap(String s, int width, String prefix, 
         String suffix)
@@ -362,7 +235,8 @@ public final class StringUtil
      * @return If the input string is non-null, the indented string.  
      *         If the input string is null, the default indent string.
      */   
-    public static String indent(String s) {
+    public static String indent(String s) 
+    {
         return indent(s, DEFAULT_INDENT_LENGTH);
     }
 
@@ -377,7 +251,8 @@ public final class StringUtil
      * @return If the input string is non-null, the indented string.  
      *         If the input string is null, indentString.
      */   
-    public static String indent(String s, int numChars) {
+    public static String indent(String s, int numChars) 
+    {
         return indent(s, numChars, DEFAULT_INDENT_CHAR);
     }
 
@@ -391,7 +266,8 @@ public final class StringUtil
      * @return If the input string is non-null, the indented string.  
      *         If the input string is null, indentString.
      */   
-    public static String indent(String s, int numChars, String indentChar) {
+    public static String indent(String s, int numChars, String indentChar) 
+    {
         return indent(s, StringUtils.repeat(indentChar, numChars));
     }
  
@@ -505,7 +381,7 @@ public final class StringUtil
         {
             for (int j = 1; j <= len; j++)
             {
-                String num = left(j + "", maxLines);
+                String num = StringUtils.rightPad(j + "", maxLines);
                 sb.append(num.charAt(i));
             }
 

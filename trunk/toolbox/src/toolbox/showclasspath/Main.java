@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.ClassUtil;
-import toolbox.util.StringUtil;
 
 /**
  * Shows the current classpath along with detailed info as reported by
@@ -133,10 +132,10 @@ public final class Main
                 MAX_TIME_LEN;
 
             ps.println(StringUtils.repeat("=", rowLength));
-            ps.print(StringUtil.left(COL_ARCHIVE, max));
-            ps.print(StringUtil.right(COL_SIZE, MAX_SIZE_LEN));
-            ps.print(StringUtil.right(COL_DATE, MAX_DATE_LEN));
-            ps.print(StringUtil.right(COL_TIME, MAX_TIME_LEN));
+            ps.print(StringUtils.rightPad(COL_ARCHIVE, max));
+            ps.print(StringUtils.leftPad(COL_SIZE, MAX_SIZE_LEN));
+            ps.print(StringUtils.leftPad(COL_DATE, MAX_DATE_LEN));
+            ps.print(StringUtils.leftPad(COL_TIME, MAX_TIME_LEN));
             ps.println();
             ps.println(StringUtils.repeat("=", rowLength));
         }
@@ -145,7 +144,7 @@ public final class Main
         while (st.hasMoreElements())
         {
             String path = st.nextToken();
-            ps.print(StringUtil.left(path, max));
+            ps.print(StringUtils.rightPad(path, max));
             File f = new File(path);
 
             // If archive, get more info
@@ -155,52 +154,52 @@ public final class Main
                 {
                     Date lastModified = new Date(f.lastModified());
 
-                    ps.print(StringUtil.right(
+                    ps.print(StringUtils.leftPad(
                         NumberFormat.getIntegerInstance().format(f.length()),
                         MAX_SIZE_LEN));
 
-                    ps.print(StringUtil.right(
+                    ps.print(StringUtils.leftPad(
                         dateFormat_.format(lastModified), MAX_DATE_LEN));
 
-                    ps.print(StringUtil.right(
+                    ps.print(StringUtils.leftPad(
                         formatTime(lastModified), MAX_TIME_LEN));
                 }
                 else
                 {
                     if (!f.exists())
                     {
-                        ps.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
+                        ps.print(StringUtils.leftPad("[Missing]", MAX_SIZE_LEN));
                     }
                     else if (!f.isFile())
                     {
-                        ps.print(StringUtil.right(
+                        ps.print(StringUtils.leftPad(
                             "[Not File]", MAX_SIZE_LEN));
                     }
                     else if (!f.canRead())
                     {
-                        ps.print(StringUtil.right(
+                        ps.print(StringUtils.leftPad(
                             "[ReadOnly]", MAX_SIZE_LEN));
                     }
                     else
                     {
-                        ps.print(StringUtil.right("[Error]", MAX_SIZE_LEN));
+                        ps.print(StringUtils.leftPad("[Error]", MAX_SIZE_LEN));
                     }
                 }
             }
             else if (f.isDirectory())
             {
                 Date lastModified = new Date(f.lastModified());
-                ps.print(StringUtil.right("[DIR]", MAX_SIZE_LEN));
+                ps.print(StringUtils.leftPad("[DIR]", MAX_SIZE_LEN));
 
-                ps.print(StringUtil.right(
+                ps.print(StringUtils.leftPad(
                     dateFormat_.format(lastModified), MAX_DATE_LEN));
 
-                ps.print(StringUtil.right(
+                ps.print(StringUtils.leftPad(
                     formatTime(lastModified), MAX_TIME_LEN));
             }
             else if (!f.exists())
             {
-                ps.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
+                ps.print(StringUtils.leftPad("[Missing]", MAX_SIZE_LEN));
             }
 
             ps.println();
