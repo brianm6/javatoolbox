@@ -1,6 +1,7 @@
 package toolbox.util.test;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
@@ -246,11 +247,16 @@ public class ClassUtilTest extends TestCase
     {
         logger_.info("Running testGetClassLocation...");
         
-        logger_.info(
-            "Class Location = " + ClassUtil.getClassLocation(Object.class));
-            
-        logger_.info(
-            "Class Location = " + ClassUtil.getClassLocation(ClassUtil.class));
+        // Try a system class
+        URL loc1 = ClassUtil.getClassLocation(Object.class);
+        logger_.info("Class Location = " + loc1);
+        assertNotNull(loc1);
+        assertTrue(loc1.toString().indexOf("rt.jar")>=0);
+        
+        // Try a toolbox class
+        URL loc2 = ClassUtil.getClassLocation(ClassUtil.class);    
+        logger_.info("Class Location = " + loc2);
+        assertNotNull(loc2);
+        assertTrue(loc2.toString().indexOf("toolbox")>=0);
     }
-    
 }
