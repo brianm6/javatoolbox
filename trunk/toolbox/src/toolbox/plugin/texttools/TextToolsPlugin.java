@@ -40,6 +40,7 @@ import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.prefs.Preferences;
 
 /**
  * Plugin for simple text manipulation.
@@ -109,6 +110,13 @@ public class TextToolsPlugin extends AbstractPlugin
      * Text field that holds the column at which to wrap for WrapAction.
      */
     private JSmartTextField wrapField_;
+
+    /**
+     * Text formatter view.
+     */
+    private FormatterView formatterView_;
+    
+    private TextToolsPreferences preferences_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -190,7 +198,7 @@ public class TextToolsPlugin extends AbstractPlugin
         topFlipPane_.addFlipper(
             ImageCache.getIcon(ImageCache.IMAGE_BRACES),
             "Format", 
-            new FormatPane(this));
+            formatterView_ = new FormatterView(this));
         
         view_.add(topFlipPane_, BorderLayout.NORTH);
     }
@@ -231,6 +239,17 @@ public class TextToolsPlugin extends AbstractPlugin
     public JSmartTextArea getOutputArea()
     {
         return outputArea_;
+    }
+
+    
+    /**
+     * Returns the formatterview.
+     * 
+     * @return
+     */
+    public FormatterView getFormatterView()
+    {
+        return formatterView_;
     }
 
     //--------------------------------------------------------------------------
@@ -282,6 +301,18 @@ public class TextToolsPlugin extends AbstractPlugin
                "tokenizing, and regular expression based filtering.";
     }
 
+    
+    /**
+     * @see toolbox.workspace.AbstractPlugin#getPreferences()
+     */
+    public Preferences getPreferences()
+    {
+        if (preferences_ == null)
+            preferences_ = new TextToolsPreferences(this);
+        
+        return preferences_;
+    }
+    
     //--------------------------------------------------------------------------
     // Destroyable Interface
     //--------------------------------------------------------------------------
@@ -330,15 +361,7 @@ public class TextToolsPlugin extends AbstractPlugin
                 new Element(NODE_OUTPUT_TEXTAREA)));
 
         splitter_.applyPrefs(root);
-
-        // This may not have to be invoked later..investigate later...
-//        SwingUtilities.invokeLater(new Runnable()
-//        {
-//            public void run()
-//            {
-//                splitter_.setDividerLocation(dividerLocation);
-//            }
-//        });
+        formatterView_.applyPrefs(root);
     }
 
 
@@ -351,7 +374,8 @@ public class TextToolsPlugin extends AbstractPlugin
 
         splitter_.savePrefs(root);
         topFlipPane_.savePrefs(root);
-
+        formatterView_.savePrefs(root);
+        
         Element input = new Element(NODE_INPUT_TEXTAREA);
         inputArea_.savePrefs(input);
         root.appendChild(input);
