@@ -437,6 +437,11 @@ public class JFlipPane extends JPanel
             toggleFlipper();
         
         int dim = PropertiesUtil.getInteger(prefs, prefix + PROP_DIMENSION,100);
+        
+        // HACK BEGIN
+        dim += SPLITTER_WIDTH + 3;
+        // HACK END
+        
         setDimension(dim);
         
         String flipper = prefs.getProperty(prefix + PROP_ACTIVE );
