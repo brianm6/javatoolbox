@@ -12,7 +12,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -20,11 +19,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import toolbox.log4j.JTextAreaAppender;
 import toolbox.util.ArrayUtil;
@@ -32,6 +31,9 @@ import toolbox.util.ClassUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JListPopupMenu;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartList;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.RegexListModelFilter;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -62,7 +64,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor
+     * Creates a JUnitPlugin
      */
     public JUnitPlugin()
     {
@@ -82,10 +84,12 @@ public class JUnitPlugin extends JPanel implements IPlugin
         
         packageModel_  = new DefaultListModel();        
         filterModel_ = new RegexListModelFilter(packageModel_);
-        selectPanel.add(BorderLayout.NORTH, filterField_ = new JTextField(12));
+        
+        selectPanel.add(BorderLayout.NORTH, 
+            filterField_ = new JSmartTextField(12));
         
         selectPanel.add(BorderLayout.CENTER, 
-            new JScrollPane(packageList_ = new JList(filterModel_)));
+            new JScrollPane(packageList_ = new JSmartList(filterModel_)));
             
         packageList_.setFont(SwingUtil.getPreferredMonoFont());
         new JListPopupMenu(packageList_);
@@ -107,10 +111,10 @@ public class JUnitPlugin extends JPanel implements IPlugin
         buttonPanel.setBorder(BorderFactory.createEtchedBorder());
         
         buttonPanel.add(
-            new JButton(getPackagesAction_ = new GetPackageListAction()));
+            new JSmartButton(getPackagesAction_ = new GetPackageListAction()));
             
         buttonPanel.add(
-            new JButton(testPackagesAction_ = new TestPackagesAction()));
+            new JSmartButton(testPackagesAction_ = new TestPackagesAction()));
 
         // configure the root panel        
         setLayout(new BorderLayout());
@@ -175,10 +179,8 @@ public class JUnitPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = null;
-        
-        if (prefs != null)
-            root = prefs.getFirstChildElement(NODE_JUNIT_PLUGIN);
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_JUNIT_PLUGIN, new Element(NODE_JUNIT_PLUGIN));
         
         filterField_.setText(
             XOMUtil.getStringAttribute(root, ATTR_FILTER, ".*test"));

@@ -27,7 +27,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -36,20 +35,19 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+
+import net.sf.jode.decompiler.Decompiler;
+
+import nu.xom.Attribute;
+import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 import org.jedit.syntax.JavaTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
-
-import net.sf.jode.decompiler.Decompiler;
-
-import nu.xom.Attribute;
-import nu.xom.Element;
 
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
@@ -65,11 +63,21 @@ import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartCheckBox;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartList;
+import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.JSmartPopupMenu;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.PluginWorkspace;
 import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.util.ui.table.JSmartTable;
+import toolbox.util.ui.table.JSmartTableHeader;
+import toolbox.util.ui.table.SmartTableCellRenderer;
 import toolbox.util.ui.table.TableSorter;
 
 /**
@@ -200,17 +208,17 @@ public class JFindClass extends JFrame implements IPreferenced
         // Action is stared by search textfield and button
         Action searchAction = new SearchAction();
 
-        JLabel searchLabel = new JLabel("Find Class");
+        JLabel searchLabel = new JSmartLabel("Find Class");
         
-        searchField_ = new JTextField(20);
+        searchField_ = new JSmartTextField(20);
         searchField_.setAction(searchAction);
         searchField_.setToolTipText("I like Regular expressions!");
         
-        searchButton_          = new JButton(searchAction);
-        dupesButton_           = new JButton(new FindDupesAction());
-        ignoreCaseCheckBox_    = new JCheckBox("Ignore Case", true);
-        showPathCheckBox_      = new JCheckBox("Show Path", true);
-        hiliteMatchesCheckBox_ = new JCheckBox("Highlight Match", true);
+        searchButton_          = new JSmartButton(searchAction);
+        dupesButton_           = new JSmartButton(new FindDupesAction());
+        ignoreCaseCheckBox_    = new JSmartCheckBox("Ignore Case", true);
+        showPathCheckBox_      = new JSmartCheckBox("Show Path", true);
+        hiliteMatchesCheckBox_ = new JSmartCheckBox("Highlight Match", true);
         
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchPanel.add(searchLabel);
@@ -248,7 +256,7 @@ public class JFindClass extends JFrame implements IPreferenced
         ((JEditPopupMenu) defaults.popup).setTextArea(sourceArea_);
         ((JEditPopupMenu) defaults.popup).buildView();
             
-        JButton decompileButton = new JButton(new DecompileAction());
+        JButton decompileButton = new JSmartButton(new DecompileAction());
         JPanel decompilerPanel = new JPanel(new BorderLayout());
         decompilerPanel.add(BorderLayout.CENTER, sourceArea_);
         decompilerPanel.add(BorderLayout.SOUTH, decompileButton);
@@ -266,13 +274,13 @@ public class JFindClass extends JFrame implements IPreferenced
     protected JPanel buildClasspathFlipper()
     {
         searchListModel_ = new DefaultListModel(); 
-        searchList_ = new JList(searchListModel_);
+        searchList_ = new JSmartList(searchListModel_);
         
         // Create popup menu and wire it to the JList
-        searchPopupMenu_ = new JPopupMenu();
-        searchPopupMenu_.add(new JMenuItem(new ClearTargetsAction()));
-        searchPopupMenu_.add(new JMenuItem(new RemoveTargetsAction()));
-        searchPopupMenu_.add(new JMenuItem(new AddClasspathTargetAction()));
+        searchPopupMenu_ = new JSmartPopupMenu();
+        searchPopupMenu_.add(new JSmartMenuItem(new ClearTargetsAction()));
+        searchPopupMenu_.add(new JSmartMenuItem(new RemoveTargetsAction()));
+        searchPopupMenu_.add(new JSmartMenuItem(new AddClasspathTargetAction()));
                     
         searchList_.addMouseListener(new JPopupListener(searchPopupMenu_));
         
@@ -309,12 +317,12 @@ public class JFindClass extends JFrame implements IPreferenced
     protected void buildSearchResultsPanel()
     {
         // Search Results panel        
-        JLabel resultLabel = new JLabel("Results");
+        JLabel resultLabel = new JSmartLabel("Results");
         
         // Setup sortable table
         resultTableModel_  = new ResultsTableModel();
         resultTableSorter_ = new TableSorter(resultTableModel_);
-        resultTable_       = new JTable(resultTableSorter_);
+        resultTable_       = new JSmartTable(resultTableSorter_);
         resultPane_        = new JScrollPane(resultTable_);
         resultTableSorter_.addMouseListenerToHeaderInTable(resultTable_);
         tweakTable();
@@ -356,6 +364,10 @@ public class JFindClass extends JFrame implements IPreferenced
     protected void tweakTable()
     {
         resultTable_.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        
+        resultTable_.setTableHeader(
+            new JSmartTableHeader(resultTable_.getColumnModel()));
+            
         TableColumnModel columnModel = resultTable_.getColumnModel();
 
         // Tweak file number column
@@ -670,7 +682,7 @@ public class JFindClass extends JFrame implements IPreferenced
     /**
      * Renderer for the contents of the Results table
      */   
-    class ResultsTableCellRenderer extends DefaultTableCellRenderer
+    class ResultsTableCellRenderer extends SmartTableCellRenderer
     {
         private DecimalFormat decimalFormatter_;
         

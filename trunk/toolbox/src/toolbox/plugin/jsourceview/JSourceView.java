@@ -54,7 +54,7 @@ import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
 import toolbox.util.ui.table.JSmartTableHeader;
-import toolbox.util.ui.table.SmartDefaultTableCellRenderer;
+import toolbox.util.ui.table.SmartTableCellRenderer;
 import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
 
@@ -674,7 +674,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * Renderer for the contents of the table
      */   
-    class TableCellRenderer extends SmartDefaultTableCellRenderer
+    class TableCellRenderer extends SmartTableCellRenderer
     {
         private DecimalFormat decimalFormatter_;
         private NumberFormat percentFormatter_;

@@ -1,16 +1,15 @@
 package toolbox.jedit;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
 import org.apache.log4j.Logger;
 
 import toolbox.util.ui.JPopupListener;
+import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.JSmartPopupMenu;
 
 /**
  * Popup menu with commonly used functionality for JEditTextArea subclasses.
  */
-public class JEditPopupMenu extends JPopupMenu
+public class JEditPopupMenu extends JSmartPopupMenu
 {
     private static final Logger logger_ =
         Logger.getLogger(JEditPopupMenu.class); 
@@ -25,7 +24,7 @@ public class JEditPopupMenu extends JPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor 
+     * Creates a JEditPopupMenu 
      */
     public JEditPopupMenu()
     {
@@ -34,7 +33,7 @@ public class JEditPopupMenu extends JPopupMenu
     /**
      * Creates a JEditTextAreaPopupMenu for the given textarea
      * 
-     * @param  textArea  JEditTextArea to add popup to
+     * @param textArea JEditTextArea to add popup to
      */
     public JEditPopupMenu(JEditTextArea textArea)
     {
@@ -48,7 +47,9 @@ public class JEditPopupMenu extends JPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * @param  area  Textarea
+     * Sets the textarea
+     * 
+     * @param area Textarea
      */
     public void setTextArea(JEditTextArea area)
     {
@@ -60,15 +61,15 @@ public class JEditPopupMenu extends JPopupMenu
      */
     public void buildView()
     {
-        add(new JMenuItem(new JEditActions.CopyAction(textArea_)));
-        add(new JMenuItem(new JEditActions.CutAction(textArea_)));
-        add(new JMenuItem(new JEditActions.PasteAction(textArea_)));
-        add(new JMenuItem(new JEditActions.SelectAllAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.CopyAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.CutAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.PasteAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.SelectAllAction(textArea_)));
         addSeparator();
-        add(new JMenuItem(new JEditActions.SetFontAction(textArea_)));
-        add(new JMenuItem(new JEditActions.FindAction(textArea_)));
-        add(new JMenuItem(new JEditActions.InsertFileAction(textArea_)));
-        add(new JMenuItem(new JEditActions.SaveAsAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.SetFontAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.FindAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.InsertFileAction(textArea_)));
+        add(new JSmartMenuItem(new JEditActions.SaveAsAction(textArea_)));
         
         textArea_.addMouseListener(new JPopupListener(this));
     }
