@@ -1,5 +1,8 @@
 package toolbox.util.test;
 
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -7,6 +10,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.log4j.SmartLogger;
 import toolbox.util.PropertiesUtil;
 
 /**
@@ -150,5 +154,33 @@ public class PropertiesUtilTest extends TestCase
             
         assertEquals(Integer.MIN_VALUE, 
             new Integer(props.getProperty("4")).intValue());
+    }
+    
+    /**
+     * Tests toString()
+     */
+    public void testToString() throws IOException
+    {
+        logger_.info("Running testToString...");
+        
+        Properties p = new Properties();
+        p.setProperty("alpha.centauri", "rhombus");
+        p.setProperty("alpha.beta", "cube");
+        p.setProperty("zulu.tango", "zebra");
+        p.setProperty("foxtrot.mango", "tail");
+        
+        String s = PropertiesUtil.toString(p);
+        
+        SmartLogger.info(logger_, s);
+        
+        LineNumberReader lnr = new LineNumberReader(new StringReader(s));
+        
+        // Make sure output is sorted correctly
+        assertTrue(lnr.readLine().startsWith("alpha.beta"));
+        assertTrue(lnr.readLine().startsWith("alpha.centauri"));
+        assertTrue(lnr.readLine().startsWith("foxtrot.mango"));
+        assertTrue(lnr.readLine().startsWith("zulu.tango"));
+        
+        lnr.close();
     }
 }
