@@ -45,7 +45,7 @@
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon.jar"/>
-	<classpathentry kind="lib" path="lib/jdom.jar"/>
+	<classpathentry sourcepath="lib/src/jdom-src.zip" kind="lib" path="lib/jdom.jar"/>
 	<classpathentry sourcepath="lib/src/jedit-syntax-src.zip" kind="lib" path="lib/jedit-syntax.jar"/>
 	<classpathentry sourcepath="lib/src/jemmy-src.zip" kind="lib" path="lib/jemmy.jar"/>
 	<classpathentry sourcepath="lib/src/jfreechart-src.zip" kind="lib" path="lib/jfreechart.jar"/>
