@@ -12,7 +12,7 @@ package toolbox.util.service;
          |                  [PAUSED]           [SHUTDOWN]
          |                   ^   |                 ^
          |              pause|   |resume           |  
-         |                   |   |                 |shutdown                                                      
+         |                   |   |                 |shutdown
          v        start      |   v     stop        |
   [INITIALIZED]----------->[RUNNING]---------->[STOPPED]
                                ^                   |

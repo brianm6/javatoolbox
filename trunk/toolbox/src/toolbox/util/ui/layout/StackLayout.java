@@ -81,10 +81,10 @@ public class StackLayout implements LayoutManager
     // Fields 
     //--------------------------------------------------------------------------
     
-    int orientation_ = HORIZONTAL;
-    int margin_ = 2;
-    Hashtable codes_ = new Hashtable();
-    int defaultCode[] = { CENTER, CENTER, 0, 0 };
+    private int orientation_ = HORIZONTAL;
+    private int margin_ = 2;
+    private Hashtable codes_ = new Hashtable();
+    private int defaultCode_[] = {CENTER, CENTER, 0, 0};
     
     //--------------------------------------------------------------------------
     // Constructors 
@@ -98,7 +98,9 @@ public class StackLayout implements LayoutManager
     }
 
     /** 
-     * Create a StackLayout with the given orientation. 
+     * Create a StackLayout with the given orientation.
+     * 
+     * @param orientation Orientation. 
      */
     public StackLayout(int orientation)
     {
@@ -107,6 +109,9 @@ public class StackLayout implements LayoutManager
 
     /**
      * Create a StackLayout with the given orientation and space.
+     * 
+     * @param orientation Orientation.
+     * @param margin Margin.
      */
     public StackLayout(int orientation, int margin)
     {
@@ -119,7 +124,10 @@ public class StackLayout implements LayoutManager
     //--------------------------------------------------------------------------
     
     /** 
-     * Add the specified component to the layout, parsing the layout tag. 
+     * Add the specified component to the layout, parsing the layout tag.
+     * 
+     * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String, 
+     *      java.awt.Component) 
      */
     public void addLayoutComponent(String tag, Component comp)
     {
@@ -247,7 +255,7 @@ public class StackLayout implements LayoutManager
                 break;
             }
             
-            for (;(i < l) && Character.isWhitespace(tag.charAt(i)); i++);
+            for (; (i < l) && Character.isWhitespace(tag.charAt(i)); i++);
             // skip whitesp.
         }
         
@@ -255,14 +263,16 @@ public class StackLayout implements LayoutManager
             System.out.println("StackLayout: can't understand \"" + tag + "\"");
         else
         {
-            int codes[] = { hcode, vcode, harg, varg };
+            int codes[] = {hcode, vcode, harg, varg};
             codes_.put(comp, codes);
         }
     }
 
     
     /** 
-     * Lays out the specified container. 
+     * Lays out the specified container.
+     * 
+     * @param parent Parent container. 
      */
     public void layoutContainer(Container parent)
     {
@@ -273,14 +283,14 @@ public class StackLayout implements LayoutManager
         Insets in = parent.getInsets();
         Dimension sz = parent.getSize();
         
-        int W = sz.width - in.left - in.right;
-        int H = sz.height - in.top - in.bottom;
+        int width = sz.width - in.left - in.right;
+        int height = sz.height - in.top - in.bottom;
         
         // total running Length
-        int L = (orientation_ == HORIZONTAL ? W : H);
+        int length = (orientation_ == HORIZONTAL ? width : height);
         
         // sideways Depth.
-        int D = (orientation_ == HORIZONTAL ? H : W);
+        int depth = (orientation_ == HORIZONTAL ? height : width);
 
         // First pass: find visible components, record min. sizes,
         // find out how much leftover space there is.
@@ -351,8 +361,8 @@ public class StackLayout implements LayoutManager
         // else as filler between centered or justified components.
         int rubber =
             ((nFills != 0)
-                || (nRubber == 0) ? 0 : Math.max(0, (L - sum) / nRubber)),
-            fill = (nFills == 0 ? 0 : Math.max(0, (L - sum) / nFills));
+                || (nRubber == 0) ? 0 : Math.max(0, (length - sum) / nRubber)),
+            fill = (nFills == 0 ? 0 : Math.max(0, (length - sum) / nFills));
 
         // Second pass: layout the components. running pos.
         int r = (orientation_ == HORIZONTAL ? in.left : in.top);
@@ -408,7 +418,7 @@ public class StackLayout implements LayoutManager
                 switch (ca & SIZEMASK)
                 {
                     case FILL :
-                        d = D - 2 * m;
+                        d = depth - 2 * m;
                         break;
                         
                     case ABS :
@@ -419,11 +429,11 @@ public class StackLayout implements LayoutManager
                 switch (ca & POSMASK)
                 {
                     case BACK :
-                        s += D - d;
+                        s += depth - d;
                         break;
                         
                     case CENTER :
-                        s += (D - d) / 2;
+                        s += (depth - d) / 2;
                         break;
                 }
 
@@ -441,7 +451,9 @@ public class StackLayout implements LayoutManager
 
     
     /** 
-     * Remove the specified component from the layout. 
+     * Remove the specified component from the layout.
+     * 
+     * @param comp Component. 
      */
     public void removeLayoutComponent(Component comp)
     {
@@ -450,7 +462,10 @@ public class StackLayout implements LayoutManager
     
     
     /** 
-     * Calculate the minimum size dimensions for the specififed container. 
+     * Calculate the minimum size dimensions for the specififed container.
+     * 
+     * @param parent Parent.
+     * @return Dimension. 
      */
     public Dimension minimumLayoutSize(Container parent)
     {
@@ -459,7 +474,10 @@ public class StackLayout implements LayoutManager
 
     
     /**
-     * Calculate the preferred size dimensions for the specififed container. 
+     * Calculate the preferred size dimensions for the specififed container.
+     * 
+     * @param parent Parent.
+     * @return Dimension. 
      */
     public Dimension preferredLayoutSize(Container parent)
     {
@@ -470,14 +488,29 @@ public class StackLayout implements LayoutManager
     // Package 
     //--------------------------------------------------------------------------
     
+    /**
+     * Counts digits.
+     * 
+     * @param tag Tag.
+     * @param i Dunno.
+     * @return int
+     */
     int countDigits(String tag, int i)
     {
         int j, l = tag.length();
-        for (j = i;(j < l) && Character.isDigit(tag.charAt(j)); j++);
+        for (j = i; (j < l) && Character.isDigit(tag.charAt(j)); j++);
         return j - i;
     }
 
     
+    /**
+     * Parses arguments. 
+     * 
+     * @param tag Tag
+     * @param i Dunno
+     * @param n Dunno
+     * @return int
+     */
     int parseArg(String tag, int i, int n)
     {
         int num = -1;
@@ -487,18 +520,31 @@ public class StackLayout implements LayoutManager
         }
         catch (Exception e)
         {
+            ; // Ignore
         }
         return num;
     }
     
 
+    /**
+     * Gets code.
+     * 
+     * @param comp Component.
+     * @return int[]
+     */
     int[] getCode(Component comp)
     {
         int code[] = (int[]) codes_.get(comp);
-        return (code == null ? defaultCode : code);
+        return (code == null ? defaultCode_ : code);
     }
 
     
+    /**
+     * Stretches component.
+     * 
+     * @param comp Component.
+     * @return boolean.
+     */
     boolean stretches(Component comp)
     {
         int c[] = getCode(comp);
@@ -506,6 +552,13 @@ public class StackLayout implements LayoutManager
     }
 
     
+    /**
+     * Computes the layout size.
+     * 
+     * @param parent Parent container.
+     * @param preferred Preferred. 
+     * @return Dimension
+     */
     Dimension computeLayoutSize(Container parent, boolean preferred)
     {
         Insets in = parent.getInsets();

@@ -77,7 +77,7 @@ public class SmartConstructor extends SmartMethod
             if (parameters != null)
                 for (int i = 0; i < parameters.length; i++)
                     parameters[i] = patterns_[i] == null ? 
-                    parameters[i] : patterns_[i].convert(parameters[i]);
+                        parameters[i] : patterns_[i].convert(parameters[i]);
         }
         catch (Exception ex)
         {

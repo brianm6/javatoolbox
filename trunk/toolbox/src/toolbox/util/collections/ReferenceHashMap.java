@@ -216,6 +216,9 @@ public class ReferenceHashMap extends AbstractMap implements Map
         /**
          * Strong reference to key, so that the GC will leave it alone as long
          * as this Entry exists.
+         * 
+         * @param ent Entry.
+         * @param key Key.
          */
         Entry(Map.Entry ent, Object key)
         {
@@ -223,26 +226,50 @@ public class ReferenceHashMap extends AbstractMap implements Map
             key_ = key;
         }
 
+        
+        /**
+         * @see java.util.Map.Entry#getKey()
+         */
         public Object getKey()
         {
             return key_;
         }
 
+        
+        /**
+         * @see java.util.Map.Entry#getValue()
+         */
         public Object getValue()
         {
             return ent_.getValue();
         }
 
+        
+        /**
+         * @see java.util.Map.Entry#setValue(java.lang.Object)
+         */
         public Object setValue(Object value)
         {
             return ent_.setValue(value);
         }
 
+        
+        /**
+         * Value equals.
+         * 
+         * @param o1 Object 1
+         * @param o2 Object 2
+         * @return boolean
+         */
         private static boolean valEquals(Object o1, Object o2)
         {
             return (o1 == null) ? (o2 == null) : o1.equals(o2);
         }
 
+        
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
         public boolean equals(Object o)
         {
             if (!(o instanceof Map.Entry))
@@ -253,6 +280,10 @@ public class ReferenceHashMap extends AbstractMap implements Map
                 valEquals(getValue(), e.getValue()));
         }
 
+        
+        /**
+         * @see java.lang.Object#hashCode()
+         */
         public int hashCode()
         {
             Object v;
@@ -272,18 +303,24 @@ public class ReferenceHashMap extends AbstractMap implements Map
     {
         private Set hashEntrySet_ = hash_.entrySet();
 
+        /**
+         * @see java.util.Collection#iterator()
+         */
         public Iterator iterator()
         {
             return new Iterator()
             {
-                Iterator hashIterator = hashEntrySet_.iterator();
-                Entry next = null;
+                private Iterator hashIterator_ = hashEntrySet_.iterator();
+                private Entry next_ = null;
 
+                /**
+                 * @see java.util.Iterator#hasNext()
+                 */
                 public boolean hasNext()
                 {
-                    while (hashIterator.hasNext())
+                    while (hashIterator_.hasNext())
                     {
-                        Map.Entry ent = (Map.Entry) hashIterator.next();
+                        Map.Entry ent = (Map.Entry) hashIterator_.next();
                         Reference ref = (Reference) ent.getKey();
                         Object k = null;
 
@@ -293,36 +330,52 @@ public class ReferenceHashMap extends AbstractMap implements Map
                             continue;
                         }
 
-                        next = new Entry(ent, k);
+                        next_ = new Entry(ent, k);
                         return true;
                     }
 
                     return false;
                 }
 
+                
+                /**
+                 * @see java.util.Iterator#next()
+                 */
                 public Object next()
                 {
-                    if ((next == null) && !hasNext())
+                    if ((next_ == null) && !hasNext())
                         throw new NoSuchElementException();
 
-                    Entry e = next;
-                    next = null;
+                    Entry e = next_;
+                    next_ = null;
                     return e;
                 }
 
+                
+                /**
+                 * @see java.util.Iterator#remove()
+                 */
                 public void remove()
                 {
-                    hashIterator.remove();
+                    hashIterator_.remove();
                 }
 
             };
         }
 
+        
+        /**
+         * @see java.util.Collection#isEmpty()
+         */
         public boolean isEmpty()
         {
             return !(iterator().hasNext());
         }
 
+        
+        /**
+         * @see java.util.Collection#size()
+         */
         public int size()
         {
             int j = 0;
@@ -333,6 +386,10 @@ public class ReferenceHashMap extends AbstractMap implements Map
             return j;
         }
 
+        
+        /**
+         * @see java.util.Collection#remove(java.lang.Object)
+         */
         public boolean remove(Object o)
         {
             processQueue();
@@ -346,7 +403,7 @@ public class ReferenceHashMap extends AbstractMap implements Map
             Object hv = hash_.get(key);
 
             if ((hv == null) ? 
-               ((ev == null) && hash_.containsKey(key)) : hv.equals(ev))
+                ((ev == null) && hash_.containsKey(key)) : hv.equals(ev))
             {
                 hash_.remove(key);
                 return true;
@@ -355,6 +412,10 @@ public class ReferenceHashMap extends AbstractMap implements Map
             return false;
         }
 
+        
+        /**
+         * @see java.lang.Object#hashCode()
+         */
         public int hashCode()
         {
             int h = 0;

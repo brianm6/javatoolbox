@@ -30,21 +30,36 @@ import toolbox.util.ui.font.JFontChooserDialog;
  */
 public final class JEditActions
 {
-    static final Logger logger_ = 
-        Logger.getLogger(JEditActions.class);
+    private static final Logger logger_ = Logger.getLogger(JEditActions.class);
+    
+    //--------------------------------------------------------------------------
+    // JEditAction
+    //--------------------------------------------------------------------------
     
     /**
      * Abstract class for all JEdit actions. 
      */
     abstract static class JEditAction extends AbstractAction
     {
-        JEditTextArea area_;
+        protected JEditTextArea area_;
         
+        /**
+         * Creates a JEditAction.
+         * 
+         * @param area Target text area.
+         */
         public JEditAction(JEditTextArea area)
         {
             area_ = area;
         }
         
+        
+        /**
+         * Creates a JEditAction.
+         * 
+         * @param label Action label.
+         * @param area Target text area.
+         */
         public JEditAction(String label, JEditTextArea area)
         {
             super(label);
@@ -52,17 +67,30 @@ public final class JEditActions
         }
     }
 
+    //--------------------------------------------------------------------------
+    // FindAction
+    //--------------------------------------------------------------------------
     
     /**
      * Triggers activation of the Find Dialog box.
      */    
     static class FindAction extends JEditAction
     {
+        /**
+         * Creates a FindAction.
+         * 
+         * @param textComp Target textarea.
+         */
         public FindAction(JEditTextArea textComp)
         {
             super("Find..", textComp);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             JFindDialog.SearchInitiator initiator = 
@@ -73,6 +101,10 @@ public final class JEditActions
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SaveAsAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Saves the contents of the text area to a file.
      */
@@ -80,11 +112,21 @@ public final class JEditActions
     {
         private File lastDir_;
         
+        /**
+         * Creates a SaveAsAction.
+         * 
+         * @param area Target text area.
+         */
         public SaveAsAction(JEditTextArea area)
         {
             super("Save As..", area);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             try
@@ -96,7 +138,8 @@ public final class JEditActions
                 else
                     chooser = new JFileChooser(lastDir_);
 
-                if (chooser.showSaveDialog(area_)==JFileChooser.APPROVE_OPTION) 
+                if (chooser.showSaveDialog(area_)
+                    == JFileChooser.APPROVE_OPTION) 
                 {
                     String saveFile = 
                         chooser.getSelectedFile().getCanonicalPath();
@@ -117,6 +160,9 @@ public final class JEditActions
         }
     }    
 
+    //--------------------------------------------------------------------------
+    // InsertFileAction
+    //--------------------------------------------------------------------------
     
     /**
      * Inserts the text of a file at the currnet cursor location.
@@ -125,11 +171,21 @@ public final class JEditActions
     {
         private File lastDir_;
         
+        /**
+         * Creates a InsertFileAction.
+         * 
+         * @param area Target textarea.
+         */
         public InsertFileAction(JEditTextArea area)
         {
             super("Insert..", area);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             try
@@ -170,17 +226,30 @@ public final class JEditActions
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SetFontAction
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the font in the text component.
      */
     static class SetFontAction extends JEditAction
     {
+        /**
+         * Creates a SetFontAction.
+         * 
+         * @param area Target textarea.
+         */
         public SetFontAction(JEditTextArea area)
         {
             super("Set font..", area);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             final Font originalFont = area_.getPainter().getFont();
@@ -195,11 +264,11 @@ public final class JEditActions
                         
             if (w instanceof Frame)
                 fontChooser = new JFontChooserDialog(
-                    (Frame)w, false, originalFont, area_.isAntiAliased());
+                    (Frame) w, false, originalFont, area_.isAntiAliased());
                     
             else if (w instanceof Dialog)
                 fontChooser = new JFontChooserDialog(
-                    (Dialog)w, false, originalFont, area_.isAntiAliased());
+                    (Dialog) w, false, originalFont, area_.isAntiAliased());
             
             /* Listener for font chooser dialog events */
                 
@@ -238,68 +307,120 @@ public final class JEditActions
         }
     }
 
+    //--------------------------------------------------------------------------
+    // CopyAction
+    //--------------------------------------------------------------------------
     
     /**
      * Copies the contents of the currently selected indices to the clipboard.
      */    
     static class CopyAction extends JEditAction
     {
+        /**
+         * Creates a CopyAction.
+         * 
+         * @param area Target text area.
+         */
         public CopyAction(JEditTextArea area)
         {
             super("Copy", area);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             area_.copy();
         }
     }
 
+    //--------------------------------------------------------------------------
+    // CutAction
+    //--------------------------------------------------------------------------
     
     /**
      * Cuts the contents of the currently selected indices.
      */    
     static class CutAction extends JEditAction
     {
+        /**
+         * Creates a CutAction.
+         * 
+         * @param area Target text area.
+         */
         public CutAction(JEditTextArea area)
         {
             super("Cut", area);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             area_.cut();
         }
     }
 
+    //--------------------------------------------------------------------------
+    // PasteAction
+    //--------------------------------------------------------------------------
     
     /**
      * Pastes the contents of the clipboard into the text component.
      */    
     static class PasteAction extends JEditAction
     {
+        /**
+         * Creates a PasteAction.
+         * 
+         * @param area Target text area.
+         */
         public PasteAction(JEditTextArea area)
         {
             super("Paste", area);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             area_.paste();
         }
     }
     
+    //--------------------------------------------------------------------------
+    // SelectAllAction
+    //--------------------------------------------------------------------------
     
     /**
      * Selects the entire contents of the textarea. 
      */
     static class SelectAllAction extends JEditAction
     {
+        /**
+         * Creates a SelectAllAction.
+         * 
+         * @param area Target text area.
+         */
         public SelectAllAction(JEditTextArea area)
         {
             super("Select All", area);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             area_.selectAll();

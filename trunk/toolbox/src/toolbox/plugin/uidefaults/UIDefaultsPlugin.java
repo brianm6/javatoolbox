@@ -459,7 +459,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             setBackground(null);
             setIcon(null);
             setText("");
-
+            String sampleName = sample.getClass().getName();
+            
             //
             // Handle colors
             //
@@ -488,12 +489,12 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             //
             // Some Icons just don't play nice
             //
-            else if 
-                ((sample.getClass().getName().indexOf("CheckBox") >= 0)       ||
-                 (sample.getClass().getName().indexOf("RadioButton") >= 0)    ||
-                 (sample.getClass().getName().indexOf("InternalFrame") >=0)   ||
-                 (sample.getClass().getName().indexOf("PaletteCloseIcon") >=0))
+            else if ((sampleName.indexOf("CheckBox") >= 0) ||
+                (sampleName.indexOf("RadioButton") >= 0)   ||
+                (sampleName.indexOf("InternalFrame") >= 0) ||
+                (sampleName.indexOf("PaletteCloseIcon") >= 0))
             {
+                ; // No op
             }
             
             //

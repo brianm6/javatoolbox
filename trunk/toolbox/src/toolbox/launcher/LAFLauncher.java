@@ -30,22 +30,18 @@ public class LAFLauncher
     {
         switch (args.length)
         {
-            case 0: 
-            
-                printUsage(); 
+
+            case 0 :
+                printUsage();
                 break;
-                
-            case 1: 
-                
-                launch(args[0], new String[0]); 
+
+            case 1 :
+                launch(args[0], new String[0]);
                 break;
-                
-            default: 
-            
-                launch(
-                    args[0], 
-                    (String[]) ArrayUtil.subset(args, 1, args.length-1));
-                    
+
+            default :
+                launch(args[0],
+                    (String[]) ArrayUtil.subset(args, 1, args.length - 1));
                 break;
         }
     }
@@ -84,13 +80,16 @@ public class LAFLauncher
         t.start();
                                  
         Class c = Class.forName(target);
-        Method m = c.getMethod("main", new Class[] { args.getClass() });
+        Method m = c.getMethod("main", new Class[] {args.getClass()});
         m.invoke(null, new Object[] {args});
     }
 }
 
 class LAFRunner implements Runnable
 {
+    /**
+     * @see java.lang.Runnable#run()
+     */
     public void run()
     {
         ThreadUtil.sleep(30000);
@@ -103,9 +102,6 @@ class LAFRunner implements Runnable
         catch (Exception e)
         {
             e.printStackTrace();
-        }
-        finally
-        {
         }
     }
 }

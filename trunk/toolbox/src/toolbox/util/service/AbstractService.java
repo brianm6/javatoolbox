@@ -155,7 +155,8 @@ public abstract class AbstractService implements Service
      */
     protected void fireServiceStarted() throws ServiceException
     {
-        for (int i=0; i<listeners_.length;listeners_[i++].serviceStarted(this));
+        for (int i = 0; i < listeners_.length; 
+            listeners_[i++].serviceStarted(this));
     }
 
     
@@ -166,7 +167,8 @@ public abstract class AbstractService implements Service
      */
     protected void fireServiceStopped() throws ServiceException
     {
-        for (int i=0; i<listeners_.length;listeners_[i++].serviceStopped(this));
+        for (int i = 0; i < listeners_.length;
+            listeners_[i++].serviceStopped(this));
     }
 
     
@@ -177,7 +179,8 @@ public abstract class AbstractService implements Service
      */
     protected void fireServicePaused() throws ServiceException
     {
-        for (int i=0; i<listeners_.length;listeners_[i++].servicePaused(this));
+        for (int i = 0; i < listeners_.length;
+            listeners_[i++].servicePaused(this));
     }
 
     
@@ -188,6 +191,7 @@ public abstract class AbstractService implements Service
      */
     protected void fireServiceResumed() throws ServiceException
     {
-        for (int i=0; i<listeners_.length;listeners_[i++].serviceResumed(this));
+        for (int i = 0; i < listeners_.length;
+            listeners_[i++].serviceResumed(this));
     }
 }

@@ -102,10 +102,11 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
         messenger.initialize(new Properties());
         messenger.login(FROM_USER, FROM_PASSWORD);
         
-        for (int i=0; i<max; i++)
+        for (int i = 0; i < max; i++)
         {
             messenger.send(
-                TO_USER, "This is message number " + (i+1) + " of " + max);
+                TO_USER,
+                "This is message number " + (i + 1) + " of " + max);
         }
         
         messenger.logout();

@@ -45,7 +45,8 @@ public class Main
     /**
      * Entrypoint.
      * 
-     * @param args[0] Program name
+     * @param args See below.
+     *        args[0] Program name
      *        args[1..n] Program arguments
      */
     public static void main(String[] args)
@@ -84,10 +85,10 @@ public class Main
                     
                     if (args.length > 1)
                         newArgs = (String[]) 
-                            ArrayUtil.subset(args, 1, args.length-1);
+                            ArrayUtil.subset(args, 1, args.length - 1);
                   
                     // Launch program      
-                    launch((String)programMap_.get(args[0]), newArgs);
+                    launch((String) programMap_.get(args[0]), newArgs);
                 }
                 break; 
         }    
@@ -110,11 +111,11 @@ public class Main
             Class c = Class.forName(className);
             
             Method m = c.getMethod("main", 
-                new Class[] { (new String[0]).getClass() });
+                new Class[] {(new String[0]).getClass()});
                 
-            m.invoke(null, new Object[] { args } );
+            m.invoke(null, new Object[] {args});
         } 
-        catch(Throwable e) 
+        catch (Throwable e) 
         {
             System.out.println("Error: " + e);
             e.printStackTrace();

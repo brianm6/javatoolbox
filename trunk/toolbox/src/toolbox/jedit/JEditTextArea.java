@@ -109,7 +109,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         
         addMouseWheelListener(this);
             
-        // Some more useful keybindings...reuse actions from the popup menu.            
+        // Some more useful keybindings...reuse actions from the popup menu.
         getInputHandler().addKeyBinding(
             "C+A", new JEditActions.SelectAllAction(this));
             

@@ -112,11 +112,20 @@ public class MethodParamTypeHolder implements IMethodHolder
         protected static final IntegerComparator defComparator_ = 
             new IntegerComparator();
 
+        /**
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
         public int compare(Object obj1, Object obj2)
         {
             return ((Integer) obj1).intValue() - ((Integer) obj2).intValue();
         }
 
+        
+        /**
+         * Returns the comparator.
+         * 
+         * @return Comparator.
+         */
         protected static Comparator getComparator()
         {
             return defComparator_;

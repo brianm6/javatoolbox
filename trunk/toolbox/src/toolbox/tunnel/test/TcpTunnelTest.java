@@ -24,8 +24,7 @@ import toolbox.util.net.SocketServerConfig;
  */
 public class TcpTunnelTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(TcpTunnelTest.class);
+    private static final Logger logger_ = Logger.getLogger(TcpTunnelTest.class);
     
     //--------------------------------------------------------------------------
     // Main
@@ -78,7 +77,9 @@ public class TcpTunnelTest extends TestCase
         TcpTunnel tunnel = new TcpTunnel(
             tunnelPort, "localhost", serverConfig.getServerPort());
             
-        DefaultTcpTunnelListener tunnelListener =new DefaultTcpTunnelListener();
+        DefaultTcpTunnelListener tunnelListener =
+            new DefaultTcpTunnelListener();
+        
         tunnel.addTcpTunnelListener(tunnelListener);
         ThreadUtil.run(tunnel, "start", null);
         tunnelListener.waitForStarted();

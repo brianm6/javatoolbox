@@ -541,6 +541,11 @@ public class LRUMap implements Map, Serializable
     }
 
     
+    /**
+     * Updates the given key.
+     * 
+     * @param key Key.
+     */
     protected void updateKey(LRUKey key)
     {
         if (map_.containsKey(key))
@@ -564,17 +569,32 @@ public class LRUMap implements Map, Serializable
         private Object key_;
         private long time_;
 
+        /**
+         * Creates a LRUKey.
+         * 
+         * @param key Key.
+         */
         LRUKey(Object key)
         {
             key_ = key;
             update();
         }
 
+        
+        /**
+         * Returns the time.
+         * 
+         * @return long
+         */
         long getTime()
         {
             return time_;
         }
 
+        
+        /**
+         * Updates the time. 
+         */
         void update()
         {
             time_ = System.currentTimeMillis();
@@ -582,11 +602,18 @@ public class LRUMap implements Map, Serializable
 
         // STANDARD METHODS
 
+        /**
+         * @see java.lang.Object#hashCode()
+         */
         public int hashCode()
         {
             return key_.hashCode();
         }
 
+        
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
         public boolean equals(Object object)
         {
             if (object == null)
@@ -611,6 +638,10 @@ public class LRUMap implements Map, Serializable
             return match;
         }
 
+        
+        /**
+         * @see java.lang.Object#toString()
+         */
         public String toString()
         {
             return key_.toString();
@@ -625,16 +656,29 @@ public class LRUMap implements Map, Serializable
     {
         private Map.Entry entry_;
 
+        /**
+         * Creates a Entry.
+         * 
+         * @param entry Entry
+         */
         Entry(Map.Entry entry)
         {
             entry_ = entry;
         }
 
+        
+        /**
+         * @see java.util.Map.Entry#setValue(java.lang.Object)
+         */
         public Object setValue(Object value)
         {
             return entry_.setValue(value);
         }
 
+        
+        /**
+         * @see java.util.Map.Entry#getValue()
+         */
         public Object getValue()
         {
             // Move key to bottom of keys
@@ -642,6 +686,10 @@ public class LRUMap implements Map, Serializable
             return entry_.getValue();
         }
 
+        
+        /**
+         * @see java.util.Map.Entry#getKey()
+         */
         public Object getKey()
         {
             return ((LRUKey) entry_.getKey()).key_;
@@ -650,40 +698,60 @@ public class LRUMap implements Map, Serializable
 
     
     /**
-     * Entry set
+     * Entry set.
      */
     class EntrySet extends AbstractSet
     {
         private Set entrySet_;
 
+        /**
+         * Creates a EntrySet.
+         */
         public EntrySet()
         {
             this.entrySet_ = map_.entrySet();
         }
 
+        
+        /**
+         * @see java.util.Collection#iterator()
+         */
         public Iterator iterator()
         {
             return new Iterator()
             {
-                Iterator iEntrySet = entrySet_.iterator();
+                private Iterator iEntrySet_ = entrySet_.iterator();
 
+                /**
+                 * @see java.util.Iterator#hasNext()
+                 */
                 public boolean hasNext()
                 {
-                    return iEntrySet.hasNext();
+                    return iEntrySet_.hasNext();
                 }
 
+                /**
+                 * @see java.util.Iterator#next()
+                 */
                 public Object next()
                 {
-                    return new Entry((Map.Entry) iEntrySet.next());
+                    return new Entry((Map.Entry) iEntrySet_.next());
                 }
 
+                /**
+                 * @see java.util.Iterator#remove()
+                 */
                 public void remove()
                 {
-                    iEntrySet.remove();
+                    iEntrySet_.remove();
                 }
             };
         }
 
+        
+        /**
+         * @see java.util.Collection#size()
+         */
         public int size()
         {
             return entrySet_.size();
@@ -692,35 +760,51 @@ public class LRUMap implements Map, Serializable
 
     
     /**
-     * Key set
+     * Key set.
      */
     class KeySet extends AbstractSet
     {
         private Set keySet_ = map_.keySet();
 
+        /**
+         * @see java.util.Collection#iterator()
+         */
         public java.util.Iterator iterator()
         {
             return new Iterator()
             {
-                Iterator iKeySet = keySet_.iterator();
+                private Iterator iKeySet_ = keySet_.iterator();
 
+                /**
+                 * @see java.util.Iterator#hasNext()
+                 */
                 public boolean hasNext()
                 {
-                    return iKeySet.hasNext();
+                    return iKeySet_.hasNext();
                 }
 
+                /**
+                 * @see java.util.Iterator#next()
+                 */
                 public Object next()
                 {
-                    return ((LRUKey) iKeySet.next()).key_;
+                    return ((LRUKey) iKeySet_.next()).key_;
                 }
 
+                /**
+                 * @see java.util.Iterator#remove()
+                 */
                 public void remove()
                 {
-                    iKeySet.remove();
+                    iKeySet_.remove();
                 }
             };
         }
 
+        
+        /**
+         * @see java.util.Collection#size()
+         */
         public int size()
         {
             return keySet_.size();

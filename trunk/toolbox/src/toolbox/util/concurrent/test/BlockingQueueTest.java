@@ -66,7 +66,7 @@ public class BlockingQueueTest extends TestCase
         
         final BlockingQueue q = new BlockingQueue();
         
-        Thread t = new Thread( new Runnable()
+        Thread t = new Thread(new Runnable()
         {
             public void run()
             {
@@ -77,7 +77,7 @@ public class BlockingQueueTest extends TestCase
                 {
                     obj = q.pull(10000);
                 }
-                catch(InterruptedException e) 
+                catch (InterruptedException e) 
                 {
                     ;   // Ignore
                 }

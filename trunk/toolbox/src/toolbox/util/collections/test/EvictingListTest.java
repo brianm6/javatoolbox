@@ -33,6 +33,9 @@ public class EvictingListTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Add none. 
+     */
     public void testAddSizeZero()
     {
         logger_.info("Running testAddSizeZero...");
@@ -48,6 +51,10 @@ public class EvictingListTest extends TestCase
         }
     }
 
+    
+    /**
+     * Add just one. 
+     */
     public void testAddSizeOne()
     {
         logger_.info("Running testAddSizeOne...");
@@ -61,20 +68,24 @@ public class EvictingListTest extends TestCase
         assertEquals(1, list.size());
     }
 
+    
+    /**
+     * Add a whole bunch. 
+     */
     public void testAddSizeMany()
     {
         logger_.info("Running testAddSizeMany...");
-        
+
         int size = 5;
         EvictingList list = new EvictingList(5);
-        
-        for (int i=1; i<=size; i++)
-            list.add(i+"");
-        
-        for (int i=size+1; i<=size+size; i++)
-            list.add(i+"");
 
-        for (int i=0, j=size+size; i<size; i++, j--)
-            assertEquals(j+"", list.get(i));
+        for (int i = 1; i <= size; i++)
+            list.add(i + "");
+
+        for (int i = size + 1; i <= size + size; i++)
+            list.add(i + "");
+
+        for (int i = 0, j = size + size; i < size; i++, j--)
+            assertEquals(j + "", list.get(i));
     }
 }

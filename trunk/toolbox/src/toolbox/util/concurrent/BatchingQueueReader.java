@@ -164,6 +164,9 @@ public class BatchingQueueReader
      */    
     class Worker implements Runnable
     {
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             //logger_.debug(method + "Batching queue reader started!");
@@ -179,20 +182,20 @@ public class BatchingQueueReader
                     if (size > 0)
                     {
                         // Create array with one extra slot for the first
-                        Object[] objs = new Object[size+1];
-                        
+                        Object[] objs = new Object[size + 1];
+
                         // Place first elemnt in array
                         objs[0] = first;
-                        
+
                         // Read the rest from the queue
-                        for (int i=1; i<=size; i++)                
+                        for (int i = 1; i <= size; i++)
                             objs[i] = queue_.pull();
-                            
+
                         fireNextBatch(objs);
                     }
                     else
                     {
-                        fireNextBatch(new Object[] { first });
+                        fireNextBatch(new Object[] {first});
                     }
                 }
                 catch (InterruptedException e)

@@ -21,7 +21,7 @@ public class SmartClass
     /**
      * Creates a new SmartClass object.
      * 
-     * @param aClass 
+     * @param aClass Class.
      */
     protected SmartClass(Class aClass)
     {
@@ -35,10 +35,10 @@ public class SmartClass
     /**
      * Gets method
      * 
-     * @param   selector         Selector
-     * @param   parameterTypes   Param types
-     * @return  Smart method
-     * @throws  NoSuchMethodException on no method
+     * @param selector Selector
+     * @param parameterTypes Param types
+     * @return Smart method
+     * @throws NoSuchMethodException on no method
      */
     public SmartMethod getMethod(Symbol selector, Class[] parameterTypes)
         throws NoSuchMethodException
@@ -49,16 +49,16 @@ public class SmartClass
             throw new NoSuchMethodException();
 
         return method.getMethod(parameterTypes == null ? 
-            new Class[] { } : parameterTypes);
+            new Class[] {} : parameterTypes);
     }
 
     /**
      * Gets method
      * 
-     * @param   selector    Selector 
-     * @param   parameters  Params 
-     * @return  Smart method
-     * @throws  NoSuchMethodException on no method
+     * @param selector Selector
+     * @param parameters Params
+     * @return Smart method
+     * @throws NoSuchMethodException on no method
      */
     public SmartMethod getMethod(Symbol selector, Object[] parameters)
         throws NoSuchMethodException
@@ -77,10 +77,10 @@ public class SmartClass
     /**
      * Gets method
      * 
-     * @param   name            Name
-     * @param   parameterTypes  Param types
-     * @return  Smart method
-     * @throws  NoSuchMethodException on no method
+     * @param name Name
+     * @param parameterTypes Param types
+     * @return Smart method
+     * @throws NoSuchMethodException on no method
      */
     public SmartMethod getMethod(String name, Class[] parameterTypes)
         throws NoSuchMethodException
@@ -91,10 +91,10 @@ public class SmartClass
     /**
      * Gets method
      * 
-     * @param   name            Name
-     * @param   parameters      Parameters
-     * @return  Smart method
-     * @throws  NoSuchMethodException on no method
+     * @param name Name
+     * @param parameters Parameters
+     * @return Smart method
+     * @throws NoSuchMethodException on no method
      */
     public SmartMethod getMethod(String name, Object[] parameters) 
         throws NoSuchMethodException
@@ -105,9 +105,9 @@ public class SmartClass
     /**
      * Gets constructor
      * 
-     * @param   parameterTypes  Param types
-     * @return  Smart constructor
-     * @throws  NoSuchMethodException on no method
+     * @param parameterTypes Param types
+     * @return Smart constructor
+     * @throws NoSuchMethodException on no method
      */
     public SmartConstructor getConstructor(Class[] parameterTypes) 
         throws NoSuchMethodException
@@ -120,9 +120,9 @@ public class SmartClass
     /**
      * Gets constructor
      * 
-     * @param   parameters  Parameters
-     * @return  SmartConstructor
-     * @throws  NoSuchMethodException on method not found
+     * @param parameters Parameters
+     * @return SmartConstructor
+     * @throws NoSuchMethodException on method not found
      */
     public SmartConstructor getConstructor(Object[] parameters) 
         throws NoSuchMethodException
@@ -145,19 +145,23 @@ public class SmartClass
     /**
      * Invokes method on an object
      * 
-     * @param   obj         Object to invoke method on 
-     * @param   selector    Selector for method
-     * @param   parameters  Params to method
-     * @return  Method return value
-     * @throws  NoSuchMethodException on method not found
-     * @throws  IllegalAccessException  on not public enough to access
-     * @throws  IllegalArgumentException on illegal argument
-     * @throws  InvocationTargetException on invalid invocation on target
-     * @throws  Exception on error
+     * @param obj Object to invoke method on
+     * @param selector Selector for method
+     * @param parameters Params to method
+     * @return Method return value
+     * @throws NoSuchMethodException on method not found
+     * @throws IllegalAccessException on not public enough to access
+     * @throws IllegalArgumentException on illegal argument
+     * @throws InvocationTargetException on invalid invocation on target
+     * @throws Exception on error
      */
     public Object invoke(Object obj, Symbol selector, Object[] parameters)
-        throws NoSuchMethodException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, Exception
+        throws
+            NoSuchMethodException,
+            IllegalAccessException,
+            IllegalArgumentException,
+            InvocationTargetException,
+            Exception
     {
         SmartMethod method = getMethod(selector, parameters);
 
@@ -167,27 +171,30 @@ public class SmartClass
     /**
      * Invokes method on an object
      * 
-     * @param   obj            Object to invoke method on 
-     * @param   methodName     Name of method to invoke
-     * @param   parameters     Params to method
-     * @return  Method return value
-     * @throws  IllegalAccessException on not public enough to access
-     * @throws  IllegalArgumentException on illegal argument
-     * @throws  InvocationTargetException on invalid invocation on target
-     * @throws  Exception on error
+     * @param obj Object to invoke method on
+     * @param methodName Name of method to invoke
+     * @param parameters Params to method
+     * @return Method return value
+     * @throws IllegalAccessException on not public enough to access
+     * @throws IllegalArgumentException on illegal argument
+     * @throws InvocationTargetException on invalid invocation on target
+     * @throws Exception on error
      */
     public Object invoke(Object obj, String methodName, Object[] parameters)
-        throws IllegalAccessException, IllegalArgumentException, 
-            InvocationTargetException, Exception
+        throws
+            IllegalAccessException,
+            IllegalArgumentException,
+            InvocationTargetException,
+            Exception
     {
         return invoke(obj, new Symbol(methodName), parameters);
     }
 
     /**
-     * @param  obj          Object
-     * @param  selector     Selector 
-     * @param  parameters   Params
-     * @return Return value 
+     * @param obj Object
+     * @param selector Selector
+     * @param parameters Params
+     * @return Return value
      */
     public Object invokeSilent(Object obj, Symbol selector, Object[] parameters)
     {
@@ -204,9 +211,9 @@ public class SmartClass
     }
 
     /**
-     * @param  obj          Object
-     * @param  methodName   Method name
-     * @param  parameters   Params
+     * @param obj Object
+     * @param methodName Method name
+     * @param parameters Params
      * @return Return value
      */
     public Object invokeSilent(Object obj, String methodName, 
@@ -218,9 +225,7 @@ public class SmartClass
     // INSTATIONATION METHODS
 
     /**
-     * 
-     * 
-     * @return New object 
+     * @return New object
      * @throws NoSuchMethodException on error
      * @throws InstantiationException on error
      * @throws IllegalAccessException on error
@@ -241,8 +246,8 @@ public class SmartClass
     /**
      * Creates a new instance
      * 
-     * @param  parameters   Params 
-     * @return New instance 
+     * @param parameters Params
+     * @return New instance
      * @throws NoSuchMethodException on error
      * @throws InstantiationException on error
      * @throws IllegalAccessException on error

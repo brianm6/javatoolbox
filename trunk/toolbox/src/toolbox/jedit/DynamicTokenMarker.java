@@ -21,16 +21,29 @@ public class DynamicTokenMarker extends TokenMarker
     private int lastOffset_;
     private int lastKeyword_;
         
+    /**
+     * Creates a DynamicTokenMarker.
+     * 
+     */
     public DynamicTokenMarker()
     {
         this(getKeywords());
     }
     
+    /**
+     * Creates a DynamicTokenMarker.
+     * 
+     * @param keywords Keywords
+     */
     public DynamicTokenMarker(KeywordMap keywords)
     {
         keywords_ = keywords;
     }
 
+    /**
+     * @see org.jedit.syntax.TokenMarker#markTokensImpl(byte, 
+     *      javax.swing.text.Segment, int)
+     */
     public byte markTokensImpl(byte token, Segment line, int lineIndex)
     {
         char[] array = line.array;
@@ -40,7 +53,8 @@ public class DynamicTokenMarker extends TokenMarker
         int length = line.count + offset;
         boolean backslash = false;
     
- loop : for (int i = offset; i < length; i++)
+    loop :  
+        for (int i = offset; i < length; i++)
         {
             //int i1 = (i + 1);
     
@@ -118,7 +132,7 @@ public class DynamicTokenMarker extends TokenMarker
                                     case '*' :
                                         addToken(i - lastOffset, token);
                                         lastOffset = lastKeyword = i;
-                                        if (length - i > 2 && array[i + 2] == '*')
+                                      if (length - i > 2 && array[i + 2] == '*')
                                             token = Token.COMMENT2;
                                         else
                                             token = Token.COMMENT1;
@@ -200,14 +214,17 @@ public class DynamicTokenMarker extends TokenMarker
                 addToken(length - lastOffset_, Token.INVALID);
                 token = Token.NULL;
                 break;
+                
             case Token.KEYWORD2 :
                 logger_.debug("addToken:keyword2");
                 addToken(length - lastOffset_, token);
                 if (!backslash)
                     token = Token.NULL;
+                
             default :
                 //token = Token.KEYWORD2;
-                logger_.debug("addToken:default " + (length - lastOffset_) + " " + token);
+                logger_.debug(
+                    "addToken:default " + (length - lastOffset_) + " " + token);
                 addToken(length - lastOffset_, token);
                 break;
         }
@@ -215,6 +232,10 @@ public class DynamicTokenMarker extends TokenMarker
         return token;
     }
     
+    
+    /**
+     * @return KeywordMap
+     */
     public static KeywordMap getKeywords()
     {
         if (TO == null)
@@ -228,6 +249,13 @@ public class DynamicTokenMarker extends TokenMarker
         return TO;
     }
     
+    
+    /**
+     * @param line Line
+     * @param i Dunno
+     * @param c Dunno
+     * @return boolean
+     */
     private boolean doKeyword(Segment line, int i, char c)
     {
         logger_.debug(line + " " + i + " '" + c + "'");

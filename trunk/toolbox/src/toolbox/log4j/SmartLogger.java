@@ -8,14 +8,14 @@ import toolbox.util.StringUtil;
 /**
  * Log4J Utility Class.
  */
-public class SmartLogger
+public final class SmartLogger
 {
     private static final Logger logger_ = Logger.getLogger(SmartLogger.class);
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Prevent contruction.
      */
@@ -26,7 +26,7 @@ public class SmartLogger
     //--------------------------------------------------------------------------
     // Public Static
     //--------------------------------------------------------------------------
-    
+
     /**
      * Logs each individual line of a string (delimited by a newline character)
      * separately.
@@ -38,7 +38,7 @@ public class SmartLogger
     {
         log(logger, Priority.DEBUG, msg);
     }
-    
+
     
     /**
      * Logs each individual line of a string (delimited by a newline character)
@@ -51,42 +51,40 @@ public class SmartLogger
     {
         log(logger, Priority.INFO, msg);
     }
-    
+
     
     /**
      * Logs each individual line of a string (delimited by a newline character)
      * separately.
      * 
-     * @param logger Logger to use
+     * @param logger Logger to use.
+     * @param priority Message priority.
      * @param msg Multiline object to log
-     * 
-     * TODO: fix this pile of mess!
      */
     public static void log(Logger logger, Priority priority, Object msg)
     {
+        // TODO: fix this pile of mess!
+        
         String[] lines = StringUtil.tokenize(msg.toString(), "\n", true);
         logger_.debug("NumLines: " + lines.length);
-        
-        
+
         if (msg.toString().trim().length() == 0)
         {
             logger.log(priority, "");
             return;
         }
-        
-        for (int i=0; i<lines.length; )
+
+        for (int i = 0; i < lines.length;)
         {
-            if ( i > 0 && 
-                      lines[i].equals("\n") && 
-                      lines[i-1].equals("\n"))
+            if (i > 0 && lines[i].equals("\n") && lines[i - 1].equals("\n"))
             {
                 logger.log(priority, "");
-                i+=1;
+                i += 1;
             }
             else
             {
                 logger.log(priority, lines[i]);
-                i+=2;
+                i += 2;
             }
         }
     }

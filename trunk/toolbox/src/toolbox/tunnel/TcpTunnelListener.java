@@ -37,10 +37,10 @@ public interface TcpTunnelListener
      * @param totalBytesWritten Total number of bytes written over the life of
      *        the tunnel.
      */
-    public void bytesWritten(
-            TcpTunnel tunnel, 
-            int connBytesWritten, 
-            int totalBytesWritten);
+    void bytesWritten(
+        TcpTunnel tunnel,
+        int connBytesWritten,
+        int totalBytesWritten);
                          
     
     /**
@@ -48,5 +48,5 @@ public interface TcpTunnelListener
      * 
      * @param tunnel The tunnel that was started.
      */                             
-    public void tunnelStarted(TcpTunnel tunnel);                             
+    void tunnelStarted(TcpTunnel tunnel);                             
 }

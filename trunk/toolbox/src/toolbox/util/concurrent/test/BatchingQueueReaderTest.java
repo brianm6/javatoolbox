@@ -213,6 +213,10 @@ public class BatchingQueueReaderTest extends TestCase
     
     class TestQueueListener implements IBatchingQueueListener
     {
+        /**
+         * @see toolbox.util.concurrent.IBatchingQueueListener#nextBatch(
+         *      java.lang.Object[])
+         */
         public void nextBatch(Object[] elements)
         {
             logger_.info("nextBatch: " + ArrayUtil.toString(elements));

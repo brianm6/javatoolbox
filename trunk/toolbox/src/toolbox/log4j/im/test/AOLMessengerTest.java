@@ -101,15 +101,16 @@ public class AOLMessengerTest extends TestCase implements StandaloneTestCase
         
         InstantMessenger messenger = new AOLMessenger();
         Properties props = new Properties();
-        props.setProperty(InstantMessenger.PROP_THROTTLE, 500+"");  
+        props.setProperty(InstantMessenger.PROP_THROTTLE, 500 + "");
 
         messenger.login("supahfuzzy", "techno");
-        
-        for (int i=0; i<100; i++)
+
+        for (int i = 0; i < 100; i++)
         {
-            ThreadUtil.sleep(300);  // throttle
+            ThreadUtil.sleep(300); // throttle
             messenger.send(
-                "analogue", "This is message number " + (i+1) + " of 100");
+                "analogue",
+                "This is message number " + (i + 1) + " of 100");
         }
         
         messenger.logout();

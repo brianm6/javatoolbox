@@ -32,46 +32,49 @@ public class BasicGridLayout extends ConstraintLayout
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a BasicGridLayout.
      */
     public BasicGridLayout()
     {
         this(0, 1, 2, 2);
     }
 
+    
     /**
-     * Creates a BasicGridLayout
+     * Creates a BasicGridLayout.
      * 
-     * @param  rows  Number of rows
-     * @param  cols  Number of columns
+     * @param rows Number of rows
+     * @param cols Number of columns
      */
     public BasicGridLayout(int rows, int cols)
     {
         this(rows, cols, 2, 2);
     }
 
+    
     /**
-     * Creates a BasicGridLayout
+     * Creates a BasicGridLayout.
      * 
-     * @param  rows  Number of rows
-     * @param  cols  Number of columns
-     * @param  hGap  Horizontal gap
-     * @param  vGap  Vertical gap
+     * @param rows Number of rows
+     * @param cols Number of columns
+     * @param hGap Horizontal gap
+     * @param vGap Vertical gap
      */
     public BasicGridLayout(int rows, int cols, int hGap, int vGap)
     {
         this(rows, cols, hGap, vGap, 0, 0);
     }
 
+    
     /**
-     * Creates a BasicGridLayout
+     * Creates a BasicGridLayout.
      * 
-     * @param  rows     Number of rows
-     * @param  cols     Number of columns
-     * @param  hGap     Horizontal gap
-     * @param  vGap     Vertical gap
-     * @param  hMargin  Horizontal margin
-     * @param  vMargin  Vertical margin
+     * @param rows Number of rows
+     * @param cols Number of columns
+     * @param hGap Horizontal gap
+     * @param vGap Vertical gap
+     * @param hMargin Horizontal margin
+     * @param vMargin Vertical margin
      */
     public BasicGridLayout(
         int rows,
@@ -94,9 +97,9 @@ public class BasicGridLayout extends ConstraintLayout
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the number of columns
+     * Sets the number of columns.
      * 
-     * @param  cols  Number of columns
+     * @param cols Number of columns
      */
     public void setColumns(int cols)
     {
@@ -106,10 +109,11 @@ public class BasicGridLayout extends ConstraintLayout
         cols_ = cols;
     }
 
+    
     /**
      * Sets the number of rows
      * 
-     * @param   rows    Number of rows
+     * @param rows Number of rows
      */
     public void setRows(int rows)
     {
@@ -119,100 +123,123 @@ public class BasicGridLayout extends ConstraintLayout
         rows_ = rows;
     }
 
+    
     /**
-     * @return  Number of rows
+     * Returns the number of rows.
+     * 
+     * @return int.
      */
     public int getRows()
     {
         return rows_;
     }
 
+    
     /**
-     * @return  Number of columns
+     * Returns the number of columns.
+     * 
+     * @return int
      */
     public int getColumns()
     {
         return cols_;
     }
 
+    
     /**
-     * Sets the alignment
+     * Sets the alignment.
      * 
-     * @param  a  Alignment
+     * @param a Alignment
      */
     public void setAlignment(int a)
     {
         alignment_ = a;
     }
 
+    
     /**
-     * @return  Alignment
+     * Returns the alignment.
+     * 
+     * @return int
      */
     public int getAlignment()
     {
         return alignment_;
     }
 
+    
     /**
      * Sets the fill
      * 
-     * @param  f  Fill
+     * @param f Fill
      */
     public void setFill(int f)
     {
         fill_ = f;
     }
 
+    
     /**
-     * @return  Fill
+     * Returns the fill.
+     * 
+     * @return int
      */
     public int getFill()
     {
         return fill_;
     }
 
+    
     /**
-     * Sets teh column weight
+     * Sets the column weight.
      * 
-     * @param  colWeight  Column weight
+     * @param colWeight Column weight
      */
     public void setColWeight(int colWeight)
     {
         colWeight_ = colWeight;
     }
 
+    
     /**
-     * @return  Column weight
+     * Returns the column weight.
+     * 
+     * @return int
      */
     public int getColWeight()
     {
         return colWeight_;
     }
 
+    
     /**
-     * Sets row weight
+     * Sets the row weight.
      * 
-     * @param  rowWeight  Row weight
+     * @param rowWeight Row weight
      */
     public void setRowWeight(int rowWeight)
     {
-        this.rowWeight_ = rowWeight;
+        rowWeight_ = rowWeight;
     }
 
+    
     /**
-     * @return  Row weight
+     * Returns the row weight.
+     * 
+     * @return int
      */
     public int getRowWeight()
     {
         return rowWeight_;
     }
 
+    
     /**
-     * Measures layout
+     * Measures layout.
      * 
-     * @param  target       Target container
-     * @param  dimension    Dimension
-     * @param  type         Type
+     * @param target Target container
+     * @param dimension Dimension
+     * @param type Type
      */
     public void measureLayout(Container target, Dimension dimension, int type)
     {
@@ -282,36 +309,64 @@ public class BasicGridLayout extends ConstraintLayout
 
     /**
      * Override this to set alignment on a per-component basis.
+     * 
+     * @param c Component.
+     * @param row Row index.
+     * @param col Column index.
+     * @return int
      */
     protected int alignmentFor(Component c, int row, int col)
     {
         return alignment_;
     }
 
+    
     /**
      * Override this to set fill on a per-component basis.
+     * 
+     * @param c Component.
+     * @param row Row index.
+     * @param col Column index.
+     * @return int
      */
     protected int fillFor(Component c, int row, int col)
     {
         return fill_;
     }
 
+    
     /**
      * Override this to set weights on a per-row basis.
+     * 
+     * @param row Row index.
+     * @return int
      */
     protected int getRowWeight(int row)
     {
         return getRowWeight();
     }
 
+    
     /**
      * Override this to set weights on a per-column basis.
+     * 
+     * @param col Column index.
+     * @return int
      */
     protected int getColWeight(int col)
     {
         return getColWeight();
     }
 
+    
+    /**
+     * Sums an array.
+     * 
+     * @param array Array.
+     * @param spacing Spacing.
+     * @param size Size.
+     * @return int
+     */
     protected int sumArray(int[] array, int spacing, int size)
     {
         int i, total = 0;
@@ -323,6 +378,13 @@ public class BasicGridLayout extends ConstraintLayout
         return total;
     }
 
+    
+    /**
+     * Calculates cell sizes.
+     * 
+     * @param target Target container.
+     * @param type Type.
+     */
     protected void calcCellSizes(Container target, int type)
     {
         int i;

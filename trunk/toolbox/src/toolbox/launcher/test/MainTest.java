@@ -18,6 +18,11 @@ public class MainTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(MainTest.class);
@@ -27,13 +32,19 @@ public class MainTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests positive launch.
+     */
     public void testMain()
     {
         logger_.info("Running testMain...");
         Main.main(new String[] {"showclasspath" });
     }
 
-
+    
+    /**
+     * Tests failed launch.
+     */
     public void testMainNegative()
     {
         logger_.info("Running testMainNegative...");

@@ -13,9 +13,16 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 
 
+/**
+ * LayoutTest.
+ */
 public class LayoutTest
 {
-
+    /**
+     * Entrypoint.
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         paragraphLayout();
@@ -25,6 +32,10 @@ public class LayoutTest
         clockLayout();
     }
 
+    
+    /**
+     * Tests paragraphLayout. 
+     */
     public static void paragraphLayout()
     {
         JFrame jf = new JFrame("ParagraphLayout");
@@ -59,12 +70,18 @@ public class LayoutTest
         f.add(new JSmartLabel("More text:"), ParagraphLayout.NEW_PARAGRAPH);
         f.add(t2);
         f.add(new JSmartLabel("miles"));
-        f.add(new JSmartLabel("A text area:"), ParagraphLayout.NEW_PARAGRAPH_TOP);
+        f.add(
+            new JSmartLabel("A text area:"),
+            ParagraphLayout.NEW_PARAGRAPH_TOP);
         f.add(t3);
         jf.pack();
         jf.show();
     }
 
+    
+    /**
+     * Tests packerLayout() 
+     */
     public static void packerLayout()
     {
         JFrame jf = new JFrame("PackerLayout");
@@ -88,6 +105,10 @@ public class LayoutTest
         jf.show();
     }
 
+    
+    /**
+     * Tests GridLayoutPlus. 
+     */
     public static void gridLayoutPlus()
     {
         JFrame jf = new JFrame("GridLayoutPlus");
@@ -108,6 +129,10 @@ public class LayoutTest
         jf.show();
     }
 
+    
+    /**
+     * Tests BasicGridLayout. 
+     */
     public static void basicGridLayout()
     {
         JFrame jf = new JFrame("BasicGridLayout");
@@ -130,6 +155,10 @@ public class LayoutTest
         jf.show();
     }
 
+    
+    /**
+     * Tests ClockLayout. 
+     */
     public static void clockLayout()
     {
         JFrame jf = new JFrame("ClockLayout");

@@ -584,6 +584,10 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
      * 
      * <tt>WeakReference</tt> s are used so that the garbage collector can
      * collect a Class and/or it's descriptors when they are no longer used.
+     * 
+     * @param aClass Class.
+     * @return PropertyDescriptor[]
+     * @throws IntrospectionException on error.
      */
     protected static PropertyDescriptor[] getPropertyDescriptors(Class aClass)
         throws IntrospectionException

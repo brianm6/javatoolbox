@@ -27,12 +27,12 @@ public class SQLDefaults extends TextAreaDefaults
         caretVisible = true;
         caretBlinks = false;
         blockCaret = true;
-        electricScroll= 3;
+        electricScroll = 3;
         cols = 80;
         rows = 15;
         styles = getSyntaxStyles();
-        eolMarkers=false;
-        paintInvalid=false;
+        eolMarkers = false;
+        paintInvalid = false;
         popup = new JEditPopupMenu();
 
         // Same        

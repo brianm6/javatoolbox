@@ -276,10 +276,10 @@ public class ParamPattern
         {
             if (patternConstructor_ == null)
                 patternConstructor_ = 
-                    getClass().getConstructor(new Class[] { Class.class });
+                    getClass().getConstructor(new Class[] {Class.class});
 
             return (ParamPattern) 
-                patternConstructor_.newInstance(new Object[] { aClass });
+                patternConstructor_.newInstance(new Object[] {aClass});
         }
         catch (Exception ex)
         {

@@ -24,8 +24,8 @@ public class NumberParamPattern extends ParamPattern
         try
         {
             for (int i = 0; i < methods.length; i++)
-                if (Modifier.isStatic(methods[i].getModifiers())  && 
-                   methods[i].getName().startsWith("to"))
+                if (Modifier.isStatic(methods[i].getModifiers()) && 
+                     methods[i].getName().startsWith("to"))
                 {
                     Class c = Class.forName(
                         "java.lang." + methods[i].getName().substring(2));
@@ -38,7 +38,7 @@ public class NumberParamPattern extends ParamPattern
         }
         catch (Exception ex)
         {
-            // Ignore
+            ; // Ignore
         }
     }
 
@@ -119,7 +119,7 @@ public class NumberParamPattern extends ParamPattern
     {
         try
         {
-            return convertMethod_.invoke(null, new Object[] { object });
+            return convertMethod_.invoke(null, new Object[] {object});
         }
         catch (Exception ex)
         {

@@ -31,7 +31,7 @@ public class EvictingList
      */
     public EvictingList(int max)
     {
-        if (max <=0)
+        if (max <= 0)
             throw new IllegalArgumentException("List size must be > 0");
             
         max_ = max;
@@ -40,7 +40,7 @@ public class EvictingList
         
     //--------------------------------------------------------------------------
     // Public
-    //-------------------------------------------------------------------------- 
+    //--------------------------------------------------------------------------
     
     /**
      * Adds to the list.
@@ -59,11 +59,23 @@ public class EvictingList
     // Delegations
     //--------------------------------------------------------------------------
     
+    /**
+     * Returns the size of the list.
+     * 
+     * @return int
+     */
     public int size()
     {
         return list_.size();
     }
     
+    
+    /**
+     * Gets the element at the given index.
+     * 
+     * @param i Index
+     * @return Object
+     */
     public Object get(int i)
     {
         return list_.get(i);

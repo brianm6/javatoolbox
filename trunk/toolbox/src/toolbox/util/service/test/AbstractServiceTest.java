@@ -22,6 +22,11 @@ public class AbstractServiceTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint.
+     * 
+     * @param args None recognized.
+     */
     public static void main(String[] args)
     {
         TestRunner.run(AbstractServiceTest.class);
@@ -31,6 +36,11 @@ public class AbstractServiceTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests start()
+     * 
+     * @throws ServiceException on service error.
+     */
     public void testStart() throws ServiceException
     {
         Service s = new MockService();
@@ -39,6 +49,12 @@ public class AbstractServiceTest extends TestCase
         assertTrue(s.isRunning());
     }
 
+    
+    /**
+     * Tests stop()
+     * 
+     * @throws ServiceException on service error.
+     */
     public void testStop() throws ServiceException
     {
         Service s = new MockService();
@@ -48,6 +64,12 @@ public class AbstractServiceTest extends TestCase
         assertFalse(s.isRunning());
     }
 
+    
+    /**
+     * Tests pause()
+     * 
+     * @throws ServiceException on service error.
+     */
     public void testPause() throws ServiceException
     {
         Service s = new MockService();
@@ -57,6 +79,12 @@ public class AbstractServiceTest extends TestCase
         assertTrue(s.isPaused());
     }
 
+    
+    /**
+     * Tests resume()
+     * 
+     * @throws ServiceException on service error.
+     */
     public void testResume() throws ServiceException 
     {
         Service s = new MockService();
@@ -88,7 +116,7 @@ public class AbstractServiceTest extends TestCase
             }
             catch (Exception e)
             {
-                // Rollback on any exceptions
+                ; // Rollback on any exceptions
             }
         }
     }
@@ -100,7 +128,8 @@ public class AbstractServiceTest extends TestCase
     class MockServiceListener implements ServiceListener
     {
         /**
-         * @see toolbox.util.service.ServiceListener#servicePaused(toolbox.util.service.Service)
+         * @see toolbox.util.service.ServiceListener#servicePaused(
+         *      toolbox.util.service.Service)
          */
         public void servicePaused(Service service) throws ServiceException
         {
@@ -108,7 +137,8 @@ public class AbstractServiceTest extends TestCase
         }
 
         /**
-         * @see toolbox.util.service.ServiceListener#serviceResumed(toolbox.util.service.Service)
+         * @see toolbox.util.service.ServiceListener#serviceResumed(
+         *      toolbox.util.service.Service)
          */
         public void serviceResumed(Service service) throws ServiceException
         {
@@ -117,7 +147,8 @@ public class AbstractServiceTest extends TestCase
         }
 
         /**
-         * @see toolbox.util.service.ServiceListener#serviceStarted(toolbox.util.service.Service)
+         * @see toolbox.util.service.ServiceListener#serviceStarted(
+         *      toolbox.util.service.Service)
          */
         public void serviceStarted(Service service) throws ServiceException
         {
@@ -125,7 +156,8 @@ public class AbstractServiceTest extends TestCase
         }
 
         /**
-         * @see toolbox.util.service.ServiceListener#serviceStopped(toolbox.util.service.Service)
+         * @see toolbox.util.service.ServiceListener#serviceStopped(
+         *      toolbox.util.service.Service)
          */
         public void serviceStopped(Service service) throws ServiceException
         {

@@ -128,6 +128,12 @@ public class StackLayoutTest extends UITestCase
     }
 
     
+    /**
+     * Adds a horizontal panel.
+     * 
+     * @param jp Container.
+     * @return JPanel
+     */
     JPanel addHPanel(Container jp)
     {
         JPanel p = new JPanel();

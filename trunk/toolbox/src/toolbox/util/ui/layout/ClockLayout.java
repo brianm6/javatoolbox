@@ -6,17 +6,16 @@ import java.awt.Dimension;
 import java.awt.Insets;
 
 /**
- * ClockLayout
+ * ClockLayout.
  */
 public class ClockLayout extends ConstraintLayout
 {
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Default constructor
+     * Creates a ClockLayout.
      */
     public ClockLayout()
     {
@@ -27,15 +26,16 @@ public class ClockLayout extends ConstraintLayout
     //--------------------------------------------------------------------------
 
     /**
-     * Measure layout
+     * Measure layout.
      * 
-     * @param  target       Container
-     * @param  dimension    Dimension
-     * @param  type         Type    
+     * @param target Container.
+     * @param dimension Dimension.
+     * @param type Type.
      */
     public void measureLayout(Container target, Dimension dimension, int type)
     {
         int count = target.getComponentCount();
+        
         if (count > 0)
         {
             Insets insets = target.getInsets();
@@ -44,11 +44,12 @@ public class ClockLayout extends ConstraintLayout
             int y = 0;
             int maxWidth = 0;
             int maxHeight = 0;
-            
+
             double radius =
                 Math.min(
                     size.width - insets.left - insets.right,
-                    size.height - insets.top - insets.bottom) / 2;
+                    size.height - insets.top - insets.bottom)
+                    / 2;
 
             Dimension[] sizes = new Dimension[count];
 
@@ -75,20 +76,28 @@ public class ClockLayout extends ConstraintLayout
             else
             {
                 int mx =
-                  (size.width - insets.left - insets.right - 2*getHMargin())/2;
-                  
+                    (size.width
+                        - insets.left
+                        - insets.right
+                        - 2 * getHMargin())
+                        / 2;
+
                 int my =
-                  (size.height - insets.top - insets.bottom - 2*getVMargin())/2;
-                  
+                    (size.height
+                        - insets.top
+                        - insets.bottom
+                        - 2 * getVMargin())
+                        / 2;
+
                 x = 0;
                 y = 0;
 
                 radius -= Math.max(maxWidth, maxHeight) / 2;
-                
+
                 for (int i = 0; i < count; i++)
                 {
                     Component c = target.getComponent(i);
-                    
+
                     if (includeComponent(c))
                     {
                         Dimension d = sizes[i];
@@ -98,7 +107,7 @@ public class ClockLayout extends ConstraintLayout
                         double angle = 2 * Math.PI * i / count;
                         x = mx + (int) (Math.sin(angle) * radius);
                         y = my - (int) (Math.cos(angle) * radius);
-                        
+
                         c.setBounds(
                             insets.left + getHMargin() + x - w / 2,
                             insets.top + getVMargin() + y - h / 2,
@@ -110,5 +119,4 @@ public class ClockLayout extends ConstraintLayout
         }
 
     }
-
 }
