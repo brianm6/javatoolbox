@@ -53,7 +53,6 @@ import toolbox.util.io.filter.FileFilter;
  * updated.
  * 
  * <pre>
- * TODO: Update scrollToVisible() to not hide the parent
  * TODO: Add filter for file list
  * TODO: Add refresh button
  * </pre>
@@ -152,6 +151,7 @@ public class JFileExplorer extends JPanel
      * Unix folder    : /usr/export/home
      * 
      * </pre>
+     * 
      * @param  path  Folder to select. Must be absolute in absolute form 
      *               from the root.
      */
@@ -161,8 +161,6 @@ public class JFileExplorer extends JPanel
         
         if (Platform.isUnix())
         {
-            //logger_.debug(method + "Platform = unix");
-            
             if (path.startsWith(File.separator))
             {
                 // Set root to "/"
@@ -178,8 +176,6 @@ public class JFileExplorer extends JPanel
         {
             // Treat all other platforms like windows
             
-            //logger_.debug(method + "Platform = windows");
-                        
             if (path.startsWith(File.separator))
             {
                 // Update the root since the path separator was stripped by
@@ -200,8 +196,8 @@ public class JFileExplorer extends JPanel
                     // Switch to different drive if necessary
                     rootsComboBox_.setSelectedItem(new File(pathTokens[0]));
                     
-                    logger_.debug(
-                        "new root: " + rootsComboBox_.getSelectedItem());
+                    logger_.debug("Switching to root in path: " + 
+                        rootsComboBox_.getSelectedItem());
                 }
                 else
                 {
@@ -219,6 +215,7 @@ public class JFileExplorer extends JPanel
 
         // Discover path by iterating over pathTokens and building a TreePath 
         // dynamically
+        
         if (root.equals(new FileNode(pathTokens[0])))
         {
             FileNode current = root;
@@ -392,13 +389,13 @@ public class JFileExplorer extends JPanel
         // File system roots 
         rootsComboBox_ = new JComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
-        rootsComboBox_.addItemListener(new ComboBoxAdapter());
-        rootsComboBox_.setRenderer(new IconCellRenderer());
+        rootsComboBox_.addItemListener(new FileRootItemListener());
+        rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
         fileList_ = new JList();
         fileList_.setModel(listModel_ = new DefaultListModel());
-        fileList_.addMouseListener(new JFEMouseHandler());
+        fileList_.addMouseListener(new FileListMouseListener());
         setFileList(getDefaultRoot());
         fileList_.setFixedCellHeight(15);
         JScrollPane filesScrollPane = new JScrollPane(fileList_);
@@ -431,8 +428,8 @@ public class JFileExplorer extends JPanel
             
         tree_.setRootVisible(true);
         tree_.setScrollsOnExpand(true);
-        tree_.addTreeSelectionListener(new TreeFolderAdapter());
-        tree_.addMouseListener(new TreeMouseHandler());
+        tree_.addTreeSelectionListener(new DirTreeSelectionListener());
+        tree_.addMouseListener(new DirTreeMouseListener());
         tree_.setCellRenderer(renderer);
         tree_.putClientProperty("JTree.lineStyle", "Angled");
 
@@ -626,7 +623,7 @@ public class JFileExplorer extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * FileNode
+     * FileNode used to represent directories in the directory tree
      */
     public class FileNode extends DefaultMutableTreeNode
     {
@@ -705,12 +702,13 @@ public class JFileExplorer extends JPanel
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
      */
-    private class IconCellRenderer extends JLabel implements ListCellRenderer
+    private class DriveIconCellRenderer extends JLabel 
+        implements ListCellRenderer
     {
         /**
          * Default constructor
          */
-        public IconCellRenderer()
+        public DriveIconCellRenderer()
         {
             this.setOpaque(true);
         }
@@ -748,7 +746,7 @@ public class JFileExplorer extends JPanel
     /**
      * Inner class for handling click events on the file list.
      */
-    private class JFEMouseHandler extends MouseAdapter
+    private class FileListMouseListener extends MouseAdapter
     {
         /**
          * Handles mouse clicked events
@@ -772,7 +770,7 @@ public class JFileExplorer extends JPanel
     /**
      * Inner class for handling click event on the JTree.
      */
-    private class TreeMouseHandler extends MouseAdapter
+    private class DirTreeMouseListener extends MouseAdapter
     {
         /**
          * Handles mouse clicks in the tree
@@ -796,7 +794,7 @@ public class JFileExplorer extends JPanel
     /**
      * Inner class to give support for Roots ComboBox changes.
      */
-    private class ComboBoxAdapter implements ItemListener
+    private class FileRootItemListener implements ItemListener
     {
         /**
          * Called when an item state has changed
@@ -815,7 +813,7 @@ public class JFileExplorer extends JPanel
     /**
      * Inner class to give support for Tree selection events.
      */
-    private class TreeFolderAdapter implements TreeSelectionListener
+    private class DirTreeSelectionListener implements TreeSelectionListener
     {
         /**
          * Called when a selection has changed on the tree
@@ -847,6 +845,8 @@ public class JFileExplorer extends JPanel
             setFileList(folder);
             
             fireFolderSelected(folder);
+            
+            selectFolder(folder);
         }
     }
 }
