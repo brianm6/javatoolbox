@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -83,6 +82,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String   ATTR_LAF_THEME    = "lookandfeel.theme";
     private static final String   ATTR_SELECTED_TAB = "selectedtab";
     private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
+    private static final String   ATTR_LOG_LEVEL    = "loglevel";
     
     private static final String   NODE_PLUGIN       = "Plugin";
     private static final String     ATTR_CLASS      = "class";
@@ -154,6 +154,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     private LookAndFeelManager lafManager_;
 
+    /**
+     * Maps Log Level -> JCheckBoxMenuItem
+     */
+    private Map levelMap_;
+    
     //--------------------------------------------------------------------------
     // Main 
     //--------------------------------------------------------------------------
@@ -376,7 +381,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         plugins_ = new SequencedHashMap(); 
-        lafManager_ = new LookAndFeelManager();       
+        lafManager_ = new LookAndFeelManager();
+        levelMap_ = new HashMap();
     }
     
     /**
@@ -467,16 +473,25 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 		
 		ButtonGroup group = new ButtonGroup();
 		
-		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.ALL)));
-		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.DEBUG)));
-		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.INFO)));
-		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.WARN)));
-		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.ERROR)));
-		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.FATAL)));
-		group.add(new JSmartCheckBoxMenuItem(new SetLogLevelAction(Level.OFF)));
-
-		for (Enumeration e = group.getElements(); e.hasMoreElements();)
-		    fileMenu.add((Component) e.nextElement());
+		Level[] levels = new Level[]
+		{
+            Level.ALL, 
+            Level.DEBUG, 
+            Level.INFO, 
+            Level.ERROR, 
+            Level.FATAL, 
+            Level.OFF
+		};
+		
+		for (int i=0; i<levels.length; i++)
+		{
+		    JCheckBoxMenuItem cbmi =
+		    	new JSmartCheckBoxMenuItem(new SetLogLevelAction(levels[i]));
+		    
+		    levelMap_.put(levels[i], cbmi);
+			group.add(cbmi);
+			fileMenu.add(cbmi);
+		}
 		
 		return fileMenu;            
 	}
@@ -617,10 +632,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             new Attribute(
                 ATTR_SMOOTH_FONTS, 
                 smoothFontsCheckBoxItem_.isSelected()+""));
-
+        
+        // Save log level
+        root.addAttribute(new Attribute(
+            ATTR_LOG_LEVEL, Logger.getLogger("toolbox").getLevel().toString()));
+        
         // Save look and feel
         lafManager_.savePrefs(root);
-                
+        
         // Save loaded plugin prefs
         for (Iterator i = plugins_.values().iterator(); i.hasNext();)
         {
@@ -723,8 +742,20 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, 800),
             XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, 600));
 
+		Level level = 
+			Level.toLevel(
+		        XOMUtil.getStringAttribute(
+		            root, ATTR_LOG_LEVEL, 
+		                Logger.getLogger("toolbox").getLevel().toString()));
+
+		new SetLogLevelAction(level).actionPerformed(
+		    new ActionEvent(this, 1, ""));
+		
+		JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) levelMap_.get(level);
+		cbmi.setSelected(true);
+		
         lafManager_.selectOnMenu();
-    
+        
         if (root != null)
         {    
             // Iterate over the list of plugins. If the plugin has the 'loaded'
