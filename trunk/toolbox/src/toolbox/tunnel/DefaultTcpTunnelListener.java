@@ -22,6 +22,16 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
      */    
     private BlockingQueue started_ = new BlockingQueue();
 
+	/**
+	 * Total numver of bytes written through the tunnel.
+     */
+    private int totalBytesWritten_;
+
+    /**
+     * Total number of bytes read through the tunnel.
+     */
+    private int totalBytesRead_;
+
     //--------------------------------------------------------------------------
     // TcpTunnelListener Interface
     //--------------------------------------------------------------------------
@@ -42,6 +52,8 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
     public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
         int totalBytesRead)
     {
+        //logger_.debug("[bytesRead]" + connBytesRead + " " + totalBytesRead);
+        totalBytesRead_ = totalBytesRead;
     }
 
     
@@ -52,6 +64,8 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
     public void bytesWritten(TcpTunnel tunnel, int connBytesWritten,
         int totalBytesWritten)
     {
+        //logger_.debug("[bytesWritten]" + connBytesWritten + " " + totalBytesWritten);        
+        totalBytesWritten_ = totalBytesWritten;
     }
     
     
@@ -77,5 +91,27 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
     public TcpTunnel waitForStarted() throws InterruptedException
     {
         return (TcpTunnel) started_.pull();
+    }
+    
+    
+    /**
+     * Returns the totalBytesRead.
+     * 
+     * @return int
+     */
+    public int getTotalBytesRead()
+    {
+        return totalBytesRead_;
+    }
+    
+    
+    /**
+     * Returns the totalBytesWritten.
+     * 
+     * @return int
+     */
+    public int getTotalBytesWritten()
+    {
+        return totalBytesWritten_;
     }
 }
