@@ -30,7 +30,7 @@ public class IntSequenceTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Non-Repeating Unit Tests
+    // Non-Repeating Sequence Tests
     //--------------------------------------------------------------------------
     
     /**
@@ -91,8 +91,6 @@ public class IntSequenceTest extends TestCase
     /**
      * Tests nextValue(low, high, nonrepeating) where the range is a large
      * interval.
-     * 
-     * TODO: This method needs serious optimization!
      */
     public void testNextValueNonRepeatingMany() throws Exception
     {
@@ -147,9 +145,32 @@ public class IntSequenceTest extends TestCase
         
         assertFalse(sequence.hasMore());
     }
+
+    
+    /**
+     * Tests for throwing of SequenceEndedException.
+     */
+    public void testNextValueNonRepeatingEnded() throws Exception
+    {
+        logger_.info("Running testNextValueNonRepeatingEnded...");
+        
+        IntSequence gen = new IntSequence(1, 1, true);
+        List nums = new ArrayList();
+        
+        gen.nextValue();
+        
+        try
+        {
+            gen.nextValue();
+        }
+        catch (SequenceEndedException see)
+        {
+            logger_.info("SUCCESS: " + see.getMessage());
+        }
+    }
     
     //--------------------------------------------------------------------------
-    // Repeating Unit Tests
+    // Repeating Sequence Tests
     //--------------------------------------------------------------------------
 
     /**
@@ -205,7 +226,7 @@ public class IntSequenceTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Negative Unit Tests
+    // Bounds Testing
     //--------------------------------------------------------------------------
     
     /**
