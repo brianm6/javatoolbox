@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -216,6 +217,38 @@ public class Dumper
     }
 
     /**
+     * Recursively dumps an object
+     *
+     * @param   obj     Object to dump
+     * @param   buffer  Dump buffer
+     * @param   depth   Recursion depth
+     * @throws  IllegalAccessException if attribute/method not accessible
+     */
+    private void dump(String arrayField, Object[] array, StringBuffer buffer, String depth) 
+        throws IllegalAccessException
+    {
+        for (int i=0; i<array.length; i++)
+        {
+            buffer.append(depth);
+            buffer.append(BAR);
+            buffer.append(CR);
+            
+            buffer.append(depth);
+            buffer.append(JUNCTION);
+            buffer.append(ARM);
+            
+            buffer.append(arrayField + "[" + i + "]");
+            buffer.append(" = ");
+            buffer.append(array[i].toString());
+            buffer.append(CR);
+            
+            dump(array[i], buffer, depth + BAR);
+            
+        }
+    }
+
+
+    /**
      * Calls itself recursively. Gets all attributes of obj and dumps relevant
      * data.
      * 
@@ -280,6 +313,23 @@ public class Dumper
                             cache_.getInfo(value).getField().getName());
                         buffer.append(CR);
                     }
+                    else if (Collection.class.isAssignableFrom(type))
+                    {
+                        buffer.append("We got us a collection!");
+                        buffer.append(CR);
+                        
+                        Collection c = (Collection) value;
+                        
+                        dump(field.getName() ,c.toArray(), buffer, depth + BAR);
+                                                
+//                        int seq = 0;
+//                        for (Iterator it = c.iterator(); it.hasNext(); )
+//                        {
+//                            Object cobj = it.next();
+//                            dump(new Proxy(seq++, cobj), buffer, depth + BAR);
+//                        }
+                        
+                    }
                     else
                     {
                         ObjectInfo objInfo = cache_.getInfo(value);
@@ -299,6 +349,23 @@ public class Dumper
                     }
                 }
             }
+        }
+    }
+
+    class Proxy
+    {
+        private int seq_;
+        private Object obj_;
+        
+        public Proxy(int seq, Object obj)
+        {
+            seq_ = seq;
+            obj_ = obj;
+        }
+        
+        public String toString() 
+        {
+            return "Array[" + seq_ + "]";
         }
     }
 
