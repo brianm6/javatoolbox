@@ -11,18 +11,18 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.FixedWidthWriter;
 
 /**
- * Unit Test for FixedWidthWriter
+ * Unit test for FixedWidthWriter
  */
 public class FixedWidthWriterTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(FixedWidthWriterTest.class);
         
     /**
      * Entry point
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
