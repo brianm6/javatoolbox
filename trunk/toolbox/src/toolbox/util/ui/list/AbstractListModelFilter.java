@@ -5,12 +5,12 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 /**
- * Abstract filter class for list models
+ * Abstract filter class for list models.
  */
 public abstract class AbstractListModelFilter extends AbstractListModel
 {
     /** 
-     * Reference to the list model being filtered 
+     * Reference to the list model being filtered. 
      */
     private ListModel delegate_;
 
@@ -19,7 +19,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a list model filter with the given delegate
+     * Creates a list model filter with the given delegate.
      * 
      * @param delegate Reference to the model being filtered
      */
@@ -33,7 +33,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the delegate list model
+     * Returns the delegate list model.
      * 
      * @return ListModel
      */    
@@ -54,6 +54,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
         return delegate_.getSize();
     }
 
+
     /**
      * @see javax.swing.ListModel#getElementAt(int)
      */
@@ -61,6 +62,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     {
         return delegate_.getElementAt(index);
     }
+
 
     /**
      * @see javax.swing.ListModel#addListDataListener(
@@ -70,6 +72,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     {
         delegate_.addListDataListener(listener);
     }
+
     
     /**
      * @see javax.swing.ListModel#removeListDataListener(

@@ -18,7 +18,7 @@ import toolbox.util.ui.JSmartPopupMenu;
 public class JListPopupMenu extends JSmartPopupMenu
 {
     /**
-     * List that the popup menu is associated with
+     * List that the popup menu is associated with.
      */
     private JList list_;
     
@@ -27,7 +27,7 @@ public class JListPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JListPopupMenu
+     * Creates a JListPopupMenu.
      * 
      * @param list JList to add popup to
      */
@@ -36,8 +36,9 @@ public class JListPopupMenu extends JSmartPopupMenu
         this("", list);
     }
 
+
     /**
-     * Creates a JListPopupMenu
+     * Creates a JListPopupMenu.
      * 
      * @param label Popupmenu label
      * @param list JList to add popup to
@@ -54,7 +55,7 @@ public class JListPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * Builds popupmenu and adds mouse listener to listbox
+     * Builds popupmenu and adds mouse listener to listbox.
      */
     protected void buildView()
     {
@@ -68,7 +69,7 @@ public class JListPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
 
     /**
-     * Copies the contents of the currently selected indices to the clipboard
+     * Copies the contents of the currently selected indices to the clipboard.
      */    
     class CopyAction extends AbstractAction
     {
@@ -98,7 +99,7 @@ public class JListPopupMenu extends JSmartPopupMenu
     }
 
     /**
-     * Selects all items in the list box 
+     * Selects all items in the list box.
      */
     class SelectAllAction extends AbstractAction
     {

@@ -16,32 +16,32 @@ import javax.swing.border.Border;
 public class DynamicBevelBorder implements Border
 {
     /** 
-     * Raised bevel type
+     * Raised bevel type.
      */
     public static final int RAISED = 0;
     
     /**
-     * Lowered bebel type
+     * Lowered bebel type.
      */
     public static final int LOWERED = 1;
 
     /** 
-     * Type of bevel 
+     * Type of bevel. 
      */
     private int type_;
     
     /** 
-     * Thickness of the bevel border in pixels 
+     * Thickness of the bevel border in pixels. 
      */
     private int thickness_;
     
     /** 
-     * Hightlight color 
+     * Hightlight color.
      */
     private Color highlight_;
     
     /** 
-     * Shadow color 
+     * Shadow color.
      */
     private Color shadow_;
 
@@ -57,8 +57,9 @@ public class DynamicBevelBorder implements Border
         this(RAISED, 1, null, null);
     }
 
+
     /**
-     * Creates a DynamicBevelBorder of the given type (RAISED or LOWERED)
+     * Creates a DynamicBevelBorder of the given type (RAISED or LOWERED).
      * 
      * @param type Bevel type
      */
@@ -67,9 +68,10 @@ public class DynamicBevelBorder implements Border
         this(type, 1, null, null);
     }
 
+
     /**
      * Creates a DynamicBevelBorder of the given type (RAISED or LOWERED) and
-     * thickness
+     * thickness.
      * 
      * @param type Bevel type
      * @param thickness Border thickness in pixels
@@ -79,8 +81,9 @@ public class DynamicBevelBorder implements Border
         this(type, thickness, null, null);
     }
 
+
     /**
-     * Creates a DynamicBevelBorder with the given options
+     * Creates a DynamicBevelBorder with the given options.
      * 
      * @param type Bevel type
      * @param thickness Border thickiness in pixels
@@ -101,7 +104,7 @@ public class DynamicBevelBorder implements Border
     //--------------------------------------------------------------------------
     
     /**
-     * Determines the hightlight color for a given component
+     * Determines the hightlight color for a given component.
      * 
      * @param c Component being painted
      * @return Highlight color. If not specified, it is derived from the 
@@ -114,8 +117,9 @@ public class DynamicBevelBorder implements Border
         return highlight_;
     }
 
+
     /**
-     * Determines the shadow color for a given component
+     * Determines the shadow color for a given component.
      * 
      * @param c Component being painted
      * @return Shadow color. If not specified, it is derived from the component
@@ -139,6 +143,7 @@ public class DynamicBevelBorder implements Border
         return true;
     }
     
+    
     /**
      * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
      */
@@ -146,6 +151,7 @@ public class DynamicBevelBorder implements Border
     {
         return new Insets(thickness_, thickness_, thickness_, thickness_);
     }
+
 
     /**
      * @see javax.swing.border.Border#paintBorder(

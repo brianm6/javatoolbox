@@ -20,12 +20,12 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
         Logger.getLogger(SmartTabbedPaneUI.class);
         
     /**
-     * Bounds of the selected icon
+     * Bounds of the selected icon.
      */
     private Rectangle selectedIconRect_;
     
     /**
-     * Text position which defaults to LEFT (not the Icon position)
+     * Text position which defaults to LEFT (not the Icon position).
      */
     private int horizontalTextPosition_ = SwingUtilities.LEFT;
 
@@ -40,8 +40,9 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
     {
     }
 
+
     /**
-     * Creates a SmartTabbedPaneUI
+     * Creates a SmartTabbedPaneUI.
      * 
      * @param horTextPosition Horizontal text position. 
      *        Use SwingConstants.[LEFT|RIGHT]
@@ -56,7 +57,7 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the bounds of the selection icon
+     * Returns the bounds of the selection icon.
      * 
      * @return Rectangle
      */

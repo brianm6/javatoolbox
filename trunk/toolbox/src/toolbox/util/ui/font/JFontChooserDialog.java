@@ -51,7 +51,7 @@ public class JFontChooserDialog extends JDialog
     private JButton applyButton_;
     
     /**
-     * List of font chooser dialog listeners
+     * List of font chooser dialog listeners.
      */
     private List listeners_;
     
@@ -66,15 +66,16 @@ public class JFontChooserDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JFontChooserDialog
+     * Creates a JFontChooserDialog.
      */
     public JFontChooserDialog()
     {
         this(null);
     }
 
+
     /**
-     * Creates a JFontChooserDialog
+     * Creates a JFontChooserDialog.
      * 
      * @param owner Parent frame
      */
@@ -83,8 +84,9 @@ public class JFontChooserDialog extends JDialog
         this(owner, true);
     }
 
+
     /**
-     * Creates a JFontChooserDialog
+     * Creates a JFontChooserDialog.
      * 
      * @param owner Parent frame
      * @param modal Dialog is modal
@@ -94,8 +96,9 @@ public class JFontChooserDialog extends JDialog
         this(owner, "", modal);
     }
 
+
     /**
-     * Creates a JFontChooserDialog
+     * Creates a JFontChooserDialog.
      * 
      * @param owner Parent frame
      * @param modal Set to true for a model dialog
@@ -106,8 +109,9 @@ public class JFontChooserDialog extends JDialog
         this(owner, modal, defaultFont, false);
     }
 
+
     /**
-     * Creates a JFontChooserDialog
+     * Creates a JFontChooserDialog.
      * 
      * @param owner Parent frame
      * @param modal Set to true for a model dialog
@@ -122,8 +126,9 @@ public class JFontChooserDialog extends JDialog
         fontChooser_.setAntiAlias(antiAlias);
     }
 
+
     /**
-     * Creates a JFontChooserDialog
+     * Creates a JFontChooserDialog.
      * 
      * @param owner Parent frame
      * @param title Frame title
@@ -133,8 +138,9 @@ public class JFontChooserDialog extends JDialog
         this(owner, title, true);
     }
 
+
     /**
-     * Creates a JFontChooserDialog
+     * Creates a JFontChooserDialog.
      * 
      * @param owner Parent frame
      * @param title Frame title
@@ -146,8 +152,9 @@ public class JFontChooserDialog extends JDialog
         buildView();
     }
 
+
     /**
-     * Creates a JFontChooserDialog witha Dialog parent
+     * Creates a JFontChooserDialog witha Dialog parent.
      * 
      * @param owner Parent dialog
      * @param modal Set to true for a model dialog
@@ -168,7 +175,7 @@ public class JFontChooserDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
     protected void buildView()
     {
@@ -205,7 +212,7 @@ public class JFontChooserDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a listener
+     * Adds a listener.
      * 
      * @param listener FontChooserDialog listener to add
      */
@@ -214,8 +221,9 @@ public class JFontChooserDialog extends JDialog
         listeners_.add(listener);
     }
 
+
     /**
-     * Removes a listener
+     * Removes a listener.
      * 
      * @param listener FontChooserDialog listener to remove
      */
@@ -269,8 +277,9 @@ public class JFontChooserDialog extends JDialog
         }
     }
 
+
     /**
-     * Notifies listeners that the apply was selected
+     * Notifies listeners that the apply was selected.
      */
     class ApplyAction extends AbstractAction
     {
@@ -289,6 +298,7 @@ public class JFontChooserDialog extends JDialog
                     applyButtonPressed(fontChooser_);
         }
     }
+
 
     /**
      * Notifies listeners that cancel was selected and disposes of the

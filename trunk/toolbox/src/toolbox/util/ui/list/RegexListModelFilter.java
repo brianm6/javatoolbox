@@ -13,7 +13,7 @@ import toolbox.util.StringUtil;
 
 /**
  * A ListModel that filters the text contents based on matching a regular 
- * expression
+ * expression.
  */
 public class RegexListModelFilter extends AbstractListModelFilter
 {
@@ -21,27 +21,27 @@ public class RegexListModelFilter extends AbstractListModelFilter
         Logger.getLogger(RegexListModelFilter.class);
 
     /**
-     * Default regular expression is to match all
+     * Default regular expression is to match all.
      */    
     public static final String MATCH_ALL = ".*";
     
     /**
-     * Collection of indices that pass the filtering criteria
+     * Collection of indices that pass the filtering criteria.
      */
     private List indexList_ = new ArrayList();
 
     /**
-     * Regular expression used to filter list contents
+     * Regular expression used to filter list contents.
      */
     private String regex_;
     
     /** 
-     * Flag to make the regular expression matcher case sensetive
+     * Flag to make the regular expression matcher case sensetive.
      */
     private boolean matchCase_;
     
     /** 
-     * Regular expression matcher
+     * Regular expression matcher.
      */
     private RE matcher_;
 
@@ -51,7 +51,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a RegexListModelFilter
+     * Creates a RegexListModelFilter.
      * 
      * @param delegate List model to filter
      */
@@ -62,7 +62,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
 
     
     /**
-     * Creates a RegexListModelFilter
+     * Creates a RegexListModelFilter.
      * 
      * @param delegate List model to filter
      * @param regex Regular expression
@@ -74,7 +74,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
 
     
     /**
-     * Creates a RegexListModelFilter
+     * Creates a RegexListModelFilter.
      * 
      * @param delegate List model to filter
      * @param regex Regular expression
@@ -87,15 +87,13 @@ public class RegexListModelFilter extends AbstractListModelFilter
         matchCase_ = matchCase;        
         setRegex(regex);
     }
-
     
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
     
-    
     /**
-     * Sets the regular expression to filter on   
+     * Sets the regular expression to filter on.   
      * 
      * @param regex Regular expression
      */
@@ -141,7 +139,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
 
     
     /**
-     * Returns the regular expression used to filter the list contents
+     * Returns the regular expression used to filter the list contents.
      * 
      * @return Regular expression
      */
@@ -153,10 +151,9 @@ public class RegexListModelFilter extends AbstractListModelFilter
     //--------------------------------------------------------------------------
     // Overrides AbstractListModelFilter
     //--------------------------------------------------------------------------
-
     
     /**
-     * Returns the size of the filtered model
+     * Returns the size of the filtered model.
      * 
      * @return size
      */
@@ -168,7 +165,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
 
     
     /**
-     * Gets an element at a given zero based index
+     * Gets an element at a given zero based index.
      * 
      * @param index Index of element to retrieve
      * @return Element at specifiec index

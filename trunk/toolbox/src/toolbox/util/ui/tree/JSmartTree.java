@@ -24,7 +24,7 @@ import toolbox.util.ui.AntiAliased;
 public class JSmartTree extends JTree implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
     
@@ -39,6 +39,7 @@ public class JSmartTree extends JTree implements AntiAliased
     {
     }
 
+
     /**
      * Creates a JSmartTree.
      * 
@@ -48,6 +49,7 @@ public class JSmartTree extends JTree implements AntiAliased
     {
         super(value);
     }
+
 
     /**
      * Creates a JSmartTree.
@@ -59,6 +61,7 @@ public class JSmartTree extends JTree implements AntiAliased
         super(value);
     }
 
+
     /**
      * Creates a JSmartTree.
      * 
@@ -68,6 +71,7 @@ public class JSmartTree extends JTree implements AntiAliased
     {
         super(value);
     }
+
 
     /**
      * Creates a JSmartTree.
@@ -79,6 +83,7 @@ public class JSmartTree extends JTree implements AntiAliased
         super(newModel);
     }
 
+
     /**
      * Creates a JSmartTree.
      * 
@@ -88,6 +93,7 @@ public class JSmartTree extends JTree implements AntiAliased
     {
         super(root);
     }
+
 
     /**
      * Creates a JSmartTree.
@@ -111,6 +117,7 @@ public class JSmartTree extends JTree implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

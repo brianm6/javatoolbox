@@ -14,17 +14,17 @@ import javax.swing.Icon;
 class SmartTabbedPaneIcon implements Icon
 {
     /**
-     * X position
+     * X position.
      */
     private int x_;
 
     /**
-     * Y position
+     * Y position.
      */
     private int y_;
 
     /**
-     * Icon being wrapped
+     * Icon being wrapped.
      */
     private Icon icon_;
 
@@ -33,7 +33,7 @@ class SmartTabbedPaneIcon implements Icon
     //--------------------------------------------------------------------------
 
     /***
-     * Creates a SmartTabbedPaneIcon
+     * Creates a SmartTabbedPaneIcon.
      * 
      * @param icon Icon to wrap
      */
@@ -59,6 +59,7 @@ class SmartTabbedPaneIcon implements Icon
             icon_.paintIcon(c, g, x, y);
     }
 
+
     /**
      * @see javax.swing.Icon#getIconWidth()
      */
@@ -66,6 +67,7 @@ class SmartTabbedPaneIcon implements Icon
     {
         return icon_.getIconWidth();
     }
+
 
     /**
      * @see javax.swing.Icon#getIconHeight()

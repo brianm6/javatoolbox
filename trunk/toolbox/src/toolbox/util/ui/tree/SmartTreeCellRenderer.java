@@ -18,7 +18,7 @@ public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
     implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -27,7 +27,7 @@ public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SmartTreeCellRenderer
+     * Creates a SmartTreeCellRenderer.
      */
     public SmartTreeCellRenderer()
     {

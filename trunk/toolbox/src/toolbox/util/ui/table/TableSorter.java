@@ -80,7 +80,7 @@ public class TableSorter extends TableMap
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TableSorter
+     * Creates a TableSorter.
      */
     public TableSorter()
     {
@@ -88,8 +88,9 @@ public class TableSorter extends TableMap
         init();        
     }
     
+    
     /**
-     * Creates a TableSorter for the given TableModel
+     * Creates a TableSorter for the given TableModel.
      * 
      * @param model Model to provide a sorted view of
      */
@@ -104,7 +105,7 @@ public class TableSorter extends TableMap
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the model
+     * Sets the model.
      * 
      * @param model Table model
      */
@@ -114,8 +115,9 @@ public class TableSorter extends TableMap
         reallocateIndexes();
     }
 
+
     /**
-     * Gets table cell value
+     * Gets table cell value.
      * 
      * @param row Row number
      * @param column Column number
@@ -130,8 +132,9 @@ public class TableSorter extends TableMap
         return getModel().getValueAt(indexes_[row], column);
     }
     
+    
     /**
-     * Sets table cell value
+     * Sets table cell value.
      * 
      * @param value Cell value
      * @param row Row number
@@ -148,7 +151,7 @@ public class TableSorter extends TableMap
     //--------------------------------------------------------------------------
     
     /**
-     * Notification that the table model has changed
+     * Notification that the table model has changed.
      * 
      * @param e Table model event
      */
@@ -170,7 +173,7 @@ public class TableSorter extends TableMap
     //--------------------------------------------------------------------------
     
     /**
-     * Sorts by the given column
+     * Sorts by the given column.
      * 
      * @param column Column index
      */
@@ -179,8 +182,9 @@ public class TableSorter extends TableMap
         sortByColumn(column, true);
     }
     
+    
     /**
-     * Sorts by the given column
+     * Sorts by the given column.
      * 
      * @param column Column index
      * @param ascending Sort ascending
@@ -195,8 +199,9 @@ public class TableSorter extends TableMap
         super.tableChanged(new TableModelEvent(this));
     }
 
+
     /**
-     * Shortcut to add mouse listener to the jtables internal table header
+     * Shortcut to add mouse listener to the jtables internal table header.
      * 
      * @param table Table with header
      */    
@@ -213,6 +218,7 @@ public class TableSorter extends TableMap
         th.setDefaultRenderer(createDefaultRenderer());
     }
 
+
     /**
      * Returns true if sorter is enabled, false otherwise.
      * 
@@ -222,6 +228,7 @@ public class TableSorter extends TableMap
     {
         return enabled_;
     }
+
 
     /**
      * Sets the enabled state of the table sorder.
@@ -238,7 +245,7 @@ public class TableSorter extends TableMap
     //--------------------------------------------------------------------------
     
     /**
-     * Initializes the TableSorter fields and icons
+     * Initializes the TableSorter fields and icons.
      */
     protected void init()
     {
@@ -251,8 +258,9 @@ public class TableSorter extends TableMap
         reverseSortIcon_ = ImageCache.getIcon(ImageCache.IMAGE_SORT_DESCENDING);
     }
 
+
     /**
-     * Compares rows by column
+     * Compares rows by column.
      * 
      * @param row1 First row index
      * @param row2 Second row index
@@ -361,8 +369,9 @@ public class TableSorter extends TableMap
         }
     }
     
+    
     /**
-     * Compares two rows
+     * Compares two rows.
      * 
      * @param row1 First row index
      * @param row2 Second row index
@@ -383,8 +392,9 @@ public class TableSorter extends TableMap
         return 0;
     }
     
+    
     /**
-     * Reallocates the indexes because of a possible change in the table model
+     * Reallocates the indexes because of a possible change in the table model.
      */
     protected void reallocateIndexes()
     {
@@ -399,6 +409,7 @@ public class TableSorter extends TableMap
             indexes_[row] = row;
     }
 
+
     /**
      * Checks that the table sorder index is in sync with the model of the
      * original table.
@@ -411,9 +422,10 @@ public class TableSorter extends TableMap
                 logger_.error("Sorter not informed of a change in model.");
         }
     }
+
     
     /**
-     * Sorts the table
+     * Sorts the table.
      * 
      * @param sender Initiater of the sort (currently unused)
      */
@@ -428,8 +440,9 @@ public class TableSorter extends TableMap
         logger_.debug("Sorting...compares=" + compares_);
     }
 
+
     /**
-     * Implementation of a fast sorting strategy
+     * Implementation of a fast sorting strategy.
      * 
      * @param from Source
      * @param to Destination
@@ -495,8 +508,9 @@ public class TableSorter extends TableMap
         }
     }
 
+
     /**
-     * Swaps two indices in the indexes_ array
+     * Swaps two indices in the indexes_ array.
      *
      * @param i First index
      * @param j Second index
@@ -508,8 +522,9 @@ public class TableSorter extends TableMap
         indexes_[j] = tmp;
     }
 
+
     /**
-     * Returns the table header cell renderer
+     * Returns the table header cell renderer.
      * 
      * @return TableCellRenderer
      */    
@@ -527,7 +542,7 @@ public class TableSorter extends TableMap
     //--------------------------------------------------------------------------
     
     /**
-     * Listens for mouse clicks on the table header cells to trigger sorting 
+     * Listens for mouse clicks on the table header cells to trigger sorting. 
      */
     final class SortingMouseListener extends MouseAdapter
     {
@@ -550,6 +565,7 @@ public class TableSorter extends TableMap
             tableView_.getTableHeader().repaint();
         }
     }
+    
     
     /**
      * Renders the ascending/descending sort direction graphic in the table

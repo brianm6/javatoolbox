@@ -11,11 +11,12 @@ import java.awt.Component;
 public interface StatusArea
 {
     /**
-     * Returns true if the width is relative (variable), false otherwise
+     * Returns true if the width is relative (variable), false otherwise.
      * 
      * @return boolean
      */
     public boolean isRelativeWidth();
+    
     
     /**
      * Returns the required width of the given component.

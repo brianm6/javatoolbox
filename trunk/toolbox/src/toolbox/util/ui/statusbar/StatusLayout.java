@@ -16,7 +16,7 @@ import java.util.Map;
 public class StatusLayout extends AbstractLayout
 {
     /**
-     * Table of component -> constraints
+     * Maps a component -> constraints.
      */
     private Map table_ = new HashMap();
 
@@ -25,15 +25,16 @@ public class StatusLayout extends AbstractLayout
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a StatusLayout
+     * Creates a StatusLayout.
      */    
     public StatusLayout()
     {
         this(0,0);
     }
 
+
     /**
-     * Creates a StatusLayout with the given gaps
+     * Creates a StatusLayout with the given gaps.
      * 
      * @param hgap Horizontal gap
      * @param vgap Vertical gap
@@ -56,10 +57,12 @@ public class StatusLayout extends AbstractLayout
         table_.put(comp, constraints);
     }
 
+
     public void removeLayoutComponent(Component comp)
     {
         table_.remove(comp);
     }
+
 
     public Dimension minimumLayoutSize(Container parent)
     {
@@ -86,6 +89,7 @@ public class StatusLayout extends AbstractLayout
             height + insets.top + insets.bottom);
     }
 
+
     public Dimension preferredLayoutSize(Container parent)
     {
         Insets insets = parent.getInsets();
@@ -110,6 +114,7 @@ public class StatusLayout extends AbstractLayout
             width + insets.left + insets.right,
             height + insets.top + insets.bottom);
     }
+
 
     public void layoutContainer(Container parent)
     {

@@ -27,7 +27,7 @@ import toolbox.util.ui.AntiAliased;
 public class JSmartTable extends JTable implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
     
@@ -43,6 +43,7 @@ public class JSmartTable extends JTable implements AntiAliased
         setTableHeader(new JSmartTableHeader());        
     }
 
+
     /**
      * Creates a JSmartTable.
      * 
@@ -55,6 +56,7 @@ public class JSmartTable extends JTable implements AntiAliased
         setTableHeader(new JSmartTableHeader());
     }
 
+
     /**
      * Creates a JSmartTable.
      * 
@@ -65,6 +67,7 @@ public class JSmartTable extends JTable implements AntiAliased
         super(dm);
         setTableHeader(new JSmartTableHeader());
     }
+
 
     /**
      * Creates a JSmartTable.
@@ -78,6 +81,7 @@ public class JSmartTable extends JTable implements AntiAliased
         setTableHeader(new JSmartTableHeader());
     }
 
+
     /**
      * Creates a JSmartTable.
      * 
@@ -90,6 +94,7 @@ public class JSmartTable extends JTable implements AntiAliased
         setTableHeader(new JSmartTableHeader());
     }
 
+
     /**
      * Creates a JSmartTable.
      * 
@@ -101,6 +106,7 @@ public class JSmartTable extends JTable implements AntiAliased
         super(dm, cm);
         setTableHeader(new JSmartTableHeader(cm));
     }
+
 
     /**
      * Creates a JSmartTable.
@@ -123,11 +129,10 @@ public class JSmartTable extends JTable implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Initializes the table
+     * Initializes the table.
      */
     protected void init()
     {
-
     }
     
     //--------------------------------------------------------------------------

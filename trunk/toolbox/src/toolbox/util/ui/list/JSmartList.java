@@ -19,7 +19,7 @@ import toolbox.util.ui.AntiAliased;
 public class JSmartList extends JList implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -28,14 +28,15 @@ public class JSmartList extends JList implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartList
+     * Creates a JSmartList.
      */
     public JSmartList()
     {
     }
 
+
     /**
-     * Creates a JSmartList
+     * Creates a JSmartList.
      * 
      * @param listData List entries
      */
@@ -44,8 +45,9 @@ public class JSmartList extends JList implements AntiAliased
         super(listData);
     }
 
+
     /**
-     * Creates a JSmartList
+     * Creates a JSmartList.
      * 
      * @param listData List entries
      */
@@ -54,8 +56,9 @@ public class JSmartList extends JList implements AntiAliased
         super(listData);
     }
 
+
     /**
-     * Creates a JSmartList
+     * Creates a JSmartList.
      * 
      * @param dataModel List model
      */
@@ -75,6 +78,7 @@ public class JSmartList extends JList implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

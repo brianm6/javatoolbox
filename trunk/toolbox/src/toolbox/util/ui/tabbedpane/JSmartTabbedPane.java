@@ -33,12 +33,12 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
         Logger.getLogger(JSmartTabbedPane.class);
     
     /**
-     * Listeners
+     * Listeners.
      */
     private SmartTabbedPaneListener[] listeners_;
 
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -47,7 +47,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartTabbedPane
+     * Creates a JSmartTabbedPane.
      */
     public JSmartTabbedPane()
     {
@@ -56,8 +56,9 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
         listeners_ = new SmartTabbedPaneListener[0];
     }
 
+
     /**
-     * Creates a JSmartTabbedPane
+     * Creates a JSmartTabbedPane.
      * 
      * @param tabPlacement Tab placement
      */
@@ -69,8 +70,9 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
         listeners_ = new SmartTabbedPaneListener[0];
     }
 
+
     /**
-     * Creates a JSmartTabbedPane
+     * Creates a JSmartTabbedPane.
      * 
      * @param tabPlacement Tab placement
      * @param tabLayoutPolicy Tab layout policy
@@ -100,7 +102,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     //--------------------------------------------------------------------------
     
     /***
-     * Adds a tab to the last position in the tabbed pane
+     * Adds a tab to the last position in the tabbed pane.
      * 
      * @param title Tab title
      * @param component Component to embed in the tab panel
@@ -116,7 +118,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a tabbed pane listener
+     * Adds a tabbed pane listener.
      * 
      * @param listener Listener to add
      */
@@ -126,8 +128,9 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
             (SmartTabbedPaneListener[]) ArrayUtil.add(listeners_, listener);
     }
 
+
     /**
-     * Removes a tabbed pane listener
+     * Removes a tabbed pane listener.
      * 
      * @param listener Listener to remove
      */
@@ -136,6 +139,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
         listeners_ = 
             (SmartTabbedPaneListener[]) ArrayUtil.remove(listeners_, listener);
     }
+
 
     /**
      * Fires notification to all listeners that a tab is about to be close
@@ -161,6 +165,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

@@ -6,7 +6,7 @@ package toolbox.util.ui.font;
 public interface IFontChooserListener
 {   
     /**
-     * Font selection has changed
+     * Font selection has changed.
      */
     public void fontChanged();
 }

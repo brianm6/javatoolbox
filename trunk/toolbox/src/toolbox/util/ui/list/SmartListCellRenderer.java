@@ -18,7 +18,7 @@ public class SmartListCellRenderer extends DefaultListCellRenderer
     implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -27,7 +27,7 @@ public class SmartListCellRenderer extends DefaultListCellRenderer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SmartListCellRenderer 
+     * Creates a SmartListCellRenderer. 
      */
     public SmartListCellRenderer()
     {
@@ -44,6 +44,7 @@ public class SmartListCellRenderer extends DefaultListCellRenderer
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

@@ -6,7 +6,7 @@ import toolbox.util.ui.list.JSmartList;
 
 /**
  * Represents a list of the four font styles: plain, bold, italic, and bold 
- * italic
+ * italic.
  */
 public class FontStyleList extends JSmartList
 {
@@ -16,7 +16,7 @@ public class FontStyleList extends JSmartList
     
     /**
      * Construct a new FontStyleList, using the supplied values for style
-     * display names
+     * display names.
      * 
      * @param styleDisplayNames   
      * 
@@ -38,7 +38,7 @@ public class FontStyleList extends JSmartList
     //--------------------------------------------------------------------------
     
     /**
-     * Returns currently selected font style
+     * Returns currently selected font style.
      * 
      * @return currently selected font style
      * @throws FontChooserException thrown if no font style is currently 
@@ -61,6 +61,7 @@ public class FontStyleList extends JSmartList
                     "No font style is currently selected");
         }
     }
+    
     
     /**
      * Change the currently selected style in this FontStyleList
@@ -96,7 +97,7 @@ public class FontStyleList extends JSmartList
     //--------------------------------------------------------------------------
     
     /**
-     * Validates style display names
+     * Validates style display names.
      * 
      * @param styleDisplayNames Style display names
      * @return String array

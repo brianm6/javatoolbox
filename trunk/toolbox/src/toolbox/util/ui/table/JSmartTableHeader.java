@@ -18,7 +18,7 @@ import toolbox.util.ui.AntiAliased;
 public class JSmartTableHeader extends JTableHeader implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
     
@@ -27,14 +27,15 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartTableHeader 
+     * Creates a JSmartTableHeader. 
      */
     public JSmartTableHeader()
     {
     }
 
+
     /**
-     * Creates a JSmartTableHeader
+     * Creates a JSmartTableHeader.
      * 
      * @param cm Column model
      */

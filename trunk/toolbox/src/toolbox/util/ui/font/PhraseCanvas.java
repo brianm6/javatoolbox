@@ -29,10 +29,10 @@ public class PhraseCanvas extends JComponent
      * Constructs a new PhraseCanvas with the supplied phrase, font, and 
      * color.
      * 
-     * @param  phrase     Phrase to be displayed in this PhraseCanvas
-     * @param  font       Font to use when rendering the phrase
-     * @param  color      Color to use when rendering the phrase
-     * @param  antiAlias  Antialias fonts
+     * @param phrase Phrase to be displayed in this PhraseCanvas
+     * @param font Font to use when rendering the phrase
+     * @param color Color to use when rendering the phrase
+     * @param antiAlias Antialias fonts
      */
     public PhraseCanvas(String phrase, Font font, Color color, 
         boolean antiAlias)
@@ -48,9 +48,9 @@ public class PhraseCanvas extends JComponent
     //--------------------------------------------------------------------------
 
     /** 
-     * Paints font
+     * Paints font.
      * 
-     * @param g  Graphics
+     * @param g Graphics
      */
     public void paint(Graphics g)
     {
@@ -119,9 +119,9 @@ public class PhraseCanvas extends JComponent
     /** 
      * Sets the phrase to be rendered by this PhraseCanvas.
      * 
-     * @param   phrase  New phrase to be rendered by this PhraseCanvas;
-     *                  this new value will be rendered the next time 
-     *                  {@link #paint(java.awt.Graphics)} is called 
+     * @param phrase New phrase to be rendered by this PhraseCanvas; this new 
+     *        value will be rendered the next time 
+     *        {@link #paint(java.awt.Graphics)} is called. 
      */
     public void setPhrase(String phrase)
     {
@@ -143,10 +143,9 @@ public class PhraseCanvas extends JComponent
     /**
      * Sets the font to use when rendering the phrase.
      * 
-     * @param   font    New font to use when rendering the phrase;
-     *                  this new value will be used to render the phrase 
-     *                  the next time {@link #paint(java.awt.Graphics)} 
-     *                  is called 
+     * @param font New font to use when rendering the phrase;
+     *        this new value will be used to render the phrase 
+     *        the next time {@link #paint(java.awt.Graphics)} is called 
      */
     public void setFont(Font font)
     {
@@ -168,10 +167,9 @@ public class PhraseCanvas extends JComponent
     /** 
      * Sets the color to use when rendering the phrase.
      * 
-     * @param   color   New color to use when rendering the phrase;
-     *                  this new value will be used to render the phrase 
-     *                  the next time {@link #paint(java.awt.Graphics)} 
-     *                  is called 
+     * @param color New color to use when rendering the phrase;
+     *        this new value will be used to render the phrase 
+     *        the next time {@link #paint(java.awt.Graphics)} is called 
      */
     public void setColor(Color color)
     {
@@ -194,10 +192,10 @@ public class PhraseCanvas extends JComponent
     /** 
      * Turn anti-aliasing on or off.
      * 
-     * @param antiAlias    Whether or not to use anti-aliasing when 
-     *                     rendering the phrase this new value will be used 
-     *                     to render the phrase the next time 
-     *                     {@link #paint(java.awt.Graphics)} is called 
+     * @param antiAlias Whether or not to use anti-aliasing when 
+     *        rendering the phrase this new value will be used 
+     *        to render the phrase the next time 
+     *        {@link #paint(java.awt.Graphics)} is called 
      */
     public void setAntiAlias(boolean antiAlias)
     {

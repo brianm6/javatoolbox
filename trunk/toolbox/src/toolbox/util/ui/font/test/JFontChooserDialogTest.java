@@ -28,7 +28,7 @@ public class JFontChooserDialogTest extends TestCase
     /**
      * Entry point
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      * @throws Exception on LAF error
      */
     public static void main(String[] args) throws Exception
@@ -42,7 +42,7 @@ public class JFontChooserDialogTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the JFontChooserDialog
+     * Tests the JFontChooserDialog.
      */
     public void testJFontChooserDialog()
     {

@@ -15,7 +15,7 @@ public class SmartListModel extends DefaultListModel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SmartListModel
+     * Creates a SmartListModel.
      */
     public SmartListModel()
     {
@@ -26,7 +26,7 @@ public class SmartListModel extends DefaultListModel
     //--------------------------------------------------------------------------
     
     /**
-     * Adds an element to the list model
+     * Adds an element to the list model.
      * 
      * @param obj Object to add to the list model
      */
@@ -49,18 +49,18 @@ public class SmartListModel extends DefaultListModel
     //--------------------------------------------------------------------------
     
     /**
-     * Runnable which adds an element to the model on the event dispatch thread
+     * Runnable which adds an element to the model on the event dispatch thread.
      */    
     class AddElement implements Runnable
     {
         /** 
-         * Element to add to the model 
+         * Element to add to the model.
          */   
         private Object element_;
 
 
         /**
-         * Creates AddElement
+         * Creates AddElement.
          * 
          * @param element Element to add to the model
          */
@@ -71,7 +71,7 @@ public class SmartListModel extends DefaultListModel
         
         
         /**
-         * Adds the element to the model
+         * Adds the element to the model.
          */
         public void run()
         {

@@ -11,12 +11,12 @@ import java.awt.Component;
 public class StatusConstraint implements StatusArea
 {
     /** 
-     * Flag for relative layout 
+     * Flag for relative layout. 
      */
     private boolean relative_;
     
     /** 
-     * Required width (implies fixed width) 
+     * Required width (implies fixed width). 
      */
     private float width_;
 
@@ -25,15 +25,16 @@ public class StatusConstraint implements StatusArea
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a StatusConstraint with the defaults of FIXED and a width of 1
+     * Creates a StatusConstraint with the defaults of FIXED and a width of 1.
      */
     public StatusConstraint()
     {
         this(JStatusBar.FIXED, 1);
     }
 
+
     /**
-     * Creates a StatusConstraint with the given width
+     * Creates a StatusConstraint with the given width.
      * 
      * @param width Width of the constraint
      */
@@ -42,8 +43,9 @@ public class StatusConstraint implements StatusArea
         this(JStatusBar.RELATIVE, width);
     }
 
+
     /**
-     * Creates a StatusConstraint setting the relative flag
+     * Creates a StatusConstraint setting the relative flag.
      * 
      * @param relative True if constraint is to be variable width, false
      *        otherwise.
@@ -53,8 +55,9 @@ public class StatusConstraint implements StatusArea
         this(relative, 1);
     }
 
+
     /**
-     * Creates a StatusConstraint with the given width and relative setting
+     * Creates a StatusConstraint with the given width and relative setting.
      * 
      * @param relative True if the constraint is to be variable width
      * @param width Width of the constraint
@@ -76,6 +79,7 @@ public class StatusConstraint implements StatusArea
     {
         return relative_;
     }
+
 
     /**
      * @see toolbox.util.ui.statusbar.StatusArea#

@@ -14,12 +14,12 @@ import java.awt.LayoutManager2;
 public abstract class AbstractLayout implements LayoutManager2
 {
     /** 
-     * Horizonal gap between components 
+     * Horizonal gap between components. 
      */
     private int hgap_;
     
     /** 
-     * Vertical gap between components 
+     * Vertical gap between components.
      */
     private int vgap_;
 
@@ -35,6 +35,7 @@ public abstract class AbstractLayout implements LayoutManager2
     {
         this(0, 0);
     }
+
 
     /**
      * Creates an AbstractLayout.
@@ -62,6 +63,7 @@ public abstract class AbstractLayout implements LayoutManager2
         return hgap_;
     }
 
+
     /**
      * Returns the vertical gap between components.
      * 
@@ -72,6 +74,7 @@ public abstract class AbstractLayout implements LayoutManager2
         return vgap_;
     }
 
+
     /**
      * Set the horizontal gap between components.
      * 
@@ -81,6 +84,7 @@ public abstract class AbstractLayout implements LayoutManager2
     {
         hgap_ = gap;
     }
+
 
     /**
      * Set the vertical gap between components.
@@ -110,6 +114,7 @@ public abstract class AbstractLayout implements LayoutManager2
         addLayoutComponent(comp, name);
     }
 
+
     /**
      * Add the specified component from the layout.
      * By default, we let the Container handle this directly.
@@ -131,6 +136,7 @@ public abstract class AbstractLayout implements LayoutManager2
     {
     }
 
+
     /**
      * Invalidates the layout, indicating that if the layout
      * manager has cached information it should be discarded.
@@ -138,6 +144,7 @@ public abstract class AbstractLayout implements LayoutManager2
     public void invalidateLayout(Container target)
     {
     }
+
 
     /**
      * Returns the maximum dimensions for this layout given
@@ -150,6 +157,7 @@ public abstract class AbstractLayout implements LayoutManager2
     {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
+
 
     /**
      * Returns the alignment along the x axis. This specifies how
@@ -165,6 +173,7 @@ public abstract class AbstractLayout implements LayoutManager2
     {
         return 0.5f;
     }
+
 
     /**
      * Returns the alignment along the y axis. This specifies how
@@ -186,7 +195,7 @@ public abstract class AbstractLayout implements LayoutManager2
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the string representation of the layout manager
+     * Returns the string representation of the layout manager.
      * 
      * @return String
      */

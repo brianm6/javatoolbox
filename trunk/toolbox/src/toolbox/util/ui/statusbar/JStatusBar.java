@@ -18,7 +18,7 @@ public class JStatusBar extends JPanel
 {
     /** 
      * Statusbar component that size is adjusted relative to the contents and
-     * space availability on the status bar
+     * space availability on the status bar.
      */
     public static final boolean RELATIVE = true;
     
@@ -33,7 +33,7 @@ public class JStatusBar extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JStatusBar
+     * Creates a JStatusBar.
      */
     public JStatusBar()
     {
@@ -50,15 +50,18 @@ public class JStatusBar extends JPanel
         add(wrapBorder(component), new StatusConstraint());
     }
 
+
     public void addStatusComponent(JComponent component, int width)
     {
         add(wrapBorder(component), new StatusConstraint(width));
     }
 
+
     public void addStatusComponent(JComponent component, boolean relative)
     {
         add(wrapBorder(component), new StatusConstraint(relative));
     }
+
 
     public void addStatusComponent(JComponent component, boolean relative, 
         float width)
