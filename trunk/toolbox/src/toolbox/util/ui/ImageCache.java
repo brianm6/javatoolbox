@@ -24,6 +24,7 @@ public class ImageCache
     private static final String ROOT = "/toolbox/util/ui/images/";
     
     // Images
+    public static final String IMAGE_BAR_CHART     = ROOT + "BarChart.png";
     public static final String IMAGE_BRACES        = ROOT + "Braces.png";
     public static final String IMAGE_CLEAR         = ROOT + "Clear.png";
     public static final String IMAGE_COLUMNS       = ROOT + "Columns.png";

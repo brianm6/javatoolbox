@@ -357,7 +357,7 @@ public class JSourceView extends JPanel implements IPreferenced
     {
         setLayout(new BorderLayout());
         
-        dirField_ = new JSmartTextField(25);
+        dirField_ = new JSmartTextField(35);
         goButton_ = new JSmartButton();
         pickDirButton_ = new JSmartButton(new PickDirectoryAction());
         
@@ -403,13 +403,13 @@ public class JSourceView extends JPanel implements IPreferenced
         
         JButton pieChart = 
             JHeaderPanel.createButton(
-                ImageCache.getIcon(ImageCache.IMAGE_DATASOURCE),
+                ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
                 "Show Pie Chart", 
                 new ShowPieChartAction());
         
         JButton save =
             JHeaderPanel.createButton(
-                ImageCache.getIcon(ImageCache.IMAGE_SAVEAS),
+                ImageCache.getIcon(ImageCache.IMAGE_SAVE),
                 "Save results",
                 new SaveResultsAction());
         
