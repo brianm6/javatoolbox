@@ -92,7 +92,7 @@ public class WrappingWriter extends Writer
     /**
      * Creates a wrapping writer with default with of <code>DEFAULT_WIDTH</code>
      * 
-     * @param  writer  Writer to decorate
+     * @param writer Writer to decorate
      */ 
     public WrappingWriter(Writer writer)
     {
@@ -104,8 +104,8 @@ public class WrappingWriter extends Writer
      * Creates a wrapping writer with the given width and no prefix/suffix
      * decorators
      * 
-     * @param  writer  Writer to decorate
-     * @param  width   Number of characters after which a line will be wrapped
+     * @param writer Writer to decorate
+     * @param width Number of characters after which a line will be wrapped
      */ 
     public WrappingWriter(Writer writer, int width)
     {
@@ -116,10 +116,10 @@ public class WrappingWriter extends Writer
     /**
      * Creates a wrapping writer
      * 
-     * @param  writer  Writer to decorate
-     * @param  width   Number of characters after which a line will be wrapped
-     * @param  prefix  Decorator prepended to beginning of each line
-     * @param  suffix  Decorator appended to the end of each line
+     * @param writer Writer to decorate
+     * @param width Number of characters after which a line will be wrapped
+     * @param prefix Decorator prepended to beginning of each line
+     * @param suffix Decorator appended to the end of each line
      */ 
     public WrappingWriter(Writer writer, int width, String prefix,String suffix)
     {
@@ -139,16 +139,16 @@ public class WrappingWriter extends Writer
     }
 
     //--------------------------------------------------------------------------
-    //  Overriden from java.io.OutputStream
+    // Overrides java.io.OutputStream
     //--------------------------------------------------------------------------
 
     /**
      * Write a portion of an array of characters.
      *
-     * @param   cbuf  Array of characters
-     * @param   off   Offset from which to start writing characters
-     * @param   len   Number of characters to write
-     * @throws  IOException if an I/O error occurs
+     * @param cbuf Array of characters
+     * @param off Offset from which to start writing characters
+     * @param len Number of characters to write
+     * @throws IOException if an I/O error occurs
      */
     public void write(char cbuf[], int off, int len) throws IOException
     {
@@ -182,7 +182,7 @@ public class WrappingWriter extends Writer
      * byte stream, flush it.  Thus one flush() invocation will flush all the
      * buffers in a chain of Writers and OutputStreams.
      *
-     * @throws  IOException if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     public void flush() throws IOException
     {   
@@ -195,7 +195,7 @@ public class WrappingWriter extends Writer
      * further write() or flush() invocations will cause an IOException to be
      * thrown.  Closing a previously-closed stream, however, has no effect.
      *
-     * @throws  IOException if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     public void close() throws IOException
     {
@@ -207,7 +207,7 @@ public class WrappingWriter extends Writer
     }
     
     //--------------------------------------------------------------------------
-    //  Interface RollingCounter.IRollingCounterListener
+    // Interface RollingCounter.IRollingCounterListener
     //--------------------------------------------------------------------------
 
     /**
@@ -239,7 +239,7 @@ public class WrappingWriter extends Writer
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
 
     /**

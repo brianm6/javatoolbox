@@ -23,8 +23,8 @@ public class TokenReader extends LineNumberReader
     /**
      * Create a TokenReader with the given delimiter
      * 
-     * @param   in          Reader to read tokens from
-     * @param   delimiter   Delimiter used to separate tokens
+     * @param in Reader to read tokens from
+     * @param delimiter Delimiter used to separate tokens
      */
     public TokenReader(Reader in, String delimiter)
     {
@@ -39,8 +39,8 @@ public class TokenReader extends LineNumberReader
     /**
      * Returns the next batch of tokens parsed from a single line
      *
-     * @return  Array of tokens, or null or end of reader reached.
-     * @throws  IOException on IO error
+     * @return Array of tokens, or null or end of reader reached.
+     * @throws IOException on IO error
      */
     public String[] readTokens() throws IOException
     {
@@ -51,5 +51,4 @@ public class TokenReader extends LineNumberReader
         else            
             return StringUtil.tokenize(line, delimiter_);   
     }
-    
 }

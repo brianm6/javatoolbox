@@ -14,22 +14,34 @@ import toolbox.util.ArrayUtil;
  */
 public class EventOutputStream extends FilterOutputStream
 {
-    /** Array of registered listeners */
+    /** 
+     * Array of registered listeners 
+     */
     private Listener[] listeners_;
     
-    /** Total number of bytes written to the stream */
+    /** 
+     * Total number of bytes written to the stream 
+     */
     private int count_;
     
-    /** Friendly name for this stream */
+    /** 
+     * Friendly name for this stream
+     */
     private String name_;
     
-    /** Number of bytes written last time a sample was taken */
+    /** 
+     * Number of bytes written last time a sample was taken
+     */
     private int lastSample_;
     
-    /** Sample period in milliseconds */
+    /** 
+     * Sample period in milliseconds 
+     */
     private long samplePeriod_ = 1000;
 
-    /** Timer that takes samples to monitor the stream throughput */    
+    /** 
+     * Timer that takes samples to monitor the stream throughput 
+     */    
     private Timer throughputTimer_;
     
     //--------------------------------------------------------------------------
@@ -39,7 +51,7 @@ public class EventOutputStream extends FilterOutputStream
     /**
      * Creates an EventOutputStream
      * 
-     * @param  out  OutputStream to chain 
+     * @param out OutputStream to chain 
      */
     public EventOutputStream(OutputStream out)
     {
@@ -50,8 +62,8 @@ public class EventOutputStream extends FilterOutputStream
      * Creates an EventOutputStream with the given name outputstream to
      * decorate.
      * 
-     * @param  name Stream name
-     * @param  out  OutputStream to chain 
+     * @param name Stream name
+     * @param out OutputStream to chain 
      */
     public EventOutputStream(String name, OutputStream out)
     {
@@ -68,7 +80,7 @@ public class EventOutputStream extends FilterOutputStream
     /**
      * Writes byte to stream keeping track of the count
      * 
-     * @param  b  Byte to write 
+     * @param b Byte to write 
      * @throws IOException on I/O error
      */
     public void write(int b) throws IOException
@@ -107,7 +119,7 @@ public class EventOutputStream extends FilterOutputStream
     /**
      * Adds a Listener to the list of registered stream listeners
      * 
-     * @param  listener  Listener to register
+     * @param listener Listener to register
      */
     public void addListener(Listener listener)
     {  
@@ -146,7 +158,7 @@ public class EventOutputStream extends FilterOutputStream
     /** 
      * Fires notification that a byte was written to the stream
      * 
-     * @param  b  Byte written to stream
+     * @param b Byte written to stream
      */
     protected void fireByteWritten(int b)
     {
@@ -220,7 +232,7 @@ public class EventOutputStream extends FilterOutputStream
     /** 
      * Fires notification of stream throughput per sample period
      * 
-     * @param  throughput  Number of bytes written per sample period
+     * @param throughput Number of bytes written per sample period
      */
     protected void fireStreamThroughput(float throughput)
     {
@@ -239,7 +251,7 @@ public class EventOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * @return  Number of bytes written to the stream
+     * @return Number of bytes written to the stream
      */
     public int getCount()
     {

@@ -18,19 +18,29 @@ public class RegexFilterReader extends LineNumberReader
     private static final Logger logger_ = 
         Logger.getLogger(RegexFilterReader.class);
     
-    /** Default regular expression matches all if one is not specified */    
+    /** 
+     * Default regular expression matches all if one is not specified 
+     */    
     private static final String DEFAULT_MATCH = ".";
 
-    /** Regular expression as a string */
+    /** 
+     * Regular expression as a string 
+     */
     private String strRegExp_;
     
-    /** Flag to match case */
+    /** 
+     * Flag to match case 
+     */
     private boolean matchCase_;
 
-    /** Inverse match flag */
+    /** 
+     * Inverse match flag 
+     */
     private boolean matchInverse_;
     
-    /** Regular expression */
+    /** 
+     * Regular expression 
+     */
     private RE regExp_;
 
     //--------------------------------------------------------------------------
@@ -40,7 +50,7 @@ public class RegexFilterReader extends LineNumberReader
     /**
      * Creates a RegexFilterReader
      * 
-     * @param  in  Reader to filter
+     * @param in Reader to filter
      */
     public RegexFilterReader(Reader in)
     {
@@ -50,9 +60,9 @@ public class RegexFilterReader extends LineNumberReader
     /**
      * Creates a RegexFilterReader
      * 
-     * @param  in         Reader to filter
-     * @param  regExp     Regular expression to match
-     * @param  matchCase  Set to true to observe case sensetivity
+     * @param in Reader to filter
+     * @param regExp Regular expression to match
+     * @param matchCase Set to true to observe case sensetivity
      */
     public RegexFilterReader(Reader in, String regExp, boolean matchCase)
     {
@@ -62,11 +72,11 @@ public class RegexFilterReader extends LineNumberReader
     /**
      * Creates a RegexFilterReader
      * 
-     * @param  in           Reader to filter
-     * @param  regExp       Regular expression to match
-     * @param  matchCase    Set to true to observe case sensetivity
-     * @param  matchInverse Match all lines that do not satisty the regular
-     *                      expression
+     * @param in Reader to filter
+     * @param regExp Regular expression to match
+     * @param matchCase Set to true to observe case sensetivity
+     * @param matchInverse Match all lines that do not satisty the regular
+     *        expression
      */
     public RegexFilterReader(Reader in, String regExp, boolean matchCase, 
         boolean matchInverse)
@@ -90,15 +100,15 @@ public class RegexFilterReader extends LineNumberReader
     }
 
     //--------------------------------------------------------------------------
-    //  Overrides java.io.LineNumberReader
+    // Overrides java.io.LineNumberReader
     //--------------------------------------------------------------------------
         
     /**
      * Reads the next line that matches the regular expression
      * 
-     * @return  String that matches regular expression or null if the 
-     *          end of the stream has been reached
-     * @throws  IOException on error
+     * @return String that matches regular expression or null if the end of the
+     *         stream has been reached
+     * @throws IOException on error
      */
     public String readLine() throws IOException
     {

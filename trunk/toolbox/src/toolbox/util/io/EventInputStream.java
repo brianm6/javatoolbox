@@ -34,7 +34,7 @@ public class EventInputStream extends FilterInputStream
     /**
      * Creates an EventInputStream
      * 
-     * @param  in  InputStream to chain 
+     * @param in InputStream to chain 
      */
     public EventInputStream(InputStream in)
     {
@@ -44,8 +44,8 @@ public class EventInputStream extends FilterInputStream
     /**
      * Creates an EventInputStream
      * 
-     * @param  name Stream name
-     * @param  in   InputStream to chain 
+     * @param name Stream name
+     * @param in InputStream to chain 
      */
     public EventInputStream(String name, InputStream in)
     {
@@ -56,7 +56,7 @@ public class EventInputStream extends FilterInputStream
     }
     
     //--------------------------------------------------------------------------
-    // Overridden from java.io.FilterInputStream
+    // Overriddes java.io.FilterInputStream
     //--------------------------------------------------------------------------
     
     /**
@@ -104,7 +104,7 @@ public class EventInputStream extends FilterInputStream
     /**
      * Adds a Listener to the list of registered stream listeners
      * 
-     * @param  listener  Listener to register
+     * @param listener Listener to register
      */
     public void addListener(Listener listener)
     {
@@ -123,7 +123,7 @@ public class EventInputStream extends FilterInputStream
     /** 
      * Fires notification that a byte was read from the stream
      * 
-     * @param  b  Bytes that was read
+     * @param b Bytes that was read
      */
     protected void fireByteRead(int b)
     {

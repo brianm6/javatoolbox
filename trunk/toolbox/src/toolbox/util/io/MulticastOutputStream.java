@@ -1,5 +1,6 @@
 package toolbox.util.io;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -53,7 +54,7 @@ public class MulticastOutputStream extends OutputStream
      */
     public synchronized void addStream(OutputStream out)
     {
-        streams_ = (OutputStream[]) ArrayUtil.add(streams_, out);
+        streams_ = (OutputStream[]) ArrayUtil.add(streams_, new BufferedOutputStream(out));
     }
 
     /**

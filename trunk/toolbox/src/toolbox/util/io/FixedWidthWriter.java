@@ -17,7 +17,7 @@ public class FixedWidthWriter extends FilterWriter
     /**
      * Creates a FixedWidthWriter
      * 
-     * @param  writer  Writer to chain
+     * @param writer Writer to chain
      */
     public FixedWidthWriter(Writer writer)
     {
@@ -31,9 +31,9 @@ public class FixedWidthWriter extends FilterWriter
     /**
      * Writes right padded
      * 
-     * @param   str    String to write
-     * @param   width  Max width
-     * @throws  IOException on I/O error
+     * @param str String to write
+     * @param width Max width
+     * @throws IOException on I/O error
      */
     public void writeRPad(String str, int width) throws IOException
     {
@@ -44,9 +44,9 @@ public class FixedWidthWriter extends FilterWriter
     /**
      * Writes right padded
      * 
-     * @param  str      String to write
-     * @param  width    Max width
-     * @param  padChar  Pad character
+     * @param str String to write
+     * @param width Max width
+     * @param padChar Pad character
      * @throws IOException on I/O error
      */
     public void writeRPad(String str, int width, char padChar)
@@ -59,8 +59,8 @@ public class FixedWidthWriter extends FilterWriter
     /**
      * Writes left padded
      * 
-     * @param  str    String to write
-     * @param  width  Max width
+     * @param str String to write
+     * @param width Max width
      * @throws IOException on I/O error
      */
     public void writeLPad(String str, int width) throws IOException
@@ -72,9 +72,9 @@ public class FixedWidthWriter extends FilterWriter
     /**
      * Writes left padded
      * 
-     * @param  str      String to write
-     * @param  width    Max width
-     * @param  padChar  Pad character
+     * @param str String to write
+     * @param width Max width
+     * @param padChar Pad character
      * @throws IOException on I/O error
      */
     public void writeLPad(String str, int width, char padChar)
@@ -89,11 +89,11 @@ public class FixedWidthWriter extends FilterWriter
      * to a given width using a pad character. Strings longer than the width 
      * are truncated.
      *
-     * @param   str       String to justify
-     * @param   width     Width of resulting screen
-     * @param   padChar   Character to use for padding
-     * @param   padRight  If true, pad on the right; if false, pad on the left
-     * @throws  IOException on I/O error
+     * @param str String to justify
+     * @param width Width of resulting screen
+     * @param padChar Character to use for padding
+     * @param padRight If true, pad on the right; if false, pad on the left
+     * @throws IOException on I/O error
      */
     public void write(String str, int width, char padChar, boolean padRight)
         throws IOException

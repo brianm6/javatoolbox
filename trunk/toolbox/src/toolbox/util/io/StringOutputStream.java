@@ -7,7 +7,9 @@ import java.io.OutputStream;
  */
 public class StringOutputStream extends OutputStream
 {
-    /** Output buffer */
+    /** 
+     * Output buffer 
+     */
     private StringBuffer output_;
 
     //--------------------------------------------------------------------------
