@@ -130,7 +130,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      * XML: Child of QueryPlugin that contains contents of the SQL text area.
      */
     public static final String NODE_CONTENTS = "SQLContents";
-    
+
     /**
      * Child of SQLContents that contains a single line of content (since XOM
      * conveniently left out support for CDATA)
@@ -231,12 +231,12 @@ public class QueryPlugin extends JPanel implements IPlugin
         add(areaSplitPane_, BorderLayout.CENTER);
     }
 
-    
+
     protected JHeaderPanel buildReferencePane()
     {
         JHeaderPanel refPane = new JHeaderPanel("SQL Reference");
-        
-        String sqlRef = 
+
+        String sqlRef =
             File.separator +
             FileUtil.trailWithSeparator(
                 ClassUtil.packageToPath(
@@ -248,10 +248,10 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         //JSmartTextArea area = new JSmartTextArea(
         //    ResourceUtil.getResourceAsString(sqlRef)+ "\n");
-        
-        JEditTextArea area = 
+
+        JEditTextArea area =
             new JEditTextArea(new TSQLTokenMarker(), new SQLDefaults());
-        
+
         area.getPainter().setFont(FontUtil.getPreferredMonoFont());
         refPane.setContent(area);
         area.setText( ResourceUtil.getResourceAsString(sqlRef)+ "\n");
@@ -259,7 +259,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         return refPane;
     }
 
-    
+
     /**
      * Constructs the SQL editor text area.
      *
@@ -618,13 +618,13 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlEditor_.applyPrefs(root);
         areaSplitPane_.applyPrefs(root);
 
-        
-        Element contents = 
+
+        Element contents =
             XOMUtil.getFirstChildElement(
-                root, 
-                NODE_CONTENTS, 
+                root,
+                NODE_CONTENTS,
                 new Element(NODE_CONTENTS));
-        
+
         sqlEditor_.setText(XOMUtil.decodeBlankLines(contents.getValue()));
         sqlEditor_.scrollTo(0, 0);
     }
@@ -646,7 +646,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         Element contents = new Element(NODE_CONTENTS);
         contents.appendChild(XOMUtil.encodeBlankLines(sqlEditor_.getText()));
-        root.appendChild(contents); 
+        root.appendChild(contents);
 
         leftFlipPane_.savePrefs(root);
         dbConfigPane_.savePrefs(root);
@@ -758,7 +758,48 @@ public class QueryPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            String sql = sqlEditor_.getLineText(sqlEditor_.getCaretLine());
+            //
+            // By default, execute the selected text
+            //
+
+            String sql = sqlEditor_.getSelectedText();
+
+            //
+            // If no text is selected, then execute the current statement. This
+            // assumes we are on the first line of the statement and that there
+            // is a semicolon somewhere to tell us where the statement ends.
+            //
+
+            if (StringUtils.isBlank(sql))
+            {
+                int max = sqlEditor_.getLineCount();
+                int curr = sqlEditor_.getCaretLine();
+                boolean terminatorFound = false;
+                StringBuffer stmt = new StringBuffer();
+
+                while (curr <= max && !terminatorFound)
+                {
+                    String line = sqlEditor_.getLineText(curr++);
+                    int pos = -1;
+                    if ((pos = line.indexOf(";")) >= 0)
+                    {
+                        stmt.append(line.substring(0, pos + 1));
+                        terminatorFound = true;
+                    }
+                    else
+                    {
+                        stmt.append("\n" + line);
+                    }
+                }
+
+                //
+                // If no terminating semicolon for the statement is found, then
+                // assume only the current line contains the entire sql
+                // statement to execute.
+                //
+
+                sql = stmt.toString();
+            }
 
             if (StringUtils.isBlank(sql))
             {
@@ -766,9 +807,11 @@ public class QueryPlugin extends JPanel implements IPlugin
             }
             else
             {
+                logger_.debug("Executing SQL: \n" + sql);
+
                 statusBar_.setInfo("Executing...");
                 String results = executeSQL(sql);
-                resultsArea_.append(results);
+                resultsArea_.append(results + "\n");
 
                 if ((!StringUtils.isBlank(results)) &&
                     (StringUtil.tokenize(results, StringUtil.NL).length < 50))
