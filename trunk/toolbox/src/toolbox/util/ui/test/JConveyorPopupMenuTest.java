@@ -1,21 +1,18 @@
 package toolbox.util.ui.test;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.SwingUtil;
+import toolbox.junit.UITestCase;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
@@ -24,13 +21,14 @@ import toolbox.util.ui.JSmartMenuItem;
 /**
  * Unit test for JConveyorPopupMenu.
  */
-public class JConveyorPopupMenuTest extends TestCase
+public class JConveyorPopupMenuTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(JConveyorPopupMenuTest.class);
 
     static int cnt = 1;
-        
+    private JPopupMenu popupMenu_;
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -39,11 +37,9 @@ public class JConveyorPopupMenuTest extends TestCase
      * Entry point.
      * 
      * @param args None recognized
-     * @throws Exception on error
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
-        SwingUtil.setPreferredLAF();
         TestRunner.run(JConveyorPopupMenuTest.class);
     }
     
@@ -58,46 +54,44 @@ public class JConveyorPopupMenuTest extends TestCase
     {
         logger_.info("Running testJConveyorPopupMenu...");
         
-        JDialog dialog=new JDialog(new JFrame(),"testJConveyorPopupMenu",true);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        
-        final JPopupMenu popupMenu = new JConveyorPopupMenu("Menu", 5);
-        
-        Container cp = dialog.getContentPane();
-        cp.setLayout(new BorderLayout());
-
-        class DummyAction extends AbstractAction
-        {
-            public DummyAction()
-            {
-                super("Menu Item " + cnt++);
-            }
-            
-            public void actionPerformed(ActionEvent e)
-            {
-            }
-        }
-
-        class AddItemAction extends AbstractAction
-        {
-            public AddItemAction()
-            {
-                super("Add Item to PopupMenu");
-            }
-                    
-            public void actionPerformed(ActionEvent e)
-            {
-                popupMenu.add(new JSmartMenuItem(new DummyAction()));
-            }
-        
-        }
-        
+        popupMenu_ = new JConveyorPopupMenu("Menu", 5);
+        JPanel cp = new JPanel(new BorderLayout());
         JButton add = new JSmartButton(new AddItemAction());
-        add.addMouseListener(new JPopupListener(popupMenu));
-        
+        add.addMouseListener(new JPopupListener(popupMenu_));
         cp.add(BorderLayout.CENTER, add);
-        dialog.pack();
-        SwingUtil.centerWindow(dialog);
-        dialog.setVisible(true);
+        launchInDialog(cp, SCREEN_ONE_THIRD);
+    }
+
+    //--------------------------------------------------------------------------
+    // TestAction
+    //--------------------------------------------------------------------------
+    
+    class TestAction extends AbstractAction
+    {
+        public TestAction()
+        {
+            super("Menu Item " + cnt++);
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // AddItemAction
+    //--------------------------------------------------------------------------
+    
+    class AddItemAction extends AbstractAction
+    {
+        public AddItemAction()
+        {
+            super("Add Item to PopupMenu");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            popupMenu_.add(new JSmartMenuItem(new TestAction()));
+        }
     }
 }
