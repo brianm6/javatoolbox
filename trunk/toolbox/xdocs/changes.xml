@@ -50,19 +50,18 @@
  * =============================================================================
  *                              Build
  * =============================================================================
- * WAIT: Integrate JCoverage into the maven build -pending new JCoverage plugin since current one gets line to lone error.
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Add a way to change the lookand feel font globally - partially working
  * TODO: http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
  * TODO: Checkout FlexDock on java.net
- * TODO: Include Askkelon in maven build
- * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
  * TODO: Add search and replace to text editors
  * TODO: Ctrl-S in Save Dialog box should remember where it was last opened up
  * TODO: Integrate JDiff Plugin/make Toolbox Plugin
  * TODO: Add shortcuts to fileexplorer
+ * WAIT: Integrate JCoverage into the maven build -pending new JCoverage plugin since current one gets line to lone error.
+ * WAIT: Extend PropertySheet to smooth fonts..can't do
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
