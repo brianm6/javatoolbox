@@ -22,27 +22,27 @@ import toolbox.util.thread.concurrent.Timeout;
 public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
     /** 
-     * Default initial size 
+     * Default initial size.
      */
     public static final int DEFAULT_INIT_SIZE = 0;
     
     /** 
-     * Default grow size 
+     * Default grow size. 
      */
     public static final int DEFAULT_GROW_SIZE = 5;
     
     /** 
-     * Default pool size 
+     * Default pool size. 
      */
     public static final int DEFAULT_POOL_SIZE = 100;
     
     /** 
-     * Default queue size 
+     * Default queue size. 
      */
     public static final int DEFAULT_QUEUE_SIZE = 100;
     
     /** 
-     * Default timeout in millis 
+     * Default timeout in millis. 
      */
     public static final int DEFAULT_TIMEOUT = 5000;
     
@@ -106,7 +106,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 
         // Create the initial threads with a runnable that never times out.
         Runnable initRunnable = new InitVariableThreadPoolRunnable();
-        currentSize_ = createThreads(initSize, initRunnable).length;
+        currentSize_ = createThreads(initSize_, initRunnable).length;
     }
 
     //--------------------------------------------------------------------------
@@ -138,7 +138,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-     * Publish a null request for each thread in the pool to signal shutdown
+     * Publish a null request for each thread in the pool to signal shutdown.
      */
     public void shutdown()
     {
