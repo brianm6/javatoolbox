@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -19,6 +20,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JFindDialog;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
@@ -41,7 +43,11 @@ public final class JEditActions
      */
     abstract static class JEditAction extends AbstractAction
     {
+        /**
+         * Context of the action. 
+         */
         protected JEditTextArea area_;
+        
         
         /**
          * Creates a JEditAction.
@@ -65,6 +71,20 @@ public final class JEditActions
             super(label);
             area_ = area;
         }
+        
+        
+        /**
+         * Creates a JEditAction.
+         * 
+         * @param label Action label.
+         * @param icon Action's icon.
+         * @param area Target text area.
+         */
+        public JEditAction(String label, Icon icon, JEditTextArea area)
+        {
+            super(label, icon);
+            area_ = area;
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -83,7 +103,8 @@ public final class JEditActions
          */
         public FindAction(JEditTextArea textComp)
         {
-            super("Find..", textComp);
+            super(
+                "Find..", ImageCache.getIcon(ImageCache.IMAGE_FIND), textComp);
         }
         
         
@@ -110,7 +131,11 @@ public final class JEditActions
      */
     static class SaveAsAction extends JEditAction
     {
+        /**
+         * Remembers last active directory.
+         */
         private File lastDir_;
+        
         
         /**
          * Creates a SaveAsAction.
@@ -119,7 +144,8 @@ public final class JEditActions
          */
         public SaveAsAction(JEditTextArea area)
         {
-            super("Save As..", area);
+            super(
+                "Save As..", ImageCache.getIcon(ImageCache.IMAGE_SAVEAS), area);
         }
         
         
@@ -323,7 +349,7 @@ public final class JEditActions
          */
         public CopyAction(JEditTextArea area)
         {
-            super("Copy", area);
+            super("Copy", ImageCache.getIcon(ImageCache.IMAGE_COPY), area);
         }
         
         
@@ -383,7 +409,7 @@ public final class JEditActions
          */
         public PasteAction(JEditTextArea area)
         {
-            super("Paste", area);
+            super("Paste", ImageCache.getIcon(ImageCache.IMAGE_PASTE), area);
         }
         
         
@@ -443,7 +469,7 @@ public final class JEditActions
          */
         public ClearAction(JEditTextArea area)
         {
-            super("Clear", area);
+            super("Clear", ImageCache.getIcon(ImageCache.IMAGE_CLEAR), area);
         }
         
         
