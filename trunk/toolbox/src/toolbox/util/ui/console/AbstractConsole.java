@@ -14,20 +14,19 @@ import toolbox.util.statemachine.StateMachine;
 /**
  * Abstract base class for console implementations.
  */
-public abstract class AbstractConsole implements Startable, Console, Nameable
+public abstract class AbstractConsole implements Console, Startable, Nameable
 {
     private static final Logger logger_ = 
         Logger.getLogger(AbstractConsole.class);
 
     //--------------------------------------------------------------------------
-    // Static
-    //--------------------------------------------------------------------------
-
-    private static String PROMPT = "CMD>";
-
-    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
+    
+    /**
+     * Default command propmt.
+     */
+    private String prompt_ = "Yes, master>";
 
     /**
      * Name of this console.
@@ -44,7 +43,6 @@ public abstract class AbstractConsole implements Startable, Console, Nameable
      */
     private CommandHandler commandHandler_;
 
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -56,10 +54,10 @@ public abstract class AbstractConsole implements Startable, Console, Nameable
      */
     public AbstractConsole(String name)
     {
+        setName(name);
         machine_ = ServiceUtil.createStateMachine(this);
-        name_ = name;
 
-        // Install a command handler by default
+        // Install the default command handler...
         setCommandHandler(new DefaultCommandHandler());
     }
 
@@ -68,32 +66,33 @@ public abstract class AbstractConsole implements Startable, Console, Nameable
     //--------------------------------------------------------------------------
 
     /**
-     * Replaces the current command line with the command indicated
+     * Replaces the current command line with the command indicated.
      * 
-     * @param cmd the command replacing the typed command
+     * @param cmd Command replacing the typed command.
      */
     public abstract void setCommandLine(String cmd);
 
 
     /**
-     * Returns the command this console send if the cursor down key was pressed.
+     * Returns the command this console is sent if the cursor down key is
+     * pressed.
      * 
-     * @return command this console send if the cursor down key was pressed
+     * @return String
      */
     public abstract String getCursorDownName();
 
 
     /**
-     * Returns the command this console send if the cursor up key was pressed.
+     * Returns the command this console is sent if the cursor up key is pressed.
      * 
-     * @return command this console send if the cursor up key was pressed
+     * @return String
      */
     public abstract String getCursorUpName();
-    
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
 
+    //--------------------------------------------------------------------------
+    // Console Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns the installed command handler or null if one has not been set.
      * 
@@ -103,7 +102,28 @@ public abstract class AbstractConsole implements Startable, Console, Nameable
     {
         return commandHandler_;
     }
-
+    
+    
+    /**
+     * @see toolbox.util.ui.console.Console#getPrompt()
+     */
+    public String getPrompt()
+    {
+        return prompt_;
+    }
+    
+    
+    /**
+     * @see toolbox.util.ui.console.Console#setPrompt(java.lang.String)
+     */
+    public void setPrompt(String prompt)
+    {
+        prompt_ = prompt;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * Sets the installed command handler.
@@ -161,19 +181,19 @@ public abstract class AbstractConsole implements Startable, Console, Nameable
                 {
                     try
                     {
+                        renderPrompt();
+                        
                         // Use chomp to get rid of the trailing newline if any
                         String s = StringUtils.chomp(read());
 
                         // Delegate execution of the command to the installed
                         // command handler
-                        getCommandHandler().handleCommand(AbstractConsole.this,
-                            s);
-
-                        setPrompt(PROMPT);
+                        getCommandHandler().handleCommand(
+                            AbstractConsole.this, s);
                     }
                     catch (Exception e)
                     {
-                        logger_.error("run", e);
+                        logger_.error("start", e);
                     }
                 }
             }
@@ -182,12 +202,13 @@ public abstract class AbstractConsole implements Startable, Console, Nameable
 
 
     /**
+     * Stops command loop processor from accepting any more commands.
+     * 
      * @see toolbox.util.service.Startable#stop()
      */
     public void stop() throws IllegalStateException, ServiceException
     {
-        if (isRunning())
-            machine_.transition(ServiceTransition.STOP);
+        machine_.transition(ServiceTransition.STOP);
     }
 
 
@@ -198,7 +219,6 @@ public abstract class AbstractConsole implements Startable, Console, Nameable
     {
         return getState() == ServiceState.RUNNING;
     }
-
 
     //--------------------------------------------------------------------------
     // Service Interface
