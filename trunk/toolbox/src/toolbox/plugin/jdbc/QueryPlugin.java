@@ -931,7 +931,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             DBProfile profile = dbConfigPane_.getCurrentProfile();
             OutputStream os = new JTextAreaOutputStream(resultsArea_);                    
-            PrintWriter pw = new PrintWriter(new OutputStreamWriter(os));
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(os), true);
             
             DBBenchmark benchmark = new DBBenchmark(
                 profile.getUrl(), 
