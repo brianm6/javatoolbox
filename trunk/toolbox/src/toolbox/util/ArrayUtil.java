@@ -86,6 +86,7 @@ public class ArrayUtil
         return sub;
     }
 
+
     /**
      * Returns subset of a given array of objects
      * 
@@ -126,7 +127,6 @@ public class ArrayUtil
 
         return subArray;
     }
-
 
 
     /**
@@ -271,6 +271,7 @@ public class ArrayUtil
         else
             return true;    
     }
+    
 
     /**
      * Determines if an array is null or empty
@@ -377,24 +378,24 @@ public class ArrayUtil
      * @param   array1  First array 
      * @param   array2  Second array
      * @return  True if the two arrays are equal by reference or equality and
-     *           each of the indices values are also equal by reference or 
-     * 			 equality, false otherwise.
+     *          each of the indices values are also equal by reference or 
+     *          equality, false otherwise.
      */
     public static boolean equals(Object[] array1, Object[] array2)
     {
         if (array1 == array2)
-        	return true;
-        	
-       	if (array1.length != array2.length)
-       		return false;
-       		
-       	for (int i=0; i<array1.length; i++)
-       	{
-       	    if (array1[i] != array2[i])
-       	        if (!array1[i].equals(array2[i]))
-       	        	return false;
-       	}
-       	
-       	return true;
+            return true;
+            
+       if (array1.length != array2.length)
+           return false;
+           
+       for (int i=0; i<array1.length; i++)
+       {
+           if (array1[i] != array2[i])
+               if (!array1[i].equals(array2[i]))
+                   return false;
+       }
+       
+       return true;
     }
 }
