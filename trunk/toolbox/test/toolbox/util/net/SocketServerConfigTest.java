@@ -1,4 +1,4 @@
-package toolbox.util.net.test;
+package toolbox.util.net;
 
 import java.io.File;
 import java.util.Properties;
@@ -60,8 +60,8 @@ public class SocketServerConfigTest extends TestCase
             sb.append("socketserver.handlerqueuesize=4000\n");
             sb.append("socketserver.name=server\n");            
             sb.append("socketserver.sockettimeout=5000\n");
-            sb.append("socketserver.connectionhandler=" + 
-                      "toolbox.util.net.test.NullConnectionHandler\n");
+            sb.append("socketserver.connectionhandler=" +
+                       NullConnectionHandler.class.getName() + "\n");
 
             FileUtil.setFileContents(file, sb.toString(), false);
             
@@ -80,7 +80,7 @@ public class SocketServerConfigTest extends TestCase
                 5000, config.getSocketTimeout());
                 
             assertEquals("handlers don't match", 
-                "toolbox.util.net.test.NullConnectionHandler", 
+                NullConnectionHandler.class.getName(), 
                 config.getConnectionHandlerType());
                 
             assertEquals("active conns don't match", 
@@ -127,7 +127,7 @@ public class SocketServerConfigTest extends TestCase
         props.put(SocketServerConfig.PROP_SOCKET_QUEUE_SIZE, "11");
         props.put(SocketServerConfig.PROP_SOCKET_TIMEOUT, "13");
         props.put(SocketServerConfig.PROP_CONNECTION_HANDLER, 
-            "toolbox.util.net.test.NullConnectionHandler");
+            NullConnectionHandler.class.getName());
         
         SocketServerConfig config = new SocketServerConfig();
         config.load(props);
@@ -148,7 +148,7 @@ public class SocketServerConfigTest extends TestCase
             13, config.getSocketTimeout());
         
         assertEquals("socket handlers don't match", 
-            "toolbox.util.net.test.NullConnectionHandler", 
+            NullConnectionHandler.class.getName(), 
             config.getConnectionHandlerType());
             
         logger_.info(config);

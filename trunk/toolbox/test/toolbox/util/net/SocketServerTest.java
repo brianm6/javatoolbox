@@ -1,4 +1,4 @@
-package toolbox.util.net.test;
+package toolbox.util.net;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,6 +18,8 @@ import toolbox.util.net.SocketServerConfig;
 
 /**
  * Unit test for SocketServer.
+ * 
+ * @see toolbox.util.net.SocketServer
  */
 public class SocketServerTest extends TestCase
 {
@@ -55,8 +57,7 @@ public class SocketServerTest extends TestCase
         SocketServerConfig config = new SocketServerConfig();
         
         // Set handler
-        config.setConnectionHandlerType(
-            "toolbox.util.net.test.PingConnectionHandler");
+        config.setConnectionHandlerType(PingConnectionHandler.class.getName());
         
         // Start server
         SocketServer server = new SocketServer(config);
@@ -143,9 +144,7 @@ public class SocketServerTest extends TestCase
         
         SocketServerConfig config = new SocketServerConfig();
         
-        config.setConnectionHandlerType(
-            "toolbox.util.net.test.EchoConnectionHandler");
-            
+        config.setConnectionHandlerType(EchoConnectionHandler.class.getName());
         config.setActiveConnections(10);
         SocketServer ss = new SocketServer(config);
         ss.start();
@@ -220,8 +219,7 @@ public class SocketServerTest extends TestCase
         SocketServerConfig config = new SocketServerConfig();
         
         // Set handler
-        config.setConnectionHandlerType(
-            "toolbox.util.net.test.NullConnectionHandler");
+        config.setConnectionHandlerType(NullConnectionHandler.class.getName());
         
         // Start server and attach listener
         SocketServer server = new SocketServer(config);

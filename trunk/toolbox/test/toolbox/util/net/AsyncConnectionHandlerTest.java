@@ -1,4 +1,4 @@
-package toolbox.util.net.test;
+package toolbox.util.net;
 
 import java.io.IOException;
 import java.io.InputStream;
