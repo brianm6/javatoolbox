@@ -62,4 +62,24 @@ public class StringInputStreamTest extends TestCase
             
         assertEquals("read() should return -1", -1, sis.read());
     }
+
+    
+    /**
+     * Tests available() method
+     */
+    public void testAvailable() throws Exception
+    {
+        /* case zero */
+        StringInputStream sis = new StringInputStream("");
+        assertEquals("available should be zero", 0, sis.available());
+        
+        /* case one */
+        sis = new StringInputStream("x");
+        assertEquals("available should be one", 1, sis.available());
+        
+        /* case many */
+        String many = "qiwuerpoqierupqiwuerpqowiuerpoqiwuerpqiurp";
+        sis = new StringInputStream(many);
+        assertEquals("available is incorrect", many.length(), sis.available());
+    }
 }
