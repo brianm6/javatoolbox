@@ -8,8 +8,8 @@ import toolbox.util.ArrayUtil;
  * @see toolbox.util.io.transferred.TransferredListener
  * @see toolbox.util.io.transferred.TransferredEvent
  */
-public class DefaultTransferredMonitor implements TransferredMonitor {
-
+public class DefaultTransferredMonitor implements TransferredMonitor 
+{
     //--------------------------------------------------------------------------
     // Defaults Constants
     //--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ public class DefaultTransferredMonitor implements TransferredMonitor {
     private TransferredListener[] listeners_;
 
     /**
-     * Number of bytes read between each transferred notification.
+     * Number of bytes read between each notification.
      */
     private int length_;
 
@@ -42,9 +42,12 @@ public class DefaultTransferredMonitor implements TransferredMonitor {
     // Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Creates a DefaultTransferredMonitor.
+     */
     public DefaultTransferredMonitor() 
     {
-        length_ = DEFAULT_SAMPLE_LENGTH;
+        setSampleLength(DEFAULT_SAMPLE_LENGTH);
         totalTransferred_ = 0;
         listeners_ = new TransferredListener[0];
     }
@@ -135,7 +138,6 @@ public class DefaultTransferredMonitor implements TransferredMonitor {
         // Sync on reset of bytesTransferred
         synchronized (this) 
         {
-            
             event = new TransferredEvent(
                 DefaultTransferredMonitor.this,
                 getSampleLength(),
