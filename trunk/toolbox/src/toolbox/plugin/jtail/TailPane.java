@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -91,14 +94,15 @@ public class TailPane extends JPanel
     //--------------------------------------------------------------------------
         
     /** 
-     * Creates a TAilPane with the given configuration
+     * Creates a TailPane with the given configuration
      * 
-     * @param   config      TailConfig
+     * @param   config      Details of the tail configuration
      * @param   statusBar   Status bar
+     * @throws  IOException if an IO error occurs
      * @throws  FileNotFoundException if file not found
      */
     public TailPane(ITailPaneConfig config, IStatusBar statusBar) 
-        throws FileNotFoundException
+        throws IOException, FileNotFoundException
     {
         statusBar_ = statusBar;
         buildView(config);
@@ -115,9 +119,10 @@ public class TailPane extends JPanel
      * Initializes the tail
      * 
      * @param  file  File to tail
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file to tail is non-existant
+     * @throws IOException if problems occur tailed System.out
      */
-    protected void init() throws FileNotFoundException
+    protected void init() throws IOException, FileNotFoundException
     {
         //
         //                      Queue 
@@ -143,7 +148,18 @@ public class TailPane extends JPanel
         // Setup tail
         tail_ = new Tail();
         tail_.addTailListener(new TailListener());
-        tail_.setTailFile(config_.getFilename());
+        
+        if (config_.getFilename().equals("System.out"))
+        {
+            // Glue system.out to an inputstream so that it can be tailed
+            PipedOutputStream pos = new PipedOutputStream();
+            PipedInputStream  pis = new PipedInputStream();
+            pos.connect(pis);
+            tail_.setTailStream(pis);
+            logger_.debug("Tailing System.out...");
+        }
+        else
+            tail_.setTailFile(config_.getFilename());
 
         // Start tail through action so button states are OK
         if (config_.isAutoStart())
@@ -164,8 +180,8 @@ public class TailPane extends JPanel
         pauseButton_    = new JButton(new PauseUnpauseAction());
         
         String startMode =  config.isAutoStart() ? 
-                            StartStopAction.MODE_STOP :
-                            StartStopAction.MODE_START;
+                            StartStopAction.MODE_START :
+                            StartStopAction.MODE_STOP;
         
         startButton_    = new JButton(new StartStopAction(startMode));
         closeButton_    = new JButton(new CloseAction());
@@ -483,8 +499,6 @@ public class TailPane extends JPanel
          */
         public void actionPerformed(ActionEvent e)
         { 
-            String method = "[actPrf] ";
-            
             if (mode_.equals(MODE_START))
             {
                 try
@@ -494,11 +508,12 @@ public class TailPane extends JPanel
                     putValue(Action.NAME, mode_);
                     pauseButton_.setEnabled(true);
                     //queueListener_.resetLines();
-                    statusBar_.setStatus("Started tail for " + tail_.getFile());
+                    statusBar_.setStatus(
+                        "Started tail for " + config_.getFilename());
                 }
                 catch(FileNotFoundException fnfe)
                 {
-                    logger_.error(method, fnfe);
+                    logger_.error(fnfe);
                 }
             }
             else
@@ -507,7 +522,8 @@ public class TailPane extends JPanel
                 mode_ = MODE_START;
                 putValue(Action.NAME, mode_);                
                 pauseButton_.setEnabled(false);
-                statusBar_.setStatus("Stopped tail for " + tail_.getFile());
+                statusBar_.setStatus(
+                    "Stopped tail for " + config_.getFilename());
             }
         }
     }
@@ -529,7 +545,6 @@ public class TailPane extends JPanel
             putValue(MNEMONIC_KEY, new Integer('P'));
             putValue(SHORT_DESCRIPTION, "Pause/Unpauses the tail");
         }
-
     
         /**
          * Pauses/unpauses the tail based on the current state
