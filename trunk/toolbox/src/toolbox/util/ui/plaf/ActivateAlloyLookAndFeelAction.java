@@ -61,7 +61,7 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
         AlloyTheme defaultTheme = new DefaultAlloyTheme();
         AlloyTheme theme = defaultTheme;
         
-        if (!StringUtils.isEmpty(clazz))
+        if (!StringUtils.isBlank(clazz))
         {
             try
             {

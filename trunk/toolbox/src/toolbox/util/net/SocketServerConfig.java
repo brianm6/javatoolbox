@@ -353,7 +353,7 @@ public class SocketServerConfig implements Nameable
     {
         String clazzName = getConnectionHandlerType();
 
-        if (StringUtils.isEmpty(clazzName))
+        if (StringUtils.isBlank(clazzName))
         {
             throw new IllegalStateException("Connection handler not set.");
         }

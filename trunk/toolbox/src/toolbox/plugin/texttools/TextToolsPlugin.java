@@ -415,7 +415,7 @@ public class TextToolsPlugin extends AbstractPlugin
         {
             String text = getInputText();
 
-            if (StringUtils.isEmpty(text))
+            if (StringUtils.isBlank(text))
             {
                 statusBar_.setInfo("Nothing to sort.");
             }

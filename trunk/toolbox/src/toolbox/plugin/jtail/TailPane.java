@@ -944,7 +944,7 @@ public class TailPane extends JHeaderPanel
         {
             String s = getRegularExpression();
 
-            if (StringUtils.isEmpty(s))
+            if (StringUtils.isBlank(s))
                 regexFilter_.setEnabled(false);
             else
             {
@@ -972,7 +972,7 @@ public class TailPane extends JHeaderPanel
         {
             String s = getCutExpression();
 
-            if (StringUtils.isEmpty(s))
+            if (StringUtils.isBlank(s))
                 cutFilter_.setEnabled(false);
             else
                 setCutExpression(getCutExpression());

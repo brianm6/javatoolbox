@@ -436,7 +436,7 @@ public class XSLFOPlugin extends AbstractPlugin
         Element root = new Element(NODE_XSLFO_PLUGIN);
         ArrayUtil.invoke(subPref_.toArray(), "savePrefs", new Object[] {root});
         
-        if (!StringUtils.isEmpty(pdfViewerPath_))
+        if (!StringUtils.isBlank(pdfViewerPath_))
         {
             Element pdf = new Element(NODE_PDF_VIEWER);
             pdf.appendChild(pdfViewerPath_);

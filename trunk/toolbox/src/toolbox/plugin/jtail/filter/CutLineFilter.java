@@ -104,7 +104,7 @@ public class CutLineFilter extends AbstractLineFilter
     {
         cut_ = cut;
 
-        if (StringUtils.isEmpty(cut_))
+        if (StringUtils.isBlank(cut_))
             setEnabled(false);
         else
             parseCut();

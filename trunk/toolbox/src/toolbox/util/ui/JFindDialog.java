@@ -131,7 +131,7 @@ public class JFindDialog extends JSmartDialog
         {
             String searchFor = findField_.getText();
 
-            if (!StringUtils.isEmpty(searchFor))
+            if (!StringUtils.isBlank(searchFor))
             {
                 String text = initiator_.getText();
 

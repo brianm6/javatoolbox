@@ -123,7 +123,7 @@ public class ClientView extends JHeaderPanel
         
         if (client_ != null)
         {
-            if (StringUtils.isEmpty(client_.getHostname()))
+            if (StringUtils.isBlank(client_.getHostname()))
                 serverHostnameField_.setText("localhost");
             else
                 serverHostnameField_.setText(client_.getHostname());

@@ -437,11 +437,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
         Element root = new Element(NODE_JFILEEXPLORER);
         
         String path = getCurrentPath();
-        if (!StringUtils.isEmpty(path))
+        if (!StringUtils.isBlank(path))
             root.addAttribute(new Attribute(ATTR_PATH, path));
             
         String file = (String) fileList_.getSelectedValue();
-        if (!StringUtils.isEmpty(file))
+        if (!StringUtils.isBlank(file))
             root.addAttribute(new Attribute(ATTR_FILE, file));
             
         splitPane_.savePrefs(root);
@@ -467,7 +467,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         
         // Restore selected file    
         String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
-        if (!StringUtils.isEmpty(file))
+        if (!StringUtils.isBlank(file))
             fileList_.setSelectedValue(file, true);
 
         splitPane_.applyPrefs(root);        

@@ -573,7 +573,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            if (StringUtils.isEmpty(getRemoteHost()))
+            if (StringUtils.isBlank(getRemoteHost()))
                 throw new IllegalArgumentException(
                     "Please specify the remote hostname");
 
