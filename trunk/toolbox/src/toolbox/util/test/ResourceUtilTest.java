@@ -2,6 +2,7 @@ package toolbox.util.test;
 
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.io.File;
 import java.io.InputStream;
 
 import javax.swing.Icon;
@@ -12,6 +13,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
 
@@ -131,6 +133,38 @@ public class ResourceUtilTest extends TestCase
         String contents = new String(data);
         logger_.info("Resource: " + contents);
         assertTrue("string match failure", contents.indexOf(MATCH_STRING) >= 0);
+    }
+
+    
+    /**
+     * Tests getResourceAsTempFile() on a text file.
+     * 
+     * @throws Exception on error
+     */
+    public void testGetResourceAsTempFile() throws Exception
+    {
+        logger_.info("Running testGetResourceAsTempFile...");
+        
+        File tempFile = null;
+        
+        try
+        {
+            tempFile = ResourceUtil.getResourceAsTempFile(FILE_TEXT);
+        
+            assertTrue("temp file does not exist", tempFile.exists());
+            
+            String contents = new String(
+                FileUtil.getFileContents(tempFile.getCanonicalPath()));
+            
+            logger_.info("Resource: " + contents);
+            
+            assertTrue(
+                "string match failure", contents.indexOf(MATCH_STRING) >= 0);
+        }
+        finally
+        {
+            FileUtil.delete(tempFile);
+        }
     }
 
     
