@@ -48,12 +48,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     /** 
      * Root preferences node for this plugin.
      */
-    private static final String NODE_PDF_PLUGIN = "PDFPlugin";
-    
-    /**
-     * Node for PDFViewer preferences.
-     */
-    private static final String NODE_PDF_VIEWER = "PDFViewer";
+    private static final String NODE_DOCVIEWER_PLUGIN = "DocumentViewerPlugin";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -90,7 +85,10 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     private List viewers_;
     
-    private JComponent lastAdded_;
+    /**
+     * Last document viewer that was active.
+     */
+    private JComponent lastActive_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -116,43 +114,7 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         
         explorer_ = new JFileExplorer(false);
         explorer_.addFileExplorerListener(new FileSelectionListener());
-
-        //        Vector v = new Vector();
-        //        v.add(new JSmartButton("One"));
-        //        v.add(new JSmartButton("Two"));
-        //        v.add(new JSmartButton("Three"));
-        //        
-        //        JList viewerList = new JSmartList(v);
-        //
-        //        class ButtonCellRenderer extends JSmartButton implements ListCellRenderer
-        //        {
-        //            public Component getListCellRendererComponent(
-        //                    JList list,
-        //                    Object value,
-        //                    int index,
-        //                    boolean isSelected,
-        //                    boolean cellHasFocus)
-        //            {
-        //                setText(value.toString());
-        //                return this;
-        //            }
-        //        }
-        //        
-        //        viewerList.setCellRenderer( new ButtonCellRenderer());
-
-        
-        
         viewerPane_ = new JPanel(new StackLayout(StackLayout.VERTICAL));
-        viewerPane_.add("Top Wide Flush", new JSmartButton("One"));
-        viewerPane_.add("Top Wide Flush", new JSmartButton("Two"));
-        viewerPane_.add("Top Wide Flush", new JSmartButton("Three"));
-        
-        
-//        viewerList.setPreferredSize(
-//            new Dimension(
-//                viewerList.getPreferredSize().width,
-//                100));
-                
         
         JSplitPane splitter = 
             new JSmartSplitPane(
@@ -162,7 +124,6 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper("File Explorer", splitter);
-        
         
         outputPanel_ = new JPanel(new BorderLayout());
         
@@ -179,24 +140,26 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     protected void viewDocument(DocumentViewer dv, File f) throws Exception
     {
-        //dv.startup(new HashMap());
-        
-        if (lastAdded_ != null)
-            outputPanel_.remove(lastAdded_);
+        if (lastActive_ != null)
+            outputPanel_.remove(lastActive_);
        
         dv.view(f);
-        lastAdded_ = dv.getComponent();
+        lastActive_ = dv.getComponent();
         
-        outputPanel_.add(BorderLayout.CENTER, lastAdded_);
+        outputPanel_.add(BorderLayout.CENTER, lastActive_);
         outputPanel_.validate();
         outputPanel_.repaint();
     }
 
     
+    /**
+     * Finds all valid document viewers for the given file.
+     * 
+     * @param file File to find a document viewer for.
+     */
     protected void findViewersForDocument(File file)
     {
         viewerPane_.removeAll();
-        
         
         for (Iterator i = viewers_.iterator(); i.hasNext(); )
         {
@@ -213,24 +176,6 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         viewerPane_.repaint();
     }
     
-    
-    class ViewAction extends SmartAction
-    {
-        DocumentViewer viewer;
-        File file;
-        
-        public ViewAction(DocumentViewer dv, File f)
-        {
-            super(dv.getName(), true, false, null);
-            viewer = dv;
-            file = f;
-        }
-                
-        public void runAction(ActionEvent e) throws Exception
-        {
-            viewDocument(viewer, file);
-        }
-    }
     
     /**
      * Builds the list of document viewers by scanning the current package for
@@ -322,10 +267,24 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     public void shutdown()
     {
-//        if (viewer_ != null)
-//            viewer_.shutdown();
-    }    
-
+        for (Iterator i = viewers_.iterator(); i.hasNext(); )
+        {
+            try
+            {
+                DocumentViewer dv = (DocumentViewer) i.next();
+                dv.shutdown();
+                dv = null;
+            }
+            catch (Exception e)
+            {
+                logger_.warn(e);
+            }
+        }
+        
+        viewers_.clear();
+        viewers_ = null;
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
@@ -337,7 +296,9 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     {
         Element root = 
             XOMUtil.getFirstChildElement(
-                prefs, NODE_PDF_PLUGIN, new Element(NODE_PDF_PLUGIN));    
+                prefs, 
+                NODE_DOCVIEWER_PLUGIN, 
+                new Element(NODE_DOCVIEWER_PLUGIN));    
         
         explorer_.applyPrefs(root);
         flipPane_.applyPrefs(root);
@@ -349,12 +310,38 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      */
     public void savePrefs(Element prefs)
     {
-        Element root = new Element(NODE_PDF_PLUGIN);
+        Element root = new Element(NODE_DOCVIEWER_PLUGIN);
         explorer_.savePrefs(root);
         flipPane_.savePrefs(root);
         XOMUtil.insertOrReplace(prefs, root);
     }
 
+    //--------------------------------------------------------------------------
+    // ViewAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Action to view a document.
+     */
+    class ViewAction extends SmartAction
+    {
+        DocumentViewer viewer_;
+        File file_;
+        
+        public ViewAction(DocumentViewer viewer, File file)
+        {
+            super(viewer.getName(), true, false, null);
+            viewer_ = viewer;
+            file_ = file;
+        }
+                
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            viewDocument(viewer_, file_);
+        }
+    }
+    
     //--------------------------------------------------------------------------
     // FileSelectionListener
     //--------------------------------------------------------------------------
@@ -372,7 +359,6 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         {
             try
             {
-                //viewDocument(new File(file));
                 findViewersForDocument(new File(file));
             }
             catch (Exception fnfe)
@@ -392,7 +378,6 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
             
             try
             {
-                //viewDocument(new File(file));
                 findViewersForDocument(new File(file));
             }
             catch (Exception fnfe)
