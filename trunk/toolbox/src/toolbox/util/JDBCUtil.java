@@ -1,6 +1,7 @@
 package toolbox.util;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -160,9 +161,12 @@ public final class JDBCUtil
         if (connProps_ == null)
             throw new IllegalStateException(
                 "Must call init() first to set the JDBC configuration.");
-                
-        return DriverManager.getConnection(
-            connProps_.getProperty("url"), connProps_);
+        
+        Connection conn =        
+            DriverManager.getConnection(
+                connProps_.getProperty("url"), connProps_);
+                        
+        return conn;
     }
 
     /**
@@ -170,13 +174,17 @@ public final class JDBCUtil
      * 
      * @param  connection  Connection to release
      */
-    private static void releaseConnection(Connection connection) 
+    public static void releaseConnection(Connection connection) 
     {
         if (connection != null)
         {
             try 
             { 
-                connection.close();
+                if (!connection.isClosed())
+                {
+                    connection.close();
+                    connection = null;
+                }
             } 
             catch(SQLException e) 
             {
@@ -219,7 +227,7 @@ public final class JDBCUtil
      * @return  Formatted contents of the result set
      * @throws  SQLException on any SQL error
      */
-    public static String executeAndFormatQuery(String sql) throws SQLException
+    public static String executeQuery(String sql) throws SQLException
     {
         String formattedResults = null;
         Connection conn = null;
@@ -247,13 +255,14 @@ public final class JDBCUtil
      * @param  url      URL to database resource
      * @param  user     Username used for authentication
      * @param  password Password used for authentication
+     * @throws SQLException on SQL error
      * @throws ClassNotFoundException if the JDBC driver is not found
      */    
     public static void init(
         String driver, 
         String url, 
         String user, 
-        String password) throws ClassNotFoundException
+        String password) throws ClassNotFoundException, SQLException
     {
         // Will force DriverManager.register() to get called
         Class.forName(driver);
@@ -261,6 +270,15 @@ public final class JDBCUtil
         connProps_.put("user", user);
         connProps_.put("password", password);
         connProps_.put("url", url);
+        
+        // Get meta data 
+        Connection conn = getConnection();
+        DatabaseMetaData meta = conn.getMetaData();
+        
+        logger_.info("DB Connect: " + 
+            meta.getDatabaseProductName() + meta.getDatabaseProductVersion());
+            
+        releaseConnection(conn);
     }
     
     /**
@@ -293,5 +311,45 @@ public final class JDBCUtil
             rs.absolute(currentPos);
             
         return last;
+    }
+    
+    /**
+     * Drops table w/o any complaints
+     * 
+     * @param  table  Table name
+     */
+    public static void dropTable(String table)
+    {
+        if (table == null)
+            return;
+            
+        try
+        {
+            executeUpdate("drop table " + table);
+        }
+        catch (SQLException e)
+        {
+            ; // Quiet please
+        }
+    }
+    
+    /**
+     * Closes a ResultSet w/o any complaining
+     * 
+     * @param rs Resultset to close
+     */
+    public static void close(ResultSet rs)
+    {
+        if (rs == null)
+            return;
+            
+        try
+        {
+            rs.close();
+        }
+        catch(SQLException e)
+        {
+            ; // Quiet please
+        }
     }
 }
