@@ -207,4 +207,24 @@ public class DoubleUtilTest extends TestCase
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100", s);
     }
+    
+    
+    /** 
+     * Tests isBetween()
+     */
+    public void testIsBetween()
+    {
+        double a = 5.5;
+        double b = 10.7;
+        double c = -34.2;
+        
+        assertTrue(DoubleUtil.isBetween(a, c, b));
+        assertTrue(DoubleUtil.isBetween(a, a, a));
+        assertTrue(DoubleUtil.isBetween(b, b, b));
+        assertTrue(DoubleUtil.isBetween(c, c, c));
+        assertTrue(!DoubleUtil.isBetween(a, b, c));       
+        assertTrue(!DoubleUtil.isBetween(b, c, c));
+        assertTrue(!DoubleUtil.isBetween(a, b, b));
+        assertTrue(!DoubleUtil.isBetween(c, a, b));
+    }
 }
