@@ -35,7 +35,7 @@ public class Main
 
 
     /**
-     * Formats date to specific format. e.g.  01/01/1980  12/31/1999
+     * Formats date to specific format: 01/01/1980  12/31/1999
      * 
      * @param   d   Date to format
      * @return      Formatted date
@@ -49,7 +49,7 @@ public class Main
 
 
     /**
-     * Formats the file size length to include commas. e.g.  1,233,276
+     * Formats the file size length to include commas: 1,233,276
      * 
      * @param   l   file length
      * @return      formatted length
@@ -66,7 +66,7 @@ public class Main
 
 
     /**
-     * Formats time to specific format. e.g.  12:47a  01:07p
+     * Formats time to specific format:  12:47a  01:07p
      * 
      * @param   t   Date to format
      * @return      Formatted time
