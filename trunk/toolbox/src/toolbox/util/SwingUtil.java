@@ -712,20 +712,31 @@ public final class SwingUtil
      *   SwingUtil.bindKey(
      *       panel, 
      *       new RefreshAction(), 
-     *       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));  // Use zero for no input mask
+     *       KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), // Use zero for no input mask
+     *       JComponent.WHEN_FOCUSED);  
      * </pre>
      * @param comp Component to bind the keystroke to.
      * @param action Action to execute once the keystroke is entered.
      * @param keyStroke Keystroke to bind to the component.
+     * @param when When the binding should be active. Choices are
+     *        {@link JComponent#WHEN_FOCUSED},
+     *        {@link JComponent#WHEN_IN_FOCUSED_WINDOW}, and
+     *        {@link JComponent#WHEN_ANCESTOR_OF_FOCUSED_COMPONENT}. 
+     *          
      */
     public static void bindKey(
         JComponent comp, 
         Action action, 
-        KeyStroke keyStroke) 
+        KeyStroke keyStroke,
+        int when) 
     {
         // TODO: Test me
-        comp.getInputMap().put(keyStroke, action.getValue(Action.NAME));
-        comp.getActionMap().put(action.getValue(Action.NAME), action);
+        
+        // KeyStroke <---> glue <--> Action
+        
+        Object glue = action.getValue(Action.NAME);
+        comp.getInputMap(when).put(keyStroke, glue);
+        comp.getActionMap().put(glue, action);
     }
     
     //--------------------------------------------------------------------------
