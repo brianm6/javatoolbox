@@ -18,6 +18,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -33,7 +34,10 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.OptionPaneUI;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ExceptionUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 
 /**
@@ -42,6 +46,9 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartOptionPane extends JOptionPane implements ActionListener
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(JSmartOptionPane.class);
+        
     private JButton okButton_;
     private JButton detailsButton_;
     private boolean expanded_;
@@ -416,9 +423,28 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
     public static void showExceptionMessageDialog(Component parentComponent,
         Throwable exception)
     {
-        showDetailedMessageDialog(parentComponent, exception.getMessage(),
-            ExceptionUtil.getStackTrace(exception), "Error", 
-                JOptionPane.ERROR_MESSAGE);    
+        String stack = ExceptionUtil.getStackTrace(exception);
+        String message = exception.getMessage();
+        
+        if (StringUtil.isNullEmptyOrBlank(message))
+        {
+            try
+            {
+                message = StringUtil.getLine(stack,1);
+            }
+            catch (IOException e)
+            {
+                logger_.error(e);
+                message = stack;
+            }
+        }
+
+        showDetailedMessageDialog(
+            parentComponent, 
+            message, 
+            stack, 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);    
     }
 
 
