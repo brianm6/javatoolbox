@@ -26,7 +26,7 @@ public class DefaultStateMachine implements StateMachine
     //--------------------------------------------------------------------------
 
     /**
-     * List of listeners interested in listening to state transitions.
+     * List of listeners interested state machine generated events.
      */
     private List listeners_;
     
@@ -46,12 +46,12 @@ public class DefaultStateMachine implements StateMachine
     private State currentState_;
     
     /**
-     * The state of this state machine before the last transition.
+     * State of this machine before the last transition.
      */
     private State previousState_;
     
     /**
-     * The transition that resulted in the current state.
+     * Transition that resulted in the change to the current state.
      */
     private Transition lastTransition_;
     
@@ -59,17 +59,10 @@ public class DefaultStateMachine implements StateMachine
      * All known registered states.
      */
     private List states_;
-    
+
     /**
-     * Maps original state -> Collection(transitions)
+     * Maps (fromState, transition) --> (toState)
      */
-    //private MultiMap fromStates_;
-    
-    /**
-     * Maps transition -> target state
-     */
-    //private MultiMap toStates_;
-    
     private MultiKeyMap stateMap_;
     
     //--------------------------------------------------------------------------
@@ -95,14 +88,27 @@ public class DefaultStateMachine implements StateMachine
         setName(name);
         listeners_  = new ArrayList(1);
         states_     = new ArrayList();
-        //fromStates_ = new MultiHashMap();
-        //toStates_   = new MultiHashMap();
         stateMap_   = new MultiKeyMap();
     }
     
     //--------------------------------------------------------------------------
     // StateMachine Interface
     //--------------------------------------------------------------------------
+    
+    /**
+     * Resets the state machine to the begin state. The previous state and last
+     * transition are set to null.
+     * 
+     * @see toolbox.util.statemachine.StateMachine#reset()
+     */
+    public void reset()
+    {
+        currentState_   = beginState_;
+        previousState_  = null;
+        lastTransition_ = null;
+        fireMachineReset();
+    }
+    
     
     /**
      * @see toolbox.util.statemachine.StateMachine#setBeginState(
@@ -117,7 +123,7 @@ public class DefaultStateMachine implements StateMachine
             + "' does not exist in state machine '" 
             + getName() 
             + "'.");
-    
+        
         beginState_ = state;
     }
     
@@ -145,9 +151,11 @@ public class DefaultStateMachine implements StateMachine
      *      toolbox.util.statemachine.State, toolbox.util.statemachine.State)
      */
     public void addTransition(
-        Transition transition, State fromState, State toState)
+        Transition transition, 
+        State fromState, 
+        State toState)
     {
-        // Verify fromState exists
+        // Verify fromState exists ---------------------------------------------
         
         Validate.isTrue(states_.contains(fromState), 
             "Adding transition '"
@@ -158,7 +166,8 @@ public class DefaultStateMachine implements StateMachine
             + getName() 
             + "'.");
 
-        // Verify toState exists
+        // Verify toState exists -----------------------------------------------
+        
         Validate.isTrue(states_.contains(toState),
             "Adding transition '"
             + transition.getName() 
@@ -168,7 +177,8 @@ public class DefaultStateMachine implements StateMachine
             + getName() 
             + "'.");
         
-        // Verify transition between the two states doesn't already exist.
+        // Verify transition between the two states doesn't already exist ------
+        
         Validate.isTrue(!stateMap_.containsKey(fromState, transition),
             "Transition '"
             + transition.getName() 
@@ -179,8 +189,6 @@ public class DefaultStateMachine implements StateMachine
             + "' already exists.");
         
         stateMap_.put(fromState, transition, toState);
-        //fromStates_.put(fromState, transition);
-        //toStates_.put(transition, toState);
     }
 
     
@@ -190,9 +198,8 @@ public class DefaultStateMachine implements StateMachine
      */
     public State transition(Transition stimulus)
     {
-        State targetState = (State) stateMap_.get(currentState_, stimulus); 
-       
-        // No transitions found for the given stimulus
+        State targetState = (State) stateMap_.get(currentState_, stimulus);
+        
         Validate.notNull(targetState,
             "No transitions exist from state '" 
             + currentState_.getName() 
@@ -208,7 +215,7 @@ public class DefaultStateMachine implements StateMachine
         return currentState_;
     }
 
-    
+
     /**
      * @see toolbox.util.statemachine.StateMachine#canTransition(
      *      toolbox.util.statemachine.Transition)
@@ -217,17 +224,7 @@ public class DefaultStateMachine implements StateMachine
     {
         return stateMap_.containsKey(currentState_, transition);
     }
-    
-    
-    /**
-     * @see toolbox.util.statemachine.StateMachine#reset()
-     */
-    public void reset()
-    {
-        currentState_ = beginState_;
-        lastTransition_ = null;
-        previousState_ = null;
-    }
+
     
     /**
      * @see toolbox.util.statemachine.StateMachine#getState()
@@ -301,7 +298,7 @@ public class DefaultStateMachine implements StateMachine
     //--------------------------------------------------------------------------
     
     /**
-     * Notifies listeners of change in state.
+     * Notifies listeners of a change in state.
      */
     protected void fireStateChanged()
     {
@@ -309,6 +306,18 @@ public class DefaultStateMachine implements StateMachine
         {
             StateMachineListener listener = (StateMachineListener) iter.next();
             listener.stateChanged(this);
+        }
+    }
+    
+    /**
+     * Notifies listeners of a machine reset.
+     */
+    protected void fireMachineReset()
+    {
+        for (Iterator iter = listeners_.iterator(); iter.hasNext();)
+        {
+            StateMachineListener listener = (StateMachineListener) iter.next();
+            listener.machineReset(this);
         }
     }
 }
