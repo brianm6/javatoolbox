@@ -64,7 +64,7 @@ public class LineStatus
     /**
      * @return Count the line flag
      */
-    public boolean getCountLine()
+    public boolean isRealCode()
     {
         return countLine_;
     }
