@@ -45,6 +45,11 @@ import toolbox.util.ui.flippane.JFlipPane;
  * <li>Filtering text dynamically using regular expressions</li>
  * <li>Tokenizing strings<li>
  * </ul>
+ * 
+ * <p><pre>
+ * TODO: Add checkbox/combo to set type of text (xml, java) and syntax hilite
+ *       as appropriate
+ * </pre>
  */ 
 public class TextPlugin extends JPanel implements IPlugin, Stringz
 { 
