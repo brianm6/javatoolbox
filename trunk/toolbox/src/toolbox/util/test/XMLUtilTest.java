@@ -121,4 +121,29 @@ public class XMLUtilTest extends TestCase
         logger_.info("Formatted XML:\n\n" + formatted);
         
     }
+    
+    /**
+     * Tests format() with XML containing a declaration. The formatter should
+     * preserve the presence of the declaration.
+     * 
+     * @throws Exception on error
+     */
+    public void testFormatWithDeclaration() throws Exception
+    {
+        logger_.info("Running testFormatWithDeclaration...");
+        
+        String xml =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        "<root>" +
+        "<type unid=\"1awiysxq\">" +
+        "<localName>null</localName>" +
+        "</type>" +
+        "</root>";
+        
+        String formatted = XMLUtil.format(xml);
+        
+        assertNotNull(formatted);
+        
+        logger_.info("Formatted XML:\n\n" + formatted);
+    }
 }
