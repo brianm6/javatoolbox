@@ -241,31 +241,29 @@ public class JMemoryMonitor extends JComponent
         Rectangle2D bounds = g.getFont().getStringBounds(str, frc);
         Graphics g2 = g.create();
         
-        g2.setClip(insets.left,
-                   insets.top,
-                   (int) (width * fraction),
-                   height);
+        g2.setClip(
+            insets.left,
+            insets.top,
+            (int) (width * fraction),
+            height);
 
         g2.setColor(Color.black);
 
-        g2.drawString(str,
-                      insets.left + (int) (width - bounds.getWidth()) / 2,
-                      (int) (insets.top + lineMetrics_.getAscent()));
+        int x = insets.left + (int) (width - bounds.getWidth()) / 2;
+        int y = (int) (height + insets.top + lineMetrics_.getAscent()) / 2;
 
+        g2.drawString(str, x, y);
         g2.dispose();
         g2 = g.create();
 
-        g2.setClip(insets.left + (int) (width * fraction),
-                   insets.top,
-                   getWidth() - insets.left - (int) (width * fraction),
-                   height);
+        g2.setClip(
+            insets.left + (int) (width * fraction),
+            insets.top,
+            getWidth() - insets.left - (int) (width * fraction),
+            height);
 
         g2.setColor(getForeground());
-
-        g2.drawString(str,
-                      insets.left + (int) (width - bounds.getWidth()) / 2,
-                     (int) (insets.top + lineMetrics_.getAscent()));
-
+        g2.drawString(str, x, y);
         g2.dispose();
     }
 
