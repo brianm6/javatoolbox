@@ -15,11 +15,10 @@ import java.util.zip.ZipFile;
 import org.apache.log4j.Category;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
-
 import toolbox.util.StringUtil;
-import toolbox.util.io.CompoundFilter;
 import toolbox.util.io.DirectoryFilter;
 import toolbox.util.io.ExtensionFilter;
+import toolbox.util.io.OrFilter;
 
 /**
  * Utility that finds all occurences of a given class in the 
@@ -54,7 +53,7 @@ public class FindClass
     
     /** Filter for archives **/
     private FilenameFilter archiveFilter_ = 
-        new CompoundFilter(jarFilter_, zipFilter_);
+        new OrFilter(jarFilter_, zipFilter_);
     
     /** Filter for directories **/
     private FilenameFilter directoryFilter_ = new DirectoryFilter();

@@ -32,6 +32,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.io.CompoundFilter;
 import toolbox.util.io.DirectoryFilter;
 import toolbox.util.io.ExtensionFilter;
+import toolbox.util.io.OrFilter;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
@@ -45,7 +46,7 @@ public class JSourceView extends JFrame implements ActionListener
         Category.getInstance(JSourceView.class);
         
     
-    private static FilenameFilter sourceFilter_;
+    private static OrFilter sourceFilter_;
 
     private static final String TEXT_GO     = "Go!";
     private static final String TEXT_CANCEL = "Cancel";
@@ -90,14 +91,11 @@ public class JSourceView extends JFrame implements ActionListener
     static
     {
         /* create filter to flesh out source files */
-        sourceFilter_ = 
-            new CompoundFilter(
-                new CompoundFilter(
-                    new ExtensionFilter("c"),
-                    new ExtensionFilter("cpp")),
-                new CompoundFilter(
-                    new ExtensionFilter("java"),
-                    new ExtensionFilter("h")));
+        sourceFilter_ = new OrFilter();
+        sourceFilter_.addFilter(new ExtensionFilter("c"));
+        sourceFilter_.addFilter(new ExtensionFilter("cpp"));
+        sourceFilter_.addFilter(new ExtensionFilter("java"));
+        sourceFilter_.addFilter(new ExtensionFilter("h"));
     }
 
 
