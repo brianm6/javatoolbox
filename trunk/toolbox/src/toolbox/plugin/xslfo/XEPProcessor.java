@@ -8,8 +8,6 @@ import java.io.OutputStream;
 
 import com.renderx.xep.XSLDriver;
 
-import org.apache.fop.apps.Driver;
-
 import toolbox.util.FileUtil;
 import toolbox.util.StreamUtil;
 

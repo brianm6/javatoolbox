@@ -16,16 +16,12 @@ import org.apache.fop.apps.Driver;
 import org.apache.fop.messaging.MessageHandler;
 
 import org.xml.sax.InputSource;
-import toolbox.util.io.EventInputStream;
 
 /**
  * Interface to access the Apache FOP XSLFO processor
  */
 public class FOPProcessor implements FOProcessor
 {
-    private static final org.apache.log4j.Logger logger_ = 
-        org.apache.log4j.Logger.getLogger(FOPProcessor.class);
-    
     /** 
      * Main interface class to FOP 
      */
