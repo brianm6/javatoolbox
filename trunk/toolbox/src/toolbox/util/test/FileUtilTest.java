@@ -276,6 +276,33 @@ public class FileUtilTest extends TestCase
         reread.delete();
     }
 
+
+    /**
+     * Tests setFileContents(File)
+     * 
+     * @throws Exception on error
+     */
+    public void testSetFileContents2() throws Exception
+    {
+        logger_.info("Running testSetFileContents2...");
+        
+        // Create a file
+        String file = FileUtil.getTempFilename();
+        String contents = "blah blah blah";
+        FileUtil.setFileContents(new File(file), contents, false);
+        
+        // Read it back in
+        File reread = new File(file);
+        String currentContents = FileUtil.getFileContents(file);
+        
+        // Compare
+        assertEquals("contents should be equals", contents, currentContents);
+        logger_.info("Passed: setFileContents2 on " + file);
+        
+        // Clean up
+        reread.delete();
+    }
+
     
     /**
      * Tests moveFile() for simple case
