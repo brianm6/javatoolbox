@@ -9,9 +9,13 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.Window;
 import java.util.Enumeration;
 import java.util.List;
@@ -653,5 +657,32 @@ public final class SwingUtil
             for (int i = 0; i < components.length; i++)
                 findInstancesOf(clazz, components[i], results);
         }
+    }
+
+
+    /**
+     * Rotates an image a given number of degrees.
+     * 
+     * @param source Source image.
+     * @param degrees Degrees to rotate.
+     * @return Image
+     */
+    public static Image rotate(Image source, int degrees)
+    {
+        int w = source.getWidth(null);
+        int h = source.getHeight(null);
+    
+        GraphicsConfiguration gc = 
+            GraphicsEnvironment
+                .getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice()
+                .getDefaultConfiguration();
+    
+        Image img = gc.createCompatibleImage(w, h, Transparency.BITMASK);
+        Graphics2D g = (Graphics2D) img.getGraphics();
+        g.translate(w / 2, h / 2);
+        g.rotate(Math.toRadians(degrees));
+        g.drawImage(source, -w / 2, -h / 2, w, h, null);
+        return img;
     }
 }
