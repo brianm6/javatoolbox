@@ -21,6 +21,7 @@ import org.apache.log4j.Category;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
+import toolbox.jtail.config.*;
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
 import toolbox.util.StringUtil;
@@ -57,7 +58,7 @@ public class TailPane extends JPanel
     private Tail tail_;
 
     /** Configuration **/
-    private TailConfig config_;
+    private ITailPaneConfig config_;
     
     /** Dirty filter flag **/
     private boolean filterDirty_;
@@ -69,7 +70,7 @@ public class TailPane extends JPanel
      * @param   config  TailConfig
      * @throws  FileNotFoundException
      */
-    public TailPane(TailConfig config) throws FileNotFoundException
+    public TailPane(ITailPaneConfig config) throws FileNotFoundException
     {
         buildView();        
         setConfiguration(config);                
@@ -145,7 +146,7 @@ public class TailPane extends JPanel
      * 
      * @param  config  Tail configuration
      */
-    public void setConfiguration(TailConfig config)
+    public void setConfiguration(ITailPaneConfig config)
     {
         config_ = config;
 
@@ -162,7 +163,7 @@ public class TailPane extends JPanel
      * 
      * @return TailConfig
      */
-    public TailConfig getConfiguration()
+    public ITailPaneConfig getConfiguration()
     {
         // Make sure configuration up to date
         config_.setAutoScroll(autoScrollBox_.isSelected());
@@ -563,5 +564,14 @@ public class TailPane extends JPanel
             // no op since the checkbox is queried directly 
             // for its state            
         }
+    }
+    
+    //
+    //  INTERFACES
+    //
+    
+    public interface ITailPaneListener
+    {
+        public void newDataAvailable(TailPane tailPane);
     }
 }

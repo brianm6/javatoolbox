@@ -1,10 +1,8 @@
 package toolbox.jtail;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,12 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -25,13 +19,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Category;
+
+import toolbox.jtail.config.*;
+import toolbox.jtail.exml.ConfigManager;
+import toolbox.jtail.exml.TailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
@@ -44,11 +40,6 @@ import toolbox.util.ui.font.FontSelectionException;
 import toolbox.util.ui.font.FontSelectionPanel;
 import toolbox.util.ui.font.IFontDialogListener;
 
-import electric.xml.Document;
-import electric.xml.Element;
-import electric.xml.Elements;
-import electric.xml.ParseException;
-
 /**
  * GUI front end to the tail
  */
@@ -58,25 +49,18 @@ public class JTail extends JFrame
     private static final Category logger_ = 
         Category.getInstance(JTail.class);
 
-    private static final String ELEMENT_JTAIL = "JTail";
-    private static final String ATTR_HEIGHT   = "height";
-    private static final String ATTR_WIDTH    = "width";
-    private static final String ATTR_X        = "x";
-    private static final String ATTR_Y        = "y";
-    
-    private static final String CONFIG_FILE = ".jtail.xml";
-    
     
     private FileSelectionPane fileSelectionPane_;
     private JTabbedPane       tabbedPane_;
     private JSmartStatusBar   statusBar_;    
     private JMenuBar          menuBar_;    
     private Map               tailMap_;
-    private Point             location_;
-    private Dimension         size_;
     private boolean           testMode_ = true;
-    private Font              defaultFont_;
-        
+
+    // TODO: make factory 
+    private IConfigManager configManager_ = new ConfigManager();
+    
+    private IJTailConfig jtailConfig_;            
         
     /**
      * Entry point 
@@ -130,7 +114,8 @@ public class JTail extends JFrame
             buildView();
             addListeners();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
-            applyConfiguration(loadConfiguration());
+            loadConfiguration();
+            applyConfiguration();
         }
         catch (Exception e)
         {
@@ -149,7 +134,7 @@ public class JTail extends JFrame
         getContentPane().setLayout(new BorderLayout());
         
         fileSelectionPane_ = new FileSelectionPane();
-        tabbedPane_ = new JTabbedPane();
+        tabbedPane_ = new JTailTabbedPane();
 
         JSplitPane rootSplitPane = 
             new JSplitPane(
@@ -197,13 +182,13 @@ public class JTail extends JFrame
      * 
      * @param  config  Tail configuration
      */     
-    protected void addTail(TailConfig config)
+    protected void addTail(ITailPaneConfig config)
     {
         try
         {
             logger_.debug("[tail  ]\n" + config);
             TailPane tailPane = new TailPane(config);
-
+ 
             JButton closeButton = tailPane.getCloseButton();
             
             // Create map of (closeButton, tailPane) so that the 
@@ -229,107 +214,9 @@ public class JTail extends JFrame
      * 
      * @throws  IOException on I/O error
      */
-    protected TailConfig[] loadConfiguration() throws IOException
+    protected void loadConfiguration()
     {
-        TailConfig[] configs = new TailConfig[0];
-        
-        String userHome = System.getProperty("user.home");
-        String filename = userHome + File.separator + CONFIG_FILE;
-     
-        File xmlFile = new File(filename);
-        
-        if (!xmlFile.exists())
-        {
-            // create a new configuration
-        }
-        else if (!xmlFile.canRead())
-        {
-            JOptionPane.showMessageDialog(this, 
-                "Cannot read configuration from " + filename + ". " + 
-                "Using defaults.");
-        }
-        else if (!xmlFile.isFile())
-        {
-            JOptionPane.showMessageDialog(this,
-                "Configuration file " + filename + " cannot be a directory. " +
-                "Using Defaults.");
-        }
-        else
-        {
-            try
-            {
-                Document config = new Document(xmlFile);            
-                Element jtailNode = config.getRoot();
-                
-                // Read optional window location
-                if ((jtailNode.getAttribute(ATTR_X) != null) &&
-                    (jtailNode.getAttribute(ATTR_Y) != null))
-                {
-                    location_ = new Point();
-                    
-                    location_.x = 
-                        Integer.parseInt(jtailNode.getAttribute(ATTR_X));
-                        
-                    location_.y = 
-                        Integer.parseInt(jtailNode.getAttribute(ATTR_Y));
-                }
-                
-                // Read optional window size
-                if ((jtailNode.getAttribute(ATTR_HEIGHT) != null) &&
-                    (jtailNode.getAttribute(ATTR_WIDTH)!= null))
-                {
-                    size_ = new Dimension();
-                    
-                    size_.height = Integer.parseInt(
-                        jtailNode.getAttribute(ATTR_HEIGHT));
-                        
-                    size_.width  = Integer.parseInt(
-                        jtailNode.getAttribute(ATTR_WIDTH));
-                }
-                
-                // Handle optional default font element    
-                Element fontNode = 
-                    jtailNode.getElement(TailConfig.ELEMENT_FONT);
-                
-                if (fontNode != null)
-                {
-                    String family = 
-                        fontNode.getAttribute(TailConfig.ATTR_FAMILY);
-                        
-                    int style = Integer.parseInt(
-                        fontNode.getAttribute(TailConfig.ATTR_STYLE));
-                        
-                    int size = Integer.parseInt(
-                        fontNode.getAttribute(TailConfig.ATTR_SIZE));
-                        
-                    defaultFont_ = new Font(family, style, size);
-                }
-                else
-                {
-                    defaultFont_ = SwingUtil.getPreferredMonoFont();
-                }
-                 
-                                
-                // Iterate through each "tail" element, hydrate the 
-                // corresponding TailConfig object
-                for (Elements tails = 
-                     jtailNode.getElements(TailConfig.ELEMENT_TAIL); 
-                     tails.hasMoreElements();)
-                {
-                    Element tail = tails.next();
-                    TailConfig props = TailConfig.unmarshal(tail);                    
-                    
-                    configs = (TailConfig[])
-                        ArrayUtil.addElement(configs, props);
-                }
-            }
-            catch (ParseException pe)
-            {
-                JSmartOptionPane.showExceptionMessageDialog(this, pe);
-            }
-        }
-        
-        return configs;
+        jtailConfig_ = configManager_.load();
     }    
     
     
@@ -339,59 +226,23 @@ public class JTail extends JFrame
      */
     protected void saveConfiguration()
     {
-        String userHome = System.getProperty("user.home");
-        String filename = userHome + File.separator + ".jtail.xml";
-     
-        File configFile = new File(filename);
-
-        try
+        // Since each of the ITailPaneConfigs are maintained inside the 
+        // TailPane itself, gather them up and update jtailConfig before
+        // saving. Essentially, do the reverse of applyConfiguration(). 
+        
+        ITailPaneConfig configs[] = new ITailPaneConfig[0];
+        
+        for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext(); )
         {
-            Element jtailNode = new Element(ELEMENT_JTAIL);
-            jtailNode.setAttribute(ATTR_HEIGHT, getSize().height + "");
-            jtailNode.setAttribute(ATTR_WIDTH, getSize().width + "");
-            jtailNode.setAttribute(ATTR_X, getLocation().x + "");
-            jtailNode.setAttribute(ATTR_Y, getLocation().y + "");
-
-            // Save default font
-            Element fontNode = new Element(TailConfig.ELEMENT_FONT);
-            
-            fontNode.setAttribute(
-                TailConfig.ATTR_FAMILY, getFont().getFamily());
-                
-            fontNode.setAttribute(
-                TailConfig.ATTR_STYLE, getFont().getStyle() + "");
-                
-            fontNode.setAttribute(
-                TailConfig.ATTR_SIZE, getFont().getSize() + "");            
-            
-            jtailNode.addElement(fontNode);
-            
-            // Save tail configurations
-            logger_.debug("Saving "+tailMap_.size()+" configurations");
-
-            List keys = new ArrayList();
-            keys.addAll(tailMap_.keySet());
-            
-            // Flip collection so read in originally created order
-            Collections.reverse(keys);            
-            
-            for (Iterator i = keys.iterator(); i.hasNext(); )
-            {
-                TailPane tail = (TailPane)tailMap_.get(i.next());
-                TailConfig config = tail.getConfiguration();
-                jtailNode.addElement(config.marshal());                
-            }
-
-            Document document = new Document();    
-            document.setRoot(jtailNode);
-            document.write(configFile);
-            
-            logger_.debug("\n" + document);
+            Map.Entry entry = (Map.Entry) i.next();
+            TailPane tailPane = (TailPane)entry.getValue();            
+            ITailPaneConfig config = tailPane.getConfiguration();
+            configs = (ITailPaneConfig[])ArrayUtil.addElement(configs, config);    
         }
-        catch (IOException ioe)
-        {
-            JSmartOptionPane.showExceptionMessageDialog(this, ioe);                        
-        }
+        jtailConfig_.setTailPaneConfigs(configs);
+        
+        
+        configManager_.save(jtailConfig_);
     }
     
     
@@ -400,24 +251,25 @@ public class JTail extends JFrame
      * 
      * @param  configs  Tail configurations
      */
-    protected void applyConfiguration(TailConfig[] configs)
+    protected void applyConfiguration()
     {
         // Window size
-        if (size_ != null)
-            setSize(size_);
+        if (jtailConfig_.getSize() != null)
+            setSize(jtailConfig_.getSize());
         else
             setSize(800,400);
         
         // Window location    
-        if (location_ != null)
-            setLocation(location_);
+        if (jtailConfig_.getLocation() != null)
+            setLocation(jtailConfig_.getLocation());
         else
             SwingUtil.centerWindow(this);
         
         // Tails left running since last save
-        for (int i=0; i<configs.length; i++)
+        ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailPaneConfigs();
+        for (int i=0; i< tailPaneConfigs.length; i++)
         {
-            TailConfig config = configs[i];
+            ITailPaneConfig config = tailPaneConfigs[i];
             
             // Apply defaults if any
             if (config.getFont() == null)
@@ -458,69 +310,7 @@ public class JTail extends JFrame
      */
     protected Font getDefaultFont()
     {
-        return defaultFont_;
-    }
-    
-
-    /**
-     * Unmarshals an XML element representing a TailProp object
-     * 
-     * @param   tail  Element representing a tailprops
-     * @return  Fully populated TailProp
-     */
-    public static TailConfig unmarshal(Element jtailNode) throws IOException 
-    {
-        
-        
-//        TailConfig props = new TailConfig();
-//        
-//        // Handle tail element
-//        props.setFilename(tail.getAttribute(ATTR_FILE));
-//        props.setAutoScroll(
-//            new Boolean(tail.getAttribute(ATTR_AUTOSCROLL)).booleanValue());
-//        props.setShowLineNumbers(
-//            new Boolean(tail.getAttribute(ATTR_LINENUMBERS)).booleanValue());
-//        
-//        // Handle font element    
-//        Element fontNode = tail.getElement(ELEMENT_FONT);
-//        String  family   = fontNode.getAttribute(ATTR_FAMILY);
-//        int     style    = Integer.parseInt(fontNode.getAttribute(ATTR_STYLE));
-//        int     size     = Integer.parseInt(fontNode.getAttribute(ATTR_SIZE));
-//        props.setFont(new Font(family, style, size));
-//            
-//        return props;
-
-        return null;
-    }
-
-
-    /**
-     * Marshals from Java object representation to XML representation
-     * 
-     * @return  Tail XML node
-     */
-    public Element marshal()  throws IOException 
-    {
-//        // Tail element
-//        Element tail = new Element(ELEMENT_TAIL);
-//        tail.setAttribute(ATTR_FILE, getFilename());
-//        tail.setAttribute(ATTR_AUTOSCROLL, 
-//            new Boolean(isAutoScroll()).toString());
-//        tail.setAttribute(ATTR_LINENUMBERS, 
-//            new Boolean(isShowLineNumbers()).toString());
-//        
-//        // Font element    
-//        Element font = new Element(ELEMENT_FONT);
-//        font.setAttribute(ATTR_FAMILY, getFont().getFamily());
-//        font.setAttribute(ATTR_STYLE, getFont().getStyle() + "");
-//        font.setAttribute(ATTR_SIZE, getFont().getSize() + "");            
-//        
-//        // Make font child of tail
-//        tail.addElement(font);
-//        
-//        return tail;
-
-        return null;
+        return jtailConfig_.getDefaultFont();
     }
 
 
@@ -540,7 +330,8 @@ public class JTail extends JFrame
          */
         public void fileDoubleClicked(String file)
         {
-            TailConfig config = new TailConfig(file, true, false, 
+            // TODO: fix to use factory
+            ITailPaneConfig config = new TailPaneConfig(file, true, false, 
                 SwingUtil.getPreferredMonoFont(), "");
                 
             addTail(config);
@@ -561,7 +352,7 @@ public class JTail extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             
-            TailConfig config = new TailConfig(
+            ITailPaneConfig config = new TailPaneConfig(
                 fileSelectionPane_.getFileExplorer().getFilePath(), 
                     true, false, SwingUtil.getPreferredMonoFont(), "");
             
