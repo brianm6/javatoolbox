@@ -76,8 +76,8 @@ public class PackerLayout extends ConstraintLayout implements Direction
     {
         hGap_ = hGap;
         vGap_ = vGap;
-        hMargin_ = hMargin;
-        vMargin_ = vMargin;
+        setHMargin(hMargin);
+        setVMargin(vMargin);
     }
 
     //--------------------------------------------------------------------------
@@ -213,8 +213,8 @@ public class PackerLayout extends ConstraintLayout implements Direction
                     {
                         Rectangle r = sizes[i];
                         c.setBounds(
-                            insets.left + hMargin_ - minX + r.x,
-                            insets.top + vMargin_ - minY + r.y,
+                            insets.left + getHMargin() - minX + r.x,
+                            insets.top + getVMargin() - minY + r.y,
                             r.width,
                             r.height);
                     }

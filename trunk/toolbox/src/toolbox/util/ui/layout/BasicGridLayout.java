@@ -53,8 +53,8 @@ public class BasicGridLayout extends ConstraintLayout
         reqCols_ = cols;
         hGap_ = hGap;
         vGap_ = vGap;
-        hMargin_ = hMargin;
-        vMargin_ = vMargin;
+        setHMargin(hMargin);
+        setVMargin(vMargin);
     }
 
     //--------------------------------------------------------------------------
@@ -216,8 +216,8 @@ public class BasicGridLayout extends ConstraintLayout
         Insets insets = target.getInsets();
         int totalWeight, totalSize, remainder;
 
-        size.width -= insets.left + insets.right + 2 * hMargin_;
-        size.height -= insets.top + insets.bottom + 2 * vMargin_;
+        size.width -= insets.left + insets.right + 2 * getHMargin();
+        size.height -= insets.top + insets.bottom + 2 * getVMargin();
         totalWeight = totalSize = 0;
         for (i = 0; i < cols_; i++)
         {
@@ -282,11 +282,11 @@ public class BasicGridLayout extends ConstraintLayout
 
                         x = insets.left + 
                             sumArray(colWidths_, hGap_, col) + 
-                            hMargin_;
+                            getHMargin();
                             
                         y = insets.top + 
                             sumArray(rowHeights_, vGap_, row) + 
-                            vMargin_;
+                            getVMargin();
                             
                         if (col > 0)
                             x += hGap_;

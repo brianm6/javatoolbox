@@ -82,8 +82,8 @@ public class ParagraphLayout extends ConstraintLayout
         int hGapMinor,
         int vGapMinor)
     {
-        hMargin_ = hMargin;
-        vMargin_ = vMargin;
+        setHMargin(hMargin);
+        setVMargin(vMargin);
         hGapMajor_ = hGapMajor;
         vGapMajor_ = vGapMajor;
         hGapMinor_ = hGapMinor;
@@ -179,7 +179,7 @@ public class ParagraphLayout extends ConstraintLayout
                     (y + rowHeight) - 
                     insets.top      - 
                     insets.bottom   - 
-                    2 * vMargin_;
+                    2 * getVMargin();
                         
                 x = 0;
                 y = 0;
@@ -310,7 +310,7 @@ public class ParagraphLayout extends ConstraintLayout
         Dimension size = target.getSize();
         
         int spareWidth =
-            size.width - rowWidth - insets.left - insets.right - 2 * hMargin_;
+            size.width - rowWidth - insets.left - insets.right - 2*getHMargin();
 
         for (int i = start; i <= end; i++)
         {
@@ -357,8 +357,8 @@ public class ParagraphLayout extends ConstraintLayout
                         0 : (rowHeight - h) / 2;
                         
                 c.setBounds(
-                    insets.left + hMargin_ + x,
-                    insets.top + vMargin_ + y + yOffset,
+                    insets.left + getHMargin() + x,
+                    insets.top + getVMargin() + y + yOffset,
                     w,
                     h);
                     

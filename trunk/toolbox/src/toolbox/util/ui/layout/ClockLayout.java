@@ -75,10 +75,10 @@ public class ClockLayout extends ConstraintLayout
             else
             {
                 int mx =
-                  (size.width - insets.left - insets.right - 2 * hMargin_) / 2;
+                  (size.width - insets.left - insets.right - 2*getHMargin())/2;
                   
                 int my =
-                  (size.height - insets.top - insets.bottom - 2 * vMargin_) / 2;
+                  (size.height - insets.top - insets.bottom - 2*getVMargin())/2;
                   
                 x = 0;
                 y = 0;
@@ -100,8 +100,8 @@ public class ClockLayout extends ConstraintLayout
                         y = my - (int) (Math.cos(angle) * radius);
                         
                         c.setBounds(
-                            insets.left + hMargin_ + x - w / 2,
-                            insets.top + vMargin_ + y - h / 2,
+                            insets.left + getHMargin() + x - w / 2,
+                            insets.top + getVMargin() + y - h / 2,
                             w,
                             h);
                     }
