@@ -17,17 +17,6 @@ public class RandomUtilTest extends TestCase
     private static final Category logger_ = 
         Category.getInstance(RandomUtilTest.class);
 
-    
-    /**
-     * Constructor for RandomUtilTest
-     * 
-     * @param  arg0  Name
-     */
-    public RandomUtilTest(String arg0)
-    {
-        super(arg0);
-    }
-
 
     /**
      * Entry point
@@ -37,6 +26,17 @@ public class RandomUtilTest extends TestCase
     public static void main(String[] args)
     {
         TestRunner.run(RandomUtilTest.class);
+    }
+
+    
+    /**
+     * Constructor for RandomUtilTest
+     * 
+     * @param  arg0  Name
+     */
+    public RandomUtilTest(String arg0)
+    {
+        super(arg0);
     }
 
     
@@ -275,5 +275,15 @@ public class RandomUtilTest extends TestCase
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
     }
+
+    
+    /**
+     * Tests nextBoolean()
+     */
+    public void testNextBoolean()
+    {
+        for (int i=0; i<10; i++)
+            logger_.info(RandomUtil.nextBoolean()+"");
+    }    
 }
 
