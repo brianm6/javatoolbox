@@ -46,5 +46,6 @@
     <classpathentry kind="lib" path="lib/sametime-comm-res.jar"/>
     <classpathentry kind="lib" path="lib/skinlf.jar" sourcepath="lib/src/skinlf-src.zip"/>
     <classpathentry kind="var" path="TOOLBOX_RESOURCES"/>
+    <classpathentry kind="lib" path="lib/multivalent.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
