@@ -38,7 +38,7 @@ public final class ThreadUtil
     {
         try
         {
-            Thread.currentThread().sleep(millis);
+            Thread.sleep(millis);
         }
         catch(Exception e)
         {
