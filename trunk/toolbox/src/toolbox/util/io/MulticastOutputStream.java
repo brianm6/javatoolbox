@@ -12,8 +12,8 @@ import toolbox.util.ArrayUtil;
  * An OutputStream that multicasts stream operations to one or more registered 
  * OutputStreams. 
  * <p>
- * Example:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * MulticastOutputStream mos = new MulticastOutputStream();
  * 
  * try

@@ -12,8 +12,8 @@ import org.apache.commons.lang.StringUtils;
  * exempt from filtering. This implementation also has an on/off switch to
  * enable or disable the filtering at runtime via the setEnabled() method.
  * <p>
- * Example:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * 
  * StringOutputStream sos = new StringOutputStream();
  * PrintableOutputStream pos = new PrintableOutputStream(sos, true, ".");

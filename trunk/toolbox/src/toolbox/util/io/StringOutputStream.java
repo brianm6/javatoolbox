@@ -5,8 +5,8 @@ import java.io.OutputStream;
 /**
  * An {@link java.io.OutputStream} that empties into a String.
  * <p>
- * Example:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * StringOutputStream sos = new StringOutputStream();
  * UpperCaseOutputStream ucos = new UpperCaseOutputStream(sos);
  * ucos.write("weee!".getBytes());

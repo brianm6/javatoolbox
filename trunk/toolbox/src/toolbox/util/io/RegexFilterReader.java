@@ -13,8 +13,8 @@ import org.apache.regexp.RESyntaxException;
  * from a Reader. If the line does not match the regular expression, it is 
  * discarded from the stream.
  * <p>
- * Example:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * StringReader sr = new StringReader("a \n ab \n abc");
  * 
  * RegexFilterReader rfr = 
@@ -28,7 +28,6 @@ import org.apache.regexp.RESyntaxException;
  * // prints out matching lines ab and abc
  * while ((line = rfr.readLine()) != null)
  *     System.out.println("Line matched: " + line);
- *  
  * </pre>
  * 
  * @see java.io.LineNumberReader

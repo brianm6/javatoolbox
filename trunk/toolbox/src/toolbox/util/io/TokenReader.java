@@ -10,8 +10,8 @@ import toolbox.util.StringUtil;
  * A {@link java.io.Reader} that reads in lines of token delimited text. One 
  * line is read per readTokens() invocation.
  * <p>
- * Example:
- * <pre>
+ * <b>Example:</b>
+ * <pre class="snippet">
  * String s = "one,two,three\nfour,five,six";
  * TokenReader reader = new TokenReader(new StringReader(s));
  * 

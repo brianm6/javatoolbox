@@ -8,8 +8,8 @@ import toolbox.util.RollingCounter;
 /**
  * WrappingWriter is a Writer that automatically line wraps. Options include
  * a configurable line width and line prefix and suffix decorators.
- * 
- * <pre>
+ * <p>
+ * <pre class="snippet">
  * Simple line wrap with a width of 3: 
  * 
  * wrap("123456789", 3) =
