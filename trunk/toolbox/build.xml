@@ -26,6 +26,7 @@
         <property name="test"       location="${top}/test"/>
         <property name="build"      location="${top}/build"/>
         <property name="build.lib"  location="${build}/lib"/>
+        <property name="build.conf" location="${build}/conf"/>
         <property name="doc"        location="${top}/doc"/>
         <property name="junit"      location="${doc}/junit"/>
         <property name="junit.xml"  location="${junit}/xml"/>
@@ -423,7 +424,20 @@
             sourcepath="${src}"
             splitindex="false" 
             use="true" 
-            version="true"/>
+            version="true"
+            stylesheetfile="${build.conf}/javadoc-stylesheet.css">
+            
+            <link href="http://www.junit.org/junit/javadoc/3.8.1/index.htm"/>
+            <link href="http://jakarta.apache.org/log4j/docs/api"/>
+            <link href="http://java.sun.com/j2se/1.4.1/docs/api"/>
+            <link href="http://jakarta.apache.org/commons/beanutils/api"/>
+            <link href="http://jakarta.apache.org/commons/logging/api"/>
+            <link href="http://jakarta.apache.org/commons/collections/api"/>
+            <link href="http://jakarta.apache.org/commons/lang/api"/>
+            <link href="http://jakarta.apache.org/commons/net/apidocs"/>
+            <link href="http://jakarta.apache.org/regexp/apidocs/"/>
+            
+        </javadoc>            
             
     </target>
 
@@ -637,7 +651,7 @@
         <style  basedir="${doc}/checkstyle" 
                 destdir="${doc}/checkstyle"                           
                 includes="checkstyle_report.xml"                                    
-                style="${build}/conf/checkstyle-noframes.xsl"/>
+                style="${build.conf}/checkstyle-noframes.xsl"/>
                 
         <exec executable="cmd.exe">
             <arg line="/c start ${doc}/checkstyle/checkstyle_report.html"/>
