@@ -11,8 +11,8 @@ public interface DumpFormatter
     /**
 	 * Should the given class be included in the dump?
 	 * 
-	 * @param clazz Class to test for inclusion
-	 * @return boolean True if class should be included, false otherwise
+	 * @param clazz Class to test for inclusion.
+	 * @return boolean True if class should be included, false otherwise.
 	 */
     boolean shouldInclude(Class clazz);
 
@@ -20,8 +20,8 @@ public interface DumpFormatter
     /**
 	 * Should the given field be included in the dump?
 	 * 
-	 * @param field Field to test for inclusion
-	 * @return boolean True if field should be included, false otherwise
+	 * @param field Field to test for inclusion.
+	 * @return boolean True if field should be included, false otherwise.
 	 */
     boolean shouldInclude(Field field);
 
@@ -30,7 +30,7 @@ public interface DumpFormatter
 	 * Returns true if the inheritance tree should be shown for each object
 	 * traversed, false otherwise.
 	 * 
-	 * @return Inheritance flag
+	 * @return Inheritance flag.
 	 */
     boolean showInheritance();
 
@@ -38,8 +38,8 @@ public interface DumpFormatter
     /**
 	 * Formats the presentation of a classes' name.
 	 * 
-	 * @param className Class name to format
-	 * @return Formatted class name
+	 * @param className Class name to format.
+	 * @return Formatted class name.
 	 */
     String formatClassName(String className);
 
@@ -47,8 +47,8 @@ public interface DumpFormatter
     /**
 	 * Formats the presentation of a classes' name.
 	 * 
-	 * @param clazz Class name to format
-	 * @return Formatted classname
+	 * @param clazz Class name to format.
+	 * @return Formatted classname.
 	 */
     String formatClassName(Class clazz);
 
@@ -57,7 +57,7 @@ public interface DumpFormatter
 	 * Returns true if the fields in a class should be sorted alphabetically,
 	 * false otherwise.
 	 * 
-	 * @return Sort fields flag
+	 * @return Sort fields flag.
 	 */
     boolean sortFields();
 
@@ -65,7 +65,7 @@ public interface DumpFormatter
     /**
 	 * Formats a field name.
 	 * 
-	 * @return Formatted field name
+	 * @return Formatted field name.
 	 */
     String formatFieldName(String fieldName);
 }

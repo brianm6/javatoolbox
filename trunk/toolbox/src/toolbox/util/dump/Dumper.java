@@ -22,6 +22,8 @@ import toolbox.util.StringUtil;
  */
 public class Dumper
 {
+    private static final Logger logger_ = Logger.getLogger(Dumper.class);
+    
     // TODO: Fix dangling tail
     // TODO: Add option to have refences to already traversed objects generate
     //       unique labels to they can be referenced. (ugly but useful)
@@ -32,31 +34,39 @@ public class Dumper
     // Constants 
     //--------------------------------------------------------------------------
     
-    private static final Logger logger_ = Logger.getLogger(Dumper.class);
+    /**
+     * Trunk character of the ascii tree.
+     */    
+    private static final String BAR = "|   ";
     
-    // Strings for ascii tree branches    
-    private static final String BAR      = "|   ";
+    /**
+     * Junction character of the ascii tree.
+     */
     private static final String JUNCTION = "+";
-    private static final String ARM      = "---";
+    
+    /**
+     * Arm character of the ascii tree.
+     */
+    private static final String ARM = "---";
 
     /** 
      * Max length of right hand value. 
      */
     private static final int MAX_PRESENTABLE_LENGTH = 100;
 
-    /** 
-     * Maximum depth to traverse into the object graph. 
-     */
-    private int maxDepth_ = Integer.MAX_VALUE;
-
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
+    
+    /** 
+     * Maximum depth to traverse into the object graph. 
+     */
+    private int maxDepth_;
         
     /** 
      * Caches objects which have already been traversed. 
      */
-    private ObjectCache cache_ = new ObjectCache();
+    private ObjectCache cache_;
     
     /** 
      * Dump formatter and configuration. 
@@ -69,10 +79,8 @@ public class Dumper
     
     /**
 	 * Creates a Dumper with the default BasicDumpFormatter.
-	 * 
-	 * @throws RESyntaxException on regular expression error
 	 */
-    private Dumper() throws RESyntaxException
+    private Dumper()
     {
         this(new BasicDumpFormatter());
     }
@@ -81,11 +89,13 @@ public class Dumper
     /**
 	 * Creates a Dumper with the given formatter.
 	 * 
-	 * @param formatter Dump formatting and output NLiteria
+	 * @param formatter Dump formatting and output criteria.
 	 */
     public Dumper(DumpFormatter formatter)
     {
         formatter_ = formatter;
+        maxDepth_  = Integer.MAX_VALUE;
+        cache_     = new ObjectCache();
     }
 
     //--------------------------------------------------------------------------
@@ -96,8 +106,8 @@ public class Dumper
 	 * Traverses an object graph and dumps it to a string using a tree
 	 * structure.
 	 * 
-	 * @param obj Object to dump
-	 * @return String dump
+	 * @param obj Object to dump.
+	 * @return Object dumped to string.
 	 */
     public static String dump(Object obj)
     {
@@ -110,9 +120,9 @@ public class Dumper
 	 * structure with the given maximum depth of traversal from the root
 	 * object.
 	 * 
-	 * @param obj Object to dump
-	 * @param maxDepth Max number of levels to recurse down into the obj
-	 * @return Object dumped as a tree
+	 * @param obj Object to dump.
+	 * @param maxDepth Max number of levels to recurse down into the obj.
+	 * @return Object dumped as a tree.
 	 */
     public static String dump(Object obj, int maxDepth)
     {
@@ -140,10 +150,10 @@ public class Dumper
 	 * structure with the given maximum depth of traversal from the root object
 	 * and formater.
 	 * 
-	 * @param obj Object to dump
-	 * @param maxDepth Max number of levels to recurse down into the obj
-	 * @param formatter Dump formatter
-	 * @return Object dumped as a tree
+	 * @param obj Object to dump.
+	 * @param maxDepth Max number of levels to recurse down into the obj.
+	 * @param formatter Dump formatter.
+	 * @return Object dumped as a tree.
 	 */
     public static String dump(Object obj, int maxDepth, DumpFormatter formatter)
     {
@@ -160,7 +170,7 @@ public class Dumper
     /**
      * Returns the maxDepth.
      * 
-     * @return Max number of levels to recurse from the root object
+     * @return Max number of levels to recurse from the root object.
      */
     public int getMaxDepth()
     {
@@ -171,7 +181,7 @@ public class Dumper
     /**
      * Sets the maxDepth.
      * 
-     * @param maxDepth Max number of levels to recurse from the root object
+     * @param maxDepth Max number of levels to recurse from the root object.
      */
     public void setMaxDepth(int maxDepth)
     {
@@ -186,8 +196,8 @@ public class Dumper
 	 * Non-static method to allow access to instance variables which in turn is
 	 * required for multiple simultaneous threads without interference.
 	 * 
-	 * @param obj Object to dump
-	 * @return Stringified dump of object
+	 * @param obj Object to dump.
+	 * @return Stringified dump of object.
 	 */
     protected String nonStaticDumpObject(Object obj)
     {
@@ -222,10 +232,10 @@ public class Dumper
 	 * Traverses an object and its children to generate a tree like structure
 	 * of the object graphs and the values of its elements.
 	 * 
-	 * @param obj Object to dump
-	 * @param buffer Dump buffer
-	 * @param depth Recursion depth
-	 * @throws IllegalAccessException if attribute/method not accessible
+	 * @param obj Object to dump.
+	 * @param buffer Dump buffer.
+	 * @param depth Recursion depth.
+	 * @throws IllegalAccessException if attribute/method not accessible.
 	 */
     protected void dump(Object obj, StringBuffer buffer, String depth) 
         throws IllegalAccessException
@@ -259,10 +269,10 @@ public class Dumper
     /**
 	 * Dumps an array or collection class.
 	 * 
-	 * @param obj Object to dump
-	 * @param buffer Dump buffer
-	 * @param depth Recursion depth
-	 * @throws IllegalAccessException if attribute/method not accessible
+	 * @param obj Object to dump.
+	 * @param buffer Dump buffer.
+	 * @param depth Recursion depth.
+	 * @throws IllegalAccessExceptio.n if attribute/method not accessible.
 	 */
     protected void dump(
         Field arrayField, 
@@ -294,11 +304,11 @@ public class Dumper
 	 * Calls itself recursively. Gets all attributes of obj and dumps relevant
 	 * data.
 	 * 
-	 * @param clazz Class representing level in class hierarchy
-	 * @param obj Object to dump
-	 * @param buffer Dump buffer
-	 * @param depth Recursion depth
-	 * @throws IllegalAccessException on illegal access
+	 * @param clazz Class representing level in class hierarchy.
+	 * @param obj Object to dump.
+	 * @param buffer Dump buffer.
+	 * @param depth Recursion depth.
+	 * @throws IllegalAccessException on illegal access.
 	 */    
     protected void dump(
         Class clazz,  
@@ -388,8 +398,8 @@ public class Dumper
 	 * Determines if we're reached the maxnumber of levels specified to
 	 * traverse down the object hierarchy.
 	 * 
-	 * @param Current indentation string (or depth)
-	 * @return True if we should not go down any deeper, false otherwise
+	 * @param Current indentation string (or depth).
+	 * @return True if we should not go down any deeper, false otherwise.
 	 */
     protected boolean reachedMaxDepth(String depth)
     {
@@ -401,7 +411,7 @@ public class Dumper
 	 * Check if the object has already been traversed, if not flip the bit
 	 * cause we're about to traverse it!
 	 * 
-	 * @param value Object to check for traversal
+	 * @param value Object to check for traversal.
 	 */
     protected void checkTraversed(Object value)
     {
@@ -415,8 +425,8 @@ public class Dumper
     /**
 	 * Convenience method to Create an ASCII tree branch.
 	 * 
-	 * @param depth Current indentation string
-	 * @return ASCII branch
+	 * @param depth Current indentation string.
+	 * @return ASCII branch.
 	 */
     protected String makeBranch(String depth)
     {
@@ -439,8 +449,8 @@ public class Dumper
 	 * conditions are true, then substitutes are used in order to simplify
 	 * readability.
 	 * 
-	 * @param obj Object to make presentable
-	 * @return Object's value is a presentable string
+	 * @param obj Object to make presentable.
+	 * @return Object's value is a presentable string.
 	 */
     protected String makePresentable(Object obj)
     {
@@ -494,8 +504,8 @@ public class Dumper
     /**
 	 * Appends the given classes inheritance tree to the dump buffer.
 	 * 
-	 * @param clazz Class for which to print the tree
-	 * @param buffer Dump buffer
+	 * @param clazz Class for which to print the tree.
+	 * @param buffer Dump buffer.
 	 */
     protected void appendInheritance(Class clazz, StringBuffer buffer)
     {
@@ -526,7 +536,7 @@ public class Dumper
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // FieldNameComparator
     //--------------------------------------------------------------------------
     
     /** 
@@ -534,6 +544,9 @@ public class Dumper
      */
     class FieldNameComparator implements Comparator
     {
+        /**
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
         public int compare(Object o1, Object o2)
         {
             String name1 = ((Field)o1).getName();

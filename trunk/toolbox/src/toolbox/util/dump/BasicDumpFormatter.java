@@ -17,6 +17,10 @@ import toolbox.util.StringUtil;
  */
 public class BasicDumpFormatter implements DumpFormatter
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Classes that are excluded from the object dump. 
      */
@@ -43,10 +47,8 @@ public class BasicDumpFormatter implements DumpFormatter
 
     /**
      * Creates a BasicDumpFormatter.
-     * 
-     * @throws RESyntaxException on regular expression error
      */
-    public BasicDumpFormatter() throws RESyntaxException
+    public BasicDumpFormatter()
     {
         excludedClasses_ = new ArrayList();
         excludedFields_  = new ArrayList();
@@ -65,8 +67,8 @@ public class BasicDumpFormatter implements DumpFormatter
     /**
 	 * Excludes a class from the object dump.
 	 * 
-	 * @param clazz Class to exclude
-	 * @throws RESyntaxException on regular expression error
+	 * @param clazz Class to exclude.
+	 * @throws RESyntaxException on regular expression error.
 	 */
     public void excludeClass(Class clazz) throws RESyntaxException
     {
@@ -78,8 +80,8 @@ public class BasicDumpFormatter implements DumpFormatter
 	 * Excludes one or more classes matching a regular expression from the
 	 * object dump.
 	 * 
-	 * @param classFilter Regular expression representing classes to exclude
-	 * @throws RESyntaxException on regular expression error
+	 * @param classFilter Regular expression representing classes to exclude.
+	 * @throws RESyntaxException on regular expression error.
 	 */
     public void excludeClasses(String classFilter) throws RESyntaxException
     {
@@ -92,8 +94,8 @@ public class BasicDumpFormatter implements DumpFormatter
 	 * object dump.
 	 * 
 	 * @param fieldFilter Regular expression represeting fields names to
-	 *        exclude
-	 * @throws RESyntaxException on regular expression error
+	 *        exclude.
+	 * @throws RESyntaxException on regular expression error.
 	 */
     public void excludeFields(String fieldFilter) throws RESyntaxException
     {

@@ -7,6 +7,10 @@ import java.lang.reflect.Field;
  */
 public class ObjectInfo
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Object being traversed. 
      */
@@ -35,8 +39,8 @@ public class ObjectInfo
     /**
 	 * Creates an ObjectInfo.
 	 * 
-	 * @param object Object to store traversal information on
-	 * @param seqNum Assigned sequence number
+	 * @param object Object to store traversal information on.
+	 * @param seqNum Assigned sequence number.
 	 */
     public ObjectInfo(Object object, String seqNum)
     {
@@ -47,9 +51,9 @@ public class ObjectInfo
     /**
 	 * Creates an ObjectInfo.
 	 * 
-	 * @param object Object to store traversal information on
-	 * @param seqNum Assigned sequence number
-	 * @param field Field associated with the object
+	 * @param object Object to store traversal information on.
+	 * @param seqNum Assigned sequence number.
+	 * @param field Field associated with the object.
 	 */
     public ObjectInfo(Object object, String seqNum, Field field)
     {
@@ -65,7 +69,7 @@ public class ObjectInfo
     /**
      * Returns the sequence number for unique identification.
      * 
-     * @return Sequence number
+     * @return Sequence number.
      */
     public String getSequenceNumber()
     {
@@ -77,7 +81,7 @@ public class ObjectInfo
      * Returns true if the object has been traversed previously, false 
      * otherwise.
      * 
-     * @return Traversed flag
+     * @return Traversed flag.
      */
     public boolean hasTraversed()
     {
@@ -88,7 +92,7 @@ public class ObjectInfo
     /**
      * Sets the flag for whether the object has been traversed already.
      * 
-     * @param traversed Traversed flag
+     * @param traversed Traversed flag.
      */
     public void setTraversed(boolean traversed)
     {

@@ -15,6 +15,10 @@ import java.util.Map;
  */
 public class ObjectCache
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Sequence number assigned to objects in the cache. 
      */
@@ -57,8 +61,8 @@ public class ObjectCache
 	 * Puts an object as the key and its generated ObjectInfo as the value into
 	 * the cache. The field is necessary to populate an ObjectInfo.
 	 * 
-	 * @param obj Object to put in the cache
-	 * @param field The field that the object refers to
+	 * @param obj Object to put in the cache.
+	 * @param field The field that the object refers to.
 	 */
     public void put(Object obj, Field field)
     {
@@ -73,8 +77,8 @@ public class ObjectCache
     /**
 	 * Retrieves the ObjectInfo for a given object.
 	 * 
-	 * @param obj Object to get info for
-	 * @return ObjectInfo for the passed in object
+	 * @param obj Object to get info for.
+	 * @return ObjectInfo for the passed in object.
 	 */
     public ObjectInfo getInfo(Object obj)
     {
@@ -91,8 +95,8 @@ public class ObjectCache
     /**
 	 * Determines if an object is already present in the cache.
 	 * 
-	 * @param obj Object to test for presence
-	 * @return True if the cache contains the object, false otherwise
+	 * @param obj Object to test for presence.
+	 * @return True if the cache contains the object, false otherwise.
 	 */
     public boolean contains(Object obj)
     {
@@ -106,7 +110,7 @@ public class ObjectCache
     /**
 	 * Determines if an object has already been traversed.
 	 * 
-	 * @param obj Object to test for traversal
+	 * @param obj Object to test for traversal.
 	 * @return True if the object has been traverse, false otherwise.
 	 */
     public boolean hasTraversed(Object obj)
