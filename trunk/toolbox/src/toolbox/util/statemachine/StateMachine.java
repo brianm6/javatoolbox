@@ -78,6 +78,9 @@ public interface StateMachine extends Nameable
      */
     public State getPreviousState();
     
+    public void reset();
+    
+    public boolean canTransition(Transition transition);
 
     /**
      * Adds a listener to this state machine.
