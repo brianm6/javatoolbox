@@ -1,0 +1,65 @@
+package toolbox.log4j.im.test;
+
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
+import org.apache.log4j.Layout;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
+import org.apache.log4j.SimpleLayout;
+
+import toolbox.log4j.im.InstantMessengerAppender;
+import toolbox.util.ThreadUtil;
+
+/**
+ * Unit test for InstantMessengerAppender
+ */
+public class InstantMessengerAppenderTest extends TestCase
+{
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Entrypoint
+     * 
+     * @param  args  None recognized
+     */
+    public static void main(String[] args)
+    {
+        TestRunner.run(InstantMessengerAppenderTest.class);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Overrides junit.framework.TestCase
+    //--------------------------------------------------------------------------
+    
+    public void tearDown()
+    {
+        
+    }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
+    public void testAppend() throws Exception
+    {
+        Logger root = Logger.getRootLogger();
+        Layout layout = new SimpleLayout();
+        
+        InstantMessengerAppender imAppender = new InstantMessengerAppender();
+        
+        imAppender.setThreshold(Priority.INFO);
+        root.addAppender(imAppender);
+
+        root.info("root info");
+        root.debug("root debug");
+        root.warn("root warning");
+        root.error("root error");
+        
+        ThreadUtil.sleep(2000);
+        LogManager.shutdown();
+    }
+}
