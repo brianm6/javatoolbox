@@ -130,11 +130,9 @@
                              Project Build Help
 ================================================================================
 
-Scope:
+Scope: 
 
-  Use this maven script when you would like to work on a single project only. 
-  Project refers to any of the individual CVS modules. For example framework, 
-  rules, or pwsui.
+  Maven goals for Toolbox
 
 Commands:
 
@@ -143,6 +141,7 @@ Commands:
   compile       Compiles the project only.
   jar           Compiles, unit tests, and jars the project. It them exports 
                 the jar to the local maven repository.
+  jnlp          Creates jnlp dist in target/jnlp
   site          Generates project website with reports and all.
   cvs-update    Does a cvs update of the project.
 ================================================================================
