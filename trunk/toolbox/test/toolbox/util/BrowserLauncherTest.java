@@ -3,11 +3,16 @@ package toolbox.util;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 /**
  * Unit Test for {@link toolbox.util.BrowserLauncher}.
  */
 public class BrowserLauncherTest extends TestCase
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(BrowserLauncherTest.class);
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -26,6 +31,8 @@ public class BrowserLauncherTest extends TestCase
      */
     public void testOpenURL() throws Exception
     {
+        logger_.info("Running testOpenURL...");
+        
         BrowserLauncher.openURL("http://www.yahoo.com");
     }
 }
