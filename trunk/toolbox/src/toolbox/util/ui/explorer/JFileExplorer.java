@@ -17,15 +17,11 @@
  */
 package toolbox.util.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -44,19 +40,13 @@ import java.util.StringTokenizer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.TreeSelectionEvent;
@@ -66,8 +56,10 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.images.HardDriveGIF;
 import toolbox.util.ui.images.TreeCloseGIF;
 import toolbox.util.ui.images.TreeOpenGIF;
@@ -79,168 +71,111 @@ import toolbox.util.ui.images.TreeOpenGIF;
 public class JFileExplorer extends JPanel
 {
     /** Logger **/
-    private static final Category logger =
+    private static final Category logger_ =
         Category.getInstance(JFileExplorer.class);
 
-    private JComboBox rootsComboBox;
-    private JScrollPane filesScrollPane, foldersScrollPane;
-    private JSplitPane splitPane;
-    private JPopupMenu popup, folderPopup;
-    private JMenuItem deleteMenuItem, renameMenuItem, 
-                      compileMenuItem, antMenuItem;
-    private JMenu filterMenuA;
-    private JTextArea textArea;
-    private DefaultListModel dList = new DefaultListModel();
-    private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+    private JComboBox   rootsComboBox_;
+    private JPopupMenu  folderPopup_;
 
-    private DefaultMutableTreeNode rootNode;
-    private JList fileList = new JList();
-    private JTree tree;
-    private DefaultTreeModel treeModel;
-    private String root, currentPath;
-    private FileFilter fileFilter, folderFilter;
-    private ImageIcon driveIcon;
-    private GridBagLayout gridbag = new GridBagLayout();
-    private GridBagConstraints constraints = new GridBagConstraints();
+    private DefaultListModel        listModel_;
+    private DefaultMutableTreeNode  rootNode_;
+    
+    private JList            fileList_;
+    private JTree            tree_;
+    private DefaultTreeModel treeModel_;
+    private String           root_, 
+                             currentPath_;
+    private FileFilter       fileFilter_, 
+                             folderFilter_;
+    private ImageIcon        driveIcon_;
+
 
     /** Collection of listeners **/
-    private List fileExplorerListeners = new ArrayList();
-
-    /**
-     * Entrypoint. Works better embedded in another app :)
-     * 
-     * @param  args  None recognized
-     */
-    public static void main(String[] args)
-    {
-        /* just launch the file explorer in a jframe..nuttin else */
-        JFrame testFrame = new TestFrame();
-            testFrame.pack();
-            testFrame.setVisible(true);
-    }
-
-    /**
-     * Test class
-     */
-    static class TestFrame extends JFrame implements JFileExplorerListener, 
-        ActionListener
-    {
-        /** Textfield for testing **/
-        private JTextField testField;
-        
-        /** Button for testing **/
-        private JButton    testButton;
-        
-        /** Explorer for testing **/
-        private JFileExplorer jfe;
-        
-        /** 
-         * Creates a test frame 
-         */
-        public TestFrame()
-        {
-            super("JFileExplorer");
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            jfe = new JFileExplorer();
-            jfe.addJFileExplorerListener(this);
-            getContentPane().setLayout(new BorderLayout());
-            getContentPane().add(jfe, BorderLayout.CENTER);
-            
-            JPanel testPanel = new JPanel(new FlowLayout());
-            testField = new JTextField(15);
-            testButton = new JButton("Set folder");
-            testButton.addActionListener(this);
-            testPanel.add(new JLabel("Folder"));
-            testPanel.add(testField);
-            testPanel.add(testButton);
-            getContentPane().add(testPanel, BorderLayout.SOUTH);
-        }        
-
-        /**
-         * @param  file  File double clicked 
-         */
-        public void fileDoubleClicked(String file)
-        {
-            logger.info("file " + file + " double clicked");
-        }
-        
-        
-        /**
-         * @param  folder  Folder that was selected
-         */
-        public void folderSelected(String folder)
-        {
-            logger.info("folder " + folder + " selected");
-        }
-        
-        public void folderDoubleClicked(String folder)
-        {
-            logger.info("folder " + folder + " double clicked");    
-        }
-                
-        /**
-         * @param  e  Action performed
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            jfe.selectFolder(this.testField.getText());
-        }
-        
-    }
-
+    private List fileExplorerListeners_ = new ArrayList();
 
     /**
      * Default constructor
      */
     public JFileExplorer()
     {
-        rootsComboBox = new JComboBox(getRoots());
-        rootsComboBox.setSelectedItem(new File(getDefaultRoot()));
-        rootsComboBox.addItemListener(new ComboBoxAdapter());
-        rootsComboBox.setRenderer(new IconCellRenderer());
-        fileList.setModel(dList);
-        fileList.addMouseListener(new JFEMouseHandler());
+        this(true);
+    }
+
+
+    /**
+     * Creates a JFileExplorer
+     * 
+     * @param  verticalSplitter  Set to true if you want the folder and file
+     *                           panes to be split by a vertical splitter, 
+     *                           otherwise a horizontal splitter will be used.
+     */
+    public JFileExplorer(boolean verticalSplitter)
+    {
+        buildView(verticalSplitter);
+    }
+
+
+    /**
+     * Builds the GUI 
+     * 
+     * @param  verticalSplitter  Splitter orientation
+     */
+    protected void buildView(boolean verticalSplitter)
+    {
+        // File system roots 
+        rootsComboBox_ = new JComboBox(getRoots());
+        rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
+        rootsComboBox_.addItemListener(new ComboBoxAdapter());
+        rootsComboBox_.setRenderer(new IconCellRenderer());
+        
+        // File list
+        fileList_ = new JList();
+        fileList_.setModel(listModel_ = new DefaultListModel());
+        fileList_.addMouseListener(new JFEMouseHandler());
         setFileList(getDefaultRoot());
-        fileList.setFixedCellHeight(15);
-        fileList.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        filesScrollPane = new JScrollPane(fileList);
+        fileList_.setFixedCellHeight(15);
+        fileList_.setFont(SwingUtil.getPreferredSerifFont());
+        JScrollPane filesScrollPane = new JScrollPane(fileList_);
 
         // Set up our Tree
         setTreeRoot(getDefaultRoot());
-        
-           renderer.setClosedIcon(new ImageIcon(TreeOpenGIF.getBytes()));
-           renderer.setLeafIcon(new ImageIcon(TreeCloseGIF.getBytes()));
-           renderer.setOpenIcon(new ImageIcon(TreeOpenGIF.getBytes()));
 
-        treeModel = new DefaultTreeModel(rootNode);
-        tree = new JTree(treeModel);
-        tree.setEditable(false);
-        tree.getSelectionModel().setSelectionMode(
+        // Load tree icons        
+        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(); 
+        renderer.setClosedIcon(new ImageIcon(TreeOpenGIF.getBytes()));
+        renderer.setLeafIcon(new ImageIcon(TreeCloseGIF.getBytes()));
+        renderer.setOpenIcon(new ImageIcon(TreeOpenGIF.getBytes()));
+
+        // Directory tree
+        treeModel_ = new DefaultTreeModel(rootNode_);
+        tree_ = new JTree(treeModel_);
+        tree_.setEditable(false);
+        tree_.getSelectionModel().setSelectionMode(
             TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tree.setRootVisible(true);
-        tree.setScrollsOnExpand(true);
-        tree.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        tree.addTreeSelectionListener(new TreeFolderAdapter());
-        tree.addMouseListener(new TreeMouseHandler());
-        tree.setCellRenderer(renderer);
-        tree.putClientProperty("JTree.lineStyle", "Angled");
+        tree_.setRootVisible(true);
+        tree_.setScrollsOnExpand(true);
+        tree_.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        tree_.addTreeSelectionListener(new TreeFolderAdapter());
+        tree_.addMouseListener(new TreeMouseHandler());
+        tree_.setCellRenderer(renderer);
+        tree_.putClientProperty("JTree.lineStyle", "Angled");
 
         setTreeFolders(getDefaultRoot(), null);
-        foldersScrollPane = new JScrollPane(tree);
+        JScrollPane foldersScrollPane = new JScrollPane(tree_);
 
-//        splitPane = new JSplitPane(
-//            JSplitPane.VERTICAL_SPLIT,
-//            filesScrollPane,
-//            foldersScrollPane);
+        JSplitPane  splitPane;
 
-        splitPane = new JSplitPane(
-            JSplitPane.HORIZONTAL_SPLIT,
-            foldersScrollPane,
-            filesScrollPane);
+        // Configurable splitter orientation
+        if (verticalSplitter)
+            splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                foldersScrollPane, filesScrollPane);
+        else
+            splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                foldersScrollPane, filesScrollPane);
 
-
-        this.setLayout(gridbag);
+        GridBagLayout gridbag = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();        
+        setLayout(gridbag);
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 1;
@@ -249,8 +184,8 @@ public class JFileExplorer extends JPanel
         constraints.weighty = 0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.NORTH;
-        gridbag.setConstraints(rootsComboBox, constraints);
-        this.add(rootsComboBox);
+        gridbag.setConstraints(rootsComboBox_, constraints);
+        add(rootsComboBox_);
 
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -261,10 +196,11 @@ public class JFileExplorer extends JPanel
         constraints.fill = GridBagConstraints.BOTH;
         constraints.anchor = GridBagConstraints.CENTER;
         gridbag.setConstraints(splitPane, constraints);
-        this.add(splitPane);
+        add(splitPane);
 
-        splitPane.setDividerLocation(0.25D);
+        splitPane.setDividerLocation(0.50D);
     }
+
 
     /**
      * Returns a file array of all available roots.
@@ -276,6 +212,7 @@ public class JFileExplorer extends JPanel
         return File.listRoots();
     }
 
+
     /**
      * Returns the root of our JTree as a String.
      *
@@ -283,8 +220,9 @@ public class JFileExplorer extends JPanel
      */
     private String getTreeRoot()
     {
-        return root;
+        return root_;
     }
+
 
     /**
      * Sets the root for the JTree.
@@ -293,13 +231,14 @@ public class JFileExplorer extends JPanel
      */
     private void setTreeRoot(String root)
     {
-        rootNode = new DefaultMutableTreeNode(root);
-        if (treeModel != null)
-        {
-            treeModel.setRoot(rootNode);
-        }
-        this.root = root;
+        rootNode_ = new DefaultMutableTreeNode(root);
+        
+        if (treeModel_ != null)
+            treeModel_.setRoot(rootNode_);
+
+        root_ = root;
     }
+
 
     /**
      * Sets the tree folders
@@ -315,13 +254,12 @@ public class JFileExplorer extends JPanel
         String[] fileList = new String[files.length];
 
         for (int i = 0; i < files.length; i++)
-        {
             fileList[i] = files[i].getName();
-        }
 
         if (fileList.length > 0)
             addTreeNodes(fileList, currentNode);
     }
+
 
     /**
      * Finds, sorts, and adds the files according to the path to the file list.
@@ -331,24 +269,25 @@ public class JFileExplorer extends JPanel
     public void setFileList(String path)
     {
         setCurrentPath(path);
-        dList.clear();
+        listModel_.clear();
         File f = new File(path);
         File[] files = f.listFiles(getFileFilter());
         Arrays.sort(files, new FileComparator());
+        
         for (int i = 0; i < files.length; i++)
-        {
-            dList.addElement(files[i].getName());
-        }
+            listModel_.addElement(files[i].getName());
     }
+
 
     /**
      * Removes all children of the tree root.
      */
     private void clear()
     {
-        rootNode.removeAllChildren();
-        treeModel.reload();
+        rootNode_.removeAllChildren();
+        treeModel_.reload();
     }
+
 
     /**
      * Adds folders to the tree.
@@ -360,7 +299,7 @@ public class JFileExplorer extends JPanel
         DefaultMutableTreeNode parentNode)
     {
         if (parentNode == null)
-            parentNode = rootNode;
+            parentNode = rootNode_;
 
         DefaultMutableTreeNode childNode = null;
         for (int i = 0; i < folderList.length; i++)
@@ -385,14 +324,15 @@ public class JFileExplorer extends JPanel
             }
             if (shouldAdd)
             {
-                treeModel.insertNodeInto(
+                treeModel_.insertNodeInto(
                     childNode, parentNode, parentNode.getChildCount());
             }
         }
 
-        tree.expandPath(new TreePath(parentNode.getPath()));
-        tree.scrollPathToVisible(new TreePath(childNode.getPath()));
+        tree_.expandPath(new TreePath(parentNode.getPath()));
+        tree_.scrollPathToVisible(new TreePath(childNode.getPath()));
     }
+
 
     /**
      * Returns the default root.
@@ -403,16 +343,17 @@ public class JFileExplorer extends JPanel
     {
         File[] roots = getRoots();
         String userHome = System.getProperty("user.home");
+        
         for (int i = 0; i < roots.length; i++)
         {
             if (userHome.startsWith(roots[i].toString()))
-            {
                 return roots[i].toString();
-            }
         }
+        
         // Should never happen
         return "";
     }
+
 
     /**
      * Returns the current directory path.
@@ -421,8 +362,9 @@ public class JFileExplorer extends JPanel
      */
     private String getCurrentPath()
     {
-        return currentPath;
+        return currentPath_;
     }
+
 
     /**
      * Sets the current directory path
@@ -431,22 +373,24 @@ public class JFileExplorer extends JPanel
      */
     public void setCurrentPath(String currentPath)
     {
-        this.currentPath = currentPath;
+        currentPath_ = currentPath;
     }
+
 
     /**
      * Returns the current file path.
      *
      * @return String
      */
-    private String getFilePath()
+    public String getFilePath()
     {
         StringBuffer s = new StringBuffer();
         s.append(getCurrentPath());
         s.append(File.separator);
-        s.append(fileList.getSelectedValue().toString());
+        s.append(fileList_.getSelectedValue().toString());
         return s.toString();
     }
+
 
     /**
      * Returns the folder filter
@@ -455,11 +399,12 @@ public class JFileExplorer extends JPanel
      */
     private FileFilter getFolderFilter()
     {
-        if (this.folderFilter == null)
-            this.folderFilter = new JFileExplorerFolderFilter();
+        if (folderFilter_ == null)
+            folderFilter_ = new JFileExplorerFolderFilter();
 
-        return folderFilter;
+        return folderFilter_;
     }
+
 
     /**
      * Returns the current file filter
@@ -468,11 +413,12 @@ public class JFileExplorer extends JPanel
      */
     private FileFilter getFileFilter()
     {
-        if (this.fileFilter == null)
-            this.fileFilter = new JFileExplorerFileFilter();
+        if (fileFilter_ == null)
+            fileFilter_ = new JFileExplorerFileFilter();
 
-        return fileFilter;
+        return fileFilter_;
     }
+
 
     /**
      * Sets the current file filter
@@ -482,7 +428,7 @@ public class JFileExplorer extends JPanel
     private void setFileFilter(FileFilter fileFilter)
     {
         if (fileFilter != null)
-            this.fileFilter = fileFilter;
+            fileFilter_ = fileFilter;
     }
 
 
@@ -494,11 +440,12 @@ public class JFileExplorer extends JPanel
      */
     private ImageIcon getDriveIcon() throws IOException
     {
-        if (driveIcon == null)
-            driveIcon = new ImageIcon(HardDriveGIF.getBytes());
+        if (driveIcon_ == null)
+            driveIcon_ = new ImageIcon(HardDriveGIF.getBytes());
             
-        return driveIcon;
+        return driveIcon_;
     }
+
 
     /**
      * Inner class that compares file names for sorting.
@@ -519,6 +466,7 @@ public class JFileExplorer extends JPanel
             return fileA.getName().compareToIgnoreCase(fileB.getName());
         }
     }
+
 
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
@@ -554,7 +502,7 @@ public class JFileExplorer extends JPanel
             }
             catch(IOException e)
             {
-                logger.fatal("getListCellRenderer", e);
+                logger_.fatal("getListCellRenderer", e);
             }
             
             this.setBackground(isSelected ? Color.blue : Color.white);
@@ -562,6 +510,7 @@ public class JFileExplorer extends JPanel
             return this;
         }
     }
+
 
     /**
      * Inner class for handling click events on the file list.
@@ -575,7 +524,7 @@ public class JFileExplorer extends JPanel
          */
         public void mouseClicked(MouseEvent evt)
         {
-            if (evt.getClickCount() == 2 && fileList.getSelectedIndex() != -1)
+            if (evt.getClickCount() == 2 && fileList_.getSelectedIndex() != -1)
             {
                 /* double click on a file fires event to listeners */
                 fireFileDoubleClicked();
@@ -586,6 +535,7 @@ public class JFileExplorer extends JPanel
             }
         }
     }
+
 
     /**
      * Inner class for handling click event on the JTree.
@@ -600,9 +550,9 @@ public class JFileExplorer extends JPanel
         public void mouseClicked(MouseEvent evt)
         {
             if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && 
-                folderPopup != null)
+                folderPopup_ != null)
             {
-                folderPopup.show(tree, evt.getX(), evt.getY());
+                folderPopup_.show(tree_, evt.getX(), evt.getY());
             }
             else if (evt.getClickCount() == 2)
             {
@@ -610,6 +560,7 @@ public class JFileExplorer extends JPanel
             }
         }
     }
+
 
     /**
      * Inner class to give support for Roots ComboBox changes.
@@ -623,12 +574,13 @@ public class JFileExplorer extends JPanel
          */
         public void itemStateChanged(ItemEvent ie)
         {
-            setFileList(rootsComboBox.getSelectedItem().toString());
+            setFileList(rootsComboBox_.getSelectedItem().toString());
             clear();
-            setTreeRoot(rootsComboBox.getSelectedItem().toString());
-            setTreeFolders(rootsComboBox.getSelectedItem().toString(), null);
+            setTreeRoot(rootsComboBox_.getSelectedItem().toString());
+            setTreeFolders(rootsComboBox_.getSelectedItem().toString(), null);
         }
     }
+
 
     /**
      * Inner class to give support for Tree selection events.
@@ -666,6 +618,7 @@ public class JFileExplorer extends JPanel
         }
     }
 
+
     /**
      * Inner class for filtering only folders.
      */
@@ -682,6 +635,7 @@ public class JFileExplorer extends JPanel
                return file.isDirectory();
         }
     }
+
 
     /**
      * Inner class for filtering files
@@ -700,6 +654,7 @@ public class JFileExplorer extends JPanel
         }
     }
 
+
     /**
      * Adds a JFileExplorerListener
      *
@@ -707,8 +662,9 @@ public class JFileExplorer extends JPanel
      */
     public void addJFileExplorerListener(JFileExplorerListener listener)
     {
-        fileExplorerListeners.add(listener);
+        fileExplorerListeners_.add(listener);
     }
+
 
     /**
      * Removes a JFileExplorerListener
@@ -717,20 +673,22 @@ public class JFileExplorer extends JPanel
      */
     public void removeJFileExplorerListener(JFileExplorerListener listener)
     {
-        fileExplorerListeners.remove(listener);
+        fileExplorerListeners_.remove(listener);
     }
+
 
     /**
      * Fires an event when a file is double clicked by the user
      */
     protected void fireFileDoubleClicked()
     {
-        for(Iterator i = fileExplorerListeners.iterator(); i.hasNext(); )
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
         {
              JFileExplorerListener listener = (JFileExplorerListener)i.next();
              listener.fileDoubleClicked(getFilePath());
         }
     }
+
     
     /**
      * Fires an event when a directory is selected
@@ -739,7 +697,7 @@ public class JFileExplorer extends JPanel
      */
     protected void fireFolderSelected(String folder)
     {
-        for(Iterator i = fileExplorerListeners.iterator(); i.hasNext(); )
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
         {
              JFileExplorerListener listener = (JFileExplorerListener)i.next();
              listener.folderSelected(folder);
@@ -754,7 +712,7 @@ public class JFileExplorer extends JPanel
      */
     protected void fireFolderDoubleClicked(String folder)
     {
-        for(Iterator i = fileExplorerListeners.iterator(); i.hasNext(); )
+        for(Iterator i = fileExplorerListeners_.iterator(); i.hasNext(); )
         {
              JFileExplorerListener listener = (JFileExplorerListener)i.next();
              listener.folderDoubleClicked(folder); 
@@ -802,7 +760,7 @@ public class JFileExplorer extends JPanel
             String token = st.nextToken();
             if(token.length() == 2 && token.endsWith(":"))
                 token += File.separator;
-            logger.debug("[selectFolder] " + token);
+            logger_.debug("[selectFolder] " + token);
             
             pathList.add(new DefaultMutableTreeNode(token));
 
@@ -823,12 +781,12 @@ public class JFileExplorer extends JPanel
 //            TreePath treePath = 
 //                new TreePath((String[])pathList.toArray(new String[0]));
                     
-            tree.setSelectionPath(treePath);
-            tree.expandPath(treePath);
+            tree_.setSelectionPath(treePath);
+            tree_.expandPath(treePath);
         }
         
-        TreePath current = tree.getSelectionPath();
-        logger.debug("[selectFolder] Should be selected: " + 
+        TreePath current = tree_.getSelectionPath();
+        logger_.debug("[selectFolder] Should be selected: " + 
             ArrayUtil.toString(current.getPath())); 
         
 //        TreePath path = new TreePath();
@@ -857,9 +815,9 @@ public class JFileExplorer extends JPanel
              String drive = folder.substring(0,3);
              folder = folder.substring(3);           
     
-            logger.debug("drive=" + drive);
+            logger_.debug("drive=" + drive);
 
-            rootsComboBox.setSelectedItem(
+            rootsComboBox_.setSelectedItem(
                 new File(drive.toUpperCase()));            
                 
             //setFileList(drive);
@@ -872,26 +830,27 @@ public class JFileExplorer extends JPanel
         
         StringTokenizer st = new StringTokenizer(folder, sep);
         
-        DefaultMutableTreeNode current = rootNode;
+        DefaultMutableTreeNode current = rootNode_;
  
-         TreePath tp = new TreePath(rootNode);
-         tree.expandPath(tp);
+         TreePath tp = new TreePath(rootNode_);
+         tree_.expandPath(tp);
                 
         while(st.hasMoreTokens())
         {
             String nextNode = st.nextToken();
              tp = tp.pathByAddingChild(new DefaultMutableTreeNode(nextNode));
-            logger.debug(nextNode);
-            tree.expandPath(tp);  
-            tree.setSelectionPath(tp);          
+            logger_.debug(nextNode);
+            tree_.expandPath(tp);  
+            tree_.setSelectionPath(tp);          
         }
         
-        logger.debug("Treepath in select()");
+        logger_.debug("Treepath in select()");
         dumpTreePath(tp);
         
         //tree.setSelectionPath(tp);
         
     }
+
 
     /**
      * DUmps treepath to logger
@@ -903,7 +862,7 @@ public class JFileExplorer extends JPanel
         Object nodes[] = tp.getPath();
         
         for(int i=0; i<nodes.length; i++)
-            logger.debug("Node " + i + "\tClass " + 
+            logger_.debug("Node " + i + "\tClass " + 
                 nodes[i].getClass().getName() + "\tString " + 
                     nodes[i].toString());
     }
