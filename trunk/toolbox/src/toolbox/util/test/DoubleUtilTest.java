@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.DoubleUtil;
 
 /**
- * Unit test for DoubleUtil
+ * Unit test for DoubleUtil.
  */
 public class DoubleUtilTest extends TestCase
 {
@@ -18,7 +18,7 @@ public class DoubleUtilTest extends TestCase
         Logger.getLogger(DoubleUtilTest.class);
     
     /** 
-     * Format for 2 digit accuracy 
+     * Format for 2 digit accuracy.
      */
     public static final DecimalFormat TWO_DIGIT_FORMAT = 
         new DecimalFormat("#########.##");
@@ -28,7 +28,7 @@ public class DoubleUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      */
@@ -42,7 +42,7 @@ public class DoubleUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests isDouble() for scenarios where the result is true
+     * Tests isDouble() for scenarios where the result is true.
      * 
      * @throws Exception on error
      */
@@ -61,8 +61,9 @@ public class DoubleUtilTest extends TestCase
             DoubleUtil.isDouble("    87.774747   "));
     }
 
+    
     /**
-     * Tests isDouble() for scenarios where the result is false
+     * Tests isDouble() for scenarios where the result is false.
      * 
      * @throws Exception on error
      */
@@ -85,8 +86,9 @@ public class DoubleUtilTest extends TestCase
             !DoubleUtil.isDouble("al;dfj0&**&&*345jklsjdf;90q354090**"));
     }
 
+    
     /**
-     * Test median() for an empty set
+     * Test median() for an empty set.
      * 
      * @throws Exception on error
      */
@@ -107,8 +109,9 @@ public class DoubleUtilTest extends TestCase
         }
     }
 
+    
     /**
-     * Tests median() for even set
+     * Tests median() for even set.
      * 
      * @throws Exception on error
      */
@@ -127,8 +130,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("values don't match", 3.5, e, 0);
     }
 
+    
     /**
-     * Tests median() for an odd set
+     * Tests median() for an odd set.
      * 
      * @throws Exception on error
      */
@@ -148,8 +152,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("values don't match", 3, e, 0);
     }
 
+    
     /**
-     * Tests median for a set of 1
+     * Tests median for a set of 1.
      * 
      * @throws Exception on error
      */
@@ -162,8 +167,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("values don't match", d[0], e, 0);
     }
 
+    
     /**
-     * Tests round() for rounding a number down
+     * Tests round() for rounding a number down.
      * 
      * @throws Exception on error
      */
@@ -176,8 +182,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.12", s);
     }
 
+    
     /**
-     * Tests round() for a big ugly number
+     * Tests round() for a big ugly number.
      * 
      * @throws Exception on error
      */
@@ -190,8 +197,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.66", s);
     }
 
+    
     /**
-     * Tests round() with one decimal number
+     * Tests round() with one decimal number.
      * 
      * @throws Exception on error
      */
@@ -204,8 +212,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.1", s);
     }
 
+    
     /**
-     * Tests round() with a two decimal number
+     * Tests round() with a two decimal number.
      * 
      * @throws Exception on error
      */
@@ -222,8 +231,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.12", s);
     }
 
+    
     /**
-     * Tests round() for rounding a number up
+     * Tests round() for rounding a number up.
      * 
      * @throws Exception on error
      */
@@ -236,8 +246,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100.13", s);
     }
 
+    
     /**
-     * Tests round() with a whole number
+     * Tests round() with a whole number.
      * 
      * @throws Exception on error
      */
@@ -250,8 +261,9 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100", s);
     }
 
+    
     /**
-     * Tests round() for a double passed in as a string
+     * Tests round() for a double passed in as a string.
      */
     public void testRoundString()
     {
@@ -261,6 +273,26 @@ public class DoubleUtilTest extends TestCase
         String s = DoubleUtil.round(d+"", TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.12", s);
     }
+    
+    
+    /**
+     * Tests round() failure for an invalid string.
+     */
+    public void testRoundFailure()
+    {
+        logger_.info("Running testRoundFailure...");
+
+        try
+        {
+            DoubleUtil.round("bad_round", TWO_DIGIT_FORMAT);
+            fail("Round should have failed on an invalid string.");
+        }
+        catch (IllegalArgumentException iae)
+        {
+            assertTrue("Success", true);
+        }
+    }
+    
     
     /** 
      * Tests isBetween()
@@ -283,6 +315,7 @@ public class DoubleUtilTest extends TestCase
         assertTrue(!DoubleUtil.isBetween(c, a, b));
     }
     
+    
     /**
      * Tests average()
      */
@@ -297,6 +330,7 @@ public class DoubleUtilTest extends TestCase
         assertEquals((double)0.0, DoubleUtil.average(new double[0]), 
             (double)0.0);
     }
+    
     
     /**
      * Tests difference()
@@ -313,6 +347,7 @@ public class DoubleUtilTest extends TestCase
             assertEquals(0.0, c[i], 0.0); 
     }
     
+    
     /**
      * Tests occurs()
      */
@@ -328,6 +363,7 @@ public class DoubleUtilTest extends TestCase
         assertEquals(3, DoubleUtil.occurs(4.5, b));
         assertEquals(0, DoubleUtil.occurs(4.5, c));
     }
+    
     
     /**
      * Tests sum()
