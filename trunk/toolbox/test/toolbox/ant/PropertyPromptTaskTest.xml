@@ -4,8 +4,8 @@
   <property name="promptTimeout" value="5"/>
   
   <taskdef classname="toolbox.ant.PropertyPromptTask" 
-  	name="propertyprompt"
-  	classpath="${basedir}/../../../../classes"/>
+  	name="propertyprompt" />
+
   
   <target name="main">
     <property name="propA" value="oldValA"/>
