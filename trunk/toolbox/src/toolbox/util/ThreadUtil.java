@@ -12,6 +12,8 @@ import toolbox.util.collections.AsMap;
 
 /**
  * Utility class for Threads.
+ * 
+ * @see java.lang.Thread
  */
 public final class ThreadUtil
 {
@@ -22,7 +24,7 @@ public final class ThreadUtil
     //--------------------------------------------------------------------------
             
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */ 
     private ThreadUtil()
     {

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="var" path="CLOVER_RUNTIME"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="debug"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="resources"/>
-	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry kind="lib" path="lib/3dlf.jar"/>
 	<classpathentry kind="lib" path="lib/apple-mrj.jar"/>
 	<classpathentry kind="lib" path="lib/acrobat.jar"/>
@@ -80,5 +78,6 @@
 	<classpathentry kind="lib" path="lib/xplookandfeel.jar"/>
 	<classpathentry sourcepath="lib/src/xt-src.zip" kind="lib" path="lib/xt.jar"/>
 	<classpathentry kind="lib" path="lib/webwindow.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

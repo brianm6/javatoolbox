@@ -16,10 +16,25 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * XOM Utility Class.
+ * <a href=http://www.cafeconleche.org/XOM>XOM</a> utility class.
  */
 public class XOMUtil
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Prevent construction of this static singleton.
+     */
+    private XOMUtil()
+    {
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Gets the integer value from a node with the option to have a default
      * value returned when one or more of the following conditions are true.

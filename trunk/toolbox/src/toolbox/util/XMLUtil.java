@@ -22,6 +22,10 @@ public class XMLUtil
 {
     private static final Logger logger_ = Logger.getLogger(XMLUtil.class);
         
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Formats and indents XML. 
      * 

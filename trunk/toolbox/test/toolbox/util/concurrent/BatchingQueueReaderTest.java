@@ -22,7 +22,7 @@ public class BatchingQueueReaderTest extends TestCase
     /**
      * Queue to read from in batch mode.
      */
-    private BlockingQueue batches_;
+    private BlockingQueue qout_;
 
     //--------------------------------------------------------------------------
     // Main
@@ -47,7 +47,7 @@ public class BatchingQueueReaderTest extends TestCase
      */
     protected void setUp() throws Exception
     {
-        batches_ = new BlockingQueue();        
+        qout_ = new BlockingQueue();        
     }
     
     //--------------------------------------------------------------------------
@@ -64,27 +64,29 @@ public class BatchingQueueReaderTest extends TestCase
         logger_.info("Running testNextBatch...");
         
         // Create queue and stuff with > 1 objects
-        BlockingQueue q = new BlockingQueue();
-        q.push("one");
-        q.push("two");
-        q.push("three");
+        BlockingQueue qin = new BlockingQueue();
+        qin.push("one");
+        qin.push("two");
+        qin.push("three");
         
         // Attaching batching reader and start
-        BatchingQueueReader bqr = new BatchingQueueReader(q);
-        IBatchingQueueListener queueListener = new TestQueueListener();
-        bqr.addBatchingQueueListener(queueListener);
-        bqr.start();
-        
+        BatchingQueueReader reader = new BatchingQueueReader(qin);
+        IBatchingQueueListener listener = new TestQueueListener();
+        reader.addBatchingQueueListener(listener);
+        reader.start();
+
+
         // Pulling from the queue should return all elements as a single array
-        Object[] batch = (Object[]) batches_.pull();
+        Object[] batch = (Object[]) qout_.pull();
         
         // Test returned elements equal to pushed elements
+        assertEquals(3, batch.length);
         assertEquals(batch[0], "one");
         assertEquals(batch[1], "two");
         assertEquals(batch[2], "three");
         
-        bqr.removeBatchingQueueListener(queueListener);
-        bqr.stop();
+        reader.removeBatchingQueueListener(listener);
+        reader.stop();
     }
 
     
@@ -109,7 +111,7 @@ public class BatchingQueueReaderTest extends TestCase
         
         logger_.info("Queue reader started...");
         
-        Object[] batch = (Object[]) batches_.pull();
+        Object[] batch = (Object[]) qout_.pull();
         
         logger_.info("Pulled next batch from queue...");
         
@@ -145,7 +147,7 @@ public class BatchingQueueReaderTest extends TestCase
         
         logger_.info(q);        
         
-        Object[] batch2 = (Object[]) batches_.pull();
+        Object[] batch2 = (Object[]) qout_.pull();
         
         assertEquals(batch2[0], "three");
         assertEquals(batch2[1], "four");
@@ -224,7 +226,7 @@ public class BatchingQueueReaderTest extends TestCase
         public void nextBatch(Object[] elements)
         {
             logger_.info("nextBatch: " + ArrayUtil.toString(elements));
-            batches_.push(elements);
+            qout_.push(elements);
         }
     }
 }

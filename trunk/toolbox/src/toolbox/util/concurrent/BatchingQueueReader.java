@@ -90,8 +90,8 @@ public class BatchingQueueReader implements Startable, Nameable
     {
         machine_.checkTransition(ServiceTransition.START);
         worker_ = new Thread(new Worker(), name_);
-        worker_.start();
         machine_.transition(ServiceTransition.START);
+        worker_.start();
     }
 
     

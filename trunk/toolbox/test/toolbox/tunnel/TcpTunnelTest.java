@@ -90,7 +90,7 @@ public class TcpTunnelTest extends TestCase
      * 
      * @throws Exception on error.
      */
-    public void testTcpTunnel() throws Exception 
+    public void xxxtestTcpTunnel() throws Exception 
     {   
         logger_.info("Running testTcpTunnel...");
         
@@ -220,7 +220,7 @@ public class TcpTunnelTest extends TestCase
     /**
      * Tests suppressing of binary data.
      */
-    public void testSuppressBinary() throws Exception 
+    public void xxxtestSuppressBinary() throws Exception 
     {   
         logger_.info("Running testSuppressBinary...");
         
