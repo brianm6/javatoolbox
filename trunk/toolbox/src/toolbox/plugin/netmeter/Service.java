@@ -56,4 +56,12 @@ public interface Service
      * @return boolean
      */
     public boolean isPaused();
+    
+    
+    /**
+     * Adds a listener to the list of observers.
+     *  
+     * @param listener Listener to add.
+     */
+    public void addServiceListener(ServiceListener listener);
 }
