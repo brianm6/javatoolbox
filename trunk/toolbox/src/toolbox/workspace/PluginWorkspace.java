@@ -98,6 +98,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */    
     public static final String PROP_STATUSBAR = "workspace.statusbar";
     
+    /**
+     * Plugin property that refers to the PluginWorkspace.
+     */
+    public static final String PROP_WORKSPACE = "workspace.self";
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -368,9 +373,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
         bootstrapMap_ = new HashMap(1);
         bootstrapMap_.put(PROP_STATUSBAR, statusBar_);
+        bootstrapMap_.put(PROP_WORKSPACE, PluginWorkspace.this);
                 
         pluginHostManager_.setPluginHost(
-            PluginHostManager.HOST_TABBED,
+            PluginHostManager.PLUGIN_HOST_TABBED,
             bootstrapMap_);
         
         Container contentPane = getContentPane();
