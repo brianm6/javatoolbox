@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 
 /**
  * I/O Stream Utility Class.
+ * 
+ * @see org.apache.commons.io.IOUtils
  */
 public final class StreamUtil
 {
@@ -29,36 +31,6 @@ public final class StreamUtil
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
-//    /**
-//     * Converts the contents of an character input stream to a string.
-//     * 
-//     * @param inputStream Input stream to read from.
-//     * @return String representation of the input stream contents.
-//     * @throws IOException on I/O error.
-//     */
-//    public static String toString(InputStream inputStream) throws IOException
-//    {
-//        // TODO: Remove method
-//        
-//        return IOUtils.toString(inputStream);
-//    }
-//
-//    
-//    /**
-//     * Converts the remaining contents of an InputStream to a byte array.
-//     * 
-//     * @param is InputStream to convert.
-//     * @return Contents of the stream as a byte array.
-//     * @throws IOException on I/O error.
-//     */    
-//    public static byte[] toByteArray(InputStream is) throws IOException
-//    {
-//        // TODO: Remove method
-//        
-//        return IOUtils.toByteArray(is);
-//    }
-
     
     /**
      * Reads an exact number of characters from a stream and returns them as a
