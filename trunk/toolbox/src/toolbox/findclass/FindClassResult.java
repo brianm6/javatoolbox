@@ -3,7 +3,10 @@ package toolbox.findclass;
 import java.util.Date;
 
 /**
- * Data object specific to the result of a successful class search.
+ * FindClassResult captures the information related to a successful search
+ * result by FindClass.
+ * 
+ * @see toolbox.findclass.FindClass
  */
 public class FindClassResult
 {

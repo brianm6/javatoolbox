@@ -25,18 +25,21 @@ import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
 
 /**
- * Find class is a utility that can find all occurences of a given class 
- * (can be expressed as a regular expression) in the classpath, one or 
- * more directories (including child directories), and/or any number of
- * arbitrary archives (includes both jars and zips). There is a public
- * API for use as a third library or a command line interface for direct
- * usage.
+ * Find class is a utility that can find all occurences of a given class (can be
+ * expressed as a regular expression) in the classpath, one or more directories 
+ * (including child directories), and/or any number of arbitrary archives 
+ * (includes both jars and zips). There is a public API for use as a third 
+ * library or a command line interface for direct usage.
  * <p>
  * Lingo:
- * <p>
- * searchTarget - a directory or jar/zip file that is a potential search
- * candidate.<br>
- * archive - collectively refers to either a jar file or a zip file.<br>
+ * <ul>
+ *   <li>searchTarget - a directory or jar/zip file that is a potential search
+ *       candidate.
+ *   <li>archive - collectively refers to either a jar file or a zip file.
+ * </ul>
+ * 
+ * @see toolbox.findclass.FindClassResult
+ * @see toolbox.findclass.FindClassListener
  * 
  * @has * - - toolbox.findclass.FindClassListener
  * @has - - - toolbox.findclass.FindClassCollector

@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * FindClassCollector collects the results of a FindClass operation.
+ * 
+ * @see toolbox.findclass.FindClass
  */
 public class FindClassCollector extends FindClassAdapter
 {

@@ -2,6 +2,8 @@ package toolbox.findclass;
 
 /**
  * Interface for classes interested in listening to Findclass events.
+ * 
+ * @see toolbox.findclass.FindClass
  */
 public interface FindClassListener
 {

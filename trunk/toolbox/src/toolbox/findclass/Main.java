@@ -18,6 +18,8 @@ import org.apache.regexp.RESyntaxException;
 /**
  * Utility that finds all occurences of a given class in the CLASSPATH, current
  * directory, and archives (recursively).
+ * 
+ * @see toolbox.findclass.FindClass
  */
 public class Main extends FindClassAdapter
 { 
