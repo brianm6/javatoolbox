@@ -37,6 +37,8 @@ package toolbox;
  * TODO: FindClass: Add decompile on select
  * TODO: FindClass: Add additional search criteria: A extends B, A implements C
  * TODO: FindClass: Add timer to see perf.
+ * TODO: FindClass: For a selected Jar, make it the search target and autolist
+ *                  all the classes within it.
  * =============================================================================
  * TODO: TCPTunnel: Add toggle button for wrap lines on toolbar
  * TODO: TCPTunnel: Add toggle button for binary char filter on toolbar
