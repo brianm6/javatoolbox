@@ -45,6 +45,7 @@
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
  * TODO: Update JSmartTableHeader to sort and auto-resize don't conflict
+ * TODO: Update PluginWorkspace to extends JSmartFrame
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
