@@ -525,7 +525,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         Element projects = XOMUtil.getFirstChildElement(
             root, NODE_CVSPROJECTS, new Element(NODE_CVSPROJECTS));
             
-        if (!projects.hasChildren())
+        if (projects.getChildCount() > 0)
         {
             projectCombo_.addItem(new CVSProject(
                 "Sourceforge",
