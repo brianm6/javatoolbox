@@ -8,7 +8,6 @@ import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JSmartOptionPane;
 
 import electric.xml.Document;
 import electric.xml.Element;

@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+
 import org.apache.log4j.Category;
 import toolbox.util.ui.JFileExplorer;
 
