@@ -561,8 +561,6 @@ public class TailPane extends JHeaderPanel
      */
     protected void fireNewDataAvailable(TailPane tailPane)
     {
-        // TODO: Nothing is firing this event!
-
         for (int i = 0; i < tailPaneListeners_.length; i++)
             tailPaneListeners_[i].newDataAvailable(tailPane);
     }
@@ -785,6 +783,8 @@ public class TailPane extends JHeaderPanel
                 if (line != null)
                     tailArea_.append(line + "\n");
             }
+
+            fireNewDataAvailable(TailPane.this);
         }
     }
 
