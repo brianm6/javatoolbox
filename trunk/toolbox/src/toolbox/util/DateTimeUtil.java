@@ -11,6 +11,10 @@ import java.util.Date;
  */
 public final class DateTimeUtil
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Prevent construction
      */
@@ -18,9 +22,13 @@ public final class DateTimeUtil
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * @param   d  Date to format
-     * @return  Date/time in dashed MM-dd-yyyy format
+     * @return  Date/time in dashed MM-dd-yyyy hh:mm a format
      */
     public static String format(Date d)
     {
@@ -40,7 +48,7 @@ public final class DateTimeUtil
      * @param   hours    Number of hours to add
      * @param   minutes  Number of minutes to add
      * @param   seconds  Number of seconds to add
-     * @return  Modified date
+     * @return  Reference to modified passed in date
      */
     public static Date add(Date date, int years, int months, int days,
         int hours, int minutes, int seconds)
@@ -130,11 +138,12 @@ public final class DateTimeUtil
         c.set(Calendar.MILLISECOND, 999);
         return c.getTime();
     }
+
     
     /**
      * Gets a date far out in the future
      * 
-     * @return  Date
+     * @return  Date representing end of time
      */
     public static Date getEndOfTime()
     {
