@@ -38,7 +38,8 @@ import toolbox.workspace.IPreferenced;
 /**
  * This is a sample implementation of the Transaction Processing Performance
  * Council Benchmark B coded in Java and ANSI SQL2. This version is using one
- * connection per thread to parallellize server operations.
+ * connection per thread to parallellize server operations. Lifted from HSQLDB
+ * with minor mods.
  */
 public class DBBenchmark implements Startable, IPreferenced
 {
@@ -48,6 +49,24 @@ public class DBBenchmark implements Startable, IPreferenced
     // Constants
     //--------------------------------------------------------------------------
     
+    public static final int TELLER = 0;
+    public static final int BRANCH = 1;
+    public static final int ACCOUNT = 2;
+    
+    /**
+     * Number formatter used during report generation.
+     */
+    private static final NumberFormat FMT = DecimalFormat.getNumberInstance();
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * XML node for dbbenchmark preferences.
+     */
+    private static final String NODE_DBBENCHMARK = "DBBenchmark";
+
     /**
      * Javabean properties that editable for this object. These properties
      * are persisted via the IPreferenced interface and edited by the 
@@ -58,20 +77,6 @@ public class DBBenchmark implements Startable, IPreferenced
         "numClients",
         "numTxPerClient"
     };
-        
-    public static final int TELLER = 0;
-    public static final int BRANCH = 1;
-    public static final int ACCOUNT = 2;
-    
-    /**
-     * Number formatter used during report generation.
-     */
-    private static final NumberFormat FMT = DecimalFormat.getNumberInstance();
-
-    /**
-     * XML node for dbbenchmark preferences.
-     */
-    private static final String NODE_DBBENCHMARK = "DBBenchmark";
     
     //--------------------------------------------------------------------------
     // Static
