@@ -3,10 +3,23 @@ package toolbox.util.io;
 import java.io.OutputStream;
 
 /**
- * An output stream that flows into a StringBuffer.
+ * An {@link java.io.OutputStream} that empties into a String.
+ * <p>
+ * Example:
+ * <pre>
+ * StringOutputStream sos = new StringOutputStream();
+ * UpperCaseOutputStream ucos = new UpperCaseOutputStream(sos);
+ * ucos.write("weee!".getBytes());
+ * ucos.close();
+ * System.out.println(sos.toString()); // Prints out WEEE!
+ * </pre>
  */
 public class StringOutputStream extends OutputStream
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Output buffer. 
      */
