@@ -11,7 +11,7 @@ import toolbox.util.Banner;
 public class BannerTask extends Task
 {
     /** 
-     * Banner text.
+     * The text of the banner.
      */
     private String msg_;
 
@@ -32,7 +32,7 @@ public class BannerTask extends Task
     //--------------------------------------------------------------------------
     // Overrides org.apache.tools.ant.Task
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see org.apache.tools.ant.Task#execute()
      */

@@ -27,12 +27,39 @@ import org.apache.tools.ant.Task;
  */
 public class PropertyPromptTask extends Task
 {
-    private String propertyName_;    // required
+    /**
+     * Property that entered value will be saved to.
+     */
+    private String propertyName_; 
+    
+    /**
+     * Default value if one is not entered.
+     */
     private String defaultValue_;
-    private String proposedValue_;   // required
-    private String promptText_;      // required
+    
+    /**
+     * Proposed value.
+     */
+    private String proposedValue_;
+    
+    /**
+     * Text immediately before the prompt.
+     */
+    private String promptText_;
+    
+    /**
+     * Prompt character to use.
+     */
     private String promptCharacter_;
+    
+    /**
+     * Timeout in seconds before the prompt continues.
+     */
     private int timeout_;
+    
+    /**
+     * Flag to use the existing value.
+     */
     private boolean useExistingValue_;
 
     //--------------------------------------------------------------------------
@@ -60,6 +87,7 @@ public class PropertyPromptTask extends Task
         setPrompttext(prompt);
     }
     
+    
     /**
      * Returns defaultValue specified in this task for the Property being set.
      * 
@@ -69,6 +97,7 @@ public class PropertyPromptTask extends Task
     {
         return defaultValue_;
     }
+    
     
     /**
      * Returns the terminating character used to punctuate the prompt text.
@@ -80,6 +109,7 @@ public class PropertyPromptTask extends Task
         return promptCharacter_;
     }
     
+    
     /**
      * Returns text of the prompt.
      * 
@@ -89,6 +119,7 @@ public class PropertyPromptTask extends Task
     {
         return promptText_;
     }
+    
     
     /**
      * Returns name of the Ant Project Property being set by this task.
@@ -100,8 +131,9 @@ public class PropertyPromptTask extends Task
         return propertyName_;
     }
     
+    
     /**
-     * Insert the method's description here.
+     * Returns true to use the existing value, false otherwise.
      *
      * @return boolean
      */
@@ -109,6 +141,7 @@ public class PropertyPromptTask extends Task
     {
         return useExistingValue_;
     }
+    
     
     /**
      * Sets defaultValue for the Property being set by this task.
@@ -119,6 +152,7 @@ public class PropertyPromptTask extends Task
     {
         defaultValue_ = newDefaultvalue;
     }
+    
     
     /**
      * Sets the terminating character used to punctuate the prompt text 
@@ -131,6 +165,7 @@ public class PropertyPromptTask extends Task
         promptCharacter_ = newPromptcharacter;
     }
     
+    
     /**
      * Sets text of the prompt.
      * 
@@ -141,6 +176,7 @@ public class PropertyPromptTask extends Task
         promptText_ = newPrompttext;
     }
     
+    
     /**
      * Specifies the Ant Project Property being set by this task.
      * 
@@ -150,6 +186,7 @@ public class PropertyPromptTask extends Task
     {
         propertyName_ = newPropertyname;
     }
+    
     
     /**
      * Insert the method's description here.
@@ -176,6 +213,7 @@ public class PropertyPromptTask extends Task
         promptCharacter_ = "?";
         useExistingValue_ = false;
     }
+    
     
     /**
      * Run the PropertyPromptTask task.
@@ -277,6 +315,7 @@ public class PropertyPromptTask extends Task
         }
     }
 
+    
     /**
      * Returns a string to be inserted in the log message indicating whether a 
      * default response was specified in the build file.
@@ -292,7 +331,7 @@ public class PropertyPromptTask extends Task
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // TimedBufferedReader
     //--------------------------------------------------------------------------
         
     /**
@@ -306,8 +345,19 @@ public class PropertyPromptTask extends Task
      */
     private class TimedBufferedReader extends BufferedReader
     {
+        /**
+         * Use linefeeds.
+         */
         private boolean linefeed = true;
+        
+        /**
+         * Timeone in seconds. Zero is indefinite.
+         */
         private int timeout = 0;
+        
+        /**
+         * Default string.
+         */
         private String defaultString = "";
 
         //----------------------------------------------------------------------
@@ -315,7 +365,7 @@ public class PropertyPromptTask extends Task
         //----------------------------------------------------------------------
         
         /**
-         * TimedBufferedReader constructor.
+         * Creates a TimedBufferedReader.
          * 
          * @param in Reader to chain
          */
@@ -324,8 +374,9 @@ public class PropertyPromptTask extends Task
             super(in);
         }
 
+        
         /**
-         * TimedBufferedReader constructor.
+         * Creates a TimedBufferedReader.
          * 
          * @param in Reader to chain
          * @param sz int Size of the input buffer.
@@ -342,17 +393,18 @@ public class PropertyPromptTask extends Task
         /**
          * Sets number of seconds to block for input.
          * 
-         * @param seconds int
+         * @param seconds Seconds
          */
         public void setTimeout(int seconds)
         {
             timeout = seconds;
         }
 
+        
         /**
          * Sets defaultString to use if no input is read.
          * 
-         * @param str String
+         * @param str Default input
          */
         public void setDefaultString(String str)
         {
