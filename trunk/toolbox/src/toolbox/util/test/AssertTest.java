@@ -13,12 +13,12 @@ import toolbox.util.AssertionException;
  */
 public class AssertTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(AssertTest.class);
 
     /**
-     * Runs testcase in text mode
+     * Entrypoint
      * 
      * @param args Args
      */
@@ -72,11 +72,11 @@ public class AssertTest extends TestCase
     {
         logger_.info("Running testEqualsFloat...");
         
-        Assert.equals(1.0f, 1.0f, 0.0, "equal");
+        Assert.equals( (float) 1.0f, (float) 1.0f, (float) 0.0, "equal");
         
         try
         {
-            Assert.equals(1.0f, 2.0f, 0.0, "not equal");
+            Assert.equals((float)1.0f, (float)2.0f, (float)0.0, "not equal");
             fail("testEqualsFloat");
         }
         catch (AssertionException e)
@@ -113,10 +113,21 @@ public class AssertTest extends TestCase
         logger_.info("Running testEqualsObject...");
         
         Assert.equals("one", "one", "equal");
-        
+        Assert.equals("one", "one");
+                
         try
         {
             Assert.equals("one", "two", "not equal");
+            fail("testEqualsObject");
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());
+        }
+        
+        try
+        {
+            Assert.equals("one", "two");
             fail("testEqualsObject");
         }
         catch (AssertionException e)
@@ -133,10 +144,21 @@ public class AssertTest extends TestCase
         logger_.info("Running testIsFalse...");
         
         Assert.isFalse(false, "isFalse");
+        Assert.isFalse(false);
         
         try
         {
             Assert.isFalse(true, "isFalse");
+            fail("testIsFalse");
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());            
+        }
+        
+        try
+        {
+            Assert.isFalse(true);
             fail("testIsFalse");
         }
         catch (AssertionException e)
@@ -153,10 +175,21 @@ public class AssertTest extends TestCase
         logger_.info("Running testIsTrue...");
         
         Assert.isTrue(true, "isTrue");
-        
+        Assert.isTrue(true);
+                
         try
         {
             Assert.isTrue(false, "isTrue");
+            fail("testIsTrue");
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());            
+        }
+        
+        try
+        {
+            Assert.isTrue(false);
             fail("testIsTrue");
         }
         catch (AssertionException e)
@@ -173,10 +206,21 @@ public class AssertTest extends TestCase
         logger_.info("Running testNotNull...");
         
         Assert.notNull("i am not null", "Object is not null");
-        
+        Assert.notNull("i am not null");
+                
         try
         {
             Assert.notNull(null, "Obiect is null");
+            fail("testNotNull");       
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());
+        }
+        
+        try
+        {
+            Assert.notNull(null);
             fail("testNotNull");       
         }
         catch (AssertionException e)
