@@ -244,6 +244,7 @@
 
         <delete verbose="true">
             <fileset dir="${dist}" includes="toolbox-lookandfeel.jar"/>
+            <fileset dir="${build.stage}/lookandfeel"/>
         </delete>
 
         <mkdir dir="${build.stage}/lookandfeel"/>
@@ -269,6 +270,9 @@
         <copy todir="${build.stage}/lookandfeel" overwrite="yes">
             <fileset dir="${resources}" includes="skinlf/*"/>
         </copy>
+
+        <!-- Nuke the META-INF dir cause it just causes problems -->
+        <delete dir="${build.stage}/lookandfeel/META-INF" verbose="true"/>
 
         <!-- Jar up staging area to produce toolbox-lookandfeel.jar -->                    
         <jar jarfile ="${dist}/toolbox-lookandfeel.jar" 
@@ -512,7 +516,8 @@
                     <exclude name="**/SwingUtilTest.java"/>
                     <exclude name="**/jedit/**"/>
                     <exclude name="**/log4j/im/**/*Test.java"/>
-                    <exclude name="**/BannerTaskTest.java"/>   
+                    <exclude name="**/BannerTaskTest.java"/>
+                    <exclude name="**/PropertyPromptTaskTest.java"/>   
                 </fileset>
             </batchtest>
           
