@@ -1,21 +1,55 @@
 package toolbox.tunnel;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ExceptionUtil;
+import toolbox.util.ResourceCloser;
 import toolbox.util.io.MulticastOutputStream;
 
 /**
- * A TcpTunnel object listens on the given port, and once Start is pressed, 
- * will forward all bytes to the given host and port.
+ * A TcpTunnel serves as a transparent intermediary between a TCP conection on 
+ * the current host and a remote host. By serving as an intermediary, traffic
+ * on the TCP connection can be captured and saved for later analysis and aid 
+ * in trouble shooting protocol level issues. The local listen port is the
+ * port that you will redirect your client application to communicate with.
+ * The remote host and port is the connection endpoint between.
+ * 
+ * <pre>
+ * Sequence of events:
+ * 
+ * 1. socket client connects to TcpTunnel (localhost:port)
+ * 2. TcpTunnel connects to remote host (remotehost:remoteport)
+ * 3. socket client sends request to TcpTunnel
+ * 4. TcpTunnel dumps request to screen and forwards to remote host
+ * 5. Remote host receives request and replies to TcpTunnel
+ * 6. TcpTunnel dumps response to screen and forwards to socket client
+ * 7. Socket client receives response and processes as normal
+ * </pre>
  */
-public class TcpTunnel
+public class TcpTunnel implements TcpTunnelListener
 {
     private static final Logger logger_ = 
         Logger.getLogger(TcpTunnel.class);
+
+    private ServerSocket ss;
+    private boolean      stop_ = false;
+    private int          listenPort_;
+    private String       remoteHost_;
+    private int          remotePort_;
+    private List         outgoingStreams_;
+    private List         incomingStreams_;
+    private List         listeners_;
     
     /**
      * Entrypoint 
@@ -43,40 +77,193 @@ public class TcpTunnel
         System.out.println("TcpTunnel: ready to rock and roll on port " + 
             listenport);
 
-        ServerSocket ss = new ServerSocket(listenport);
+        TcpTunnel tunnel = new TcpTunnel(listenport, tunnelhost, tunnelport);
+        tunnel.addOutgoingStream(System.out);
+        tunnel.addIncomingStream(System.out);
+        tunnel.addTcpTunnelListener(tunnel);
+        tunnel.start();
+    }
 
-        while (true)
+    //--------------------------------------------------------------------------
+    // Constructors 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a TcpTunnel
+     * 
+     * @param  listenPort  Local port to listen on
+     * @param  remoteHost  Remote host to connect to
+     * @param  remotePort  Remote port to connect to
+     */
+    public TcpTunnel(int listenPort, String remoteHost, int remotePort)
+    {
+        listenPort_ = listenPort;
+        remoteHost_ = remoteHost;
+        remotePort_ = remotePort;
+        
+        incomingStreams_ = new ArrayList();
+        outgoingStreams_ = new ArrayList();
+        listeners_ = new ArrayList();
+    }    
+       
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+                  
+    /**
+     * Adds an output stream to the collection of incoming streams that
+     * data from the remote host will be multicast to
+     * 
+     * @param  stream  Stream to add to multicast group
+     */
+    public void addIncomingStream(OutputStream stream)
+    {
+        incomingStreams_.add(stream);    
+    }
+
+    /**
+     * Adds an output stream to the collection of outgoing streams that
+     * sends data from the local socket client to the remote host
+     * 
+     * @param  stream  Stream to add to multicast group
+     */
+    public void addOutgoingStream(OutputStream stream)
+    {
+        outgoingStreams_.add(stream);    
+    }
+        
+    /**
+     * Starts the tunnel
+     */
+    public void start()
+    {
+        boolean alreadyListened = false;
+        
+        try
         {
-            // accept the connection from my client
-            logger_.debug(method + "Waiting to accept...");
-            Socket sc = ss.accept();
-
-            // connect to the thing I'm tunnelling for
-            logger_.debug(method + "Creating new socket to tunnel " + 
-                tunnelhost + ":" + tunnelport);
-                
-            Socket st = new Socket(tunnelhost, tunnelport);
-
-            logger_.debug(method + "Tunnelling port " + listenport + 
-                " to port " + tunnelport + " on host " + tunnelhost);
-
-            // relay the stuff thru
-            logger_.debug(method + "Setting up relays...");
+            // Server socket on listenPort
+            ss = new ServerSocket(listenPort_);
+            ss.setSoTimeout(5000);
+            stop_ = false;
             
-            MulticastOutputStream tos = new MulticastOutputStream();
-            tos.addStream(st.getOutputStream());
-            tos.addStream(System.out);
-            
-            MulticastOutputStream sos = new MulticastOutputStream();
-            sos.addStream(sc.getOutputStream());
-            sos.addStream(System.out);
-            
-            new Thread(new Relay(sc.getInputStream(), tos)).start();
-            new Thread(new Relay(st.getInputStream(), sos)).start();
+            while (!stop_)
+            {
+                try
+                {
+                    if (!ss.isClosed())
+                    {
+                        if (!alreadyListened)
+                            fireStatusChanged(
+                                "Listening for connections on port " + 
+                                    listenPort_);
 
-            logger_.debug(method + "Done!");
-            
-            // that's it .. they're off; now I go back to my stuff.
+                        // Client socket
+                        Socket cs = ss.accept();
+    
+                        // Remote socket
+                        Socket rs = new Socket(remoteHost_,remotePort_);
+                        
+                        fireStatusChanged(
+                            "Tunnelling port "+ listenPort_ + 
+                            " to port " + remotePort_ + 
+                            " on host " + remoteHost_ + " ...");
+    
+                        // relay the stuff thru. Make multicast output streams
+                        // that send to the socket and also to the textarea
+                        // for each direction
+                        
+                        MulticastOutputStream outStreams = 
+                            new MulticastOutputStream();
+                            
+                        outStreams.addStream(rs.getOutputStream());
+                        
+                        for (Iterator i = outgoingStreams_.iterator(); 
+                            i.hasNext();)
+                                outStreams.addStream((OutputStream)i.next());    
+                        
+                        MulticastOutputStream inStreams = 
+                            new MulticastOutputStream();
+                            
+                        inStreams.addStream(cs.getOutputStream());
+                        
+                        for (Iterator i = incomingStreams_.iterator(); 
+                            i.hasNext();)
+                                inStreams.addStream((OutputStream)i.next());    
+
+                        new Thread(new Relay(
+                            new BufferedInputStream(cs.getInputStream()), 
+                            new BufferedOutputStream(outStreams))).start();
+                            
+                        new Thread(new Relay(
+                            new BufferedInputStream(rs.getInputStream()), 
+                            new BufferedOutputStream(inStreams))).start();
+
+                        // that's it .. they're off
+                    }
+                }
+                catch (SocketTimeoutException ste)
+                {
+                    alreadyListened = true;
+                }
+                catch (Exception e)
+                {
+                    if (!stop_)
+                        ExceptionUtil.handleUI(e, logger_);
+                }
+            }
         }
+        catch (IOException ioe)
+        {
+            ExceptionUtil.handleUI(ioe, logger_);
+        }
+    }
+    
+    /**
+     * Stops the tunnel
+     */              
+    public void stop()
+    {
+        stop_ = true;
+        ResourceCloser.close(ss);    
+        fireStatusChanged("Tunnel stopped");
+    }
+    
+    //--------------------------------------------------------------------------
+    // Event listener support
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a TcpTunnelListener
+     * 
+     * @param  listener  TcpTunnelListener to add
+     */
+    public void addTcpTunnelListener(TcpTunnelListener listener)
+    {
+        listeners_.add(listener);
+    }
+    
+    /**
+     * Fires notifcation that the status of the tunnel has changed to gtall 
+     * registered listeners.
+     * 
+     * @param  status  New status
+     */
+    protected void fireStatusChanged(String status)
+    {
+        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+            ((TcpTunnelListener) i.next()).statusChanged(this, status);    
+    }
+    
+    //--------------------------------------------------------------------------
+    // Interface TcpTunnelListener
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
+     *      toolbox.tunnel.TcpTunnel, java.lang.String)
+     */
+    public void statusChanged(TcpTunnel tunnel, String status)
+    {
+        System.out.println(status);
     }
 }
