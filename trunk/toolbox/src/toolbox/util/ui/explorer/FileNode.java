@@ -2,6 +2,8 @@ package toolbox.util.ui.explorer;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import toolbox.util.Platform;
 
 /**
@@ -20,7 +22,7 @@ public class FileNode extends DefaultMutableTreeNode
      * 
      * @param userObject Object to associate with the file node.
      */
-    FileNode(Object userObject)
+    public FileNode(Object userObject)
     {
         super(userObject);
     }
@@ -50,5 +52,14 @@ public class FileNode extends DefaultMutableTreeNode
             return file1.equals(file2);
         else
             return file1.equalsIgnoreCase(file2);
+    }
+    
+    
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }
