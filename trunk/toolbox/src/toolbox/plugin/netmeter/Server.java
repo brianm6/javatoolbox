@@ -14,6 +14,8 @@ import toolbox.util.service.ServiceException;
 /**
  * Server is a non-UI component that is used to collect data throughput
  * statistics when connected to by a Client.
+ * 
+ * @see toolbox.plugin.netmeter.Client
  */
 public class Server extends AbstractService
 {

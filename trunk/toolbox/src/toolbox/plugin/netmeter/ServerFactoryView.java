@@ -23,6 +23,8 @@ import toolbox.util.ui.layout.ParagraphLayout;
  * <li>ServerFactoryView hands newly created ServerViews back to the 
  *     NetMeterPlugin.
  * </ul>
+ * 
+ * @see ServerFactoryView
  */
 public class ServerFactoryView extends JHeaderPanel
 {

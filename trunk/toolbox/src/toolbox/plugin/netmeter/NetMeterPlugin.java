@@ -11,15 +11,19 @@ import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.workspace.IPlugin;
 
 /**
- * NetMeter Plugin.
- * <br>
+ * A NetMeter Plugin connects to another instance of NetMeter Plugin for the
+ * purposes of determining the max data transfer rate between the two nodes.
+ * <p>
  * <ul>
- * <li>NetMeterPlugin contains one and only one ClientFactoryView.
- * <li>NetMeterPlugin contains one and only one ServerFactoryView.
- * <li>NetMeterPlugin handles presentation and layout of ClientViews.
- * <li>NetMeterPlugin handles presentation and layout of ServerViews.
- * <li>NetmeterPlugin arranges ClientViews and ServerViews in a stacked grid.
- * <ul>
+ *  <li>NetMeterPlugin contains one and only one ClientFactoryView.
+ *  <li>NetMeterPlugin contains one and only one ServerFactoryView.
+ *  <li>NetMeterPlugin handles presentation and layout of ClientViews.
+ *  <li>NetMeterPlugin handles presentation and layout of ServerViews.
+ *  <li>NetmeterPlugin arranges ClientViews and ServerViews in a stacked grid.
+ * </ul>
+ * 
+ * @see toolbox.plugin.netmeter.Client
+ * @see toolbox.plugin.netmeter.Server
  */
 public class NetMeterPlugin extends JPanel implements IPlugin
 {

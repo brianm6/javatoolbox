@@ -15,7 +15,10 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * ServerView is an updateable view of the Server object. 
+ * ServerView is UI component that presents an updateable view of the Server 
+ * object.
+ * 
+ * @see toolbox.plugin.netmeter.Server 
  */
 public class ServerView extends JHeaderPanel implements ServiceListener
 {

@@ -20,6 +20,8 @@ import toolbox.util.service.ServiceException;
  * to connect to well known Servers and initiate data transfer in order to 
  * measure throughput. Interested listeners can be notified of the statistics
  * as they are gathered.
+ * 
+ * @see toolbox.plugin.netmeter.Server
  */
 public class Client extends AbstractService
 {

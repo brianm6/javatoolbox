@@ -12,6 +12,8 @@ import toolbox.util.net.IConnectionHandler;
 /**
  * ServerConnectionHandler is a server side connection handler for incoming
  * client requests. 
+ * 
+ * @see toolbox.plugin.netmeter.Server
  */
 public class ServerConnectionHandler implements IConnectionHandler
 {
