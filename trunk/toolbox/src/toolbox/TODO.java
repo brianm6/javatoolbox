@@ -18,6 +18,7 @@ package toolbox;
  * TODO: Add history to statusbar.
  * TODO: Add icons to statusbar.
  * TODO: Double click on collapsable panel header should toggle it!
+ * TODO: Add way to copy the current selection from the file explorer dir pane.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
