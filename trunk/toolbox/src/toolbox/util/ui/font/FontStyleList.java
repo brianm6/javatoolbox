@@ -65,10 +65,10 @@ public class FontStyleList extends JList
     
     /**
      * @return currently selected font style
-     * @throws FontSelectionException thrown if no font style is 
+     * @throws FontChooserException thrown if no font style is 
      *         currently selected
      */
-    public int getSelectedStyle() throws FontSelectionException
+    public int getSelectedStyle() throws FontChooserException
     {
         switch (this.getSelectedIndex())
         {
@@ -81,7 +81,7 @@ public class FontStyleList extends JList
             case 3 :
                 return Font.BOLD + Font.ITALIC;
             default :
-                throw new FontSelectionException(
+                throw new FontChooserException(
                     "No font style is currently selected");
         }
     }

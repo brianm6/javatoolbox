@@ -18,7 +18,7 @@ public class PhraseCanvas extends Canvas
     protected Color     color_;        
     protected String    phrase_;
     protected Font      font_;
-    protected boolean   antialiasOn_;
+    protected boolean   antiAlias_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -28,16 +28,17 @@ public class PhraseCanvas extends Canvas
      * Constructs a new PhraseCanvas with the supplied phrase, font, and 
      * color.
      * 
-     * @param   phrase  Phrase to be displayed in this PhraseCanvas
-     * @param   font    Font to use when rendering the phrase
-     * @param   color   Color to use when rendering the phrase
+     * @param   phrase      Phrase to be displayed in this PhraseCanvas
+     * @param   font        Font to use when rendering the phrase
+     * @param   color       Color to use when rendering the phrase
+     * @param   antiAlias   Antialias fonts
      */
-    public PhraseCanvas(String phrase, Font font, Color color)
+    public PhraseCanvas(String phrase, Font font, Color color, boolean antiAlias)
     {
         phrase_ = phrase;
         font_ = font;
         color_ = color;
-        antialiasOn_ = true;
+        antiAlias_ = antiAlias;
     }
 
     //--------------------------------------------------------------------------
@@ -45,7 +46,7 @@ public class PhraseCanvas extends Canvas
     //--------------------------------------------------------------------------
 
     /** 
-     * @see java.awt.Canvas#paint(java.awt.Graphics) 
+     * Paints font
      */
     public void paint(Graphics g)
     {
@@ -58,12 +59,12 @@ public class PhraseCanvas extends Canvas
                 font_.getSize() + 1);
                 
         dummyFont.createGlyphVector(
-            new FontRenderContext(null, antialiasOn_, false),
+            new FontRenderContext(null, antiAlias_, false),
             phrase_);
 
         GlyphVector glyphVector =
             font_.createGlyphVector(
-                new FontRenderContext(null, antialiasOn_, false),
+                new FontRenderContext(null, antiAlias_, false),
                 phrase_);
                 
         // Use precedent set by applications like MS Word to place
@@ -180,22 +181,22 @@ public class PhraseCanvas extends Canvas
      * @return whether or not anti-aliasing is used when rendering the 
      *         phrase 
      */
-    public boolean isAntialiasOn()
+    public boolean isAntiAlias()
     {
-        return antialiasOn_;
+        return antiAlias_;
     }
     
     
     /** 
      * Turn anti-aliasing on or off.
      * 
-     * @param antialiasOn  Whether or not to use anti-aliasing when 
+     * @param antiAlias    Whether or not to use anti-aliasing when 
      *                     rendering the phrase this new value will be used 
      *                     to render the phrase the next time 
      *                     {@link #paint(java.awt.Graphics)} is called 
      */
-    public void setAntialiasOn(boolean antialiasOn)
+    public void setAntiAlias(boolean antiAlias)
     {
-        antialiasOn_ = antialiasOn;
+        antiAlias_ = antiAlias;
     }
 }
