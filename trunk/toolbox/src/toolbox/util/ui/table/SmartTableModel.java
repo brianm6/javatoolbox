@@ -14,35 +14,41 @@ import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 
 /**
- * A thread safe table model that adds elements to the model on the 
- * EventDispatch thread.
+ * SmartTableModel extends DefaultTableModel by adding the following
+ * features.
+ * <p>
+ * <ul>
+ *  <li>Adds rows on the event dispatch thread
+ *  <li>Save table contents to a file
+ *  <li>Uses batching to effifiently add large numbers of rows
+ * </ul>
  */
-public class SmartTableModel extends DefaultTableModel 
+public class SmartTableModel extends DefaultTableModel
     implements IBatchingQueueListener
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(SmartTableModel.class);
-    
+
     //--------------------------------------------------------------------------
-    // Fields 
+    // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Holding pen for rows that need to be added to the table.
-     */    
+     */
     private BlockingQueue queue_;
-    
+
     /**
      * Reads table rows from the holding pen in batch mode.
      */
     private BatchingQueueReader queueReader_;
-    
+
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Creates a table model. 
+     * Creates a table model.
      */
     public SmartTableModel()
     {
@@ -52,7 +58,7 @@ public class SmartTableModel extends DefaultTableModel
 
     /**
      * Creates a SmartTableModel.
-     * 
+     *
      * @param i Number of columns.
      * @param j Number of rows.
      */
@@ -65,7 +71,7 @@ public class SmartTableModel extends DefaultTableModel
 
     /**
      * Creates a SmartTableModel.
-     * 
+     *
      * @param vector Vector of data.
      * @param i Number of columns.
      */
@@ -78,7 +84,7 @@ public class SmartTableModel extends DefaultTableModel
 
     /**
      * Creates a SmartTableModel.
-     * 
+     *
      * @param aobj Array of objects.
      * @param i Number of columns.
      */
@@ -90,10 +96,10 @@ public class SmartTableModel extends DefaultTableModel
     //--------------------------------------------------------------------------
     // Overrides javax.swing.table.DefaultTableModel
     //--------------------------------------------------------------------------
-        
+
     /**
      * Adds a vector of data as a row to the table.
-     * 
+     *
      * @param vector Adds vector of data to the table as a new row.
      * @see javax.swing.table.DefaultTableModel#addRow(Vector)
      */
@@ -101,7 +107,7 @@ public class SmartTableModel extends DefaultTableModel
     {
         if (!SwingUtilities.isEventDispatchThread())
         {
-            // If not event dispatch thread, push to queue         
+            // If not event dispatch thread, push to queue
             queue_.push(vector);
         }
         else
@@ -118,14 +124,14 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Returns class associated with a given column. Needed for sorting
      * capability.
-     * 
+     *
      * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
      */
     public Class getColumnClass(int columnIndex)
     {
-        return (getRowCount() > 0) 
-            ? getValueAt(0, columnIndex).getClass() 
-            : super.getColumnClass(columnIndex);    
+        return (getRowCount() > 0)
+            ? getValueAt(0, columnIndex).getClass()
+            : super.getColumnClass(columnIndex);
     }
 
     //--------------------------------------------------------------------------
@@ -134,7 +140,7 @@ public class SmartTableModel extends DefaultTableModel
 
     /**
      * Adds an array of rows to the table.
-     * 
+     *
      * @param rows Rows to add to the table.
      */
     public void addRows(Object[] rows)
@@ -156,14 +162,14 @@ public class SmartTableModel extends DefaultTableModel
 
     /**
      * Saves the contents of the table model to a file.
-     * 
+     *
      * @param s Filename to save to.
      * @throws IOException on I/O error.
      */
     public void saveToFile(String s) throws IOException
     {
         FileWriter filewriter = new FileWriter(s);
-        
+
         for (int i = 0; i < getRowCount(); i++)
         {
             for (int j = 0; j < getColumnCount(); j++)
@@ -177,7 +183,7 @@ public class SmartTableModel extends DefaultTableModel
     //--------------------------------------------------------------------------
     //  Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Inits table model.
      */
@@ -192,10 +198,10 @@ public class SmartTableModel extends DefaultTableModel
     //--------------------------------------------------------------------------
     //  IBatchingQueueListener Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * Next batch of rows is available.
-     * 
+     *
      * @param elements Array of rows to add to the table.
      */
     public void nextBatch(Object[] elements)
@@ -207,13 +213,13 @@ public class SmartTableModel extends DefaultTableModel
     //--------------------------------------------------------------------------
     //  AddRows
     //--------------------------------------------------------------------------
-    
+
     /**
      * Runnable that adds a row to the table model.
      */
     class AddRows implements Runnable
     {
-        /** 
+        /**
          * Row data.
          */
         private Object[] rows_;
@@ -221,7 +227,7 @@ public class SmartTableModel extends DefaultTableModel
 
         /**
          * Creates a Runnable to add a row to the table model.
-         * 
+         *
          * @param rows Data to add to the table.
          */
         public AddRows(Object[] rows)
@@ -229,9 +235,9 @@ public class SmartTableModel extends DefaultTableModel
             rows_ = rows;
         }
 
-                
+
         /**
-         * Adds a row to the table model. 
+         * Adds a row to the table model.
          */
         public void run()
         {

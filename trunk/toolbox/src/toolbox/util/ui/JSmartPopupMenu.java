@@ -10,7 +10,7 @@ import toolbox.util.SwingUtil;
  * JSmartPopupMenu adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Antialised text
  * </ul>
  */
 public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
@@ -18,7 +18,7 @@ public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Antialiased flag.
      */
@@ -27,9 +27,9 @@ public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Creates a JSmartPopupMenu. 
+     * Creates a JSmartPopupMenu.
      */
     public JSmartPopupMenu()
     {
@@ -38,7 +38,7 @@ public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
 
     /**
      * Creates a JSmartPopupMenu.
-     * 
+     *
      * @param label Menu label.
      */
     public JSmartPopupMenu(String label)
@@ -49,7 +49,7 @@ public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */

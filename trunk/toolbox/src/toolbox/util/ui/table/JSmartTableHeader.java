@@ -12,26 +12,26 @@ import toolbox.util.ui.AntiAliased;
  * JSmartTableHeader adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialiased column headers
+ *   <li>Antialiased column headers
  * </ul>
  */
 public class JSmartTableHeader extends JTableHeader implements AntiAliased
 {
     //--------------------------------------------------------------------------
-    // Fields 
+    // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Creates a JSmartTableHeader. 
+     * Creates a JSmartTableHeader.
      */
     public JSmartTableHeader()
     {
@@ -40,8 +40,8 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
 
     /**
      * Creates a JSmartTableHeader.
-     * 
-     * @param cm Column model
+     *
+     * @param cm Column model.
      */
     public JSmartTableHeader(TableColumnModel cm)
     {
@@ -51,7 +51,7 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -60,6 +60,7 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
         return antiAliased_;
     }
 
+    
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
@@ -67,7 +68,7 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
     {
         antiAliased_ = b;
     }
-    
+
     //--------------------------------------------------------------------------
     // Overrides JComponent
     //--------------------------------------------------------------------------

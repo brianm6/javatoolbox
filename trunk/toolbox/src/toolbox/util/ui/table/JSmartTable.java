@@ -31,9 +31,10 @@ import toolbox.workspace.IPreferenced;
  * <p>
  * <ul>
  *   <li>Antialised text.
- *   <li>Automatic tailing as the number of rows increases.
+ *   <li>Auto-scroll to the last row in the table as data is added.
+ *   <li>Persistence of preferences
  * </ul>
- * 
+ *
  * @see JSmartTableHeader
  * @see SmartTableModel
  * @see SmartTableCellRenderer
@@ -43,15 +44,15 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     private static final Logger logger_ = Logger.getLogger(JSmartTable.class);
 
     //--------------------------------------------------------------------------
-    // Constants 
+    // Constants
     //--------------------------------------------------------------------------
-    
+
     /**
      * Prefences node for all JSmartTable settings.
      */
     private static final String NODE_JSMARTTABLE = "JSmartTable";
 
-    /** 
+    /**
      * Preference that stores automatic tailing of the table flag as a boolean.
      */
     private static final String ATTR_AUTOTAIL = "autotail";
@@ -60,11 +61,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      * Preference that stores antialiasing of the text flag as a boolean.
      */
     private static final String ATTR_ANTIALIAS = "antialias";
-    
+
     //--------------------------------------------------------------------------
-    // Fields 
+    // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Antialiased flag.
      */
@@ -75,16 +76,16 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
      * is responsible for "following" the table is transferred over seamlessly.
      */
     private PropertyChangeListener tableModelTracker_;
-    
+
     /**
      * Listens for changes to the tables model (specifically insert and delete
      * row operations) so that the table can be scrolled to the very end
      * (assumning that the follow flag is turned on).
      */
     private TableModelListener followTracker_;
-    
+
     /**
-     * Toggles automatic scrolling of table to its very last row as rows are 
+     * Toggles automatic scrolling of table to its very last row as rows are
      * added in real time.
      */
     private boolean autoTail_;
@@ -92,19 +93,19 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a JSmartTable.
      */
     public JSmartTable()
     {
-        smartInit();        
+        smartInit();
     }
 
 
     /**
      * Creates a JSmartTable.
-     * 
+     *
      * @param numRows Number of rows.
      * @param numColumns Number of columns.
      */
@@ -117,7 +118,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     * 
+     *
      * @param dm Table model.
      */
     public JSmartTable(TableModel dm)
@@ -129,7 +130,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     * 
+     *
      * @param rowData Row data.
      * @param columnNames Column names.
      */
@@ -142,7 +143,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     * 
+     *
      * @param rowData Row data.
      * @param columnNames Column names.
      */
@@ -155,7 +156,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     * 
+     *
      * @param dm Table model.
      * @param cm Column model.
      */
@@ -168,7 +169,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Creates a JSmartTable.
-     * 
+     *
      * @param dm Table model.
      * @param cm Column model.
      * @param sm Selection model.
@@ -185,7 +186,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Initializes the table.
      */
@@ -195,9 +196,9 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
         followTracker_ = new FollowTracker();
 
         addPropertyChangeListener(
-            "model", 
+            "model",
             tableModelTracker_ = new TableModelTracker());
-        
+
         getModel().addTableModelListener(followTracker_);
     }
 
@@ -207,33 +208,33 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     /**
      * Returns true if automatic tailing is active, false otherwise.
-     * 
+     *
      * @return boolean
      */
     public boolean isAutoTail()
     {
         return autoTail_;
     }
-   
-    
+
+
     /**
      * Activates autoatic tailing of the table as the number of rows increases.
-     * 
+     *
      * @param autoTail True to activate tailing, false otherwise.
      */
     public void setAutoTail(boolean autoTail)
     {
         if (autoTail == isAutoTail())
             return;
-        
+
         autoTail_ = autoTail;
         firePropertyChange("autotail", !autoTail, autoTail);
     }
-    
+
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -241,12 +242,12 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JSMARTTABLE, new Element(NODE_JSMARTTABLE));
-        
+
         setAutoTail(XOMUtil.getBooleanAttribute(root, ATTR_AUTOTAIL, true));
         setAntiAliased(XOMUtil.getBooleanAttribute(root, ATTR_ANTIALIAS, true));
     }
 
-    
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -257,11 +258,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
         root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
         prefs.appendChild(root);
     }
-    
+
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -270,7 +271,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
         return antiAliased_;
     }
 
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
@@ -280,17 +281,17 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
         // TODO: Is this necessary?
         JTableHeader header = getTableHeader();
-        
+
         if ((header != null) && (header instanceof AntiAliased))
-            ((AntiAliased) header).setAntiAliased(b); 
-            
+            ((AntiAliased) header).setAntiAliased(b);
+
         for (int i = 0, c = getColumnCount(); i < c; i++)
         {
             TableCellRenderer tcr = getCellRenderer(0, i);
-            
+
             if (tcr != null && tcr instanceof AntiAliased)
                 ((AntiAliased) tcr).setAntiAliased(b);
-        }            
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -305,7 +306,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
         SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
-    
+
     //--------------------------------------------------------------------------
     // TableModelTracker
     //--------------------------------------------------------------------------
@@ -325,10 +326,10 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
         {
             TableModel old = (TableModel) evt.getOldValue();
             TableModel knew = (TableModel) evt.getNewValue();
-            
+
             if (old != null)
                 old.removeTableModelListener(followTracker_);
-            
+
             if (knew != null)
                 knew.addTableModelListener(followTracker_);
         }
@@ -337,11 +338,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     //--------------------------------------------------------------------------
     // FollowTracker
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Listens for insertions/deletions from the table model. Whenever this 
+     * Listens for insertions/deletions from the table model. Whenever this
      * happens, if the follow flag is active, the table will automatically be
-     * scrolled to the end. 
+     * scrolled to the end.
      */
     class FollowTracker implements TableModelListener
     {
@@ -352,7 +353,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
         public void tableChanged(TableModelEvent e)
         {
             // Only update scrolly bar if a row was inserted or deleted.
-            
+
             if (isAutoTail() &&
                 (e.getType() == TableModelEvent.INSERT ||
                  e.getType() == TableModelEvent.DELETE))
@@ -363,11 +364,11 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
                     {
                         Rectangle rect = getCellRect(
                             getRowCount(), getColumnCount(), true);
-                        
+
                         scrollRectToVisible(rect);
                     }
                 });
             }
         }
-    }    
+    }
 }

@@ -11,16 +11,16 @@ import toolbox.util.ui.AntiAliased;
  * SmartTableCellRender adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialiased text.
+ *   <li>Antialiased text
  * </ul>
  */
 public class SmartTableCellRenderer extends DefaultTableCellRenderer
     implements AntiAliased
 {
     //--------------------------------------------------------------------------
-    // Fields 
+    // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Antialiased flag.
      */
@@ -30,8 +30,8 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer
     // Constructors
     //--------------------------------------------------------------------------
 
-    /** 
-     * Creates a SmartTableCellRenderer. 
+    /**
+     * Creates a SmartTableCellRenderer.
      */
     public SmartTableCellRenderer()
     {
@@ -40,7 +40,7 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.ui.AntiAliased#isAntiAliased()
      */
@@ -57,7 +57,7 @@ public class SmartTableCellRenderer extends DefaultTableCellRenderer
     {
         antiAliased_ = b;
     }
-    
+
     //--------------------------------------------------------------------------
     // Overrides JComponent
     //--------------------------------------------------------------------------
