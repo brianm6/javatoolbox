@@ -12,7 +12,7 @@
              
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" 
-                value="%d{ABSOLUTE} %5p  %15.15c{1}.%-20.20M|%x %m%n"/>
+                value="%d{RELATIVE} %-5p  %15.15c{1}.%-20.20M|%x %m%n"/>
         </layout>
    </appender>
 
