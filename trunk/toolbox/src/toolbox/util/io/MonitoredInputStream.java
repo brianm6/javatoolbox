@@ -21,7 +21,8 @@ import toolbox.util.service.Nameable;
  * </ul>
  * 
  * @see toolbox.util.io.throughput.ThroughputMonitor
- * @see toolbox.util.io.transferred.TransferredMonitor 
+ * @see toolbox.util.io.transferred.TransferredMonitor
+ * @see toolbox.util.io.MonitoredOutputStream 
  */
 public class MonitoredInputStream extends FilterInputStream implements Nameable
 {
