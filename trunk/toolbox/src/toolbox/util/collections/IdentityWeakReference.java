@@ -5,14 +5,14 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
 /**
- * A WeakReference which can be used within a hash table
- * as the identity of an object (i.e. object reference).
- * 
- * Two IdentityWeakReference(s) are the same if there underlying object
- * have the same object reference (i.e. object1 == object2 )
+ * A WeakReference which can be used within a hash table as the identity of an 
+ * object. (i.e. object reference)
+ * <p>
+ * Two IdentityWeakReference(s) are the same if there underlying object have 
+ * the same object reference. (ex: object1 == object2)
  * 
  * @see #REFERENCE_FACTORY
- * @see ReferenceMap
+ * @see ReferenceHashMap
  */
 public class IdentityWeakReference extends WeakReference
 {
@@ -74,7 +74,7 @@ public class IdentityWeakReference extends WeakReference
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.lang.Object
+    //  Overrides java.lang.Object
     //--------------------------------------------------------------------------
 
     /**

@@ -25,7 +25,8 @@ import java.util.Set;
  *   </ol>
  * </ol>
  * 
- * @todo   Use an ObjectPool for LRUKey
+ * to do   Use an ObjectPool for LRUKey
+ * 
  * @author Steven Lee
  */
 public class LRUMap implements Map, Serializable

@@ -9,7 +9,7 @@ import java.lang.ref.ReferenceQueue;
  * would give the same functionality as a WeakHashMap.
  * 
  * @see ReferenceHashMap
- * @see WeakIdentity
+ * @see IdentityWeakReference
  */
 public interface ReferenceFactory
 {

@@ -5,7 +5,7 @@ import java.util.Map;
 import toolbox.util.typecast.Typecast;
 
 /**
- * Used to convert an object into a Map
+ * Used to convert an object into a Map.
  * <pre>
  * 
  * Example:
