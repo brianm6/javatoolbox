@@ -32,7 +32,7 @@ public interface TailListener
     /**
      * Tail has been paused.
      * 
-     * @param tail that was paused. 
+     * @param tail Tail that was paused. 
      */
     void tailPaused(Tail tail);
     
