@@ -20,6 +20,9 @@ package toolbox;
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Add a filled bar mode to JSourceView
+ * TODO: Create JSmartFrame - remember size and position
+ * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
+ * TODO: Writer a proper multisplit pane.
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
