@@ -462,4 +462,41 @@ public class StringUtilTest extends TestCase
         assertEquals(true, StringUtil.isMultiline("\na"));
         assertEquals(true, StringUtil.isMultiline("a\n"));
     }
+    
+    /**
+     * Tests tokenize()
+     */
+    public void testTokenize()
+    {
+        logger_.info("Running testTokenize...");
+        
+        // Empty string
+        assertEquals(0, StringUtil.tokenize("", "x").length);
+        assertEquals(0, StringUtil.tokenize("", "x", true).length);
+        
+        // One lone token
+        String s = "a";
+        assertEquals(0, StringUtil.tokenize(s, "a").length);
+        assertEquals(1, StringUtil.tokenize(s, "a", true).length);
+        assertEquals("a", StringUtil.tokenize(s, "a", true)[0]);
+        
+        // Multiple tokens
+        String m = "oneZtwoZthree";
+        assertEquals(1, StringUtil.tokenize(m, "X").length);
+        assertEquals(1, StringUtil.tokenize(m, "X", true).length);
+            
+            // Without delims
+            assertEquals(3, StringUtil.tokenize(m, "Z").length);
+            assertEquals("one", StringUtil.tokenize(m, "Z")[0]);        
+            assertEquals("two", StringUtil.tokenize(m, "Z")[1]);
+            assertEquals("three", StringUtil.tokenize(m, "Z")[2]);
+    
+            // With delims
+            assertEquals(5,       StringUtil.tokenize(m, "Z", true).length);
+            assertEquals("one",   StringUtil.tokenize(m, "Z", true)[0]);
+            assertEquals("Z",     StringUtil.tokenize(m, "Z", true)[1]);
+            assertEquals("two",   StringUtil.tokenize(m, "Z", true)[2]);
+            assertEquals("Z",     StringUtil.tokenize(m, "Z", true)[3]);            
+            assertEquals("three", StringUtil.tokenize(m, "Z", true)[4]);
+    }
 }
