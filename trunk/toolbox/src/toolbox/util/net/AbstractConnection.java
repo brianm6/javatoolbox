@@ -29,22 +29,22 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * @see com.swa.turbo.util.comm.IConnection#connect()
+     * @see IConnection#connect()
      */
     public abstract void connect() throws IOException;
 
     /**
-     * @see com.swa.turbo.util.comm.IConnection#close()
+     * @see IConnection#close()
      */
     public abstract void close() throws IOException;
 
     /**
-     * @see com.swa.turbo.util.comm.IConnection#getInputStream()
+     * @see IConnection#getInputStream()
      */
     public abstract InputStream getInputStream() throws IOException;
 
     /**
-     * @see com.swa.turbo.util.comm.IConnection#getOutputStream()
+     * @see IConnection#getOutputStream()
      */
     public abstract OutputStream getOutputStream() throws IOException;
 

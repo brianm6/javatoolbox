@@ -98,7 +98,7 @@ public class StringConnection extends AbstractConnection implements IConnection
 
 
     /**
-     * @see com.swa.turbo.util.comm.IConnection#isConnected()
+     * @see IConnection#isConnected()
      */
     public boolean isConnected()
     {

@@ -58,7 +58,7 @@ public class SocketServerConfigTest extends TestCase
         props.put(SocketServerConfig.PROP_SOCKET_QUEUE_SIZE, "11");
         props.put(SocketServerConfig.PROP_SOCKET_TIMEOUT, "13");
         props.put(SocketServerConfig.PROP_CONNECTION_HANDLER, 
-            "com.swa.turbo.util.comm.test.NullConnectionHandler");
+            "toolbox.util.net.test.NullConnectionHandler");
         
         SocketServerConfig config = new SocketServerConfig();
         config.load(props);
@@ -70,7 +70,7 @@ public class SocketServerConfigTest extends TestCase
         assertEquals("socket timeout don't match", 13, config.getSocketTimeout());
         
         assertEquals("socket handlers don't match", 
-            "com.swa.turbo.util.comm.test.NullConnectionHandler", 
+            "toolbox.util.net.test.NullConnectionHandler", 
             config.getConnectionHandlerType());
             
         logger_.info(config);

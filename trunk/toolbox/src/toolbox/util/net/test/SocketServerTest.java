@@ -59,7 +59,7 @@ public class SocketServerTest extends TestCase
         
         // Set handler
         config.setConnectionHandlerType(
-            "com.swa.turbo.util.comm.test.PingConnectionHandler");
+            "toolbox.util.net.test.PingConnectionHandler");
         
         // Start server
         SocketServer server = new SocketServer(config);
@@ -132,7 +132,7 @@ public class SocketServerTest extends TestCase
         SocketServerConfig config = new SocketServerConfig();
         
         config.setConnectionHandlerType(
-            "com.swa.turbo.util.comm.test.EchoConnectionHandler");
+            "toolbox.util.net.test.EchoConnectionHandler");
             
         config.setActiveConnections(10);
         SocketServer ss = new SocketServer(config);
@@ -199,7 +199,7 @@ public class SocketServerTest extends TestCase
         
         // Set handler
         config.setConnectionHandlerType(
-            "com.swa.turbo.util.comm.test.NullConnectionHandler");
+            "toolbox.util.net.test.NullConnectionHandler");
 
         // SocketServer listener        
         class TestListener implements ISocketServerListener

@@ -19,7 +19,7 @@ public class NullConnectionHandler implements IConnectionHandler
     }
 
     /**
-     * @see com.swa.turbo.util.comm.IConnectionHandler#handle(IConnection)
+     * @see IConnectionHandler#handle(IConnection)
      */
     public Object handle(IConnection conn)
     {

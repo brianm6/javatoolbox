@@ -99,7 +99,7 @@ public class AsyncConnectionHandlerTest extends TestCase
             public OutputStream getOutputStream() throws IOException { return null;};
             
             /**
-             * @see com.swa.turbo.util.comm.IConnection#isConnected()
+             * @see IConnection#isConnected()
              */
             public boolean isConnected()
             {

@@ -115,7 +115,7 @@ public class SocketServerConfig
         defaults_.put(PROP_SOCKET_QUEUE_SIZE, "20");
         defaults_.put(PROP_SOCKET_TIMEOUT, "30000");
         defaults_.put(PROP_CONNECTION_HANDLER, 
-                     "com.swa.turbo.util.comm.test.EchoConnectionHandler");
+                     "toolbox.util.net.test.EchoConnectionHandler");
     }
 
     //--------------------------------------------------------------------------
