@@ -23,6 +23,9 @@ import toolbox.util.SwingUtil;
  */
 public class JFindDialog extends JDialog
 {
+    /** TODO: Wire ESC key to dismiss dialog box */
+    /** TODO: Search from current cursor position */
+    
     private static final Logger logger_ =
         Logger.getLogger(JFindDialog.class);
    
