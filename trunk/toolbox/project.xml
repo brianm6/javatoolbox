@@ -684,7 +684,7 @@
 
     <dependency>
       <id>tinylaf</id>
-      <version>LATEST</version
+      <version>LATEST</version>
       <url>http://www.muntjak.de/hans/java/tinylaf</url>  
       <properties>
         <jnlp.jar>true</jnlp.jar>
