@@ -71,11 +71,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
 
     // Workspace preferences nodes and attributes.
     private static final String NODE_WORKSPACE      = "Workspace";
-    private static final String   ATTR_MAXXED       =   "maximized";
-    private static final String   ATTR_WIDTH        =   "width";
-    private static final String   ATTR_HEIGHT       =   "height";
-    private static final String   ATTR_XCOORD       =   "xcoord";
-    private static final String   ATTR_YCOORD       =   "ycoord";
     private static final String   ATTR_SMOOTH_FONTS =   "smoothfonts";
     private static final String   ATTR_LOG_LEVEL    =   "loglevel";
     private static final String   ATTR_DECORATIONS  =   "decorations";
@@ -97,9 +92,13 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Name of file that appliation and plugin preferences are stored in.
+     * Default name and location of the file that application and plugin 
+     * preferences are saved to which is .toolbox.xml in the users home
+     * directory.
      */
-    private static final String FILE_PREFS = ".toolbox.xml";
+    private static final String DEFAULT_PREFS_FILE = 
+        FileUtil.trailWithSeparator(
+            System.getProperty("user.home")) + ".toolbox.xml";
 
     /**
      * Plugin property used to identify a reference to the workspace's shared
@@ -147,6 +146,11 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * File used to persist workspace and plugin preferences.
+     */
+    private String prefsFile_;
+    
+    /**
      * Preferences stored as XML.
      */
     private Element prefs_;
@@ -190,15 +194,16 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         System.setSecurityManager(null);
         
         // Decoration flag has to be set before the first JFrame is instantiated
-        boolean decorate = shouldDecorate();
+        String prefsFile = (args.length == 0) ? DEFAULT_PREFS_FILE : args[0];
+        boolean decorate = shouldDecorate(prefsFile);
         JFrame.setDefaultLookAndFeelDecorated(decorate);
         JDialog.setDefaultLookAndFeelDecorated(decorate);
-        
         Toolkit.getDefaultToolkit().setDynamicLayout(true);
+        
         
         try
         {
-            new PluginWorkspace();
+            new PluginWorkspace(prefsFile);
         }
         catch (Exception e)
         {
@@ -211,13 +216,26 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a PluginWorkspace.
+     * Creates a PluginWorkspace with the default preferences file.
      *
      * @throws Exception on error.
      */
     public PluginWorkspace() throws Exception
     {
+        this(DEFAULT_PREFS_FILE);
+    }
+
+    
+    /**
+     * Creates a PluginWorkspace with the given file used for preferences.
+     *
+     * @param prefsFile Preferences file.
+     * @throws Exception on error.
+     */
+    public PluginWorkspace(String prefsFile) throws Exception
+    {
         super("Toolbox");
+        setPrefsFile(prefsFile);
         init();
         loadPrefs();
         buildView();
@@ -225,7 +243,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         applyPrefs(prefs_);
         setVisible(true);
     }
-
+    
     //--------------------------------------------------------------------------
     // Plugin Management
     //--------------------------------------------------------------------------
@@ -411,16 +429,13 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      * flag. Returns true if look and feel decorations should be used, false
      * otherwise.
      * 
+     * @param prefsFile Preferences file.
      * @return boolean
      */
-    protected static boolean shouldDecorate()
+    protected static boolean shouldDecorate(String prefsFile)
     {
         boolean result = false;
-        
-        String userhome = 
-            FileUtil.trailWithSeparator(System.getProperty("user.home"));
-        
-        File file = new File(userhome + FILE_PREFS);
+        File file = new File(prefsFile);
 
         try
         {
@@ -431,7 +446,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger_.warn(e);
         }
 
         logger_.debug("shouldDecorate = " + result);
@@ -618,18 +633,14 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
 
 
     /**
-     * Loads the workspace and plugin preferences from $user.home/.toolbox.xml.
+     * Loads the workspace and plugin preferences from the preferences file 
+     * into a DOM tree accessible via XOM.
      */
     protected void loadPrefs()
     {
         prefs_ = new Element(NODE_ROOT);
         unloadedPrefs_ = new Element(NODE_ROOT);
-
-        String userhome = System.getProperty("user.home");
-
-        userhome = FileUtil.trailWithSeparator(userhome);
-
-        File f = new File(userhome + FILE_PREFS);
+        File f = new File(getPrefsFile());
 
         if (f.exists() && f.canRead() && f.isFile())
         {
@@ -651,8 +662,10 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         }
         else
         {
-            logger_.info("Preferences file " + FILE_PREFS +
-                " is either non-existant, unreadable, or not a file.");
+            logger_.warn(
+                "Preferences file " 
+                + getPrefsFile() 
+                + " is either non-existant, unreadable, or not a file.");
         }
     }
 
@@ -679,6 +692,28 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         }
     }
 
+    
+    /**
+     * Returns the absolute name of the preferences file.
+     * 
+     * @return String
+     */
+    public String getPrefsFile()
+    {
+        return prefsFile_;
+    }
+
+
+    /**
+     * Sets the absolute name of the preferences file.
+     * 
+     * @param prefsFile Preferences file. 
+     */
+    public void setPrefsFile(String prefsFile)
+    {
+        prefsFile_ = prefsFile;
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
@@ -775,36 +810,33 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         getPluginHost().savePrefs(root);
 
         //
-        // Save prefs to an xml file in the users home directory
+        // Save prefs to the designated preferences file.
         //
-        String userhome = System.getProperty("user.home");
-        userhome = FileUtil.trailWithSeparator(userhome);
-
         FileWriter writer = null;
-        String xml = null;
 
         try
         {
-            writer = new FileWriter(userhome + FILE_PREFS);
+            writer = new FileWriter(getPrefsFile());
             StringOutputStream sos = new StringOutputStream();
             Serializer serializer = new Serializer(sos);
             serializer.setIndent(2);
             serializer.setLineSeparator("\n");
             serializer.write(new Document(root));
-            xml = sos.toString();
+            String xml = sos.toString();
+            //SmartLogger.debug(logger_, xml);
             writer.write(xml);
+            statusBar_.setInfo("Saved preferences to " + getPrefsFile());
         }
         catch (IOException ioe)
         {
+            statusBar_.setError(
+                "Failed to save preferences to " + getPrefsFile());
             ExceptionUtil.handleUI(ioe, logger_);
         }
         finally
         {
             IOUtils.closeQuietly(writer);
         }
-
-        SmartLogger.debug(logger_, xml);
-        statusBar_.setInfo("Saved preferences");
     }
 
 
