@@ -184,12 +184,10 @@ public class SmartClass
     }
 
     /**
-     * 
-     * 
-     * @param obj 
-     * @param selector 
-     * @param parameters 
-     * @return  
+     * @param  obj          Object
+     * @param  selector     Selector 
+     * @param  parameters   Params
+     * @return Return value 
      */
     public Object invokeSilent(Object obj, Symbol selector, Object[] parameters)
     {
@@ -206,12 +204,10 @@ public class SmartClass
     }
 
     /**
-     * 
-     * 
-     * @param obj 
-     * @param methodName 
-     * @param parameters 
-     * @return  
+     * @param  obj          Object
+     * @param  methodName   Method name
+     * @param  parameters   Params
+     * @return Return value
      */
     public Object invokeSilent(Object obj, String methodName, 
         Object[] parameters)
@@ -224,12 +220,12 @@ public class SmartClass
     /**
      * 
      * 
-     * @return  
-     * @throws NoSuchMethodException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
-     * @throws IllegalArgumentException 
-     * @throws InvocationTargetException 
+     * @return New object 
+     * @throws NoSuchMethodException on error
+     * @throws InstantiationException on error
+     * @throws IllegalAccessException on error
+     * @throws IllegalArgumentException on error
+     * @throws InvocationTargetException on error
      */
     public Object newInstance()
         throws
@@ -243,15 +239,15 @@ public class SmartClass
     }
 
     /**
+     * Creates a new instance
      * 
-     * 
-     * @param parameters 
-     * @return  
-     * @throws NoSuchMethodException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
-     * @throws IllegalArgumentException 
-     * @throws InvocationTargetException 
+     * @param  parameters   Params 
+     * @return New instance 
+     * @throws NoSuchMethodException on error
+     * @throws InstantiationException on error
+     * @throws IllegalAccessException on error
+     * @throws IllegalArgumentException on error
+     * @throws InvocationTargetException on error
      */
     public Object newInstance(Object[] parameters)
         throws
@@ -269,7 +265,7 @@ public class SmartClass
     // SUPPORT METHODS
 
     /**
-     * 
+     * Constructs class 
      */
     public void constructClass()
     {
@@ -278,7 +274,7 @@ public class SmartClass
     }
 
     /**
-     * 
+     * Caches methods
      */
     protected void cacheMethods()
     {
@@ -299,7 +295,7 @@ public class SmartClass
     }
 
     /**
-     * 
+     * Caches constructors
      */
     protected void cacheConstructors()
     {
