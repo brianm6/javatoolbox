@@ -258,6 +258,8 @@ public class Tail implements Runnable
      */
     public void run()
     {
+        String method = "[run   ] ";
+        
         try
         {
             LineNumberReader lnr = (LineNumberReader) reader_;
@@ -308,7 +310,7 @@ public class Tail implements Runnable
                     }
                     else if (strikes == resetThreshHold && getFile() != null)
                     {
-                        //logger_.debug("reset threshold met");
+                        //logger_.debug(method + "reset threshold met");
                         
                         // check timestamps   
                         resetTimeStamp = new Date(getFile().lastModified());
@@ -320,12 +322,15 @@ public class Tail implements Runnable
                             // reset the stream and stop plaing around..
 
                             lnr = new LineNumberReader(new FileReader(getFile()));
+                            
                             //long skipped = lnr.skip(Integer.MAX_VALUE);                                
-                            //logger_.debug("Skipped " + skipped + " lines on reset");
-                            logger_.debug("Re-attached to " + getFile().getName());
+                            //logger_.debug(method + "Skipped " + skipped + " lines on reset");
+                            
+                            logger_.debug(method + "Re-attached to " + 
+                                getFile().getName());
                         }
                         else
-                            ;//logger_.debug("Failed criterai for reset");
+                            ;//logger_.debug(method + "Failed criterai for reset");
                             
                         strikes = 0;
                     }
@@ -337,7 +342,7 @@ public class Tail implements Runnable
         }
         catch (Exception e)
         {
-            logger_.error("run", e);
+            logger_.error(method, e);
         }
     }
 

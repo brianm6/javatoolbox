@@ -646,7 +646,7 @@ public class JFlipPane extends JPanel
 
     
     //--------------------------------------------------------------------------
-    //  INNER CLASSES
+    //  Inner Classes
     //--------------------------------------------------------------------------
     
     /**
@@ -656,24 +656,26 @@ public class JFlipPane extends JPanel
     {
         public void actionPerformed(ActionEvent evt)
         {
+            String method = "[actPrf] ";
+            
             if(evt.getSource() == closeButton_)
                 setSelectedFlipper(null);
             else
             {
                 JComponent button = (JComponent)evt.getSource();
                 String name = button.getName();
-                logger_.debug("Flipper " + name + " selected");
+                logger_.debug(method + "Flipper " + name + " selected");
                 JComponent flipper = (JComponent)flippers_.get(name);
                 
                 if (isFlipperSelected(flipper))
                 {
-                    logger_.debug("Toggeling flipper");
+                    logger_.debug(method + "Toggeling flipper");
                     toggleFlipper();
                     
                 }
                 else 
                 {
-                    logger_.debug("Selecting flipper");
+                    logger_.debug(method + "Selecting flipper");
                     
                     // Must be expanded before flipper can be selected
                     if (isCollapsed())
