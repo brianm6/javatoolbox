@@ -8,7 +8,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Modifier;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -27,7 +29,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -37,7 +38,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 
 /**
- * Shows UIDefaults for each widget in Swing's library. 
+ * Shows UIDefaults for each widget in Swing's library for a given Look and Feel
  * 
  * @author Unascribed
  */
@@ -47,11 +48,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         Logger.getLogger(UIDefaultsPlugin.class);
         
     private JTabbedPane     tabbedPane_;
-    private JButton         metalButton_;
-    private JButton         windowsButton_;
-    private JButton         motifButton_;
     private SampleRenderer  sampleRenderer_;
-
+    private Map             infoMap_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -69,7 +68,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         
     public String getName()
     {
-        return "UIDefaults Viewer";
+        return "Look & Feel Defaults";
     }
     
     public JComponent getComponent()
@@ -84,28 +83,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     
     public void startup(Map params)
     {
-        //if (params != null)
-        //  statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
-        
-        setLayout(new BorderLayout());
-        tabbedPane_ = getTabbedPane();
-        add(tabbedPane_);
-
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(1, 3));
-        add(buttons, BorderLayout.SOUTH);
-
-        metalButton_ = new JButton("Metal");
-        metalButton_.addActionListener(this);
-        buttons.add(metalButton_);
-
-        windowsButton_ = new JButton("Windows");
-        windowsButton_.addActionListener(this);
-        buttons.add(windowsButton_);
-
-        motifButton_ = new JButton("Motif");
-        motifButton_.addActionListener(this);
-        buttons.add(motifButton_);
+        buildView();
     }
     
     public void savePrefs(Properties prefs)
@@ -126,19 +104,14 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     
     public void actionPerformed(ActionEvent e)
     {
-        String laf = "";
-        Object o = e.getSource();
-
-        if (o == metalButton_)
-            laf = "javax.swing.plaf.metal.MetalLookAndFeel";
-        else if (o == windowsButton_)
-            laf = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-        else if (o == motifButton_)
-            laf = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-
+        String name = ((JButton) e.getSource()).getText();
+        
+        String clazz = 
+            ((UIManager.LookAndFeelInfo) infoMap_.get(name)).getClassName();
+        
         try
         {
-            UIManager.setLookAndFeel(laf);
+            UIManager.setLookAndFeel(clazz);
         }
         catch (Exception e2)
         {
@@ -154,6 +127,31 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    private void buildView()
+    {
+        //if (params != null)
+        //  statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+        
+        setLayout(new BorderLayout());
+        tabbedPane_ = getTabbedPane();
+        add(tabbedPane_);
+
+        UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
+        infoMap_ = new HashMap(info.length);
+        
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new GridLayout(1, info.length));
+        add(buttons, BorderLayout.SOUTH);
+
+        for (int i=0; i<info.length; i++)
+        {
+            JButton button = new JButton(info[i].getName());
+            button.addActionListener(this);    
+            buttons.add(button);
+            infoMap_.put(info[i].getName(), info[i]);
+        }
+    }
         
     private JTabbedPane getTabbedPane()
     {
@@ -247,7 +245,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
                     if (o instanceof Color)
                         rowData[i][2] = (Color) o;
 
-                    if (o instanceof IconUIResource)
+                    if (o instanceof Icon)
                         rowData[i][2] = (Icon) o;
                 }
                 else
@@ -255,14 +253,13 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
                     rowData[i][1] = "";
                     rowData[i][2] = "";
                 }
-
             }
 
             MyTableModel myModel = new MyTableModel(rowData, colName);
             JTable table = new JTable(myModel);
             
             table.setDefaultRenderer(
-                sampleRenderer_.getClass(),sampleRenderer_);
+                sampleRenderer_.getClass(), sampleRenderer_);
                 
             table.getColumnModel().getColumn(0).setPreferredWidth(250);
             table.getColumnModel().getColumn(1).setPreferredWidth(500);
@@ -278,33 +275,33 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     
     class MyTableModel extends AbstractTableModel
     {
-        private String[] columnNames;
-        private Object[][] rowData;
+        private String[] columnNames_;
+        private Object[][] rowData_;
 
         public MyTableModel(Object[][] rowData, String[] columnNames)
         {
-            this.rowData = rowData;
-            this.columnNames = columnNames;
+            rowData_     = rowData;
+            columnNames_ = columnNames;
         }
 
         public int getColumnCount()
         {
-            return columnNames.length;
+            return columnNames_.length;
         }
 
         public int getRowCount()
         {
-            return rowData.length;
+            return rowData_.length;
         }
 
         public String getColumnName(int col)
         {
-            return columnNames[col];
+            return columnNames_[col];
         }
 
         public Object getValueAt(int row, int col)
         {
-            return rowData[row][col];
+            return rowData_[row][col];
         }
 
         public Class getColumnClass(int c)
@@ -321,7 +318,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
         public void setValueAt(Object value, int row, int col)
         {
-            rowData[row][col] = value;
+            rowData_[row][col] = value;
             fireTableCellUpdated(row, col);
         }
     }
@@ -330,9 +327,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
         public SampleRenderer()
         {
-            super();
             setHorizontalAlignment(SwingConstants.CENTER);
-            setOpaque(true); //MUST do this for background to show up.
+            setOpaque(true); // MUST do this for background to show up.
         }
 
         public Component getTableCellRendererComponent(
@@ -347,22 +343,51 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
             setIcon(null);
             setText("");
 
+            //
+            // Handle colors
+            //
             if (sample instanceof Color)
             {
                 setBackground((Color) sample);
             }
-
-            if (sample instanceof Font)
+            
+            //
+            // Handle fonts
+            //
+            else if (sample instanceof Font)
             {
                 setText("Sample");
                 setFont((Font) sample);
             }
-
-            if (sample instanceof Icon)
+            
+            //
+            // Skip over private classes
+            //
+            else if (Modifier.isPrivate(sample.getClass().getModifiers()))
             {
-                setIcon((Icon) sample);
             }
-
+            
+            //
+            // Some Icons just don't play nice
+            //
+            else if 
+                ((sample.getClass().getName().indexOf("CheckBox") >= 0)       ||
+                 (sample.getClass().getName().indexOf("RadioButton") >= 0)    ||
+                 (sample.getClass().getName().indexOf("InternalFrame") >=0)   ||
+                 (sample.getClass().getName().indexOf("PaletteCloseIcon") >=0))
+            {
+            }
+            
+            //
+            //  Handle icons
+            //
+            else if (sample instanceof Icon)
+            {
+                Icon icon = (Icon) sample;
+                setIcon(icon);
+                setText(icon.getIconWidth() + "x" + icon.getIconHeight());
+            }
+            
             return this;
         }
     }
