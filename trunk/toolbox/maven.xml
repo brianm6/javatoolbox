@@ -383,6 +383,7 @@ Commands:
                 <include name="l2fprod-common.jar"/>
                 <include name="concurrent.jar"/>
                 <include name="forms.jar"/>
+                <include name="jemmy.jar"/>
 
                 <!-- Doc viewer plugin -->
                 <include name="calphahtml.jar"/>

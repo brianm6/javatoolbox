@@ -427,13 +427,20 @@
     </dependency>
 
     <dependency>
+      <id>jemmy</id>
+      <version/>
+      <properties>
+        <jnlp.jar>false</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>jfreechart</id>
       <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
     </dependency>
-
 
     <dependency>
       <id>jode</id>
