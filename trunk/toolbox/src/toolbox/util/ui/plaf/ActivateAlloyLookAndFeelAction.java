@@ -52,7 +52,7 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
     public void activate() throws Exception
     {
         LAFInfo info = getLookAndFeelInfo();
-        String name = info.getProperty("theme.name");
+        //String name = info.getProperty("theme.name"); 
         String clazz = info.getProperty("theme.class");
         String license = info.getProperty("theme.license");
       
@@ -78,12 +78,14 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
 
         // Fix alloy fonts
         
-        Font f = new Font("Bitstream Vera Sans", Font.PLAIN, 11);
+        Font f = new Font("Tahoma", Font.PLAIN, 11);
+        //Font f = new Font("Bitstream Vera Sans", Font.PLAIN, 11);
         //Font f = new Font("Trebuchet MS", Font.PLAIN, 11);
         //Font f = new Font("Lucida Sans", Font.PLAIN, 11);
+        //Font f = new Font("Lucida Sans Typewriter", Font.PLAIN, 10);
+        
         //Font f = FontUtil.getPreferredSerifFont();
         //Font f = FontUtil.getPreferredMonoFont();
-        //Font f = new Font("Lucida Sans Typewriter", Font.PLAIN, 10);
         
         UIManager.put("Button.font", f);
         UIManager.put("DesktopIcon.font", f);
