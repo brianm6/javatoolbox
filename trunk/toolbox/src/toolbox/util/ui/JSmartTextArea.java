@@ -28,15 +28,15 @@ import toolbox.util.XOMUtil;
  *   <li>Support to save/restore preferences to XML
  * </ul>
  */
-public class JSmartTextArea extends JTextArea
+public class JSmartTextArea extends JTextArea implements AntiAliased
 {
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
 
     private static final String NODE_JSMARTTEXTAREA = "JSmartTextArea";
+    private static final String   ATTR_AUTOSCROLL   = "autoscroll";
+    private static final String   ATTR_ANTIALIAS    = "antialias";
     private static final String NODE_FONT           = "Font";
-    private static final String ATTR_AUTOSCROLL     = "autoscroll";
-    private static final String ATTR_ANTIALIAS      = "antialias";
     
     /** 
      * Popup menu for this component 
