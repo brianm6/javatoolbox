@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -230,7 +230,7 @@ public class JTail extends JFrame
         {
             logger_.debug("\n" + config);
             TailPane tailPane = new TailPane(config, statusBar_);
-    
+ 
             JButton closeButton = tailPane.getCloseButton();
             
             // Create map of (closeButton, tailPane) so that the 
@@ -245,17 +245,28 @@ public class JTail extends JFrame
                 
             tabbedPane_.setToolTipTextAt(
                 tabbedPane_.getTabCount()-1, config.getFilename());
+            
                 
             tabbedPane_.setSelectedComponent(tailPane);
             
             statusBar_.setStatus("Added tail for " + config.getFilename());
         }
-        catch (IOException e)
+        catch (FileNotFoundException e)
         {
             ExceptionUtil.handleUI(e, logger_);
         }
     }
-            
+         
+    /**
+     * Loads properties (delegated to configuration manager)
+     * 
+     * @throws  IOException on I/O error
+     */
+    protected void loadConfiguration()
+    {
+        jtailConfig_ = configManager_.load();
+    }    
+    
     /**
      * Saves the current configuration of all tail instances (delegated to 
      * configuration manager).
@@ -293,19 +304,7 @@ public class JTail extends JFrame
         // Save file explorer settings
         if (props != null)
             fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
-    }            
-    
-
-         
-    /**
-     * Loads properties (delegated to configuration manager)
-     * 
-     * @throws  IOException on I/O error
-     */
-    protected void loadConfiguration()
-    {
-        jtailConfig_ = configManager_.load();
-    }    
+    }
     
     /**
      * Applies configurations
@@ -350,8 +349,7 @@ public class JTail extends JFrame
         // Apply saved file explorer settings
         if (props != null)
             fileSelectionPane_.getFileExplorer().applyPrefs(props, "jtail");
-    }
-    
+    }    
 
     /**
      * Adds listeners
@@ -389,7 +387,7 @@ public class JTail extends JFrame
     //--------------------------------------------------------------------------
     
     /**
-     * Listener for the file explorer
+     * Adds a tail for a file double clicked by the user via the file explorer
      */
     private class FileSelectionListener extends JFileExplorerAdapter
     {
@@ -439,7 +437,7 @@ public class JTail extends JFrame
     }
     
     /**
-     * Tail button listener
+     * Removes a tail once the close button is clicked on the tail pane
      */
     private class CloseButtonListener implements ActionListener
     {
@@ -522,7 +520,7 @@ public class JTail extends JFrame
             statusBar_.setStatus("Saved configuration");
         }
     }
-
+    
     /**
      * Generates a file with intermittent output so that the file can be
      * tailed for testing purposes. The file is created is $user.home
@@ -694,7 +692,7 @@ public class JTail extends JFrame
                     KeyEvent.VK_O, 
                     Event.CTRL_MASK));
         }
-        
+                
         public void actionPerformed(ActionEvent e)
         {
             ITailPaneConfig config = configManager_.createTailPaneConfig();
@@ -709,4 +707,4 @@ public class JTail extends JFrame
             addTail(config);
         }
     }
-}
+}   
