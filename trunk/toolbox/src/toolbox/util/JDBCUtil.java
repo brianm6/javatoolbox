@@ -251,6 +251,51 @@ public final class JDBCUtil
 
     
     /**
+     * Returns a list of tables.
+     * 
+     * @return String[]
+     * @throws SQLException on DB error.
+     */    
+    public static String[] getTableNames() throws SQLException
+    {
+        Connection conn = JDBCUtil.getConnection();
+        DatabaseMetaData meta = conn.getMetaData();
+        ResultSet rs = meta.getTables(null, null, null, null);
+        ResultSetMetaData rsmeta = rs.getMetaData();
+        int cnt = rsmeta.getColumnCount();
+        
+        /*
+        int tableColumn = -1;
+        
+        for (int i = 0; i < cnt; i++)
+        {
+            String columnName = rsmeta.getColumnName(i);
+            
+            if (columnName.equalsIgnoreCase("TABLE_NAME"))
+            {
+                tableColumn = i;
+                break;
+            }
+        }
+        
+        if (tableColumn > -1)
+        {
+        */
+        
+        List tables = new ArrayList();
+        
+        while (rs.next())
+        {
+            String tableName = rs.getString("TABLE_NAME");
+            tables.add(tableName);
+        }        
+        
+        JDBCUtil.releaseConnection(conn);
+        return (String[]) tables.toArray(new String[0]);
+    }
+
+
+    /**
      * Executes a SQL INSERT, UPDATE, or DELETE statement.
      * 
      * @param sql Insert/update/delete sql statement to execute.
