@@ -1,14 +1,16 @@
 package toolbox.util.test;
 
+import java.io.OutputStream;
 import java.io.StringReader;
+
+import org.apache.log4j.Logger;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.StreamUtil;
 import toolbox.util.io.StringInputStream;
+import toolbox.util.io.StringOutputStream;
 
 /**
  * Unit test for StreamUtil
@@ -22,7 +24,7 @@ public class StreamUtilTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
@@ -133,4 +135,34 @@ public class StreamUtilTest extends TestCase
         assertEquals("first pass does not match", "test", pass1);
         assertEquals("second pass does not match", "ing", pass2);
     }
+    
+    /**
+     * Tests close(OutputStream)
+     * 
+     * @throws Exception on error
+     */
+    public void testCloseOutputStream() throws Exception
+    {
+        logger_.info("Running testCloseOutputStream...");
+        
+        StringOutputStream sos = new StringOutputStream();
+        sos.write("testing".getBytes());
+        StreamUtil.close(sos);
+        StreamUtil.close((OutputStream) null);
+   }
+   
+   /**
+    * Tests close(InputStream)
+    * 
+    * @throws Exception on error
+    */
+   public void testCloseInputStream() throws Exception
+   {
+       logger_.info("Running testCloseOutputStream...");
+        
+       StringOutputStream sos = new StringOutputStream();
+       sos.write("testing".getBytes());
+       StreamUtil.close(sos);
+       StreamUtil.close((OutputStream) null);
+  }
 }
