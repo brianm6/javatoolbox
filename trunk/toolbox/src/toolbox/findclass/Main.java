@@ -16,8 +16,8 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Utility that finds all occurences of a given class in the 
- * CLASSPATH, current directory, and archives (recursively)
+ * Utility that finds all occurences of a given class in the CLASSPATH, 
+ * current directory, and archives (recursively).
  */
 public class Main extends FindClassAdapter
 { 
@@ -81,7 +81,7 @@ public class Main extends FindClassAdapter
                          opt.equals(helpOption2.getOpt()))
                 {
                     mainClass.printUsage();
-                    System.exit(0);
+                    return;
                 }
             }
                 
@@ -96,7 +96,9 @@ public class Main extends FindClassAdapter
                 
                 // Invalid
                 case  0: 
-                default: mainClass.printUsage(); System.exit(0);
+                default: 
+                	mainClass.printUsage(); 
+                	return;
             }
         }
         catch (RESyntaxException re)
@@ -215,7 +217,7 @@ public class Main extends FindClassAdapter
         writer_.println("current directory.");
         writer_.println();
         
-        writer_.println("Usage  : java toolbox.findclass.Main [-c -v -h] " +
+        writer_.println("Usage  : java toolbox.findclass.Main [-c -t -h] " +
                            "<classToFind>");
                            
         writer_.println("Options: -c, --caseSensetive => Case sensetive search");
