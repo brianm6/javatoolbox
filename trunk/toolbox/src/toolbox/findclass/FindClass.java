@@ -22,12 +22,12 @@ import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
 
 /**
- * Utility that finds all occurences of a given class in the 
- * CLASSPATH, current directory, and archives (recursively)
+ * Utility that finds all occurences of a given class in the  CLASSPATH, 
+ * current directory, and archives (recursively)
  */
 public class FindClass 
 { 
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(Main.class);
     
@@ -118,7 +118,7 @@ public class FindClass
      * @param   classToFind     Regular expression for class to find
      * @param   ignoreCase      Ignores case in search
      * @return  Array of FindClassResults
-     * @throws  IOException on IO error
+     * @throws  IOException on I/O error
      * @throws  RESyntaxException on regular expression error
      */
     public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
@@ -159,7 +159,6 @@ public class FindClass
                 break;                    
             }
         }
-
         
         return defaultCollector_.getResults();
     }
@@ -183,14 +182,14 @@ public class FindClass
     /**
      * Cancels a pending search
      */
-    public void  cancelSearch()
+    public void cancelSearch()
     {
         isCancelled_ = true;
     }
     
     /**
-     * Adds a search target to the front of the search target list.
-     * A search target is a valid directory or java archive.
+     * Adds a search target to the front of the search target list.  A search 
+     * target is a valid directory or java archive.
      * 
      * @param  searchTarget  Absolute location of directory or jar/zip file
      */
@@ -238,6 +237,18 @@ public class FindClass
         searchTargets_.clear();
     }
 
+    /**
+     * Returns a list of archives that exist in a given directory. The 
+     * directory is searched recursively
+     * 
+     * @param   dir  Directory to find targets in
+     * @return  List of String filenames
+     */
+    public List getArchivesInDir(File dir)
+    {
+        return findFilesRecursively(dir.getAbsolutePath(), archiveFilter_);    
+    }
+    
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -291,9 +302,8 @@ public class FindClass
     }
     
     /**
-     * Retrieves a list of all archive targets to search
-     * starting from the current directory and all directories
-     * contained with it recursively.
+     * Retrieves a list of all archive targets to search starting from the 
+     * current directory and all directories contained with it recursively.
      * 
      * @return Array of strings to archive file locations
      */
@@ -303,23 +313,11 @@ public class FindClass
     }
 
     /**
-     * Returns a list of archives that exist in a given directory. The 
-     * directory is searched recursively
-     * 
-     * @param   dir  Directory to find targets in
-     * @return  List of String filenames
-     */
-    public List getArchivesInDir(File dir)
-    {
-        return findFilesRecursively(dir.getAbsolutePath(), archiveFilter_);    
-    }
-    
-    /**
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
      * 
-     * @param    startingDir Start directory for the search
-     * @param    filter      Filename filter criteria
+     * @param    startingDir  Start directory for the search
+     * @param    filter       Filename filter criteria
      * @return   List of files that match the filter from the start dir
      */    
     protected List findFilesRecursively(String startingDir, 
@@ -358,7 +356,7 @@ public class FindClass
     /**
      * Finds class in a given jar file
      * 
-     * @param   jarName     the name of the jar file to search
+     * @param   jarName     Name of the jar file to search
      * @throws  IOException on error
      */
     protected void findInArchive(String jarName) throws IOException
@@ -400,13 +398,14 @@ public class FindClass
                 }
             }
         }
+        
         zf.close();
     }
     
     /**
      * Finds class in a given directory and subdirs
      * 
-     * @param   pathName    the absolute name of the directory to search
+     * @param   pathName   Absolute name of the directory to search
      */    
     protected void findInPath(String pathName) 
     { 
@@ -452,8 +451,8 @@ public class FindClass
     /**
      * Determines whether a given file is a java archive
      * 
-     * @param   s   absolute name of the java archive
-     * @return      true if a valid archive, false otherwise
+     * @param   s   Absolute name of the java archive
+     * @return  True if a valid archive, false otherwise
      */
     protected static boolean isArchive(String s) 
     { 
@@ -484,7 +483,7 @@ public class FindClass
     /**
      * Called when a class is found by the various search methods
      *
-     * @param  target   The target being searched
+     * @param  target  Target being searched
      */
     protected void fireSearchingTarget(String target)
     {
@@ -520,7 +519,6 @@ public class FindClass
     {
         findListeners_.add(listener);        
     }
-
     
     /**
      * Removes a listener from the notification list 
@@ -531,4 +529,4 @@ public class FindClass
     {
         findListeners_.remove(listener);
     }
-}     
+}
