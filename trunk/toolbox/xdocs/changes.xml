@@ -52,6 +52,7 @@
  * TODO: Rename StringUtil.addBars to banner
  * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
+ * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
