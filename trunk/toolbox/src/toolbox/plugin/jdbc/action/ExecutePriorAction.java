@@ -2,6 +2,8 @@ package toolbox.plugin.jdbc.action;
 
 import java.awt.event.ActionEvent;
 
+import org.apache.log4j.Logger;
+
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.db.SQLFormatter;
 
@@ -12,6 +14,9 @@ import toolbox.util.db.SQLFormatter;
  */
 public class ExecutePriorAction extends BaseAction
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(ExecutePriorAction.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -30,6 +35,7 @@ public class ExecutePriorAction extends BaseAction
      *
      * @param plugin Query plugin.
      * @param sql SQL to execute.
+     * @throws Exception
      */
     public ExecutePriorAction(QueryPlugin plugin, String sql)
     {
@@ -38,7 +44,16 @@ public class ExecutePriorAction extends BaseAction
         SQLFormatter sf = new SQLFormatter();
         sf.setIndent(2);
         sf.setNewLine("<br>");
-        sql = sf.format(sql);
+        
+        try
+        {
+            sql = sf.format(sql);
+        }
+        catch (Exception e)
+        {
+            logger_.error(e);
+        }
+        
         sql = "<html>" + sql + "</html>";
         putValue(NAME, sql);
         putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
