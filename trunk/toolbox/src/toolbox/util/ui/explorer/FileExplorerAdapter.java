@@ -5,13 +5,20 @@ package toolbox.util.ui.explorer;
  */
 public class FileExplorerAdapter implements FileExplorerListener
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * Constructor for FileExplorerAdapter.
+     * Creates a FileExplorerAdapter.
      */
     public FileExplorerAdapter()
     {
     }
 
+    //--------------------------------------------------------------------------
+    // FileExplorerListener Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see FileExplorerListener#fileDoubleClicked(String)

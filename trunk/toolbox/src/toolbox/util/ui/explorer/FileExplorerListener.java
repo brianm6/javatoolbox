@@ -1,7 +1,7 @@
 package toolbox.util.ui.explorer;
 
 /**
- * Listener defining all events that the JFileExplorer generates.
+ * Listener interface for JFileExplorer generated events.
  */
 public interface FileExplorerListener
 {

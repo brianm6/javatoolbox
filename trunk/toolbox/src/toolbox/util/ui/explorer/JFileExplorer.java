@@ -63,58 +63,119 @@ import toolbox.util.ui.tree.SmartTreeCellRenderer;
 import toolbox.workspace.IPreferenced;
 
 /**
- * File explorer UI component.
+ * File explorer UI component that supports a number of features. Heavily
+ * modified and enhanced from the Jext project. 
  */
 public class JFileExplorer extends JPanel implements IPreferenced
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(JFileExplorer.class);
+    private static final Logger logger_ = Logger.getLogger(JFileExplorer.class);
 
-    // Preferences XML structure
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Node for file explorer preferences.
+     */
     private static final String NODE_JFILEEXPLORER = "JFileExplorer";
-    private static final String   ATTR_PATH        = "path";
-    private static final String   ATTR_FILE        = "file";
+    
+    /**
+     * Attribute for last selected directory.
+     */
+    private static final String ATTR_PATH = "path";
+    
+    /**
+     * Attribute for the last selected file.
+     */
+    private static final String ATTR_FILE = "file";
 
-    // Models
-    private DefaultListModel        listModel_;
-    private DefaultMutableTreeNode  rootNode_;
-    private DefaultTreeModel        treeModel_;
+    //--------------------------------------------------------------------------
+    // Fields : Models
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Model for the file list.
+     */
+    private DefaultListModel listModel_;
+    
+    /**
+     * Model for the root node of the directory tree.
+     */
+    private DefaultMutableTreeNode rootNode_;
+    
+    /**
+     * Model for the directory tree.
+     */
+    private DefaultTreeModel treeModel_;
 
-    // Views        
+    //--------------------------------------------------------------------------
+    // Fields : Views
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Splitter between the directory tree and file list.
+     */
     private JSmartSplitPane splitPane_;
-    private JList           fileList_;
-    private JTree           tree_;
-    private JComboBox       rootsComboBox_;
-    private JPopupMenu      folderPopup_;
-
-    private String currentPath_;
+    
+    /**
+     * File list.
+     */
+    private JList fileList_;
+    
+    /**
+     * Directory tree.
+     */
+    private JTree tree_;
+    
+    /**
+     * Drop down combo with drive letters.
+     */
+    private JComboBox rootsComboBox_;
     
     /**
      * Drive icon used in the root combo box.
      */
     private Icon driveIcon_;
-
+    
+    /**
+     * Popup menu for the file list.
+     */
+    private JPopupMenu folderPopup_;
+    
+    /**
+     * File information bar displayed at the bottom of the component. Displays
+     * file size, last modified date, and read/write status.
+     */
+    private InfoBar infoBar_;
+    
+    //--------------------------------------------------------------------------
+    // Fields : Events
+    //--------------------------------------------------------------------------
+    
     /** 
      * List of objects interested in file explorer generated events. 
      */ 
     private FileExplorerListener[] fileExplorerListeners_;
 
-	/** 
-	 * Flag to prevent events from triggering new events to be generated while
-	 * an operation is executing on the tree.
-	 */
+    /** 
+     * Flag to prevent events from triggering new events to be generated while
+     * an operation is executing on the tree.
+     */
     private boolean processingTreeEvent_;
     
     /** 
      * Listener for the change in selection to the directory. 
      */
     private DirTreeSelectionListener treeSelectionListener_;
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /**
-     * File information bar displayed at the bottom of the component. 
-     * Displays file size, last modified date, and read/write status.
+     * Current selection path.
      */
-    private InfoBar infoBar_;
+    private String currentPath_;
         
     //--------------------------------------------------------------------------
     //  Constructors
@@ -158,9 +219,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
 
 
     /**
-     * Sets the current directory path
+     * Sets the current directory path.
      *
-     * @param currentPath Path to set explorer to
+     * @param currentPath Path to set explorer to.
      */
     public void setCurrentPath(String currentPath)
     {
@@ -333,7 +394,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Saves preferences as XML.
      * 
-     * @param prefs Element to save preferences to
+     * @param prefs Element to save preferences to.
      */
     public void savePrefs(Element prefs)
     {
@@ -356,7 +417,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Restores preferences from XML and applies them.
      * 
-     * @param prefs XML DOM to read the preferences from  
+     * @param prefs XML DOM to read the preferences from.  
      */   
     public void applyPrefs(Element prefs)
     {
@@ -377,7 +438,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Overrides java.awt.Component
+    // Overrides java.awt.Component
     //--------------------------------------------------------------------------
 
     /**
@@ -389,7 +450,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    //  Event Notification Support
+    // Event Notification Support
     //--------------------------------------------------------------------------
 
     /**
@@ -466,9 +527,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI. 
+     * Constructs the user interface. 
      * 
-     * @param verticalSplitter Splitter orientation
+     * @param verticalSplitter Splitter orientation.
      */
     protected void buildView(boolean verticalSplitter)
     {
@@ -586,10 +647,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Sets the tree folders.
      *
-     * @param pathToAddFolders Path to add folders to
-     * @param currentNode Current node
+     * @param pathToAddFolders Path to add folders to.
+     * @param currentNode Current node.
      */
-    protected void setTreeFolders(String pathToAddFolders,
+    protected void setTreeFolders(
+        String pathToAddFolders,
         DefaultMutableTreeNode currentNode)
     {
         File[] files = 
@@ -609,7 +671,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Finds, sorts, and adds the files according to the path to the file list.
      *
-     * @param path Path with files
+     * @param path Path with files.
      */
     protected void setFileList(String path)
     {
@@ -642,10 +704,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Adds folders to the tree.
      *
-     * @param folderList An array of folders to add
-     * @param parentNode Parent node of nodes to add
+     * @param folderList An array of folders to add.
+     * @param parentNode Parent node of nodes to add.
      */
-    protected void addTreeNodes(String[] folderList, 
+    protected void addTreeNodes(
+        String[] folderList, 
         DefaultMutableTreeNode parentNode)
     {
         if (parentNode == null)
@@ -715,11 +778,18 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class DriveIconCellRenderer extends JSmartLabel implements ListCellRenderer
     {
+        /**
+         * Creates a DriveIconCellRenderer.
+         */
         DriveIconCellRenderer()
         {
             this.setOpaque(true);
         }
 
+        //----------------------------------------------------------------------
+        // ListCellRenderer Inteface
+        //----------------------------------------------------------------------
+        
         /**
          * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
          *      javax.swing.JList, java.lang.Object, int, boolean, boolean)
@@ -748,6 +818,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class FileListMouseListener extends MouseAdapter
     {
+        
         public void mouseClicked(MouseEvent evt)
         {
             if (evt.getClickCount() == 2 && fileList_.getSelectedIndex() != -1)

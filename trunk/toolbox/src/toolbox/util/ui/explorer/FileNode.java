@@ -5,7 +5,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import toolbox.util.Platform;
 
 /**
- * FileNode used to represent directories in the directory tree.
+ * FileNode used to represent directories in the directory tree. The purpose of
+ * this class is to implement a useful equals() method that compares files based
+ * on the their name.
  */
 public class FileNode extends DefaultMutableTreeNode
 {
