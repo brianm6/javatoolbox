@@ -70,6 +70,8 @@ public class StatcvsXMLEngine implements StatcvsEngine
      */
     public void generateStats() throws Exception
     {
+        // TODO: Move jar urls to an external resource.
+        
         ClassWorld world = new ClassWorld();
         ClassRealm statcvsRealm = world.newRealm("statcvs");
 
@@ -79,10 +81,10 @@ public class StatcvsXMLEngine implements StatcvsEngine
         //statcvsRealm.addConstituent(new File("lib/log4j.jar").toURL());
 
         statcvsRealm.addConstituent(new URL(
-            "http://download.berlios.de/statcvs-xml/statcvs-xml-0.9.2.jar"));
+            "http://download.berlios.de/statcvs-xml/statcvs-xml-0.9.3.jar"));
 
         statcvsRealm.addConstituent(new URL(
-            "http://www.ibiblio.org/maven/jdom/jars/jdom-b9.jar"));
+            "http://www.ibiblio.org/maven/jdom/jars/jdom-b10.jar"));
 
         statcvsRealm.addConstituent(new URL(
             "http://mattpayne.org/java/jfree.chart/jfreechart-0.9.16.jar"));
@@ -102,7 +104,9 @@ public class StatcvsXMLEngine implements StatcvsEngine
         //"org.apache.commons.logging.impl.Log4JLogger");
 
 
-        Class statcvsClass = statcvsRealm.loadClass("de.berlios.statcvs.xml.Main");
+        Class statcvsClass = statcvsRealm.loadClass(
+            "de.berlios.statcvs.xml.Main");
+        
         Object statcvsMain = statcvsClass.newInstance();
 
         String args[] = new String[] 
