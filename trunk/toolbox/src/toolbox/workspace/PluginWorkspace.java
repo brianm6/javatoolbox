@@ -149,7 +149,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * 
      * @param  plugin  Plugin to add to the GUI
      */
-    public void registerPlugin(IPlugin plugin)
+    public void registerPlugin(IPlugin plugin) throws Exception
     {
         // Add to registry    
         plugins_.put(plugin.getName(), plugin);
