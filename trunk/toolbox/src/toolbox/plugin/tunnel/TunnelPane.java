@@ -8,7 +8,6 @@ import java.awt.event.ComponentEvent;
 import java.io.BufferedOutputStream;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,6 +40,10 @@ import toolbox.workspace.IStatusBar;
  */
 public class JTcpTunnelPane extends JPanel implements IPreferenced
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final Logger logger_ = 
         Logger.getLogger(JTcpTunnelPane.class);
     
@@ -52,85 +55,85 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     private static final String   NODE_INCOMING       = "Incoming";
     private static final String   NODE_OUTGOING       = "Outgoing";
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * Textarea that incoming data from the tunnel is dumped to 
+     * Textarea that incoming data from the tunnel is dumped to. 
      */
     private JSmartTextArea incomingTextArea_;
     
     /** 
-     * Textarea that outgoing data to the tunnel is dumped to 
+     * Textarea that outgoing data to the tunnel is dumped to. 
      */ 
     private JSmartTextArea outgoingTextArea_;
     
     /** 
-     * Refernce to the workspace status bar 
+     * Refernce to the workspace status bar.
      */
     private IStatusBar statusBar_;
     
     /** 
-     * Splits the input and output textareas 
+     * Splits the input and output textareas. 
      */
     private JSmartSplitPane splitter_;
     
     /** 
-     * Clears the text areas 
-     */
-    private JButton clearButton_;
-    
-    /** 
-     * Status label for the incoming text area 
+     * Status label for the incoming text area. 
      */
     private JLabel remoteLabel_;
     
     /** 
-     * Status label for the outgoing text area 
+     * Status label for the outgoing text area. 
      */
     private JLabel localLabel_;
 
     /**
-     * Flip pane that contains the configuration information
+     * Flip pane that contains the configuration information.
      */
     private JFlipPane configFlipPane_;
 
     /** 
-     * Field for the port number of the local host 
+     * Field for the port number of the local host. 
      */
     private JTextField listenPortField_;
     
     /** 
-     * Field for the remote hostname 
+     * Field for the remote hostname.
      */
     private JTextField remoteHostField_;
     
     /** 
-     * Field for the remote port number 
+     * Field for the remote port number. 
      */
     private JTextField remotePortField_;
     
     /**
-     * Field that captures the max capacity of the incoming/outgoing textareas
+     * Field that captures the max capacity of the incoming/outgoing textareas.
      */
     private JTextField capacityField_;
     
     /** 
-     * Tunnel object 
+     * Non-UI Tunnel component.
      */
     private TcpTunnel tunnel_;    
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JTcpTunnelPane
+     * Creates a JTcpTunnelPane.
      */
     public JTcpTunnelPane()
     {
         buildView();
     }
         
+    
     /**
-     * Creates a JTcpTunnelPane with the given parameters
+     * Creates a JTcpTunnelPane with the given parameters.
      * 
      * @param listenPort Port to listen on
      * @param remoteHost Host to tunnel to
@@ -159,8 +162,9 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         return Integer.parseInt(listenPortField_.getText().trim());
     }
 
+    
     /**
-     * Returns the text area for incoming data
+     * Returns the text area for incoming data.
      * 
      * @return JTextArea
      */
@@ -169,8 +173,9 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         return incomingTextArea_;
     }
 
+    
     /**
-     * Returns host to forward traffic to
+     * Returns host to forward traffic to.
      * 
      * @return String
      */
@@ -179,8 +184,9 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         return remoteHostField_.getText().trim();
     }
 
+    
     /**
-     * Returns port to forward traffic to
+     * Returns port to forward traffic to.
      * 
      * @return int
      */
@@ -189,8 +195,9 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         return Integer.parseInt(remotePortField_.getText().trim());
     }
 
+    
     /**
-     * Returns the text area for incoming data
+     * Returns the text area for incoming data.
      * 
      * @return JTextArea
      */
@@ -199,10 +206,11 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         return outgoingTextArea_;
     }
 
+    
     /**
-     * Sets the status bar
+     * Sets the status bar.
      *
-     * @param statusBar  Statusbar
+     * @param statusBar Statusbar
      */
     public void setStatusBar(IStatusBar statusBar)
     {
@@ -210,77 +218,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // IPreferenced Interface
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
-     */
-    public void applyPrefs(Element prefs) throws Exception
-    {
-        Element root = XOMUtil.getFirstChildElement(
-            prefs, NODE_TCPTUNNEL_PLUGIN, new Element(NODE_TCPTUNNEL_PLUGIN));
-        
-        remotePortField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_REMOTE_PORT, ""));
-
-        remoteHostField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_REMOTE_HOST, ""));
-            
-        listenPortField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_LOCAL_PORT, ""));
-    
-        configFlipPane_.applyPrefs(root);
-        splitter_.applyPrefs(root);
-    
-        incomingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
-            root, NODE_INCOMING, new Element(NODE_INCOMING)));
-
-        capacityField_.setText(incomingTextArea_.getCapacity()+"");
-            
-        outgoingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
-            root, NODE_OUTGOING, new Element(NODE_OUTGOING)));
-            
-        incomingTextArea_.setPruneFactor(50);
-        outgoingTextArea_.setPruneFactor(50);
-    }
-
-    /**
-     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
-     */
-    public void savePrefs(Element prefs)
-    {
-        Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
-        
-        root.addAttribute(
-            new Attribute(ATTR_LOCAL_PORT, listenPortField_.getText()));
-
-        root.addAttribute(
-            new Attribute(ATTR_REMOTE_PORT, remotePortField_.getText()));
-
-        root.addAttribute(
-            new Attribute(ATTR_REMOTE_HOST, remoteHostField_.getText()));
-
-        configFlipPane_.savePrefs(root);
-        splitter_.savePrefs(root);
-            
-        Element incoming = new Element(NODE_INCOMING);
-        incomingTextArea_.setCapacity(
-            Integer.parseInt(capacityField_.getText()));
-        incomingTextArea_.savePrefs(incoming);
-        root.appendChild(incoming);
-
-        Element outgoing = new Element(NODE_OUTGOING);
-        outgoingTextArea_.setCapacity(
-            Integer.parseInt(capacityField_.getText()));
-        outgoingTextArea_.savePrefs(outgoing);
-        root.appendChild(outgoing);
-        
-        XOMUtil.insertOrReplace(prefs, root);
-    }
-
-    //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -334,7 +272,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
 
         buttonPanel.add(new JSmartButton(new StartTunnelAction()));
         buttonPanel.add(new JSmartButton(new StopTunnelAction()));
-        buttonPanel.add(clearButton_ = new JSmartButton(new ClearAction()));
+        buttonPanel.add(new JSmartButton(new ClearAction()));
         
         actionPanel.add(BorderLayout.CENTER, buttonPanel);
         add(BorderLayout.SOUTH, actionPanel);
@@ -375,9 +313,80 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
             }
         });
     }
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_TCPTUNNEL_PLUGIN, new Element(NODE_TCPTUNNEL_PLUGIN));
+        
+        remotePortField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_REMOTE_PORT, ""));
+
+        remoteHostField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_REMOTE_HOST, ""));
+            
+        listenPortField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_LOCAL_PORT, ""));
+    
+        configFlipPane_.applyPrefs(root);
+        splitter_.applyPrefs(root);
+    
+        incomingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
+            root, NODE_INCOMING, new Element(NODE_INCOMING)));
+
+        capacityField_.setText(incomingTextArea_.getCapacity()+"");
+            
+        outgoingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
+            root, NODE_OUTGOING, new Element(NODE_OUTGOING)));
+            
+        incomingTextArea_.setPruneFactor(50);
+        outgoingTextArea_.setPruneFactor(50);
+    }
+
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
+        
+        root.addAttribute(
+            new Attribute(ATTR_LOCAL_PORT, listenPortField_.getText()));
+
+        root.addAttribute(
+            new Attribute(ATTR_REMOTE_PORT, remotePortField_.getText()));
+
+        root.addAttribute(
+            new Attribute(ATTR_REMOTE_HOST, remoteHostField_.getText()));
+
+        configFlipPane_.savePrefs(root);
+        splitter_.savePrefs(root);
+            
+        Element incoming = new Element(NODE_INCOMING);
+        incomingTextArea_.setCapacity(
+            Integer.parseInt(capacityField_.getText()));
+        incomingTextArea_.savePrefs(incoming);
+        root.appendChild(incoming);
+
+        Element outgoing = new Element(NODE_OUTGOING);
+        outgoingTextArea_.setCapacity(
+            Integer.parseInt(capacityField_.getText()));
+        outgoingTextArea_.savePrefs(outgoing);
+        root.appendChild(outgoing);
+        
+        XOMUtil.insertOrReplace(prefs, root);
+    }
     
     //--------------------------------------------------------------------------
-    //  Actions
+    // ClearAction
     //--------------------------------------------------------------------------
 
     /**
@@ -396,9 +405,13 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
             outgoingTextArea_.setText("");
         }
     }
-    
+
+    //--------------------------------------------------------------------------
+    // StartTunnelAction
+    //--------------------------------------------------------------------------
+
     /**
-     * Starts the tunnel
+     * Starts the tunnel.
      */    
     class StartTunnelAction extends SmartAction implements TcpTunnelListener
     {
@@ -461,8 +474,12 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         }
     }
 
+    //--------------------------------------------------------------------------
+    // StopTunnelAction
+    //--------------------------------------------------------------------------
+    
     /**
-     * Stops the tunnel
+     * Stops the tunnel.
      */
     class StopTunnelAction extends AbstractAction
     {
