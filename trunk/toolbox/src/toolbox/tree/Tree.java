@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -80,117 +81,116 @@ public class Tree
     //--------------------------------------------------------------------------
     
     /** 
-     * Spaces indentation per tree branch 
+     * Spaces indentation per tree branch. 
      */
     private static final String SPACER = "    ";
     
     /** 
-     * Tree branch with a continuation 
+     * Tree branch with a continuation. 
      */
     private static final String BAR = "|   ";
     
     /** 
-     * Junction in the tree 
+     * Junction in the tree. 
      */
     private static final String JUNCTION = "+";
     
     /** 
-     * Tree arm 
+     * Tree arm. 
      */
     private static final String ARM = "---";
 
     /**
-     * Do not sort
+     * Do not sort.
      */
     private static final String SORT_NONE = "x";
 
     /**
-     * Sort by the name of the name 
+     * Sort by file name. 
      */
     private static final String SORT_NAME = "n";
 
     /**
-     * Sort by the size of the file
+     * Sort by the file size.
      */
     private static final String SORT_SIZE = "s";
     
     /**
-     * Sort by the date/time of the file
+     * Sort by the file timestamp.
      */
     private static final String SORT_DATE = "d";
 
     //--------------------------------------------------------------------------
-    // Defaults
+    // Default Constants
     //--------------------------------------------------------------------------
 
     /** 
-     * Files are not shown by default 
+     * Files are not shown by default. 
      */
     private static final boolean DEFAULT_SHOWFILES = false;
 
     /** 
-     * File sizes are not shown by default 
+     * File sizes are not shown by default. 
      */
     private static final boolean DEFAULT_SHOWSIZE = false;
 
 	/** 
-	 * File date/times are not shown by default 
+	 * File date/times are not shown by default. 
 	 */
 	private static final boolean DEFAULT_SHOWDATE = false;
 
     /** 
-     * Output is sent to System.out by default 
+     * Output is sent to System.out by default. 
      */
     private static final Writer DEFAULT_WRITER = 
         new OutputStreamWriter(System.out);
 
     /**
-     * Sorting is not activate by default
+     * Sorting is not activate by default.
      */
     private static final String DEFAULT_SORT = SORT_NONE;
-
 
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
     /** 
-     * Output writer 
+     * Output writer. 
      */    
     private PrintWriter writer_;
     
     /** 
-     * Filter to identify directories 
+     * Filter to identify directories. 
      */
     private FilenameFilter dirFilter_;
     
     /** 
-     * Filter to identify files 
+     * Filter to identify files. 
      */
     private FilenameFilter fileFilter_;
     
     /** 
-     * Flag that controls the showing of files 
+     * Flag to toggle the showing of files. 
      */
     private boolean showFiles_;
 
     /** 
-     * Flag that controls the showing of file size 
+     * Flag to toggle the showing of a file's size. 
      */
     private boolean showSize_;
 
 	/** 
-	 * Flag that controls the showing of file date/time 
+	 * Flag to toggle the showing of a file's timestamp. 
 	 */
 	private boolean showDate_;
 
     /** 
-     * Root directory of the tree 
+     * Root directory of the tree. 
      */
     private File rootDir_;
 
     /**
-     * Field to sort output by if showFiles is true
+     * Specifies the sort order. Only valid if showFiles is true.
      */
     private String sortBy_;
 
@@ -198,15 +198,20 @@ public class Tree
 	 * Maps from SORT_* option to a Comparator
 	 */
 	private Map sortByMap_;
+    
+    /**
+     * Formatter for file sizes, etc.
+     */
+    private NumberFormat formatter_;
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
         
     /**
-     * Entrypoint
+     * Launcher for tree.
      *
-     * @param args  [-f, rootDir]
+     * @param args  [-f, -s -os, rootDir]
      * @throws Exception on error
      */
     public static void main(String args[]) throws Exception
@@ -461,11 +466,12 @@ public class Tree
 			new FileComparator(FileComparator.COMPARE_DATE));
         
         sortBy_ = sortBy;
+        
         if (!sortByMap_.containsKey(sortBy_))
             throw new IllegalArgumentException(
                 "Sort by field '" + sortBy + "' is invalid.");
-                
-        //System.out.println(Dumper.dump(this));
+        
+        formatter_ = DecimalFormat.getIntegerInstance();
     }
 
     //--------------------------------------------------------------------------
@@ -473,7 +479,7 @@ public class Tree
     //--------------------------------------------------------------------------
     
     /**
-     * Prints the tree
+     * Prints the tree.
      */    
     public void showTree()
     {
@@ -485,7 +491,7 @@ public class Tree
     //--------------------------------------------------------------------------
     
     /**
-     * Prints program usage
+     * Prints program usage.
      * 
      * @param options Command line options
      */
@@ -498,6 +504,7 @@ public class Tree
             options,
             "");
     }
+    
     
     /**
      * Recurses the directory structure of the given rootDir and generates
@@ -517,18 +524,20 @@ public class Tree
         File[] dirs = rootDir.listFiles(dirFilter_);
 		Arrays.sort(dirs, (Comparator) sortByMap_.get(sortBy_));
 
+        String filler = (dirs.length == 0 ? SPACER : BAR);
+        
         // Print files
         if (showFiles_)
         {
             File[] files = rootDir.listFiles(fileFilter_);
 			Arrays.sort(files, (Comparator) sortByMap_.get(sortBy_));
 			
-            int longestName = -1;
-            int largestFile = -1;
+            int longestName = -1; // Number of spaces occupied by longest fname 
+            int largestFile = -1; // Number of spaces occupied by largest fsize
+            long dirSize = 0;     // Running total of a directory's size
             
             for (int i = 0; i < files.length; i++)
             {
-                String filler = (dirs.length == 0 ? SPACER : BAR);
                 writer_.print(level + filler + files[i].getName());
                 
                 if (showSize_)
@@ -538,7 +547,7 @@ public class Tree
                             .getLongestFilename(files).getName().length();
                     
                     if (largestFile == -1)
-                        largestFile = DecimalFormat.getIntegerInstance().format(
+                        largestFile = formatter_.format(
                             FileUtil.getLargestFile(files).length()).length();
                       
                     writer_.print(
@@ -546,12 +555,14 @@ public class Tree
                             longestName - files[i].getName().length()));
         
                     String formatted = 
-                        DecimalFormat.getIntegerInstance().format(
-                            files[i].length());
+                        formatter_.format(files[i].length());
                               
                     writer_.print(" " + 
                         StringUtil.repeat(" ", largestFile - formatted.length())
                         + formatted);
+            
+                    // Accumulate directory size
+                    dirSize += files[i].length();
                 }
 
                 if (showDate_)
@@ -562,6 +573,24 @@ public class Tree
                 }
             
                 writer_.println();
+            }
+            
+            
+            // Print out the size of the directory
+            if (dirSize > 0 && showSize_)
+            {
+                String total = formatter_.format(dirSize);
+                int tlen = total.length();
+                String dashy = StringUtil.repeat("-", tlen);
+                int alotted = longestName + largestFile + 1;
+                String header = StringUtil.repeat(" ", alotted - tlen); 
+                
+                //writer_.println(level + filler + header + dashy);
+                //writer_.println(level + filler + header.substring(1) + "." + total + ".");
+                
+                String s = files.length + " file(s) ";
+                String gap = StringUtil.repeat(" ", alotted - s.length() - tlen);
+                writer_.println(level + filler + s + gap + total);
             }
             
             // Extra line after last file in a dir        
