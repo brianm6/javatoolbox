@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import toolbox.util.Stringz;
+import toolbox.util.dump.BasicDumpFormatter;
 import toolbox.util.dump.Dumper;
 
 /**
@@ -159,14 +160,22 @@ public class DumperTest extends TestCase implements Stringz
     }
 
     /**
-     * Should be able to dump itself, right?
+     * Tests dump(obj, depth, formatter). Creates a new formatter and adds
+     * lastName_ to the list of fields to be excluded. Verifies lastName_
+     * does not show up in the dump!
      * 
-     * @throws Exception on error
-     */    
-    public void testDumpItself() throws Exception
+     * @throws  Exception on error
+     */ 
+    public void testDumpObjectDepthFormatter() throws Exception
     {
-        logger_.info("Running testDumpItself...");
-        logger_.info(NL + BRNL + Dumper.dump(new Dumper()) + BRNL + NL);
+        logger_.info("Running testDumpObjectDepthFormatter...");
+        
+        Employee emp = new Employee();
+        BasicDumpFormatter formatter = new BasicDumpFormatter();
+        formatter.excludeFields("lastName_");
+        String dump = Dumper.dump(emp, 10, formatter);
+        logger_.info("\n\n" + dump);
+        assertTrue(dump.indexOf("lastName_") < 0);        
     }
      
     /**
