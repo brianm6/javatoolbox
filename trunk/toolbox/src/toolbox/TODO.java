@@ -70,6 +70,7 @@ package toolbox;
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
  *  - Added NapkinLookAndFeel to the Look and Feel menu
+ *  - Upgraded to commons-net-1.2.1
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
