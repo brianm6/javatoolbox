@@ -1,8 +1,6 @@
 package toolbox.plugin.jdbc;
 
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
@@ -13,10 +11,13 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -25,6 +26,7 @@ import nu.xom.Elements;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.forms.SmartComponentFactory;
 import toolbox.plugin.jdbc.action.BaseAction;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCSession;
@@ -34,10 +36,8 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartComboBox;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
-import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 
@@ -46,6 +46,8 @@ import toolbox.workspace.IStatusBar;
  */    
 public class DBConfig extends JHeaderPanel implements IPreferenced
 {
+    // TODO: Rename to DBProfilesView
+    
     private static final Logger logger_ = Logger.getLogger(DBConfig.class);
     
     //--------------------------------------------------------------------------
@@ -171,6 +173,11 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     }
 
     
+    /**
+     * Returns the name of the session for the currently selected DBProfile.
+     * 
+     * @return String
+     */
     public String getSession()
     {
         return getCurrentProfile().getProfileName();
@@ -185,72 +192,71 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      */
     protected void buildView()
     {
-        JPanel content = new JPanel(new ParagraphLayout());
-
-        content.add(new JSmartLabel("Profile"), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(profileCombo_ = new JSmartComboBox());
-        
-        profileCombo_.setEditable(true);
-        profileCombo_.setAction(new ProfileChangedAction());
-        
         JToolBar tb = new JToolBar();
-        tb.setFloatable(false);
-        tb.setBorderPainted(false);
         tb.add(new SaveAction());
         tb.add(new DeleteAction());
-        content.add(tb);
+        setToolBar(tb);
+        
+        FormLayout layout = new FormLayout("r:p:n, p, f:p:g, p, r:p:n", "");
+        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+        builder.setComponentFactory(SmartComponentFactory.getInstance());
+        builder.setDefaultDialogBorder();
 
+        // Profile combobox
+        profileCombo_ = new JSmartComboBox();
+        profileCombo_.setEditable(true);
+        profileCombo_.setAction(new ProfileChangedAction());
+        builder.append("Profile", profileCombo_);
+        builder.nextLine();
+        
         // Create a jar text field with a "..." button to choose the jar file
         // attached to its right side
-        
-        jarField_ = new JSmartTextField(20);
-        
-        jarField_.setToolTipText(
-            "Only use if the JDBC driver is not on the classpath");
-        
+        jarField_ = new JSmartTextField(16);
+        jarField_.setToolTipText("Optional if not on classpath");
         JButton jarChooserButton = new JSmartButton(new JarChooserAction());
+        Dimension buttonDim = new Dimension(20, 20);
+        jarChooserButton.setMaximumSize(buttonDim);
+        jarChooserButton.setPreferredSize(buttonDim);
+        jarChooserButton.setMinimumSize(buttonDim);
+        builder.append("Jar File", jarField_, jarChooserButton);
+        builder.nextLine();
         
-        GridBagLayout gbl = new GridBagLayout();
-        GridBagConstraints gbc = new GridBagConstraints();
-        
-        Dimension d = new Dimension(12, jarField_.getPreferredSize().height);
-        jarChooserButton.setPreferredSize(d);
-        
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.weightx = 9;
-        JPanel jarPanel = new JPanel(gbl);
-        jarPanel.add(jarField_, gbc);
-        gbc.gridx = 2;
-        gbc.weightx = 1;
-        jarPanel.add(jarChooserButton, gbc);
+        // JDBC Driver
+        driverField_ = new JSmartTextField(16);
+        builder.append("Driver", driverField_);
+        builder.nextLine();
 
-        content.add(new JSmartLabel("Jar"), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(jarPanel);
+        // URL 
+        urlField_ = new JSmartTextField(16);
+        builder.append("URL", urlField_);
+        builder.nextLine();
 
-        content.add(new JSmartLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(driverField_ = new JSmartTextField(20));
-        
-        content.add(new JSmartLabel("URL"), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(urlField_ = new JSmartTextField(20));
-    
-        content.add(new JSmartLabel("User"), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(userField_ = new JSmartTextField(15));
+        // User
+        userField_ = new JSmartTextField(16);
+        builder.append("User", userField_);
+        builder.nextLine();
 
         Action connectDisconnectAction = 
             new ConnectDisconnectAction(ConnectDisconnectAction.MODE_CONNECT);
 
-        content.add(new JSmartLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
-        passwordField_ = new JPasswordField(15);
+        // Password
+        passwordField_ = new JPasswordField(16);
         passwordField_.setAction(connectDisconnectAction);
-        content.add(passwordField_);
-            
-        content.add(new JSmartLabel(""), ParagraphLayout.NEW_PARAGRAPH);
-        content.add(new JSmartButton(connectDisconnectAction));
+        builder.append("Password", passwordField_);
+        builder.nextLine();
+
+        builder.appendRelatedComponentsGapRow();
+        builder.nextLine();
+
+        builder.appendRow("pref");
+        CellConstraints cc = new CellConstraints();
         
-        setContent(content);
+        builder.add(
+            new JSmartButton(connectDisconnectAction), 
+            cc.xyw(3, builder.getRow(), 1, "c,f"));
+        
+        //setContent(new FormDebugPanel(layout));
+        setContent(builder.getPanel());
     }
 
     //--------------------------------------------------------------------------
@@ -626,6 +632,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         JarChooserAction()
         {
             super("...", true, false, null);
+            //putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_FIND));
         }
 
         
