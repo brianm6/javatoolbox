@@ -134,7 +134,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs)
     {
@@ -161,7 +161,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     }
     
     /**
-     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs)
     {

@@ -435,7 +435,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getPluginName()
+     * @see toolbox.workspace.IPlugin#getPluginName()
      */
     public String getPluginName()
     {
@@ -443,7 +443,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
     
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
+     * @see toolbox.workspace.IPlugin#getComponent()
      */
     public JComponent getComponent()
     {
@@ -451,7 +451,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     * @see toolbox.workspace.IPlugin#getDescription()
      */
     public String getDescription()
     {
@@ -459,7 +459,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#startup(java.util.Map)
+     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
      */
     public void startup(Map params)
     {
@@ -483,7 +483,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
+     * @see toolbox.workspace.IPlugin#shutdown()
      */
     public void shutdown()
     {
@@ -494,7 +494,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
  
     /**
-     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
     {
@@ -553,7 +553,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs)
     {

@@ -399,7 +399,7 @@ public class JFindClass extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
     {
@@ -432,7 +432,7 @@ public class JFindClass extends JFrame implements IPreferenced
     }
     
     /**
-     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs)
     {
