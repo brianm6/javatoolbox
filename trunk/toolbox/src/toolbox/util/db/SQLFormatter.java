@@ -199,13 +199,13 @@ public class SQLFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the string used for indentation.
+     * Returns number of spaces to use for indentation.
      * 
-     * @return String
+     * @return int
      */
-    public String getIndent()
+    public int getIndent()
     {
-        return indent_;
+        return indent_.length();
     }
     
     
@@ -251,7 +251,18 @@ public class SQLFormatter
     {
         return majorCapsMode_;
     }
+
     
+    /**
+     * Returns the newLineBeforeAnd.
+     * 
+     * @return boolean
+     */
+    public boolean isNewLineBeforeAnd()
+    {
+        return newLineBeforeAnd_;
+    }
+
     //--------------------------------------------------------------------------
     // Mutators
     //--------------------------------------------------------------------------
