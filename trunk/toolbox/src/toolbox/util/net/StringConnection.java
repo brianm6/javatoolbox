@@ -10,13 +10,24 @@ import toolbox.util.io.StringOutputStream;
 /**
  * String based implementation of an IConnection
  */
-public class StringConnection implements IConnection
+public class StringConnection extends AbstractConnection implements IConnection
 {
-    /** Input stream **/
-    StringInputStream sis;
+    /** 
+     * Input stream 
+     */
+    private StringInputStream sis_;
 
-    /** Output stream **/
-    StringOutputStream sos;
+    /** 
+     * Output stream 
+     */
+    private StringOutputStream sos_;
+    
+    /**
+     * Connected flag
+     */
+    private boolean connected_;
+    
+    
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -38,20 +49,23 @@ public class StringConnection implements IConnection
      */
     public StringConnection(String str)
     {
-        sis = new StringInputStream(str);
-        sos = new StringOutputStream();
+        sis_ = new StringInputStream(str);
+        sos_ = new StringOutputStream();
+        
+        connected_ = false;
     }
 
     //--------------------------------------------------------------------------
-    //  IConnection Interface
+    //  IConnection interface
     //--------------------------------------------------------------------------
     
     /**
      * @see IConnection#open()
      */
-    public void open()
+    public void connect()
     {
         // nothing to do
+        connected_ = true;
     }
 
 
@@ -61,6 +75,7 @@ public class StringConnection implements IConnection
     public void close() throws IOException
     {
         // nothing to do
+        connected_ = false;
     }
 
 
@@ -69,7 +84,7 @@ public class StringConnection implements IConnection
      */
     public InputStream getInputStream() throws IOException
     {
-        return sis;
+        return sis_;
     }
 
 
@@ -78,7 +93,16 @@ public class StringConnection implements IConnection
      */
     public OutputStream getOutputStream() throws IOException
     {
-        return sos;
+        return sos_;
+    }
+
+
+    /**
+     * @see com.swa.turbo.util.comm.IConnection#isConnected()
+     */
+    public boolean isConnected()
+    {
+        return connected_;
     }
 
     //--------------------------------------------------------------------------
@@ -92,6 +116,6 @@ public class StringConnection implements IConnection
      */
     public String getOutputString()
     {
-        return sos.toString();
+        return sos_.toString();
     }
 }
