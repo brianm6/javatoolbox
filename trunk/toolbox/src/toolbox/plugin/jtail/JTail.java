@@ -116,7 +116,7 @@ public class JTail extends JFrame
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for JTail.
+     * Default constructor
      */
     public JTail()
     {
@@ -124,7 +124,7 @@ public class JTail extends JFrame
     }
 
     /**
-     * Constructor for JTail.
+     * Creates a JTail with the given title
      * 
      * @param title  Window title
      */
@@ -268,10 +268,45 @@ public class JTail extends JFrame
     }    
     
     /**
+     * Adds listeners
+     */
+    protected void wireView()
+    {
+        // Intercept closing of app to save configuration
+        addWindowListener(new WindowListener());
+        
+        fileSelectionPane_.getFileExplorer().
+            addJFileExplorerListener(new FileSelectionListener());
+            
+        fileSelectionPane_.getTailButton().
+            addActionListener(new TailButtonListener());
+    }
+    
+    /**
+     * @return  Currently selected tail in the tabbed pane
+     */
+    protected TailPane getSelectedTail()
+    {
+        return (TailPane)tabbedPane_.getSelectedComponent();
+    }
+    
+    /**
+     * @return  Configuration of currently selected tail in the tabbed pane
+     */
+    protected ITailPaneConfig getSelectedConfig()
+    {
+        return getSelectedTail().getConfiguration();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Preferences Support
+    //--------------------------------------------------------------------------    
+
+    /**
      * Saves the current configuration of all tail instances (delegated to 
      * configuration manager).
      * 
-     * @param  props  Properties to save file explorer to
+     * @param  props  Used to save file explorer and flip pane properties
      */
     protected void saveConfiguration(Properties props)
     {
@@ -301,15 +336,18 @@ public class JTail extends JFrame
         
         configManager_.save(jtailConfig_);
         
-        // Save file explorer settings
+        // Save properties that are separate from IJTailConfig/ITailPaneConfig
         if (props != null)
+        {
             fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
+            flipPane_.savePrefs(props, "jtail");
+        }
     }
     
     /**
      * Applies configurations
      * 
-     * @param  props  Only JFileExplorer properties are saved here
+     * @param  props  File explorer and flip pane properties read from here
      */
     protected void applyConfiguration(Properties props)
     {
@@ -346,41 +384,13 @@ public class JTail extends JFrame
             addTail(config);
         }
         
-        // Apply saved file explorer settings
+        // Apply properties that are separate from IJTailConfig/ITailPaneConfig
         if (props != null)
+        {
             fileSelectionPane_.getFileExplorer().applyPrefs(props, "jtail");
+            flipPane_.applyPrefs(props, "jtail");
+        }
     }    
-
-    /**
-     * Adds listeners
-     */
-    protected void wireView()
-    {
-        // Intercept closing of app to save configuration
-        addWindowListener(new WindowListener());
-        
-        fileSelectionPane_.getFileExplorer().
-            addJFileExplorerListener(new FileSelectionListener());
-            
-        fileSelectionPane_.getTailButton().
-            addActionListener(new TailButtonListener());
-    }
-    
-    /**
-     * @return  Currently selected tail in the tabbed pane
-     */
-    protected TailPane getSelectedTail()
-    {
-        return (TailPane)tabbedPane_.getSelectedComponent();
-    }
-    
-    /**
-     * @return  Configuration of currently selected tail in the tabbed pane
-     */
-    protected ITailPaneConfig getSelectedConfig()
-    {
-        return getSelectedTail().getConfiguration();
-    }
     
     //--------------------------------------------------------------------------
     //  Inner Classes
@@ -479,27 +489,6 @@ public class JTail extends JFrame
     //  Actions
     //--------------------------------------------------------------------------
     
-    /**
-     * Action to exit the application. The configurations are saved before exit.
-     */
-    private class ExitAction extends AbstractAction
-    {
-        public ExitAction()
-        {
-            super("Exit");
-            putValue(MNEMONIC_KEY, new Integer('x'));    
-            putValue(SHORT_DESCRIPTION, "Exits JTail");
-            putValue(ACCELERATOR_KEY, 
-                KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
-        }
-        
-        public void actionPerformed(ActionEvent e)
-        {
-            saveConfiguration(null);
-            System.exit(0);
-        }
-    }
-
     /**
      * Action to save configurations
      */
