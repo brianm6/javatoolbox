@@ -610,15 +610,15 @@ public class PluginDialog extends JDialog
             legitPlugins.add(new PluginMeta(
                 "toolbox.plugin.pdf.PDFPlugin"));
             legitPlugins.add(new PluginMeta(
-                "toolbox.tunnel.JTcpTunnelPlugin"));
+                "toolbox.plugin.tunnel.TunnelPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.jtail.JTailPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.jsourceview.JSourceViewPlugin"));
             legitPlugins.add(new PluginMeta(
-                "toolbox.jdbc.QueryPlugin"));
+                "toolbox.plugin.jdbc.QueryPlugin"));
             legitPlugins.add(new PluginMeta(
-                "toolbox.findclass.JFindClassPlugin"));
+                "toolbox.plugin.findclass.FindClassPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.plugin.netmeter.NetMeterPlugin"));
             legitPlugins.add(new PluginMeta(
