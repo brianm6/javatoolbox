@@ -45,11 +45,8 @@ public class BlockingQueueTest extends TestCase
         logger_.info("Running testPullTimeoutExpired...");
         
         BlockingQueue q = new BlockingQueue();
-        
         ElapsedTime time = new ElapsedTime();
-        
         Object obj = q.pull(5000);
-        
         time.setEndTime();
         
         logger_.info("Elapsed time: " + time);
@@ -115,5 +112,40 @@ public class BlockingQueueTest extends TestCase
         q.push("c");
         
         logger_.info("toString: " + q);
+    }
+    
+    /**
+     * Tests interrupt() while blocked
+     * 
+     * @throws Exception on error
+     */
+    public void testInterrupt() throws Exception
+    {
+        logger_.info("Running testInterrupt...");
+        
+        final BlockingQueue q = new BlockingQueue();
+        
+        Thread blocked = new Thread(new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    q.pull();
+                }
+                catch (Throwable t)
+                {
+                    logger_.debug("Caught in run() " + t);
+                }
+            }
+        });
+        
+        blocked.start();
+        
+        ThreadUtil.sleep(1000);
+        blocked.interrupt();
+        logger_.debug("\n" + ThreadUtil.toString(blocked));
+        
+        assertTrue(!blocked.isAlive());
     }
 }
