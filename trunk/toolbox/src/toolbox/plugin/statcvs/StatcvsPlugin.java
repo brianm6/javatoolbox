@@ -8,11 +8,14 @@ import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+
+import com.jgoodies.forms.builder.ButtonStackBuilder;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -42,7 +45,6 @@ import toolbox.util.ui.JSmartRadioButton;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SortedComboBoxModel;
-import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
@@ -295,18 +297,27 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
         launchURLField_.setEditable(false);
 
-        JPanel b = new JPanel(new GridLayoutPlus(4, 1, 5, 5, 5, 5));
+        //
+        // Button stack
+        //
+        
+        JButton[] buttons = new JButton[] {
+            new JSmartButton(new EverythingAction()),
+            new JSmartButton(new LoginAction()),
+            new JSmartButton(new CheckoutAction()),
+            new JSmartButton(new LogAction()),
+            new JSmartButton(new GenerateStatsAction()),
+            new JSmartButton(new LaunchAction())
+        };
 
-        b.add(new JSmartButton(new EverythingAction()));
-        b.add(new JSmartButton(new LoginAction()));
-        b.add(new JSmartButton(new CheckoutAction()));
-        b.add(new JSmartButton(new LogAction()));
-        b.add(new JSmartButton(new GenerateStatsAction()));
-        b.add(new JSmartButton(new LaunchAction()));
+        ButtonStackBuilder builder = new ButtonStackBuilder();
+        builder.addGlue();
+        builder.addButtons(buttons);
+        builder.addGlue();
 
         JPanel base = new JPanel(new BorderLayout());
         base.add(BorderLayout.WEST, p);
-        base.add(BorderLayout.CENTER, b);
+        base.add(BorderLayout.CENTER, builder.getPanel());
         
         JCollapsablePanel wrapper = new JCollapsablePanel("CVS Projects");
         wrapper.setContent(base);
