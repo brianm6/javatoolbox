@@ -10,7 +10,7 @@ import toolbox.util.ui.JSmartOptionPane;
 /**
  * Exception utilities
  */
-public class ExceptionUtil
+public final class ExceptionUtil
 {
     //--------------------------------------------------------------------------
     //  Constructors
@@ -24,7 +24,7 @@ public class ExceptionUtil
     }
 
     //--------------------------------------------------------------------------
-    //  Static Methods
+    //  Public
     //--------------------------------------------------------------------------
 
     /**
