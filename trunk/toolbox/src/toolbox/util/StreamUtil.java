@@ -231,7 +231,7 @@ public final class StreamUtil
             {
                 outputStream.close();
             }
-            catch (IOException e)
+            catch (Exception e)
             {
                 logger_.warn(
                     "An error occurred while closing an OutputStream.", e);
@@ -274,7 +274,7 @@ public final class StreamUtil
             {
                 reader.close();
             }
-            catch (IOException e)
+            catch (Exception e)
             {
                 logger_.warn("An error occurred while closing a Reader.", e);
             }
