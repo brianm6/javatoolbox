@@ -127,6 +127,17 @@ public final class ResourceUtil
     }
 
     /**
+     * Returns resource with the given name as a string.
+     * 
+     * @param  name  Resource name (file, url, etc)
+     * @return Resource contents as a string.
+     */
+    public static String getResourceAsString(String name)
+    {
+        return new String(getResourceAsBytes(name));
+    }
+
+    /**
      * This is just a convenience method to return a resource in the form of 
      * of an Icon. The name should refer to a valid GIF or JPG image. 
      * 
