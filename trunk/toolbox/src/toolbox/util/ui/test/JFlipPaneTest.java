@@ -10,9 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.apache.log4j.Category;
-
-import toolbox.util.ui.*;
 import toolbox.util.ui.JFileExplorer;
+import toolbox.util.ui.JFlipPane;
 
 /**
  * Unit test for JFlipPane
