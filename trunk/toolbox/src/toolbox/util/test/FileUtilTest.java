@@ -10,6 +10,7 @@ import junit.textui.TestRunner;
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
+import toolbox.util.io.filter.DirectoryFilter;
 
 /**
  * Unit test for FileUtil
@@ -52,17 +53,21 @@ public class FileUtilTest extends TestCase
         logger_.info("Passed: Temp dir = " + tempDir);
     }
 
+    //--------------------------------------------------------------------------
+    // generateTempFilename()
+    //--------------------------------------------------------------------------
+    
     /**
-     * Tests the getTempFilename() method 
+     * Tests the generateTempFilename() method 
      * 
      * @throws Exception on error
      */    
-    public void testGetTempFilename() throws Exception
+    public void testGenerateTempFilename() throws Exception
     {
-        logger_.info("Running testGetTempFilename...");
+        logger_.info("Running testGenerateTempFilename...");
         
         // Generate temp file name
-        String tempFile = FileUtil.getTempFilename();
+        String tempFile = FileUtil.generateTempFilename();
         assertNotNull("temp filename is null", tempFile);
         
         // Use temp file name to create a file
@@ -73,72 +78,46 @@ public class FileUtilTest extends TestCase
         
         logger_.info("Passed: Created temp file " + tempFile);
     }
-    
+
     /**
-     * Tests cleanDir() for failure by passing a file instead of a directory
+     * Tests the generateTempFilename(File forDir) method 
      * 
      * @throws Exception on error
-     */
-    public void testCleanDirFailure1() throws Exception
+     */    
+    public void testGenerateTempFilenameForDir() throws Exception
     {
-        logger_.info("Running testCleanDirFailure1...");
+        logger_.info("Running testGenerateTempFilenameForDir...");
         
-        // Create a file
-        String file = FileUtil.getTempFilename();
-        FileUtil.setFileContents(file, "hello", false);
-        File f = new File(file);
+        // Generate temp file name in temp directory
+        String tempFile = FileUtil.generateTempFilename(FileUtil.getTempDir());
+        assertNotNull("temp filename is null", tempFile);
         
-        try
-        {
-            FileUtil.cleanDir(f);
-            fail("Should have failed on a file, not a directory");
-        }
-        catch (IllegalArgumentException e)
-        {
-            logger_.info("Passed: " + e);
-        }
-        finally
-        {
-            f.delete();    
-        }
+        // Use temp file name to create a file
+        FileUtil.setFileContents(tempFile, "this is a temp file", false);
+        FileUtil.getFileContents(tempFile); 
+        File file = new File(tempFile);
+        file.delete();
+        
+        logger_.info("Passed: Created temp file " + tempFile);
     }
-    
-    /**
-     * Tests cleanDir() for failure by passing in a non-existant directory
-     * 
-     * @throws Exception on error
-     */
-    public void testCleanDirFailure2() throws Exception
-    {
-        logger_.info("Running testCleanDirFailure2...");
-        
-        // Create a bogus dir name
-        String dir = FileUtil.getTempFilename();
-        
-        try
-        {
-            FileUtil.cleanDir(new File(dir));
-            fail("Should have failed on a non-existant directory");
-        }
-        catch (IllegalArgumentException e)
-        {
-            logger_.info("Passed: " + e);
-        }
-    }
+
+    //--------------------------------------------------------------------------
+    // cleanDir()
+    //--------------------------------------------------------------------------
     
     /**
      * Tests cleanDir() for cleaning the contents of a single directory
      * 
      * @throws Exception on error
      */
-    public void testCleanDirFailure() throws Exception
+    public void testCleanDir() throws Exception
     {
         logger_.info("Running testCleanDirFailure...");
         
         int numFiles = 10;
         
         // Create a directory
-        String dirName = FileUtil.getTempFilename();
+        String dirName = FileUtil.generateTempFilename();
         File dir = new File(dirName);
         dir.mkdir();
         
@@ -174,6 +153,62 @@ public class FileUtilTest extends TestCase
     }
     
     /**
+     * Tests cleanDir() for failure by passing a file instead of a directory
+     * 
+     * @throws Exception on error
+     */
+    public void testCleanDirFailure1() throws Exception
+    {
+        logger_.info("Running testCleanDirFailure1...");
+        
+        // Create a file
+        String file = FileUtil.generateTempFilename();
+        FileUtil.setFileContents(file, "hello", false);
+        File f = new File(file);
+        
+        try
+        {
+            FileUtil.cleanDir(f);
+            fail("Should have failed on a file, not a directory");
+        }
+        catch (IllegalArgumentException e)
+        {
+            logger_.info("Passed: " + e);
+        }
+        finally
+        {
+            f.delete();    
+        }
+    }
+    
+    /**
+     * Tests cleanDir() for failure by passing in a non-existant directory
+     * 
+     * @throws Exception on error
+     */
+    public void testCleanDirFailure2() throws Exception
+    {
+        logger_.info("Running testCleanDirFailure2...");
+        
+        // Create a bogus dir name
+        String dir = FileUtil.generateTempFilename();
+        
+        try
+        {
+            FileUtil.cleanDir(new File(dir));
+            fail("Should have failed on a non-existant directory");
+        }
+        catch (IllegalArgumentException e)
+        {
+            logger_.info("Passed: " + e);
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // getFileContents()
+    //--------------------------------------------------------------------------
+    
+    /**
      * Tests getFileContents()
      * 
      * @throws Exception on error
@@ -183,7 +218,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testGetFileContents...");
         
         // Create a file
-        String file = FileUtil.getTempFilename();
+        String file = FileUtil.generateTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(file, contents, false);
         
@@ -195,32 +230,6 @@ public class FileUtilTest extends TestCase
         
         // Clean up
         new File(file).delete();
-    }
-
-    /**
-     * Tests getFileAsBytes()
-     * 
-     * @throws Exception on error
-     */
-    public void testGetFileAsBytes() throws Exception
-    {
-        logger_.info("Running testGetFileAsBytes...");
-        
-        String file = FileUtil.getTempFilename();
-        
-        try
-        {
-            String contents = "blah blah blah";
-            FileUtil.setFileContents(file, contents, false);
-            byte[] currentContents = FileUtil.getFileAsBytes(file);
-            
-            assertEquals("File contents should be equal", contents, 
-                new String(currentContents));
-        }
-        finally
-        {
-            FileUtil.delete(file);
-        }
     }
 
     /**
@@ -236,7 +245,7 @@ public class FileUtilTest extends TestCase
         int fileSize = 500000;
         
         // Create a file
-        String file = FileUtil.getTempFilename();
+        String file = FileUtil.generateTempFilename();
         StringBuffer contents = new StringBuffer();
         for(int i=0; i<fileSize; i++)
             contents.append(RandomUtil.nextAlpha());
@@ -256,6 +265,40 @@ public class FileUtilTest extends TestCase
         reread.delete();
     }
 
+    //--------------------------------------------------------------------------
+    // getFileAsBytes()
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests getFileAsBytes()
+     * 
+     * @throws Exception on error
+     */
+    public void testGetFileAsBytes() throws Exception
+    {
+        logger_.info("Running testGetFileAsBytes...");
+        
+        String file = FileUtil.generateTempFilename();
+        
+        try
+        {
+            String contents = "blah blah blah";
+            FileUtil.setFileContents(file, contents, false);
+            byte[] currentContents = FileUtil.getFileAsBytes(file);
+            
+            assertEquals("File contents should be equal", contents, 
+                new String(currentContents));
+        }
+        finally
+        {
+            FileUtil.delete(file);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // setFileContents()
+    //--------------------------------------------------------------------------
+
     /**
      * Tests setFileContents()
      * 
@@ -266,7 +309,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testSetFileContents...");
         
         // Create a file
-        String file = FileUtil.getTempFilename();
+        String file = FileUtil.generateTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(file, contents, false);
         
@@ -291,7 +334,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testSetFileContentsBytes...");
         
         // Create a file
-        String file = FileUtil.getTempFilename();
+        String file = FileUtil.generateTempFilename();
         byte[] contents = "blah blah blah".getBytes();
         FileUtil.setFileContents(file, contents, false);
         
@@ -316,7 +359,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testSetFileContents2...");
         
         // Create a file
-        String file = FileUtil.getTempFilename();
+        String file = FileUtil.generateTempFilename();
         String contents = "blah blah blah";
         FileUtil.setFileContents(new File(file), contents, false);
         
@@ -331,6 +374,10 @@ public class FileUtilTest extends TestCase
         // Clean up
         reread.delete();
     }
+    
+    //--------------------------------------------------------------------------
+    // moveFile()
+    //--------------------------------------------------------------------------
     
     /**
      * Tests moveFile() for simple case
@@ -356,19 +403,19 @@ public class FileUtilTest extends TestCase
         logger_.info("Running testMoveFile..."); 
         
         // Make src dir
-        String srcDirName = FileUtil.getTempFilename();
+        String srcDirName = FileUtil.generateTempFilename();
         File   srcDir     = new File(srcDirName);
         srcDir.mkdir();
         
         // Make dest dir
-        String destDirName = FileUtil.getTempFilename();
+        String destDirName = FileUtil.generateTempFilename();
         File   destDir     = new File(destDirName);
         destDir.mkdir();
  
         try
         {
             // Make src file
-            String srcFilename = FileUtil.getTempFilename(srcDir);
+            String srcFilename = FileUtil.generateTempFilename(srcDir);
             File   srcFile     = new File(srcFilename);
             String srcContents =  "test file for move";
             FileUtil.setFileContents(srcFilename, srcContents, false);
@@ -428,6 +475,10 @@ public class FileUtilTest extends TestCase
         }
     }
 
+    //--------------------------------------------------------------------------
+    // trailWithSeparator()
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests trailWithSeparator() with the separator missing
      */
@@ -526,11 +577,87 @@ public class FileUtilTest extends TestCase
     {
         logger_.info("Running testDelete...");
         
-        String file = FileUtil.getTempFilename();
+        String file = FileUtil.generateTempFilename();
         FileUtil.setFileContents(file, "test data", false);
         File f = new File(file);
         assertTrue(f.exists());
         FileUtil.delete(file);
         assertTrue(!f.exists());
     }
+    
+    /**
+     * Tests createTempDir()
+     * 
+     * @throws Exception on error
+     */
+    public void testCreateTempDir() throws Exception
+    {
+        logger_.info("Running testCreateTempDir...");
+        
+        // Create temp dir
+        // Get list of dirs in the system temp dir
+        // Make sure created temp dir shows up in the list.
+        
+        File tempDir = FileUtil.createTempDir();
+        String[] dirs = FileUtil.getTempDir().list(new DirectoryFilter());
+        assertTrue(ArrayUtil.contains(dirs, tempDir.getName()));
+        FileUtil.removeDir(tempDir);
+    }
+    
+    /**
+     * Tests findFiles()
+     * 
+     * @throws Exception on error
+     */
+    public void testFindFiles() throws Exception
+    {
+        //logger_.info("Running testFindFiles...");
+        
+        // TODO: write me
+        
+        //assertTrue(true);
+    }
+    
+    /**
+     * Tests getLargestFile()
+     * 
+     * @throws Exception on error
+     */
+    public void testGetLargestFile() throws Exception
+    {
+        //logger_.info("Running testGetLargestFile...");
+        
+        // TODO: write me
+        
+        //assertTrue(true);
+    }
+
+    /**
+     * Tests getLongestFilename()
+     * 
+     * @throws Exception on error
+     */
+    public void testGetLongestFilename() throws Exception
+    {
+        //logger_.info("Running testGetLongestFilename...");
+        
+        // TODO: write me
+        
+        //assertTrue(true);
+    }
+
+    /**
+     * Tests removeDir()
+     * 
+     * @throws Exception on error
+     */
+    public void testRemoveDir() throws Exception
+    {
+        //logger_.info("Running testRemoveDir...");
+        
+        // TODO: write me
+        
+        //assertTrue(true);
+    }
+    
 }
