@@ -5,7 +5,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 
 /**
- * PluginMeta info used to populate the active/inactive lists.
+ * PluginMeta contains meta-information about IPlugin instances. This includes
+ * classname, display name, and plugin instance. Used primarily by 
+ * {@link toolbox.workspace.PluginMenu} and 
+ * {@link toolbox.workspace.PluginDialog} to manage plugin information at
+ * runtime.
  */
 public class PluginMeta
 {
@@ -16,12 +20,12 @@ public class PluginMeta
     //--------------------------------------------------------------------------
     
     /**
-     * Display friendly plugin name.
+     * Fully qualified class name of the plugin.
      */
     private String className_;
     
     /**
-     * Reference to the IPlugin instance.
+     * Reference to an IPlugin instance.
      */
     private IPlugin plugin_;
 
@@ -43,7 +47,7 @@ public class PluginMeta
     /**
      * Creates a PluginMeta.
      * 
-     * @param plugin Plugin class.
+     * @param plugin IPlugin instance.
      */
     public PluginMeta(IPlugin plugin)
     {
@@ -111,6 +115,8 @@ public class PluginMeta
     //--------------------------------------------------------------------------
     
     /**
+     * Returns the plugins display name.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString()
