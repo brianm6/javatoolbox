@@ -64,10 +64,13 @@
   
   <developers>
     <developer>
-      <name>Semir Patel</name>
+      <name>S. Patel</name>
       <id>analogue</id>
-      <email>analogue@yaoo.com</email>
+      <email>analogue@yahoo.com</email>
       <organization>:-)</organization>
+        <roles>
+            <role>Lead Instigator</role>
+        </roles>
     </developer>
   </developers>
       
@@ -91,6 +94,7 @@
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <url>http://www.adobe.com</url>
     </dependency>
 
     <dependency>
@@ -103,14 +107,16 @@
 
     <dependency>
       <id>ant</id>
-      <version/>
       <properties/>
+      <version>1.6.1</version>
+      <url>http://ant.apache.org</url>
     </dependency>
 
     <dependency>
       <id>ant-launcher</id>
-      <version/>
       <properties/>
+      <version>1.6.1</version>
+      <url>http://ant.apache.org</url>
     </dependency>
 
     <dependency>
@@ -139,10 +145,11 @@
 
     <dependency>
       <id>bsh</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://www.beanshell.org</url>
     </dependency>
 
     <dependency>
@@ -155,90 +162,101 @@
 
     <dependency>
       <id>classworlds</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://classworlds.codehaus.org</url>
     </dependency>
 
     <dependency>
       <id>commons-beanutils</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/beanutils</url>
     </dependency>
             
     <dependency>
       <id>commons-cli</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/cli</url>
     </dependency>
 
     <dependency>
       <id>commons-codec</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/codec</url>
     </dependency>
 
     <dependency>
       <id>commons-collections</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/collections</url>
     </dependency>
 
     <dependency>
       <id>commons-dbcp</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/dbcp</url>
     </dependency>
 
     <dependency>
       <id>commons-io</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/io</url>
     </dependency>
                           
     <dependency>
       <id>commons-lang</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/lang</url>
     </dependency>
 
     <dependency>
       <id>commons-logging</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/logging</url>
     </dependency>
 
     <dependency>
       <id>commons-net</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/net</url>
     </dependency>
 
     <dependency>
       <id>commons-pool</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://jakarta.apache.org/commons/pool</url>
     </dependency>
             
     <dependency>
@@ -267,16 +285,18 @@
 
     <dependency>
       <id>fop</id>
-      <version/>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
+      <version>LATEST</version>
+      <url>http://xml.apache.org/fop</url>
     </dependency>
 
     <dependency>
       <id>hamsam</id>
-      <version/>
       <properties/>
+      <version>LATEST</version>
+      <url>http://hamsam.sf.net</url>
     </dependency>
 
     <dependency>
@@ -289,7 +309,8 @@
 
     <dependency>
       <id>hsqldb</id>
-      <version/>
+      <version>1.7.1</version>
+      <url>http://www.hsqldb.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -344,7 +365,8 @@
 
     <dependency>
       <id>jode</id>
-      <version/>
+      <version>LATEST</version>
+      <url>http://jode.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -352,7 +374,8 @@
 
     <dependency>
       <id>jreversepro</id>
-      <version/>
+      <version>LATEST</version>
+      <url>http://jrevpro.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -376,7 +399,8 @@
 
     <dependency>
       <id>junit</id>
-      <version/>
+      <version>3.8.1</version>
+      <url>http://www.junit.org</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -412,7 +436,8 @@
 
     <dependency>
       <id>log4j</id>
-      <version/>
+      <version>LATEST</version>
+      <url>http://logging.apache.org/log4j</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -460,7 +485,8 @@
 
     <dependency>
       <id>pollo</id>
-      <version/>
+      <version>LATEST</version>
+      <url>http://pollo.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -492,7 +518,8 @@
 
     <dependency>
       <id>statcvs</id>
-      <version/>
+      <version>LATEST</version>
+      <url>http://statcvs.sf.net</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -533,6 +560,7 @@
     <dependency>
       <id>xep</id>
       <version/>
+      <url>http://www.renderx.com</url>
       <properties>
         <jnlp.jar>true</jnlp.jar>
       </properties>
@@ -651,6 +679,7 @@
   <!-- ===================================================================== -->
     
   <reports>     
+
     <report>maven-javadoc-plugin</report>
     <report>maven-changelog-plugin</report>
     <report>maven-developer-activity-plugin</report>
@@ -662,8 +691,9 @@
     <report>maven-junit-report-plugin</report>
     <report>maven-clover-plugin</report>
     <report>maven-statcvs-plugin</report>
-      
+          
     <!--
+    <report>maven-license-plugin</report>
     ======================================
     Doesn't seem to do anything at all
     <report>maven-changes-plugin</report>
