@@ -177,4 +177,21 @@ public class ClassUtilTest extends TestCase
                      "c" + File.separatorChar + 
                      "d", ClassUtil.packageToPath("a.b.c.d"));
     }
+    
+    /**
+     * Tests stripPackage()
+     */
+    public void testStripPackage()
+    {
+        logger_.info("Running testStripPackage...");
+        
+        assertEquals("Class names don't match", "ClassUtilTest", 
+            ClassUtil.stripPackage(getClass().getName()));
+            
+        assertEquals("Class names don't match", "c",
+            ClassUtil.stripPackage("a.b.c"));
+            
+        assertEquals("Class names don't match", "NoPackage",
+            ClassUtil.stripPackage("NoPackage"));
+    }
 }
