@@ -44,12 +44,10 @@
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
  * TODO: Add a way to change the lookand feel font globally
- * TODO: Upate code snippets to use <pre class="snippet">
  * TODO: http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
  * TODO: Checkout FlexDock on java.net
  * TODO: Include Askkelon in maven build
- * TODO: Rename StringUtil.addBars to banner
  * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
@@ -113,6 +111,10 @@
       <action type="add"   >Lib - Added janino.jar to use inside JTailPlugin for creating dynamic filters coded in java on the fly</action>
       <action type="add"   >Lib - Added jalopy.jar, jakarta-oro.jar, and jdom.jar to support toolbox.util.formatter.JavaFormatter</action>
       <action type="add"   >Util - Created concrete instances of toolbox.util.formatter.Formatter to handle Java, XML, and HTML</action>
+      <action type="update">Util - Renamed StringUtil.addBars() to banner()</action>
+      <action type="update">Util - Replaced StringUtil.left() and right() with StringUtils.rightPad() and leftPad()</action>
+      <action type="update">Util - Upated code snippets in javadocs to use class=snippet</action>
+      <action type="fix"   >Util - Fixed QueryPlugin to remove the session from the session map if Connect fails</action>
     </release>
     
     <release version="2.0" date="July 2004">
