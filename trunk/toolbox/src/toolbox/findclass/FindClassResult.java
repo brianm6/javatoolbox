@@ -1,5 +1,7 @@
 package toolbox.findclass;
 
+import java.util.Date;
+
 /**
  * Data object specific to the result of a successful class search
  */
@@ -7,26 +9,31 @@ public class FindClassResult
 {
     /** Search string used to find this result **/
     private String searchString_;
-    
     /** Location of the class file **/
     private String classLocation_;
-    
     /** Fully qualified name of the found class file **/
     private String classFQN_;
-    
+    /** Size of the class file**/
+    private long fileSize_;
+    /** File timestamp **/
+    private Date timestamp_;
+
+
     /**
-     * Constructor
+     * Creates a FindClassResult
      * 
      * @param  searchString   Original search string
      * @param  classLocation  Location where class was found (jar/path)
      * @param  classFQN       Fully qualified name of the class found
      */
     public FindClassResult(String searchString, String classLocation, 
-        String classFQN)
+        String classFQN, long fileSize, Date timestamp)
     {
         searchString_ = searchString;
         classLocation_ = classLocation;
         classFQN_ = classFQN;    
+        fileSize_ = fileSize;
+        timestamp_ = timestamp;
     }
 
     /**
@@ -54,11 +61,26 @@ public class FindClassResult
     }
 
     /**
+     * @return Size of the class file
+     */
+    public long getFileSize()
+    {
+        return fileSize_;
+    }
+    
+    /**
+     * @return Timestamp of the class file
+     */
+    public Date getTimestamp()
+    {
+        return timestamp_;
+    }
+    
+    /**
      * @return Stringified
      */    
     public String toString()
     {
         return classLocation_ + " => " + classFQN_;
     }
-        
 }

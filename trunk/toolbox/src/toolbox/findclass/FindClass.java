@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.zip.ZipFile;
 import org.apache.log4j.Category;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
+
 import toolbox.util.StringUtil;
 import toolbox.util.io.CompoundFilter;
 import toolbox.util.io.DirectoryFilter;
@@ -276,13 +278,25 @@ public class FindClass
         { 
             ZipEntry ze = (ZipEntry) e.nextElement();
 
-            if (!ze.isDirectory() &&  ze.getName().endsWith(".class" )) 
+            if (!ze.isDirectory() &&  ze.getName().endsWith(".class")) 
             { 
                 String name = ze.getName().replace('/', '.');
                 name = name.substring(0, name.length() - ".class".length());
-
+                
                 if (regExp_.match(name))
-                    fireClassFound(jarName, name);
+                {
+                    long size = ze.getSize();
+                    Date date = new Date(ze.getTime());
+                    
+                    FindClassResult result = new FindClassResult(
+                        classToFind_,
+                        jarName,
+                        name,
+                        size,
+                        date);
+                    
+                    fireClassFound(result);
+                }
             }
         }
         zf.close();
@@ -318,7 +332,17 @@ public class FindClass
             
             if (regExp_.match(dotted))
             {
-                fireClassFound(pathName, dotted);
+                File classFile = new File(fileName);
+                
+                FindClassResult result = 
+                    new FindClassResult( 
+                        classToFind_,
+                        pathName,
+                        dotted,
+                        classFile.length(),
+                        new Date(classFile.lastModified()));
+                    
+                fireClassFound(result);
             }
         }
     }
@@ -343,14 +367,10 @@ public class FindClass
     /**
      * Called when a class is found by the various search methods
      *
-     * @param  whereFound   Where the class was found (dir, zip, etc)
-     * @param  whatFound    Class that was found
+     * @param  result   Details of what, what, when the class was found
      */
-    protected void fireClassFound(String whereFound, String whatFound)
+    protected void fireClassFound(FindClassResult result)
     {
-        FindClassResult result = 
-            new FindClassResult(classToFind_, whereFound, whatFound);
-
         for(int i=0; i<findListeners_.size(); i++)
         {
             IFindClassListener listener = 
@@ -358,8 +378,6 @@ public class FindClass
                 
             listener.classFound(result);
         }
-        
-        //System.out.println(clazzSource + " => " + clazz);   
     }
 
 
