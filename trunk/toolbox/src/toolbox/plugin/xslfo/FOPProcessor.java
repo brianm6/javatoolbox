@@ -1,26 +1,34 @@
 package toolbox.util.xslfo;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 
 import org.apache.avalon.framework.logger.ConsoleLogger;
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.fop.apps.Driver;
 import org.apache.fop.messaging.MessageHandler;
-import org.xml.sax.InputSource;
 
-import toolbox.util.io.StringInputStream;
+import org.xml.sax.InputSource;
+import toolbox.util.io.EventInputStream;
 
 /**
  * Interface to access the Apache FOP XSLFO processor
  */
 public class FOPProcessor implements FOProcessor
 {
-    /** Main interface class to FOP */
+    private static final org.apache.log4j.Logger logger_ = 
+        org.apache.log4j.Logger.getLogger(FOPProcessor.class);
+    
+    /** 
+     * Main interface class to FOP 
+     */
     private Driver driver_;
 
     //--------------------------------------------------------------------------
@@ -58,7 +66,8 @@ public class FOPProcessor implements FOProcessor
         try
         {
             driver_.setOutputStream(pdfStream);
-            driver_.setInputSource(new InputSource(foStream));
+            Reader reader = new InputStreamReader(foStream, "UTF-8");
+            driver_.setInputSource(new InputSource(reader));
             driver_.run();
         }
         finally
@@ -74,7 +83,7 @@ public class FOPProcessor implements FOProcessor
     public byte[] renderPDF(String foXML) throws Exception
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        renderPDF(new StringInputStream(foXML), baos);
+        renderPDF(new ByteArrayInputStream(foXML.getBytes("UTF-8")), baos);
         return baos.toByteArray();
     }
 }
