@@ -14,15 +14,25 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import junit.framework.TestCase;
+import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
+import toolbox.util.ArrayUtil;
 import toolbox.util.SwingUtil;
 
 /**
- *  SwingUtil Unit Test
+ * Unit test for SwingUtil
  */
 public class SwingUtilTest extends TestCase
 {
+    /** Logger */
+    private static final Logger logger_ = 
+        Logger.getLogger(SwingUtilTest.class);
+    
     /**
      * Entry point
      * 
@@ -30,9 +40,13 @@ public class SwingUtilTest extends TestCase
      */
     public static void main(String[] args)
     {
-        junit.textui.TestRunner.run(SwingUtilTest.class);
+        TestRunner.run(SwingUtilTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for SwingUtilTest.
      * 
@@ -43,7 +57,10 @@ public class SwingUtilTest extends TestCase
         super(arg0);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests the tiling of a JDesktopPane
      */
@@ -53,7 +70,20 @@ public class SwingUtilTest extends TestCase
         frame.setVisible(true);
     }
     
+    /**
+     * Tests getLAFs() to make sure all default and additional LAF's have been
+     * installed correctly.
+     */
+    public void testGetLAFs()
+    {
+        UIManager.LookAndFeelInfo[] lafs = SwingUtil.getLAFs();
+        logger_.debug("\n" + ArrayUtil.toString(lafs, true));
+    }
     
+    //--------------------------------------------------------------------------
+    // Helper Classes
+    //--------------------------------------------------------------------------
+        
     class TestFrame extends JFrame
     {
         private JDesktopPane desktop_;
