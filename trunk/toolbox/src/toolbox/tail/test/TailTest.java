@@ -23,6 +23,7 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.io.NullWriter;
+import toolbox.util.io.StringOutputStream;
 
 /**
  * Unit test for Tail.
@@ -147,33 +148,35 @@ public class TailTest extends TestCase
     {
         logger_.info("Running testTailFile...");
        
-        File ffile = FileUtil.createTempFile();
-        FileStuffer stuffer = new FileStuffer(ffile, 250);
+        File tmpFile = FileUtil.createTempFile();
+        FileStuffer tmpFileStuffer = new FileStuffer(tmpFile, 200);
         Writer sink = null;
          
         try
         {
-            stuffer.start();
+            tmpFileStuffer.start();
             
             ThreadUtil.sleep(1000);
             
             Tail tail = new Tail();
-            sink = new OutputStreamWriter(System.out);
-            tail.follow(ffile, sink);
+            StringOutputStream sos = new StringOutputStream();
+            sink = new OutputStreamWriter(sos);
+            tail.follow(tmpFile, sink);
             tail.setBacklog(4);
             tail.start();
             
             ThreadUtil.sleep(1000);
             
             tail.stop();
-            
             sink.flush();
+            
+            logger_.info(StringUtil.addBars(sos.toString()));
         }
         finally
         {
-            stuffer.stop();
+            tmpFileStuffer.stop();
             StreamUtil.close(sink);
-            FileUtil.delete(ffile);
+            FileUtil.delete(tmpFile);
         }
     }
     
@@ -224,6 +227,81 @@ public class TailTest extends TestCase
         listener.waitForUnpause();
         ThreadUtil.sleep(1000);
         
+        tail.stop();
+        listener.waitForStop();
+        
+        // Dump contents of the sinks
+        logger_.info("OutputWriter sink:\n" + sw.toString());
+        
+        tail.removeTailListener(listener);
+        
+        logger_.info(tail.toString());
+    }
+
+    
+    /**
+     * Tests monkeying with the lifecycle of a tail.
+     * 
+     * @throws Exception on error
+     */
+    public void testTailMonkeyWithLifeCycle() throws Exception
+    {
+        logger_.info("Running testTailMonkeyWithLifeCycle...");
+       
+        PipedWriter writer = new PipedWriter();
+        PipedReader reader = new PipedReader(writer);
+
+        ThreadUtil.run(
+            this,
+            "writeDelayed",
+            new Object[] {
+                writer,
+                new Integer(5),
+                new Integer(500),
+                "line " });
+
+        int d = 1000;
+        
+        Tail tail = new Tail();
+
+        // Create a listener so we can test event
+        TestTailListener listener = new TestTailListener();        
+        tail.addTailListener(listener);
+
+        // Create sinks for tail and attach them to the tail
+        // Attach the input reader to the tail        
+        StringWriter sw = new StringWriter();
+        tail.follow(reader, sw, "testTailMonkeyWithLifeCycle");
+        
+        // Start twice - should print warning
+        tail.start();
+        listener.waitForStart();
+        tail.start(); 
+        ThreadUtil.sleep(d);
+        
+        // Pause twice
+        tail.pause();
+        listener.waitForPause();
+        tail.pause();
+        ThreadUtil.sleep(d);
+        
+        // Unpause twice
+        tail.unpause();
+        listener.waitForUnpause();
+        tail.unpause();
+        ThreadUtil.sleep(d);
+        
+        // Stop twice
+        tail.stop();
+        listener.waitForStop();
+        tail.stop();
+
+        // Stop while tail is paused
+        
+        tail.start();
+        listener.waitForStart();
+        tail.pause();
+        listener.waitForPause();
         tail.stop();
         listener.waitForStop();
         
