@@ -146,7 +146,9 @@ public class DBProfile
     //--------------------------------------------------------------------------
         
     /**
-     * @return
+     * Returns the name of the database profile.
+     * 
+     * @return Profile name
      */
     public String getProfileName()
     {
@@ -154,7 +156,9 @@ public class DBProfile
     }
 
     /**
-     * @return
+     * Returns the JDBC driver.
+     * 
+     * @return JDBC driver
      */
     public String getDriver()
     {
@@ -162,7 +166,9 @@ public class DBProfile
     }
 
     /**
-     * @return
+     * Returns the JDBC password.
+     * 
+     * @return JDBC password
      */
     public String getPassword()
     {
@@ -170,7 +176,9 @@ public class DBProfile
     }
 
     /**
-     * @return
+     * Returns the JDBC URL.
+     * 
+     * @return JDBC URL
      */
     public String getUrl()
     {
@@ -178,7 +186,9 @@ public class DBProfile
     }
 
     /**
-     * @return
+     * Returns the JDBC username.
+     * 
+     * @return JDBC username
      */
     public String getUsername()
     {
@@ -186,7 +196,9 @@ public class DBProfile
     }
 
     /**
-     * @param string
+     * Sets the name of the database profile.
+     * 
+     * @param string  Profile name
      */
     public void setProfileName(String string)
     {
@@ -194,7 +206,9 @@ public class DBProfile
     }
 
     /**
-     * @param string
+     * Sets the JDBC driver. Must be a FQCN.
+     * 
+     * @param string JDBC driver
      */
     public void setDriver(String string)
     {
@@ -202,7 +216,9 @@ public class DBProfile
     }
 
     /**
-     * @param string
+     * Sets the JDBC password.
+     * 
+     * @param string  JDBC password in clear text
      */
     public void setPassword(String string)
     {
@@ -210,7 +226,9 @@ public class DBProfile
     }
 
     /**
-     * @param string
+     * Sets the JDBC URL.
+     * 
+     * @param string JDBC URL
      */
     public void setUrl(String string)
     {
@@ -218,7 +236,9 @@ public class DBProfile
     }
 
     /**
-     * @param string
+     * Sets the JDBC username.
+     * 
+     * @param string JDBC username
      */
     public void setUsername(String string)
     {

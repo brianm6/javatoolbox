@@ -5,45 +5,45 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.text.PlainDocument;
 
-import org.apache.log4j.Logger;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.TokenMarker;
 
 import toolbox.util.SwingUtil;
-import toolbox.jedit.JEditActions;
 
 /**
- * Modified JEditTextArea that supports the following features:
+ * Modified JEditTextArea that supports a host of convenient features. These
+ * features include:
  * <ul>
- * <li>mouse wheel support
- * <li>tab size can be adjusted
- * <li>font can be changed
- * <li>simple text search facility
- * <li>Right mouse button activated popup menu with:
+ *   <li>Mouse wheel support
+ *   <li>Adjustable tab size
+ *   <li>Adjustable font
+ *   <li>Simple text search facility
+ *   <li>Right mouse button activated popup menu with:
  *     <ul>
- *     <li>Copy, cut, paste
- *     <li>Save to file
- *     <li>Insert from file
- *     <li>Antialias text
+ *       <li>Copy, cut, paste
+ *       <li>Save to file
+ *       <li>Insert from file
+ *       <li>Antialias text
  *     </ul>
+ *   </li>
  * </ul>
  * <p>
  * Keyboard shortcuts added:
  * <ul>
- * <li>Ctrl+A - Select All
- * <li>Ctrl+V - Paste
- * <li>Ctrl+C - Copy
- * <li>Ctrl+X - Cut
- * <li>Ctrl+O - Open file
- * <li>Ctrl+S - Save file
- * <li>Ctrl+F - Find
+ *   <li>Ctrl+A - Select All
+ *   <li>Ctrl+V - Paste
+ *   <li>Ctrl+C - Copy
+ *   <li>Ctrl+X - Cut
+ *   <li>Ctrl+O - Open file
+ *   <li>Ctrl+S - Save file
+ *   <li>Ctrl+F - Find
  * </ul>
  */
 public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     implements MouseWheelListener
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(JEditTextArea.class);
+    //private static final Logger logger_ = 
+    //    Logger.getLogger(JEditTextArea.class);
         
     private int mouseWheelUnit_ = 3;
     private int tabSize_ = 4;

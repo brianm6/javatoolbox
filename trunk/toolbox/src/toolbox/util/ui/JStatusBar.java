@@ -83,10 +83,10 @@ public class JStatusBar extends JPanel implements IStatusBar
     {
         return statusLabel_.getText();
     }
-    
+
     /**
-     * @see toolbox.util.ui.plugin.IStatusBar#setBusy(java.lang.String)
-     */
+     * @see toolbox.util.ui.plugin.IStatusBar#setBusy(boolean)
+     */    
     public void setBusy(boolean busy)
     {
         //setStatus(IStatusBar.BUSY, status);
