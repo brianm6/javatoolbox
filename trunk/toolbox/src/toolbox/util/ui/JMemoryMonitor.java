@@ -1,6 +1,7 @@
 package toolbox.util.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -107,6 +108,8 @@ public class JMemoryMonitor extends JComponent
         
         progressBackground_ = UIManager.getColor("ScrollBar.thumb");
         progressForeground_ = UIManager.getColor("ScrollBar.thumbHighlight");
+        
+        setPreferredSize(new Dimension(75,15));
     }
 
     //--------------------------------------------------------------------------
