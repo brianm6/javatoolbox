@@ -546,7 +546,7 @@
         <delete dir="${doc}/checkstyle/*.*"/> 
 
         <!-- run checkstyle on the source code -->
-        <checkstyle failOnViolation="false">
+        <checkstyle failOnViolation="false"	properties="${build}/conf/checkstyle.properties">
             <fileset dir="${src}" includes="**/*.java"/>                        
             <!--formatter type="plain"/-->                                               
             <formatter type="xml" toFile="${doc}/checkstyle/checkstyle_report.xml"/>       
