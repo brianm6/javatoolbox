@@ -21,7 +21,9 @@ public class TreeTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(TreeTest.class);
     
-    /** Temporary directory that will serve as the root dir for tests */
+    /** 
+     * Temporary directory that will serve as the root dir for tests 
+     */
     private File rootDir_;
 
     //--------------------------------------------------------------------------
@@ -31,7 +33,7 @@ public class TreeTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -348,7 +350,7 @@ public class TreeTest extends TestCase
     /**
      * Creates a temp file in the given directory
      * 
-     * @param  dir  Dir to create file in
+     * @param dir Dir to create file in
      * @throws IOException on error
      */
     protected File createFile(File dir) throws IOException
@@ -361,7 +363,7 @@ public class TreeTest extends TestCase
     /**
      * Executes the native version of tree to use as a comparison
      * 
-     * @param  dir  Directory
+     * @param dir Directory
      * @throws IOException on error
      */
     public void printNativeTree(File dir) throws IOException

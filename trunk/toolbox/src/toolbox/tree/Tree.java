@@ -19,7 +19,9 @@ import toolbox.util.io.filter.FileFilter;
 
 /**
  * Generates a text representation of a directory tree with the option to
- * include files. Example:
+ * include files.
+ * <br>
+ * Example:
  * <pre>
  *
  *   apache
@@ -51,38 +53,68 @@ import toolbox.util.io.filter.FileFilter;
  */
 public class Tree
 {
-    /** Spaces indentation per tree branch */
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Spaces indentation per tree branch 
+     */
     private static final String SPACER = "    ";
     
-    /** Tree branch with a continuation */
+    /** 
+     * Tree branch with a continuation 
+     */
     private static final String BAR = "|   ";
     
-    /** Junction in the tree */
+    /** 
+     * Junction in the tree 
+     */
     private static final String JUNCTION = "+";
     
-    /** Tree arm */
+    /** 
+     * Tree arm 
+     */
     private static final String ARM = "---";
     
-    /** Files are not shown by default */
+    /** 
+     * Files are not shown by default 
+     */
     private static final boolean DEFAULT_SHOWFILES = false;
     
-    /** Output is send to System.out by default */
+    /** 
+     * Output is sent to System.out by default 
+     */
     private static final Writer DEFAULT_WRITER = 
         new OutputStreamWriter(System.out);
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
-    /** Output writer */    
+    /** 
+     * Output writer 
+     */    
     private PrintWriter writer_;
     
-    /** Filter to identify directories */
+    /** 
+     * Filter to identify directories 
+     */
     private FilenameFilter dirFilter_;
     
-    /** Filter to identigy files */
+    /** 
+     * Filter to identify files 
+     */
     private FilenameFilter fileFilter_;
     
-    /** Flag that controls the showing of files */
+    /** 
+     * Flag that controls the showing of files 
+     */
     private boolean showFiles_;
     
-    /** Root directory of the tree */
+    /** 
+     * Root directory of the tree 
+     */
     private File rootDir_;
 
     //--------------------------------------------------------------------------
@@ -92,8 +124,8 @@ public class Tree
     /**
      * Entrypoint
      *
-     * @param   args  [-f, rootDir]
-     * @throws  Exception on error
+     * @param args  [-f, rootDir]
+     * @throws Exception on error
      */
     public static void main(String args[]) throws Exception
     {
@@ -155,13 +187,14 @@ public class Tree
     }
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a tree with the given root directory
+     * Creates a Tree that will show files and send the output to System.out
+     * with the given root directory.
      * 
-     * @param  rootDir   Root directory
+     * @param rootDir Root directory
      */
     public Tree(File rootDir)
     {
@@ -169,10 +202,11 @@ public class Tree
     }
 
     /**
-     * Creates a tree with the given root directory and output
+     * Creates a tree that will show files with the given root directory and
+     * send output to the given writer.
      * 
-     * @param  rootDir  Root directory
-     * @param  writer   Output destination    
+     * @param rootDir Root directory
+     * @param writer Output destination    
      */
     public Tree(File rootDir, Writer writer)
     {
@@ -180,11 +214,11 @@ public class Tree
     }
 
     /**
-     * Creates a tree with the given root directory and flag to show files
+     * Creates a tree with the given root directory and flag to show files.
      * 
-     * @param  rootDir    Root directory
-     * @param  showFiles  Set to true if you want file info in the tree,
-     *                    false otherwise
+     * @param rootDir Root directory
+     * @param showFiles Set to true if you want file info in the tree, false 
+     *        otherwise
      */
     public Tree(File rootDir, boolean showFiles)
     {
@@ -192,12 +226,12 @@ public class Tree
     }
 
     /**
-     * Creates a tree with the given criteria
+     * Creates a tree with the given criteria.
      * 
-     * @param  rootDir    Root directory of the tree
-     * @param  showFiles  Set to true if you want file info in the tree,
-     *                    false otherwise
-     * @param  writer     Output destination
+     * @param rootDir Root directory of the tree
+     * @param showFiles Set to true if you want file info in the tree, false 
+     *        otherwise
+     * @param writer Output destination
      */
     public Tree(File rootDir, boolean showFiles, Writer writer)
     {
@@ -225,7 +259,7 @@ public class Tree
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
     
     /**
@@ -237,7 +271,7 @@ public class Tree
     }
     
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -254,8 +288,8 @@ public class Tree
      * Recurses the directory structure of the given rootDir and generates
      * a hierarchical text representation.
      * 
-     * @param  rootDir   Root diretory
-     * @param  level     Current level of decorated indentation
+     * @param rootDir Root diretory
+     * @param level Current level of decorated indentation
      */
     protected boolean showTree(File rootDir, String level)
     {
