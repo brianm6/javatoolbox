@@ -196,8 +196,6 @@ public class Tail
      */
     public void pause()
     {
-        // TODO: use wait/notify
-        
         if (isAlive() && !isPaused())
             paused_ = true;
     }
@@ -208,7 +206,14 @@ public class Tail
     public void unpause()
     {
         if (isAlive() && isPaused())
+        {
             paused_ = false;
+            
+            synchronized(this)
+            {
+                notify();
+            }
+        }
     }
     
     /**
@@ -289,13 +294,21 @@ public class Tail
      */
     protected void checkPaused()
     {
-        // Loop de loop while paused
-        while (paused_)
+        if (paused_)
         {
             fireTailPaused();
 
-            while (paused_)
-                ThreadUtil.sleep(1);
+            synchronized(this)
+            {
+                try
+                {
+                    wait();
+                }
+                catch (InterruptedException e)
+                {
+                    logger_.error(e);
+                }
+            }
 
             fireTailUnpaused();
         }
@@ -468,8 +481,7 @@ public class Tail
                 while (!pendingShutdown_)
                 {
                     checkPaused();
-    
-
+                    
                     String line = reader_.readLine();
     
                     if (line != null)
@@ -507,10 +519,8 @@ public class Tail
                             }
                             else
                             {
-                                ;
-                                
-                                //logger_.debug(method + 
-                                //    "Failed criterai for reset");
+                                ; // logger_.debug(method + 
+                                  //    "Failed criterai for reset");
                             }
                                 
                             strikes = 0;
