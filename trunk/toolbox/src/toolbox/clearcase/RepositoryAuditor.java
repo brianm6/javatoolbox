@@ -13,13 +13,14 @@ import java.util.Map;
 
 import net.sf.statcvs.util.FileUtils;
 
+import org.apache.commons.collections.Closure;
+import org.apache.commons.collections.Transformer;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.clearcase.adapter.ClearCaseAdapterFactory;
 import toolbox.clearcase.audit.ContainsTabsAudit;
-import toolbox.clearcase.audit.MissingCommentAudit;
 import toolbox.util.DateUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.collections.ObjectComparator;
@@ -98,7 +99,7 @@ public class RepositoryAuditor
 
         
         List audits = new ArrayList();
-        audits.add(new MissingCommentAudit());
+        //audits.add(new MissingCommentAudit());
         audits.add(new ContainsTabsAudit());
         List finalResults = new ArrayList();
         
@@ -110,6 +111,8 @@ public class RepositoryAuditor
 
         Comparator sortByUser = new ObjectComparator("username", "filename");
         Collections.sort(finalResults, sortByUser);
+        
+        
         
         for (Iterator iter = finalResults.iterator(); iter.hasNext();)
         {
@@ -146,6 +149,26 @@ public class RepositoryAuditor
             result = username;
         
         return result;
+    }
+    
+    
+    
+    class StringLengthClosure implements Closure
+    {
+        String propName_;
+        
+        public StringLengthClosure(String propName)
+        {
+            propName_ = propName;
+        }
+        
+        /**
+         * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+         */
+        public void execute(Object input)
+        {
+            Property
+        }
     }
     
 }
