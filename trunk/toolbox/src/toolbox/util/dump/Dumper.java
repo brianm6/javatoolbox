@@ -261,11 +261,13 @@ public class Dumper implements Stringz
         
         for (int i=0; i<array.length; i++)
         {
-            buffer.append(makeBranch(depth));            
-            buffer.append(arrayField.getName() + "[" + i + "]");
+            buffer.append(makeBranch(depth));
+                        
+            buffer.append(
+                formatter_.formatFieldName(arrayField.getName()) + "["+i+"]");
+                
             buffer.append(" = ");
             buffer.append(makePresentable(array[i]));
-            
             buffer.append(NL);
             dump(array[i], buffer, depth + BAR);
         }
@@ -313,7 +315,7 @@ public class Dumper implements Stringz
                     cache_.put(value , field );
     
                 buffer.append(makeBranch(depth));
-                buffer.append(field.getName());
+                buffer.append(formatter_.formatFieldName(field.getName()));
                 buffer.append(" = ");
     
                 if (value == null)
@@ -329,8 +331,8 @@ public class Dumper implements Stringz
                     {
                         buffer.append("[Visited] ");
                         
-                        buffer.append(
-                            cache_.getInfo(value).getField().getName());
+                        buffer.append(formatter_.formatFieldName(
+                            cache_.getInfo(value).getField().getName()));
                             
                         buffer.append(NL);
                     }
