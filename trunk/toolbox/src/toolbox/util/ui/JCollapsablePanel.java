@@ -16,11 +16,18 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.PreferencedUtil;
+import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
 /**
  * Extension of JHeaderPanel that allows the panels contents to be collapsed
  * using a button in the header.
+ * <p>
+ * Supports persistence of the following properties:
+ * <ul>
+ *   <li>Collapsed state
+ * </ul>
  */
 public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
 {
@@ -28,10 +35,19 @@ public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
         Logger.getLogger(JCollapsablePanel.class);
     
     //--------------------------------------------------------------------------
-    // Constants
+    // Javabean Constants
+    //--------------------------------------------------------------------------
+
+    public static final String PROPERTY_COLLAPSED = "collapsed";
+    
+    //--------------------------------------------------------------------------
+    // Preferenced Constants
     //--------------------------------------------------------------------------
     
-    public static final String PROPERTY_COLLAPSED = "collapsed";
+    public static final String NODE_JCOLLAPSABLEPANEL = "JCollapsablePanel";
+    
+    public static final String[] SAVED_PROPERTIES = 
+        new String[] {PROPERTY_COLLAPSED};
     
     //--------------------------------------------------------------------------
     // Fields
@@ -218,13 +234,24 @@ public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, 
+                NODE_JCOLLAPSABLEPANEL,
+                new Element(NODE_JCOLLAPSABLEPANEL));
+     
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPERTIES);
     }
-    
+
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
     {
+        Element root = new Element(NODE_JCOLLAPSABLEPANEL);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPERTIES);
+        XOMUtil.insertOrReplace(prefs, root);
     }
     
     //--------------------------------------------------------------------------
