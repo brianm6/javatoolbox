@@ -82,13 +82,12 @@ import toolbox.workspace.WorkspaceAction;
  */
 public class FindClassPane extends JPanel implements IPreferenced
 {
-    //--------------------------------------------------------------------------
-    // Constants
-    //--------------------------------------------------------------------------
-
     private static final Logger logger_ = Logger.getLogger(FindClassPane.class);
+    
+    //--------------------------------------------------------------------------
+    // XML Constants
+    //--------------------------------------------------------------------------
 
-    // XML stuff for preferences
     private static final String NODE_JFINDCLASS_PLUGIN = "JFindClassPlugin";
     private static final String   ATTR_IGNORECASE      = "ignorecase";
     private static final String   ATTR_SEARCH          = "search";
@@ -123,7 +122,7 @@ public class FindClassPane extends JPanel implements IPreferenced
      */
     private JCheckBox ignoreCaseCheckBox_;
 
-    // Left flip pane
+    // Left flip pane 
 
     /**
      * Flipper that houses the file explorer.
@@ -767,22 +766,31 @@ public class FindClassPane extends JPanel implements IPreferenced
          *
          * @param folder Directory to add.
          */
-        public void folderDoubleClicked(String folder)
+        public void folderDoubleClicked(final String folder)
         {
-            List targets = findClass_.getArchivesInDir(new File(folder));
-
-            statusBar_.setInfo(
-                targets.size() + "archives added to the search list.");
-
-            Iterator i = targets.iterator();
-
-            while (i.hasNext())
+            new WorkspaceAction("", true, true, FindClassPane.this, statusBar_)
             {
-                String target = (String) i.next();
-                searchListModel_.addElement(target);
-            }
+                public void runAction(ActionEvent e) throws Exception
+                {
+                    statusBar_.setInfo("Finding jars in " + folder + "...");
+                    
+                    List targets = 
+                        findClass_.getArchivesInDir(new File(folder));
 
-            searchListModel_.addElement(folder);
+                    statusBar_.setInfo(
+                        "Found " + targets.size() + " jars in " + folder);
+
+                    Iterator i = targets.iterator();
+
+                    while (i.hasNext())
+                    {
+                        String target = (String) i.next();
+                        searchListModel_.addElement(target);
+                    }
+
+                    searchListModel_.addElement(folder);
+                }
+            }.actionPerformed(new ActionEvent(new Object(), 1, ""));
         }
 
 
