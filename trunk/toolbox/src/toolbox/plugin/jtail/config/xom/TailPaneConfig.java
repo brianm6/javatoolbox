@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.plugin.jtail.config.ITailPaneConfig;
 import toolbox.util.FontUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
@@ -29,15 +30,48 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     // Fields
     //--------------------------------------------------------------------------
 
+    /**
+     * Files being tailed.
+     */
     private String[]  filenames_;
-    private boolean autoScroll_;
+    
+    /**
+     * Flag to turn line numbers on/off.
+     */
     private boolean showLineNumbers_;
-    private boolean antiAlias_;
+    
+    /**
+     * Flag to start the tail automatically at startup.
+     */
     private boolean autoStart_;
-    private Font    font_;
+    
+    /**
+     * Regular expression to filter the tail output.
+     */
     private String  regularExpression_;
+    
+    /**
+     * Cut expression to filter the tail output.
+     */
     private String  cutExpression_;
 
+    // TODO: Following attribs need to be migrated out of here -----------------
+    
+    /**
+     * Font for the textarea. Should migrate to textarea preferences.
+     */
+    private Font font_;
+    
+    /**
+     * Flag to turn smooth fonts on/off. Should migrate to textarea preferences.
+     */
+    private boolean antiAlias_;
+    
+    /**
+     * Autoscroll flag. Should migrate to textarea preferences.
+     */
+    private boolean autoScroll_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -50,7 +84,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         this(new String[0], // file
              true,          // autoscroll
              false,         // show linenumbers
-             false,         // antialias
+             SwingUtil.getDefaultAntiAlias(), // antialias
              FontUtil.getPreferredMonoFont(), // font
              "",            // Regular exp
              "",            // Cut exp
@@ -130,7 +164,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
 
             setFont(
                 FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
-            
+        
             setRegularExpression(
                 XOMUtil.getString(root.getFirstChildElement(
                     NODE_REGULAR_EXPRESSION), DEFAULT_REGEX));
@@ -140,7 +174,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
                     NODE_CUT_EXPRESSION), DEFAULT_CUT_EXPRESSION));
         }
     }
-
+ 
 
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
@@ -217,6 +251,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return autoScroll_;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#getFilenames()
      */
@@ -225,6 +260,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return filenames_;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#isShowLineNumbers()
      */
@@ -233,6 +269,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return showLineNumbers_;
     }
  
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAutoScroll(boolean)
      */
@@ -241,6 +278,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         autoScroll_ = autoScroll;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setFilenames(
      *      java.lang.String[])
@@ -250,6 +288,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         filenames_ = filenames;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setShowLineNumbers(boolean)
      */
@@ -257,7 +296,8 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
     {
         showLineNumbers_ = showLineNumbers;
     }
- 
+
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#getFont()
      */
@@ -266,6 +306,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return font_;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setFont(java.awt.Font)
      */
@@ -274,6 +315,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         font_ = font;
     }
  
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#getRegularExpression()
      */
@@ -282,6 +324,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return regularExpression_;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setRegularExpression(
      *      java.lang.String)
@@ -291,6 +334,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         regularExpression_ = filter;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#getCutExpression()
      */
@@ -299,6 +343,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return cutExpression_;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setCutExpression(
      *      java.lang.String)
@@ -308,6 +353,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         cutExpression_ = cutExpression;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#isAntiAliased()
      */
@@ -316,6 +362,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return antiAlias_;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAntiAlias(boolean)
      */
@@ -324,6 +371,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         antiAlias_ = b;
     }
  
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#isAutoStart()
      */
@@ -332,6 +380,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
         return autoStart_;
     }
 
+    
     /**
      * @see toolbox.plugin.jtail.config.ITailPaneConfig#setAutoStart(boolean)
      */
