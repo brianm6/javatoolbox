@@ -1,5 +1,6 @@
 package toolbox.util.test;
 
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -135,7 +136,7 @@ public class SocketUtilTest extends TestCase
     
     
     /**
-     * Tests close(Socket)
+     * Tests close(Socket) for a valid, null, and exception throwing Socket.
      * 
      * @throws Exception on error.
      */
@@ -155,8 +156,16 @@ public class SocketUtilTest extends TestCase
         SocketUtil.close(socket);
         
         // Close null socket
-        socket = null;
-        SocketUtil.close(socket);
+        SocketUtil.close((Socket) null);
+        
+        // Close exception throwing
+        SocketUtil.close(new Socket() 
+        { 
+            public synchronized void close() throws IOException
+            {
+                throw new IOException("Thrown on purpose.");
+            }
+        });
         
         serverThread.join();
     }
@@ -192,7 +201,14 @@ public class SocketUtilTest extends TestCase
         
         //serverThread.join();
         
-        Socket nullSocket = null;
-        SocketUtil.close(nullSocket);
+        SocketUtil.close((ServerSocket) null);
+        
+        SocketUtil.close(new ServerSocket()
+        {
+            public void close() throws IOException
+            {
+                throw new IOException("Thrown on purpose.");
+            }
+        });
     }
 }
