@@ -352,5 +352,27 @@ public class ClassUtilTest extends TestCase
     {
         logger_.info("Running testFindInPathNotFound...");
         assertNull(ClassUtil.findInPath("SomeNonExistantFile.exe"));
-    }    
+    }
+    
+
+    /**
+     * Tests isInnerClass()
+     */
+    public void testIsInnerClass()
+    {
+        logger_.info("Running testIsInnerClass...");
+        
+        assertFalse(ClassUtil.isInnerClass(""));
+        assertFalse(ClassUtil.isInnerClass("a"));
+        assertFalse(ClassUtil.isInnerClass("a.b"));
+        assertFalse(ClassUtil.isInnerClass("abc"));
+        assertFalse(ClassUtil.isInnerClass("$"));
+        assertFalse(ClassUtil.isInnerClass("$$"));
+        assertFalse(ClassUtil.isInnerClass("one$two$three$"));
+        
+        assertTrue(ClassUtil.isInnerClass("a$b"));
+        assertTrue(ClassUtil.isInnerClass("one$two"));
+        assertTrue(ClassUtil.isInnerClass("one$two$three"));
+        
+    }
 }
