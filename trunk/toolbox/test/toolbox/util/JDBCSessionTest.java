@@ -1,19 +1,18 @@
 package toolbox.util;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.showclasspath.Main;
-import toolbox.util.io.StringOutputStream;
 
 /**
  * Unit test for {@link toolbox.util.JDBCSession}. This test case uses an 
@@ -172,6 +171,68 @@ public class JDBCSessionTest extends TestCase
         {
             JDBCSession.shutdown(name);
             cleanup(prefix);
+        }
+        
+        assertEquals(0, JDBCSession.getSessionCount());
+    }
+
+    
+    /**
+     * Tests init() loading the jdbc driver from a jar file and connection 
+     * pooling.
+     *
+     * @throws Exception on error.
+     */
+    public void testInitUsingJarAndPooling() throws Exception
+    {
+        logger_.info("Running testInitUsingJarAndPooling...");
+
+        String session = "JDBCSessionTest-" + RandomUtils.nextInt();
+
+        try
+        {
+            JDBCSession.init(
+                session, 
+                getDBJar(), 
+                DB_DRIVER, 
+                DB_URL + session, 
+                //"jdbc:hsqldb:hsql://localhost/bard_hsql1",
+                DB_USER, 
+                DB_PASSWORD, 
+                true);
+            
+            String[] tables = JDBCSession.getTableNames(session);
+            
+            //logger_.debug(ArrayUtil.toString(tables, true));
+            
+            assertTrue(tables.length > 0);
+            assertEquals(1, JDBCSession.getSessionCount());
+            
+            for (int i = 0; i < 100; i++)
+            {
+                Connection conn1 = JDBCSession.getConnection(session);
+                Connection conn2 = JDBCSession.getConnection(session);
+                Connection conn3 = JDBCSession.getConnection(session);
+                
+                //logger_.info("Connection: " + conn1);
+                //logger_.info("Autocommit: " + conn1.getAutoCommit());
+                
+                assertNotNull(conn1);
+                assertNotNull(conn2);
+                assertNotNull(conn3);
+                JDBCUtil.releaseConnection(conn1);
+                JDBCUtil.releaseConnection(conn2);
+                JDBCUtil.releaseConnection(conn3);
+            }
+        }
+        catch (Throwable t)
+        {
+            logger_.error("erro", t);
+        }
+        finally
+        {
+            JDBCSession.shutdown(session);
+            cleanup(session);
         }
         
         assertEquals(0, JDBCSession.getSessionCount());
@@ -1031,21 +1092,17 @@ public class JDBCSessionTest extends TestCase
      */
     protected String getDBJar()
     {
-        String jarFile = null;
-        StringOutputStream sos = new StringOutputStream();
-        Main.showPath(sos);
-        String[] lines = StringUtil.tokenize(sos.toString(), "\n");
-
-        for (int i = 0; i < lines.length; i++)
-        {
-            if (lines[i].indexOf(DB_JAR) >= 0)
+        List files = FileUtil.find(System.getProperty("user.dir"), 
+            new FilenameFilter()
             {
-                jarFile = StringUtil.tokenize(lines[i], " ")[0];
-                logger_.info("Found file: " + jarFile);
-                break;
-            }
-        }
-
-        return jarFile;
+                public boolean accept(File dir, String name)
+                {
+                    return name.equals(DB_JAR);
+                }
+            });
+    
+        assertEquals("jdbc driver jar file not found!", 1, files.size());
+        
+        return files.get(0).toString();
     }
 }
