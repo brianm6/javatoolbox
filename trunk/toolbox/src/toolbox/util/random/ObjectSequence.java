@@ -3,6 +3,8 @@ package toolbox.util.random;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * ObjectSequence is responsible for generating a repeating/non-repeating 
  * sequence of objects from a given list of objects.
@@ -30,22 +32,28 @@ public class ObjectSequence extends AbstractSequence
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a ObjectSequence.
+     * Creates an ObjectSequence.
+     * 
+     * @param objectList List of objects from which to populate the sequence.
+     * @param nonRepeating True if the sequence should not repeat values.
      */
-    public ObjectSequence(List objectList, boolean repeating)
+    public ObjectSequence(List objectList, boolean nonRepeating)
     {
-        super(repeating);
+        super(nonRepeating);
         setPool(objectList);
-        sequence_ = new IntSequence(0, getPool().size() - 1, repeating);
+        sequence_ = new IntSequence(0, getPool().size() - 1, nonRepeating);
     }
     
     
     /**
-     * Creates a ObjectSequence.
+     * Creates an ObjectSequence.
+     * 
+     * @param objectList Array of objects from which to populate the sequence.
+     * @param nonRepeating True if the sequence should not repeat values.
      */
-    public ObjectSequence(Object[] objectList, boolean repeating)
+    public ObjectSequence(Object[] objectList, boolean nonRepeating)
     {
-        this(Arrays.asList(objectList), repeating);
+        this(Arrays.asList(objectList), nonRepeating);
     }
     
     //--------------------------------------------------------------------------
@@ -66,7 +74,7 @@ public class ObjectSequence extends AbstractSequence
      */
     public boolean hasMore()
     {
-        return sequence_.isRepeating(); 
+        return sequence_.hasMore(); 
     }
     
     //--------------------------------------------------------------------------
@@ -80,7 +88,7 @@ public class ObjectSequence extends AbstractSequence
      */
     public int getSize()
     {
-        return getPool().size();
+        return pool_.size();
     }
 
     
@@ -103,5 +111,6 @@ public class ObjectSequence extends AbstractSequence
     protected void setPool(List pool)
     {
         pool_ = pool;
+        Validate.isTrue(!pool_.isEmpty(), "List cannot be empty.");
     }
 }
