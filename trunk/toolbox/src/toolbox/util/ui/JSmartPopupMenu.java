@@ -16,7 +16,7 @@ import toolbox.util.SwingUtil;
 public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -25,14 +25,15 @@ public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartPopupMenu 
+     * Creates a JSmartPopupMenu. 
      */
     public JSmartPopupMenu()
     {
     }
 
+
     /**
-     * Creates a JSmartPopupMenu
+     * Creates a JSmartPopupMenu.
      * 
      * @param label Menu label
      */
@@ -52,6 +53,7 @@ public class JSmartPopupMenu extends JPopupMenu implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

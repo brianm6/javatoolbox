@@ -11,7 +11,7 @@ import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
 /**
- * JSmartSplitPane
+ * JSmartSplitPane is a split pane that can remember its divider location.
  */
 public class JSmartSplitPane extends JSplitPane implements IPreferenced
 {
@@ -24,33 +24,42 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartSplitPane
+     * Creates a JSmartSplitPane.
      */
     public JSmartSplitPane()
     {
     }
 
+
     /**
-     * @param newOrientation
+     * Creates a JSmartSplitPane.
+     * 
+     * @param newOrientation Orientation
      */
     public JSmartSplitPane(int newOrientation)
     {
         super(newOrientation);
     }
 
+
     /**
-     * @param newOrientation
-     * @param newContinuousLayout
+     * Creates a JSmartSplitPane.
+     * 
+     * @param newOrientation Orientation
+     * @param newContinuousLayout Continuous layout
      */
     public JSmartSplitPane(int newOrientation, boolean newContinuousLayout)
     {
         super(newOrientation, newContinuousLayout);
     }
 
+
     /**
-     * @param newOrientation
-     * @param newLeftComponent
-     * @param newRightComponent
+     * Creates a JSmartSplitPane.
+     * 
+     * @param newOrientation Orientation
+     * @param newLeftComponent Left hand side component
+     * @param newRightComponent Right hand side component
      */
     public JSmartSplitPane(
         int newOrientation,
@@ -60,11 +69,14 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
         super(newOrientation, newLeftComponent, newRightComponent);
     }
 
+
     /**
-     * @param newOrientation
-     * @param newContinuousLayout
-     * @param newLeftComponent
-     * @param newRightComponent
+     * Creates a JSmartSplitPane.
+     * 
+     * @param newOrientation Orientation
+     * @param newContinuousLayout Continuous layout
+     * @param newLeftComponent Left hand side component
+     * @param newRightComponent Right hand side component
      */
     public JSmartSplitPane(
         int newOrientation,
@@ -97,6 +109,7 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
                 ATTR_DIVIDER_LOCATION, 
                 getDividerLocation()));
     }
+
 
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)

@@ -88,7 +88,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private Icon   driveIcon_;
 
     /** 
-     * List of interested listeners 
+     * List of interested listeners. 
      */ 
     private JFileExplorerListener[] fileExplorerListeners_;
 
@@ -99,7 +99,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private boolean processingTreeEvent_;
     
     /** 
-     * Listener for the change in selection to the directory 
+     * Listener for the change in selection to the directory. 
      */
     private DirTreeSelectionListener treeSelectionListener_;
     
@@ -114,19 +114,20 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JFileExplorer with a default horizontal splitter
+     * Creates a JFileExplorer with a default horizontal splitter.
      */
     public JFileExplorer()
     {
         this(false);
     }
 
+
     /**
-     * Creates a JFileExplorer
+     * Creates a JFileExplorer.
      * 
-     * @param  verticalSplitter Set to true if you want the folder and file
-     *                          panes to be split by a vertical splitter, 
-     *                          otherwise a horizontal splitter will be used.
+     * @param verticalSplitter Set to true if you want the folder and file
+     *        panes to be split by a vertical splitter, otherwise a horizontal 
+     *        splitter will be used.
      */
     public JFileExplorer(boolean verticalSplitter)
     {
@@ -148,6 +149,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         return currentPath_;
     }
 
+
     /**
      * Sets the current directory path
      *
@@ -157,6 +159,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     {
         currentPath_ = currentPath;
     }
+
 
     /**
      * Returns the current file path.
@@ -178,6 +181,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
             
         return s.toString();
     }
+
     
     /**
      * Selects the given folder. Folder is a fully qualified directory structure
@@ -320,7 +324,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Saves preferences as XML
+     * Saves preferences as XML.
      * 
      * @param prefs Element to save preferences to
      */
@@ -340,6 +344,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
             
         XOMUtil.insertOrReplace(prefs, root);
     }
+
     
     /**
      * Restores preferences from XML and applies them.
@@ -381,7 +386,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a JFileExplorerListener
+     * Adds a JFileExplorerListener.
      *
      * @param listener Listener to add
      */
@@ -392,8 +397,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
                 ArrayUtil.add(fileExplorerListeners_, listener);
     }
 
+
     /**
-     * Removes a JFileExplorerListener
+     * Removes a JFileExplorerListener.
      *
      * @param listener Listener to remove
      */
@@ -404,8 +410,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
                 ArrayUtil.remove(fileExplorerListeners_, listener);
     }
 
+
     /**
-     * Fires an event when a file is double clicked by the user
+     * Fires an event when a file is double clicked by the user.
      */
     protected void fireFileDoubleClicked()
     {
@@ -413,17 +420,19 @@ public class JFileExplorer extends JPanel implements IPreferenced
             fileExplorerListeners_[i++].fileDoubleClicked(getFilePath()));
     }
 
+
     /**
-     * Fires an event when a file is selected by the user
+     * Fires an event when a file is selected by the user.
      */
     protected void fireFileSelected()
     {
         for (int i=0; i<fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].fileSelected(getFilePath()));
     }
+
     
     /**
-     * Fires an event when a directory is selected
+     * Fires an event when a directory is selected.
      * 
      * @param folder Folder that was selected
      */
@@ -432,9 +441,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         for (int i=0; i<fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].folderSelected(folder));
     }
+
     
     /**
-     * Fire an event when a directory is double clicked
+     * Fire an event when a directory is double clicked.
      * 
      * @param folder Folder that was double clicked
      */
@@ -449,7 +459,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Builds the GUI 
+     * Builds the GUI. 
      * 
      * @param verticalSplitter Splitter orientation
      */
@@ -551,6 +561,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         splitPane_.setDividerLocation(150);
     }
 
+
     /**
      * Sets the root for the JTree.
      *
@@ -566,8 +577,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         root_ = root;
     }
 
+
     /**
-     * Sets the tree folders
+     * Sets the tree folders.
      *
      * @param pathToAddFolders Path to add folders to
      * @param currentNode Current node
@@ -588,6 +600,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
             addTreeNodes(fileList, currentNode);
     }
 
+
     /**
      * Finds, sorts, and adds the files according to the path to the file list.
      *
@@ -605,6 +618,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
             listModel_.addElement(files[i].getName());
     }
 
+
     /**
      * Removes all children of the tree root.
      */
@@ -618,6 +632,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         
         tree_.addTreeSelectionListener(treeSelectionListener_);
     }
+
 
     /**
      * Adds folders to the tree.
@@ -665,6 +680,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         tree_.scrollPathToVisible(new TreePath(childNode.getPath()));
     }
 
+
     /**
      * Returns the default root.
      *
@@ -688,14 +704,14 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
-    
+
     /**
      * FileNode used to represent directories in the directory tree
      */
     class FileNode extends DefaultMutableTreeNode
     {
         /**
-         * Creates a FileNode
+         * Creates a FileNode.
          * 
          * @param userObject Object to associate with the file node
          */
@@ -706,9 +722,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
     
         /**
          * Compares based on directory/file name. Is sensetive to the host
-         * platform w.r.t. case sensetivity
+         * platform w.r.t. case sensetivity.
          * 
-         * @param  obj  Object to compare
+         * @param obj Object to compare
          * @return True if nodes are equal, false otherwise
          */
         public boolean equals(Object obj)
@@ -727,6 +743,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
                 return file1.equalsIgnoreCase(file2);
         }
     }
+
     
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
@@ -757,8 +774,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+
     /**
-     * Handles double click mouse events on a file in the file list
+     * Handles double click mouse events on a file in the file list.
      */
     class FileListMouseListener extends MouseAdapter
     {
@@ -780,6 +798,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+
     /**
      * Listens for selection changes in the file list, and fires events
      * accordingly.
@@ -794,6 +813,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
             fireFileSelected();
         }
     }
+
     
     /**
      * Inner class for handling click event on the JTree.
@@ -814,8 +834,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+
     /**
-     * Handles the changing of the selection of the file root (drive letter)
+     * Handles the changing of the selection of the file root (drive letter).
      */
     class DriveComboListener implements ItemListener
     {
@@ -832,8 +853,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+
     /**
-     * Updates the file list when the directory folder selection changes
+     * Updates the file list when the directory folder selection changes.
      */
     class DirTreeSelectionListener implements TreeSelectionListener
     {
@@ -867,8 +889,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
 
+
     /**
-     * Simple file information bar that shows file attributes
+     * Simple file information bar that shows file attributes.
      */    
     class InfoBar extends JStatusBar
     {
@@ -931,7 +954,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
                 (file.canWrite() ? "W" : ""));
         }
     }
+
     
+    /** 
+     * Updates the infobar with the currently selected file.
+     */
     class InfoBarUpdater extends JFileExplorerAdapter
     {
         public void fileSelected(String file)

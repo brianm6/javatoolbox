@@ -23,7 +23,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
         Logger.getLogger(JSmartMenuItem.class);
         
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -32,14 +32,15 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartMenuItem
+     * Creates a JSmartMenuItem.
      */
     public JSmartMenuItem()
     {
     }
 
+
     /**
-     * Creates a JSmartMenuItem
+     * Creates a JSmartMenuItem.
      * 
      * @param text Menu item text
      */
@@ -48,8 +49,9 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
         super(text);
     }
 
+
     /**
-     * Creates a JSmartMenuItem
+     * Creates a JSmartMenuItem.
      * 
      * @param text Menu item text
      * @param mnemonic Text mnemonic
@@ -59,8 +61,9 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
         super(text, mnemonic);
     }
 
+
     /**
-     * Creates a JSmartMenuItem
+     * Creates a JSmartMenuItem.
      * 
      * @param a Action activated by the selection of this menu item
      */
@@ -69,8 +72,9 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
         super(a);
     }
 
+
     /**
-     * Creates a JSmartMenuItem
+     * Creates a JSmartMenuItem.
      * 
      * @param icon Menu item icon
      */
@@ -79,8 +83,9 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
         super(icon);
     }
 
+
     /**
-     * Creates a JSmartMenuItem
+     * Creates a JSmartMenuItem.
      * 
      * @param text Menu item text
      * @param icon Menu item icon

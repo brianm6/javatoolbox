@@ -34,7 +34,6 @@ public class ImageCache
     public static final String IMAGE_TREE_CLOSED = ROOT + "TreeClosed.gif";
     public static final String IMAGE_HARD_DRIVE  = ROOT + "HardDrive.gif";
     
-    
     /**
      * Hashmap for cached icons
      */
@@ -52,7 +51,7 @@ public class ImageCache
     /**
      * Retrieve icon at the specified URL
      * 
-     * @param  url  URL to load icon from
+     * @param url URL to load icon from
      * @return Icon if a valid url, null otherwise
      */
     public static Icon getIcon(String url)
@@ -70,10 +69,11 @@ public class ImageCache
         return icon;
     }
 
+
     /**
      * Retrieve image at the specified URL
      * 
-     * @param  url  URL to load image from
+     * @param url URL to load image from
      * @return Image if a valid url, null otherwise
      */
     public static Image getImage(String url)
@@ -90,6 +90,7 @@ public class ImageCache
             
         return image;
     }
+    
     
     /**
      * Flushes the cache

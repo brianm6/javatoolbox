@@ -13,7 +13,7 @@ import toolbox.util.Assert;
 public class JConveyorPopupMenu extends JSmartPopupMenu
 {
     /** 
-     * Max number of items that can be displayed by the popup menu
+     * Max number of items that can be displayed by the popup menu.
      */
     private int capacity_;
     
@@ -22,7 +22,7 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JConveyorPopupMenu with a default max capacity of 10
+     * Creates a JConveyorPopupMenu with a default max capacity of 10.
      */
     public JConveyorPopupMenu()
     {
@@ -30,11 +30,10 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
     }
     
     /**
-     * Creates a JConveyorPopupMenu
+     * Creates a JConveyorPopupMenu.
      * 
      * @param capacity Max number of menu items allowed in the menu before
-     *                 items at the bottom of the menu start getting pushed
-     *                 off.
+     *        items at the bottom of the menu start getting pushed off.
      */
     public JConveyorPopupMenu(int capacity)
     {
@@ -42,11 +41,11 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
     }
 
     /**
-     * Creates a JConveyorPopupMenu
+     * Creates a JConveyorPopupMenu.
      * 
      * @param title Popup menu title
      * @param capacity Max number of menu items allowed in the menu before
-     *                 items at the bottom of the menu start getting pushed off.
+     *        items at the bottom of the menu start getting pushed off.
      */
     public JConveyorPopupMenu(String title, int capacity)
     {
@@ -59,7 +58,7 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the max capacity of the popup menu
+     * Sets the max capacity of the popup menu.
      * 
      * @param capacity Capacity > 0
      */

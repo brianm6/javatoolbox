@@ -27,14 +27,15 @@ public class JSmartLabel extends JLabel implements AntiAliased
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JSmartLabel 
+     * Creates a JSmartLabel. 
      */
     public JSmartLabel()
     {
     }
+
     
     /**
-     * Creates a JSmartLabel
+     * Creates a JSmartLabel.
      * 
      * @param text Label text
      */
@@ -43,8 +44,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
         super(text);
     }
 
+
     /**
-     * Creates a JSmartLabel
+     * Creates a JSmartLabel.
      * 
      * @param image Label image
      */
@@ -53,8 +55,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
         super(image);
     }
 
+
     /**
-     * Creates a JSmartLabel
+     * Creates a JSmartLabel.
      * 
      * @param image Label image
      * @param horizontalAlignment Text alignment
@@ -64,8 +67,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
         super(image, horizontalAlignment);
     }
 
+
     /**
-     * Creates a JSmartLabel
+     * Creates a JSmartLabel.
      * 
      * @param text Label text
      * @param icon Label icon
@@ -76,8 +80,9 @@ public class JSmartLabel extends JLabel implements AntiAliased
         super(text, icon, horizontalAlignment);
     }
 
+
     /**
-     * Creates a JSmartLabel
+     * Creates a JSmartLabel.
      * 
      * @param text Label text
      * @param horizontalAlignment Text alignment
@@ -98,6 +103,7 @@ public class JSmartLabel extends JLabel implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

@@ -26,14 +26,15 @@ public class JSmartMenu extends JMenu implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartMenu
+     * Creates a JSmartMenu.
      */
     public JSmartMenu()
     {
     }
 
+
     /**
-     * Creates a JSmartMenu
+     * Creates a JSmartMenu.
      * 
      * @param s Menu text
      */
@@ -42,8 +43,9 @@ public class JSmartMenu extends JMenu implements AntiAliased
         super(s);
     }
 
+
     /**
-     * Creates a JSmartMenu
+     * Creates a JSmartMenu.
      * 
      * @param s Menu text
      * @param b Can the menu be torn off  
@@ -53,8 +55,9 @@ public class JSmartMenu extends JMenu implements AntiAliased
         super(s, b);
     }
 
+
     /**
-     * Creates a JSmartMenu
+     * Creates a JSmartMenu.
      * 
      * @param a Action activated by the selection of this menu
      */
@@ -74,6 +77,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

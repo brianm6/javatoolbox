@@ -17,7 +17,7 @@ import toolbox.util.SwingUtil;
 public class JSmartTextField extends JTextField implements AntiAliased
 {
     /**
-     * Antialiased flag
+     * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
@@ -26,14 +26,15 @@ public class JSmartTextField extends JTextField implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartTextField
+     * Creates a JSmartTextField.
      */
     public JSmartTextField()
     {
     }
 
+
     /**
-     * Creates a JSmartTextField
+     * Creates a JSmartTextField.
      * 
      * @param columns Number of columns
      */
@@ -42,8 +43,9 @@ public class JSmartTextField extends JTextField implements AntiAliased
         super(columns);
     }
 
+
     /**
-     * Creates a JSmartTextField
+     * Creates a JSmartTextField.
      * 
      * @param text Field text
      */
@@ -52,8 +54,9 @@ public class JSmartTextField extends JTextField implements AntiAliased
         super(text);
     }
 
+
     /**
-     * Creates a JSmartTextField
+     * Creates a JSmartTextField.
      * 
      * @param text Field text
      * @param columns Number of columns
@@ -63,8 +66,9 @@ public class JSmartTextField extends JTextField implements AntiAliased
         super(text, columns);
     }
 
+
     /**
-     * Creates a JSmartTextField
+     * Creates a JSmartTextField.
      * 
      * @param doc Document
      * @param text Field text
@@ -86,6 +90,7 @@ public class JSmartTextField extends JTextField implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

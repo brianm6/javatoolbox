@@ -38,20 +38,21 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     private JTextComponent textComponent_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JTextComponentPopupMenu
+     * Creates a JTextComponentPopupMenu.
      */
     public JTextComponentPopupMenu()
     {
     }
     
+    
     /**
      * Creates a JTextComponentPopupMenu with an associated text component.
      * 
-     * @param  textComponent  JTextComponent to add popup to
+     * @param textComponent JTextComponent to add popup to
      */
     public JTextComponentPopupMenu(JTextComponent textComponent)
     {
@@ -60,11 +61,11 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
-     * Builds popupmenu and adds mouse listener to listbox
+     * Builds popupmenu and adds mouse listener to listbox.
      */
     protected void buildView()
     {
@@ -81,11 +82,11 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     }
     
     //--------------------------------------------------------------------------
-    //  Actions
+    // Actions
     //--------------------------------------------------------------------------
 
     /**
-     * Copies the contents of the currently selected indices to the clipboard
+     * Copies the contents of the currently selected indices to the clipboard.
      */    
     class CopyAction extends AbstractAction
     {
@@ -97,14 +98,16 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                 ImageCache.getIcon(ImageCache.IMAGE_COPY));
         }
         
+        
         public void actionPerformed(ActionEvent e)
         {
             textComponent_.copy();
         }
     }
 
+
     /**
-     * Pastes the contents of the clipboard into the text component
+     * Pastes the contents of the clipboard into the text component.
      */    
     class PasteAction extends AbstractAction
     {
@@ -116,14 +119,16 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                 ImageCache.getIcon(ImageCache.IMAGE_PASTE));
         }
         
+        
         public void actionPerformed(ActionEvent e)
         {
             textComponent_.paste();
         }
     }
     
+    
     /**
-     * Selects all items in the list box 
+     * Selects all items in the list box.
      */
     class SelectAllAction extends AbstractAction
     {
@@ -132,14 +137,16 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
             super("Select All");
         }
         
+        
         public void actionPerformed(ActionEvent e)
         {
             textComponent_.selectAll();
         }
     }
     
+    
     /**
-     * Sets the font in the text component
+     * Sets the font in the text component.
      */
     class SetFontAction extends AbstractAction
     {
@@ -147,6 +154,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         {
             super("Set font..");
         }
+        
         
         public void actionPerformed(ActionEvent e)
         {
@@ -168,6 +176,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                 
             fontChooser.addFontDialogListener(new IFontChooserDialogListener()
             {
+                
                 public void okButtonPressed(JFontChooser fontChooser)
                 {
                     try
@@ -187,12 +196,14 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                     }
                 }
 
+
                 public void cancelButtonPressed(JFontChooser fontChooser)
                 {
                     // Just restore the original font...skip antialias cuz
                     // I'm a lazy bum sometimes..
                     textComponent_.setFont(originalFont);
                 }
+
 
                 public void applyButtonPressed(JFontChooser fontChooser)
                 {
@@ -205,8 +216,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
+    
     /**
-     * Triggers activation of the Find Dialog box
+     * Triggers activation of the Find Dialog box.
      */    
     class FindAction extends AbstractAction
     {
@@ -232,6 +244,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                 }
             });
         }
+
         
         public void actionPerformed(ActionEvent e)
         {
@@ -242,8 +255,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
+    
     /**
-     * Inserts the text of a file at the currnet cursor location
+     * Inserts the text of a file at the currnet cursor location.
      */
     static class InsertFileAction extends SmartAction
     {
@@ -255,6 +269,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
             super("Insert..", true, false, null);
             jtc_ = jtc;
         }
+
         
         public void runAction(ActionEvent e) throws Exception
         {
@@ -281,8 +296,9 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         }
     }
     
+    
     /**
-     * Inserts the text of a file at the currnet cursor location
+     * Inserts the text of a file at the currnet cursor location.
      */
     static class SaveAsAction extends SmartAction
     {
@@ -297,6 +313,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
                 ImageCache.getIcon(ImageCache.IMAGE_SAVEAS));
             jtc_ = jtc;
         }
+
         
         public void runAction(ActionEvent e) throws Exception
         {
@@ -327,7 +344,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     //--------------------------------------------------------------------------
     
     /**
-     * Search initiator for JTextComponents
+     * Search initiator for JTextComponents.
      */    
     class SearchInitiator implements JFindDialog.SearchInitiator
     {
@@ -337,21 +354,25 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
         {
             jtc_ = jtc;
         }
+
         
         public Frame getFrame()
         {
             return SwingUtil.getFrameAncestor(jtc_);
         }
 
+
         public String getSearchString()
         {
             return "";
         }
 
+
         public String getText()
         {
             return jtc_.getText();
         }
+
 
         public void selectText(int start, int end)
         {

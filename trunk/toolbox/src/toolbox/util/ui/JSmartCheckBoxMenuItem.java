@@ -28,14 +28,15 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartCheckBoxMenuItem
+     * Creates a JSmartCheckBoxMenuItem.
      */
     public JSmartCheckBoxMenuItem()
     {
     }
 
+
     /**
-     * Creates a JSmartCheckBoxMenuItem
+     * Creates a JSmartCheckBoxMenuItem.
      * 
      * @param text Checkbox text
      */
@@ -44,8 +45,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
         super(text);
     }
 
+
     /**
-     * Creates a JSmartCheckBoxMenuItem
+     * Creates a JSmartCheckBoxMenuItem.
      * 
      * @param text Checkbox text
      * @param b Checked state
@@ -54,6 +56,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     {
         super(text, b);
     }
+
 
     /**
      * Creates a JSmartCheckedBoxMenuItem
@@ -65,8 +68,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
         super(a);
     }
 
+
     /**
-     * Creates a JSmartCheckBoxMenuItem
+     * Creates a JSmartCheckBoxMenuItem.
      * 
      * @param icon Checkbox icon
      */
@@ -75,8 +79,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
         super(icon);
     }
 
+
     /**
-     * Creates a JSmartCheckBoxMenuItem
+     * Creates a JSmartCheckBoxMenuItem.
      * 
      * @param text Checkbox text
      * @param icon Checkbox icon
@@ -86,8 +91,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
         super(text, icon);
     }
 
+
     /**
-     * Creates a JSmartCheckBoxMenuItem
+     * Creates a JSmartCheckBoxMenuItem.
      * 
      * @param text Checkbox text
      * @param icon Checkbox icon

@@ -20,7 +20,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 
 /**
- * Simple text search find dialog that is tied to a SearchInitiator
+ * Simple text search find dialog that is tied to a SearchInitiator.
  */
 public class JFindDialog extends JDialog
 {
@@ -30,28 +30,28 @@ public class JFindDialog extends JDialog
         Logger.getLogger(JFindDialog.class);
    
     /** 
-     * Textfield for the user to change/updatee the search string 
+     * Textfield for the user to change/updatee the search string. 
      */     
     private JTextField findField_;
     
     /** 
-     * Search client 
+     * Search client.
      */
     private SearchInitiator initiator_;
     
     /** 
-     * Used to display informative information regarding the search 
+     * Used to display informative information regarding the search. 
      */
     private JStatusBar status_;
 
     /** 
-     * Most recently used search string 
+     * Most recently used search string.
      */
     private String lastSearched_;
     
     /** 
      * Index of string when last found, used to determine if conducting a new 
-     * search of continuing an existing search 
+     * search of continuing an existing search. 
      */
     private int lastFound_;
 
@@ -60,7 +60,7 @@ public class JFindDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a find dialog for the given search initiator
+     * Creates a find dialog for the given search initiator.
      * 
      * @param initiator Initiator of the searchs
      */
@@ -84,7 +84,7 @@ public class JFindDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the view of the find dialog
+     * Builds the view of the find dialog.
      */
     protected void buildView()
     {
@@ -163,8 +163,9 @@ public class JFindDialog extends JDialog
         }
     }
     
+    
     /**
-     * Disposes of the find dialog when dismissed
+     * Disposes of the find dialog when dismissed.
      */
     class CancelAction extends AbstractAction
     {
@@ -184,30 +185,39 @@ public class JFindDialog extends JDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Search client must implement this interface
+     * Search client must implement this interface.
      */    
     public interface SearchInitiator
     {
         /**
-         * @return Text to search for
+         * Returns the text to search for.
+         * 
+         * @return String
          */
         public String getSearchString();
         
+        
         /**
-         * @return Text to search within
+         * Returns the text to search within.
+         * 
+         * @return String
          */
         public String getText();
         
+        
         /**
-         * Selects the text after it has been found
+         * Selects the text after it has been found.
          * 
          * @param start Starting index of selection
          * @param end Ending index of selection
          */
         public void selectText(int start, int end);
         
+        
         /**
-         * @return Frame that the search initiator is located in.
+         * Returns the Frame that the search initiator is located in.
+         * 
+         * @return Frame
          */
         public Frame getFrame();
     }

@@ -30,15 +30,16 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartComboBox.
      */
     public JSmartComboBox()
     {
         init();
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartComboBox.
      * 
      * @param items Dropdown items
      */
@@ -48,8 +49,9 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
         init();
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartComboBox.
      * 
      * @param items Dropdown items
      */
@@ -59,8 +61,9 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
         init();
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartComboBox.
      * 
      * @param aModel Combobox model
      */
@@ -94,6 +97,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

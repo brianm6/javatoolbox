@@ -36,10 +36,10 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
         
     /**
-     * Create a multiplitpane with the given orientation and dividerSize
+     * Create a multiplitpane with the given orientation and dividerSize.
      * 
-     * @param  orientation  JSplitPane.[HORIZONTAL|VERTICAL]_SPLIT
-     * @param  dividerSize  Size of the splitpane dividers
+     * @param orientation JSplitPane.[HORIZONTAL|VERTICAL]_SPLIT
+     * @param dividerSize Size of the splitpane dividers
      */
     public JMultiSplitPane(int orientation, int dividerSize)
     {
@@ -69,29 +69,31 @@ public class JMultiSplitPane extends JPanel
      * component. The adding of the component will be deferred using 
      * {@link javax.swing.SwingUtilities#invokeLater}.
      *
-     * @param  comp  Component to add
+     * @param comp Component to add
      */
     public void add(JComponent comp)
     {
         SwingUtilities.invokeLater(new AddComponent(comp));
     }
 
+
     /**
      * Removes a component from the multisplitpane. Removal is be deferred 
      * using {@link javax.swing.SwingUtilities#invokeLater}.
      *
-     * @param  comp  Component to remove
+     * @param comp Component to remove
      */
     public void remove(JComponent comp)
     {
         SwingUtilities.invokeLater(new RemoveComponent(comp));
     }
 
+
     /**
-     * Components of the multisplitpane
+     * Components of the multisplitpane.
      * 
-     * @return  Contents of the multisplitpane. The order is the order by
-     *          which they should be added in order to get the same ordering.
+     * @return Contents of the multisplitpane. The order is the order by
+     *         which they should be added in order to get the same ordering.
      */
     public Component[] getComponents()
     {
@@ -115,9 +117,9 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the split pane divider size
+     * Sets the split pane divider size.
      *
-     * @param size  New size for all dividers.
+     * @param size New size for all dividers.
      */
     public void setDividerSize(int size)
     {
@@ -132,24 +134,33 @@ public class JMultiSplitPane extends JPanel
         revalidate();
     }
 
+
     /**
-     * @return Size of the split pane divider
+     * Returns the size of the split pane divider.
+     * 
+     * @return int
      */
     public int getDividerSize()
     {
         return dividerSize_;
     }
 
+
     /** 
-     * @return Splitpane orientation
+     * Returns the splitpane orientation.
+     * 
+     * @return int
      */
     public int getOrientation() 
     {
         return orientation_;
     }
     
+    
     /**
-     * @return Array of divider locations
+     * Returns the array of divider locations.
+     * 
+     * @return int[]
      */
     public int[] getDividerLocations()
     {
@@ -161,10 +172,11 @@ public class JMultiSplitPane extends JPanel
         return ivec.getArray();
     }
 
+
     /**
-     * Set the divider locations
+     * Set the divider locations.
      * 
-     * @param  locs  Array of divider locations
+     * @param locs  Array of divider locations
      */
     public void setDividerLocations(final int[] locs)
     {
@@ -183,7 +195,7 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Gets divider locations
+     * Gets divider locations.
      * 
      * @param ivec Vector of divider locations (populated on exit)
      * @param splitpane JSplitPane
@@ -199,8 +211,9 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
+
     /**
-     * Sets divider locations
+     * Sets divider locations.
      * 
      * @param locs Divider locations to set
      * @param index Index
@@ -230,11 +243,12 @@ public class JMultiSplitPane extends JPanel
         return index;
     }
 
+
     /**
-     * Gets the components
+     * Gets the components.
      * 
-     * @param  vec        Vector
-     * @param  splitpane  JSplitPane
+     * @param vec Vector
+     * @param splitpane JSplitPane
      */
     private void doGetComponents(Vector vec, Component splitpane)
     {
@@ -250,10 +264,11 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
+
     /**
-     * Sets the split width
+     * Sets the split width.
      * 
-     * @param  splitpane  JSplitPane
+     * @param splitpane JSplitPane
      */
     private void doSetSplitWidth(Component splitpane)
     {
@@ -266,10 +281,11 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
+
     /**
-     * Adds a component
+     * Adds a component.
      * 
-     * @param  comp  Component to add
+     * @param comp Component to add
      */
     private void addComponent(JComponent comp)
     {
@@ -301,10 +317,11 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
+
     /**
-     * Remove a component
+     * Remove a component.
      * 
-     * @param  comp  Component to remove
+     * @param comp Component to remove
      */
     private void removeComponent(JComponent comp)
     {
@@ -339,12 +356,13 @@ public class JMultiSplitPane extends JPanel
         }
     }
 
+
     /**
-     * Replaces a component in its parent
+     * Replaces a component in its parent.
      * 
-     * @param  parent  Parent container
-     * @param  split   Splitpane
-     * @param  comp    Component to replace
+     * @param parent Parent container
+     * @param split Splitpane
+     * @param comp Component to replace
      */
     private void replaceInParent(Container parent, JSplitPane split, 
         Component comp)
@@ -375,7 +393,7 @@ public class JMultiSplitPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a component to the multisplit pane
+     * Adds a component to the multisplit pane.
      */
     private class AddComponent implements Runnable
     {
@@ -394,7 +412,7 @@ public class JMultiSplitPane extends JPanel
     }
     
     /**
-     * Removes a component from the multisplitpane
+     * Removes a component from the multisplitpane.
      */
     private class RemoveComponent implements Runnable
     {
@@ -433,7 +451,7 @@ public class JMultiSplitPane extends JPanel
         /**
          * Arg constructor
          * 
-         * @param initialSize  Initial size
+         * @param initialSize Initial size
          */
         public IntVector(int initialSize)
         {
@@ -443,7 +461,7 @@ public class JMultiSplitPane extends JPanel
         /** 
          * Add an int last 
          * 
-         * @param  v  int
+         * @param v int
          */
         public void add(int v)
         {

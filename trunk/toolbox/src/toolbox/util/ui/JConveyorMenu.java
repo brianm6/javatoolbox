@@ -23,7 +23,7 @@ public class JConveyorMenu extends JSmartMenu
      * Creates a JConveyorMenu
      * 
      * @param capacity Max number of menu items allowed in the menu before
-     *                 items at the bottom of the menu start getting pushed off.
+     *        items at the bottom of the menu start getting pushed off.
      */
     public JConveyorMenu(int capacity)
     {
@@ -35,7 +35,7 @@ public class JConveyorMenu extends JSmartMenu
      * 
      * @param title Menu title
      * @param capacity Max number of menu items allowed in the menu before
-     *                 items at the bottom of the menu start getting pushed off.
+     *        items at the bottom of the menu start getting pushed off.
      */
     public JConveyorMenu(String title, int capacity)
     {

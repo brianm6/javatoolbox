@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.SwingUtil;
 
 /**
- * Simple memory monitor component lifted from JEdit with minor modifications
+ * Simple memory monitor component lifted from JEdit with minor modifications.
  */
 public class JMemoryMonitor extends JComponent
 {
@@ -67,6 +67,9 @@ public class JMemoryMonitor extends JComponent
     // Protected 
     //--------------------------------------------------------------------------
     
+    /**
+     * Sets all the configuration defaults.
+     */
     protected void setDefaults()
     {
         labelFont_ = UIManager.getFont("Label.font");
@@ -219,7 +222,7 @@ public class JMemoryMonitor extends JComponent
     //--------------------------------------------------------------------------
 
     /** 
-     * Refreshes are triggered by the Timer
+     * Refreshes are triggered by the Timer attached to this action.
      */
     class RefreshAction extends AbstractAction
     {

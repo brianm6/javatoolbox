@@ -46,22 +46,22 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     private static final String NODE_FONT             = "Font";
     
     /** 
-     * Popup menu for this component 
+     * Popup menu for this component. 
      */
     private JTextComponentPopupMenu popupMenu_;
     
     /**
-     * Check box that toggles autoscroll
+     * Check box that toggles autoscroll.
      */
     private JCheckBoxMenuItem autoScrollCheckBox_;
     
     /** 
-     * Check box that toggles antialiasing of text
+     * Check box that toggles antialiasing of text.
      */
     private JCheckBoxMenuItem antiAliasCheckBox_;
     
     /**
-     * Check box that toggles line wrapping
+     * Check box that toggles line wrapping.
      */
     private JCheckBoxMenuItem wrapLinesCheckBox_;
     
@@ -73,7 +73,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     
     /**
      * Percentage of text to prune once the capacity is reached. Valid values
-     * are in the range [1..100]
+     * are in the range [1..100].
      */
     private int pruningFactor_;
     
@@ -90,6 +90,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         this("");
     }
 
+
     /**
      * Creates a JSmartTextArea with the given text and autoscroll and antialias
      * turned off by default.
@@ -101,8 +102,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         this(text, false, false);
     }
 
+
     /**
-     * Creates a JSmartTextArea with the given options
+     * Creates a JSmartTextArea with the given options.
      * 
      * @param autoScroll Turns on autoscroll of output
      * @param antiAlias Turns on antialiasing of the text
@@ -112,8 +114,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         this("", autoScroll, antiAlias);
     }
 
+
     /**
-     * Creates a JSmartTextArea with the given text and options
+     * Creates a JSmartTextArea with the given text and options.
      * 
      * @param text Initial text
      * @param autoScroll Turns on autoscroll of output
@@ -183,7 +186,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     //--------------------------------------------------------------------------
     
     /**
-     * Overriden to enable antialiasing
+     * Overriden to enable antialiasing.
      * 
      * @see java.awt.Component#paint(java.awt.Graphics)
      */
@@ -236,6 +239,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         }
     }
     
+    
     /**
      * @see javax.swing.JTextArea#setLineWrap(boolean)
      */
@@ -252,15 +256,16 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     //--------------------------------------------------------------------------
     
     /**
-     * Convenience method to scroll to the bottom of the text area
+     * Convenience method to scroll to the bottom of the text area.
      */
     public void scrollToEnd()
     {
         setCaretPosition(getDocument().getLength());
     }
     
+    
     /**
-     * Returns true if autoscroll is enabled, false otherwise
+     * Returns true if autoscroll is enabled, false otherwise.
      * 
      * @return boolean
      */
@@ -269,8 +274,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         return autoScrollCheckBox_.isSelected();
     }
 
+
     /**
-     * Sets the autoScroll feature
+     * Sets the autoScroll feature.
      * 
      * @param autoScroll  True to enable autoscroll, false to disable autoscroll
      */
@@ -279,8 +285,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         autoScrollCheckBox_.setSelected(autoScroll);
     }
    
+   
     /**
-     * Returns true if antialiasing is enabled, false otherwise
+     * Returns true if antialiasing is enabled, false otherwise.
      * 
      * @return boolean
      */
@@ -289,8 +296,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         return antiAliasCheckBox_.isSelected();
     }
 
+
     /**
-     * Activates antialiasing of text
+     * Activates antialiasing of text.
      * 
      * @param antiAlias True turns antialiasing on; false turns it off
      */
@@ -298,6 +306,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     {
         antiAliasCheckBox_.setSelected(antiAlias);
     }
+
 
     /**
      * Returns the maximum number of characters displayable by the text area
@@ -310,6 +319,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         return capacity_;
     }
 
+
     /**
      * Returns the percentage of text that gets pruned from the text area when
      * the capacity is reached.
@@ -321,6 +331,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         return pruningFactor_;
     }
 
+
     /**
      * Sets the max capacity of the text area.
      * 
@@ -331,8 +342,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         capacity_ = i;
     }
 
+
     /**
-     * Sets the pruning factor
+     * Sets the pruning factor.
      * 
      * @param f Pruning factor
      */
@@ -349,14 +361,14 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     //--------------------------------------------------------------------------
     
     /**
-     * Adds a popupmenu to the textarea
+     * Adds a popupmenu to the textarea.
      */
     protected void buildView()
     {
         // Build popup menu and add register with textarea
         autoScrollCheckBox_ = new JSmartCheckBoxMenuItem(new AutoScrollAction());
-        antiAliasCheckBox_  = new JSmartCheckBoxMenuItem(new AntiAliasAction());
-        wrapLinesCheckBox_  = new JSmartCheckBoxMenuItem(new WrapLinesAction());
+        antiAliasCheckBox_ = new JSmartCheckBoxMenuItem(new AntiAliasAction());
+        wrapLinesCheckBox_ = new JSmartCheckBoxMenuItem(new WrapLinesAction());
         
         popupMenu_ = new JTextComponentPopupMenu(this);
         popupMenu_.addSeparator();
@@ -370,7 +382,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     //--------------------------------------------------------------------------
     
     /**
-     * Toggles autoscroll
+     * Toggles autoscroll.
      */    
     class AutoScrollAction extends AbstractAction 
     {
@@ -378,6 +390,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         {
             super("AutoScroll");
         }
+        
         
         public void actionPerformed(ActionEvent e)
         {
@@ -387,7 +400,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     }    
 
     /**
-     * Toggles antialiasing
+     * Toggles antialiasing.
      */
     class AntiAliasAction extends AbstractAction 
     {
@@ -396,6 +409,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
             super("AntiAlias");
         }
         
+        
         public void actionPerformed(ActionEvent e)
         {
             repaint();
@@ -403,7 +417,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     }
 
     /**
-     * Toggles line wrapping
+     * Toggles line wrapping.
      */
     class WrapLinesAction extends AbstractAction 
     {
@@ -412,6 +426,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
             super("Wrap Lines");
         }
         
+        
         public void actionPerformed(ActionEvent e)
         {
             setLineWrap(wrapLinesCheckBox_.isSelected());
@@ -419,7 +434,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     }
 
     /**
-     * Clears the text area
+     * Clears the text area.
      */
     public class ClearAction extends AbstractAction
     {
@@ -428,12 +443,14 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
             this("Clear");
         }
         
+        
         public ClearAction(String name)
         {
             super(name);
             putValue(MNEMONIC_KEY, new Integer('C'));
             putValue(SHORT_DESCRIPTION, "Clears the output");
         }
+        
         
         public void actionPerformed(ActionEvent e)
         {

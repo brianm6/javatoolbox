@@ -6,12 +6,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 
 /**
- * Popup menu listener for RMB
+ * Popup menu listener activated by a right-mouse-button click event.
  */ 
 public class JPopupListener extends MouseAdapter
 {
     /**
-     * Popup menu to add a listener to
+     * Popup menu to add a listener to.
      */
     private JPopupMenu popupMenu_;
 
@@ -20,9 +20,9 @@ public class JPopupListener extends MouseAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JPopupListener
+     * Creates a JPopupListener.
      * 
-     * @param  popupMenu  Menu to add this listener to
+     * @param popupMenu Menu to add this listener to
      */    
     public JPopupListener(JPopupMenu popupMenu)
     {
@@ -41,6 +41,7 @@ public class JPopupListener extends MouseAdapter
         maybeShowPopup(e);
     }
 
+
     /**
      * @param e Mouse event
      */
@@ -54,9 +55,9 @@ public class JPopupListener extends MouseAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Determines if the popupmenu should be made visible
+     * Determines if the popupmenu should be made visible.
      * 
-     * @param  e  Mouse event
+     * @param e Mouse event
      */
     private void maybeShowPopup(MouseEvent e)
     {

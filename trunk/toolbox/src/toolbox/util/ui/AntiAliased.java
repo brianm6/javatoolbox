@@ -7,16 +7,17 @@ package toolbox.util.ui;
 public interface AntiAliased
 {
     /**
-     * Returns true if antialiasing is turned on, false otherwise
+     * Returns true if antialiasing is turned on, false otherwise.
      * 
      * @return boolean
      */
     public boolean isAntiAliased();
     
+    
     /**
-     * Sets the components antialiasing flag
+     * Sets the components antialiasing flag.
      * 
-     * @param  b  Set to true to turn on antialiasing, false otherwise
+     * @param b Set to true to turn on antialiasing, false otherwise.
      */
     public void setAntiAliased(boolean b);
 }

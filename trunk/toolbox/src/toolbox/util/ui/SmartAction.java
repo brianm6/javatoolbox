@@ -67,32 +67,32 @@ public abstract class SmartAction extends AbstractAction
     private boolean async_;
     
     /** 
-     * Set the cursor to busy while action executing 
+     * Set the cursor to busy while action executing. 
      */
     private boolean busyCursor_;
     
     /** 
-     * Root component on which to set the busy cursor on 
+     * Root component on which to set the busy cursor on. 
      */
     private Component scope_;
 
     /** 
-     * Caught exception if one was thrown 
+     * Caught exception if one was thrown. 
      */
     private Throwable caught_;
     
     /** 
-     * List of actions to execute before this action 
+     * List of actions to execute before this action. 
      */
     private List preActions_;
     
     /** 
-     * List of actions to execute (regardless of failure) after this action 
+     * List of actions to execute (regardless of failure) after this action. 
      */
     private List finallyActions_;
     
     /** 
-     * List of actions to execute if an exception is thrown 
+     * List of actions to execute if an exception is thrown.
      */
     private List errorActions_;
 
@@ -101,14 +101,13 @@ public abstract class SmartAction extends AbstractAction
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SmartAction with the given options
+     * Creates a SmartAction with the given options.
      * 
-     * @param  name      Name of action
-     * @param  tryCatch  Set to true to surround the action with a try/catch 
-     *                   block
-     * @param  async     Set to tree to execute the action asynchronously
-     * @param  scope     Component to set the busy cursor on (implies that you
-     *                   want the busy cursor set). Pass in null to ignore.
+     * @param name Name of action
+     * @param tryCatch Set to true to surround the action with a try/catch block
+     * @param async Set to tree to execute the action asynchronously
+     * @param scope Component to set the busy cursor on (implies that you want 
+     *        the busy cursor set). Pass in null to ignore.
      */
     public SmartAction(String name, boolean tryCatch, boolean async, 
         Component scope)
@@ -144,7 +143,7 @@ public abstract class SmartAction extends AbstractAction
      * execution of arbitrary actions and also handles sync/async exection
      * of the action. Delegates to runAction() which subclass implement.
      * 
-     * @param e  ActionEvent
+     * @param e ActionEvent
      */    
     public final void actionPerformed(final ActionEvent e)
     {
@@ -192,7 +191,7 @@ public abstract class SmartAction extends AbstractAction
      * Called by actionPerformed() as a delegate for subclasses to override
      * and implement their "actionPerformed" behavior.
      * 
-     * @param  e  ActionEvent
+     * @param e ActionEvent
      * @throws Exception on error
      */
     public abstract void runAction(ActionEvent e) throws Exception;
@@ -204,34 +203,37 @@ public abstract class SmartAction extends AbstractAction
     /**
      * Adds an action to be executed prior the exection of this action
      * 
-     * @param  action  Action to execute before main action
+     * @param action Action to execute before main action
      */
     public void addPreAction(Action action)
     {
         preActions_.add(action);
     }
 
+
     /**
      * Adds an action to be executed after the execution of the main action
      * regardless or an error condition or not.
      * 
-     * @param  action  Action to execute after the main action
+     * @param action Action to execute after the main action
      */
     public void addFinallyAction(Action action)
     {
         finallyActions_.add(action);
     }
     
+    
     /**
      * Adds an action to be executed in the event of an error condition (an
      * exception is thrown)
      * 
-     * @param  action  Action to execute if an exception is thrown
+     * @param action Action to execute if an exception is thrown
      */
     public void addErrorAction(Action action)
     {
         errorActions_.add(action);
     }
+
 
     /**
      * Returns thrown exception
@@ -248,7 +250,7 @@ public abstract class SmartAction extends AbstractAction
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the busy cursor on the passed in JComponent
+     * Sets the busy cursor on the passed in JComponent.
      */
     class BusyCursorAction extends AbstractAction
     {
@@ -258,8 +260,9 @@ public abstract class SmartAction extends AbstractAction
         }
     }
 
+
     /**
-     * Sets the default cursor on the passed in JComponent
+     * Sets the default cursor on the passed in JComponent.
      */    
     class DefaultCursorAction extends AbstractAction
     {
@@ -269,8 +272,9 @@ public abstract class SmartAction extends AbstractAction
         }
     }
 
+
     /**
-     * Logs the exception and displays on the GUI 
+     * Logs the exception and displays on the GUI.
      */
     class HandleErrorAction extends AbstractAction
     {

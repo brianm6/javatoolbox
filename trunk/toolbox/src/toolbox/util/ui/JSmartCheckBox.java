@@ -22,20 +22,20 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
 
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox.
      */
     public JSmartCheckBox()
     {
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox.
      * 
      * @param text Text label
      */
@@ -44,8 +44,9 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
         super(text);
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox.
      * 
      * @param text Text label
      * @param selected Initial selected state
@@ -55,8 +56,9 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
         super(text, selected);
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox.
      * 
      * @param a Action
      */
@@ -65,8 +67,9 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
         super(a);
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox.
      * 
      * @param icon Icon
      */
@@ -75,8 +78,9 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
         super(icon);
     }
 
+
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox.
      * 
      * @param icon Icon
      * @param selected Initial selected state
@@ -87,7 +91,7 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
     }
 
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox
      * 
      * @param text Text label
      * @param icon Icon
@@ -98,7 +102,7 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
     }
 
     /**
-     * Creates a JSmartComboBox
+     * Creates a JSmartCheckBox
      * 
      * @param text Text label
      * @param icon Icon
@@ -120,6 +124,7 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
     {
         return antiAliased_;
     }
+
 
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)

@@ -43,7 +43,7 @@ public class NativeBrowser
      * Display a file in the system browser. If you want to display a
      * file, you must include the absolute path name.
      * 
-     * @param  url  URL to launch
+     * @param url URL to launch
      */
     public static void displayURL(String url)
     {
