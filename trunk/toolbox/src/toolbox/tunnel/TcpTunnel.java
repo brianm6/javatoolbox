@@ -441,120 +441,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
         machine_.transition(ServiceTransition.START);
     }
 
-    //--------------------------------------------------------------------------
-    // ServerThread
-    //--------------------------------------------------------------------------
     
-    class ServerThread implements Runnable
-    {
-        /**
-         * @see java.lang.Runnable#run()
-         */
-        public void run()
-        {
-            boolean alreadyListened = false;
-            
-            while (isRunning())
-            {
-                try
-                {
-                    if (serverSocket_.isClosed())
-                    {
-                        logger_.debug("Tunnel socket server is closed. Exiting..");
-                        return;
-                    }
-                    
-                    if (!alreadyListened)
-                        fireStatusChanged( 
-                            "Listening for connections on port " + localPort_);
-
-                    // Client socket
-                    Socket client = serverSocket_.accept();
-
-                    // Remote socket
-                    Socket remote = new Socket(remoteHost_, remotePort_);
-
-                    fireStatusChanged(
-                        "Tunnelling port " + localPort_ +
-                        " to port " + remotePort_ +
-                        " on host " + remoteHost_ + " ...");
-                    
-//==============================================================================
-//
-//                                                              +--------> outgoingSink_
-//                                                              |
-//                                                              +--------> eos (event output stream)
-//                                                 |outStreams  |
-//        cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()
-//                                        |        |
-//                            instreams   | tunnel |
-//                                        |        |
-//     cs.getOutputStream()<--------------| <===== |<------------ rs.geInputStream()
-//                          |             |        |
-//     eventinputstream<----+
-//                          |
-//     incomingSink_<-------+
-//
-// =============================================================================
-
-                    //----------Outgoing streams--------------------------------
-                    
-                    MulticastOutputStream outStreams = new MulticastOutputStream();
-                    outStreams.addStream(remote.getOutputStream());
-
-                    MonitoredOutputStream mos = new MonitoredOutputStream(
-                        NAME_STREAM_OUT, new NullOutputStream());
-
-                    mos.addOutputStreamListener(new MyOutputStreamListener());
-                    outStreams.addStream(mos);
-
-                    printableOutgoingSink_ = new PrintableOutputStream(
-                        outgoingSink_, supressBinary_, SUBSTITUTION_CHAR);
-
-                    outStreams.addStream(printableOutgoingSink_);
-
-                    //----------Incoming streams--------------------------------
-                    
-                    MulticastOutputStream inStreams = new MulticastOutputStream();
-                    inStreams.addStream(client.getOutputStream());
-
-                    MonitoredOutputStream mis = new MonitoredOutputStream(
-                        NAME_STREAM_IN, new NullOutputStream());
-
-                    mis.addOutputStreamListener(new MyOutputStreamListener());
-                    inStreams.addStream(mis);
-
-                    printableIncomingSink_ = new PrintableOutputStream(
-                        incomingSink_, supressBinary_, SUBSTITUTION_CHAR);
-
-                    inStreams.addStream(printableIncomingSink_);
-
-                    //----------------------------------------------------------
-                    
-                    new Thread(new Relay(
-                        new BufferedInputStream(client.getInputStream()),
-                        new BufferedOutputStream(outStreams)),
-                        "TcpTunnel:incomingSink").start();
-
-                    new Thread(new Relay(
-                        new BufferedInputStream(remote.getInputStream()),
-                        new BufferedOutputStream(inStreams)),
-                        "TcpTunnel:outgoingSink").start();
-                }
-                catch (SocketTimeoutException ste)
-                {
-                    alreadyListened = true;
-                }
-                catch (Exception e)
-                {
-                    if (!stopped_)
-                        ExceptionUtil.handleUI(e, logger_);
-                }
-            }
-        }
-    }
-    
-
     /**
      * Stops the tunnel.
      * 
@@ -680,7 +567,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // Interface TcpTunnelListener
+    // TcpTunnelListener Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -725,11 +612,127 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     }
 
     //--------------------------------------------------------------------------
+    // ServerThread
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Thread that creates the tunnel connections.
+     */
+    class ServerThread implements Runnable
+    {
+        /**
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            boolean alreadyListened = false;
+            
+            while (isRunning())
+            {
+                try
+                {
+                    if (serverSocket_.isClosed())
+                    {
+                        logger_.debug("Tunnel socket server is closed. Exiting..");
+                        return;
+                    }
+                    
+                    if (!alreadyListened)
+                        fireStatusChanged( 
+                            "Listening for connections on port " + localPort_);
+
+                    // Client socket
+                    Socket client = serverSocket_.accept();
+
+                    // Remote socket
+                    Socket remote = new Socket(remoteHost_, remotePort_);
+
+                    fireStatusChanged(
+                        "Tunnelling port " + localPort_ +
+                        " to port " + remotePort_ +
+                        " on host " + remoteHost_ + " ...");
+                    
+//==============================================================================
+//
+//                                                              +--------> outgoingSink_
+//                                                              |
+//                                                              +--------> eos (event output stream)
+//                                                 |outStreams  |
+//        cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()
+//                                        |        |
+//                            instreams   | tunnel |
+//                                        |        |
+//     cs.getOutputStream()<--------------| <===== |<------------ rs.geInputStream()
+//                          |             |        |
+//     eventinputstream<----+
+//                          |
+//     incomingSink_<-------+
+//
+// =============================================================================
+
+                    //----------Outgoing streams--------------------------------
+                    
+                    MulticastOutputStream outStreams = new MulticastOutputStream();
+                    outStreams.addStream(remote.getOutputStream());
+
+                    MonitoredOutputStream mos = new MonitoredOutputStream(
+                        NAME_STREAM_OUT, new NullOutputStream());
+
+                    mos.addOutputStreamListener(new MyOutputStreamListener());
+                    outStreams.addStream(mos);
+
+                    printableOutgoingSink_ = new PrintableOutputStream(
+                        outgoingSink_, supressBinary_, SUBSTITUTION_CHAR);
+
+                    outStreams.addStream(printableOutgoingSink_);
+
+                    //----------Incoming streams--------------------------------
+                    
+                    MulticastOutputStream inStreams = new MulticastOutputStream();
+                    inStreams.addStream(client.getOutputStream());
+
+                    MonitoredOutputStream mis = new MonitoredOutputStream(
+                        NAME_STREAM_IN, new NullOutputStream());
+
+                    mis.addOutputStreamListener(new MyOutputStreamListener());
+                    inStreams.addStream(mis);
+
+                    printableIncomingSink_ = new PrintableOutputStream(
+                        incomingSink_, supressBinary_, SUBSTITUTION_CHAR);
+
+                    inStreams.addStream(printableIncomingSink_);
+
+                    //----------------------------------------------------------
+                    
+                    new Thread(new Relay(
+                        new BufferedInputStream(client.getInputStream()),
+                        new BufferedOutputStream(outStreams)),
+                        "TcpTunnel:incomingSink").start();
+
+                    new Thread(new Relay(
+                        new BufferedInputStream(remote.getInputStream()),
+                        new BufferedOutputStream(inStreams)),
+                        "TcpTunnel:outgoingSink").start();
+                }
+                catch (SocketTimeoutException ste)
+                {
+                    alreadyListened = true;
+                }
+                catch (Exception e)
+                {
+                    if (!stopped_)
+                        ExceptionUtil.handleUI(e, logger_);
+                }
+            }
+        }
+    }
+    
+    //--------------------------------------------------------------------------
     // OutputStreamListener
     //--------------------------------------------------------------------------
 
     /**
-     * Listener that reports totla number of bytes written/read from the tunnel
+     * Listener that reports total number of bytes written/read from the tunnel
      * after the connection is closed.
      */
     class MyOutputStreamListener 
