@@ -32,6 +32,7 @@ package toolbox;
  *                  class name
  * TODO: FindClass: Add decompile on select
  * TODO: FindClass: Add additional search criteria: A extends B, A implements C
+ * TODO: FindClass: Add timer to see perf.
  * =============================================================================
  * </pre>
  */
