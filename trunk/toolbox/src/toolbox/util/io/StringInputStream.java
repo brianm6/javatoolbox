@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.Stringz;
 
 /**
  * StringInputStream is an input stream sourced from a String.
@@ -19,7 +18,7 @@ import toolbox.util.Stringz;
  *   <li>skip()
  * </ul>
  */
-public class StringInputStream extends InputStream implements Stringz  
+public class StringInputStream extends InputStream  
 {
     private static final Logger logger_ = 
         Logger.getLogger(StringInputStream.class);
@@ -186,27 +185,27 @@ public class StringInputStream extends InputStream implements Stringz
         int bufferLen = buffer_.length();
         
         StringBuffer sb = new StringBuffer();
-        sb.append(NL + BRNL);
+        sb.append(StringUtil.NL + StringUtil.BRNL);
         sb.append(ClassUtil.stripPackage(getClass().getName()));
-        sb.append(" (" + super.toString() + ")" + NL);
-        sb.append(StringUtil.repeat("-", 80) + NL);        
-        sb.append("index     = " + index_ + NL);
-        sb.append("ignoreEOF = " + ignoreEOF_ + NL);
+        sb.append(" (" + super.toString() + ")" + StringUtil.NL);
+        sb.append(StringUtil.repeat("-", 80) + StringUtil.NL);        
+        sb.append("index     = " + index_ + StringUtil.NL);
+        sb.append("ignoreEOF = " + ignoreEOF_ + StringUtil.NL);
         
         sb.append(
             "unread    = [" + unreadLen + "] " + 
             (unreadLen > 80 
-                ? NL + StringUtil.wrap(unread, 70, "\t[", "]") 
-                : unread) + NL);
+                ? StringUtil.NL + StringUtil.wrap(unread, 70, "\t[", "]") 
+                : unread) + StringUtil.NL);
              
         sb.append(
             "buffer    = [" + bufferLen + "] " +
             (bufferLen > 80 
-                ? NL + StringUtil.wrap(buffer, 70, "\t[", "]")  
-                : buffer) + NL); 
+                ? StringUtil.NL + StringUtil.wrap(buffer, 70, "\t[", "]")  
+                : buffer) + StringUtil.NL); 
             
             
-        sb.append(BRNL);
+        sb.append(StringUtil.BRNL);
         return sb.toString();
     }
 }

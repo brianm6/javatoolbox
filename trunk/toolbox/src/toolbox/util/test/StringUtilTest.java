@@ -11,12 +11,11 @@ import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
 import toolbox.util.StringUtil;
-import toolbox.util.Stringz;
 
 /**
  * Unit test for StringUtil.
  */
-public class StringUtilTest extends TestCase implements Stringz
+public class StringUtilTest extends TestCase
 {
     private static Logger logger_ = 
         Logger.getLogger(StringUtilTest.class);
@@ -435,7 +434,7 @@ public class StringUtilTest extends TestCase implements Stringz
         String s = "0123456789";
         
         logger_.info(StringUtil.wrap(s));
-        logger_.info(NL + StringUtil.wrap(s, 5));
+        logger_.info(StringUtil.NL + StringUtil.wrap(s, 5));
         logger_.info(StringUtil.wrap(s, 5, true));
         logger_.info(StringUtil.wrap(s, 5, false));
     }
@@ -559,31 +558,35 @@ public class StringUtilTest extends TestCase implements Stringz
         assertNull(StringUtil.getLine("", 500));
         
         // String with only newline
-        assertEquals("", StringUtil.getLine(NL, 0));
-        assertNull(StringUtil.getLine(NL, 1));
-        assertNull(StringUtil.getLine(NL, 500));
+        assertEquals("", StringUtil.getLine(StringUtil.NL, 0));
+        assertNull(StringUtil.getLine(StringUtil.NL, 1));
+        assertNull(StringUtil.getLine(StringUtil.NL, 500));
         
         // String with one char + newline
-        s = "a" + NL;
+        s = "a" + StringUtil.NL;
         assertEquals("a", StringUtil.getLine(s, 0));
         assertNull(StringUtil.getLine(s, 1));
         assertNull(StringUtil.getLine(s, 500));
 
         // String with multiple chars + newline
-        s = "abc" + NL;
+        s = "abc" + StringUtil.NL;
         assertEquals("abc", StringUtil.getLine(s, 0));
         assertNull(StringUtil.getLine(s, 1));
         assertNull(StringUtil.getLine(s, 500));
         
         // String with multiple newlines
         int cnt = 10;
-        s = StringUtil.repeat(NL, cnt);
+        s = StringUtil.repeat(StringUtil.NL, cnt);
         for (int i=0; i<cnt; i++)
             assertEquals("", StringUtil.getLine(s, i));
         assertNull(StringUtil.getLine(s, 500));
 
         // String with multiple newlines w/ single chars
-        s = "a" + NL + "b" + NL + "c" + NL + "d" + NL;
+        s = "a" + StringUtil.NL + 
+            "b" + StringUtil.NL + 
+            "c" + StringUtil.NL + 
+            "d" + StringUtil.NL;
+        
         assertEquals("a", StringUtil.getLine(s, 0));
         assertEquals("b", StringUtil.getLine(s, 1));
         assertEquals("c", StringUtil.getLine(s, 2));
@@ -591,7 +594,11 @@ public class StringUtilTest extends TestCase implements Stringz
         assertNull(StringUtil.getLine(s, 500));
         
         // String with multiple newlines w/ multiple chars
-        s = "abc" + NL + "def" + NL + "ghi" + NL + "jkl" + NL;
+        s = "abc" + StringUtil.NL + 
+            "def" + StringUtil.NL + 
+            "ghi" + StringUtil.NL + 
+            "jkl" + StringUtil.NL;
+        
         assertEquals("abc", StringUtil.getLine(s, 0));
         assertEquals("def", StringUtil.getLine(s, 1));
         assertEquals("ghi", StringUtil.getLine(s, 2));
@@ -600,7 +607,11 @@ public class StringUtilTest extends TestCase implements Stringz
         
         // String with multiple newlines w/ multiple chars. The last line does
         // not have a terminating newline
-        s = "abc" + NL + "def" + NL + "ghi" + NL + "jkl";
+        s = "abc" + StringUtil.NL + 
+            "def" + StringUtil.NL + 
+            "ghi" + StringUtil.NL + 
+            "jkl";
+        
         assertEquals("abc", StringUtil.getLine(s, 0));
         assertEquals("def", StringUtil.getLine(s, 1));
         assertEquals("ghi", StringUtil.getLine(s, 2));

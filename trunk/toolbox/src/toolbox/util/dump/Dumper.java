@@ -11,7 +11,6 @@ import org.apache.regexp.RESyntaxException;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.Stringz;
 
 /**
  * Dumper is a simple but useful utility used to dump a graph of java objects
@@ -21,7 +20,7 @@ import toolbox.util.Stringz;
  * 
  * @see BasicDumpFormatter 
  */
-public class Dumper implements Stringz
+public class Dumper
 {
     // TODO: Fix dangling tail
     // TODO: Add option to have refences to already traversed objects generate
@@ -205,7 +204,7 @@ public class Dumper implements Stringz
             // Print out the root object
             cache_.put(obj);
             buffer.append(obj.getClass().getName());
-            buffer.append(NL);
+            buffer.append(StringUtil.NL);
             
             dump(obj, buffer, "");
         }
@@ -285,7 +284,7 @@ public class Dumper implements Stringz
                 
             buffer.append(" = ");
             buffer.append(makePresentable(array[i]));
-            buffer.append(NL);
+            buffer.append(StringUtil.NL);
             dump(array[i], buffer, depth + BAR);
         }
     }
@@ -339,7 +338,7 @@ public class Dumper implements Stringz
                 if (value == null)
                 {
                     buffer.append("null");
-                    buffer.append(NL);
+                    buffer.append(StringUtil.NL);
                 }
                 else
                 {
@@ -352,7 +351,7 @@ public class Dumper implements Stringz
                         buffer.append(formatter_.formatFieldName(
                             cache_.getInfo(value).getField().getName()));
                             
-                        buffer.append(NL);
+                        buffer.append(StringUtil.NL);
                     }
                     else if (Collection.class.isAssignableFrom(type))
                     {
@@ -364,7 +363,7 @@ public class Dumper implements Stringz
                             ClassUtil.stripPackage(value.getClass().getName()));
                             
                         buffer.append("[" + c.size() + "]"); 
-                        buffer.append(NL);
+                        buffer.append(StringUtil.NL);
                         
                         if (!reachedMaxDepth(depth))
                             dump(field, c.toArray(), buffer, depth + BAR);
@@ -374,7 +373,7 @@ public class Dumper implements Stringz
                         checkTraversed(value);
                         buffer.append(makePresentable(value));
                         appendInheritance(type, buffer);
-                        buffer.append(NL);
+                        buffer.append(StringUtil.NL);
                         
                         if (!reachedMaxDepth(depth))                    
                             dump(type, value, buffer, depth + BAR);
@@ -425,7 +424,7 @@ public class Dumper implements Stringz
            
         sb.append(depth);
         sb.append(BAR);
-        sb.append(NL);
+        sb.append(StringUtil.NL);
             
         sb.append(depth);
         sb.append(JUNCTION);

@@ -5,7 +5,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.Stringz;
+import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.io.StringInputStream;
 
@@ -115,7 +115,7 @@ public class StringInputStreamTest extends TestCase
         for (int i=0; i<iterations; i++)                  
         {
             if (i == 2)
-                logger_.info(Stringz.NL + sis.toString());
+                logger_.info(StringUtil.NL + sis.toString());
                 
             int c = sis.read();
             logger_.info("Read: " + (char)c);
