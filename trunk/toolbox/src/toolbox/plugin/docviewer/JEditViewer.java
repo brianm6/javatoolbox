@@ -30,7 +30,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 
 /**
- * A viewer to for popular text documents with syntax hiliting.
+ * A viewer to for popular text formats with syntax hiliting.
  */
 public class JEditViewer implements DocumentViewer
 {
@@ -43,7 +43,7 @@ public class JEditViewer implements DocumentViewer
     /**
      * Map of file extensions to their corresponding TokenMarker class.
      */
-    private static final Map EXT_MAP;
+    protected static final Map EXT_MAP;
     
     //--------------------------------------------------------------------------
     // Static Initializers
@@ -55,6 +55,7 @@ public class JEditViewer implements DocumentViewer
         EXT_MAP.put("java", JavaTokenMarker.class);
         EXT_MAP.put("xml", XMLTokenMarker.class);
         EXT_MAP.put("xsl", XMLTokenMarker.class);
+        EXT_MAP.put("xslt", XMLTokenMarker.class);
         EXT_MAP.put("bat", BatchFileTokenMarker.class);
         EXT_MAP.put("properties", PropsTokenMarker.class);
         EXT_MAP.put("props", PropsTokenMarker.class);
@@ -68,6 +69,9 @@ public class JEditViewer implements DocumentViewer
         EXT_MAP.put("h", CTokenMarker.class);
         EXT_MAP.put("cc", CCTokenMarker.class);
         EXT_MAP.put("cpp", CCTokenMarker.class);
+        
+        // TODO: Find dtd marker
+        EXT_MAP.put("dtd", JavaTokenMarker.class);
     }
     
     //--------------------------------------------------------------------------
@@ -91,6 +95,53 @@ public class JEditViewer implements DocumentViewer
     }
 
     //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the textarea.
+     * 
+     * @return JEditTextArea
+     */
+    protected JEditTextArea getTextArea() 
+    {
+        return textArea_;
+    }
+
+    
+    /**
+     * Creates the text area
+     * 
+     * @param file File to create for.
+     */
+    protected void createTextArea(File file) 
+    {
+        Class c = (Class) 
+            EXT_MAP.get(FileUtil.getExtension(file).toLowerCase());
+        
+        if (c != null)
+        {
+            try
+            {
+                textArea_ = new JEditTextArea(
+                    (TokenMarker) c.newInstance(), new JavaDefaults());
+                
+            }
+            catch (Exception e)
+            {
+                logger_.warn("Error instantiating " + c.getName() + ".");
+                textArea_ = new JEditTextArea();
+            } 
+        }
+        else
+        {    
+            textArea_ = new JEditTextArea();
+        }
+        
+        textArea_.getPainter().setFont(FontUtil.getPreferredMonoFont());
+    }
+    
+    //--------------------------------------------------------------------------
     // DocumentViewer Interface
     //--------------------------------------------------------------------------
     
@@ -109,29 +160,7 @@ public class JEditViewer implements DocumentViewer
     {
         try
         {
-            Class c = 
-                (Class) EXT_MAP.get(FileUtil.getExtension(file).toLowerCase());
-            
-            if (c != null)
-            {
-                try
-                {
-                    textArea_ = new JEditTextArea(
-                        (TokenMarker) c.newInstance(), new JavaDefaults());
-                    
-                }
-                catch (Exception e)
-                {
-                    logger_.warn("Error instantiating " + c.getName() + ".");
-                    textArea_ = new JEditTextArea();
-                } 
-            }
-            else
-            {    
-                textArea_ = new JEditTextArea();
-            }
-
-            textArea_.getPainter().setFont(FontUtil.getPreferredMonoFont());
+            createTextArea(file);
             String text = FileUtil.getFileContents(file.getCanonicalPath());
             textArea_.setText(text);
             textArea_.scrollTo(0, 0);
