@@ -8,25 +8,33 @@ import edu.uci.ics.jung.visualization.contrib.CircleLayout;
 
 import toolbox.graph.Edge;
 import toolbox.graph.Graph;
-import toolbox.graph.GraphFactory;
+import toolbox.graph.GraphLib;
 import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
 
 /**
- * JungGraphFactory is responsible for ___.
+ * Jung implemenatation of a {@link toolbox.graph.GraphLib}.
  */
-public class JungGraphFactory implements GraphFactory
+public class JungGraphLib implements GraphLib
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a JungGraphFactory.
-     * 
      */
-    public JungGraphFactory()
+    public JungGraphLib()
     {
     }
 
+    //--------------------------------------------------------------------------
+    // GraphLib Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.graph.GraphFactory#createEdge(toolbox.graph.Vertex, toolbox.graph.Vertex)
+     * @see toolbox.graph.GraphLib#createEdge(toolbox.graph.Vertex, 
+     *      toolbox.graph.Vertex)
      */
     public Edge createEdge(Vertex from, Vertex to)
     {
@@ -36,7 +44,7 @@ public class JungGraphFactory implements GraphFactory
     
     
     /**
-     * @see toolbox.graph.GraphFactory#createGraph()
+     * @see toolbox.graph.GraphLib#createGraph()
      */
     public Graph createGraph()
     {
@@ -45,6 +53,10 @@ public class JungGraphFactory implements GraphFactory
     }
     
     
+    /**
+     * @see toolbox.graph.GraphLib#createVertex(toolbox.graph.Graph, 
+     *      java.lang.String)
+     */
     public Vertex createVertex(Graph graph, String label)
     {
         Vertex v = new JungVertex(graph, label);
@@ -53,7 +65,7 @@ public class JungGraphFactory implements GraphFactory
     
     
     /**
-     * @see toolbox.graph.GraphFactory#createView(toolbox.graph.Graph)
+     * @see toolbox.graph.GraphLib#createView(toolbox.graph.Graph)
      */
     public GraphView createView(Graph graph)
     {
@@ -63,7 +75,7 @@ public class JungGraphFactory implements GraphFactory
     
     
     /**
-     * @see toolbox.graph.GraphFactory#getLayouts()
+     * @see toolbox.graph.GraphLib#getLayouts()
      */
     public List getLayouts(Graph graph)
     {
