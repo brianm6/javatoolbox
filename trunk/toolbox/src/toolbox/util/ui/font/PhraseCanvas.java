@@ -33,6 +33,7 @@ public class PhraseCanvas extends Canvas
         phrase_ = phrase;
         font_ = font;
         color_ = color;
+        antialiasOn_ = true;
     }
 
 
