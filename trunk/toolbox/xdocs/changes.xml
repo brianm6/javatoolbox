@@ -7,7 +7,6 @@
  * TODO: Move Tomcat server to booger2
  * TODO: Add vizant for visualization of build dependencies
  * TODO: Add support to minimize to system tray - systray4j
- * TODO: Integrate automatic build number generation into the build process.
  * TODO: Get PropertyPrompt working properly
  * TODO: Fix tailing of Log4j in JTail
  * TODO: Add detach notification to tail.
@@ -20,8 +19,6 @@
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
- * TODO: Figure out how to use JGoodies forms
- * TODO: Figure out how to use JGoodies data binding framework
  * TODO: Integrate new icons from 
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
  * TODO: Make plugins detachable
@@ -46,6 +43,8 @@
  * TODO: StatCVS: Add nuke checkout dir
  * TODO: StatCVS: Add support for projects that span multiple modules
  * TODO: StatCVS: Create output directory if it doesn't already exist
+ * TODO: Figure out how to use JGoodies data binding framework 
+ * TODO: Integrate automatic build number generation into the build process. 
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -57,7 +56,6 @@
  * TODO: Ctrl-Up/Down should scroll through query history
  * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
  *       a selection.
- * TODO: Switch between grid and text view
  * TODO: Lift more stuff from hsqldb manager
  * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
  * =============================================================================
@@ -91,98 +89,100 @@
 
   <body>
     <release version="2.0" date="July 2004">
-      <action type="update">Upgraded to commons-collections-3.1</action>              
-      <action type="add"   >Introduced JDBCSession (multi client version of JDBCUtil)</action>              
-      <action type="fix"   >Fixed sql history list from getting too big</action>              
-      <action type="add"   >Added bunch of shortcut goals for maven generated reports to maven.xml</action>              
-      <action type="fix"   >Fixed ClassCastException in QueryPlugin on query execution failure</action>
-      <action type="add"   >Created DynamicFilterView for real time filtering of a textarea</action>              
-      <action type="add"   >Added realtime filtering to QueryPlugin results pane</action>              
-      <action type="add"   >Added this changes report to maven</action>
-      <action type="update">Upgraded to cvs 1.12.9 to get maven-statcvs-plugin working</action>
-      <action type="add"   >QueryPlugin error messages can now be redirected to the results pane.</action>
+      <action type="update">Lib - Upgraded to commons-collections-3.1</action>              
+      <action type="add"   >Util - Introduced JDBCSession (multi client version of JDBCUtil)</action>              
+      <action type="fix"   >QueryPlugin - Fixed sql history list from getting too big</action>              
+      <action type="add"   >Build - Added bunch of shortcut goals for maven generated reports to maven.xml</action>              
+      <action type="fix"   >QueryPlugin - Fixed ClassCastException on query execution failure</action>
+      <action type="add"   >Util - Created DynamicFilterView for real time filtering of a textarea</action>              
+      <action type="add"   >QueryPlugin - Added realtime filtering to results pane</action>              
+      <action type="add"   >Build - Added this changes report to maven</action>
+      <action type="update">Build - Upgraded to cvs 1.12.9 to get maven-statcvs-plugin working</action>
+      <action type="add"   >QueryPlugin - Error messages can now be redirected to the results pane.</action>
       <action type="fix"   >Fixed single selection execution in QueryPlugin</action>
-      <action type="update">Replaced NativeBrowser with BrowserLauncher which is more consistent</action>
-      <action type="add"   >Added non-repeating random number generators as implementors of RandomSequence</action>
-      <action type="update">DBBenchmark in QueryPlugin can now be configured and persist its preferences</action>
-      <action type="update">Removed overlap between toolbox.util.RandomUtil and commons-lang RandomUtils</action>
-      <action type="add"   >Added unit test for BeanUtil</action>
-      <action type="add"   >Added concurrent-1.3.4 and removed overlapping toolbox implementations of similar classes</action>
-      <action type="update">Updated JFlipPane to support icons on the tabs</action>
-      <action type="add"   >Added CompoundIcon</action>
-      <action type="update">Updated flippanes with icons in various plugins</action>
-      <action type="add"   >Added rotate(Image) method to SwingUtil</action>
-      <action type="add"   >Added Window menu to DesktopPluginHost so plugin frames can be tiled or cascaded</action>
-      <action type="add"   >Added FH Look and Feel</action>
-      <action type="update">Upgraded to commons-codec-1.3 and commons-net-1.2.2</action>
-      <action type="add"   >Added abillity to look at query results in the QueryPlugin in a JTable</action>
-      <action type="update">Updated QueryPlugin to use JDBCSession instead of JDBCUtil for driver management</action>
-      <action type="update">Updated StatcvsPlugin to use a collapsable panel for the cvs projects view</action>
+      <action type="update">Util - Replaced NativeBrowser with BrowserLauncher which is more consistent</action>
+      <action type="add"   >Util - Added non-repeating random number generators as implementors of RandomSequence</action>
+      <action type="update">QueryPlugin - DBBenchmark in QueryPlugin can now be configured and persist its preferences</action>
+      <action type="update">Util - Removed overlap between toolbox.util.RandomUtil and commons-lang RandomUtils</action>
+      <action type="add"   >Util - Added unit test for BeanUtil</action>
+      <action type="add"   >Lib - Added concurrent-1.3.4 and removed overlapping toolbox implementations of similar classes</action>
+      <action type="update">Util - Updated JFlipPane to support icons on the tabs</action>
+      <action type="add"   >Util - Added CompoundIcon</action>
+      <action type="update">Misc - Updated flippanes with icons in various plugins</action>
+      <action type="add"   >Util - Added rotate(Image) method to SwingUtil</action>
+      <action type="add"   >Workspace - Added Window menu to DesktopPluginHost so plugin frames can be tiled or cascaded</action>
+      <action type="add"   >LookAndFeel - Added FH Look and Feel</action>
+      <action type="update">Lib - Upgraded to commons-codec-1.3 and commons-net-1.2.2</action>
+      <action type="add"   >QueryPlugin - Added abillity to look at query results in a JTable</action>
+      <action type="update">QueryPlugin - Updated  to use JDBCSession instead of JDBCUtil for driver management</action>
+      <action type="update">StatcvsPlugin - Updated to use a collapsable panel for the cvs projects view</action>
+      <action type="update">LookAndFeel - Upgraded to Skin Look and Feel 1.2.9 with new Beige Azul themepack</action>
+      <action type="update">Misc - Updated various forms throughout the GUI to use JGoodies Forms layout</action>
     </release>
 
     <release version="2.0" date="June 2004">
-      <action type="update">Updated Jode to 1.1.2-pre1</action>
-      <action type="add"   >Added StringUtil.indent()</action>
-      <action type="add"   >Imported ThrottledInput/OutputStream</action>
-      <action type="add"   >Added ThroughputMonitor component</action>
-      <action type="add"   >Added TransferredMonitor component</action>
-      <action type="add"   >Added MonitoredInput/OutputStream</action>
-      <action type="update">Updated to commons-dbcp-1.2.1, commons-pool-1.2, commons-logging-1.0.4, xom-1.0a2</action>
-      <action type="update">Look and feel decorations flag now works but requires a restart</action>
-      <action type="update">Minor updates to NetMeter - button states, init state, etc.</action>
-      <action type="add"   >Added JavaViewer to DocumentViewerPlugin</action>
-      <action type="add"   >Added SortedListModel</action>
-      <action type="update">Revamped Service interface</action>
-      <action type="update">Service state transitions can be strict or relaxed</action>
-      <action type="update">Updated InstantMessenger to the Service interface</action>
-      <action type="update">Added capitalization modes to SQLFormatter and sliced up format()</action>
-      <action type="add"   >Added configuration editor for SQLFormatter so settings can be saved</action>
-      <action type="add"   >Added AssertUtil which contains assertions for serialization</action>
+      <action type="update">Util - Updated Jode to 1.1.2-pre1</action>
+      <action type="add"   >Util - Added StringUtil.indent()</action>
+      <action type="add"   >Util - Imported ThrottledInput/OutputStream</action>
+      <action type="add"   >Util - Added ThroughputMonitor component</action>
+      <action type="add"   >Util - Added TransferredMonitor component</action>
+      <action type="add"   >Util - Added MonitoredInput/OutputStream</action>
+      <action type="update">Lib - Updated to commons-dbcp-1.2.1, commons-pool-1.2, commons-logging-1.0.4, xom-1.0a2</action>
+      <action type="fix"   >LookAndFeel - Decorations flag now works but requires a restart</action>
+      <action type="update">NetMeterPlugin - Minor updates; button states, init state, etc.</action>
+      <action type="add"   >DocViewerPlugin - Added JavaViewer to DocumentViewerPlugin</action>
+      <action type="add"   >Util - Added SortedListModel</action>
+      <action type="update">Util - Revamped Service interface</action>
+      <action type="update">Util - Service state transitions can be strict or relaxed</action>
+      <action type="update">Util - Updated InstantMessenger to the Service interface</action>
+      <action type="update">Util - Added capitalization modes to SQLFormatter and sliced up format()</action>
+      <action type="add"   >Util - Added configuration editor for SQLFormatter so settings can be saved</action>
+      <action type="add"   >Util - Added AssertUtil which contains assertions for serialization</action>
     </release>
 
     <release version="2.0" date="May 2004">
-      <action type="add"   >Added JDBC benchmark to JDBC plugin</action>
-      <action type="add"   >Added NapkinLookAndFeel to the Look and Feel menu</action>
-      <action type="update">Upgraded to commons-net-1.2.1</action>
-      <action type="update">Encoded passwords in JDBC plugin</action>
-      <action type="update">StatcvsPlugin cvs project combobox is sorted</action>
-      <action type="add"   >Added connection pooling to JDBCUtil using commons-dbcp</action>
-      <action type="update">Upgraded to commons-io-1.0</action>
-      <action type="add"   >Added 3D look and feel</action>
-      <action type="add"   >Added a tree based DTD viewer to the DocumentViewerPlugin</action>
-      <action type="update">Updated usage template in FindClass</action>
-      <action type="update">Updated FileComparator to use static instances</action>
-      <action type="remove">Relaced ClassUtil.stripClass() and stripPackage() with commons-lang equivalent</action>
-      <action type="remove">Removed toolbox.util.Assert and replaced with Validate from commons-lang</action>
-      <action type="update">Added maxdepth (-l) and show fullpath (-p) flags to Tree</action>
+      <action type="add"   >QueryPlugin - Added JDBC benchmark</action>
+      <action type="add"   >LookAndFeel - Added NapkinLookAndFeel to the Look and Feel menu</action>
+      <action type="update">Lib - Upgraded to commons-net-1.2.1</action>
+      <action type="update">QueryPlugin - Encoded passwords</action>
+      <action type="update">StatcvsPlugin - CVS project combobox is now sorted</action>
+      <action type="add"   >Util - Added connection pooling to JDBCUtil using commons-dbcp</action>
+      <action type="update">Lib - Upgraded to commons-io-1.0</action>
+      <action type="add"   >LookAndFeel - Added 3D look and feel</action>
+      <action type="add"   >DocViewerPlugin - Added a tree based DTD viewer</action>
+      <action type="update">Util - Updated usage template in FindClass</action>
+      <action type="update">Util - Updated FileComparator to use static instances</action>
+      <action type="remove">Util - Relaced ClassUtil.stripClass() and stripPackage() with commons-lang equivalent</action>
+      <action type="remove">Util - Removed toolbox.util.Assert and replaced with Validate from commons-lang</action>
+      <action type="update">Util - Added maxdepth (-l) and show fullpath (-p) flags to Tree</action>
     </release>
 
     <release version="2.0" date="April 2004">
-      <action type="update">Scan source for refactorings to use DisposeAction </action>
-      <action type="update">Updated to the latest Sun TableSorter</action>
-      <action type="add"   >Integrated statcvs-xml from berlios into the StatCVS plugin</action>
-      <action type="add"   >Add HTTP proxy support (changeable via the preferences dialog) </action>
-      <action type="add"   >Added group Javadoc separators to the maven project.xml</action>
-      <action type="update">Update to latest Multivalent</action>
-      <action type="update">Updated JFreeChart to 0.9.18 </action>
-      <action type="update">Alphasorted the Plugin menu</action>
-      <action type="remove">Replaced select methods in StringUtil and StreamUtil with apache commons</action>
-      <action type="update">Fixed splash image to use a blown up version of the regular toolbox icon</action>
-      <action type="update">Made the jar search activity an async operation in the FindClassPlugin  </action>
-      <action type="update">JEditTextArea now has ability to save the contents between instances</action>
-      <action type="update">JDBCPlugin sql editor now makes use of JEditTextArea saving contents  </action>
-      <action type="update">SQL stmts in editor popup menu are now formatted multiline</action>
-      <action type="update">Connect/Disconnect buttons in JDBCPlugin merged into a single button </action>
-      <action type="update">SearchTargetPanel extracted from FindClassPane as top level class</action>
-      <action type="add"   >Added tooltips to the plugin menu items</action>
+      <action type="update">Util - Scan source for refactorings to use DisposeAction </action>
+      <action type="update">Util - Updated to the latest Sun TableSorter</action>
+      <action type="add"   >StatcvsPlugin - Integrated statcvs-xml from berlios</action>
+      <action type="add"   >Workspace - Added HTTP proxy support (changeable via the preferences dialog) </action>
+      <action type="add"   >Build - Added group Javadoc separators to the maven project.xml</action>
+      <action type="update">Lib - Update to latest Multivalent</action>
+      <action type="update">Lib - Updated JFreeChart to 0.9.18 </action>
+      <action type="update">Workspace - Alphasorted the Plugin menu</action>
+      <action type="remove">Lib - Replaced select methods in StringUtil and StreamUtil with apache commons</action>
+      <action type="update">Build - Fixed splash image to use a blown up version of the regular toolbox icon</action>
+      <action type="update">FindClassPlugin - Made the jar search activity an async operation</action>
+      <action type="update">Util - JEditTextArea now has ability to save the contents between instances</action>
+      <action type="update">QueryPlugin - SQL editor now makes use of JEditTextArea saving contents  </action>
+      <action type="update">QueryPlugin - SQL stmts in editor popup menu are now formatted multiline</action>
+      <action type="update">QueryPlugin - Connect/Disconnect buttons merged into a single two state button</action>
+      <action type="update">FindClassPlugin - SearchTargetPanel extracted from FindClassPane as top level class</action>
+      <action type="add"   >Workspace - Added tooltips to the plugin menu items</action>
     </release>
 
     <release version="2.0" date="March 2004">
-      <action type="add"   >Added Plugin menu</action>
-      <action type="update">Separate unit tests from main source branch + reconfig maven.</action>
-      <action type="add"   >Created JSmartInternalFrame</action>
-      <action type="update">DesktopPluginHost now rembers window position and sizes</action>
-      <action type="update">Added wildcard matching to the file switch in tree</action>
+      <action type="add"   >Workspace - Added Plugin menu</action>
+      <action type="update">Build - Separate unit tests from main source branch + reconfig maven.</action>
+      <action type="add"   >Util - Created JSmartInternalFrame</action>
+      <action type="update">Workspace - DesktopPluginHost now rembers window position and sizes</action>
+      <action type="update">Util - Added wildcard matching to the file switch in tree</action>
     </release>
 
   </body>
