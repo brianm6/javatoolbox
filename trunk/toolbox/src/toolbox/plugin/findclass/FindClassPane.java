@@ -195,10 +195,9 @@ public class FindClassPane extends JPanel implements IPreferenced
 
         buildView();
         findClass_ = new FindClass();
-        List targets = findClass_.getSearchTargets();
-
-        for (Iterator i = targets.iterator(); i.hasNext();)
-        	searchTargetPanel_.addSearchTarget(i.next().toString());
+        
+        // Add only targets on the classpath by default.
+        searchTargetPanel_.new AddClasspathTargetAction().addClasspathTargets();
     }
 
 
