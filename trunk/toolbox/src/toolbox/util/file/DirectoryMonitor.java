@@ -11,9 +11,37 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * DirectoryMonitor monitors a given directory for the availability of files
- * based on a configurable selection criteria. Interested parties can register
- * for notification by implementing the {@link IDirectoryListener} interface.
+ * Monitors a directory for file activity based on a configurable selection 
+ * criteria. Interested parties can register for notification of activity by 
+ * implementing the {@link IDirectoryListener} interface.
+ * <p>
+ * Example:
+ * <pre>
+ * 
+ * // Monitor the current directory
+ * DirectoryMonitor dm = new DirectoryMonitor(new File("."));
+ * 
+ * // Lets listen for newly created files
+ * dm.addFileActivity(new FileCreatedActivity());
+ * 
+ * // Register a listener
+ * dm.addDirectoryListener(new IDirectoryListener() {
+ *     public void fileActivity(IFileActivity activity, File[] files)
+ *         throws Exception {
+ *         System.out.println("Files created: " + ArrayUtil.toString(files));  
+ *      }
+ *  });
+ *
+ * dm.start();
+ *
+ * // Directory now being monitored...
+ *
+ * dm.stop();
+ * </pre>
+ * 
+ * @see toolbox.util.file.IFileActivity
+ * @see toolbox.util.file.IDirectoryListener
+ * @see toolbox.util.file.FileCreatedActivity
  */
 public class DirectoryMonitor
 {
