@@ -35,7 +35,7 @@ public class StringUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests
+    // right() Unit Tests
     //--------------------------------------------------------------------------
     
     /**
@@ -95,6 +95,9 @@ public class StringUtilTest extends TestCase
         assertEquals("345", StringUtil.right("345", 2));        
     }
 
+    //--------------------------------------------------------------------------
+    // left() Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests left() for proper truncation behavior.
@@ -140,6 +143,141 @@ public class StringUtilTest extends TestCase
         assertEquals("345", StringUtil.left(345, 2));        
     }
 
+    //--------------------------------------------------------------------------
+    // wrap() Unit Tests
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests wrap().
+     */
+    public void testWrap()
+    {
+        logger_.info("Running testWrap...");
+        
+        String s = "0123456789";
+        
+        logger_.info(StringUtil.wrap(s));
+        logger_.info(StringUtil.NL + StringUtil.wrap(s, 5));
+        logger_.info(StringUtil.wrap(s, 5, true));
+        logger_.info(StringUtil.wrap(s, 5, false));
+    }
+    
+    //--------------------------------------------------------------------------
+    // indent() Unit Tests
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests indent(s, indentString)
+     */
+    public void testIndentStringString() 
+    {
+        logger_.info("Running testIndentStringString...");
+        
+        // Null
+        assertEquals("***", StringUtil.indent(null, "***"));
+        
+        // Empty string
+        assertEquals("***", StringUtil.indent("", "***"));
+        
+        // Blank string
+        assertEquals("***   ", StringUtil.indent("   ", "***"));
+        
+        // Single line
+        assertEquals("***howdy", StringUtil.indent("howdy", "***"));
+        
+        // New line
+        assertEquals("***\n", StringUtil.indent("\n", "***"));
+        
+        // Consecutive new lines
+        assertEquals("*\n*\n*\n", StringUtil.indent("\n\n\n", "*"));
+        
+        // Multiple lines
+        assertEquals(
+            "*line1\n*line2\n*line3", 
+            StringUtil.indent("line1\nline2\nline3", "*"));
+            
+        // Alternating newlines
+        assertEquals(
+            "*line1\n*\n*line2\n*\n*line3\n*\n", 
+            StringUtil.indent("line1\n\nline2\n\nline3\n\n", "*"));
+    }
+
+    
+    /**
+     * Tests indent(s, numChars)
+     */
+    public void testIndentInt() 
+    {
+        logger_.info("Running testIndentInt...");
+        
+        // Zero
+        assertEquals("int", StringUtil.indent("int", 0));
+        
+        // One
+        assertEquals(
+            StringUtils.repeat(StringUtil.DEFAULT_INDENT_CHAR, 1) + "int",
+            StringUtil.indent("int", 1));
+            
+        // Many
+        assertEquals(
+            StringUtils.repeat(StringUtil.DEFAULT_INDENT_CHAR, 4) + "int",
+            StringUtil.indent("int", 4));
+    }
+    
+
+    /**
+     * Tests indent(s, numChars, indentChar)
+     */
+    public void testIndentIntString() {
+        
+        logger_.info("Running testIndentIntString...");
+        
+        // Zero empty
+        assertEquals("int", StringUtil.indent("int", 0, ""));
+
+        // Zero non-empty
+        assertEquals("int", StringUtil.indent("int", 0, "nonempty"));
+        
+        // One empty
+        assertEquals("int", StringUtil.indent("int", 1, ""));
+
+        // One non-empty
+        assertEquals("1int", StringUtil.indent("int", 1, "1"));
+            
+        // Many empty
+        assertEquals("int", StringUtil.indent("int", 4, ""));
+        
+        // Many non-empty
+        assertEquals("4444int", StringUtil.indent("int", 4, "4"));
+    }
+
+    
+    /**
+     * Tests indent(s)
+     */
+    public void testIndentString() 
+    {
+        
+        logger_.info("Running testIndentString...");
+        
+        // Empty
+        assertEquals(
+            StringUtils.repeat(
+                StringUtil.DEFAULT_INDENT_CHAR,
+                StringUtil.DEFAULT_INDENT_LENGTH),
+            StringUtil.indent(""));
+        
+        // Non-Empty
+        assertEquals(
+            StringUtils.repeat(
+                StringUtil.DEFAULT_INDENT_CHAR,
+                StringUtil.DEFAULT_INDENT_LENGTH) + "abc",
+            StringUtil.indent("abc"));
+    }
+    
+    //--------------------------------------------------------------------------
+    // Misc Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests static toString( List ).
@@ -302,96 +440,6 @@ public class StringUtilTest extends TestCase
             assertEquals(s, t);
         }
         
-    }
-    
-    
-//    /**
-//     * Tests trim() for an empty string.
-//     */
-//    public void testTrimEmpty()
-//    {
-//        logger_.info("Running testTrimEmpty...");
-//        
-//        assertEquals("trimmed empty string incorrect",
-//            "", StringUtil.trim("", 'x'));
-//    }
-//    
-//    
-//    /**
-//     * Tests trim() for a single char string.
-//     */
-//    public void testTrimOne()
-//    {
-//        logger_.info("Running testTrimOne...");
-//        
-//        String s = "x";
-//        assertEquals("trimmed incorrect", "", StringUtil.trim(s, 'x'));
-//        assertEquals("trimmed incorrect", s, StringUtil.trim(s, ' '));
-//    }
-//
-//    
-//    /**
-//     * Tests trim() for larger string.
-//     */
-//    public void testTrimMany()
-//    {
-//        logger_.info("Running testTrimMany...");
-//        
-//        String s = "..abcdefg..x..";
-//        assertEquals("trim incorrect", "abcdefg..x", StringUtil.trim(s, '.'));
-//        assertEquals("trim incorrect", s, StringUtil.trim(s, 'z'));
-//    }
-// 
-//    
-//    /**
-//     * Tests trim() for trimming entire string.
-//     */
-//    public void testTrimEntire()
-//    {
-//        logger_.info("Running testTrimEntire...");
-//        
-//        String s = "aaaaaaaaaaaaaaaaaaaaaaaa";
-//        assertEquals("trim incorrect", "", StringUtil.trim(s, 'a'));            
-//    }
-//    
-//    
-//    /**
-//     * Tests trim() for prefix trimming only.
-//     */
-//    public void testTrimPrefixOnly()
-//    {
-//        logger_.info("Running testTrimPrefixOnly...");
-//        
-//        String s = ".......aaaaaa";
-//        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));
-//    }
-//
-//    
-//    /**
-//     * Tests trim() for suffix trimming only.
-//     */
-//    public void testTrimSuffixOnly()
-//    {
-//        logger_.info("Running testTrimSuffixOnly...");
-//        
-//        String s = "aaaaaa........";
-//        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));
-//    }
-    
-    
-    /**
-     * Tests wrap().
-     */
-    public void testWrap()
-    {
-        logger_.info("Running testWrap...");
-        
-        String s = "0123456789";
-        
-        logger_.info(StringUtil.wrap(s));
-        logger_.info(StringUtil.NL + StringUtil.wrap(s, 5));
-        logger_.info(StringUtil.wrap(s, 5, true));
-        logger_.info(StringUtil.wrap(s, 5, false));
     }
 
     
