@@ -10,20 +10,17 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
-import java2html.Java2Html;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -40,11 +37,17 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
+import org.jedit.syntax.JavaTokenMarker;
+import org.jedit.syntax.TextAreaDefaults;
 
 import net.sf.jode.decompiler.Decompiler;
 
+import toolbox.jedit.JEditTextArea;
+import toolbox.jedit.JEditTextAreaPopupMenu;
+import toolbox.jedit.JavaDefaults;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
@@ -53,24 +56,22 @@ import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
-import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * GUI for FindClass
+ * GUI for finding class files by regular expression from the classpath
+ * or any arbitrary java archive or directory.
  * 
  * <pre>
- * TODO: Replace decompiler HTML view with jedit-syntax editor
  * TODO: Update tablecell renderer to highlight the matching substring
  * TODO: Add sorting to table
  * </pre>
  */
 public class JFindClass extends JFrame
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JFindClass.class);
 
@@ -88,7 +89,7 @@ public class JFindClass extends JFrame
     private JList                searchList_;
     private DefaultListModel     searchListModel_;
     private JPopupMenu           searchPopupMenu_;
-    private JEditorPane          sourceArea_;
+    private JEditTextArea        sourceArea_;
     
     // Results    
     private JTable               resultTable_;
@@ -112,11 +113,11 @@ public class JFindClass extends JFrame
         "Timestamp"
     };
 
-    //private static final int COL_NUM       = 0;
+    private static final int COL_NUM       = 0;
     private static final int COL_SOURCE    = 1;
     private static final int COL_CLASS     = 2;
-    //private static final int COL_SIZE      = 3;
-    //private static final int COL_TIMESTAMP = 4;
+    private static final int COL_SIZE      = 3;
+    private static final int COL_TIMESTAMP = 4;
 
     /** 
      * Prefix tacked onto the beginning of all properties associated with JTail
@@ -239,9 +240,6 @@ public class JFindClass extends JFrame
         // Left flip pane with file explorer
         buildLeftFlipPane();
 
-        // Status bar
-        buildStatusBar();
-        
         // Post tweaks
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -281,16 +279,21 @@ public class JFindClass extends JFrame
      */
     protected JPanel buildDecompilerPanel()
     {
-        // Decpmpiler 
-        JPanel decompilerPanel = new JPanel(new BorderLayout());
-        decompilerPanel.setFont(SwingUtil.getPreferredMonoFont());
-        sourceArea_ = new JEditorPane();
-        sourceArea_.setContentType("text/html");
-        sourceArea_.setFont(SwingUtil.getPreferredMonoFont());
-        decompilerPanel.add(new JScrollPane(sourceArea_), BorderLayout.CENTER);
+        TextAreaDefaults defaults = new JavaDefaults();
+        
+        sourceArea_ = 
+            new JEditTextArea(new JavaTokenMarker(), defaults);
+
+        // Hack for circular reference in popup menu            
+        ((JEditTextAreaPopupMenu) defaults.popup).setTextArea(sourceArea_);
+        ((JEditTextAreaPopupMenu) defaults.popup).buildView();
+            
         JButton decompileButton = new JButton(new DecompileAction());
+        JPanel decompilerPanel = new JPanel(new BorderLayout());
+        decompilerPanel.add(BorderLayout.CENTER, new JScrollPane(sourceArea_));
         decompilerPanel.add(BorderLayout.SOUTH, decompileButton);
-        decompilerPanel.setPreferredSize(new Dimension(100, 400));        
+        decompilerPanel.setPreferredSize(new Dimension(100, 400));
+        
         return decompilerPanel;
     }
 
@@ -366,17 +369,6 @@ public class JFindClass extends JFrame
     }
 
     /**
-     * Builds the status bar 
-     */
-    protected void buildStatusBar()
-    {
-        // Status bar
-        //statusBar_ = new JStatusPane();
-        //statusBar_.setStatus("Enter a regular expression and hit Find!");
-        //getContentPane().add(statusBar_, BorderLayout.SOUTH);
-    }
-
-    /**
      * Builds the left flip pane which contains the file explorer. The file
      * explorer can be used to add additional search targets to the Classpath
      * panel
@@ -435,18 +427,6 @@ public class JFindClass extends JFrame
             new AlternatingCellRenderer());
     }
 
-    /**
-     * Generic error handler for GUI exceptions
-     * 
-     * @param  t   Exception causing error
-     * @param  c   Logger to log to
-     */
-    protected void handleException(Throwable t, Logger c)
-    {
-        c.error(t.getMessage(), t);
-        JSmartOptionPane.showExceptionMessageDialog(this, t);
-    }
-
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
@@ -457,13 +437,13 @@ public class JFindClass extends JFrame
     class FindClassHandler extends FindClassAdapter
     {
         //----------------------------------------------------------------------
-        // Overridden from FindClassAdapter
+        // Overrides toolbox.findclass.FindClassAdapter
         //----------------------------------------------------------------------
             
         /**
          * When a class is found, add it to the result table
          * 
-         * @param  searchResult   Info on class that was found
+         * @param  searchResult  Info on class that was found
          */
         public void classFound(FindClassResult searchResult)
         {
@@ -481,7 +461,7 @@ public class JFindClass extends JFrame
         /**
          * When a target is searched, update the status bar
          * 
-         * @param  target   Target that is being searched
+         * @param  target  Target that is being searched
          */
         public void searchingTarget(String target)
         {
@@ -515,7 +495,7 @@ public class JFindClass extends JFrame
             Logger.getLogger(JFileExplorerHandler.class);
         
         //----------------------------------------------------------------------
-        // Overridden from JFileExplorerAdapter
+        // Overrides toolbox.util.ui.explorer.JFileExplorerAdapter
         //----------------------------------------------------------------------
         
         /**
@@ -559,7 +539,7 @@ public class JFindClass extends JFrame
     class AlternatingCellRenderer extends DefaultTableCellRenderer
     {
         //----------------------------------------------------------------------
-        // Overridden from DefaultTableCellRenderer
+        // Overrides javax.swing.table.DefaultTableCellRenderer
         //----------------------------------------------------------------------
         
         /**
@@ -673,23 +653,17 @@ public class JFindClass extends JFrame
                     String javaSource = StringUtil.replace(
                         writer.getBuffer().toString(), "\t", "    ");
                         
-                    logger_.debug("\n" + javaSource);    
-                        
-                    StringReader javaReader = new StringReader(javaSource);
-                    StringWriter htmlWriter = new StringWriter();
-                    new Java2Html(javaReader, htmlWriter);
+                    //logger_.debug("\n" + javaSource);    
                     
-                    sourceArea_.setText(htmlWriter.toString());
+                    sourceArea_.setText(javaSource);
                     sourceArea_.setCaretPosition(0);
                 }
                 catch(IOException ioe)
                 {
-                    handleException(ioe, logger_);
+                    ExceptionUtil.handleUI(ioe, logger_);
                 }
-
             }           
         }
-        
     }
     
     /**
@@ -699,6 +673,7 @@ public class JFindClass extends JFrame
     {
         private static final String SEARCH = "Search";
         private static final String CANCEL = "Cancel";
+        
         private Thread searchThread_;
         
         public SearchCancelAction()
@@ -765,7 +740,7 @@ public class JFindClass extends JFrame
                     Object results[]  = findClass_.findClass(
                         search, ignoreCaseCheckBox_.isSelected());             
                     
-                    statusBar_.setStatus(results.length + " matches found");
+                    statusBar_.setStatus(results.length + " matches found.");
                     
                     putValue(NAME, SEARCH);
                     putValue(MNEMONIC_KEY, new Integer('S'));
@@ -773,7 +748,7 @@ public class JFindClass extends JFrame
             }
             catch (Exception ex)
             {
-                handleException(ex, logger_);
+                ExceptionUtil.handleUI(ex, logger_);
             }
         }
     }
