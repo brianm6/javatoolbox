@@ -5,10 +5,10 @@ import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
 import toolbox.util.PropertiesUtil;
@@ -18,10 +18,13 @@ import toolbox.util.PropertiesUtil;
  */
 public class PropertiesUtilTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(PropertiesUtilTest.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+            
     /**
      * Entrypoint
      * 
@@ -32,20 +35,6 @@ public class PropertiesUtilTest extends TestCase
         TestRunner.run(PropertiesUtilTest.class);
     }
     
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructor for PropertiesUtilTest.
-     * 
-     * @param arg0  Name
-     */
-    public PropertiesUtilTest(String arg0)
-    {
-        super(arg0);
-    }
-
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
@@ -128,6 +117,7 @@ public class PropertiesUtilTest extends TestCase
         assertEquals(0, PropertiesUtil.getInteger(props, "3", -1));
         assertEquals(-1, PropertiesUtil.getInteger(props, "4", -1));
         assertEquals(-1, PropertiesUtil.getInteger(props, "5", -1));
+        assertEquals(-1, PropertiesUtil.getInteger(props, "doesnt exist", -1));
     }   
     
     /**
