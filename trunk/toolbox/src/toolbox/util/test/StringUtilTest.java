@@ -111,7 +111,6 @@ public class StringUtilTest extends TestCase
         assertEquals("345", StringUtil.right("345", 2));        
     }
 
-
     /**
      * Tests left() for proper truncation behavior
      */
@@ -374,7 +373,6 @@ public class StringUtilTest extends TestCase
         assertEquals("trim incorrect", "abcdefg..x", StringUtil.trim(s,'.'));
         assertEquals("trim incorrect", s, StringUtil.trim(s, 'z'));
     }
- 
  
     /**
      * Tests trim() for trimming entire string

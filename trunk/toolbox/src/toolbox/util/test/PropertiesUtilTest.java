@@ -14,7 +14,7 @@ import toolbox.util.PropertiesUtil;
  */
 public class PropertiesUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(PropertiesUtilTest.class);
         

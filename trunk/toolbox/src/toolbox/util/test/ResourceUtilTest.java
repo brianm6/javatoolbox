@@ -15,7 +15,7 @@ import toolbox.util.ResourceUtil;
  */
 public class ResourceUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtilTest.class);
     

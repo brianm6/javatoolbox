@@ -115,9 +115,9 @@ public class PlatformTest extends TestCase
 
 
     /**
-     * Tests isMacOS
+     * Tests isMacOS()
      */
-    public void testIsMaxOS()
+    public void testIsMacOS()
     {
         logger_.info("Running testIsMacOS...");
         logger_.info("Is Mac OS: " + Platform.isMacOS());

@@ -15,7 +15,7 @@ import toolbox.util.io.StringInputStream;
  */
 public class StreamUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(StreamUtilTest.class);
         

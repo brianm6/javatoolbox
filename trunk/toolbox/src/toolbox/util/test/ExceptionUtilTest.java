@@ -13,7 +13,7 @@ import toolbox.util.ExceptionUtil;
 public class ExceptionUtilTest extends TestCase
 {
     
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ExceptionUtilTest.class);
 
