@@ -54,7 +54,7 @@ public class FindClassPlugin implements IPlugin
      */
     public JComponent getComponent()
     {
-        return (JComponent) delegate_.getContentPane();
+        return (JComponent) delegate_;
     }
 
     
