@@ -14,9 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
-import net.sf.statcvs.Main;
-import net.sf.statcvs.output.CommandLineParser;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -26,23 +23,24 @@ import org.apache.log4j.Logger;
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JButtonGroup;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartRadioButton;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.NativeBrowser;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
-import toolbox.util.ui.textarea.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
@@ -85,6 +83,29 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * selected cvs project.
      */
     private static final String ATTR_SELECTED  = "selected";
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+
+    /**
+     * Key of the client property that is attached to each of the report engine
+     * radio buttons to identify which report engine it represents.
+     */
+    private static final String KEY_ENGINE =
+        "toolbox.plugin.statcvs.StatcvsEngine";
+
+    /**
+     * Property that is the class name of the default statcvs report engine.
+     */
+    public static final String PROP_STATCVS_ENGINE =
+        "toolbox.plugin.statcvs.DefaultStatcvsEngine";
+
+    /**
+     * Property this is the class name of the statcvs-xml report engine.
+     */
+    public static final String PROP_STATCVS_XML_ENGINE =
+        "toolbox.plugin.statcvs.StatcvsXMLEngine";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -145,6 +166,21 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     private PrintStream cvsErr_;
 
+    /**
+     * Radio button that selects the report engine that comes with statcvs.
+     */
+    private JSmartRadioButton defaultEngine_;
+
+    /**
+     * Radio button that selects the report engine that comes with statcvs-xml.
+     */
+    private JSmartRadioButton xmlEngine_;
+
+    /**
+     * Mutual exclusion gruop for the report engine radio buttons.
+     */
+    private JButtonGroup engineGroup_;
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -187,7 +223,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     protected JComponent buildControlPanel()
     {
-        JPanel p = new JPanel(new ParagraphLayout(5, 5, 5, 5, 5, 5));
+        JPanel p = new JPanel(new ParagraphLayout(10, 10, 5, 5, 5, 5));
 
         p.add(new JSmartLabel("Project"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(projectCombo_ = new JSmartComboBox());
@@ -223,6 +259,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         p.add(new JSmartLabel("Launch URL"), ParagraphLayout.NEW_PARAGRAPH);
         p.add(launchURLField_ = new JSmartTextField(30));
 
+        p.add(new JSmartLabel("Report Style"), ParagraphLayout.NEW_PARAGRAPH);
+
+        engineGroup_ = new JButtonGroup();
+        defaultEngine_ = new JSmartRadioButton("StatCVS");
+        defaultEngine_.putClientProperty(KEY_ENGINE, PROP_STATCVS_ENGINE);
+        xmlEngine_ = new JSmartRadioButton("StatCVS-XML");
+        xmlEngine_.putClientProperty(KEY_ENGINE, PROP_STATCVS_XML_ENGINE);
+        engineGroup_.add(defaultEngine_);
+        engineGroup_.add(xmlEngine_);
+        p.add(defaultEngine_);
+        p.add(xmlEngine_);
+        defaultEngine_.setSelected(true);
+
         launchURLField_.setEditable(false);
 
         JPanel b = new JPanel(new GridLayoutPlus(4, 1, 5, 5, 5, 5));
@@ -233,7 +282,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         b.add(new JSmartButton(new LogAction()));
         b.add(new JSmartButton(new GenerateStatsAction()));
         b.add(new JSmartButton(new LaunchAction()));
-        b.add(new JSmartButton(new ClearAction(outputArea_)));
 
         JPanel base = new JPanel(new BorderLayout());
         base.add(BorderLayout.WEST, p);
@@ -251,7 +299,14 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     protected JComponent buildOutputPanel()
     {
         outputArea_ = new JSmartTextArea(true, false);
-        return new JScrollPane(outputArea_);
+
+        JHeaderPanel hp =
+            new JHeaderPanel(
+                "Output",
+                JHeaderPanel.createToolBar(outputArea_),
+                new JScrollPane(outputArea_));
+
+        return hp;
     }
 
     //--------------------------------------------------------------------------
@@ -320,6 +375,25 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
+
+    /**
+     * Creates an instance of the appropriate report engine.
+     *
+     * @return StatcvsEngine
+     * @throws Exception on instantiation error.
+     */
+    protected StatcvsEngine getStatcvsEngine() throws Exception
+    {
+        JComponent selected = engineGroup_.getSelected();
+        String engineClazz = (String) selected.getClientProperty(KEY_ENGINE);
+
+        StatcvsEngine engine =
+            (StatcvsEngine) Class.forName(engineClazz).newInstance();
+
+        engine.setPlugin(this);
+        return engine;
+    }
+
 
     /**
      * Returns a log file name based on the cvs module. Takes into account that
@@ -502,7 +576,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 "",
                 FileUtil.getTempDir().getCanonicalPath(),
                 false,
-                ""));
+                "",
+                PROP_STATCVS_ENGINE));
 
             projectCombo_.addItem(new CVSProject(
                 "Apache",
@@ -511,7 +586,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 "",
                 FileUtil.getTempDir().getCanonicalPath(),
                 false,
-                ""));
+                "",
+                PROP_STATCVS_ENGINE));
 
             projectCombo_.addItem(new CVSProject(
                 "Statcvs",
@@ -520,7 +596,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 "",
                 FileUtil.getTempDir().getCanonicalPath(),
                 false,
-                ""));
+                "",
+                PROP_STATCVS_ENGINE));
         }
         else
         {
@@ -695,7 +772,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 "login"
             };
 
-            boolean success = 
+            boolean success =
                 CVSCommand.processCommand(
                     cvsArgs,
                     null,
@@ -851,45 +928,11 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         public void runAction(ActionEvent e) throws Exception
         {
             statusBar_.setInfo("Generating stats...");
-
             verify();
             setDebug();
-
-            String cvsBaseDir =
-                checkoutDirField_.getText() +
-                cvsModuleField_.getText() +
-                File.separator;
-
-            String[] args = new String[]
-            {
-                "-verbose",
-                //"-debug",
-                "-output-dir", cvsBaseDir + "statcvs",
-                "-nocredits",
-                //"-title " + cvsModuleField_.getText(),
-                getCVSLogFile(),
-                cvsBaseDir
-            };
-
-            try
-            {
-                new CommandLineParser(args).parse();
-                Main.generateDefaultHTMLSuite();
-            }
-            catch (Exception ee)
-            {
-                System.setSecurityManager(null);
-                logger_.error("Generate Stats failed", ee);
-                ExceptionUtil.handleUI(ee, logger_);
-            }
-
-            launchURLField_.setText(
-                "file://" +
-                getCVSBaseDir() +
-                "statcvs" +
-                File.separator +
-                "index.html");
-
+            StatcvsEngine engine = getStatcvsEngine();
+            engine.generateStats();
+            launchURLField_.setText(engine.getLaunchURL());
             statusBar_.setInfo("Generating stats done.");
         }
     }
@@ -962,23 +1005,23 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * Saves the current cvs project. If the project does not already exist,
      * it is created.
      */
-    class SaveAction extends AbstractAction
+    class SaveAction extends StatcvsAction
     {
         /**
          * Creates a SaveAction.
          */
         SaveAction()
         {
-            super("", ImageCache.getIcon(ImageCache.IMAGE_SAVE));
+            super("", false, null, null);
+            putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_SAVE));
             putValue(SHORT_DESCRIPTION, "Saves the project");
         }
 
 
         /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             String current = projectCombo_.getEditor().getItem().toString();
 
@@ -1003,6 +1046,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                         project.setCheckoutDir(checkoutDirField_.getText());
                         project.setDebug(debugCheckBox_.isSelected());
                         project.setLaunchURL(launchURLField_.getText());
+                        project.setEngine(
+                            getStatcvsEngine().getClass().getName());
                         found |= true;
                         break;
                     }
@@ -1010,14 +1055,17 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
                 if (!found)
                 {
-                    CVSProject project = new CVSProject(
+                    CVSProject project = null;
+
+                    project = new CVSProject(
                         current,
                         cvsModuleField_.getText(),
                         cvsRootField_.getText(),
                         cvsPasswordField_.getText(),
                         checkoutDirField_.getText(),
                         debugCheckBox_.isSelected(),
-                        launchURLField_.getText());
+                        launchURLField_.getText(),
+                        getStatcvsEngine().getClass().getName());
 
                     projectCombo_.addItem(project);
                     projectCombo_.setSelectedItem(project);
