@@ -16,7 +16,7 @@ import toolbox.util.RandomUtil;
  */
 public class FileUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(FileUtilTest.class);
 
@@ -36,6 +36,7 @@ public class FileUtilTest extends TestCase
                     
     /**
      * Constructor for FileUtilTest.
+     * 
      * @param arg0  Name
      */
     public FileUtilTest(String arg0)
@@ -62,6 +63,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Passed: Temp dir = " + tempDir);
     }
 
+
     /**
      * Tests the getTempFilename() method 
      * 
@@ -83,6 +85,7 @@ public class FileUtilTest extends TestCase
         
         logger_.info("Passed: Created temp file " + tempFile);
     }
+
     
     /**
      * Tests cleanDir() for failure by passing a file instead of a directory
@@ -112,6 +115,7 @@ public class FileUtilTest extends TestCase
             f.delete();    
         }
     }
+
     
     /**
      * Tests cleanDir() for failure by passing in a non-existant directory
@@ -135,6 +139,7 @@ public class FileUtilTest extends TestCase
             logger_.info("Passed: " + e);
         }
     }
+
     
     /**
      * Tests cleanDir() for cleaning the contents of a single directory
@@ -182,6 +187,7 @@ public class FileUtilTest extends TestCase
         logger_.info("Contents after: " + ArrayUtil.toString(after));
         assertEquals("No files should be left in " + dir, 0, after.length);
     }
+
     
     /**
      * Tests getFileContents()
@@ -208,6 +214,7 @@ public class FileUtilTest extends TestCase
         // Clean up
         reread.delete();
     }
+
 
     /**
      * Tests getFileContents() for a large file
@@ -242,6 +249,7 @@ public class FileUtilTest extends TestCase
         reread.delete();
     }
 
+
     /**
      * Tests setFileContents()
      * 
@@ -267,6 +275,7 @@ public class FileUtilTest extends TestCase
         // Clean up
         reread.delete();
     }
+
     
     /**
      * Tests moveFile() for simple case
@@ -301,48 +310,106 @@ public class FileUtilTest extends TestCase
         File   destDir     = new File(destDirName);
         destDir.mkdir();
  
-        // Make src file
-        String srcFilename = FileUtil.getTempFilename(srcDir);
-        File   srcFile     = new File(srcFilename);
-        String srcContents =  "test file for move";
-        FileUtil.setFileContents(srcFilename, srcContents, false);
-
-        // Take snapshot before file move
-        String[] beforeMoveSrc = srcDir.list();
-        String[] beforeMoveDest= destDir.list();
-        
-        logger_.info("Before move:  src=" + ArrayUtil.toString(beforeMoveSrc));
-        logger_.info("Before move: dest=" + ArrayUtil.toString(beforeMoveDest));
-        
-        assertEquals("should be one file in src dir", 1, beforeMoveSrc.length);
-        assertEquals("should be zero files in dest dir", 
-            0, beforeMoveDest.length);
-
-        // Move file
-        FileUtil.moveFile(srcFile, destDir);
-
-        // Take snapshot again
-        String[] afterMoveSrc = srcDir.list();
-        String[] afterMoveDest= destDir.list();
-
-        logger_.info("After move:  src=" + ArrayUtil.toString(afterMoveSrc));
-        logger_.info("After move: dest=" + ArrayUtil.toString(afterMoveDest));
+        try
+        {
+            // Make src file
+            String srcFilename = FileUtil.getTempFilename(srcDir);
+            File   srcFile     = new File(srcFilename);
+            String srcContents =  "test file for move";
+            FileUtil.setFileContents(srcFilename, srcContents, false);
+    
+            // Take snapshot before file move
+            String[] beforeMoveSrc = srcDir.list();
+            String[] beforeMoveDest= destDir.list();
+            
+            logger_.info("Before move:  src=" + ArrayUtil.toString(beforeMoveSrc));
+            logger_.info("Before move: dest=" + ArrayUtil.toString(beforeMoveDest));
+            
+            assertEquals("should be one file in src dir", 1, beforeMoveSrc.length);
+            assertEquals("should be zero files in dest dir", 
+                0, beforeMoveDest.length);
+    
+            // Move file
+            FileUtil.moveFile(srcFile, destDir);
+    
+            // Take snapshot again
+            String[] afterMoveSrc = srcDir.list();
+            String[] afterMoveDest= destDir.list();
+    
+            logger_.info("After move:  src=" + ArrayUtil.toString(afterMoveSrc));
+            logger_.info("After move: dest=" + ArrayUtil.toString(afterMoveDest));
+                    
+            assertEquals("should be zero files in src dir", 0, afterMoveSrc.length);
+            assertEquals("should be one file in dest dir", 1, afterMoveDest.length);
+    
+            // Compare contents of moved file
+            String destContents = 
+                FileUtil.getFileContents(destDir.listFiles()[0].getAbsolutePath());
                 
-        assertEquals("should be zero files in src dir", 0, afterMoveSrc.length);
-        assertEquals("should be one file in dest dir", 1, afterMoveDest.length);
-
-        // Compare contents of moved file
-        String destContents = 
-            FileUtil.getFileContents(destDir.listFiles()[0].getAbsolutePath());
+            assertEquals("contents of moved file should be the same", 
+                srcContents, destContents);
+                
+            logger_.info("Passed: moveFile");
+        }
+        finally
+        {
+            // Cleanup
             
-        assertEquals("contents of moved file should be the same", 
-            srcContents, destContents);
-            
-        logger_.info("Passed: moveFile");
+            FileUtil.cleanDir(destDir);
+            srcDir.delete();
+            destDir.delete();
+        }
+    }
+    
 
-        // TODO: add to finally block
-        FileUtil.cleanDir(destDir);
-        srcDir.delete();
-        destDir.delete();
+    /**
+     * Tests trailWithSeparator() with the separator missing
+     */
+    public void testTrailWithSeparatorMissing()
+    {
+        logger_.info("Running testTrailWithSeparatorMissing...");
+        
+        String path = File.separator + "java";
+        String trailed = FileUtil.trailWithSeparator(path);
+        assertEquals(path + File.separator, trailed);
+    }    
+
+    
+    /**
+     * Tests trailWithSeparator() with separator already there
+     */
+    public void testTrailWithSeparatorAlreadyExists()
+    {
+        logger_.info("Running testTrailWithSeparatorAlreadyExists...");
+        
+        String path = File.separator + "java" + File.separator;
+        String trailed = FileUtil.trailWithSeparator(path);
+        assertEquals(path, trailed);
+    }    
+    
+    
+    /**
+     * Tests matchPlatformSeparator()
+     */
+    public void testMatchPlatformSeparator()
+    {
+        logger_.info("Running testMatchPlatformSeparator...");
+        
+        String match = File.separator + "a" + File.separator + "b";
+        assertEquals(match, FileUtil.matchPlatformSeparator("\\a\\b"));
+        assertEquals(match, FileUtil.matchPlatformSeparator("/a/b"));
+    }
+    
+    
+    /**
+     * Tests dropExtension()
+     */
+    public void testDropExtension()
+    {
+        logger_.info("Running testDropExtension...");
+ 
+        assertEquals("foobar", FileUtil.dropExtension("foobar"));
+        assertEquals("foobar", FileUtil.dropExtension("foobar.txt"));
+        assertEquals("foobar.old", FileUtil.dropExtension("foobar.old.txt"));
     }
 }
