@@ -24,7 +24,7 @@ import org.jedit.syntax.TextAreaDefaults;
 
 import toolbox.jedit.DynamicTokenMarker;
 import toolbox.jedit.JEditTextArea;
-import toolbox.jedit.JEditTextAreaPopupMenu;
+import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.SwingUtil;
 
@@ -78,11 +78,11 @@ public class JEditTextAreaTest extends TestCase
            Container c = getContentPane();
 
            TextAreaDefaults defaults = new JavaDefaults();
-           defaults.popup = new JEditTextAreaPopupMenu();
+           defaults.popup = new JEditPopupMenu();
            
            jeta_ = new JEditTextArea(new DynamicTokenMarker(), defaults);
-           ((JEditTextAreaPopupMenu) defaults.popup).setTextArea(jeta_);
-           ((JEditTextAreaPopupMenu) defaults.popup).buildView();
+           ((JEditPopupMenu) defaults.popup).setTextArea(jeta_);
+           ((JEditPopupMenu) defaults.popup).buildView();
 
            c.add(BorderLayout.CENTER, new JScrollPane(jeta_));
            c.add(BorderLayout.SOUTH, buildControlView());

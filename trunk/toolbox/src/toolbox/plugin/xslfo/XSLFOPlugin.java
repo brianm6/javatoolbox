@@ -31,7 +31,7 @@ import org.jedit.syntax.Token;
 import org.jedit.syntax.XMLTokenMarker;
 
 import toolbox.jedit.JEditTextArea;
-import toolbox.jedit.JEditTextAreaPopupMenu;
+import toolbox.jedit.JEditPopupMenu;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
@@ -142,7 +142,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         //public Color eolMarkerColor;
         defaults_.eolMarkers=false;
         defaults_.paintInvalid=false;
-        defaults_.popup = new JEditTextAreaPopupMenu();
+        defaults_.popup = new JEditPopupMenu();
     }
 
     /**
@@ -195,8 +195,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     {
         initTextArea();
         xmlArea_ = new JEditTextArea(new XMLTokenMarker(), defaults_);
-        ((JEditTextAreaPopupMenu) defaults_.popup).setTextArea(xmlArea_);
-        ((JEditTextAreaPopupMenu) defaults_.popup).buildView();
+        ((JEditPopupMenu) defaults_.popup).setTextArea(xmlArea_);
+        ((JEditPopupMenu) defaults_.popup).buildView();
         
         setLayout(new BorderLayout());
         explorer_ = new JFileExplorer(false);
