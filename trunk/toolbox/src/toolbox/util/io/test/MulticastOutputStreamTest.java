@@ -72,7 +72,8 @@ public class MulticastOutputStreamTest extends TestCase
         }
             
         mos.write(testString.getBytes());
-
+        mos.close();
+        
         for (int i=0; i<streams.length; i++)
             assertEquals(testString, streams[i].getBuffer().toString());
     }
@@ -98,6 +99,7 @@ public class MulticastOutputStreamTest extends TestCase
         }
             
         mos.write(testString.getBytes(), 0, testString.length());
+        mos.close();
 
         for (int i=0; i<streams.length; i++)
         {
