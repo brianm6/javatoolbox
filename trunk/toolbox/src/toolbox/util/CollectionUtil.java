@@ -5,18 +5,17 @@ import java.util.HashSet;
 
 /**
  * Utility class for Collections.
+ * 
+ * @see org.apache.commons.collections.CollectionUtils
  */
 public final class CollectionUtil
 {
-    // Clover private constructor workaround
-    static { new CollectionUtil(); }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor.
+     * Prevent construction of this static singleton.
      */
     private CollectionUtil()
     {
