@@ -1,6 +1,8 @@
 package toolbox.showclasspath;
 
 import java.io.File;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -30,6 +32,10 @@ import toolbox.util.StringUtil;
  */
 public final class Main
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+
     /** 
      * Max length for size column.
      */
@@ -76,6 +82,22 @@ public final class Main
      */
     public static void main(String[] args)
     {
+        showPath(System.out);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Writes the classpath to the given output stream.
+     * 
+     * @param output OutputStream to send classpath listing to.
+     */
+    public static void showPath(OutputStream out)
+    {
+        PrintStream pout = new PrintStream(out, true);
+        
         // stuffed everything info main()
         String classPath = System.getProperty("java.class.path");
         
@@ -104,27 +126,27 @@ public final class Main
             int rowLength = max + MAX_SIZE_LEN + 
                             MAX_DATE_LEN + MAX_TIME_LEN;
                             
-            System.out.println(StringUtil.repeat("=", rowLength));
-            System.out.print(COL_ARCHIVE);
-            System.out.print(repeatSpace(max - COL_ARCHIVE.length()));
-            System.out.print(repeatSpace(MAX_SIZE_LEN - COL_SIZE.length()));
-            System.out.print(COL_SIZE);
-            System.out.print(repeatSpace(MAX_DATE_LEN - COL_DATE.length()));
-            System.out.print(COL_DATE);
-            System.out.print(repeatSpace(MAX_TIME_LEN - COL_TIME.length()));
-            System.out.print(COL_TIME);
-            System.out.println();
-            System.out.println(StringUtil.repeat("=", rowLength));
+            pout.println(StringUtil.repeat("=", rowLength));
+            pout.print(COL_ARCHIVE);
+            pout.print(repeatSpace(max - COL_ARCHIVE.length()));
+            pout.print(repeatSpace(MAX_SIZE_LEN - COL_SIZE.length()));
+            pout.print(COL_SIZE);
+            pout.print(repeatSpace(MAX_DATE_LEN - COL_DATE.length()));
+            pout.print(COL_DATE);
+            pout.print(repeatSpace(MAX_TIME_LEN - COL_TIME.length()));
+            pout.print(COL_TIME);
+            pout.println();
+            pout.println(StringUtil.repeat("=", rowLength));
         }
 
         // loop through classpath
         while (st.hasMoreElements())
         {
             String path = st.nextToken();
-            System.out.print(path);
+            pout.print(path);
 
             for (int i = 0; i < (max - path.length()); i++)
-                System.out.print(" ");
+                pout.print(" ");
 
             File f = new File(path);
 
@@ -138,25 +160,25 @@ public final class Main
                     String time = formatTime(lastModified);
                     String length = formatLength(f.length());
                     
-                    System.out.print(
+                    pout.print(
                         repeatSpace(MAX_SIZE_LEN - length.length()));
                         
-                    System.out.print(length);
-                    System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                    System.out.print(date);
-                    System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                    System.out.print(time);
+                    pout.print(length);
+                    pout.print(repeatSpace(MAX_DATE_LEN - date.length()));
+                    pout.print(date);
+                    pout.print(repeatSpace(MAX_TIME_LEN - time.length()));
+                    pout.print(time);
                 }
                 else
                 {
                     if (!f.exists())
-                        System.out.print("Does not exist!");
+                        pout.print("Does not exist!");
                     else if (!f.isFile())
-                        System.out.print("Is not a file!");
+                        pout.print("Is not a file!");
                     else if (!f.canRead())
-                        System.out.print("Cannot open file!");
+                        pout.print("Cannot open file!");
                     else
-                        System.out.print("Unknown error opening file!");
+                        pout.print("Unknown error opening file!");
                 }
             }
             else if (f.isDirectory())
@@ -164,21 +186,24 @@ public final class Main
                 Date lastModified = new Date(f.lastModified());
                 String date = formatDate(lastModified);
                 String time = formatTime(lastModified);
-                System.out.print(repeatSpace(MAX_SIZE_LEN));
-                System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
-                System.out.print(date);
-                System.out.print(repeatSpace(MAX_TIME_LEN - time.length()));
-                System.out.print(time);
+                pout.print(repeatSpace(MAX_SIZE_LEN));
+                pout.print(repeatSpace(MAX_DATE_LEN - date.length()));
+                pout.print(date);
+                pout.print(repeatSpace(MAX_TIME_LEN - time.length()));
+                pout.print(time);
             }
             else if (!f.exists())
             {
-                System.out.print("Does not exist!");
+                pout.print("Does not exist!");
             }
 
-            System.out.println();
+            pout.println();
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Package Protected
+    //--------------------------------------------------------------------------
 
     /**
      * Formats date to specific format: 01/01/1980  12/31/1999
