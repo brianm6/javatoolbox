@@ -78,6 +78,8 @@ public class PreferencesDialog extends JDialog
 
     public static void main(String[] args) throws Exception
     {
+        // TODO: Remove me once i'm no longer useful for testing!
+        
         JFrame frame = new JFrame();
         SwingUtil.centerWindow(frame);
         JDialog d = new PreferencesDialog(frame, new PreferencesManager());
