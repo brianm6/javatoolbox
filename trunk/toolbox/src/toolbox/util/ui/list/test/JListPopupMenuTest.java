@@ -1,4 +1,4 @@
-package toolbox.util.ui.test;
+package toolbox.util.ui.list.test;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
