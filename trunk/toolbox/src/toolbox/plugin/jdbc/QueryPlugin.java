@@ -35,6 +35,7 @@ import toolbox.jedit.JEditActions;
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
+import toolbox.plugin.jdbc.action.*;
 import toolbox.plugin.jdbc.action.FormatSQLAction;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
@@ -291,7 +292,59 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         sqlEditor_.setText(sb.toString());
     }
+
     
+    /**
+     * Runs a query against the database and returns the results as a nicely
+     * formatted string.
+     *
+     * @param sql SQL query.
+     * @return Formatted results.
+     * @see JDBCUtil#format(ResultSet)
+     */
+    public String executeSQL(String sql)
+    {
+        String metaResults = null;
+        String lower = sql.trim().toLowerCase();
+
+        try
+        {
+            if (lower.startsWith("select"))
+            {
+                //
+                // Execute select statement
+                //
+                
+                metaResults = JDBCUtil.executeQuery(sql);
+            }
+            else if (lower.startsWith("insert") ||
+                     lower.startsWith("delete") ||
+                     lower.startsWith("update") ||
+                     lower.startsWith("create") ||
+                     lower.startsWith("drop")   ||
+                     lower.startsWith("alter"))
+            {
+                metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
+            }
+            else
+            {
+                //
+                // Everything else is processed as an update
+                //
+                
+                metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
+            }
+
+            addToHistory(sql);
+        }
+        catch (Exception e)
+        {
+            ExceptionUtil.handleUI(e, logger_);
+        }
+
+        return metaResults;
+    }
+
     //--------------------------------------------------------------------------
     // Build UI
     //--------------------------------------------------------------------------
@@ -380,7 +433,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             "C+ENTER", new ExecuteAllAction());
 
         sqlEditor_.getInputHandler().addKeyBinding(
-            "CS+ENTER", new ExecuteCurrentAction());
+            "CS+ENTER", new ExecuteCurrentAction(this));
 
         sqlEditor_.getInputHandler().addKeyBinding(
             "C+UP", new CtrlUpAction());
@@ -399,7 +452,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JButton executeCurrent = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_FORWARD),
             "Execute Current/Selected",
-            new ExecuteCurrentAction());
+            new ExecuteCurrentAction(this));
         
         JButton format = JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_BRACES),
@@ -467,58 +520,6 @@ public class QueryPlugin extends JPanel implements IPlugin
     // Protected
     //--------------------------------------------------------------------------
     
-    /**
-     * Runs a query against the database and returns the results as a nicely
-     * formatted string.
-     *
-     * @param sql SQL query.
-     * @return Formatted results.
-     * @see JDBCUtil#format(ResultSet)
-     */
-    protected String executeSQL(String sql)
-    {
-        String metaResults = null;
-        String lower = sql.trim().toLowerCase();
-
-        try
-        {
-            if (lower.startsWith("select"))
-            {
-                //
-                // Execute select statement
-                //
-                
-                metaResults = JDBCUtil.executeQuery(sql);
-            }
-            else if (lower.startsWith("insert") ||
-                     lower.startsWith("delete") ||
-                     lower.startsWith("update") ||
-                     lower.startsWith("create") ||
-                     lower.startsWith("drop")   ||
-                     lower.startsWith("alter"))
-            {
-                metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
-            }
-            else
-            {
-                //
-                // Everything else is processed as an update
-                //
-                
-                metaResults = JDBCUtil.executeUpdate(sql) + " rows affected.";
-            }
-
-            addToHistory(sql);
-        }
-        catch (Exception e)
-        {
-            ExceptionUtil.handleUI(e, logger_);
-        }
-
-        return metaResults;
-    }
-
-
     /**
      * Adds a sql statement to the popup menu history.
      *
@@ -706,7 +707,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // SQLReferenceAction
+    // ExecuteAllAction
     //--------------------------------------------------------------------------
 
     /**
@@ -823,99 +824,9 @@ public class QueryPlugin extends JPanel implements IPlugin
             }
         }
     }
-
     
     //--------------------------------------------------------------------------
-    // ExecuteCurrentAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Runs the query and appends the results to the output text area.
-     */
-    class ExecuteCurrentAction extends WorkspaceAction
-    {
-        /**
-         * Creates a ExecuteCurrentAction.
-         */
-        ExecuteCurrentAction()
-        {
-            super("Execute Current Statement", true, QueryPlugin.this,
-                statusBar_);
-        }
-
-
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(
-         *      java.awt.event.ActionEvent)
-         */
-        public void runAction(ActionEvent e) throws Exception
-        {
-            //
-            // By default, execute the selected text
-            //
-
-            String sql = sqlEditor_.getSelectedText();
-
-            //
-            // If no text is selected, then execute the current statement. This
-            // assumes we are on the first line of the statement and that there
-            // is a semicolon somewhere to tell us where the statement ends.
-            //
-
-            if (StringUtils.isBlank(sql))
-            {
-                int max = sqlEditor_.getLineCount();
-                int curr = sqlEditor_.getCaretLine();
-                boolean terminatorFound = false;
-                StringBuffer stmt = new StringBuffer();
-
-                while (curr <= max && !terminatorFound)
-                {
-                    String line = sqlEditor_.getLineText(curr++);
-                    int pos = -1;
-                    if ((pos = line.indexOf(";")) >= 0)
-                    {
-                        stmt.append(line.substring(0, pos + 1));
-                        terminatorFound = true;
-                    }
-                    else
-                    {
-                        stmt.append("\n" + line);
-                    }
-                }
-
-                //
-                // If no terminating semicolon for the statement is found, then
-                // assume only the current line contains the entire sql
-                // statement to execute.
-                //
-
-                sql = stmt.toString();
-            }
-
-            if (StringUtils.isBlank(sql))
-            {
-                statusBar_.setInfo("Enter SQL to execute");
-            }
-            else
-            {
-                logger_.debug("Executing SQL: \n" + sql);
-
-                statusBar_.setInfo("Executing...");
-                String results = executeSQL(sql);
-                resultsArea_.append(results + "\n");
-
-                if ((!StringUtils.isBlank(results)) &&
-                    (StringUtil.tokenize(results, StringUtil.NL).length < 50))
-                    resultsArea_.scrollToEnd();
-
-                statusBar_.setInfo("Done");
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // FormatSQLAction
+    // ExecutzePriorAction
     //--------------------------------------------------------------------------
 
     /**
