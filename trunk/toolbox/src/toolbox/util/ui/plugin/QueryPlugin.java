@@ -14,13 +14,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
@@ -29,6 +29,7 @@ import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
+import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
@@ -75,6 +76,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     
     /** Property key for SQL history */
     public static final String PROP_HISTORY = "query.plugin.history";
+
+    /** Max number of entries in sql history popup menu */
+    public static final String PROP_HISTORY_MAX = "query.plugin.history.max";
     
     /** Property key for JDBC driver name */
     public static final String PROP_DRIVER = "query.plugin.driver";
@@ -92,14 +96,16 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final String PROP_CONTENTS = "query.plugin.contents";
     
     // SQL query & results stuff
-    private IStatusBar      statusBar_;    
-    private JEditTextArea   sqlArea_;
-    private JTextArea       resultsArea_;
-    private JButton         queryButton_;
-    private JButton         clearButton_;
-    private JPopupMenu      sqlPopup_;
-    private Map             sqlHistory_;
-    private JFlipPane       leftFlipPane_;
+    private IStatusBar     statusBar_;    
+    private JEditTextArea  sqlArea_;
+    private JTextArea      resultsArea_;
+    private JButton        queryButton_;
+    private JButton        clearButton_;
+    private JFlipPane      leftFlipPane_;
+    
+    // SQL history
+    private JConveyorPopupMenu sqlPopup_;    
+    private Map                sqlHistory_;
     
     // JDBC config stuff 
     private JTextField driverField_;
@@ -128,7 +134,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     protected void buildView()
     {
         sqlHistory_ = new HashMap();
-        sqlPopup_ = new JConveyorPopupMenu(3);
+        sqlPopup_ = new JConveyorPopupMenu();
 
         TextAreaDefaults defaults = new JavaDefaults();
         defaults.popup = sqlPopup_;
@@ -285,23 +291,25 @@ public class QueryPlugin extends JPanel implements IPlugin
 
     public void applyPrefs(Properties prefs)
     {
-        String history = prefs.getProperty(PROP_HISTORY);
+        // Restore sql history
+        sqlPopup_.setCapacity(
+            PropertiesUtil.getInteger(prefs, PROP_HISTORY_MAX, 10));
         
-        if (!StringUtil.isNullOrEmpty(history))
-        {            
-            String[] historyItems = StringUtil.tokenize(history, "|");
-    
-            logger_.debug(
-                "Restoring " + historyItems.length + " saved sql stmts");
+        String[] historyItems = 
+            StringUtil.tokenize(prefs.getProperty(PROP_HISTORY,""), "|");
             
-            for (int i=0; i<historyItems.length; i++)
-                addToHistory(historyItems[i]);
-        }
-            
+        logger_.debug("Restoring " + historyItems.length + " saved sql stmts");
+        
+        for (int i=0; i<historyItems.length; i++)
+            addToHistory(historyItems[i]);
+        
+        // Restore JDCBC driver
         driverField_.setText(prefs.getProperty(PROP_DRIVER, ""));
         urlField_.setText(prefs.getProperty(PROP_URL, ""));
         userField_.setText(prefs.getProperty(PROP_USER, ""));
         passwordField_.setText(prefs.getProperty(PROP_PASSWORD, ""));
+        
+        
         sqlArea_.setText(prefs.getProperty(PROP_CONTENTS, ""));
         leftFlipPane_.applyPrefs(prefs, PROP_PREFIX);
     }
