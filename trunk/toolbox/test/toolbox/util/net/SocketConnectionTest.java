@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+import EDU.oswego.cs.dl.util.concurrent.Mutex;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -14,12 +16,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
-import toolbox.util.concurrent.Mutex;
-import toolbox.util.net.DefaultConnectionListener;
-import toolbox.util.net.SocketConnection;
 
 /**
  * Unit test for SocketConnection.
+ * 
+ * @see toolbox.util.net.SocketConnection
  */
 public class SocketConnectionTest extends TestCase
 {

@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import EDU.oswego.cs.dl.util.concurrent.Mutex;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -15,10 +17,11 @@ import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
-import toolbox.util.concurrent.Mutex;
 
 /**
  * Unit test for Findclass.
+ * 
+ * @see toolbox.findclass.FindClass
  */
 public class FindClassTest extends TestCase
 {
@@ -307,6 +310,7 @@ public class FindClassTest extends TestCase
         
         /**
          * Waits for the search to be canceled.
+         * 
          * @see toolbox.findclass.FindClassListener#searchCancelled()
          */
         public void searchCancelled()

@@ -10,6 +10,8 @@ import toolbox.util.ThreadUtil;
 
 /**
  * Unit test for BlockingQueue.
+ * 
+ * @see toolbox.util.concurrent.BlockingQueue
  */
 public class BlockingQueueTest extends TestCase
 {
@@ -48,8 +50,8 @@ public class BlockingQueueTest extends TestCase
         Object obj = q.pull(5000);
         time.setEndTime();
         
-        logger_.info("Elapsed time: " + time);
-        logger_.info("Popped obj  : " + obj);
+        logger_.info("Elapsed time = " + time);
+        logger_.info("Popped obj   = " + obj);
     }
     
     
@@ -82,8 +84,8 @@ public class BlockingQueueTest extends TestCase
                 
                 time.setEndTime();
                 
-                logger_.info("Elapsed time: " + time);
-                logger_.info("Popped obj  : " + obj);                
+                logger_.info("Elapsed time = " + time);
+                logger_.info("Popped obj   = " + obj);                
             }
         }, "testPullTimeoutMet");
         t.start();
@@ -111,7 +113,7 @@ public class BlockingQueueTest extends TestCase
         q.push("b");
         q.push("c");
         
-        logger_.info("toString: " + q);
+        logger_.info("toString = " + q);
     }
     
     

@@ -3,6 +3,8 @@ package toolbox.util.concurrent;
 import java.util.ArrayList;
 import java.util.List;
 
+import EDU.oswego.cs.dl.util.concurrent.Mutex;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
