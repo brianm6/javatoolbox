@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * Utility class that deals only with the TIME portions of the 
- * <code>java.util.Date</code> object
+ * <code>java.util.Date</code> object.
  */
 public final class TimeUtil
 {
@@ -31,8 +31,8 @@ public final class TimeUtil
     /**
      * Formats the time portion of a Date object
      * 
-     * @param   d    Date with time to format
-     * @return  Time in dashed hh:mma format
+     * @param d Date with time to format
+     * @return Time in dashed hh:mma format
      */
     public static String format(Date d)
     {

@@ -32,10 +32,10 @@ public class XMLUtil
      * Omit Declaration = false
      * </pre>
      * 
-     * @param   xml  XML string to format
-     * @return  Formatted XML string
-     * @throws  SAXException on parsing error
-     * @throws  IOException on I/O error
+     * @param xml XML string to format
+     * @return Formatted XML string
+     * @throws SAXException on parsing error
+     * @throws IOException on I/O error
      */
     public static String format(String xml) throws SAXException, IOException
     {
@@ -45,13 +45,13 @@ public class XMLUtil
     /**
      * Formats and indents XML to make it easy to read
      * 
-     * @param   xml        XML string to format
-     * @param   indent     Number of spaces per indentation 
-     * @param   lineWidth  Max line width afterwhich the line is wrapped
-     * @param   omitDeclaration  Set to true to omit the xml declaration
-     * @return  Formatted XML string
-     * @throws  SAXException on parsing error
-     * @throws  IOException on I/O error
+     * @param xml XML string to format
+     * @param indent Number of spaces per indentation 
+     * @param lineWidth Max line width afterwhich the line is wrapped
+     * @param omitDeclaration Set to true to omit the xml declaration
+     * @return Formatted XML string
+     * @throws SAXException on parsing error
+     * @throws IOException on I/O error
      */
     public static String format(String xml, int indent, int lineWidth, 
         boolean omitDeclaration) throws SAXException, IOException
@@ -80,10 +80,10 @@ public class XMLUtil
     /**
      * Converts a string XML element into its DOM counterpart
      * 
-     * @param   xml  XML to load into a DOM element
-     * @return  DOM Element representing xml string
-     * @throws  IOException on I/O error
-     * @throws  SAXException on XML parsing error
+     * @param xml XML to load into a DOM element
+     * @return DOM Element representing xml string
+     * @throws IOException on I/O error
+     * @throws SAXException on XML parsing error
      */
     public static Element loadElement(String xml)
         throws IOException, SAXException
