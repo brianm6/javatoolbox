@@ -242,10 +242,14 @@ public class TableSorter extends TableMap
         ascending_       = true;
         sortingColumn_   = -1;
         enabled_         = true;
-        forwardSortIcon_ = ResourceUtil.getResourceAsIcon(
-                           "/toolbox/util/ui/images/Forward.gif");
-        reverseSortIcon_ = ResourceUtil.getResourceAsIcon(
-                           "/toolbox/util/ui/images/Reverse.gif");
+        
+        forwardSortIcon_ = 
+            ResourceUtil.getResourceAsIcon(
+                "/toolbox/util/ui/images/SortAscending.gif");
+                
+        reverseSortIcon_ = 
+            ResourceUtil.getResourceAsIcon(
+                "/toolbox/util/ui/images/SortDescending.gif");
     }
 
     /**
@@ -509,7 +513,8 @@ public class TableSorter extends TableMap
     {
         DefaultTableCellRenderer label = new TableHeaderCellRenderer();
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setHorizontalTextPosition(SwingConstants.LEFT);
+        label.setHorizontalTextPosition(SwingConstants.LEADING);
+        label.setIconTextGap(10);
         return label;
     }
     
