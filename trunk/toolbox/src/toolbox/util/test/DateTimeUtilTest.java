@@ -76,45 +76,45 @@ public class DateTimeUtilTest extends TestCase
      */
     public void testGetBeginningOfTime()
     {
-       logger_.info("Running testGetBeginningOfTime...");        
-       
-       Date d = DateTimeUtil.getBeginningOfTime();
-       logger_.info("Beginning of time: " + DateTimeUtil.format(d));
-    }   
-    
+        logger_.info("Running testGetBeginningOfTime...");
+
+        Date d = DateTimeUtil.getBeginningOfTime();
+        logger_.info("Beginning of time: " + DateTimeUtil.format(d));
+    }
+
     
     /**
      * Test getEndOfDay()
      */
     public void testGetEndOfDay()
     {
-       logger_.info("Running testGetEndOfDay...");
-       
-       Date d = DateTimeUtil.getEndOfDay();
-       logger_.info("End of day: " + DateTimeUtil.format(d));
+        logger_.info("Running testGetEndOfDay...");
+
+        Date d = DateTimeUtil.getEndOfDay();
+        logger_.info("End of day: " + DateTimeUtil.format(d));
     }
-    
+
     
     /**
      * Tests getEndOfTime()
      */
     public void testGetEndOfTime()
     {
-       logger_.info("Running testGetEndOfTime...");        
-       
-       Date d = DateTimeUtil.getEndOfTime();
-       logger_.info("End of time: " + DateTimeUtil.format(d));
+        logger_.info("Running testGetEndOfTime...");
+
+        Date d = DateTimeUtil.getEndOfTime();
+        logger_.info("End of time: " + DateTimeUtil.format(d));
     }
-    
+
     
     /**
      * Tests formatToSecond()
      */
     public void testFormatToSecond()
     {
-       logger_.info("Running testFormatToSecond...");        
-       
-       Date d = new Date();
-       logger_.info("Formatted to seconds: " + DateTimeUtil.formatToSecond(d));
-    }   
+        logger_.info("Running testFormatToSecond...");
+
+        Date d = new Date();
+        logger_.info("Formatted to seconds: " + DateTimeUtil.formatToSecond(d));
+    }
 }

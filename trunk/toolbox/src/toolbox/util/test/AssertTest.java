@@ -61,11 +61,11 @@ public class AssertTest extends TestCase
     {
         logger_.info("Running testEqualsFloat...");
         
-        Assert.equals( 1.0f, 1.0f, (float) 0.0, "equal");
+        Assert.equals(1.0f, 1.0f, (float) 0.0, "equal");
         
         try
         {
-            Assert.equals((float)1.0f, (float)2.0f, (float)0.0, "not equal");
+            Assert.equals((float) 1.0f, (float) 2.0f, (float) 0.0, "not equal");
             fail("testEqualsFloat");
         }
         catch (AssertionException e)
@@ -85,7 +85,7 @@ public class AssertTest extends TestCase
         
         try
         {
-            Assert.equals(111L, 222L,"not equal");
+            Assert.equals(111L, 222L, "not equal");
             fail("testEqualsLong");
         }
         catch (AssertionException e)

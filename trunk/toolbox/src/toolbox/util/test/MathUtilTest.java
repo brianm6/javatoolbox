@@ -75,7 +75,7 @@ public class MathUtilTest extends TestCase
     {
         logger_.info("Running testAddToAll...");
         
-        int[] n = new int[] { 1, 2, 3};
+        int[] n = new int[] {1, 2, 3};
         int x = 10;
         MathUtil.addToAll(n, x);
         
@@ -92,7 +92,7 @@ public class MathUtilTest extends TestCase
     {
         logger_.info("Running testSum...");
         
-        int[] n = new int[] { 1, 2, 3};
+        int[] n = new int[] {1, 2, 3};
         assertEquals("sum incorrect", 1 + 2 + 3, MathUtil.sum(n));
         assertEquals("sum empty array incorrect", 0, MathUtil.sum(new int[0]));
     }

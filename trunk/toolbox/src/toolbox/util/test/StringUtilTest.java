@@ -358,7 +358,7 @@ public class StringUtilTest extends TestCase
         logger_.info("Running testTrimEmpty...");
         
         assertEquals("trimmed empty string incorrect",
-            "", StringUtil.trim("",'x'));
+            "", StringUtil.trim("", 'x'));
     }
     
     
@@ -370,8 +370,8 @@ public class StringUtilTest extends TestCase
         logger_.info("Running testTrimOne...");
         
         String s = "x";
-        assertEquals("trimmed incorrect", "", StringUtil.trim(s,'x'));
-        assertEquals("trimmed incorrect", s, StringUtil.trim(s,' '));
+        assertEquals("trimmed incorrect", "", StringUtil.trim(s, 'x'));
+        assertEquals("trimmed incorrect", s, StringUtil.trim(s, ' '));
     }
 
     
@@ -383,7 +383,7 @@ public class StringUtilTest extends TestCase
         logger_.info("Running testTrimMany...");
         
         String s = "..abcdefg..x..";
-        assertEquals("trim incorrect", "abcdefg..x", StringUtil.trim(s,'.'));
+        assertEquals("trim incorrect", "abcdefg..x", StringUtil.trim(s, '.'));
         assertEquals("trim incorrect", s, StringUtil.trim(s, 'z'));
     }
  
@@ -526,19 +526,19 @@ public class StringUtilTest extends TestCase
         assertEquals(1, StringUtil.tokenize(m, "X").length);
         assertEquals(1, StringUtil.tokenize(m, "X", true).length);
             
-            // Without delims
-            assertEquals(3, StringUtil.tokenize(m, "Z").length);
-            assertEquals("one", StringUtil.tokenize(m, "Z")[0]);        
-            assertEquals("two", StringUtil.tokenize(m, "Z")[1]);
-            assertEquals("three", StringUtil.tokenize(m, "Z")[2]);
-    
-            // With delims
-            assertEquals(5,       StringUtil.tokenize(m, "Z", true).length);
-            assertEquals("one",   StringUtil.tokenize(m, "Z", true)[0]);
-            assertEquals("Z",     StringUtil.tokenize(m, "Z", true)[1]);
-            assertEquals("two",   StringUtil.tokenize(m, "Z", true)[2]);
-            assertEquals("Z",     StringUtil.tokenize(m, "Z", true)[3]);            
-            assertEquals("three", StringUtil.tokenize(m, "Z", true)[4]);
+        // Without delims
+        assertEquals(3, StringUtil.tokenize(m, "Z").length);
+        assertEquals("one", StringUtil.tokenize(m, "Z")[0]);
+        assertEquals("two", StringUtil.tokenize(m, "Z")[1]);
+        assertEquals("three", StringUtil.tokenize(m, "Z")[2]);
+
+        // With delims
+        assertEquals(5, StringUtil.tokenize(m, "Z", true).length);
+        assertEquals("one", StringUtil.tokenize(m, "Z", true)[0]);
+        assertEquals("Z", StringUtil.tokenize(m, "Z", true)[1]);
+        assertEquals("two", StringUtil.tokenize(m, "Z", true)[2]);
+        assertEquals("Z", StringUtil.tokenize(m, "Z", true)[3]);
+        assertEquals("three", StringUtil.tokenize(m, "Z", true)[4]);
     }
     
     
@@ -577,8 +577,10 @@ public class StringUtilTest extends TestCase
         // String with multiple newlines
         int cnt = 10;
         s = StringUtil.repeat(StringUtil.NL, cnt);
-        for (int i=0; i<cnt; i++)
+        
+        for (int i = 0; i < cnt; i++)
             assertEquals("", StringUtil.getLine(s, i));
+        
         assertNull(StringUtil.getLine(s, 500));
 
         // String with multiple newlines w/ single chars

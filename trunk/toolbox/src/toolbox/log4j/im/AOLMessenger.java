@@ -101,7 +101,10 @@ public class AOLMessenger implements InstantMessenger
     /**
      * Synchronized method since whole send/recv is async. Waiters in the
      * queue will return immediately because the connected_ flag gets checked
-     * before anything happens. 
+     * before anything happens.
+     * 
+     * @see toolbox.log4j.im.InstantMessenger#login(java.lang.String, 
+     *      java.lang.String) 
      */
     public synchronized void login(String username, String password) 
         throws InstantMessengerException
@@ -111,7 +114,7 @@ public class AOLMessenger implements InstantMessenger
 
         try
         {         
-            connection_.logIn(username,password,50000);
+            connection_.logIn(username, password, 50000);
             listener_.waitForLogin();
             
             while (!connection_.isLoginComplete());
@@ -140,6 +143,9 @@ public class AOLMessenger implements InstantMessenger
     
     /**
      * Sends message to the recipient using a queue invoker strategy.
+     * 
+     * @see toolbox.log4j.im.InstantMessenger#send(java.lang.String, 
+     *      java.lang.String)
      */
     public void send(final String recipient, final String message)
         throws InstantMessengerException
@@ -207,12 +213,12 @@ public class AOLMessenger implements InstantMessenger
         /** 
          * Login success and failures both go in this queue. 
          */
-        BlockingQueue loginQueue_;
+        private BlockingQueue loginQueue_;
         
         /** 
          * Disconnect notification goes into this queue. 
          */
-        BlockingQueue disconnected_;
+        private BlockingQueue disconnected_;
         
         //----------------------------------------------------------------------
         // Constructors
@@ -248,7 +254,7 @@ public class AOLMessenger implements InstantMessenger
          * Waits for a successful disconnect.
          * 
          * @return Protocol that was disconnected.
-         * @throws InterruptedExceptin if interrupted while pulling from the 
+         * @throws InterruptedException if interrupted while pulling from the 
          *         <code>disconnected_</code> queue.
          */        
         public TocResponse waitForDisconnect() throws InterruptedException

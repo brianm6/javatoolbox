@@ -235,12 +235,14 @@ public class ClassUtilTest extends TestCase
         assertEquals(0, ClassUtil.getMatchingClasses(new Object[0]).length);
         
         // One
-        Class[] one = ClassUtil.getMatchingClasses(new Object[] { "whoopee" } );
+        Class[] one = ClassUtil.getMatchingClasses(new Object[] {"whoopee"});
         assertEquals(1, one.length);
         assertEquals(String.class, one[0]);
         
         // Many
-        Object[] objs = new Object[] {"whoopee",new Integer(3),new ArrayList()};
+        Object[] objs = 
+            new Object[] {"whoopee", new Integer(3), new ArrayList()};
+        
         Class[] many = ClassUtil.getMatchingClasses(objs);
         assertEquals(3, many.length);
         assertEquals(String.class, many[0]);
@@ -260,12 +262,12 @@ public class ClassUtilTest extends TestCase
         URL loc1 = ClassUtil.getClassLocation(Object.class);
         logger_.info("Class Location = " + loc1);
         assertNotNull(loc1);
-        assertTrue(loc1.toString().indexOf("rt.jar")>=0);
+        assertTrue(loc1.toString().indexOf("rt.jar") >= 0);
         
         // Try a toolbox class
         URL loc2 = ClassUtil.getClassLocation(ClassUtil.class);    
         logger_.info("Class Location = " + loc2);
         assertNotNull(loc2);
-        assertTrue(loc2.toString().indexOf("toolbox")>=0);
+        assertTrue(loc2.toString().indexOf("toolbox") >= 0);
     }
 }

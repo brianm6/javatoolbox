@@ -55,26 +55,26 @@ public class EchoConnectionHandler implements IConnectionHandler
                 
             PrintWriter pw = new PrintWriter(conn.getOutputStream());           
             
-            while(!terminate) 
+            while (!terminate) 
             {
                 String request = br.readLine();
                 logger_.info("Echo: " + request);
                 pw.println(request);
                 pw.flush();
                 
-                if(request.equals(TOKEN_TERMINATE))
+                if (request.equals(TOKEN_TERMINATE))
                     terminate = true;
             }
             
             conn.close();
         }
-        catch(IOException e)
+        catch (IOException e)
         {
             logger_.error(e.getMessage(), e);
         }
         finally
         {
-            // nothing
+            ; // nothing
         }
         
         return null;

@@ -94,7 +94,7 @@ public class SocketConnectionTest extends TestCase
         logger_.info("Running testForceConnectConstructor...");
         
         final int port = SocketUtil.getFreePort();
-        Server server = new Server(port,false);
+        Server server = new Server(port, false);
         final Mutex mutex = new Mutex();
         
         new Thread(new Runnable()
@@ -227,7 +227,7 @@ public class SocketConnectionTest extends TestCase
         connection.setHost("localhost");
         connection.setPort(s.getPort());
         
-        for (int i=0; i<100; i++)
+        for (int i = 0; i < 100; i++)
         {
             logger_.info("Connection " + i);
             
@@ -310,7 +310,7 @@ public class SocketConnectionTest extends TestCase
          */
         public Server()
         {
-            this(0,false);
+            this(0, false);
         }
 
         
@@ -399,7 +399,7 @@ public class SocketConnectionTest extends TestCase
          */
         public void run()
         {
-            while(keepGoing_)
+            while (keepGoing_)
             {
                 try
                 {
@@ -417,7 +417,7 @@ public class SocketConnectionTest extends TestCase
                 {
                     logger_.info(se.getMessage());
                 }
-                catch(IOException e)
+                catch (IOException e)
                 {
                     logger_.error("run", e);
                 }

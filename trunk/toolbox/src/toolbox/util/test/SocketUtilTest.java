@@ -101,7 +101,7 @@ public class SocketUtilTest extends TestCase
         // start socket server
         ServerSocket ss = new ServerSocket(0);
         
-        ThreadUtil.run(ss,"accept", new Object[0]);
+        ThreadUtil.run(ss, "accept", new Object[0]);
         
         // wait for server to init
         ThreadUtil.sleep(2000);
@@ -125,7 +125,7 @@ public class SocketUtilTest extends TestCase
     {
         logger_.info("Running testGetFreePort...");
         
-        for (int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++)
         {
             int freePort = SocketUtil.getFreePort();
             logger_.info("Freeport = " + freePort);

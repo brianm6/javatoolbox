@@ -162,7 +162,7 @@ public class DoubleUtilTest extends TestCase
     {
         logger_.info("Running testMedianOne...");
         
-        double[] d = new double[] { 99 };
+        double[] d = new double[] {99};
         double e = DoubleUtil.median(d);
         assertEquals("values don't match", d[0], e, 0);
     }
@@ -270,7 +270,7 @@ public class DoubleUtilTest extends TestCase
         logger_.info("Running testRoundString...");
         
         double d = 100.123;
-        String s = DoubleUtil.round(d+"", TWO_DIGIT_FORMAT);
+        String s = DoubleUtil.round(d + "", TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.12", s);
     }
     
@@ -323,12 +323,12 @@ public class DoubleUtilTest extends TestCase
     {
         logger_.info("Running testAverage...");
         
-        double[] d = new double[] { 1.0, 1.1, 1.2 };
-        assertEquals( 1.1, (double) DoubleUtil.average(d),
+        double[] d = new double[] {1.0, 1.1, 1.2};
+        assertEquals(1.1, (double) DoubleUtil.average(d),
             /* this should be 0.0 */ 0.01);
             
-        assertEquals((double)0.0, DoubleUtil.average(new double[0]), 
-            (double)0.0);
+        assertEquals((double) 0.0, DoubleUtil.average(new double[0]), 
+            (double) 0.0);
     }
     
     
@@ -339,11 +339,11 @@ public class DoubleUtilTest extends TestCase
     {
         logger_.info("Running testDifference...");
         
-        double[] a = new double[] { 1.1, 4.5, 100.6 };
-        double[] b = new double[] { 1.1, 4.5, 100.6 };
+        double[] a = new double[] {1.1, 4.5, 100.6};
+        double[] b = new double[] {1.1, 4.5, 100.6};
         double[] c = DoubleUtil.difference(a, b);
     
-        for (int i=0; i<c.length; i++)
+        for (int i = 0; i < c.length; i++)
             assertEquals(0.0, c[i], 0.0); 
     }
     
@@ -355,9 +355,9 @@ public class DoubleUtilTest extends TestCase
     {
         logger_.info("Running testOccurs...");
            
-        double[] a = new double[] { 2.3, 4.5, 6.7 };  // occurs once
-        double[] b = new double[] { 4.5, 4.5, 4.5 };  // occurs thrice
-        double[] c = new double[] { 9.9, 9.9, 9.9 };  // occurs none
+        double[] a = new double[] {2.3, 4.5, 6.7};  // occurs once
+        double[] b = new double[] {4.5, 4.5, 4.5};  // occurs thrice
+        double[] c = new double[] {9.9, 9.9, 9.9};  // occurs none
         
         assertEquals(1, DoubleUtil.occurs(4.5, a));
         assertEquals(3, DoubleUtil.occurs(4.5, b));
@@ -372,7 +372,7 @@ public class DoubleUtilTest extends TestCase
     {
         logger_.info("Running testSum...");
         
-        double[] d = new double[] { 1.0, 1.1, 1.2 };
+        double[] d = new double[] {1.0, 1.1, 1.2};
         assertEquals((double) 3.3, (double) DoubleUtil.sum(d), 0.0);
         assertEquals((double) 0.0, (double) DoubleUtil.sum(new double[0]), 0.0);
     }

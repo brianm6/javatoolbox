@@ -32,7 +32,7 @@ public class JDBCUtilTest extends TestCase
     private static String DB_DRIVER = "org.hsqldb.jdbcDriver";
     private static String DB_USER = "SA";
     private static String DB_PASSWORD = "";
-    private static String DB_URL = "jdbc:hsqldb:" + FileUtil.getTempDir()+FS; 
+    private static String DB_URL = "jdbc:hsqldb:" + FileUtil.getTempDir() + FS; 
     
     //--------------------------------------------------------------------------
     // Main
@@ -54,6 +54,8 @@ public class JDBCUtilTest extends TestCase
 
     /**
      * Tests init()
+     * 
+     * @throws Exception on error.
      */
     public void testInit() throws Exception
     {
@@ -142,7 +144,7 @@ public class JDBCUtilTest extends TestCase
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            String results = JDBCUtil.executeQuery("select * from " + table);            
+            String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("0 rows") >= 0);
             logger_.info("\n" + results);
         }
@@ -172,8 +174,11 @@ public class JDBCUtilTest extends TestCase
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            JDBCUtil.executeUpdate("insert into " +table + "(id) values (999)");
-            String results = JDBCUtil.executeQuery("select * from " + table);            
+            
+            JDBCUtil.executeUpdate(
+                "insert into " + table + "(id) values (999)");
+            
+            String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("1 rows") >= 0);
             assertTrue(results.indexOf("999") >= 0);
             logger_.info("\n" + results);
@@ -205,14 +210,14 @@ public class JDBCUtilTest extends TestCase
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             
-            for (int i=0; i<100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 JDBCUtil.executeUpdate(
                     "insert into " + table + "(id) " + 
                     "values (" + i + ")");
             }
                     
-            String results = JDBCUtil.executeQuery("select * from " + table);            
+            String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("100 rows") >= 0);
             logger_.info("\n" + StringUtil.wrap(results.replace('\n', ' ')));
         }
@@ -276,7 +281,8 @@ public class JDBCUtilTest extends TestCase
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            JDBCUtil.executeUpdate("insert into " +table + "(id) values (999)");
+            JDBCUtil.executeUpdate(
+                "insert into " + table + "(id) values (999)");
             
             Object[][] results = 
                 JDBCUtil.executeQueryArray("select * from " + table);
@@ -312,9 +318,9 @@ public class JDBCUtilTest extends TestCase
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
             
-            for(int i=0; i<100; i++)
+            for (int i = 0; i < 100; i++)
                 JDBCUtil.executeUpdate(
-                    "insert into " +table + "(id) values (" + i + ")");
+                    "insert into " + table + "(id) values (" + i + ")");
                     
             Object[][] results = 
                 JDBCUtil.executeQueryArray("select * from " + table);
@@ -322,7 +328,7 @@ public class JDBCUtilTest extends TestCase
             assertEquals(1, results.length);
             assertEquals(100, results[0].length);
             
-            for (int i=0; i<100; i++)
+            for (int i = 0; i < 100; i++)
                 assertEquals(new Integer(i), results[0][i]);
         }
         finally
@@ -365,7 +371,7 @@ public class JDBCUtilTest extends TestCase
                 JDBCUtil.executeUpdate(
                     "delete from " + table + " where id=999"));
                             
-            String results = JDBCUtil.executeQuery("select * from " + table);            
+            String results = JDBCUtil.executeQuery("select * from " + table);
             assertTrue(results.indexOf("0 rows") >= 0);
             logger_.info("\n" + results);
         }
@@ -443,7 +449,7 @@ public class JDBCUtilTest extends TestCase
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
 
-            for(int i=0; i<numRows; i++)
+            for (int i = 0; i < numRows; i++)
                 JDBCUtil.executeUpdate(
                     "insert into " + table + "(id) values (" + i + ")");
             
@@ -491,7 +497,9 @@ public class JDBCUtilTest extends TestCase
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            JDBCUtil.executeUpdate("insert into " +table + "(id) values (999)");            
+            
+            JDBCUtil.executeUpdate(
+                "insert into " + table + "(id) values (999)");
             
             conn = JDBCUtil.getConnection();
             
@@ -534,12 +542,13 @@ public class JDBCUtilTest extends TestCase
         try
         {
             JDBCUtil.executeUpdate("create table " + table + "(id integer)");
-            JDBCUtil.executeUpdate("insert into " +table + "(id) values (999)");
+            JDBCUtil.executeUpdate(
+                "insert into " + table + "(id) values (999)");
            
             // Make sure table exists
             String contents = JDBCUtil.executeQuery("select * from user");
             //logger_.info("Before drop: " + contents);             
-            assertTrue(contents.indexOf("ID") >=0);
+            assertTrue(contents.indexOf("ID") >= 0);
                                 
             JDBCUtil.dropTable("user");
 
@@ -565,6 +574,8 @@ public class JDBCUtilTest extends TestCase
     
     /**
      * Tests shutdown()
+     * 
+     * @throws Exception on error.
      */
     public void testShutdown() throws Exception
     {
@@ -580,12 +591,16 @@ public class JDBCUtilTest extends TestCase
     
     /**
      * Cleans up HSQLDB file remnants.
+     * 
+     * @param prefix Name prefix.
      */
     protected void cleanup(String prefix)
     {
-        (new File(FileUtil.getTempDir() + FS + prefix +".properties")).delete();
-        (new File(FileUtil.getTempDir() + FS + prefix +".data")).delete();
-        (new File(FileUtil.getTempDir() + FS + prefix +".script")).delete();
+        (new File(
+            FileUtil.getTempDir() + FS + prefix + ".properties")).delete();
+        
+        (new File(FileUtil.getTempDir() + FS + prefix + ".data")).delete();
+        (new File(FileUtil.getTempDir() + FS + prefix + ".script")).delete();
     }
     
     
@@ -601,7 +616,7 @@ public class JDBCUtilTest extends TestCase
         Main.showPath(sos);
         String[] lines = StringUtil.tokenize(sos.toString(), "\n");
         
-        for (int i=0; i<lines.length; i++)
+        for (int i = 0; i < lines.length; i++)
         {
             if (lines[i].indexOf(DB_JAR) >= 0)
             {

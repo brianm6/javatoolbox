@@ -16,7 +16,7 @@ import toolbox.util.net.SocketServerConfig;
  */
 public class SocketServerConfigTest extends TestCase
 {
-    public static final Logger logger_ =
+    private static final Logger logger_ =
         Logger.getLogger(SocketServerConfigTest.class);
 
     //--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ public class SocketServerConfigTest extends TestCase
             }
             catch (Exception e) 
             {
-                // Ignore
+                ; // Ignore
             }
         }
     }

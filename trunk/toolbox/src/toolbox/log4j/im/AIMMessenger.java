@@ -41,7 +41,7 @@ public class AIMMessenger implements InstantMessenger
     /** 
      * Available instant messaging protocols. 
      */
-    private Protocol[] protocols;
+    private Protocol[] protocols_;
     
     /** 
      * AIM instant messaging protocol.
@@ -90,9 +90,9 @@ public class AIMMessenger implements InstantMessenger
     public void initialize(Properties props)
     {
         invoker_ = new QueuedInvoker();
-        protocols = ProtocolManager.getAvailableProtocols();
-        System.out.println(ArrayUtil.toString(protocols));
-        aim_ = protocols[2];
+        protocols_ = ProtocolManager.getAvailableProtocols();
+        System.out.println(ArrayUtil.toString(protocols_));
+        aim_ = protocols_[2];
         aim_.setListener(listener_ = new AIMListener());
         
         throttle_ = PropertiesUtil.getInteger(
@@ -104,6 +104,9 @@ public class AIMMessenger implements InstantMessenger
      * Synchronized method since whole send/recv is async. Waiters in the
      * queue will return immediately because the connected_ flag gets checked
      * before anything happens. 
+     * 
+     * @see toolbox.log4j.im.InstantMessenger#login(java.lang.String, 
+     *      java.lang.String)
      */
     public synchronized void login(String username, String password) 
         throws InstantMessengerException
@@ -143,6 +146,8 @@ public class AIMMessenger implements InstantMessenger
     
     /**
      * Logs out from AIM. 
+     * 
+     * @see toolbox.log4j.im.InstantMessenger#logout()
      */
     public void logout() throws InstantMessengerException
     {
@@ -172,6 +177,9 @@ public class AIMMessenger implements InstantMessenger
     
     /**
      * Sends message to the recipient using a queue invoker strategy.
+     * 
+     * @see toolbox.log4j.im.InstantMessenger#send(java.lang.String, 
+     *      java.lang.String)
      */
     public void send(String recipient, String message)
     {
@@ -245,12 +253,12 @@ public class AIMMessenger implements InstantMessenger
         /** 
          * Login success and failures both go in this queue.
          */
-        BlockingQueue connected_;
+        private BlockingQueue connected_;
         
         /** 
          * Disconnect notification goes into this queue. 
          */
-        BlockingQueue disconnected_;
+        private BlockingQueue disconnected_;
         
         //----------------------------------------------------------------------
         // Constructors
@@ -286,7 +294,7 @@ public class AIMMessenger implements InstantMessenger
          * Waits for a successful disconnect.
          * 
          * @return Protocol that was disconnected.
-         * @throws InterruptedExceptin if interrupted while pulling from the 
+         * @throws InterruptedException if interrupted while pulling from the 
          *         <code>disconnected_</code> queue.
          */        
         public Protocol waitForDisconnect() throws InterruptedException

@@ -121,7 +121,7 @@ public class FileUtilTest extends TestCase
         File dir = FileUtil.createTempDir();
         
         // Populate with files
-        for (int i=0; i< numFiles; i++)
+        for (int i = 0; i < numFiles; i++)
         {
             String filename = i + ".txt";
             File file = new File(dir, filename);
@@ -246,8 +246,10 @@ public class FileUtilTest extends TestCase
         // Create a file
         String file = FileUtil.createTempFilename();
         StringBuffer contents = new StringBuffer();
-        for(int i=0; i<fileSize; i++)
+        
+        for (int i = 0; i < fileSize; i++)
             contents.append(RandomUtil.nextAlpha());
+        
         FileUtil.setFileContents(file, contents.toString(), false);
         
         // Read it back in
@@ -423,7 +425,7 @@ public class FileUtilTest extends TestCase
     
             // Take snapshot before file move
             String[] beforeMoveSrc = srcDir.list();
-            String[] beforeMoveDest= destDir.list();
+            String[] beforeMoveDest = destDir.list();
             
             logger_.info(
                 "Before move:  src=" + ArrayUtil.toString(beforeMoveSrc));
@@ -442,7 +444,7 @@ public class FileUtilTest extends TestCase
     
             // Take snapshot again
             String[] afterMoveSrc = srcDir.list();
-            String[] afterMoveDest= destDir.list();
+            String[] afterMoveDest = destDir.list();
     
             logger_.info(
                 "After move:  src=" + ArrayUtil.toString(afterMoveSrc));
@@ -564,7 +566,7 @@ public class FileUtilTest extends TestCase
         {
             // Delete should be quiet no matter what so we don't expect an
             // exception to be thrown on a non-existant file.
-            fail("Delete of non-existant file should not generate an error.");   
+            fail("Delete of non-existant file should not generate an error.");
         }
         
         try
@@ -576,7 +578,7 @@ public class FileUtilTest extends TestCase
         {
             // Delete should be quiet no matter what so we don't expect an
             // exception to be thrown on a non-existant file.
-            fail("Delete of non-existant file should not generate an error.");   
+            fail("Delete of non-existant file should not generate an error.");
         }
     }
     

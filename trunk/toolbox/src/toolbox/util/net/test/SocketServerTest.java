@@ -21,7 +21,7 @@ import toolbox.util.net.SocketServerConfig;
  */
 public class SocketServerTest extends TestCase
 {
-    public static final Logger logger_ = 
+    private static final Logger logger_ = 
         Logger.getLogger(SocketServerTest.class);
 
     //--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ public class SocketServerTest extends TestCase
     /**
      * Entry point.
      * 
-     * @param args None recognized 
+     * @param args None recognized. 
      */
     public static void main(String[] args)
     {
@@ -45,7 +45,7 @@ public class SocketServerTest extends TestCase
     /**
      * Tests simple ping pong between client and server.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSocketServerPingPong() throws Exception
     {
@@ -89,7 +89,7 @@ public class SocketServerTest extends TestCase
     /**
      * Tests SocketServer lifecycle state transitions.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSocketServerLifeCycle() throws Exception
     { 
@@ -124,7 +124,7 @@ public class SocketServerTest extends TestCase
         
         SocketServer server = new SocketServer(new SocketServerConfig());
         
-        for(int i=0; i<20; i++)
+        for (int i = 0; i < 20; i++)
         {
             server.start();
             server.stop();  
@@ -154,14 +154,23 @@ public class SocketServerTest extends TestCase
         
         class Task extends Thread
         {
-            String prefix = " ";
+            private String prefix_ = " ";
                         
+            /**
+             * Creates a Task.
+             * 
+             * @param taskNbr Number.
+             */
             public Task(int taskNbr)
             {
-                for(int i=0; i<taskNbr; i++)
-                    prefix += "  ";
+                for (int i = 0; i < taskNbr; i++)
+                    prefix_ += "  ";
             }
             
+            
+            /**
+             * @see java.lang.Runnable#run()
+             */
             public void run()
             {
                 try 
@@ -169,7 +178,7 @@ public class SocketServerTest extends TestCase
                     EchoSocketClient client = new EchoSocketClient(port);
                     int x = 100;
                 
-                    client.sendMany(this + prefix + "msg ", x);
+                    client.sendMany(this + prefix_ + "msg ", x);
                     client.send(EchoConnectionHandler.TOKEN_TERMINATE);
                     client.close();
                 }
@@ -184,14 +193,14 @@ public class SocketServerTest extends TestCase
         Task tasks[] = new Task[max];
         
         // Spawn off a whole bunch of threads
-        for(int i=0; i< max; i++)
-        { 
+        for (int i = 0; i < max; i++)
+        {
             tasks[i] = new Task(i);
             tasks[i].start();
         }
-        
+
         // Wait for each thread to end
-        for(int j=0; j<max; j++)
+        for (int j = 0; j < max; j++)
             tasks[j].join();
             
         ss.stop();

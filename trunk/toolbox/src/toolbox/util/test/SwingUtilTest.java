@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyVetoException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -88,6 +89,9 @@ public class SwingUtilTest extends UITestCase
     {
         private JDesktopPane desktop_;
         
+        /**
+         * Creates a TestFrame.
+         */
         public TestFrame()
         {
             super("InternalFrameDemo");
@@ -123,7 +127,13 @@ public class SwingUtilTest extends UITestCase
             // Make dragging faster:
             desktop_.putClientProperty("JDesktopPane.dragMode", "outline");
         }
+
         
+        /**
+         * Creates a menu bar.
+         * 
+         * @return Menu bar.
+         */
         protected JMenuBar createMenuBar()
         {
             JMenuBar menuBar = new JMenuBar();
@@ -169,6 +179,10 @@ public class SwingUtilTest extends UITestCase
             return menuBar;
         }
         
+        
+        /**
+         * Creates a frame. 
+         */
         protected void createFrame()
         {
             MyInternalFrame frame = new MyInternalFrame();
@@ -179,9 +193,9 @@ public class SwingUtilTest extends UITestCase
             {
                 frame.setSelected(true);
             }
-            catch (java.beans.PropertyVetoException e)
+            catch (PropertyVetoException e)
             {
-                // Ignore
+                ; // Ignore
             }
         }
     }
@@ -192,6 +206,9 @@ class MyInternalFrame extends JInternalFrame
     private static int openFrameCount_ = 0;
     private static final int xOffset_ = 30, yOffset_ = 30;
     
+    /**
+     * Creates a MyInternalFrame.
+     */
     public MyInternalFrame()
     {
         super("Document #" + (++openFrameCount_), true, true, true, true);

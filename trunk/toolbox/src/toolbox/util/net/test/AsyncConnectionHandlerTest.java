@@ -60,6 +60,10 @@ public class AsyncConnectionHandlerTest extends TestCase
          */ 
         class TestConnectionHandler implements IConnectionHandler
         {
+            /**
+             * @see toolbox.util.net.IConnectionHandler#handle(
+             *      toolbox.util.net.IConnection)
+             */
             public Object handle(IConnection conn)
             {
                 // Simulates long lived async activity
@@ -70,6 +74,7 @@ public class AsyncConnectionHandlerTest extends TestCase
             }
         }
 
+        
         /**
          * Dummy connection.
          */
@@ -78,32 +83,44 @@ public class AsyncConnectionHandlerTest extends TestCase
             /**
              * Opens the connection.
              */
-            public void connect(){};
+            public void connect()
+            {
+            }
+            
             
             /**
-             * Closes the connection. 
+             * Closes the connection.
+             * 
+             * @throws IOException on I/O error. 
              */
-            public void close() throws IOException {};
+            public void close() throws IOException 
+            {
+            }
+            
             
             /**
              * Accessor for the connections input stream.
              * 
              * @return InputStream
+             * @throws IOException on I/O error.
              */
             public InputStream getInputStream() throws IOException 
             { 
                 return null;
             }
             
+            
             /**
              * Accessor for the connections output stream.
              * 
              * @return OutputStream
+             * @throws IOException on I/O error.
              */
             public OutputStream getOutputStream() throws IOException 
             { 
                 return null;
             }
+            
             
             /**
              * @see IConnection#isConnected()
@@ -115,7 +132,7 @@ public class AsyncConnectionHandlerTest extends TestCase
         }
         
         ThreadDispatcher dispatcher = 
-            new ThreadDispatcher(new ThreadPoolStrategy(5,5));
+            new ThreadDispatcher(new ThreadPoolStrategy(5, 5));
             
         IConnectionHandler handler = 
             new AsyncConnectionHandler(
@@ -127,7 +144,7 @@ public class AsyncConnectionHandlerTest extends TestCase
         
         assertNotNull("result is null", result);
         
-        ReturnValue rv = (ReturnValue)result;
+        ReturnValue rv = (ReturnValue) result;
 
         /* 
          * handle() should be async and we know there is a 5sec delay in 

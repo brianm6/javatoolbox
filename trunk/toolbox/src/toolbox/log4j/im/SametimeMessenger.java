@@ -37,42 +37,42 @@ import toolbox.util.invoker.QueuedInvoker;
 public class SametimeMessenger implements InstantMessenger
 {
     /** 
-     * Invoker used to handle the sending of messages 
+     * Invoker used to handle the sending of messages. 
      */
     private Invoker invoker_;
 
     /**
-     * Sametime session
+     * Sametime session.
      */
     private STSession session_;
     
     /**
-     * Community service 
+     * Community service. 
      */
     private CommunityService communityService_;
     
     /**
-     * Instant messaging service
+     * Instant messaging service.
      */
     private InstantMessagingService  messagingService_;
     
     /**
-     * Instant messsage chat session
+     * Instant messsage chat session.
      */
     private Im chatSession_;
 
     /**
-     * Listener for login events
+     * Listener for login events.
      */
     private SametimeLoginListener loginListener_;
 
     /**
-     * Listener for message service events
+     * Listener for message service events.
      */
     private ImServiceListener messagingServiceListener_;
 
     /**
-     * Listener for chat session events
+     * Listener for chat session events.
      */       
     private SametimeImListener chatSessionListener_;
 
@@ -82,7 +82,7 @@ public class SametimeMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SametimeMessenger
+     * Creates a SametimeMessenger.
      */
     public SametimeMessenger()
     {
@@ -111,28 +111,6 @@ public class SametimeMessenger implements InstantMessenger
                     "com.lotus.sametime.im.ImComp",
                     "com.lotus.sametime.resourceloader.ResourceLoaderComp"});
             
-            /*
-            log4j: componentLoaded {com.lotus.sametime.conf.ConfComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            
-            log4j: componentLoaded {com.lotus.sametime.places.PlacesComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.post.PostComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.storage.StorageService(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.wih.WihComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.awareness.AwarenessComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.directory.DirectoryComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.lookup.LookupComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.token.TokenComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.names.NamesComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.filetransfer.FileTransferComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.announcement.AnnouncementComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.buddylist.BLComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            
-            log4j: componentLoaded {com.lotus.sametime.commui.CommUIComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.chatui.ChatUIComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.filetransferui.FileTransferUIComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}
-            log4j: componentLoaded {com.lotus.sametime.announcementui.AnnouncementUIComp(part), STSession = STSession {SametimeMessenger toolbox.log4j.im.SametimeMessenger@95c083}}            
-            */
-                        
             //session_.loadAllComponents();
             session_.start();
         }
@@ -171,7 +149,7 @@ public class SametimeMessenger implements InstantMessenger
                     new SametimeAdminMsgListener());
                              
                 communityService_.loginByPassword(
-                    "sametime.ibm.com",username,password);
+                    "sametime.ibm.com", username, password);
                 
                 loginListener_.waitForLogin();
             }
@@ -213,9 +191,12 @@ public class SametimeMessenger implements InstantMessenger
         {
             invoker_.invoke(new Runnable()
             {
+                /**
+                 * @see java.lang.Runnable#run()
+                 */
                 public void run()
                 {
-                   chatSession_.sendText(false, message);
+                    chatSession_.sendText(false, message);
                 }
             });
         }
@@ -270,7 +251,7 @@ public class SametimeMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /**
-     * Listener for login events
+     * Listener for login events.
      */
     class SametimeLoginListener implements LoginListener
     {
@@ -310,6 +291,12 @@ public class SametimeMessenger implements InstantMessenger
             LogLog.debug("Logged out : " + arg0);
         }
         
+        
+        /**
+         * Waits for the login event.
+         * 
+         * @throws InterruptedException on interruption.
+         */
         public void waitForLogin() throws InterruptedException
         {
             LogLog.debug("Waiting for login event..");
@@ -318,8 +305,12 @@ public class SametimeMessenger implements InstantMessenger
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SametimeMessagingServiceListener
+    //--------------------------------------------------------------------------
+    
     /**
-     * Listener for instant messaging service events
+     * Listener for instant messaging service events.
      */    
     class SametimeMessagingServiceListener implements ImServiceListener 
     {
@@ -333,8 +324,12 @@ public class SametimeMessenger implements InstantMessenger
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SametimeImListener
+    //--------------------------------------------------------------------------
+    
     /**
-     * Listener for chat session events
+     * Listener for chat session events.
      */        
     class SametimeImListener implements ImListener
     {
@@ -384,16 +379,28 @@ public class SametimeMessenger implements InstantMessenger
         }
     }
     
+    //--------------------------------------------------------------------------
+    // SameTimeComponentListener
+    //--------------------------------------------------------------------------
+    
     /**
      * Session component listener 
      */
     class SametimeComponentListener implements ComponentListener
     {
+        /**
+         * @see com.lotus.sametime.core.comparch.ComponentListener#
+         *      componentLoaded(com.lotus.sametime.core.comparch.STCompApi)
+         */
         public void componentLoaded(STCompApi arg0)
         {
             LogLog.debug("componentLoaded " + arg0);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // SametimeServiceListener
+    //--------------------------------------------------------------------------
     
     class SametimeServiceListener implements ServiceListener
     {
@@ -406,6 +413,10 @@ public class SametimeMessenger implements InstantMessenger
             LogLog.debug("serviceAvailable: " + arg0);
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // SametimeAdminMsgListener
+    //--------------------------------------------------------------------------
     
     class SametimeAdminMsgListener implements AdminMsgListener
     {

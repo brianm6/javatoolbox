@@ -195,7 +195,7 @@ public class XOMUtilTest extends TestCase
         // logger_.info("\n" + XOMUtil.toXML(parent));
                 
         Element newChild = new Element("child");
-        newChild.addAttribute(new Attribute("id","new"));
+        newChild.addAttribute(new Attribute("id", "new"));
         
         XOMUtil.insertOrReplace(parent, newChild);
         assertEquals(1, parent.getChildCount());
@@ -226,7 +226,7 @@ public class XOMUtilTest extends TestCase
         parent.appendChild(dupe2);
         
         Element newChild = new Element("child");
-        newChild.addAttribute(new Attribute("id","new"));
+        newChild.addAttribute(new Attribute("id", "new"));
         
         try
         {
@@ -262,8 +262,8 @@ public class XOMUtilTest extends TestCase
         child2.addAttribute(new Attribute("seq", "2"));
         parent.appendChild(child2);
 
-        Element result = 
-            XOMUtil.getFirstChildElement(parent,"child",new Element("default"));        
+        Element result = XOMUtil.getFirstChildElement(
+                parent, "child", new Element("default"));        
         
         assertEquals("1", result.getAttributeValue("seq"));
         

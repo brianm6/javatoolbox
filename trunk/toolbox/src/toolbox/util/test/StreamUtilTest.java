@@ -167,12 +167,12 @@ public class StreamUtilTest extends TestCase
      */
     public void testCloseInputStream() throws Exception
     {
-       logger_.info("Running testCloseOutputStream...");
-        
-       StringOutputStream sos = new StringOutputStream();
-       sos.write("testing".getBytes());
-       StreamUtil.close(sos);
-       StreamUtil.close((OutputStream) null);
+        logger_.info("Running testCloseOutputStream...");
+
+        StringOutputStream sos = new StringOutputStream();
+        sos.write("testing".getBytes());
+        StreamUtil.close(sos);
+        StreamUtil.close((OutputStream) null);
     }
     
     
@@ -205,10 +205,10 @@ public class StreamUtilTest extends TestCase
         
         try
         {
-          StreamUtil.close(w);
-          
-          // Success.
-          assertTrue(true);
+            StreamUtil.close(w);
+
+            // Success.
+            assertTrue(true);
         }
         catch (Exception e)
         {

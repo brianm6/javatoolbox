@@ -48,7 +48,7 @@ public class RandomUtilTest extends TestCase
         
         try
         {
-            for(int i=0; i<100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 char c = RandomUtil.nextAlpha();
                 sb.append(c);
@@ -74,7 +74,7 @@ public class RandomUtilTest extends TestCase
         
         try
         {
-            for(int i=0; i<100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 char c = RandomUtil.nextUpperAlpha();
                 sb.append(c);
@@ -86,7 +86,7 @@ public class RandomUtilTest extends TestCase
         finally
         {
             logger_.debug("Random upper alphas:\n " + 
-                StringUtil.wrap(sb.toString(),true));
+                StringUtil.wrap(sb.toString(), true));
         }
     }
 
@@ -102,7 +102,7 @@ public class RandomUtilTest extends TestCase
         
         try
         {
-            for(int i=0; i<100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 char c = RandomUtil.nextLowerAlpha();
                 sb.append(c);
@@ -128,7 +128,7 @@ public class RandomUtilTest extends TestCase
         
         StringBuffer sb = new StringBuffer();
         
-        for (int j=0; j<300; j++)
+        for (int j = 0; j < 300; j++)
         {
             int i = RandomUtil.nextInt();    
             sb.append(i + " ");       
@@ -243,8 +243,8 @@ public class RandomUtilTest extends TestCase
             }
             
             sb.append(i + " ");       
-            assertTrue("int should be greater than floor", i>= floor);
-            assertTrue("int should be less than ceiling", i<=ceiling);
+            assertTrue("int should be greater than floor", i >= floor);
+            assertTrue("int should be less than ceiling", i <= ceiling);
         }
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
@@ -282,8 +282,8 @@ public class RandomUtilTest extends TestCase
                 minHit = true;                
             }
             
-            assertTrue("int should be greater than floor", i>= floor);
-            assertTrue("int should be less than ceiling", i<=ceiling);
+            assertTrue("int should be greater than floor", i >= floor);
+            assertTrue("int should be less than ceiling", i <= ceiling);
         }
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
@@ -297,8 +297,8 @@ public class RandomUtilTest extends TestCase
     {
         logger_.info("Running testNextBoolean...");
         
-        for (int i=0; i<10; i++)
-            logger_.info(RandomUtil.nextBoolean()+"");
+        for (int i = 0; i < 10; i++)
+            logger_.info(RandomUtil.nextBoolean() + "");
     }    
     
     
@@ -320,7 +320,7 @@ public class RandomUtilTest extends TestCase
     {
         logger_.info("Running testNextElementArrayOne...");
         
-        assertEquals("one", (RandomUtil.nextElement(new String[] { "one" } )));
+        assertEquals("one", (RandomUtil.nextElement(new String[] {"one"})));
     }
 
 
@@ -332,11 +332,13 @@ public class RandomUtilTest extends TestCase
         logger_.info("Running testNextElementArrayMany...");
         
         String[] s = new String[] 
-            { "zero", "one", "two", "three", "four", "five" };
+        {
+            "zero", "one", "two", "three", "four", "five"
+        };
         
         StringBuffer  sb = new StringBuffer();
         
-        for (int i=0; i<50; i++)
+        for (int i = 0; i < 50; i++)
             sb.append(RandomUtil.nextElement(s) + " ");
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
@@ -383,7 +385,7 @@ public class RandomUtilTest extends TestCase
         
         StringBuffer  sb = new StringBuffer();
         
-        for (int i=0; i<50; i++)
+        for (int i = 0; i < 50; i++)
             sb.append(RandomUtil.nextElement(many) + " ");
         
         logger_.info("\n" + StringUtil.wrap(sb.toString(), true));
@@ -409,11 +411,11 @@ public class RandomUtilTest extends TestCase
         
         double ceil = 2000;
         
-        for (int i=0; i<100; i++)
+        for (int i = 0; i < 100; i++)
         {
             double rand = RandomUtil.nextDouble(ceil);
-            assertTrue( rand <= ceil);
-            assertTrue( rand >= 0.0);
+            assertTrue(rand <= ceil);
+            assertTrue(rand >= 0.0);
         }
     }
 }

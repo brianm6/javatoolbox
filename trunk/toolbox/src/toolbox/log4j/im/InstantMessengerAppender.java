@@ -174,7 +174,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
         LogLog.debug("Connect called: username=" + username_);
         
         Properties props = new Properties();
-        props.put(InstantMessenger.PROP_THROTTLE, throttle_+"");
+        props.put(InstantMessenger.PROP_THROTTLE, throttle_ + "");
         
         messenger_.initialize(props);
         messenger_.login(username_, password_);

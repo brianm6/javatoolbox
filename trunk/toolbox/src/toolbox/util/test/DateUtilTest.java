@@ -48,24 +48,24 @@ public class DateUtilTest extends TestCase
             0, DateUtil.getDifferenceInDays(new Date(), new Date()));
 
         Date now = new Date();
-        Date then = DateUtil.addDays((Date)now.clone(), 1);
+        Date then = DateUtil.addDays((Date) now.clone(), 1);
         assertEquals("Difference should be 1 days",
             1, DateUtil.getDifferenceInDays(now, then));
 
         now = new Date();
-        then = DateUtil.addWeeks((Date)now.clone(), 1);
+        then = DateUtil.addWeeks((Date) now.clone(), 1);
         assertEquals("Difference should be 7 days",
             7, DateUtil.getDifferenceInDays(now, then));
 
         now = new Date();
-        then = DateUtil.addWeeks((Date)now.clone(), 4);
+        then = DateUtil.addWeeks((Date) now.clone(), 4);
         assertEquals("Difference should be 28 days",
             28, DateUtil.getDifferenceInDays(now, then));
 
         try
         {
             now = new Date();
-            then = DateUtil.addWeeks((Date)now.clone(), 4);
+            then = DateUtil.addWeeks((Date) now.clone(), 4);
             DateUtil.getDifferenceInDays(then, now);
             fail("should have failed for dates out of order");
         }
@@ -87,12 +87,12 @@ public class DateUtilTest extends TestCase
             0, DateUtil.getDifferenceInWeeks(new Date(), new Date()));
         
         Date now = new Date();
-        Date then = DateUtil.addWeeks((Date)now.clone(), 1);
+        Date then = DateUtil.addWeeks((Date) now.clone(), 1);
         assertEquals("Difference should be 1 weeks",
             1, DateUtil.getDifferenceInWeeks(now, then));
 
         now = new Date();
-        then = DateUtil.addWeeks((Date)now.clone(), 7);
+        then = DateUtil.addWeeks((Date) now.clone(), 7);
         assertEquals("Difference should be 7 weeks", 7,
             DateUtil.getDifferenceInWeeks(now, then));
 
@@ -120,34 +120,34 @@ public class DateUtilTest extends TestCase
             !DateUtil.isBefore(new Date(), new Date()));
 
         Date now = new Date();
-        Date then = DateUtil.addDays((Date)now.clone(), 1);
+        Date then = DateUtil.addDays((Date) now.clone(), 1);
         assertTrue("Is before should be true for days", 
             DateUtil.isBefore(now, then));
 
         now = new Date();
-        then = DateUtil.subtractDays((Date)now.clone(), 1);
+        then = DateUtil.subtractDays((Date) now.clone(), 1);
         assertTrue("Is before should be false for days",
             !DateUtil.isBefore(now, then));
 
         // Monthly difference
         now = new Date();
-        then = DateUtil.addWeeks((Date)now.clone(), 8);
+        then = DateUtil.addWeeks((Date) now.clone(), 8);
         assertTrue("Is before should be true for months",
             DateUtil.isBefore(now, then));
 
         now = new Date();
-        then = DateUtil.subtractDays((Date)now.clone(), 60);
+        then = DateUtil.subtractDays((Date) now.clone(), 60);
         assertTrue("Is before should be false for months",
             !DateUtil.isBefore(now, then));
 
         // Yearly difference
         now = new Date();
-        then = DateUtil.addWeeks((Date)now.clone(), 60);
+        then = DateUtil.addWeeks((Date) now.clone(), 60);
         assertTrue("Is before should be true for years",
             DateUtil.isBefore(now, then));
 
         now = new Date();
-        then = DateUtil.subtractDays((Date)now.clone(), 500);
+        then = DateUtil.subtractDays((Date) now.clone(), 500);
         assertTrue("Is before should be false for years",
             !DateUtil.isBefore(now, then));
     }
@@ -160,7 +160,7 @@ public class DateUtilTest extends TestCase
     {
         logger_.info("Running testIsBetween...");
         
-        Date beginRange = DateUtil.addWeeks(DateUtil.getToday(),-1);
+        Date beginRange = DateUtil.addWeeks(DateUtil.getToday(), -1);
         Date endRange   = DateUtil.addWeeks(DateUtil.getToday(), 1);
 
         Date midRange    = DateUtil.getToday();
@@ -248,7 +248,7 @@ public class DateUtilTest extends TestCase
         assertTrue(DateUtil.equals(now, now));
  
         // Today != tomorrow       
-        Date tomorrow = DateUtil.addDays(DateUtil.getToday(),1);
+        Date tomorrow = DateUtil.addDays(DateUtil.getToday(), 1);
         assertTrue(!DateUtil.equals(now, tomorrow)); 
         
         // Today with time == Today with different time
@@ -329,7 +329,7 @@ public class DateUtilTest extends TestCase
         
         Date now       = new Date();
         Date today     = DateUtil.getToday();
-        Date yesterday = DateUtil.subtractDays(DateUtil.getToday(),1);
+        Date yesterday = DateUtil.subtractDays(DateUtil.getToday(), 1);
         Date tomorrow  = DateUtil.addDays(DateUtil.getToday(), 1);
         Date wayBefore = DateUtil.subtractDays(DateUtil.getToday(), 100);
         Date wayAfter  = DateUtil.addDays(DateUtil.getToday(), 100);
@@ -351,7 +351,7 @@ public class DateUtilTest extends TestCase
         
         Date now       = new Date();
         Date today     = DateUtil.getToday();
-        Date yesterday = DateUtil.subtractDays(DateUtil.getToday(),1);
+        Date yesterday = DateUtil.subtractDays(DateUtil.getToday(), 1);
         Date tomorrow  = DateUtil.addDays(DateUtil.getToday(), 1);
         Date wayBefore = DateUtil.subtractDays(DateUtil.getToday(), 100);
         Date wayAfter  = DateUtil.addDays(DateUtil.getToday(), 100);
@@ -487,7 +487,7 @@ public class DateUtilTest extends TestCase
         Date today = new Date();
         Date yesterday = DateUtil.addDays(new Date(), 1);
         DateUtil.subtractDays(today, -1);
-        assertTrue(DateUtil.equals(today,yesterday));
+        assertTrue(DateUtil.equals(today, yesterday));
     }
     
     

@@ -8,12 +8,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.Console;
 
 /**
- * Unit test for Console
+ * Unit test for Console.
  */
 public class ConsoleTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ConsoleTest.class);
+    private static final Logger logger_ = Logger.getLogger(ConsoleTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -44,6 +43,7 @@ public class ConsoleTest extends TestCase
         console.handleCommand(Console.CMD_CLASSPATH);
     }
     
+    
     /**
      * Tests handleCommand(help)
      */
@@ -54,6 +54,7 @@ public class ConsoleTest extends TestCase
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_HELP);
     }
+    
     
     /**
      * Tests handleCommand(mem)
@@ -66,6 +67,7 @@ public class ConsoleTest extends TestCase
         console.handleCommand(Console.CMD_MEM);
     }
     
+    
     /**
      * Tests handleCommand(props)
      */
@@ -77,6 +79,7 @@ public class ConsoleTest extends TestCase
         console.handleCommand(Console.CMD_PROPS);
     }
     
+    
     /**
      * Tests handleCommand(uptime)
      */
@@ -87,6 +90,7 @@ public class ConsoleTest extends TestCase
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_UPTIME);
     }
+    
     
     /**
      * Tests handleCommand(setprop)
@@ -105,6 +109,7 @@ public class ConsoleTest extends TestCase
             
         assertEquals("property should be set", value, System.getProperty(prop));
     }
+    
     
     /**
      * Tests handleCommand(delprop)
@@ -130,10 +135,13 @@ public class ConsoleTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test implementation of console
+     * Test implementation of console.
      */
     class TestConsole extends Console
     {
+        /**
+         * @see toolbox.util.Console#getPrompt()
+         */
         public String getPrompt()
         {
             return "TestConsole>";

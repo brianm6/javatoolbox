@@ -74,7 +74,7 @@ public class RemoteTelnet
         CommandLine cmdLine = parser.parse(cliOptions, args, true);
         RemoteTelnetInfo options = new RemoteTelnetInfo();
         
-        for (Iterator i = cmdLine.iterator(); i.hasNext(); )
+        for (Iterator i = cmdLine.iterator(); i.hasNext();)
         {
             Option option = (Option) i.next();
             String opt    = option.getOpt();            
@@ -199,7 +199,7 @@ public class RemoteTelnet
             if (cmd.equals("exit"))
                 return;
                 
-            telnet.getOutputStream().write((cmd+"\n").getBytes());
+            telnet.getOutputStream().write((cmd + "\n").getBytes());
             telnet.getOutputStream().flush();
             
             //String response = StreamUtil.asString(telnet.getInputStream());
@@ -248,7 +248,7 @@ public class RemoteTelnet
             options_.setPassword(queryUser("Password: "));
             
         if (StringUtil.isNullOrEmpty(options_.getCommand()))
-            options_.setCommand(queryUser("Command: " ));
+            options_.setCommand(queryUser("Command: "));
     }    
 
 

@@ -189,11 +189,13 @@ public class ThreadUtilTest extends TestCase
         
         target = new Tester();
         ThreadUtil.run(target, "pingAssignable", writer).join();
-        assertTrue("pingAssignable was not executed for w", target.pingAssignableCalled_);
+        assertTrue("pingAssignable was not executed for w", 
+                target.pingAssignableCalled_);
         
         target = new Tester();
         ThreadUtil.run(target, "pingAssignable", pw).join();
-        assertTrue("pingAssignable was not executed for pw", target.pingAssignableCalled_);
+        assertTrue("pingAssignable was not executed for pw", 
+                target.pingAssignableCalled_);
         
     } 
 
@@ -305,8 +307,8 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.run(
             target, 
             "pingOneArg", 
-            new Object[] { "hello" }, 
-            new Class[] { String.class } ).join();
+            new Object[] {"hello"}, 
+            new Class[] {String.class}).join();
             
         assertTrue("ping was not executed", target.pingOneArgCalled_);
     }
@@ -376,7 +378,7 @@ public class ThreadUtilTest extends TestCase
         t.start();
         logger_.info("toString() after start()\n" + ThreadUtil.toString(t));
         t.join();
-        logger_.info("toString() after join()\n" + ThreadUtil.toString(t));        
+        logger_.info("toString() after join()\n" + ThreadUtil.toString(t));
     }
 
     //--------------------------------------------------------------------------
@@ -388,7 +390,7 @@ public class ThreadUtilTest extends TestCase
      */   
     public class Tester
     {
-        public boolean pingAssignableCalled_;
+        private boolean pingAssignableCalled_;
         private boolean pingSimpleCalled_;
         private boolean pingOneArgCalled_;
         private boolean pingArgsCalled_;
@@ -422,6 +424,8 @@ public class ThreadUtilTest extends TestCase
         
         /**
          * Method with a single arg.
+         * 
+         * @param str String.
          */
         public void pingOneArg(String str)
         {
@@ -432,6 +436,9 @@ public class ThreadUtilTest extends TestCase
         
         /**
          * Method with args of complex type.
+         * 
+         * @param str String.
+         * @param strArray String array.
          */
         public void pingArgs(String str, String[] strArray)
         {
@@ -443,6 +450,12 @@ public class ThreadUtilTest extends TestCase
         
         /**
          * Test method with complex args.
+         * 
+         * @param pw Writer.
+         * @param i Integer.
+         * @param i2 Integer.
+         * @param s String.
+
          */       
         public void pingComplex(Writer pw,  Integer i, Integer i2, String s)
         {
@@ -454,6 +467,11 @@ public class ThreadUtilTest extends TestCase
         
         /**
          * Test method method with primitive args.
+         * 
+         * @param a int.
+         * @param b boolean.
+         * @param l long.
+         * @param f float.
          */
         public void pingPrimitive(int a, /*char c,*/ boolean b, long l, float f)
         {
@@ -467,6 +485,8 @@ public class ThreadUtilTest extends TestCase
         
         /**
          * Test method which will accept Writer/PrintWriter.
+         * 
+         * @param w Writer.
          */
         public void pingAssignable(Writer w)
         {
@@ -487,6 +507,8 @@ public class ThreadUtilTest extends TestCase
         
         /**
          * Test calling a method from in innerclass on itself.
+         * 
+         * @throws Exception on error.
          */
         public void testFromInnerClass() throws Exception
         {
@@ -505,6 +527,7 @@ public class ThreadUtilTest extends TestCase
             return pingArgsCalled_;
         }
 
+        
         /**
          * Returns the pingComplexCalled.
          * 

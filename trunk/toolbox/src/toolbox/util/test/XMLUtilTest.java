@@ -42,66 +42,66 @@ public class XMLUtilTest extends TestCase
         logger_.info("Running testFormat...");
         
         String xml =
-        "<root>" +
-        "<type unid=\"1awiysxq\">" +
-        "<localName>" +
-        "null</localName>" +
-        "<isChanged>" +
-        "false</isChanged>" +
-        "<elideLabel>" +
-        "false</elideLabel>" +
-        "<sequence>" +
-        "</sequence>" +
-        "<validationSequence>" +
-        "</validationSequence>" +
-        "<readOnly name=\"domain\">" +
-        "<localName>" +
-        "domain</localName>" +
-        "<isChanged>" +
-        "false</isChanged>" +
-        "<elideLabel>" +
-        "false</elideLabel>" +
-        "<valueDomain>" +
-        "null</valueDomain>" +
-        "<value>" +
-        "</value>" +
-        "</readOnly>" +
-        "<list name=\"translationEntry\">" +
-        "<localName>" +
-        "translationEntry</localName>" +
-        "<isChanged>" +
-        "false</isChanged>" +
-        "<elideLabel>" +
-        "false</elideLabel>" +
-        "<newAllowed>" +
-        "true</newAllowed>" +
-        "<deleteAllowed>" +
-        "true</deleteAllowed>" +
-        "</list>" +
-        "<singleKeyword name=\"changeRequestApproval\">" +
-        "<localName>" +
-        "changeRequestApproval</localName>" +
-        "<isChanged>" +
-        "false</isChanged>" +
-        "<elideLabel>" +
-        "false</elideLabel>" +
-        "<sequence>" +
-        "</sequence>" +
-        "<validationSequence>" +
-        "#</validationSequence>" +
-        "<editable>" +
-        "true</editable>" +
-        "<mandatory>" +
-        "false</mandatory>" +
-        "<domain>" +
-        "APPROVAL</domain>" +
-        "<cascaded>" +
-        "false</cascaded>" +
-        "<value>" +
-        "</value>" +
-        "</singleKeyword>" +
-        "</type>" +
-        "</root>";
+            "<root>" +
+            "<type unid=\"1awiysxq\">" +
+            "<localName>" +
+            "null</localName>" +
+            "<isChanged>" +
+            "false</isChanged>" +
+            "<elideLabel>" +
+            "false</elideLabel>" +
+            "<sequence>" +
+            "</sequence>" +
+            "<validationSequence>" +
+            "</validationSequence>" +
+            "<readOnly name=\"domain\">" +
+            "<localName>" +
+            "domain</localName>" +
+            "<isChanged>" +
+            "false</isChanged>" +
+            "<elideLabel>" +
+            "false</elideLabel>" +
+            "<valueDomain>" +
+            "null</valueDomain>" +
+            "<value>" +
+            "</value>" +
+            "</readOnly>" +
+            "<list name=\"translationEntry\">" +
+            "<localName>" +
+            "translationEntry</localName>" +
+            "<isChanged>" +
+            "false</isChanged>" +
+            "<elideLabel>" +
+            "false</elideLabel>" +
+            "<newAllowed>" +
+            "true</newAllowed>" +
+            "<deleteAllowed>" +
+            "true</deleteAllowed>" +
+            "</list>" +
+            "<singleKeyword name=\"changeRequestApproval\">" +
+            "<localName>" +
+            "changeRequestApproval</localName>" +
+            "<isChanged>" +
+            "false</isChanged>" +
+            "<elideLabel>" +
+            "false</elideLabel>" +
+            "<sequence>" +
+            "</sequence>" +
+            "<validationSequence>" +
+            "#</validationSequence>" +
+            "<editable>" +
+            "true</editable>" +
+            "<mandatory>" +
+            "false</mandatory>" +
+            "<domain>" +
+            "APPROVAL</domain>" +
+            "<cascaded>" +
+            "false</cascaded>" +
+            "<value>" +
+            "</value>" +
+            "</singleKeyword>" +
+            "</type>" +
+            "</root>";
 
         String formatted = XMLUtil.format(xml);
         
@@ -123,12 +123,12 @@ public class XMLUtilTest extends TestCase
         logger_.info("Running testFormatWithDeclaration...");
         
         String xml =
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-        "<root>" +
-        "<type unid=\"1awiysxq\">" +
-        "<localName>null</localName>" +
-        "</type>" +
-        "</root>";
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<root>" +
+            "<type unid=\"1awiysxq\">" +
+            "<localName>null</localName>" +
+            "</type>" +
+            "</root>";
         
         String formatted = XMLUtil.format(xml);
         

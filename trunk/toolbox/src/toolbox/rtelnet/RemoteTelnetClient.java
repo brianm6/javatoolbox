@@ -34,7 +34,7 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
         {
             if (outputBuffer_.indexOf(searchString) >= 0)
             {
-                outputBuffer_.delete(0, outputBuffer_.length()-1);
+                outputBuffer_.delete(0, outputBuffer_.length() - 1);
                 return;
             }
             else
@@ -51,7 +51,7 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
      */    
     public void sendCommand(String command) throws IOException
     {
-        getOutputStream().write((command+"\n").getBytes());
+        getOutputStream().write((command + "\n").getBytes());
         getOutputStream().flush();
         
         // Sleep to avoid race condition
@@ -73,7 +73,7 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
             while (true)
             {
                 int c = getInputStream().read();
-                char x = (char)c;
+                char x = (char) c;
                 System.out.print(x); 
                 outputBuffer_.append(x);                    
             }

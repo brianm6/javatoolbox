@@ -14,7 +14,7 @@ public interface InstantMessenger
     /**
      * Property for the delay between successive messages.
      */
-    public static final String PROP_THROTTLE = "throttle";
+    String PROP_THROTTLE = "throttle";
     
     //--------------------------------------------------------------------------
     // Public

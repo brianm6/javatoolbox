@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class EchoSocketClient
 {
-    public static final Logger logger_ = 
+    private static final Logger logger_ = 
         Logger.getLogger(EchoSocketClient.class);
     
     /** 
@@ -71,7 +71,7 @@ public class EchoSocketClient
                     new InputStreamReader(socket_.getInputStream()));
             
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             logger_.error("While creating socket", e);
         }
@@ -106,7 +106,7 @@ public class EchoSocketClient
      */
     public void sendMany(String request, int num) throws IOException 
     {
-        for(int i=0; i<num; i++)
+        for (int i = 0; i < num; i++)
             send(request + i);  
     }
     

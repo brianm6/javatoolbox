@@ -67,13 +67,13 @@ public class PingConnectionHandler implements IConnectionHandler
             
             conn.close();
         }
-        catch(IOException e)
+        catch (IOException e)
         {
             logger_.error(e.getMessage(), e);
         }
         finally
         {
-            // nothing
+            ; // nothing
         }
         
         return null;

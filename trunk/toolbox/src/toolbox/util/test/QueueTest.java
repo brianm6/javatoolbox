@@ -128,11 +128,11 @@ public class QueueTest extends TestCase
         assertEquals(1, q.size());
         
         for (int i = 0; i < 10; i++)
-            q.enqueue(i+"");
+            q.enqueue(i + "");
             
         assertEquals(11, q.size());
         
-        for (int i=0; i<11; i++)
+        for (int i = 0; i < 11; i++)
             q.dequeue();
             
         assertEquals(0, q.size());
