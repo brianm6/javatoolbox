@@ -23,7 +23,7 @@ import toolbox.util.thread.strategy.ThreadPoolStrategy;
  */
 public class AsyncConnectionHandlerTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(AsyncConnectionHandlerTest.class);
     
@@ -125,10 +125,12 @@ public class AsyncConnectionHandlerTest extends TestCase
             }
         }
         
+        ThreadDispatcher dispatcher = 
+            new ThreadDispatcher(new ThreadPoolStrategy(5,5));
+            
         IConnectionHandler handler = 
             new AsyncConnectionHandler(
-                new TestConnectionHandler(), 
-                    new ThreadDispatcher(new ThreadPoolStrategy(5,5)));
+                new TestConnectionHandler(), dispatcher);
                 
         IConnection connection = new TestConnection();
         
@@ -153,5 +155,7 @@ public class AsyncConnectionHandlerTest extends TestCase
         assertEquals("return values not same", rv.getValue(), helloWorld);      
         
         logger_.info(rv.getValue());
+        
+        dispatcher.shutdown();
     }
 }
