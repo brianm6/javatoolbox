@@ -41,10 +41,10 @@ import toolbox.util.db.SQLFormatter;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
-import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
@@ -781,14 +781,14 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Queries the DB metadata and dumps a list of the tables.
      */
-    class ListTablesAction extends SmartAction
+    class ListTablesAction extends WorkspaceAction
     {
         /**
          * Creates a ListTablesAction.
          */
         public ListTablesAction()
         {
-            super("List Tables", true, false, null);
+            super("List Tables", true, true, null, statusBar_);
         }
 
         
@@ -816,14 +816,14 @@ public class QueryPlugin extends JPanel implements IPlugin
      * name is selected in the results area, then only the columns for the
      * selected table are returned.
      */    
-    class ListColumnsAction extends SmartAction
+    class ListColumnsAction extends WorkspaceAction
     {
         /**
          * Creates a ListColumnsAction.
          */
         public ListColumnsAction()
         {
-            super("List Columns", true, false, null);
+            super("List Columns", true, true, null, statusBar_);
         }
 
         
@@ -833,13 +833,31 @@ public class QueryPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            Connection conn = JDBCUtil.getConnection();
-            DatabaseMetaData meta = conn.getMetaData();
             String table = resultsArea_.getSelectedText();
-            ResultSet rs = meta.getColumns(null, null, table, null);
-            String tables = JDBCUtil.format(rs);
-            resultsArea_.append(tables);
-            JDBCUtil.releaseConnection(conn);
+            
+            if (StringUtil.isNullOrBlank(table))
+            {    
+                JSmartOptionPane.showMessageDialog(QueryPlugin.this, 
+                    "Select text matching the column name from the output " +
+                    "area.", "Error", JSmartOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                Connection conn = null; 
+                
+                try
+                {
+                    conn = JDBCUtil.getConnection();
+                    DatabaseMetaData meta = conn.getMetaData();
+                    ResultSet rs = meta.getColumns(null, null, table, null);
+                    String tables = JDBCUtil.format(rs);
+                    resultsArea_.append(tables);
+                }
+                finally
+                {
+                    JDBCUtil.releaseConnection(conn);
+                }
+            }
         }
     }
 }
