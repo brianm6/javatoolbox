@@ -1,9 +1,7 @@
 package toolbox.plugin.jardeps;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -14,25 +12,6 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import edu.uci.ics.jung.graph.Edge;
-import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.Vertex;
-import edu.uci.ics.jung.graph.decorators.EdgeStringer;
-import edu.uci.ics.jung.graph.decorators.StringLabeller;
-import edu.uci.ics.jung.graph.decorators.StringLabeller.UniqueLabelException;
-import edu.uci.ics.jung.graph.impl.DirectedSparseEdge;
-import edu.uci.ics.jung.graph.impl.DirectedSparseGraph;
-import edu.uci.ics.jung.graph.impl.DirectedSparseVertex;
-import edu.uci.ics.jung.io.PajekNetReader;
-import edu.uci.ics.jung.visualization.FRLayout;
-import edu.uci.ics.jung.visualization.FadingVertexLayout;
-import edu.uci.ics.jung.visualization.GraphDraw;
-import edu.uci.ics.jung.visualization.Layout;
-import edu.uci.ics.jung.visualization.PluggableRenderer;
-import edu.uci.ics.jung.visualization.Renderer;
-import edu.uci.ics.jung.visualization.graphdraw.SettableRenderer;
 
 import nu.xom.Element;
 
@@ -40,13 +19,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
-import org.netbeans.lib.cvsclient.request.SetRequest;
-
-import samples.graph.ShowLayouts;
-import scratch.danyel.sample.FadeRenderer;
-import scratch.scott.AestheticSpringVisualizer;
-import scratch.scott.BasicRenderer;
-
+import toolbox.graph.Edge;
+import toolbox.graph.Graph;
+import toolbox.graph.GraphFactory;
+import toolbox.graph.GraphView;
+import toolbox.graph.Vertex;
+import toolbox.graph.jung.JungGraphFactory;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.service.ServiceException;
@@ -75,7 +53,7 @@ public class JarDepsPlugin extends AbstractPlugin
     /** 
      * Root preferences node for this plugin.
      */
-    private static final String NODE_JARDEPS_PLUGIN = "JarDepsPlugin";
+    private static final String NODE_JARDEPS_PLUGIN = "JarDepsPlugin2";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -105,6 +83,10 @@ public class JarDepsPlugin extends AbstractPlugin
      * File explorer used to navigate to and select documents for viewing. 
      */
     private JFileExplorer explorer_;
+
+    private GraphView graphView_;
+    private Graph graph_;
+    private GraphFactory graphFactory_ = new JungGraphFactory();
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -228,64 +210,56 @@ public class JarDepsPlugin extends AbstractPlugin
             
             Map nodes = new HashMap();
             
-            initGraph();
+            graph_ = graphFactory_.createGraph();
             
             while ( (line = lnr.readLine()) !=  null)
             {
                 String[] tokens = StringUtils.split(line);
                 Validate.isTrue(tokens.length == 3);
                 
-                String from = FileUtil.stripPath(tokens[0]);
-                String to = FileUtil.stripPath(tokens[2]);
+                String fromLabel = FileUtil.stripPath(tokens[0]);
+                String toLabel = FileUtil.stripPath(tokens[2]);
                 
                 Vertex fromVertex = null;
                 Vertex toVertex = null;
                 
-                if (!nodes.containsKey(from))
+                if (!nodes.containsKey(fromLabel))
                 {
-                    fromVertex = addVertex(from);
-                    nodes.put(from, fromVertex);
+                    fromVertex = graphFactory_.createVertex(graph_, fromLabel);
+                    nodes.put(fromLabel, fromVertex);
                 }
                 else
                 {
-                    fromVertex = (Vertex) nodes.get(from);
+                    fromVertex = (Vertex) nodes.get(fromLabel);
                 }
                     
                 
-                if (!nodes.containsKey(to))
+                if (!nodes.containsKey(toLabel))
                 {
-                    toVertex = addVertex(to);
-                    nodes.put(to, toVertex);
+                    toVertex = graphFactory_.createVertex(graph_, toLabel);
+                    nodes.put(toLabel, toVertex);
                 }
                 else
                 {
-                    toVertex = (Vertex) nodes.get(to);
+                    toVertex = (Vertex) nodes.get(toLabel);
                 }
                 
-                addEdge(fromVertex, toVertex);
+                Edge edge = graphFactory_.createEdge(fromVertex, toVertex);
             }
+            
+            graphView_ = graphFactory_.createView(graph_);
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger_.error(e);
         }
-        
-        showGraph();
-                
     }
     
-    GraphDraw graphDraw_;
-    Graph graph_;
-    
-    private void initGraph() throws IOException
-    {
-        graph_ = getGraph();
-    }
     
     private void showGraph()
     {
-        graphDraw_ = new GraphDraw(graph_);
-        graphDraw_.showStatus();
+        //graphView_ = new GraphDraw(graph_);
+        //graphView_.showStatus();
     
         
 //        graphDraw_.setRenderer(
@@ -298,24 +272,24 @@ public class JarDepsPlugin extends AbstractPlugin
         //graphDraw_.setRenderer(new PluggableRenderer());
                 
         //SettableRenderer sr = (SettableRenderer) graphDraw_.getRenderer();
-        SettableRenderer sr = 
-            new SettableRenderer(
-                StringLabeller.getLabeller(graph_),
-                new EdgeStringer()
-                {
-                    /**
-                     * @see edu.uci.ics.jung.graph.decorators.EdgeStringer#getLabel(edu.uci.ics.jung.graph.Edge)
-                     */
-                    public String getLabel(Edge e)
-                    {
-                        return "depends on";
-                    }
-                });
-        
-        graphDraw_.setRenderer(sr);
-                
-        sr.setLightDrawing(false);
-        sr.setEdgeColor(Color.BLUE);
+//        SettableRenderer sr = 
+//            new SettableRenderer(
+//                StringLabeller.getLabeller(graph_),
+//                new EdgeStringer()
+//                {
+//                    /**
+//                     * @see edu.uci.ics.jung.graph.decorators.EdgeStringer#getLabel(edu.uci.ics.jung.graph.Edge)
+//                     */
+//                    public String getLabel(Edge e)
+//                    {
+//                        return "depends on";
+//                    }
+//                });
+//        
+//        graphView_.setRenderer(sr);
+//                
+//        sr.setLightDrawing(false);
+//        sr.setEdgeColor(Color.BLUE);
         
         
         //sr.setEdgeThickness(2);
@@ -324,16 +298,16 @@ public class JarDepsPlugin extends AbstractPlugin
         //Layout layout = new SpringLayout(graph_);
         //Layout layout = new FadingVertexLayout(10, new SpringLayout(graph_));
         //Layout layout = new FastScalableMDS(graph_);
-        Layout layout = new FRLayout(graph_);
+        //Layout layout = new FRLayout(graph_);
         //Layout layout = new CircleLayout(graph_);
         //Layout layout = new ISOMLayout(graph_);
         //Layout layout = new KKLayout(graph_);
         //Layout layout = new KKLayoutInt(graph_);
         //Layout layout = new AestheticSpringVisualizer(graph_);
         
-        graphDraw_.setGraphLayout(layout);
-        graphDraw_.setVertexBGColor(Color.gray);
-        graphDraw_.setVertexForegroundColor(Color.white);
+        //graphView_.setGraphLayout(layout);
+        //graphView_.setVertexBGColor(Color.gray);
+        //graphView_.setVertexForegroundColor(Color.white);
         
         //SpringLayout sl = (SpringLayout) graphDraw_.getGraphLayout();
         //sl.setRepulsionRange(200);
@@ -345,81 +319,36 @@ public class JarDepsPlugin extends AbstractPlugin
         //gd.stop();
         //gd.restartLayout();
         
-        workArea_.add(BorderLayout.CENTER, new JScrollPane(graphDraw_));
+        //workArea_.add(BorderLayout.CENTER, new JScrollPane(graphView_));
     }
 
-    public Graph getGraph() throws IOException {
-        PajekNetReader pnr = new PajekNetReader();
-       
-//        Graph g = pnr.load(new StringReader(
-//            "*vertices 2\n"
-//            + "1 \"xxxxxxxxxxxxxxxxxxxxx\"\n"
-//            + "2 \"yyyyyyyyyyyyyyyyyyyyy\"\n"
-//            + "*edges\n"
-//            + "1 2"
-//            ));
-        
-        Graph g = new DirectedSparseGraph();
-        
-        int cnt = 0;
-        
-//        for (Iterator i = g.getVertices().iterator(); i.hasNext(); )
-//        {
-//            Vertex v = (Vertex) i.next();
-//            
-//            try
-//            {
-//                StringLabeller.getLabeller(g).setLabel(v, "node" + cnt++);
-//            }
-//            catch (UniqueLabelException e1)
-//            {
-//                e1.printStackTrace();
-//            }
-//        }
-        
-//        try
-//        {
-//            SimpleSparseVertex howdyVertex = new SimpleSparseVertex();
-//            g.addVertex(howdyVertex);
-//            StringLabeller.getLabeller(g).setLabel(howdyVertex, "howdy");
-//
-//            SimpleSparseVertex cowPokeVertex = new SimpleSparseVertex();
-//            g.addVertex(cowPokeVertex);
-//            StringLabeller.getLabeller(g).setLabel(cowPokeVertex, "cowPoke");
-//
-//            DirectedSparseEdge edge = new DirectedSparseEdge(howdyVertex, cowPokeVertex);
-//            g.addEdge(edge);
-//        }
-//        catch (UniqueLabelException e)
-//        {
-//            e.printStackTrace();
-//        }
-        
-        return g;
-    }
+//    public Graph getGraph() throws IOException {
+//        Graph g = new DirectedSparseGraph();
+//        return g;
+//    }
     
     
     
     /**
      * 
      */
-    private Vertex addVertex(String label) throws UniqueLabelException
-    {
-        logger_.debug("Adding vertex " + label);
-        
-        Vertex vertex = new DirectedSparseVertex();
-        graph_.addVertex(vertex);
-        StringLabeller.getLabeller(graph_).setLabel(vertex, label);
-        return vertex;
-    }
-    
-    private void addEdge(Vertex from, Vertex to)
-    {
-        logger_.debug("Adding edge " + from + " ---> " + to);
-        
-        Edge edge = new DirectedSparseEdge(from, to);
-        graph_.addEdge(edge);
-    }
+//    private Vertex addVertex(String label) //throws UniqueLabelException
+//    {
+//        logger_.debug("Adding vertex " + label);
+//        
+//        Vertex vertex = graphFactory_.createVertex(graph_, label); 
+//        //graph_.addVertex(vertex);
+//        //StringLabeller.getLabeller(graph_).setLabel(vertex, label);
+//        return vertex;
+//    }
+//    
+//    private void addEdge(Vertex from, Vertex to)
+//    {
+//        logger_.debug("Adding edge " + from + " ---> " + to);
+//        
+//        Edge edge = graphFactory_.createEdge(from, to);
+//        graph_.addEdge(edge);
+//    }
     
     //--------------------------------------------------------------------------
     // Initializable Interface
@@ -449,7 +378,7 @@ public class JarDepsPlugin extends AbstractPlugin
      */
     public String getPluginName()
     {
-        return "Jar Deps";
+        return "Jar Deps 2";
     }
 
     
@@ -533,6 +462,8 @@ public class JarDepsPlugin extends AbstractPlugin
         {
             viewDependencies(Arrays.asList(
                 explorer_.getFileList().getSelectedValues()));
+            
+            workArea_.add(BorderLayout.CENTER, graphView_.getComponent());
         }
     }
 }
