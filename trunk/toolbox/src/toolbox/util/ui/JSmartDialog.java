@@ -4,8 +4,12 @@ import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -13,7 +17,10 @@ import javax.swing.KeyStroke;
 
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.PreferencedUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.action.DisposeAction;
 import toolbox.workspace.IPreferenced;
@@ -31,6 +38,8 @@ public class JSmartDialog extends JDialog implements IPreferenced
 {
     // TODO: Write unit test to make sure initDialog() and dispose() are 
     //       maintaining a proper list of active dialogs.
+
+    private static final Logger logger_ = Logger.getLogger(JSmartDialog.class);
     
     //--------------------------------------------------------------------------
     // Constants
@@ -195,13 +204,15 @@ public class JSmartDialog extends JDialog implements IPreferenced
     protected void initDialog()
     {
         instances_.add(this);
+     
+        addWindowListener(new InternalListener());
         
-        // Bind ESC to the dispose action.
-        getRootPane()
-            .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-            .put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), KEY_ESC);
-
-        getRootPane().getActionMap().put(KEY_ESC, new DisposeAction(this));
+        // ESC key should dismiss the dialog...
+        SwingUtil.bindKey(
+            getRootPane(), 
+            new DisposeAction(this),    
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+            JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
     
     //--------------------------------------------------------------------------
@@ -261,4 +272,82 @@ public class JSmartDialog extends JDialog implements IPreferenced
         PreferencedUtil.savePrefs(root, this);
         XOMUtil.insertOrReplace(prefs, root);
     }    
-}
+    
+    //--------------------------------------------------------------------------
+    // InternalListener
+    //--------------------------------------------------------------------------
+    
+    class InternalListener extends WindowAdapter
+    {
+        public void windowClosing(WindowEvent e)
+        {
+            logger_.debug("windowClosing");
+            
+            String key = getName();
+            
+            if (key != null) 
+            {
+                Element prefs = new Element(NODE_JDIALOG);
+                
+                try
+                {
+                    savePrefs(prefs);
+                }
+                catch (Exception e1)
+                {
+                    logger_.error("savePrefs", e1);
+                }
+                
+                checkIn(key, prefs);
+            }
+            
+            super.windowClosing(e);
+        }
+
+        public void windowClosed(WindowEvent e)
+        {
+            logger_.debug("windowClosed");
+        }
+        
+        
+        public void windowOpened(WindowEvent e)
+        {
+            String key = getName();
+            
+            if (key != null)
+            {
+                Element prefs = checkOut(key);
+                
+                if (prefs != null)
+                {
+                    try
+                    {
+                        applyPrefs(prefs);
+                    }
+                    catch (Exception e1)
+                    {
+                        logger_.error("applyPrefs", e1);
+                    }
+                }
+            }
+            
+            super.windowOpened(e);
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // Static 
+    //--------------------------------------------------------------------------
+    
+    private static Map prefs_ = new HashMap();
+    
+    private static void checkIn(String key, Element prefs)
+    {
+        prefs_.put(key, prefs);
+    }
+    
+    private static Element checkOut(String key)
+    {
+        return (Element) prefs_.get(key);
+    }
+}    
