@@ -9,6 +9,7 @@ import junitx.util.BasicTestFilter;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ClassUtil;
 
 /**
  * Filter that identifies only those tests suitable for execution under Clover.
@@ -17,102 +18,107 @@ import toolbox.util.ArrayUtil;
  */
 public class CloverTestFilter extends BasicTestFilter
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(CloverTestFilter.class);
-    
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Javassist class pool.
      */
     private ClassPool classPool_;
-    
+
     /**
      * Javassist class used to filter out test cases that extend UITestCase.
      */
     private CtClass uiTestCase_;
-    
+
     /**
-     * Javassist class used to filter out test cases that implement 
+     * Javassist class used to filter out test cases that implement
      * StandAloneTestCase.
      */
     private CtClass standAloneTestCase_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Creates a CloverTestFilter. 
-     * 
+     * Creates a CloverTestFilter.
+     *
      * @throws NotFoundException if test case class not found.
      */
     public CloverTestFilter() throws NotFoundException
     {
         classPool_ = ClassPool.getDefault();
         uiTestCase_ = classPool_.get(UITestCase.class.getName());
-        
-        standAloneTestCase_ = 
+
+        standAloneTestCase_ =
             classPool_.get(StandaloneTestCase.class.getName());
     }
-    
+
     //--------------------------------------------------------------------------
-    // Overrides BasicTestFilter 
+    // Overrides BasicTestFilter
     //--------------------------------------------------------------------------
-    
+
     /**
      * Rejects classes that exend UITestCase.
      * Rejects classes that implement StandAloneTestCase.
-     * 
+     *
      * @see junitx.util.TestFilter#include(java.lang.Class)
      */
     public boolean include(Class clazz)
     {
         boolean b = super.include(clazz);
-        
+
         try
         {
             CtClass c = classPool_.get(clazz.getName());
-            
+
             if (c.subclassOf(uiTestCase_))
-            {    
+            {
                 b = false;
-                logger_.debug("Rejecting UITestCase: " + clazz.getName());
+
+                logger_.debug("Rejecting UITestCase " +
+                    ClassUtil.stripPackage(clazz));
             }
             else if (ArrayUtil.contains(c.getInterfaces(), standAloneTestCase_))
             {
                 b = false;
-                
-                logger_.debug(
-                    "Rejecting StandAloneTestCase: " + clazz.getName());
+
+                logger_.debug("Rejecting StandAloneTestCase " +
+                    ClassUtil.stripPackage(clazz));
             }
         }
         catch (NotFoundException e)
         {
-            logger_.error(e + ":" + clazz);
+            logger_.error(e.getMessage() + ":" + clazz);
         }
         finally
         {
             if (b)
-                logger_.debug("Accepted class: " + clazz);
+            {
+                logger_.debug("Accepted unit test " +
+                    ClassUtil.stripPackage(clazz));
+            }
         }
-        
+
         return b;
     }
 
-    
+
     /**
      * @see junitx.util.TestFilter#include(java.lang.String)
      */
     public boolean include(String arg0)
     {
         boolean b = super.include(arg0);
-        
+
         if (b)
-            System.out.println("Accepted class: " + arg0);
-        
+            logger_.debug("Accepted class " + arg0);
+
         return b;
     }
 }
