@@ -9,6 +9,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.log4j.SmartLogger;
 import toolbox.util.StringUtil;
 
 /**
@@ -16,7 +17,6 @@ import toolbox.util.StringUtil;
  */
 public class StringUtilTest extends TestCase
 {
-    /** Logger */
     private static Logger logger_ = 
         Logger.getLogger(StringUtilTest.class);
 
@@ -67,24 +67,16 @@ public class StringUtilTest extends TestCase
         String b4 = StringUtil.right( s, 4, ' ', true );
   
         if( !a1.equals( b1 )) 
-        {
             fail( "ERROR RIGHT 1" );
-        }
 
         if( !a2.equals( b2 )) 
-        {
             fail( "ERROR RIGHT 2" );
-        }
 
         if( !a3.equals( b3 )) 
-        {
             fail( "ERROR RIGHT 3" );
-        }
 
         if( !a4.equals( b4 )) 
-        {
             fail( "ERROR RIGHT 4" );
-        }
     }
 
     /**
@@ -130,24 +122,16 @@ public class StringUtilTest extends TestCase
         String b4 = StringUtil.left( s, 4, ' ', true );
 
         if( !a1.equals( b1 )) 
-        {
             fail( "ERROR LEFT 1" );
-        }
 
         if( !a2.equals( b2 )) 
-        {
             fail( "ERROR LEFT 2" );
-        }
 
         if( !a3.equals( b3 )) 
-        {
             fail( "ERROR LEFT 3" );
-        }
 
         if( !a4.equals( b4 )) 
-        {
             fail( "ERROR LEFT 4" );
-        }
     }
 
     /**
@@ -177,7 +161,7 @@ public class StringUtilTest extends TestCase
         String result = StringUtil.toString( theList );
         String expected = " [0] = ELEM_ONE [1] = ELEM_TWO [2] = ELEM_THREE";
 
-        if( ! expected.equals( result ))
+        if (! expected.equals( result ))
         {
             fail( " Result(" + result + ") does not match " +
                "expected(" + expected + ")" );
@@ -218,7 +202,7 @@ public class StringUtilTest extends TestCase
             String s  = "abcd";
             String sr = StringUtil.getStringRuler(s);
             
-            logger_.debug("\n" +sr);
+            SmartLogger.info(logger_, sr);
             
             assertTrue("ruler incorrect", sr.startsWith(s));
             assertTrue("ruler incorrect", sr.endsWith("1234"));
@@ -229,8 +213,7 @@ public class StringUtilTest extends TestCase
             String s  = "abcdefghijklmnopqrstuvwxyz";
             String sr = StringUtil.getStringRuler(s);
             
-            logger_.debug("\n" +sr);
-            
+            SmartLogger.info(logger_, sr);
             
             LineNumberReader lnr = new LineNumberReader(new StringReader(sr));
     
@@ -255,19 +238,19 @@ public class StringUtilTest extends TestCase
         //      STRING LENGTH = 0 
         //======================================
          
-        /* test empty string with zero */
+        // test empty string with zero 
         {
             String s = StringUtil.truncate("", 0);
             assertEquals(s, "");
         }
 
-        /* test empty string with one */
+        // test empty string with one 
         {
             String s = StringUtil.truncate("", 1);
             assertEquals(s, "");
         }
         
-        /* test empty string with many */
+        // test empty string with many 
         {
             String s = StringUtil.truncate("", 50);
             assertEquals(s, "");
@@ -277,21 +260,21 @@ public class StringUtilTest extends TestCase
         //      STRING LENGTH = 1 
         //======================================
          
-        /* test 1 char string with zero */
+        // test 1 char string with zero
         {
             String t = "x";
             String s = StringUtil.truncate(t, 0);
             assertEquals(s, "");
         }
 
-        /* test 1 char string with one */
+        // test 1 char string with one 
         {
             String t = "x";
             String s = StringUtil.truncate(t, 1);
             assertEquals(s, t);
         }
         
-        /* test 1 char string with many */
+        // test 1 char string with many 
         {
             String t = "x";
             String s = StringUtil.truncate(t, 50);
@@ -302,35 +285,35 @@ public class StringUtilTest extends TestCase
         //      STRING LENGTH > 1
         //======================================
         
-        /* test non-empty string with zero */
+        // test non-empty string with zero 
         {
             String t = "hello";
             String s = StringUtil.truncate(t, 0);
             assertEquals(s, "");
         }
 
-        /* test non-empty string with one */
+        // test non-empty string with one
         {
             String t = "hello";
             String s = StringUtil.truncate(t, 1);
             assertEquals(s, "h");
         }
         
-        /* test non-empty string with many */
+        // test non-empty string with many 
         {
             String t = "hello";
             String s = StringUtil.truncate(t, 4);
             assertEquals(s, "hell");
         }
         
-        /* test non-empty string with exact length */
+        // test non-empty string with exact length 
         {
             String t = "hello";
             String s = StringUtil.truncate(t, t.length());
             assertEquals(s, t);
         }
 
-        /* test non-empty string with length greater than string */
+        // test non-empty string with length greater than string 
         {
             String t = "hello";
             String s = StringUtil.truncate(t, 100);
@@ -416,8 +399,8 @@ public class StringUtilTest extends TestCase
         
         String s = "0123456789";
         
-        logger_.info("\n" + StringUtil.wrap(s));
-        logger_.info("\n" + StringUtil.wrap(s, 5));
+        SmartLogger.info(logger_, StringUtil.wrap(s));
+        SmartLogger.info(logger_, StringUtil.wrap(s, 5));
     }
 
     /**
@@ -457,5 +440,26 @@ public class StringUtilTest extends TestCase
         String b = StringUtil.replace(a, "me", "ho", 2);
         
         assertEquals("ho ho me", b);
+    }
+    
+    /**
+     * Tests isMultiline()
+     */
+    public void testIsMultiline()
+    {
+        logger_.info("Running testIsMultiline...");
+        
+        assertEquals(false, StringUtil.isMultiline(""));
+        assertEquals(false, StringUtil.isMultiline("a"));
+        assertEquals(false, StringUtil.isMultiline("This is a sentence."));
+        assertEquals(false, StringUtil.isMultiline("Embedded \t tab"));
+        
+        assertEquals(true, StringUtil.isMultiline("\n"));
+        assertEquals(true, StringUtil.isMultiline("End of sentence\n"));
+        assertEquals(true, StringUtil.isMultiline("\nBeginning of sentence"));
+        assertEquals(true, StringUtil.isMultiline("Middle of \n sentence"));
+        assertEquals(true, StringUtil.isMultiline("Multiple \n sentences \n!"));
+        assertEquals(true, StringUtil.isMultiline("\na"));
+        assertEquals(true, StringUtil.isMultiline("a\n"));
     }
 }
