@@ -9,43 +9,74 @@ import javax.swing.JComboBox;
 import toolbox.util.SwingUtil;
 
 /**
+ * JSmartComboBox adds the following behavior.
+ * <p>
+ * <ul>
+ *   <li>Support for antialised text
+ * </ul>
  * 
+ * @see SmartListCellRenderer
  */
 public class JSmartComboBox extends JComboBox implements AntiAliased
 {
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * 
+     * Creates a JSmartComboBox
      */
     public JSmartComboBox()
     {
-        super();
+        init();
     }
 
     /**
-     * @param items
+     * Creates a JSmartComboBox
+     * 
+     * @param items Dropdown items
      */
     public JSmartComboBox(Object[] items)
     {
         super(items);
+        init();
     }
 
     /**
-     * @param items
+     * Creates a JSmartComboBox
+     * 
+     * @param items Dropdown items
      */
     public JSmartComboBox(Vector items)
     {
         super(items);
+        init();
     }
 
     /**
-     * @param aModel
+     * Creates a JSmartComboBox
+     * 
+     * @param aModel Combobox model
      */
     public JSmartComboBox(ComboBoxModel aModel)
     {
         super(aModel);
+        init();
     }
 
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Initializes the combobox by setting the list cell renderer to a
+     * SmartListCellRenderer.
+     */
+    protected void init()
+    {
+        setRenderer(new SmartListCellRenderer());
+    }
+    
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
