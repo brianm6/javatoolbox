@@ -14,6 +14,7 @@ import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.explorer.listener.DriveComboListener;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
@@ -98,9 +99,9 @@ public class InfoBar extends JStatusBar
                 String folder = explorer_.getCurrentPath();
                 String file   = FileUtil.stripPath(explorer_.getFilePath());
                 
-                explorer_.new DriveComboListener().itemStateChanged(
-                    new ItemEvent(explorer_.getRootsComboBox(), 0, null, 
-                        ItemEvent.ITEM_STATE_CHANGED));
+                new DriveComboListener(explorer_).itemStateChanged(
+                        new ItemEvent(explorer_.getRootsComboBox(), 0, null, 
+                            ItemEvent.ITEM_STATE_CHANGED));
                         
                 explorer_.selectFolder(folder);
                 explorer_.setFileList(folder);

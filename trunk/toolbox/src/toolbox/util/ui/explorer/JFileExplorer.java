@@ -4,32 +4,20 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -45,16 +33,18 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
-import toolbox.util.ui.JSmartOptionPane;
-import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
+import toolbox.util.ui.explorer.listener.DirTreeMouseListener;
+import toolbox.util.ui.explorer.listener.DirTreeSelectionListener;
+import toolbox.util.ui.explorer.listener.DriveComboListener;
+import toolbox.util.ui.explorer.listener.FileListMouseListener;
+import toolbox.util.ui.explorer.listener.FileListSelectionListener;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.SmartListCellRenderer;
 import toolbox.util.ui.tree.JSmartTree;
@@ -77,6 +67,7 @@ import toolbox.workspace.IPreferenced;
  *     </ul>
  *   <li>Infobar with file attributes
  *   <li>Refresh button
+ *   <li>Rename directory
  * </ul>
  * 
  * @see toolbox.util.ui.explorer.FileExplorerListener
@@ -420,31 +411,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    // Package
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Package level access for the roots combobox. Used by the InfoBar.
-     * 
-     * @return JComboBox
-     */
-    JComboBox getRootsComboBox()
-    {
-        return rootsComboBox_;
-    }
-
-    
-    /**
-     * Package level access for the file list. Used by the InfoBar.
-     * 
-     * @return JList
-     */
-    public JList getFileList()
-    {
-        return fileList_;
-    }
-    
-    //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
@@ -575,6 +541,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     protected void fireFolderDoubleClicked(String folder)
     {
+        // TODO: Should be protected
+        
         for (int i = 0; i < fileExplorerListeners_.length; 
             fileExplorerListeners_[i++].folderDoubleClicked(folder));
     }
@@ -583,6 +551,50 @@ public class JFileExplorer extends JPanel implements IPreferenced
     // Protected
     //--------------------------------------------------------------------------
 
+    /**
+     * Package level access for the roots combobox. Used by the InfoBar.
+     * 
+     * @return JComboBox
+     */
+    protected JComboBox getRootsComboBox()
+    {
+        return rootsComboBox_;
+    }
+
+    
+    /**
+     * Package level access for the file list. Used by the InfoBar.
+     * 
+     * @return JList
+     */
+    public JList getFileList()
+    {
+        return fileList_;
+    }
+    
+    
+    /**
+     * Returns the popup menu for the directory list.
+     * 
+     * @return JPopupMenu
+     */
+    protected JPopupMenu getFolderPopup()
+    {
+        return folderPopup_;
+    }
+
+    
+    /**
+     * Sets the popup menu for the directory list.
+     * 
+     * @param folderPopup Popupmenu
+     */
+    protected void setFolderPopup(JPopupMenu folderPopup)
+    {
+        folderPopup_ = folderPopup;
+    }
+
+    
     /**
      * Constructs the user interface. 
      * 
@@ -593,14 +605,14 @@ public class JFileExplorer extends JPanel implements IPreferenced
         // File system roots combobox
         rootsComboBox_ = new JSmartComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
-        rootsComboBox_.addItemListener(new DriveComboListener());
+        rootsComboBox_.addItemListener(new DriveComboListener(this));
         rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
         fileList_ = new JSmartList();
         fileList_.setModel(listModel_ = new DefaultListModel());
-        fileList_.addMouseListener(new FileListMouseListener());
-        fileList_.addListSelectionListener(new FileListSelectionListener());
+        fileList_.addMouseListener(new FileListMouseListener(this));
+        fileList_.addListSelectionListener(new FileListSelectionListener(this));
         setFileList(getDefaultRoot());
         fileList_.setFixedCellHeight(15);
         JScrollPane filesScrollPane = new JScrollPane(fileList_);
@@ -625,10 +637,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
         tree_.setRootVisible(true);
         tree_.setScrollsOnExpand(true);
         
-        treeSelectionListener_ = new DirTreeSelectionListener();
+        treeSelectionListener_ = new DirTreeSelectionListener(this);
         tree_.addTreeSelectionListener(treeSelectionListener_);
+        tree_.addMouseListener(new DirTreeMouseListener(this));
         
-        tree_.addMouseListener(new DirTreeMouseListener());
         tree_.setCellRenderer(renderer);
         tree_.putClientProperty("JTree.lineStyle", "Angled");
 
@@ -868,218 +880,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
             setIcon(ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE));
             
             return this;
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // FileListMouseListener
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Handles double click mouse events on a file in the file list.
-     */
-    class FileListMouseListener extends MouseAdapter
-    {
-        /**
-         * @see java.awt.event.MouseListener#mouseClicked(
-         *      java.awt.event.MouseEvent)
-         */
-        public void mouseClicked(MouseEvent evt)
-        {
-            if (evt.getClickCount() == 2 && fileList_.getSelectedIndex() != -1)
-            {
-                // double click on a file fires event to listeners 
-                fireFileDoubleClicked();
-            }
-            else if (evt.getClickCount() == 1)
-            {
-                ; // No need to fire a fileSelected event. 
-                  // FileListSelectionListener has this covered.
-            }
-            else if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
-            {
-                ; // nothing tied to right mouse button click
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // FileListSelectionListener
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Listens for selection changes in the file list, and fires events
-     * accordingly.
-     */
-    class FileListSelectionListener implements ListSelectionListener
-    {
-        /**
-         * @see javax.swing.event.ListSelectionListener#valueChanged(
-         *      javax.swing.event.ListSelectionEvent)
-         */
-        public void valueChanged(ListSelectionEvent e)
-        {
-            if (e.getValueIsAdjusting())
-                return;
-                
-            fireFileSelected();
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // DirTreeMouseListener
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Inner class for handling click event on the JTree.
-     */
-    class DirTreeMouseListener extends MouseAdapter
-    {
-        /**
-         * @see java.awt.event.MouseListener#mouseClicked(
-         *      java.awt.event.MouseEvent)
-         */
-        public void mouseClicked(MouseEvent evt)
-        {
-            if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0 ) // && 
-                // folderPopup_ != null)
-            {
-                if (folderPopup_ == null)
-                {
-                    folderPopup_ = new JSmartPopupMenu("DirPopup");
-                    folderPopup_.add(new AbstractAction("Rename")
-                    {
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            String path = 
-                                StringUtils.chomp(
-                                    getCurrentPath(), 
-                                    File.separator);
-                            
-                            int lastDirIdx = path.lastIndexOf(File.separator);
-                             
-                            String lastDir = 
-                                (lastDirIdx < 0) 
-                                    ? path 
-                                    : path.substring(lastDirIdx + 1);
-                            
-                            String newName = JOptionPane.showInputDialog(
-                                JFileExplorer.this, "Enter the new name");
-                            
-                            if (!StringUtils.isBlank(newName))
-                            {
-                                File from = new File(path);
-                                File parent = from.getParentFile();
-                                File to = new File(parent, newName);
-                                
-                                logger_.debug("From: " + from + "  To: " + to);
-                                
-                                boolean success  = from.renameTo(to);
-         
-                                if (success)
-                                {
-                                    String folder = to.getAbsolutePath();
-                                    
-                                    new DriveComboListener().itemStateChanged(
-                                        new ItemEvent(getRootsComboBox(), 0, null, 
-                                            ItemEvent.SELECTED));
-                                            
-                                    selectFolder(folder);
-                                    
-                                    //setFileList(folder);
-                                    //getFileList().setSelectedValue(file, true);
-                                }
-                                else
-                                {
-                                    JSmartOptionPane.showMessageDialog(
-                                        SwingUtil.getFrameAncestor(JFileExplorer.this),
-                                        "File rename failed",
-                                        "Error - Rename",
-                                        JOptionPane.ERROR_MESSAGE);
-                                }
-                            }
-                        }
-                    });
-                }
-                
-                folderPopup_.show(tree_, evt.getX(), evt.getY());
-            }
-            else if (evt.getClickCount() == 2)
-            {
-                fireFolderDoubleClicked(getCurrentPath());
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // DriveComboListener
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Handles the changing of the selection of drive letter. When a new drive
-     * is selected, the directory and file lists are automatically populated 
-     * with the contents of the drive's root directory.
-     */
-    class DriveComboListener implements ItemListener
-    {
-        /**
-         * @see java.awt.event.ItemListener#itemStateChanged(
-         *      java.awt.event.ItemEvent)
-         */
-        public void itemStateChanged(ItemEvent ie)
-        {
-            if (ie.getStateChange() == ItemEvent.SELECTED)
-            {
-                String fileRoot = rootsComboBox_.getSelectedItem().toString();
-                setFileList(fileRoot);
-                clear();
-                setTreeRoot(fileRoot);
-                setTreeFolders(fileRoot, null);
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // DirTreeSelectionListener
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Updates the contents of the file list when the directory folder 
-     * selection changes.
-     */
-    class DirTreeSelectionListener implements TreeSelectionListener
-    {
-        /**
-         * @see javax.swing.event.TreeSelectionListener#valueChanged(
-         *      javax.swing.event.TreeSelectionEvent)
-         */
-        public void valueChanged(TreeSelectionEvent e)
-        {
-            StringBuffer s = new StringBuffer();
-            TreePath path = e.getPath();
-            Object[] o = path.getPath();
-    
-            DefaultMutableTreeNode currentNode =
-                (DefaultMutableTreeNode) (path.getLastPathComponent());
-    
-            // Should optimize
-            s.append(o[0]);
-            
-            for (int i = 1; i < o.length; i++)
-            {
-                if (!o[i - 1].toString().endsWith(File.separator))
-                    s.append(File.separator);
-                    
-                s.append(o[i]);
-            }
-    
-            String folder = s.toString();
-            setTreeFolders(folder, currentNode);
-            setFileList(folder);
-            
-            fireFolderSelected(folder);
-            
-            selectFolder(folder);
         }
     }
 }
