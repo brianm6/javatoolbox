@@ -28,6 +28,7 @@ import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
+import toolbox.util.StreamUtil;
 
 /**
  * A viewer to for popular text formats with syntax hiliting.
@@ -120,8 +121,18 @@ public class JEditViewer implements DocumentViewer
      */
     protected void createTextArea(File file) 
     {
-        Class c = (Class) 
-            EXT_MAP.get(FileUtil.getExtension(file).toLowerCase());
+        createTextArea(FileUtil.getExtension(file));
+    }
+
+    
+    /**
+     * Creates the text area
+     * 
+     * @param file File to create for.
+     */
+    protected void createTextArea(String fileExtension) 
+    {
+        Class c = (Class) EXT_MAP.get(fileExtension.toLowerCase());
         
         if (c != null)
         {
@@ -185,7 +196,20 @@ public class JEditViewer implements DocumentViewer
      */
     public void view(InputStream is) throws DocumentViewerException
     {
-        throw new UnsupportedOperationException("Not implemented");
+        createTextArea("???");
+        String text;
+        
+        try
+        {
+            text = StreamUtil.asString(is);
+        }
+        catch (IOException e)
+        {
+            throw new DocumentViewerException(e);
+        }
+        
+        textArea_.setText(text);
+        textArea_.scrollTo(0, 0);
     }
 
     
