@@ -12,7 +12,7 @@ import toolbox.util.ResourceUtil;
 import toolbox.util.io.StringInputStream;
 
 /**
- * Unit test for FOPProcessor.
+ * Unit test for {@link toolbox.plugin.xslfo.FOPProcessor}.
  */
 public class FOPProcessorTest extends TestCase
 {

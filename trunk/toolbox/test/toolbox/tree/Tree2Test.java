@@ -15,9 +15,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.io.NullWriter;
 
 /**
- * Unit test for Tree2.
- * 
- * @see toolbox.tree.Tree2
+ * Unit test for {@link toolbox.tree.Tree2}.
  */
 public class Tree2Test extends TestCase
 {

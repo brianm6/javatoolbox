@@ -12,9 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Unit test for BeanPropertyFilter.
- * 
- * @see toolbox.util.beans.BeanPropertyFilter
+ * Unit test for {@link toolbox.util.beans.BeanPropertyFilter}.
  */
 public class BeanPropertyFilterTest extends TestCase
 {
@@ -333,6 +331,9 @@ public class BeanPropertyFilterTest extends TestCase
     // Origin
     //--------------------------------------------------------------------------
 
+    /**
+     * Bean origin.
+     */
     public class Origin
     {
         String name_;
@@ -364,5 +365,4 @@ public class BeanPropertyFilterTest extends TestCase
             name_ = string;
         }
     }
-
 }

@@ -9,9 +9,7 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for BlockingQueue.
- * 
- * @see toolbox.util.concurrent.BlockingQueue
+ * Unit test for {@link toolbox.util.concurrent.BlockingQueue}.
  */
 public class BlockingQueueTest extends TestCase
 {

@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for InstantMessengerFactory.
+ * Unit test for {@link toolbox.log4j.im.InstantMessengerFactory}.
  */
 public class InstantMessengerFactoryTest extends TestCase
 {

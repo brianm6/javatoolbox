@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.AssertUtil;
 
 /**
- * Unit test for CapsMode.
- * 
- * @see toolbox.util.db.CapsMode
+ * Unit test for {@link toolbox.util.db.CapsMode}.
  */
 public class CapsModeTest extends TestCase
 {

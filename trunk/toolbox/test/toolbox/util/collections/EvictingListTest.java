@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for EvictingList. 
+ * Unit test for {@link toolbox.util.collections.EvictingList}. 
  */
 public class EvictingListTest extends TestCase
 {

@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for FOPProcessorFactory.
+ * Unit test for {@link toolbox.plugin.xslfo.FOProcessorFactory}.
  */
 public class FOProcessorFactoryTest extends TestCase
 {

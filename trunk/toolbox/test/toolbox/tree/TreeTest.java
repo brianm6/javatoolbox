@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.FileUtil;
 
 /**
- * Unit test for Tree.
+ * Unit test for {@link toolbox.tree.Tree}.
  */
 public class TreeTest extends TestCase
 {

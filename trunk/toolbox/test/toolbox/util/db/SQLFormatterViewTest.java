@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 
 /**
- * SQLFormatterViewTest is responsible for _____.
+ * Unit test for {@link toolbox.util.db.SQLFormatterView}.
  */
 public class SQLFormatterViewTest extends UITestCase
 {

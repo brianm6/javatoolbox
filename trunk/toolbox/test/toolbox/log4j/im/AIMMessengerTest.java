@@ -8,7 +8,7 @@ import org.apache.log4j.helpers.LogLog;
 import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
- * Unit tests for AIMMessenger.
+ * Unit test for {@link toolbox.log4j.im.AIMMessenger}.
  */
 public class AIMMessengerTest extends AbstractMessengerTest implements 
 	StandaloneTestCase

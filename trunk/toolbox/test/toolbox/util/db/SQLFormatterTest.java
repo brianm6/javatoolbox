@@ -10,9 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for SQLFormatter.
- * 
- * @see toolbox.util.db.SQLFormatter
+ * Unit test for {@link toolbox.util.db.SQLFormatter}.
  */
 public class SQLFormatterTest extends TestCase
 {

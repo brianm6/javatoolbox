@@ -11,7 +11,7 @@ import toolbox.junit.testcase.StandaloneTestCase;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for InstantMessengerAppender.
+ * Unit test for {@link toolbox.log4j.im.InstantMessengerAppender}.
  */
 public class InstantMessengerAppenderTest extends TestCase
     implements StandaloneTestCase

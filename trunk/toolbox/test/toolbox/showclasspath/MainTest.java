@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 /**
- * Unit test for Main.
+ * Unit test for {@link toolbox.showclasspath.Main}..
  */
 public class MainTest extends TestCase
 {

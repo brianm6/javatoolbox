@@ -9,7 +9,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for CaseInsensetiveSet. 
+ * Unit test for {@link toolbox.util.collections.CaseInsensetiveSet}. 
  */
 public class CaseInsensetiveSetTest extends TestCase
 {

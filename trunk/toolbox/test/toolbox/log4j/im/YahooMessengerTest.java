@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
- * Unit test for YahooMessenger.
+ * Unit test for {@link toolbox.log4j.im.YahooMessenger}.
  */
 public class YahooMessengerTest extends AbstractMessengerTest implements 
 	StandaloneTestCase
