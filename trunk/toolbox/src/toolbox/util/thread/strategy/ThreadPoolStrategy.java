@@ -21,26 +21,25 @@ import toolbox.util.thread.concurrent.BoundedBufferAdapter;
  */
 public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
-    static class Task
-    {
-        public IThreadable request;
-        public ReturnValue result;
-
-        public Task(IThreadable request, ReturnValue result)
-        {
-            this.request = request;
-            this.result = result;
-        }
-    }
-
-
+    /**
+     * Default pool size
+     */
     public static final int DEFAULT_POOL_SIZE = 10;
+    
+    /**
+     * Default queue size
+     */
     public static final int DEFAULT_QUEUE_SIZE = 100;
+    
     private int poolSize_;
     private Runnable runnable_;
     private BoundedBuffer requestQueue_;
 
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a default thread pool.
      */
@@ -65,7 +64,10 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
         createThreads(poolSize_, runnable_);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Services the request by putting it on the request queue.  If the
      * queue is full, the calling thread is blocked until a slot becomes
@@ -90,12 +92,26 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
             requestQueue_.put(null);
     }
 
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+        
+    static class Task
+    {
+        private IThreadable request_;
+        private ReturnValue result_;
+
+        public Task(IThreadable request, ReturnValue result)
+        {
+            request_ = request;
+            result_ = result;
+        }
+    }
 
     /**
      * Strategy specific runnable for thread-pool strategy.
      */
-    class ThreadPoolRunnable
-        implements java.lang.Runnable
+    class ThreadPoolRunnable implements Runnable
     {
 
         /*
@@ -111,12 +127,12 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
             {
                 try
                 {
-                    setStarted(task.result);
-                    setResult(task.result, process(task.request));
+                    setStarted(task.result_);
+                    setResult(task.result_, process(task.request_));
                 }
                 catch (Exception e)
                 {
-                    setResult(task.result, e);
+                    setResult(task.result_, e);
                 }
             }
         }

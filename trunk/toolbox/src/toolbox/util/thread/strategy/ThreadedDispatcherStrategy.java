@@ -3,7 +3,6 @@ package toolbox.util.thread.strategy;
 import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ReturnValue;
 import toolbox.util.thread.ThreadContainer;
-import toolbox.util.thread.ReturnValue.Listener;
 
 /**
  * ThreadedDispatcherStrategy.java
@@ -17,7 +16,10 @@ public abstract class ThreadedDispatcherStrategy
     private int pendingResults_;
     private ThreadContainer container_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a new threaded publication strategy.
      */
@@ -27,7 +29,10 @@ public abstract class ThreadedDispatcherStrategy
         pendingResults_ = 0;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Publishes the request in an alternate thread and returns a future
      * object that can interrogate the result.
@@ -51,7 +56,7 @@ public abstract class ThreadedDispatcherStrategy
      * @param    request    Request to publish.
      * @param    callback   Callback to receive status.
      */
-    public void dispatchAsync(IThreadable request, ReturnValue.Listener callback)
+    public void dispatchAsync(IThreadable request,ReturnValue.Listener callback)
     {
         ReturnValue result = new ReturnValue(request, callback);
         serviceRequest(request, result);
@@ -94,11 +99,11 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Services the request and manages the set of active requests.
-    *
-    * @param    request        the request to publish.
-    * @param    result            holds the request result.
-    */
+     * Services the request and manages the set of active requests.
+     *
+     * @param    request        the request to publish.
+     * @param    result            holds the request result.
+     */
     protected void serviceRequest(IThreadable request, ReturnValue result)
     {
         synchronized (this)
@@ -111,21 +116,21 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Services the request in an alternate thread and records the result.
-    *
-    * @param    request        the request to publish.
-    * @param    result            holds the request result.
-    */
+     * Services the request in an alternate thread and records the result.
+     *
+     * @param    request        the request to publish.
+     * @param    result            holds the request result.
+     */
     protected abstract void service(IThreadable request, ReturnValue result);
 
 
     /**
-    * Indicates the request corresponding to returnValues is processing.
-    * This is made protected so only publication strategies or classes in 
-    * this package can update the state.
-    *
-    * @param    returnValue     the return value to update state for.
-    */
+     * Indicates the request corresponding to returnValues is processing.
+     * This is made protected so only publication strategies or classes in 
+     * this package can update the state.
+     *
+     * @param    returnValue     the return value to update state for.
+     */
     protected void setStarted(ReturnValue returnValue)
     {
         returnValue.setStarted();
@@ -133,13 +138,13 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Assigns the value contained in the returnValue.  This is made
-    * protected so only publication strategies or classes in this package
-    * can set the value.
-    *
-    * @param    result          the return value to contain the value.
-    * @param    value           the value to assign to the return value.
-    */
+     * Assigns the value contained in the returnValue.  This is made
+     * protected so only publication strategies or classes in this package
+     * can set the value.
+     *
+     * @param    result          the return value to contain the value.
+     * @param    value           the value to assign to the return value.
+     */
     protected void setResult(ReturnValue result, Object value)
     {
         result.setValue(value);
@@ -153,11 +158,11 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Creates and starts a new thread encapsualting the runnable.
-    *
-    * @param    runnable     the runnable to run in the thread.
-    * @return    the newly created thread.
-    */
+     * Creates and starts a new thread encapsualting the runnable.
+     *
+     * @param    runnable     the runnable to run in the thread.
+     * @return    the newly created thread.
+     */
     protected Thread createThread(Runnable runnable)
     {
         Thread thread = container_.createThread(runnable);
@@ -169,12 +174,12 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Creates and starts howMany new threads encapsualting the runnable.
-    *
-    * @param    howMany          the number of threads to create.
-    * @param    runnable     the runnable to run in the thread.
-    * @return    the array of newly created threads.
-    */
+     * Creates and starts howMany new threads encapsualting the runnable.
+     *
+     * @param    howMany          the number of threads to create.
+     * @param    runnable     the runnable to run in the thread.
+     * @return    the array of newly created threads.
+     */
     protected Thread[] createThreads(int howMany, Runnable runnable)
     {
         Thread[] threads = new Thread[howMany];
@@ -187,11 +192,11 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-    * Returns true if the threads created by this strategy should be
-    * made daemon threads.
-    *
-    * @return    true if threads should be daemon.
-    */
+     * Returns true if the threads created by this strategy should be
+     * made daemon threads.
+     *
+     * @return    true if threads should be daemon.
+     */
     protected boolean makeDaemon()
     {
         return true;

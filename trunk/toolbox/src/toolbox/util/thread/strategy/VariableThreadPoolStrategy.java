@@ -23,24 +23,21 @@ import toolbox.util.thread.concurrent.Timeout;
  */
 public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 {
-    static class Task
-    {
-        public IThreadable request;
-        public ReturnValue result;
-
-        public Task(IThreadable request, ReturnValue result)
-        {
-            this.request = request;
-            this.result = result;
-        }
-    }
-
-
+    /** Default initial size **/
     public static final int DEFAULT_INIT_SIZE = 0;
+    
+    /** Default grow size **/
     public static final int DEFAULT_GROW_SIZE = 5;
+    
+    /** Default pool size **/
     public static final int DEFAULT_POOL_SIZE = 100;
+    
+    /** Default queue size **/
     public static final int DEFAULT_QUEUE_SIZE = 100;
+    
+    /** Default timeout in millis **/
     public static final int DEFAULT_TIMEOUT = 5000;
+    
     private int initSize_;
     private int growSize_;
     private int poolSize_;
@@ -51,7 +48,10 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     private Runnable runnable_;
     private BoundedBuffer requestQueue_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a default variable thread pool.
      */
@@ -64,6 +64,8 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 
     /**
      * Creates a default variable thread pool consisting of initSize threads.
+     * 
+     * @param  initSize  Initial number of threads
      */
     public VariableThreadPoolStrategy(int initSize)
     {
@@ -76,7 +78,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
      * Creates a variable thread pool of capacity poolSize, increment 
      * growSize, queueSize and thread timeout period.
      *
-     * @param    iniSize     Number of threads initially created.
+     * @param    initSize    Number of threads initially created.
      * @param    growSize    Number of threads per increment.
      * @param    poolSize    Maximum number threads createable.
      * @param    queueSize   Maximum number of buffered requests.
@@ -99,6 +101,9 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         currentSize_ = createThreads(initSize, initRunnable).length;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * Publish the request by putting it on the request queue.  If the
@@ -134,7 +139,10 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
             requestQueue_.put(null);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
     /**
      * Strategy specific runnable for VariableThreadPool strategy.
      */
@@ -169,12 +177,12 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
                     {
                         ++busySize_;
                         --pendingSize_;
-                        setStarted(task.result);
-                        setResult(task.result, process(task.request));
+                        setStarted(task.result_);
+                        setResult(task.result_, process(task.request_));
                     }
                     catch (Exception e)
                     {
-                        setResult(task.result, e);
+                        setResult(task.result_, e);
                     }
                     finally
                     {
@@ -203,8 +211,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Specialized VariableThreadPool runnable that never times out.
      */
-    class InitVariableThreadPoolRunnable
-        extends VariableThreadPoolRunnable
+    class InitVariableThreadPoolRunnable extends VariableThreadPoolRunnable
     {
 
         /**
@@ -212,10 +219,21 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          *
          * @return  the next request to proecess.
          */
-        protected Object take()
-                       throws Timeout, InterruptedException
+        protected Object take() throws Timeout, InterruptedException
         {
             return requestQueue_.take();
+        }
+    }
+    
+    static class Task
+    {
+        private IThreadable request_;
+        private ReturnValue result_;
+
+        public Task(IThreadable request, ReturnValue result)
+        {
+            this.request_ = request;
+            this.result_ = result;
         }
     }
 }
