@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.TokenMarker;
 
+import toolbox.jedit.action.InsertFileAction;
+import toolbox.jedit.action.SaveAsAction;
 import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
@@ -90,6 +92,16 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
      */
     private boolean saveContents_;
 
+    /**
+     * Action to save the contents of the text area to a file.
+     */
+    private SaveAsAction saveAsAction_;
+
+    /**
+     * Action to insert the contents of a file into the text area.
+     */
+    private InsertFileAction insertFileAction_;
+    
     //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
@@ -139,10 +151,10 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
             "C+X", new JEditActions.CutAction(this));
             
         getInputHandler().addKeyBinding(
-            "C+O", new JEditActions.InsertFileAction(this));
+            "C+O", insertFileAction_ = new InsertFileAction(this));
             
         getInputHandler().addKeyBinding(
-            "C+S", new JEditActions.SaveAsAction(this));
+            "C+S", saveAsAction_ = new SaveAsAction(this));
             
         getInputHandler().addKeyBinding(
             "C+F", new JEditActions.FindAction(this));
@@ -292,7 +304,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JEDITTEXTAREA, new Element(NODE_JEDITTEXTAREA));
@@ -318,13 +330,16 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
         getPainter().setFont(FontUtil.toFont(XOMUtil.getFirstChildElement(
             root, NODE_FONT, FontUtil.toElement(
                 FontUtil.getPreferredMonoFont()))));
+
+        saveAsAction_.applyPrefs(root);
+        insertFileAction_.applyPrefs(root);
     }
     
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JEDITTEXTAREA);
         root.addAttribute(new Attribute(ATTR_TABSIZE, getTabSize() + ""));
@@ -346,8 +361,36 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
 	            Base64.encodeBase64(getText().getBytes())));
 	        
 	        root.appendChild(contents);
-        }
+        } 
+
+        saveAsAction_.savePrefs(root);
+        insertFileAction_.savePrefs(root);
         
         XOMUtil.insertOrReplace(prefs, root);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the SaveAsAction.
+     * 
+     * @return SaveAsAction.
+     */
+    protected SaveAsAction getSaveAsAction()
+    {
+        return saveAsAction_;
+    }
+    
+    
+    /**
+     * Returns the InsertFileAction.
+     * 
+     * @return InsertFileAction
+     */
+    protected InsertFileAction getInsertFileAction()
+    {
+        return insertFileAction_;
     }
 }
