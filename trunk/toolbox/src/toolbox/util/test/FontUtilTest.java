@@ -127,4 +127,18 @@ public class FontUtilTest extends TestCase
         int after = g.getSize();
         assertEquals(f.getSize() - 4, g.getSize());
     }
+    
+    
+    /**
+     * Tests setSize()
+     */
+    public void testSetSize()
+    {
+        logger_.info("Running testSetSize...");
+        
+        int expected = 48;
+        Font before = FontUtil.getPreferredSerifFont();
+        Font after  = FontUtil.setSize(before, expected);
+        assertEquals(expected, after.getSize());
+    }
 }
