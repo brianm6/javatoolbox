@@ -12,11 +12,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * JStatusPane is a simple component to show a text message as status
  */
-public class JStatusPane extends JPanel
+public class JStatusPane extends JPanel implements IStatusBar
 {
     private JLabel statusLabel_;
 
