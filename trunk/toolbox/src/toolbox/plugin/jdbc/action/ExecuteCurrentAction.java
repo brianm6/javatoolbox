@@ -135,7 +135,7 @@ public class ExecuteCurrentAction extends BaseAction
             
             ElapsedTime time = new ElapsedTime();
             String results = plugin.executeSQL(sql);
-            time.getEndTime();
+            time.setEndTime();
             
             //plugin.getResultsArea().append(results + "\n");
 
