@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -15,6 +17,7 @@ import nu.xom.Element;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
@@ -38,10 +41,10 @@ import toolbox.workspace.IPreferenced;
 import toolbox.workspace.PreferencedException;
 
 /**
- * Tunnels TCP traffic through a local proxy port before it is forwarded to
- * the intended recipient. This allows a view into a "real time" window
- * of the data being sent back and forth. Very useful for socket level
- * degugging.
+ * Tunnels TCP traffic through a local proxy port before it is forwarded to the 
+ * intended recipient. This allows a view into a "real time" window of the data 
+ * being sent back and forth. Very useful for socket level degugging.
+ * 
  * <pre class="snippet">
  *
  * Without Tunnel:
@@ -49,12 +52,12 @@ import toolbox.workspace.PreferencedException;
  *              Client                Server:80
  *             --------              --------
  *                 |                     |
- *                 |        read         |
+ *                 |        write        |
  *                 |-------------------->|
  *                 |                     |--.
  *                 |                     |  | do something
  *                 |                     |<-'
- *                 |        write        |
+ *                 |        read         |
  *                 |<--------------------|
  *                 |                     |
  *
@@ -75,13 +78,13 @@ import toolbox.workspace.PreferencedException;
  *                 |              |            |--.
  *                 |              |            |  | do something
  *                 |              |            |<-'
- *                 |              |    write   |
+ *                 |              |    read    |
  *                 |              |<-----------|
  *                 |              |            |
  *                 |              |--.         |
  *                 |              |  |in sink  |
  *                 |              |<-'         |
- *                 |     write    |            |
+ *                 |     read     |            |
  *                 |<-------------|            |
  *                 |              |            |
  * </pre>
@@ -229,21 +232,18 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
             CommandLineParser parser = new PosixParser();
             Options options = new Options();
 
-            // Valid options            
-            Option quietOption = 
-                new Option("q", "quiet", false, "Don't print data");
+            // Create command line options            
+            Option quietOption = new Option(
+                "q", "quiet", false, "Quiet (don't print tunneled data)");
                 
-            Option throughputOption = 
-                new Option("t", "throughput", false, "Prints throughput");
+            Option throughputOption = new Option(
+                "t", "throughput", false, "Prints throughput");
             
-            Option binaryOption = 
-                new Option("b", "suppress binary", false, 
-                    "Suppresses binary output");
+            Option binaryOption = new Option(
+                "b", "suppressBinary", false, "Suppresses binary output");
             
             Option helpOption = new Option("h", "help", false, "Print usage");
-            Option helpOption2 = new Option("?", "/?", false, "Print Usage");
             
-            options.addOption(helpOption2);
             options.addOption(helpOption);
             options.addOption(quietOption);        
             options.addOption(throughputOption);
@@ -251,8 +251,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     
             // Parse options
             CommandLine cmdLine = parser.parse(options, args, true);
-    
-            // Send output to System.out
+            
+            // Create tunnel w/o specifying config
             TcpTunnel tunnel = new TcpTunnel();
             
             // Handle options
@@ -273,20 +273,17 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
                 else if (opt.equals(throughputOption.getOpt()))
                 {
                     // TODO
-                    //tunnel.setShowTargets(true);
                 }
-                else if (opt.equals(helpOption.getOpt()) ||
-                         opt.equals(helpOption2.getOpt()))
+                else if (opt.equals(helpOption.getOpt()))
                 {
-                    printUsage();
+                    printUsage(options);
                     return;
                 }
             }
-                
-            // Make sure class to find is the only arg
+
+            // 3 args are : local port, remote host, remote port
             switch (cmdLine.getArgs().length)
             {
-                // Start the search...
                 case 3:
                     int localPort = Integer.parseInt(cmdLine.getArgs()[0]);
                     String tunnelhost = cmdLine.getArgs()[1];
@@ -306,7 +303,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
                 
                 // Invalid
                 default: 
-                    printUsage(); 
+                    printUsage(options); 
                     return;
             }
         }
@@ -314,49 +311,11 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
         {
             logger_.error("main", e);   
         }
-        
-        ////////////////////////////////////////////////////////////////////////
-        
-//        if (args.length != 3)
-//        {
-//            printUsage();
-//            
-//            System.exit(1);
-//        }
-//
-//        int localPort = Integer.parseInt(args[0]);
-//        String tunnelhost = args[1];
-//        int tunnelport = Integer.parseInt(args[2]);
-//        
-//        try
-//        {
-//            TcpTunnel tunnel = new TcpTunnel(localPort, tunnelhost, tunnelport);
-//            //tunnel.setIncomingSink(System.out);
-//            //tunnel.setOutgoingSink(System.out);
-//            tunnel.addTcpTunnelListener(tunnel);
-//            tunnel.start();
-//        }
-//        catch (ServiceException e)
-//        {
-//            logger_.error(e);
-//        }
-        
     }
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-
-    /**
-     * 
-     */
-    private static void printUsage()
-    {
-        System.err.println(
-            "Usage: java " 
-            + TcpTunnel.class.getName() 
-            + " listenport tunnelhost tunnelport");
-    }
 
     /**
      * Creates a TcpTunnel listening on port 8888 and re-routing to port 9999
@@ -710,6 +669,33 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
         System.out.println("Tunnel started");
     }
 
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Prints program usage. 
+     */
+    private static void printUsage(Options options)
+    {
+        HelpFormatter f = new HelpFormatter();
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        
+        f.printHelp(
+            pw, 
+            80, 
+            "tcptunnel " + "[option]" + " [port] [rhost] [rport]", 
+            "", 
+            options, 
+            2, 
+            4,
+            "",
+            false);
+        
+        System.out.println(sw.toString());
+    }
+    
     //--------------------------------------------------------------------------
     // ServerThread
     //--------------------------------------------------------------------------
