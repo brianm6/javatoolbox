@@ -22,7 +22,10 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.filter.ExtensionFilter;
 
 /**
- * Class related utility methods.
+ * Class related utility methods that complements
+ * {@link org.apache.commons.lang.ClassUtils}.
+ * 
+ * @see org.apache.commons.lang.ClassUtils
  */
 public final class ClassUtil
 {
@@ -329,55 +332,6 @@ public final class ClassUtil
         return StringUtils.split(getClasspath(), File.pathSeparator);
     }
     
-    
-    /**
-     * Strips package name from a fully qualified class name.
-     * 
-     * @param fqn Fully qualified class name.
-     * @return Name of class only.
-     */
-    public static String stripPackage(String fqn)
-    {
-        int idx = fqn.lastIndexOf('.');
-        
-        if (idx >= 0)
-            return fqn.substring(idx + 1);
-        else
-            return fqn;
-    }
-    
-    
-    /**
-     * Strips the package name from a class.
-     * 
-     * @param clazz Class to string package from.
-     * @return Name of the class only.
-     */
-    public static String stripPackage(Class clazz)
-    {
-        return stripPackage(clazz.getName());
-    }
-    
-    
-    /**
-     * Strips the class portion from a fully qualified class name leaving only 
-     * the package name.
-     * 
-     * <pre>
-     * Examples:
-     * java.io.InputStream => java.io
-     * Widget              => "" (empty string)
-     * </pre>
-     * 
-     * @param fqcn Fully qualified class name.
-     * @return Package of the fqcn.
-     */
-    public static String stripClass(String fqcn)
-    {
-        int i = fqcn.lastIndexOf(".");
-        return (i >= 0 ? fqcn.substring(0, i) : "");
-    }
-
     
     /**
      * Returns array of Class object matching the types for the passed in 
