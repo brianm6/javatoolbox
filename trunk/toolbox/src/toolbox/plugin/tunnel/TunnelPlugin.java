@@ -73,8 +73,6 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void init()
     {
-        // moved to constructor
-        //jtcpTunnelPane_ = new JTcpTunnelPane();
     }
 
     /**
