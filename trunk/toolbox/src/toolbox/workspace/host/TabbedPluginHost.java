@@ -115,6 +115,7 @@ public class TabbedPluginHost extends AbstractPluginHost
         JComponent comp = plugin.getComponent();
         tabPanel_.addTab(plugin.getPluginName(), comp);
         comp2plugin_.put(comp, plugin);
+        selectPlugin(plugin);
     }    
 
     
@@ -141,19 +142,14 @@ public class TabbedPluginHost extends AbstractPluginHost
     
     
     /**
-     * @see toolbox.workspace.host.PluginHost#shutdown()
+     * @see toolbox.workspace.host.PluginHost#selectPlugin(
+     *      toolbox.workspace.IPlugin)
      */
-    public void shutdown()
+    public void selectPlugin(IPlugin plugin)
     {
-        tabPanel_.removeAll();
-        tabPanel_ = null;
-        
-        comp2plugin_.clear();
-        comp2plugin_ = null;
-        
-        super.shutdown();
+        tabPanel_.setSelectedComponent((Component) plugin2comp_.get(plugin));
     }
-
+    
     
     /**
      * @see toolbox.workspace.host.PluginHost#getComponent()
@@ -170,6 +166,21 @@ public class TabbedPluginHost extends AbstractPluginHost
     public String getName()
     {
         return "Tabbed Panel";
+    }
+    
+    
+    /**
+     * @see toolbox.workspace.host.PluginHost#shutdown()
+     */
+    public void shutdown()
+    {
+        tabPanel_.removeAll();
+        tabPanel_ = null;
+        
+        comp2plugin_.clear();
+        comp2plugin_ = null;
+        
+        super.shutdown();
     }
     
     //--------------------------------------------------------------------------
