@@ -69,7 +69,8 @@ package toolbox;
  * 	- Update to latest Multivalent
  * 	- Updated JFreeChart to 0.9.18 
  * 	- Alphasorted the Plugin menu
- *  - Replaced select methods in StringUtil and StreamUtil with apache commons 
+ *  - Replaced select methods in StringUtil and StreamUtil with apache commons
+ *  - Fixed splash image to use a blown up version of the regular toolbox icon 
  * 
  * February 2004
  * 	- Add Plugin menu
