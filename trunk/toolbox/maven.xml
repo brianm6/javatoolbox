@@ -160,6 +160,8 @@ Commands:
                 the build process.
   compile       Compiles the project only.
   cvs-update    Does a cvs update of the project.
+  fatjar
+  fatjar-lf
   jar           Compiles, unit tests, and jars the project.
   jnlp          Creates jnlp distribution in target/jnlp
   jnlp-deploy   Copies the jnlp distribution to the http server
@@ -230,4 +232,223 @@ Commands:
 		    <arg value="-ograph.gif"/>
 		</exec>            
     </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- FATJAR:ALL                                                          -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:all" 
+          description = "Creates all fatjars and distributes them.">
+        
+        <attainGoal name="fatjar:clean"/>
+        <attainGoal name="fatjar:toolbox"/>
+        <attainGoal name="fatjar:laf"/>
+        <attainGoal name="fatjar:xslfo"/>
+        <attainGoal name="fatjar:dist"/>
+    </goal>    
+        
+        
+    <!-- =================================================================== -->
+    <!-- FATJAR:CLEAN                                                        -->
+    <!-- =================================================================== -->
+    <goal name = "fatjar:clean"
+          description = "Cleans fatjar workarea.">
+        <delete dir="${basedir}/target/fatjar" verbose="false"/>
+    </goal>
+    
+    
+    <!-- =================================================================== -->
+    <!-- FATJAR:TOOLBOX                                                      -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:toolbox" description = "Creates toolbox.jar.">
+
+        <echo message="Jarring..."/>
+
+        <j:set var="dist" value="${basedir}/target/fatjar"/>
+        <j:set var="stage" value="${basedir}/target/fatjar/toolbox"/>
+        <mkdir dir="${stage}"/>
+        <delete file="${dist}/toolbox.jar" verbose="false" quiet="off"/>
+
+        <!-- Unjar all jars to staging area -->
+        <unjar dest="${stage}" overwrite="false">
+
+            <fileset dir="${basedir}/lib">
+                <include name="log4j.jar"/>
+                <include name="jcommon.jar"/>
+                <include name="jfreechart.jar"/>
+                <include name="jode.jar"/>
+                <include name="jreversepro.jar"/>
+                <include name="junit.jar"/>
+                <include name="xml-apis.jar"/>
+                <include name="xercesImpl.jar"/>
+                <include name="xom.jar"/>
+                <include name="jedit-syntax.jar"/>
+                <include name="multivalent.jar"/>
+                <include name="jsap.jar"/>
+                <include name="classworlds.jar"/>
+                <include name="bsh.jar"/>
+                <include name="statcvs.jar"/>
+
+                <!-- Doc viewer plugin -->
+                <include name="webwindow.jar"/>
+                <include name="calphahtml.jar"/>
+                <include name="jaxen.jar"/>
+                <include name="pollo.jar"/>
+                <include name="javassist.jar"/>
+                <include name="matra.jar"/>                
+
+                <!-- ===== Apache Commons ===== -->
+                <include name="commons-beanutils.jar"/>
+                <include name="commons-cli.jar"/>
+                <include name="commons-codec.jar"/>
+                <include name="commons-collections.jar"/>
+                <include name="commons-dbcp.jar"/>                
+                <include name="commons-io.jar"/>
+                <include name="commons-lang.jar"/>
+                <include name="commons-logging.jar"/>
+                <include name="commons-net.jar"/>
+                <include name="commons-pool.jar"/>                
+                <include name="jakarta-regexp.jar"/>
+
+                <!-- ===== Log4j IM Appenders ==== -->
+                <include name="hamsam.jar"/>
+
+            </fileset>
+        </unjar>
+
+        <!-- Copy toolbox class files to staging area -->
+        <copy todir="${stage}" overwrite="yes">
+
+            <fileset
+                dir="${basedir}/classes"
+                includes="**/*.class"
+                excludes="**/MANIFEST.MF,**/test/**"/>
+
+            <fileset
+                dir="${basedir}/resources"
+                excludes="**/test/**,skinlf/**"/>
+        </copy>
+
+        <!-- Jar up staging area to produce toolbox.jar -->
+        <jar jarfile="${dist}/toolbox.jar"
+             manifest="${basedir}/src/META-INF/MANIFEST.MF"
+             compress="yes">
+
+            <!-- The INDEX.LIST file from xom.jar somehow confuses the   -->
+            <!-- Class-Path directive in the manifest so it is excluded  -->
+            <!-- for this reason.                                        -->
+            <fileset dir="${stage}" 
+                     excludes="META-INF/INDEX.LIST"/>
+        </jar>
+
+    </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- FATJAR:LAF                                                          -->
+    <!-- =================================================================== -->
+    <goal name = "fatjar:laf"
+          description = "Creates toolbox-lookandfeel.jar.">
+
+        <j:set var="dist" value="${basedir}/target/fatjar"/>
+        <j:set var="stage" value="${basedir}/target/fatjar/laf"/>
+        <mkdir dir="${stage}"/>
+
+        <delete verbose="true" failonerror="false" >
+            <fileset dir="${dist}" includes="toolbox-lookandfeel.jar"/>
+        </delete>
+        
+        <!-- Unjar all jars to staging area -->
+        <unjar dest="${stage}" overwrite="true">
+            
+            <fileset dir="${basedir}/lib">
+
+                <!-- ===== Look and Feels ==== -->
+                <include name="looks.jar"/>
+                <include name="kunststoff.jar"/>
+                <include name="xplookandfeel.jar"/>
+                <include name="metouia.jar"/>
+                <include name="tinylaf.jar"/>
+                <include name="skinlf.jar"/>
+                <include name="toniclf.jar"/>
+                <include name="liquidlf.jar"/>
+                <include name="hippolf.jar"/>
+                <include name="alloy.jar"/>
+                <include name="oyoahalf.jar"/>
+                <include name="squarenesslf.jar"/>
+                <include name="napkinlf.jar"/>
+                <include name="3dlf.jar"/>                
+
+            </fileset>
+        </unjar>
+
+        <!-- Copy skinlf themepacks -->
+        <copy todir="${stage}" overwrite="yes">
+            <fileset dir="${basedir}/resources" includes="skinlf/*"/>
+        </copy>
+
+        <!-- Nuke the META-INF dir cause it just causes problems -->
+        <delete dir="${stage}/META-INF" verbose="true"/>
+
+        <!-- Jar up staging area to produce toolbox-lookandfeel.jar -->
+        <jar jarfile ="${dist}/toolbox-lookandfeel.jar" compress="yes">
+            <fileset dir="${stage}"/>
+        </jar>
+
+    </goal>
+    
+    
+    <!-- =================================================================== -->
+    <!-- FATJAR:XSLFO                                                        -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:xslfo" 
+          description = "Creates toolbox-xslfo.jar.">
+
+        <j:set var="dist" value="${basedir}/target/fatjar"/>
+        <j:set var="stage" value="${basedir}/target/fatjar/xslfo"/>
+        <mkdir dir="${stage}"/>
+        
+        <delete verbose="true">
+            <fileset dir="${dist}" includes="toolbox-xslfo.jar"/>
+        </delete>
+
+        <!-- Unjar all jars to staging area -->
+        <unjar dest="${stage}" overwrite="true">
+
+            <fileset dir="${basedir}/lib">
+
+                <!-- ===== XSL-FO Plugin Dependencies ==== -->
+                <include name="fop.jar"/>
+                <include name="batik.jar"/>
+                <include name="acrobat.jar"/>
+                <include name="avalon-framework.jar"/>
+                <include name="apple-mrj.jar"/>
+                <include name="xep.jar"/>
+                <include name="xt.jar"/>
+                <include name="saxon.jar"/>
+                <include name="cryptix32.jar"/>
+                <include name="cryptix32-pgp.jar"/>
+
+            </fileset>
+        </unjar>
+
+        <!-- Jar up staging area to produce toolbox-xslfo.jar -->
+        <jar jarfile ="${dist}/toolbox-xslfo.jar" compress="yes">
+            <fileset dir="${stage}"/>
+        </jar>
+
+    </goal>
+
+    <!-- =================================================================== -->
+    <!-- FATJAR:DIST                                                         -->
+    <!-- =================================================================== -->
+    <goal name="fatjar:dist" 
+          description = "Distributes the fatjars to a local directory.">
+        
+        <!-- Copy toolbox class files to staging area -->
+        <copy todir="${toolbox.fatjar.dist}" overwrite="yes">
+            <fileset dir="${basedir}/target/fatjar/" includes="*.jar"/>
+        </copy>
+    </goal>    
+
 </project>
