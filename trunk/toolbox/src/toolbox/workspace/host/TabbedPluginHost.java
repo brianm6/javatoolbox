@@ -53,6 +53,18 @@ public class TabbedPluginHost extends AbstractPluginHost
     private BidiMap pluginMap_;
     
     //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a TabbedPluginHost.
+     */
+    public TabbedPluginHost()
+    {
+        setName("Tabbed Panel");
+    }
+    
+    //--------------------------------------------------------------------------
     // Initializable Interface
     //--------------------------------------------------------------------------
 
@@ -62,7 +74,6 @@ public class TabbedPluginHost extends AbstractPluginHost
     public void initialize(Map props)
     {
         super.initialize(props);
-        setName("Tabbed Panel");
         
         workspace_ = 
             (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);

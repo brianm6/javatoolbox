@@ -77,6 +77,18 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
     private PluginWorkspace workspace_;
     
     //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a DesktopPluginHost.
+     */
+    public DesktopPluginHost()
+    {
+        setName("Desktop");
+    }
+    
+    //--------------------------------------------------------------------------
     // Initializable Interface
     //--------------------------------------------------------------------------
 
@@ -86,7 +98,6 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
     public void initialize(Map props)
     {
         super.initialize(props);
-        setName("Desktop");
         workspace_ = (PluginWorkspace) props.get(PluginWorkspace.KEY_WORKSPACE);
         desktop_ = new JDesktopPane();
         pluginMap_ = new DualHashBidiMap();
