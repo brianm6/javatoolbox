@@ -3,7 +3,7 @@ package toolbox.util.net.test;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
+import java.net.Socket; 
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -231,6 +231,8 @@ public class SocketServerTest extends TestCase
             
         server.addSocketServerListener(listener);
         server.start();
+        
+        listener.waitForStart();
 
         // Connect to server
         int port = server.getServerPort();
