@@ -1,6 +1,5 @@
 package toolbox.util.ui.explorer;
 
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -11,10 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import toolbox.util.DateTimeUtil;
-import toolbox.util.FileUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartLabel;
-import toolbox.util.ui.explorer.listener.DriveComboListener;
+import toolbox.util.ui.explorer.action.RefreshAction;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
@@ -78,7 +76,7 @@ public class InfoBar extends JStatusBar
      * 
      * @param explorer File explorer to associate this infobar with.
      */
-    InfoBar(JFileExplorer explorer)
+    InfoBar(final JFileExplorer explorer)
     {
 		explorer_ = explorer;
         sizeLabel_ = new JSmartLabel();
@@ -96,16 +94,7 @@ public class InfoBar extends JStatusBar
         {
             public void mousePressed(MouseEvent e)
             {
-                String folder = explorer_.getCurrentPath();
-                String file   = FileUtil.stripPath(explorer_.getFilePath());
-                
-                new DriveComboListener(explorer_).itemStateChanged(
-                        new ItemEvent(explorer_.getRootsComboBox(), 0, null, 
-                            ItemEvent.ITEM_STATE_CHANGED));
-                        
-                explorer_.selectFolder(folder);
-                explorer_.setFileList(folder);
-                explorer_.getFileList().setSelectedValue(file, true);
+                new RefreshAction(explorer_).refresh();
             }
         });
         
