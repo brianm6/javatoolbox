@@ -1,7 +1,6 @@
 package toolbox.util.file.test;
 
 import java.io.File;
-import java.io.IOException;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
