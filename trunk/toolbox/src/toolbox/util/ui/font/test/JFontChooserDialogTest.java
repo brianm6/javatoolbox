@@ -1,5 +1,6 @@
 package toolbox.util.ui.font.test;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
@@ -41,32 +42,37 @@ public class JFontChooserDialogTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test for the font chooser dialog
+     * Tests the JFontChooserDialog
      */
-    public void testFontSelectionPanel()
+    public void testJFontChooserDialog()
     {
-        IFontChooserDialogListener listener = new IFontChooserDialogListener()
+        logger_.info("Running testJFontChooserDialog...");
+        
+        final JFontChooserDialog fsd = 
+            new JFontChooserDialog(new JFrame(), "Select font", true);
+            
+        fsd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            
+        fsd.addFontDialogListener(new IFontChooserDialogListener()
         {
             public void okButtonPressed(JFontChooser fontPanel)
             {
-                logger_.info("OK button pressed");                
+                logger_.info("OK button pressed");
+                fsd.dispose();
             }
 
             public void cancelButtonPressed(JFontChooser fontPanel)
             {
-                logger_.info("Cancel button pressed");                
+                logger_.info("Cancel button pressed");
+                fsd.dispose();                
             }
 
             public void applyButtonPressed(JFontChooser fontPanel)
             {
                 logger_.info("Apply button pressed");
             }
-        };
-        
-        JFontChooserDialog fsd = 
-            new JFontChooserDialog(new JFrame(), "Select font", false);
-            
-        fsd.addFontDialogListener(listener);
+        });
+
         SwingUtil.centerWindow(fsd);
         fsd.setVisible(true);            
     }

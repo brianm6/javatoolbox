@@ -2,12 +2,13 @@ package toolbox.util.ui.font.test;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-
-import org.apache.log4j.Logger;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.font.JFontChooser;
@@ -47,11 +48,12 @@ public class JFontChooserTest extends TestCase
     {
         logger_.info("Running testFontSelectionPanel...");
         
-        JFrame f = new JFrame();
-        JFontChooser fsp = new JFontChooser();
-        f.getContentPane().add(BorderLayout.CENTER, fsp);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.pack();
-        f.setVisible(true);
+        JDialog dialog = new JDialog(new JFrame(), "testJFontChooser", true);
+        JFontChooser chooser = new JFontChooser();
+        dialog.getContentPane().add(BorderLayout.CENTER, chooser);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.pack();
+        SwingUtil.centerWindow(dialog);
+        dialog.setVisible(true);
     }
 }
