@@ -68,7 +68,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         Logger.getLogger(PluginWorkspace.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     // Workspace preferences nodes and attributes.
@@ -119,9 +119,9 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     public static final String LABEL_PREFERENCES_MENU = "Preferences";
-    public static final String LABEL_FILE_MENU = "File";
-    public static final String LABEL_EXIT_MENUITEM = "Exit";
-    public static final String TITLE_TOOLBOX = "Toolbox";
+    public static final String LABEL_FILE_MENU        = "File";
+    public static final String LABEL_EXIT_MENUITEM    = "Exit";
+    public static final String TITLE_TOOLBOX          = "Toolbox";
 
     //--------------------------------------------------------------------------
     // UI Fields
@@ -280,7 +280,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      */
     public void registerPlugin(IPlugin plugin) throws Exception
     {
-        pluginHostManager_.getPluginHost().addPlugin(plugin);
+        getPluginHost().addPlugin(plugin);
 
         //
         // Restore unloaded preferences if they exist
@@ -290,12 +290,13 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         Elements pluginWrappers = unloadedPrefs_.getChildElements(NODE_PLUGIN);
         Element pluginWrapper = null;
 
-        for (int i = 0; i < pluginWrappers.size(); i++)
+        for (int i = 0, n = pluginWrappers.size(); i < n; i++)
         {
             pluginWrapper = pluginWrappers.get(i);
 
-            if (pluginWrapper.getAttributeValue(ATTR_CLASS).equals(
-                plugin.getClass().getName()))
+            if (pluginWrapper
+                    .getAttributeValue(ATTR_CLASS)
+                    .equals(plugin.getClass().getName()))
             {
                 pluginWrapper.detach();
                 workspaceNode.appendChild(pluginWrapper);
@@ -320,7 +321,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      */
     public void registerPlugin(IPlugin plugin, Element prefs) throws Exception
     {
-        pluginHostManager_.getPluginHost().addPlugin(plugin);
+        getPluginHost().addPlugin(plugin);
 
         //
         // Restore preferences but first see if there is a set of unloaded
@@ -390,14 +391,12 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         if (hasPlugin(pluginClass))
         {
             IPlugin plugin = getPluginByClass(pluginClass);
-
             Element pluginNode = new Element(NODE_PLUGIN);
             pluginNode.addAttribute(new Attribute(ATTR_CLASS, pluginClass));
             pluginNode.addAttribute(new Attribute(ATTR_LOADED, "false"));
             plugin.savePrefs(pluginNode);
             unloadedPrefs_.appendChild(pluginNode);
-
-            pluginHostManager_.getPluginHost().removePlugin(plugin);
+            getPluginHost().removePlugin(plugin);
         }
         else
         {
@@ -493,7 +492,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         // Have to build log menu here cuz buildView() requires it to set
         // the initial value of the console logger checkbox state.
         //
-
         logMenu_ = new LoggingMenu();
     }
 
@@ -516,7 +514,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         // The plugin host needs to be set before calling applyPrefs() because
         // of dependencies
         //
-
         pluginHostManager_.setPluginHost(
             XOMUtil.getStringAttribute(
                 XOMUtil.getFirstChildElement(
@@ -539,9 +536,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
             BorderLayout.SOUTH);
 
         setJMenuBar(createMenuBar());
-
         addWindowListener(new CloseWindowListener());
-
         setIconImage(ImageCache.getImage(ImageCache.IMAGE_TOOLBOX));
     }
 
@@ -605,7 +600,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         menu.setMnemonic('P');
         menu.add(new JSmartMenuItem(new SavePreferencesAction(this)));
 
-        smoothFontsCheckBoxItem_ =
+        smoothFontsCheckBoxItem_ = 
             new JSmartCheckBoxMenuItem(
                 new SmoothFontsAction(this));
 
@@ -619,14 +614,11 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
 
         menu.add(new JSmartMenuItem(new AbstractAction(LABEL_PREFERENCES_MENU)
         {
-            /**
-             * @see java.awt.event.ActionListener#actionPerformed(
-             *      java.awt.event.ActionEvent)
-             */
             public void actionPerformed(ActionEvent e)
             {
-                new PreferencesDialog(PluginWorkspace.this,preferencesManager_)
-                    .setVisible(true);
+                new PreferencesDialog(
+                    PluginWorkspace.this,
+                    preferencesManager_).setVisible(true);
             }
         }));
 
@@ -714,6 +706,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         }
         catch (Exception e)
         {
+            // Don't let look and feel failure stop initialization
             ExceptionUtil.handleUI(e, logger_);
         }
     }
@@ -856,7 +849,9 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         catch (IOException ioe)
         {
             statusBar_.setError(
-                "Failed to save preferences to " + getPrefsFile());
+                "Failed to save preferences to " 
+                + getPrefsFile());
+            
             ExceptionUtil.handleUI(ioe, logger_);
         }
         finally
@@ -986,15 +981,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      */
     class CloseWindowListener extends WindowAdapter
     {
-        /**
-         * Creates a CloseWindowListener.
-         * 
-         * @param workspace
-         */
-        CloseWindowListener()
-        {
-        }
-
         /**
          * @see java.awt.event.WindowListener#windowClosing(
          *      java.awt.event.WindowEvent)
