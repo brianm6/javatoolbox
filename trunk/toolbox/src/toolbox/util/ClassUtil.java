@@ -216,7 +216,7 @@ public final class ClassUtil
                 pathElement = FileUtil.trailWithSeparator(pathElement);
                 
                 // Get all class files       
-                List classFiles = FileUtil.findFilesRecursively(
+                List classFiles = FileUtil.findFiles(
                     pathElement, new ExtensionFilter(".class"));
                        
                 // Roundup parent directories and tag as package names
