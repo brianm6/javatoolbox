@@ -13,12 +13,11 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.xml.XMLNode;
 
 /**
- * Tiny XML implemenation of IJTailConfig interface that marshals
- * configuration information to/from XML
+ * Tiny XML implemenation of IJTailConfig interface that marshals configuration 
+ * information to and from XML.
  */
 public class JTailConfig implements IJTailConfig, XMLConstants
 { 
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JTailConfig.class);
     
@@ -110,7 +109,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            ; // TODO: set default location
+            jtailConfig.setLocation(new Point(100,100));
         }
         
         // Read optional window size
@@ -124,7 +123,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            ; // TODO: set default size
+            jtailConfig.setSize(new Dimension(400,300));
         }
         
         // Read optional directory
@@ -136,7 +135,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
         else
         {
-            ; // TODO: set default directory
+            jtailConfig.setDirectory(System.getProperty("user.home"));
         }
         
         XMLNode defaultsNode = jtailNode.getNode(ELEMENT_DEFAULTS);
@@ -165,8 +164,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         }
          
                         
-        // Iterate through each "tail" element and delegate the 
-        // hydration to the TailPaneConfig object
+        // Iterate through each "tail" element and delegate the hydration to 
+        // the TailPaneConfig object
         ITailPaneConfig[] tailPaneConfigs = new ITailPaneConfig[0];
         
         for (Enumeration tails = jtailNode.enumerateNode();
@@ -194,7 +193,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
 
     /**
      * @see toolbox.jtail.config.IJTailConfig#
-     *          setDefaultConfig(toolbox.jtail.config.ITailPaneConfig)
+     *      setDefaultConfig(toolbox.jtail.config.ITailPaneConfig)
      */
     public void setDefaultConfig(ITailPaneConfig defaultConfig)
     {
@@ -251,7 +250,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
 
     /**
      * @see toolbox.jtail.config.IJTailConfig#
-     *          setTailConfigs(toolbox.jtail.config.ITailPaneConfig[])
+     *      setTailConfigs(toolbox.jtail.config.ITailPaneConfig[])
      */
     public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs)
     {
