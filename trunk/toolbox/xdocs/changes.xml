@@ -37,7 +37,6 @@
  * TODO: StatCVS: Add support for projects that span multiple modules
  * TODO: StatCVS: Create output directory if it doesn't already exist
  * TODO: Figure out how to use JGoodies data binding framework 
- * TODO: Integrate automatic build number generation into the build process. 
  * TODO: *Add a way to change the lookand feel font globally
  * TODO: *http://pdfdoclet.sourceforge.net/examples.html
  * TODO: http://www.infonode.net/index.html?idwdownload
@@ -182,6 +181,15 @@
           <tr>
             <td width="20%">Util</td>
             <td>Renamed toolbox.util.Banner and all related classes to toolbox.util.Figlet</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Added replaceIgnoreCase() to StringUtil</td>
           </tr>
         </table>
       </action>
