@@ -320,6 +320,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         });
     }
 
+    
     /**
      * Creates the common toolbar that is used in the input and output text
      * areas.
@@ -339,6 +340,11 @@ public class TunnelPane extends JPanel implements IPreferenced
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
             "Clear",
             new ClearAction()));
+        
+        tb.add(JHeaderPanel.createToggleButton(
+            ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
+            "Supress Binary Data",
+            new SupressBinaryAction()));
         
         return tb;
     }
@@ -580,4 +586,20 @@ public class TunnelPane extends JPanel implements IPreferenced
             tunnel_.stop();
         }
     }
+    
+    
+    /**
+     * Toggles suppressing of binary data from showing up in the output.
+     */    
+    public class SupressBinaryAction extends AbstractAction 
+    {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            tunnel_.setSupressBinary(!tunnel_.isSupressBinary());
+        }
+    }    
 }
