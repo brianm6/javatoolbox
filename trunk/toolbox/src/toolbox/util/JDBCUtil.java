@@ -634,22 +634,6 @@ public final class JDBCUtil
     }
 
     //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Trims whitespace and remove trailing semicolon if any from the given
-     * sql statement.
-     * 
-     * @param sql SQL statement to prepare for execution.
-     * @return String
-     */
-    private static final String prepSQL(String sql) 
-    {
-        return sql = StringUtils.chomp(sql.trim(), ";");
-    }
-
-    //--------------------------------------------------------------------------
     // Driver Proxy
     //--------------------------------------------------------------------------
 
