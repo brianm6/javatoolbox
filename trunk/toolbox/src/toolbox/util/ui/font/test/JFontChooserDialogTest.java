@@ -5,9 +5,10 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
-import toolbox.util.ui.font.JFontChooserDialog;
-import toolbox.util.ui.font.JFontChooser;
+
 import toolbox.util.ui.font.IFontChooserDialogListener;
+import toolbox.util.ui.font.JFontChooser;
+import toolbox.util.ui.font.JFontChooserDialog;
 
 /**
  * Unit test for JFontChooserDialog
@@ -27,6 +28,10 @@ public class JFontChooserDialogTest extends TestCase
         TestRunner.run(JFontChooserDialogTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for JFontChooserDialogTest.
      * 
@@ -37,12 +42,16 @@ public class JFontChooserDialogTest extends TestCase
         super(arg0);
     }
 
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Test for void JFontChooser()
      */
     public void testFontSelectionPanel()
     {
-        IFontChooserDialogListener fsdListener = new IFontChooserDialogListener()
+        IFontChooserDialogListener listener = new IFontChooserDialogListener()
         {
             public void okButtonPressed(JFontChooser fontPanel)
             {
@@ -63,7 +72,7 @@ public class JFontChooserDialogTest extends TestCase
         JFontChooserDialog fsd = 
             new JFontChooserDialog(new JFrame(), "Select font", false);
             
-        fsd.addFontDialogListener(fsdListener);
+        fsd.addFontDialogListener(listener);
         
         fsd.setVisible(true);            
     }

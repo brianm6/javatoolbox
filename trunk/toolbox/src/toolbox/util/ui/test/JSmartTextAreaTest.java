@@ -18,6 +18,8 @@ public class JSmartTextAreaTest extends TestCase
 {
     /** 
      * Entry point
+     * 
+     * @param  args  None
      */
     public static void main(String[] args)
     {
@@ -26,7 +28,8 @@ public class JSmartTextAreaTest extends TestCase
 
     /**
      * Constructor for JSmartTextAreaTest.
-     * @param arg0
+     * 
+     * @param arg0  Name
      */
     public JSmartTextAreaTest(String arg0)
     {

@@ -25,6 +25,8 @@ public class JFlipPaneTest extends JFrame
 
     /**
      * Entry point
+     * 
+     * @param  args  None
      */    
     public static void main(String[] args)
     {
@@ -33,6 +35,10 @@ public class JFlipPaneTest extends JFrame
         frame.setVisible(true);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor
      */
@@ -41,6 +47,10 @@ public class JFlipPaneTest extends JFrame
         init();
         buildView();
     }
+    
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
     
     protected void init()
     {

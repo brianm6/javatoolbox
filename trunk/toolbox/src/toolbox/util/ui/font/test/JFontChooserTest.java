@@ -22,6 +22,10 @@ public class JFontChooserTest extends TestCase
         junit.textui.TestRunner.run(JFontChooserTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for JFontChooserTest.
      * 
@@ -32,7 +36,11 @@ public class JFontChooserTest extends TestCase
         super(arg0);
     }
 
-    /*
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
+    /**
      * Test for void JFontChooser()
      */
     public void testFontSelectionPanel()
@@ -43,51 +51,5 @@ public class JFontChooserTest extends TestCase
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setVisible(true);
-    }
-
-    /*
-     * Test for void JFontChooser(Font)
-     */
-    public void testFontSelectionPanelFont()
-    {
-    }
-
-    /*
-     * Test for void JFontChooser(Font, String[], int[])
-     */
-    public void testFontSelectionPanelFontStringArrayIArray()
-    {
-    }
-
-    public void testGetSelectedFontFamily()
-    {
-    }
-
-    public void testGetSelectedFontStyle()
-    {
-    }
-
-    public void testGetSelectedFontSize()
-    {
-    }
-
-    public void testGetSelectedFont()
-    {
-    }
-
-    public void testSetSelectedFont()
-    {
-    }
-
-    public void testSetSelectedFontFamily()
-    {
-    }
-
-    public void testSetSelectedFontStyle()
-    {
-    }
-
-    public void testSetSelectedFontSize()
-    {
     }
 }

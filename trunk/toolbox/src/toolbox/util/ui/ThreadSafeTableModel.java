@@ -47,6 +47,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
 
     /**
      * Creates a ThreadSafeTableModel
+     * 
+     * @param   i   Number of columns
+     * @param   j   Number of rows
      */
     public ThreadSafeTableModel(int i, int j)
     {
@@ -57,6 +60,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
 
     /**
      * Creates a ThreadSafeTableModel
+     * 
+     * @param  vector  Vector of data
+     * @param  i       Number of columns
      */
     public ThreadSafeTableModel(Vector vector, int i)
     {
@@ -67,6 +73,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
 
     /**
      * Creates a ThreadSafeTableModel
+     * 
+     * @param  aobj  Array of objects
+     * @param  i     Number of columns
      */
     public ThreadSafeTableModel(Object aobj[], int i)
     {
@@ -76,6 +85,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
 
     /**
      * Creates a ThreadSafeTableModel
+     * 
+     * @param  vector  Vector of columns
+     * @param  vector1 Vector of rows
      */
     public ThreadSafeTableModel(Vector vector, Vector vector1)
     {
@@ -86,6 +98,9 @@ public class ThreadSafeTableModel extends DefaultTableModel
 
     /**
      * Creates a ThreadSafeTableModel
+     * 
+     * @param  aobj  Array of column objects
+     * @param  aobj1 Array of row objects
      */
     public ThreadSafeTableModel(Object aobj[][], Object aobj1[])
     {
@@ -112,6 +127,8 @@ public class ThreadSafeTableModel extends DefaultTableModel
     
     /**
      * Adds a vector of data as a row to the table
+     * 
+     * @param  vector  Adds vector of data to the table as a new row
      */
     public void addRow(Vector vector)
     {
@@ -126,6 +143,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
             }
             catch (InterruptedException ioe)
             {
+                // Ignore
             }
         }
         else
@@ -138,6 +156,8 @@ public class ThreadSafeTableModel extends DefaultTableModel
 
     /**
      * Adds an array of rows to the table
+     * 
+     * @param  rows  Rows to add to the table
      */
     public void addRows(Object[] rows)
     {
@@ -162,6 +182,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
      * Saves the contents of the table model to a file
      * 
      * @param  s  Filename
+     * @throws IOException on IO error
      */
     public void saveToFile(String s) throws IOException
     {
@@ -183,6 +204,8 @@ public class ThreadSafeTableModel extends DefaultTableModel
     
     /**
      * Interface for IBatchQueueListner
+     * 
+     * @param  elements  Array of rows to add to the table
      */
     public void nextBatch(Object[] elements)
     {
@@ -200,7 +223,7 @@ public class ThreadSafeTableModel extends DefaultTableModel
     class AddRows implements Runnable
     {
         /** Row data **/
-        Object[] rows_;
+        private Object[] rows_;
 
         /**
          * Creates a Runnable to add a row to the table model

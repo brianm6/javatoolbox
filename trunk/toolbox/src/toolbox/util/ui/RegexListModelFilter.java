@@ -65,6 +65,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
      * Creates a list model
      * 
      * @param  delegate  List model to filter
+     * @param  regex     Regular expression
      */
     public RegexListModelFilter(ListModel delegate, String regex)
     {
@@ -75,8 +76,11 @@ public class RegexListModelFilter extends AbstractListModelFilter
      * Creates a list model
      * 
      * @param  delegate  List model to filter
+     * @param  regex     Regular expression
+     * @param  matchCase Flag to match case
      */
-    public RegexListModelFilter(ListModel delegate, String regex, boolean matchCase)
+    public RegexListModelFilter(ListModel delegate, String regex, 
+        boolean matchCase)
     {
         super(delegate);
         matchCase_ = matchCase;        
@@ -155,6 +159,9 @@ public class RegexListModelFilter extends AbstractListModelFilter
     }
 
     /**
+     * Gets an element at a given zero based index
+     * 
+     * @param   index  Index of element to retrieve
      * @return  Element at specifiec index
      */
     public Object getElementAt(int index)

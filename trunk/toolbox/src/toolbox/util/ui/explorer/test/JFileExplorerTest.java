@@ -15,7 +15,6 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ThreadUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerListener;
 
@@ -32,7 +31,7 @@ public class JFileExplorerTest extends TestCase
     /**
      * Entrypoint
      * 
-     * param  args  None recognized
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
@@ -40,17 +39,23 @@ public class JFileExplorerTest extends TestCase
         //new JFileExplorerTest("").testJFileExplorer();
     }
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for JFileExplorerTest.
      * 
-     * @param arg0
+     * @param arg0  Name
      */
     public JFileExplorerTest(String arg0)
     {
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /** 
      * Tests launcher
@@ -64,6 +69,9 @@ public class JFileExplorerTest extends TestCase
         //ThreadUtil.join(10000);
     }
     
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
     
     /**
      * Test class

@@ -83,6 +83,8 @@ public class JSmartOptionPaneTest extends TestCase
     
     /**
      * Tests showMessageDialog() for error msg type
+     * 
+     * @throws  Exception on error
      */ 
     public void testShowDetailedMessageDialogError() throws Exception
     {
@@ -95,6 +97,8 @@ public class JSmartOptionPaneTest extends TestCase
     
     /**
      * Tests showMessageDialog() for variable paramteres
+     * 
+     * @throws  Exception on error
      */
     public void testShowDetailedMessageDialogParams() throws Exception
     {
@@ -108,6 +112,8 @@ public class JSmartOptionPaneTest extends TestCase
     
     /**
      * Tests showExceptionMessageDialog()
+     * 
+     * @throws  Exception on error
      */
     public void testShowExceptionMessageDialog()  throws Exception
     {

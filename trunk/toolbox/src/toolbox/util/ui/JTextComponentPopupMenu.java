@@ -31,7 +31,7 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Constructor for JTextComponentPopupMenu.
      * 
-     * @param  JTextComponent  JTextComponent to add popup to
+     * @param  textComponent  JTextComponent to add popup to
      */
     public JTextComponentPopupMenu(JTextComponent textComponent)
     {
@@ -41,8 +41,8 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Constructor for JTextComponentPopupMenu.
      * 
-     * @param label  Popupmenu label
-     * @param list   JTextComponent to add popup to
+     * @param label             Popupmenu label
+     * @param textComponent     JTextComponent to add popup to
      */
     public JTextComponentPopupMenu(String label, JTextComponent textComponent)
     {
