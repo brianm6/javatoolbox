@@ -1,7 +1,9 @@
 package toolbox.util;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,7 +120,17 @@ public final class FontUtil
     public static synchronized Font getPreferredMonoFont()
     {
         if (monoFont_ == null)
+        {
             monoFont_ = getPreferredFont(preferredMono_);
+            
+            Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            
+            // Make font smaller if desktop width beyound 1280. Just look
+            // better or the font ends up being too large.
+            
+            if (d.getWidth() >= 1280)
+                monoFont_ = shrink(monoFont_, 1);
+        }
         
         return monoFont_;               
     }
