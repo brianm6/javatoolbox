@@ -8,10 +8,12 @@ import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 
+import org.apache.commons.codec.binary.Base64;
+
 import toolbox.util.XOMUtil;
 
 /**
- * Database connection profile for single JDBC connection.
+ * Database connection profile for JDBC.
  */
 public class DBProfile
 {
@@ -65,7 +67,8 @@ public class DBProfile
     private String profileName_;
     
     /**
-     * JDBC driver jar file name.
+     * Absolute path of the JDBC driver's jar file. This is optional if the jar 
+     * file is already on the classpath.
      */
     private String jarFile_;
     
@@ -110,7 +113,12 @@ public class DBProfile
         setDriver(profile.getAttributeValue(ATTR_DRIVER));
         setUrl(profile.getAttributeValue(ATTR_URL));
         setUsername(profile.getAttributeValue(ATTR_USERNAME));
-        setPassword(profile.getAttributeValue(ATTR_PASSWORD));
+        
+        String decodedPassword = 
+            new String(Base64.decodeBase64(
+                profile.getAttributeValue(ATTR_PASSWORD).getBytes()));
+
+        setPassword(decodedPassword);
     }
 
     
@@ -133,11 +141,11 @@ public class DBProfile
         String password)
     {
         profileName_ = profileName;
-        jarFile_ = jarFile;
-        driver_ = driver;
-        url_ = url;
-        username_ = username;
-        password_ = password;
+        jarFile_     = jarFile;
+        driver_      = driver;
+        url_         = url;
+        username_    = username;
+        password_    = password;
     }
     
     //--------------------------------------------------------------------------
@@ -168,7 +176,11 @@ public class DBProfile
         profile.addAttribute(new Attribute(ATTR_DRIVER, driver_));
         profile.addAttribute(new Attribute(ATTR_URL, url_));
         profile.addAttribute(new Attribute(ATTR_USERNAME, username_));
-        profile.addAttribute(new Attribute(ATTR_PASSWORD, password_));
+        
+        String encodedPassword = 
+            new String(Base64.encodeBase64(password_.getBytes()));
+        
+        profile.addAttribute(new Attribute(ATTR_PASSWORD, encodedPassword));
         return profile;
     }
 
