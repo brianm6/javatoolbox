@@ -33,7 +33,9 @@ package toolbox;
  * TODO: Update all command line tools using new help format in findclass
  * TODO: Tree - add inverse regex, case sensetive regex, and html output
  * TODO: Update EventInput/OutputStream to emit events every duration of time or
- *       every x number of bytes read/written. 
+ *       every x number of bytes read/written.
+ * TODO: Change String parameter to a File object in FileExplorerListener
+ * TODO: Added number of files/selected files to the JFileExplorer InfoBar
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================

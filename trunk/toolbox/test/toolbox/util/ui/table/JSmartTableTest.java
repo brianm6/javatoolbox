@@ -20,6 +20,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartToggleButton;
+import toolbox.util.ui.table.action.AutoTailAction;
 
 /**
  * Unit test for JSmartTable.
