@@ -3,6 +3,7 @@ package toolbox.plugin.netmeter;
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 
 import org.apache.commons.lang.StringUtils;
@@ -61,6 +62,12 @@ public class ClientView extends JHeaderPanel
      */
     private JTextField statusField_;
     
+    /**
+     * Bandwidth throttle
+     */
+    private JSlider throttle_;
+    
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -104,7 +111,10 @@ public class ClientView extends JHeaderPanel
     protected void buildView()
     {
         JPanel content = new JPanel(new BorderLayout());
-        content.add(buildInputPanel(), BorderLayout.CENTER);
+        content.add(buildInputPanel(), BorderLayout.NORTH);
+        
+        ThrottleView throttleView = new ThrottleView(client_.getBandwidth());
+        content.add(throttleView, BorderLayout.CENTER);
         content.add(new ServiceView(client_), BorderLayout.SOUTH);
         
         if (client_ != null)
