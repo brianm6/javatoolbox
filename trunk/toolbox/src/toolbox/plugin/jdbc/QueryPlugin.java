@@ -101,7 +101,6 @@ import toolbox.workspace.WorkspaceAction;
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
 {
-    // TODO: create SQLDefaults for syntax hiliting
     // TODO: Ctrl-Up/Down should scroll through query history
      
     //--------------------------------------------------------------------------
@@ -579,6 +578,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlEditor_.setText(
             XOMUtil.getString(
                 root.getFirstChildElement(NODE_CONTENTS), ""));
+        
+        sqlEditor_.scrollTo(0,0);
     }
 
     
