@@ -53,5 +53,8 @@
 	<classpathentry kind="lib" path="resources"/>
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
+	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
+	<classpathentry kind="lib" path="lib/calpahtml.jar"/>
+	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
