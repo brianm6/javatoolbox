@@ -1,7 +1,3 @@
-/*
- * (c) Copyright 2001 MyCorporation.
- * All Rights Reserved.
- */
 package toolbox.jtail.test;
 
 import junit.framework.TestCase;
@@ -9,8 +5,7 @@ import junit.textui.TestRunner;
 import toolbox.jtail.TailReader;
 
 /**
- * @version 	1.0
- * @author
+ * 
  */
 public class TailReaderTest extends TestCase
 {
@@ -27,9 +22,9 @@ public class TailReaderTest extends TestCase
 	/**
 	 * Constructor for TailReaderTest.
 	 */
-	public TailReaderTest()
+	public TailReaderTest(String name)
 	{
-		super("");
+		super(name);
 	}
 
 	/**
@@ -37,7 +32,7 @@ public class TailReaderTest extends TestCase
 	 */
 	public void testTailReader() throws Exception
 	{
-		TailReader tr = new TailReader(null, null);		
+		//TailReader tr = new TailReader(null, null);		
 	}
 
 }

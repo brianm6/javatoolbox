@@ -12,6 +12,7 @@ import org.apache.log4j.Category;
 import toolbox.tail.ITailListener;
 import toolbox.tail.Tail;
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.StringOutputStream;
 
 /**
  * Unit test for Tail
@@ -20,7 +21,7 @@ public class TailTest extends TestCase
 {
     
     /** Logger **/
-    private static final Category logger_ =
+    public static final Category logger_ =
         Category.getInstance(TailTest.class);
 
     /**
@@ -61,16 +62,16 @@ public class TailTest extends TestCase
             new Integer(1000), "testing tail reader"} );
         
         Tail tail = new Tail();
-        tail.addOutputStream(System.out);
-        tail.addWriter(new OutputStreamWriter(System.out));
+        tail.addOutputStream(new StringOutputStream());
+        tail.addWriter(new OutputStreamWriter(new StringOutputStream()));
         tail.addTailListener(new TestTailListener());
         logger_.info(tail.toString());
         tail.tail(reader);
         ThreadUtil.sleep(2000);
         tail.pause();
-        ThreadUtil.sleep(10000);
+        ThreadUtil.sleep(2000);
         tail.unpause();
-        ThreadUtil.sleep(4000);
+        ThreadUtil.sleep(2000);
     }
     
     
@@ -82,16 +83,16 @@ public class TailTest extends TestCase
      * @param  delay      Delay between writes in seconds
      * @param  value      String to send to writer
      */                
-    public void writeDelayed(PipedWriter writer, Integer iterations, 
-        Integer delay, String value)
+    public void writeDelayed(PipedWriter writer, int iterations, 
+        int delay, String value)
     {
         PrintWriter pw = new PrintWriter(writer);
         
-        for(int i=0; i<iterations.intValue(); i++)
+        for(int i=0; i<iterations; i++)
         {
             pw.println(i + " " + value);
             pw.flush();
-            ThreadUtil.sleep(delay.intValue());
+            ThreadUtil.sleep(delay);
         }
         
         pw.close();
@@ -104,8 +105,8 @@ public class TailTest extends TestCase
 class TestTailListener implements ITailListener
 {
     /** Logger **/
-    private static final Category logger_ =
-        Category.getInstance(TestTailListener.class);
+    private static final Category logger_ = TailTest.logger_;
+        //Category.getInstance(TestTailListener.class);
         
     /**
      * Next line is available
@@ -114,7 +115,7 @@ class TestTailListener implements ITailListener
      */    
     public void nextLine(String line)
     {
-        System.out.print(line);
+        logger_.debug(line);
     }
 
     /**
