@@ -2,7 +2,9 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
+
 import toolbox.util.ExceptionUtil;
 
 /**
@@ -23,6 +25,10 @@ public class ExceptionUtilTest extends TestCase
         TestRunner.run(ExceptionUtilTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Create
      */
@@ -31,11 +37,17 @@ public class ExceptionUtilTest extends TestCase
         super(name);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests the getStackTrace() method
      */
     public void testGetStackTrace()
     {
+        logger_.info("Running testGetStackTrace...");
+        
         Exception e = new Exception("wumba");
         String stackTrace = ExceptionUtil.getStackTrace(e);
         assertNotNull(stackTrace);

@@ -17,7 +17,7 @@ import toolbox.util.StringUtil;
 public class StringUtilTest extends TestCase
 {
     /** Logger **/
-    private static Logger logger = 
+    private static Logger logger_ = 
         Logger.getLogger(StringUtilTest.class);
 
     /**
@@ -53,6 +53,8 @@ public class StringUtilTest extends TestCase
      */
     public void testRightForTruncation()
     {
+        logger_.info("Running testRightForTruncation...");
+        
         String s = "HELLO";
 
         String a1 = "   HELLO";
@@ -90,6 +92,8 @@ public class StringUtilTest extends TestCase
      */
     public void testLeftForTruncation()
     {
+        logger_.info("Running testLeftForTruncation...");
+        
         String s = "HELLO";
 
         String a1 = "HELLO   ";
@@ -127,6 +131,8 @@ public class StringUtilTest extends TestCase
      */
     public void testToStringForList()
     {
+        logger_.info("Running testToStringForList...");
+        
         ArrayList theList = new ArrayList();
         theList.add( "ELEM_ONE" );
         theList.add( "ELEM_TWO" );
@@ -147,6 +153,8 @@ public class StringUtilTest extends TestCase
      */
     public void testIsNullOrEmpty()
     {
+        logger_.info("Running testIsNullOrEmpty...");
+        
         assertTrue("pass in null should return true", 
             StringUtil.isNullOrEmpty(null));
             
@@ -167,23 +175,25 @@ public class StringUtilTest extends TestCase
      */
     public void testGetStringRuler() throws Exception
     {
-        /* one digit length test */
+        logger_.info("Running testGetStringRuler...");
+        
+        // one digit length test
         {
             String s  = "abcd";
             String sr = StringUtil.getStringRuler(s);
             
-            logger.debug("\n" +sr);
+            logger_.debug("\n" +sr);
             
             assertTrue("ruler incorrect", sr.startsWith(s));
             assertTrue("ruler incorrect", sr.endsWith("1234"));
         }
     
-        /* two digit length test */
+        // two digit length test
         {
             String s  = "abcdefghijklmnopqrstuvwxyz";
             String sr = StringUtil.getStringRuler(s);
             
-            logger.debug("\n" +sr);
+            logger_.debug("\n" +sr);
             
             
             LineNumberReader lnr = new LineNumberReader(new StringReader(sr));
@@ -203,6 +213,8 @@ public class StringUtilTest extends TestCase
      */ 
     public void testTruncate() 
     {
+        logger_.info("Running testTruncate...");
+        
         //======================================
         //      STRING LENGTH = 0 
         //======================================
@@ -296,6 +308,8 @@ public class StringUtilTest extends TestCase
      */
     public void testTrimEmpty()
     {
+        logger_.info("Running testTrimEmpty...");
+        
         assertEquals("trimmed empty string incorrect",
             "", StringUtil.trim("",'x'));
     }
@@ -305,6 +319,8 @@ public class StringUtilTest extends TestCase
      */
     public void testTrimOne()
     {
+        logger_.info("Running testTrimOne...");
+        
         String s = "x";
         assertEquals("trimmed incorrect", "", StringUtil.trim(s,'x'));
         assertEquals("trimmed incorrect", s, StringUtil.trim(s,' '));
@@ -315,6 +331,8 @@ public class StringUtilTest extends TestCase
      */
     public void testTrimMany()
     {
+        logger_.info("Running testTrimMany...");
+        
         String s = "..abcdefg..x..";
         assertEquals("trim incorrect", "abcdefg..x", StringUtil.trim(s,'.'));
         assertEquals("trim incorrect", s, StringUtil.trim(s, 'z'));
@@ -326,6 +344,8 @@ public class StringUtilTest extends TestCase
      */
     public void testTrimEntire()
     {
+        logger_.info("Running testTrimEntire...");
+        
         String s = "aaaaaaaaaaaaaaaaaaaaaaaa";
         assertEquals("trim incorrect", "", StringUtil.trim(s, 'a'));            
     }
@@ -335,6 +355,8 @@ public class StringUtilTest extends TestCase
      */
     public void testTrimPrefixOnly()
     {
+        logger_.info("Running testTrimPrefixOnly...");
+        
         String s = ".......aaaaaa";
         assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));            
     }
@@ -344,6 +366,8 @@ public class StringUtilTest extends TestCase
      */
     public void testTrimSuffixOnly()
     {
+        logger_.info("Running testTrimSuffixOnly...");
+        
         String s = "aaaaaa........";
         assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));            
     }

@@ -4,6 +4,9 @@ import java.io.StringReader;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
 import toolbox.util.StreamUtil;
 import toolbox.util.io.StringInputStream;
 
@@ -12,6 +15,10 @@ import toolbox.util.io.StringInputStream;
  */
 public class StreamUtilTest extends TestCase
 {
+    /** Logger **/
+    private static final Logger logger_ =
+        Logger.getLogger(StreamUtilTest.class);
+        
     /**
      * Entrypoint
      */
@@ -19,6 +26,10 @@ public class StreamUtilTest extends TestCase
     {
         TestRunner.run(StreamUtilTest.class);
     }
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for StreamUtilTest
@@ -28,11 +39,17 @@ public class StreamUtilTest extends TestCase
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests the toString() method
      */
     public void testToString() throws Exception
     {
+        logger_.info("Running testToString...");
+        
         String testString = "this is a test string for toString()";
         
         StringInputStream sis = new StringInputStream(testString);
@@ -47,18 +64,20 @@ public class StreamUtilTest extends TestCase
      */
     public void testEmpty() throws Exception
     {
-        /* create stream and populate */
+        logger_.info("Running testEmpty...");
+                
+        // Create stream and populate
         String contents = "testing";
         StringInputStream sis = new StringInputStream(contents);
         
-        /* verify available */
+        // Verify available
         assertEquals("stream should have contents", contents.length(),
             sis.available());
         
-        /* empty the stream */
+        // Empty the stream
         StreamUtil.empty(sis);
      
-        /* verify empty */
+        // Verify empty 
         assertEquals("available() should be 0", 0, sis.available());
         assertEquals("read() should be -1", -1, sis.read());
     }
@@ -68,15 +87,17 @@ public class StreamUtilTest extends TestCase
      */
     public void testReadExactlyStream() throws Exception
     {
-        /* create stream and populate */
+        logger_.info("Running testReadExactlyStream...");
+        
+        // create stream and populate
         String contents = "testing";
         StringInputStream sis = new StringInputStream(contents);
         
-        /* read in 2 passes, 4 bytes first then 3 bytes next */
+        // read in 2 passes, 4 bytes first then 3 bytes next 
         byte[] pass1 = StreamUtil.readExactly(sis, 4);
         byte[] pass2 = StreamUtil.readExactly(sis, 3); 
      
-        /* verify */
+        // verify
         assertEquals("first pass does not match", "test", new String(pass1));
         assertEquals("second pass does not match", "ing", new String(pass2));
     }
@@ -86,20 +107,20 @@ public class StreamUtilTest extends TestCase
      */
     public void testReadExactlyReader() throws Exception
     {
-        /* create stream and populate */
+        logger_.info("Running testReadExactlyReader...");
+        
+        // create stream and populate
         String contents = "testing";
         StringReader sr = new StringReader(contents);
         
-        /* read in 2 passes, 4 bytes first then 3 bytes next */
+        // read in 2 passes, 4 bytes first then 3 bytes next
         String pass1 = StreamUtil.readExactly(sr, 4);
         String pass2 = StreamUtil.readExactly(sr, 3); 
      
-        /* verify */
+        // verify
         assertEquals("first pass does not match", "test", pass1);
         assertEquals("second pass does not match", "ing", pass2);
     }
-    
-    
 }
 
 

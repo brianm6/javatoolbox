@@ -1,12 +1,12 @@
 package toolbox.jtail.config.tinyxml;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.Enumeration;
 
 import org.apache.log4j.Logger;
+
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.ArrayUtil;
@@ -43,7 +43,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
     
     /**
@@ -193,7 +193,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
     
     //--------------------------------------------------------------------------
-    //  Interface IJTailConfig
+    //  IJTailConfig Interface
     //--------------------------------------------------------------------------
 
     /**

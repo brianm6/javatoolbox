@@ -27,6 +27,10 @@ public class ClassUtilTest extends TestCase
         TestRunner.run(ClassUtilTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for ClassUtilTest.
      * 
@@ -37,11 +41,17 @@ public class ClassUtilTest extends TestCase
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests getClassesInPackage() for a package in a file system directory
      */
     public void testGetClassesInPackageDirectory()
     {
+        logger_.info("Running testGetClassesInPackageDirectory...");
+        
         String[] classes = ClassUtil.getClassesInPackage("toolbox.util");
         logger_.info("\n" + ArrayUtil.toString(classes, true));
         assertTrue(StringUtil.class.getName() + " not found in package", 
@@ -53,6 +63,8 @@ public class ClassUtilTest extends TestCase
      */
     public void testGetClassesInPackageArchive()
     {
+        logger_.info("Running testGetClassesInPackageArchive...");
+        
         String[] classes = ClassUtil.getClassesInPackage("junit.textui");
         logger_.info("\n"+ArrayUtil.toString(classes, true));
         assertTrue(TestRunner.class.getName() + " not found in package", 
@@ -64,6 +76,8 @@ public class ClassUtilTest extends TestCase
      */
     public void testGetClassesInPackageBoot()
     {
+        logger_.info("Running testGetClassesInPackageBoot...");
+        
         String[] classes = ClassUtil.getClassesInPackage("java.lang");
         logger_.info("\n" + ArrayUtil.toString(classes, true));
         assertTrue(String.class.getName() + " not found in package", 
@@ -74,7 +88,9 @@ public class ClassUtilTest extends TestCase
      * Tests getPackagesInClasspath() 
      */
     public void testGetPackagesInClasspath()
-    {
+    {   
+        logger_.info("Running testGetPackagesInClasspath...");
+        
         String[] packages = ClassUtil.getPackagesInClasspath();
         logger_.info("\n" + ArrayUtil.toString(packages, true));
         assertTrue(ArrayUtil.contains(packages, "java.lang"));
@@ -87,6 +103,8 @@ public class ClassUtilTest extends TestCase
      */
     public void testGetClasspath()
     {
+        logger_.info("Running testGetClasspath...");
+        
         String classpath = ClassUtil.getClasspath();
         assertNotNull(classpath);
         String[] paths = StringUtil.tokenize(classpath, File.pathSeparator);
@@ -98,6 +116,8 @@ public class ClassUtilTest extends TestCase
      */
     public void testIsArchive()
     {
+        logger_.info("Running testIsArchive...");
+        
         // Positive tests
         assertTrue(ClassUtil.isArchive("a.jar"));
         assertTrue(ClassUtil.isArchive("b.zip"));
@@ -120,6 +140,8 @@ public class ClassUtilTest extends TestCase
      */ 
     public void testIsClassFile()
     {
+        logger_.info("Running testIsClassFile...");
+        
         // Positive tests
         assertTrue(ClassUtil.isClassFile("a.class"));
         assertTrue(ClassUtil.isClassFile("A.CLASS"));
@@ -135,8 +157,13 @@ public class ClassUtilTest extends TestCase
         assertTrue(!ClassUtil.isArchive("X.CLASS.X"));
     }
     
+    /**
+     * Tests packageToPath()
+     */
     public void testPackageToPath()
     {
+        logger_.info("Running testPackageToPath...");
+        
         assertEquals("a", ClassUtil.packageToPath("a"));
 
         assertEquals("a" + File.separatorChar + "b" , 
@@ -147,9 +174,5 @@ public class ClassUtilTest extends TestCase
                      "b" + File.separatorChar +
                      "c" + File.separatorChar + 
                      "d", ClassUtil.packageToPath("a.b.c.d"));
-                     
-
-                     
     }
-    
 }

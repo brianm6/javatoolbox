@@ -19,15 +19,6 @@ public class FileUtilTest extends TestCase
     /** Logger **/
     private static final Logger logger_ = 
         Logger.getLogger(FileUtilTest.class);
-                
-    /**
-     * Constructor for FileUtilTest.
-     * @param arg0  Name
-     */
-    public FileUtilTest(String arg0)
-    {
-        super(arg0);
-    }
 
     /**
      * Runs the test case in text mode
@@ -39,6 +30,23 @@ public class FileUtilTest extends TestCase
         TestRunner.run(FileUtilTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+                    
+    /**
+     * Constructor for FileUtilTest.
+     * @param arg0  Name
+     */
+    public FileUtilTest(String arg0)
+    {
+        super(arg0);
+    }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests the getTempDir() method 
      * 
@@ -46,6 +54,8 @@ public class FileUtilTest extends TestCase
      */    
     public void testGetTempDir() throws Exception
     {
+        logger_.info("Running testGetTempDir...");
+        
         String tempDir = FileUtil.getTempDir().getCanonicalPath();
         File file = new File(tempDir);
         assertTrue("temp is not a directory", file.isDirectory());
@@ -59,6 +69,8 @@ public class FileUtilTest extends TestCase
      */    
     public void testGetTempFilename() throws Exception
     {
+        logger_.info("Running testGetTempFilename...");
+        
         // Generate temp file name
         String tempFile = FileUtil.getTempFilename();
         assertNotNull("temp filename is null", tempFile);
@@ -79,6 +91,8 @@ public class FileUtilTest extends TestCase
      */
     public void testCleanDirFailure1() throws Exception
     {
+        logger_.info("Running testCleanDirFailure1...");
+        
         // Create a file
         String file = FileUtil.getTempFilename();
         FileUtil.setFileContents(file, "hello", false);
@@ -106,6 +120,8 @@ public class FileUtilTest extends TestCase
      */
     public void testCleanDirFailure2() throws Exception
     {
+        logger_.info("Running testCleanDirFailure2...");
+        
         // Create a bogus dir name
         String dir = FileUtil.getTempFilename();
         
@@ -127,6 +143,8 @@ public class FileUtilTest extends TestCase
      */
     public void testCleanDirFailure() throws Exception
     {
+        logger_.info("Running testCleanDirFailure...");
+        
         int numFiles = 10;
         
         // Create a directory
@@ -172,6 +190,8 @@ public class FileUtilTest extends TestCase
      */
     public void testGetFileContents() throws Exception
     {
+        logger_.info("Running testGetFileContents...");
+        
         // Create a file
         String file = FileUtil.getTempFilename();
         String contents = "blah blah blah";
@@ -196,6 +216,8 @@ public class FileUtilTest extends TestCase
      */
     public void testGetFileContentsLargeFile() throws Exception
     {
+        logger_.info("Running testGetFileContentsLargeFile...");
+        
         // Half meg file
         int fileSize = 500000;
         
@@ -227,6 +249,8 @@ public class FileUtilTest extends TestCase
      */
     public void testSetFileContents() throws Exception
     {
+        logger_.info("Running testSetFileContents...");
+        
         // Create a file
         String file = FileUtil.getTempFilename();
         String contents = "blah blah blah";
@@ -265,6 +289,8 @@ public class FileUtilTest extends TestCase
      */
     public void testMoveFile() throws Exception
     {
+        logger_.info("Running testMoveFile..."); 
+        
         // Make src dir
         String srcDirName = FileUtil.getTempFilename();
         File   srcDir     = new File(srcDirName);

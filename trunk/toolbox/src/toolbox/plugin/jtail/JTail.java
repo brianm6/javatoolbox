@@ -19,11 +19,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
+
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
@@ -58,34 +58,34 @@ public class JTail extends JFrame
     /**
      * Tab panel that contains each tail as a single tab
      */
-    private JTabbedPane       tabbedPane_;
+    private JTabbedPane tabbedPane_;
     
     /**
      * Flip panel that houses the file explorer 
      */
-    private JFlipPane         flipPane_;    
+    private JFlipPane flipPane_;    
     
     /**
      * Status bar at the bottom of the screen that shows the status of
      * varioys activities
      */
-    private JStatusPane       statusBar_;    
+    private JStatusPane statusBar_;    
     
     /**
      * Main menu bar that includes functionality not found else where 
      */
-    private JMenuBar          menuBar_;    
+    private JMenuBar menuBar_;    
     
     /** 
      * Map of each tail that is active
      */
-    private Map               tailMap_;
+    private Map tailMap_;
     
     /**
      * Puts the application into test mode. An additional menu item is added
      * to the file menu which creates a running tail for testing purposes
      */
-    private boolean           testMode_ = true;
+    private boolean testMode_ = true;
     
     /** 
      * Configuration manager which oversees the reading and saving of 
@@ -138,7 +138,7 @@ public class JTail extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------    
     
     /** 

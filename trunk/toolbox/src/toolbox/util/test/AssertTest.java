@@ -2,7 +2,9 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
+
 import toolbox.util.Assert;
 import toolbox.util.AssertionException;
 
@@ -14,16 +16,6 @@ public class AssertTest extends TestCase
     /** Logger **/
     private static final Logger logger_ = 
         Logger.getLogger(AssertTest.class);
-    
-    /**
-     * Constructor for AssertTest.
-     * 
-     * @param arg0  Name
-     */
-    public AssertTest(String arg0)
-    {
-        super(arg0);
-    }
 
     /**
      * Runs testcase in text mode
@@ -34,12 +26,32 @@ public class AssertTest extends TestCase
     {
         TestRunner.run(AssertTest.class);
     }
-    
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+            
+    /**
+     * Constructor for AssertTest.
+     * 
+     * @param arg0  Name
+     */
+    public AssertTest(String arg0)
+    {
+        super(arg0);
+    }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests equals(double)
      */
     public void testEqualsDouble() 
     {
+        logger_.info("Running testEqualsDouble...");
+        
         Assert.equals(1.0d, 1.0d, 0.0, "equal");
         
         try
@@ -58,6 +70,8 @@ public class AssertTest extends TestCase
      */
     public void testEqualsFloat()
     {
+        logger_.info("Running testEqualsFloat...");
+        
         Assert.equals(1.0f, 1.0f, 0.0, "equal");
         
         try
@@ -76,6 +90,8 @@ public class AssertTest extends TestCase
      */
     public void testEqualsLong() 
     {
+        logger_.info("Running testEqualsLong...");
+        
         Assert.equals(111L, 111L, "equal");
         
         try
@@ -94,6 +110,8 @@ public class AssertTest extends TestCase
      */
     public void testEqualsObject() 
     {
+        logger_.info("Running testEqualsObject...");
+        
         Assert.equals("one", "one", "equal");
         
         try
@@ -112,6 +130,8 @@ public class AssertTest extends TestCase
      */
     public void testIsFalse() 
     {
+        logger_.info("Running testIsFalse...");
+        
         Assert.isFalse(false, "isFalse");
         
         try
@@ -130,6 +150,8 @@ public class AssertTest extends TestCase
      */
     public void testIsTrue() 
     {
+        logger_.info("Running testIsTrue...");
+        
         Assert.isTrue(true, "isTrue");
         
         try
@@ -148,6 +170,8 @@ public class AssertTest extends TestCase
      */
     public void testNotNull() 
     {
+        logger_.info("Running testNotNull...");
+        
         Assert.notNull("i am not null", "Object is not null");
         
         try

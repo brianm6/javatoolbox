@@ -4,11 +4,11 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
-import toolbox.util.StringUtil;
 
 /**
  * Unit test for ResourceUtilTest
@@ -18,7 +18,6 @@ public class ResourceUtilTest extends TestCase
     /** Logger **/
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtilTest.class);
-        
     
     /**
      * Entrypoint
@@ -30,6 +29,9 @@ public class ResourceUtilTest extends TestCase
         TestRunner.run(ResourceUtilTest.class);    
     }
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for ResourceUtilTest
@@ -41,6 +43,9 @@ public class ResourceUtilTest extends TestCase
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests the exportToClass() method
@@ -49,6 +54,8 @@ public class ResourceUtilTest extends TestCase
      */
     public void testExportToClass() throws Exception
     {
+        logger_.info("Running testExportToClass...");
+        
         String treeOpen  = "images" + File.separator + "tree_open.gif";
     
         String filename = "TreeOpenGIF.java";

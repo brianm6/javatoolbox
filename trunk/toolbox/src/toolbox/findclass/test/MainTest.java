@@ -2,6 +2,9 @@ package toolbox.findclass.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
 import toolbox.findclass.Main;
 
 /**
@@ -9,6 +12,9 @@ import toolbox.findclass.Main;
  */
 public class MainTest extends TestCase
 {
+    /** Logger **/
+    private static final Logger logger_ = Logger.getLogger(MainTest.class);
+    
     /**
      * Test entry point
      * 
@@ -36,6 +42,8 @@ public class MainTest extends TestCase
      */
     public void testFindInJar() throws Exception
     {
+        logger_.info("Running testFindInJar...");
+        
         Main.main(new String[] {  "filter$" } );
     }
 

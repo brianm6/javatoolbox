@@ -24,6 +24,10 @@ public class ClassUtil
     private static final Logger logger_ = 
         Logger.getLogger(ClassUtil.class);
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Prevent construction
      */
@@ -31,6 +35,10 @@ public class ClassUtil
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Retrieves the names of all classes in a given package
      *

@@ -41,7 +41,6 @@ public class JSourceView extends JFrame implements ActionListener
 {
     private static final Logger logger_ = 
         Logger.getLogger(JSourceView.class);
-        
     
     private static OrFilter sourceFilter_;
 
@@ -68,10 +67,14 @@ public class JSourceView extends JFrame implements ActionListener
     private Thread       parserThread_;
     private ParserWorker parserWorker_;
     
-    /** Platform path separator **/
+    /** 
+     * Platform path separator 
+     */
     private String pathSeparator_;
 
-    /** Table column names **/    
+    /** 
+     * Table column names 
+     */    
     private String colNames[] = 
     {
         "Num",

@@ -27,10 +27,14 @@ import junit.runner.TestCollector;
  */
 public class CompleteTestCollector implements TestCollector
 {
-    /** Introspects jars for unit tests **/
+    /** 
+     * Introspects jars for unit tests 
+     */
     TestCollector jarCollector;
     
-    /** Scans directories for unit tests **/
+    /** 
+     * Scans directories for unit tests 
+     */
     TestCollector dirCollector;
     
     //--------------------------------------------------------------------------
@@ -47,7 +51,7 @@ public class CompleteTestCollector implements TestCollector
     }
 
     //--------------------------------------------------------------------------
-    //  Interface TestCollector
+    //  TestCollector Interface
     //--------------------------------------------------------------------------
     
     /**

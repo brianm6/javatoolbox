@@ -23,7 +23,7 @@ public class FindClassCollector extends FindClassAdapter
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Overridden from FindClassAdapter
     //--------------------------------------------------------------------------
         
     /**
@@ -37,6 +37,9 @@ public class FindClassCollector extends FindClassAdapter
         results_.add(result);            
     }
     
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Returns array of find class results 

@@ -4,17 +4,22 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import toolbox.util.CollectionUtil;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
+import toolbox.util.CollectionUtil;
 
 /**
  * Unit test for CollectionUtil 
  */
 public class CollectionUtilTest extends TestCase
 {
-
+    /** Logger **/
+    private static final Logger logger_ =
+        Logger.getLogger(CollectionUtilTest.class);
+        
     /**
      * Entrypoint
      *
@@ -25,7 +30,10 @@ public class CollectionUtilTest extends TestCase
         TestRunner.run(CollectionUtilTest.class);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for CollectionUtilTest.
      * 
@@ -36,12 +44,17 @@ public class CollectionUtilTest extends TestCase
         super(arg0);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests union()
      */
     public void testUnion()
     {
+        logger_.info("Running testUnion...");
+        
         Set s1 = new HashSet();
         s1.add("one");
         
@@ -61,6 +74,8 @@ public class CollectionUtilTest extends TestCase
      */
     public void testIntersection()
     {
+        logger_.info("Running testIntersection...");
+        
         Set s1 = new HashSet();
         s1.add("one");
         s1.add("two");
@@ -81,6 +96,8 @@ public class CollectionUtilTest extends TestCase
      */
     public void testDifference()
     {
+        logger_.info("Running testDifference...");
+        
         Set s1 = new HashSet();
         s1.add("one");
         s1.add("two");
@@ -101,6 +118,8 @@ public class CollectionUtilTest extends TestCase
      */
     public void testIsSubset()
     {
+        logger_.info("Running testIsSubset...");
+        
         Set s1 = new HashSet();
         s1.add("one");
         s1.add("two");

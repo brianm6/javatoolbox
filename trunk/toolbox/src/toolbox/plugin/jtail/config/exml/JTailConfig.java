@@ -6,13 +6,13 @@ import java.awt.Point;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import toolbox.jtail.config.IJTailConfig;
-import toolbox.jtail.config.ITailPaneConfig;
-import toolbox.util.SwingUtil;
 
 import electric.util.ArrayUtil;
 import electric.xml.Element;
 import electric.xml.Elements;
+
+import toolbox.jtail.config.IJTailConfig;
+import toolbox.jtail.config.ITailPaneConfig;
 
 /**
  * Electric XML implemenation of IJTailConfig interface that marshals
@@ -49,7 +49,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     }
     
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
     
     /**
@@ -201,8 +201,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         
         return jtailConfig;
     }
-    
-
 
     /**
      * Sets the default tail pane configuration

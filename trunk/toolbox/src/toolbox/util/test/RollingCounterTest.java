@@ -22,6 +22,10 @@ public class RollingCounterTest extends TestCase
         TestRunner.run(RollingCounterTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for RollingCounterTest.
      * 
@@ -32,11 +36,17 @@ public class RollingCounterTest extends TestCase
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests increment()
      */
     public void testRangeIsSmall()
     {
+        logger_.info("Running testRangeIsSmall...");
+        
         RollingCounter c = new RollingCounter(1,5,1);
         
         StringBuffer sb = new StringBuffer();
@@ -67,6 +77,8 @@ public class RollingCounterTest extends TestCase
      */
     public void testRangeIsOne()
     {
+        logger_.info("Running testRangeIsOne...");
+        
         RollingCounter c = new RollingCounter(1,1,1);
         
         for(int i=0; i<20; i++)
@@ -82,6 +94,8 @@ public class RollingCounterTest extends TestCase
      */
     public void testRangeIsNegative()
     {
+        logger_.info("Running testRangeIsNegative...");
+        
         RollingCounter c = new RollingCounter(-10,-5,-10);
         
         for(int i=0; i<20; i++)
@@ -97,6 +111,8 @@ public class RollingCounterTest extends TestCase
      */
     public void testRangeIsSigned()
     {
+        logger_.info("Running testRangeIsSigned...");
+        
         RollingCounter c = new RollingCounter(-5,5,-5);
         
         for(int i=0; i<22; i++)
@@ -111,6 +127,8 @@ public class RollingCounterTest extends TestCase
      */
     public void testListener()
     {
+        logger_.info("Running testListener...");
+        
         class Ear implements RollingCounter.IRollingCounterListener
         {
             public void afterRoll(RollingCounter rc)
@@ -142,6 +160,8 @@ public class RollingCounterTest extends TestCase
      */
     public void testListener2()
     {
+        logger_.info("Running testListener2...");
+        
         class Ear implements RollingCounter.IRollingCounterListener
         {
             public void afterRoll(RollingCounter rc)

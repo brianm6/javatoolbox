@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.collections.AsMap;
 import toolbox.util.xml.XMLNode;
@@ -206,7 +207,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     //--------------------------------------------------------------------------
-    //  Interface ITailPaneConfig
+    //  ITailPaneConfig Interface
     //--------------------------------------------------------------------------
 
     /**

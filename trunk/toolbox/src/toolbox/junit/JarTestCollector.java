@@ -31,7 +31,7 @@ public class JarTestCollector implements TestCollector
     }
 
     //--------------------------------------------------------------------------
-    //  Interface TestCollector
+    //  TestCollector Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -47,7 +47,7 @@ public class JarTestCollector implements TestCollector
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------
 
     /**

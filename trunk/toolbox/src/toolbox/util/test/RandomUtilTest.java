@@ -1,8 +1,6 @@
 package toolbox.util.test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -22,7 +20,6 @@ public class RandomUtilTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(RandomUtilTest.class);
 
-
     /**
      * Entry point
      * 
@@ -33,7 +30,10 @@ public class RandomUtilTest extends TestCase
         TestRunner.run(RandomUtilTest.class);
     }
 
-    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Constructor for RandomUtilTest
      * 
@@ -44,12 +44,17 @@ public class RandomUtilTest extends TestCase
         super(arg0);
     }
 
-    
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests nextAlpha()
      */
     public void testNextAlpha() 
     {
+        logger_.info("Running testNextAlpha...");
+        
         StringBuffer sb = new StringBuffer();
         
         try
@@ -74,6 +79,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextUpperAlpha() 
     {
+        logger_.info("Running testNextUpperAlpha...");
+        
         StringBuffer sb = new StringBuffer();
         
         try
@@ -100,6 +107,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextLowerAlpha() 
     {
+        logger_.info("Running testNextLowerAlpha...");
+        
         StringBuffer sb = new StringBuffer();
         
         try
@@ -126,6 +135,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextInt()
     {
+        logger_.info("Running testNextInt...");
+        
         StringBuffer sb = new StringBuffer();
         
         for (int j=0; j<300; j++)
@@ -144,6 +155,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextIntCeiling()
     {
+        logger_.info("Running testNextIntCeiling...");
+        
         StringBuffer sb = new StringBuffer();
         int ceiling = 500;
         boolean maxHit = false;
@@ -178,7 +191,9 @@ public class RandomUtilTest extends TestCase
      * Tests nextInt() with a small ceiling boundary
      */
     public void testNextIntCeilingSmall()
-    {
+    {   
+        logger_.info("Running testNextIntCeilingSmall...");
+        
         StringBuffer sb = new StringBuffer();
         int ceiling = 1;
         boolean maxHit = false;
@@ -214,6 +229,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextIntFloorCeiling()
     {
+        logger_.info("Running testNextIntFloorCeiling...");
+       
         StringBuffer sb = new StringBuffer();
         int floor   = 100;
         int ceiling = 200;
@@ -250,6 +267,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextIntFloorCeilingOne()
     {
+        logger_.info("Running testNextIntFloorCeilingOne...");
+        
         StringBuffer sb = new StringBuffer();
         int floor   = 101;
         int ceiling = 101;
@@ -287,6 +306,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextBoolean()
     {
+        logger_.info("Running testNextBoolean...");
+        
         for (int i=0; i<10; i++)
             logger_.info(RandomUtil.nextBoolean()+"");
     }    
@@ -297,6 +318,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextElementArrayEmpty()
     {
+        logger_.info("Running testNextElementArrayEmpty...");
+        
         assertNull(RandomUtil.nextElement(new String[0]));
     }
 
@@ -306,6 +329,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextElementArrayOne()
     {
+        logger_.info("Running testNextElementArrayOne...");
+        
         assertEquals("one", (RandomUtil.nextElement(new String[] { "one" } )));
     }
 
@@ -315,6 +340,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextElementArrayMany()
     {
+        logger_.info("Running testNextElementArrayMany...");
+        
         String[] s = new String[] { "zero", "one", "two", "three", "four", "five" };
         
         StringBuffer  sb = new StringBuffer();
@@ -330,6 +357,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextElementListEmpty()
     {
+        logger_.info("Running testNextElementListEmpty...");
+        
         assertNull(RandomUtil.nextElement(new ArrayList()));
     }
 
@@ -339,6 +368,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextElementListOne()
     {
+        logger_.info("Running testNextElementListOne...");
+        
         List one = new ArrayList();
         one.add("one");
         assertEquals("one", (RandomUtil.nextElement(one)));
@@ -350,6 +381,8 @@ public class RandomUtilTest extends TestCase
      */
     public void testNextElementListMany()
     {
+        logger_.info("Running testNextElementListMany...");
+        
         List many = new ArrayList();
         many.add("zero");
         many.add("one");

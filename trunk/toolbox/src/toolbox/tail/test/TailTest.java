@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
+
 import toolbox.tail.ITailListener;
 import toolbox.tail.Tail;
 import toolbox.util.ThreadUtil;
@@ -24,6 +26,20 @@ public class TailTest extends TestCase
         Logger.getLogger(TailTest.class);
 
     /**
+     * Entrypoint
+     * 
+     * @param  args  Args
+     */
+    public static void main(String[] args)
+    {
+        TestRunner.run(TailTest.class);
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
      * Creates test
      * 
      * @param  name Name
@@ -35,30 +51,26 @@ public class TailTest extends TestCase
     
     
     /**
-     * Entrypoint
-     * 
-     * @param  args  Args
-     */
-    public static void main(String[] args)
-    {
-        TestRunner.run(TailTest.class);
-    }
-    
-    /**
      * Tests tail using a reader
      * 
      * @throws  Exception on error
      */
     public void testTailReader() throws Exception
     {
+       logger_.info("Running testTailReader...");
        
         PipedWriter writer = new PipedWriter();
         PipedReader reader = new PipedReader(writer);
-        
-        ThreadUtil.run(this, "writeDelayed", 
-            new Object[] { writer, new Integer(5),
-            new Integer(1000), "testing tail reader"} );
-        
+
+        ThreadUtil.run(
+            this,
+            "writeDelayed",
+            new Object[] {
+                writer,
+                new Integer(5),
+                new Integer(1000),
+                "testing tail reader" });
+
         Tail tail = new Tail();
         tail.addOutputStream(new StringOutputStream());
         tail.addWriter(new OutputStreamWriter(new StringOutputStream()));
@@ -85,6 +97,8 @@ public class TailTest extends TestCase
     public void writeDelayed(PipedWriter writer, int iterations, 
         int delay, String value)
     {
+        logger_.info("Running writeDelayed...");
+        
         PrintWriter pw = new PrintWriter(writer);
         
         for(int i=0; i<iterations; i++)
@@ -97,6 +111,10 @@ public class TailTest extends TestCase
         pw.close();
     }
 }
+
+//--------------------------------------------------------------------------
+// Helper Classes
+//--------------------------------------------------------------------------
 
 /**
  * Test tail listener 

@@ -124,7 +124,7 @@ public class Main extends FindClassAdapter
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
 
     /**
@@ -194,6 +194,10 @@ public class Main extends FindClassAdapter
         writer_ = new PrintWriter(writer);
     }
 
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    
     /**
      * Prints program usage
      */
@@ -217,7 +221,7 @@ public class Main extends FindClassAdapter
     }
  
     //--------------------------------------------------------------------------
-    //  Interface IFindClassListener
+    //  Overridden from FindClassAdapter
     //-------------------------------------------------------------------------- 
  
     /**

@@ -28,6 +28,10 @@ public class CompleteTestCollectorTest extends TestCase
         TestRunner.run(CompleteTestCollectorTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for CompleteTestCollectorTest
      * 
@@ -38,12 +42,17 @@ public class CompleteTestCollectorTest extends TestCase
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    // UNit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests collectTests()
      */
     public void testCollectTests()
     {
+        logger_.info("Running testCollectTests...");
+        
         TestCollector tc = new CompleteTestCollector();
         
         for(Enumeration e = tc.collectTests(); e.hasMoreElements(); )

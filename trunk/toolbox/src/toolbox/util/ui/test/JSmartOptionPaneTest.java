@@ -1,12 +1,12 @@
 package toolbox.util.ui.test;
 
-import java.awt.Frame;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
@@ -16,6 +16,10 @@ import toolbox.util.ui.JSmartOptionPane;
  */
 public class JSmartOptionPaneTest extends TestCase
 {
+    /** Logger **/
+    private static final Logger logger_ =
+        Logger.getLogger(JSmartOptionPaneTest.class);
+        
     private static final String MSG_TITLE = "JSmartOptionPane";
     
     private static final String MSG_TEXT = 
@@ -35,15 +39,10 @@ public class JSmartOptionPaneTest extends TestCase
         TestRunner.run(JSmartOptionPaneTest.class);
     }
 
-    /**
-     * Setup 
-     */
-    public void setUp()
-    {
-        MSG_DETAIL = ExceptionUtil.getStackTrace(
-            new Exception("This is an exception"));        
-    }
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for DetailedDialogTest.
      * 
@@ -53,12 +52,31 @@ public class JSmartOptionPaneTest extends TestCase
     {
         super(arg0);
     }
+
+    //--------------------------------------------------------------------------
+    // Setup
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Setup 
+     */
+    public void setUp()
+    {
+        MSG_DETAIL = ExceptionUtil.getStackTrace(
+            new Exception("This is an exception"));        
+    }
+    
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests showMessageDialog() for defaults 
      */
     public void testShowDetailedMessageDialogDefault()
     {
+        logger_.info("Running testShowDetailedMessageDialogDefault...");
+        
         JSmartOptionPane.showDetailedMessageDialog(
             PARENT, MSG_TEXT, MSG_DETAIL);
     }
@@ -68,6 +86,8 @@ public class JSmartOptionPaneTest extends TestCase
      */ 
     public void testShowDetailedMessageDialogError() throws Exception
     {
+        logger_.info("Running testShowDetailedMessageDialogError...");
+        
         SwingUtil.setMotifLAF();
         JSmartOptionPane.showDetailedMessageDialog(
             PARENT, MSG_TEXT, MSG_DETAIL, MSG_TITLE, JOptionPane.ERROR_MESSAGE);
@@ -78,6 +98,8 @@ public class JSmartOptionPaneTest extends TestCase
      */
     public void testShowDetailedMessageDialogParams() throws Exception
     {
+        logger_.info("Running testShowDetailedMessageDialogParams...");
+        
         SwingUtil.setWindowsLAF();
         JSmartOptionPane.showDetailedMessageDialog(
             PARENT, "message text", MSG_DETAIL, "message title", 
@@ -89,6 +111,8 @@ public class JSmartOptionPaneTest extends TestCase
      */
     public void testShowExceptionMessageDialog()  throws Exception
     {
+        logger_.info("Running testShowExceptionMessageDialog...");
+        
         SwingUtil.setMetalLAF();
         JSmartOptionPane.showExceptionMessageDialog(PARENT, 
             new Exception("testing"));

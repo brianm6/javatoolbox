@@ -2,7 +2,9 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
+
 import toolbox.util.Console;
 
 /**
@@ -15,16 +17,19 @@ public class ConsoleTest extends TestCase
         Logger.getLogger(ConsoleTest.class);
 
     /**
-     * Test implementation of console
+     * Entrypoint
+     *
+     * @param  args  Arguments
      */
-    class TestConsole extends Console
+    public static void main(String[] args)
     {
-        public String getPrompt()
-        {
-            return "TestConsole>";
-        }
+        TestRunner.run(ConsoleTest.class);
     }
-    
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Constructor for ConsoleTest.
      * 
@@ -35,21 +40,17 @@ public class ConsoleTest extends TestCase
         super(name);
     }
     
-    /**
-     * Entrypoint
-     *
-     * @param  args  Arguments
-     */
-    public static void main(String[] args)
-    {
-        TestRunner.run(ConsoleTest.class);
-    }
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests handleCommand(classpath)
      */
     public void testHandleCommandClasspath()
     {
+        logger_.info("Running testHandleCommandClasspath...");
+        
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_CLASSPATH);
     }
@@ -59,6 +60,8 @@ public class ConsoleTest extends TestCase
      */
     public void testHandleCommandHelp() 
     {
+        logger_.info("Running testHandleCommandHelp...");
+        
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_HELP);
     }
@@ -68,6 +71,8 @@ public class ConsoleTest extends TestCase
      */
     public void testHandleCommandMem() 
     {
+        logger_.info("Running testHandleCommandMem...");
+        
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_MEM);
     }
@@ -77,6 +82,8 @@ public class ConsoleTest extends TestCase
      */
     public void testHandleCommandProps() 
     {
+        logger_.info("Running testHandleCommandProps...");
+        
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_PROPS);
     }
@@ -86,6 +93,8 @@ public class ConsoleTest extends TestCase
      */
     public void testHandleCommandUptime() 
     {
+        logger_.info("Running testHandleCommandUptime...");
+        
         TestConsole console = new TestConsole();
         console.handleCommand(Console.CMD_UPTIME);
     }
@@ -95,6 +104,8 @@ public class ConsoleTest extends TestCase
      */
     public void testHandleCommandSetProp() 
     {
+        logger_.info("Running testHandleCommandSetProp...");
+        
         TestConsole console = new TestConsole();
 
         String prop = "console.test";
@@ -111,6 +122,8 @@ public class ConsoleTest extends TestCase
      */
     public void testHandleCommandDelProp() 
     {
+        logger_.info("Running testHandleCommandDelProp...");
+        
         TestConsole console = new TestConsole();
 
         String prop = "console.delprop";
@@ -121,5 +134,20 @@ public class ConsoleTest extends TestCase
             Console.CMD_DELPROP + " " + prop);
             
         assertNull("property should be null", System.getProperty(prop));    
+    }
+    
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Test implementation of console
+     */
+    class TestConsole extends Console
+    {
+        public String getPrompt()
+        {
+            return "TestConsole>";
+        }
     }
 }

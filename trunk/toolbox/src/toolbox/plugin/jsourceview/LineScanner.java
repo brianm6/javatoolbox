@@ -1,7 +1,5 @@
 package toolbox.jsourceview;
 
-import java.io.PrintStream;
-
 /**
  * LineScanner scanner
  */
@@ -9,10 +7,14 @@ public class LineScanner implements MachineConstants
 {
     static boolean DEBUG;
     
-    /** line of source code **/
+    /** 
+     * Line of source code 
+     */
     private String line_;
     
-    /** current position **/
+    /** 
+     * Current position 
+     */
     private int position_;
     
     //--------------------------------------------------------------------------
@@ -30,7 +32,7 @@ public class LineScanner implements MachineConstants
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
 
     /**

@@ -97,73 +97,56 @@ public class JTcpTunnel extends JFrame
         server.start();
     }
 
-
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    // Public
     //--------------------------------------------------------------------------
     
     /**
-     * Tunnel thread
+     * @return  Port to listen
      */
-    class TunnelRunner implements Runnable
+    public int getListenPort()
     {
-        /**
-         * Creates server socket and reads
-         */
-        public void run()
-        {
-            ServerSocket ss = null;
+        return listenPort_;
+    }
 
-            try
-            {
-                ss = new ServerSocket(getListenPort());
-            }
-            catch (IOException ioe)
-            {
-                JSmartOptionPane.showExceptionMessageDialog(
-                    JTcpTunnel.this, ioe);
-                    
-                System.exit(1);
-            }
 
-            while (true)
-            {
-                try
-                {
-                    status_.setText("Listening for connections on port " + 
-                        getListenPort());
+    /**
+     * @return  Listen text area
+     */
+    public JTextArea getListenText()
+    {
+        return listenText_;
+    }
 
-                    // accept the connection from my client
-                    Socket sc = ss.accept();
 
-                    // connect to the thing I'm tunnelling for
-                    Socket st = new Socket(getTunnelHost(), getTunnelPort());
-                    
-                    status_.setText("Tunnelling port "+ getListenPort()+ 
-                                    " to port " + getTunnelPort() + 
-                                    " on host " + getTunnelHost() + 
-                                    " ...");
+    /**
+     * @return  Host to forward traffic to
+     */
+    public String getTunnelHost()
+    {
+        return tunnelHost_;
+    }
 
-                    // relay the stuff thru
-                    new Relay(sc.getInputStream(), st.getOutputStream(), 
-                        getListenText()).start();
-                              
-                    new Relay(st.getInputStream(), sc.getOutputStream(), 
-                        getTunnelText()).start();
 
-                    // that's it .. they're off
-                }
-                catch (Exception e)
-                {
-                    JSmartOptionPane.showExceptionMessageDialog(
-                        JTcpTunnel.this, e);
-                }
-            }
-        }
+    /**
+     * @return  Port to forward traffic to
+     */
+    public int getTunnelPort()
+    {
+        return tunnelPort_;
+    }
+
+
+    /**
+     * @return Tunnel text area
+     */
+    public JTextArea getTunnelText()
+    {
+        return tunnelText_;
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------
     
     /**
@@ -264,49 +247,68 @@ public class JTcpTunnel extends JFrame
             }
         });
     }
-
-
+    
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
+    
     /**
-     * @return  Port to listen
+     * Tunnel thread
      */
-    public int getListenPort()
+    class TunnelRunner implements Runnable
     {
-        return listenPort_;
-    }
+        /**
+         * Creates server socket and reads
+         */
+        public void run()
+        {
+            ServerSocket ss = null;
 
+            try
+            {
+                ss = new ServerSocket(getListenPort());
+            }
+            catch (IOException ioe)
+            {
+                JSmartOptionPane.showExceptionMessageDialog(
+                    JTcpTunnel.this, ioe);
+                    
+                System.exit(1);
+            }
 
-    /**
-     * @return  Listen text area
-     */
-    public JTextArea getListenText()
-    {
-        return listenText_;
-    }
+            while (true)
+            {
+                try
+                {
+                    status_.setText("Listening for connections on port " + 
+                        getListenPort());
 
+                    // accept the connection from my client
+                    Socket sc = ss.accept();
 
-    /**
-     * @return  Host to forward traffic to
-     */
-    public String getTunnelHost()
-    {
-        return tunnelHost_;
-    }
+                    // connect to the thing I'm tunnelling for
+                    Socket st = new Socket(getTunnelHost(), getTunnelPort());
+                    
+                    status_.setText("Tunnelling port "+ getListenPort()+ 
+                                    " to port " + getTunnelPort() + 
+                                    " on host " + getTunnelHost() + 
+                                    " ...");
 
+                    // relay the stuff thru
+                    new Relay(sc.getInputStream(), st.getOutputStream(), 
+                        getListenText()).start();
+                              
+                    new Relay(st.getInputStream(), sc.getOutputStream(), 
+                        getTunnelText()).start();
 
-    /**
-     * @return  Port to forward traffic to
-     */
-    public int getTunnelPort()
-    {
-        return tunnelPort_;
-    }
-
-
-    /**
-     * @return Tunnel text area
-     */
-    public JTextArea getTunnelText()
-    {
-        return tunnelText_;
+                    // that's it .. they're off
+                }
+                catch (Exception e)
+                {
+                    JSmartOptionPane.showExceptionMessageDialog(
+                        JTcpTunnel.this, e);
+                }
+            }
+        }
     }
 }

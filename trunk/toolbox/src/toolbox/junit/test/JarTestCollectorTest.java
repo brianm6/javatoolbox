@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 import junit.runner.TestCollector;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.junit.JarTestCollector;
 
 /**
@@ -13,7 +15,10 @@ import toolbox.junit.JarTestCollector;
  */
 public class JarTestCollectorTest extends TestCase
 {
-    
+    /** Logger **/
+    private static final Logger logger_ =
+        Logger.getLogger(JarTestCollectorTest.class);
+            
     /**
      * Entrypoint
      *
@@ -24,6 +29,10 @@ public class JarTestCollectorTest extends TestCase
         TestRunner.run(JarTestCollectorTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for JarTestCollectorTest
      * 
@@ -34,12 +43,17 @@ public class JarTestCollectorTest extends TestCase
         super(arg0);
     }
     
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Tests collectTests()
      */
     public void testCollectTests()
     {
+        logger_.info("Running testCollectTests...");
+        
         TestCollector tc = new JarTestCollector();
         
         for(Enumeration e = tc.collectTests(); e.hasMoreElements(); )

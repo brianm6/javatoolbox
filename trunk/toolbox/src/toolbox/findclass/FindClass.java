@@ -31,28 +31,44 @@ public class FindClass
     private static final Logger logger_ = 
         Logger.getLogger(Main.class);
     
-    /** Class to find **/
+    /**
+     * Class to find 
+     */
     private String classToFind_;
     
-    /** Class path to search on **/
+    /** 
+     * Class path to search on 
+     */
     private String[] classpath_;
     
-    /** Ignore case in search criteria **/
+    /** 
+     * Ignore case in search criteria?
+     */
     private boolean ignoreCase_;
 
-    /** Filter for jar files **/
+    /** 
+     * Filter for jar files 
+     */
     private FilenameFilter jarFilter_ = new ExtensionFilter(".jar");
     
-    /** Filter for zip files **/
+    /** 
+     * Filter for zip files 
+     */
     private FilenameFilter zipFilter_ = new ExtensionFilter(".zip");
     
-    /** Filter for class files **/
+    /** 
+     * Filter for class files 
+     */
     private FilenameFilter classFilter_ = new ExtensionFilter(".class");
     
-    /** Filter for archives **/
+    /** 
+     * Filter for archives 
+     */
     private FilenameFilter archiveFilter_ = new OrFilter(jarFilter_, zipFilter_);
     
-    /** Filter for directories **/
+    /** 
+     * Filter for directories 
+     */
     private FilenameFilter directoryFilter_ = new DirectoryFilter();
 
     /** 
@@ -61,19 +77,29 @@ public class FindClass
      */    
     private static final String debugProp_ = "findclass.debug";
 
-    /** regular expression matcher **/
-    private RE     regExp_;
+    /** 
+     * Regular expression matcher 
+     */
+    private RE regExp_;
 
-    /** Collection of listeners **/
+    /** 
+     * Collection of listeners 
+     */
     private List findListeners_ = new ArrayList();
     
-    /** Default collector **/
+    /** 
+     * Default collector 
+     */
     private FindClassCollector defaultCollector_ = new FindClassCollector();
 
-    /** Holds ordered list of search targets **/
+    /** 
+     * Holds ordered list of search targets 
+     */
     private List searchTargets_ = null;
 
-    /** Flag to cancel the search **/
+    /** 
+     * Flag to cancel the search 
+     */
     private boolean isCancelled_;
     
     //--------------------------------------------------------------------------
@@ -93,7 +119,7 @@ public class FindClass
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
 
     /**
@@ -148,7 +174,84 @@ public class FindClass
         return defaultCollector_.getResults();
     }
 
+    /**
+     * Returns list of targets that will be searched
+     * 
+     * @return  List of targets as strings
+     */
+    public List getSearchTargets()
+    {
+        // build lazily
+        if (searchTargets_ == null)
+        {
+            buildSearchTargets();    
+        }
+        
+        return searchTargets_;
+    }
+    
+    /**
+     * Cancels a pending search
+     */
+    public void  cancelSearch()
+    {
+        isCancelled_ = true;
+    }
+    
+    /**
+     * Adds a search target to the front of the search target list.
+     * A search target is a valid directory or java archive.
+     * 
+     * @param  target  Absolute location of directory or jar/zip file
+     */
+    public void addSearchTarget(String searchTarget)
+    {
+        searchTargets_.add(searchTarget);
+    }
+    
+    /**
+     * Adds a file or a directory as the search target. If a directory, then
+     * it is scanned recursively for archives all of which are added as search
+     * targets. If a file, then that single archive file is added as a search
+     * target.
+     * 
+     * @param  target  File or directory
+     */
+    public void addSearchTarget(File target)
+    {
+        if (target.isDirectory())
+        {
+            searchTargets_.addAll(findFilesRecursively(
+                target.getAbsolutePath(), archiveFilter_));
+        }
+        else
+        {
+            searchTargets_.add(target.getAbsolutePath());            
+        }
+    }
+    
+    /**
+     * Removes a search target from the list of search targets
+     *
+     * @param  target  Search Target to remove
+     */
+    public void removeSearchTarget(String searchTarget)
+    {
+        searchTargets_.remove(searchTarget);
+    }
+    
+    /**
+     * Removes all search targets
+     */
+    public void removeAllSearchTargets()
+    {
+        searchTargets_.clear();
+    }
 
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    
     /**
      * Builds the list of search targets
      */
@@ -173,7 +276,6 @@ public class FindClass
             logger_.debug(method + "==============================");                
         }
     }
-
     
     /**
      * Retrieves all search targets (archives and directories) on the classpath
@@ -197,7 +299,6 @@ public class FindClass
             
         return targets;
     }
-
     
     /**
      * Retrieves a list of all archive targets to search
@@ -263,7 +364,6 @@ public class FindClass
         
         return basket;
     }
-
     
     /**
      * Finds class in a given jar file
@@ -312,7 +412,6 @@ public class FindClass
         }
         zf.close();
     }
-
     
     /**
      * Finds class in a given directory and subdirs
@@ -359,7 +458,6 @@ public class FindClass
             }
         }
     }
-
     
     /**
      * Determines whether a given file is a java archive
@@ -367,12 +465,15 @@ public class FindClass
      * @param   s   absolute name of the java archive
      * @return      true if a valid archive, false otherwise
      */
-    public static boolean isArchive(String s) 
+    protected static boolean isArchive(String s) 
     { 
         s = s.toUpperCase();
         return (s.endsWith(".JAR") || s.endsWith(".ZIP"));
     }
 
+    //--------------------------------------------------------------------------
+    // Event Listener Support
+    //--------------------------------------------------------------------------
 
     /**
      * Called when a class is found by the various search methods
@@ -390,7 +491,6 @@ public class FindClass
         }
     }
 
-
     /**
      * Called when a class is found by the various search methods
      *
@@ -406,7 +506,6 @@ public class FindClass
             listener.searchingTarget(target);
         }
     }
-
     
     /**
      * Called when the search is cancelled
@@ -421,7 +520,6 @@ public class FindClass
             listener.searchCancelled();
         }
     }
-
  
     /**
      * Adds a listener to the notification list
@@ -442,85 +540,5 @@ public class FindClass
     public void removeFindClassListener(IFindClassListener listener)
     {
         findListeners_.remove(listener);
-    }
-
-    
-    /**
-     * Returns list of targets that will be searched
-     * 
-     * @return  List of targets as strings
-     */
-    public List getSearchTargets()
-    {
-        // build lazily
-        if (searchTargets_ == null)
-        {
-            buildSearchTargets();    
-        }
-        
-        return searchTargets_;
-    }
-
-    
-    /**
-     * Cancels a pending search
-     */
-    public void  cancelSearch()
-    {
-        isCancelled_ = true;
-    }
-    
-    
-    /**
-     * Adds a search target to the front of the search target list.
-     * A search target is a valid directory or java archive.
-     * 
-     * @param  target  Absolute location of directory or jar/zip file
-     */
-    public void addSearchTarget(String searchTarget)
-    {
-        searchTargets_.add(searchTarget);
-    }
-    
-    
-    /**
-     * Adds a file or a directory as the search target. If a directory, then
-     * it is scanned recursively for archives all of which are added as search
-     * targets. If a file, then that single archive file is added as a search
-     * target.
-     * 
-     * @param  target  File or directory
-     */
-    public void addSearchTarget(File target)
-    {
-        if (target.isDirectory())
-        {
-            searchTargets_.addAll(findFilesRecursively(
-                target.getAbsolutePath(), archiveFilter_));
-        }
-        else
-        {
-            searchTargets_.add(target.getAbsolutePath());            
-        }
-    }
-
-    
-    /**
-     * Removes a search target from the list of search targets
-     *
-     * @param  target  Search Target to remove
-     */
-    public void removeSearchTarget(String searchTarget)
-    {
-        searchTargets_.remove(searchTarget);
-    }
-    
-    
-    /**
-     * Removes all search targets
-     */
-    public void removeAllSearchTargets()
-    {
-        searchTargets_.clear();
     }
 }     

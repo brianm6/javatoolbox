@@ -2,30 +2,19 @@ package toolbox.util.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
-import toolbox.util.StringUtil;
 
 /**
  * ArrayUtil unit test class
  */
 public class ArrayUtilTest extends TestCase
 {
-    
     /** Logger **/
-    private static final Logger logger = 
+    private static final Logger logger_ = 
         Logger.getLogger(ArrayUtilTest.class);
-
-    /**
-     * ArrayUtilTest constructor
-     *  
-     * @param aName String
-     */
-    public ArrayUtilTest(String aName)
-    {
-        super(aName);
-    }
-
 
     /**
      * Starts the test case and runs the entire suite.
@@ -37,12 +26,31 @@ public class ArrayUtilTest extends TestCase
         TestRunner.run(ArrayUtilTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * ArrayUtilTest constructor
+     *  
+     * @param aName String
+     */
+    public ArrayUtilTest(String aName)
+    {
+        super(aName);
+    }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
 
     /**
      * Test subset() for subset equal to array
      */
     public void testSubsetDoubleAll() 
     {
+        logger_.info("Running testSubsetDoubleAll...");
+        
         int len = 10;
         double[] d = new double[len];
 
@@ -63,6 +71,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testSubsetDoubleEmpty() 
     {
+        logger_.info("Running testSubsetDoubleEmpty...");
+        
         double[] d = new double[0];
         double[] e = ArrayUtil.subset(d, 0, 0);
         assertEquals("subset should be empty", 0, e.length);
@@ -74,6 +84,7 @@ public class ArrayUtilTest extends TestCase
      */
     public void testSubsetDoubleFirstHalf() 
     {
+        logger_.info("Running testSubsetDoubleFirstHalf...");
         int len = 10;
         double[] d = new double[len];
 
@@ -94,6 +105,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testSubsetDoubleOne() 
     {
+        logger_.info("Running testSubsetDoubleOne...");
+        
         double[] d = new double[]{99};
         double[] e = ArrayUtil.subset(d, 0, 0);
         assertEquals("subset should have one element", 1, e.length);
@@ -106,6 +119,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testSubsetDoubleSecondHalf()
     {
+        logger_.info("Running testSubsetDoubleSecondHalf...");
+        
         int len = 10;
         double[] d = new double[len];
 
@@ -131,14 +146,16 @@ public class ArrayUtilTest extends TestCase
      */
     public void testSubsetObjectAll() 
     {
+        logger_.info("Running testSubsetObjectAll...");
+        
         String method = "[subObj] ";
         
         String[] objs = new String[] { "zero", "one", "two", "three" };
         
         String[] subset = (String[]) ArrayUtil.subset(objs, 1, 2);
         
-        logger.info(method + ArrayUtil.toString(objs));
-        logger.info(method + ArrayUtil.toString(subset));
+        logger_.info(method + ArrayUtil.toString(objs));
+        logger_.info(method + ArrayUtil.toString(subset));
         
         assertEquals("first index is incorrect", "one", subset[0]);
         assertEquals("second index is incorrect", "two", subset[1]);
@@ -150,6 +167,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testSubsetObjectEmpty() 
     {
+        logger_.info("Running testSubsetObjectEmpty...");
+        
         String[] d = new String[0];
         String[] e = (String[]) ArrayUtil.subset(d, 0, 0);
         assertEquals("subset should be empty", 0, e.length);
@@ -161,6 +180,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testSubsetObjectOne() 
     {
+        logger_.info("Running testSubsetObjectOne...");
+        
         String[] d = new String[] { "a", "b", "c" };
         String[] e = (String[])ArrayUtil.subset(d, 0, 0);
         assertEquals("subset should have one element", 1, e.length);
@@ -181,6 +202,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testToString()
     {
+        logger_.info("Running testToString...");
+        
         String[] s = new String[]
         {
             "one", "two", "three", "four", "five", "six", "seven", "eight", 
@@ -189,7 +212,7 @@ public class ArrayUtilTest extends TestCase
         
         String expected = "[10]{one, two, three, four, five, six, seven, eight, nine, ten}";
         String result   = ArrayUtil.toString(s, false);
-        logger.info("[toStrn] " + result);
+        logger_.info("[toStrn] " + result);
         assertEquals("strings don't match", expected, result);
 
     }
@@ -200,8 +223,10 @@ public class ArrayUtilTest extends TestCase
      */
     public void testToStringEmpty()
     {
+        logger_.info("Running testToStringEmpty...");
+        
         String[] s = new String[0];
-        logger.info("[sempty] " + ArrayUtil.toString(s));
+        logger_.info("[sempty] " + ArrayUtil.toString(s));
     }
     
 
@@ -210,9 +235,11 @@ public class ArrayUtilTest extends TestCase
      */
     public void testToStringOneElementOnePerLine()
     {
+        logger_.info("Running testToStringOneElementOnePerLine...");
+        
         String[] s = new String[] { "hello"};
-        logger.info("[oneelm] " + ArrayUtil.toString(s, true));
-        logger.info("[oneelm] " + ArrayUtil.toString(s, false));        
+        logger_.info("[oneelm] " + ArrayUtil.toString(s, true));
+        logger_.info("[oneelm] " + ArrayUtil.toString(s, false));        
     }
 
 
@@ -221,6 +248,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testToStringOnePerLine()
     {
+        logger_.info("Running testToStringOnePerLine...");
+        
         String[] s = new String[]
         {
             "one", "two", "three", "four", "five", "six", "seven", "eight", 
@@ -228,7 +257,7 @@ public class ArrayUtilTest extends TestCase
         };
         
         String result   = ArrayUtil.toString(s, true);
-        logger.info("[oneper]\n " + result);
+        logger_.info("[oneper]\n " + result);
     }
 
     
@@ -237,6 +266,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testIndexOfEmpty() 
     {
+        logger_.info("Running testIndexOfEmpty...");
+        
         String strArray[] = new String[0];
         String s = "duke";
         
@@ -251,6 +282,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testIndexOfOne()
     {
+        logger_.info("Running testIndexOfOne...");
+        
         String   s = "duke";
         String[] strArray = new String[] { s };
         
@@ -266,6 +299,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testIndexOfOneNotFound()
     {
+        logger_.info("Running testIndexOfOneNotFound...");
+        
         String   s = "duke";
         String[] strArray = new String[] { "java" };
         
@@ -281,6 +316,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testIndexOfMany()
     {
+        logger_.info("Running testIndexOfMany...");
+        
         String   two = "two";
         
         String[] strArray = 
@@ -297,6 +334,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testIndexOfManyNotFound()
     {
+        logger_.info("Running testIndexOfManyNotFound...");
+        
         String   notFound = "notFound";
         
         String[] strArray = 
@@ -313,6 +352,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testContainsEmpty()
     {
+        logger_.info("Running testContainsEmpty...");
+        
         assertTrue("Should not be found in an empty array",
             !ArrayUtil.contains(new String[0], "blah"));
     }
@@ -323,6 +364,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testContainsOneNotFound()
     {
+        logger_.info("Running testContainsOneNotFound...");
+        
         assertTrue("Should not be found in an array of size one", 
             !ArrayUtil.contains(new String[] {"this"}, "dont match"));
     }
@@ -333,6 +376,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testContainsManyNotFound()
     {
+        logger_.info("Running testContainsManyNotFound...");
+        
         assertTrue("Should not be found in an array with size > one", 
             !ArrayUtil.contains(new String[] {"one", "two", "three" }, "zero"));
     }    
@@ -343,6 +388,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testContainsOne()
     {
+        logger_.info("Running testContainsOne...");
+        
         assertTrue("Should have found in an array of size one", 
             ArrayUtil.contains(new String[] {"this"}, "this"));
     }
@@ -353,6 +400,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testContainsMany()
     {
+        logger_.info("Running testContainsMany...");
+        
         assertTrue("Should have found in an array with size > one", 
             ArrayUtil.contains(new String[] {"one", "two", "three" }, "two"));
     }    
@@ -363,6 +412,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testIsNullOrEmpty()
     {
+        logger_.info("Running testIsNullOrEmpty...");
+        
         String[] nullArray  = null;
         String[] emptyArray = new String[0];
         String[] oneArray   = new String[] { "zero" };
@@ -406,6 +457,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatBothEmpty()
     {
+        logger_.info("Running testConcatBothEmpty...");
+        
         String[] head = new String[0];
         String[] tail = new String[0];
         
@@ -422,6 +475,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatEmptyOne()
     {
+        logger_.info("Running testConcatEmptyOne...");
+        
         String[] head = new String[0];
         String[] tail = new String[] { "one" };
         
@@ -439,6 +494,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatEmptyMany()
     {
+        logger_.info("Running testConcatEmptyMany...");
+        
         String[] head = new String[0];
         String[] tail = new String[] { "one", "two", "three", "four" };
         
@@ -461,6 +518,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatOneEmpty()
     {
+        logger_.info("Running testConcatOneEmpty...");
+        
         String[] tail = new String[0];
         String[] head = new String[] { "one" };
         
@@ -478,6 +537,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatManyEmpty()
     {
+        logger_.info("Running testConcatManyEmpty...");
+        
         String[] tail = new String[0];
         String[] head = new String[] { "one", "two", "three", "four" };
         
@@ -500,6 +561,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatBothOne()
     {
+        logger_.info("Running testConcatBothOne...");
+        
         String[] head = new String[] { "one" };
         String[] tail = new String[] { "two" };
         
@@ -519,6 +582,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatManyOne()
     {
+        logger_.info("Running testConcatManyOne...");
+        
         String[] head = new String[] { "one", "two", "three", "four" };
         String[] tail = new String[] { "five" };
         
@@ -546,6 +611,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatOneMany()
     {
+        logger_.info("Running testConcatOneMany...");
+        
         String[] tail = new String[] { "one", "two", "three", "four" };
         String[] head = new String[] { "five" };
         
@@ -572,6 +639,8 @@ public class ArrayUtilTest extends TestCase
      */
     public void testConcatBothMany()
     {
+        logger_.info("Running testConcatBothMany...");
+        
         String[] head = new String[] { "one", "two", "three", "four" };
         String[] tail = new String[] { "five", "six", "seven", "eight" };
         

@@ -5,6 +5,8 @@ import java.util.Properties;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.PropertiesUtil;
 
 /**
@@ -12,6 +14,10 @@ import toolbox.util.PropertiesUtil;
  */
 public class PropertiesUtilTest extends TestCase
 {
+    /** Logger **/
+    private static final Logger logger_ =
+        Logger.getLogger(PropertiesUtilTest.class);
+        
     /**
      * Entrypoint
      */
@@ -19,6 +25,10 @@ public class PropertiesUtilTest extends TestCase
     {
         TestRunner.run(PropertiesUtilTest.class);
     }
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for PropertiesUtilTest.
@@ -30,11 +40,17 @@ public class PropertiesUtilTest extends TestCase
         super(arg0);
     }
 
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests getBoolean()
      */
     public void testGetBoolean()
     {
+        logger_.info("Running testGetBoolean...");
+        
         Properties props = new Properties();
         
         // lower case
@@ -75,6 +91,8 @@ public class PropertiesUtilTest extends TestCase
      */
     public void testSetBoolean()
     {
+        logger_.info("Running testSetBoolean...");
+        
         Properties props = new Properties();
         
         PropertiesUtil.setBoolean(props, "1", true);
@@ -89,6 +107,8 @@ public class PropertiesUtilTest extends TestCase
      */
     public void testGetInteger()
     {
+        logger_.info("Running testGetInteger...");
+        
         Properties props = new Properties();
         
         props.setProperty("1", "100");
@@ -109,6 +129,8 @@ public class PropertiesUtilTest extends TestCase
      */
     public void testSetInteger()
     {
+        logger_.info("Running testSetInteger...");
+        
         Properties props = new Properties();
         
         PropertiesUtil.setInteger(props, "0", 0);

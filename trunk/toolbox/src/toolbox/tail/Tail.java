@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.ThreadUtil;
 
 /**
@@ -30,34 +31,54 @@ public class Tail implements Runnable
     private static final Logger logger_ = 
         Logger.getLogger(Tail.class);
     
-    /** Number of line for initial backlog **/
+    /** 
+     * Number of line for initial backlog 
+     */
     public static final int NUM_LINES_BACKLOG = 10;
 
-    /** Tail listeners **/
+    /** 
+     * Tail listeners 
+     */
     private List listeners_ = new ArrayList();
     
-    /** Stream listenres **/
+    /** 
+     * Stream listeners
+     */
     private List streams_ = new ArrayList();
     
-    /** Writer listeners **/
+    /** 
+     * Writer listeners 
+     */
     private List writers_ = new ArrayList();
 
-    /** Thread that runner is associated with **/
+    /** 
+     * Thread that runner is associated with 
+     */
     private Thread thread_;
 
-    /** Reader to tail **/
+    /** 
+     * Reader to tail 
+     */
     private Reader reader_;
     
-    /** File if reader originated at one **/
+    /** 
+     * File if reader originated at one 
+     */
     private File file_;
 
-    /** Paused state of the runner **/
+    /** 
+     * Paused state of the runner 
+     */
     private boolean paused_ = false;
 
-    /** Active state of the tail **/
+    /** 
+     * Active state of the tail 
+     */
     private boolean isAlive_ = false;
 
-    /** Flag to signify a shutdown is pending **/
+    /** 
+     * Flag to signify a shutdown is pending 
+     */
     private boolean pendingShutdown_ = false;
     
     //--------------------------------------------------------------------------
@@ -72,7 +93,7 @@ public class Tail implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------    
     
     /**
@@ -187,24 +208,6 @@ public class Tail implements Runnable
 
 
     /**
-     * Connects to the provided stream source
-     * 
-     * @throws FileNotFoundException
-     */
-    protected void connect() throws FileNotFoundException
-    {
-        if (getFile() != null)
-        {
-            reader_ = new LineNumberReader(new FileReader(getFile()));
-        }
-        else
-        {
-            reader_ = new LineNumberReader(getReader());
-        }
-    }
-
-
-    /**
      * Pauses the tail
      */
     public void pause()
@@ -240,23 +243,6 @@ public class Tail implements Runnable
         }
     }
 
-
-    /**
-     * Spin while tail is paused
-     */
-    protected void checkPaused()
-    {
-        /* loop de loop while paused */
-        while (paused_)
-        {
-            fireTailPaused();
-
-            while (paused_)
-                ThreadUtil.sleep(1);
-
-            fireTailUnpaused();
-        }
-    }
 
     /**
      * @param  listener   Listener to add
@@ -302,7 +288,113 @@ public class Tail implements Runnable
         streams_.remove(os);
     }
 
+    
+    /**
+     * @return Number of listeners of each type
+     */
+    public String toString()
+    {
+        return "Listeners = " + listeners_.size() + "\n" + 
+               "Streams   = " + streams_.size() + "\n" + 
+               "Writers   = " + writers_.size() + "\n";
+    }
+    
+    
+    /**
+     * Returns the file.
+     * 
+     * @return File
+     */
+    public File getFile()
+    {
+        return file_;
+    }
 
+
+    /**
+     * @return  True if the tail is paused, false otherwise
+     */
+    public boolean isPaused()
+    {
+        return paused_;
+    }
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Spin while tail is paused
+     */
+    protected void checkPaused()
+    {
+        /* loop de loop while paused */
+        while (paused_)
+        {
+            fireTailPaused();
+
+            while (paused_)
+                ThreadUtil.sleep(1);
+
+            fireTailUnpaused();
+        }
+    }
+
+    /**
+     * Sets the file.
+     * 
+     * @param file The file to set
+     */
+    protected void setFile(File file)
+    {
+        file_ = file;
+    }
+
+
+    /**
+     * Returns the reader.
+     * 
+     * @return Reader
+     */
+    protected Reader getReader()
+    {
+        return reader_;
+    }
+
+
+    /**
+     * Sets the reader.
+     * 
+     * @param reader The reader to set
+     */
+    protected void setReader(Reader reader)
+    {
+        reader_ = reader;
+    }
+
+
+    /**
+     * Connects to the provided stream source
+     * 
+     * @throws FileNotFoundException
+     */
+    protected void connect() throws FileNotFoundException
+    {
+        if (getFile() != null)
+        {
+            reader_ = new LineNumberReader(new FileReader(getFile()));
+        }
+        else
+        {
+            reader_ = new LineNumberReader(getReader());
+        }
+    }
+
+
+    //--------------------------------------------------------------------------
+    // Event Listener Support
+    //--------------------------------------------------------------------------
+    
     /**
      * Fires event for availability of the next line of the tail
      * 
@@ -450,70 +542,6 @@ public class Tail implements Runnable
                 logger_.error("fireTailPaused", e);
             }
         }
-    }
-
-    
-    /**
-     * @return Number of listeners of each type
-     */
-    public String toString()
-    {
-        return "Listeners = " + listeners_.size() + "\n" + 
-               "Streams   = " + streams_.size() + "\n" + 
-               "Writers   = " + writers_.size() + "\n";
-    }
-    
-    
-    /**
-     * Returns the file.
-     * 
-     * @return File
-     */
-    public File getFile()
-    {
-        return file_;
-    }
-
-
-    /**
-     * Sets the file.
-     * 
-     * @param file The file to set
-     */
-    protected void setFile(File file)
-    {
-        file_ = file;
-    }
-
-
-    /**
-     * @return  True if the tail is paused, false otherwise
-     */
-    public boolean isPaused()
-    {
-        return paused_;
-    }
-
-
-    /**
-     * Returns the reader.
-     * 
-     * @return Reader
-     */
-    protected Reader getReader()
-    {
-        return reader_;
-    }
-
-
-    /**
-     * Sets the reader.
-     * 
-     * @param reader The reader to set
-     */
-    protected void setReader(Reader reader)
-    {
-        reader_ = reader;
     }
     
     //--------------------------------------------------------------------------

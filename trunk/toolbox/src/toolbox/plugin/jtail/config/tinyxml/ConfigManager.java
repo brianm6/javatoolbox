@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
@@ -36,7 +37,7 @@ public class ConfigManager implements IConfigManager
     }
 
     //--------------------------------------------------------------------------
-    //  Interfaces - IConfigManager
+    //  IConfigManager Interface
     //--------------------------------------------------------------------------
     
     /**

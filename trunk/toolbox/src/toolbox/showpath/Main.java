@@ -9,27 +9,10 @@ import java.util.Vector;
  */
 public class Main
 {
-    /** list of paths **/
-    private static Vector checkList = new Vector();
-
-    /**
-     * Checks if a path is a duplicate by checking the existing list
-     * 
-     * @param  dupe  Path to check for duplicate
-     * @return True if duplicate, flase otherwise
+    /** 
+     * List of paths 
      */
-    public static boolean isDupe(String dupe)
-    {
-        for (Enumeration e = checkList.elements(); e.hasMoreElements();)
-        {
-            String check = (String)e.nextElement();
-
-            if (dupe.toUpperCase().equals(check.toUpperCase()))
-                return true;
-        }
-
-        return false;
-    }
+    private static Vector checkList = new Vector();
 
     /**
      * Entrypoint for showclasspath
@@ -56,4 +39,25 @@ public class Main
             System.out.println();
         }
     }
+
+
+    /**
+     * Checks if a path is a duplicate by checking the existing list
+     * 
+     * @param  dupe  Path to check for duplicate
+     * @return True if duplicate, flase otherwise
+     */
+    public static boolean isDupe(String dupe)
+    {
+        for (Enumeration e = checkList.elements(); e.hasMoreElements();)
+        {
+            String check = (String)e.nextElement();
+
+            if (dupe.toUpperCase().equals(check.toUpperCase()))
+                return true;
+        }
+
+        return false;
+    }
+
 }

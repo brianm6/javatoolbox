@@ -47,6 +47,9 @@ public class Main
         Main launcher = new Main(args);
     }
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates the launcher with the given arguments
@@ -85,6 +88,10 @@ public class Main
         }
         
     }
+    
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
     
     /**
      * Launches a toolbox executable with the given classname and arguments
@@ -135,7 +142,7 @@ public class Main
     /**
      * Prints launcher usage
      */
-    public void printUsage()
+    protected void printUsage()
     {
         System.out.println(
             "Usage: java -jar toolbox.jar [program] [args]          \n" +

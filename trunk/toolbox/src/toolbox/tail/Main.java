@@ -23,6 +23,10 @@ public class Main extends TailAdapter
         Main tail = new Main(args);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Arg constructor
      * 
@@ -55,6 +59,10 @@ public class Main extends TailAdapter
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    
     /**
      * Program usage 
      */
@@ -68,6 +76,10 @@ public class Main extends TailAdapter
             "Example : java toolbox.tail.Main appserver.log");
     }
  
+    //--------------------------------------------------------------------------
+    // Overridden from TailAdapter
+    //--------------------------------------------------------------------------
+    
     /**
      * Override and print out the next line 
      * 

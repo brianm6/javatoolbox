@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
+
 import toolbox.util.DoubleUtil;
 
 /**
@@ -11,6 +14,10 @@ import toolbox.util.DoubleUtil;
  */
 public class DoubleUtilTest extends TestCase
 {
+    /** Logger **/
+    private static final Logger logger_ =
+        Logger.getLogger(DoubleUtilTest.class);
+        
     public static final DecimalFormat TWO_DIGIT_FORMAT = 
         new DecimalFormat("#########.##");
         
@@ -24,7 +31,10 @@ public class DoubleUtilTest extends TestCase
         TestRunner.run(DoubleUtilTest.class);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for DoubleUtilTest.
      * 
@@ -35,13 +45,18 @@ public class DoubleUtilTest extends TestCase
         super(arg0);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Unit Test
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests isDouble() for scenarios where the result is true
      */
     public void testIsDoubleTrue() throws Exception
     {
-        /* positive */
+        logger_.info("Running testIsDoubleTrue...");
+        
+        // positive
         assertTrue("0 is a double", DoubleUtil.isDouble("0"));
         assertTrue("0.00 is a double", DoubleUtil.isDouble("0.00"));
         assertTrue("12345 is a double", DoubleUtil.isDouble("12345"));
@@ -58,7 +73,9 @@ public class DoubleUtilTest extends TestCase
      */
     public void testIsDoubleFalse() throws Exception
     {
-        /* negative */
+        logger_.info("Running testIsDoubleFalse...");
+        
+        // negative
         assertTrue("null is not a double", !DoubleUtil.isDouble(null));
         assertTrue("empty string is not a double", !DoubleUtil.isDouble(""));
         assertTrue("alpha is not a double", !DoubleUtil.isDouble("a"));
@@ -79,6 +96,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testMedianEmpty() throws Exception
     {
+        logger_.info("Running testMedianEmpty...");
+        
         double[] d = new double[0];
 
         try
@@ -98,6 +117,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testMedianEven() throws Exception
     {
+        logger_.info("Running testMedianEven...");
+        
         int len = 6;
 
         double[] d = new double[len];
@@ -115,6 +136,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testMedianOdd() throws Exception
     {
+        logger_.info("Running testMedianOdd...");
+        
         int len = 5;
 
         double[] d = new double[len];
@@ -133,6 +156,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testMedianOne() throws Exception
     {
+        logger_.info("Running testMedianOne...");
+        
         double[] d = new double[] { 99 };
         double e = DoubleUtil.median(d);
         assertEquals("values don't match", d[0], e, 0);
@@ -144,6 +169,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testRoundDown() throws Exception
     {
+        logger_.info("Running testRoundDown...");
+        
         double d = 100.123;
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.12", s);
@@ -155,6 +182,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testRoundMax() throws Exception
     {
+        logger_.info("Running testRoundMax...");
+        
         double d = 100.6585754859606858456484758586585785765785;
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.66", s);
@@ -166,6 +195,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testRoundOneDecimal() throws Exception
     {
+        logger_.info("Running testRoundOneDecimal...");
+        
         double d = 100.10;
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.1", s);
@@ -177,6 +208,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testRoundTwoDecimal() throws Exception
     {
+        logger_.info("Running testRoundTwoDecimal...");
+        
         double d = 100.12;
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.12", s);
@@ -192,6 +225,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testRoundUp() throws Exception
     {
+        logger_.info("Running testRoundUp...");
+        
         double d = 100.127;
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100.13", s);
@@ -203,6 +238,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testRoundWholeNumber() throws Exception
     {
+        logger_.info("Running testRoundWholeNumber...");
+        
         double d = 100;
         String s = DoubleUtil.round(d, TWO_DIGIT_FORMAT);
         assertEquals("Rounding failed.", "100", s);
@@ -214,6 +251,8 @@ public class DoubleUtilTest extends TestCase
      */
     public void testIsBetween()
     {
+        logger_.info("Running testIsBetween...");
+        
         double a = 5.5;
         double b = 10.7;
         double c = -34.2;

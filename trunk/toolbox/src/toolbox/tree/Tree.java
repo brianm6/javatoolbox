@@ -210,7 +210,19 @@ public class Tree
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Prints the tree
+     */    
+    public void showTree()
+    {
+        showTree(rootDir_, "");
+    }
+    
+    //--------------------------------------------------------------------------
+    //  Private
     //--------------------------------------------------------------------------
     
     /**
@@ -222,16 +234,6 @@ public class Tree
         System.out.println("Usage    : tree [-f] <dir>");
         System.out.println("Options  : -f  => include files");
     }
-
-
-    /**
-     * Prints the tree
-     */    
-    public void showTree()
-    {
-        showTree(rootDir_, "");
-    }
-
     
     /**
      * Recurses the directory structure of the given rootDir and generates

@@ -2,16 +2,14 @@ package toolbox.tree.test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.log4j.Logger;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.tree.Tree;
 import toolbox.util.FileUtil;
-import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 
 /**
@@ -23,7 +21,9 @@ public class TreeTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(TreeTest.class);
     
-    /** Temporary directory that will serve as the root dir for tests **/
+    /** 
+     * Temporary directory that will serve as the root dir for tests 
+     */
     private File rootDir_;
 
     /**
@@ -35,7 +35,11 @@ public class TreeTest extends TestCase
     {
         TestRunner.run(TreeTest.class);
     }
-    
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+        
     /**
      * Constructor for TreeTest.
      * 
@@ -46,7 +50,10 @@ public class TreeTest extends TestCase
         super(arg0);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Setup
+    //--------------------------------------------------------------------------
+    
     /**
      * Create a temp directory to play around in
      */
@@ -65,7 +72,10 @@ public class TreeTest extends TestCase
         rootDir_.delete();
     }
 
-    
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+        
     /**
      * Tests for a simple cascading structure
      */
@@ -283,7 +293,9 @@ public class TreeTest extends TestCase
         printNativeFileTree(rootDir_);
     }
 
-
+    //--------------------------------------------------------------------------
+    // Helper Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Creates a temp file in the given directory

@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
+
 import toolbox.jtail.config.IJTailConfig;
 
 /**
@@ -32,9 +33,14 @@ public class PreferencesDialog extends JDialog implements ActionListener
     private static final String ACTION_OK     = "OK";
     private static final String ACTION_CANCEL = "Cancel";
     
-    /** Preferences will be changed on the config object directly **/
+    /** 
+     * Preferences will be changed on the config object directly 
+     */
     private IJTailConfig config_;
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Constructor for PreferencesDialog.
@@ -49,6 +55,9 @@ public class PreferencesDialog extends JDialog implements ActionListener
         pack();
     }
     
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
     
     /**
      * Builds the GUI
@@ -117,6 +126,9 @@ public class PreferencesDialog extends JDialog implements ActionListener
         return prefPanel;
     }
 
+    //--------------------------------------------------------------------------
+    // ActionListener Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @param  e  ActionEvent

@@ -17,6 +17,10 @@ public class Assert
     /** Default assertion error message **/
     private static final String DEFAULT_MSG = "";
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Enforce singleton
      */
@@ -24,6 +28,10 @@ public class Assert
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Assert that two doubles are equals within some tolerance.
      *

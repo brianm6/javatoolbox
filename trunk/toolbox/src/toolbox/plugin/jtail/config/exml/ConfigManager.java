@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+
+import electric.xml.Document;
+import electric.xml.Element;
+
 import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.SwingUtil;
-
-import electric.xml.Document;
-import electric.xml.Element;
 
 /**
  * Configuration manager for Electric XML persistence strategy
@@ -35,7 +36,7 @@ public class ConfigManager implements IConfigManager
     }
 
     //--------------------------------------------------------------------------
-    //  Interface IConfigManager
+    //  IConfigManager Interface
     //--------------------------------------------------------------------------
 
     /**

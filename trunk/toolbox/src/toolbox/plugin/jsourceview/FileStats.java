@@ -5,16 +5,24 @@ package toolbox.jsourceview;
  */
 public class FileStats
 {
-    /** Total number of lines in file **/    
+    /** 
+     * Total number of lines in file 
+     */    
     private int totalLines_;
     
-    /** Number of comment lines in file **/
+    /** 
+     * Number of comment lines in file 
+     */
     private int commentLines_;
     
-    /** Number of code lines in file **/
+    /** 
+     * Number of code lines in file 
+     */
     private int codeLines_;
     
-    /** Number of blank lines in file **/
+    /** 
+     * Number of blank lines in file 
+     */
     private int blankLines_;
     
     //--------------------------------------------------------------------------
@@ -29,7 +37,7 @@ public class FileStats
     }
     
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------
     
     /**

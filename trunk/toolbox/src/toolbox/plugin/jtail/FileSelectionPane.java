@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.ui.JFileExplorer;
 
 /**
@@ -51,7 +52,7 @@ public class FileSelectionPane extends JPanel implements ActionListener
     }
     
     //--------------------------------------------------------------------------
-    //  Implementation
+    // Private
     //--------------------------------------------------------------------------    
     
 	/**
@@ -71,7 +72,20 @@ public class FileSelectionPane extends JPanel implements ActionListener
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 
-	
+    
+    /**
+     * Tail button 
+     */
+    protected void tailButtonClicked()
+    {
+        logger_.info("tail");
+    }
+
+    
+    //--------------------------------------------------------------------------
+    // ActionListener Interface
+    //--------------------------------------------------------------------------
+    	
 	/**
 	 * ActionListener interface
 	 */
@@ -85,14 +99,6 @@ public class FileSelectionPane extends JPanel implements ActionListener
 			logger_.warn("No handler for " + e);
 	}
 	
-    
-	/**
-	 * Tail button 
-	 */
-	protected void tailButtonClicked()
-	{
-		logger_.info("tail");
-	}
     
     //--------------------------------------------------------------------------
     //  Accessors/Mutators

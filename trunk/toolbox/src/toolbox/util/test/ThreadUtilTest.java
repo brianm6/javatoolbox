@@ -53,6 +53,8 @@ public class ThreadUtilTest extends TestCase
      */
     public void testSleep() 
     {
+        logger_.info("Running testSleep...");
+        
         // Not much to test
         ThreadUtil.sleep(1000);
     }
@@ -64,6 +66,8 @@ public class ThreadUtilTest extends TestCase
      */
     public void testRunSimple() throws Exception
     {
+        logger_.info("Running testRunSimple...");
+        
         Tester target = new Tester();
         ThreadUtil.run(target, "pingSimple", null).join();
         assertTrue("ping was not executed", target.pingSimpleCalled);
@@ -76,6 +80,8 @@ public class ThreadUtilTest extends TestCase
      */
     public void testRunArgs() throws Exception
     {
+        logger_.info("Running testRunArgs...");
+        
         Tester target = new Tester();
         
         // Call method with args
@@ -97,6 +103,8 @@ public class ThreadUtilTest extends TestCase
      */
     public void testRunComplex() throws Exception
     {
+        logger_.info("Running testRunComplex...");
+        
         Tester target = new Tester();
         
         PrintWriter writer = new PrintWriter(System.out);
@@ -120,6 +128,8 @@ public class ThreadUtilTest extends TestCase
      */
     public void testRunPrimitive() throws Exception
     {
+        logger_.info("Running testRunPrimitive...");
+        
         Tester target = new Tester();
                
         ThreadUtil.run(target, "pingPrimitive", 
@@ -138,6 +148,8 @@ public class ThreadUtilTest extends TestCase
  
     public void testInner() throws Exception
     {
+        logger_.info("Running testInner...");
+        
         Tester target = new Tester();
         target.testFromInnerClass();
     }  

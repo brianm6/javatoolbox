@@ -65,7 +65,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Public
     //--------------------------------------------------------------------------    
     
     /**

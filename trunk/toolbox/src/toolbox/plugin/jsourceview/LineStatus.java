@@ -6,13 +6,20 @@ package toolbox.jsourceview;
  */
 public class LineStatus
 {
-    /** is the line part of a comment **/
+    /** 
+     * Is the line part of a comment?
+     */
     private boolean inComment_;
     
-    /** should the line be counted **/
+    /** 
+     * Should the line be counted?
+     */
     private boolean countLine_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constuctor 
      */
@@ -22,7 +29,10 @@ public class LineStatus
         countLine_ = false;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Accessors/Mutators
+    //--------------------------------------------------------------------------
+    
     /**
      * Mutator for in comment flag
      * 
