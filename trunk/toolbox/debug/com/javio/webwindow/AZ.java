@@ -1,10 +1,19 @@
 package com.javio.webwindow;
 
-import D.C;
-import D.D;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.MediaTracker;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 import java.net.URL;
+
+import D.C;
+import D.D;
 
 // Referenced classes of package com.javio.webwindow:
 //            UC, HTMLPane, ConnectionHandler, EI, 
@@ -40,18 +49,37 @@ public class AZ extends UC
         darkGray = new Rectangle();
     }
 
+    // =========================================================================
+    // OVERRIDE: Replaced with JODE impl
     protected final int U()
     {
-        String s;
-        s = (String)I("border");
-        if (s == null)
-            break MISSING_BLOCK_LABEL_20;
-        return Integer.parseInt(s);
-        NumberFormatException numberformatexception;
-        numberformatexception;
-        return !EI() ? -1 : 2;
-    }
+        String string = (String) this.I("border");
+        do
+        {
+            if (string != null)
+            {
+                int i;
+                try
+                {
+                    i = Integer.parseInt(string);
+                }
+                catch (NumberFormatException numberformatexception)
+                {
+                    break;
+                }
+                return i;
+            }
+        }
 
+        while (false);
+
+        if (EI())
+            return 2;
+
+        return -1;
+    }
+    // =========================================================================
+    
     private synchronized void F(Image image, int i, int j)
     {
         int k = -1;
@@ -118,7 +146,7 @@ public class AZ extends UC
         A(d, d1, d2);
         String s = I("clip", d, d1, d2, null);
         if (s != null)
-            drawImage = D.C.parseClipStyle(s);
+            drawImage = C.parseClipStyle(s);
         else
             drawImage = null;
         j();
@@ -317,6 +345,12 @@ public class AZ extends UC
 
     public final void paint(Graphics g, Rectangle rectangle, int i)
     {
+        // =====================================================================
+        // OVERRIDE: Added call to super impl which contains code for font
+        //           smoothing.
+        super.paint(g, rectangle, i);
+        // =====================================================================
+        
         if (!G.intersects(rectangle) || i != m() || !GI())
             return;
         int j = G.x + H.left + f.C.m_thickness;
