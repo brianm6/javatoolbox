@@ -1,6 +1,7 @@
 package toolbox.plugin.jsourceview;
 
 import java.awt.BorderLayout;
+import java.text.NumberFormat;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -23,7 +24,7 @@ public class PieChart extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Statistics to visualize.
+     * Source code statistics to graph in a pie chart.
      */
     private FileStats stats_;
     
@@ -49,8 +50,6 @@ public class PieChart extends JPanel
         
         // add the chart to a panel...
         ChartPanel chartPanel = new ChartPanel(chart);
-        
-        //chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
         add(chartPanel, BorderLayout.CENTER);
     }
 
@@ -98,47 +97,40 @@ public class PieChart extends JPanel
      */
     protected float percent(float top, float bottom)
     {
-        return (top / bottom * 100);
+        return (top / bottom);
     }
     
     
     /**
-     * Creates a chart.
+     * Creates a chart for the source code categories.
      * 
      * @param dataset The dataset.
      * @return JFreeChart
      */
     protected JFreeChart createChart(PieDataset dataset) 
     {
-        JFreeChart chart = ChartFactory.createPieChart3D(
-            "Source Code Categories",  // chart title
-            dataset,                   // data
-            true,                      // include legend
-            true,
-            false);
+        JFreeChart chart = 
+            ChartFactory.createPieChart3D(
+                "Source Code Categories",  // chart title
+                dataset,                   // data
+                true,                      // include legend
+                true,                      // tooltips 
+                false);                    // gen urls
 
-        // set the background color for the chart...
-        //chart.setBackgroundPaint(Colors.getColor("light steel blue"));
-        
         chart.setBackgroundPaint(UIManager.getColor("JOptionFrame.background"));
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
-        
-        //plot.setStartAngle(270);
-        //plot.setDirection(Rotation.CLOCKWISE);
-        
         plot.setForegroundAlpha(0.5f);
         
-        // TODO: Format labels correctly like 27%
+        NumberFormat format = NumberFormat.getPercentInstance();
+        format.setMaximumFractionDigits(1);
+        
         plot.setLabelGenerator(
-            new StandardPieItemLabelGenerator("{0} = {1}"));
+            new StandardPieItemLabelGenerator("{1} {0}", format, format));
         
-        //plot.setSectionLabelType(PiePlot.NAME_AND_PERCENT_LABELS);
-        //plot.setSectionLabelFont(FontUtil.getPreferredSerifFont());
+        plot.setToolTipGenerator(
+            new StandardPieItemLabelGenerator("{0} {1}", format, format));
         
-        //plot.setExplodePercent(1, 20.0);
-        //plot.setCircular(true);
         plot.setNoDataMessage("No data to display");
-        
         return chart;
     }
 }
