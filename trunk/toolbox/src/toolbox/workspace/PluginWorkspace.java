@@ -37,10 +37,10 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
-import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.ImageCache;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
@@ -246,9 +246,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         
         addWindowListener(new CloseWindowListener());
         
-        setIconImage(
-            ResourceUtil.getResourceAsImage(
-                "toolbox/util/ui/images/Toolbox.gif"));
+        setIconImage(ImageCache.getImage("toolbox/util/ui/images/Toolbox.gif"));
     }
 
     /**
