@@ -38,17 +38,17 @@ import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 
 /**
- * User interface view of of the TCP Tunnel. 
+ * User interface for TCPTunnel. 
  */
 public class TunnelPane extends JPanel implements IPreferenced
 {
+    private static final Logger logger_ = Logger.getLogger(TunnelPane.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
     
-    private static final Logger logger_ = Logger.getLogger(TunnelPane.class);
-    
-    // Preferences
+    // XML Preferences
     private static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
     private static final String   ATTR_REMOTE_PORT    = "remoteport";
     private static final String   ATTR_REMOTE_HOST    = "remotehost";
@@ -136,9 +136,9 @@ public class TunnelPane extends JPanel implements IPreferenced
     /**
      * Creates a TunnelPane with the given parameters.
      * 
-     * @param listenPort Port to listen on
-     * @param remoteHost Host to tunnel to
-     * @param remotePort Port to tunnel to
+     * @param listenPort Port to listen on.
+     * @param remoteHost Host to tunnel to.
+     * @param remotePort Port to tunnel to.
      */
     public TunnelPane(int listenPort, String remoteHost, int remotePort)
     {
@@ -223,7 +223,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Constructors the user interface. 
+     * Constructs the user interface. 
      */
     protected void buildView()
     {
@@ -391,15 +391,23 @@ public class TunnelPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Clears the contents of the input and output text areas
+     * Clears the contents of the input and output text areas.
      */
     class ClearAction extends AbstractAction
     {
+        /**
+         * Creates a ClearAction.
+         */
         ClearAction()
         {
             super("Clear");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             incomingTextArea_.setText("");
@@ -416,35 +424,72 @@ public class TunnelPane extends JPanel implements IPreferenced
      */    
     class StartTunnelAction extends SmartAction implements TcpTunnelListener
     {
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
+        /**
+         * Creates a StartTunnelAction.
+         */
         StartTunnelAction()
         {
             super("Start", true, false, null);
         }
+
+        //----------------------------------------------------------------------
+        // TcpTunnelListener Interface
+        //----------------------------------------------------------------------
         
+        /**
+		 * @see toolbox.tunnel.TcpTunnelListener#statusChanged(
+         *      toolbox.tunnel.TcpTunnel, java.lang.String)
+		 */
         public void statusChanged(TcpTunnel tunnel, String status)
         {
             statusBar_.setStatus(status);
         }
 
-        public void bytesRead(TcpTunnel tunnel, int connBytesRead, 
-            int totalBytesRead)
+        
+        /**
+		 * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
+         *      toolbox.tunnel.TcpTunnel, int, int)
+		 */
+        public void bytesRead(TcpTunnel tunnel, 
+                              int connBytesRead, 
+							  int totalBytesRead)
         {
-            localLabel_.setText("Sent to Remote Host: " + connBytesRead +
-                " conn  " + totalBytesRead + " total");
+            localLabel_.setText("Sent to Remote Host: " + connBytesRead + 
+                                " conn  " + totalBytesRead + " total");
         }
 
-        public void bytesWritten(TcpTunnel tunnel, int connBytesWritten,
-            int totalBytesWritten)
+        
+        /**
+         * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
+         *      toolbox.tunnel.TcpTunnel, int, int)
+         */
+        public void bytesWritten(TcpTunnel tunnel, 
+                                 int connBytesWritten,
+								 int totalBytesWritten)
         {
             remoteLabel_.setText("Received from Remote Host: " + 
                 connBytesWritten + " conn  " + totalBytesWritten + " total");
         }
 
+        
+        /**
+         * @see toolbox.tunnel.TcpTunnelListener#tunnelStarted(
+         *      toolbox.tunnel.TcpTunnel)
+         */
         public void tunnelStarted(TcpTunnel tunnel)
         {
             statusBar_.setStatus("Tunnel started");
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             if (StringUtil.isNullOrEmpty(getRemoteHost()))
@@ -484,11 +529,19 @@ public class TunnelPane extends JPanel implements IPreferenced
      */
     class StopTunnelAction extends AbstractAction
     {
+        /**
+         * Creates a StopTunnelAction.
+         */
         StopTunnelAction()
         {
             super("Stop");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             tunnel_.stop();
