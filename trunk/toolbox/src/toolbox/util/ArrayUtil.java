@@ -1,6 +1,7 @@
 package toolbox.util;
 
 import java.lang.reflect.Array;
+import java.util.Comparator;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
@@ -286,6 +287,34 @@ public final class ArrayUtil
                 
         return -1;
     }
+
+    
+    /**
+     * Determines if an object exists in a given array of objects. Uses equals()
+     * for comparison.
+     * 
+     * @param array Array of objects to search.
+     * @param obj Object to search for.
+     * @return -1 if the object is not found, otherwise the index of the first 
+     *         matching object.
+     */
+    public static int indexOf(Object[] array, Object obj, Comparator c)
+    {
+        if (array.length == 0)
+            return -1;
+        
+        int idx = 0;
+        
+        while (idx < array.length)
+        {
+            if (c.compare(obj, array[idx]) == 0)
+                return idx;
+            else
+                idx++;
+        }
+                
+        return -1;
+    }
     
     
     /**
@@ -298,6 +327,21 @@ public final class ArrayUtil
     public static boolean contains(Object[] array, Object obj)
     {
         return !(indexOf(array, obj) == -1);
+    }
+
+    
+    /**
+     * Determines if an array of objects contains an object using the given
+     * comparator to test equality.
+     * 
+     * @param array Array of objects to search.
+     * @param obj Object to search for.
+     * @param c Comparator to compare the objects.
+     * @return True if the object is found in the array, false otherwise.
+     */
+    public static boolean contains(Object[] array, Object obj, Comparator c)
+    {
+        return !(indexOf(array, obj, c) == -1);
     }
 
     
