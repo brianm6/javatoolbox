@@ -44,6 +44,7 @@ package toolbox;
  * TODO: Lift more stuff from hsqldb manager
  * TODO: Move benchmark to its own panel with preferences.
  * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
+ * TODO: Migrate connection pooled JDBCUtil over
  * =============================================================================
  * 								FindClassPlugin
  * =============================================================================
