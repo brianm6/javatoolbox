@@ -477,7 +477,7 @@ public class ManagePluginsDialog extends JDialog
                 for (int i=0; i<selected.length; i++)
                 {
                     parent_.deregisterPlugin(
-                        ((PluginMeta)selected[i]).getClassName());
+                        ((PluginMeta)selected[i]).getClassName(), true);
                         
                     inactiveModel_.addElement(selected[i]);                        
                 }
