@@ -531,7 +531,6 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             "File Explorer", 
             fileExplorer_ = buildFileExplorer());
         
-        
         // Query Plugin Prefs
         leftFlipPane_.addFlipper(
             DBPrefsView.ICON_DBPREFS,
@@ -706,29 +705,34 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         resultsArea_.setFont(FontUtil.getPreferredMonoFont());
 
         // Build toolbar for Results panel
-        JButton clear = JHeaderPanel.createButton(
+        JButton clear = 
+            JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
                 "Clear results",
                 new ClearAction(resultsArea_));
 
-        JButton listTables = JHeaderPanel.createButton(
+        JButton listTables = 
+            JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_TABLES),
                 "List tables",
                 new ListTablesAction(this));
 
-        JButton listColumns = JHeaderPanel.createButton(
+        JButton listColumns = 
+            JHeaderPanel.createButton(
                 ImageCache.getIcon(ImageCache.IMAGE_COLUMNS),
                 "List columns",
                 new ListColumnsAction(this));
 
-        JToggleButton switchResults = JHeaderPanel.createToggleButton(
-                ImageCache.getIcon(ImageCache.IMAGE_DUKE),
+        JToggleButton switchResults = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_SWAP_PANES),
                 "Switch results display",
                 new ToggleTableAction());
         
         JPanel resultsAreaPanel = new JPanel(new BorderLayout());
         
-        JToggleButton filterResults = JHeaderPanel.createToggleButton(
+        JToggleButton filterResults = 
+            JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_FUNNEL),
                 "Show results filter",
                 new ShowResultsFilterAction(this, resultsAreaPanel));
@@ -1105,7 +1109,11 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             super("Scroll History Up");
         }
 
-
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             statusBar_.setWarning("TODO: Implement ctrl-up");
@@ -1123,6 +1131,10 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
      */
     public class ToggleTableAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             resultsLayout_.next(resultsCardPanel_);
@@ -1138,6 +1150,10 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
      */
     class FileSelectionListener extends FileExplorerAdapter
     {
+        /**
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(
+         *      java.lang.String)
+         */
         public void fileDoubleClicked(String file)
         {
             try
@@ -1170,6 +1186,10 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         }
         
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             JList list = fileExplorer_.getFileList();
@@ -1178,7 +1198,8 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             //logger_.debug("Selection : " + ArrayUtil.toString(values, true));
             
             String dir = 
-                FileUtil.trailWithSeparator(fileExplorer_.getCurrentPath());
+                FileUtil.trailWithSeparator(
+                    fileExplorer_.getCurrentPath());
 
             StringBuffer sb = new StringBuffer();
             
