@@ -594,8 +594,6 @@ public final class ArrayUtil
      * 
      * @param obj Array of objects.
      * @return List
-     * 
-     * TODO: Write unit test
      */
     public static List toList(Object[] obj)
     {
