@@ -2338,14 +2338,14 @@ public class Banner
                         printUsage();
                         System.out.println("\nError: '" + option.getValue() + 
                             "' is not a valid line width.");
-                        System.exit(0);
+                        return; //System.exit(0);
                     }
                 }
                 else if (opt.equals(helpOption.getOpt())  ||
                          opt.equals(helpOption2.getOpt()))
                 {
                     printUsage();
-                    System.exit(0);
+                    return; //System.exit(0);
                 }
             }
 
@@ -2355,8 +2355,8 @@ public class Banner
                 case  0: 
                 
                     printUsage(); 
-                    System.exit(0);
-                    break;
+                    return; //System.exit(0);
+                    
                 
                 default:
                  

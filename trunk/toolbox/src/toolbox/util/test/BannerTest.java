@@ -1,9 +1,9 @@
 package toolbox.util.test;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.Banner;
 
@@ -12,34 +12,23 @@ import toolbox.util.Banner;
  */
 public class BannerTest extends TestCase
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(BannerTest.class);
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entrypoint
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(BannerTest.class);
     }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
     
-    /**
-     * Constructor for FigletFontTest.
-     * 
-     * @param arg0  Name
-     */
-    public BannerTest(String arg0)
-    {
-        super(arg0);
-    }
-
     //--------------------------------------------------------------------------
     // Unit Tests 
     //--------------------------------------------------------------------------
@@ -51,7 +40,25 @@ public class BannerTest extends TestCase
      */
     public void testFiglet() throws Exception
     {
+        logger_.info("Running testFiglet...");
+        
         String s = Banner.convert("Howdy!");
         logger_.info("\n" + s);
+    }
+    
+    /**
+     * Tests main()
+     */
+    public void testMain()
+    {
+        logger_.info("Running testMain...");
+        
+        Banner.main(new String[0]);
+        Banner.main(new String[] {"-h"});        
+        Banner.main(new String[] {"Ummmm...!"});
+        Banner.main(new String[] {"-l", "Donuts!"});
+        Banner.main(new String[] {"-s", "One doh per line"});
+        Banner.main(new String[] {"-s", "-l", "Byte code"});
+        Banner.main(new String[] {"-w", "120", "[this a big line 120]"});
     }
 }
