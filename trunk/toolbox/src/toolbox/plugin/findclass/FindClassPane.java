@@ -61,10 +61,12 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.list.JSmartList;
+import toolbox.util.ui.table.AutoTailAction;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.JSmartTableHeader;
 import toolbox.util.ui.table.SmartTableCellRenderer;
@@ -161,7 +163,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     /**
      * Table that displays the results of the search.
      */
-    private JTable resultTable_;
+    private JSmartTable resultTable_;
     
     /**
      * Data model for the list of search results.
@@ -378,19 +380,30 @@ public class FindClassPane extends JPanel implements IPreferenced
         resultTableSorter_.addMouseListenerToHeaderInTable(resultTable_);
         tweakTable();
         
-        hiliteToggleButton_ = JHeaderPanel.createToggleButton(
-            ImageCache.getIcon(ImageCache.IMAGE_BRACES),
-            "Highlight matches",
-            new TableRepaintAction());
+        hiliteToggleButton_ = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_BRACES),
+                "Highlight matches",
+                new TableRepaintAction());
         
-        showPathToggleButton_ = JHeaderPanel.createToggleButton(
-            ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED),
-            "Show full path archive path",
-            new TableRepaintAction());
+        showPathToggleButton_ = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED),
+                "Show full path archive path",
+                new TableRepaintAction());
+        
+        JSmartToggleButton autoTailButton = 
+            JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_LOCK),
+                "Automatically tail output", 
+                new AutoTailAction(resultTable_));
+        
+        autoTailButton.toggleOnProperty(resultTable_, "autotail");
         
         JToolBar tb = JHeaderPanel.createToolBar();
         tb.add(showPathToggleButton_);
         tb.add(hiliteToggleButton_);
+        tb.add(autoTailButton);
         JHeaderPanel resultPanel = new JHeaderPanel("Results", tb, resultPane_);
        
         JPanel glue = new JPanel(new BorderLayout());
@@ -428,10 +441,6 @@ public class FindClassPane extends JPanel implements IPreferenced
     protected void tweakTable()
     {
         resultTable_.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        
-        resultTable_.setTableHeader(
-            new JSmartTableHeader(resultTable_.getColumnModel()));
-            
         TableColumnModel columnModel = resultTable_.getColumnModel();
 
         // Tweak file number column
@@ -492,7 +501,8 @@ public class FindClassPane extends JPanel implements IPreferenced
                 root, NODE_TOP_FLIPPANE, new Element(NODE_TOP_FLIPPANE)));
             
         fileExplorer_.applyPrefs(root);
-
+        resultTable_.applyPrefs(root);
+        
         // TODO: Integrate preferences for DecompilerPanel
     }
     
@@ -505,7 +515,8 @@ public class FindClassPane extends JPanel implements IPreferenced
         Element root = new Element(NODE_JFINDCLASS_PLUGIN);
         
         fileExplorer_.savePrefs(root);
-
+        resultTable_.savePrefs(root);
+        
         // TODO: Integrate preferences for DecompilerPanel
         
         Element topFlipPane = new Element(NODE_TOP_FLIPPANE);
