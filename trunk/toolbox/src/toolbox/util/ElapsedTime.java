@@ -274,7 +274,7 @@ public class ElapsedTime
         if (getMillis() > 0)
             sb.append(getMillis() + "ms");
         
-        return sb.toString();
+        return sb.toString().trim();
     }
 
 
