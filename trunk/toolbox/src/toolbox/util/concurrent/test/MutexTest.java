@@ -12,8 +12,7 @@ import toolbox.util.concurrent.Mutex;
  */
 public class MutexTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(MutexTest.class);
+    private static final Logger logger_ = Logger.getLogger(MutexTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -22,7 +21,7 @@ public class MutexTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -36,7 +35,7 @@ public class MutexTest extends TestCase
     /**
      * Tests acquire().
      * 
-     * @throws InterruptedException on error
+     * @throws InterruptedException on error.
      */
     public void testAcquire() throws InterruptedException
     {
@@ -52,7 +51,7 @@ public class MutexTest extends TestCase
     /**
      * Tests release().
      * 
-     * @throws InterruptedException on error
+     * @throws InterruptedException on error.
      */
     public void testRelease() throws InterruptedException
     {
@@ -68,7 +67,7 @@ public class MutexTest extends TestCase
     /**
      * Tests attempt().
      * 
-     * @throws InterruptedException on error
+     * @throws InterruptedException on error.
      */
     public void testAttempt() throws InterruptedException
     {

@@ -20,6 +20,10 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
     private static final Logger logger_ = 
         Logger.getLogger(JodeDecompiler.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Jode decompiler.
      */

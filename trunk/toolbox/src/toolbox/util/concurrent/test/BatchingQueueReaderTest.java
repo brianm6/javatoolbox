@@ -18,6 +18,10 @@ public class BatchingQueueReaderTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(BatchingQueueReaderTest.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Queue to read from in batch mode.
      */
@@ -30,7 +34,7 @@ public class BatchingQueueReaderTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */    
     public static void main(String[] args)
     {
@@ -56,7 +60,7 @@ public class BatchingQueueReaderTest extends TestCase
     /**
      * Test notification.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testNextBatch() throws Exception
     {
@@ -90,7 +94,7 @@ public class BatchingQueueReaderTest extends TestCase
     /**
      * Test start() and stop().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testStartStop() throws Exception
     {
@@ -158,7 +162,7 @@ public class BatchingQueueReaderTest extends TestCase
     /**
      * Test start() if called twice.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testStartTwice() throws Exception
     {
@@ -186,7 +190,7 @@ public class BatchingQueueReaderTest extends TestCase
     /**
      * Test stop() if called twice.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testStopTwice() throws Exception
     {
@@ -211,6 +215,9 @@ public class BatchingQueueReaderTest extends TestCase
     // Helper Classes
     //--------------------------------------------------------------------------
     
+    /**
+     * Listens for next batch off the queue.
+     */
     class TestQueueListener implements IBatchingQueueListener
     {
         /**

@@ -14,6 +14,10 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
     private static final Logger logger_ = 
         Logger.getLogger(JReverseProDecompiler.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * JReversePro decompiler.
      */

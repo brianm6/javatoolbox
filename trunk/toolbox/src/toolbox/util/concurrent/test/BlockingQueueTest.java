@@ -24,7 +24,7 @@ public class BlockingQueueTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */    
     public static void main(String[] args)
     {
@@ -38,7 +38,7 @@ public class BlockingQueueTest extends TestCase
     /**
      * Test pull() when the timeout expires.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testPullTimeoutExpired() throws Exception 
     {
@@ -51,14 +51,13 @@ public class BlockingQueueTest extends TestCase
         
         logger_.info("Elapsed time: " + time);
         logger_.info("Popped obj  : " + obj);
-        
     }
     
     
     /**
      * Test pull() when item is popped before the timeout.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testPullTimeoutMet() throws Exception 
     {
@@ -101,7 +100,7 @@ public class BlockingQueueTest extends TestCase
     /**
      * Tests toString().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testToString() throws Exception
     {
@@ -120,7 +119,7 @@ public class BlockingQueueTest extends TestCase
     /**
      * Tests interrupt() while blocked.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInterrupt() throws Exception
     {

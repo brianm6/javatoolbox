@@ -16,7 +16,7 @@ public class DecompilerException extends Exception
     /**
      * Creates a DecompilerException.
      * 
-     * @param message Error message
+     * @param message Error message.
      */
     public DecompilerException(String message)
     {
@@ -27,7 +27,7 @@ public class DecompilerException extends Exception
     /**
      * Creates a DecompilerException.
      * 
-     * @param cause Cause of the error
+     * @param cause Cause of the error.
      */
     public DecompilerException(Throwable cause)
     {

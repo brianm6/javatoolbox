@@ -11,8 +11,7 @@ import toolbox.util.StreamUtil;
  */
 public class JadDecompiler implements toolbox.util.decompiler.Decompiler
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(JadDecompiler.class);
+    private static final Logger logger_ = Logger.getLogger(JadDecompiler.class);
     
     //--------------------------------------------------------------------------
     // Constructors

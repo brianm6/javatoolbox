@@ -1,10 +1,14 @@
 package toolbox.util.concurrent;
 
 /**
- * Blocking queue reader.
+ * Abstract base implementation of a blocking queue reader.
  */
 public abstract class BlockingQueueReader implements Runnable
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Queue to read from.
      */
@@ -16,7 +20,7 @@ public abstract class BlockingQueueReader implements Runnable
     private boolean continueProcessing_ = true;
 
     //--------------------------------------------------------------------------
-    // Abstrct Methods
+    // Abstract Methods
     //--------------------------------------------------------------------------
     
     /**
@@ -33,7 +37,7 @@ public abstract class BlockingQueueReader implements Runnable
     /**
      * Init.
      * 
-     * @param queue Queue to read from
+     * @param queue Queue to read from.
      */
     public void init(BlockingQueue queue)
     {

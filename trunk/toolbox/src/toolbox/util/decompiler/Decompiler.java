@@ -18,9 +18,9 @@ public interface Decompiler
     /**
      * Decompiles the given classFile.
      * 
-     * @param classFile Class file to decompile
-     * @return Souce code of the decompiled class
-     * @throws DecompilerException on decompilation error
+     * @param classFile Class file to decompile.
+     * @return Souce code of the decompiled class.
+     * @throws DecompilerException on decompilation error.
      */
     String decompile(File classFile) throws DecompilerException;
     

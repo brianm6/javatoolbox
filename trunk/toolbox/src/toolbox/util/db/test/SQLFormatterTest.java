@@ -16,6 +16,10 @@ public class SQLFormatterTest extends TestCase
     private static final Logger logger_ =
         Logger.getLogger(SQLFormatterTest.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Shared formatter use by unit tests.
      */

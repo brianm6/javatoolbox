@@ -13,11 +13,14 @@ import toolbox.util.ElapsedTime;
  */
 public class BlockingQueue
 {
-    private static final Logger logger_ =
-        Logger.getLogger(BlockingQueue.class);
+    private static final Logger logger_ = Logger.getLogger(BlockingQueue.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
-     * The backing queue.
+     * The backing store for the queue.
      */        
     private List queue_;
     
@@ -53,8 +56,8 @@ public class BlockingQueue
      * Pulls element off the queue. Blocks until an element is available if the
      * queue is empty.
      * 
-     * @return Next element
-     * @throws InterruptedException on error
+     * @return Next element.
+     * @throws InterruptedException on error.
      */
     public Object pull() throws InterruptedException
     {
@@ -84,9 +87,9 @@ public class BlockingQueue
      * Pulls element off the queue. Blocks until an element is available if the
      * queue is empty.
      * 
-     * @param millis Timeout in milliseconds
-     * @return Next element
-     * @throws InterruptedException on error
+     * @param millis Timeout in milliseconds.
+     * @return Next element.
+     * @throws InterruptedException on error.
      */
     public Object pull(long millis) throws InterruptedException
     {
@@ -127,7 +130,7 @@ public class BlockingQueue
     /**
      * Pushes an element onto the queue.
      * 
-     * @param obj Object to push onto the queue
+     * @param obj Object to push onto the queue.
      */
     public void push(Object obj)
     {
@@ -151,7 +154,7 @@ public class BlockingQueue
     /**
      * Returns the size of the queue.
      * 
-     * @return Queue size
+     * @return Queue size.
      */
     public int size()
     {
@@ -180,7 +183,7 @@ public class BlockingQueue
     /**
      * Dumps contents of queue one line at a time.
      * 
-     * @return Queue contents as a string, one line per element
+     * @return Queue contents as a string, one line per element.
      */
     public String toString()
     {

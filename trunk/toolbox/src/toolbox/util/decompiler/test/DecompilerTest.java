@@ -24,6 +24,10 @@ public class DecompilerTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(DecompilerTest.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Array of decompilers to test.
      */
@@ -36,7 +40,7 @@ public class DecompilerTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -50,7 +54,7 @@ public class DecompilerTest extends TestCase
     /**
      * Creates a DecompilerTest.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public DecompilerTest() throws Exception
     {
@@ -64,7 +68,7 @@ public class DecompilerTest extends TestCase
     /**
      * Class to test for String decompile(File).
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testDecompileFile() throws Exception
     {
@@ -105,7 +109,7 @@ public class DecompilerTest extends TestCase
     /**
      * Tests decompile(className, classPath).
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testDecompileClassnameClasspath() throws Exception
     {
