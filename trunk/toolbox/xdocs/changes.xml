@@ -40,6 +40,7 @@
  * TODO: Look into Jemmy for automating GUI unit tests.
  * TODO: Add WinLAF https://winlaf.dev.java.net
  * TODO: Add latest Oyoaha and all its themes
+ * TODO: Add non-repeating random number generator
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -97,7 +98,7 @@
       <action type="update">Upgraded to cvs 1.12.9 to get maven-statcvs-plugin working</action>
       <action type="add"   >QueryPlugin error messages can now be redirected to the results pane.</action>
       <action type="fix"   >Fixed single selection execution in QueryPlugin</action>
-      <action type="add"   >Added BrowserLauncher</action>
+      <action type="update">Replaced NativeBrowser with BrowserLauncher which is more consistent</action>
     </release>
 
     <release version="2.0" date="June 2004">
