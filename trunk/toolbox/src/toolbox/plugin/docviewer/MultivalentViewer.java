@@ -42,11 +42,11 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a multivalent viewer.
+     * Creates a MultivalentViewer.
      */
     public MultivalentViewer()
     {
-        buildView();
+        //buildView();
     }
     
     //--------------------------------------------------------------------------
@@ -71,12 +71,11 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     
     
     /**
-     * Opens a file for viewing
-     * 
-     * @param file File to view
+     * @see toolbox.plugin.docviewer.DocumentViewer#view(java.io.File)
      */
     public void view(File file)
     {
+        lazyLoad();
         browser_.eventq(Document.MSG_OPEN, file.toURI());
     }
     
@@ -113,6 +112,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
      */
     public JComponent getComponent()
     {
+        lazyLoad();
         return this;
     }
 
@@ -172,6 +172,18 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
         // doc.bbox and set Swing scrollbars accordingly
     }
 
+    
+    /**
+     * Lazily constructs the GUI so that loading the viewer does not induce
+     * creation of unnecessary objects in the case that the viewer is not
+     * used.
+     */
+    protected void lazyLoad()
+    {
+        if (browser_ == null)
+            buildView();
+    }
+    
     //--------------------------------------------------------------------------
     // SemanticSender
     //--------------------------------------------------------------------------
