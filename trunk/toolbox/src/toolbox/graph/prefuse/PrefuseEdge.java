@@ -32,7 +32,7 @@ public class PrefuseEdge implements toolbox.graph.Edge
      */
     public PrefuseEdge(toolbox.graph.Vertex from, toolbox.graph.Vertex to) 
     {
-        this(from, to, false);
+        this(from, to, true);
     }
 
     

@@ -28,7 +28,7 @@ public class PrefuseGraph implements toolbox.graph.Graph
      */
     public PrefuseGraph()
     {
-        this(false);
+        this(true);
     }
 
     
