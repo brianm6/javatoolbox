@@ -27,7 +27,7 @@ import toolbox.util.ui.JSmartMenuItem;
 public class JConveyorPopupMenuTest extends TestCase
 {
     private static final Logger logger_ =
-        Logger.getLogger(JListPopupMenuTest.class);
+        Logger.getLogger(JConveyorPopupMenuTest.class);
 
     static int cnt = 1;
         

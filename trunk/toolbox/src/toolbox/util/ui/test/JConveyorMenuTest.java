@@ -22,13 +22,14 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 
+
 /**
  * Unit test for JConveyorMenu
  */
 public class JConveyorMenuTest extends TestCase
 {
     private static final Logger logger_ =
-        Logger.getLogger(JListPopupMenuTest.class);
+        Logger.getLogger(JConveyorMenuTest.class);
 
     private static int cnt = 1;
         
