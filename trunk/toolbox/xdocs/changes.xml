@@ -50,7 +50,6 @@
  * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
- * TODO: Apply StateMachine to Service interface
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -149,6 +148,15 @@
           <tr>
             <td width="20%">DocViewerPlugin</td>
             <td>JavaViewer now support quick nav to methods via a method list</td>
+          </tr>
+        </table>
+      </action>
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Refactored Service interface and applied StateMachine to service transitions</td>
           </tr>
         </table>
       </action>
