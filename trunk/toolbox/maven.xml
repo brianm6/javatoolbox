@@ -144,6 +144,8 @@
             quiet="false" 
             overwrite="false">
         <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
+        <fileset dir="${basedir}/resources/toolbox/util/ui/images" 
+                 includes="toolbox.gif"/>
       </copy>
     </goal>
 
