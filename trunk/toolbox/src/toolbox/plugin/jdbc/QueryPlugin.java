@@ -2,6 +2,7 @@ package toolbox.plugin.jdbc;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -257,43 +258,26 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         resultsArea_ = new JSmartTextArea();
         resultsArea_.setFont(FontUtil.getPreferredMonoFont());
-        
-        JButton help = new JButton(
-            ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK));
-        help.setFocusPainted(false);
-        help.setToolTipText("SQL Help");
-        help.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                String sqlRef = File.separator + 
-                    FileUtil.trailWithSeparator(
-                        ClassUtil.packageToPath(
-                            ClassUtil.stripClass(
-                                QueryPlugin.class.getName()))) + 
-                                    "sqlref.txt";
-                
-                sqlRef = sqlRef.replace(File.separatorChar, '/');
-                
-                sqlEditor_.setText(sqlEditor_.getText() + "\n" +
-                    ResourceUtil.getResourceAsString(sqlRef));
-            }
-        });
-        
-        JToolBar tb = new JToolBar();
-        tb.setRollover(true);
+
+        // Build toolbar for SQL editor
+        JButton help = JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK),
+            "SQL Reference",
+            new SQLReferenceAction());
+
+        JToolBar tb = JHeaderPanel.createToolBar();
         tb.add(help);
         
-        JButton clear = 
-            new JSmartButton(ImageCache.getIcon(ImageCache.IMAGE_TRASHCAN));
-        clear.setFocusPainted(false);
-        clear.setToolTipText("Clear results");
-        clear.addActionListener(resultsArea_.new ClearAction());
+        // Build toolbar for Results panel
+        JButton clear = JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
+            "Clear results",
+            resultsArea_.new ClearAction());
         
-        JToolBar rb = new JToolBar();
-        rb.setRollover(true);
+        JToolBar rb = JHeaderPanel.createToolBar();
         rb.add(clear);
-        
+
+        // Split SQL editor and results panel
         areaSplitPane_ = 
             new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
@@ -612,6 +596,24 @@ public class QueryPlugin extends JPanel implements IPlugin
     // ExecuteAction
     //--------------------------------------------------------------------------
     
+    class SQLReferenceAction extends AbstractAction
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            String sqlRef = File.separator + 
+                FileUtil.trailWithSeparator(
+                    ClassUtil.packageToPath(
+                        ClassUtil.stripClass(
+                            QueryPlugin.class.getName()))) + 
+                                "sqlref.txt";
+            
+            sqlRef = sqlRef.replace(File.separatorChar, '/');
+            
+            sqlEditor_.setText(sqlEditor_.getText() + "\n" +
+                ResourceUtil.getResourceAsString(sqlRef));
+        }
+    }
+
     /**
      * Runs the query and appends the results to the output text area.
      */
