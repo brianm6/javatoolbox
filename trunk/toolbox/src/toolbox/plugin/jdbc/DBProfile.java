@@ -73,10 +73,11 @@ public class DBProfile
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DBProfile from XML
+     * Creates a DBProfile from XML.
      *
-     * @param  xml  String containing a valid XML persistence of DBProfile
-     * @throws IOException on I/O error 
+     * @param xml String containing a valid XML persistence of DBProfile
+     * @throws IOException on I/O error
+     * @throws ParseException on XML parsing error 
      */
     public DBProfile(String xml) throws ParseException, IOException
     {
@@ -91,24 +92,24 @@ public class DBProfile
     }
 
     /**
-     * Creates a DBProfile
+     * Creates a DBProfile.
      *
-     * @param  profileName Friendly name of the profile
-     * @param  driver      JDBC driver class
-     * @param  url         JDBC access url
-     * @param  username    Username
-     * @param  password    Password in clear text       
+     * @param profileName Friendly name of the profile
+     * @param driver JDBC driver class
+     * @param url JDBC access url
+     * @param username Username
+     * @param password Password in clear text       
      */
     public DBProfile(
-        String  profileName, 
+        String profileName, 
         String driver, 
         String url, 
         String username,
         String password)
     {
-        profileName_  = profileName;
-        driver_   = driver;
-        url_      = url;
+        profileName_ = profileName;
+        driver_ = driver;
+        url_ = url;
         username_ = username;
         password_ = password;
     }
@@ -120,7 +121,7 @@ public class DBProfile
     /**
      * Returns an XML representation of the data contained in this profile.
      * 
-     * @return  XML string
+     * @return XML string
      */
     public String toXML()
     {
@@ -130,7 +131,7 @@ public class DBProfile
     /**
      * Returns a DOM representation of the data contained in this profile.
      * 
-     * @return  DOM tree
+     * @return DOM tree
      */    
     public Element toDOM()
     {
@@ -256,7 +257,7 @@ public class DBProfile
      * what is used by default to render the text value of this profile when
      * added to a JComboBox.
      * 
-     * @return  Profile name
+     * @return Profile name
      */ 
     public String toString()
     {
