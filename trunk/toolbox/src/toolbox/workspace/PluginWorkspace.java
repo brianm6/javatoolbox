@@ -115,7 +115,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         try
         {
             PluginWorkspace frame = new PluginWorkspace();
-            frame.setVisible(true);
+            //frame.setVisible(true);
         }
         catch(Exception e)
         {
@@ -139,10 +139,12 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         buildView();
         loadPrefs();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        applyPrefs();
         
         // Nasty hack so plugins get initialized after the empty
         // workspace has been realized
-        SwingUtilities.invokeLater(new PostInit());
+        //SwingUtilities.invokeLater(new PostInit());
     }
 
     //--------------------------------------------------------------------------
