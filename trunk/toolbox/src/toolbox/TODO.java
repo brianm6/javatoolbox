@@ -16,7 +16,7 @@ package toolbox;
  * TODO: Upgrade to CLI2
  * TODO: add .cvspass to conf
  * TODO: Add sql helpers to jdbc plugin
- * 
+ * TODO: Update PDF viewer to also use acrobat
  * </pre>
  */
 public class TODO
