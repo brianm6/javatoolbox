@@ -13,9 +13,6 @@ import toolbox.util.FileUtil;
  */
 class SourceParser implements Runnable
 {
-    /**
-     * Logger
-     */
     private static final Logger logger_ = 
         Logger.getLogger(SourceParser.class);
     
@@ -60,7 +57,10 @@ class SourceParser implements Runnable
     //--------------------------------------------------------------------------
     // Runnable Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Pops source code off the work queue and parses collecting stats.
+     */
     public void run()
     {
         ElapsedTime elapsed = new ElapsedTime();

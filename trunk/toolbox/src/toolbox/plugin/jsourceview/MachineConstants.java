@@ -1,7 +1,7 @@
 package toolbox.jsourceview;
 
 /**
- * Machine constants
+ * Source code parser state machine constants.
  */
 public interface MachineConstants
 {

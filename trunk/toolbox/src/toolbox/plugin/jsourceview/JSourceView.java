@@ -278,7 +278,9 @@ public class JSourceView extends JPanel implements IPreferenced
 
     
     /**
-     * @return Returns the tableModel.
+     * Returns the tableModel.
+     * 
+     * @return SmartTableModel
      */
     public SmartTableModel getTableModel()
     {
@@ -287,7 +289,9 @@ public class JSourceView extends JPanel implements IPreferenced
     
     
     /**
-     * @return Returns the tableSorter.
+     * Returns the tableSorter.
+     * 
+     * @return TableSorter
      */
     public TableSorter getTableSorter()
     {
