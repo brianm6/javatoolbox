@@ -539,18 +539,18 @@
   <build>
     <nagEmailAddress>analogue@yahoo.com</nagEmailAddress>
     <sourceDirectory>src</sourceDirectory>
-    <unitTestSourceDirectory>src</unitTestSourceDirectory>
+    <unitTestSourceDirectory>test</unitTestSourceDirectory>
     <integrationUnitTestSourceDirectory/>
     <aspectSourceDirectory/>
   
     <unitTest>
       <includes>
-        <!--include>**/*Test.java</include-->
-        <include>toolbox/junit/CloverTestSuite.java</include>
+        <include>**/*Test.java</include>
+        <!--include>toolbox/junit/CloverTestSuite.java</include-->
       </includes>
       
       <excludes>
-        <!--
+        
         <exclude>**/RepositoryTest.java</exclude>
         <exclude>**/ui/**/*Test.java</exclude>
         <exclude>**/SwingUtilTest.java</exclude>
@@ -558,15 +558,17 @@
         <exclude>**/log4j/im/**/*Test.java</exclude>
         <exclude>**/BannerTaskTest.java</exclude>
         <exclude>**/DecompilerTest.java</exclude>
-        -->
+        
       </excludes>
       
       <resources>
         <resource>
           <directory>${basedir}/resources</directory>
+          <!--
           <includes>
             <include>**/test/**</include>
           </includes>
+          -->
         </resource>
         
         <!--
@@ -587,9 +589,11 @@
         <includes>
           <include>**/*</include>
         </includes>
+        <!--
         <excludes>
           <exclude>**/test/**</exclude>
         </excludes>
+        -->
       </resource>
     </resources>
   </build>
