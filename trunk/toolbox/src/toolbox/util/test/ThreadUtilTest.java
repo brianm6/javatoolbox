@@ -277,6 +277,26 @@ public class ThreadUtilTest extends TestCase
             ; // Behaves as expected            
         }
     } 
+
+    /**
+     * Tests run() using the full signature with Class[]
+     * 
+     * @throws Exception on error
+     */
+    public void testRunWithClassesIncluded() throws Exception
+    {
+        logger_.info("Running testRunWithClassesIncluded...");
+        
+        Tester target = new Tester();
+        
+        ThreadUtil.run(
+            target, 
+            "pingOneArg", 
+            new Object[] { "hello" }, 
+            new Class[] { String.class } ).join();
+            
+        assertTrue("ping was not executed", target.pingOneArgCalled_);
+    }
  
     /**
      * Tests from an inner class
