@@ -24,8 +24,9 @@ public class LAFLauncher
      * 
      * @param  args  [0]    = Name of class to launch
      *               [1..n] = Command line arguments
+     * @throws Exception on error
      */
-    public static void main(String args[])
+    public static void main(String args[]) throws Exception
     {
         switch (args.length)
         {
@@ -70,26 +71,20 @@ public class LAFLauncher
     /**
      * Launches target class
      * 
-     * @param target  Name of class with main() to launch 
-     * @param args    Array of arguments
+     * @param  target  Name of class with main() to launch 
+     * @param  args    Array of arguments
+     * @throws Exception on error
      */
-    private static void launch(String target, String[] args)
+    private static void launch(String target, String[] args) throws Exception
     {
-        try
-        {
-            SwingUtil.setPreferredLAF();
-        
-            Thread t = new Thread(new LAFRunner());
-            t.start();
-                                     
-            Class c = Class.forName(target);
-            Method m = c.getMethod("main", new Class[] { args.getClass() });
-            m.invoke(null, new Object[] {args});
-        }
-        catch (Exception e)
-        {
-            logger_.error("launch", e);
-        }
+        SwingUtil.setPreferredLAF();
+    
+        Thread t = new Thread(new LAFRunner());
+        t.start();
+                                 
+        Class c = Class.forName(target);
+        Method m = c.getMethod("main", new Class[] { args.getClass() });
+        m.invoke(null, new Object[] {args});
     }
 }
 
