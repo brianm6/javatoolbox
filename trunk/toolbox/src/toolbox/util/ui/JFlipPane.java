@@ -383,13 +383,13 @@ public class JFlipPane extends JPanel
                         
             pref = new Dimension(width, height);
             
-            logger_.info(method + "prefSize expanded = " + pref);                        
+            //logger_.info(method + "prefSize expanded = " + pref);                        
         }
         else
         {
             pref = buttonPanel_.getPreferredSize();
             
-            logger_.info(method + "prefSize collapsed = " + pref);            
+            //logger_.info(method + "prefSize collapsed = " + pref);            
         }
         
         return pref;
@@ -565,11 +565,11 @@ public class JFlipPane extends JPanel
         else
         {
             URL url = JFlipPane.class.getClass().getResource(
-                "/toolbox/util/ui/images/" + iconName);
+                "/toolbox/util/ui/" + iconName);
 
             if(url == null)
             {
-                System.err.println("Icon not found: " + iconName);
+                logger_.error("Icon not found: " + iconName);
                 return null;
             }
 
@@ -1262,7 +1262,7 @@ public class JFlipPane extends JPanel
             }
             
 
-            fcpLogger_.info(method + "prefsize=" + pref);
+            //fcpLogger_.info(method + "prefsize=" + pref);
             
             return pref;
         } 
