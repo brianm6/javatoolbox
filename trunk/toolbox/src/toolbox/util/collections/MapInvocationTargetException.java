@@ -16,43 +16,75 @@ import java.io.PrintWriter;
  */
 public class MapInvocationTargetException extends RuntimeException
 {
-    private Throwable target;
+    private Throwable target_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Protected
+     */    
     protected MapInvocationTargetException()
     {
-        super();
     }
 
+    /**
+     * Creates MapInvocationTargetException
+     * 
+     * @param  target  Target throwable
+     */
     public MapInvocationTargetException(Throwable target)
     {
         super();
-        this.target = target;
+        target_ = target;
     }
 
+    /**
+     * Creates MapInvocationTargetException
+     * 
+     * @param  target  Target throwable
+     * @param  s       Reason
+     */
     public MapInvocationTargetException(Throwable target, String s)
     {
         super(s);
-        this.target = target;
+        target_ = target;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @return Target exception
+     */
     public Throwable getTargetException()
     {
-        return target;
+        return target_;
     }
 
+    /**
+     * Prints stack trace
+     */
     public void printStackTrace()
     {
         printStackTrace(System.err);
     }
 
+    /**
+     * Prints stack trace to print stream
+     * 
+     * @param  ps  Print stream
+     */
     public void printStackTrace(PrintStream ps)
     {
         synchronized (ps)
         {
-            if (target != null)
+            if (target_ != null)
             {
                 ps.print("java.lang.reflect.MapInvocationTargetException: ");
-                target.printStackTrace(ps);
+                target_.printStackTrace(ps);
             }
             else
             {
@@ -61,15 +93,20 @@ public class MapInvocationTargetException extends RuntimeException
         }
     }
 
+    /**
+     * Prints stacktrace to print writer
+     * 
+     * @param  pw  Print writer
+     */
     public void printStackTrace(PrintWriter pw)
     {
         synchronized (pw)
         {
-            if (target != null)
+            if (target_ != null)
             {
                 pw.print(
                     "com.ip.util.collection.MapInvocationTargetException: ");
-                target.printStackTrace(pw);
+                target_.printStackTrace(pw);
             }
             else
             {
@@ -77,5 +114,4 @@ public class MapInvocationTargetException extends RuntimeException
             }
         }
     }
-
 }

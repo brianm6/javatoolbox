@@ -15,14 +15,17 @@ import org.apache.log4j.Logger;
  */
 public class SocketUtil
 {
-    /** Logger **/
-    private static final Logger logger = 
+    private static final Logger logger_ = 
         Logger.getLogger(SocketUtil.class);
 
-    /** Value embedded in message for an accept() timeout **/
+    /** 
+     * Value embedded in message for an accept() timeout 
+     */
     public static final String MSG_ACCEPT_TIMEOUT = "Accept timed out";
 
-    /** Value embedded in exception message for a socket closed exception **/
+    /** 
+     * Value embedded in exception message for a socket closed exception 
+     */
     public static final String MSG_SOCKET_CLOSED = "Socket closed";
 
 
@@ -50,26 +53,26 @@ public class SocketUtil
     {
         Socket socket = null;
 
-        /* zero max retries = infinite */
+        // zero max retries = infinite 
         if (maxRetries <= 0)
             maxRetries = Integer.MAX_VALUE;
 
-        /* loop max retries */
+        // loop max retries
         for (int i = 0; i < maxRetries; i++)
         {
             try
             {
-                /* if successful, break */
+                // if successful, break
                 socket = new Socket(hostname, port);
                 break;
             }
             catch (ConnectException e)
             {
-                logger.debug("Connect to " + hostname + ":" + port + 
+                logger_.debug("Connect to " + hostname + ":" + port + 
                     " failed. Will retry in " + interval + " secs " + 
                     (maxRetries - i) + " times..");
 
-                /* else sleep and try again */
+                // else sleep and try again
                 ThreadUtil.sleep(interval * 1000);
             }
         }

@@ -1,6 +1,13 @@
 package toolbox.util.collections;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.AbstractSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A Least Recently Used (LRU) Map which can be constrained by time
@@ -13,7 +20,7 @@ import java.util.*;
  *   <li>the value is specifically accessed by
  *   <ol>
  *       <li><tt>Entry.getValue()</tt> when
- *       		 iterating over <tt>entrySet()</tt>.  
+ *                iterating over <tt>entrySet()</tt>.  
  *       <li>calling <tt>containsValue()</tt> and there is a match
  *   </ol>
  * </ol>
@@ -23,17 +30,22 @@ import java.util.*;
  */
 public class LRUMap implements java.util.Map, java.io.Serializable
 {
+    /**
+     * No time limit
+     */
     public static final int NO_TIME_LIMIT = 0;
 
     protected static final int DEFAULT_MAX_SIZE = 1000;
 
-    protected Map map;
-    protected List keys;
+    private Map map_;
+    private List keys_;
 
-    protected int maxSize;
-    protected long timeLimit;
+    private int maxSize_;
+    private long timeLimit_;
 
-    // CONSTRUCTORS
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
      * Constructs an LRUMap with a size of 1000
@@ -47,6 +59,8 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     /**
      * Constructs an LRUMap with a size of <tt>maxSize</tt>
      * with no time limit.
+     * 
+     * @param  maxSize  Max size
      */
     public LRUMap(int maxSize)
     {
@@ -56,6 +70,9 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     /**
      * Constructs an LRUMap with a size of <tt>maxSize</tt>
      * with a time limit of <tt>timeLimit</tt> in milliseconds.
+     * 
+     * @param  maxSize      Max size
+     * @param  timeLimit    Time limit 
      */
     public LRUMap(int maxSize, long timeLimit)
     {
@@ -75,33 +92,51 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      */
     public LRUMap(int maxSize, long timeLimit, Map backingMap)
     {
-        this.maxSize = maxSize;
-        this.timeLimit = timeLimit;
-        this.map = backingMap;
-        this.keys = new LinkedList();
+        this.maxSize_ = maxSize;
+        this.timeLimit_ = timeLimit;
+        this.map_ = backingMap;
+        this.keys_ = new LinkedList();
     }
 
-    // API
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
+    /**
+     * @return  Max size
+     */
     public int getMaxSize()
     {
-        return maxSize;
+        return maxSize_;
     }
 
+    /**
+     * Sets max size
+     * 
+     * @param  maxSize  Max size
+     */
     public void setMaxSize(int maxSize)
     {
-        this.maxSize = maxSize;
+        maxSize_ = maxSize;
         update();
     }
 
+    /**
+     * @return Time limit
+     */
     public long getTimeLimit()
     {
-        return timeLimit;
+        return timeLimit_;
     }
 
+    /**
+     * Sets time limit
+     * 
+     * @param  timeLimit  Time limit
+     */
     public void setTimeLimit(long timeLimit)
     {
-        this.timeLimit = timeLimit;
+        timeLimit_ = timeLimit;
         update();
     }
 
@@ -113,22 +148,24 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     public void update()
     {
         // Reset Size
-        while (keys.size() > getMaxSize())
+        while (keys_.size() > getMaxSize())
         {
-            map.remove(keys.remove(0));
+            map_.remove(keys_.remove(0));
         }
 
         // Check Time
-        if (timeLimit > 0)
+        if (timeLimit_ > 0)
         {
             long time = System.currentTimeMillis();
-            for (Iterator i = keys.iterator(); i.hasNext();)
+            
+            for (Iterator i = keys_.iterator(); i.hasNext();)
             {
                 LRUKey key = (LRUKey) i.next();
-                if (time - key.getTime() > timeLimit)
+                
+                if (time - key.getTime() > timeLimit_)
                 {
                     i.remove();
-                    map.remove(key);
+                    map_.remove(key);
                 }
                 else
                 {
@@ -145,8 +182,8 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      */
     public void clear()
     {
-        map.clear();
-        keys.clear();
+        map_.clear();
+        keys_.clear();
     }
 
     /**
@@ -156,19 +193,13 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      * <b>NOTE:</b> If the key is found, then the timestamp for that entry
      * will be updated.
      *
-     * @param key key whose presence in this map is to be tested.
-     * @return <tt>true</tt> if this map contains a mapping for the specified
-     * key.
-     * 
-     * @throws ClassCastException if the key is of an inappropriate type for
-     * 		  this map.
-     * @throws NullPointerException if the key is <tt>null</tt> and this map
-     *            does not not permit <tt>null</tt> keys.
+     * @param  key  Key whose presence in this map is to be tested.
+     * @return True if this map contains a mapping for the specified key
      */
     public boolean containsKey(Object key)
     {
         update();
-        return map.containsKey(new LRUKey(key));
+        return map_.containsKey(new LRUKey(key));
     }
 
     /**
@@ -190,7 +221,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
         try
         {
             boolean rVal = false;
-            Iterator i = map.entrySet().iterator();
+            Iterator i = map_.entrySet().iterator();
 
             if (value == null)
             {
@@ -260,12 +291,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      * 
      * @param key key whose associated value is to be returned.
      * @return the value to which this map maps the specified key, or
-     *	       <tt>null</tt> if the map contains no mapping for this key.
-     * 
-     * @throws ClassCastException if the key is of an inappropriate type for
-     * 		  this map.
-     * @throws NullPointerException key is <tt>null</tt> and this map does not
-     *		  not permit <tt>null</tt> keys.
+     *           <tt>null</tt> if the map contains no mapping for this key.
      * 
      * @see #containsKey(Object)
      */
@@ -275,9 +301,10 @@ public class LRUMap implements java.util.Map, java.io.Serializable
         {
             LRUKey lruKey =
                 (key instanceof LRUKey) ? (LRUKey) key : new LRUKey(key);
+                
             updateKey(lruKey);
 
-            return map.get(lruKey);
+            return map_.get(lruKey);
         }
         finally
         {
@@ -293,7 +320,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     public boolean isEmpty()
     {
         update();
-        return map.isEmpty();
+        return map_.isEmpty();
     }
 
     /**
@@ -322,37 +349,39 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      * @param key key with which the specified value is to be associated.
      * @param value value to be associated with the specified key.
      * @return previous value associated with specified key, or <tt>null</tt>
-     *	       if there was no mapping for key.  A <tt>null</tt> return can
-     *	       also indicate that the map previously associated <tt>null</tt>
-     *	       with the specified key, if the implementation supports
-     *	       <tt>null</tt> values.
+     *           if there was no mapping for key.  A <tt>null</tt> return can
+     *           also indicate that the map previously associated <tt>null</tt>
+     *           with the specified key, if the implementation supports
+     *           <tt>null</tt> values.
      * 
      * @throws UnsupportedOperationException if the <tt>put</tt> operation is
-     *	          not supported by this map.
+     *              not supported by this map.
      * @throws ClassCastException if the class of the specified key or value
-     * 	          prevents it from being stored in this map.
+     *               prevents it from being stored in this map.
      * @throws IllegalArgumentException if some aspect of this key or value
-     *	          prevents it from being stored in this map.
+     *              prevents it from being stored in this map.
      * @throws NullPointerException this map does not permit <tt>null</tt>
      *            keys or values, and the specified key or value is
      *            <tt>null</tt>.
      */
-    public Object put(Object key, Object value)
+    public Object put(Object key, Object value) 
+        throws UnsupportedOperationException, ClassCastException,
+               IllegalArgumentException, NullPointerException
     {
         try
         {
             LRUKey lruKey = new LRUKey(key);
 
-            if (map.containsKey(lruKey))
+            if (map_.containsKey(lruKey))
             {
                 updateKey(lruKey);
             }
             else
             {
-                keys.add(lruKey);
+                keys_.add(lruKey);
             }
 
-            return map.put(lruKey, value);
+            return map_.put(lruKey, value);
         }
         finally
         {
@@ -368,19 +397,21 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      * @param t Mappings to be stored in this map.
      * 
      * @throws UnsupportedOperationException if the <tt>putAll</tt> method is
-     * 		  not supported by this map.
+     *           not supported by this map.
      * 
      * @throws ClassCastException if the class of a key or value in the
-     * 	          specified map prevents it from being stored in this map.
+     *               specified map prevents it from being stored in this map.
      * 
      * @throws IllegalArgumentException some aspect of a key or value in the
-     *	          specified map prevents it from being stored in this map.
+     *              specified map prevents it from being stored in this map.
      * 
      * @throws NullPointerException this map does not permit <tt>null</tt>
      *            keys or values, and the specified key or value is
      *            <tt>null</tt>.
      */
     public void putAll(java.util.Map t)
+        throws UnsupportedOperationException, ClassCastException,
+               IllegalArgumentException, NullPointerException
     {
         for (Iterator i = t.entrySet().iterator(); i.hasNext();)
         {
@@ -395,20 +426,20 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      *
      * @param key key whose mapping is to be removed from the map.
      * @return previous value associated with specified key, or <tt>null</tt>
-     *	       if there was no mapping for key.  A <tt>null</tt> return can
-     *	       also indicate that the map previously associated <tt>null</tt>
-     *	       with the specified key, if the implementation supports
-     *	       <tt>null</tt> values.
+     *           if there was no mapping for key.  A <tt>null</tt> return can
+     *           also indicate that the map previously associated <tt>null</tt>
+     *           with the specified key, if the implementation supports
+     *           <tt>null</tt> values.
      * @throws UnsupportedOperationException if the <tt>remove</tt> method is
      *         not supported by this map.
      */
-    public Object remove(Object key)
+    public Object remove(Object key) throws UnsupportedOperationException    
     {
         try
         {
             LRUKey lruKey = new LRUKey(key);
-            keys.remove(lruKey);
-            return map.remove(lruKey);
+            keys_.remove(lruKey);
+            return map_.remove(lruKey);
         }
         finally
         {
@@ -426,7 +457,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     public int size()
     {
         update();
-        return map.size();
+        return map_.size();
     }
 
     /**
@@ -448,7 +479,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     public java.util.Collection values()
     {
         update();
-        return map.values();
+        return map_.values();
     }
 
     // STANDARD METHODS
@@ -460,12 +491,16 @@ public class LRUMap implements java.util.Map, java.io.Serializable
     public String toString()
     {
         update();
-        return map.toString();
+        return map_.toString();
     }
 
+    /**
+     * @param   o  Object to test for equality
+     * @return  True if equal, false otherwise
+     */
     public boolean equals(Object o)
     {
-        return map.equals(o);
+        return map_.equals(o);
     }
 
     /**
@@ -488,51 +523,55 @@ public class LRUMap implements java.util.Map, java.io.Serializable
      */
     public int hashCode()
     {
-        return map.hashCode();
+        return map_.hashCode();
     }
 
     // HELPER METHODS
 
     protected void updateKey(LRUKey key)
     {
-        if (map.containsKey(key))
+        if (map_.containsKey(key))
         {
             // get reference to key and remove
-            key = (LRUKey) keys.remove(keys.indexOf(key));
+            key = (LRUKey) keys_.remove(keys_.indexOf(key));
             key.update();
-            keys.add(key);
+            keys_.add(key);
         }
     }
 
-    /////////////////////////////////////////////////////////////////
-    // INNER CLASSES
-
-    class LRUKey implements java.io.Serializable
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Least Recently Used Key
+     */
+    class LRUKey implements Serializable
     {
-        Object key;
-        long time;
+        private Object key_;
+        private long time_;
 
         LRUKey(Object key)
         {
-            this.key = key;
+            key_ = key;
             update();
         }
 
         long getTime()
         {
-            return time;
+            return time_;
         }
 
         void update()
         {
-            time = System.currentTimeMillis();
+            time_ = System.currentTimeMillis();
         }
 
         // STANDARD METHODS
 
         public int hashCode()
         {
-            return key.hashCode();
+            return key_.hashCode();
         }
 
         public boolean equals(Object object)
@@ -544,7 +583,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
             if (object instanceof LRUKey)
             {
                 LRUKey lruKey = (LRUKey) object;
-                boolean match = this.equals(lruKey.key);
+                boolean match = this.equals(lruKey.key_);
                 // UPDATE KEY, SINCE IT IS BEING ACCESSED
                 if (match)
                     lruKey.update();
@@ -553,7 +592,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
             }
 
             // OBJECT IS NOT AN LRUKey
-            boolean match = this.key.equals(object);
+            boolean match = this.key_.equals(object);
             if (match)
                 this.update();
             return match;
@@ -561,52 +600,58 @@ public class LRUMap implements java.util.Map, java.io.Serializable
 
         public String toString()
         {
-            return key.toString();
+            return key_.toString();
         }
 
     }
 
-    class Entry implements Map.Entry, java.io.Serializable
+    /**
+     * Map entry
+     */
+    class Entry implements Map.Entry, Serializable
     {
-        Map.Entry entry;
+        private Map.Entry entry_;
 
         Entry(Map.Entry entry)
         {
-            this.entry = entry;
+            entry_ = entry;
         }
 
         public Object setValue(Object value)
         {
-            return entry.setValue(value);
+            return entry_.setValue(value);
         }
 
         public Object getValue()
         {
             // Move key to bottom of keys
-            updateKey((LRUKey) entry.getKey());
-            return entry.getValue();
+            updateKey((LRUKey) entry_.getKey());
+            return entry_.getValue();
         }
 
         public Object getKey()
         {
-            return ((LRUKey) entry.getKey()).key;
+            return ((LRUKey) entry_.getKey()).key_;
         }
     }
 
-    class EntrySet extends java.util.AbstractSet
+    /**
+     * Entry set
+     */
+    class EntrySet extends AbstractSet
     {
-        Set entrySet;
+        private Set entrySet_;
 
         public EntrySet()
         {
-            this.entrySet = map.entrySet();
+            this.entrySet_ = map_.entrySet();
         }
 
-        public java.util.Iterator iterator()
+        public Iterator iterator()
         {
             return new Iterator()
             {
-                Iterator iEntrySet = entrySet.iterator();
+                Iterator iEntrySet = entrySet_.iterator();
 
                 public boolean hasNext()
                 {
@@ -627,19 +672,22 @@ public class LRUMap implements java.util.Map, java.io.Serializable
 
         public int size()
         {
-            return entrySet.size();
+            return entrySet_.size();
         }
     }
 
-    class KeySet extends java.util.AbstractSet
+    /**
+     * Key set
+     */
+    class KeySet extends AbstractSet
     {
-        Set keySet = map.keySet();
+        private Set keySet_ = map_.keySet();
 
         public java.util.Iterator iterator()
         {
             return new Iterator()
             {
-                Iterator iKeySet = keySet.iterator();
+                Iterator iKeySet = keySet_.iterator();
 
                 public boolean hasNext()
                 {
@@ -648,7 +696,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
 
                 public Object next()
                 {
-                    return ((LRUKey) iKeySet.next()).key;
+                    return ((LRUKey) iKeySet.next()).key_;
                 }
 
                 public void remove()
@@ -660,8 +708,7 @@ public class LRUMap implements java.util.Map, java.io.Serializable
 
         public int size()
         {
-            return keySet.size();
+            return keySet_.size();
         }
     }
-
 }

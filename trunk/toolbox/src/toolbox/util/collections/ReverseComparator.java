@@ -10,7 +10,7 @@ public class ReverseComparator implements Comparator
     /** 
      * Comparator whose comparisons are going to be reversed 
      */
-    protected Comparator comparator_;
+    private Comparator comparator_;
 
     /**
      * Construct a comparator that generates reverse of another comparator

@@ -71,10 +71,10 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         NUMBER_CLASSES.add(Double.TYPE);
     }
 
-    protected Object bean_;
-    protected transient WeakReference wBean_;
-    protected transient ObjectEntrySet entrySet_;
-    protected boolean silent_;
+    private Object bean_;
+    private transient WeakReference wBean_;
+    private transient ObjectEntrySet entrySet_;
+    private boolean silent_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -87,7 +87,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
      * is held onto by a strong reference.
      * 
      * @param   bean  Object to convert to a <tt>Map</tt>.
-     * @throws  IntrospectionException
+     * @throws  IntrospectionException on error
      */
     public ObjectMap(Object bean) throws IntrospectionException
     {
@@ -104,7 +104,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
      * @param   silent  true  - exceptions thrown by bean are ignored<br>
      *                  false - MapInvocationTargetException will be thrown
      *                          if the bean throws an exception
-     * @throws  IntrospectionException
+     * @throws  IntrospectionException on error
      */
     public ObjectMap(Object bean, boolean silent) throws IntrospectionException
     {
@@ -123,8 +123,8 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
      *               false - MapInvocationTargetException will be thrown
      *                       if the bean throws an exception
      * @param useWeakRef true - holds onto the bean using a WeakReference
-     * 					 false - holds onto the bean using a strong reference
-     * @throws IntrospectionException
+     *                      false - holds onto the bean using a strong reference
+     * @throws IntrospectionException on error
      */
     public ObjectMap(Object bean, boolean silent, boolean useWeakRef)
         throws IntrospectionException
@@ -145,8 +145,9 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     /**
      * Checks if a key is in the map
      * 
+     * @param  key  Key
      * @return True if map containts key, false otherwise
-     * @throws MapInvocationTargetException
+     * @throws MapInvocationTargetException on map error
      */
     public boolean containsKey(Object key) throws MapInvocationTargetException
     {
@@ -187,7 +188,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
      * 
      * @param  key  Key to find object for
      * @return Object for the given key
-     * @throws MapInvocationTargetException
+     * @throws MapInvocationTargetException on map error
      */
     public Object get(Object key) throws MapInvocationTargetException
     {
@@ -201,9 +202,8 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 Object rVal = super.get(str.substring(0, index));
                 try
                 {
-                    return rVal == null
-                        ? null
-                        : asMap(rVal).get(str.substring(index + 1));
+                    return rVal == null ? null : 
+                        asMap(rVal).get(str.substring(index + 1));
                 }
                 catch (MapInvocationTargetException e)
                 {
@@ -220,6 +220,8 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     /**
      * Puts an key, value pair in the map
      * 
+     * @param  key    Key
+     * @param  value  Value
      * @return Inserted value
      * @throws UnsupportedOperationException if a set method is not found
      * @throws MapInvocationTargetException if an exception is thrown while 
@@ -435,6 +437,13 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         return NUMBER_CLASSES.contains(t);
     }
 
+    /**
+     * Converts a number of a given class
+     * 
+     * @param  n  Number
+     * @param  t  Class
+     * @return Number 
+     */
     public static Number convertNumber(Number n, Class t)
     {
         if (t.equals(Byte.class) || t.equals(Byte.TYPE))
@@ -465,6 +474,13 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         return n;
     }
 
+    /**
+     * Converts a string of a given class
+     * 
+     * @param  s  String to convert
+     * @param  t  Class
+     * @return Object
+     */
     public static Object convertString(String s, Class t)
     {
         if (s == null)
@@ -552,21 +568,21 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
     
     class ObjectEntrySet extends AbstractSet
     {
-        protected PropertyDescriptor[] pds;
-        protected MapEntry[] mapEntries;
+        private PropertyDescriptor[] pds_;
+        private MapEntry[] mapEntries_;
 
         public ObjectEntrySet() throws IntrospectionException
         {
-            pds = getPropertyDescriptors(getBean().getClass());
-            mapEntries = new MapEntry[pds.length];
+            pds_ = getPropertyDescriptors(getBean().getClass());
+            mapEntries_ = new MapEntry[pds_.length];
 
-            for (int i = 0; i < pds.length; i++)
-                mapEntries[i] = new MapEntry(i);
+            for (int i = 0; i < pds_.length; i++)
+                mapEntries_[i] = new MapEntry(i);
         }
 
         public int size()
         {
-            return pds.length;
+            return pds_.length;
         }
 
         public Iterator iterator()
@@ -576,16 +592,16 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 
         class EntryIterator implements Iterator
         {
-            int i = 0;
+            private int i_ = 0;
 
             public boolean hasNext()
             {
-                return i < pds.length;
+                return i_ < pds_.length;
             }
 
             public Object next()
             {
-                return mapEntries[i++];
+                return mapEntries_[i_++];
             }
 
             public void remove()
@@ -597,18 +613,18 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
 
         class MapEntry implements java.util.Map.Entry
         {
-            int index;
+            private int index_;
 
             public MapEntry(int newIndex)
             {
-                index = newIndex;
+                index_ = newIndex;
             }
 
             // MAPENTRY METHODS
 
             public Object getKey()
             {
-                return pds[index].getName();
+                return pds_[index_].getName();
             }
 
             /**
@@ -619,12 +635,11 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
             {
                 try
                 {
-                    Method getMethod = pds[index].getReadMethod();
+                    Method getMethod = pds_[index_].getReadMethod();
                     if (getMethod == null)
                         throw new UnsupportedOperationException(
-                            "get method for '"
-                                + pds[index].getName()
-                                + "' not found");
+                            "get method for '" + pds_[index_].getName() + 
+                            "' not found");
 
                     return getMethod.invoke(getBean(), null);
                 }
@@ -636,15 +651,14 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 {
                     throw new MapInvocationTargetException(
                         e.getTargetException(),
-                        "Error while getting property: "
-                            + pds[index].getName());
+                        "Error while getting property: " + 
+                        pds_[index_].getName());
                 }
                 catch (Exception e)
                 {
                     throw new MapInvocationTargetException(
-                        e,
-                        "Error while getting property: "
-                            + pds[index].getName());
+                        e, "Error while getting property: " + 
+                        pds_[index_].getName());
                 }
             }
 
@@ -654,20 +668,20 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
             }
 
             /**
-             * @throws UnsupportedOperationException if a set method is not found
+             * @throws UnsupportedOperationException if a set method 
+             *         is not found
              * @throws MapInvocationTargetException if an exception is thrown 
              *         while calling the method
              */
-            public Object setValue(Object value)
-                throws MapInvocationTargetException, UnsupportedOperationException
+            public Object setValue(Object value) throws 
+                MapInvocationTargetException, UnsupportedOperationException
             {
-                Method setMethod = pds[index].getWriteMethod();
+                Method setMethod = pds_[index_].getWriteMethod();
 
                 if (setMethod == null)
                     throw new UnsupportedOperationException(
-                        "set method for '"
-                            + pds[index].getName()
-                            + "' not found");
+                        "set method for '"  + pds_[index_].getName() + 
+                        "' not found");
 
                 try
                 {
@@ -679,8 +693,8 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                     }
                     else if (!parmType.isAssignableFrom(value.getClass()))
                     {
-                        if (value instanceof Number
-                            && isNumberConvertable(parmType))
+                        if (value instanceof Number && 
+                            isNumberConvertable(parmType))
                             value = convertNumber((Number) value, parmType);
                         else
                             value = convertString(value.toString(), parmType);
@@ -696,15 +710,14 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                 {
                     throw new MapInvocationTargetException(
                         e.getTargetException(),
-                        "Error while setting property: "
-                            + pds[index].getName());
+                        "Error while setting property: " + 
+                        pds_[index_].getName());
                 }
                 catch (Exception e)
                 {
                     throw new MapInvocationTargetException(
-                        e,
-                        "Error while setting property: "
-                            + pds[index].getName());
+                        e, "Error while setting property: " + 
+                        pds_[index_].getName());
                 }
 
                 return null;

@@ -13,6 +13,7 @@ import toolbox.util.typecast.Typecast;
  */
 public class AsMap
 {
+    /** instance */
     public static final Typecast TYPECAST = new Typecast(Map.class);
 
     static 
@@ -20,11 +21,24 @@ public class AsMap
         TYPECAST.addSearchPackage(AsMap.class);
     }
 
+    /**
+     * Maps an object
+     * 
+     * @param  object  Object
+     * @return Map of object
+     */
     public static Map of(Object object)
     {
         return of(object, null);
     }
 
+    /**
+     * Maps an object
+     * 
+     * @param  object  Object
+     * @param  policy  Policy
+     * @return Map of object
+     */
     public static Map of(Object object, String policy)
     {
         return (Map) TYPECAST.coerce(object, policy);

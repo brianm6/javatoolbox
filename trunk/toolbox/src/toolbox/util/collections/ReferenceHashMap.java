@@ -45,6 +45,13 @@ public class ReferenceHashMap extends AbstractMap implements Map
     // Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Constructor
+     * 
+     * @param  factory          Factory
+     * @param  initialCapacity  Initial capacity
+     * @param  loadFactor       Load factor
+     */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity,
         float loadFactor)
     {
@@ -52,12 +59,23 @@ public class ReferenceHashMap extends AbstractMap implements Map
         factory_ = factory;
     }
 
+    /**
+     * Constructor
+     * 
+     * @param  factory          Factory
+     * @param  initialCapacity  Initial capacity
+     */
     public ReferenceHashMap(ReferenceFactory factory, int initialCapacity)
     {
         hash_ = new HashMap(initialCapacity);
         factory_ = factory;
     }
 
+    /**
+     * Constructor
+     * 
+     * @param  factory          Factory
+     */
     public ReferenceHashMap(ReferenceFactory factory)
     {
         hash_ = new HashMap();
@@ -178,10 +196,10 @@ public class ReferenceHashMap extends AbstractMap implements Map
     /**
      * Internal class for entries
      */
-    static private class Entry implements Map.Entry
+    private static class Entry implements Map.Entry
     {
-        private Map.Entry ent;
-        private Object key;
+        private Map.Entry ent_;
+        private Object key_;
 
         /**
          * Strong reference to key, so that the GC
@@ -190,23 +208,23 @@ public class ReferenceHashMap extends AbstractMap implements Map
          */
         Entry(Map.Entry ent, Object key)
         {
-            this.ent = ent;
-            this.key = key;
+            ent_ = ent;
+            key_ = key;
         }
 
         public Object getKey()
         {
-            return key;
+            return key_;
         }
 
         public Object getValue()
         {
-            return ent.getValue();
+            return ent_.getValue();
         }
 
         public Object setValue(Object value)
         {
-            return ent.setValue(value);
+            return ent_.setValue(value);
         }
 
         private static boolean valEquals(Object o1, Object o2)
@@ -220,19 +238,16 @@ public class ReferenceHashMap extends AbstractMap implements Map
                 return false;
 
             Map.Entry e = (Map.Entry) o;
-            return (
-                valEquals(key, e.getKey())
-                    && valEquals(getValue(), e.getValue()));
+            return (valEquals(key_, e.getKey()) && 
+                valEquals(getValue(), e.getValue()));
         }
 
         public int hashCode()
         {
             Object v;
-            return (
-                ((key == null) ? 0 : key.hashCode())
-                    ^ (((v = getValue()) == null) ? 0 : v.hashCode()));
+            return (((key_ == null) ? 0 : key_.hashCode()) ^ 
+                (((v = getValue()) == null) ? 0 : v.hashCode()));
         }
-
     }
 
     /**
@@ -240,13 +255,13 @@ public class ReferenceHashMap extends AbstractMap implements Map
      */
     private class EntrySet extends AbstractSet
     {
-        Set hashEntrySet = hash_.entrySet();
+        private Set hashEntrySet_ = hash_.entrySet();
 
         public Iterator iterator()
         {
             return new Iterator()
             {
-                Iterator hashIterator = hashEntrySet.iterator();
+                Iterator hashIterator = hashEntrySet_.iterator();
                 Entry next = null;
 
                 public boolean hasNext()
@@ -259,7 +274,7 @@ public class ReferenceHashMap extends AbstractMap implements Map
 
                         if ((ref != null) && ((k = ref.get()) == null))
                         {
-                            /* Weak key has been cleared by GC */
+                            // Weak key has been cleared by GC
                             continue;
                         }
 
@@ -315,9 +330,8 @@ public class ReferenceHashMap extends AbstractMap implements Map
             Reference key = factory_.create(e.getKey());
             Object hv = hash_.get(key);
 
-            if ((hv == null)
-                ? ((ev == null) && hash_.containsKey(key))
-                : hv.equals(ev))
+            if ((hv == null) ? 
+               ((ev == null) && hash_.containsKey(key)) : hv.equals(ev))
             {
                 hash_.remove(key);
                 return true;
@@ -330,7 +344,7 @@ public class ReferenceHashMap extends AbstractMap implements Map
         {
             int h = 0;
 
-            for (Iterator i = hashEntrySet.iterator(); i.hasNext();)
+            for (Iterator i = hashEntrySet_.iterator(); i.hasNext();)
             {
                 Map.Entry ent = (Map.Entry) i.next();
                 Reference key = (Reference) ent.getKey();
@@ -339,9 +353,8 @@ public class ReferenceHashMap extends AbstractMap implements Map
                 if (key == null)
                     continue;
 
-                h
-                    += (key.hashCode()
-                        ^ (((v = ent.getValue()) == null) ? 0 : v.hashCode()));
+                h += (key.hashCode() ^ 
+                    (((v = ent.getValue()) == null) ? 0 : v.hashCode()));
             }
 
             return h;

@@ -1,6 +1,7 @@
 package toolbox.util.collections;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * A Comparator which compares a properties of objects.
@@ -23,8 +24,11 @@ import java.util.*;
  * 
  *   // Do a case insentive sort on lastName ascending, firstName descending
  *   oc = new ObjectComparator(
- *             new ObjectComparator.Property( "lastName", false, String.CASE_INSENSITIVE_ORDER ),
- *             new ObjectComparator.Property( "firstName", true, String.CASE_INSENSITIVE_ORDER ) );
+ *      new ObjectComparator.Property( 
+ *          "lastName", false, String.CASE_INSENSITIVE_ORDER ),
+ *      new ObjectComparator.Property( 
+ *          "firstName", true, String.CASE_INSENSITIVE_ORDER ) );
+ * 
  *   Collections.sort( people, oc );
  * </pre>
  * 
@@ -34,70 +38,110 @@ import java.util.*;
 public class ObjectComparator implements Comparator, java.io.Serializable
 {
 
-    protected Property[] properties;
+    private Property[] props_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * @param propName the property to compare or a period separated list of properties
-     *                 (e.g. address.line1 )
+     * @param propertyName The property to compare or a period separated list 
+     *                     of properties (e.g. address.line1 )
      */
     public ObjectComparator(String propertyName)
     {
         this(new Property(propertyName));
     }
 
+    /**
+     * @param  propertyName  Property name
+     * @param  comparator    Comparator
+     */
     public ObjectComparator(String propertyName, Comparator comparator)
     {
         this(new Property(propertyName, false, comparator));
     }
 
+    /**
+     * @param  propertyName  Property name
+     * @param  reverseOrder  Reverses the order
+     */
     public ObjectComparator(String propertyName, boolean reverseOrder)
     {
         this(new Property[] { new Property(propertyName, reverseOrder)});
     }
 
+    /**
+     * @param  property1  Property one
+     * @param  property2  Property two
+     */
     public ObjectComparator(String property1, String property2)
     {
-        this(
-            new Property[] { new Property(property1), new Property(property2)});
+        this(new Property[] 
+            { new Property(property1), new Property(property2)});
     }
 
-    public ObjectComparator(
-        String property1,
-        String property2,
-        String property3)
+    /**
+     * @param  property1  Property 1
+     * @param  property2  Property 2
+     * @param  property3  Property 3
+     */
+    public ObjectComparator(String property1,String property2, String property3)
     {
-        this(
-            new Property[] {
+        this(new Property[] {
                 new Property(property1),
                 new Property(property2),
                 new Property(property3)});
     }
 
+    /**
+     * @param  prop  Property
+     */
     public ObjectComparator(Property prop)
     {
         this(new Property[] { prop });
     }
 
+    /**
+     * @param  prop1  Property 1
+     * @param  prop2  Property 2
+     */
     public ObjectComparator(Property prop1, Property prop2)
     {
         this(new Property[] { prop1, prop2 });
     }
 
+    /**
+     * @param  properties  Properties
+     */
     public ObjectComparator(Property[] properties)
     {
-        this.properties = properties;
+        this.props_ = properties;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Compares two objects
+     * 
+     * @param  o1  First object
+     * @param  o2  Second object
+     * @return Zero if equals, -1 
+     *         -1   if o1 lessthan o2 
+     *          1   if o1 greaterthan o2
+     */
     public int compare(Object o1, Object o2)
     {
         Object c1 = null, c2 = null;
         int rVal = 0;
         boolean reverseOrder = false;
 
-        for (int i = 0; rVal == 0 && i < properties.length; i++)
+        for (int i = 0; rVal == 0 && i < props_.length; i++)
         {
-            c1 = getProperty(o1, properties[i].name);
-            c2 = getProperty(o2, properties[i].name);
+            c1 = getProperty(o1, props_[i].name_);
+            c2 = getProperty(o2, props_[i].name_);
 
             // Atleast One of the values are null
             if (c1 == null || c2 == null)
@@ -105,16 +149,16 @@ public class ObjectComparator implements Comparator, java.io.Serializable
                 rVal = (c2 == null ? 0 : 1) - (c1 == null ? 0 : 1);
                 break;
             }
-            else if (properties[i].comparator == null)
+            else if (props_[i].comparator_ == null)
             {
                 rVal = ((Comparable) c1).compareTo(c2);
             }
             else
             {
-                rVal = properties[i].comparator.compare(c1, c2);
+                rVal = props_[i].comparator_.compare(c1, c2);
             }
 
-            reverseOrder = properties[i].reverseOrder;
+            reverseOrder = props_[i].reverseOrder_;
         }
 
         // If the Object compares identically and they are different
@@ -125,8 +169,13 @@ public class ObjectComparator implements Comparator, java.io.Serializable
         return reverseOrder ? -rVal : rVal;
     }
 
-    // STANDARD METHODS
 
+    /**
+     * Test for equality
+     * 
+     * @param  obj  Object to test
+     * @return True if equal, false otherwise
+     */
     public boolean equals(Object obj)
     {
         if (obj == this)
@@ -136,8 +185,8 @@ public class ObjectComparator implements Comparator, java.io.Serializable
             return false;
 
         return Arrays.equals(
-            this.properties,
-            ((ObjectComparator) obj).properties);
+            this.props_,
+            ((ObjectComparator) obj).props_);
     }
 
     // HELPER METHODS
@@ -147,43 +196,69 @@ public class ObjectComparator implements Comparator, java.io.Serializable
         return AsMap.of(obj).get(property);
     }
 
-    // INNER CLASSES 	
+    // INNER CLASSES     
 
     /**
      * A description of the property to compare.  If a Comparator
      * is not provided, the property should implement Comparable.
      */
-    static public class Property implements java.io.Serializable
+    public static class Property implements java.io.Serializable
     {
-        protected String name;
-        protected boolean reverseOrder;
-        protected Comparator comparator;
+        private String name_;
+        private boolean reverseOrder_;
+        private Comparator comparator_;
 
+        /**
+         * @param  name  Property name
+         */
         public Property(String name)
         {
             this(name, false);
         }
 
+        /**
+         * Constructor
+         * 
+         * @param  name         Property name
+         * @param  reverseOrder Flip order
+         */
         public Property(String name, boolean reverseOrder)
         {
             this(name, reverseOrder, null);
         }
 
+        /**
+         * Constructor
+         * 
+         * @param  name         Name
+         * @param  comparator   Comparator
+         */
         public Property(String name, Comparator comparator)
         {
             this(name, false, comparator);
         }
 
-        public Property(
-            String name,
-            boolean reverseOrder,
+        /**
+         * Constructor
+         * 
+         * @param  name             Property name
+         * @param  reverseOrder     Flip order
+         * @param  comparator       Comparator
+         */
+        public Property(String name, boolean reverseOrder, 
             Comparator comparator)
         {
-            this.name = name;
-            this.reverseOrder = reverseOrder;
-            this.comparator = comparator;
+            name_ = name;
+            reverseOrder_ = reverseOrder;
+            comparator_ = comparator;
         }
 
+        /**
+         * Equals
+         * 
+         * @param  obj  Object
+         * @return TRue or false
+         */
         public boolean equals(Object obj)
         {
             if (obj == this)
@@ -194,10 +269,11 @@ public class ObjectComparator implements Comparator, java.io.Serializable
 
             Property p = (Property) obj;
 
-            return (name == p.name || (name != null && name.equals(p.name)))
-                && (reverseOrder == p.reverseOrder)
-                && (comparator == p.comparator
-                    || (comparator != null && comparator.equals(p.comparator)));
+            return (name_ == p.name_ || 
+                (name_ != null && name_.equals(p.name_))) && 
+                (reverseOrder_ == p.reverseOrder_) && 
+                (comparator_ == p.comparator_ || 
+                (comparator_ != null && comparator_.equals(p.comparator_)));
         }
     }
 
