@@ -1,9 +1,7 @@
 package toolbox.util.ui.test;
 
-import java.awt.BorderLayout;
 import java.io.StringReader;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import junit.textui.TestRunner;
@@ -16,7 +14,10 @@ import org.apache.log4j.Logger;
 import toolbox.junit.UITestCase;
 import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.splitpane.JMultiSplitPane;
+import toolbox.util.ui.splitpane.SplitOrientation;
 
 /**
  * Unit test for JSmartTextArea.
@@ -55,21 +56,25 @@ public class JSmartTextAreaTest extends UITestCase
     {
         logger_.info("Running testAutoScroll...");
         
-        JPanel cp = new JPanel(new BorderLayout());
-        JSmartTextArea area = new JSmartTextArea("hello");
+        JMultiSplitPane jms = new JMultiSplitPane(3, SplitOrientation.VERTICAL);
+        JSmartTextArea area = new JSmartTextArea("hello\nworld!");
         
-        cp.add(createPropertyChangeConsole(area), BorderLayout.CENTER);
-        cp.add(new JScrollPane(area), BorderLayout.NORTH);
-        cp.add(createPropertySheet(area), BorderLayout.SOUTH);
+        jms.setComponent(0, new JHeaderPanel(
+            "Test Component", null, new JScrollPane(area)));
         
-        launchInDialog(cp, SCREEN_ONE_THIRD);
+        jms.setComponent(1, createPropertySheet(area));
+        jms.setComponent(2, createPropertyChangeConsole(area));
+
+        jms.distributeEvenly();
+        
+        launchInDialog(jms, UITestCase.SCREEN_ONE_HALF);
     }
     
     
     /**
      * Tests savePrefs() and applyPrefs().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSaveApplyPrefs() throws Exception
     {
