@@ -13,7 +13,8 @@ import toolbox.util.XMLUtil;
 import toolbox.util.XOMUtil;
 
 /**
- * XML formatter that uses Xerces internally.
+ * XML formatter that uses <a href="http://xml.apache.org/xerces2-j/">Xerces</a> 
+ * internally for formatting.
  * <p>
  * <b>Example:</b>
  * <pre class="snippet">
@@ -27,11 +28,17 @@ public class XMLFormatter extends AbstractFormatter
     private static final Logger logger_ = Logger.getLogger(XMLFormatter.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
+    /**
+     * Root node for XMLFormatter preferences.
+     */
     public static final String NODE_XMLFORMATTER = "XMLFormatter";
     
+    /**
+     * Persisted javabean properties.
+     */
     public static final String[] SAVED_PROPS = {
         "indent",
         "lineWidth",

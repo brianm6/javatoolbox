@@ -13,7 +13,8 @@ import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 
 /**
- * HTML formatter that uses Tidy internally.
+ * HTML formatter that uses <a href="http://jtidy.sf.net">JTidy</a> internally
+ * for formatting.
  * <p>
  * <b>Example:</b>
  * <pre class="snippet">
@@ -27,11 +28,17 @@ public class HTMLFormatter extends AbstractFormatter
     private static final Logger logger_ = Logger.getLogger(HTMLFormatter.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
+    /**
+     * Root prefs node for this HTMLFormatter.
+     */
     public static final String NODE_HTMLFORMATTER = "HTMLFormatter";
     
+    /**
+     * Javabean properties that are persisted.
+     */
     public static final String[] SAVED_PROPS = {
         "indent",
         "wrapLength"
@@ -42,7 +49,7 @@ public class HTMLFormatter extends AbstractFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * HTML formatter.
+     * JTidy HTML formatter.
      */
     private Tidy tidy_;
     

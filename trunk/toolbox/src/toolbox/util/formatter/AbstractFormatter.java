@@ -6,30 +6,28 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Abstract formatter that takes care of non-formatter related housekeeping 
- * stuff.
- * <br>
- *  This base class requires that only the 
- * <code>format(InputStream, OutputStream)</code> be implemented by subclasses.
- * <br>
- * The other various signatures are implemented here and all funnel to the
- * <code>format(InputStream, OutputStream)</code> implementation.
+ * An abstract implementation of a {@link Formatter} that assumes responsibility
+ * for behavior common to most concrete implementations.
+ * <p>
+ * This base class requires that only the
+ * <code>format(InputStream, OutputStream)</code> method be implemented by
+ * subclasses. The remaining variations all funnel to this one method.
  */
 public abstract class AbstractFormatter implements Formatter
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Friendly name of this formatter.
      */
     private String name_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a AbstractFormatter.
      */
@@ -37,10 +35,10 @@ public abstract class AbstractFormatter implements Formatter
     {
     }
 
-    
+
     /**
      * Creates a AbstractFormatter with the given name.
-     * 
+     *
      * @param name Name of this formatter.
      */
     public AbstractFormatter(String name)
@@ -51,7 +49,7 @@ public abstract class AbstractFormatter implements Formatter
     //--------------------------------------------------------------------------
     // Nameable Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.util.service.Nameable#getName()
      */
@@ -68,16 +66,14 @@ public abstract class AbstractFormatter implements Formatter
     {
         name_ = name;
     }
-    
+
     //--------------------------------------------------------------------------
     // Formatter Interface
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Delegates to method signature that takes an InputStream and OutputStream.
-     * 
-     * @see toolbox.util.formatter.Formatter#format(
-     *      java.io.InputStream, java.io.OutputStream)
+     * Delegates to the stream based implementation.
+     *
      * @see toolbox.util.formatter.Formatter#format(java.lang.String)
      */
     public String format(String input) throws Exception
@@ -87,19 +83,24 @@ public abstract class AbstractFormatter implements Formatter
         format(sis, sos);
         return sos.toString();
     }
-    
+
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
-    
+
     /**
+     * Override in subclass to apply preferences.
+     *
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
     public void applyPrefs(Element prefs) throws Exception
     {
     }
-    
+
+
     /**
+     * Override in subclass to save preferences.
+     *
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
     public void savePrefs(Element prefs) throws Exception
