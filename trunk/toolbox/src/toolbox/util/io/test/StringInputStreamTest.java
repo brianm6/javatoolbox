@@ -153,6 +153,12 @@ public class StringInputStreamTest extends TestCase
         sis.append("ab");
         assertEquals('a', (char) sis.read());
         assertEquals('b', (char) sis.read());
+        
+        sis.append(null);
+        assertEquals(0, sis.available());
+        
+        sis.append("");
+        assertEquals(0, sis.available());
     }
  
     //--------------------------------------------------------------------------
