@@ -29,7 +29,7 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
-import nu.xom.ParseException;
+import nu.xom.ParsingException;
 import nu.xom.Serializer;
 
 import org.apache.log4j.Level;
@@ -521,7 +521,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 prefs_.appendChild(root);
                 SmartLogger.debug(logger_, prefs_.toXML());
             }
-            catch (ParseException pe)
+            catch (ParsingException pe)
             {
                 ExceptionUtil.handleUI(pe, logger_);
             }

@@ -6,7 +6,7 @@ import java.io.StringReader;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Element;
-import nu.xom.ParseException;
+import nu.xom.ParsingException;
 
 import toolbox.util.XOMUtil;
 
@@ -100,7 +100,7 @@ public class DBProfile
      * @throws IOException on I/O error.
      * @throws ParseException on XML parsing error. 
      */
-    public DBProfile(String xml) throws IOException, ParseException
+    public DBProfile(String xml) throws IOException, ParsingException 
     {
         Element profile = 
             new Builder().build(new StringReader(xml)).getRootElement();

@@ -7,7 +7,7 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
-import nu.xom.ParseException;
+import nu.xom.ParsingException;
 import nu.xom.Serializer;
 
 import toolbox.util.io.StringInputStream;
@@ -229,8 +229,8 @@ public class XOMUtil
      * @throws ParseException if XML is invalid or not well-formed.
      * @throws IOException if an I/O error occurs.
      */
-    public static Element toElement(String xml) throws ParseException, 
-        IOException
+    public static Element toElement(String xml) 
+        throws ParsingException, IOException
     {
         return new Builder().build(new StringInputStream(xml)).getRootElement();
     }
