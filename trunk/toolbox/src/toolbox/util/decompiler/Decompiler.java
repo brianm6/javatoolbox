@@ -2,19 +2,22 @@ package toolbox.util.decompiler;
 
 import java.io.File;
 
+import toolbox.util.service.Nameable;
+
 /**
- * Common interface for various decompiler implementations.
+ * Common interface for various decompiler implementations. Use 
+ * {@link DecompilerFactory} to create concrete instances.
+ * <p>
+ * <b>Example:</b>
+ * <pre class="snippet">
+ * Decompiler d = DecompilerFactory.create(DecompilerFactory.DECOMPILER_DEFAULT);
+ * String sourceCode = d.decompile(new File("a.class"));
+ * </pre>
+ * 
+ * @see toolbox.util.decompiler.DecompilerFactory
  */
-public interface Decompiler
+public interface Decompiler extends Nameable
 {
-    /**
-     * Returns UI friendly name for the decompiler.
-     * 
-     * @return String
-     */
-    String getName();
-    
-    
     /**
      * Decompiles the given classFile.
      * 
