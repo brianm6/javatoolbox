@@ -49,7 +49,7 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner
+     * @param owner  Parent frame
      */
     public JFontChooserDialog(Frame owner)
     {
@@ -60,8 +60,8 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner
-     * @param modal
+     * @param owner Parent frame
+     * @param modal Dialog is modal
      */
     public JFontChooserDialog(Frame owner, boolean modal)
     {
@@ -102,8 +102,8 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner
-     * @param title
+     * @param owner  Parent frame
+     * @param title  Frame title
      */
     public JFontChooserDialog(Frame owner, String title)
     {
@@ -114,9 +114,9 @@ public class JFontChooserDialog extends JDialog
     /**
      * Constructor for JFontChooserDialog.
      * 
-     * @param owner
-     * @param title
-     * @param modal
+     * @param owner  Parent frame
+     * @param title  Frame title
+     * @param modal  Modal dialog
      */
     public JFontChooserDialog(Frame owner, String title, boolean modal)
     {
@@ -154,6 +154,8 @@ public class JFontChooserDialog extends JDialog
 
     /**
      * Adds a listener
+     * 
+     * @param  listener  FontChooserDialog listener to add
      */
     public void addFontDialogListener(IFontChooserDialogListener listener)
     {
@@ -163,6 +165,8 @@ public class JFontChooserDialog extends JDialog
 
     /**
      * Removes a listener
+     * 
+     * @param  listener  FontChooserDialog listener to remove
      */
     public void removeFontDialogListener(IFontChooserDialogListener listener)
     {
@@ -194,7 +198,8 @@ public class JFontChooserDialog extends JDialog
         public void actionPerformed(ActionEvent e)
         {
             for (Iterator i = listeners_.iterator(); i.hasNext(); )
-                ((IFontChooserDialogListener)i.next()).okButtonPressed(fontChooser_);
+                ((IFontChooserDialogListener)i.next()).
+                    okButtonPressed(fontChooser_);
             
             dispose();
         }
@@ -220,7 +225,8 @@ public class JFontChooserDialog extends JDialog
         public void actionPerformed(ActionEvent e)
         {
             for (Iterator i = listeners_.iterator(); i.hasNext(); )
-                ((IFontChooserDialogListener)i.next()).applyButtonPressed(fontChooser_);
+                ((IFontChooserDialogListener)i.next()).
+                    applyButtonPressed(fontChooser_);
         }
     }
 
@@ -245,7 +251,8 @@ public class JFontChooserDialog extends JDialog
         {
             IFontChooserDialogListener listener = null;
             for (Iterator i = listeners_.iterator(); i.hasNext(); )
-                ((IFontChooserDialogListener)i.next()).cancelButtonPressed(fontChooser_);
+                ((IFontChooserDialogListener)i.next()).
+                    cancelButtonPressed(fontChooser_);
 
             dispose();
         }

@@ -6,26 +6,26 @@ package toolbox.util.ui.font;
 public interface IFontChooserDialogListener
 {
     
-	/**
-	 * Called when the OK button is pressed
-	 * 
-	 * @param  fontChooser  Font chooser panel
-	 */
+    /**
+     * Called when the OK button is pressed
+     * 
+     * @param  fontChooser  Font chooser panel
+     */
     public void okButtonPressed(JFontChooser fontChooser);
     
     
-	/**
-	 * Called when the cancel button is pressed
-	 * 
-	 * @param  fontChooser  Font chooser panel
-	 */
+    /**
+     * Called when the cancel button is pressed
+     * 
+     * @param  fontChooser  Font chooser panel
+     */
     public void cancelButtonPressed(JFontChooser fontChooser);
     
     
-   	/**
-	 * Called when the apply button is pressed
-	 * 
-	 * @param  fontChooser  Font chooser panel
-	 */
-	public void applyButtonPressed(JFontChooser fontChooser);
+    /**
+     * Called when the apply button is pressed
+     * 
+     * @param  fontChooser  Font chooser panel
+     */
+    public void applyButtonPressed(JFontChooser fontChooser);
 }

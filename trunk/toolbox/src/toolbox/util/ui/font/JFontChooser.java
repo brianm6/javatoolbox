@@ -2,7 +2,6 @@ package toolbox.util.ui.font;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Font;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -43,42 +41,42 @@ public class JFontChooser extends JPanel
     /** 
      * JList for font family 
      */
-    protected JList fontFamilyList_;
+    private JList fontFamilyList_;
     
     /** 
      * FontStlyeList (subclass of JList) for font style 
      */
-    protected FontStyleList fontStyleList_;
+    private FontStyleList fontStyleList_;
     
     /** 
      * JTextField for font size 
      */
-    protected JTextField fontSize_;
+    private JTextField fontSize_;
     
     /** 
      * JList for font size 
      */
-    protected JList fontSizeList_;
+    private JList fontSizeList_;
 
     /**
      * Anti-aliasing check box
      */
-    protected JCheckBox antiAliasCheckBox_;
+    private JCheckBox antiAliasCheckBox_;
     
     /** 
      * PhraseCanvas in which font samples are displayed 
      */
-    protected PhraseCanvas phraseCanvas_;
+    private PhraseCanvas phraseCanvas_;
 
     /** 
      * List of listeners 
      */
-    protected List listeners_ = new ArrayList();
+    private List listeners_ = new ArrayList();
 
     /** 
      * Maximum number of characters permissibile in a valid font size 
      */
-    protected int maxNumCharsInFontSize_ = 3;
+    private int maxNumCharsInFontSize_ = 3;
 
 
     //--------------------------------------------------------------------------
@@ -138,6 +136,8 @@ public class JFontChooser extends JPanel
      *      Must contain one or more predefined font sizes which will be 
      *      available to the user as a convenience for populating the font 
      *      size text field; all values must be greater than 0.
+     * 
+     * @param  antiAlias  Turn on antialias
      */    
     public JFontChooser(Font initialFont, String[] styleDisplayNames,
         int[] predefinedSizes, boolean antiAlias)
@@ -278,8 +278,8 @@ public class JFontChooser extends JPanel
      */
     protected void wireView()
     {
-        fontFamilyList_.addListSelectionListener(new FontSelectionListener());                
-        fontStyleList_.addListSelectionListener(new FontSelectionListener());                
+        fontFamilyList_.addListSelectionListener(new FontSelectionListener());
+        fontStyleList_.addListSelectionListener(new FontSelectionListener());
         addFontSelectionListener(new PhraseFontSelectionListener());        
         
         // Use FontSizeSynchronizer to ensure consistency between text field &
@@ -327,13 +327,9 @@ public class JFontChooser extends JPanel
 
 
     /**
-     * Adds an Observer to this JFontChooser; the supplied Observer will 
-     * have its update() method called any time the Font currently specified
-     * in the JFontChooser changes. (The <tt>arg</tt> supplied to the
-     * Observer will be <tt>null</tt>.)
+     * Adds an listener to this JFontChooser
      * 
-     * @param   observer   Observer to be added
-     * @see     java.util.Observer
+     * @param   listener  Font selection listener to add
      */
     public void addFontSelectionListener(IFontChooserListener listener)
     {
@@ -342,10 +338,9 @@ public class JFontChooser extends JPanel
     
     
     /**
-     * Removes an Observer from this JFontChooser.
+     * Removes an listener from this JFontChooser
      * 
-     * @param   observer   Observer to be removed
-     * @see     java.util.Observer
+     * @param   listener  Font selection listener to remove
      */
     public void removeFontSelectionListener(IFontChooserListener listener)
     {
@@ -475,7 +470,7 @@ public class JFontChooser extends JPanel
      * @throws  IllegalArgumentException thrown if the family or style of the
      *          font supplied are not available or invalid
      */
-    public void setSelectedFont(Font font)
+    public void setSelectedFont(Font font) throws IllegalArgumentException
     {
         setSelectedFontFamily(font.getName());
         setSelectedFontStyle(font.getStyle());
@@ -490,7 +485,8 @@ public class JFontChooser extends JPanel
      * @throws  IllegalArgumentException thrown if the supplied font family is
      *          not among the list of available font families
      */
-    public void setSelectedFontFamily(String family)
+    public void setSelectedFontFamily(String family) throws
+        IllegalArgumentException
     {
         ListModel familyListModel = fontFamilyList_.getModel();
         
@@ -517,7 +513,7 @@ public class JFontChooser extends JPanel
      *          not one of Font.PLAIN, Font.BOLD, Font.ITALIC, or 
      *          Font.BOLD+Font.ITALIC
      */
-    public void setSelectedFontStyle(int style)
+    public void setSelectedFontStyle(int style) throws IllegalArgumentException
     {
         fontStyleList_.setSelectedStyle(style);
     }
@@ -546,15 +542,15 @@ public class JFontChooser extends JPanel
         ListSelectionListener
     {
         
-        protected JList list_;
-        protected JTextField textField_;
-        protected boolean updating_;
+        private JList list_;
+        private JTextField textField_;
+        private boolean updating_;
         
         
         /**
          * @param   list        List containing predefined font sizes 
          * @param   textField   Text field in which font size is specified
-        */
+         */
         public FontSizeSynchronizer(JList list, JTextField textField)
         {
             list_ = list;

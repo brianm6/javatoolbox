@@ -27,7 +27,8 @@ public class FontStyleList extends JList
      * @throws IllegalArgumentException if styleDisplayNames does not
      *         contain exactly four String values
      */
-    public FontStyleList(String[] styleDisplayNames)
+    public FontStyleList(String[] styleDisplayNames) 
+        throws IllegalArgumentException
     {
         super(validateStyleDisplayNames(styleDisplayNames));
     }
@@ -42,7 +43,8 @@ public class FontStyleList extends JList
      * @param  styleDisplayNames  Style display names
      * @return String array
      */
-    private static String[] validateStyleDisplayNames(String[] styleDisplayNames)
+    private static String[] 
+        validateStyleDisplayNames(String[] styleDisplayNames)
     {
         if (styleDisplayNames == null)
             throw new IllegalArgumentException(
@@ -94,7 +96,7 @@ public class FontStyleList extends JList
      * @throws  IllegalArgumentException thrown if style is not one of 
      *          Font.PLAIN, Font.BOLD, Font.ITALIC, or Font.BOLD+Font.ITALIC
      */
-    public void setSelectedStyle(int style)
+    public void setSelectedStyle(int style) throws IllegalArgumentException
     {
         switch (style)
         {

@@ -8,7 +8,7 @@ public class FontChooserException extends Exception
     /**
      * Creates a FontChooserException
      * 
-     * @parm  msg  Exception message
+     * @param  msg  Exception message
      */
     public FontChooserException(String msg)
     {

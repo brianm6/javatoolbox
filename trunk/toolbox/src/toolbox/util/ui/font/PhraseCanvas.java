@@ -16,10 +16,10 @@ import javax.swing.JComponent;
  */
 public class PhraseCanvas extends JComponent
 {
-    protected Color     color_;        
-    protected String    phrase_;
-    protected Font      font_;
-    protected boolean   antiAlias_;
+    private Color     color_;        
+    private String    phrase_;
+    private Font      font_;
+    private boolean   antiAlias_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -34,7 +34,8 @@ public class PhraseCanvas extends JComponent
      * @param   color       Color to use when rendering the phrase
      * @param   antiAlias   Antialias fonts
      */
-    public PhraseCanvas(String phrase, Font font, Color color, boolean antiAlias)
+    public PhraseCanvas(String phrase, Font font, Color color, 
+        boolean antiAlias)
     {
         phrase_ = phrase;
         font_ = font;
@@ -48,6 +49,8 @@ public class PhraseCanvas extends JComponent
 
     /** 
      * Paints font
+     * 
+     * @param g  Graphics
      */
     public void paint(Graphics g)
     {
