@@ -11,9 +11,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.NullWriter;
 
 /**
- * Decompiler adapter for the Jode decompiler @ http://jode.sf.net. 
+ * Decompiler adapter for the Jode decompiler @ http://jode.sf.net.
+ * 
+ * @see toolbox.util.decompiler.DecompilerFactory 
  */
-public class JodeDecompiler implements Decompiler
+public class JodeDecompiler extends AbstractDecompiler
 {
     private static final Logger logger_ = 
         Logger.getLogger(JodeDecompiler.class);
@@ -36,6 +38,7 @@ public class JodeDecompiler implements Decompiler
      */
     public JodeDecompiler()
     {
+        super("Jode");
         decompiler_ = new jode.decompiler.Decompiler();
         decompiler_.setOption("style", "pascal");
         decompiler_.setErr(new PrintWriter(new NullWriter()));
@@ -47,15 +50,6 @@ public class JodeDecompiler implements Decompiler
     //--------------------------------------------------------------------------
     // Decompiler Interface
     //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.decompiler.Decompiler#getName()
-     */
-    public String getName()
-    {
-        return "Jode";
-    }
-
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
@@ -87,19 +81,5 @@ public class JodeDecompiler implements Decompiler
                 
         // Nuke the tabs. They're hardcoded as a width of 8 in jode.
         return StringUtils.replace(javaWriter.toString(), "\t", "        ");
-    }
-    
-    //--------------------------------------------------------------------------
-    // Overrides java.lang.Object
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Returns the name of this decompiler.
-     * 
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getName();
     }
 }

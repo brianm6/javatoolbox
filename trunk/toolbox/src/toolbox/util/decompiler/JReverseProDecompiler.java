@@ -7,9 +7,11 @@ import jreversepro.revengine.JSerializer;
 import org.apache.log4j.Logger;
 
 /**
- * Decompiler bridge to the JReversePro decompiler @ http://jrevpro.sf.net. 
+ * Decompiler bridge to the JReversePro decompiler @ http://jrevpro.sf.net.
+ * 
+ * @see toolbox.util.decompiler.DecompilerFactory 
  */
-public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
+public class JReverseProDecompiler extends AbstractDecompiler
 {
     private static final Logger logger_ = 
         Logger.getLogger(JReverseProDecompiler.class);
@@ -32,21 +34,13 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
      */
     public JReverseProDecompiler()
     {
+        super("JReversePro");
         decompiler_ = new JSerializer();
     }
     
     //--------------------------------------------------------------------------
     // Decompiler Interface
     //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.decompiler.Decompiler#getName()
-     */
-    public String getName()
-    {
-        return "JReversePro";
-    }
-    
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
@@ -77,17 +71,5 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
         throws DecompilerException
     {
         throw new IllegalArgumentException("Not supported");
-    }
-    
-    //--------------------------------------------------------------------------
-    // Overrides java.lang.Object
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getName();
     }
 }

@@ -7,9 +7,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.StreamUtil;
 
 /**
- * Decompiler bridge to the windows only JAD decompiler. 
+ * Decompiler bridge to the windows only JAD decompiler.
+ * 
+ * @see toolbox.util.decompiler.DecompilerFactory 
  */
-public class JadDecompiler implements toolbox.util.decompiler.Decompiler
+public class JadDecompiler extends AbstractDecompiler
 {
     private static final Logger logger_ = Logger.getLogger(JadDecompiler.class);
     
@@ -22,20 +24,12 @@ public class JadDecompiler implements toolbox.util.decompiler.Decompiler
      */
     public JadDecompiler()
     {
+        super("Jad");
     }
     
     //--------------------------------------------------------------------------
     // Decompiler Interface
     //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.decompiler.Decompiler#getName()
-     */
-    public String getName()
-    {
-        return "Jad";
-    }
-    
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
@@ -72,17 +66,5 @@ public class JadDecompiler implements toolbox.util.decompiler.Decompiler
         throws DecompilerException
     {
         throw new IllegalArgumentException("Not supported");
-    }
-    
-    //--------------------------------------------------------------------------
-    // Overrides java.lang.Object
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return getName();
     }
 }
