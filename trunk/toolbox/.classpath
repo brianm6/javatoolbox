@@ -60,7 +60,7 @@
 	<classpathentry sourcepath="lib/src/liquidlf-src.zip" kind="lib" path="lib/liquidlf.jar"/>
 	<classpathentry sourcepath="lib/src/log4j-src.zip" kind="lib" path="lib/log4j.jar"/>
 	<classpathentry sourcepath="lib/src/looks-src.zip" kind="lib" path="lib/looks.jar"/>
-	<classpathentry kind="lib" path="lib/matra.jar"/>
+	<classpathentry sourcepath="lib/src/matra-src.zip" kind="lib" path="lib/matra.jar"/>
 	<classpathentry kind="lib" path="lib/metouia.jar"/>
 	<classpathentry sourcepath="lib/src/multivalent-src.zip" kind="lib" path="lib/multivalent.jar"/>
 	<classpathentry kind="lib" path="lib/napkinlf.jar"/>
