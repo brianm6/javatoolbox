@@ -5,23 +5,22 @@ import java.util.Collection;
 import java.util.Stack;
 
 import javax.swing.JFrame;
-import junit.framework.TestCase;
-import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.StringUtil;
+import junit.framework.TestCase;
+import junit.textui.TestRunner;
+
+import toolbox.util.Stringz;
 import toolbox.util.dump.Dumper;
 
 /**
  * Unit test for ObjectDumper
  */
-public class DumperTest extends TestCase
+public class DumperTest extends TestCase implements Stringz
 {
-
     private static final Logger logger_ = 
         Logger.getLogger(DumperTest.class);
-                
 
     /**
      * Entrypoint
@@ -57,10 +56,8 @@ public class DumperTest extends TestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-        
-        System.out.println("\n" + StringUtil.repeat("=", 80));
+        System.out.println(NL + BR);
     }
-
 
     //--------------------------------------------------------------------------
     //  Unit Tests
@@ -117,7 +114,17 @@ public class DumperTest extends TestCase
     public void testDumpMaxDepth()
     { 
         logger_.info("Running testDumpMaxDepth...");
-        logger_.info("\n\n" + Dumper.dump(new Employee(), 3));        
+
+        Employee emp = new Employee();
+        
+        logger_.info(NL + BRNL + "Max depth = 1" + NL + BRNL +
+            Dumper.dump(emp, 1));
+         
+        logger_.info(NL + BRNL + "Max depth = 2" + NL + BRNL +
+            Dumper.dump(emp, 2));        
+
+        logger_.info(NL + BRNL + "Max depth = 3" + NL + BRNL +
+            Dumper.dump(emp, 3));        
     }
     
     /**
@@ -125,24 +132,42 @@ public class DumperTest extends TestCase
      */    
     public void testDumpCollection()
     {
+        logger_.info("Running testDumpCollection...");
+        
         class CollectionDump
         {
-            private Collection coll_;
-            
+            private Collection collection_;
+            private Collection clone_;
+                        
             public CollectionDump()
             {
-                coll_ = new ArrayList();
-                coll_.add("one");
-                coll_.add(new Country());
-                coll_.add(new Employee());
+                collection_ = new ArrayList();
+                collection_.add("one");
+                collection_.add(new Country());
+                collection_.add(new Employee());
+                clone_ = collection_;
+            }
+            
+            public CollectionDump(Collection c)
+            {
+                collection_ = c;
+                clone_ = collection_;
             }
         }
         
-        logger_.info("Running testDumpCollection...");
         logger_.info("\n\n" + Dumper.dump(new CollectionDump()));
     }
 
-    // TODO: Update dumper to handle collections/arrays/vectors/etc!
+    /**
+     * Should be able to dump itself, right?
+     * 
+     * @throws Exception on error
+     */    
+    public void testDumpItself() throws Exception
+    {
+        logger_.info("Running testDumpItself...");
+        logger_.info(NL + BRNL + Dumper.dump(new Dumper()) + BRNL + NL);
+    }
      
     /**
      * Tests legacy version 
@@ -232,64 +257,64 @@ public class DumperTest extends TestCase
     {
         private Address address_   = new Address();
         private Address reference_ = address_; 
-    } 
-}
+    }
 
-class B extends A
-{
-    protected transient int aBVariable;
-    private int xDeclaredInAandB = 8;
-}
-
-class C extends B
-{
-    volatile boolean aCVariable = false;
-}
-
-class D extends C
-{
-    //  protected Object aDVariable = new Object();
-    //  private String myString1 = "asdfsadfsadf\nasdfsadf\njasdfs\ndafsadfsadfdsaasdfasdf";
-    //  private String myString2 = "aaaa\nbbbb\n\n\ncccc\n\n";
-    //  Object differentType = new C();
-    private volatile static Integer synchInteger = new Integer(9);
-    protected transient FUN fun = new MEGAFUN();
-    //  static D loop = new D();
-    public Stack stack = new Stack();
-    //  public javax.swing.JLabel jLabel= new javax.swing.JLabel();
-}
-
-class FUN extends Object
-{
-    private Integer funInteger = new Integer(13);
-}
-
-class MEGAFUN extends FUN
-{
-    private Integer megaFunInteger = new Integer(14);
-    public String toString()
+    ///////////////////////////////////////////////////////////////////////////
+        
+    class B extends A
     {
-        return "this is what you get from calling \"toString()\" !!!";
+        protected transient int aBVariable;
+        private int xDeclaredInAandB = 8;
+    }
+
+    class C extends B
+    {
+        volatile boolean aCVariable = false;
+    }
+
+    class D extends C
+    {
+        //  protected Object aDVariable = new Object();
+        //  private String myString1 = "asdfsadfsadf\nasdfsadf\njasdfs\ndafsadfsadfdsaasdfasdf";
+        //  private String myString2 = "aaaa\nbbbb\n\n\ncccc\n\n";
+        //  Object differentType = new C();
+        //private volatile static Integer synchInteger = new Integer(9);
+        protected transient FUN fun = new MEGAFUN();
+        //  static D loop = new D();
+        public Stack stack = new Stack();
+        //  public javax.swing.JLabel jLabel= new javax.swing.JLabel();
+    }
+
+    class FUN extends Object
+    {
+        private Integer funInteger = new Integer(13);
+    }
+
+    class MEGAFUN extends FUN
+    {
+        private Integer megaFunInteger = new Integer(14);
+        public String toString()
+        {
+            return "this is what you get from calling \"toString()\" !!!";
+        }
+    }
+
+    class TestObject2
+    {
+
+        public int jInt = 5;
+        private transient float jFloat = 6;
+        public Integer jInteger = new Integer(7);
+        private Double jDouble = new Double(8);
+
+        public D d = new D();
+        //public static final TestObject2 to2 = new TestObject2();
+
+    }
+
+    class A
+    {
+        private int anAVariable;
+        private int xDeclaredInAandB = 5;
     }
 }
-
-class TestObject2
-{
-
-    public int jInt = 5;
-    private transient float jFloat = 6;
-    public Integer jInteger = new Integer(7);
-    private Double jDouble = new Double(8);
-
-    public D d = new D();
-    public static final TestObject2 to2 = new TestObject2();
-
-}
-
-class A
-{
-    private int anAVariable;
-    private int xDeclaredInAandB = 5;
-}
-
-
