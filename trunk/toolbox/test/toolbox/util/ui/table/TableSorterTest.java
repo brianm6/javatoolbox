@@ -33,7 +33,7 @@ public class TableSorterTest extends UITestCase
     /**
      * Entry point.
      *
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -154,10 +154,9 @@ public class TableSorterTest extends UITestCase
 
 
         /**
-         * JTable uses this method to determine the default renderer/
-         * editor for each cell.  If we didn't implement this method,
-         * then the last column would contain text ("true"/"false"),
-         * rather than a check box.
+         * JTable uses this method to determine the default renderer/ editor for
+         * each cell. If we didn't implement this method, then the last column
+         * would contain text ("true"/"false"), rather than a check box.
          *
          * @see javax.swing.table.TableModel#getColumnClass(int)
          */
@@ -185,14 +184,14 @@ public class TableSorterTest extends UITestCase
          * Don't need to implement this method unless your table's data can
          * change.
          *
-         * @see javax.swing.table.TableModel#setValueAt(
-         *      java.lang.Object, int, int)
+         * @see javax.swing.table.TableModel#setValueAt( java.lang.Object, int,
+         *      int)
          */
         public void setValueAt(Object value, int row, int col)
         {
             if (DEBUG)
             {
-                System.out.println("Setting value at " + row + "," + col +
+                logger_.debug("Setting value at " + row + "," + col +
                     " to " + value + " (an instance of " +
                         value.getClass() + ")");
             }
@@ -217,7 +216,7 @@ public class TableSorterTest extends UITestCase
                 {
                     JOptionPane.showMessageDialog(new JLabel(),
                         "The \"" + getColumnName(col) +
-                            "\" column accepts only integer values.");
+                        "\" column accepts only integer values.");
                 }
             }
             else
@@ -229,7 +228,7 @@ public class TableSorterTest extends UITestCase
 
             if (DEBUG)
             {
-                System.out.println("New value of data:");
+                logger_.debug("New value of data:");
                 printDebugData();
             }
         }

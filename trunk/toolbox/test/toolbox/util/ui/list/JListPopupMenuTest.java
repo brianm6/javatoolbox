@@ -27,7 +27,7 @@ public class JListPopupMenuTest extends UITestCase
     /** 
      * Entry point.
      * 
-     * @param args None
+     * @param args None.
      */
     public static void main(String[] args)
     {
@@ -39,7 +39,7 @@ public class JListPopupMenuTest extends UITestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests popupmenu.
+     * Tests the popupmenu.
      */
     public void testListPopup()
     {
