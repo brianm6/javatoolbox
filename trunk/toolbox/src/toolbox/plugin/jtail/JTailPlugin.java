@@ -15,6 +15,10 @@ public class JTailPlugin implements IPlugin
 {
     private JTail jtail_;
     
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getName()
      */

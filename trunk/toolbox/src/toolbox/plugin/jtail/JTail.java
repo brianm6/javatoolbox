@@ -362,6 +362,7 @@ public class JTail extends JFrame
         return (TailPane)tabbedPane_.getSelectedComponent();
     }
     
+    
     /**
      * @return  Configuration of currently selected tail in the tabbed pane
      */

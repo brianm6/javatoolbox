@@ -20,7 +20,7 @@ public class LineNumberDecorator extends AbstractLineFilter
     }
 
     //--------------------------------------------------------------------------
-    //  ILineFilter
+    //  ILineFilter Interface
     //--------------------------------------------------------------------------
 
     /**

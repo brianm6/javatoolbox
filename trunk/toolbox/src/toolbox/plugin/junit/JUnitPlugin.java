@@ -169,7 +169,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     }
 
     /**
-     * @see com.swa.turbo.pos.comm.proxy.ui.IPlugin#getMenu()
+     * @see toolbox.util.ui.plugin.IPlugin#getMenu()
      */
     public JMenu getMenu()
     {
@@ -195,7 +195,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     }
 
     /**
-     * @see com.swa.turbo.util.ui.IPlugin#setStatusBar(IStatusBar)
+     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
      */
     public void setStatusBar(IStatusBar statusBar)
     {
@@ -203,7 +203,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     }
 
     /**
-     * @see com.swa.turbo.util.ui.IPlugin#shutdown()
+     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
      */
     public void shutdown()
     {

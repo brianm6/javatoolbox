@@ -8,12 +8,13 @@ import org.apache.log4j.Logger;
 import toolbox.findclass.Main;
 
 /**
- * Unit test for findclass
+ * Unit test for Main
  */
 public class MainTest extends TestCase
 {
-    /** Logger **/
-    private static final Logger logger_ = Logger.getLogger(MainTest.class);
+    /** Logger */
+    private static final Logger logger_ = 
+        Logger.getLogger(MainTest.class);
     
     /**
      * Test entry point
@@ -25,6 +26,10 @@ public class MainTest extends TestCase
         TestRunner.run(MainTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Arg constructor
      * 
@@ -34,6 +39,10 @@ public class MainTest extends TestCase
     {
         super(arg);
     }
+    
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
     
     /**
      * Test finding a class in a jarfile
@@ -46,5 +55,4 @@ public class MainTest extends TestCase
         
         Main.main(new String[] {  "filter$" } );
     }
-
 }

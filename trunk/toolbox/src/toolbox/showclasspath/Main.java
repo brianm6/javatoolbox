@@ -30,26 +30,25 @@ import toolbox.util.StringUtil;
  */
 public class Main
 {
-
-    /** max length for size column **/
+    /** Max length for size column */
     private static final int MAX_SIZE_LEN = 12;
     
-    /** max length for date column **/
+    /** Max length for date column */
     private static final int MAX_DATE_LEN = 14;
     
-    /** max length for time column **/
+    /** Max length for time column */
     private static final int MAX_TIME_LEN = 8;
 
-    /** column heading for archive **/
+    /** Column heading for archive */
     private static final String COL_ARCHIVE = "JAR/Directory";
     
-    /** column heading for date **/
+    /** Column heading for date */
     private static final String COL_DATE = "Date";
     
-    /** column heading for size **/
+    /** Column heading for size */
     private static final String COL_SIZE = "Size";
     
-    /** column heading for time **/    
+    /** Column heading for time */    
     private static final String COL_TIME = "Time";
 
 

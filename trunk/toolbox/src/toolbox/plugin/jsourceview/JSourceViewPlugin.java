@@ -15,6 +15,10 @@ public class JSourceViewPlugin implements IPlugin
 {
     private JSourceView sourceView_;
     
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getName()
      */

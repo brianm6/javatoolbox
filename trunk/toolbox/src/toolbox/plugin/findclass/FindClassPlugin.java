@@ -22,6 +22,10 @@ public class JFindClassPlugin implements IPlugin
         
     private JFindClass jfindClass_;
     
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getName()
      */
@@ -87,6 +91,5 @@ public class JFindClassPlugin implements IPlugin
      */
     public void shutdown()
     {
-        
     }
 }

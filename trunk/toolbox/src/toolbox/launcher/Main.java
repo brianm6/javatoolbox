@@ -14,12 +14,12 @@ import toolbox.util.ArrayUtil;
  */
 public class Main
 {
-    /** program name to class file map **/
+    /** Program name to class file map */
     private static HashMap programMap_;
     
     static
     {
-        /* map program names to class names */
+        // Map program names to class names
         programMap_ = new HashMap(10);
         
         programMap_.put("findclass",  "toolbox.findclass.Main");

@@ -217,60 +217,6 @@ public class TailPane extends JPanel
     }
 
     /**
-     * Sets the configuration
-     * 
-     * @param  config  Tail configuration
-     */
-    public void setConfiguration(ITailPaneConfig config)
-    {
-        config_ = config;
-
-        autoScrollBox_.setSelected(config_.isAutoScroll());
-        tailArea_.setAutoScroll(config_.isAutoScroll());
-        
-        boolean lineNumbers = config_.isShowLineNumbers();
-        lineNumbersBox_.setSelected(lineNumbers);
-        lineNumberDecorator_.setEnabled(lineNumbers);
-        
-        tailArea_.setFont(config_.getFont());
-        tailArea_.setAntiAlias(config.isAntiAlias());
-        
-        setRegularExpression(config_.getRegularExpression());
-        setCutExpression(config_.getCutExpression());
-    }
-
-
-    /**
-     * Gets the configuration
-     * 
-     * @return TailConfig
-     */
-    public ITailPaneConfig getConfiguration()
-    {
-        // Make sure configuration up to date
-        config_.setAutoScroll(autoScrollBox_.isSelected());
-        config_.setShowLineNumbers(lineNumbersBox_.isSelected());
-        config_.setFont(tailArea_.getFont());
-        config_.setAntiAlias(tailArea_.isAntiAlias());
-        config_.setRegularExpression(getRegularExpression());
-        config_.setCutExpression(getCutExpression());
-        return config_;
-    }    
-
-    //--------------------------------------------------------------------------
-    //  Accessors/Mutators
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @return Close button
-     */
-    public JButton getCloseButton()
-    {
-        return closeButton_;
-    }
-
-    
-    /**
      * @return Filter text
      */
     protected String getRegularExpression()
@@ -325,7 +271,61 @@ public class TailPane extends JPanel
             logger_.info("Invalid cut expression: " + cut);
         }
     }
+
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets the configuration
+     * 
+     * @param  config  Tail configuration
+     */
+    public void setConfiguration(ITailPaneConfig config)
+    {
+        config_ = config;
+
+        autoScrollBox_.setSelected(config_.isAutoScroll());
+        tailArea_.setAutoScroll(config_.isAutoScroll());
         
+        boolean lineNumbers = config_.isShowLineNumbers();
+        lineNumbersBox_.setSelected(lineNumbers);
+        lineNumberDecorator_.setEnabled(lineNumbers);
+        
+        tailArea_.setFont(config_.getFont());
+        tailArea_.setAntiAlias(config.isAntiAlias());
+        
+        setRegularExpression(config_.getRegularExpression());
+        setCutExpression(config_.getCutExpression());
+    }
+
+
+    /**
+     * Gets the configuration
+     * 
+     * @return TailConfig
+     */
+    public ITailPaneConfig getConfiguration()
+    {
+        // Make sure configuration up to date
+        config_.setAutoScroll(autoScrollBox_.isSelected());
+        config_.setShowLineNumbers(lineNumbersBox_.isSelected());
+        config_.setFont(tailArea_.getFont());
+        config_.setAntiAlias(tailArea_.isAntiAlias());
+        config_.setRegularExpression(getRegularExpression());
+        config_.setCutExpression(getCutExpression());
+        return config_;
+    }    
+
+
+    /**
+     * @return Close button
+     */
+    public JButton getCloseButton()
+    {
+        return closeButton_;
+    }
 
     //--------------------------------------------------------------------------
     //  Interfaces
@@ -409,51 +409,6 @@ public class TailPane extends JPanel
             }
         }
     }
-
-
-//    /**
-//     * Enabled dynamic filtering based on regex as it is typed
-//     */    
-//    public class RegexKeyListener extends KeyAdapter
-//    {
-//        String oldValue = "";
-//        
-//        public void keyReleased(KeyEvent e)
-//        {
-//            super.keyReleased(e);
-//            
-//            String newValue = getFilter() + e.getKeyChar();
-// 
-//            // Only refresh if the field has changed           
-//            if (!newValue.equals(oldValue))
-//            {                
-//                oldValue = newValue;
-//                setFilter(getFilter());
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Listens to the cut filter
-//     */    
-//    public class CutKeyListener extends KeyAdapter
-//    {
-//        String oldValue = "";
-//        
-//        public void keyReleased(KeyEvent e)
-//        {
-//            super.keyReleased(e);
-//            
-//            String newValue = getFilter() + e.getKeyChar();
-// 
-//            // Only refresh if the field has changed           
-//            if (!newValue.equals(oldValue))
-//            {                
-//                oldValue = newValue;
-//                setCut(getCut());
-//            }
-//        }
-//    }
 
 
     /**

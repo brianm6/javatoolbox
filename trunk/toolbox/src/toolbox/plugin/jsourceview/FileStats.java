@@ -30,7 +30,7 @@ public class FileStats
     //--------------------------------------------------------------------------
         
     /**
-     * Constructor
+     * Default constructor
      */
     public FileStats()
     {

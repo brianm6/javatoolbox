@@ -14,8 +14,9 @@ import toolbox.util.ArrayUtil;
  */
 public class FindClassTest extends TestCase
 {
-    /** Logger **/
-    private static final Logger logger_ = Logger.getLogger(FindClassTest.class);
+    /** Logger */
+    private static final Logger logger_ = 
+        Logger.getLogger(FindClassTest.class);
     
     /**
      * Test entry point
@@ -57,7 +58,7 @@ public class FindClassTest extends TestCase
         FindClass finder = new FindClass();
         FindClassResult[] results = finder.findClass("Info$", false);
         
-        System.out.println(ArrayUtil.toString(results, true));
+        logger_.info("\n" + ArrayUtil.toString(results, true));
     }
 
 }

@@ -197,7 +197,7 @@ public class JSourceView extends JFrame implements ActionListener
 
 
     //--------------------------------------------------------------------------
-    //  Implementation
+    //  Private
     //--------------------------------------------------------------------------
     
     /**
@@ -359,10 +359,10 @@ public class JSourceView extends JFrame implements ActionListener
      */
     private class ScanDirWorker implements Runnable
     {
-        /** Directory to scan **/
+        /** Directory to scan */
         private File file_;
 
-        /** Cancel flag **/
+        /** Cancel flag */
         private boolean cancel_ = false;
         
         /**
@@ -410,6 +410,7 @@ public class JSourceView extends JFrame implements ActionListener
             
             // Process dirs in current directory
             File dirs[] = file.listFiles(new DirectoryFilter());
+            
             if (!ArrayUtil.isNullOrEmpty(dirs))
             {
                 for (int i=0; i<dirs.length; i++)

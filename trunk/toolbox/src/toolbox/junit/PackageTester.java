@@ -17,8 +17,9 @@ import toolbox.util.ClassUtil;
  */
 public class PackageTester
 {
-    /** Logger **/
-    public static final Logger logger_ = Logger.getLogger(PackageTester.class);
+    /** Logger */
+    public static final Logger logger_ = 
+        Logger.getLogger(PackageTester.class);
     
     private List packages_ = new ArrayList();
 
