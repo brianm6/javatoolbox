@@ -102,7 +102,8 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
     
     /** 
-     * The wall of the enclosing panel that the flippane is attached to. 
+     * The wall of the enclosing panel that the flippane is attached to.
+     * Values include left, right, top, and bottom. 
      */
     private String position_;
     
@@ -341,17 +342,23 @@ public class JFlipPane extends JPanel
     {
         if (!isCollapsed())
         {
+            //
             // Flipper is expanded so collapse it by removing the card panel
+            //
             remove(flipCardPanel_);
             
+            //
             // Invisible button steals the selected state so none show as
             // selected
+            //
             nullButton_.setSelected(true);
             fireFlipperCollapsed();
         }
         else
         {
+            //
             // Flipper is collapsed so expand it by adding back the card panel
+            //
             add(BorderLayout.CENTER, flipCardPanel_);
             fireFlipperExpanded();
         }
@@ -563,7 +570,14 @@ public class JFlipPane extends JPanel
             left = 0;
 
         closeButton_.setMargin(new Insets(0, left, 0, 0));
-        buttonPanel_.add(closeButton_);
+        
+        //
+        // Removed the close button
+        //
+        
+        //buttonPanel_.add(closeButton_);
+        
+        
         closeButton_.addActionListener(new FlipperHandler());
 
         // Popup button
