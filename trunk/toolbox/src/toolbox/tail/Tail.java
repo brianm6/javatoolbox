@@ -476,13 +476,18 @@ public class Tail
                 int resetThreshHold     = 5000;
 
                 // Seek to end of file
-                reader_.skip(Integer.MAX_VALUE);          
+                if (isFile()) 
+                    reader_.skip(Integer.MAX_VALUE);          
                                       
                 while (!pendingShutdown_)
                 {
                     checkPaused();
                     
+                    //logger_.info("Tail:before readLine()");
+                    
                     String line = reader_.readLine();
+    
+                    //logger_.info("Tail:readLine(): " + line);
     
                     if (line != null)
                     {
