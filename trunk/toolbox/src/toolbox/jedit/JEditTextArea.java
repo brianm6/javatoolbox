@@ -11,6 +11,8 @@ import toolbox.util.SwingUtil;
 
 /**
  * Modified JEditTextArea that supports a mouse wheel, tab size, and font
+ * 
+ * TODO: Add accelerators for cut/copy/paste/select all
  */
 public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     implements MouseWheelListener
