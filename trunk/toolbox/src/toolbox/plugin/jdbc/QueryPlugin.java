@@ -180,7 +180,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         queryButton_ = new JButton(new ExecuteAction());
         buttonPanel.add(queryButton_);
 
-        clearButton_ = new JButton(new ClearAction());
+        clearButton_ = new JButton(resultsArea_.new ClearAction());
         buttonPanel.add(clearButton_);
 
         // Root 
@@ -413,24 +413,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
     
-    /**
-     * Clears the output text area
-     */
-    private class ClearAction extends AbstractAction
-    {
-        public ClearAction()
-        {
-            super("Clear");
-            putValue(MNEMONIC_KEY, new Integer('C'));
-            putValue(SHORT_DESCRIPTION, "Clears the output");
-        }
-    
-        public void actionPerformed(ActionEvent e)
-        {
-            resultsArea_.setText("");            
-        }
-    }
-
     /**
      * Ctrl-Up Key action
      */
