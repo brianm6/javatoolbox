@@ -2,6 +2,7 @@ package toolbox.util.ui;
 
 import java.awt.Color;
 import java.util.Arrays;
+
 import javax.swing.plaf.ColorUIResource;
 
 /**
@@ -771,9 +772,6 @@ public class Colors
 
     private static XColor key_ = new XColor("", -1, -1, -1);
     
-    //public static final Color BLUE1 = getColor("blue1");
-    //public static final Color BLUE4 = getColor("blue4");
-    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -809,6 +807,10 @@ public class Colors
         private int green_;
         private int blue_;
 
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
          * Creates a XColor.
          * 
@@ -825,6 +827,9 @@ public class Colors
             blue_ = blue;
         }
 
+        //----------------------------------------------------------------------
+        // Package
+        //----------------------------------------------------------------------
         
         /**
          * Returns this XColor's equivalent Color.
@@ -836,6 +841,9 @@ public class Colors
             return new ColorUIResource(red_, green_, blue_);
         }
 
+        //----------------------------------------------------------------------
+        // Comparable Interface
+        //----------------------------------------------------------------------
         
         /**
          * @see java.lang.Comparable#compareTo(java.lang.Object)
@@ -843,7 +851,6 @@ public class Colors
         public int compareTo(Object o)
         {
             XColor other = (XColor) o;
-
             return name_.compareTo(other.name_);
         }
     }
