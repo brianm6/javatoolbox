@@ -31,6 +31,7 @@
 	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
 	<classpathentry kind="lib" path="lib/cryptix32-pgp.jar"/>
 	<classpathentry sourcepath="lib/cvslib.jar" kind="lib" path="lib/cvslib.jar"/>
+	<classpathentry kind="lib" path="lib/fhlaf.jar"/>
 	<classpathentry sourcepath="lib/src/fop-src.zip" kind="lib" path="lib/fop.jar"/>
 	<classpathentry sourcepath="lib/src/hamsam-src.zip" kind="lib" path="lib/hamsam.jar"/>
 	<classpathentry kind="lib" path="lib/hippolf.jar"/>
