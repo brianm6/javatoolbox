@@ -114,7 +114,16 @@
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
       <Property name="group.name" value="Others"/>            
   </LookAndFeel>
-  
+
+  <!--
+  <LookAndFeel 
+      name="JellyBeans"
+      class="workshop.core.plaf.WorkshopLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
+  </LookAndFeel>
+  -->
+
   <!-- ==================================================================== -->
   <!-- Alloy Look and Feels                                                 -->
   <!-- ==================================================================== -->
