@@ -21,7 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
@@ -57,7 +56,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
            
     //--------------------------------------------------------------------------
     //  Constructors
-    //--------------------------------------------------------------------------       
+    //--------------------------------------------------------------------------
 
     /**
      * Default constructor
@@ -104,7 +103,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
         
         // build button panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.setBorder(BorderFactory.createEtchedBorder());               
+        buttonPanel.setBorder(BorderFactory.createEtchedBorder());
         
         buttonPanel.add(
             new JButton(getPackagesAction_ = new GetPackageListAction()));
@@ -144,7 +143,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
        
     //--------------------------------------------------------------------------
     //  IPlugin interface
-    //--------------------------------------------------------------------------        
+    //--------------------------------------------------------------------------
     
     /**
      * @see com.swa.turbo.util.ui.IPlugin#init()
@@ -212,13 +211,13 @@ public class JUnitPlugin extends JPanel implements  IPlugin
 
     //--------------------------------------------------------------------------
     //  GUI Actions
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
     
     /**
      * Gets the list of packages on the classpath and populates the package
      * list box
      */
-    public class GetPackageListAction extends AbstractAction
+    class GetPackageListAction extends AbstractAction
     {
         public GetPackageListAction()
         {
@@ -249,7 +248,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     /**
      * Runs the unit tests in the selected packges in the package list box
      */
-    public class TestPackagesAction extends AbstractAction
+    class TestPackagesAction extends AbstractAction
     {
         public TestPackagesAction()
         {
@@ -267,7 +266,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
             for(int i=0; i<selected.length; i++)
                 pt.addPackage(selected[i].toString());    
                 
-            logger_.info("Running tests on: " + ArrayUtil.toString(selected));    
+            logger_.info("Running tests on: " + ArrayUtil.toString(selected));
             
             pt.run();
         }
@@ -280,9 +279,9 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     /**
      * Enabled dynamic filtering  of regex as it is typed
      */    
-    public class FilterKeyListener extends KeyAdapter
+    class FilterKeyListener extends KeyAdapter
     {
-        String oldValue = "";
+        private String oldValue_ = "";
         
         public void keyReleased(KeyEvent e)
         {
@@ -291,9 +290,9 @@ public class JUnitPlugin extends JPanel implements  IPlugin
             String newValue = filterField_.getText().trim() + e.getKeyChar();
  
             // Only refresh if the filter has changed           
-            if (!newValue.equals(oldValue))
+            if (!newValue.equals(oldValue_))
             {                
-                oldValue = newValue;
+                oldValue_ = newValue;
                 updatePackageList();            
             }
         }

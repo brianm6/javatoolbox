@@ -1,7 +1,9 @@
 package toolbox.util.typecast;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Constructor;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Can perform a typecast on any object so that it can aquire new behavior at
@@ -18,56 +20,102 @@ import java.util.*;
  * @see ClassFinder
  * 
  * @todo improve cache to have several alternatives to a WeakIdentityCache
- *       (e.g. SoftReference, LRUTable, TimeDelayed, or a CombinedCache which would combine them all )
+ *       (e.g. SoftReference, LRUTable, TimeDelayed, or a CombinedCache which 
+ *             would combine them all )
  */
 public class Typecast
 {
 
     // INSTANCE VARIABLES
 
-    private Class toClass;
-    private ClassFinder finder;
-    private Class identityCacheClass;
-    /** key=policy, value=IdentityCache */
-    private Map cache = Collections.synchronizedMap(new HashMap(10));
+    private Class toClass_;
+    private ClassFinder finder_;
+    private Class identityCacheClass_;
+    
+    /** 
+     * key=policy, 
+     * value=IdentityCache 
+     */
+    private Map cache_ = Collections.synchronizedMap(new HashMap(10));
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Constructor
+     * 
+     * @param  toClass  Typecast destination class
+     */
     public Typecast(Class toClass)
     {
         this(toClass, new ClassFinder());
     }
 
+    /**
+     * Constructor
+     * 
+     * @param  toClass  Typecast destination class
+     * @param  finder   ClassFinder to use
+     */
     public Typecast(Class toClass, ClassFinder finder)
     {
         this(toClass, finder, WeakIdentityCache.class);
     }
 
-    public Typecast(
-        Class toClass,
-        ClassFinder finder,
-        Class identityCacheClass)
+    /**
+     * Constructor
+     * 
+     * @param  toClass              Typecast destination class
+     * @param  finder               ClassFinder to use
+     * @param  identityCacheClass   Class to use for identity in cache
+     */
+    public Typecast(Class toClass, ClassFinder finder, Class identityCacheClass)
     {
-        this.toClass = toClass;
-        this.finder = finder;
-        this.identityCacheClass = identityCacheClass;
+        toClass_ = toClass;
+        finder_ = finder;
+        identityCacheClass_ = identityCacheClass;
     }
 
-    // API
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
+    /**
+     * @return ClassFinder
+     */    
     public ClassFinder getClassFinder()
     {
-        return finder;
+        return finder_;
     }
 
+    /**
+     * Adds package name to search
+     * 
+     * @param  pckgName  Package name
+     */
     public void addSearchPackage(String pckgName)
     {
         getClassFinder().addSearchPackage(pckgName);
     }
 
+    /**
+     * Adds a classes package name to the search
+     * 
+     * @param  classInPckg  Class in package to search
+     */
     public void addSearchPackage(Class classInPckg)
     {
         getClassFinder().addSearchPackage(classInPckg);
     }
 
+    /**
+     * Coerces an identity using the given policy
+     * 
+     * @param  identity  Identity
+     * @param  policy    Policy
+     * @return Coerced object
+     */
     public Object coerce(Object identity, String policy)
     {
         return coerce(identity, policy, null);
@@ -77,10 +125,15 @@ public class Typecast
      * Tries to convert the given <code>identity</code> to <code>toClass</code>.
      * The cachedCasts are first checked, and then a newInstance is created if
      * needed.
+     * 
+     * @param  identity  Identity
+     * @param  policy    Policy
+     * @param  loader    Classloader to use
+     * @return Coerced object
      */
     public Object coerce(Object identity, String policy, ClassLoader loader)
     {
-        if (toClass.isInstance(identity))
+        if (toClass_.isInstance(identity))
             return identity;
 
         if (loader == null)
@@ -103,19 +156,19 @@ public class Typecast
 
     private IdentityCache getCache(String policy)
     {
-        IdentityCache rVal = (IdentityCache) cache.get(policy);
+        IdentityCache rVal = (IdentityCache) cache_.get(policy);
         if (rVal == null)
         {
             try
             {
-                rVal = (IdentityCache) identityCacheClass.newInstance();
+                rVal = (IdentityCache) identityCacheClass_.newInstance();
             }
             catch (Exception e)
             {
                 throw new IllegalArgumentException(
-                    "Cannot instantiate " + identityCacheClass.getName());
+                    "Cannot instantiate " + identityCacheClass_.getName());
             }
-            cache.put(policy, rVal);
+            cache_.put(policy, rVal);
         }
         return rVal;
     }
@@ -128,7 +181,10 @@ public class Typecast
         try
         {
             Class fromClass = identity.getClass();
-            Class fClass = finder.findClass(fromClass, toClass, policy, loader);
+            
+            Class fClass = 
+                finder_.findClass(fromClass, toClass_, policy, loader);
+                
             Constructor[] constructors = fClass.getConstructors();
 
             for (int i = 0; i < constructors.length; i++)
@@ -146,12 +202,8 @@ public class Typecast
             if (e instanceof ClassNotFoundException && policy != null)
                 return coerce(identity, null, loader);
 
-            throw new TypecastException(
-                "Unable to coerce identity '"
-                    + identity
-                    + "' to a "
-                    + toClass.getClass().getName(),
-                e);
+            throw new TypecastException("Unable to coerce identity '" + 
+                identity + "' to a " + toClass_.getClass().getName(), e);
         }
 
         return null;
