@@ -16,7 +16,7 @@ public class PluginException extends Exception
     /**
      * Creates a PluginException.
      * 
-     * @param message Error message
+     * @param message Error message.
      */
     public PluginException(String message)
     {
@@ -27,7 +27,7 @@ public class PluginException extends Exception
     /**
      * Creates a PluginException.
      * 
-     * @param cause Originating exception
+     * @param cause Originating exception.
      */
     public PluginException(Throwable cause)
     {
@@ -38,8 +38,8 @@ public class PluginException extends Exception
     /**
      * Creates a PluginException.
      * 
-     * @param message Error message
-     * @param cause Originating exception
+     * @param message Error message.
+     * @param cause Originating exception.
      */
     public PluginException(String message, Throwable cause)
     {
