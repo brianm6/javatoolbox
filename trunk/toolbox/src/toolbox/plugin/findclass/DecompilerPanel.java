@@ -1,7 +1,6 @@
 package toolbox.plugin.findclass;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
@@ -9,6 +8,7 @@ import java.net.URL;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
@@ -25,7 +25,8 @@ import toolbox.util.StreamUtil;
 import toolbox.util.decompiler.Decompiler;
 import toolbox.util.decompiler.DecompilerException;
 import toolbox.util.decompiler.DecompilerFactory;
-import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartComboBox;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.workspace.WorkspaceAction;
@@ -41,7 +42,7 @@ import toolbox.workspace.WorkspaceAction;
  *   <li>Decompiled files are stacked on a tabbed pane.
  * </ul>
  */
-public class DecompilerPanel extends JPanel
+public class DecompilerPanel extends JHeaderPanel
 {
     private static final Logger logger_ = 
         Logger.getLogger(DecompilerPanel.class);
@@ -78,6 +79,7 @@ public class DecompilerPanel extends JPanel
      */
     public DecompilerPanel(JTable resultTable)
     {
+        super("Decompiler");
         resultTable_ = resultTable;
         buildView();
     }
@@ -86,6 +88,41 @@ public class DecompilerPanel extends JPanel
     // Protected
     //--------------------------------------------------------------------------
 
+    /**
+     * Constructs the user interface.
+     */
+    protected void buildView()
+    {
+        Decompiler[] decompilers = null;
+        
+        try
+        {
+            decompilers = DecompilerFactory.createAll(); 
+        }
+        catch (DecompilerException de)
+        {
+            ExceptionUtil.handleUI(de, logger_);
+        }
+
+        JPanel content = new JPanel(new BorderLayout());
+
+        decompilerCombo_ = new JSmartComboBox(decompilers);
+        
+        JButton decompile = createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_SPANNER),
+            "Decompile",
+            new DecompileAction());
+        
+        JToolBar tb = createToolBar();
+        tb.add(decompilerCombo_);
+        tb.add(decompile);
+        setToolBar(tb);
+        tabbedPane_ = new JSmartTabbedPane(true);
+        content.add(tabbedPane_, BorderLayout.CENTER);
+        setContent(content);
+    }
+    
+    
     /**
      * Adds a tab to the tabbed pane. The class name is used as the tab title
      * and the source is embedded in a text area for viewing.
@@ -108,36 +145,6 @@ public class DecompilerPanel extends JPanel
         sourceArea.setCaretPosition(0);
         tabbedPane_.addTab(clazz, sourceArea);
         tabbedPane_.setSelectedComponent(sourceArea);
-    }
-
-    
-    /**
-     * Constructs the user interface.
-     */
-    protected void buildView()
-    {
-        Decompiler[] decompilers = null;
-        
-        try
-        {
-            decompilers = DecompilerFactory.createAll(); 
-        }
-        catch (DecompilerException de)
-        {
-            ExceptionUtil.handleUI(de, logger_);
-        }
-
-        decompilerCombo_ = new JSmartComboBox(decompilers);
-        JButton decompileButton = new JSmartButton(new DecompileAction());
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(decompilerCombo_);
-        buttonPanel.add(decompileButton);
-        
-        tabbedPane_ = new JSmartTabbedPane(true);
-        
-        setLayout(new BorderLayout());
-        add(tabbedPane_, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
     }
     
     //--------------------------------------------------------------------------
