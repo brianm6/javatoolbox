@@ -10,6 +10,7 @@ import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.UIManager;
 import javax.swing.text.TextAction;
 
 /**
@@ -92,7 +93,7 @@ public class SwingUtil
      * 
      * @return Monospaced font
      */
-    public static Font getMonospacedFont()
+    public static Font getPreferredMonoFont()
     {
         String favoredFont = "Lucida Console";
         String backupFont  = "monospaced";
@@ -121,5 +122,72 @@ public class SwingUtil
         
         return monofont_;               
     }
+
+    /**
+     * Returns preferred variable text font
+     * 
+     * @return Preferred variable text font
+     */
+    public static Font getPreferredFont()
+    {
+        String favoredFont = "Verdana";
+        String backupFont  = "serif";
+        
+        if (monofont_ == null)
+        {
+            GraphicsEnvironment ge = 
+                GraphicsEnvironment.getLocalGraphicsEnvironment();
+                
+            String[] familyNames = ge.getAvailableFontFamilyNames();
+            Map attribMap = new HashMap();
+            
+            if (ArrayUtil.contains(familyNames, favoredFont))
+            {
+                attribMap.put(TextAttribute.FAMILY, favoredFont);
+                attribMap.put(TextAttribute.FONT, favoredFont);
+            }
+            else
+            {
+                attribMap.put(TextAttribute.FAMILY, backupFont);
+                attribMap.put(TextAttribute.FONT, backupFont);        
+            }
+
+            monofont_ = new Font(attribMap);            
+        }
+        
+        return monofont_;               
+    }
+
     
+    
+    /**
+     * Sets the Look and Feel to Metal
+     */    
+    public static void setMetalLAF() throws Exception
+    {
+        UIManager.setLookAndFeel(
+            "javax.swing.plaf.metal.MetalLookAndFeel");
+            
+        //SwingUtilities.updateComponentTreeUI(frame);
+    }
+    
+    
+    /**
+     * Sets the Look and Feel to Windows
+     */
+    public static void setWindowsLAF() throws Exception
+    {
+        UIManager.setLookAndFeel(
+            "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+    }
+ 
+ 
+    /**
+     * Sets the Look and Feel to Motif/CDE
+     */   
+    public static void setMotifLAF() throws Exception
+    {
+        UIManager.setLookAndFeel(
+            "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+    }
 }
