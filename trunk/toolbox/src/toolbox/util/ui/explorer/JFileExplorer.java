@@ -11,7 +11,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -44,7 +43,6 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
 import toolbox.util.PropertiesUtil;
-import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
@@ -192,7 +190,7 @@ public class JFileExplorer extends JPanel
                 }
                 else
                 {
-                    throw new IllegalArgumentException("Path must begin with /");
+                   throw new IllegalArgumentException("Path must begin with /");
                 }
             }
             else // if (Platform.isWindows())
@@ -243,8 +241,8 @@ public class JFileExplorer extends JPanel
             DefaultTreeModel model = (DefaultTreeModel)tree_.getModel();
             FileNode root = (FileNode) model.getRoot();
     
-            // Discover path by iterating over pathTokens and building a TreePath 
-            // dynamically
+            // Discover path by iterating over pathTokens and building a 
+            // TreePath dynamically
             
             if (root.equals(new FileNode(pathTokens[0])))
             {
@@ -421,10 +419,12 @@ public class JFileExplorer extends JPanel
      */
     protected void buildView(boolean verticalSplitter)
     {
+
         // File system roots combobox
         rootsComboBox_ = new JComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
         rootsComboBox_.addItemListener(new DriveComboListener());
+        driveIcon_= ImageCache.getIcon("/toolbox/util/ui/images/HardDrive.gif");
         rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
@@ -442,16 +442,13 @@ public class JFileExplorer extends JPanel
         DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
          
         renderer.setClosedIcon(
-            ResourceUtil.getResourceAsIcon(
-                "/toolbox/util/ui/images/TreeOpen.gif"));
+            ImageCache.getIcon("/toolbox/util/ui/images/TreeOpen.gif"));
 
         renderer.setOpenIcon(
-            ResourceUtil.getResourceAsIcon(
-                "/toolbox/util/ui/images/TreeOpen.gif"));
+            ImageCache.getIcon("/toolbox/util/ui/images/TreeOpen.gif"));
 
         renderer.setLeafIcon(
-            ResourceUtil.getResourceAsIcon(
-                "/toolbox/util/ui/images/TreeClosed.gif"));
+            ImageCache.getIcon("/toolbox/util/ui/images/TreeClosed.gif"));
 
         // Directory tree
         treeModel_ = new DefaultTreeModel(rootNode_);
@@ -643,22 +640,6 @@ public class JFileExplorer extends JPanel
         return "";
     }
 
-    /**
-     * Gets the Drive Icon for the Roots drop down menu display.
-     *
-     * @return  ImageIcon of the drive
-     * @throws  IOException on IO error
-     */
-    protected Icon getDriveIcon() throws IOException
-    {
-        if (driveIcon_ == null)
-            driveIcon_ = 
-                ResourceUtil.getResourceAsIcon(
-                    "/toolbox/util/ui/images/HardDrive.gif");
-            
-        return driveIcon_;
-    }
-
     //--------------------------------------------------------------------------
     //  Inner Classes
     //--------------------------------------------------------------------------
@@ -768,16 +749,7 @@ public class JFileExplorer extends JPanel
             Object value, int index, boolean isSelected, boolean cellHasFocus)
         {
             setText(value.toString());
-            
-            try
-            {
-                setIcon(getDriveIcon());
-            }
-            catch (IOException e)
-            {
-                logger_.fatal("getListCellRenderer", e);
-            }
-            
+            setIcon(driveIcon_);
             setBackground(isSelected ? Color.blue : Color.white);
             setForeground(isSelected ? Color.white : Color.black);
             return this;
@@ -847,7 +819,7 @@ public class JFileExplorer extends JPanel
                 //logger_.debug(Stringz.BR);            
                 //logger_.debug(Dumper.dump(ie,5)); 
                 //logger_.debug(Stringz.BR);
-                //logger_.debug("$$$$$", new Exception("From itemStateChanged()"));
+                //logger_.debug("$$", new Exception("From itemStateChanged()"));
                 //logger_.debug(Stringz.BR);
                  
                 setFileList(fileRoot);
