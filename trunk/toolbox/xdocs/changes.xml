@@ -60,7 +60,6 @@
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
  * TODO: Lift more stuff from hsqldb manager
- * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
  * =============================================================================
  *                              FindClassPlugin
  * =============================================================================
@@ -90,6 +89,20 @@
   </properties>
 
   <body>
+
+    <release version="2.0" date="September 2004">
+
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">All</td>
+            <td>Made sure all passwords are not saved as clear text</td>
+          </tr>
+        </table>
+      </action>
+
+    </release>
+
     
     <release version="2.0" date="August 2004">
       <action type="Util">Added FontUtil.isMonospaced()</action>
@@ -187,7 +200,6 @@
           </tr>
         </table>
       </action>
-
     </release>
     
     <release version="2.0" date="July 2004">
