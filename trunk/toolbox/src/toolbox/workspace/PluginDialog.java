@@ -43,10 +43,10 @@ import toolbox.util.ui.list.JSmartList;
 /**
  * Dialog that allows user to add/remove/find plugins.
  */
-public class ManagePluginsDialog extends JDialog
+public class PluginDialog extends JDialog
 {
     public static final Logger logger_ =
-        Logger.getLogger(ManagePluginsDialog.class);
+        Logger.getLogger(PluginDialog.class);
     
     //--------------------------------------------------------------------------
     // Fields
@@ -96,7 +96,7 @@ public class ManagePluginsDialog extends JDialog
      * 
      * @param parent Plugin workspace
      */    
-    protected ManagePluginsDialog(PluginWorkspace parent)
+    protected PluginDialog(PluginWorkspace parent)
     {
         super(parent, "Manage Plugins", false);
         workspace_ = parent;
@@ -404,9 +404,9 @@ public class ManagePluginsDialog extends JDialog
         }
     }
     
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Actions
-    //----------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     
     /**
      * Adds a plugin - moves the plugin from the inactive list to the active 
@@ -557,7 +557,7 @@ public class ManagePluginsDialog extends JDialog
         {
             super("Find Plugins", 
                   true, 
-                  ManagePluginsDialog.this, 
+                  PluginDialog.this, 
                   workspace_.getStatusBar());
                 
             putValue(Action.MNEMONIC_KEY, new Integer('F')); 
@@ -586,7 +586,7 @@ public class ManagePluginsDialog extends JDialog
         {
             super("List Plugins", 
                   true, 
-                  ManagePluginsDialog.this, 
+                  PluginDialog.this, 
                   workspace_.getStatusBar());
                 
             putValue(Action.MNEMONIC_KEY, new Integer('L')); 
@@ -631,8 +631,8 @@ public class ManagePluginsDialog extends JDialog
             // Exclude the plugins that are already loaded                
             for (int j=0; j<workspace_.getPluginHost().getPlugins().length; j++)     
             {
-                String pluginClass = 
-                    workspace_.getPluginHost().getPlugins()[j].getClass().getName();
+                String pluginClass = workspace_.getPluginHost().
+                    getPlugins()[j].getClass().getName();
 
                 for (int i=0; i<legitPlugins.size(); i++)
                 {

@@ -820,7 +820,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
         public void actionPerformed(ActionEvent ae)
         {
-            JDialog dialog = new ManagePluginsDialog(PluginWorkspace.this);
+            JDialog dialog = new PluginDialog(PluginWorkspace.this);
             dialog.setVisible(true);    
         }
     }
