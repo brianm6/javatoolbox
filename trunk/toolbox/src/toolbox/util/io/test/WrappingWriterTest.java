@@ -239,7 +239,7 @@ public class WrappingWriterTest extends TestCase
         String one = "a";
         
         StringWriter sw = new StringWriter(); 
-        WrappingWriter ww = new WrappingWriter(sw, 80,"[", "]");
+        WrappingWriter ww = new WrappingWriter(sw, 80, "[", "]");
         ww.write(one);
         ww.close();
         String s = sw.toString();
@@ -282,7 +282,7 @@ public class WrappingWriterTest extends TestCase
         String expected = "[12345]\n[6]";
         
         StringWriter sw = new StringWriter(); 
-        WrappingWriter ww = new WrappingWriter(sw, 7, "[","]");
+        WrappingWriter ww = new WrappingWriter(sw, 7, "[", "]");
         ww.write("123456");
         ww.close();
         String s = sw.toString();

@@ -53,7 +53,9 @@ public class CloverTestFilter extends BasicTestFilter
     {
         classPool_ = ClassPool.getDefault();
         uiTestCase_ = classPool_.get(UITestCase.class.getName());
-        standAloneTestCase_ =classPool_.get(StandaloneTestCase.class.getName());
+        
+        standAloneTestCase_ = 
+            classPool_.get(StandaloneTestCase.class.getName());
     }
     
     //--------------------------------------------------------------------------
@@ -82,7 +84,9 @@ public class CloverTestFilter extends BasicTestFilter
             else if (ArrayUtil.contains(c.getInterfaces(), standAloneTestCase_))
             {
                 b = false;
-                logger_.debug("Rejecting StandAloneTestCase: "+clazz.getName());
+                
+                logger_.debug(
+                    "Rejecting StandAloneTestCase: " + clazz.getName());
             }
         }
         catch (NotFoundException e)

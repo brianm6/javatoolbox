@@ -233,11 +233,12 @@ public class SocketServer implements Runnable
     /**
      * Fires notification that a new socket client was just accepted.
      * 
-     * @param socket New socket that was created
+     * @param socket New socket that was created.
+     * @param conn Newly established connection.
      */
     protected void fireSocketAccepted(Socket socket, IConnection conn)
     {
-        for (int i=0; i<listeners_.length; 
+        for (int i = 0; i < listeners_.length; 
             listeners_[i++].socketAccepted(socket, conn));
     }
 
@@ -248,14 +249,15 @@ public class SocketServer implements Runnable
      */
     protected void fireServerStarted()
     {
-        for (int i=0; i<listeners_.length; listeners_[i++].serverStarted(this));
+        for (int i = 0; i < listeners_.length; 
+             listeners_[i++].serverStarted(this));
     }
 
 
     /**
      * Adds a listener to the socket server.
      * 
-     * @param listener Implementor of ISocketServerListener
+     * @param listener Implementor of ISocketServerListener.
      */
     public void addSocketServerListener(ISocketServerListener listener)
     {
@@ -267,7 +269,7 @@ public class SocketServer implements Runnable
     /**
      * Removes a listener from the socket server.
      * 
-     * @param listener Implementor of ISocketServerListener
+     * @param listener Implementor of ISocketServerListener.
      */
     public void removeSocketServerListener(ISocketServerListener listener)
     {
@@ -312,7 +314,7 @@ public class SocketServer implements Runnable
                 IConnection socketConn = new SocketConnection(socket);
 
                 // Fire notification to listeners                             
-                fireSocketAccepted(socket, socketConn);                             
+                fireSocketAccepted(socket, socketConn);
 
                 // Create handler 
                 IConnectionHandler handler = getConnectionHandler();

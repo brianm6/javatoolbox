@@ -64,10 +64,10 @@ public class CompleteTestCollector implements TestCollector
         Vector results = new Vector();
 
         // Merge the two result sets        
-        for(Enumeration e = jarCollector_.collectTests();e.hasMoreElements();)
+        for (Enumeration e = jarCollector_.collectTests(); e.hasMoreElements();)
             results.add(e.nextElement());    
 
-        for(Enumeration e = dirCollector_.collectTests();e.hasMoreElements();)
+        for (Enumeration e = dirCollector_.collectTests(); e.hasMoreElements();)
             results.add(e.nextElement());    
         
         return results.elements();

@@ -104,6 +104,7 @@ public class DesktopPluginHost extends AbstractPluginHost
         }
         catch (PropertyVetoException e)
         {
+            ; // Ignore
         }
     }
 
@@ -114,7 +115,7 @@ public class DesktopPluginHost extends AbstractPluginHost
      */
     public void exportPlugin(IPlugin plugin)
     {
-        desktop_.remove((JComponent)pluginToFrameMap_.get(plugin));
+        desktop_.remove((JComponent) pluginToFrameMap_.get(plugin));
         pluginToFrameMap_.remove(plugin);
         
         super.exportPlugin(plugin);

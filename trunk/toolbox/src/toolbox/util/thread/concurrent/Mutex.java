@@ -54,7 +54,7 @@ public class Mutex
                 }
                 catch (InterruptedException ie)
                 {
-                    // ignore
+                    ; // ignore
                 }
             }
 
@@ -76,12 +76,12 @@ public class Mutex
 
     /**
      * Attempt to release the mutex.
-     *
+     * 
      * @throws UnderflowException if mutex has not been acquired.
      * @throws NotOwnerException if calling thread does not own mutex.
      */
-    public synchronized void unlock() throws UnderflowException,
-        NotOwnerException
+    public synchronized void unlock()
+        throws UnderflowException, NotOwnerException
     {
         if (count_ <= 0)
         {

@@ -125,7 +125,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private Element prefs_;
     
     /** 
-     * Default initialization map for all plugins. Passed into IPlugin.startup() 
+     * Default initialization map for all plugins. Passed into 
+     * IPlugin.startup().
      */
     private Map bootstrapMap_;
     
@@ -165,7 +166,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         {
             new PluginWorkspace();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             ExceptionUtil.handleUI(e, logger_);
         }
@@ -214,7 +215,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             
         Element pluginWrapper = null;
                 
-        for (int i=0; i<pluginWrappers.size(); i++)
+        for (int i = 0; i < pluginWrappers.size(); i++)
         {
             pluginWrapper = pluginWrappers.get(i);
             
@@ -300,6 +301,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Deregisters a plugin given its fully qualified name.
      * 
      * @param pluginClass Class name of plugin to remove.
+     * @param removeTab Set to true to also remove the tab the plugin was in.
      * @throws Exception on error.
      */
     public void deregisterPlugin(String pluginClass, boolean removeTab) 
@@ -493,7 +495,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
         userhome = FileUtil.trailWithSeparator(userhome);
             
-        File f = new File( userhome + FILE_PREFS);
+        File f = new File(userhome + FILE_PREFS);
         
         if (f.exists() && f.canRead() && f.isFile())
         {
@@ -525,6 +527,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Sets only the LookAndFeel based on the loaded preferences.
      * 
      * @param prefs DOM representing the saved preferences.
+     * @throws Exception on error.
      */
     protected void setLAF(Element prefs) throws Exception
     {
@@ -549,30 +552,32 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         boolean maxxed = 
             (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
             
-        root.addAttribute(new Attribute(ATTR_MAXXED, maxxed+""));
+        root.addAttribute(new Attribute(ATTR_MAXXED, maxxed + ""));
         
         if (!maxxed)
         {
             // Save window location
-            root.addAttribute(new Attribute(ATTR_XCOORD, getLocation().x+""));
-            root.addAttribute(new Attribute(ATTR_YCOORD, getLocation().y+""));
+            root.addAttribute(new Attribute(ATTR_XCOORD, getLocation().x + ""));
+            root.addAttribute(new Attribute(ATTR_YCOORD, getLocation().y + ""));
         
             // Save window size
-            root.addAttribute(new Attribute(ATTR_WIDTH, getSize().width+""));
-            root.addAttribute(new Attribute(ATTR_HEIGHT, getSize().height+"")); 
+            root.addAttribute(new Attribute(ATTR_WIDTH, getSize().width + ""));
+            root.addAttribute(
+                new Attribute(ATTR_HEIGHT, getSize().height + "")); 
         }
 
         // Save currently selected tab
         
         // Fix me!!!
         //root.addAttribute(
-        //    new Attribute(ATTR_SELECTED_TAB,tabbedPane_.getSelectedIndex()+""));
+        //    new Attribute(ATTR_SELECTED_TAB,
+        //                  tabbedPane_.getSelectedIndex()+""));
 
         // Save smooth fonts flag
         root.addAttribute(
             new Attribute(
                 ATTR_SMOOTH_FONTS, 
-                smoothFontsCheckBoxItem_.isSelected()+""));
+                smoothFontsCheckBoxItem_.isSelected() + ""));
         
         // Save log level
         root.addAttribute(new Attribute(
@@ -602,7 +607,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
         logger_.debug(unloaded.size() + " unloaded plugins to save");
         
-        for (int i=0; i<unloaded.size(); i++)
+        for (int i = 0; i < unloaded.size(); i++)
             root.appendChild(unloaded.get(i).copy());            
 
             
@@ -701,7 +706,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             
             Elements plugins = root.getChildElements(NODE_PLUGIN);
             
-            for (int i=0; i<plugins.size(); i++) 
+            for (int i = 0; i < plugins.size(); i++) 
             {
                 Element pluginNode = plugins.get(i);
                 
@@ -894,7 +899,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             long freeMem  = Runtime.getRuntime().freeMemory();
             long totalMem = Runtime.getRuntime().totalMemory();
             long maxMem   = Runtime.getRuntime().maxMemory();
-            long beforeUsedMem  = (totalMem - freeMem)/1000;
+            long beforeUsedMem  = (totalMem - freeMem) / 1000;
             
             ElapsedTime time = new ElapsedTime();
             System.gc();
@@ -903,16 +908,16 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             freeMem  = Runtime.getRuntime().freeMemory();
             totalMem = Runtime.getRuntime().totalMemory();
             maxMem   = Runtime.getRuntime().maxMemory();
-            long afterUsedMem  = (totalMem - freeMem)/1000;
+            long afterUsedMem  = (totalMem - freeMem) / 1000;
 
             statusBar_.setStatus("" +
                 "<html>" + "<font color='black'>" +
                   "Finished GC in " + time + ".   " +
                   "Used Before: " + beforeUsedMem + "K   " +
-                  "After: "       + afterUsedMem  + "K   " +
-                  "Freed:<b>"     + (beforeUsedMem - afterUsedMem) + "K</b>   "+ 
-                  "Total:     "   + totalMem/1000 + "K   " +
-                  "Max: "         + maxMem/1000   + "K   " +
+                  "After: "     + afterUsedMem  + "K   " +
+                  "Freed:<b>"   + (beforeUsedMem - afterUsedMem) + "K</b>   " + 
+                  "Total:     " + totalMem / 1000 + "K   " +
+                  "Max: "       + maxMem / 1000   + "K   " +
                   "</font>" +
                 "</html>");
         }
@@ -949,17 +954,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             SwingUtil.setDefaultAntiAlias(b);
             Component[] comps = getRootPane().getComponents();
             
-            for (int i=0; i<comps.length; 
+            for (int i = 0; i < comps.length; 
                 SwingUtil.setAntiAliased(comps[i++], b));
             
 //            SwingUtil.setAntiAliased(getJMenuBar(), b);
 //            
-            for (int i=0; i<getJMenuBar().getMenuCount(); i++)
+            for (int i = 0; i < getJMenuBar().getMenuCount(); i++)
             {    
                 JMenu menu = getJMenuBar().getMenu(i);
                 SwingUtil.setAntiAliased(menu, b);
                 
-                for (int j=0; j<menu.getItemCount(); j++)
+                for (int j = 0; j < menu.getItemCount(); j++)
                     SwingUtil.setAntiAliased(menu.getMenuComponent(j), b);
             }
             

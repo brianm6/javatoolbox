@@ -24,7 +24,7 @@ public class StringInputStreamTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -38,7 +38,7 @@ public class StringInputStreamTest extends TestCase
     /**
      * Tests the read() method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testRead() throws Exception
     {
@@ -57,7 +57,7 @@ public class StringInputStreamTest extends TestCase
     /**
      * Tests the read() method when stream is empty.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadEmpty() throws Exception
     {
@@ -75,7 +75,7 @@ public class StringInputStreamTest extends TestCase
     /**
      * Tests available() method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAvailable() throws Exception
     {
@@ -99,7 +99,7 @@ public class StringInputStreamTest extends TestCase
     /** 
      * Tests read on an empty stream with ignore EOF set to true.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testReadEmptyIgnoreEOF() throws Exception
     {
@@ -109,17 +109,23 @@ public class StringInputStreamTest extends TestCase
  
         int iterations = 3;
         
-        ThreadUtil.run(this, "stuffStream", new Object[] 
-            { sis, new Integer(1000), "x", new Integer(iterations)});
+        ThreadUtil.run(
+            this,
+            "stuffStream",
+            new Object[] {
+                sis,
+                new Integer(1000),
+                "x",
+                new Integer(iterations)});
         
-        for (int i=0; i<iterations; i++)                  
+        for (int i = 0; i < iterations; i++)                  
         {
             if (i == 2)
                 logger_.info(StringUtil.NL + sis.toString());
                 
             int c = sis.read();
-            logger_.info("Read: " + (char)c);
-            assertEquals('x', (char)c);
+            logger_.info("Read: " + (char) c);
+            assertEquals('x', (char) c);
         }
         
         sis.setIgnoreEOF(false);
@@ -130,7 +136,7 @@ public class StringInputStreamTest extends TestCase
     /**
      * Tests append().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAppend() throws Exception
     {
@@ -142,12 +148,11 @@ public class StringInputStreamTest extends TestCase
         
         sis.append("x");
         c = sis.read();
-        assertEquals('x', (char)c);
-        
+        assertEquals('x', (char) c);
+
         sis.append("ab");
-        assertEquals('a', (char)sis.read());
-        assertEquals('b', (char)sis.read());
-        
+        assertEquals('a', (char) sis.read());
+        assertEquals('b', (char) sis.read());
     }
  
     //--------------------------------------------------------------------------
@@ -157,15 +162,18 @@ public class StringInputStreamTest extends TestCase
     /**
      * Stuffs a stream.
      * 
-     * @param sis Stream to stuff
-     * @param delay Delay in ms
-     * @param s String being stuffed
-     * @param iterations Number of iterations
+     * @param sis Stream to stuff.
+     * @param delay Delay in ms.
+     * @param s String being stuffed.
+     * @param iterations Number of iterations.
      */
-    public void stuffStream(StringInputStream sis, int delay, String s, 
+    public void stuffStream(
+        StringInputStream sis,
+        int delay,
+        String s,
         int iterations) 
     {
-        for (int i=0; i<iterations; i++)
+        for (int i = 0; i < iterations; i++)
         {
             sis.append(s);
             ThreadUtil.sleep(delay);

@@ -34,7 +34,8 @@ public class DirectoryMonitor
     private List activities_;
 
     /** 
-     * Delay interval in millis used to check for new activity.Defaults to 5 sec 
+     * Delay interval in millis used to check for new activity.Defaults to 5 
+     * sec.
      */
     private int delay_;
 
@@ -186,7 +187,7 @@ public class DirectoryMonitor
     /**
      * Fires notification of file activity to the directory monitor listeners.
      *
-     * @param actvitity Activity that generated this event
+     * @param activity Activity that generated this event
      * @param files Files affected by the activity 
      * @throws Exception on error
      */
@@ -194,7 +195,7 @@ public class DirectoryMonitor
         throws Exception
     {
         // Iterator through listeners and file event
-        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+        for (Iterator i = listeners_.iterator(); i.hasNext();)
         {
             IDirectoryListener dirListener = (IDirectoryListener) i.next();
             dirListener.fileActivity(activity, files);
@@ -234,19 +235,22 @@ public class DirectoryMonitor
      */
     class ActivityRunner implements Runnable
     {
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             // DEBUG 
             logger_.debug("Monitoring: " + getDirectory());
             
-            for (Iterator i = activities_.iterator(); i.hasNext(); )
+            for (Iterator i = activities_.iterator(); i.hasNext();)
                 logger_.debug("Checking activity: " + i.next());
     
             // Check termination flag
             while (!shutdown_)
             {
                 // Loop through each activity
-                for (Iterator i = activities_.iterator(); i.hasNext(); )
+                for (Iterator i = activities_.iterator(); i.hasNext();)
                 {
                     IFileActivity activity = (IFileActivity) i.next();
                     

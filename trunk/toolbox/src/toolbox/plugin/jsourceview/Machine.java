@@ -13,8 +13,8 @@ public class Machine implements MachineConstants
     /**
      * Scans a line.
      * 
-     * @param line Line to scan
-     * @param linestatus Line's status
+     * @param line Line to scan.
+     * @param linestatus Line's status.
      */
     public static void scanLine(LineScanner line, LineStatus linestatus) 
     {

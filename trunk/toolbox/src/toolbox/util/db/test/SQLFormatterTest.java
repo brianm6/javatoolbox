@@ -19,7 +19,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Shared formatter use by unit tests.
      */
-    SQLFormatter formatter_ = new SQLFormatter();
+    private SQLFormatter formatter_ = new SQLFormatter();
     
     //--------------------------------------------------------------------------
     // Main 
@@ -42,9 +42,9 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a simple select stmt.
      */
-    public void testFormatSQL_1()
+    public void testFormatSQL1()
     {
-        logger_.info("Running testFormatSQL...");
+        logger_.info("Running testFormatSQL1...");
         
         String s = formatter_.format("select * from user");
         logger_.info(StringUtil.addBars(s));
@@ -54,9 +54,9 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a simple sql statement with criteria.
      */
-    public void testFormatSQL_2()
+    public void testFormatSQL2()
     {
-        logger_.info("Running testFormatSQL_2...");
+        logger_.info("Running testFormatSQL2...");
         
         String s = formatter_.format(
             "select one, two, three from user " +
@@ -69,9 +69,9 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a create table stmt.
      */
-    public void testFormatSQL_3()
+    public void testFormatSQL3()
     {
-        logger_.info("Running testFormatSQL_3...");
+        logger_.info("Running testFormatSQL3...");
         
         String s = formatter_.format(
             "        CREATE TABLE SAPCateg.SAPCategoryType("
@@ -89,7 +89,7 @@ public class SQLFormatterTest extends TestCase
     /**
      * Tests formatting of a large create table stmt.
      */
-    public void testFormatSQL_4()
+    public void testFormatSQL4()
     {
         logger_.info("Running testFormatSQL_4...");
         

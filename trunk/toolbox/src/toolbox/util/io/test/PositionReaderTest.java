@@ -14,7 +14,7 @@ import toolbox.util.io.PositionReader;
  */
 public class PositionReaderTest extends TestCase
 {
-    public static final Logger logger_ =
+    private static final Logger logger_ =
         Logger.getLogger(PositionReaderTest.class);
 
     //--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ public class PositionReaderTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -38,7 +38,7 @@ public class PositionReaderTest extends TestCase
     /**
      * Test readUntil().
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testReadUntil() throws Exception
     {

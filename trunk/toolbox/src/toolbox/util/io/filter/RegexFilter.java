@@ -35,9 +35,9 @@ public class RegexFilter implements FilenameFilter
      * Creates a file filter that applies a regular expression to the name of
      * a file.
      * 
-     * @param regExp Regular expression to match
-     * @param matchCase Set to true to observe case sensetivity
-     * @throws RESyntaxException if the regular expression is invalid
+     * @param regExp Regular expression to match.
+     * @param matchCase Set to true to observe case sensetivity.
+     * @throws RESyntaxException if the regular expression is invalid.
      */
     public RegexFilter(String regExp, boolean matchCase) 
         throws RESyntaxException
@@ -60,7 +60,7 @@ public class RegexFilter implements FilenameFilter
      *
      * @param dir Directory in which the file was found.
      * @param name Name of the file.
-     * @return True if and only if the name should be included in the file list; 
+     * @return True if and only if the name should be included in the file list;
      *         false otherwise.
      */
     public boolean accept(File dir, String name)

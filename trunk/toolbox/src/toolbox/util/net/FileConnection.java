@@ -18,6 +18,10 @@ import toolbox.util.StreamUtil;
  */
 public class FileConnection extends AbstractConnection implements IConnection
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * File tied to the InputStream.
      */
@@ -199,20 +203,39 @@ public class FileConnection extends AbstractConnection implements IConnection
      */
     class InternalFileConnectionListener implements IConnectionListener 
     {
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionClosed(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionClosed(IConnection connection)
         {
             connected_ = false;
         }
+
         
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionClosing(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionClosing(IConnection connection)
         {
         }
 
+        
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionInterrupted(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionInterrupted(IConnection connection)
         {
             connected_ = false;
         }
+
         
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionStarted(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionStarted(IConnection connection)
         {
             connected_ = true;

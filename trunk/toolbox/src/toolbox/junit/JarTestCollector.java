@@ -86,9 +86,9 @@ public class JarTestCollector implements TestCollector
      */
     protected void collectFilesInJars(List archives, List result)
     {
-        for(Iterator i=archives.iterator(); i.hasNext(); )
+        for (Iterator i = archives.iterator(); i.hasNext();)
         {
-            String archive = (String)i.next();
+            String archive = (String) i.next();
                 
             //System.out.println("Archive=" + archive);
             
@@ -96,7 +96,7 @@ public class JarTestCollector implements TestCollector
             {
                 findInArchive(archive, result);
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 System.err.println(e.getMessage());
                 e.printStackTrace();

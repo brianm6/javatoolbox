@@ -18,11 +18,19 @@ public class RegexFilterReader extends LineNumberReader
     private static final Logger logger_ = 
         Logger.getLogger(RegexFilterReader.class);
     
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Default regular expression matches all if one is not specified. 
      */    
     private static final String DEFAULT_MATCH = ".";
 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Regular expression as a string. 
      */
@@ -50,7 +58,7 @@ public class RegexFilterReader extends LineNumberReader
     /**
      * Creates a RegexFilterReader.
      * 
-     * @param in Reader to filter
+     * @param in Reader to filter.
      */
     public RegexFilterReader(Reader in)
     {
@@ -61,9 +69,9 @@ public class RegexFilterReader extends LineNumberReader
     /**
      * Creates a RegexFilterReader.
      * 
-     * @param in Reader to filter
-     * @param regExp Regular expression to match
-     * @param matchCase Set to true to observe case sensetivity
+     * @param in Reader to filter.
+     * @param regExp Regular expression to match.
+     * @param matchCase Set to true to observe case sensetivity.
      */
     public RegexFilterReader(Reader in, String regExp, boolean matchCase)
     {
@@ -74,11 +82,11 @@ public class RegexFilterReader extends LineNumberReader
     /**
      * Creates a RegexFilterReader.
      * 
-     * @param in Reader to filter
-     * @param regExp Regular expression to match
-     * @param matchCase Set to true to observe case sensetivity
+     * @param in Reader to filter.
+     * @param regExp Regular expression to match.
+     * @param matchCase Set to true to observe case sensetivity.
      * @param matchInverse Match all lines that do not satisty the regular
-     *        expression
+     *        expression.
      */
     public RegexFilterReader(Reader in, String regExp, boolean matchCase, 
         boolean matchInverse)
@@ -109,14 +117,14 @@ public class RegexFilterReader extends LineNumberReader
      * Reads the next line that matches the regular expression.
      * 
      * @return String that matches regular expression or null if the end of the
-     *         stream has been reached
-     * @throws IOException on error
+     *         stream has been reached.
+     * @throws IOException on error.
      */
     public String readLine() throws IOException
     {
         String  line = null;
         
-        while(true)
+        while (true)
         {
             line = super.readLine();
             
@@ -125,9 +133,9 @@ public class RegexFilterReader extends LineNumberReader
                 
             boolean matches = regExp_.match(line);
 
-            if(matches && !matchInverse_)
+            if (matches && !matchInverse_)
                 return line;
-            else if(!matches && matchInverse_)
+            else if (!matches && matchInverse_)
                 return line;
         }
     }

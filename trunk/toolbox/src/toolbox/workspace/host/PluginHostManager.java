@@ -117,7 +117,8 @@ public class PluginHostManager
      * Creates a plugin hosts given its class name. 
      * Use PluginHostManager.HOST_* constants.
      * 
-     * @param hostClass Class name of plugin host to create.
+     * @param pluginHostClass Class name of plugin host to create.
+     * @param props Properties map.
      * @throws PluginException on plugin error.
      */
     public void setPluginHost(String pluginHostClass, Map props) 
@@ -169,7 +170,7 @@ public class PluginHostManager
     {
         JMenu menu = new JSmartMenu("Plugin Host");
         
-        for (int i=0; i<pluginHosts_.length; i++)
+        for (int i = 0; i < pluginHosts_.length; i++)
         {
             try
             {
@@ -181,7 +182,7 @@ public class PluginHostManager
                 
                 menu.add(menuItem);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ExceptionUtil.handleUI(e, logger_);
             }
@@ -212,7 +213,7 @@ public class PluginHostManager
         
         IPlugin[] sourcePlugins = source.getPlugins();
         
-        for (int i=0; i<sourcePlugins.length; i++)
+        for (int i = 0; i < sourcePlugins.length; i++)
         {
             IPlugin plugin = sourcePlugins[i];
             source.exportPlugin(plugin);
@@ -260,7 +261,7 @@ public class PluginHostManager
             if (selected.equals(current_.getClass().getName()))
             {
                 JSmartOptionPane.showMessageDialog(
-                    null, "Plugin host " + selected + " is already active.");                
+                    null, "Plugin host " + selected + " is already active.");
             }
             
             recepticle_.remove(current_.getComponent());

@@ -23,6 +23,10 @@ public class StringInputStream extends InputStream
     private static final Logger logger_ = 
         Logger.getLogger(StringInputStream.class);
     
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Current position in the stream. 
      */
@@ -54,7 +58,7 @@ public class StringInputStream extends InputStream
     /**
      * Creates a StringInputStream with the passed string.
      *
-     * @param s String to initialize stream with
+     * @param s String to initialize stream with.
      */
     public StringInputStream(String s)
     {
@@ -66,7 +70,7 @@ public class StringInputStream extends InputStream
      * Creates a StringInputStream.
      * 
      * @param ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
-     *        the stream has been reached)
+     *        the stream has been reached).
      */
     public StringInputStream(boolean ignoreEOF)
     {
@@ -77,9 +81,9 @@ public class StringInputStream extends InputStream
     /**
      * Creates a StringInputStream.
      * 
-     * @param s String to initialize stream with
+     * @param s String to initialize stream with.
      * @param ignoreEOF Ignores EOF (read blocks indefinitely if the end of 
-     *        the stream has been reached)
+     *        the stream has been reached).
      */
     public StringInputStream(String s, boolean ignoreEOF)
     {
@@ -95,8 +99,8 @@ public class StringInputStream extends InputStream
     /**
      * Reads a byte from the stream.
      *
-     * @return The current character or -1 if stream is empty
-     * @throws IOException if I/O error occurs
+     * @return The current character or -1 if stream is empty.
+     * @throws IOException if I/O error occurs.
      */
     public int read() throws IOException 
     {
@@ -108,7 +112,7 @@ public class StringInputStream extends InputStream
         }
         else if (ignoreEOF_)
         {
-            synchronized(this)
+            synchronized (this)
             {
                 try
                 {
@@ -130,8 +134,8 @@ public class StringInputStream extends InputStream
      * Returns number of bytes available to read from the stream without 
      * blocking.
      * 
-     * @return Number of bytes available
-     * @throws IOException on I/O error
+     * @return Number of bytes available.
+     * @throws IOException on I/O error.
      */
     public int available() throws IOException
     {
@@ -145,7 +149,7 @@ public class StringInputStream extends InputStream
     /**
      * Appends a string to the end of the input stream.
      * 
-     * @param s String to append
+     * @param s String to append.
      */
     public synchronized void append(String s)
     {
@@ -162,7 +166,7 @@ public class StringInputStream extends InputStream
     /**
      * Sets the flag to ignore EOF.
      * 
-     * @param ignoreEOF True to ignore EOF, false otherwise
+     * @param ignoreEOF True to ignore EOF, false otherwise.
      */   
     public void setIgnoreEOF(boolean ignoreEOF)
     {

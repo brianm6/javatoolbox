@@ -127,6 +127,7 @@ public class UITestCase extends TestCase
      * Launches test component in a modal dialog.
      * 
      * @param c Component containing UI objects to test.
+     * @param size Size constant for the dimensions of the window.
      * @return Newly created dialog.
      */
     protected JDialog launchInDialog(JComponent c, int size)
@@ -188,6 +189,11 @@ public class UITestCase extends TestCase
     }
     
     
+    /**
+     * Launches the UI in a panel.
+     * 
+     * @param c Component.
+     */
     protected void launchInPanel(JComponent c)
     {
     }

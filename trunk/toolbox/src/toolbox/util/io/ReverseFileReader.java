@@ -18,6 +18,10 @@ public class ReverseFileReader extends Reader
     private static final Logger logger_ =
         Logger.getLogger(ReverseFileReader.class);
 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * File to read in reverse order. 
      */        
@@ -35,11 +39,12 @@ public class ReverseFileReader extends Reader
     /**
      * Creates a ReverseFileReader.
      * 
-     * @param file File to read in reverse order
-     * @throws IOException on I/O error
-     * @throws FileNotFoundException for non-existant file 
+     * @param file File to read in reverse order.
+     * @throws IOException on I/O error.
+     * @throws FileNotFoundException for non-existant file. 
      */        
-    public ReverseFileReader(File file) throws IOException,FileNotFoundException
+    public ReverseFileReader(File file) throws IOException, 
+        FileNotFoundException
     {
         file_ = new RandomAccessFile(file, "r");
         pointer_ = file_.length() - 1;
@@ -81,14 +86,14 @@ public class ReverseFileReader extends Reader
      */
     public int read(char[] cbuf, int off, int len) throws IOException
     {
-        for (int i=0; i<len; i++)
+        for (int i = 0; i < len; i++)
         {
             int ch = read();
             
             if (ch == -1)
                 return i;
             else
-                cbuf[off+i] = (char) ch;
+                cbuf[off + i] = (char) ch;
         }
         
         return len;
@@ -105,7 +110,7 @@ public class ReverseFileReader extends Reader
     
     
     /**
-     * Skips in reverse direction
+     * Skips in reverse direction.
      * 
      * @see java.io.Reader#skip(long)
      */
@@ -147,14 +152,14 @@ public class ReverseFileReader extends Reader
      * </pre>
      * 
      * @return Line as string or null if the beginning of file has been reached.
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public String readLine() throws IOException
     {
         String line = null;
         StringBuffer sb = new StringBuffer();
         
-        while (pointer_ >= 0 )
+        while (pointer_ >= 0)
         {
             int i = read();
             char c = (char) i;
@@ -197,7 +202,7 @@ public class ReverseFileReader extends Reader
      * </pre>
      * 
      * @return Line as string or null if the beginning of file has been reached.
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public String readLineNormal() throws IOException
     {

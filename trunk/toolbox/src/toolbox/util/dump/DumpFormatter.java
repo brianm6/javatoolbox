@@ -65,6 +65,7 @@ public interface DumpFormatter
     /**
      * Formats a field name.
      * 
+     * @param fieldName Name of the field.
      * @return Formatted field name.
      */
     String formatFieldName(String fieldName);

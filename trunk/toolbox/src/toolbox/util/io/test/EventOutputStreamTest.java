@@ -200,8 +200,8 @@ public class EventOutputStreamTest extends TestCase
         throws IOException
     {
         byte[] packet = new byte[packetSize];
-        for (int i=0; i<packet.length; i++)
-            packet[i] = (byte) RandomUtil.nextInt(1,50);
+        for (int i = 0; i < packet.length; i++)
+            packet[i] = (byte) RandomUtil.nextInt(1, 50);
         
         Date now = new Date();
         Date future = new Date(now.getTime());
@@ -216,7 +216,7 @@ public class EventOutputStreamTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Inner classes 
+    // OutputStreamListener 
     //--------------------------------------------------------------------------
    
     /** 
@@ -232,16 +232,36 @@ public class EventOutputStreamTest extends TestCase
         // Public
         //----------------------------------------------------------------------
         
+        /**
+         * Waits for a write operation to occur.
+         * 
+         * @return Byte written.
+         * @throws InterruptedException on interruption.
+         */
         public int waitForWrite() throws InterruptedException
         {
             return ((Integer) writeQueue_.pull()).intValue();
         }
 
+        
+        /**
+         * Waits for the stream to be flushed.
+         * 
+         * @return EventOutputStream.
+         * @throws InterruptedException on interruption.
+         */
         public EventOutputStream waitForFlush() throws InterruptedException
         {
             return (EventOutputStream) flushQueue_.pull();
         }
 
+        
+        /**
+         * Waits for the stream to be closed.
+         * 
+         * @return EventOutputStream.
+         * @throws InterruptedException on interruption.
+         */
         public EventOutputStream waitForClose() throws InterruptedException
         {
             return (EventOutputStream) closeQueue_.pull();
@@ -251,27 +271,49 @@ public class EventOutputStreamTest extends TestCase
         // EvenoutOutputStream.Listener Interface
         //----------------------------------------------------------------------
         
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#byteWritten(
+         *      toolbox.util.io.EventOutputStream, int)
+         */
         public void byteWritten(EventOutputStream stream, int b)
         {
             writeQueue_.push(new Integer(b));
         }
         
+        
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamClosed(
+         *      toolbox.util.io.EventOutputStream)
+         */
         public void streamClosed(EventOutputStream stream)
         {
             closeQueue_.push(stream);
         }
 
+        
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamFlushed(
+         *      toolbox.util.io.EventOutputStream)
+         */
         public void streamFlushed(EventOutputStream stream)
         {
             flushQueue_.push(stream);
         }
         
+        
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamThroughput(
+         *      toolbox.util.io.EventOutputStream, float)
+         */
         public void streamThroughput(EventOutputStream stream, 
             float bytesPerPeriod)
         {
         }
     }
     
+    //--------------------------------------------------------------------------
+    // ThroughputListener 
+    //--------------------------------------------------------------------------
     
     /** 
      * Listener used to make sure event notification is working correctly.
@@ -282,19 +324,39 @@ public class EventOutputStreamTest extends TestCase
         // EvenoutOutputStream.Listener Interface
         //----------------------------------------------------------------------
         
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#byteWritten(
+         *      toolbox.util.io.EventOutputStream, int)
+         */
         public void byteWritten(EventOutputStream stream, int b)
         {
         }
         
+        
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamClosed(
+         *      toolbox.util.io.EventOutputStream)
+         */
         public void streamClosed(EventOutputStream stream)
         {
         }
 
+        
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamFlushed(
+         *      toolbox.util.io.EventOutputStream)
+         */
         public void streamFlushed(EventOutputStream stream)
         {
         }
         
-        public void streamThroughput(EventOutputStream stream, 
+        
+        /**
+         * @see toolbox.util.io.EventOutputStream.Listener#streamThroughput(
+         *      toolbox.util.io.EventOutputStream, float)
+         */
+        public void streamThroughput(
+            EventOutputStream stream,
             float bytesPerPeriod)
         {
             String thruput = DecimalFormat.getInstance().format(bytesPerPeriod);

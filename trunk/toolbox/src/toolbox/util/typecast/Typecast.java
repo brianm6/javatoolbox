@@ -160,7 +160,9 @@ public class Typecast
     //--------------------------------------------------------------------------
 
     /**
-     * @param  policy  Policy
+     * Gets cache given a policy.
+     * 
+     * @param policy Policy
      * @return Cache
      */
     private IdentityCache getCache(String policy)
@@ -183,15 +185,18 @@ public class Typecast
         return rVal;
     }
 
+    
     /**
-     * Creates new instance
+     * Creates new instance.
      * 
-     * @param identity
-     * @param policy
-     * @param loader
+     * @param identity Identity.
+     * @param policy Policy.
+     * @param loader Class loader.
      * @return Object
      */
-    private Object newInstance(Object identity, String policy, 
+    private Object newInstance(
+        Object identity,
+        String policy,
         ClassLoader loader)
     {
         try
@@ -209,7 +214,7 @@ public class Typecast
 
                 if (parms.length == 1 && parms[0].isAssignableFrom(fromClass))
                     return constructors[i].newInstance(
-                        new Object[] { identity });
+                        new Object[] {identity});
             }
         }
         catch (Exception e)

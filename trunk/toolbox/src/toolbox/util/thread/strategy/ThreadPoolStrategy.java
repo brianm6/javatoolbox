@@ -47,9 +47,9 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-     * Creates a thread pool consisting of poolSize threads and a queue
-     * of queueSize.
-     *
+     * Creates a thread pool consisting of poolSize threads and a queue of
+     * queueSize.
+     * 
      * @param poolSize Number of threads in the pool.
      * @param queueSize Maximum number of buffered requests.
      */
@@ -66,10 +66,9 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
     
     /**
-     * Services the request by putting it on the request queue.  If the
-     * queue is full, the calling thread is blocked until a slot becomes
-     * available.
-     *
+     * Services the request by putting it on the request queue. If the queue is
+     * full, the calling thread is blocked until a slot becomes available.
+     * 
      * @param request Request to publish.
      * @param result Holds the request result.
      */
@@ -80,7 +79,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /** 
-     * Publish a null request for each thread in the pool to signal shutdown
+     * Publish a null request for each thread in the pool to signal shutdown.
      */
     public void shutdown()
     {
@@ -100,6 +99,12 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
         private IThreadable request_;
         private ReturnValue result_;
 
+        /**
+         * Creates a Task.
+         * 
+         * @param request Request.
+         * @param result Return value.
+         */
         public Task(IThreadable request, ReturnValue result)
         {
             request_ = request;
@@ -113,8 +118,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
      */
     class ThreadPoolRunnable implements Runnable
     {
-
-        /*
+        /**
          * Process the next available task on the queue or block until
          * one becomes available.  A null task instructs this strategy
          * to stop reading further tasks.
@@ -123,7 +127,7 @@ public class ThreadPoolStrategy extends ThreadedDispatcherStrategy
         {
             Task task = null;
 
-            while ((task = (Task)requestQueue_.take()) != null)
+            while ((task = (Task) requestQueue_.take()) != null)
             {
                 try
                 {

@@ -15,8 +15,7 @@ import toolbox.util.io.filter.OrFilter;
  */
 public class OrFilterTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(OrFilterTest.class);
+    private static final Logger logger_ = Logger.getLogger(OrFilterTest.class);
      
     /** 
      * Test directory for filtering files. 
@@ -30,7 +29,7 @@ public class OrFilterTest extends TestCase
     /** 
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -44,7 +43,7 @@ public class OrFilterTest extends TestCase
     /** 
      * Create a temporary directory with files to use for testing.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     protected void setUp() throws Exception
     {
@@ -58,7 +57,7 @@ public class OrFilterTest extends TestCase
     /**
      * Clean up temporary directory.
      * 
-     * @throws Exception on error 
+     * @throws Exception on error. 
      */
     protected void tearDown() throws Exception
     {
@@ -144,7 +143,7 @@ public class OrFilterTest extends TestCase
         
         OrFilter filter = new OrFilter();
         
-        for (int i=0; i<100; i++)
+        for (int i = 0; i < 100; i++)
             filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
         
         filter.addFilter(new MockFilter(true));

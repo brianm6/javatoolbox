@@ -54,13 +54,12 @@ public class ClassFinder
     /**
      * Search packages.
      */
-    private Set additionalSearchPackages_ = new HashSet(10);
+    private Set additionalSearchPackages_;
     
     /** 
      * Create an LRUMap with a max size of 10000 and a timelimit of 60 minutes. 
      */
-    private Map cache_ = 
-        Collections.synchronizedMap(new LRUMap(1000, 60 * 60000));
+    private Map cache_;
     
     /**
      * Search string.
@@ -81,6 +80,8 @@ public class ClassFinder
      */
     public ClassFinder()
     {
+        additionalSearchPackages_ = new HashSet(10);
+        cache_ = Collections.synchronizedMap(new LRUMap(1000, 60 * 60000));
     }
 
     
@@ -92,6 +93,7 @@ public class ClassFinder
      */
     public ClassFinder(String search, String replace)
     {
+        this();
         search_ = search;
         replace_ = replace;
     }
@@ -238,8 +240,8 @@ public class ClassFinder
         ClassLoader loader)
         throws ClassNotFoundException
     {
-        String className =
-            (String)cache_.get(getCacheKey(fromClass, toClass, prefix, loader));
+        String className = (String) 
+            cache_.get(getCacheKey(fromClass, toClass, prefix, loader));
 
         if (className != null)
             return loader.loadClass(className);
@@ -275,7 +277,7 @@ public class ClassFinder
      * @param toClass To a class.
      * @param prefix Prefix.
      * @param loader Classloader to search.
-     * @param classname Name of class.
+     * @param className Name of class.
      */
     protected void putCache(
         Class fromClass,

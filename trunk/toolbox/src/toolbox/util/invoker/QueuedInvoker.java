@@ -123,7 +123,7 @@ public class QueuedInvoker implements Invoker
      * @see toolbox.util.invoker.Invoker#invoke(
      *      java.lang.Object, java.lang.String, java.lang.Object[])
      */
-    public void invoke(        
+    public void invoke(
         final Object target, 
         final String method, 
         final Object[] params)
@@ -153,7 +153,7 @@ public class QueuedInvoker implements Invoker
     {
         if (!isEmpty())
         {    
-            logger_.warn("Shutting down queued invoker  even though there are "+
+            logger_.warn("Shutting down queued invoker even though there are " +
                 getSize() + " items remaining in the invocation queue.");
         }
         else if (!isIdle())
@@ -176,6 +176,9 @@ public class QueuedInvoker implements Invoker
     {
         private boolean running_ = false;
 
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             boolean shutdown = false;
@@ -199,6 +202,12 @@ public class QueuedInvoker implements Invoker
             }
         }
 
+        
+        /**
+         * Returns true if the invokable is executing, false otherwise.
+         * 
+         * @return boolean.
+         */
         public boolean isRunning()
         {
             return running_;

@@ -20,8 +20,8 @@ public class ConditionVariable
      *         mutex.
      * @throws Mutex.UnderflowException if the mutex has not been acquired.
      */
-    public void condWait(Mutex mutex) throws Mutex.NotOwnerException, 
-        Mutex.UnderflowException
+    public void condWait(Mutex mutex)
+        throws Mutex.NotOwnerException, Mutex.UnderflowException
     {
         try
         {
@@ -33,7 +33,7 @@ public class ConditionVariable
         }
         catch (InterruptedException ie)
         {
-            // Allow spurious interrupts
+            ; // Allow spurious interrupts
         }
         finally
         {

@@ -32,9 +32,9 @@ public abstract class ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
     
     /**
-     * Publishes the request in an alternate thread and returns a future
-     * object that can interrogate the result.
-     *
+     * Publishes the request in an alternate thread and returns a future object
+     * that can interrogate the result.
+     * 
      * @param request Request to publish.
      * @return Future object encapsualting the request result
      */
@@ -42,19 +42,20 @@ public abstract class ThreadedDispatcherStrategy
     {
         ReturnValue result = new ReturnValue();
         serviceRequest(request, result);
-
         return result;
     }
 
 
     /**
-     * Publish the request in an alternate thread using the supplied
-     * callback to supply status information about the response.
-     *
+     * Publish the request in an alternate thread using the supplied callback
+     * to supply status information about the response.
+     * 
      * @param request Request to publish.
      * @param callback Callback to receive status.
      */
-    public void dispatchAsync(IThreadable request,ReturnValue.Listener callback)
+    public void dispatchAsync(
+        IThreadable request,
+        ReturnValue.Listener callback)
     {
         ReturnValue result = new ReturnValue(request, callback);
         serviceRequest(request, result);
@@ -71,11 +72,11 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-     * Blocks the current thread until all pending requests are complete or
-     * the timeout has elapsed.
-     *
-     * @param  timeout  Timeout value in milliseconds.  If 0, the join will 
-     *                  wait indefinitely.
+     * Blocks the current thread until all pending requests are complete or the
+     * timeout has elapsed.
+     * 
+     * @param timeout Timeout value in milliseconds. If 0, the join will wait
+     *        indefinitely.
      */
     public synchronized void join(long timeout)
     {
@@ -84,13 +85,11 @@ public abstract class ThreadedDispatcherStrategy
             try
             {
                 wait(timeout);
-
                 return;
             }
             catch (InterruptedException e)
             {
-
-                // try again
+                ;// try again
             }
         }
     }
@@ -131,10 +130,10 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-     * Indicates the request corresponding to returnValues is processing.
-     * This is made protected so only publication strategies or classes in 
-     * this package can update the state.
-     *
+     * Indicates the request corresponding to returnValues is processing. This
+     * is made protected so only publication strategies or classes in this
+     * package can update the state.
+     * 
      * @param returnValue Return value to update state for.
      */
     protected void setStarted(ReturnValue returnValue)
@@ -144,10 +143,10 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-     * Assigns the value contained in the returnValue.  This is made
-     * protected so only publication strategies or classes in this package
-     * can set the value.
-     *
+     * Assigns the value contained in the returnValue. This is made protected
+     * so only publication strategies or classes in this package can set the
+     * value.
+     * 
      * @param result Return value to contain the value
      * @param value Value to assign to the return value
      */
@@ -198,9 +197,9 @@ public abstract class ThreadedDispatcherStrategy
 
 
     /**
-     * Returns true if the threads created by this strategy should be made 
+     * Returns true if the threads created by this strategy should be made
      * daemon threads.
-     *
+     * 
      * @return True if threads should be daemon.
      */
     protected boolean makeDaemon()

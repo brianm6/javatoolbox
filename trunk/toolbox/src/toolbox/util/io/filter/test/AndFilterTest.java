@@ -44,6 +44,8 @@ public class AndFilterTest extends TestCase
     
     /** 
      * Create a temporary directory with files to use for testing.
+     * 
+     * @throws Exception on error.
      */
     protected void setUp() throws Exception
     {
@@ -54,7 +56,9 @@ public class AndFilterTest extends TestCase
 
     
     /**
-     * Clean up temporary directory. 
+     * Clean up temporary directory.
+     * 
+     * @throws Exception on error 
      */
     protected void tearDown() throws Exception
     {
@@ -139,7 +143,7 @@ public class AndFilterTest extends TestCase
         
         AndFilter filter = new AndFilter();
         
-        for (int i=0; i<100; i++)
+        for (int i = 0; i < 100; i++)
             filter.addFilter(new MockFilter(RandomUtil.nextBoolean()));
         
         filter.addFilter(new MockFilter(false));

@@ -9,6 +9,10 @@ import java.io.InputStream;
  */
 public class PositionInputStream extends InputStream
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Wrapped input stream.
      */
@@ -178,7 +182,7 @@ public class PositionInputStream extends InputStream
      */
     public byte[] readUntil(byte stopAt) throws IOException
     {
-        return readUntil(new byte[] { stopAt });
+        return readUntil(new byte[] {stopAt});
     }
 
     
@@ -197,7 +201,8 @@ public class PositionInputStream extends InputStream
         {
             int b;
 
-            outer : while ((b = read()) != -1)
+            outer : 
+            while ((b = read()) != -1)
             {
                 oStream.write(b);
                 for (int i = 0; i < stopAt.length; i++)

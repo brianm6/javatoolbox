@@ -90,8 +90,8 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * @throws IOException on I/O error
      * @throws UnknownHostException on invalid hostname
      */
-    public SocketConnection(String host, int port) 
-        throws IOException, UnknownHostException
+    public SocketConnection(String host, int port) throws IOException, 
+        UnknownHostException
     {
         this(host, port, false);
     }
@@ -138,12 +138,12 @@ public class SocketConnection extends AbstractConnection implements IConnection
         int retryInterval) 
         throws IOException, UnknownHostException
     {
-       addConnectionListener(new InternalSocketConnectionListener());
-       setHost(host);
-       setPort(port);
-       setForceConnect(forceConnect);
-       setRetryInterval(retryInterval);
-       connect();
+        addConnectionListener(new InternalSocketConnectionListener());
+        setHost(host);
+        setPort(port);
+        setForceConnect(forceConnect);
+        setRetryInterval(retryInterval);
+        connect();
     }
 
     //--------------------------------------------------------------------------
@@ -341,7 +341,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
      */
     public String toString()
     {
-        return getName() + " connection@" +getHost() + ":" + getPort();
+        return getName() + " connection@" + getHost() + ":" + getPort();
     }
 
     //--------------------------------------------------------------------------
@@ -354,20 +354,37 @@ public class SocketConnection extends AbstractConnection implements IConnection
      */
     class InternalSocketConnectionListener implements IConnectionListener 
     {
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionClosed(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionClosed(IConnection connection)
         {
             connected_ = false;
         }
         
+        
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionClosing(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionClosing(IConnection connection)
         {
         }
 
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionInterrupted(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionInterrupted(IConnection connection)
         {
             connected_ = false;
         }
         
+        /**
+         * @see toolbox.util.net.IConnectionListener#connectionStarted(
+         *      toolbox.util.net.IConnection)
+         */
         public void connectionStarted(IConnection connection)
         {
             connected_ = true;

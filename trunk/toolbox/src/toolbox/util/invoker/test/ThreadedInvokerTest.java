@@ -31,12 +31,12 @@ public class ThreadedInvokerTest extends TestCase
         TestRunner.run(ThreadedInvokerTest.class);
     }
 
-    //----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Unit Tests
-    //----------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     /**
-     * Tests that a call to invoke(Runnable) method returns before the amount of 
+     * Tests that a call to invoke(Runnable) method returns before the amount of
      * time that it takes to execute the method.
      * 
      * @throws Exception on error

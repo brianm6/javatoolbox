@@ -16,14 +16,17 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Utility that finds all occurences of a given class in the CLASSPATH, 
- * current directory, and archives (recursively).
+ * Utility that finds all occurences of a given class in the CLASSPATH, current
+ * directory, and archives (recursively).
  */
 public class Main extends FindClassAdapter
 { 
-    private static final Logger logger_ = 
-        Logger.getLogger(Main.class);
+    private static final Logger logger_ = Logger.getLogger(Main.class);
 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Writer that output is sent to.
      */
@@ -66,8 +69,8 @@ public class Main extends FindClassAdapter
             Options options = new Options();
 
             // Valid options            
-            Option caseOption = 
-                new Option("c","caseSensetive", false, "Case sensetive search");
+            Option caseOption = new Option(
+                "c", "caseSensetive", false, "Case sensetive search");
                 
             Option targetsOption = 
                 new Option("t", "targets", false, "Lists the search targets");
@@ -87,7 +90,7 @@ public class Main extends FindClassAdapter
             Main mainClass = new Main(new OutputStreamWriter(System.out));
             
             // Handle options
-            for (Iterator i = cmdLine.iterator(); i.hasNext(); )
+            for (Iterator i = cmdLine.iterator(); i.hasNext();)
             {
                 Option option = (Option) i.next();
                 String opt = option.getOpt();
@@ -172,7 +175,7 @@ public class Main extends FindClassAdapter
             writer_.println("Search targets");
             writer_.println("==============================");
             
-            for(Iterator i = finder.getSearchTargets().iterator(); 
+            for (Iterator i = finder.getSearchTargets().iterator(); 
                 i.hasNext(); writer_.println(i.next()));
                 
             writer_.println("==============================");                

@@ -363,7 +363,7 @@ public class SocketServerConfig
         try
         {
             clazz = Class.forName(clazzName);
-            handler = (IConnectionHandler)clazz.newInstance();
+            handler = (IConnectionHandler) clazz.newInstance();
         }
         catch (ClassNotFoundException cnfe)
         {

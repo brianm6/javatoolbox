@@ -17,7 +17,7 @@ import toolbox.util.ClassUtil;
  */
 public class PackageTester
 {
-    public static final Logger logger_ = Logger.getLogger(PackageTester.class);
+    private static final Logger logger_ = Logger.getLogger(PackageTester.class);
  
     //--------------------------------------------------------------------------
     // Fields 
@@ -41,7 +41,7 @@ public class PackageTester
     {
         PackageTester tester = new PackageTester();
                 
-        for (int i=0; i<args.length; i++)
+        for (int i = 0; i < args.length; i++)
             tester.addPackage(args[i]);
 
         if (tester.getPackageCount() > 0)        
@@ -107,14 +107,14 @@ public class PackageTester
     {
         TestSuite testSuite = new TestSuite();
                     
-        for (Iterator p = packages_.iterator(); p.hasNext(); )
+        for (Iterator p = packages_.iterator(); p.hasNext();)
         {
-            String packageName = (String)p.next();
+            String packageName = (String) p.next();
             String[] classes = ClassUtil.getClassesInPackage(packageName);
             
             logger_.debug("\n" + ArrayUtil.toString(classes, true));
             
-            for (int i=0; i<classes.length; i++)
+            for (int i = 0; i < classes.length; i++)
             {
                 try
                 {

@@ -24,7 +24,7 @@ public class QueuedInvokerTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -36,10 +36,10 @@ public class QueuedInvokerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests that a call to invoke(Runnable) method returns before the amount of 
+     * Tests that a call to invoke(Runnable) method returns before the amount of
      * time that it takes to execute the method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeRunnable() throws Exception
     {
@@ -66,7 +66,8 @@ public class QueuedInvokerTest extends TestCase
     
             for (int i = 0; i < invokables.length; i++)
             {
-                assertTrue("Method was not invoked", invokables[i].wasInvoked());
+                assertTrue("Method was not invoked", 
+                    invokables[i].wasInvoked());
     
                 // Compare current begin timestamp to previous end timestamp to 
                 // verify the invokables were executed in sequence.
@@ -95,7 +96,7 @@ public class QueuedInvokerTest extends TestCase
      * Tests that a call to invoke(Object, Method, Object[]) returns before the 
      * amount of time that it takes to execute the method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeReflectively() throws Exception
     {
@@ -121,7 +122,8 @@ public class QueuedInvokerTest extends TestCase
     
             for (int i = 0; i < invokables.length; i++)
             {
-                assertTrue("Method was not invoked", invokables[i].wasInvoked());
+                assertTrue("Method was not invoked", 
+                    invokables[i].wasInvoked());
     
                 // Compare current begin timestamp to previous end timestamp to
                 //  verify invokables were executed in sequence.
@@ -149,7 +151,7 @@ public class QueuedInvokerTest extends TestCase
     /**
      * Stress tests invoke()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testInvokeStressTest() throws Exception
     {
@@ -177,7 +179,8 @@ public class QueuedInvokerTest extends TestCase
             // Verify
             for (int i = 0; i < invokables.length; i++)
             {
-                assertTrue("Method was not invoked",invokables[i].wasInvoked());
+                assertTrue("Method was not invoked",
+                    invokables[i].wasInvoked());
 
                 // Compare current begin timestamp to previous end timestamp to
                 // verify invokables where execute in sequence.
@@ -194,8 +197,6 @@ public class QueuedInvokerTest extends TestCase
                         end <= begin);
                 }
             }
-
-
         }
         finally
         {
@@ -208,7 +209,7 @@ public class QueuedInvokerTest extends TestCase
      * Tests shutdown() while there are still pending pending invocations in
      * the queue.
      *
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShutdownPremature() throws Exception
     {

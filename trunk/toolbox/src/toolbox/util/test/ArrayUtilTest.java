@@ -141,8 +141,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testSubsetObjectAll...");
         
-        String[] objs = new String[] { "zero", "one", "two", "three" };
-        
+        String[] objs = new String[] {"zero", "one", "two", "three"};
         String[] subset = (String[]) ArrayUtil.subset(objs, 1, 2);
         
         logger_.info(ArrayUtil.toString(objs));
@@ -173,16 +172,16 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testSubsetObjectOne...");
         
-        String[] d = new String[] { "a", "b", "c" };
-        String[] e = (String[])ArrayUtil.subset(d, 0, 0);
+        String[] d = new String[] {"a", "b", "c"};
+        String[] e = (String[]) ArrayUtil.subset(d, 0, 0);
         assertEquals("subset should have one element", 1, e.length);
         assertEquals("values don't match", "a", e[0]);
         
-        e = (String[])ArrayUtil.subset(d, 1, 1);
+        e = (String[]) ArrayUtil.subset(d, 1, 1);
         assertEquals("subset should have one element", 1, e.length);
         assertEquals("values don't match", "b", e[0]);
         
-        e = (String[])ArrayUtil.subset(d, 2, 2);
+        e = (String[]) ArrayUtil.subset(d, 2, 2);
         assertEquals("subset should have one element", 1, e.length);
         assertEquals("values don't match", "c", e[0]);
     }
@@ -195,7 +194,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testSubetOutOfBounds...");
         
-        String[] a = new String[] { "zero", "one", "two" };
+        String[] a = new String[] {"zero", "one", "two"};
         
         // Subset bounds which are invalid
         int[][] bounds = new int[][] 
@@ -205,21 +204,23 @@ public class ArrayUtilTest extends TestCase
             {-1,  1  },
             {-1,  2  },
             {-1,  3  },
-            { 0,  3  },
-            { 1,  3  },
-            { 2,  3  }, 
-            { 3,  3  }     
+            {0,  3  },
+            {1,  3  },
+            {2,  3  }, 
+            {3,  3  }     
         };
         
         // Run each set of bounds through and make sure it fails.
-        for (int i=0; i<bounds.length; i++)
+        for (int i = 0; i < bounds.length; i++)
         {
             try
             {
                 int lower = bounds[i][0];
                 int upper = bounds[i][1];
-                ArrayUtil.subset(a, lower, upper);                
-                fail("Bounds (" +lower+ ", " + upper + ") should have failed");
+                ArrayUtil.subset(a, lower, upper);
+                
+                fail("Bounds (" + lower + ", " + upper + 
+                    ") should have failed");
             }
             catch (IllegalArgumentException iae)
             {
@@ -275,7 +276,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testToStringOne...");
         
-        String[] s = new String[] { "blah" };
+        String[] s = new String[] {"blah"};
         logger_.info(ArrayUtil.toString(s));
     }
     
@@ -287,7 +288,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testToStringOneElementOnePerLine...");
         
-        String[] s = new String[] { "hello"};
+        String[] s = new String[] {"hello"};
         logger_.info(ArrayUtil.toString(s, true));
         logger_.info(ArrayUtil.toString(s, false));        
     }
@@ -338,7 +339,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testIndexOfOne...");
         
         String   s = "duke";
-        String[] strArray = new String[] { s };
+        String[] strArray = new String[] {s};
         
         
         int idx = ArrayUtil.indexOf(strArray, s);
@@ -355,7 +356,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testIndexOfOneNotFound...");
         
         String   s = "duke";
-        String[] strArray = new String[] { "java" };
+        String[] strArray = new String[] {"java"};
         
         
         int idx = ArrayUtil.indexOf(strArray, s);
@@ -374,7 +375,7 @@ public class ArrayUtilTest extends TestCase
         String   two = "two";
         
         String[] strArray = 
-            new String[] { "zero", "one", two, "three", "four" };
+            new String[] {"zero", "one", two, "three", "four"};
         
         int idx = ArrayUtil.indexOf(strArray, two);
         
@@ -392,7 +393,7 @@ public class ArrayUtilTest extends TestCase
         String   notFound = "notFound";
         
         String[] strArray = 
-            new String[] { "zero", "one", "two", "three", "four" };
+            new String[] {"zero", "one", "two", "three", "four"};
         
         int idx = ArrayUtil.indexOf(strArray, notFound);
         
@@ -514,9 +515,9 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testConcatEmptyOne...");
         
         String[] head = new String[0];
-        String[] tail = new String[] { "one" };
+        String[] tail = new String[] {"one"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array length incorrect", 1, concatted.length);
         assertEquals("concatted array class type should string", String.class,
@@ -533,9 +534,9 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testConcatEmptyMany...");
         
         String[] head = new String[0];
-        String[] tail = new String[] { "one", "two", "three", "four" };
+        String[] tail = new String[] {"one", "two", "three", "four"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array len incorrect", tail.length, 
             concatted.length);
@@ -543,7 +544,7 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array class type should string", String.class,
             concatted.getClass().getComponentType());
         
-        for (int i=0; i<tail.length; i++)
+        for (int i = 0; i < tail.length; i++)
             assertEquals("concatted array contents incorrect", tail[i], 
                 concatted[i]);
     }
@@ -557,9 +558,9 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testConcatOneEmpty...");
         
         String[] tail = new String[0];
-        String[] head = new String[] { "one" };
+        String[] head = new String[] {"one"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array length incorrect", 1, concatted.length);
         assertEquals("concatted array class type should string", String.class,
@@ -576,9 +577,9 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testConcatManyEmpty...");
         
         String[] tail = new String[0];
-        String[] head = new String[] { "one", "two", "three", "four" };
+        String[] head = new String[] {"one", "two", "three", "four"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array len incorrect", head.length, 
             concatted.length);
@@ -586,7 +587,7 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array class type should string", String.class,
             concatted.getClass().getComponentType());
         
-        for (int i=0; i<head.length; i++)
+        for (int i = 0; i < head.length; i++)
             assertEquals("concatted array contents incorrect", head[i], 
                 concatted[i]);
     }
@@ -599,10 +600,10 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testConcatBothOne...");
         
-        String[] head = new String[] { "one" };
-        String[] tail = new String[] { "two" };
+        String[] head = new String[] {"one"};
+        String[] tail = new String[] {"two"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array length incorrect", 2, concatted.length);
         assertEquals("concatted array class type should string", String.class,
@@ -620,10 +621,10 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testConcatManyOne...");
         
-        String[] head = new String[] { "one", "two", "three", "four" };
-        String[] tail = new String[] { "five" };
+        String[] head = new String[] {"one", "two", "three", "four"};
+        String[] tail = new String[] {"five"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array len incorrect", head.length + tail.length,
             concatted.length);
@@ -632,7 +633,7 @@ public class ArrayUtilTest extends TestCase
             concatted.getClass().getComponentType());
         
         int i;
-        for (i=0; i<head.length; i++)
+        for (i = 0; i < head.length; i++)
             assertEquals("concatted array contents incorrect", head[i], 
                 concatted[i]);
                 
@@ -649,10 +650,10 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testConcatOneMany...");
         
-        String[] tail = new String[] { "one", "two", "three", "four" };
-        String[] head = new String[] { "five" };
+        String[] tail = new String[] {"one", "two", "three", "four"};
+        String[] head = new String[] {"five"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array len incorrect", head.length + tail.length,
             concatted.length);
@@ -663,9 +664,9 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array contents incorrect", head[0], 
             concatted[0]);
             
-        for (int i=0; i<tail.length; i++)
+        for (int i = 0; i < tail.length; i++)
             assertEquals("concatted array contents incorrect", tail[i], 
-                concatted[i+head.length]);
+                concatted[i + head.length]);
 
     }
 
@@ -677,10 +678,10 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testConcatBothMany...");
         
-        String[] head = new String[] { "one", "two", "three", "four" };
-        String[] tail = new String[] { "five", "six", "seven", "eight" };
+        String[] head = new String[] {"one", "two", "three", "four"};
+        String[] tail = new String[] {"five", "six", "seven", "eight"};
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array len incorrect", head.length + tail.length,
             concatted.length);
@@ -688,13 +689,17 @@ public class ArrayUtilTest extends TestCase
         assertEquals("concatted array class type should string", String.class,
             concatted.getClass().getComponentType());
         
-        for (int i=0; i<head.length; i++)
-            assertEquals("concatted array contents incorrect", head[i], 
+        for (int i = 0; i < head.length; i++)
+            assertEquals(
+                "concatted array contents incorrect",
+                head[i],
                 concatted[i]);
 
-        for (int i=0; i<tail.length; i++)
-            assertEquals("concatted array contents incorrect", tail[i], 
-                concatted[i+head.length]);
+        for (int i = 0; i < tail.length; i++)
+            assertEquals(
+                "concatted array contents incorrect",
+                tail[i],
+                concatted[i + head.length]);
     }   
 
     //--------------------------------------------------------------------------
@@ -711,7 +716,7 @@ public class ArrayUtilTest extends TestCase
         String[] arr = new String[0];
         String obj = "foo";
 
-        String[] result = (String[])ArrayUtil.insert(arr, obj);
+        String[] result = (String[]) ArrayUtil.insert(arr, obj);
             
         assertEquals(1, result.length);
         assertEquals(obj, result[0]);    
@@ -725,7 +730,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testInsertToArray...");
         
-        String[] arr = new String[] { "one", "two", "three" };
+        String[] arr = new String[] {"one", "two", "three"};
         String zero = "zero";        
         String[] expected = new String[] {"zero", "one", "two", "three"};
 
@@ -747,7 +752,7 @@ public class ArrayUtilTest extends TestCase
         String[] arr = new String[0];
         String obj = "foo";
 
-        String[] result = (String[])ArrayUtil.insertAt(arr, obj, 0);
+        String[] result = (String[]) ArrayUtil.insertAt(arr, obj, 0);
             
         assertEquals(1, result.length);
         assertEquals(obj, result[0]);    
@@ -761,7 +766,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testInsertAtFront...");
         
-        String[] arr = new String[] { "one", "two", "three" };
+        String[] arr = new String[] {"one", "two", "three"};
         String zero = "zero";        
         String[] expected = new String[] {"zero", "one", "two", "three"};
 
@@ -779,7 +784,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testInsertAtBack...");
         
-        String[] arr = new String[] { "one", "two", "three" };
+        String[] arr = new String[] {"one", "two", "three"};
         String four = "four";        
         String[] expected = new String[] {"one", "two", "three", "four"};
 
@@ -797,7 +802,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testInsertAtMiddle...");
         
-        String[] arr = new String[] { "one", "three" };
+        String[] arr = new String[] {"one", "three"};
         String two = "two";        
         String[] expected = new String[] {"one", "two", "three"};
 
@@ -836,7 +841,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testRemoveOne...");
         
         String   s = "duke";
-        String[] strArray = new String[] { s };
+        String[] strArray = new String[] {s};
         
         String[] result = (String[]) ArrayUtil.remove(strArray, s);
         
@@ -853,15 +858,15 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testRemoveHead...");
         
         String s = "head";
-        String[] strArray = new String[] { s, "one", "two", "three", "tail"};
+        String[] strArray = new String[] {s, "one", "two", "three", "tail"};
         
         String[] result = (String[]) ArrayUtil.remove(strArray, s);
         
         assertEquals(strArray.length - 1, result.length);
         assertTrue(result.getClass().getComponentType() == String.class);
         
-        for (int i=0; i<strArray.length - 1; i++)
-            assertEquals(strArray[i+1], result[i]);
+        for (int i = 0; i < strArray.length - 1; i++)
+            assertEquals(strArray[i + 1], result[i]);
     }
     
     
@@ -873,14 +878,14 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testRemoveTail...");
         
         String tail = "tail";
-        String[] strArray = new String[] { "head", "one", "two", "three", tail};
+        String[] strArray = new String[] {"head", "one", "two", "three", tail};
         
         String[] result = (String[]) ArrayUtil.remove(strArray, tail);
         
         assertEquals(strArray.length - 1, result.length);
         assertTrue(result.getClass().getComponentType() == String.class);
         
-        for (int i=0; i<strArray.length - 1; i++)
+        for (int i = 0; i < strArray.length - 1; i++)
             assertEquals(strArray[i], result[i]);
     }
 
@@ -893,7 +898,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testRemoveHead...");
         
         String middle = "middle";
-        String[] strArray = new String[] { "head", middle, "tail"};
+        String[] strArray = new String[] {"head", middle, "tail"};
         
         String[] result = (String[]) ArrayUtil.remove(strArray, middle);
         
@@ -913,7 +918,7 @@ public class ArrayUtilTest extends TestCase
 
         List keys = new ArrayList();
         
-        for (int i=0; i<100; i++)
+        for (int i = 0; i < 100; i++)
             keys.add("key" + i);
                 
         String[] data = (String[]) keys.toArray(new String[0]);
@@ -942,7 +947,7 @@ public class ArrayUtilTest extends TestCase
         double[] d = new double[10];
         ArrayUtil.init(d, 99.9);
             
-        for (int i=0; i<d.length; assertEquals(99.9d, d[i++], 0.0));
+        for (int i = 0; i < d.length; assertEquals(99.9d, d[i++], 0.0));
     }
     
     
@@ -956,7 +961,7 @@ public class ArrayUtilTest extends TestCase
         int[] d = new int[10];
         ArrayUtil.init(d, 99);
         
-        for (int i=0; i<d.length; assertEquals(99, d[i++]));
+        for (int i = 0; i < d.length; assertEquals(99, d[i++]));
     }
     
     
@@ -994,7 +999,7 @@ public class ArrayUtilTest extends TestCase
         String[] arr = new String[0];
         String obj = "foo";
 
-        String[] result = (String[])ArrayUtil.add(arr, obj);
+        String[] result = (String[]) ArrayUtil.add(arr, obj);
             
         assertEquals(1, result.length);
         assertEquals(obj, result[0]);    
@@ -1008,12 +1013,11 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testAddToArray...");
         
-        String[] arr = new String[] { "one", "two", "three" };
+        String[] arr = new String[] {"one", "two", "three"};
         String four = "four";        
         String[] expected = new String[] {"one", "two", "three", four};
 
-
-        String[] result = (String[])ArrayUtil.add(arr, four);
+        String[] result = (String[]) ArrayUtil.add(arr, four);
             
         assertEquals(arr.length + 1, result.length);
         assertTrue(ArrayUtil.equals(expected, result));    
@@ -1028,32 +1032,32 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testEquals...");
         
-        String[] a = new String[] { "a", "b", "c"};
-        String[] b = new String[] { "1", "2" };
-        String[] c = new String[] { "alpha", "beta", "gamma" };
+        String[] a = new String[] {"a", "b", "c"};
+        String[] b = new String[] {"1", "2"};
+        String[] c = new String[] {"alpha", "beta", "gamma"};
         
         Object x1 = new Integer(1);
         Object x2 = new Boolean(false);
         Object x3 = new Character('x');
         
-        Object[] d1 = new Object[] { x1, x2, x3 };
-        Object[] d2 = new Object[] { x1, x2, x3 };
+        Object[] d1 = new Object[] {x1, x2, x3};
+        Object[] d2 = new Object[] {x1, x2, x3};
         
         Object y1 = new Integer(1);
         Object y2 = new Boolean(false);
         Object y3 = new Character('x');
         
-        Object[] e1 = new Object[] { x1, x2, x3 };
-        Object[] e2 = new Object[] { y1, y2, y3 };
+        Object[] e1 = new Object[] {x1, x2, x3};
+        Object[] e2 = new Object[] {y1, y2, y3};
                  
         // Equal by reference: a == a
         assertTrue(ArrayUtil.equals(a, a));
         
         // Not equal by length: a.length != b.length
-        assertFalse(ArrayUtil.equals(a,b));
+        assertFalse(ArrayUtil.equals(a, b));
         
         // Not equals by content: a[i] != c[i] or !a[i].equals(c[i])
-        assertFalse(ArrayUtil.equals(a,c));
+        assertFalse(ArrayUtil.equals(a, c));
         
         // Equal by contents' reference: d1[i] == d2[i]
         assertTrue(ArrayUtil.equals(d1, d2));
@@ -1072,7 +1076,7 @@ public class ArrayUtilTest extends TestCase
         
         String[] nullArray  = null;
         String[] emptyArray = new String[0];
-        String[] oneArray   = new String[] { "zero" };
+        String[] oneArray   = new String[] {"zero"};
         
         assertTrue("Should have returned true for null array", 
             ArrayUtil.isNullOrEmpty(nullArray));
@@ -1091,15 +1095,15 @@ public class ArrayUtilTest extends TestCase
     public void testInvoke()
     {
         logger_.info("Running testInvoke...");
-        
-        StringBuffer[] buffers = new StringBuffer[10];
-        
-        for(int i=0; i<buffers.length; i++)
-            buffers[i] = new StringBuffer("");
-        
-        ArrayUtil.invoke(buffers, "append", new Object[] { "x" });
 
-        for(int i=0; i<buffers.length; i++)
+        StringBuffer[] buffers = new StringBuffer[10];
+
+        for (int i = 0; i < buffers.length; i++)
+            buffers[i] = new StringBuffer("");
+
+        ArrayUtil.invoke(buffers, "append", new Object[] {"x"});
+
+        for (int i = 0; i < buffers.length; i++)
             assertEquals("x", buffers[i].toString());
     }
 
@@ -1111,7 +1115,7 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testInvokeFailure...");
         
-        String[] buffers = new String[] { "a", "b" };
-        ArrayUtil.invoke(buffers, "bogus_method", new Object[] { "x" });
+        String[] buffers = new String[] {"a", "b"};
+        ArrayUtil.invoke(buffers, "bogus_method", new Object[] {"x"});
     }
 }

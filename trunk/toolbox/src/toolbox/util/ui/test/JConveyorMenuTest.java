@@ -75,13 +75,23 @@ public class JConveyorMenuTest extends UITestCase
     // TestAction
     //--------------------------------------------------------------------------
     
+    /**
+     * TestAction
+     */
     class TestAction extends AbstractAction
     {
+        /**
+         * Creates a test action. 
+         */
         public TestAction()
         {
             super("Menu Item " + cnt++);
         }
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
         }
@@ -91,17 +101,27 @@ public class JConveyorMenuTest extends UITestCase
     // AddItemAction
     //--------------------------------------------------------------------------
     
+    /**
+     * AddItemAction.
+     */
     class AddItemAction extends AbstractAction
     {
+        /**
+         * Creates an AddItemAction. 
+         */
         public AddItemAction()
         {
             super("Add Item to Menu");
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             menu_.add(new JSmartMenuItem(new TestAction()));
         }
-        
     }
 }

@@ -111,7 +111,7 @@ public class LoggingMenu extends JSmartMenu
 
         levelMap_ = new HashMap(levels.length);
         
-        for (int i=0; i<levels.length; i++)
+        for (int i = 0; i < levels.length; i++)
         {
             JCheckBoxMenuItem cbmi =
                 new JSmartCheckBoxMenuItem(new SetLogLevelAction(levels[i]));
@@ -159,6 +159,7 @@ public class LoggingMenu extends JSmartMenu
             level_ = level;
         }
         
+        
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -178,7 +179,7 @@ public class LoggingMenu extends JSmartMenu
      */
     class LogToConsoleAction extends AbstractAction
     {
-        ConsoleAppender appender_;
+        private ConsoleAppender appender_;
         
         /**
          * Creates a LogToConsoleAction.

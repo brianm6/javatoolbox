@@ -5,10 +5,10 @@ package toolbox.workspace;
  */
 public interface IStatusBar
 {
-    public static final int BUSY    = 1;
-    public static final int ERROR   = 2;
-    public static final int INFO    = 3;
-    public static final int WARNING = 4;
+    int BUSY    = 1;
+    int ERROR   = 2;
+    int INFO    = 3;
+    int WARNING = 4;
     
     /**
      * Sets the status text

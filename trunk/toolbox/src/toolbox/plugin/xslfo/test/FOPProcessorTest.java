@@ -144,6 +144,12 @@ public class FOPProcessorTest extends TestCase
         private int cnt_;
         private String foXML_;
 
+        /**
+         * Creates a RenderRequest.
+         * 
+         * @param cnt Counter
+         * @param foXML XML to render.
+         */
         RenderRequest(int cnt, String foXML)
         {
             cnt_ = cnt;
@@ -154,11 +160,14 @@ public class FOPProcessorTest extends TestCase
         // Runnable Interface 
         //----------------------------------------------------------------------
         
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             try
             {
-                logger_.info("Request " + cnt_+ " processing...");
+                logger_.info("Request " + cnt_ + " processing...");
                      
                 FOProcessor fop = 
                     FOProcessorFactory.createProcessor(
@@ -167,7 +176,7 @@ public class FOPProcessorTest extends TestCase
                 fop.initialize(new Properties());
                     
                 StringInputStream input = new StringInputStream(foXML_);
-                ByteArrayOutputStream output = new ByteArrayOutputStream();            
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
                 fop.renderPDF(input, output);
                 byte[] pdfBytes = output.toByteArray();
                     

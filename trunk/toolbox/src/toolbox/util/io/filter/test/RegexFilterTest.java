@@ -15,7 +15,7 @@ import toolbox.util.io.filter.RegexFilter;
  */
 public class RegexFilterTest extends TestCase
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(RegexFilterTest.class);
         
     /** 
@@ -30,7 +30,7 @@ public class RegexFilterTest extends TestCase
     /** 
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -44,7 +44,7 @@ public class RegexFilterTest extends TestCase
     /** 
      * Create a temporary directory with files to use for testing.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     protected void setUp() throws Exception
     {
@@ -62,7 +62,7 @@ public class RegexFilterTest extends TestCase
     /**
      * Clean up temporary directory.
      * 
-     * @throws Exception on error 
+     * @throws Exception on error. 
      */
     protected void tearDown() throws Exception
     {
@@ -77,7 +77,7 @@ public class RegexFilterTest extends TestCase
     /**
      * Tests accept() for not matching any files.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAcceptMatchesZero() throws Exception
     {
@@ -92,7 +92,7 @@ public class RegexFilterTest extends TestCase
     /**
      * Tests accept() for not matching one file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAcceptMatchesOne() throws Exception
     {
@@ -108,7 +108,7 @@ public class RegexFilterTest extends TestCase
     /**
      * Tests accept() for matching many files.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAcceptMatchesMany() throws Exception
     {
@@ -119,7 +119,7 @@ public class RegexFilterTest extends TestCase
         
         assertEquals("Two matches should have been found", 2, matches.length);
         
-        for(int i=0; i<matches.length; i++)
+        for (int i = 0; i < matches.length; i++)
             assertTrue("java file should have been found", 
                 matches[i].endsWith("java"));
     }
@@ -128,7 +128,7 @@ public class RegexFilterTest extends TestCase
     /**
      * Tests accept() for case sensetivity.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testAcceptMatchesCase() throws Exception
     {

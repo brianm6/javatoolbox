@@ -206,7 +206,7 @@ public class FindClassTest extends TestCase
         ThreadUtil.run(
                 finder, 
                 "findClass", 
-                new Object[] { "xxx", new Boolean(false) });
+                new Object[] {"xxx", new Boolean(false)});
         
         logger_.info("Giving finder a head start..");
         ThreadUtil.sleep(5000); 
@@ -227,34 +227,55 @@ public class FindClassTest extends TestCase
     
     class SearchListener implements FindClassListener
     {
-        Mutex cancel = new Mutex();
-        Mutex first = new Mutex();
+        private Mutex cancel_ = new Mutex();
+        private Mutex first_ = new Mutex();
         
-        public SearchListener() throws InterruptedException
-        {
-            cancel.acquire();
-            first.acquire();
-        }
-        
-        public void waitForCancel() throws InterruptedException
-        {
-            cancel.acquire();
-        }
-        
-        public void waitForFirst() throws InterruptedException
-        {
-            first.acquire();
-        }
         
         /**
+         * Creates a SearchListener.
+         * 
+         * @throws InterruptedException on interruption.
+         */
+        public SearchListener() throws InterruptedException
+        {
+            cancel_.acquire();
+            first_.acquire();
+        }
+        
+        
+        /**
+         * Waits for the search to be canceled.
+         * 
+         * @throws InterruptedException on interruption.
+         */
+        public void waitForCancel() throws InterruptedException
+        {
+            cancel_.acquire();
+        }
+        
+        
+        /**
+         * Waits for the first search result.
+         * 
+         * @throws InterruptedException on interruption.
+         */
+        public void waitForFirst() throws InterruptedException
+        {
+            first_.acquire();
+        }
+        
+        
+        /**
+         * Waits for the search to be canceled.
          * @see toolbox.findclass.FindClassListener#searchCancelled()
          */
         public void searchCancelled()
         {
             logger_.info("SearchCanceled");
-            cancel.release();
+            cancel_.release();
         }
 
+        
         /**
          * @see toolbox.findclass.FindClassListener#searchCompleted(
          *      java.lang.String)
@@ -264,6 +285,7 @@ public class FindClassTest extends TestCase
             logger_.info("SearchCompleted " + search);
         }
 
+        
         /**
          * @see toolbox.findclass.FindClassListener#classFound(
          *      toolbox.findclass.FindClassResult)
@@ -273,6 +295,7 @@ public class FindClassTest extends TestCase
             logger_.info("ClassFound " + searchResult.getClassFQN());
         }
 
+        
         /**
          * @see toolbox.findclass.FindClassListener#searchingTarget(
          *      java.lang.String)
@@ -280,7 +303,7 @@ public class FindClassTest extends TestCase
         public void searchingTarget(String target)
         {
             logger_.info("SearchingTarget " + target);
-            first.release();
+            first_.release();
         }
     }
 }

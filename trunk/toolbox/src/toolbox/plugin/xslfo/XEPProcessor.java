@@ -68,7 +68,7 @@ public class XEPProcessor implements FOProcessor
      * 
      * @param foFile XSL-FO input file.
      * @param pdfFile PDF output file.
-     * @throws Excepption on error.
+     * @throws Exception on error.
      */    
     private void renderPDF(File foFile, File pdfFile) throws Exception
     {

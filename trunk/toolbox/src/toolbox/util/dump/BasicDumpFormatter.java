@@ -138,7 +138,7 @@ public class BasicDumpFormatter implements DumpFormatter
     {
         String name = clazz.getName();
         
-        for (Iterator i = excludedClasses_.iterator(); i.hasNext(); )
+        for (Iterator i = excludedClasses_.iterator(); i.hasNext();)
         {
             RE regExp = (RE) i.next();
             
@@ -162,7 +162,7 @@ public class BasicDumpFormatter implements DumpFormatter
         if (Modifier.isStatic(field.getModifiers()))
             return false;
 
-        for (Iterator i = excludedFields_.iterator(); i.hasNext(); )
+        for (Iterator i = excludedFields_.iterator(); i.hasNext();)
         {
             // Skip fields that match the regular expression
             RE regExp = (RE) i.next();

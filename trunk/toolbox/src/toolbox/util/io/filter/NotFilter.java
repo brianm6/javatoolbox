@@ -21,7 +21,7 @@ public class NotFilter implements FilenameFilter
     /**
      * Creates a NotFilter.
      * 
-     * @param filter Filter to negate
+     * @param filter Filter to negate.
      */   
     public NotFilter(FilenameFilter filter)
     {
@@ -35,11 +35,11 @@ public class NotFilter implements FilenameFilter
     /**
      * Negates a filter's accept() method.
      * 
-     * @param dir Directory file is contained in
-     * @param name Name of file
-     * @return Inverse of filter
+     * @param dir Directory file is contained in.
+     * @param name Name of file.
+     * @return Inverse of filter.
      */
-    public boolean accept(File dir,String name)
+    public boolean accept(File dir, String name)
     {
         return !filter_.accept(dir, name);
     }

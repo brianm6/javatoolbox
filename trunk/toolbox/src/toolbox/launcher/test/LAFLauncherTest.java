@@ -44,7 +44,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
         logger_.info("Running testMainNoArgs...");
         
         String target = "toolbox.launcher.Main";
-        LAFLauncher.main(new String[] { target });
+        LAFLauncher.main(new String[] {target});
     }
     
     
@@ -58,7 +58,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
         logger_.info("Running testMainOneArg...");
         
         String target = "toolbox.launcher.Main";
-        LAFLauncher.main(new String[] { target, "showclasspath" });
+        LAFLauncher.main(new String[] {target, "showclasspath"});
     }
 
 
@@ -73,7 +73,7 @@ public class LAFLauncherTest extends TestCase implements StandaloneTestCase
         
         String target = "toolbox.launcher.Main";
         LAFLauncher.main(
-            new String[] { target, "banner", "testing", "LAFLauncher"});
+            new String[] {target, "banner", "testing", "LAFLauncher"});
     }
     
     

@@ -111,7 +111,7 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public IPlugin getPlugin(String pluginClass)
     {
-        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
+        for (Iterator i = plugins_.values().iterator(); i.hasNext();)
         {
             IPlugin plugin = (IPlugin) i.next();
             if (plugin.getClass().getName().equals(pluginClass))
@@ -140,7 +140,7 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     public boolean hasPlugin(String pluginClass)
     {
-        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
+        for (Iterator i = plugins_.values().iterator(); i.hasNext();)
             if (i.next().getClass().getName().equals(pluginClass))
                 return true;
         

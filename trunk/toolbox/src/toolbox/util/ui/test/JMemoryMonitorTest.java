@@ -67,14 +67,22 @@ public class JMemoryMonitorTest extends UITestCase
      */
     class EatMemoryAction extends SmartAction
     {
+        /**
+         * Creates an EatMemoryAction. 
+         */
         EatMemoryAction()
         {
             super("Eat Memory", true, true, null);    
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e)
         {
-            for (int i=0; i<2000000; i++)
+            for (int i = 0; i < 2000000; i++)
             {
                 RandomUtil.nextInt();
             }

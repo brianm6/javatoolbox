@@ -170,7 +170,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         defaults_.caretVisible = true;
         defaults_.caretBlinks = false;
         defaults_.blockCaret = true;
-        defaults_.electricScroll=3;
+        defaults_.electricScroll = 3;
         
         //public int cols;
         //defaults_.rows = 5;
@@ -182,8 +182,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         //public Color bracketHighlightColor;
         //public boolean bracketHighlight;
         //public Color eolMarkerColor;
-        defaults_.eolMarkers=false;
-        defaults_.paintInvalid=false;
+        defaults_.eolMarkers = false;
+        defaults_.paintInvalid = false;
         defaults_.popup = new JEditPopupMenu();
     }
 
@@ -424,7 +424,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     public void startup(Map params)
     {
         if (params != null)
-            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            statusBar_ = (IStatusBar) 
+                params.get(PluginWorkspace.PROP_STATUSBAR);
         
         buildView();
     }
@@ -510,6 +511,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     class FileSelectionListener extends FileExplorerAdapter
     {
+        /**
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileDoubleClicked(
+         *      java.lang.String)
+         */
         public void fileDoubleClicked(String file)
         {
             try
@@ -536,11 +541,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     class FormatAction extends WorkspaceAction 
     {
+        /**
+         * Creates a FormatAction. 
+         */
         FormatAction()
         {
             super("Format", false, null, null);
         }
     
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             xmlArea_.setText(XMLUtil.format(xmlArea_.getText()));
@@ -556,17 +569,25 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     class FOPAWTAction extends WorkspaceAction
     {
+        /**
+         * Creates a FOPAWTAction. 
+         */
         FOPAWTAction()
         {
             super("Launch with FOP AWT", false, null, null);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             String xml = xmlArea_.getText();
             String foFile  = FileUtil.createTempFilename() + ".xml";
             FileUtil.setFileContents(foFile, xml, false);
-            Fop.main(new String[] { foFile, "-awt"});
+            Fop.main(new String[] {foFile, "-awt"});
         }
     }
     
@@ -579,11 +600,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     class FOPRenderAction extends WorkspaceAction
     {
+        /**
+         * Creates a FOPRenderAction. 
+         */
         FOPRenderAction()
         {
             super("Render with FOP", true, XSLFOPlugin.this, statusBar_);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -604,11 +633,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     class FOPLaunchAction extends WorkspaceAction
     {
+        /**
+         * Creates a FOPLaunchAction. 
+         */
         FOPLaunchAction()
         {
             super("Launch with FOP", true, XSLFOPlugin.this, statusBar_);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -634,11 +671,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     {
         private File lastDir_;
         
+        /**
+         * Creates a FOPExportToPDFAction. 
+         */
         FOPExportToPDFAction()
         {
             super("Export to PDF..", false, null, null);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = null;
@@ -673,11 +718,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     class XEPRenderAction extends WorkspaceAction
     {
+        /**
+         * Creates a XEPRenderAction. 
+         */
         XEPRenderAction()
         {
             super("Render with XEP", true, XSLFOPlugin.this, statusBar_);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             InputStream input = new StringInputStream(xmlArea_.getText());
@@ -696,11 +749,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     class XEPLaunchAction extends WorkspaceAction
     {
+        /**
+         * Creates a XEPLaunchAction. 
+         */
         XEPLaunchAction()
         {
             super("Launch with XEP", true, XSLFOPlugin.this, statusBar_);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             InputStream input = new StringInputStream(xmlArea_.getText());
@@ -724,11 +785,19 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     {
         private File lastDir_;
         
+        /**
+         * Creates a FOPExportToPostscriptAction. 
+         */
         FOPExportToPostscriptAction()
         {
             super("Export to Postscript..", false, null, null);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             JFileChooser chooser = null;

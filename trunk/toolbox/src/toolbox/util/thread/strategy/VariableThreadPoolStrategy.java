@@ -82,17 +82,21 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
 
 
     /**
-     * Creates a variable thread pool of capacity poolSize, increment 
-     * growSize, queueSize and thread timeout period.
-     *
+     * Creates a variable thread pool of capacity poolSize, increment growSize,
+     * queueSize and thread timeout period.
+     * 
      * @param initSize Number of threads initially created.
      * @param growSize Number of threads per increment.
      * @param poolSize Maximum number threads createable.
      * @param queueSize Maximum number of buffered requests.
      * @param timeout Timeout period to pickup pending requests.
      */
-    public VariableThreadPoolStrategy(int initSize, int growSize, int poolSize, 
-                                      int queueSize, int timeout)
+    public VariableThreadPoolStrategy(
+        int initSize,
+        int growSize,
+        int poolSize,
+        int queueSize,
+        int timeout)
     {
         busySize_ = 0;
         pendingSize_ = 0;
@@ -113,11 +117,11 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     //--------------------------------------------------------------------------
 
     /**
-     * Publish the request by putting it on the request queue.  If the queue is 
-     * full, the calling thread is blocked until a slot becomes available.  If 
-     * no threads are available to process this request, create additional 
+     * Publish the request by putting it on the request queue. If the queue is
+     * full, the calling thread is blocked until a slot becomes available. If
+     * no threads are available to process this request, create additional
      * threads.
-     *
+     * 
      * @param request Request to publish.
      * @param result Holds the request result.
      */
@@ -158,6 +162,8 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          * Returns the next request or times out.
          *
          * @return Next request to proecess.
+         * @throws Timeout on timeout.
+         * @throws InterruptedException on interruption.
          */
         protected Object take() throws Timeout, InterruptedException
         {
@@ -174,7 +180,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
             {
                 Task task = null;
 
-                while ((task = (Task)take()) != null)
+                while ((task = (Task) take()) != null)
                 {
                     try
                     {
@@ -195,11 +201,11 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
             }
             catch (InterruptedException e)
             {
-                // ignore interruptions
+                ; // ignore interruptions
             }
             catch (Timeout t)
             {
-                // no requests pending
+                ; // no requests pending
             }
             finally
             {
@@ -221,6 +227,8 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
          * Returns the next request.
          *
          * @return Next request to proecess.
+         * @throws Timeout on timeout.
+         * @throws InterruptedException when interrupted.
          */
         protected Object take() throws Timeout, InterruptedException
         {
@@ -240,6 +248,12 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
         private IThreadable request_;
         private ReturnValue result_;
 
+        /**
+         * Creates a Task.
+         * 
+         * @param request Request.
+         * @param result Return value.
+         */
         public Task(IThreadable request, ReturnValue result)
         {
             request_ = request;

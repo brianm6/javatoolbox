@@ -154,16 +154,16 @@ public class FileStuffer implements Runnable
             }
             else
             {
-                 while (!stop_)
-                 {
+                while (!stop_)
+                {
                     pw = new PrintWriter(new FileWriter(getFile(), true));
                     pw.println(stuffer_.getStuff());
                     pw.close();
                     ThreadUtil.sleep(delay_);
-                 }   
+                }   
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -198,7 +198,7 @@ public class FileStuffer implements Runnable
         {
             thread_.join(10000);
         }
-        catch(InterruptedException ie)
+        catch (InterruptedException ie)
         {
             System.err.println(ie);
             System.err.println(ExceptionUtil.getStackTrace(ie));        

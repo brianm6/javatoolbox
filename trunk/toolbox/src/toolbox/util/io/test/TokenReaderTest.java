@@ -15,7 +15,7 @@ import toolbox.util.io.TokenReader;
  */
 public class TokenReaderTest extends TestCase
 {
-    public static final Logger logger_ =
+    private static final Logger logger_ =
         Logger.getLogger(TokenReaderTest.class);
 
     //--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ public class TokenReaderTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -39,13 +39,13 @@ public class TokenReaderTest extends TestCase
     /**
      * Tests an empty reader.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testEmptyReader() throws Exception
     {
         logger_.info("Running testEmptyReader...");
         
-        TokenReader tr = new TokenReader( new StringReader(""), ",");
+        TokenReader tr = new TokenReader(new StringReader(""), ",");
         String[] tokens = tr.readTokens();
         assertNull("tokens should be null", tokens);
     }
@@ -54,13 +54,13 @@ public class TokenReaderTest extends TestCase
     /**
      * Tests a reader with a single line of data.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testSingleLineReader() throws Exception
     {
         logger_.info("Running testSingleLineReader...");
         
-        TokenReader tr = new TokenReader( new StringReader("a,b,c,d,e,f"), ",");
+        TokenReader tr = new TokenReader(new StringReader("a,b,c,d,e,f"), ",");
         String[] tokens = tr.readTokens();
         assertNotNull("first line should not be null", tokens);
         assertEquals("number of tokens incorrect", 6, tokens.length);
@@ -72,7 +72,7 @@ public class TokenReaderTest extends TestCase
     /**
      * Tests a reader with multiple lines of multiple tokens.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testMultiLineReader() throws Exception
     {
@@ -80,9 +80,9 @@ public class TokenReaderTest extends TestCase
         
         int numLines = 3;
         String lines = "a,b,c\nd,e,f\ng,h,i";
-        TokenReader tr = new TokenReader( new StringReader(lines), ",");
+        TokenReader tr = new TokenReader(new StringReader(lines), ",");
         
-        for (int i=0; i<numLines; i++)
+        for (int i = 0; i < numLines; i++)
         {
             String[] tokens = tr.readTokens();
             assertNotNull("line should not be null", tokens);

@@ -144,7 +144,7 @@ public abstract class WorkspaceAction extends SmartAction
             if (StringUtil.isNullOrBlank(message))
             {
                 message = 
-                    StringUtil.getLine(ExceptionUtil.getStackTrace(caught),0);
+                    StringUtil.getLine(ExceptionUtil.getStackTrace(caught), 0);
             }
             
             statusBar_.setError("Error: " + message);    

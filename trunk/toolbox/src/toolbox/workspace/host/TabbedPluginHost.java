@@ -60,7 +60,8 @@ public class TabbedPluginHost extends AbstractPluginHost
     {
         super.startup(props);
         
-        workspace_ = (PluginWorkspace)props.get(PluginWorkspace.PROP_WORKSPACE);
+        workspace_ = 
+            (PluginWorkspace) props.get(PluginWorkspace.PROP_WORKSPACE);
         
         // Bidirectional hash maps
         comp2plugin_ = new DualHashBidiMap();

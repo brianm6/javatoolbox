@@ -130,7 +130,7 @@ public class Dumper
         
         try
         {
-            result = dump(obj, maxDepth, new BasicDumpFormatter() );
+            result = dump(obj, maxDepth, new BasicDumpFormatter());
         }
         catch (RESyntaxException re)
         {
@@ -138,7 +138,7 @@ public class Dumper
         }
         finally
         {
-            
+            ;
         }
         
         return result;
@@ -259,7 +259,7 @@ public class Dumper
                 Class c = (Class) stack.pop();
                 
                 // This is different from reachedMaxDepth!
-                if (depth.length()/4 <= maxDepth_)           
+                if (depth.length() / 4 <= maxDepth_)           
                     dump(c, obj, buffer, depth);
             }
         }
@@ -269,10 +269,11 @@ public class Dumper
     /**
      * Dumps an array or collection class.
      * 
-     * @param obj Object to dump.
+     * @param arrayField Field thas is an array.
+     * @param array Array object.
      * @param buffer Dump buffer.
      * @param depth Recursion depth.
-     * @throws IllegalAccessExceptio.n if attribute/method not accessible.
+     * @throws IllegalAccessException if attribute/method not accessible.
      */
     protected void dump(
         Field arrayField, 
@@ -285,12 +286,13 @@ public class Dumper
         
         // Iterator over array, dumping the value at each index
         
-        for (int i=0; i<array.length; i++)
+        for (int i = 0; i < array.length; i++)
         {
             buffer.append(makeBranch(depth));
                         
             buffer.append(
-                formatter_.formatFieldName(arrayField.getName()) + "["+i+"]");
+                formatter_.formatFieldName(arrayField.getName()) + 
+                "[" + i + "]");
                 
             buffer.append(" = ");
             buffer.append(makePresentable(array[i]));
@@ -339,7 +341,7 @@ public class Dumper
     
                 // Update cache            
                 if ((value != null) && (!cache_.contains(value)))
-                    cache_.put(value , field );
+                    cache_.put(value , field);
     
                 buffer.append(makeBranch(depth));
                 buffer.append(formatter_.formatFieldName(field.getName()));
@@ -398,12 +400,12 @@ public class Dumper
      * Determines if we're reached the maxnumber of levels specified to
      * traverse down the object hierarchy.
      * 
-     * @param Current indentation string (or depth).
+     * @param depth Current indentation string (or depth).
      * @return True if we should not go down any deeper, false otherwise.
      */
     protected boolean reachedMaxDepth(String depth)
     {
-        return !((depth + BAR).length()/4 < maxDepth_);        
+        return !((depth + BAR).length() / 4 < maxDepth_);        
     }
 
     
@@ -479,7 +481,7 @@ public class Dumper
                 result = toString.substring(0, toString.indexOf("\n"));
                 
                 if (result.length() > MAX_PRESENTABLE_LENGTH)
-                    result = result.substring(0, MAX_PRESENTABLE_LENGTH-3) + 
+                    result = result.substring(0, MAX_PRESENTABLE_LENGTH - 3) + 
                         "...";
                 
             }
@@ -492,7 +494,7 @@ public class Dumper
                 result = toString;
                 
                 if (result.length() > MAX_PRESENTABLE_LENGTH)
-                    result = result.substring(0, MAX_PRESENTABLE_LENGTH-3) + 
+                    result = result.substring(0, MAX_PRESENTABLE_LENGTH - 3) + 
                         "...";
             }
         }
@@ -549,8 +551,8 @@ public class Dumper
          */
         public int compare(Object o1, Object o2)
         {
-            String name1 = ((Field)o1).getName();
-            String name2 = ((Field)o2).getName();
+            String name1 = ((Field) o1).getName();
+            String name2 = ((Field) o2).getName();
             return name1.compareTo(name2);
         }
     }

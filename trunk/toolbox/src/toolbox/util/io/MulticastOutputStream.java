@@ -36,7 +36,7 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Creates a MulticastOutputStream.
      * 
-     * @param out Stream to add to the multicast group
+     * @param out Stream to add to the multicast group.
      */
     public MulticastOutputStream(OutputStream out)
     {
@@ -51,7 +51,7 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Adds a stream to the multicast group.
      * 
-     * @param out Stream to add
+     * @param out Stream to add.
      */
     public synchronized void addStream(OutputStream out)
     {
@@ -63,7 +63,7 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Removes a stream from the multicast group.
      * 
-     * @param out Stream to remove
+     * @param out Stream to remove.
      */
     public synchronized void removeStream(OutputStream out)
     {
@@ -77,33 +77,33 @@ public class MulticastOutputStream extends OutputStream
     /**
      * Writes integer to each stream in the multicast group.
      * 
-     * @param b Integer to write
-     * @throws IOException on I/O error
+     * @param b Integer to write.
+     * @throws IOException on I/O error.
      */
     public synchronized void write(int b) throws IOException
     {
-        for (int i=0; i<streams_.length; streams_[i++].write(b));
+        for (int i = 0; i < streams_.length; streams_[i++].write(b));
     }
 
     
     /**
      * Flushes all streams in the multicast group.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public synchronized void flush() throws IOException
     {
-        for (int i=0; i<streams_.length; streams_[i++].flush());
+        for (int i = 0; i < streams_.length; streams_[i++].flush());
     }
 
     
     /**
      * Closes all streams in the multicast group.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     public synchronized void close() throws IOException
     {
-        for (int i=0; i<streams_.length; streams_[i++].close());        
+        for (int i = 0; i < streams_.length; streams_[i++].close());        
     }
 }

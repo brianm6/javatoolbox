@@ -30,6 +30,10 @@ import toolbox.util.RollingCounter;
 public class WrappingWriter extends Writer 
     implements RollingCounter.IRollingCounterListener
 {
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Default width to wrap at. 
      */
@@ -50,6 +54,10 @@ public class WrappingWriter extends Writer
      */
     public static final String DEFAULT_NEWLINE = "\n";
 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Delegate writer.
      */
@@ -93,7 +101,7 @@ public class WrappingWriter extends Writer
      * Creates a wrapping writer with default with of 
      * <code>DEFAULT_WIDTH</code>.
      * 
-     * @param writer Writer to decorate
+     * @param writer Writer to decorate.
      */ 
     public WrappingWriter(Writer writer)
     {
@@ -105,8 +113,8 @@ public class WrappingWriter extends Writer
      * Creates a wrapping writer with the given width and no prefix/suffix
      * decorators.
      * 
-     * @param writer Writer to decorate
-     * @param width Number of characters after which a line will be wrapped
+     * @param writer Writer to decorate.
+     * @param width Number of characters after which a line will be wrapped.
      */ 
     public WrappingWriter(Writer writer, int width)
     {
@@ -117,12 +125,16 @@ public class WrappingWriter extends Writer
     /**
      * Creates a wrapping writer.
      * 
-     * @param writer Writer to decorate
-     * @param width Number of characters after which a line will be wrapped
-     * @param prefix Decorator prepended to beginning of each line
-     * @param suffix Decorator appended to the end of each line
+     * @param writer Writer to decorate.
+     * @param width Number of characters after which a line will be wrapped.
+     * @param prefix Decorator prepended to beginning of each line.
+     * @param suffix Decorator appended to the end of each line.
      */ 
-    public WrappingWriter(Writer writer, int width, String prefix,String suffix)
+    public WrappingWriter(
+        Writer writer,
+        int width,
+        String prefix,
+        String suffix)
     {
         writer_ = writer;
         prefix_ = prefix;
@@ -146,14 +158,14 @@ public class WrappingWriter extends Writer
     /**
      * Write a portion of an array of characters.
      *
-     * @param cbuf Array of characters
-     * @param off Offset from which to start writing characters
-     * @param len Number of characters to write
-     * @throws IOException if an I/O error occurs
+     * @param cbuf Array of characters.
+     * @param off Offset from which to start writing characters.
+     * @param len Number of characters to write.
+     * @throws IOException if an I/O error occurs.
      */
     public void write(char cbuf[], int off, int len) throws IOException
     {
-        for (int i=off; i<off+len; i++)
+        for (int i = off; i < off + len; i++)
         {
             // Add prefix before writing very first char to stream
             if (first_)
@@ -163,7 +175,7 @@ public class WrappingWriter extends Writer
             }
 
             // If were're on the verge of a new line, wrap
-            if(stagger_)
+            if (stagger_)
             {
                 writer_.write(DEFAULT_NEWLINE);
                 writer_.write(prefix_);
@@ -196,7 +208,7 @@ public class WrappingWriter extends Writer
      * further write() or flush() invocations will cause an IOException to be
      * thrown.  Closing a previously-closed stream, however, has no effect.
      *
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an I/O error occurs.
      */
     public void close() throws IOException
     {
@@ -214,7 +226,7 @@ public class WrappingWriter extends Writer
     /**
      * Counter has rolled back to the beginning of the range.
      * 
-     * @param rc Counter that was rolled
+     * @param rc Counter that was rolled.
      */
     public void afterRoll(RollingCounter rc)
     {
@@ -225,7 +237,7 @@ public class WrappingWriter extends Writer
     /**
      * Counter is about to roll to the beginning of the range.
      * 
-     * @param rc Counter being rolled
+     * @param rc Counter being rolled.
      */
     public void beforeRoll(RollingCounter rc)
     {
@@ -233,7 +245,7 @@ public class WrappingWriter extends Writer
         {
             writer_.write(suffix_);
         } 
-        catch(IOException e) 
+        catch (IOException e) 
         {
             ;   // Ignore
         }

@@ -204,7 +204,7 @@ public class FileComparatorTest extends TestCase
         
         FileUtil.setFileContents(fileA_, "this_file_should_match", false);
         FileUtil.setFileContents(fileB_, "this_file_should_match", false);
-        FileUtil.setFileContents(fileC_, "yabba dabba doo,i see you!",false);
+        FileUtil.setFileContents(fileC_, "yabba dabba doo,i see you!", false);
         FileUtil.setFileContents(fileD_, "abcdefgijklmnopq", false);
         
         FileComparator fc = 

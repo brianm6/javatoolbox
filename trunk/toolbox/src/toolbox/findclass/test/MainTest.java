@@ -12,8 +12,7 @@ import toolbox.findclass.Main;
  */
 public class MainTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(MainTest.class);
+    private static final Logger logger_ = Logger.getLogger(MainTest.class);
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -22,7 +21,7 @@ public class MainTest extends TestCase
     /**
      * Test entry point.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -36,13 +35,13 @@ public class MainTest extends TestCase
     /**
      * Test finding a class in a jarfile.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testFindInJar() throws Exception
     {
         logger_.info("Running testFindInJar...");
         
-        Main.main(new String[] {  "filter$" } );
+        Main.main(new String[] {"filter$"});
     }
     
     
@@ -53,6 +52,6 @@ public class MainTest extends TestCase
     {
         logger_.info("Running testPrintUsage...");
         
-        Main.main(new String[] { "-badflag"});
+        Main.main(new String[] {"-badflag"});
     }
 }

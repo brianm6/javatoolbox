@@ -405,42 +405,84 @@ public class SQLFormatter
     // Private
     //--------------------------------------------------------------------------
     
+    /**
+     * Returns true if the string is a name, false otherwise.
+     * 
+     * @param s SQL name.
+     * @return boolean
+     */
     private static boolean isName(String s)
     {
         return !isIn(s, MAJOR_WORDS) && !isIn(s, MINOR_WORDS);
     }
 
     
+    /**
+     * Returns true if the string is a SQL function, false otherwise.
+     * 
+     * @param s SQL function. 
+     * @return boolean
+     */
     private static boolean isFunction(String s)
     {
         return isIn(s, FUNCTION_WORDS);
     }
     
     
+    /**
+     * Returns true if the string is a minor SQL keyword.
+     * 
+     * @param s SQL keyword.
+     * @return boolean
+     */
     private static boolean isMinor(String s)
     {
         return isIn(s, MINOR_WORDS);
     }
 
     
+    /**
+     * Returns true if token s is in string s1.
+     * 
+     * @param s Token to search for.
+     * @param s1 String with embedded tokens.
+     * @return boolean
+     */
     private static boolean isIn(String s, String s1)
     {
         return s1.indexOf("|" + s.toUpperCase() + "|") > -1;
     }
 
     
+    /**
+     * Returns true if the string is a subselect.
+     * 
+     * @param s SQL subselect.
+     * @return boolean
+     */
     private static boolean isSubSelect(String s)
     {
         return isIn(s, SUB_SELECT);
     }
 
     
+    /**
+     * Sets the capitalization of minor sql keywords.
+     * 
+     * @param flag True to capitalize, false otherwise.
+     */
     public void setCapitalizeMinor(boolean flag)
     {
         capMinor_ = flag;
     }
 
     
+    /**
+     * Returns true if the string is a major SQL keyword.
+     * 
+     * @param s SQL keyword.
+     * @return boolean
+     */
     private static boolean isMajor(String s)
     {
         return isIn(s, MAJOR_WORDS);

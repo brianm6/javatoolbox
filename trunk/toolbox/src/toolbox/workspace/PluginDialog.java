@@ -45,7 +45,7 @@ import toolbox.util.ui.list.JSmartList;
  */
 public class PluginDialog extends JDialog
 {
-    public static final Logger logger_ = Logger.getLogger(PluginDialog.class);
+    private static final Logger logger_ = Logger.getLogger(PluginDialog.class);
     
     //--------------------------------------------------------------------------
     // Fields
@@ -114,10 +114,10 @@ public class PluginDialog extends JDialog
      */
     protected void buildView()
     {
-        Dimension prefSize = new Dimension(150,200);
+        Dimension prefSize = new Dimension(150, 200);
         
         Border border = new CompoundBorder(
-            BorderFactory.createEmptyBorder(0,10,10,10),                
+            BorderFactory.createEmptyBorder(0, 10, 10, 10),                
             BorderFactory.createEtchedBorder());            
                 
         // List of active plugins
@@ -150,7 +150,7 @@ public class PluginDialog extends JDialog
         gbc.weightx    = 1;
         gbc.weighty    = 1;
         gbc.anchor     = GridBagConstraints.SOUTH;
-        gbc.insets     = new Insets(5,0,5,0);
+        gbc.insets     = new Insets(5, 0, 5, 0);
         midButtonPanel.add(
             addButton_ = new JSmartButton(new AddNewPluginAction()), gbc);
         
@@ -167,7 +167,7 @@ public class PluginDialog extends JDialog
         gbc.anchor     = GridBagConstraints.SOUTH;
         gbc.gridheight = 1;
         gbc.gridwidth  = 1;
-        gbc.insets     = new Insets(0,0,0,0);
+        gbc.insets     = new Insets(0, 0, 0, 0);
         JLabel inactiveLabel = new JSmartLabel("Inactive Plugins");
         inactiveLabel.setHorizontalAlignment(SwingConstants.CENTER);
         inactiveLabel.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -175,7 +175,7 @@ public class PluginDialog extends JDialog
         
         gbc.gridx  = 1; 
         gbc.gridy  = 2;
-        gbc.insets = new Insets(5,0,5,0);            
+        gbc.insets = new Insets(5, 0, 5, 0);            
         gbc.anchor = GridBagConstraints.CENTER;            
         listPanel.add(inactiveScroller, gbc);  
         
@@ -188,7 +188,7 @@ public class PluginDialog extends JDialog
         gbc.gridy      = 1;
         gbc.weightx    = 1.0;        
         gbc.anchor     = GridBagConstraints.CENTER;
-        gbc.insets     = new Insets(0,0,0,0);            
+        gbc.insets     = new Insets(0, 0, 0, 0);            
         JLabel activeLabel = new JSmartLabel("Active Plugins");
         activeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         activeLabel.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -197,7 +197,7 @@ public class PluginDialog extends JDialog
         gbc.gridx  = 3;
         gbc.gridy  = 2;
         gbc.anchor = GridBagConstraints.NORTH;                        
-        gbc.insets = new Insets(5,0,5,0);            
+        gbc.insets = new Insets(5, 0, 5, 0);            
         listPanel.add(activeScroller, gbc);
         
         // Find/Close Buttons on bottom
@@ -220,7 +220,7 @@ public class PluginDialog extends JDialog
     {
         activeModel_.clear();
         
-        for (int i = 0; i<workspace_.getPluginHost().getPlugins().length; i++)
+        for (int i = 0; i < workspace_.getPluginHost().getPlugins().length; i++)
         {
             IPlugin plugin = workspace_.getPluginHost().getPlugins()[i];
             PluginMeta meta = new PluginMeta(plugin);
@@ -260,7 +260,7 @@ public class PluginDialog extends JDialog
 
         logger_.debug("Results: " + candidatePlugins.length);
 
-        for (int i=0; i<candidatePlugins.length; i++)
+        for (int i = 0; i < candidatePlugins.length; i++)
         {
             String clazz     = candidatePlugins[i].getClassFQN();
             String clazzOnly = ClassUtil.stripPackage(clazz);
@@ -270,11 +270,14 @@ public class PluginDialog extends JDialog
             boolean skip = false;
                 
             // Exclude the plugins that are already loaded                
-            for (int j=0; j<workspace_.getPluginHost().getPlugins().length; j++)
+            for (int j = 0; j < workspace_.getPluginHost().getPlugins().length; 
+                 j++)
             {
-                String pluginClass = 
-                    workspace_.getPluginHost().
-                        getPlugins()[j].getClass().getName();
+                String pluginClass =
+                    workspace_.getPluginHost()
+                              .getPlugins()[j]
+                              .getClass()
+                              .getName();
                 
                 if (pluginClass.equals(clazz))
                 {
@@ -284,7 +287,7 @@ public class PluginDialog extends JDialog
             }
             
             // Exclude plugins that already occur in the inactive list
-            for (int j=0, n=legitPlugins.size(); j<n; j++)
+            for (int j = 0, n = legitPlugins.size(); j < n; j++)
             {
                 PluginMeta pm = (PluginMeta) legitPlugins.get(j);
                 
@@ -331,7 +334,7 @@ public class PluginDialog extends JDialog
     
         Collections.sort(legitPlugins, new ObjectComparator("name"));
 
-        for (int i=0; i<legitPlugins.size(); i++)
+        for (int i = 0; i < legitPlugins.size(); i++)
             inactiveModel_.addElement(legitPlugins.get(i));
         
         removeButton_.setEnabled(activeModel_.size() > 0);
@@ -350,16 +353,33 @@ public class PluginDialog extends JDialog
         private String className_;
         private IPlugin plugin_;
 
+        /**
+         * Creates a PluginMeta.
+         * 
+         * @param pluginClass Plugin class name.
+         */
         public PluginMeta(String pluginClass)
         {
             className_ = pluginClass;
         }
         
+        
+        /**
+         * Creates a PluginMeta.
+         * 
+         * @param plugin Plugin class.
+         */
         public PluginMeta(IPlugin plugin)
         {
             plugin_ = plugin;
         }
         
+        
+        /**
+         * Returns the plugin class name.
+         * 
+         * @return String
+         */
         public String getClassName()
         {
             if (className_ == null && plugin_ != null)
@@ -368,11 +388,23 @@ public class PluginDialog extends JDialog
             return className_;
         }
         
+        
+        /**
+         * Returns the plugin friendly name.
+         * 
+         * @return String
+         */
         public String getName()
         {
             return getPlugin().getPluginName();    
         }
         
+        
+        /**
+         * Returns the plugin instance.
+         * 
+         * @return IPlugin.
+         */
         public IPlugin getPlugin()
         {
             try
@@ -396,7 +428,11 @@ public class PluginDialog extends JDialog
             
             return plugin_;
         }
+    
         
+        /**
+         * @see java.lang.Object#toString()
+         */
         public String toString()
         {
             return getName();
@@ -404,7 +440,7 @@ public class PluginDialog extends JDialog
     }
     
     //--------------------------------------------------------------------------
-    // Actions
+    // AddNewPluginAction
     //--------------------------------------------------------------------------
     
     /**
@@ -413,26 +449,34 @@ public class PluginDialog extends JDialog
      */
     class AddNewPluginAction extends AbstractAction
     {
+        /**
+         * Creates a AddNewPluginAction. 
+         */
         AddNewPluginAction()
         {
             super("Add Plugin >>");
             putValue(Action.MNEMONIC_KEY, new Integer('A'));                
         }
            
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             int sizeBefore = inactiveModel_.size();
             int[] selectedIdx = inactiveList_.getSelectedIndices();
             Object[] selected = inactiveList_.getSelectedValues();
             
-            for (int i=0; i<selected.length; i++)
+            for (int i = 0; i < selected.length; i++)
             {
                 try
                 {
                     workspace_.registerPlugin(
-                        ((PluginMeta)selected[i]).getClassName());
+                        ((PluginMeta) selected[i]).getClassName());
                         
-                    inactiveModel_.removeElement(selected[i]);                        
+                    inactiveModel_.removeElement(selected[i]);
                 }
                 catch (Exception ex)
                 {
@@ -443,17 +487,17 @@ public class PluginDialog extends JDialog
             populateActive();
 
             // Inactive list selection
-            if (selectedIdx[selected.length-1] == sizeBefore - 1)
-                inactiveList_.setSelectedIndex(sizeBefore - selected.length -1);
+            if (selectedIdx[selected.length - 1] == sizeBefore - 1)
+                inactiveList_.setSelectedIndex(
+                    sizeBefore - selected.length - 1);
             else
                 inactiveList_.setSelectedIndex(selectedIdx[0]);
             
             // Active list selection
             int[] selectedActive = new int[selected.length];
             
-            for (int i=0, n = activeModel_.size() - selected.length; 
-                i<selected.length; 
-                    i++, n++)
+            for (int i = 0, n = activeModel_.size() - selected.length; 
+                i < selected.length; i++, n++)
             {
                 selectedActive[i] = n;                
             }
@@ -472,12 +516,20 @@ public class PluginDialog extends JDialog
      */
     class RemovePluginAction extends AbstractAction
     {
+        /**
+         * Creates a RemovePluginAction. 
+         */
         RemovePluginAction()
         {
             super("<< Remove Plugin");
             putValue(Action.MNEMONIC_KEY, new Integer('R'));
         }
            
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             int sizeBefore = activeModel_.size();
@@ -487,12 +539,12 @@ public class PluginDialog extends JDialog
             try
             {
                 // Deregister selected plugins
-                for (int i=0; i<selected.length; i++)
+                for (int i = 0; i < selected.length; i++)
                 {
                     workspace_.deregisterPlugin(
-                        ((PluginMeta)selected[i]).getClassName(), true);
+                        ((PluginMeta) selected[i]).getClassName(), true);
                         
-                    inactiveModel_.addElement(selected[i]);                        
+                    inactiveModel_.addElement(selected[i]);
                 }
             }
             catch (Exception ex)
@@ -503,7 +555,7 @@ public class PluginDialog extends JDialog
             populateActive();
 
             // Active list selection
-            if (selectedIdx[selected.length-1] == sizeBefore-1)
+            if (selectedIdx[selected.length - 1] == sizeBefore - 1)
                 activeList_.setSelectedIndex(sizeBefore - selected.length - 1);
             else
                 activeList_.setSelectedIndex(selectedIdx[0]);
@@ -511,9 +563,8 @@ public class PluginDialog extends JDialog
             // Inactive list selection
             int[] selectedInactive = new int[selected.length];
             
-            for (int i=0, n = inactiveModel_.size() - selected.length; 
-                i<selected.length; 
-                    i++, n++)
+            for (int i = 0, n = inactiveModel_.size() - selected.length; 
+                i < selected.length; i++, n++)
             {
                 selectedInactive[i] = n;                
             }
@@ -531,12 +582,20 @@ public class PluginDialog extends JDialog
      */
     class CloseAction extends AbstractAction
     {
+        /**
+         * Creates a CloseAction. 
+         */
         CloseAction()
         {
             super("Close");
             putValue(Action.MNEMONIC_KEY, new Integer('C'));
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             dispose();
@@ -552,6 +611,9 @@ public class PluginDialog extends JDialog
      */
     class FindPluginsAction extends WorkspaceAction
     {
+        /**
+         * Creates a FindPluginsAction. 
+         */
         FindPluginsAction()
         {
             super("Find Plugins", 
@@ -562,6 +624,11 @@ public class PluginDialog extends JDialog
             putValue(Action.MNEMONIC_KEY, new Integer('F')); 
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e)
         {
             populateInactive(); 
@@ -591,6 +658,7 @@ public class PluginDialog extends JDialog
             putValue(Action.MNEMONIC_KEY, new Integer('L')); 
         }
 
+        
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
          *      java.awt.event.ActionEvent)
@@ -630,12 +698,18 @@ public class PluginDialog extends JDialog
                 "toolbox.plugin.uidefaults.UIDefaultsPlugin"));
 
             // Exclude the plugins that are already loaded                
-            for (int j=0; j<workspace_.getPluginHost().getPlugins().length; j++)     
+            for (int j = 0;
+                j < workspace_.getPluginHost().getPlugins().length;
+                j++)     
             {
-                String pluginClass = workspace_.getPluginHost().
-                    getPlugins()[j].getClass().getName();
+                String pluginClass =
+                    workspace_
+                        .getPluginHost()
+                        .getPlugins()[j]
+                        .getClass()
+                        .getName();
 
-                for (int i=0; i<legitPlugins.size(); i++)
+                for (int i = 0; i < legitPlugins.size(); i++)
                 {
                     PluginMeta meta = (PluginMeta) legitPlugins.get(i);
                     if (meta.getClassName().equals(pluginClass))
@@ -645,7 +719,7 @@ public class PluginDialog extends JDialog
             
             Collections.sort(legitPlugins, new ObjectComparator("name"));
 
-            for (int i=0; i<legitPlugins.size(); i++)
+            for (int i = 0; i < legitPlugins.size(); i++)
                 inactiveModel_.addElement(legitPlugins.get(i));
         
             removeButton_.setEnabled(activeModel_.size() > 0);

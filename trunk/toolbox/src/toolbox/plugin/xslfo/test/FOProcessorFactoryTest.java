@@ -84,7 +84,7 @@ public class FOProcessorFactoryTest extends TestCase
         }
         catch (IllegalArgumentException iae)
         {
-            // Passed.
+            ; // Passed.
         }
     }
 }

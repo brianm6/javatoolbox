@@ -73,22 +73,27 @@ public class SmartActionTest extends UITestCase
 
     /**
      * Builds the GUI.
+     * 
+     * @return Button panel.
      */
     protected JPanel buildButtonPanel()
     {
-        JPanel p = new JPanel(new GridLayout(4,4));
+        JPanel p = new JPanel(new GridLayout(4, 4));
         
         p.add(new JSmartButton(new SyncTimedNoProbsAction(
             "Run synchronous timed action with no problems", false, p)));
             
         p.add(new JSmartButton(new SyncTimedThrowingAction(
-            "Run synchronous timed action that throws an exception", false,p)));
+            "Run synchronous timed action that throws an exception", 
+            false, p)));
             
         p.add(new JSmartButton(new AsyncTimedNoProbsAction(
             "Run asynchronous timed action with no problems", true, p)));
             
         p.add(new JSmartButton(new AsyncTimedThrowingAction(
-            "Run asynchronous timed action that throws an exception", true,p)));
+            "Run asynchronous timed action that throws an exception", true, 
+            p)));
+        
         return p;
     }
     
@@ -96,14 +101,29 @@ public class SmartActionTest extends UITestCase
     // SyncTimedNoProbsAction
     //--------------------------------------------------------------------------
     
+    /**
+     * Synchronous action with no errors when running.
+     */
     class SyncTimedNoProbsAction extends SmartAction
     {
+        /**
+         * Creates a SyncTimedNoProbsAction.
+         * 
+         * @param name Text label.
+         * @param async True to run the action asynchronously.
+         * @param scope Component to set busy cursor for. 
+         */
         public SyncTimedNoProbsAction(
             String name, boolean async, JComponent scope)
         {
             super(name, true, async, scope);
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e)
         {
             logger_.info("Running synchronous timed action with no problems");
@@ -115,14 +135,29 @@ public class SmartActionTest extends UITestCase
     // SyncTimedThrowingAction 
     //--------------------------------------------------------------------------
     
+    /**
+     * Synchronous timed action that throws an exception.
+     */
     class SyncTimedThrowingAction extends SmartAction
     {
+        /**
+         * Creates a SyncTimedThrowingAction.
+         * 
+         * @param name Text label.
+         * @param async True to run the action asynchronously.
+         * @param scope Component to set busy cursor for. 
+         */
         public SyncTimedThrowingAction(
             String name, boolean async, JComponent scope)
         {
             super(name, true, async, scope);
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e)
         {
             logger_.info(
@@ -137,14 +172,31 @@ public class SmartActionTest extends UITestCase
     // AsyncTimedNoProbsAction 
     //--------------------------------------------------------------------------
     
+    /**
+     * Asynchronous timed action with no problems.
+     */
     class AsyncTimedNoProbsAction extends SmartAction
     {
+        /**
+         * Creates an AsyncTimedNoProbsAction.
+         * 
+         * @param name Text label.
+         * @param async True to run the action asynchronously.
+         * @param scope Component to set busy cursor for. 
+         */
         public AsyncTimedNoProbsAction(
-            String name, boolean async, JComponent scope)
+            String name,
+            boolean async,
+            JComponent scope)
         {
             super(name, true, async, scope);
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e)
         {
             logger_.info("Running asynchronous timed action with no problems");
@@ -155,15 +207,32 @@ public class SmartActionTest extends UITestCase
     //--------------------------------------------------------------------------
     // AsyncTimedThrowingAction 
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Asynchronous timed action that throws an exception.
+     */
     class AsyncTimedThrowingAction extends SmartAction
     {
+        /**
+         * Creates an AsyncTimedThrowingAction.
+         * 
+         * @param name Text label.
+         * @param async True to run the action asynchronously.
+         * @param scope Component to set busy cursor for. 
+         */
         public AsyncTimedThrowingAction(
-            String name, boolean async, JComponent scope)
+            String name,
+            boolean async,
+            JComponent scope)
         {
             super(name, true, async, scope);
         }
 
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e)
         {
             logger_.info(

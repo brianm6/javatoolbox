@@ -144,8 +144,9 @@ public class FileComparator implements Comparator
     /**
      * Does a byte by byte comparison of the two files.
      * 
-     * @param f1 File object 1
-     * @param f2 File object 2
+     * @param f1 File object 1.
+     * @param f2 File object 2.
+     * @return int
      */
     protected int compareByContents(File f1, File f2)
     {

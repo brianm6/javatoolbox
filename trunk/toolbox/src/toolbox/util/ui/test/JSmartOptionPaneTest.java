@@ -98,8 +98,13 @@ public class JSmartOptionPaneTest extends UITestCase
         logger_.info("Running testShowDetailedMessageDialogError...");
         
         LookAndFeelUtil.setMotifLAF();
+        
         JSmartOptionPane.showDetailedMessageDialog(
-            parent_, MSG_TEXT, MSG_DETAIL, MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            parent_,
+            MSG_TEXT,
+            MSG_DETAIL,
+            MSG_TITLE,
+            JOptionPane.ERROR_MESSAGE);
     }
     
     
@@ -143,7 +148,7 @@ public class JSmartOptionPaneTest extends UITestCase
         
         StringBuffer sb = new StringBuffer();
         
-        for (int i=0; i<20000; i++)
+        for (int i = 0; i < 20000; i++)
             sb.append(RandomUtil.nextUpperAlpha());
             
         String msg = StringUtil.wrap(sb.toString(), 50, true);

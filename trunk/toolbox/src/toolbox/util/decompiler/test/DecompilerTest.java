@@ -70,7 +70,7 @@ public class DecompilerTest extends TestCase
     {
         logger_.info("Running testDecompileFile...");
         
-        for (int i=0; i<decompilers_.length; i++)
+        for (int i = 0; i < decompilers_.length; i++)
         {
             String tmpClass = null;
             
@@ -111,13 +111,13 @@ public class DecompilerTest extends TestCase
     {
         logger_.info("Running testDecompileClassnameClasspath...");
         
-        for (int i=0; i<decompilers_.length; i++)
+        for (int i = 0; i < decompilers_.length; i++)
         {
             try
             {
-                String source = decompilers_[i].decompile(
-                                    "java.lang.Object", 
-                                    ClassUtil.getClasspath());
+                String source = 
+                    decompilers_[i].decompile(
+                        "java.lang.Object", ClassUtil.getClasspath());
                 
                 logger_.debug(StringUtil.addBars(source));
             }

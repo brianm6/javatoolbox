@@ -14,6 +14,10 @@ import toolbox.util.ArrayUtil;
  */
 public class EventOutputStream extends FilterOutputStream
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Array of registered listeners. 
      */
@@ -51,7 +55,7 @@ public class EventOutputStream extends FilterOutputStream
     /**
      * Creates an EventOutputStream.
      * 
-     * @param out OutputStream to chain 
+     * @param out OutputStream to chain. 
      */
     public EventOutputStream(OutputStream out)
     {
@@ -63,8 +67,8 @@ public class EventOutputStream extends FilterOutputStream
      * Creates an EventOutputStream with the given name outputstream to
      * decorate.
      * 
-     * @param name Stream name
-     * @param out OutputStream to chain 
+     * @param name Stream name.
+     * @param out OutputStream to chain. 
      */
     public EventOutputStream(String name, OutputStream out)
     {
@@ -81,8 +85,8 @@ public class EventOutputStream extends FilterOutputStream
     /**
      * Writes byte to stream keeping track of the count.
      * 
-     * @param b Byte to write 
-     * @throws IOException on I/O error
+     * @param b Byte to write. 
+     * @throws IOException on I/O error.
      */
     public void write(int b) throws IOException
     {
@@ -122,7 +126,7 @@ public class EventOutputStream extends FilterOutputStream
     /**
      * Adds a Listener to the list of registered stream listeners.
      * 
-     * @param listener Listener to register
+     * @param listener Listener to register.
      */
     public void addListener(Listener listener)
     {  
@@ -140,7 +144,7 @@ public class EventOutputStream extends FilterOutputStream
         {
             case 0 : return;
             case 1 : listeners_[0].streamClosed(this); return;
-            default: for (int i=0, n=listeners_.length; i<n; i++)
+            default: for (int i = 0, n = listeners_.length; i < n; i++)
                         listeners_[i].streamClosed(this);
         }
     }
@@ -155,7 +159,7 @@ public class EventOutputStream extends FilterOutputStream
         {
             case 0 : return;
             case 1 : listeners_[0].streamFlushed(this); return;
-            default: for (int i=0, n=listeners_.length; i<n; i++)
+            default: for (int i = 0, n = listeners_.length; i < n; i++)
                         listeners_[i].streamFlushed(this);
         }
     }
@@ -164,7 +168,7 @@ public class EventOutputStream extends FilterOutputStream
     /** 
      * Fires notification that a byte was written to the stream.
      * 
-     * @param b Byte written to stream
+     * @param b Byte written to stream.
      */
     protected void fireByteWritten(int b)
     {
@@ -230,7 +234,7 @@ public class EventOutputStream extends FilterOutputStream
         {
             case 0 : return;
             case 1 : listeners_[0].byteWritten(this, b); return;
-            default: for (int i=0, n=listeners_.length; i<n; i++)
+            default: for (int i = 0, n = listeners_.length; i < n; i++)
                         listeners_[i].byteWritten(this, b);
         }
     }
@@ -239,7 +243,7 @@ public class EventOutputStream extends FilterOutputStream
     /** 
      * Fires notification of stream throughput per sample period.
      * 
-     * @param throughput Number of bytes written per sample period
+     * @param throughput Number of bytes written per sample period.
      */
     protected void fireStreamThroughput(float throughput)
     {
@@ -248,7 +252,7 @@ public class EventOutputStream extends FilterOutputStream
             case 0 : return;
             case 1 : listeners_[0].streamThroughput(this, throughput); 
                      return;
-            default: for (int i=0, n=listeners_.length; i<n; i++)
+            default: for (int i = 0, n = listeners_.length; i < n; i++)
                         listeners_[i].streamThroughput(this, throughput);
         }
     }
@@ -320,37 +324,36 @@ public class EventOutputStream extends FilterOutputStream
         /**
          * Notification that the stream has been closed.
          * 
-         * @param stream Stream that was closed
+         * @param stream Stream that was closed.
          */
-        public void streamClosed(EventOutputStream stream);
+        void streamClosed(EventOutputStream stream);
         
         
         /**
          * Notification that the stream was flushed.
          * 
-         * @param stream Stream that was flushed
+         * @param stream Stream that was flushed.
          */
-        public void streamFlushed(EventOutputStream stream);
+        void streamFlushed(EventOutputStream stream);
         
         
         /**
          * Notification that data was written to the stream.
          * 
-         * @param stream Stream data was written to
-         * @param b Byte written to the stream
+         * @param stream Stream data was written to.
+         * @param b Byte written to the stream.
          */
-        public void byteWritten(EventOutputStream stream, int b);
+        void byteWritten(EventOutputStream stream, int b);
         
         
         /**
          * Notification of the number of bytes transfered through the stream
          * over the last sample period.
          * 
-         * @param stream Stream being monitored for throughput
-         * @param bytesPerPeriod Number of bytes transferred over sample period
+         * @param stream Stream being monitored for throughput.
+         * @param bytesPerPeriod Number of bytes transferred over sample period.
          */
-        public void streamThroughput(EventOutputStream stream, 
-            float bytesPerPeriod);
+        void streamThroughput(EventOutputStream stream, float bytesPerPeriod);
     }
     
     //--------------------------------------------------------------------------
@@ -363,12 +366,15 @@ public class EventOutputStream extends FilterOutputStream
      */
     class ThroughputTask extends TimerTask
     {
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             int current = getCount();
             
             fireStreamThroughput(
-                (current - lastSample_)/(samplePeriod_/1000));
+                (current - lastSample_) / (samplePeriod_ / 1000));
                 
             lastSample_ = current;
         }

@@ -41,7 +41,7 @@ import toolbox.workspace.IPlugin;
  */
 public class JUnitPlugin extends JPanel implements IPlugin
 {
-    public static final Logger logger_ = Logger.getLogger(JUnitPlugin.class);
+    private static final Logger logger_ = Logger.getLogger(JUnitPlugin.class);
 
     //--------------------------------------------------------------------------
     // Constants 
@@ -133,7 +133,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
         packageList_.setModel(new DefaultListModel());
         filterModel_.setRegex(filterField_.getText());
         packageList_.setModel(filterModel_);
-        packageList_.scrollRectToVisible(new Rectangle(0,0,0,0));
+        packageList_.scrollRectToVisible(new Rectangle(0, 0, 0, 0));
     }
 
     //--------------------------------------------------------------------------
@@ -240,7 +240,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
             packageList_.setModel(new DefaultListModel());
             packageModel_ = new DefaultListModel();
                         
-            for (int i=0; i<packages.length; i++)
+            for (int i = 0; i < packages.length; i++)
                 packageModel_.addElement(packages[i]);
             
             filterModel_ = new RegexListModelFilter(packageModel_);
@@ -280,7 +280,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
             Object[] selected = packageList_.getSelectedValues();
             PackageTester pt = new PackageTester();
             
-            for(int i=0; i<selected.length; i++)
+            for (int i = 0; i < selected.length; i++)
                 pt.addPackage(selected[i].toString());    
                 
             logger_.info("Running tests on: " + ArrayUtil.toString(selected));

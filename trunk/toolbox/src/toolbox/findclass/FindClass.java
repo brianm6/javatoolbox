@@ -127,16 +127,16 @@ public class FindClass
     /**
      * Finds a class.
      * 
-     * @param classToFind Regular expression for class to find
-     * @param ignoreCase Ignores case in search
-     * @return Array of FindClassResults
-     * @throws IOException on I/O error
-     * @throws RESyntaxException on regular expression error
+     * @param classToFind Regular expression for class to find.
+     * @param ignoreCase Ignores case in search.
+     * @return Array of FindClassResults.
+     * @throws IOException on I/O error.
+     * @throws RESyntaxException on regular expression error.
      */
     public FindClassResult[] findClass(
-            String classToFind, 
-            boolean ignoreCase) 
-            throws RESyntaxException, IOException
+        String classToFind, 
+        boolean ignoreCase) 
+        throws RESyntaxException, IOException
     {
         ignoreCase_  = ignoreCase;
         classToFind_ = classToFind;
@@ -152,7 +152,7 @@ public class FindClass
         String[] targets = (String[]) getSearchTargets().toArray(new String[0]);
 
         // Search each target
-        for (int i=0; i< targets.length; i++) 
+        for (int i = 0; i < targets.length; i++) 
         { 
             if (!isCancelled_)
             {
@@ -346,13 +346,13 @@ public class FindClass
             
             // Process files in the current dir and throw them is the basked
             String[] files = f.list(filter);
-            for (int i=0; i<files.length; i++) 
+            for (int i = 0; i < files.length; i++) 
                 basket.add(startingDir + files[i]);
             
             // Process immediate child directories
             String[] dirs  = f.list(directoryFilter_);
                         
-            for(int i=0; i<dirs.length; i++)
+            for (int i = 0; i < dirs.length; i++)
             {
                 List subBasket = 
                     findFilesRecursively(startingDir + dirs[i], filter);
@@ -430,9 +430,9 @@ public class FindClass
         // Regular expression search
         List classFiles = findFilesRecursively(dirPath, classFileFilter_);
         
-        for(Iterator i = classFiles.iterator(); i.hasNext(); )
+        for (Iterator i = classFiles.iterator(); i.hasNext();)
         {
-            String fileName = (String)i.next();
+            String fileName = (String) i.next();
             String dotted = fileName.replace(File.separatorChar, '.');
             
             String searchTarget = StringUtil.truncate(
@@ -447,7 +447,7 @@ public class FindClass
                 File classFile = new File(fileName);
                 
                 FindClassResult result = 
-                    new FindClassResult( 
+                    new FindClassResult(
                         classToFind_,
                         dirPath,
                         dotted,
@@ -473,7 +473,7 @@ public class FindClass
      */
     protected void fireClassFound(FindClassResult result)
     {
-        for (int i=0; i<findListeners_.length; i++)
+        for (int i = 0; i < findListeners_.length; i++)
             findListeners_[i].classFound(result);
     }
 
@@ -483,7 +483,7 @@ public class FindClass
      */
     protected void fireSearchCompleted()
     {
-        for (int i=0; i<findListeners_.length; i++)
+        for (int i = 0; i < findListeners_.length; i++)
             findListeners_[i].searchCompleted(classToFind_);
     }
 
@@ -495,7 +495,7 @@ public class FindClass
      */
     protected void fireSearchingTarget(String target)
     {
-        for (int i=0; i<findListeners_.length; i++)
+        for (int i = 0; i < findListeners_.length; i++)
             findListeners_[i].searchingTarget(target);
     }
     
@@ -505,7 +505,7 @@ public class FindClass
      */
     protected void fireSearchCancelled()
     {
-        for (int i=0; i<findListeners_.length; i++)
+        for (int i = 0; i < findListeners_.length; i++)
             findListeners_[i].searchCancelled();
     }
  
@@ -517,8 +517,8 @@ public class FindClass
      */   
     public void addSearchListener(FindClassListener listener)
     {
-        findListeners_ = 
-            (FindClassListener[]) ArrayUtil.add(findListeners_, listener);        
+        findListeners_ =
+            (FindClassListener[]) ArrayUtil.add(findListeners_, listener);
     }
     
     
@@ -530,7 +530,7 @@ public class FindClass
     public void removeSearchListener(FindClassListener listener)
     {
         findListeners_ = 
-            (FindClassListener[]) ArrayUtil.remove(findListeners_, listener);        
+            (FindClassListener[]) ArrayUtil.remove(findListeners_, listener);
     }
     
     

@@ -66,16 +66,16 @@ public class MulticastOutputStreamTest extends TestCase
         StringOutputStream[] streams = new StringOutputStream[10];
         MulticastOutputStream mos = new MulticastOutputStream();
                 
-        for(int i=0; i<streams.length; i++)
+        for (int i = 0; i < streams.length; i++)
         {
             streams[i] = new StringOutputStream();
             mos.addStream(streams[i]);
         }
-            
+
         mos.write(testString.getBytes());
         mos.close();
-        
-        for (int i=0; i<streams.length; i++)
+
+        for (int i = 0; i < streams.length; i++)
             assertEquals(testString, streams[i].getBuffer().toString());
     }
 
@@ -94,7 +94,7 @@ public class MulticastOutputStreamTest extends TestCase
         StringOutputStream[] streams = new StringOutputStream[10];
         MulticastOutputStream mos = new MulticastOutputStream();
                 
-        for(int i=0; i<streams.length; i++)
+        for (int i = 0; i < streams.length; i++)
         {
             streams[i] = new StringOutputStream();
             mos.addStream(streams[i]);
@@ -103,7 +103,7 @@ public class MulticastOutputStreamTest extends TestCase
         mos.write(testString.getBytes(), 0, testString.length());
         mos.close();
 
-        for (int i=0; i<streams.length; i++)
+        for (int i = 0; i < streams.length; i++)
         {
             assertEquals(testString, streams[i].getBuffer().toString());
             mos.removeStream(streams[i]);
@@ -123,7 +123,7 @@ public class MulticastOutputStreamTest extends TestCase
         StringOutputStream[] streams = new StringOutputStream[10];
         MulticastOutputStream mos = new MulticastOutputStream();
                 
-        for(int i=0; i<streams.length; i++)
+        for (int i = 0; i < streams.length; i++)
         {
             streams[i] = new StringOutputStream();
             mos.addStream(streams[i]);
@@ -145,7 +145,7 @@ public class MulticastOutputStreamTest extends TestCase
         StringOutputStream[] streams = new StringOutputStream[10];
         MulticastOutputStream mos = new MulticastOutputStream();
                 
-        for(int i=0; i<streams.length; i++)
+        for (int i = 0; i < streams.length; i++)
         {
             streams[i] = new StringOutputStream();
             mos.addStream(streams[i]);
@@ -167,7 +167,7 @@ public class MulticastOutputStreamTest extends TestCase
         StringOutputStream[] streams = new StringOutputStream[10];
         MulticastOutputStream mos = new MulticastOutputStream();
                 
-        for(int i=0; i<streams.length; i++)
+        for (int i = 0; i < streams.length; i++)
         {
             streams[i] = new StringOutputStream();
             mos.addStream(streams[i]);

@@ -5,7 +5,7 @@ import toolbox.util.ArrayUtil;
 /**
  * Factory class for creating Decompilers.
  */
-public class DecompilerFactory
+public final class DecompilerFactory
 {
     //--------------------------------------------------------------------------
     // Constants
@@ -38,9 +38,9 @@ public class DecompilerFactory
     {
         decompilers_ = new String[] 
         {
-          DECOMPILER_JODE,
-          DECOMPILER_JAD,
-          DECOMPILER_JREVERSEPRO
+            DECOMPILER_JODE,
+            DECOMPILER_JAD,
+            DECOMPILER_JREVERSEPRO
         };
     }
     
@@ -122,7 +122,7 @@ public class DecompilerFactory
     {
         Decompiler d[] = new Decompiler[decompilers_.length];
         
-        for (int i=0; i<decompilers_.length; i++)
+        for (int i = 0; i < decompilers_.length; i++)
             d[i] = create(decompilers_[i]);
             
         return d;

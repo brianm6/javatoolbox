@@ -26,7 +26,7 @@ public class JConveyorPopupMenuTest extends UITestCase
     private static final Logger logger_ =
         Logger.getLogger(JConveyorPopupMenuTest.class);
 
-    static int cnt = 1;
+    private static int cnt = 1;
     private JPopupMenu popupMenu_;
     
     //--------------------------------------------------------------------------
@@ -66,13 +66,24 @@ public class JConveyorPopupMenuTest extends UITestCase
     // TestAction
     //--------------------------------------------------------------------------
     
+    /**
+     * No-op test action.
+     */
     class TestAction extends AbstractAction
     {
+        /**
+         * Creates a TestAction. 
+         */
         public TestAction()
         {
             super("Menu Item " + cnt++);
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
         }
@@ -82,13 +93,24 @@ public class JConveyorPopupMenuTest extends UITestCase
     // AddItemAction
     //--------------------------------------------------------------------------
     
+    /**
+     * Adds an item to the popup menu.
+     */
     class AddItemAction extends AbstractAction
     {
+        /**
+         * Creates an AddItemAction. 
+         */
         public AddItemAction()
         {
             super("Add Item to PopupMenu");
         }
         
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             popupMenu_.add(new JSmartMenuItem(new TestAction()));
