@@ -546,7 +546,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
         rootsComboBox_ = new JSmartComboBox(File.listRoots());
         rootsComboBox_.setSelectedItem(new File(getDefaultRoot()));
         rootsComboBox_.addItemListener(new DriveComboListener());
-        driveIcon_ = ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE);
         rootsComboBox_.setRenderer(new DriveIconCellRenderer());
         
         // File list
@@ -812,10 +811,14 @@ public class JFileExplorer extends JPanel implements IPreferenced
             boolean cellHasFocus)
         {
             super.getListCellRendererComponent(
-                list, value, index, isSelected, cellHasFocus);
+                list, 
+                value, 
+                index, 
+                isSelected, 
+                cellHasFocus);
             
             setText(value.toString());
-            setIcon(driveIcon_);
+            setIcon(ImageCache.getIcon(ImageCache.IMAGE_HARD_DRIVE));
             
             return this;
         }
