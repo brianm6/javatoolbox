@@ -7,6 +7,7 @@ import javax.swing.text.PlainDocument;
 
 import org.apache.log4j.Logger;
 import org.jedit.syntax.TextAreaDefaults;
+import org.jedit.syntax.TokenMarker;
 
 import toolbox.util.SwingUtil;
 
@@ -27,23 +28,29 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     //--------------------------------------------------------------------------
         
     /**
-     * Default constructor
+     * Creates a JEditTextArea with the build in defaults and no token marker
+     * for syntax hiliting.
      */
     public JEditTextArea()
     {
-        this(new TextAreaDefaults());
+        this(null, TextAreaDefaults.getDefaults());
     }
     
     /**
      * Creates a JEditTextArea with the given defaults
      * 
-     * @param textAreaDefaults  Defaults
+     * @param marker   Token marker to use for syntax hiliting
+     * @param defaults Text area defaults
      */
-    public JEditTextArea(TextAreaDefaults textAreaDefaults)
+    public JEditTextArea(TokenMarker marker, TextAreaDefaults defaults)
     {
-        super(textAreaDefaults);
-        addMouseWheelListener(this);
+        super(defaults);
         
+        if (marker != null)
+            setTokenMarker(marker);
+        
+        addMouseWheelListener(this);
+            
         // Set the font
         getPainter().setFont(SwingUtil.getPreferredMonoFont());
         
