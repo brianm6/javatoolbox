@@ -169,6 +169,9 @@ public class YahooMessenger implements InstantMessenger
         }
     }
 
+    /**
+     * @see toolbox.log4j.im.InstantMessenger#shutdown()
+     */
     public void shutdown() throws InstantMessengerException 
     {
         try
