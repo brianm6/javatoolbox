@@ -1,7 +1,9 @@
 package toolbox.graph.jung;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uci.ics.jung.visualization.SpringLayout;
 import edu.uci.ics.jung.visualization.contrib.CircleLayout;
@@ -39,6 +41,7 @@ public class JungGraphLib implements GraphLib
     public Edge createEdge(Vertex from, Vertex to)
     {
         Edge e = new JungEdge(from, to);
+        lookup_.put(e.getDelegate(), e);
         return e;
     }
     
@@ -60,6 +63,7 @@ public class JungGraphLib implements GraphLib
     public Vertex createVertex(Graph graph, String label)
     {
         Vertex v = new JungVertex(graph, label);
+        lookup_.put(v.getDelegate(), v);
         return v;
     }
     
@@ -87,4 +91,32 @@ public class JungGraphLib implements GraphLib
         layouts.add(new JungLayout(new SpringLayout(g)));
         return layouts;
     }
+
+    //--------------------------------------------------------------------------
+    // Static
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @param dest
+     * @return
+     */
+    public static Vertex lookupVertex(edu.uci.ics.jung.graph.Vertex dest)
+    {
+        Vertex v = (Vertex) lookup_.get(dest);
+        return v;
+    }
+
+    
+    /**
+     * @param dest
+     * @return
+     */
+    public static Edge lookupEdge(edu.uci.ics.jung.graph.Edge edge)
+    {
+        Edge e = (Edge) lookup_.get(edge);
+        return e;
+    }
+    
+
+    private static final Map lookup_ = new HashMap();
 }
