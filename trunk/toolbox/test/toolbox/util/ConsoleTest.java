@@ -5,10 +5,10 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.Console;
+import toolbox.util.ui.console.AbstractConsole;
 
 /**
- * Unit test for {@link toolbox.util.Console}.
+ * Unit test for {@link toolbox.util.ui.console.AbstractConsole}.
  */
 public class ConsoleTest extends TestCase
 {
@@ -40,7 +40,7 @@ public class ConsoleTest extends TestCase
         logger_.info("Running testHandleCommandClasspath...");
         
         TestConsole console = new TestConsole();
-        console.handleCommand(Console.CMD_CLASSPATH);
+        console.handleCommand(AbstractConsole.CMD_CLASSPATH);
     }
     
     
@@ -52,7 +52,7 @@ public class ConsoleTest extends TestCase
         logger_.info("Running testHandleCommandHelp...");
         
         TestConsole console = new TestConsole();
-        console.handleCommand(Console.CMD_HELP);
+        console.handleCommand(AbstractConsole.CMD_HELP);
     }
     
     
@@ -64,7 +64,7 @@ public class ConsoleTest extends TestCase
         logger_.info("Running testHandleCommandMem...");
         
         TestConsole console = new TestConsole();
-        console.handleCommand(Console.CMD_MEM);
+        console.handleCommand(AbstractConsole.CMD_MEM);
     }
     
     
@@ -76,7 +76,7 @@ public class ConsoleTest extends TestCase
         logger_.info("Running testHandleCommandProps...");
         
         TestConsole console = new TestConsole();
-        console.handleCommand(Console.CMD_PROPS);
+        console.handleCommand(AbstractConsole.CMD_PROPS);
     }
     
     
@@ -88,7 +88,7 @@ public class ConsoleTest extends TestCase
         logger_.info("Running testHandleCommandUptime...");
         
         TestConsole console = new TestConsole();
-        console.handleCommand(Console.CMD_UPTIME);
+        console.handleCommand(AbstractConsole.CMD_UPTIME);
     }
     
     
@@ -105,7 +105,7 @@ public class ConsoleTest extends TestCase
         String value = "123";        
         
         console.handleCommand(
-            Console.CMD_SETPROP + " " + prop + " " + value);
+            AbstractConsole.CMD_SETPROP + " " + prop + " " + value);
             
         assertEquals("property should be set", value, System.getProperty(prop));
     }
@@ -125,7 +125,7 @@ public class ConsoleTest extends TestCase
         System.setProperty(prop, value);
         
         console.handleCommand(
-            Console.CMD_DELPROP + " " + prop);
+            AbstractConsole.CMD_DELPROP + " " + prop);
             
         assertNull("property should be null", System.getProperty(prop));    
     }
@@ -137,10 +137,10 @@ public class ConsoleTest extends TestCase
     /**
      * Test implementation of console.
      */
-    class TestConsole extends Console
+    class TestConsole extends AbstractConsole
     {
         /**
-         * @see toolbox.util.Console#getPrompt()
+         * @see toolbox.util.ui.console.AbstractConsole#getPrompt()
          */
         public String getPrompt()
         {
