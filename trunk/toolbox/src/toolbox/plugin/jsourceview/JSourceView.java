@@ -1,31 +1,21 @@
 package toolbox.jsourceview;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FilenameFilter;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -34,25 +24,14 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ArrayUtil;
-import toolbox.util.ElapsedTime;
-import toolbox.util.ExceptionUtil;
-import toolbox.util.FileUtil;
-import toolbox.util.MathUtil;
 import toolbox.util.Queue;
 import toolbox.util.XOMUtil;
-import toolbox.util.io.filter.DirectoryFilter;
-import toolbox.util.io.filter.ExtensionFilter;
-import toolbox.util.io.filter.OrFilter;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
-import toolbox.util.ui.JSmartMenu;
-import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.JSmartTableHeader;
-import toolbox.util.ui.table.SmartTableCellRenderer;
 import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
 import toolbox.workspace.IPreferenced;
@@ -87,23 +66,65 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     private static final String ATTR_LAST_DIR = "dir";
     
-    private static final String LABEL_GO     = "Go!";
-    private static final String LABEL_CANCEL = "Cancel";
+    /**
+     * Button label to start search.
+     */
+    protected static final String LABEL_GO = "Go!";
+    
+    /**
+     * Button label to cancel the search once started.
+     */
+    protected static final String LABEL_CANCEL = "Cancel";
 
-    private static final int COL_NUM        = 0;
-    private static final int COL_DIR        = 1;
-    private static final int COL_FILE       = 2;
-    private static final int COL_CODE       = 3;
-    private static final int COL_COMMENTS   = 4;
-    private static final int COL_BLANK      = 5;
-    private static final int COL_THROWN_OUT = 6;
-    private static final int COL_TOTAL      = 7;
-    private static final int COL_PERCENTAGE = 8;
+	/**
+     * Row number column.
+	 */
+    protected static final int COL_NUM = 0;
+    
+    /**
+     * Directory column.
+     */
+    protected static final int COL_DIR = 1;
+    
+    /**
+     * File name column.
+     */
+    protected static final int COL_FILE = 2;
+    
+    /**
+     * Total lines of code column.
+     */
+    protected static final int COL_CODE = 3;
+    
+    /**
+     * Total lines of comments column.
+     */
+    protected static final int COL_COMMENTS = 4;
+    
+    /**
+     * Total blank lines column.
+     */
+    protected static final int COL_BLANK = 5;
+    
+    /**
+     * Total lines thrown out column.
+     */
+    protected static final int COL_THROWN_OUT = 6;
+    
+    /**
+     * Total number of lines column.
+     */
+    protected static final int COL_TOTAL = 7;
+    
+    /**
+     * Percentage of code to comments column.
+     */
+    protected static final int COL_PERCENTAGE = 8;
 
     /** 
      * Table column names.
      */    
-    private static String colNames_[] = 
+    protected static String COL_NAMES[] = 
     {
         "Num",
         "Directory", 
@@ -120,34 +141,76 @@ public class JSourceView extends JPanel implements IPreferenced
     // Fields
     //--------------------------------------------------------------------------
     
-    private JTextField  dirField_;
-    private JButton     goButton_;
-    private JButton     pickDirButton_;
-    private JLabel      scanStatusLabel_;
-    private JLabel      parseStatusLabel_;
+    /**
+     * Input field for the base directory to start searching for source code.
+     */
+    private JTextField dirField_;
     
-    private JMenuBar    menuBar_;
-    private JMenuItem   saveMenuItem_;
+    /**
+     * Button that triggers the search.
+     */
+    JButton goButton_;
     
-    private JTable          table_;
+    /**
+     * Activates the file chooser to allow selection of the search directory.
+     */
+    private JButton pickDirButton_;
+    
+    /**
+     * Label for the status of the file scanning.
+     */
+    private JLabel scanStatusLabel_;
+    
+    /**
+     * Label for the status of the file parsing.
+     */
+    private JLabel parseStatusLabel_;
+    
+    /**
+     * Table that contains the gathered source code statistics.
+     */
+    private JTable table_;
+    
+    /**
+     * Model for the source code statistics table.
+     */
     private SmartTableModel tableModel_;
-    private TableSorter     tableSorter_;
-    private Queue           workQueue_;
     
-    private Thread        scanDirThread_;
-    private ScanDirWorker scanDirWorker_;
-    private Thread        parserThread_;
-    private ParserWorker  parserWorker_;
+    /**
+     * Allows sorting of the table by column.
+     */
+    private TableSorter tableSorter_;
+    
+    /**
+     * Queue that acts as a pipe between the scanner thread and the parsing
+     * thread.
+     */
+    private Queue workQueue_;
+    
+    /**
+     * Thread that scans the file system looking for source files.
+     */
+    Thread scanDirThread_;
+    
+    /**
+     * Runnable that implements the behavior necessary to look for source files.
+     */
+    private SourceScanner scanDirWorker_;
+    
+    /**
+     * Thread that parses source files and gathers statistics.
+     */
+    private Thread parserThread_;
+    
+    /**
+     * Runnable that implements the behavior necessary to parse source files.
+     */
+    private SourceParser parserWorker_;
 
     /** 
-     * Workspace status bar (in addition to the two we're already got). 
+     * Workspace status bar (in addition to the two we've already got). 
      */
     private IStatusBar workspaceStatusBar_;
-    
-    /** 
-     * Filter to identify source files. 
-     */
-    private static OrFilter sourceFilter_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -202,6 +265,35 @@ public class JSourceView extends JPanel implements IPreferenced
         dirField_.setAction(new SearchAction());
     }
 
+    
+    /**
+     * Returns the workQueue.
+     * 
+     * @return Queue
+     */
+    public Queue getWorkQueue()
+    {
+        return workQueue_;
+    }
+
+    
+    /**
+     * @return Returns the tableModel.
+     */
+    public SmartTableModel getTableModel()
+    {
+        return tableModel_;
+    }
+    
+    
+    /**
+     * @return Returns the tableSorter.
+     */
+    public TableSorter getTableSorter()
+    {
+        return tableSorter_;
+    }
+    
 	//--------------------------------------------------------------------------
 	// IPreferenced Interface
 	//--------------------------------------------------------------------------
@@ -211,10 +303,11 @@ public class JSourceView extends JPanel implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = null;
-        
-        if (prefs != null)
-            root = prefs.getFirstChildElement(NODE_JSOURCEVIEW_PLUGIN);
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs,
+                NODE_JSOURCEVIEW_PLUGIN,
+                new Element(NODE_JSOURCEVIEW_PLUGIN));
         
         dirField_.setText(XOMUtil.getStringAttribute(root, ATTR_LAST_DIR, ""));
         dirField_.setCaretPosition(0);
@@ -252,7 +345,6 @@ public class JSourceView extends JPanel implements IPreferenced
         JPanel topPanel = new JPanel();
         scanStatusLabel_ = new JSmartLabel(" ");
         parseStatusLabel_ = new JSmartLabel(" ");
-        menuBar_ = new JMenuBar();
         
         topPanel.setLayout(new FlowLayout());
         topPanel.add(new JSmartLabel("Directory"));
@@ -277,14 +369,14 @@ public class JSourceView extends JPanel implements IPreferenced
         topPanel.add(goButton_);
 
         // Setup sortable table
-        tableModel_  = new SmartTableModel(colNames_, 0);
+        tableModel_  = new SmartTableModel(COL_NAMES, 0);
         tableSorter_ = new TableSorter(tableModel_);
         table_       = new JSmartTable(tableSorter_);
         tableSorter_.addMouseListenerToHeaderInTable(table_);
         
         // Set alternating row renderer
-        table_.setDefaultRenderer(Integer.class, new TableCellRenderer());
-        table_.setDefaultRenderer(String.class, new TableCellRenderer());
+        table_.setDefaultRenderer(Integer.class, new SourceTableCellRenderer());
+        table_.setDefaultRenderer(String.class, new SourceTableCellRenderer());
         
         tweakTable();
         
@@ -296,14 +388,6 @@ public class JSourceView extends JPanel implements IPreferenced
         jpanel.add(scanStatusLabel_, BorderLayout.NORTH);
         jpanel.add(parseStatusLabel_, BorderLayout.SOUTH);
         add(jpanel, BorderLayout.SOUTH);
-        
-        //setJMenuBar(createMenuBar());
-        
-        sourceFilter_ = new OrFilter();
-        sourceFilter_.addFilter(new ExtensionFilter("c"));
-        sourceFilter_.addFilter(new ExtensionFilter("cpp"));
-        sourceFilter_.addFilter(new ExtensionFilter("java"));
-        sourceFilter_.addFilter(new ExtensionFilter("h"));
     }
     
     
@@ -358,22 +442,6 @@ public class JSourceView extends JPanel implements IPreferenced
         table_.setTableHeader(new JSmartTableHeader(columnModel));
     }
     
-    
-    /**
-     * Returns the menubar.
-     * 
-     * @return Menubar
-     */
-    protected JMenuBar createMenuBar()
-    {
-        JMenu jmenu = new JSmartMenu("File");
-        saveMenuItem_ = new JSmartMenuItem(new SaveResultsAction());
-        jmenu.add(saveMenuItem_);
-        menuBar_.add(jmenu);
-        
-        return menuBar_;
-    }
-        
     //--------------------------------------------------------------------------
     // SearchAction
     //--------------------------------------------------------------------------
@@ -403,11 +471,13 @@ public class JSourceView extends JPanel implements IPreferenced
                 // turned back on when the parser thread completes
                 tableSorter_.setEnabled(false);
             
-                scanDirWorker_ = new ScanDirWorker(new File(dir));
+                scanDirWorker_ = 
+                    new SourceScanner(JSourceView.this,new File(dir));
+                
                 scanDirThread_ = new Thread(scanDirWorker_);
                 scanDirThread_.start();
             
-                parserWorker_  = new ParserWorker();
+                parserWorker_  = new SourceParser(JSourceView.this);
                 parserThread_  = new Thread(parserWorker_);
                 parserThread_.start();
                 
@@ -471,6 +541,8 @@ public class JSourceView extends JPanel implements IPreferenced
     
     /**
      * Saves the results table to a file.
+     * 
+     * TODO: Add a UI hook for this.
      */
     class SaveResultsAction extends SmartAction
     {
@@ -485,317 +557,6 @@ public class JSourceView extends JPanel implements IPreferenced
         
             if (s.length() > 0)
                 tableModel_.saveToFile(s);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // ScanDirWorker
-    //--------------------------------------------------------------------------
-    
-    /** 
-     * Scans file system recursively for files containing source code.
-     */
-    class ScanDirWorker implements Runnable
-    {
-        /** 
-         * Directory to scan recursively for source files. 
-         */
-        private File dir_;
-
-        /** 
-         * Cancel flag. 
-         */
-        private boolean cancel_;
-        
-        /** 
-         * Filter for list on directories. 
-         */
-        private FilenameFilter dirFilter_;
-        
-        //----------------------------------------------------------------------
-        // Constructors
-        //----------------------------------------------------------------------
-        
-        /**
-         * Creates a scanner.
-         * 
-         * @param dir Directory root to scan
-         */
-        ScanDirWorker(File dir)
-        {
-            dir_       = dir;
-            dirFilter_ = new DirectoryFilter();
-            cancel_    = false;
-        }
-        
-        //----------------------------------------------------------------------
-        // Protected
-        //----------------------------------------------------------------------
-        
-        /**
-         * Finds all java files in the given directory. Called recursively so
-         * the directory is passed on each invocation.
-         * 
-         * @param file Directory to scan for files
-         */
-        protected void findJavaFiles(File dir)
-        {
-            // Short circuit if operation canceled
-            if (cancel_)
-                return;
-                
-            // Process files in current directory
-            File srcFiles[] = dir.listFiles(sourceFilter_);
-            
-            if (!ArrayUtil.isNullOrEmpty(srcFiles))
-                for (int i = 0; i < srcFiles.length; i++)
-                    workQueue_.enqueue(srcFiles[i].getAbsolutePath());
-            
-            // Process dirs in current directory
-            File dirs[] = dir.listFiles(dirFilter_);
-            
-            if (!ArrayUtil.isNullOrEmpty(dirs))
-            {
-                for (int i=0; i<dirs.length; i++)
-                {
-                    setScanStatus("Scanning " + dirs[i] + " ...");
-                    findJavaFiles(dirs[i]);
-                }    
-            }
-        }
-
-        
-        /** 
-         * Cancels the scanning activity.
-         */
-        protected void cancel()
-        {
-            cancel_ = true;
-        }
-        
-        //----------------------------------------------------------------------
-        // Runnable Interface
-        //----------------------------------------------------------------------
-                
-        /**
-         * Starts the scanning activity on a separate thread.
-         */
-        public void run()
-        {
-            findJavaFiles(dir_);
-            setScanStatus("Done scanning.");
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // ParserWorker
-    //--------------------------------------------------------------------------
-
-    /**
-     * Pops files off of the work queue and parses them to gather stats.
-     */
-    class ParserWorker implements Runnable
-    {
-        private boolean cancel_ = false;
-        
-        public void run()
-        {
-            ElapsedTime elapsed = new ElapsedTime();
-            FileStats totals = new FileStats();
-            int fileCount = 0;
-            StatsCollector statsCollector = new StatsCollector();
-            
-            while (!workQueue_.isEmpty() || scanDirThread_.isAlive()) 
-            {
-                if (cancel_)
-                    break;
-                    
-                // Pop file of the queue
-                String filename = (String) workQueue_.dequeue();
-                
-                if (filename != null)
-                {
-                    setParseStatus("Parsing [" + workQueue_.size() + "] " + 
-                        filename + " ...");
-                     
-                    // Parse file and add to totals
-                    FileStats fileStats = null;
-                    
-                    try
-                    {
-                        fileStats = statsCollector.getStats(filename);
-                        totals.add(fileStats);
-                        ++fileCount;
-
-                        // Create table row data and append                    
-                        Object tableRow[] = new Object[colNames_.length];
-                        tableRow[0] = new Integer(fileCount);
-                        tableRow[1] = FileUtil.stripFile(filename);
-                        tableRow[2] = FileUtil.stripPath(filename);
-                        tableRow[3] = new Integer(fileStats.getCodeLines());
-                        tableRow[4] = new Integer(fileStats.getCommentLines());
-                        tableRow[5] = new Integer(fileStats.getBlankLines());
-                        tableRow[6] = new Integer(fileStats.getThrownOutLines());
-                        tableRow[7] = new Integer(fileStats.getTotalLines());
-                        tableRow[8] = new Integer(fileStats.getPercent());
-                    
-                        tableModel_.addRow(tableRow);
-                        
-                    }
-                    catch (Exception e)
-                    {
-                        ExceptionUtil.handleUI(e, logger_);
-                    }
-                }
-            }
-        
-            NumberFormat df = DecimalFormat.getIntegerInstance();
-            
-            setParseStatus(
-             "[Total " + df.format(totals.getTotalLines()) + "]  " +
-             "[Code " + df.format(totals.getCodeLines()) + "]  " +
-             "[Comments " + df.format(totals.getCommentLines()) + "]  " +
-             "[Empty " + df.format(totals.getBlankLines()) + "]  " +
-             "[Thrown out " + df.format(totals.getThrownOutLines()) + "]  " + 
-             "[Percent code vs comments " + df.format(totals.getPercent()) + 
-             "%]"); 
-            
-            setScanStatus("Done parsing.");
-            goButton_.setText(LABEL_GO);
-            
-            // Turn the sorter back on
-            tableSorter_.setEnabled(true);
-            
-            elapsed.setEndTime();
-            setScanStatus("Elapsed time: " + elapsed.toString());
-        }
-        
-        /** 
-         * Cancels the parsing activity.
-         */
-        public void cancel()
-        {
-            cancel_ = true;
-            tableSorter_.setEnabled(true);
-            setParseStatus("Search canceled!");            
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // TableCellRenderer
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Renderer for the contents of the table.
-     */   
-    class TableCellRenderer extends SmartTableCellRenderer
-    {
-        private DecimalFormat decimalFormatter_;
-        private NumberFormat percentFormatter_;
-        
-        public TableCellRenderer()
-        {
-            decimalFormatter_ = new DecimalFormat("###,###");
-            percentFormatter_ = NumberFormat.getPercentInstance();
-        }
-        
-        //----------------------------------------------------------------------
-        // Overrides javax.swing.table.DefaultTableCellRenderer
-        //----------------------------------------------------------------------
-        
-        /**
-         * Returns the default table cell renderer.
-         *
-         * @param table JTable
-         * @param value Value to assign to the cell at [row, column]
-         * @param isSelected True if the cell is selected
-         * @param hasFocus True if cell has focus
-         * @param row Row of the cell to render
-         * @param column Column of the cell to render
-         * @return Default table cell renderer
-         */
-        public Component getTableCellRendererComponent(
-            JTable  table,
-            Object  value,
-            boolean isSelected,
-            boolean hasFocus,
-            int     row,
-            int     column)
-        {
-            String text = value.toString();
-            
-            if (isSelected)
-            {
-                setForeground(table.getSelectionForeground());
-                setBackground(table.getSelectionBackground());
-            }
-            else
-            {
-                setForeground(table.getForeground());
-    
-                // Alternate row background colors colors
-                                
-                if (MathUtil.isEven(row))
-                    setBackground(table.getBackground());
-                else
-                    setBackground(new Color(240,240,240));
-            }
-    
-            if (hasFocus)
-            {
-                setBorder(
-                    UIManager.getBorder("Table.focusCellHighlightBorder"));
-                    
-                if (table.isCellEditable(row, column))
-                {
-                    setForeground(
-                        UIManager.getColor("Table.focusCellForeground"));
-                        
-                    setBackground(
-                        UIManager.getColor("Table.focusCellBackground"));
-                }
-            }
-            else
-                setBorder(noFocusBorder);
-
-            switch (column)
-            {
-                case COL_NUM:
-                
-                    setHorizontalAlignment(SwingConstants.CENTER);
-                    setValue(text);
-                    break;
-                    
-                case COL_DIR:
-                case COL_FILE:
-                
-                    setHorizontalAlignment(SwingConstants.LEFT);
-                    setValue(text);
-                    break;
-                    
-                case COL_CODE:
-                case COL_COMMENTS:
-                case COL_BLANK:
-                case COL_THROWN_OUT:
-                case COL_TOTAL:
-                
-                    setHorizontalAlignment(SwingConstants.CENTER);
-                    setValue(decimalFormatter_.format(value));
-                    break;
-    
-                case COL_PERCENTAGE:
-                
-                    setHorizontalAlignment(SwingConstants.CENTER);
-                    int i = ((Integer) value).intValue();
-                    Float f = new Float((float) i/100);
-                    setValue(percentFormatter_.format(f));
-                    break;
-                    
-                default:
-                    setValue(value);
-            }
-            
-            return this;
         }
     }
 }
