@@ -163,7 +163,7 @@ public class PropertyPromptTask extends Task
     /**
      * Sets defaultValue for the Property being set by this task.
      * 
-     * @param newDefaultvalue Default value
+     * @param newDefaultvalue Default value.
      */
     public void setDefaultvalue(String newDefaultvalue)
     {
@@ -175,7 +175,7 @@ public class PropertyPromptTask extends Task
      * Sets the terminating character used to punctuate the prompt text 
      * (default is "?").
      * 
-     * @param newPromptcharacter Prompt character
+     * @param newPromptcharacter Prompt character.
      */
     public void setPromptcharacter(String newPromptcharacter)
     {
@@ -186,7 +186,7 @@ public class PropertyPromptTask extends Task
     /**
      * Sets text of the prompt.
      * 
-     * @param newPrompttext Prompt
+     * @param newPrompttext Prompt.
      */
     public void setPrompttext(String newPrompttext)
     {
@@ -197,7 +197,7 @@ public class PropertyPromptTask extends Task
     /**
      * Specifies the Ant Project Property being set by this task.
      * 
-     * @param newPropertyname Property name
+     * @param newPropertyname Property name.
      */
     public void setPropertyname(String newPropertyname)
     {
@@ -235,7 +235,7 @@ public class PropertyPromptTask extends Task
     /**
      * Run the PropertyPromptTask task.
      * 
-     * @throws BuildException on build error
+     * @throws BuildException on build error.
      */
     public void execute() throws BuildException
     {
@@ -381,7 +381,7 @@ public class PropertyPromptTask extends Task
         /**
          * Creates a TimedBufferedReader.
          * 
-         * @param in Reader to chain
+         * @param in Reader to chain.
          */
         TimedBufferedReader(Reader in)
         {
@@ -407,7 +407,7 @@ public class PropertyPromptTask extends Task
         /**
          * Sets number of seconds to block for input.
          * 
-         * @param seconds Seconds
+         * @param seconds Seconds.
          */
         public void setTimeout(int seconds)
         {
@@ -418,7 +418,7 @@ public class PropertyPromptTask extends Task
         /**
          * Sets defaultString to use if no input is read.
          * 
-         * @param str Default input
+         * @param str Default input.
          */
         public void setDefaultString(String str)
         {

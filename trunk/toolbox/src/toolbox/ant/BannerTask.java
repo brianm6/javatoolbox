@@ -7,7 +7,7 @@ import toolbox.util.Banner;
 
 /**
  * BannerTask is an Ant task thats converts text to an ASCII banner and write 
- * the result to standard out.
+ * the result to standard output stream.
  * 
  * @see toolbox.util.Banner
  */
@@ -25,7 +25,7 @@ public class BannerTask extends Task
     /**
      * Sets the banner message.
      * 
-     * @param msg Banner message
+     * @param msg Banner message.
      */
     public void setMessage(String msg)
     {
