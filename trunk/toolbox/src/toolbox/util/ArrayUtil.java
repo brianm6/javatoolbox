@@ -300,12 +300,13 @@ public class ArrayUtil
     
     
     /**
-     * Adds an element to an existing array and returns the new array.
+     * Adds an element to the end of an existing array 
+     * and returns the new array.
      * 
      * @param   array       An array to add the element to
      * @param   element     Element to append
      */
-    public static Object addElement(Object[] array, Object element)
+    public static Object add(Object[] array, Object element)
     {
         int length = array.length;
         
@@ -320,5 +321,42 @@ public class ArrayUtil
         newArray[length] = element;
         
         return newArray;
+    }
+    
+    
+    /**
+     * Inserts an element to the beginning of an array. The component type of 
+     * the array must be the same as that type of the element.
+     * 
+     * @param   array   An array
+     * @param   element The element to insert.
+     */
+    public static Object[] insert(Object[] array, Object element)
+    {
+        return insertAt(array, element, 0);
+    }
+    
+    
+    /**
+     * Inserts an element into the given position of an array. The component 
+     * type of the array must be the same as that type of the element.
+     * 
+     * @param array     An array
+     * @param element   The element to insert.
+     * @param index     The index to insert the element before.
+     */
+    public static Object[] insertAt(Object array[], Object element, int index)
+    {
+        int length = Array.getLength(array);
+        
+        Object[] newarray = (Object[])
+            Array.newInstance(array.getClass().getComponentType(), length + 1);
+    
+        if (index > 0)
+            System.arraycopy(array, 0, newarray, 0, index);
+    
+        Array.set(newarray, index, element);
+        System.arraycopy(array, index, newarray, index + 1, length - index);
+        return newarray;
     }
 }
