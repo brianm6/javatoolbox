@@ -35,7 +35,8 @@ package toolbox;
  * TODO: Change String parameter to a File object in FileExplorerListener
  * TODO: Added number of files/selected files to the JFileExplorer InfoBar
  * TODO: Add Swing preferences (window drag, resize outline, etc)
- * TODO: Make service state transitions optional
+ * TODO: Update NetMeter to use MonitoredInput/Output streams.
+ * TODO: Customize SQLFormatter formatting options
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -91,6 +92,9 @@ package toolbox;
  *  - Added JavaViewer to DocumentViewerPlugin
  *  - Added SortedListModel
  *  - Revamped Service interface
+ *  - Service state transitions can be strict or relaxed
+ *  - Updated InstantMessenger to the Service interface
+ *  
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
