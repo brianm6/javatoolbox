@@ -8,9 +8,8 @@ import java.util.Date;
 /**
  * Utility class that deals only with the DATE portions of the 
  * {@link java.util.Date} class.
- * 
- * <p><pre>
- * 
+ * <p>
+ * <pre>
  * DESIGN NOTE: All behavior defined on this class applies to only the date
  *              portion of a java.util.Date object. This means day, month, and 
  *              year are the only attributes of a Date used for comparison,
@@ -28,7 +27,7 @@ public final class DateUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Private constructor
+     * Private constructor.
      */
     private DateUtil()
     {
@@ -39,7 +38,7 @@ public final class DateUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Formats a date to MM-dd-yyyy
+     * Formats a date to MM-dd-yyyy.
      * 
      * @param d Date to format
      * @return Date in MM-dd-yyyy format
@@ -50,6 +49,7 @@ public final class DateUtil
         return df.format(d);
     }
 
+    
     /**
      * Adds a given number of days to a date. The original date is returned 
      * for chaining.
@@ -67,6 +67,7 @@ public final class DateUtil
         return date;
     }
 
+    
     /**
      * Adds a given number of weeks to a date. The original date is returned 
      * for chaining.
@@ -80,8 +81,9 @@ public final class DateUtil
         return addDays(date, weeks * 7);
     }
 
+    
     /**
-     * Compares only the date portions of a Date object
+     * Compares only the date portions of a Date object.
      *
      * @param d1 First date
      * @param d2 Second date
@@ -99,6 +101,7 @@ public final class DateUtil
             return 1;
     }
 
+    
     /**
      * Copies only the date portion of an existing date. The time portion is 
      * zeroed out.
@@ -117,6 +120,7 @@ public final class DateUtil
         return c.getTime();
     }
 
+    
     /**
      * Gets the beginning of the current month. Time portion is zeroed out.
      *
@@ -131,8 +135,9 @@ public final class DateUtil
         return c.getTime();
     }
 
+    
     /**
-     * Compares two dates for equality based on year, month, and day
+     * Compares two dates for equality based on year, month, and day.
      *
      * @param date1 First date
      * @param date2 Second date
@@ -152,8 +157,9 @@ public final class DateUtil
             cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
     }
 
+    
     /**
-     * Gets the current date with the time portion zeroed out
+     * Gets the current date with the time portion zeroed out.
      * 
      * @return Todays date
      */
@@ -162,6 +168,7 @@ public final class DateUtil
         return zeroTime(new Date());
     }
 
+    
     /**
      * Gets the next occurrence of a given day relative to today.
      * Answers the question: What date is next Thursday?
@@ -174,6 +181,7 @@ public final class DateUtil
         return getNextDay(getToday(), day);
     }
 
+    
     /**
      * Gets the next occurrence of a given day relative to a date.
      * Answers the question: 
@@ -201,6 +209,7 @@ public final class DateUtil
         return c.getTime();
     }
 
+    
     /**
      * Gets the previous occurence of the given day of the week relative to
      * today. Answers the question: What was the date of last Wednesday?
@@ -213,9 +222,10 @@ public final class DateUtil
         return getPreviousDay(getToday(), day);
     }
 
+    
     /**
-     * Gets the previous occurrence of the given day 
-     * of the week startinf from the the given date.
+     * Gets the previous occurrence of the given day of the week startinf from 
+     * the the given date.
      *
      * @param fromDate Date of where to start looking
      * @param day Calendar.MONDAY, TUE, ...
@@ -239,8 +249,9 @@ public final class DateUtil
         return c.getTime();
     }
 
+    
     /**
-     * Computes the number of days difference between two dates
+     * Computes the number of days difference between two dates.
      *
      * @param before The lessor of the two dates
      * @param after The greater of the two dates
@@ -259,8 +270,9 @@ public final class DateUtil
         return (int) secs / secsInDay;
     }
 
+    
     /**
-     * Computes number of whole weeks difference between two dates
+     * Computes number of whole weeks difference between two dates.
      *
      * @param before The lessor of the two dates
      * @param after The greater of the two dates
@@ -272,6 +284,7 @@ public final class DateUtil
         return (days + 1) / 7;
     }
 
+    
     /**
      * Determines if a date is before another date. Time is not recognized in 
      * this comparison.
@@ -312,9 +325,10 @@ public final class DateUtil
         }
     }
 
+    
     /**
      * Determines if a date is between a given date range inclusize of the
-     * minimum and maximum dates in the range
+     * minimum and maximum dates in the range.
      * 
      * @param date Date to check
      * @param begin Start of range
@@ -326,6 +340,7 @@ public final class DateUtil
         return isOnOrAfter(date, begin) && isOnOrBefore(date, end);
     }
 
+    
     /**
      * Determines if a date is on or after a given date.
      * 
@@ -341,8 +356,9 @@ public final class DateUtil
             return isBefore(b, a);
     }
 
+    
     /**
-     * Determines if a date is on or before a given date
+     * Determines if a date is on or before a given date.
      * 
      * @param isThis Is this date on or before...
      * @param beforeThis this date?
@@ -356,6 +372,7 @@ public final class DateUtil
             return isBefore(isThis, beforeThis);
     }
 
+    
     /**
      * Zeros out the time portion of the given date. Returns original date for 
      * chaining.
@@ -375,6 +392,7 @@ public final class DateUtil
         return d;
     }
 
+    
     /**
      * Rounds number of days to a weekly number. If number of days is not 
      * wholly divisible by a week, then the week is rounded down if less than 
@@ -389,8 +407,9 @@ public final class DateUtil
         return Math.round((days / (float) 7));
     }
 
+    
     /**
-     * Subtracts days from a given date
+     * Subtracts days from a given date.
      * 
      * @param d Date to subtract days from
      * @param days Number of days to subtract

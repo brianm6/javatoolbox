@@ -6,7 +6,7 @@ import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Array utility class
+ * Array utility class.
  */
 public final class ArrayUtil
 {
@@ -21,7 +21,7 @@ public final class ArrayUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private ArrayUtil()
     {
@@ -32,7 +32,7 @@ public final class ArrayUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Initializes an array of double with a given value
+     * Initializes an array of double with a given value.
      * 
      * @param d Array of doubles
      * @param value Initialization value
@@ -44,8 +44,9 @@ public final class ArrayUtil
         return d;
     }
 
+    
     /**
-     * Initializes an array of ints with a given value
+     * Initializes an array of ints with a given value.
      * 
      * @param d Array of ints
      * @param value Initialization value
@@ -57,8 +58,9 @@ public final class ArrayUtil
         return d;
     }
 
+    
     /**
-     * Returns subset of a given double array
+     * Returns subset of a given double array.
      *
      * @param array The array to get subset of
      * @param startIndex The starting index (inclusive)
@@ -93,8 +95,9 @@ public final class ArrayUtil
         return sub;
     }
 
+    
     /**
-     * Returns the subset of an array of objects
+     * Returns the subset of an array of objects.
      * 
      * @param array Array to extract subset from
      * @param startIndex Starting index of the subset (zero based)
@@ -129,6 +132,7 @@ public final class ArrayUtil
         }
     }
 
+    
     /**
      * Converts an array of doubles to a string. Good for debug output.
      * 
@@ -145,8 +149,9 @@ public final class ArrayUtil
         return toString(wrapper);
     }
 
+    
     /**
-     * Converts an array of ints to a string. Good for debug output
+     * Converts an array of ints to a string. Good for debug output.
      * 
      * @param array Array of ints
      * @return String representing contents of array
@@ -161,9 +166,10 @@ public final class ArrayUtil
         return toString(wrapper);
     }
 
+    
     /**
      * Converts an array of objects into a comma delimited single line 
-     * string of each elements toString()
+     * string of each elements toString().
      *
      * @param array Array of objects to stringify
      * @return String of comma delimited array elements toString()
@@ -173,9 +179,10 @@ public final class ArrayUtil
         return toString(array, false);
     }
 
+    
     /**
      * Converts an object array into a comma delimited string of 
-     * each elements toString()
+     * each elements toString().
      *
      * @param array Array of objects to stringify
      * @param onePerLine If true, the entire contents are represented on a 
@@ -221,9 +228,10 @@ public final class ArrayUtil
         return sb.toString();
     }
     
+    
     /**
-     * Determines if an object exists in a given array of objects.
-     * Uses equals() for comparison.
+     * Determines if an object exists in a given array of objects. Uses equals() 
+     * for comparison.
      * 
      * @param array Array of objects to search
      * @param obj Object to search for
@@ -248,8 +256,9 @@ public final class ArrayUtil
         return -1;
     }
     
+    
     /**
-     * Determines if an array of objects contains an object
+     * Determines if an array of objects contains an object.
      * 
      * @param array Array of objects to search
      * @param obj Object to search for
@@ -260,8 +269,9 @@ public final class ArrayUtil
         return !(indexOf(array, obj) == -1);
     }
 
+    
     /**
-     * Determines if an array is null or empty
+     * Determines if an array is null or empty.
      * 
      * @param array Array to check for null or empty
      * @return True if an array is null or has a size of length zero, false 
@@ -272,6 +282,7 @@ public final class ArrayUtil
         return (array == null || array.length == 0);
     }
 
+    
     /**
      * Concats two arrays (one right after the other) with homogenous content.
      * Arrays must contain elements of the same type!
@@ -291,6 +302,7 @@ public final class ArrayUtil
         
         return result;
     } 
+    
     
     /**
      * Adds an element to the end of an existing array 
@@ -317,6 +329,7 @@ public final class ArrayUtil
         return newArray;
     }
     
+    
     /**
      * Inserts an element to the beginning of an array. The component type of 
      * the array must be the same as that type of the element.
@@ -329,6 +342,7 @@ public final class ArrayUtil
     {
         return insertAt(array, element, 0);
     }
+    
     
     /**
      * Inserts an element into the given position of an array. The component 
@@ -354,8 +368,9 @@ public final class ArrayUtil
         return newarray;
     }
     
+    
     /**
-     * Determines if two given arrays are equal in length and content
+     * Determines if two given arrays are equal in length and content.
      * 
      * @param array1 First array 
      * @param array2 Second array
@@ -381,8 +396,9 @@ public final class ArrayUtil
         return true;
     }
 
+    
     /**
-     * Removes the first occurence of an object from an array
+     * Removes the first occurence of an object from an array.
      * 
      * @param array Array to remove object from
      * @param element Object to remove
@@ -420,8 +436,9 @@ public final class ArrayUtil
         return result;
     }
     
+    
     /**
-     * Invokes a method on each element of an array
+     * Invokes a method on each element of an array.
      * 
      * @param array Array of objects 
      * @param method Method to invoke on each object

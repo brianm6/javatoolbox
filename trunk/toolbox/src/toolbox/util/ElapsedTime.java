@@ -31,27 +31,27 @@ public class ElapsedTime
     //--------------------------------------------------------------------------
     
     /** 
-     * 1 millisecond 
+     * 1 millisecond. 
      */
     public static final int MILLI = 1;
     
     /** 
-     * 1 second 
+     * 1 second.
      */
     public static final int SECOND = 1000 * MILLI;
     
     /** 
-     * 1 minute 
+     * 1 minute.
      */
     public static final int MINUTE = 60 * SECOND;
     
     /** 
-     * 1 hour 
+     * 1 hour.
      */
     public static final int HOUR = 60 * MINUTE;
     
     /** 
-     * 1 day 
+     * 1 day.
      */
     public static final int DAY = 24 * HOUR;
     
@@ -60,42 +60,42 @@ public class ElapsedTime
     //--------------------------------------------------------------------------
     
     /**
-     * Starting time in millis
+     * Starting time in millis.
      */
     private long startTime_;
     
     /**
-     * Ending time in millis
+     * Ending time in millis.
      */
     private long endTime_;
     
     /**
-     * Number of days elapsed 
+     * Number of days elapsed.
      */
     private long days_;
     
     /**
-     * Number of normalized hours elapsed < 23
+     * Number of normalized hours elapsed < 23.
      */
     private int  hours_;
     
     /**
-     * Number of normalized minutes elapsed < 60
+     * Number of normalized minutes elapsed < 60.
      */
     private int  minutes_;
     
     /**
-     * Number of normalized seconds elapsed < 60
+     * Number of normalized seconds elapsed < 60.
      */
     private int  seconds_;
     
     /**
-     * Number of normalized milliseconds elapsed < 1000
+     * Number of normalized milliseconds elapsed < 1000.
      */
     private int  millis_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
@@ -107,6 +107,7 @@ public class ElapsedTime
         this(new Date());
     }
 
+    
     /**
      * Creates an elapsed time with the start and end times equal to the start 
      * time.
@@ -118,8 +119,9 @@ public class ElapsedTime
         this(startTime.getTime(), startTime.getTime());
     }
 
+    
     /**
-     * Creates an elapsed time from the given time span
+     * Creates an elapsed time from the given time span.
      * 
      * @param startTime Starting time
      * @param endTime Ending time
@@ -129,8 +131,9 @@ public class ElapsedTime
         this(startTime.getTime(), endTime.getTime());
     }
 
+    
     /**
-     * Creates an elapsed time from the given time span
+     * Creates an elapsed time from the given time span.
      * 
      * @param startTime Staring time in milliseconds
      * @param endTime Ending time in milliseconds
@@ -142,8 +145,9 @@ public class ElapsedTime
         recalc();
     }
     
+    
     /**
-     * Creates an elapsed time from the given time components
+     * Creates an elapsed time from the given time components.
      * 
      * @param days Number of days elapsed           [0..Integer.MAXINT]
      * @param hours Number of hours elapsed         [0..23]
@@ -161,8 +165,9 @@ public class ElapsedTime
         millis_  = millis;
     }        
     
+    
     /** 
-     * Creates a copy of the given elapsed time
+     * Creates a copy of the given elapsed time.
      * 
      * @param elapsedTime Elapsed time to copy
      */
@@ -174,11 +179,11 @@ public class ElapsedTime
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
     
     /**
-     * Accessor for the number of days elapsed [0..Integer.MAXINT]
+     * Accessor for the number of days elapsed [0..Integer.MAXINT].
      * 
      * @return Days elapsed
      */    
@@ -189,7 +194,7 @@ public class ElapsedTime
 
 
     /**
-     * Accessor for the number of hours elapsed [0..23]
+     * Accessor for the number of hours elapsed [0..23].
      * 
      * @return Hours elapsed
      */    
@@ -199,7 +204,7 @@ public class ElapsedTime
     }
 
     /**
-     * Accessor for the number of minutes elapsed [0..59]
+     * Accessor for the number of minutes elapsed [0..59].
      * 
      * @return Minutes elapsed
      */    
@@ -209,7 +214,7 @@ public class ElapsedTime
     }
 
     /**
-     * Accessor for the number of seconds elapsed [0..59]
+     * Accessor for the number of seconds elapsed [0..59].
      * 
      * @return Seconds elapsed
      */    
@@ -220,7 +225,7 @@ public class ElapsedTime
 
 
     /**
-     * Accessor for the number of milliseconds elapsed [0..999]
+     * Accessor for the number of milliseconds elapsed [0..999].
      * 
      * @return Milliseconds elapsed
      */
@@ -229,8 +234,9 @@ public class ElapsedTime
         return millis_;
     }
 
+    
     /**
-     * Accessor for the staring time of the elapsed time
+     * Accessor for the staring time of the elapsed time.
      * 
      * @return Starting time
      */
@@ -239,8 +245,9 @@ public class ElapsedTime
         return new Date(startTime_);
     }
     
+    
     /**
-     * Accessor for the ending time of the elapsed time
+     * Accessor for the ending time of the elapsed time.
      * 
      * @return Ending time
      */
@@ -249,8 +256,9 @@ public class ElapsedTime
         return new Date(endTime_);
     }
 
+    
     /**
-     * Sets the starting time for the elapsed time
+     * Sets the starting time for the elapsed time.
      *
      * @param startTime Starting time
      */
@@ -259,16 +267,18 @@ public class ElapsedTime
         startTime_ = startTime.getTime();
     }
     
+    
     /**
-     * Sets the starting time for the elapsed time to the current time
+     * Sets the starting time for the elapsed time to the current time.
      */
     public void setStartTimeNow()
     {
         startTime_ = new Date().getTime();
     }
     
+    
     /**
-     * Sets the ending time for the elapsed time
+     * Sets the ending time for the elapsed time.
      * 
      * @param endTime Ending time
      */
@@ -278,8 +288,9 @@ public class ElapsedTime
         recalc();
     }
 
+    
     /**
-     * Sets the ending time for the elapsed time to the current time
+     * Sets the ending time for the elapsed time to the current time.
      */
     public void setEndTime()
     {
@@ -287,8 +298,9 @@ public class ElapsedTime
         recalc();
     }
     
+    
     /**
-     * Returns the total time elapsed in milliseconds
+     * Returns the total time elapsed in milliseconds.
      * 
      * @return long
      */
@@ -315,11 +327,11 @@ public class ElapsedTime
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
-     * Calculates the elapsed time between the starting time and ending time
+     * Calculates the elapsed time between the starting time and ending time.
      */
     protected void recalc()
     {
@@ -344,11 +356,11 @@ public class ElapsedTime
     }
     
     //--------------------------------------------------------------------------
-    //  Overridden from java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
         
     /**
-     * Returns elapsed time as a formatted string: 3d 23h 34m 23s 897ms
+     * Returns elapsed time as a formatted string: 3d 23h 34m 23s 897ms.
      * 
      * @return Elapsed time as a formatted string
      */
@@ -374,6 +386,7 @@ public class ElapsedTime
         return sb.toString().trim();
     }
 
+    
     /**
      * Compares elapsed times for the span of time regardless of the start or 
      * ending time.
@@ -392,8 +405,9 @@ public class ElapsedTime
                     toString().equals(obj.toString()));
     }
     
+    
     /**
-     * Override hashcode implementation to match equals()
+     * Override hashcode implementation to match equals().
      * 
      * @return Unique hashcode
      */

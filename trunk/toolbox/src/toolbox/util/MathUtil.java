@@ -1,7 +1,7 @@
 package toolbox.util;
 
 /**
- * Math Utility Class
+ * Math Utility Class.
  */
 public final class MathUtil 
 {
@@ -13,7 +13,7 @@ public final class MathUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private MathUtil() 
     {
@@ -24,34 +24,36 @@ public final class MathUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Determines if a given integer is an even number
-     * 
-     * @param   i   Integer to evaluate
-     * @return  True if even, false otherwise
-     */
+	 * Determines if a given integer is an even number.
+	 * 
+	 * @param i Integer to evaluate
+	 * @return True if even, false otherwise
+	 */
     public static boolean isEven(long i) 
     {
         return ((i%2) == 0);
     }
 
+    
     /**
-     * Determines if a given integer is an odd number
-     * 
-     * @param   i   Integer to evaluate
-     * @return  True if odd, false otherwise
-     */
+	 * Determines if a given integer is an odd number.
+	 * 
+	 * @param i Integer to evaluate
+	 * @return True if odd, false otherwise
+	 */
     public static boolean isOdd(long i) 
     {
         return !isEven(i);
     }
     
+    
     /**
-     * Adds a value to each index of an array
-     * 
-     * @param   array  Array to add value to
-     * @param   value  Value to add to each array index
-     * @return  Array with value added to each index
-     */
+	 * Adds a value to each index of an array.
+	 * 
+	 * @param array Array to add value to
+	 * @param value Value to add to each array index
+	 * @return Array with value added to each index
+	 */
     public static int[] addToAll(int[] array, int value) 
     {
         for(int i=0; i<array.length; i++)
@@ -60,12 +62,13 @@ public final class MathUtil
         return array;
     }
     
+    
     /**
-     *  Calculates the inverse normal cumulative distribution
-     *
-     *  @param  p   Any number between 0 and 1
-     *  @return Inverse normal cumulative distribution
-     */
+	 * Calculates the inverse normal cumulative distribution.
+	 * 
+	 * @param p Any number between 0 and 1
+	 * @return Inverse normal cumulative distribution
+	 */
     public static double invNormalCumDist(double p) 
     {
         double c[] = new double[3];
@@ -110,13 +113,14 @@ public final class MathUtil
             return x;
         }
     }
+
     
     /**
-     *  Returns sum of array of integers
-     *
-     *  @param  d   Array of integers
-     *  @return Sum of elements in d
-     */
+	 * Returns sum of array of integers.
+	 * 
+	 * @param d Array of integers
+	 * @return Sum of elements in d
+	 */
     public static int sum(int[] d) 
     {
         if( d.length == 0)

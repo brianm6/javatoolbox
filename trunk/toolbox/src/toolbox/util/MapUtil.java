@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Utility functionality for Maps
+ * Utility functionality for Maps.
  */
 public class MapUtil
 {
@@ -12,18 +12,19 @@ public class MapUtil
     static { new MapUtil(); }
 
     /**
-     * Constructor for MapUtil.
+     * Private constructor.
      */
     private MapUtil()
     {
     }
     
+    
     /**
      * Alternative toString() implementation that displays map entries, one
-     * per line
+     * per line.
      * 
-     * @param   map  Map to stringify
-     * @return  String representing map's contents
+     * @param map Map to stringify
+     * @return String representing map's contents
      */
     public static String toString(Map map)
     {
@@ -37,5 +38,4 @@ public class MapUtil
         
         return sb.toString();
     }
-
 }

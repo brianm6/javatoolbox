@@ -2261,12 +2261,12 @@ public class Banner
     //--------------------------------------------------------------------------
     
     /** 
-     * Logger 
+     * Logger. 
      */
     private static final Logger logger_ = Logger.getLogger(Banner.class);
     
     /** 
-     * Default font 
+     * Default font. 
      */
     private static final BannerFont FONT_STANDARD = 
         new BannerFont(FONT_STANDARD_DATA);
@@ -2281,7 +2281,7 @@ public class Banner
     //--------------------------------------------------------------------------
 
     /**
-     * Executes banner via Command line args
+     * Executes banner via Command line args.
      * 
      * @param args See printUsage()
      */
@@ -2398,7 +2398,7 @@ public class Banner
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private Banner()
     {
@@ -2409,7 +2409,7 @@ public class Banner
     //--------------------------------------------------------------------------
 
     /**
-     * Converts from ASCII to a banner
+     * Converts from ASCII to a banner.
      *
      * @param message Message
      * @return Banner as a string
@@ -2419,9 +2419,10 @@ public class Banner
         return getBanner(message, false, true, Integer.MAX_VALUE);
     }
 
+    
     /**
      * Converts from ASCII to a banner, eventually centering each line,
-     * folding after each word, or when the width limit is reached
+     * folding after each word, or when the width limit is reached.
      *
      * @param message Message
      * @param splitAtWord True if split at word
@@ -2432,13 +2433,14 @@ public class Banner
     public static String getBanner(String message, boolean splitAtWord,
         boolean leftJustify, int splitWidth)
     {
-        return getBanner(message, FONT_STANDARD, splitAtWord, leftJustify,
-                    splitWidth);
+        return getBanner(
+            message, FONT_STANDARD, splitAtWord, leftJustify, splitWidth);
     }
+
     
     /**
      * Converts from ASCII to a banner, eventually centering each line,
-     * folding after each word, or when the width limit is reached
+     * folding after each word, or when the width limit is reached.
      * 
      * @param message Message
      * @param figletFont Font
@@ -2499,9 +2501,10 @@ public class Banner
         
         return result;
     }
+
     
     /**
-     * Gimme the maximum width of a converted text
+     * Gimme the maximum width of a converted text.
      * 
      * @param message Message
      * @return Width of text
@@ -2523,7 +2526,7 @@ public class Banner
     //--------------------------------------------------------------------------
     
     /**
-     * Move a banner to the right (for centering)
+     * Move a banner to the right (for centering).
      * 
      * @param message Text of message
      * @param offset Offset to start
@@ -2544,9 +2547,10 @@ public class Banner
             
         return result;
     }
+
     
     /**
-     * Append a new banner line (center if needed)
+     * Append a new banner line (center if needed).
      * 
      * @param text Existing text
      * @param line New line
@@ -2567,8 +2571,9 @@ public class Banner
         return result;
     }
     
+    
     /**
-     * Create a banner from text
+     * Create a banner from text.
      * 
      * @param message Message
      * @param font Font to use
@@ -2592,16 +2597,16 @@ public class Banner
         return result;
     }
     
+    
     /**
-     * Appends a word to a banner
+     * Appends a word to a banner.
      * 
      * @param message Banner to append word to
      * @param end Word to append to the banner
      * @param font Font to use
      * @return Banner with word appended
      */
-    private static String append(String message, String end, 
-        BannerFont font)
+    private static String append(String message, String end, BannerFont font)
     {
         String result = "";
         int h = 0;
@@ -2626,8 +2631,9 @@ public class Banner
         return result;
     }
 
+    
     /**
-     * Prints program usage and help information
+     * Prints program usage and help information.
      */
     private static void printUsage()
     {
@@ -2652,7 +2658,7 @@ public class Banner
     //--------------------------------------------------------------------------
     
     /**
-     * Font described by ascii string in figlet format
+     * Font described by ascii string in figlet format.
      */ 
     static class BannerFont
     {
@@ -2669,7 +2675,7 @@ public class Banner
         //----------------------------------------------------------------------
 
         /**
-         * Creates a banner font
+         * Creates a banner font.
          * 
          * @param fontData Figlet font data
          */        
@@ -2679,7 +2685,7 @@ public class Banner
         }
 
         /**
-         * Creates a banner font
+         * Creates a banner font.
          *
          * @param aURL URL to figlet font data
          */            
@@ -2737,7 +2743,7 @@ public class Banner
         //----------------------------------------------------------------------
         
         /**
-         * Reads figlet font_ data from an inputstream
+         * Reads figlet font_ data from an inputstream.
          * 
          * @param is Inputstream to read font data from
          */
@@ -2845,4 +2851,3 @@ public class Banner
  *
  * 12/2002 Modifications made to remove resource dependency
  */
-

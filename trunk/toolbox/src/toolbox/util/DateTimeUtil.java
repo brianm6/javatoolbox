@@ -8,11 +8,11 @@ import java.util.Date;
 /**
  * Utility class that deals with both the DATE and TIME portions of the 
  * {@link java.util.Date} class.
- * 
- * TODO: Revisit chaining vs. confusing
  */
 public final class DateTimeUtil
 {
+    // TODO: Revisit chaining vs. confusing
+    
     // Clover private constructor workaround
     static { new DateTimeUtil(); }
 
@@ -21,7 +21,7 @@ public final class DateTimeUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private DateTimeUtil()
     {
@@ -32,10 +32,10 @@ public final class DateTimeUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Formats a timestamp
+     * Formats a timestamp in MM-dd-yyyy hh:mm a format.
      *  
      * @param d Date to format
-     * @return Date/time in dashed MM-dd-yyyy hh:mm a format
+     * @return Date/time in dashed MM-dd-yyyy hh:mm a format.
      */
     public static String format(Date d)
     {
@@ -43,8 +43,9 @@ public final class DateTimeUtil
         return df.format(d);
     }
 
+    
 	/**
-	 * Formats a timestamp down to the second
+	 * Formats a timestamp down to the second.
 	 *  
 	 * @param d Date to format
 	 * @return Date/time in dashed MM-dd-yyyy hh:mm:ss a format
@@ -54,6 +55,7 @@ public final class DateTimeUtil
 		DateFormat df = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a");
 		return df.format(d);
 	}
+    
     
     /**
      * Adds individual time components to a date. The original date is returned 
@@ -83,8 +85,9 @@ public final class DateTimeUtil
         return date;
     }
     
+    
     /**
-     * Gets the date/time of the beginning of the current day
+     * Gets the date/time of the beginning of the current day.
      * 
      * @return Date
      */
@@ -92,6 +95,7 @@ public final class DateTimeUtil
     {
         return getBeginningOfDay(new Date());
     }
+    
     
     /**
      * Convenience method to get the time of day immediately after is rolled 
@@ -112,8 +116,9 @@ public final class DateTimeUtil
         return c.getTime();
     }
 
+    
     /**
-     * Get earliest notion of java time
+     * Get earliest notion of java time.
      * 
      * @return Beginning of time
      */
@@ -122,9 +127,10 @@ public final class DateTimeUtil
         return new Date(0);
     }
     
+    
     /**
      * Convenience method to get the time of the current day preset to 
-     * 23:59:59 999 ms
+     * 23:59:59 999 ms.
      * 
      * @return End of current day
      */
@@ -133,6 +139,7 @@ public final class DateTimeUtil
         return getEndOfDay(new Date());
     }
 
+    
     /**
      * Convenience method to get the time of the given day immediately 
      * before it rolls over to the next day.
@@ -152,8 +159,9 @@ public final class DateTimeUtil
         return c.getTime();
     }
     
+    
     /**
-     * Gets a date far out in the future
+     * Gets a date far out in the future.
      * 
      * @return Date representing end of time
      */

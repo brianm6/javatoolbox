@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 
 /**
- * Utility class for doubles
+ * Utility class for doubles.
  */
 public final class DoubleUtil
 {
@@ -16,7 +16,7 @@ public final class DoubleUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent Construction
+     * Private constructor.
      */
     private DoubleUtil()
     {
@@ -27,7 +27,7 @@ public final class DoubleUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Determines if the contents of a string can be expressed as a double
+     * Determines if the contents of a string can be expressed as a double.
      * 
      * @param s String to inspect
      * @return True if string contains a double, false otherwise
@@ -54,8 +54,9 @@ public final class DoubleUtil
         return b;
     }
 
+    
     /**
-     * Computes the average of a double array
+     * Computes the average of a double array.
      * 
      * @param d Array of doubles
      * @return Average of the array
@@ -74,8 +75,9 @@ public final class DoubleUtil
         return avg;
     }
 
+    
     /**
-     * Calculates difference of two arrays of doubles
+     * Calculates difference of two arrays of doubles.
      * 
      * @param subtractFrom Array to subtract from
      * @param subtract Array to subtract
@@ -94,8 +96,9 @@ public final class DoubleUtil
         return diff;
     }
 
+    
     /**
-     * Determines the number of occurrences of a given value in an array
+     * Determines the number of occurrences of a given value in an array.
      *
      * @param value Value to match
      * @param arr Array of doubles
@@ -112,8 +115,9 @@ public final class DoubleUtil
         return cnt;
     }
 
+    
     /**
-     * Calculates the median value
+     * Calculates the median value.
      * 
      * @param array Array of values
      * @return Median value
@@ -149,8 +153,9 @@ public final class DoubleUtil
         return median;
     }
 
+    
     /**
-     * Calculates the sum of an array of doubles
+     * Calculates the sum of an array of doubles.
      *
      * @param d Array of doubles
      * @return Sum of elements in d
@@ -169,8 +174,9 @@ public final class DoubleUtil
         return sum;
     }
 
+    
     /**
-     * Rounds a double using the given Decimal format
+     * Rounds a double using the given Decimal format.
      * 
      * @param d Double to round
      * @param format Format to use for rounding
@@ -194,8 +200,9 @@ public final class DoubleUtil
         }
     }
 
+    
     /**
-     * Rounds a string that contains a double value 
+     * Rounds a string that contains a double value. 
      * 
      * @param s Double value as a string
      * @param format Format to use for rounding
@@ -206,14 +213,15 @@ public final class DoubleUtil
         return round(Double.parseDouble(s), format);
     }
     
+    
     /**
-     * Determines if a double is in a range [a..b]
-     * (inclusive of the start and end)
+     * Determines if a double is in a range [a..b] (inclusive of the start and 
+     * end).
      * 
      * @param number Double to check
      * @param rangeBegin Start of the range 
      * @param rangeEnd End of the range   
-     * @return True if the given double is in the range, false otherwise 
+     * @return True if the given double is in the range, false otherwise. 
      */
     public static boolean isBetween(double number, double rangeBegin, 
         double rangeEnd) 

@@ -21,12 +21,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.filter.ExtensionFilter;
 
 /**
- * Class related utility methods
+ * Class related utility methods.
  */
 public final class ClassUtil
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ClassUtil.class);
+    private static final Logger logger_ = Logger.getLogger(ClassUtil.class);
 
     // Clover private constructor workaround
     static { new ClassUtil(); }
@@ -36,7 +35,7 @@ public final class ClassUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private ClassUtil()
     {
@@ -47,12 +46,12 @@ public final class ClassUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Retrieves the names of all classes in a given package
-     *
-     * @param packageName Name of package to search
-     * @return Array of fully qualified class names in the package.
-     *         Empty array if no classes are found.
-     */
+	 * Retrieves the names of all classes in a given package.
+	 * 
+	 * @param packageName Name of package to search
+	 * @return Array of fully qualified class names in the package. Empty array
+	 *         if no classes are found.
+	 */
     public static String[] getClassesInPackage(String packageName)
     {
         // Collect results here
@@ -147,10 +146,11 @@ public final class ClassUtil
         }
         return (String[]) collector.toArray(new String[0]);
     }
+
     
     /**
      * Returns a list of all known packages in the classpath that contain
-     * class files
+     * class files.
      * 
      * @return Array of fully qualified package names
      */    
@@ -247,8 +247,9 @@ public final class ClassUtil
         return (String[]) sorted.toArray(new String[0]);
     }
     
+    
     /**
-     * Converts a file path into a package name
+     * Converts a file path into a package name.
      * 
      * @param path File path
      * @return Fully qualified package name
@@ -263,8 +264,9 @@ public final class ClassUtil
         return packageName;
     }
     
+    
     /**
-     * Converts a package name into a file path
+     * Converts a package name into a file path.
      * 
      * @param packageName Package name
      * @return File path
@@ -274,21 +276,23 @@ public final class ClassUtil
         return packageName.replace('.', File.separatorChar);        
     }
     
+    
     /**
-     * Determines if a files name indicates a java archive. This includes
-     * zip and jar file types.
-     * 
-     * @param filename File to examine
-     * @return True if the name is a valid java archive, false otherwise
-     */
+	 * Determines if a files name indicates a java archive. This includes zip
+	 * and jar file types.
+	 * 
+	 * @param filename File to examine
+	 * @return True if the name is a valid java archive, false otherwise
+	 */
     public static boolean isArchive(String filename)
     {
         String f = filename.toLowerCase().trim();
         return (f.endsWith(".zip") || f.endsWith(".jar"));        
     }
 
+    
     /**
-     * Returns true if the filename indicates a java class file
+     * Returns true if the filename indicates a java class file.
      * 
      * @param filename File to examine
      * @return True if a class file, false otherwise
@@ -297,9 +301,10 @@ public final class ClassUtil
     {
         return filename.trim().toLowerCase().endsWith(".class");    
     }
+
     
     /**
-     * Returns the complete system classpath separated by pathSeparator
+     * Returns the complete system classpath separated by pathSeparator.
      * 
      * @return String
      */
@@ -314,8 +319,9 @@ public final class ClassUtil
         return classpath;           
     }
     
+    
     /**
-     * Strips package name from a fully qualified class name
+     * Strips package name from a fully qualified class name.
      * 
      * @param fqn Fully qualified class name
      * @return Name of class only
@@ -329,6 +335,7 @@ public final class ClassUtil
         else
             return fqn;
     }
+    
     
     /**
      * Strips the class portion from a fully qualified class name leaving only 
@@ -349,8 +356,10 @@ public final class ClassUtil
         return (i >= 0 ? fqcn.substring(0, i) : "");
     }
 
+    
     /**
-     * Returns array of Class object matching the types for the passed in params
+     * Returns array of Class object matching the types for the passed in 
+     * params.
      * 
      * @param params Array of objects 
      * @return Array of Class objects
@@ -368,6 +377,7 @@ public final class ClassUtil
             
         return ca;
     }
+    
     
     /**
      * Given a Class object, attempts to find its .class location [returns null

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * Utility class for Collections
+ * Utility class for Collections.
  */
 public final class CollectionUtil
 {
@@ -16,7 +16,7 @@ public final class CollectionUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for CollectionUtil.
+     * Private constructor.
      */
     private CollectionUtil()
     {
@@ -27,7 +27,7 @@ public final class CollectionUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Assembles the union of a pair of collections
+     * Assembles the union of a pair of collections.
      * 
      * @param set1 First set
      * @param set2 Second set
@@ -40,8 +40,9 @@ public final class CollectionUtil
         return union;
     }
     
+    
     /**
-     * Assembles the intersection of a pair of collections
+     * Assembles the intersection of a pair of collections.
      * 
      * @param set1 First set
      * @param set2 Second set
@@ -55,8 +56,9 @@ public final class CollectionUtil
         return intersection;
     }
 
+    
     /**
-     * Assembles the set difference of a pair of collections
+     * Assembles the set difference of a pair of collections.
      * 
      * @param set1 First set
      * @param set2 Second set
@@ -69,8 +71,9 @@ public final class CollectionUtil
         return difference;
     }
     
+    
     /**
-     * Determines if set2 is a subset of set1
+     * Determines if set2 is a subset of set1.
      * 
      * @param set1 First set
      * @param set2 Second set

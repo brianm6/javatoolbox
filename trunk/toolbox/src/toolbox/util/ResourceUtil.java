@@ -18,8 +18,7 @@ import org.apache.log4j.Logger;
  */
 public final class ResourceUtil
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ResourceUtil.class);
+    private static final Logger logger_ = Logger.getLogger(ResourceUtil.class);
 
     // Clover private constructor workaround
     static { new ResourceUtil(); }
@@ -399,7 +398,7 @@ public final class ResourceUtil
     //--------------------------------------------------------------------------
     
     /**
-	 * Exports a resource to bytes and encapsulates in a class
+	 * Exports a resource to bytes and encapsulates in a class.
 	 * 
 	 * @param resource Name of resource
 	 * @param packageName Name of package to create object in

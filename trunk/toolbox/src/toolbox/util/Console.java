@@ -35,7 +35,7 @@ import java.util.StringTokenizer;
  * InteractiveConsole and add interceptors for whatever commands you would like 
  * to support. Don't forget to call super.handleCommand() if your concrete 
  * implementation doesn't understand the command (delegate to a higher 
- * authority)
+ * authority).
  */
 public abstract class Console
 {
@@ -44,52 +44,52 @@ public abstract class Console
     //--------------------------------------------------------------------------
     
     /**
-     * Command to show help 
+     * Command to show help. 
      */
     public static final String CMD_HELP = "help";
     
     /** 
-     * Commands to exit the jvm 
+     * Command to exit the jvm. 
      */
     public static final String CMD_QUIT = "quit";
     
     /** 
-     * Command to exit the jvm 
+     * Command to exit the jvm. 
      */
     public static final String CMD_EXIT = "exit";
     
     /** 
-     * Command to show the classpath 
+     * Command to show the classpath. 
      */
     public static final String CMD_CLASSPATH = "classpath";
     
     /** 
-     * Command to show the system properties 
+     * Command to show the system properties. 
      */
     public static final String CMD_PROPS = "props";
     
     /** 
-     * Command to show memory consumption 
+     * Command to show memory consumption. 
      */
     public static final String CMD_MEM = "mem";
     
     /** 
-     * Command to detach the console from the input stream 
+     * Command to detach the console from the input stream. 
      */
     public static final String CMD_DETACH = "detach";
     
     /** 
-     * Command to add a property to System.properties 
+     * Command to add a property to System.properties. 
      */
     public static final String CMD_SETPROP = "setprop";
     
     /** 
-     * Command to remove a property from System.properties 
+     * Command to remove a property from System.properties. 
      */
     public static final String CMD_DELPROP = "delprop";
 
     /** 
-     * Command to show how long the console has been active 
+     * Command to show how long the console has been active.
      */
     public static final String CMD_UPTIME = "uptime";
     
@@ -98,17 +98,17 @@ public abstract class Console
     //--------------------------------------------------------------------------
     
     /** 
-     * Source of commands 
+     * Source of commands. 
      */    
     private LineNumberReader lnr_;
     
     /** 
-     * Output of command results 
+     * Output of command results. 
      */
     private PrintStream ps_;
 
     /** 
-     * Time console was created 
+     * Time console was created.
      */
     private long startTime_;
     
@@ -125,8 +125,9 @@ public abstract class Console
         this(System.in, System.out);
     }
     
+    
     /**
-     * Create an InteractiveConsole with the given streams
+     * Create an InteractiveConsole with the given streams.
      * 
      * @param is Input stream to read commands from
      * @param os Output stream to write command results to
@@ -144,7 +145,7 @@ public abstract class Console
     //--------------------------------------------------------------------------
 
     /**
-     * Accessor for the command prompt
+     * Accessor for the command prompt.
      * 
      * @return Command prompt
      */
@@ -156,7 +157,7 @@ public abstract class Console
  
     /**
      * This method must be called when ready to handle commands. The loop is 
-     * neverending so this call does block (reading from the input stream)
+     * neverending so this call does block (reading from the input stream).
      */
     public void startConsole()
     {
@@ -167,8 +168,9 @@ public abstract class Console
         }
     }
       
+    
     /**
-     * Accessor for the print stream that all output is sent to
+     * Accessor for the print stream that all output is sent to.
      * 
      * @return PrintStream
      */
@@ -177,8 +179,9 @@ public abstract class Console
         return ps_;
     }
 
+    
     /**
-     * Retrieves the next command from the input stream 
+     * Retrieves the next command from the input stream. 
      * 
      * @return Next command
      */
@@ -200,8 +203,9 @@ public abstract class Console
         return cmd;
     }        
     
+    
     /**
-     * Handles the command 
+     * Handles the command. 
      * 
      * @param cmd Command to handle
      */
@@ -230,11 +234,11 @@ public abstract class Console
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
-     * Adds/sets a property to system properties 
+     * Adds/sets a property to system properties. 
      * 
      * @param cmd Original command so we can extract prop name/value
      */
@@ -251,8 +255,9 @@ public abstract class Console
         }
     }
 
+    
     /**
-     * Removes a system property
+     * Removes a system property.
      * 
      * @param cmd Original command so we can extract prop name
      */
@@ -269,16 +274,18 @@ public abstract class Console
         }
     }
 
+    
     /**
-     * Exits the virtual machine 
+     * Exits the virtual machine. 
      */
     protected void commandQuit()
     {
         System.exit(0);
     }
 
+    
     /**
-     * Detachs the console from the input/ooutput streams
+     * Detachs the console from the input/output streams.
      */
     protected void commandDetach()
     {
@@ -295,8 +302,9 @@ public abstract class Console
         getPrintStream().println("Re-attached to inputstream.");
     }
     
+    
     /**
-     * Print help info
+     * Print help info.
      */
     protected void commandHelp()
     {
@@ -313,8 +321,9 @@ public abstract class Console
         ps.println("uptime     => shows how long process has been running");
     }
 
+    
     /**
-     * Prints out all system properties in alphabetical order
+     * Prints out all system properties in alphabetical order.
      */
     protected void commandProps()
     {
@@ -346,8 +355,9 @@ public abstract class Console
         }
     }
 
+    
     /**
-     * Prints out runtime memory allocation
+     * Prints out runtime memory allocation.
      */
     protected void commandMem()
     {
@@ -358,8 +368,9 @@ public abstract class Console
             "Total memory " + Runtime.getRuntime().totalMemory());
     }
 
+    
     /**
-     * Print out classpath information
+     * Print out classpath information.
      */
     protected void commandClasspath()
     {
@@ -373,8 +384,9 @@ public abstract class Console
         getPrintStream().print(sb.toString());
     }
     
+    
     /**
-     * Prints out the uptime
+     * Prints out the uptime.
      */
     protected void commandUptime()
     {

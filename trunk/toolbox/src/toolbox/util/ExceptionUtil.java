@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ui.JSmartOptionPane;
 
 /**
- * Exception utilities
+ * Exception utilities.
  */
 public final class ExceptionUtil
 {
@@ -16,22 +16,22 @@ public final class ExceptionUtil
     static { new ExceptionUtil(); }
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private ExceptionUtil()
     {
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
 
     /**
-     * Converts a <code>Throwable</code>'s stack trace to a string
+     * Converts a <code>Throwable</code>'s stack trace to a string.
      *
      * @param t Throwable to extrace stack trace from
      * @return Stack trace of the throwable as a string
@@ -42,6 +42,7 @@ public final class ExceptionUtil
         t.printStackTrace(new PrintWriter(sw));
         return sw.toString();
     }
+    
     
     /**
      * Generic Error handler for exceptions generated on a client side UI. 
