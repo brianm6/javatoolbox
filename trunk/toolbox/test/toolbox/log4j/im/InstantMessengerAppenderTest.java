@@ -16,6 +16,9 @@ import toolbox.util.ThreadUtil;
 public class InstantMessengerAppenderTest extends TestCase
     implements StandaloneTestCase
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(InstantMessengerAppenderTest.class);
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -41,6 +44,8 @@ public class InstantMessengerAppenderTest extends TestCase
      */
     public void testAppend() throws Exception
     {
+        logger_.info("Running testAppend...");
+        
         Logger root = Logger.getRootLogger();
         
         InstantMessengerAppender imAppender = new InstantMessengerAppender();
