@@ -81,7 +81,8 @@ public class JSmartTableTest extends UITestCase
 
         JSmartToggleButton b =
             new JSmartToggleButton(new AutoTailAction(table));
-        b.toggleOnProperty(table, "autotail");
+        
+        b.toggleOnProperty(table, JSmartTable.PROP_AUTOTAIL);
         buttons.add(b);
 
         buttons.add(new JSmartButton(new AbstractAction("setAutoTail(true)")
