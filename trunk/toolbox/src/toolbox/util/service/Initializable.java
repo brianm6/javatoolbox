@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @see toolbox.util.service.Destroyable
  */
-public interface Initializable extends ServiceNature
+public interface Initializable extends Service
 {
     /**
      * Initializes the service with optional configuration informatin.

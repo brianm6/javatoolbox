@@ -11,7 +11,12 @@ import toolbox.util.net.ISocketServerListener;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 import toolbox.util.service.AbstractService;
+import toolbox.util.service.Initializable;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
+import toolbox.util.service.ServiceTransition;
+import toolbox.util.service.Startable;
+import toolbox.util.statemachine.StateMachine;
 
 /**
  * Server is a non-UI component that is used to collect data throughput
@@ -19,11 +24,16 @@ import toolbox.util.service.ServiceException;
  * 
  * @see toolbox.plugin.netmeter.Client
  */
-public class Server extends AbstractService
+public class Server implements Startable, Initializable
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
+    
+    /**
+     * Statemachine for the lifecycle states of this server.
+     */
+    private StateMachine machine_;
     
     /**
      * Server socket which sits and waits for client connections.
@@ -88,6 +98,9 @@ public class Server extends AbstractService
     public Server(int port)
     {
         setPort(port);
+        
+        // Create a state machine that adheres to the natures of this server
+        machine_ = AbstractService.createStateMachine(this);
     }
 
     //--------------------------------------------------------------------------
@@ -127,14 +140,16 @@ public class Server extends AbstractService
     }
     
     //--------------------------------------------------------------------------
-    // Service Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.service.AbstractService#initialize(Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
     public void initialize(Map configuration) throws ServiceException
     {
+        machine_.checkTransition(ServiceTransition.INITIALIZE);
+        
         SocketServerConfig config = new SocketServerConfig();
         config.setName("NetMeterServer");
         config.setServerPort(port_);
@@ -152,20 +167,76 @@ public class Server extends AbstractService
         serverListener_ = new ServerListener();        
         server_.addSocketServerListener(serverListener_);
         
-        super.initialize(configuration);
+        machine_.transition(ServiceTransition.INITIALIZE);
+    }
+
+    //--------------------------------------------------------------------------
+    // Startable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Startable#start()
+     */
+    public void start() throws ServiceException
+    {
+        machine_.checkTransition(ServiceTransition.START);
+        
+        try
+        {
+            server_.start();
+        }
+        catch (IOException ioe)
+        {
+            throw new ServiceException(ioe);
+        }
+        
+        machine_.transition(ServiceTransition.START);
+    }
+
+
+    /**
+     * @see toolbox.util.service.Service#stop()
+     */
+    public void stop() throws ServiceException
+    {
+        machine_.checkTransition(ServiceTransition.STOP);
+        
+        try
+        {
+            server_.stop();
+        }
+        catch (IOException ioe)
+        {
+            throw new ServiceException(ioe);
+        }
+        
+        machine_.transition(ServiceTransition.STOP);
+    }
+
+
+    /**
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return machine_.getState() == ServiceState.RUNNING;
     }
     
     //--------------------------------------------------------------------------
     // MySocketServer
     //--------------------------------------------------------------------------
     
+    /**
+     * MySocketServer is responsible for handling incoming connections from
+     * clients. 
+     */
     class MySocketServer extends SocketServer 
     {
-        
         public MySocketServer(SocketServerConfig config) 
         {
             super(config);
         }
+        
         
         /**
          * @see toolbox.util.net.SocketServer#getConnectionHandler()
@@ -179,87 +250,6 @@ public class Server extends AbstractService
             async.setConnectionHandler(handler);
             return async;
         }
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.Service#start()
-     */
-    public void start() throws ServiceException
-    {
-        try
-        {
-            server_.start();
-            super.start();
-        }
-        catch (IOException ioe)
-        {
-            throw new ServiceException(ioe);
-        }
-    }
-
-
-    /**
-     * @see toolbox.util.service.Service#stop()
-     */
-    public void stop() throws ServiceException
-    {
-        try
-        {
-            server_.stop();
-        }
-        catch (IOException ioe)
-        {
-            throw new ServiceException(ioe);
-        }
-        finally
-        {
-            super.stop();
-        }
-    }
-
-
-    /**
-     * @see toolbox.util.service.Service#suspend()
-     */
-    public void suspend() throws ServiceException
-    {
-        throw new UnsupportedOperationException("Pause not supported");
-    }
-
-
-    /**
-     * @see toolbox.util.service.Service#resume()
-     */
-    public void resume() throws ServiceException
-    {
-        throw new UnsupportedOperationException("Resume not supported");
-    }
-
-
-    /**
-     * @see toolbox.util.service.Service#isRunning()
-     */
-    public boolean isRunning()
-    {
-        throw new UnsupportedOperationException("isRunning not supported");
-    }
-
-
-    /**
-     * @see toolbox.util.service.Service#isSuspended()
-     */
-    public boolean isSuspended()
-    {
-        throw new UnsupportedOperationException("isPaused not supported");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.Destroyable#destroy()
-     */
-    public void destroy() throws ServiceException
-    {
     }
     
     //--------------------------------------------------------------------------

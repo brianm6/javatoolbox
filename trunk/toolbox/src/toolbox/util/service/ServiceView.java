@@ -186,7 +186,7 @@ public class ServiceView extends JPanel
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            service_.start();
+            ((Startable) service_).start();
             ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
             ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
             ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
@@ -219,7 +219,7 @@ public class ServiceView extends JPanel
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            service_.stop();
+            ((Startable) service_).stop();
             ((AbstractAction) actions_.get(ACTION_START)).setEnabled(true);
             ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
             ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
@@ -252,7 +252,7 @@ public class ServiceView extends JPanel
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            service_.suspend();
+            ((Suspendable) service_).suspend();
             ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
             ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
             ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
@@ -284,7 +284,7 @@ public class ServiceView extends JPanel
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            service_.resume();
+            ((Suspendable) service_).resume();
             ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
             ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
             ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);

@@ -3,7 +3,7 @@ package toolbox.util.service;
 /**
  * A Startable service can be started and stopped at will.
  */
-public interface Startable extends ServiceNature
+public interface Startable extends Service
 {
     /**
      * Starts the service. Once a service it started, it may either be suspended

@@ -25,8 +25,7 @@ package toolbox.util.service;
  *</pre>                                      
  */              
 
-public interface Service extends Initializable, Startable, Suspendable, 
-    Destroyable
+public interface Service 
 {
     /**
      * Returns the current state of this service.

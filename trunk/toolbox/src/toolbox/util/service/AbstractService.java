@@ -11,7 +11,8 @@ import toolbox.util.statemachine.StateMachineFactory;
 /**
  * Abstract base class for Service implementors.
  */
-public abstract class AbstractService implements Service
+public abstract class AbstractService implements Startable, Initializable,
+    Suspendable, Destroyable
 {
     // TODO: Left off here!
 
@@ -389,7 +390,7 @@ public abstract class AbstractService implements Service
      */
     public void addServiceListener(ServiceListener listener)
     {
-        //listeners_ = (ServiceListener[]) ArrayUtil.add(listeners_, listener);
+        listeners_ = (ServiceListener[]) ArrayUtil.add(listeners_, listener);
     }
 
     
@@ -399,7 +400,7 @@ public abstract class AbstractService implements Service
      */
     public void removeServiceListener(ServiceListener listener)
     {
-        //listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
+        listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
     }
     
     //--------------------------------------------------------------------------

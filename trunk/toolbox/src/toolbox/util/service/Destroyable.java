@@ -5,7 +5,7 @@ package toolbox.util.service;
  * state is a terminal state. A service can only be destroyed if in the Stopped
  * state.
  */
-public interface Destroyable extends ServiceNature
+public interface Destroyable extends Service
 {
     /**
      * Destroys this service.
