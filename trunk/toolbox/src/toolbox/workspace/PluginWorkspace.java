@@ -74,9 +74,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String   ATTR_HEIGHT       = "height";
     private static final String   ATTR_XCOORD       = "xcoord";
     private static final String   ATTR_YCOORD       = "ycoord";
-    private static final String   ATTR_LAF          = "lookandfeel";
-    private static final String   ATTR_LAF_THEME    = "lookandfeel.theme";
-    private static final String   ATTR_SELECTED_TAB = "selectedtab";
     private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
     private static final String   ATTR_LOG_LEVEL    = "loglevel";
     
@@ -110,11 +107,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     private IStatusBar statusBar_;
     
-    /** 
-     * Look and Feel Menu Items. 
-     */
-    private JMenu lookAndFeelMenu_;
-
     /**
      * Log4J specific logging menu.
      */
