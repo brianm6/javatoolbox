@@ -84,7 +84,9 @@ package toolbox.util.concurrent;
  */
 public class Semaphore implements Sync
 {
-    /** current number of available permits **/
+    /** 
+     * Current number of available permits
+     */
     private long permits_;
 
     //--------------------------------------------------------------------------
@@ -116,20 +118,15 @@ public class Semaphore implements Sync
     public void acquire() throws InterruptedException
     {
         if (Thread.interrupted())
-            throw new InterruptedException();
+            throw new InterruptedException(
+                "Thread has been interrupted prior to Semaphore.acquire()");
             
         synchronized (this)
         {
             try
             {
-
                 while (permits_ <= 0)
-                {
-
                     wait();
-
-                }
-
                 --permits_;
             }
             catch (InterruptedException ex)
@@ -151,7 +148,8 @@ public class Semaphore implements Sync
     public boolean attempt(long msecs) throws InterruptedException
     {
         if (Thread.interrupted())
-            throw new InterruptedException();
+            throw new InterruptedException(
+                "Thread has been interrupted prior to Semaphore.attempt()");
 
         synchronized (this)
         {
@@ -161,7 +159,9 @@ public class Semaphore implements Sync
                 return true;
             }
             else if (msecs <= 0)
+            {
                 return false;
+            }
             else
             {
                 try
@@ -232,12 +232,12 @@ public class Semaphore implements Sync
 
 
     /**
-     * Return the current number of available permits. Returns an accurate, 
+     * Returns the current number of available permits. Returns an accurate, 
      * but possibly unstable value, that may change immediately after returning.
      * 
      * @return  long
      */
-    public synchronized long permits()
+    public synchronized long getPermits()
     {
         return permits_;
     }
