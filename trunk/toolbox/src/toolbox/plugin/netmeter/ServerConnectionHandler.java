@@ -2,11 +2,10 @@ package toolbox.plugin.netmeter;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ElapsedTime;
-import toolbox.util.io.EventInputStream;
 import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
 
@@ -31,26 +30,26 @@ public class ServerConnectionHandler implements IConnectionHandler
     {
         try
         {
-            EventInputStream is = 
-              new EventInputStream("ServerConnectionHandler",
+            //EventInputStream is = 
+            //  new EventInputStream("ServerConnectionHandler",
 
             //CountingInputStream is = 
             //    new CountingInputStream(
-                    new BufferedInputStream(conn.getInputStream()));
+            InputStream is = new BufferedInputStream(conn.getInputStream());
                 
-            ElapsedTime time = new ElapsedTime();
+            //ElapsedTime time = new ElapsedTime();
             
-            byte[] buffer = new byte[30000];
+            //byte[] buffer = new byte[30000];
             
-            while(is.read(buffer) != -1 );
+            while(is.read() != -1 );
             
-            time.setEndTime();
+            //time.setEndTime();
             
-            int secs = time.getSeconds();
-            int count = is.getCount();
-            double thruput = count/secs;
+            //int secs = time.getSeconds();
+            //int count = is.getCount();
+            //double thruput = count/secs;
             
-            logger_.info("Server throughput: " + count + "/" + secs + " ==> " + thruput + "KBytes/sec");
+            //logger_.info("Server throughput: " + count + "/" + secs + " ==> " + thruput + "KBytes/sec");
             
             is.close();
         }
