@@ -9,7 +9,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
 
 /**
- * Queue that blocks on calls to pull() until an element is available
+ * Queue that blocks on calls to pull() until an element is available.
  */
 public class BlockingQueue
 {
@@ -17,17 +17,17 @@ public class BlockingQueue
         Logger.getLogger(BlockingQueue.class);
 
     /**
-     * The backing queue
+     * The backing queue.
      */        
     private List queue_;
     
     /**
-     * Mutex semaphore
+     * Mutex semaphore.
      */
     private Semaphore semaphore_;
     
     /**
-     * Mutex
+     * Mutex.
      */
     private Mutex mutex_;
 
@@ -36,7 +36,7 @@ public class BlockingQueue
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a BlockingQueue
+     * Creates a BlockingQueue.
      */
     public BlockingQueue()
     {
@@ -51,10 +51,10 @@ public class BlockingQueue
         
     /**
      * Pulls element off the queue. Blocks until an element is available if the
-     * queue is empty
+     * queue is empty.
      * 
-     * @return  Next element
-     * @throws  InterruptedException on error
+     * @return Next element
+     * @throws InterruptedException on error
      */
     public Object pull() throws InterruptedException
     {
@@ -79,14 +79,15 @@ public class BlockingQueue
         }
     }
 
+    
     /**
-     * Pulls element off the queue. Blocks until an element is available if the
-     * queue is empty
-     * 
-     * @param   millis  Timeout in milliseconds
-     * @return  Next element
-     * @throws  InterruptedException on error
-     */
+	 * Pulls element off the queue. Blocks until an element is available if the
+	 * queue is empty.
+	 * 
+	 * @param millis Timeout in milliseconds
+	 * @return Next element
+	 * @throws InterruptedException on error
+	 */
     public Object pull(long millis) throws InterruptedException
     {
         try
@@ -122,11 +123,12 @@ public class BlockingQueue
         }
     }
 
+    
     /**
-     * Pushes an element onto the queue.
-     * 
-     * @param  obj  Object to push onto the queue
-     */
+	 * Pushes an element onto the queue.
+	 * 
+	 * @param obj Object to push onto the queue
+	 */
     public void push(Object obj)
     {
         try
@@ -145,8 +147,9 @@ public class BlockingQueue
         }
     }
 
+    
     /**
-     * Returns the size of the queue
+     * Returns the size of the queue.
      * 
      * @return Queue size
      */
@@ -175,9 +178,9 @@ public class BlockingQueue
     //--------------------------------------------------------------------------
     
     /**
-     * Dumps contents of queue one line at a time
+     * Dumps contents of queue one line at a time.
      * 
-     * @return  Queue contents as a string, one line per element
+     * @return Queue contents as a string, one line per element
      */
     public String toString()
     {

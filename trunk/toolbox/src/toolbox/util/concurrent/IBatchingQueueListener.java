@@ -6,7 +6,7 @@ package toolbox.util.concurrent;
 public interface IBatchingQueueListener
 {
     /**
-     * Next batch of elements have been pulled off of the queue
+     * Next batch of elements have been pulled off of the queue.
      * 
      * @param elements Array of objects pulled from the queue
      */

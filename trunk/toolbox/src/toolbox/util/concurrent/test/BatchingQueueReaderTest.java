@@ -11,7 +11,7 @@ import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 
 /**
- * Unit test for BatchingQueueReader
+ * Unit test for BatchingQueueReader.
  */
 public class BatchingQueueReaderTest extends TestCase
 {
@@ -25,9 +25,9 @@ public class BatchingQueueReaderTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */    
     public static void main(String[] args)
     {
@@ -35,7 +35,7 @@ public class BatchingQueueReaderTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    //  Setup
+    // Overrides TestCase
     //--------------------------------------------------------------------------
     
     /**
@@ -51,7 +51,7 @@ public class BatchingQueueReaderTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test notification
+     * Test notification.
      * 
      * @throws Exception on error
      */
@@ -83,8 +83,9 @@ public class BatchingQueueReaderTest extends TestCase
         bqr.stop();
     }
 
+    
     /**
-     * Test start() and stop()
+     * Test start() and stop().
      * 
      * @throws Exception on error
      */
@@ -150,8 +151,9 @@ public class BatchingQueueReaderTest extends TestCase
         bqr.stop();
     }
 
+    
     /**
-     * Test start() if called twice
+     * Test start() if called twice.
      * 
      * @throws Exception on error
      */
@@ -177,8 +179,9 @@ public class BatchingQueueReaderTest extends TestCase
         }
     }
 
+    
     /**
-     * Test stop() if called twice
+     * Test stop() if called twice.
      * 
      * @throws Exception on error
      */

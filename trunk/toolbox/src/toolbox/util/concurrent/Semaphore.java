@@ -85,7 +85,7 @@ package toolbox.util.concurrent;
 public class Semaphore implements Sync
 {
     /** 
-     * Current number of available permits
+     * Current number of available permits.
      */
     private long permits_;
 
@@ -93,14 +93,14 @@ public class Semaphore implements Sync
     // Constructors
     //--------------------------------------------------------------------------
     
-    /** 
-     * Create a Semaphore with the given initial number of permits.
-     * Using a seed of one makes the semaphore act as a mutual exclusion lock.
-     * Negative seeds are also allowed, in which case no acquires will proceed
-     * until the number of releases has pushed the number of permits past 0.
-     * 
-     * @param  initialPermits  Initial permits
-     */
+    /**
+	 * Create a Semaphore with the given initial number of permits. Using a
+	 * seed of one makes the semaphore act as a mutual exclusion lock. Negative
+	 * seeds are also allowed, in which case no acquires will proceed until the
+	 * number of releases has pushed the number of permits past 0.
+	 * 
+	 * @param initialPermits Initial permits
+	 */
     public Semaphore(long initialPermits)
     {
         permits_ = initialPermits;
@@ -111,7 +111,7 @@ public class Semaphore implements Sync
     //--------------------------------------------------------------------------
     
     /** 
-     * Wait until a permit is available, and take one 
+     * Wait until a permit is available, and take one. 
      * 
      * @throws InterruptedException on interruption
      */
@@ -198,7 +198,7 @@ public class Semaphore implements Sync
 
 
     /** 
-     * Release a permit 
+     * Release a permit. 
      */
     public synchronized void release()
     {
@@ -207,18 +207,19 @@ public class Semaphore implements Sync
     }
 
 
-    /** 
-     * Release N permits. <code>release(n)</code> is
-     * equivalent in effect to:
-     * <pre>
-     *   for (int i = 0; i < n; ++i) release();
-     * </pre>
-     * <p>
-     * But may be more efficient in some semaphore implementations.
-     * 
-     * @param     n   Time in millis
-     * @exception IllegalArgumentException if n is negative.
-     */
+    /**
+	 * Release N permits. <code>release(n)</code> is equivalent in effect to:
+	 * 
+	 * <pre>
+	 *  for (int i = 0; i < n; ++i) release();
+	 * </pre>
+	 * 
+	 * <p>
+	 * But may be more efficient in some semaphore implementations.
+	 * 
+	 * @param n Time in millis
+	 * @exception IllegalArgumentException if n is negative.
+	 */
     public synchronized void release(long n) throws IllegalArgumentException
     {
         if (n < 0)
@@ -235,7 +236,7 @@ public class Semaphore implements Sync
      * Returns the current number of available permits. Returns an accurate, 
      * but possibly unstable value, that may change immediately after returning.
      * 
-     * @return  long
+     * @return long
      */
     public synchronized long getPermits()
     {

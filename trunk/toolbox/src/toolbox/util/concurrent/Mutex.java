@@ -107,9 +107,8 @@ package toolbox.util.concurrent;
 
 public class Mutex implements Sync
 {
-
     /** 
-     * The lock status 
+     * The lock status. 
      */
     private boolean inuse_ = false;
 
@@ -118,9 +117,9 @@ public class Mutex implements Sync
     //--------------------------------------------------------------------------
     
     /**
-     * Acquires the mutex
+     * Acquires the mutex.
      * 
-     * @throws  InterruptedException on interruption
+     * @throws InterruptedException on interruption
      */
     public void acquire() throws InterruptedException
     {
@@ -143,6 +142,7 @@ public class Mutex implements Sync
         }
     }
 
+    
     /**
      * Releases the mutex
      */
@@ -152,13 +152,14 @@ public class Mutex implements Sync
         notify();
     }
 
+    
     /**
-     * Attempts to acquire the mutex in a given time frame
-     * 
-     * @param   msecs  Milliseconds to attempt
-     * @return  If attempt was successful
-     * @throws  InterruptedException on interruption
-     */
+	 * Attempts to acquire the mutex in a given time frame.
+	 * 
+	 * @param msecs Milliseconds to attempt
+	 * @return If attempt was successful
+	 * @throws InterruptedException on interruption
+	 */
     public boolean attempt(long msecs) throws InterruptedException
     {
         if (Thread.interrupted())

@@ -1,12 +1,18 @@
 package toolbox.util.concurrent;
 
 /**
- * Blocking queue reader
+ * Blocking queue reader.
  */
 public abstract class BlockingQueueReader implements Runnable
 {
+    /**
+     * Queue to read from.
+     */
     private BlockingQueue queue_;
     
+    /**
+     * Termination flag.
+     */
     private boolean continueProcessing_ = true;
 
     //--------------------------------------------------------------------------
@@ -14,9 +20,9 @@ public abstract class BlockingQueueReader implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Execute for each object in queue
+     * Execute for each object in queue.
      * 
-     * @param  obj  Obect to execute
+     * @param obj Obect to execute
      */    
     public abstract void execute(Object obj);
 
@@ -25,17 +31,18 @@ public abstract class BlockingQueueReader implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Init
+     * Init.
      * 
-     * @param  queue  Queue to read from
+     * @param queue Queue to read from
      */
     public void init(BlockingQueue queue)
     {
         queue_ = queue;
     }
 
+    
     /**
-     * Shuts down reader
+     * Shuts down reader.
      */
     public void shutdown()
     {
@@ -47,7 +54,7 @@ public abstract class BlockingQueueReader implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Runs the reader
+     * Runs the reader.
      */
     public void run()
     {

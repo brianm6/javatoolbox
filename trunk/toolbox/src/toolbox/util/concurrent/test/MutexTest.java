@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.concurrent.Mutex;
 
 /**
- * Unit test for Mutex
+ * Unit test for Mutex.
  */
 public class MutexTest extends TestCase
 {
@@ -20,9 +20,9 @@ public class MutexTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -34,7 +34,7 @@ public class MutexTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests acquire()
+     * Tests acquire().
      * 
      * @throws InterruptedException on error
      */
@@ -48,8 +48,9 @@ public class MutexTest extends TestCase
         m.acquire();
     }
 
+    
     /**
-     * Tests release()
+     * Tests release().
      * 
      * @throws InterruptedException on error
      */
@@ -63,8 +64,9 @@ public class MutexTest extends TestCase
         m.release();
     }
 
+    
     /**
-     * Tests attempt()
+     * Tests attempt().
      * 
      * @throws InterruptedException on error
      */

@@ -10,7 +10,7 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
 
 /**
- * Unit test for BlockingQueue
+ * Unit test for BlockingQueue.
  */
 public class BlockingQueueTest extends TestCase
 {
@@ -22,9 +22,9 @@ public class BlockingQueueTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */    
     public static void main(String[] args)
     {
@@ -36,7 +36,7 @@ public class BlockingQueueTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test pull() when the timeout expires
+     * Test pull() when the timeout expires.
      * 
      * @throws Exception on error
      */
@@ -54,8 +54,9 @@ public class BlockingQueueTest extends TestCase
         
     }
     
+    
     /**
-     * Test pull() when item is popped before the timeout
+     * Test pull() when item is popped before the timeout.
      * 
      * @throws Exception on error
      */
@@ -96,8 +97,9 @@ public class BlockingQueueTest extends TestCase
         t.join();
     }
     
+    
     /**
-     * Tests toString()
+     * Tests toString().
      * 
      * @throws Exception on error
      */
@@ -114,8 +116,9 @@ public class BlockingQueueTest extends TestCase
         logger_.info("toString: " + q);
     }
     
+    
     /**
-     * Tests interrupt() while blocked
+     * Tests interrupt() while blocked.
      * 
      * @throws Exception on error
      */

@@ -8,32 +8,32 @@ import toolbox.util.ThreadUtil;
 
 /**
  * Reads as much content off a queue as possible (batch mode) and delivers in a 
- * single call to IBatchingQueueListener.nextBatch()
+ * single call to IBatchingQueueListener.nextBatch().
  */
 public class BatchingQueueReader
 {
     /** 
-     * Queue to read elements from 
+     * Queue to read elements from. 
      */
     private BlockingQueue queue_;
     
     /** 
-     * Started flag 
+     * Started flag. 
      */
     private boolean started_ = false;
     
     /** 
-     * Queue Listeners 
+     * Queue Listeners. 
      */
     private List listeners_ = new ArrayList();    
 
     /** 
-     * Batch thread 
+     * Batch thread. 
      */
     private Thread worker_;
     
     /** 
-     * Friendly name assigned to the batch thread 
+     * Friendly name assigned to the batch thread. 
      */
     private String name_;
     
@@ -42,7 +42,7 @@ public class BatchingQueueReader
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a BatchingQueueReader
+     * Creates a BatchingQueueReader.
      * 
      * @param queue Queue to read in batch mode from
      */
@@ -51,8 +51,9 @@ public class BatchingQueueReader
         this(queue, "BatchingQueueReader");
     }
 
+    
     /**
-     * Creates a BatchingQueueReader
+     * Creates a BatchingQueueReader.
      * 
      * @param queue Queue to read in batch mode from
      * @param name Friendly name assigned to the batch thread
@@ -68,7 +69,7 @@ public class BatchingQueueReader
     //--------------------------------------------------------------------------
     
     /**
-     * Stops the reader
+     * Stops the reader.
      * 
      * @throws IllegalStateException if the reader has already been stopped
      */
@@ -86,8 +87,9 @@ public class BatchingQueueReader
         }
     }
 
+    
     /**
-     * Starts the reader
+     * Starts the reader.
      * 
      * @throws IllegalStateException if the reader is already started
      */
@@ -111,7 +113,7 @@ public class BatchingQueueReader
     //--------------------------------------------------------------------------
  
     /**
-     * Fires notification of new batch of elements available
+     * Fires notification of new batch of elements available.
      * 
      * @param elements New elements available
      */
@@ -128,8 +130,9 @@ public class BatchingQueueReader
         }    
     }
     
+    
     /**
-     * Adds a listener 
+     * Adds a listener. 
      * 
      * @param listener Listener to add
      */   
@@ -141,7 +144,7 @@ public class BatchingQueueReader
  
     
     /**
-     * Removes a listener
+     * Removes a listener.
      * 
      * @param listener Listener to remove
      */
