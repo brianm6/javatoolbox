@@ -1,14 +1,19 @@
 package toolbox.util.net.test;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
 
+import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.net.IConnection;
+import toolbox.util.net.IConnectionListener;
 import toolbox.util.net.SocketConnection;
 
 /**
@@ -17,7 +22,7 @@ import toolbox.util.net.SocketConnection;
 public class SocketConnectionTest extends TestCase
 {
     /** Logger **/
-    private static final Logger logger = 
+    private static final Logger logger_ = 
         Logger.getLogger(SocketConnectionTest.class);
     
     /**
@@ -28,6 +33,10 @@ public class SocketConnectionTest extends TestCase
         TestRunner.run(SocketConnectionTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for SocketConnectionTest
      */
@@ -35,6 +44,65 @@ public class SocketConnectionTest extends TestCase
     {
         super(arg);
     }
+    
+    //--------------------------------------------------------------------------
+    //  Constructor Tests
+    //--------------------------------------------------------------------------
+    
+    public void testDefaultConstructor() throws Exception
+    {
+        Server server = new Server(false);
+        SocketConnection sc = new SocketConnection();
+
+        server.start();        
+        sc.setHost("localhost");
+        sc.setPort(server.getPort());
+        sc.connect();
+        sc.close();
+    }
+        
+    public void testHostPortConstructor() throws Exception
+    {
+        Server server = new Server(false);
+        server.start();        
+        
+        SocketConnection sc = new SocketConnection("localhost", server.getPort());
+        sc.connect();
+        sc.close();
+    }
+        
+    public void testForceConnectConstructor() throws Exception
+    {
+        final int port = SocketUtil.getFreePort();
+        Server server = new Server(port,false);
+        
+        new Thread(new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    SocketConnection sc = 
+                        new SocketConnection("localhost", port, true, 2);                
+                        
+                    logger_.info("Connected after retry!");
+                    sc.connect();
+                    sc.close();
+                }
+                catch(Exception e)
+                {
+                }
+            }
+        }).start();
+        
+        ThreadUtil.sleep(10000);
+        
+        server.start();
+    }        
+    
+    //--------------------------------------------------------------------------
+    //  Test methods
+    //--------------------------------------------------------------------------    
     
     /**
      * Tests the getInputStream() method
@@ -81,17 +149,143 @@ public class SocketConnectionTest extends TestCase
     }
 
     /**
+     * Tests the notifications genereated by IConnectionListener
+     */
+    public void testConnectionListener() throws Exception
+    {
+        Server s = new Server();
+        s.start();
+        
+        ThreadUtil.sleep(2000);
+        
+        SocketConnection connection = new SocketConnection();
+        connection.addConnectionListener(new Listener());
+        connection.setHost("localhost");
+        connection.setPort(s.getPort());
+        connection.connect();
+        connection.close();
+        s.stop();
+    }
+
+    /**
+     * Tests SocketConnection lifecycle
+     */
+    public void xtestConnectionLifeCycle() throws Exception
+    {
+        Server s = new Server(true);
+        s.start();
+        
+        ThreadUtil.sleep(2000);
+        
+        SocketConnection connection = new SocketConnection();
+        connection.addConnectionListener(new Listener());
+        connection.setHost("localhost");
+        connection.setPort(s.getPort());
+        
+        for (int i=0; i<500; i++)
+        {
+            logger_.info("Connection " + i);
+            
+            try
+            {
+                connection.connect();
+                connection.close();
+            }
+            catch(ConnectException ce)
+            {
+                logger_.info("Failed to connect to server");
+            }
+            finally
+            {
+                ThreadUtil.sleep(1);
+            }
+        }
+        
+        s.stop();
+    }
+
+    /**
+     * Tests the isConnected() method
+     */
+    public void testIsConnected() throws Exception
+    {
+        Server server = new Server(true);
+        server.start();        
+        
+        SocketConnection sc = new SocketConnection("localhost", server.getPort());
+        assertTrue(sc.isConnected());
+        sc.close();
+        assertTrue(!sc.isConnected());
+        sc.connect();
+        assertTrue(sc.isConnected());
+        sc.close();
+
+        server.stop();
+    }
+
+
+    //--------------------------------------------------------------------------
+    //  Test helper classes
+    //--------------------------------------------------------------------------
+
+    /**
+     * Dummy connection listener
+     */
+    class Listener implements IConnectionListener
+    {
+        public void connectionClosed(IConnection connection)
+        {
+            logger_.info("Notification: Connection closed " + connection);
+        }
+        
+        public void connectionClosing(IConnection connection)
+        {
+            logger_.info("Notification: Connection closing " + connection);            
+        }
+        
+        public void connectionInterrupted(IConnection connection)
+        {
+            logger_.info("Notification: Connection interrupted" + connection);            
+        }
+        
+        public void connectionStarted(IConnection connection)
+        {
+            logger_.info("Notification: Connection started" + connection);                        
+        }
+
+    }
+
+
+    /**
      * Internal socket server
      */
     class Server implements Runnable
     {
-        ServerSocket socket;
-
+        ServerSocket socket_;
+        boolean longLived_ = false;
+        int port_;
+        boolean keepGoing_ = true;
+                    
         /**
          * Constructor 
          */
         public Server()
         {
+            this(0,false);
+        }
+
+        /**
+         * Arg constructor
+         */
+        public Server(boolean longLived)
+        {
+            this(0, longLived);
+        }
+
+        public Server(int port, boolean longLived)
+        {
+            port_ = port;
+            longLived_ = longLived;
         }
 
         /**
@@ -99,7 +293,7 @@ public class SocketConnectionTest extends TestCase
          */
         public void start() throws IOException
         {
-            socket = new ServerSocket(0);
+            socket_ = new ServerSocket(port_);
             
             Thread t = new Thread(this);
             t.start();
@@ -110,7 +304,8 @@ public class SocketConnectionTest extends TestCase
          */
         public void stop() throws IOException
         {
-            socket.close();
+            keepGoing_ = false;
+            socket_.close();
         }
         
         /**
@@ -118,13 +313,19 @@ public class SocketConnectionTest extends TestCase
          */
         public void run()
         {
-            try
+            while(keepGoing_)
             {
-                Socket sock = socket.accept();                          
-            }
-            catch(IOException e)
-            {
-                logger.error("run", e);
+                try
+                {
+                    logger_.info("Server: Waiting to accept...");
+                    Socket sock = socket_.accept();
+                    keepGoing_ = longLived_;
+                    logger_.info("Server: After accept..");
+                }
+                catch(IOException e)
+                {
+                    logger_.info(e.toString());
+                }
             }
         }
             
@@ -133,7 +334,7 @@ public class SocketConnectionTest extends TestCase
          */
         public int getPort() 
         {
-            return socket.getLocalPort();
+            return socket_.getLocalPort();
         }           
     }
 }
