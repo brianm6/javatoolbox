@@ -30,37 +30,59 @@ import toolbox.util.RollingCounter;
 public class WrappingWriter extends Writer implements 
     RollingCounter.IRollingCounterListener
 {
-    /** Default width to wrap at **/
+    /** 
+     * Default width to wrap at 
+     */
     public static final int    DEFAULT_WIDTH   = 80;
     
-    /** Default prefix for each line **/
+    /** 
+     * Default prefix for each line 
+     */
     public static final String DEFAULT_PREFIX  = "";
     
-    /** Default suffix for each line **/
+    /** 
+     * Default suffix for each line 
+     */
     public static final String DEFAULT_SUFFIX  = "";
     
-    /** Default newline for each line **/
+    /** 
+     * Default newline for each line 
+     */
     public static final String DEFAULT_NEWLINE = "\n";
 
-    /** Delegate writer **/
+    /** 
+     * Delegate writer 
+     */
     private Writer writer_;
     
-    /** Rolling counter to keep track of line position **/
+    /** 
+     * Rolling counter to keep track of line position 
+     */
     private RollingCounter counter_;
     
-    /** Width of writer **/
+    /** 
+     * Width of writer 
+     */
     private int width_;
     
-    /** Prefix decorator prepended to each line **/
+    /** 
+     * Prefix decorator prepended to each line 
+     */
     private String prefix_;     
     
-    /** Suffix decorator appended to each line **/
+    /** 
+     * Suffix decorator appended to each line 
+     */
     private String suffix_;     
     
-    /** Flag to mark the consumption of the first character **/
+    /**
+     *  Flag to mark the consumption of the first character 
+     */
     private boolean first_;
     
-    /** Flag to stagger writing on a new line until the next char is written **/
+    /** 
+     * Flag to stagger writing on a new line until the next char is written 
+     */
     private boolean stagger_;
 
     //--------------------------------------------------------------------------
@@ -133,14 +155,14 @@ public class WrappingWriter extends Writer implements
     {
         for (int i=off; i<off+len; i++)
         {
-            /* add prefix before writing very first char to stream */
+            // Add prefix before writing very first char to stream
             if (first_)
             {
                 writer_.write(prefix_);
                 first_ = false;    
             }
 
-            /* if were're on the verge of a new line, wrap */
+            // If were're on the verge of a new line, wrap
             if(stagger_)
             {
                 writer_.write(DEFAULT_NEWLINE);
@@ -186,7 +208,7 @@ public class WrappingWriter extends Writer implements
     }
     
     //--------------------------------------------------------------------------
-    //  Public 
+    //  Interface RollingCounter.IRollingCounterListener
     //--------------------------------------------------------------------------
 
     /**
@@ -217,6 +239,9 @@ public class WrappingWriter extends Writer implements
         }
     }
 
+    //--------------------------------------------------------------------------
+    //  Overridden from java.lang.Object
+    //--------------------------------------------------------------------------
 
     /**
      * @return Dump to string
