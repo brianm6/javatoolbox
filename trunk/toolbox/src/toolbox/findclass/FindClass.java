@@ -38,9 +38,6 @@ public class FindClass
     
     /** Ignore case in search criteria **/
     private boolean ignoreCase_;
-    
-    /** System file separator **/
-    private String fileSeparator_ = System.getProperty("file.separator");
 
     /** Filter for jar files **/
     private FilenameFilter jarFilter_ = new ExtensionFilter(".jar");
@@ -48,7 +45,7 @@ public class FindClass
     /** Filter for zip files **/
     private FilenameFilter zipFilter_ = new ExtensionFilter(".zip");
     
-    /** Filter for clas files **/
+    /** Filter for class files **/
     private FilenameFilter classFilter_ = new ExtensionFilter(".class");
     
     /** Filter for archives **/
@@ -78,12 +75,16 @@ public class FindClass
     /** Flag to cancel the search **/
     private boolean isCancelled_;
     
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * Constructor
+     * Default Constructor
      */
     public FindClass() 
     {
-        /* enable debug if findclass.debug found */
+        // enable debug if findclass.debug found 
         if (System.getProperty(debugProp_) == null)
             Category.getDefaultHierarchy().disableDebug();
         
@@ -91,6 +92,9 @@ public class FindClass
         //buildSearchTargets();
     }
 
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
 
     /**
      * Finds a class
@@ -104,22 +108,22 @@ public class FindClass
     public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
         throws RESyntaxException, IOException
     { 
-        /* result collector */
+        // result collector
         defaultCollector_.clear();
         
-        /* set arguments */
+        // set arguments
         ignoreCase_  = ignoreCase;
         classToFind_ = classToFind;
 
-        /* setup regexp based on flag */                    
+        // setup regexp based on flag
         regExp_ = new RE(classToFind_);
         if (ignoreCase)
             regExp_.setMatchFlags(RE.MATCH_CASEINDEPENDENT);        
 
-        /* convert search list to an array */
+        // convert search list to an array
         classpath_ = (String[]) getSearchTargets().toArray(new String[0]);
 
-        /* for each search target, search it */
+        // for each search target, search it
         for (int i=0; i< classpath_.length; i++) 
         { 
             if (!isCancelled_)
@@ -150,12 +154,12 @@ public class FindClass
      */
     protected void buildSearchTargets()
     {
-        /* build list of archives and dirs to search */        
+        // build list of archives and dirs to search
         searchTargets_ = new ArrayList();
         searchTargets_.addAll(getClassPathTargets());
         searchTargets_.addAll(getArchiveTargets());
         
-        /* print out search targets if debub is on */        
+        // print out search targets if debub is on
         if (logger_.isDebugEnabled())
         {
             logger_.debug("Search targets");
@@ -179,14 +183,14 @@ public class FindClass
     {
         List targets = new ArrayList();
         
-        /* get classpath */
+        // get classpath
         String c = System.getProperty("java.class.path");
         
-        /* tokenize */  
+        // tokenize
         StringTokenizer t = 
             new StringTokenizer(c, System.getProperty("path.separator"), false);
                 
-        /* iterate and add to search list */    
+        // iterate and add to search list
         while (t.hasMoreTokens())
             targets.add(t.nextToken());
             
@@ -223,20 +227,17 @@ public class FindClass
 
         if (f.exists() && f.isDirectory()) 
         { 
-            /* smack a trailing / on the start dir */
-            if (!startingDir.endsWith(fileSeparator_))
-                startingDir += fileSeparator_;
+            // smack a trailing / on the start dir 
+            if (!startingDir.endsWith(File.separator))
+                startingDir += File.separator;
             
-            /* process files */
+            // process files
             String[] files = f.list(filter);
             
             for (int i=0; i<files.length; i++) 
-            { 
-                File current = new File(f, files[i]);
                 basket.add(startingDir + files[i]);
-            }
             
-            /* process directories */
+            // process directories
             String[] dirs  = f.list(directoryFilter_);
                         
             for(int i=0; i<dirs.length; i++)
@@ -308,12 +309,12 @@ public class FindClass
      */    
     protected void findInPath(String pathName) 
     { 
-        /* tack a slash on the end */
-        if (!pathName.endsWith( fileSeparator_ ))
-            pathName += fileSeparator_;
+        // tack a slash on the end
+        if (!pathName.endsWith( File.separator ))
+            pathName += File.separator;
 
         
-        /* regular expression search */
+        // regular expression search
         List classFiles = findFilesRecursively(pathName, classFilter_);
         
         for(Iterator i = classFiles.iterator(); i.hasNext(); )
@@ -437,7 +438,7 @@ public class FindClass
      */
     public List getSearchTargets()
     {
-        /* build lazily */
+        // build lazily
         if (searchTargets_ == null)
         {
             buildSearchTargets();    
@@ -467,6 +468,28 @@ public class FindClass
         searchTargets_.add(0, searchTarget);
     }
     
+    
+    /**
+     * Adds a file or a directory as the search target. If a directory, then
+     * it is scanned recursively for archives all of which are added as search
+     * targets. If a file, then that single archive file is added as a search
+     * target.
+     * 
+     * @param  target  File or directory
+     */
+    public void addSearchTarget(File target)
+    {
+        if (target.isDirectory())
+        {
+            searchTargets_.addAll(0,
+                findFilesRecursively(target.getAbsolutePath(), archiveFilter_));
+        }
+        else
+        {
+            searchTargets_.add(0, target.getAbsolutePath());            
+        }
+    }
+
     
     /**
      * Removes a search target from the list of search targets
