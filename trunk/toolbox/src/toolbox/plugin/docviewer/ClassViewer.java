@@ -9,12 +9,11 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.decompiler.Decompiler;
-import toolbox.util.decompiler.DecompilerException;
 import toolbox.util.decompiler.DecompilerFactory;
 import toolbox.util.io.StringInputStream;
 
 /**
- * Java class file viewer that decompiles a <code>class<code> file and displays
+ * Java class file viewer that decompiles a <code>class</code> file and displays
  * the resulting source code in a syntax hilighting editor. 
  */
 public class ClassViewer extends JavaViewer
