@@ -37,9 +37,9 @@ public class FindClassAdapter implements FindClassListener
 
     
     /**
-     * @see FindClassListener#searchCancelled()
+     * @see FindClassListener#searchCanceled()
      */
-    public void searchCancelled()
+    public void searchCanceled()
     {
     }
     
