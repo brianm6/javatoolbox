@@ -16,7 +16,7 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.XMLUtil;
 
 /**
- * Unit test for SametimeMessenger
+ * Unit test for SametimeMessenger.
  */
 public class SametimeMessengerTest extends TestCase
 {
@@ -28,9 +28,9 @@ public class SametimeMessengerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -42,7 +42,7 @@ public class SametimeMessengerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests full lifecycle of typical usage
+     * Tests full lifecycle of typical usage.
      * 
      * @throws Exception on error
      */    
@@ -76,8 +76,9 @@ public class SametimeMessengerTest extends TestCase
         logger_.debug("All done!");
     }
     
+    
     /**
-     * Tests sending a whole slew of messages
+     * Tests sending a whole slew of messages.
      * 
      * @throws Exception on error
      */    
@@ -101,6 +102,7 @@ public class SametimeMessengerTest extends TestCase
         messenger.logout();
         messenger.shutdown();
     }
+    
     
     /**
      * Tests that the configuration in the xml file is read and executed
