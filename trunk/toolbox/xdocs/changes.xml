@@ -41,6 +41,9 @@
  * TODO: Add WinLAF https://winlaf.dev.java.net
  * TODO: Add latest Oyoaha and all its themes
  * TODO: Add non-repeating random number generator
+ * TODO: Expose xml formatter properties in TextToolsPlugin
+ * TODO: Expose html formatter properties in TextToolsPlugin
+ * TODO: Add undo to TextToolsPlugin
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
