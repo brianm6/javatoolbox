@@ -25,67 +25,75 @@ import toolbox.util.ThreadUtil;
  * removing multiple listeners that report on the lifecycle of the tail. One or 
  * more outputstreams/writers can also be specified as the destination for the 
  * output of the tail.
+ * <p>
+ * To tail a file and send the output to System.out:
+ * <pre>
+ * Tail tail = new Tail();
+ * tail.setTailFile("server.log");
+ * tail.addOutputStream(System.out);
+ * 
+ * // Starts tailer thread; returns immediately
+ * tail.start();
+ * 
+ * // Later on... 
+ * tail.pause();
+ * tail.unpause();
+ * 
+ * // All done..cleanup 
+ * tail.stop();
+ * 
+ * // Change of mind...wheee
+ * tail.start();  
+ * </pre>
  */
 public class Tail implements Runnable
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(Tail.class);
     
-    /** 
-     * Number of line for initial backlog 
-     */
+    /** Number of line for initial backlog */ 
     public static final int NUM_LINES_BACKLOG = 20;
 
-    /** 
-     * Tail listeners 
-     */
-    private List listeners_ = new ArrayList();
+    /** Tail listeners */ 
+    private List listeners_;
     
-    /** 
-     * Stream listeners
-     */
-    private List streams_ = new ArrayList();
+    /** Streams where tail output will be sent */
+    private List streams_;
     
-    /** 
-     * Writer listeners 
-     */
-    private List writers_ = new ArrayList();
+    /** Writer where tail output will be sent */ 
+    private List writers_;
 
-    /** 
-     * Thread that runner is associated with 
-     */
+    /** Tailer thread */ 
     private Thread thread_;
 
-    /** 
-     * Reader to tail 
-     */
+    /** Reader which tail will follow */
     private Reader reader_;
     
-    /** 
-     * File if reader originated at one 
-     */
+    /** File which tail will follow */ 
     private File file_;
 
-    /** 
-     * Paused state of the runner 
-     */
-    private boolean paused_ = false;
+    /** Paused state of the tailer (not thread!) */
+    private boolean paused_;
 
-    /** 
-     * Flag to signify a shutdown is pending 
-     */
-    private boolean pendingShutdown_ = false;
+    /** Flag set if the tailer thread needs to shutdown */ 
+    private boolean pendingShutdown_;
     
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for Tail.
+     * Default constructor
      */
     public Tail()
     {
+        listeners_ = new ArrayList(1);
+        streams_   = new ArrayList(1);
+        writers_   = new ArrayList(1);
+        
+        paused_          = false;
+        pendingShutdown_ = false;
+        
     }
 
     //--------------------------------------------------------------------------
@@ -98,8 +106,7 @@ public class Tail implements Runnable
      * @param   filename  File to tail
      * @throws  FileNotFoundException if file not found
      */
-    public void setTailFile(String filename) 
-        throws FileNotFoundException
+    public void setTailFile(String filename) throws FileNotFoundException
     {
         setTailFile(new File(filename));
     }
@@ -153,7 +160,10 @@ public class Tail implements Runnable
     {
         if (!isAlive())
         {
-            thread_ = new Thread(this);
+            String name = "Tail-" + 
+                (getFile() != null ? getFile().getName() : "???");
+                 
+            thread_ = new Thread(this, name);
             connect();
             thread_.start();
             fireTailStarted();
@@ -290,7 +300,7 @@ public class Tail implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
     /**
@@ -536,7 +546,7 @@ public class Tail implements Runnable
     }
     
     //--------------------------------------------------------------------------
-    //  Interface Runnable
+    //  Runnable Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -548,14 +558,15 @@ public class Tail implements Runnable
         {
             LineNumberReader lnr = (LineNumberReader) reader_;
             int cnt = 0;
-            lnr.mark(1000);
+            int estimatedBytesBacklog = NUM_LINES_BACKLOG * 80;
+            //lnr.mark(estimatedBytesBacklog);
 
             while (lnr.ready())
             {
                 cnt++;
 
-                if ((cnt % NUM_LINES_BACKLOG) == 0)
-                    lnr.mark(1000);
+                if (((cnt + NUM_LINES_BACKLOG) % NUM_LINES_BACKLOG) == 0)
+                    lnr.mark(estimatedBytesBacklog);
 
                 lnr.readLine();
             }
