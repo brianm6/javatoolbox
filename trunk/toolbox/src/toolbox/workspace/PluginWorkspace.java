@@ -30,6 +30,7 @@ import nu.xom.Node;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -40,6 +41,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringOutputStream;
+import toolbox.util.service.ServiceException;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
 import toolbox.util.ui.JSmartFrame;
@@ -91,7 +93,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     private static final String NODE_ROOT = "Root";
 
     //--------------------------------------------------------------------------
-    // Constants
+    // Default Constants
     //--------------------------------------------------------------------------
 
     /**
@@ -103,14 +105,19 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         FileUtil.trailWithSeparator(
             System.getProperty("user.home")) + ".toolbox.xml";
 
+    //--------------------------------------------------------------------------
+    // Key Constants
+    //--------------------------------------------------------------------------
+    
     /**
-     * Plugin property used to identify a reference to the workspace's shared
-     * statusbar.
+     * Key that references the workspace's statusbar. This is passed to plugins 
+     * via IPlugin.initialize(Map) on startup.
      */
     public static final String KEY_STATUSBAR = "workspace.statusbar";
 
     /**
-     * Plugin property that refers to the PluginWorkspace.
+     * Key that refererences the workspace itself. This is passed to plugins
+     * via IPlugin.initialize(Map) on startup.
      */
     public static final String KEY_WORKSPACE = "workspace.self";
 
@@ -118,6 +125,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     // UI Component Name Constants
     //--------------------------------------------------------------------------
     
+    // Used by the Jemmy Unit Tests
     public static final String LABEL_PREFERENCES_MENU = "Preferences";
     public static final String LABEL_FILE_MENU        = "File";
     public static final String LABEL_EXIT_MENUITEM    = "Exit";
@@ -139,7 +147,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     private LoggingMenu logMenu_;
 
     /**
-     * Plugin menu.
+     * Plugin menu from which plugins can be activated directly.
      */
     private JSmartMenu pluginMenu_;
 
@@ -158,17 +166,19 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * File used to persist workspace and plugin preferences.
+     * File to which workspace and plugin preferences are persisted. Any
+     * component which implements the IPreferenced interface is persisted here.
      */
     private String prefsFile_;
     
     /**
-     * Preferences stored as XML.
+     * Global set of preferences in the structure of a live XML DOM tree.
      */
     private Element prefs_;
 
     /**
-     * Unloaded preferences.
+     * Once a plugin is unloaded, its prefs would be thrown away unless we save
+     * them here to reuse again the next time the plugin is activated.
      */
     private Element unloadedPrefs_;
 
@@ -182,14 +192,16 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Manages the plugin host.
+     * Manages the various plugin host implementations (tabbed and desktop at
+     * the moment).
      */
     private PluginHostManager pluginHostManager_;
 
     /**
-     * Default initialization map for plugins. Passed into IPlugin.startup().
+     * Initialization map for plugins passed via IPlugin.startup(Map). See
+     * Key Constants.
      */
-    private Map bootstrapMap_;
+    private Map initMap_;
 
     //--------------------------------------------------------------------------
     // Main
@@ -212,7 +224,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         JDialog.setDefaultLookAndFeelDecorated(decorate);
         Toolkit.getDefaultToolkit().setDynamicLayout(true);
         
-        
         try
         {
             new PluginWorkspace(prefsFile);
@@ -230,6 +241,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     /**
      * Creates a PluginWorkspace with the default preferences file.
      *
+     * @see #DEFAULT_PREFS_FILE
      * @throws Exception on error.
      */
     public PluginWorkspace() throws Exception
@@ -248,7 +260,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     {
         super(TITLE_TOOLBOX);
         setPrefsFile(prefsFile);
-        init();
+        initialize(MapUtils.EMPTY_MAP);
         loadPrefs();
         buildView();
         setLAF(prefs_);
@@ -261,7 +273,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the plugin host.
+     * Returns the currently installed plugin host.
      *
      * @return PluginHost
      */
@@ -272,7 +284,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
 
     
     /**
-     * Registers a plugin with the PluginHostManager. Must be called prior
+     * Registers a plugin with the PluginHostManager. Must be called prior to
      * buildView().
      *
      * @param plugin Plugin to register.
@@ -313,7 +325,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
 
     /**
      * Registers a plugin with the PluginHostManager along with an existing set
-     * of preferences. Must be called prior buildView().
+     * of preferences. Must be called prior to buildView().
      *
      * @param plugin Plugin to register.
      * @param prefs Plugin preferences DOM.
@@ -474,7 +486,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         logger_.debug("shouldDecorate = " + result);
         return result;
     }
-    
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -482,7 +494,8 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     /**
      * Initializes the plugin workspace.
      */
-    protected void init()
+    public void initialize(Map config) throws IllegalStateException,
+        ServiceException
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pluginHostManager_ = new PluginHostManager(this);
@@ -495,7 +508,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         logMenu_ = new LoggingMenu();
     }
 
-
+    
     /**
      * Constructs the user interface.
      *
@@ -506,9 +519,9 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         statusBar_ = new WorkspaceStatusBar();
         statusBar_.setInfo("Howdy pardner!");
 
-        bootstrapMap_ = new HashMap(1);
-        bootstrapMap_.put(KEY_STATUSBAR, statusBar_);
-        bootstrapMap_.put(KEY_WORKSPACE, PluginWorkspace.this);
+        initMap_ = new HashMap(2);
+        initMap_.put(KEY_STATUSBAR, statusBar_);
+        initMap_.put(KEY_WORKSPACE, this);
 
         //
         // The plugin host needs to be set before calling applyPrefs() because
@@ -522,7 +535,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
                     new Element(NODE_WORKSPACE)),
                 ATTR_PLUGINHOST,
                 PluginHostManager.PLUGIN_HOST_TABBED),
-            bootstrapMap_);
+            initMap_);
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
@@ -998,6 +1011,9 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // UseDecorationsAction
+    //--------------------------------------------------------------------------
     
     /**
      * Toggles using the Look and Feel frame and dialog border decorations.
