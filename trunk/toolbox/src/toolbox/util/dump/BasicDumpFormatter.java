@@ -10,22 +10,31 @@ import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 import toolbox.util.ClassUtil;
+import toolbox.util.StringUtil;
 
 /**
  * Basic implementation of the {@link DumpFormatter} interface
  */
 public class BasicDumpFormatter implements DumpFormatter
 {
-    /** Classes that are excluded from the object dump */
+    /** 
+     * Classes that are excluded from the object dump 
+     */
     private List excludedClasses_;
 
-    /** Fields that are excluded from the object dump */
+    /** 
+     * Fields that are excluded from the object dump 
+     */
     private List excludedFields_;
 
-    /** Controls stripping of the package when printing out a classes' name */
+    /** 
+     * Controls stripping of the package when printing out a classes' name 
+     */
     private boolean stripPackage_;
 
-    /** Flag to show inheritance tree for each object that is traversed*/
+    /** 
+     * Flag to show inheritance tree for each object that is traversed
+     */
     private boolean showInheritance_;
     
     //--------------------------------------------------------------------------
@@ -169,4 +178,14 @@ public class BasicDumpFormatter implements DumpFormatter
     {
         return true;
     }
+    
+    public String formatFieldName(String fieldName)
+    {
+        //
+        // Strip leading and trailing underscores
+        //
+        
+        return StringUtil.trim(fieldName, '_');
+    }
+
 }
