@@ -21,8 +21,6 @@ package toolbox;
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
- * TODO: Updated JFreeChart to 0.9.18
- * TODO: Update to latest Multivalent
  * TODO: Figure out how to use forms
  * TODO: Add tile and cascade to Desktop plugin host
  * TODO: JDBC Plugin : icons for execute all, execute selected, execute current
@@ -50,17 +48,24 @@ package toolbox;
  * =============================================================================
  * 
  * =============================== COMPLETED ===================================
- * - Add Plugin menu
- * - Separate unit tests from main source branch + reconfig maven.
- * - Created JSmartInternalFrame
- * - DesktopPluginHost now rembers window position and sizes
- * - Add wildcard matchine to the file switch in tree
- * - Scan source for refactorings to use DisposeAction 
- * - Update to latest Sun TableSorter
- * - Integrate statcvs-xml from berlios
- * - Add HTTP proxy support to preferences dialog. 
- * - Figure out how to put separators on the main javadocs page
- * - Alphasort plugin menu
+ *
+ * April 2004 
+ * 	- Scan source for refactorings to use DisposeAction 
+ * 	- Updated to the latest Sun TableSorter
+ * 	- Integrated statcvs-xml from berlios into the StatCVS plugin
+ * 	- Add HTTP proxy support (changeable via the preferences dialog) 
+ * 	- Added group Javadoc separators to the maven project.xml
+ * 	- Update to latest Multivalent
+ * 	- Updated JFreeChart to 0.9.18 
+ * 	- Alphasorted the Plugin menu
+ *  - Replaced select methods in StringUtil and StreamUtil with apache commons 
+ * 
+ * February 2004
+ * 	- Add Plugin menu
+ * 	- Separate unit tests from main source branch + reconfig maven.
+ * 	- Created JSmartInternalFrame
+ * 	- DesktopPluginHost now rembers window position and sizes
+ * 	- Add wildcard matching to the file switch in tree
  * ============================================================================= 
  * </pre>
  */
