@@ -11,21 +11,18 @@ import toolbox.util.ui.list.JSmartList;
 public class FontStyleList extends JSmartList
 {
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
      * Construct a new FontStyleList, using the supplied values for style
      * display names.
      * 
-     * @param styleDisplayNames   
-     * 
-     *      Must contain exactly four members. The members of this array 
-     *      represent the following styles, in order: Font.PLAIN, 
-     *      Font.BOLD, Font.ITALIC, and Font.BOLD+Font.ITALIC
-     * 
-     * @throws IllegalArgumentException if styleDisplayNames does not
-     *         contain exactly four String values
+     * @param styleDisplayNames Must contain exactly four members. The members
+     *        of this array represent the following styles, in order:
+     *        Font.PLAIN, Font.BOLD, Font.ITALIC, and Font.BOLD + Font.ITALIC.
+     * @throws IllegalArgumentException if styleDisplayNames does not contain
+     *         exactly four String values.
      */
     public FontStyleList(String[] styleDisplayNames) 
         throws IllegalArgumentException
@@ -34,15 +31,15 @@ public class FontStyleList extends JSmartList
     }
     
     //--------------------------------------------------------------------------
-    //  Public 
+    // Public 
     //--------------------------------------------------------------------------
     
     /**
      * Returns currently selected font style.
      * 
-     * @return currently selected font style
-     * @throws FontChooserException thrown if no font style is currently 
-     *         selected
+     * @return currently selected font style.
+     * @throws FontChooserException thrown if no font style is currently
+     *         selected.
      */
     public int getSelectedStyle() throws FontChooserException
     {
@@ -66,9 +63,9 @@ public class FontStyleList extends JSmartList
     /**
      * Change the currently selected style in this FontStyleList.
      * 
-     * @param style New selected style for this FontStyleList
-     * @throws IllegalArgumentException thrown if style is not one of 
-     *         Font.PLAIN, Font.BOLD, Font.ITALIC, or Font.BOLD+Font.ITALIC
+     * @param style New selected style for this FontStyleList.
+     * @throws IllegalArgumentException thrown if style is not one of
+     *         Font.PLAIN, Font.BOLD, Font.ITALIC, or Font.BOLD + Font.ITALIC.
      */
     public void setSelectedStyle(int style) throws IllegalArgumentException
     {
@@ -93,17 +90,17 @@ public class FontStyleList extends JSmartList
     }
     
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
      * Validates style display names.
      * 
-     * @param styleDisplayNames Style display names
-     * @return String array
+     * @param styleDisplayNames Style display names.
+     * @return String array.
      */
-    private static String[] validateStyleDisplayNames(
-            String[] styleDisplayNames)
+    protected static String[] validateStyleDisplayNames(
+        String[] styleDisplayNames)
     {
         if (styleDisplayNames == null)
             throw new IllegalArgumentException(
