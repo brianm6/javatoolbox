@@ -100,7 +100,7 @@ public class JSmartToggleButton extends JToggleButton implements AntiAliased
         {
             public void propertyChange(PropertyChangeEvent evt)
             {
-                setSelected((Boolean) evt.getNewValue()).booleanValue();
+                setSelected(((Boolean) evt.getNewValue()).booleanValue());
             }
         });
     }
