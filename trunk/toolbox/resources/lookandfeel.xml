@@ -275,6 +275,15 @@
       class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
       
+      <Property name="theme.name" value="(default)"/>
+      <Property name="theme.path" value="skinlf/themepack.zip"/>
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
       <Property name="theme.name" value="Aqua"/>
       <Property name="theme.path" value="skinlf/aqua.zip"/>
   </LookAndFeel>
@@ -286,6 +295,15 @@
       
       <Property name="theme.name" value="BBJ"/>
       <Property name="theme.path" value="skinlf/bbj.zip"/>
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="SkinLF" 
+      class="com.l2fprod.gui.plaf.skin.SkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateSkinLookAndFeelAction">
+      
+      <Property name="theme.name" value="Beige Azul"/>
+      <Property name="theme.path" value="skinlf/beigeazul.zip"/>
   </LookAndFeel>
  
   <LookAndFeel 
