@@ -77,7 +77,6 @@ public class DefaultStatcvsEngine implements StatcvsEngine
             "-verbose",
             //"-debug",
             "-output-dir", plugin_.getCVSBaseDir() + "statcvs",
-            "-nocredits",
             //"-title " + cvsModuleField_.getText(),
             plugin_.getCVSLogFile(),
             plugin_.getCVSBaseDir()
