@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -73,6 +74,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String PROP_LOADED   = "workspace.plugins.loaded";
     private static final String PROP_SELECTED = "workspace.plugins.selected";
     
+    public static final String PROP_STATUSBAR = "workspace.statusbar";
+     
     /** Plugins are added to this tab panel in order or registration */
     private JTabbedPane tabbedPane_;
     
@@ -87,6 +90,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     
     /** Map of plugin names -> plugins */
     private Map plugins_ = new SequencedHashMap();
+    
+    /** Default initialization map for all plugins */
+    private Map initMap_;
 
     //--------------------------------------------------------------------------
     // Main 
@@ -145,11 +151,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         plugins_.put(plugin.getName(), plugin);
 
         // Init plugin
-        plugin.init();
+        plugin.startup(initMap_);
 
-        // Give plugin's its status bar
-        plugin.setStatusBar(statusBar_);
-        
         // Create tab
         JPanel pluginPanel = new JPanel(new BorderLayout());
         
@@ -192,7 +195,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         {
             IPlugin plugin = getPluginByClass(pluginClass);
             tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getName()));
-            plugin.setStatusBar(null);
+            //plugin.setStatusBar(null);
             plugins_.remove(plugin.getName());
             plugin.shutdown();
         }
@@ -220,6 +223,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         statusBar_ = new WorkspaceStatusBar();
         statusBar_.setStatus("Howdy pardner!");
         contentPane.add(BorderLayout.SOUTH, (Component) statusBar_);
+        
+        initMap_ = new HashMap(1);
+        initMap_.put(PROP_STATUSBAR, statusBar_);
         
         setJMenuBar(createMenuBar());
         

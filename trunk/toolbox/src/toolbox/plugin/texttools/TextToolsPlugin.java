@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -108,8 +109,11 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     //  IPlugin Interface
     //--------------------------------------------------------------------------
 
-    public void init()
+    public void startup(Map params)
     {
+        if (params != null)
+            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+        
         buildView();
     }
 
@@ -139,11 +143,6 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         topFlipPane_.savePrefs(prefs, "textplugin");
     }
 
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        statusBar_ = statusBar;
-    }
-    
     public void shutdown()
     {
     }

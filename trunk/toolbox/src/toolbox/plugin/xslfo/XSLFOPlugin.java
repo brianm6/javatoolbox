@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -43,6 +44,7 @@ import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.PluginWorkspace;
 import toolbox.util.ui.plugin.WorkspaceAction;
 
 /**
@@ -352,8 +354,11 @@ public class XSLFOPlugin extends JPanel implements IPlugin
                "Apache FOP or RenderX XEP.";
     }
 
-    public void init()
+    public void startup(Map params)
     {
+        if (params != null)
+            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+        
         buildView();
     }
 
@@ -372,11 +377,6 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         flipPane_.applyPrefs(prefs, PREFS_PREFIX);
         
         acrobatPath_ = prefs.getProperty("xslfoplugin.acrobat.path", null);
-    }
-
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        statusBar_ = statusBar;
     }
 
     public void shutdown()

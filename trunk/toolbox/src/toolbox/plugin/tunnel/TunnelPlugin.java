@@ -1,10 +1,12 @@
 package toolbox.tunnel;
 
 import java.awt.Component;
+import java.util.Map;
 import java.util.Properties;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.PluginWorkspace;
 
 /**
  * Plugin wrapper for JTcpTunnel
@@ -14,23 +16,23 @@ public class JTcpTunnelPlugin implements IPlugin
     /** Delegate */
     private JTcpTunnelPane jtcpTunnelPane_;
 
-    /** Hack for out of order init of plug by registerPlugin() */
-    private IStatusBar savedStatusBar_;
-    
     //--------------------------------------------------------------------------
-    // Constructors
+    // IPlugin Interface
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Default constructor
+     * @see toolbox.util.ui.plugin.IPlugin#startup(Map)
      */
-    public JTcpTunnelPlugin()
+    public void startup(Map params)
     {
+        IStatusBar statusBar = null;
+        
+        if (params != null)
+            statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+
+        jtcpTunnelPane_ = new JTcpTunnelPane();
+        jtcpTunnelPane_.setStatusBar(statusBar);    
     }
-    
-    //--------------------------------------------------------------------------
-    // Interface IPlugin
-    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.util.ui.plugin.IPlugin#getName()
@@ -38,6 +40,16 @@ public class JTcpTunnelPlugin implements IPlugin
     public String getName()
     {
         return "TCP Tunnel";
+    }
+
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     */
+    public String getDescription()
+    {
+        return "TCP Tunnel allows you to snoop on incoming/outgoing traffic " + 
+               "by creating an intermediate 'tunnel proxy' between two TCP " +
+               "connection endpoints.";
     }
 
     /**
@@ -49,24 +61,11 @@ public class JTcpTunnelPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
      */
-    public String getDescription()
+    public void applyPrefs(Properties prefs)
     {
-        return "TCP Tunnel allows you to snoop on incoming/outgoing traffic " + 
-               "by creating an intermediate 'tunnel proxy' between your " +
-               "connection endpoints.";
-    }
-
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#init()
-     */
-    public void init()
-    {
-        jtcpTunnelPane_ = new JTcpTunnelPane();    
-        
-        if (savedStatusBar_ != null)
-            setStatusBar(savedStatusBar_);    
+        jtcpTunnelPane_.applyPrefs(prefs);
     }
 
     /**
@@ -78,28 +77,10 @@ public class JTcpTunnelPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
-     */
-    public void applyPrefs(Properties prefs)
-    {
-        jtcpTunnelPane_.applyPrefs(prefs);
-    }
-
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
-     */
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        if (jtcpTunnelPane_ == null)
-            savedStatusBar_ = statusBar;
-        else
-            jtcpTunnelPane_.setStatusBar(statusBar);
-    }
-
-    /**
      * @see toolbox.util.ui.plugin.IPlugin#shutdown()
      */
     public void shutdown()
     {
+        jtcpTunnelPane_ = null;
     }
 }

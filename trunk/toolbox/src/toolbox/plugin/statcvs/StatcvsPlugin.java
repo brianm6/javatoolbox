@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -105,18 +106,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * output of cvs log command).
      */
     private PrintStream originalSystemOut_;
-    
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Default constructor
-     */
-    public StatcvsPlugin()
-    {
-        // Needed since created via newInstance()
-    }
     
     //--------------------------------------------------------------------------
     // Protected
@@ -402,14 +391,11 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return "Runs Statcvs on a CVS module";
     }
 
-    public void init()
+    public void startup(Map params)
     {
-        // moved to setStatusBar() since its is need to init
-    }
-
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        statusBar_ = statusBar;
+        if (params != null)
+            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            
         buildView();
     }
 

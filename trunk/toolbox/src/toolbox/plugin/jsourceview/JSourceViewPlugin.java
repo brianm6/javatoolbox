@@ -1,10 +1,12 @@
 package toolbox.jsourceview;
 
 import java.awt.Component;
+import java.util.Map;
 import java.util.Properties;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.PluginWorkspace;
 
 /**
  * Plugin wrapper for JSourceView
@@ -43,11 +45,17 @@ public class JSourceViewPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#init()
+     * @see toolbox.util.ui.plugin.IPlugin#startup(Map)
      */
-    public void init()
+    public void startup(Map params)
     {
+        IStatusBar statusBar = null;
+        
+        if (params != null)
+            statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+        
         sourceView_ = new JSourceView();
+        sourceView_.setStatusBar(statusBar);
     }
 
     /**
@@ -64,14 +72,6 @@ public class JSourceViewPlugin implements IPlugin
     public void applyPrefs(Properties prefs)
     {
         sourceView_.applyPrefs(prefs);
-    }
-
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
-     */
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        sourceView_.setStatusBar(statusBar);
     }
 
     /**

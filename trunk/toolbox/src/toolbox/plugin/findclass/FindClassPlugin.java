@@ -1,13 +1,13 @@
 package toolbox.findclass;
 
 import java.awt.Component;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ui.plugin.IPlugin;
-import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * Plugin wrapper for JFindClass
@@ -24,6 +24,9 @@ public class JFindClassPlugin implements IPlugin
     // Constructors
     //--------------------------------------------------------------------------
     
+    /** 
+     * Default Constructor 
+     */
     public JFindClassPlugin()
     {
         jfindClass_ = new JFindClass();
@@ -60,13 +63,13 @@ public class JFindClassPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#init()
+     * @see toolbox.util.ui.plugin.IPlugin#startup(Map)
      */
-    public void init()
+    public void startup(Map params)
     {
         try
         {
-            jfindClass_.init();        
+            jfindClass_.init(params);        
         }
         catch (Exception ioe)
         {
@@ -88,14 +91,6 @@ public class JFindClassPlugin implements IPlugin
     public void applyPrefs(Properties prefs)
     {
         jfindClass_.applyPrefs(prefs);
-    }
-
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
-     */
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        jfindClass_.setStatusBar(statusBar);
     }
 
     /**

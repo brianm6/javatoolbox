@@ -35,11 +35,10 @@ import toolbox.util.SwingUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
-import toolbox.util.ui.JStatusBar;
-import toolbox.util.ui.ThreadSafeTableModel;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.util.ui.table.SmartTableModel;
 import toolbox.util.ui.table.TableSorter;
 
 /**
@@ -76,17 +75,18 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     private JMenuItem   saveMenuItem_;
     private JMenuItem   aboutMenuItem_;
     
-    private JTable               table_;
-    private ThreadSafeTableModel tableModel_;
-    private TableSorter          tableSorter_;
-    private Queue                workQueue_;
+    private JTable          table_;
+    private SmartTableModel tableModel_;
+    private TableSorter     tableSorter_;
+    private Queue           workQueue_;
     
     private Thread        scanDirThread_;
     private ScanDirWorker scanDirWorker_;
     private Thread        parserThread_;
     private ParserWorker  parserWorker_;
 
-    private IStatusBar workspaceStatusBar_ = new JStatusBar();
+    /** Workspace status bar (in addition to the two we're already got) */
+    private IStatusBar workspaceStatusBar_;
     
     /** Platform path separator */
     private String pathSeparator_;
@@ -159,7 +159,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         topPanel.add(goButton_);
 
         // Setup sortable table
-        tableModel_  = new ThreadSafeTableModel(colNames_, 0);
+        tableModel_  = new SmartTableModel(colNames_, 0);
         tableSorter_ = new TableSorter(tableModel_);
         table_       = new JTable(tableSorter_);
         tableSorter_.addMouseListenerToHeaderInTable(table_);
@@ -556,7 +556,6 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
             }
         
             NumberFormat df = DecimalFormat.getIntegerInstance();
-            NumberFormat pf = DecimalFormat.getPercentInstance();
             
             setParseStatus(
              "[Total " + df.format(totals.getTotalLines()) + "]  " +

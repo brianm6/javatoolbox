@@ -81,8 +81,11 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return "Displays UI defaults for the installed Look and Feels.";
     }
     
-    public void init()
+    public void startup(Map params)
     {
+        //if (params != null)
+        //  statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+        
         setLayout(new BorderLayout());
         tabbedPane_ = getTabbedPane();
         add(tabbedPane_);
@@ -109,10 +112,6 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     }
     
     public void applyPrefs(Properties prefs)
-    {
-    }
-    
-    public void setStatusBar(IStatusBar statusBar)
     {
     }
     

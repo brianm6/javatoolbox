@@ -278,8 +278,11 @@ public class QueryPlugin extends JPanel implements IPlugin
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
-    public void init()
+    public void startup(Map params)
     {
+        if (params != null)
+            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+            
         buildView();
     }
 
@@ -297,11 +300,6 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         return "Simple SQL driven interface to a JDBC accessible database.";
     }
-
-	public void setStatusBar(IStatusBar statusBar)
-	{
-		statusBar_ = statusBar;
-	}
     
 	public void shutdown()
 	{

@@ -1,10 +1,12 @@
 package toolbox.jtail;
 
 import java.awt.Component;
+import java.util.Map;
 import java.util.Properties;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.PluginWorkspace;
 
 /**
  * Plugin wrapper for {@link JTail}
@@ -13,9 +15,6 @@ public class JTailPlugin implements IPlugin
 {
     /** JTail Delegate */
     private JTail jtail_;
-
-    /** Hack for out of order initialization by register plugin */
-    private IStatusBar savedStatusBar_;
 
     //--------------------------------------------------------------------------
     // Constructors 
@@ -47,12 +46,15 @@ public class JTailPlugin implements IPlugin
         return "Tails files as they grow. Similar to 'tail -f' on Unix";
     }
 
-    public void init()
+    public void startup(Map params)
     {
-        jtail_ = new JTail();
+        IStatusBar statusBar = null;
         
-        if (savedStatusBar_ != null)
-            setStatusBar(savedStatusBar_);
+        if (params != null)
+            statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+        
+        jtail_ = new JTail();
+        jtail_.setStatusBar(statusBar);
     }
 
     public void savePrefs(Properties prefs)
@@ -63,14 +65,6 @@ public class JTailPlugin implements IPlugin
     public void applyPrefs(Properties prefs)
     {
         jtail_.applyPrefs(prefs);
-    }
-
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        if (jtail_ == null)
-            savedStatusBar_ = statusBar;
-        else
-            jtail_.setStatusBar(statusBar);
     }
 
     public void shutdown()

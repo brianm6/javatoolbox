@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.AbstractAction;
@@ -32,11 +33,12 @@ import toolbox.util.ui.JListPopupMenu;
 import toolbox.util.ui.RegexListModelFilter;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.PluginWorkspace;
 
 /**
  * Simple plugin that allows running of JUnit tests by package
  */
-public class JUnitPlugin extends JPanel implements  IPlugin
+public class JUnitPlugin extends JPanel implements IPlugin
 {
     public static final Logger logger_ =
         Logger.getLogger(JUnitPlugin.class);
@@ -126,26 +128,18 @@ public class JUnitPlugin extends JPanel implements  IPlugin
         packageList_.scrollRectToVisible(new Rectangle(0,0,0,0));
     }
 
-    /**
-     * Sets the status text
-     * 
-     * @param  status  Status text
-     */
-    protected void setStatus(String status)
-    {
-        if (statusBar_ != null)
-            statusBar_.setStatus(status);
-    }
-       
     //--------------------------------------------------------------------------
     //  IPlugin interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#init()
+     * @see toolbox.util.ui.plugin.IPlugin#startup(Map)
      */
-    public void init()
+    public void startup(Map params)
     {
+        if (params != null)
+            statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
+
         buildView();        
     }
 
@@ -189,14 +183,6 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     {
         // Set default to test packages
         filterField_.setText(prefs.getProperty(PROP_FILTER, ".*test"));
-    }
-
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
-     */
-    public void setStatusBar(IStatusBar statusBar)
-    {
-        statusBar_ = statusBar;
     }
 
     /**
