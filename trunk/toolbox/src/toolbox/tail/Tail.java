@@ -303,7 +303,7 @@ public class Tail implements Runnable
                     }
                     else if (strikes == resetThreshHold && getFile() != null)
                     {
-                        logger_.debug("reset threshold met");
+                        //logger_.debug("reset threshold met");
                         
                         // check timestamps   
                         resetTimeStamp = new Date(getFile().lastModified());
@@ -320,7 +320,7 @@ public class Tail implements Runnable
                             logger_.debug("Re-attached to " + getFile().getName());
                         }
                         else
-                            logger_.debug("Failed criterai for reset");
+                            ;//logger_.debug("Failed criterai for reset");
                             
                         strikes = 0;
                     }
@@ -328,12 +328,6 @@ public class Tail implements Runnable
                     ThreadUtil.sleep(1);
                     strikes++;
                 }
-                
-//                    else
-//                    {
-//                        atEnd = true;
-//                        fireTailEnded();
-//                    }
             }
         }
         catch (Exception e)
