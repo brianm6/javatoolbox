@@ -65,7 +65,7 @@ public class Dumper implements Stringz
      * 
      * @throws  RESyntaxException on regular expression error
      */
-    public Dumper() throws RESyntaxException
+    private Dumper() throws RESyntaxException
     {
         this (new BasicDumpFormatter());
     }   
@@ -105,19 +105,37 @@ public class Dumper implements Stringz
      */
     public static String dump(Object obj, int maxDepth)
     {
-        String dump = null;
+        String result = null;
         
         try
         {
-            Dumper dumper = new Dumper();
-            dumper.setMaxDepth(maxDepth);
-            dump = dumper.nonStaticDumpObject(obj);    
+            result = dump(obj, maxDepth, new BasicDumpFormatter() );
         }
         catch (RESyntaxException re)
         {
             logger_.error("dump", re);
         }
-        
+        finally
+        {
+            return result;
+        }
+    }
+    
+    /**
+     * Traverses an object graph and dumps it to a string using a tree structure
+     * with the given maximum depth of traversal from the root object and
+     * formater.
+     * 
+     * @param   obj       Object to dump
+     * @param   maxDepth  Max number of levels to recurse down into the obj
+     * @param   formatter Dump formatter
+     * @return  Object dumped as a tree 
+     */
+    public static String dump(Object obj, int maxDepth, DumpFormatter formatter)
+    {
+        Dumper dumper = new Dumper(formatter);
+        dumper.setMaxDepth(maxDepth);
+        String dump = dumper.nonStaticDumpObject(obj);
         return dump;        
     }
 
