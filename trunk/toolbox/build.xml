@@ -218,11 +218,6 @@
             overwrite ="false" />
             
         <unjar 
-            src       ="${lib}/java2html.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" />
-
-        <unjar 
             src       ="${lib}/jode.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
