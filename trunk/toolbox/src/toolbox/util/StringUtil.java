@@ -1,13 +1,23 @@
 package toolbox.util;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.log4j.Category;
+
+import toolbox.util.io.WrappingWriter;
 
 /**
  * Utility methods for manipulating strings.
  */
 public final class StringUtil
 {
+    /** Logger **/
+    private static final Category logger_ = 
+        Category.getInstance(StringUtil.class);
+    
     /**
      *  Prevent construction
      */
@@ -257,5 +267,106 @@ public final class StringUtil
             return s;
         else
             return s.substring(0, n);    
-    }    
+    }  
+    
+    /**
+     * Repeats a string a specified number of times
+     * 
+     * @param  s         String to repeat
+     * @param  numTimes  Number of times to repeat the string
+     * @return String containing numTimes concatenated instances of s
+     */
+    public static final String repeat(String s, int numTimes)
+    {
+        StringBuffer sb = new StringBuffer();
+        for(int i=0; i<numTimes; i++)
+            sb.append(s);
+        return sb.toString();
+    }
+
+    
+    /**
+     * Wraps a string to a default width of 80
+     * 
+     * @param   s  String to wrap
+     * @return  Wrapped string
+     */    
+    public static String wrap(String s)
+    {
+        return wrap(s, 80);
+    }
+
+    
+    /** 
+     * Wraps a string to a default width of 80. The beginnning of line and
+     * end of line are decorated with brackets to create a box effect
+     * 
+     * [some text here]
+     * [more text here]
+     * 
+     * @param   s  String to wrap
+     * @return  Wrapped string with box decoration
+     */
+    public static String wrapInBox(String s)
+    {
+        return wrapInBox(s, 80);
+    }
+
+    
+    /**
+     * Wraps a string to a given width. The beginning of line and end of line
+     * are decorated with brackets to create a box effect
+     * 
+     * @param   s      String to wrap
+     * @param   width  Width to wrap the string
+     * @return  Wrapped string
+     */
+    public static String wrapInBox(String s, int width)
+    {
+        return wrap(s, width, "[", "]");    
+    }
+
+    
+    /**
+     * Wraps a string to a given width
+     * 
+     * @param   s      String to wrap
+     * @param   width  Width to wrap the string
+     * @return  Wrapped string
+     */
+    public static String wrap(String s, int width)
+    {
+        return wrap(s, width, "", "");    
+    }
+    
+    
+    /**
+     * Wraps a string to the specified criteria
+     * 
+     * @param  s       String to wrap
+     * @param  width   Width to wrap the string
+     * @param  prefix  Prefix before each line
+     * @param  suffix  Suffix after each line
+     * @return Wrapped string
+     */
+    public static String wrap(String s, int width, String prefix, String suffix)
+    {
+        String wrapped = null;
+        
+        try
+        {
+            StringWriter sw = new StringWriter();
+            WrappingWriter w = new WrappingWriter(sw, width, prefix, suffix);
+            w.write(s);
+            w.close();
+            wrapped = sw.toString();
+        }
+        catch (IOException e)
+        {
+            logger_.error(e);
+        }
+        
+        return wrapped;
+    }
+      
 }
