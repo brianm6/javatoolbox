@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
@@ -31,6 +32,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -41,12 +43,31 @@ import toolbox.util.ui.list.JSmartList;
 
 /**
  * JFontChooser is a UI component that provides the ability to select a font
- * and its associated characteristics.
+ * and its associated characteristics. Characteristics include:
+ * <ul>
+ *  <li>Name
+ *  <li>Size
+ *  <li>Style (plain, bold, italic, bold + italic)
+ *  <li>Antialiased
+ * </ul>
+ * <br>
+ * Additionally, fonts can be identified as monospaced by appearing as BOLD 
+ * or have the font name rendered using the representative font in the font
+ * selection list.
  */
 public class JFontChooser extends JPanel
 {
     private static final Logger logger_ = Logger.getLogger(JFontChooser.class);
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
+    /** 
+     * Maximum number of digits permissibile in a valid font size. 
+     */
+    private static final int MAX_DIGITS_IN_FONT_SIZE = 3;
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -55,7 +76,12 @@ public class JFontChooser extends JPanel
      * JList for font family. 
      */
     private JList fontFamilyList_;
-    
+
+    /**
+     * Renderer for the font names in the list box.
+     */
+    private ListCellRenderer fontFamilyCellRenderer_;
+
     /** 
      * FontStlyeList (subclass of JList) for font style. 
      */
@@ -77,19 +103,14 @@ public class JFontChooser extends JPanel
     private JCheckBox antiAliasCheckBox_;
     
     /** 
-     * PhraseCanvas in which font samples are displayed. 
+     * Component in which font samples are displayed. 
      */
     private PhraseCanvas phraseCanvas_;
 
     /** 
      * List of font chooser listeners. 
      */
-    private List listeners_ = new ArrayList();
-
-    /** 
-     * Maximum number of characters permissibile in a valid font size. 
-     */
-    private int maxNumCharsInFontSize_ = 3;
+    private List listeners_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -147,12 +168,13 @@ public class JFontChooser extends JPanel
         int[] predefinedSizes,     
         boolean antiAlias)
     {
+        listeners_ = new ArrayList();
         buildView(initialFont, styleDisplayNames, predefinedSizes, antiAlias);
         wireView();
-        setAntiAlias(false);
+        setAntiAliased(false);
         phraseCanvas_.invalidate();
         phraseCanvas_.repaint();
-        setAntiAlias(antiAlias);
+        setAntiAliased(antiAlias);
         phraseCanvas_.invalidate();
         phraseCanvas_.repaint();
     }
@@ -180,7 +202,8 @@ public class JFontChooser extends JPanel
         GridBagConstraints gbc = new GridBagConstraints();
 
         String[] availableFontFamilyNames = 
-            GraphicsEnvironment.getLocalGraphicsEnvironment()
+            GraphicsEnvironment
+                .getLocalGraphicsEnvironment()
                 .getAvailableFontFamilyNames();
 
         // Sets initial font if one is not provided
@@ -195,6 +218,8 @@ public class JFontChooser extends JPanel
         fontFamilyList_ = new JSmartList(availableFontFamilyNames);
         fontFamilyList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontFamilyList_.setVisibleRowCount(8);
+        fontFamilyCellRenderer_ = new FontFamilyCellRenderer();
+        fontFamilyList_.setCellRenderer(fontFamilyCellRenderer_);
 
         // Add to gridbag
         gbc.weightx    = 1; gbc.weighty   = 1;
@@ -217,7 +242,7 @@ public class JFontChooser extends JPanel
 
         // Configure anti-alias checkbox
         antiAliasCheckBox_ = new JSmartCheckBox(new AntiAliasAction());
-        setAntiAlias(antiAlias);
+        setAntiAliased(antiAlias);
 
         // Add to gridbag
         gbc.weightx    = 0.75; gbc.weighty   = 0;
@@ -253,8 +278,12 @@ public class JFontChooser extends JPanel
         add(new JScrollPane(fontSizeList_), gbc);
 
         // Configure Phrase Canvas (displays current font selection)
-        phraseCanvas_ = new PhraseCanvas(initialFont.getFamily(), initialFont, 
-            Color.black, antiAlias);
+        phraseCanvas_ = 
+            new PhraseCanvas(
+                initialFont.getFamily(), 
+                initialFont, 
+                Color.black, 
+                antiAlias);
         
         JPanel phrasePanel = new JPanel(new BorderLayout());
         phrasePanel.add(BorderLayout.CENTER, phraseCanvas_);
@@ -279,23 +308,8 @@ public class JFontChooser extends JPanel
 
 
     /**
-     * Wraps a component in a panel with a heading.
-     * 
-     * @param heading Heading.
-     * @param component Component to wrap with a heading.
-     * @return Wrapped component as a JPanel.
-     */
-    protected JPanel wrapWithHeading(String heading, JComponent component)
-    {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(BorderLayout.NORTH, new JSmartLabel(heading));
-        panel.add(BorderLayout.CENTER, component);
-        return panel;    
-    }
-
-    
-    /**
-     * Wires the GUI with appropriate event listeners.
+     * Wires the user interface components together with the appropriate event 
+     * listeners.
      */
     protected void wireView()
     {
@@ -314,15 +328,31 @@ public class JFontChooser extends JPanel
 
 
     /**
-     * Validates predefinted font sizes.
+     * Wraps a component in a panel with a heading.
+     * 
+     * @param heading Heading text.
+     * @param component Component to wrap with a heading.
+     * @return Wrapped component as a JPanel.
+     */
+    protected JPanel wrapWithHeading(String heading, JComponent component)
+    {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(BorderLayout.NORTH, new JSmartLabel(heading));
+        panel.add(BorderLayout.CENTER, component);
+        return panel;    
+    }
+
+    
+    /**
+     * Validates predefined font sizes.
      * 
      * @param predefinedSizes Array of font sizes.
-     * @throws IllegalArgumentException thrown if predefinedSizes does not 
-     *         contain one or more integer values or if it contains any 
-     *         integers with a value of less than 1.
      * @return Integer[]
+     * @throws IllegalArgumentException if predefinedSizes does not contain one
+     *         or more integer values or if it contains any integers with a 
+     *         value less than 1.
      */
-    private Integer[] validateAndConvertPredefinedSizes(int[] predefinedSizes)
+    protected Integer[] validateAndConvertPredefinedSizes(int[] predefinedSizes)
     {
         if (predefinedSizes == null)
             throw new IllegalArgumentException(
@@ -405,7 +435,7 @@ public class JFontChooser extends JPanel
      * 
      * @param b True for antialias on, false otherwise.
      */
-    public void setAntiAlias(boolean b)
+    public void setAntiAliased(boolean b)
     {
         antiAliasCheckBox_.setSelected(b);
         
@@ -458,12 +488,11 @@ public class JFontChooser extends JPanel
     {
         String fontSize = fontSize_.getText();
         
-        if ((fontSize == null) || (fontSize.equals("")))
+        if (StringUtils.isBlank(fontSize))
             throw new FontChooserException("No font size specified");
         
-        if (fontSize.length() > maxNumCharsInFontSize_)
-            throw new FontChooserException(
-                "Too many characters in font size");
+        if (fontSize.length() > MAX_DIGITS_IN_FONT_SIZE)
+            throw new FontChooserException("Too many characters in font size");
             
         try
         {
@@ -472,8 +501,7 @@ public class JFontChooser extends JPanel
         catch (NumberFormatException e)
         {
             throw new FontChooserException(
-                "The number specified in the font size text field (" + 
-                fontSize_.getText() + ") is not a valid integer.");
+                "The value '" + fontSize + "' is not a valid font size.");
         }
     }
 
@@ -600,17 +628,20 @@ public class JFontChooser extends JPanel
             if (updating_)
                 return;
 
-            updating_ = true;
-            
-            Object selectedValue =
-                ((JList) e.getSource()).getSelectedValue();
-                
-            if (selectedValue != null)
-                textField_.setText(selectedValue.toString());
-
-            fireFontSelectionChanged();
-            
-            updating_ = false;
+            try
+            {
+                updating_ = true;
+                Object selectedValue = ((JList) e.getSource()).getSelectedValue();
+                    
+                if (selectedValue != null)
+                    textField_.setText(selectedValue.toString());
+    
+                fireFontSelectionChanged();
+            }
+            finally
+            {
+                updating_ = false;
+            }
         }
 
         
@@ -656,15 +687,15 @@ public class JFontChooser extends JPanel
             if (updating_)
                 return;
 
-            updating_ = true;
             
             try
             {
-                Integer currentFontSizeInteger =
-                    Integer.valueOf(textField_.getText());
-                    
+                updating_ = true;
                 boolean currentSizeWasInList = false;
                 Object listMember;
+                
+                Integer currentFontSizeInteger = 
+                    Integer.valueOf(textField_.getText());
                 
                 for (int i = 0; i < list_.getModel().getSize(); i++)
                 {
@@ -680,15 +711,17 @@ public class JFontChooser extends JPanel
                 
                 if (!currentSizeWasInList)
                     list_.clearSelection();
+                
+                fireFontSelectionChanged();
             }
             catch (NumberFormatException nfe)
             {
                 list_.clearSelection();
             }
-            
-            fireFontSelectionChanged();
-            
-            updating_ = false;
+            finally
+            {
+                updating_ = false;
+            }
         }
     }
     
@@ -718,8 +751,8 @@ public class JFontChooser extends JPanel
     /**
      * Listener that notifies the phraseCanvas of font changes.
      */
-    protected class PhraseFontSelectionListener implements 
-        IFontChooserListener
+    protected class PhraseFontSelectionListener 
+        implements IFontChooserListener
     {
         /**
          * @see toolbox.util.ui.font.IFontChooserListener#fontChanged()
@@ -731,9 +764,7 @@ public class JFontChooser extends JPanel
                 phraseCanvas_.setPhrase(
                     (String) fontFamilyList_.getSelectedValue());
                     
-                phraseCanvas_.setFont(
-                    JFontChooser.this.getSelectedFont());
-                    
+                phraseCanvas_.setFont(JFontChooser.this.getSelectedFont());
                 phraseCanvas_.setAntiAlias(JFontChooser.this.isAntiAliased());
             }
             catch (FontChooserException e)
@@ -782,7 +813,7 @@ public class JFontChooser extends JPanel
 }
 
 /**
-Based on work by:
+Based on work originally by:
 
 Copyright (C) 2000, 2001 Greg Merrill (greghmerrill@yahoo.com)
 
