@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import org.netbeans.jemmy.operators.ContainerOperator;
 import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JDialogOperator;
 import org.netbeans.jemmy.operators.JListOperator;
+import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.util.Dumper;
 import org.netbeans.jemmy.util.NameComponentChooser;
 
@@ -36,7 +38,7 @@ public class JemmyUtil
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // JButton
     //--------------------------------------------------------------------------
     
     /**
@@ -64,6 +66,40 @@ public class JemmyUtil
         return (JButton) operator.getSource();
     }
     
+    //--------------------------------------------------------------------------
+    // JTextField
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Convenience method to find a textfield operator within a given container
+     * operator.
+     * 
+     * @param operator Container textfield is in.
+     * @param name Name of the textfield.
+     * @return JTextFieldOperator
+     */
+    public static JTextFieldOperator findTextField(
+        ContainerOperator operator, 
+        String name)
+    {
+        return new JTextFieldOperator(operator, new NameComponentChooser(name));
+    }
+    
+    
+    /**
+     * Convenience method to avoid casting to a JTextField.
+     * 
+     * @param operator Existing operator.
+     * @return JTextField
+     */
+    public static JTextField getSource(JTextFieldOperator operator)
+    {
+        return (JTextField) operator.getSource();
+    }
+    
+    //--------------------------------------------------------------------------
+    // JList
+    //--------------------------------------------------------------------------
     
     /**
      * @param operator
@@ -75,6 +111,10 @@ public class JemmyUtil
     }
     
     
+    //--------------------------------------------------------------------------
+    // JDialog
+    //--------------------------------------------------------------------------
+    
     /**
      * @param operator
      * @return
@@ -84,6 +124,10 @@ public class JemmyUtil
         return (JDialog) operator.getSource();
     }
 
+    
+    //--------------------------------------------------------------------------
+    // Dumper
+    //--------------------------------------------------------------------------
     
     /**
      * Convenience method to dump all to the logger as debug output. 
