@@ -8,6 +8,8 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.junit.collector.JarTestCollector;
+
 /**
  * Unit test for JarTestCollector.
  */

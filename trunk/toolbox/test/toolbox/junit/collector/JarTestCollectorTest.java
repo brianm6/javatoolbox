@@ -1,4 +1,4 @@
-package toolbox.junit;
+package toolbox.junit.collector;
 
 import java.util.Enumeration;
 
@@ -8,20 +8,20 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.junit.collector.CompleteTestCollector;
+import toolbox.junit.collector.JarTestCollector;
 
 /**
- * Unit test for CompleteTestCollector.
+ * Unit test for JarTestCollector.
  */
-public class CompleteTestCollectorTest extends TestCase
+public class JarTestCollectorTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(CompleteTestCollectorTest.class);
+    private static final Logger logger_ =
+        Logger.getLogger(JarTestCollectorTest.class);
 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
-        
+            
     /**
      * Entrypoint.
      *
@@ -29,7 +29,7 @@ public class CompleteTestCollectorTest extends TestCase
      */
     public static void main(String[] args)
     {
-        TestRunner.run(CompleteTestCollectorTest.class);
+        TestRunner.run(JarTestCollectorTest.class);
     }
     
     //--------------------------------------------------------------------------
@@ -43,17 +43,13 @@ public class CompleteTestCollectorTest extends TestCase
     {
         logger_.info("Running testCollectTests...");
         
-        TestCollector tc = new CompleteTestCollector();
+        TestCollector tc = new JarTestCollector();
         
         for (Enumeration e = tc.collectTests(); e.hasMoreElements();)
         {
             String classname = (String) e.nextElement();
-
-            logger_.info("Testclass=" + classname);
-
-            assertTrue(
-                classname + " should end with Test",
-                classname.endsWith("Test"));
+            logger_.info("Testclass: " + classname);
         }
+        
     }
 }

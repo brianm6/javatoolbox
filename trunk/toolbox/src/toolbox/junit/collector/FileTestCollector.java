@@ -1,4 +1,4 @@
-package toolbox.junit;
+package toolbox.junit.collector;
 
 import junit.runner.ClassPathTestCollector;
 

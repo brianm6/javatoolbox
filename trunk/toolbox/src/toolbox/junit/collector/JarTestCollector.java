@@ -1,4 +1,4 @@
-package toolbox.junit;
+package toolbox.junit.collector;
 
 import java.io.IOException;
 import java.util.ArrayList;
