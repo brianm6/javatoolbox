@@ -9,13 +9,17 @@ import javax.swing.event.ListDataListener;
  */
 public abstract class AbstractListModelFilter extends AbstractListModel
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Reference to the list model being filtered. 
      */
     private ListModel delegate_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -29,7 +33,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
 
     /**
