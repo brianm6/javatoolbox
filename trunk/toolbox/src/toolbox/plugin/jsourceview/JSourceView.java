@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Properties;
@@ -52,6 +52,7 @@ import toolbox.util.ui.table.TableSorter;
  * TODO: Add chart for visualization
  * TODO: Custom table cell renders to align cell contents/color code unusually
  *       high or low numbers, etc
+ * TODO: Add regex filter to include/exclude files
  * </pre> 
  * 
  */
@@ -104,11 +105,11 @@ public class JSourceView extends JFrame implements ActionListener
         "Percentage"
     };
 
+    //  Filter to identify source files
     private static OrFilter sourceFilter_;
     
     static
     {
-        // create filter to flesh out source files
         sourceFilter_ = new OrFilter();
         sourceFilter_.addFilter(new ExtensionFilter("c"));
         sourceFilter_.addFilter(new ExtensionFilter("cpp"));
@@ -219,27 +220,27 @@ public class JSourceView extends JFrame implements ActionListener
     /**
      * Sets the text of the scan status
      * 
-     * @param  s  Status text
+     * @param  status  Status of the scan activity
      */
-    public void setScanStatus(String s)
+    public void setScanStatus(String status)
     {
-        scanStatusLabel_.setText(s);
+        scanStatusLabel_.setText(status);
     }
 
     /**
      * Sets the text of the parse status
      * 
-     * @param  s  Parse status text
+     * @param  status  Status of the parse activity
      */
-    public void setParseStatus(String s)
+    public void setParseStatus(String status)
     {
-        parseStatusLabel_.setText(s);
+        parseStatusLabel_.setText(status);
     }
 
     /**
      * Saves preferences 
      * 
-     * @param prefs
+     * @param prefs Properties to save preferences to
      */
     public void savePrefs(Properties prefs)
     {
@@ -252,7 +253,7 @@ public class JSourceView extends JFrame implements ActionListener
     /**
      * Applies preferences
      * 
-     * @param prefs
+     * @param prefs Properties to read preferences from
      */
     public void applyPrefs(Properties prefs)
     {
@@ -327,14 +328,14 @@ public class JSourceView extends JFrame implements ActionListener
     }
     
     /** 
-     * Starts the scanning
+     * Starts the scanning/parsing activities in parallel
      */
     protected void goButtonPressed()
     {
         if (goButton_.getText().equals(LABEL_GO))
         {
             goButton_.setText(LABEL_CANCEL);
-            String s = dirField_.getText();
+            String dir = dirField_.getText();
             workQueue_ = new Queue();
             tableModel_.setRowCount(0);
             
@@ -343,7 +344,7 @@ public class JSourceView extends JFrame implements ActionListener
             // turned back on when the parser thread completes
             tableSorter_.setEnabled(false);
             
-            scanDirWorker_ = new ScanDirWorker(new File(s));
+            scanDirWorker_ = new ScanDirWorker(new File(dir));
             scanDirThread_ = new Thread(scanDirWorker_);
             scanDirThread_.start();
             
@@ -373,7 +374,7 @@ public class JSourceView extends JFrame implements ActionListener
     }
 
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    //  ScanDirWorker Inner Class
     //--------------------------------------------------------------------------
     
     /** 
@@ -381,48 +382,56 @@ public class JSourceView extends JFrame implements ActionListener
      */
     private class ScanDirWorker implements Runnable
     {
-        /** 
-         * Directory to scan 
-         */
-        private File file_;
+        /** Directory to scan recursively for source files */
+        private File dir_;
 
-        /** 
-         * Cancel flag 
-         */
-        private boolean cancel_ = false;
+        /** Cancel flag */
+        private boolean cancel_;
+        
+        /** Filter for list on directories */
+        private FilenameFilter dirFilter_;
+        
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
         
         /**
          * Creates a scanner
          * 
-         * @param  file1  Directory to scann
+         * @param  dir  Directory root to scan
          */
         public ScanDirWorker(File dir)
         {
-            file_ = dir;
+            dir_       = dir;
+            dirFilter_ = new DirectoryFilter();
+            cancel_    = false;
         }
         
+        //----------------------------------------------------------------------
+        // Protected
+        //----------------------------------------------------------------------
+        
         /**
-         * Finds all java files in the given directory
+         * Finds all java files in the given directory. Called recursively so
+         * the directory is passed on each invocation.
          * 
          * @param  file  Directory to scan for files
          */
-        protected void findJavaFiles(File file)
+        protected void findJavaFiles(File dir)
         {
             // Short circuit if operation canceled
             if (cancel_)
                 return;
                 
             // Process files in current directory
-            File srcFiles[] = file.listFiles(sourceFilter_);
+            File srcFiles[] = dir.listFiles(sourceFilter_);
             
             if (!ArrayUtil.isNullOrEmpty(srcFiles))
-            {
                 for (int i = 0; i < srcFiles.length; i++)
                     workQueue_.enqueue(srcFiles[i].getAbsolutePath());
-            }
             
             // Process dirs in current directory
-            File dirs[] = file.listFiles(new DirectoryFilter());
+            File dirs[] = dir.listFiles(dirFilter_);
             
             if (!ArrayUtil.isNullOrEmpty(dirs))
             {
@@ -433,11 +442,11 @@ public class JSourceView extends JFrame implements ActionListener
                 }    
             }
         }
-        
+
         /** 
-         * Cancels the operation
+         * Cancels the scanning activity
          */
-        public void cancel()
+        protected void cancel()
         {
             cancel_ = true;
         }
@@ -447,19 +456,23 @@ public class JSourceView extends JFrame implements ActionListener
         //----------------------------------------------------------------------
                 
         /**
-         * Starts scanning directory on a separate thread
+         * Starts the scanning activity on a separate thread
          */
         public void run()
         {
-            findJavaFiles(file_);
+            findJavaFiles(dir_);
             setScanStatus("Done scanning.");
         }
     }
 
+    //--------------------------------------------------------------------------
+    // ParserWorker Inner Class
+    //--------------------------------------------------------------------------
+
     /**
      * Pops files off of the work queue and parses them to gather stats
      */
-    class ParserWorker implements Runnable
+    private class ParserWorker implements Runnable
     {
         private boolean cancel_ = false;
         
@@ -503,8 +516,6 @@ public class JSourceView extends JFrame implements ActionListener
                     
                     tableModel_.addRow(tableRow);
                 }
-                
-                //Thread.yield();
             }
         
             NumberFormat df = DecimalFormat.getIntegerInstance();
@@ -534,18 +545,16 @@ public class JSourceView extends JFrame implements ActionListener
         protected FileStats scanFile(String filename)
         {
             FileStats filestats = new FileStats();
+            LineStatus  status  = new LineStatus();
+            LineScanner scanner = new LineScanner();
+            String line;
             
             try
             {
-                LineNumberReader lineReader = 
-                    new LineNumberReader(
-                        new BufferedReader(
-                            new FileReader(filename)));
+                BufferedReader reader = 
+                    new BufferedReader(new FileReader(filename));
                 
-                LineStatus linestatus = new LineStatus();
-                String line;
-                
-                while ((line = lineReader.readLine()) != null) 
+                while ((line = reader.readLine()) != null) 
                 {
                     filestats.incrementTotalLines();
                     line = line.replace('\t',' ');
@@ -556,16 +565,17 @@ public class JSourceView extends JFrame implements ActionListener
                     }
                     else
                     {
-                        Machine.scanLine(new LineScanner(line), linestatus);
+                        scanner.setLine(line);
+                        Machine.scanLine(scanner, status);
                         
-                        if (linestatus.isRealCode())
+                        if (status.isRealCode())
                             filestats.incrementCodeLines();
                         else
                             filestats.incrementCommentLines();
                     }
                 }
                 
-                ResourceCloser.close(lineReader);
+                ResourceCloser.close(reader);
             }
             catch (Exception e)
             {
@@ -578,7 +588,7 @@ public class JSourceView extends JFrame implements ActionListener
         }
         
         /** 
-         * Cancels the search operation
+         * Cancels the parsing activity
          */
         public void cancel()
         {
