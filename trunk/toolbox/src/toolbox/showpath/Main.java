@@ -1,8 +1,9 @@
 package toolbox.showpath;
 
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 /**
  * Shows system path
@@ -10,36 +11,47 @@ import java.util.Vector;
 public class Main
 {
     /** 
-     * List of paths 
+     * List of paths remembered so dupes can be flagged 
      */
-    private static Vector checkList_ = new Vector();
+    private List checkList_;
 
     /**
      * Entrypoint for showclasspath
      * 
-     * @param  args  none recognized 
+     * @param  args  None recognized 
      */
     public static void main(String[] args)
     {
-        StringTokenizer st = new StringTokenizer(
-        	System.getProperty("java.library.path"), 
-            	System.getProperty("path.separator"));
-
-        // Find longest for formatting
-        while (st.hasMoreElements())
-        {
-            String path = (String)st.nextToken();
-            System.out.print(path);
-
-            if (isDupe(path))
-                System.out.print("\t** DUPLICATE **");
-            else
-                checkList_.addElement(path);
-
-            System.out.println();
-        }
+    	new Main();
     }
+	
+	//--------------------------------------------------------------------------
+    // Constructors 
+    //--------------------------------------------------------------------------
+    
+	public Main()
+	{
+		checkList_ = new ArrayList();
+		
+		StringTokenizer st = new StringTokenizer(
+			System.getProperty("java.library.path"), 
+				System.getProperty("path.separator"));
 
+		// Find longest for formatting
+		while (st.hasMoreElements())
+		{
+			String path = (String)st.nextToken();
+			System.out.print(path);
+
+			if (isDupe(path))
+				System.out.print("\t** DUPLICATE **");
+			else
+				checkList_.add(path);
+
+			System.out.println();
+		}
+	}
+	
 	//--------------------------------------------------------------------------
     // Private 
     //--------------------------------------------------------------------------
@@ -50,11 +62,11 @@ public class Main
      * @param   dupe   Path to check for duplicate
      * @return  True if duplicate, flase otherwise
      */
-    private static boolean isDupe(String dupe)
+    private boolean isDupe(String dupe)
     {
-        for (Enumeration e = checkList_.elements(); e.hasMoreElements();)
+        for (Iterator i = checkList_.iterator(); i.hasNext();)
         {
-            String check = (String)e.nextElement();
+            String check = (String) i.next();
 
             if (dupe.toUpperCase().equals(check.toUpperCase()))
                 return true;
