@@ -1,6 +1,5 @@
 package toolbox.plugin.jdbc;
 
-import java.awt.BorderLayout;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -10,26 +9,37 @@ import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
+import javax.swing.Icon;
 
 import com.l2fprod.common.propertysheet.Property;
 import com.l2fprod.common.propertysheet.PropertySheetPanel;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 
-import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
-import toolbox.util.StringUtil;
-import toolbox.util.collections.AsMap;
+import toolbox.util.beans.BeanPropertyFilter;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 
 /**
- * DBPrefsView allows the QueryPlugin preferences to be edited. 
+ * DBPrefsView allows the QueryPlugin preferences to be edited.
+ * 
+ * @see toolbox.plugin.jdbc.QueryPlugin 
  */
-public class DBPrefsView extends JPanel
+public class DBPrefsView extends JHeaderPanel
 {
     private static final Logger logger_ = Logger.getLogger(DBPrefsView.class);
+
+    //--------------------------------------------------------------------------
+    // Icons
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Icon for header and flipper.
+     */
+    public static final Icon ICON_DBPREFS =
+        ImageCache.getIcon(ImageCache.IMAGE_CONFIG);
 
     //--------------------------------------------------------------------------
     // Fields
@@ -52,10 +62,11 @@ public class DBPrefsView extends JPanel
     /**
      * Creates a DBPrefsView.
      * 
-     * @param formatter SQL formatter.
+     * @param plugin Query plugin.
      */
     public DBPrefsView(QueryPlugin plugin)
     {
+        super(ICON_DBPREFS, "Plugin Properties");
         buildView();
         setPlugin(plugin);
     }
@@ -100,32 +111,27 @@ public class DBPrefsView extends JPanel
         List descriptors = new ArrayList();
         CollectionUtils.addAll(descriptors, dArray);
         
-        // Remove unsupported properties
-        CollectionUtils.filter(descriptors, new Predicate()
-        {
-            public boolean evaluate(Object object)
-            {
-                PropertyDescriptor pd = (PropertyDescriptor) object;
-                return ArrayUtil.contains(
-                    QueryPlugin.SAVED_PROPS, pd.getName());
-            }
-        });
-
+        // Filter out only the properties that the QueryPlugin can save. 
+        CollectionUtils.filter(
+            descriptors, 
+            new BeanPropertyFilter(
+                "name", 
+                QueryPlugin.SAVED_PROPS));
+        
         dArray = (PropertyDescriptor[]) 
             descriptors.toArray(new PropertyDescriptor[0]);
-
-        if (logger_.isDebugEnabled())
-            for (int i = 0; i < dArray.length; i++)
-                logger_.info(StringUtil.banner(AsMap.of(dArray[i]) + ""));
+        
+        //if (logger_.isDebugEnabled())
+        //    for (int i = 0; i < dArray.length; i++)
+        //        logger_.info(StringUtil.banner(AsMap.of(dArray[i]) + ""));
 
         // Create and init the property sheet
         sheet_ = new PropertySheetPanel();
         sheet_.setProperties(dArray);
+        sheet_.setDescriptionVisible(true);
         sheet_.addPropertySheetChangeListener(new MyPropertyChangeListener());
         
-        // Build the GUI
-        setLayout(new BorderLayout());
-        add(BorderLayout.CENTER, sheet_);
+        setContent(sheet_);
     }
 
     //----------------------------------------------------------------------

@@ -1,6 +1,5 @@
 package toolbox.plugin.jdbc;
 
-import java.awt.BorderLayout;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -10,28 +9,39 @@ import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
+import javax.swing.Icon;
 
 import com.l2fprod.common.propertysheet.Property;
 import com.l2fprod.common.propertysheet.PropertySheetPanel;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 
-import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.beans.BeanPropertyFilter;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 
 /**
  * DBBenchmarkView allows for configuration of the database benchmark.
  * 
  * @see toolbox.plugin.jdbc.DBBenchmark 
  */
-public class DBBenchmarkView extends JPanel
+public class DBBenchmarkView extends JHeaderPanel
 {
     private static final Logger logger_ = 
         Logger.getLogger(DBBenchmarkView.class);
 
+    //--------------------------------------------------------------------------
+    // Icons
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Icon for header and flipper.
+     */
+    public static final Icon ICON_DBBENCHMARK =
+        ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -57,6 +67,7 @@ public class DBBenchmarkView extends JPanel
      */
     public DBBenchmarkView(DBBenchmark benchmark)
     {
+        super(ICON_DBBENCHMARK, "Benchmark Properties");
         buildView();
         setBenchmark(benchmark);
     }
@@ -101,32 +112,23 @@ public class DBBenchmarkView extends JPanel
         List descriptors = new ArrayList();
         CollectionUtils.addAll(descriptors, da);
         
-        // Remove unsupported properties
-        CollectionUtils.filter(descriptors, new Predicate()
-        {
-            public boolean evaluate(Object object)
-            {
-                PropertyDescriptor pd = (PropertyDescriptor) object;
-                return ArrayUtil.contains(
-                    DBBenchmark.SAVED_PROPS, pd.getName());
-            }
-        });
-
+        // Filter out only the properties that the DBBenchmark is able to save.
+        CollectionUtils.filter(
+            descriptors, 
+            new BeanPropertyFilter(
+                "name", 
+                DBBenchmark.SAVED_PROPS));
+        
         da = (PropertyDescriptor[]) 
             descriptors.toArray(new PropertyDescriptor[0]);
-
-//        if (logger_.isDebugEnabled())
-//            for (int i = 0; i < dArray.length; i++)
-//                logger_.info(StringUtil.banner(AsMap.of(dArray[i]) + ""));
 
         // Create and init the property sheet
         sheet_ = new PropertySheetPanel();
         sheet_.setProperties(da);
+        sheet_.setDescriptionVisible(true);
         sheet_.addPropertySheetChangeListener(new MyPropertyChangeListener());
-        
-        // Build the GUI
-        setLayout(new BorderLayout());
-        add(BorderLayout.CENTER, sheet_);
+
+        setContent(sheet_);
     }
 
     //----------------------------------------------------------------------
