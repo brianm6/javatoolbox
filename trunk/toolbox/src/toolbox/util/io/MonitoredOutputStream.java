@@ -201,7 +201,7 @@ public class MonitoredOutputStream extends FilterOutputStream
     /**
      * @param throughputMonitor The throughputMonitor to set.
      */
-    public void setThroughputMonitor(DefaultThroughputMonitor throughputMonitor)
+    public void setThroughputMonitor(ThroughputMonitor throughputMonitor)
     {
         throughputMonitor_ = throughputMonitor;
     }
