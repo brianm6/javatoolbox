@@ -16,11 +16,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.junit.UITestCase;
 import toolbox.util.ArrayUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
@@ -30,7 +30,7 @@ import toolbox.util.ui.JSmartMenuItem;
 /**
  * Unit test for SwingUtil.
  */
-public class SwingUtilTest extends TestCase
+public class SwingUtilTest extends UITestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(SwingUtilTest.class);
