@@ -7,13 +7,15 @@ import toolbox.util.typecast.Typecast;
 /**
  * Used to convert an object into a Map
  * <pre>
+ * 
  * Example:
- *      Map map = AsMap.of( someObject );
+ *      Map map = AsMap.of(someObject);
+ * 
  * </pre>
  */
-public class AsMap
+public final class AsMap
 {
-    /** instance */
+    /** Instance */
     public static final Typecast TYPECAST = new Typecast(Map.class);
 
     static 
@@ -24,7 +26,7 @@ public class AsMap
     /**
      * Maps an object
      * 
-     * @param  object  Object
+     * @param  object  Object to map 
      * @return Map of object
      */
     public static Map of(Object object)
@@ -35,8 +37,8 @@ public class AsMap
     /**
      * Maps an object
      * 
-     * @param  object  Object
-     * @param  policy  Policy
+     * @param  object  Object to map
+     * @param  policy  Mapping policy
      * @return Map of object
      */
     public static Map of(Object object, String policy)
