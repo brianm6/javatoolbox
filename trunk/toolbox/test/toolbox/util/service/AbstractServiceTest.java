@@ -42,12 +42,75 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testStart...");
         
-        Service s = new MockService();
-        s.addServiceListener(new MockServiceListener());
+        Service s = new MockService(true);
         s.initialize();
         s.start();
         assertTrue(s.isRunning());
+        
+        s = new MockService(true);
+        s.initialize();
+        s.start();
+        s.stop();
+        s.start();
+        assertTrue(s.isRunning());
+        
+        s = new MockService(true);
+        s.initialize();
+        s.start();
+        s.suspend();
+        s.start();
     }
+
+    
+    /**
+     * Tests invalid state transitions on start()
+     * 
+     * @throws ServiceException on service error.
+     */
+    public void testStartInvalid() throws ServiceException
+    {
+        logger_.info("Running testStartInvalid...");
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.start();
+            fail("Invalid start from uninitialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.start();
+            s.suspend();
+            s.resume();
+            s.start();
+            fail("Invalid start from resume");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+     
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.destroy();
+            s.start();
+            fail("Invalid start from destroy");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+    }
+    
 
     
     /**
@@ -59,7 +122,7 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testSuspend...");
         
-        Service s = new MockService();
+        Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
         s.initialize();
         s.start();
@@ -67,7 +130,68 @@ public class AbstractServiceTest extends TestCase
         assertTrue(s.isSuspended());
     }
 
+
+    /**
+     * Tests invalid state transitions on suspend()
+     * 
+     * @throws ServiceException on service error.
+     */
+    public void testSuspendInvalid() throws ServiceException
+    {
+        logger_.info("Running testSuspendInvalid...");
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.suspend();
+            fail("Invalid suspend from uninitialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.suspend();
+            fail("Invalid suspend from initialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+     
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.start();
+            s.stop();
+            s.suspend();
+            fail("Invalid suspend from stop");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.destroy();
+            s.suspend();
+            fail("Invalid suspend from destroy");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+    }
     
+
     /**
      * Tests resume()
      * 
@@ -77,7 +201,7 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testResume...");
         
-        Service s = new MockService();
+        Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
         s.initialize();
         s.start();
@@ -88,6 +212,81 @@ public class AbstractServiceTest extends TestCase
 
     
     /**
+     * Tests invalid state transitions on resume()
+     * 
+     * @throws ServiceException on service error.
+     */
+    public void testResumeInvalid() throws ServiceException
+    {
+        logger_.info("Running testResumeInvalid...");
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.resume();
+            fail("Invalid resume from uninitialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.resume();
+            fail("Invalid resume from initialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.start();
+            s.resume();
+            fail("Invalid resume from start");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.destroy();
+            s.start();
+            s.stop();
+            s.suspend();
+            fail("Invalid resume from stopped");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.destroy();
+            s.suspend();
+            fail("Invalid resume from destryed");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+    }
+    
+    
+    /**
      * Tests stop()
      * 
      * @throws ServiceException on service error.
@@ -96,12 +295,59 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testStop...");
         
-        Service s = new MockService();
+        Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
         s.initialize();
         s.start();
         s.stop();
         assertFalse(s.isRunning());
+    }
+
+
+    /**
+     * Tests invalid state transitions on stop()
+     * 
+     * @throws ServiceException on service error.
+     */
+    public void testStopInvalid() throws ServiceException
+    {
+        logger_.info("Running testStopInvalid...");
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.stop();
+            fail("Invalid stop from uninitialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.stop();
+            fail("Invalid stop from initialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.destroy();
+            s.stop();
+            fail("Invalid stop from destroyed");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
     }
 
     
@@ -114,7 +360,7 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testDestroy...");
         
-        Service s = new MockService();
+        Service s = new MockService(true);
         s.addServiceListener(new MockServiceListener());
         s.initialize();
         s.start();
@@ -123,13 +369,84 @@ public class AbstractServiceTest extends TestCase
         assertFalse(s.isRunning());
     }
     
+    
+    /**
+     * Tests invalid state transitions on destroy()
+     * 
+     * @throws ServiceException on service error.
+     */
+    public void testDestroyInvalid() throws ServiceException
+    {
+        logger_.info("Running testResumeInvalid...");
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.destroy();
+            fail("Invalid destroy from uninitialized");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.start();
+            s.destroy();
+            fail("Invalid destroy from start");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+        
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.start();
+            s.suspend();
+            s.resume();
+            s.destroy();
+            fail("Invalid destroy from resume");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+
+        try 
+        {
+            Service s = new MockService(true);
+            s.initialize();
+            s.start();
+            s.suspend();
+            s.destroy();
+            fail("Invalid destroy from suspend");
+        }
+        catch (ServiceException se) 
+        {
+            ; // Success
+        }
+    }
+
     //--------------------------------------------------------------------------
     // MockService
     //--------------------------------------------------------------------------
     
     class MockService extends AbstractService
     {
-        // No-op so instance can be created.
+        public MockService() 
+        {
+        }
+
+        public MockService(boolean strict) 
+        {
+            super(strict);
+        }
     }
     
     //--------------------------------------------------------------------------
