@@ -10,15 +10,12 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Enumeration;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -26,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -44,8 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.DateTimeUtil;
-import toolbox.util.FileUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -54,25 +48,40 @@ import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
-import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.SmartListCellRenderer;
-import toolbox.util.ui.statusbar.JStatusBar;
 import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
 import toolbox.workspace.IPreferenced;
 
 /**
  * File explorer UI component that supports a number of features. Heavily
- * modified and enhanced from the Jext project. 
+ * modified and enhanced from the original sourced from the Jext project.
+ * <p>
+ * Features:
+ * <ul>
+ *   <li>Vertical or horizontal splitter orientation
+ *   <li>Event notification for
+ *     <ul>
+ *       <li>Directory selection
+ *       <li>Directory double-click
+ *       <li>File selection
+ *       <li>File double-click
+ *     </ul>
+ *   <li>Infobar with file attributes
+ *   <li>Refresh button
+ * </ul>
+ * @see toolbox.util.ui.explorer.FileExplorerListener
+ * @see toolbox.util.ui.explorer.FileNode
+ * @see toolbox.util.ui.explorer.InfoBar 
  */
 public class JFileExplorer extends JPanel implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(JFileExplorer.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -168,8 +177,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private FileExplorerListener[] fileExplorerListeners_;
 
     /** 
-     * Flag to prevent events from triggering new events to be generated while
-     * an operation is executing on the tree.
+     * Flag to prevent events from triggering new events from being processed 
+     * while an operation is pending on the tree.
      */
     private boolean processingTreeEvent_;
     
@@ -396,7 +405,30 @@ public class JFileExplorer extends JPanel implements IPreferenced
             processingTreeEvent_ = false;
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // Package
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Package level access for the roots combobox. Used by the InfoBar.
+     * 
+     * @return JComboBox
+     */
+    JComboBox getRootsComboBox() {
+        return rootsComboBox_;
+    }
 
+    
+    /**
+     * Package level access for the file list. Used by the InfoBar.
+     *  
+     * @return JList
+     */
+    public JList getFileList() {
+        return fileList_;
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferencesd Interface
     //--------------------------------------------------------------------------
@@ -621,7 +653,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         gridbag.setConstraints(splitPane_, constraints);
         add(splitPane_);
               
-        infoBar_ = new InfoBar();
+        infoBar_ = new InfoBar(this);
         constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.gridwidth = 1;
@@ -633,8 +665,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         gridbag.setConstraints(infoBar_, constraints);
         add(infoBar_);
               
-        addFileExplorerListener(new InfoBarUpdater());              
-              
+        addFileExplorerListener(infoBar_.new InfoBarUpdater());              
         splitPane_.setDividerLocation(150);
     }
 
@@ -912,7 +943,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Handles the changing of the selection of the file root (drive letter).
+     * Handles the changing of the selection of drive letter. When a new drive
+     * is selected, the directory and file lists are automatically populated 
+     * with the contents of the drive's root directory.
      */
     class DriveComboListener implements ItemListener
     {
@@ -938,7 +971,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Updates the file list when the directory folder selection changes.
+     * Updates the contents of the file list when the directory folder 
+     * selection changes.
      */
     class DirTreeSelectionListener implements TreeSelectionListener
     {
@@ -973,103 +1007,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
             fireFolderSelected(folder);
             
             selectFolder(folder);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // InfoBar
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Simple file information bar that shows file attributes.
-     */    
-    class InfoBar extends JStatusBar
-    {
-        private JLabel sizeLabel_;
-        private JLabel modifiedLabel_;
-        private JLabel attribLabel_;
-        private JLabel refreshLabel_;
-        private DecimalFormat df_;
-        
-        /**
-         * Creates an InfoBar.
-         */
-        InfoBar()
-        {
-            df_ = new DecimalFormat();
-            
-            sizeLabel_ = new JSmartLabel();
-            sizeLabel_.setHorizontalAlignment(SwingConstants.CENTER);
-            
-            modifiedLabel_ = new JSmartLabel();
-            modifiedLabel_.setHorizontalAlignment(SwingConstants.CENTER);
-            
-            attribLabel_ = new JSmartLabel();
-
-            refreshLabel_ = 
-                new JSmartLabel(ImageCache.getIcon(ImageCache.IMAGE_REFRESH));
-            
-            refreshLabel_.addMouseListener(new MouseAdapter()
-            {
-                public void mousePressed(MouseEvent e)
-                {
-                    String folder = getCurrentPath();
-                    String file   = FileUtil.stripPath(getFilePath());
-                    
-                    new DriveComboListener().itemStateChanged(
-                        new ItemEvent(rootsComboBox_, 0, null, 
-                            ItemEvent.ITEM_STATE_CHANGED));
-                            
-                    selectFolder(folder);
-                    setFileList(folder);
-                    fileList_.setSelectedValue(file, true);
-                }
-            });
-            
-            addStatusComponent(sizeLabel_, false);
-            addStatusComponent(modifiedLabel_, true);
-            addStatusComponent(attribLabel_, false);
-            addStatusComponent(refreshLabel_, false);
-        }
-
-        
-        /**
-         * Updates the bar to show information for the given file.
-         * 
-         * @param file File to show info for.
-         */
-        public void showInfo(File file)
-        {
-            String size = df_.format(file.length()) + " bytes";
-            sizeLabel_.setText(size);
-            sizeLabel_.setToolTipText(size);
-            
-            String date = DateTimeUtil.format(new Date(file.lastModified()));
-            modifiedLabel_.setText(date);
-            modifiedLabel_.setToolTipText(date);
-                
-            attribLabel_.setText(
-                (file.canRead() ? "R" : "") +
-                (file.canWrite() ? "W" : ""));
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // InfoBarUpdater
-    //--------------------------------------------------------------------------
-    
-    /** 
-     * Updates the infobar with the currently selected file.
-     */
-    class InfoBarUpdater extends FileExplorerAdapter
-    {
-        /**
-         * @see toolbox.util.ui.explorer.FileExplorerListener#fileSelected(
-         *      java.lang.String)
-         */
-        public void fileSelected(String file)
-        {
-            infoBar_.showInfo(new File(file));
         }
     }
 }
