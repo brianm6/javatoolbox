@@ -29,7 +29,7 @@ import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 
 import toolbox.util.FontUtil;
-import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.AutoTailAction;
 import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 
@@ -565,7 +565,7 @@ public class JHeaderPanel extends JPanel
            new LineWrapAction(textArea), textArea, "wrapLine"));
        
        tb.add(createToggleButton(
-           new AutoScrollAction(textArea), textArea, "autoscroll"));
+           new AutoTailAction(textArea), textArea, "autoscroll"));
        
        tb.add(createButton(new ClearAction(textArea)));
        return tb;

@@ -6,28 +6,25 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartTextArea;
 
 /**
- * Toggles autoscrolling in a JSmartTextArea.
+ * Toggles autotailing of output in a JSmartTextArea.
  * 
  * @see toolbox.util.ui.JSmartTextArea
  */    
-public class AutoScrollAction extends AbstractTextComponentAction 
+public class AutoTailAction extends AbstractTextComponentAction 
 {
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a AutoScrollAction.
+     * Creates an AutoTailAction.
      * 
      * @param area Text area to link this action to.
      */
-    public AutoScrollAction(JSmartTextArea area)
+    public AutoTailAction(JSmartTextArea area)
     {
-        super(area, "AutoScroll", ImageCache.getIcon(ImageCache.IMAGE_LOCK));
-        
-        putValue(
-            SHORT_DESCRIPTION, 
-            "Toggles autoscrolling of text");
+        super(area, "AutoTail", ImageCache.getIcon(ImageCache.IMAGE_LOCK));
+        putValue(SHORT_DESCRIPTION, "Toggles autotailing of text.");
     }
     
     //--------------------------------------------------------------------------
@@ -42,9 +39,9 @@ public class AutoScrollAction extends AbstractTextComponentAction
     { 
         JSmartTextArea ta = (JSmartTextArea) getTextComponent();
         
-        ta.setAutoScroll(!ta.isAutoScroll());
+        ta.setAutoTail(!ta.isAutoTail());
         
-        if (ta.isAutoScroll())
+        if (ta.isAutoTail())
             ta.scrollToEnd();
     }
 }
