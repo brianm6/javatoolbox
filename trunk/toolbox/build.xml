@@ -183,11 +183,12 @@
     </target>
 
     <!--=============================-->
-    <!--           JAR_SRC           -->
+    <!--           JAR-SRC           -->
     <!--=============================-->
     <target name="jar-src" depends="init" description="Create jar containing only source code">
         <jar jarfile="${dist}/toolbox-src.jar">
-            <fileset dir="${src}" includes="**/*.java"/>
+            <fileset dir="${top}" includes="src/**/*.java"/>
+            <fileset dir="${top}" includes="src/**/*.MF"/>
             <fileset dir="${top}" includes="build.xml"/>
             <fileset dir="${top}" includes="resources/**/*"/>
         </jar>
