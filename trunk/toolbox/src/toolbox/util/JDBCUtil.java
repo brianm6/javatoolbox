@@ -378,16 +378,18 @@ public final class JDBCUtil
     public static int executeUpdate(String sql) throws SQLException
     {
         Connection conn = null;
+        Statement stmt = null;
         int rows = -1;
         
         try 
         {
             conn = getConnection();    
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             rows = stmt.executeUpdate(prepSQL(sql));
         } 
         finally 
         {
+            close(stmt);
             releaseConnection(conn); 
         }
         
@@ -429,16 +431,20 @@ public final class JDBCUtil
     {
         String formattedResults = null;
         Connection conn = null;
-            
+        ResultSet results = null;
+        PreparedStatement stmt = null;
+        
         try
         {
             conn = getConnection();
-            PreparedStatement stmt = conn.prepareStatement(prepSQL(sql));
-            ResultSet results = stmt.executeQuery();
+            stmt = conn.prepareStatement(prepSQL(sql));
+            results = stmt.executeQuery();
             formattedResults = format(results);
         }
         finally
         {
+            close(stmt);
+            close(results);
             releaseConnection(conn); 
         }
         
@@ -458,17 +464,19 @@ public final class JDBCUtil
     {
         Object[][] data = null;
         Connection conn = null;
+        ResultSet results = null;
         PreparedStatement stmt = null;
 
         try
         {
             conn = getConnection();
             stmt = conn.prepareStatement(prepSQL(sql));
-            ResultSet results = stmt.executeQuery();
+            results = stmt.executeQuery();
             data = toArray(results);
         }
         finally
         {
+            close(results);
             close(stmt);
             releaseConnection(conn);
         }
