@@ -23,7 +23,7 @@ public class TreeTest extends TestCase
         Category.getInstance(TreeTest.class);
     
     /** Temporary directory that will serve as the root dir for tests **/
-    private File rootDir;
+    private File rootDir_;
 
     /**
      * Entrypoint
@@ -51,8 +51,7 @@ public class TreeTest extends TestCase
      */
     public void setUp() throws IOException
     {
-        rootDir = FileUtil.createTempDir();
-        System.out.println();
+        rootDir_ = FileUtil.createTempDir();
     }
 
     /**
@@ -60,8 +59,8 @@ public class TreeTest extends TestCase
      */
     public void tearDown()
     {
-        FileUtil.cleanDir(rootDir);
-        rootDir.delete();
+        FileUtil.cleanDir(rootDir_);
+        rootDir_.delete();
     }
 
     
@@ -72,7 +71,7 @@ public class TreeTest extends TestCase
     {
         logger_.info("Tree with cascading dirs: \n");
         
-        File a = new File(rootDir, "a");
+        File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -84,10 +83,10 @@ public class TreeTest extends TestCase
         File d = new File(c, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree();
-        tree.showTree(rootDir);
+        Tree tree = new Tree(rootDir_);
+        tree.showTree();
         
-        printNativeTree(rootDir);
+        printNativeTree(rootDir_);
     }
 
     /**
@@ -97,7 +96,7 @@ public class TreeTest extends TestCase
     {
         logger_.info("Tree with flat struct at level 2: \n");
         
-        File a = new File(rootDir, "a");
+        File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -109,10 +108,10 @@ public class TreeTest extends TestCase
         File d = new File(a, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree();
-        tree.showTree(rootDir);
+        Tree tree = new Tree(rootDir_);
+        tree.showTree();
         
-        printNativeTree(rootDir);
+        printNativeTree(rootDir_);
     }
 
     /**
@@ -122,8 +121,8 @@ public class TreeTest extends TestCase
     {
         logger_.info("Tree with an extension bar: \n");
                 
-        // Create rootDir\a\b\c\d 
-        File a = new File(rootDir, "a");
+        // Create rootDir_\a\b\c\d 
+        File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
@@ -135,17 +134,17 @@ public class TreeTest extends TestCase
         File d = new File(a, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree();
-        tree.showTree(rootDir);
+        Tree tree = new Tree(rootDir_);
+        tree.showTree();
         
-        printNativeTree(rootDir);
+        printNativeTree(rootDir_);
     }
 
     /**
      * Tests for more then one dir in the root
      * <pre> 
      *
-     *   rootDir
+     *   rootDir_
      *   |
      *   +---a
      *   |   +---b
@@ -159,39 +158,39 @@ public class TreeTest extends TestCase
     {
         logger_.info("Tree with > 1 dir in root: \n");
                 
-        File a = new File(rootDir, "a");
+        File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
         
         File b = new File(a, "b");
         assertTrue(b.mkdir());
         
-        File c = new File (rootDir, "c");
+        File c = new File (rootDir_, "c");
         assertTrue(c.mkdir());
         
         File d = new File(c, "d");
         assertTrue(d.mkdir());
         
-        Tree tree = new Tree();
-        tree.showTree(rootDir);
+        Tree tree = new Tree(rootDir_);
+        tree.showTree();
         
-        printNativeTree(rootDir);
+        printNativeTree(rootDir_);
     }
 
     /**
      * Tests for an empty root directory
      * <pre> 
      *
-     *   rootDir
+     *   rootDir_
      *
      * </pre>
      */
     public void testShowTreeEmptyRoot() throws Exception
     {
         logger_.info("Tree with an empty root: \n");
-        Tree tree = new Tree();
-        tree.showTree(rootDir);
+        Tree tree = new Tree(rootDir_);
+        tree.showTree();
         
-        printNativeTree(rootDir);
+        printNativeTree(rootDir_);
     }
 
 
@@ -199,7 +198,7 @@ public class TreeTest extends TestCase
      * Tests tree with only one folder
      * <pre> 
      *
-     *   rootDir
+     *   rootDir_
      *   |
      *   +---a
      *
@@ -209,13 +208,13 @@ public class TreeTest extends TestCase
     {
         logger_.info("Tree with a single directory: \n");
 
-        File a = new File(rootDir, "a");
+        File a = new File(rootDir_, "a");
         assertTrue(a.mkdir());
         
-        Tree tree = new Tree();
-        tree.showTree(rootDir);
+        Tree tree = new Tree(rootDir_);
+        tree.showTree();
         
-        printNativeTree(rootDir);
+        printNativeTree(rootDir_);
     }
 
 
@@ -224,10 +223,77 @@ public class TreeTest extends TestCase
      */
     public void xtestShowTreeLargeTree() throws Exception
     {
-        Tree tree = new Tree();
-        tree.showTree(new File("/"));
+        Tree tree = new Tree(new File("/"));
+        tree.showTree();
         
-//        printNativeTree(rootDir);
+//        printNativeTree(rootDir_);
+    }
+
+
+    /**
+     * Tests for a simple cascading structure with one file
+     */
+    public void testShowTreeSimpleCascadeFile() throws Exception
+    {
+        logger_.info("Tree with cascading dirs and one file: \n");
+        
+        createFile(rootDir_);
+        
+        File a = new File(rootDir_, "a");
+        assertTrue(a.mkdir());
+        createFile(a);
+                
+        File b = new File(a, "b");
+        assertTrue(b.mkdir());
+        createFile(b);
+        
+        File c = new File (b, "c");
+        assertTrue(c.mkdir());
+        createFile(c);
+        
+        File d = new File(c, "d");
+        assertTrue(d.mkdir());
+        createFile(d);
+               
+        Tree tree = new Tree(rootDir_, true);
+        tree.showTree();
+        
+        printNativeFileTree(rootDir_);
+    }
+
+
+    /**
+     * Tests for an empty tree with files in the root only
+     */
+    public void testShowTreeRootFiles() throws Exception
+    {
+        logger_.info("Tree with cascading dirs and one file: \n");
+        
+        createFile(rootDir_);
+        createFile(rootDir_);
+        createFile(rootDir_);
+        createFile(rootDir_);
+        createFile(rootDir_);
+               
+        Tree tree = new Tree(rootDir_, true);
+        tree.showTree();
+        
+        printNativeFileTree(rootDir_);
+    }
+
+
+
+    /**
+     * Creates a temp file in the given directory
+     * 
+     * @param  dir  Dir to create file in
+     * @throws IOException on error
+     */
+    protected File createFile(File dir) throws IOException
+    {
+        String f = FileUtil.getTempFilename(dir);
+        FileUtil.setFileContents(f, "testing", false);
+        return new File(f);
     }
 
     /**
@@ -236,6 +302,18 @@ public class TreeTest extends TestCase
     public void printNativeTree(File dir) throws IOException
     {
         Process p = Runtime.getRuntime().exec("tree.com /a " + dir.getAbsolutePath());
+        InputStream is = p.getInputStream();
+        String output = StreamUtil.asString(is);
+        output = output.substring(output.indexOf("\n", output.indexOf("\n") + 1));
+        System.out.println(output);
+    }
+
+    /**
+     * Executes the native version of tree to use as a comparison
+     */
+    public void printNativeFileTree(File dir) throws IOException
+    {
+        Process p = Runtime.getRuntime().exec("tree.com /a /f " + dir.getAbsolutePath());
         InputStream is = p.getInputStream();
         String output = StreamUtil.asString(is);
         output = output.substring(output.indexOf("\n", output.indexOf("\n") + 1));
