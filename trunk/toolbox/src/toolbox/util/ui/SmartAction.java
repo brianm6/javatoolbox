@@ -245,6 +245,18 @@ public abstract class SmartAction extends AbstractAction
         return caught_;
     }
     
+    
+    /**
+     * Sets the name of this action.
+     * 
+     * @param name Name this will show up on this action's associated UI
+     *        component. For example the text of a JButton.  
+     */
+    public void setName(String name)
+    {
+        putValue(Action.NAME, name);
+    }
+    
     //--------------------------------------------------------------------------
     // BusyCursorAction
     //--------------------------------------------------------------------------
