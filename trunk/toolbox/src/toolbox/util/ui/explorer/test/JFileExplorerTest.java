@@ -72,13 +72,13 @@ public class JFileExplorerTest extends TestCase
         ActionListener
     {
         /** Textfield for testing **/
-        private JTextField testField;
+        private JTextField testField_;
         
         /** Button for testing **/
-        private JButton    testButton;
+        private JButton    testButton_;
         
         /** Explorer for testing **/
-        private JFileExplorer jfe;
+        private JFileExplorer jfe_;
         
         /** 
          * Creates a test frame 
@@ -88,18 +88,18 @@ public class JFileExplorerTest extends TestCase
             super("JFileExplorer");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            jfe = new JFileExplorer(false);
-            jfe.addJFileExplorerListener(this);
+            jfe_ = new JFileExplorer(false);
+            jfe_.addJFileExplorerListener(this);
             getContentPane().setLayout(new BorderLayout());
-            getContentPane().add(jfe, BorderLayout.CENTER);
+            getContentPane().add(jfe_, BorderLayout.CENTER);
             
             JPanel testPanel = new JPanel(new FlowLayout());
-            testField = new JTextField(15);
-            testButton = new JButton("Set folder");
-            testButton.addActionListener(this);
+            testField_ = new JTextField(15);
+            testButton_ = new JButton("Set folder");
+            testButton_.addActionListener(this);
             testPanel.add(new JLabel("Folder"));
-            testPanel.add(testField);
-            testPanel.add(testButton);
+            testPanel.add(testField_);
+            testPanel.add(testButton_);
             getContentPane().add(testPanel, BorderLayout.SOUTH);
         }        
 
@@ -133,7 +133,7 @@ public class JFileExplorerTest extends TestCase
          */
         public void actionPerformed(ActionEvent e)
         {
-            jfe.selectFolder(this.testField.getText());
+            jfe_.selectFolder(testField_.getText());
         }
     }
 }
