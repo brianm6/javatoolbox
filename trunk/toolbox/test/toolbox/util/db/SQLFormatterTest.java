@@ -62,7 +62,6 @@ public class SQLFormatterTest extends TestCase
     public void testFormatSQL1_1()
     {
         logger_.info("Running testFormatSQL1_1...");
-        
         String s = formatter_.format("SELECT * FROM USER");
         logger_.info(StringUtil.addBars(s));
     }
