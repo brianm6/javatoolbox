@@ -187,7 +187,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
-        // Set default to all turbo test packages
+        // Set default to test packages
         filterField_.setText(prefs.getProperty(PROP_FILTER, ".*test"));
     }
 
