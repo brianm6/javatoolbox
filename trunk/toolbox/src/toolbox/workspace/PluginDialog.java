@@ -62,7 +62,7 @@ public class ManagePluginsDialog extends JDialog
     /**
      * Workspace that is the parent of this dialog box
      */
-    private PluginWorkspace parent_;
+    private PluginWorkspace workspace_;
     
     /**
      * List of active (loaded) plugins in the workspace
@@ -96,7 +96,7 @@ public class ManagePluginsDialog extends JDialog
     protected ManagePluginsDialog(PluginWorkspace parent)
     {
         super(parent, "Manage Plugins", false);
-        parent_ = parent;
+        workspace_ = parent;
         buildView();
         pack();
         SwingUtil.centerWindow(parent, this);
@@ -216,7 +216,7 @@ public class ManagePluginsDialog extends JDialog
     {
         activeModel_.clear();
         
-        for (Iterator i = parent_.getPlugins().values().iterator();i.hasNext();)
+        for (Iterator i = workspace_.getPlugins().values().iterator();i.hasNext();)
         {
             IPlugin plugin = (IPlugin)i.next();
             PluginMeta meta = new PluginMeta(plugin);
@@ -265,7 +265,7 @@ public class ManagePluginsDialog extends JDialog
             boolean skip = false;
                 
             // Exclude the plugins that are already loaded                
-            for (Iterator it = parent_.getPlugins().values().iterator(); 
+            for (Iterator it = workspace_.getPlugins().values().iterator(); 
                  it.hasNext(); )
             {
                 String pluginClass = it.next().getClass().getName();
@@ -296,7 +296,7 @@ public class ManagePluginsDialog extends JDialog
                     
                 Object plugin = null;
 
-                // Excluse plugins that can't be instantiated for whatever 
+                // Exclude plugins that can't be instantiated for whatever 
                 // reason
                 try
                 {                            
@@ -321,6 +321,18 @@ public class ManagePluginsDialog extends JDialog
                     }
                 }
             }
+        }
+    
+        // If not plugins found, assume we're running via WebStart and use a 
+        // static list of plugins instead.
+         
+        if (legitPlugins.isEmpty())
+        {
+            // TODO: fill in rest of the plugins or move to external file
+            legitPlugins.add(new PluginMeta("toolbox.util.xslfo.XSLFOPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.util.ui.plugin.StatcvsPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.util.ui.plugin.TextPlugin"));
+            legitPlugins.add(new PluginMeta("toolbox.plugin.pdf.PDFPlugin"));
         }
     
         Collections.sort(legitPlugins, new ObjectComparator("name"));
@@ -423,7 +435,7 @@ public class ManagePluginsDialog extends JDialog
             {
                 try
                 {
-                    parent_.registerPlugin(
+                    workspace_.registerPlugin(
                         ((PluginMeta)selected[i]).getClassName());
                         
                     inactiveModel_.removeElement(selected[i]);                        
@@ -479,7 +491,7 @@ public class ManagePluginsDialog extends JDialog
                 // Deregister selected plugins
                 for (int i=0; i<selected.length; i++)
                 {
-                    parent_.deregisterPlugin(
+                    workspace_.deregisterPlugin(
                         ((PluginMeta)selected[i]).getClassName(), true);
                         
                     inactiveModel_.addElement(selected[i]);                        
@@ -539,7 +551,7 @@ public class ManagePluginsDialog extends JDialog
             super("Find Plugins", 
                   true, 
                   ManagePluginsDialog.this, 
-                  parent_.getStatusBar());
+                  workspace_.getStatusBar());
                 
             putValue(Action.MNEMONIC_KEY, new Integer('F')); 
         }
