@@ -9,18 +9,38 @@ import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.GridLayoutPlus;
 
 /**
- * ServiceView
+ * ServiceView associated a UI component with a service so that it can be 
+ * manipulated.
  */
 public class ServiceView extends JPanel
 {
+    /**
+     * Service attached to the view.
+     */
     private Service service_;
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a ServiceView.
+     * 
+     * @param service Service to attached to this view.
+     */
     public ServiceView(Service service)
     {
         service_ = service;
         buildView();
     }
     
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Builds the GUI.
+     */
     protected void buildView()
     {
         setLayout(new GridLayoutPlus(1,4));
@@ -29,6 +49,10 @@ public class ServiceView extends JPanel
         add(new JSmartButton(new ResumeAction()));
         add(new JSmartButton(new StopAction()));
     }
+    
+    //--------------------------------------------------------------------------
+    // StartAction
+    //--------------------------------------------------------------------------
     
     class StartAction extends SmartAction
     {
@@ -43,6 +67,10 @@ public class ServiceView extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // StopAction
+    //--------------------------------------------------------------------------
+    
     class StopAction extends SmartAction
     {
         public StopAction()
@@ -55,6 +83,10 @@ public class ServiceView extends JPanel
             service_.stop();
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // PauseAction
+    //--------------------------------------------------------------------------
     
     class PauseAction extends SmartAction
     {
@@ -69,6 +101,10 @@ public class ServiceView extends JPanel
         }
     }
     
+    //--------------------------------------------------------------------------
+    // ResumeAction
+    //--------------------------------------------------------------------------
+    
     class ResumeAction extends SmartAction
     {
         public ResumeAction()
@@ -80,14 +116,5 @@ public class ServiceView extends JPanel
         {
             service_.resume();
         }
-    }
-    
-    
-    interface ServiceListener
-    {
-        public void serviceStarted(Service service) throws ServiceException;
-        public void serviceStopped(Service service) throws ServiceException;
-        public void servicePaused(Service service) throws ServiceException;
-        public void serviceResumed(Service service) throws ServiceException;
     }
 }
