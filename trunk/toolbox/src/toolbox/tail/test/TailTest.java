@@ -201,7 +201,7 @@ public class TailTest extends TestCase
         // Create sinks for tail and attach them to the tail
         // Attach the input reader to the tail        
         StringWriter sw = new StringWriter();
-        tail.follow(reader, sw);
+        tail.follow(reader, sw, "testTailLifeCycle");
         
         // Lifecycle of tail
         tail.start();
