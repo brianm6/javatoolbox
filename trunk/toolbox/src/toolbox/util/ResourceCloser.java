@@ -70,7 +70,7 @@ public final class ResourceCloser
     }
 
     //--------------------------------------------------------------------------
-    //  Static Methods
+    //  Public 
     //--------------------------------------------------------------------------
 
     /**
@@ -93,6 +93,7 @@ public final class ResourceCloser
         }
     }
     
+    
     /**
      * Closes an inputstream quitely
      * 
@@ -113,6 +114,7 @@ public final class ResourceCloser
             }
         }
     }
+
 
     /**
      * Closes an outputstream quitely
@@ -135,6 +137,7 @@ public final class ResourceCloser
         }
     }
 
+
     /**
      * Closes a writer quietly
      * 
@@ -155,6 +158,7 @@ public final class ResourceCloser
         }
     }
 
+
     /**
      * Closes a reader quietly
      * 
@@ -174,6 +178,7 @@ public final class ResourceCloser
             }
         }
     }
+
 
     /**
      * Closes a socket quietly
@@ -221,6 +226,7 @@ public final class ResourceCloser
 //            }
 //        }
 //    }
+
     
     /**
      * Closes an IConnection quietly

@@ -29,6 +29,10 @@ public class SocketUtil
     public static final String MSG_SOCKET_CLOSED = "Socket closed";
 
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Prevent construction
      */
@@ -36,7 +40,10 @@ public class SocketUtil
     {
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Establishes a connection to a server socket with a retry strategy
      * 
@@ -53,16 +60,16 @@ public class SocketUtil
     {
         Socket socket = null;
 
-        // zero max retries = infinite 
+        // Zero max retries = infinite 
         if (maxRetries <= 0)
             maxRetries = Integer.MAX_VALUE;
 
-        // loop max retries
+        // Loop max retries times
         for (int i = 0; i < maxRetries; i++)
         {
             try
             {
-                // if successful, break
+                // If successful, break
                 socket = new Socket(hostname, port);
                 break;
             }
@@ -72,7 +79,7 @@ public class SocketUtil
                     " failed. Will retry in " + interval + " secs " + 
                     (maxRetries - i) + " times..");
 
-                // else sleep and try again
+                // Else sleep and try again
                 ThreadUtil.sleep(interval * 1000);
             }
         }
@@ -85,11 +92,13 @@ public class SocketUtil
      * Determines if the reason for an InterruptedIOException is the timeout
      * of the call to socket.accept()
      * 
-     * @param  iioe    Exception to check
-     * @return True if caused by an accept timeout, false otherwise
-     * 
+     * <pre>
      * NOTE: This is crude, but there is no otherway to execute conditional
      *       logic based on this exception.
+     * </pre>
+     * 
+     * @param  iioe    Exception to check
+     * @return True if caused by an accept timeout, false otherwise
      */
     public static boolean isReasonAcceptTimeout(InterruptedIOException iioe)
     {
@@ -101,11 +110,13 @@ public class SocketUtil
      * Determines if the reason for a SocketException is because the socket
      * has already been closed.
      * 
-     * @param  se   SocketException to check
-     * @return True if exception raised by a closed socket , false otherwise
-     * 
+     * <pre>
      * NOTE: This is crude, but there is no otherway to execute conditional
      *       logic based on this exception.
+     * </pre>
+     * 
+     * @param  se   SocketException to check
+     * @return True if exception raised by a closed socket , false otherwise
      */
     public static boolean isReasonSocketClosed(SocketException se)
     {

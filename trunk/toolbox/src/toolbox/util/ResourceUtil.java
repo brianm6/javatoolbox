@@ -13,9 +13,24 @@ import org.apache.log4j.Logger;
  */
 public final class ResourceUtil
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtil.class);
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Private constructor
+     */
+    private ResourceUtil()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * Locates a resource with the given name using an exhaustive
@@ -65,6 +80,7 @@ public final class ResourceUtil
         return is;
     }
 
+
     /**
      * Locates the resource identified by the url.
      *
@@ -78,6 +94,7 @@ public final class ResourceUtil
         URL u = getResourceURL(url);
         return (u != null) ? u.openStream() : null;
     }
+
 
     /**
      * Locates the resource identified by the file name.
@@ -94,6 +111,7 @@ public final class ResourceUtil
         return (url != null) ? url.openStream() : null;
     }
 
+
     /**
      * Locates the resource associated with this class.
      *
@@ -108,6 +126,7 @@ public final class ResourceUtil
         URL url = getClassResourceURL(resource);
         return (url != null) ? url.openStream() : null;
     }
+
 
     /**
      * Locates the resource associated with the supplied class.
@@ -127,6 +146,7 @@ public final class ResourceUtil
         return (url != null) ? url.openStream() : null;
     }
 
+
     /**
      * Locates the resource associated with the package of the supplied
      * class.
@@ -145,6 +165,7 @@ public final class ResourceUtil
         URL url = getPackageResourceURL(context, resource);
         return (url != null) ? url.openStream() : null;
     }
+
 
     /**
      * Locates the resource identified by the url.
@@ -169,6 +190,7 @@ public final class ResourceUtil
         return u;
     }
 
+
     /**
      * Locates the resource identified by the file name.
      *
@@ -192,6 +214,7 @@ public final class ResourceUtil
         return file.toURL();
     }
 
+
     /**
      * Locates the resource associated with this class.
      *
@@ -205,6 +228,7 @@ public final class ResourceUtil
         logger_.debug("getClassResource(" + resource + ")");
         return getClassResourceURL(ResourceUtil.class, resource);
     }
+
 
     /**
      * Locates the resource associated with the supplied class.
@@ -230,6 +254,7 @@ public final class ResourceUtil
 
         return url;
     }
+
 
     /**
      * Locates the resource associated with the package of the supplied
@@ -267,6 +292,7 @@ public final class ResourceUtil
 
         return url;
     }
+
     
     /**
      * Exports a resource to bytes and encapsulates in a class

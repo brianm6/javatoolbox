@@ -8,16 +8,16 @@ import java.util.List;
  */
 public class RollingCounter
 {
-    /** Start of range **/
+    /** Start of range */
     private int  start_;
     
-    /** End of range **/
+    /** End of range */
     private int  end_;
     
-    /** Current position in range **/
+    /** Current position in range */
     private int  cnt_; 
     
-    /** List of counter listeners **/
+    /** List of counter listeners */
     private List listeners_;
     
     //--------------------------------------------------------------------------
@@ -120,7 +120,7 @@ public class RollingCounter
     /**
      * Adds a listener
      *
-     * @param  listener  Listener
+     * @param  listener  Listener to add
      */
     public void addRollingCounterListener(IRollingCounterListener listener)
     {

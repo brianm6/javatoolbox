@@ -17,7 +17,11 @@ public class StreamUtil
 {
     private static final Logger logger_ = 
         Logger.getLogger(StreamUtil.class);
-        
+ 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+           
     /**
      * Prevent construction
      */
@@ -25,29 +29,35 @@ public class StreamUtil
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Converts the contents of an character input stream to a string.
      *
-     * @param      inputStream        The input stream to read from
-     * @return     String representation of the input stream contents.
-     * @throws     IOException on IO error
+     * @param   inputStream     Input stream to read from
+     * @return  String representation of the input stream contents.
+     * @throws  IOException on IO error
      */
     public static String asString(InputStream inputStream) throws IOException
     {
         return new String(toBytes(inputStream));
     }
 
+
     /**
      * Converts the remaining contents of an InputStream to a byte array
      * 
-     * @param  is   InputStream to convert
-     * @return byte[]
-     * @throws IOException on IO error
+     * @param   is   InputStream to convert
+     * @return  Contents of the stream as a byte array
+     * @throws  IOException on IO error
      */    
     public static byte[] toBytes(InputStream is) throws IOException
     {
         List buffer = new ArrayList();
         int c;
+        
         while ( (c = is.read()) != -1)
         {
             Byte b = new Byte((byte)c);
@@ -55,13 +65,16 @@ public class StreamUtil
         }
         
         byte[] byteArray = new byte[buffer.size()];
+        
         for(int i=0; i<buffer.size(); i++)
         {
             Byte b = (Byte)buffer.get(i);
             byteArray[i] = b.byteValue();
         }
+        
         return byteArray;
     }
+
     
     /**
      * Reads an exact number of characters from a stream and returns them as a
@@ -70,8 +83,8 @@ public class StreamUtil
      * 
      * @param   is     InputStream to read characters from
      * @param   len    Number of characters to read
-     * @return  String contailing len characters read from input stream
-     * @throws  IOException if underlying stream times out
+     * @return  String containing len characters read from input stream
+     * @throws  IOException if underlying stream times out or IO error occurs
      */
     public static byte[] readExactly(InputStream is, int len) 
         throws IOException
@@ -93,10 +106,12 @@ public class StreamUtil
             }
 
             if (c != -1)
+            {
                 buffer[i] = (byte)c;
+            }
             else
             {
-                /* throw all bytes read into a string */
+                // Throw all bytes read into a string
                 StringBuffer bytesRead = new StringBuffer();
 
                 for (int j = 0; j < i; j++)
@@ -106,8 +121,10 @@ public class StreamUtil
                     "End of inputstream reached. Bytes read = " + bytesRead);
             }
         }
+        
         return buffer;
     }
+
 
     /**
      * Reads an exact number of characters from a reader and returns them as a
@@ -144,13 +161,16 @@ public class StreamUtil
             }
 
             if (c != -1)
+            {
                 sb.append((char)c);
+            }
             else
             {
                 throw new EOFException(
                     "End of inputstream reached. Chars read = " + sb);
             }
         }
+        
         return sb.toString();
     }
 

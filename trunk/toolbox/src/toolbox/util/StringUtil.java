@@ -11,14 +11,17 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.WrappingWriter;
 
 /**
- * Utility methods for manipulating strings.
+ * String utility methods
  */
 public final class StringUtil
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(StringUtil.class);
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //-------------------------------------------------------------------------- 
     
     /**
      * Static class...prevent construction
@@ -27,7 +30,10 @@ public final class StringUtil
     { 
     }
     
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Left justify a string representing an integer with a given width.
      * The num is converted to a string which is padded with space characters 
