@@ -128,7 +128,7 @@ public class SQLFormatterView extends JHeaderPanel
             descriptors, 
             new BeanPropertyFilter(
                 "name", 
-                SQLFormatter.SAVED_PROPERTIES));
+                SQLFormatter.SAVED_PROPS));
                 
         dArray = (PropertyDescriptor[]) 
             descriptors.toArray(new PropertyDescriptor[0]);
