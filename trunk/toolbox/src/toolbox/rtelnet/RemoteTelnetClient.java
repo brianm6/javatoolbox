@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.net.SocketException;
 
 import org.apache.commons.net.telnet.TelnetClient;
+import org.apache.log4j.Logger;
 
+import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.StringOutputStream;
 
 /**
  * RemoteTelnetClient is a specialization of the commons.net.TelnetClient 
@@ -15,8 +18,11 @@ import toolbox.util.ThreadUtil;
  * @see toolbox.rtelnet.RemoteTelnet
  * @see toolbox.rtelnet.RemoteTelnetInfo
  */
-public class RemoteTelnetClient extends TelnetClient implements Runnable
+public class RemoteTelnetClient extends TelnetClient
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(RemoteTelnetClient.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -24,8 +30,13 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     /** 
      * Telnet responses are dumped here so that they can be searched. 
      */
-    private StringBuffer outputBuffer_;
-
+    private StringOutputStream responseStream_;
+   
+    /**
+     * Current position into the input read from the telnet input stream.
+     */
+    private int responseIndex_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -35,7 +46,8 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
      */
     public RemoteTelnetClient()
     {
-        outputBuffer_ = new StringBuffer();
+        responseIndex_ = 0;
+        responseStream_ = new StringOutputStream();
     }
     
     //--------------------------------------------------------------------------
@@ -51,13 +63,23 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     {
         while (true)
         {
-            if (outputBuffer_.indexOf(searchString) >= 0)
+            StringBuffer buffer = responseStream_.getBuffer();
+            int foundAt = buffer.indexOf(searchString, responseIndex_);
+
+            if (foundAt >= 0)
             {
-                outputBuffer_.delete(0, outputBuffer_.length() - 1);
+                // skip over the found string so subsequent waitFor() will 
+                // skip over everything we've already searched
+                responseIndex_ = foundAt + searchString.length();
                 return;
             }
             else
+            {
+                // TODO: Use wait/notify instead
+                
                 ThreadUtil.sleep(1);
+            }
+
         }
     }
 
@@ -70,41 +92,29 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
      */    
     public void sendCommand(String command) throws IOException
     {
+        int responseBegin = responseStream_.getBuffer().length() - 1;
         getOutputStream().write((command + "\n").getBytes());
         getOutputStream().flush();
         
-        // Sleep to avoid race condition
+        // TODO: We need to sleep only long enough to make sure that all the
+        //       output for the submitted command has been written back to 
+        //       use, the telnet client. Research RFC on how to do this.
+        //  
+        //   OR: Add ability to sense when the stream is dormant over a given
+        //       period of time.
+        
         ThreadUtil.sleep(1000);
+        
+        StringBuffer allResponses = responseStream_.getBuffer();
+        int responseEnd = allResponses.length() - 1;
+        String response = allResponses.substring(responseBegin, responseEnd);
+        
+        logger_.debug(StringUtil.banner(
+            "Request: " + command + "\nResponse: " + response));
     }
 
     //--------------------------------------------------------------------------
-    // Runnable Interface
-    //--------------------------------------------------------------------------
-    
-    /** 
-     * Reads from telnet connections output stream and populates the
-     * outputBuffer.
-     */    
-    public void run()
-    {
-        try
-        {
-            while (true)
-            {
-                int c = getInputStream().read();
-                char x = (char) c;
-                System.out.print(x); 
-                outputBuffer_.append(x);                    
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // Overrids org.apache.commons.net.telnet.TelnetClient 
+    // Overrides org.apache.commons.net.telnet.TelnetClient 
     //--------------------------------------------------------------------------
     
     /**
@@ -118,8 +128,22 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     public void connect(String hostname, int port)
         throws SocketException, IOException
     {
+        registerSpyStream(responseStream_);
         super.connect(hostname, port);
-        Thread t = new Thread(this);
-        t.start();
+     
+        ThreadUtil.sleep(1000);
+        
+        logger_.debug(StringUtil.banner(
+            "Connect response: \n" 
+            + responseStream_.toString()));
+    }
+    
+    
+    /**
+     * @see org.apache.commons.net.telnet.TelnetClient#disconnect()
+     */
+    public void disconnect() throws IOException
+    {
+        super.disconnect();
     }
 }
