@@ -6,14 +6,21 @@ import java.awt.Dimension;
 import java.awt.LayoutManager2;
 
 /**
- * AbstractLayout
+ * AbstractLayout used for the status bar.
+ * <p>
+ * Originally created by Claude Duguay<br>
+ * Copyright (c) 2000<br>
  */
 public abstract class AbstractLayout implements LayoutManager2
 {
-    /** Horizonal gap between components */
+    /** 
+     * Horizonal gap between components 
+     */
     private int hgap_;
     
-    /** Vertical gap between components */
+    /** 
+     * Vertical gap between components 
+     */
     private int vgap_;
 
     //--------------------------------------------------------------------------
@@ -46,7 +53,9 @@ public abstract class AbstractLayout implements LayoutManager2
     //--------------------------------------------------------------------------
 
     /**
-     * @return Horizontal gap between components.
+     * Returns the horizontal gap between components.
+     * 
+     * @return int
      */
     public int getHgap()
     {
@@ -54,7 +63,9 @@ public abstract class AbstractLayout implements LayoutManager2
     }
 
     /**
-     * @return Vertical gap between components.
+     * Returns the vertical gap between components.
+     * 
+     * @return int
      */
     public int getVgap()
     {
@@ -64,7 +75,7 @@ public abstract class AbstractLayout implements LayoutManager2
     /**
      * Set the horizontal gap between components.
      * 
-     * @param gap The horizontal gap to be set
+     * @param gap Horizontal gap to be set
      */
     public void setHgap(int gap)
     {
@@ -74,7 +85,7 @@ public abstract class AbstractLayout implements LayoutManager2
     /**
      * Set the vertical gap between components.
      * 
-     * @param gap The vertical gap to be set
+     * @param gap Vertical gap to be set
      */
     public void setVgap(int gap)
     {
@@ -90,8 +101,9 @@ public abstract class AbstractLayout implements LayoutManager2
      * to the layout. By default, we call the more recent
      * addLayoutComponent method with an object constraint
      * argument. The name is passed through directly.
-     * @param name The name of the component
-     * @param comp The component to be added
+     * 
+     * @param name Name of the component
+     * @param comp Component to be added
      */
     public void addLayoutComponent(String name, Component comp)
     {
@@ -101,8 +113,9 @@ public abstract class AbstractLayout implements LayoutManager2
     /**
      * Add the specified component from the layout.
      * By default, we let the Container handle this directly.
-     * @param comp The component to be added
-     * @param constraints The constraints to apply when laying out.
+     * 
+     * @param comp Component to be added
+     * @param constraints Constraints to apply when laying out.
      */
     public void addLayoutComponent(Component comp, Object constraints)
     {
@@ -111,7 +124,8 @@ public abstract class AbstractLayout implements LayoutManager2
     /**
      * Removes the specified component from the layout.
      * By default, we let the Container handle this directly.
-     * @param comp the component to be removed
+     * 
+     * @param comp Component to be removed
      */
     public void removeLayoutComponent(Component comp)
     {
@@ -128,7 +142,9 @@ public abstract class AbstractLayout implements LayoutManager2
     /**
      * Returns the maximum dimensions for this layout given
      * the component in the specified target container.
+     * 
      * @param target The component which needs to be laid out
+     * @return Dimension
      */
     public Dimension maximumLayoutSize(Container target)
     {
@@ -141,6 +157,9 @@ public abstract class AbstractLayout implements LayoutManager2
      * components. The value should be a number between 0 and 1
      * where 0 represents alignment along the origin, 1 is aligned
      * the furthest away from the origin, 0.5 is centered, etc.
+     * 
+     * @param parent Parent container 
+     * @return float
      */
     public float getLayoutAlignmentX(Container parent)
     {
@@ -153,8 +172,10 @@ public abstract class AbstractLayout implements LayoutManager2
      * components. The value should be a number between 0 and 1
      * where 0 represents alignment along the origin, 1 is aligned
      * the furthest away from the origin, 0.5 is centered, etc.
+     * 
+     * @param parent Parent container
+     * @return float
      */
-
     public float getLayoutAlignmentY(Container parent)
     {
         return 0.5f;
@@ -165,15 +186,12 @@ public abstract class AbstractLayout implements LayoutManager2
     //--------------------------------------------------------------------------
     
     /**
-     * @return String representation of the layout manager
+     * Returns the string representation of the layout manager
+     * 
+     * @return String
      */
     public String toString()
     {
         return getClass().getName() + "[hgap=" + hgap_ + ",vgap=" + vgap_ + "]";
     }
 }
-
-/*
-Originally created by Claude Duguay
-Copyright (c) 2000
-*/
