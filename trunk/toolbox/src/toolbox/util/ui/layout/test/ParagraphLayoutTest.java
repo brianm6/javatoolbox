@@ -1,20 +1,18 @@
 package toolbox.util.ui.layout.test;
 
-import java.awt.Container;
 import java.awt.Font;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.SwingUtil;
+import toolbox.junit.UITestCase;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
@@ -23,7 +21,7 @@ import toolbox.util.ui.layout.ParagraphLayout;
 /**
  * Unit test for ParagraphLayout.
  */
-public class ParagraphLayoutTest extends TestCase
+public class ParagraphLayoutTest extends UITestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(ParagraphLayoutTest.class);
@@ -33,14 +31,13 @@ public class ParagraphLayoutTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
     {
-    	SwingUtil.setPreferredLAF();
         TestRunner.run(ParagraphLayoutTest.class);
     }
 
@@ -55,8 +52,7 @@ public class ParagraphLayoutTest extends TestCase
     {
         logger_.info("Running testParagraphLayout...");
         
-        JFrame jf = new JFrame("ParagraphLayout Unit Test");
-        Container f = jf.getContentPane();
+        JPanel f = new JPanel(); 
         f.setLayout(new ParagraphLayout());
         JButton b1 = new JSmartButton("One");
         JButton b2 = new JSmartButton("Two");
@@ -87,10 +83,12 @@ public class ParagraphLayoutTest extends TestCase
         f.add(new JSmartLabel("More text:"), ParagraphLayout.NEW_PARAGRAPH);
         f.add(t2);
         f.add(new JSmartLabel("miles"));
-        f.add(new JSmartLabel("A text area:"), ParagraphLayout.NEW_PARAGRAPH_TOP);
+        
+        f.add(new JSmartLabel("A text area:"), 
+                ParagraphLayout.NEW_PARAGRAPH_TOP);
+        
         f.add(new JScrollPane(t3));
-        jf.pack();
-        SwingUtil.centerWindow(jf);
-        jf.setVisible(true);
+        
+        launchInDialog(f);
     }
 }
