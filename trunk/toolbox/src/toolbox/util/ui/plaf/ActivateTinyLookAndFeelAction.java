@@ -47,12 +47,16 @@ public class ActivateTinyLookAndFeelAction extends ActivateLookAndFeelAction
      */
     public void activate() throws Exception
     {
+        //super.activate();
+        
         LAFInfo info = getLookAndFeelInfo();
-        String themeResource = info.getProperty("theme.file");
-        File themeFile = ResourceUtil.getResourceAsTempFile(themeResource);
-        int themeStyle = Integer.parseInt(info.getProperty("theme.style"));
-        boolean b = Theme.loadTheme(themeFile, themeStyle);
+        String  themeResource = info.getProperty("theme.file");
+        File    themeFile = ResourceUtil.getResourceAsTempFile(themeResource);
+        int     themeStyle = Integer.parseInt(info.getProperty("theme.style"));
+        boolean b = Theme.loadTheme(themeFile, 2);
+        
         logger_.debug("Tiny theme loaded: " + b);
+        logger_.debug(info.toString());
         super.activate();
     }
 }
