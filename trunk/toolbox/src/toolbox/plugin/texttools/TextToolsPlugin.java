@@ -133,10 +133,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
-            
+        buttonPanel.add(new JSmartButton(outputArea_.new ClearAction()));
         buttonPanel.add(new JSmartButton(new SortAction()));
         buttonPanel.add(new JSmartButton(new BannerAction()));
-        buttonPanel.add(new JSmartButton(outputArea_.new ClearAction()));
+        buttonPanel.add(new JSmartButton(new QuoteAction()));
         
         // Root 
         setLayout(new BorderLayout());
@@ -347,6 +347,46 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             
             for (int i=0; i<lines.length; i++)
                 outputArea_.append(NL + Banner.getBanner(lines[i]));
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // QuoteAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Wraps a multiline string in double quotes.
+     */
+    class QuoteAction extends AbstractAction
+    {
+        QuoteAction()
+        {
+            super("Quote");
+            putValue(MNEMONIC_KEY, new Integer('Q'));
+            putValue(SHORT_DESCRIPTION, "Encloses text in quotes");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            String text = getInputText();        
+            String[] lines = StringUtil.tokenize(text, NL);
+            StringBuffer sb = new StringBuffer();
+            
+            for (int i=0; i<lines.length; i++)
+            {
+                // Escape embedded quotes
+                String line = StringUtil.replace(lines[i], "\"", "\\\"");
+                
+                if (i > 0)
+                    sb.append("+ ");
+                
+                sb.append("\"");
+                sb.append(line);
+                sb.append("\"");
+                sb.append(NL);
+            }
+            
+            outputArea_.append(sb.toString());
         }
     }
     
