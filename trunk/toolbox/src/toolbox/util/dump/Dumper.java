@@ -23,13 +23,11 @@ import toolbox.util.Stringz;
  */
 public class Dumper implements Stringz
 {
-    /*
-    * TODO: Fix dangling tail
-    * TODO: Add option to have refences to already traversed objects generate
-    *       unique labels to they can be referenced. (ugly but useful)
-    * TODO: Allow option to leave out nulls
-    * TODO: Add interface to support custom dumpers for specific types of objs
-    */
+    // TODO: Fix dangling tail
+    // TODO: Add option to have refences to already traversed objects generate
+    //       unique labels to they can be referenced. (ugly but useful)
+    // TODO: Allow option to leave out nulls
+    // TODO: Add interface to support custom dumpers for specific types of objs
         
     private static final Logger logger_ = 
         Logger.getLogger(Dumper.class);
@@ -39,16 +37,24 @@ public class Dumper implements Stringz
     private static final String JUNCTION = "+";
     private static final String ARM      = "---";
 
-    /** Max length of right hand value */
+    /** 
+     * Max length of right hand value 
+     */
     private static final int MAX_PRESENTABLE_LENGTH = 100;
 
-    /** Maximum depth to traverse into the object graph */
+    /** 
+     * Maximum depth to traverse into the object graph 
+     */
     private int maxDepth_ = Integer.MAX_VALUE;
 
-    /** Caches objects which have already been traversed */
+    /** 
+     * Caches objects which have already been traversed 
+     */
     private ObjectCache cache_ = new ObjectCache();
     
-    /** Dump formatter and configuration */
+    /** 
+     * Dump formatter and configuration 
+     */
     private DumpFormatter formatter_;
 
     //--------------------------------------------------------------------------
@@ -76,7 +82,7 @@ public class Dumper implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    //  Public Static 
+    //  Public (Static) 
     //--------------------------------------------------------------------------
     
     /**
@@ -135,7 +141,7 @@ public class Dumper implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    //  Public (Instance)
     //--------------------------------------------------------------------------
 
     /**
@@ -159,7 +165,7 @@ public class Dumper implements Stringz
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
     
     /**
@@ -169,7 +175,7 @@ public class Dumper implements Stringz
      * @param  obj  Object to dump
      * @return Stringified dump of object
      */
-    private String nonStaticDumpObject(Object obj)
+    protected String nonStaticDumpObject(Object obj)
     {
         StringBuffer buffer = new StringBuffer();
         
@@ -206,7 +212,7 @@ public class Dumper implements Stringz
      * @param   depth   Recursion depth
      * @throws  IllegalAccessException if attribute/method not accessible
      */
-    private void dump(Object obj, StringBuffer buffer, String depth) 
+    protected void dump(Object obj, StringBuffer buffer, String depth) 
         throws IllegalAccessException
     {
         if (obj != null)
@@ -242,8 +248,12 @@ public class Dumper implements Stringz
      * @param   depth   Recursion depth
      * @throws  IllegalAccessException if attribute/method not accessible
      */
-    private void dump(Field arrayField, Object[] array, StringBuffer buffer, 
-        String depth) throws IllegalAccessException
+    protected void dump(
+        Field arrayField, 
+        Object[] array, 
+        StringBuffer buffer, 
+        String depth) 
+        throws IllegalAccessException
     {
         cache_.put(array);
         
@@ -271,8 +281,12 @@ public class Dumper implements Stringz
      * @param   depth   Recursion depth
      * @throws  IllegalAccessException on illegal access
      */    
-    private void dump(Class clazz,  Object obj, StringBuffer buffer,
-        String depth) throws IllegalAccessException
+    protected void dump(
+        Class clazz,  
+        Object obj, 
+        StringBuffer buffer,
+        String depth) 
+        throws IllegalAccessException
     {
         if (!formatter_.shouldInclude(clazz))
             return;
@@ -357,7 +371,7 @@ public class Dumper implements Stringz
      * @param   Current indentation string (or depth)
      * @return  True if we should not go down any deeper, false otherwise
      */
-    private boolean reachedMaxDepth(String depth)
+    protected boolean reachedMaxDepth(String depth)
     {
         return !((depth + BAR).length()/4 < maxDepth_);        
     }
@@ -368,7 +382,7 @@ public class Dumper implements Stringz
      * 
      * @param  value  Object to check for traversal
      */
-    private void checkTraversed(Object value)
+    protected void checkTraversed(Object value)
     {
         ObjectInfo objInfo = cache_.getInfo(value);
 
@@ -380,9 +394,9 @@ public class Dumper implements Stringz
      * Convenience method to Create an ASCII tree branch
      * 
      * @param   depth  Current indentation string
-     * @return  Branch
+     * @return  ASCII branch
      */
-    private String makeBranch(String depth)
+    protected String makeBranch(String depth)
     {
         StringBuffer sb = new StringBuffer();
            
@@ -405,7 +419,7 @@ public class Dumper implements Stringz
      * @param   obj  Object to make presentable
      * @return  Object's value is a presentable string
      */
-    private String makePresentable(Object obj)
+    protected String makePresentable(Object obj)
     {
         String result = null;
         
@@ -459,7 +473,7 @@ public class Dumper implements Stringz
      * @param  clazz   Class for which to print the tree    
      * @param  buffer  Dump buffer
      */
-    public void appendInheritance(Class clazz, StringBuffer buffer)
+    protected void appendInheritance(Class clazz, StringBuffer buffer)
     {
         if (formatter_.showInheritance())
         {
@@ -486,225 +500,6 @@ public class Dumper implements Stringz
             }
         }
     }
-    
-    /**
-     * Appends relevant information about this object to the buffer.
-     * 
-     * @param  obj     Object to append info for
-     * @param  buffer  Dump buffer
-     * @param  depth   Recursion depth
-     */
-    //    private void appendObjectInfo(Object obj, StringBuffer buffer,
-    //        String depth)
-    //    {
-    //        String label = cache_.getInfo(obj).getSequenceNumber();
-    //        appendObjectInfo(obj, buffer, depth, label);
-    //    }
-  
-    /**
-     * Appends relevant information about this object to the buffer.
-     * 
-     * @param  obj     Object to append info for
-     * @param  buffer  Dump buffer
-     * @param  depth   Recursion depth
-     * @param  label   Label
-     */
-    //    private void appendObjectInfo(Object obj, StringBuffer buffer,
-    //        String depth, String label)
-    //    {
-    //        buffer.append(depth);
-    //        
-    //        if (obj == null)
-    //        {
-    //            buffer.append("null");
-    //        }
-    //        else
-    //        {
-    //            Class type = obj.getClass();
-    //            
-    //            if (showActualType())
-    //            {
-    //                appendTypeInfo(
-    //                    formatColumn("Type"), type, buffer, depth);
-    //            }
-    //            
-    //            if (showHashCode())
-    //            {
-    //                buffer.append(" (hash:");
-    //                buffer.append(Integer.toHexString(obj.hashCode()));
-    //                buffer.append(")");
-    //            }
-    //            
-    //            if (showHashCode() || showActualType())
-    //                buffer.append(NL);
-    //        }
-    //    }
-
-    /**
-     * Appends relevant information about this type to the buffer.
-     * 
-     * @param  txt     Text
-     * @param  type    Class type
-     * @param  buffer  Dump buffer
-     * @param  depth   Recursion depth
-     */
-    //    private void appendTypeInfo(String txt, Class type, StringBuffer buffer,
-    //        String depth)
-    //    {
-    //        if (type.isPrimitive())
-    //        {
-    //            indent(buffer, depth);
-    //            buffer.append(txt);
-    //            buffer.append(type.getName());
-    //        }
-    //        else
-    //        {
-    //            // Class hierarchy
-    //            Class tmpClass = type;
-    //            indent(buffer, depth);
-    //            buffer.append(txt);
-    //            
-    //            if (!formatter_.showInheritance())
-    //            {
-    //                String className = tmpClass.getName();
-    //                buffer.append(formatter_.formatClassName(className));
-    //            }
-    //            else
-    //            {
-    //                do
-    //                {
-    //                    String className = tmpClass.getName();
-    //                    buffer.append(formatter_.formatClassName(className));
-    //                    
-    //                    if (!(tmpClass == Object.class))
-    //                        buffer.append(" -> ");
-    //                }
-    //                while ((tmpClass = tmpClass.getSuperclass()) != null);
-    //            }
-    //        }
-    //    }
-    
-    /**
-     * Translates modifiers passed as an INT to a STRING.
-     * 
-     * @param   mod  Modifier
-     * @return  String modifier
-     */
-    //    private String getModifiersAsString(int mod)
-    //    {
-    //        StringBuffer sb = new StringBuffer();
-    //        List list = new ArrayList();
-    //        
-    //        if (Modifier.isSynchronized(mod))
-    //            list.add("synchronized");
-    //        if (Modifier.isPrivate(mod))
-    //            list.add("private");
-    //        if (Modifier.isProtected(mod))
-    //            list.add("protected");
-    //        if (Modifier.isPublic(mod))
-    //            list.add("public");
-    //        if (Modifier.isStatic(mod))
-    //            list.add("static");
-    //        if (Modifier.isFinal(mod))
-    //            list.add("final");
-    //        if (Modifier.isTransient(mod))
-    //            list.add("transient");
-    //        if (Modifier.isVolatile(mod))
-    //            list.add("volatile");
-    //            
-    //        sb.append("[");
-    //        Iterator i = list.iterator();
-    //        
-    //        while (i.hasNext())
-    //        {
-    //            sb.append((String) i.next());
-    //            if (i.hasNext())
-    //                sb.append(", ");
-    //        }
-    //        
-    //        sb.append("] ");
-    //        return sb.toString();
-    //    }
-
-    /**
-     * Appends to the object dump buffer
-     * 
-     * @param  buffer  Dump buffer
-     * @param  txt     Text to append
-     * @param  depth   Recursion Depth
-     */
-    //    private final void append(StringBuffer buffer, String txt, String depth)
-    //    {
-    //        indent(buffer, depth);
-    //        buffer.append(txt);
-    //        buffer.append(NL);
-    //    }
-
-    /**
-     * Indents based on recursion level
-     * 
-     * @param  buffer  Dump buffer
-     * @param  depth   Levels of recursion
-     */
-    //    private final void indent(StringBuffer buffer, String depth)
-    //    {
-    //        indent(buffer, depth, "" /* LABEL_SPACE */);
-    //    }
-
-    /**
-     * Indents based on recursion level
-     * 
-     * @param  buffer  Dump buffer
-     * @param  depth   Recursion depth
-     * @param  label   Label to use
-     */
-    //    private final void indent(StringBuffer buffer, String depth, String label)
-    //    {
-    //        buffer.append(depth);
-    //    }
-
-    /**
-     * @return Show the hash Code?
-     */
-    //    private boolean showHashCode()
-    //    {
-    //        return false;
-    //    }
-
-    /**
-     * @return Show the class that a field is declared in
-     */
-    //    private boolean showDeclaredIn()
-    //    {
-    //        return false;
-    //    }
-    
-    /**
-     * @return Show the fields access modifiers 
-     */
-    //    private boolean showAccessModifiers()
-    //    {
-    //        return false;
-    //    }
-
-    /**
-     * @return Show the actual type of an object (int -> Integer)
-     */
-    //    private boolean showActualType()
-    //    {
-    //        return false;
-    //    }
-
-    /**
-     * Formats a column field
-     *
-     * @param   col     Text of column
-     * @return  Fixed width formatted text
-     */
-    //    private String formatColumn(String col)
-    //    {
-    //        return col + "--";
-    //    }
 
     //--------------------------------------------------------------------------
     // Inner Classes
