@@ -5,6 +5,7 @@ import java.awt.event.ItemEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
@@ -45,6 +46,7 @@ public class RenameDirAction extends AbstractAction
     public RenameDirAction(JFileExplorerProxy explorer)
     {
         super("Rename");
+        putValue(Action.MNEMONIC_KEY, new Integer('R'));
         explorer_ = explorer;
     }
 
