@@ -149,27 +149,22 @@ public class Tail implements Startable, Suspendable
     public void start() throws ServiceException
     {
         machine_.checkTransition(ServiceTransition.START);
-        //if (!isRunning())
-        //{
-            String name = "Tail-" + (isFile() ? file_.getName() : threadName_);
-            tailer_ = new Thread(new Tailer(), name);
-            
-            try
-            {
-                connect();
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                throw new ServiceException(fnfe);
-            }
-            
-            tailer_.start();
-            fireTailStarted();
-        //}
-        //else
-        //    logger_.warn("Tail is already running");
-            
+        
+        String name = "Tail-" + (isFile() ? file_.getName() : threadName_);
+        tailer_ = new Thread(new Tailer(), name);
+        
+        try
+        {
+            connect();
+        }
+        catch (FileNotFoundException fnfe)
+        {
+            throw new ServiceException(fnfe);
+        }
+        
+        tailer_.start();
         machine_.transition(ServiceTransition.START);            
+        fireTailStarted();
     }
 
 
@@ -180,36 +175,29 @@ public class Tail implements Startable, Suspendable
      */
     public void stop()
     {
-//        if (isRunning())
-//        {
-        
         machine_.checkTransition(ServiceTransition.STOP);
         
-            try
-            {
-                pendingShutdown_ = true;
+        try
+        {
+            pendingShutdown_ = true;
 
-                if (isSuspended())
-                    resume();
+            if (isSuspended())
+                resume();
 
-                ThreadUtil.stop(tailer_);
+            ThreadUtil.stop(tailer_);
 
-                // Change of plans..when the tail is stopped,
-                // don't close the stream.
+            // Change of plans..when the tail is stopped,
+            // don't close the stream.
 
-                //IOUtils.closeQuietly(reader_);
-            }
-            finally
-            {
-                tailer_ = null;
-                pendingShutdown_ = false;
-                fireTailStopped();
-            }
-//        }
-//        else
-//            logger_.warn("Tail is already stopped");
-            
+            //IOUtils.closeQuietly(reader_);
+        }
+        finally
+        {
+            tailer_ = null;
+            pendingShutdown_ = false;
             machine_.transition(ServiceTransition.STOP);            
+            fireTailStopped();
+        }
     }
 
 
@@ -221,8 +209,8 @@ public class Tail implements Startable, Suspendable
      */
     public boolean isRunning()
     {
-        // TODO: Fix this to use machine_
-        return (tailer_ != null && tailer_.isAlive());
+        //return (tailer_ != null && tailer_.isAlive());
+        return getState() == ServiceState.RUNNING;
     }
     
     //--------------------------------------------------------------------------
@@ -260,8 +248,6 @@ public class Tail implements Startable, Suspendable
     public void suspend()
     {
         machine_.checkTransition(ServiceTransition.SUSPEND);
-        //if (isRunning() && !isSuspended())
-        //    paused_ = true;
         machine_.transition(ServiceTransition.SUSPEND);
     }
 
@@ -274,17 +260,12 @@ public class Tail implements Startable, Suspendable
     public void resume()
     {
         machine_.checkTransition(ServiceTransition.RESUME);
-        
-        //if (isRunning() && isSuspended())
-        //{
-        //    paused_ = false;
 
-            synchronized (this)
-            {
-                notify();
-            }
-        //}
-            
+        synchronized (this)
+        {
+            notify();
+        }
+
         machine_.transition(ServiceTransition.RESUME);    
     }
 
