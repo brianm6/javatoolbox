@@ -13,6 +13,7 @@ import com.wilko.jaim.TocResponse;
 
 import org.apache.log4j.helpers.LogLog;
 
+import toolbox.util.PropertiesUtil;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
@@ -26,22 +27,34 @@ public class AOLMessenger implements InstantMessenger
      // NOTE: Cannot use Log4J logging since this is included in the 
      //       implementation of a Log4J appender.
     
-    /** Return code for a successful connection */
+    /** 
+     * Return code for a successful connection 
+     */
     public static final String CONNECT_SUCCEEDED = "Connect succeeded!";
     
-    /** Return code for a failed connection */
+    /** 
+     * Return code for a failed connection 
+     */
     public static final String CONNECT_FAILED = "Connect failed!";
     
-    /** Connection to the AOL instant messaging server */
+    /** 
+     * Connection to the AOL instant messaging server 
+     */
     private JaimConnection connection_;
     
-    /** Listener for server side generated AOL events */
+    /** 
+     * Listener for server side generated AOL events 
+     */
     private AOLListener listener_;
     
-    /** Flag that tracks the connection state */
+    /** 
+     * Flag that tracks the connection state 
+     */
     private boolean connected_;
     
-    /** Invoker used to handle the sending of messages */
+    /** 
+     * Invoker used to handle the sending of messages 
+     */
     private Invoker invoker_;
     
     //--------------------------------------------------------------------------
@@ -49,19 +62,21 @@ public class AOLMessenger implements InstantMessenger
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates an AOLMessenger
      */
     public AOLMessenger()
     {
     }
 
     //--------------------------------------------------------------------------
-    // toolbox.log4j.im.InstantMessenger Interface
+    // InstantMessenger Interface
     //--------------------------------------------------------------------------
 
     public void initialize(Properties props) throws InstantMessengerException
     {
-        invoker_    = new QueuedInvoker();
+        long delay = PropertiesUtil.getLong(props, PROP_DELAY, 750);
+        
+        invoker_    = new QueuedInvoker(delay);
         connection_ = new JaimConnection("toc.oscar.aol.com", 9898);
         listener_   = new AOLListener();
         
@@ -171,10 +186,14 @@ public class AOLMessenger implements InstantMessenger
      */
     class AOLListener implements JaimEventListener
     {
-        /** Login success and failures both go in this queue */
+        /** 
+         * Login success and failures both go in this queue 
+         */
         BlockingQueue loginQueue_;
         
-        /** Disconnect notification goes into this queue */
+        /** 
+         * Disconnect notification goes into this queue 
+         */
         BlockingQueue disconnected_;
         
         //----------------------------------------------------------------------
@@ -182,7 +201,7 @@ public class AOLMessenger implements InstantMessenger
         //----------------------------------------------------------------------
 
         /** 
-         * Default constructor
+         * Creates an AOLListener
          */
         public AOLListener()
         {
@@ -222,9 +241,6 @@ public class AOLMessenger implements InstantMessenger
         // com.wilko.jaim.JaimEventListener Interface
         //----------------------------------------------------------------------
         
-        /**
-         * @see com.wilko.jaim.JaimEventListener#receiveEvent(com.wilko.jaim.JaimEvent)
-         */
         public void receiveEvent(JaimEvent event)
         {
             TocResponse response = event.getTocResponse();
@@ -237,7 +253,8 @@ public class AOLMessenger implements InstantMessenger
                 LogLog.error("Error text: " + er.getErrorText());
                 LogLog.error("Error desc: " + er.getErrorDescription());
             }
-            else if (type.equalsIgnoreCase(LoginCompleteTocResponse.RESPONSE_TYPE))
+            else if (type.equalsIgnoreCase(
+                LoginCompleteTocResponse.RESPONSE_TYPE))
             {
                 LogLog.debug("Connected to AOL!");
                 
@@ -250,7 +267,8 @@ public class AOLMessenger implements InstantMessenger
                     LogLog.error("receiveEvent", e);
                 }
             }
-            else if (type.equalsIgnoreCase(ConnectionLostTocResponse.RESPONSE_TYPE))
+            else if (type.equalsIgnoreCase(
+                ConnectionLostTocResponse.RESPONSE_TYPE))
             {
                 try
                 {
@@ -264,7 +282,9 @@ public class AOLMessenger implements InstantMessenger
             }
             else
             {
-                LogLog.debug("Unhandled TOC Response: " + response.getResponseType());
+                LogLog.debug(
+                    "Unhandled TOC Response: " + response.getResponseType());
+                    
                 LogLog.debug("Unhandled TOC Response: " + response);
             }
         }

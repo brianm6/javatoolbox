@@ -8,6 +8,11 @@ import java.util.Properties;
 public interface InstantMessenger
 {
     /**
+     * Property for the delay between successive messages
+     */
+    public static final String PROP_DELAY = "delay";
+    
+    /**
      * Initializes the instant messenger with any properties needed for the
      * specific implementation.
      * 

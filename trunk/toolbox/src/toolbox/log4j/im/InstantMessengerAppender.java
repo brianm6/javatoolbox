@@ -17,16 +17,16 @@ import org.apache.log4j.spi.LoggingEvent;
  * &lt;appender name=&quot;instantmessenger&quot;
  *           class=&quot;toolbox.log4j.im.InstantMessengerAppender&quot;&gt;
  *     &lt;param name=&quot;Messenger&quot; value=&quot;Yahoo&quot;/&gt;
- *     &lt;param name=&quot;Username&quot;  value=&quot;superfuzz&quot;/&gt;
- *     &lt;param name=&quot;Password&quot;  value=&quot;mellowdigs&quot;/&gt;
- *     &lt;param name=&quot;Recipient&quot; value=&quot;booyakasha&quot;/&gt;
+ *     &lt;param name=&quot;Username&quot;  value=&quot;my_username&quot;/&gt;
+ *     &lt;param name=&quot;Password&quot;  value=&quot;my_password&quot;/&gt;
+ *     &lt;param name=&quot;Recipient&quot; value=&quot;my_recipient&quot;/&gt;
+ *     &lt;param name=&quot;Delay&quot;     value=&quot;500&quot;/&gt;
  * &lt;/appender&gt;
  *  
  * &lt;logger name=&quot;errorlogger&quot;&gt;
  *     &lt;level value=&quot;ERROR&quot;/&gt;
  *     &lt;appender-ref ref=&quot;instantmessenger&quot;/&gt;
- * &lt;/logger&gt;  
- * 
+ * &lt;/logger&gt; 
  * </pre> 
  */
 public class InstantMessengerAppender extends AppenderSkeleton
@@ -55,6 +55,13 @@ public class InstantMessengerAppender extends AppenderSkeleton
      * Username of the online buddy to send the log messages to 
      */
     private String recipient_;
+
+    /**
+     * Forced delay in milliseconds between instant messages. Set to zero for
+     * no delay.
+     */
+    private long delay_;
+    
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -65,7 +72,6 @@ public class InstantMessengerAppender extends AppenderSkeleton
      */
     public InstantMessengerAppender()
     {
-        //init();
     }
 
     //--------------------------------------------------------------------------
@@ -113,6 +119,17 @@ public class InstantMessengerAppender extends AppenderSkeleton
         username_ = string;
     }
 
+    /**
+     * Sets the delay in milliseconds
+     * 
+     * @param delay Delay in milliseconds between sending of successive instant
+     *              messages.
+     */
+    public void setDelay(long delay)
+    {
+        delay_ = delay;
+    }
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -122,6 +139,7 @@ public class InstantMessengerAppender extends AppenderSkeleton
      */
     protected void init()
     {
+        delay_ = 0;
         messenger_ = InstantMessengerFactory.create(messengerType_);
     }
 
@@ -137,7 +155,10 @@ public class InstantMessengerAppender extends AppenderSkeleton
             
         LogLog.debug("Connect called: username=" + username_);
         
-        messenger_.initialize(new Properties());
+        Properties props = new Properties();
+        props.put(InstantMessenger.PROP_DELAY, delay_+"");
+        
+        messenger_.initialize(props);
         messenger_.login(username_, password_);
     }
 
