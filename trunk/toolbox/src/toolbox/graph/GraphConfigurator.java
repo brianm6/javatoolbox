@@ -58,6 +58,8 @@ public class GraphConfigurator extends JPanel
     
     /**
      * Adds a listener to this GraphConfigurator.
+     * 
+     * listener Listener to add.
      */
     public void addListener(GraphConfigurator.Listener listener)
     {

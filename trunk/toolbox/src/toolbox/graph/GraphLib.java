@@ -28,8 +28,8 @@ public interface GraphLib
     
     
     /**
-     * Returns a newly created vertex with the given label and adds it to the
-     * passed in graph.
+     * Returns a newly created Vertex with the given label and adds it to the
+     * passed in Graph.
      * 
      * @param graph Graph to create the vertex in.
      * @param label Vertex label.
@@ -39,7 +39,7 @@ public interface GraphLib
     
     
     /**
-     * Retruns a newly created GraphView associated with the passed in Graph.
+     * Returns a newly created GraphView associated with the passed in Graph.
      * 
      * @param graph Graph to associate the GraphView with.
      * @return GraphView
@@ -50,7 +50,7 @@ public interface GraphLib
     /**
      * Returns a list of the layouts that the passed in Graph supports.
      * 
-     * @param graph Graph.
+     * @param graph Graph to query for layouts.
      * @return List<Layout>
      */
     List getLayouts(Graph graph);
