@@ -127,6 +127,9 @@ public class RollingCounter
         listeners_.add(listener);
     }
 
+    //--------------------------------------------------------------------------
+    // Overridden from java.lang.Object
+    //--------------------------------------------------------------------------
     
     /**
      * @return Dumps to string
