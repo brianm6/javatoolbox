@@ -2,6 +2,8 @@ package toolbox.jtail.filter;
 
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import toolbox.util.Assert;
 import toolbox.util.AssertionException;
 import toolbox.util.StringUtil;
@@ -64,8 +66,8 @@ public class CutLineFilter extends AbstractLineFilter
         if (line == null || line.length() == 0)
             return line;
         
-        if (begin_ < 0 || end_ < 0)
-            return line;
+        //if (begin_ < 0 || end_ < 0)
+        //    return line;
         
         StringBuffer sb = new StringBuffer(line);
         
@@ -139,4 +141,17 @@ public class CutLineFilter extends AbstractLineFilter
             throw new IllegalArgumentException(
                 "Begin cannot be greater than end. " + cut_);            
     }
+    
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString(this);
+    }
+    
 }
