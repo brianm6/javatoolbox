@@ -1,6 +1,7 @@
 package toolbox.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
@@ -197,66 +198,73 @@ public final class ThreadUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Runs a method on a given object in a thread
+     * Runs a method on a given object in a separate thread from that of the 
+     * caller.
      */        
     public static class MethodRunner implements Runnable
     {
-        /** 
-         * Name of method to execute 
-         */
+        /** Name of method to execute */
         private String method_;
         
-        /** 
-         * Object to execute the method on 
-         */
+        /** Object to execute the method on */
         private Object target_;
         
-        /** 
-         * Parameters to pass on the method invocation 
-         */
+        /** Parameters to pass on the method invocation */
         private Object[] params_;
 
-        /**
-         * Parameter types
-         */
+        /** Parameter types */
         private Class[] clazzes_;
-            
+
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+                    
         /**
          * Creates a MethodRunner
          * 
-         * @param  newTarget  Target object of method invocation
-         * @param  newMethod  Method name on target object
-         * @param  newParams  List of parameters to the method
+         * @param  target  Target object of method invocation
+         * @param  method  Method name on target object
+         * @param  params  List of parameters to the method
          */
-        public MethodRunner(Object newTarget, String newMethod, 
-            Object[] newParams)
+        public MethodRunner(Object target, String method, Object[] params)
         {
-            target_ = newTarget;
-            method_ = newMethod;                    
-            params_ = newParams;
-            
-            if (params_ == null)
-                params_ = new Object[0];
+            this(target, method, params, ClassUtil.getMatchingClasses(params));
         }
 
-        
         /**
          * Creates a MethodRunner
          * 
-         * @param  newTarget   Target object of method invocation
-         * @param  newMethod   Method name on target object
-         * @param  newParams   List of parameters to the method
-         * @param  newClazzes  List of classes for parameter types
+         * @param  target   Target object of method invocation
+         * @param  method   Method name on target object
+         * @param  params   List of parameters to the method
+         * @param  clazzes  List of classes for parameter types
          */
-        public MethodRunner(Object newTarget, String newMethod, 
-            Object[] newParams, Class[] newClazzes)
+        public MethodRunner(Object target, String method, Object[] params, 
+            Class[] clazzes)
         {
-            target_  = newTarget;
-            method_  = newMethod;                    
-            params_  = newParams;
-            clazzes_ = newClazzes;
+            target_  = target;
+            method_  = method;                    
+            params_  = params;
+            clazzes_ = clazzes;
+
+            if (params_ == null)
+                params_ = new Object[0];
+            
+            // Have to verify method is legit here because after run(), there
+            // is no opportunity to let the caller know that the passed params
+            // were invalid.
+            
+            Method verifyMethod =  
+                MethodUtils.getMatchingAccessibleMethod(
+                    target_.getClass(), method_, clazzes_);
+                    
+            if (verifyMethod == null)
+                throw new IllegalArgumentException(toString());
         }        
         
+        //----------------------------------------------------------------------
+        // Runnable Interface
+        //----------------------------------------------------------------------
         
         /**
          * Executes the method provided at time of construction
@@ -285,6 +293,9 @@ public final class ThreadUtil
             }
         }
         
+        //----------------------------------------------------------------------
+        //  Overrides java.lang.Object
+        //----------------------------------------------------------------------
         
         /**
          * Dump to string
