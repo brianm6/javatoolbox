@@ -97,13 +97,13 @@ public class PhraseCanvas extends Canvas
      * 
      * @return phrase to be rendered by this PhraseCanvas 
      */
-        public String getPhrase()
-        {
-            return phrase_;
-        }
+     public String getPhrase()
+     {
+         return phrase_;
+     }
  
         
-        /** 
+    /** 
      * Sets the phrase to be rendered by this PhraseCanvas.
      * 
      * @param   phrase  New phrase to be rendered by this PhraseCanvas;
@@ -164,6 +164,7 @@ public class PhraseCanvas extends Canvas
     {
         color_ = color;
     }
+
 
     /** 
      * Returns true iff anti-aliasing is used when rendering the phrase.
