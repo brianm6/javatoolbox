@@ -42,9 +42,16 @@ import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * Tail pane
- * <p>
+ * 
+ * <pre>
  * TOOD: Figure why anti alias select from font chooser dialog does not get
  *       applied/persisted to the tailpane!
+ * TODO: Color code keywords
+ * TODO: Color code time lapse delays
+ * TODO: Verify regex filtering is working
+ * TODO: Move button panel to its own flippane
+ * TODO: Add option to tail the whole file from the beginning
+ * </pre> 
  */
 public class TailPane extends JPanel
 {
