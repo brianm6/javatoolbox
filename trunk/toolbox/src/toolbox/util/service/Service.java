@@ -3,8 +3,25 @@ package toolbox.util.service;
 /**
  * An object that implements the Service interface adheres to basic lifecycle
  * management and (start/stop/resume) and a query interface expose current
- * state. 
- */
+ * state.
+   <pre>
+     
+                             init
+         +-----------------------------------------+
+         |                                         |
+         |                  [PAUSED]           [SHUTDOWN]
+         |                   ^   |                 ^
+         |              pause|   |resume           |  
+         |                   |   |                 |shutdown                                                      
+         v        start      |   v     stop        |
+  [INITIALIZED]----------->[RUNNING]---------->[STOPPED]
+                               ^                   |
+                               |                   |
+                               +-------------------+
+                                      start
+  </pre>                                      
+ */              
+
 public interface Service
 {
 	/**
