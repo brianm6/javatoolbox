@@ -49,6 +49,8 @@ import toolbox.util.ui.table.TableSorter;
  * TODO: Figure out how to save table column sizes
  * TODO: Convert actionPerformed() to Actions
  * TODO: Add chart for visualization
+ * TODO: Custom table cell renders to align cell contents/color code unusually
+ *       high or low numbers, etc
  * </pre> 
  * 
  */
