@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
@@ -145,9 +146,9 @@ public class StatcvsPlugin extends AbstractPlugin
     private JSmartTextField cvsRootField_;
 
     /**
-     * Field for the cvs password (required by empty strings are OK).
+     * Field for the cvs password (required but empty strings are OK).
      */
-    private JSmartTextField cvsPasswordField_;
+    private JPasswordField cvsPasswordField_;
 
     /**
      * Field for the checkout directory (must already exist).
@@ -276,7 +277,7 @@ public class StatcvsPlugin extends AbstractPlugin
         cvsRootField_.setName("CVS root");
 
         p.add(new JSmartLabel("CVS Password"), ParagraphLayout.NEW_PARAGRAPH);
-        p.add(cvsPasswordField_ = new JSmartTextField(20));
+        p.add(cvsPasswordField_ = new JPasswordField(20));
 
         p.add(new JSmartLabel("Checkout Directory"),
                 ParagraphLayout.NEW_PARAGRAPH);
@@ -840,7 +841,9 @@ public class StatcvsPlugin extends AbstractPlugin
             statusBar_.setInfo("Logging in...");
 
             // Override cvs password for netbeans cvs lib
-            System.setProperty("cvs.password", cvsPasswordField_.getText());
+            System.setProperty(
+                "cvs.password", 
+                new String(cvsPasswordField_.getPassword()));
 
             // Delete password file. Netbeans cvs lib has problems overwriting
             // it if it already exists
@@ -1131,14 +1134,15 @@ public class StatcvsPlugin extends AbstractPlugin
 
                 for (int i = 0; i < projectCombo_.getItemCount(); i++)
                 {
-                    CVSProject project =
-                        (CVSProject) projectCombo_.getItemAt(i);
+                    CVSProject project = (CVSProject) 
+                        projectCombo_.getItemAt(i);
 
                     if (project.getProject().equals(current))
                     {
                         project.setCVSModule(cvsModuleField_.getText());
                         project.setCVSRoot(cvsRootField_.getText());
-                        project.setCVSPassword(cvsPasswordField_.getText());
+                        project.setCVSPassword(
+                            new String(cvsPasswordField_.getPassword()));
                         project.setCheckoutDir(checkoutDirField_.getText());
                         project.setDebug(debugCheckBox_.isSelected());
                         project.setLaunchURL(launchURLField_.getText());
@@ -1157,7 +1161,7 @@ public class StatcvsPlugin extends AbstractPlugin
                         current,
                         cvsModuleField_.getText(),
                         cvsRootField_.getText(),
-                        cvsPasswordField_.getText(),
+                        new String(cvsPasswordField_.getPassword()),
                         checkoutDirField_.getText(),
                         debugCheckBox_.isSelected(),
                         launchURLField_.getText(),
