@@ -3,9 +3,10 @@ package toolbox.findclass;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -38,8 +39,13 @@ public class JFindClass extends JFrame implements ActionListener,
     private JList  resultList;
     private DefaultListModel resultModel;
     private JScrollPane resultPane;
+    
     private JLabel statusLabel;
 
+    private FindClass findClass;
+
+    private Font monoFont = new Font("Lucida Console", Font.PLAIN, 11);
+    
     /**
      * Entrypoint
      */    
@@ -53,7 +59,7 @@ public class JFindClass extends JFrame implements ActionListener,
      * Constructor for JFindClass.
      * @throws HeadlessException
      */
-    public JFindClass() throws HeadlessException
+    public JFindClass()
     {
         this("JFindClass");
     }
@@ -64,14 +70,23 @@ public class JFindClass extends JFrame implements ActionListener,
      * @param title
      * @throws HeadlessException
      */
-    public JFindClass(String title) throws HeadlessException
+    public JFindClass(String title)
     {
         super(title);
         buildView();
-        
+        init();
         pack();
     }
 
+    protected void init()
+    {
+        findClass = new FindClass();
+        findClass.addFindClassListener(this);        
+        List targets = findClass.getSearchTargets();
+        
+        for (Iterator i = targets.iterator(); i.hasNext(); 
+            pathModel.addElement(i.next()));
+    }
 
     /**
      * Builds the view
@@ -85,6 +100,7 @@ public class JFindClass extends JFrame implements ActionListener,
         searchLabel = new JLabel("Find Class");
         searchField = new JTextField(15);
         searchField.addActionListener(this);
+        searchField.setFont(monoFont);
         searchButton = new JButton("Find");
         searchButton.addActionListener(this);
                 
@@ -98,7 +114,9 @@ public class JFindClass extends JFrame implements ActionListener,
         //====================================================
 
         JLabel pathListLabel = new JLabel("Classpath");
-        pathList = new JList();
+        pathModel = new DefaultListModel(); 
+        pathList = new JList(pathModel);
+        pathList.setFont(monoFont);
         
         JPanel pathPanel = new JPanel(new BorderLayout());
         pathPanel.add(pathListLabel, BorderLayout.NORTH);
@@ -109,7 +127,7 @@ public class JFindClass extends JFrame implements ActionListener,
         JLabel resultListLabel = new JLabel("Results");
         resultModel = new SafeListModel();
         resultList = new JList(resultModel);
-        resultList.setFont(new Font("Lucida Console", Font.PLAIN, 10));
+        resultList.setFont(monoFont);
         resultPane = new JScrollPane(resultList);;
         
         JPanel resultPanel = new JPanel(new BorderLayout());
@@ -160,13 +178,10 @@ public class JFindClass extends JFrame implements ActionListener,
                 return;
             
             resultModel.clear();
-                
-            FindClass fc = new FindClass();
-            fc.addFindClassListener(this);
-            fc.findClass(search, true);             
-            ThreadUtil.sleep(2000);
-            resultList.ensureIndexIsVisible(resultModel.getSize()-1);
-            System.out.println("Done");
+            Object results[] = findClass.findClass(search, true);             
+            //ThreadUtil.sleep(2000);
+            //resultList.ensureIndexIsVisible(resultModel.getSize()-1);
+            statusLabel.setText(results.length + " matches found");
         }
         catch (Exception e)
         {
@@ -181,7 +196,13 @@ public class JFindClass extends JFrame implements ActionListener,
     public void classFound(FindClassResult searchResult)
     {
         resultModel.addElement(searchResult);
-        statusLabel.setText(searchResult.toString());
-        resultList.ensureIndexIsVisible(resultModel.getSize()-1);
+        //statusLabel.setText(searchResult.toString());
+        //resultList.ensureIndexIsVisible(resultModel.getSize()-1);
+    }
+    
+    public void searchingTarget(String target)
+    {
+        statusLabel.setText("Searching " + target + " ...");    
     }    
+      
 }
