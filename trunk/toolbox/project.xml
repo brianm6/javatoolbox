@@ -645,4 +645,43 @@
     ======================================
     -->
   </reports>
+  
+  <packageGroups>
+
+    <packageGroup>
+      <title>Toolbox Workspace</title>
+      <packages>toolbox.workspace*</packages>
+    </packageGroup>
+  
+    <packageGroup>
+      <title>Toolbox Workspace Plugins</title>
+      <packages>toolbox.plugin*</packages>
+    </packageGroup>
+    
+    <packageGroup>
+      <title>Toolbox Utils</title>
+      <packages>toolbox.util*</packages>
+    </packageGroup>
+    
+    <packageGroup>
+      <title>Toolbox GUI Utils</title>
+      <packages>toolbox.util.ui*</packages>
+    </packageGroup>
+
+    <packageGroup>
+      <title>Toolbox Command Line Tools</title>
+      <packages>
+        toolbox.findclass,
+        toolbox.launcher,
+        toolbox.rtelnet,
+        toolbox.showclasspath,
+        toolbox.showpath,
+        toolbox.tail,
+        toolbox.tree,
+        toolbox.tunnel
+      </packages>
+    </packageGroup>
+    
+  </packageGroups>  
+  
 </project>
