@@ -59,8 +59,10 @@ public class XMLNode
             nodes_ = new Hashtable();
             nodelist_ = new Vector();
         }
+        
         nodelist_.add(node);
         Object obj = nodes_.get(node.getName());
+        
         if (obj == null)
         {
             nodes_.put(node.getName(), node);
@@ -89,6 +91,7 @@ public class XMLNode
     public Enumeration enumerateNode(String name)
     {
         Object obj = nodes_.get(name);
+        
         if (obj == null)
         {
             return new NullEnumeration();
@@ -115,6 +118,7 @@ public class XMLNode
         {
             attrs_ = new Hashtable();
         }
+        
         attrs_.put(name, value);
     }
 
@@ -130,6 +134,7 @@ public class XMLNode
         {
             return null;
         }
+        
         return (String) attrs_.get(name);
     }
 
@@ -163,11 +168,14 @@ public class XMLNode
         {
             return null;
         }
+        
         Object obj = nodes_.get(name);
+        
         if (obj instanceof XMLNode)
         {
             return (XMLNode) obj;
         }
+        
         return null;
     }
 
@@ -245,27 +253,33 @@ public class XMLNode
         {
             return "<!-- " + value_ + " -->";
         }
+        
         if (isDocType())
         {
             return "<!DOCTYPE " + value_ + ">";
         }
+        
         if (value_ != null)
         {
             return value_;
         }
+        
         if (isInvisible())
         {
             return "";
         }
+        
         // QUERY: shouldnt call toString. Needs to improve
         if (nodelist_ != null)
         {
             StringBuffer buffer = new StringBuffer();
             Enumeration enum = enumerateNode();
+            
             while (enum.hasMoreElements())
             {
                 buffer.append(enum.nextElement().toString());
             }
+            
             return buffer.toString();
         }
         return null;
@@ -403,24 +417,29 @@ public class XMLNode
         {
             return "<!-- " + value_ + " -->";
         }
+        
         if (isDocType())
         {
             return "<!DOCTYPE " + value_ + ">";
         }
+        
         if (value_ != null)
         {
             return value_;
         }
+        
 
         StringBuffer tmp = new StringBuffer();
 
         if (!isInvisible())
         {
             tmp.append("<");
+            
             if (isPI())
             {
                 tmp.append("?");
             }
+            
             tmp.append(name_);
         }
 
@@ -435,6 +454,7 @@ public class XMLNode
             tmp.append(getAttr(obj));
             tmp.append("\"");
         }
+        
         if (isEmpty())
         {
             if (isPI())
@@ -457,9 +477,11 @@ public class XMLNode
             }
 
             enum = enumerateNode();
+            
             while (enum.hasMoreElements())
             {
                 Object obj = enum.nextElement();
+                
                 if (obj instanceof XMLNode)
                 {
                     XMLNode node = (XMLNode) obj;
@@ -469,6 +491,7 @@ public class XMLNode
                 {
                     Vector nodelist = (Vector) obj;
                     Enumeration nodeEnum = nodelist.elements();
+                    
                     while (nodeEnum.hasMoreElements())
                     {
                         XMLNode node = (XMLNode) nodeEnum.nextElement();
@@ -482,6 +505,7 @@ public class XMLNode
                 tmp.append("</" + name_ + ">\n");
             }
         }
+        
         return tmp.toString();
     }
 
@@ -512,7 +536,6 @@ public class XMLNode
      */
     class SingletonEnumeration implements Enumeration
     {
-
         private Object obj_;
         private boolean notdone_ = true;
 
@@ -535,6 +558,5 @@ public class XMLNode
         {
             return notdone_;
         }
-
     }
 }
