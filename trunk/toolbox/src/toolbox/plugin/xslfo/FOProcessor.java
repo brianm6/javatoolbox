@@ -14,7 +14,7 @@ public interface FOProcessor
      * 
      * @param props Initialization properties
      */
-    public void initialize(Properties props);
+    void initialize(Properties props);
     
     
     /**
@@ -25,7 +25,7 @@ public interface FOProcessor
      * @param pdfStream Stream to write PDF output to
      * @throws Exception on error
      */
-    public void renderPDF(InputStream foStream, OutputStream pdfStream) 
+    void renderPDF(InputStream foStream, OutputStream pdfStream) 
         throws Exception;
     
     
@@ -36,6 +36,6 @@ public interface FOProcessor
      * @param psStream Destination of Postscript output
      * @throws Exception on error
      */    
-    public void renderPostscript(InputStream foStream, OutputStream psStream)
+    void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception;
 }

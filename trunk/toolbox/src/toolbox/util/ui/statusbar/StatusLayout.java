@@ -16,9 +16,9 @@ import java.util.Map;
 public class StatusLayout extends AbstractLayout
 {
     /**
-     * Maps a component -> constraints.
+     * Maps a component to its constraints.
      */
-    private Map table_ = new HashMap();
+    private Map table_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -42,12 +42,17 @@ public class StatusLayout extends AbstractLayout
     public StatusLayout(int hgap, int vgap)
     {
         super(hgap, vgap);
+        table_ = new HashMap();
     }
 
     //--------------------------------------------------------------------------
     // Overrides AbstractLayout
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see java.awt.LayoutManager2#addLayoutComponent(java.awt.Component, 
+     *      java.lang.Object)
+     */
     public void addLayoutComponent(Component comp, Object constraints)
     {
         if (!(constraints instanceof StatusArea))
@@ -58,12 +63,18 @@ public class StatusLayout extends AbstractLayout
     }
 
 
+    /**
+     * @see java.awt.LayoutManager#removeLayoutComponent(java.awt.Component)
+     */
     public void removeLayoutComponent(Component comp)
     {
         table_.remove(comp);
     }
 
 
+    /**
+     * @see java.awt.LayoutManager#minimumLayoutSize(java.awt.Container)
+     */
     public Dimension minimumLayoutSize(Container parent)
     {
         Insets insets = parent.getInsets();
@@ -90,6 +101,9 @@ public class StatusLayout extends AbstractLayout
     }
 
 
+    /**
+     * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
+     */
     public Dimension preferredLayoutSize(Container parent)
     {
         Insets insets = parent.getInsets();
@@ -116,6 +130,9 @@ public class StatusLayout extends AbstractLayout
     }
 
 
+    /**
+     * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
+     */
     public void layoutContainer(Container parent)
     {
         Insets insets = parent.getInsets();

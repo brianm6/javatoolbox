@@ -13,7 +13,7 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 
 /**
- * PopupMenu for a JList
+ * PopupMenu for a JList.
  */
 public class JListPopupMenu extends JSmartPopupMenu
 {
@@ -65,7 +65,7 @@ public class JListPopupMenu extends JSmartPopupMenu
     }
     
     //--------------------------------------------------------------------------
-    // Actions
+    // CopyAction
     //--------------------------------------------------------------------------
 
     /**
@@ -98,6 +98,10 @@ public class JListPopupMenu extends JSmartPopupMenu
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SelectAllAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Selects all items in the list box.
      */

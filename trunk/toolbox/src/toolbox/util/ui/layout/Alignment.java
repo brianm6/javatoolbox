@@ -3,26 +3,45 @@ package toolbox.util.ui.layout;
 import java.awt.Rectangle;
 
 /**
- * Alignment 
+ * Alignment. 
  */
 public class Alignment implements Direction
 {
-    /** None */
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * None 
+     */
     public static final int FILL_NONE = 0;
-    /** Horiz */
+    
+    /** 
+     * Horiz 
+     */
     public static final int FILL_HORIZONTAL = 1;
-    /** Vert */
+    
+    /** 
+     * Vert 
+     */
     public static final int FILL_VERTICAL = 2;
-    /** Both */
+    
+    /** 
+     * Both 
+     */
     public static final int FILL_BOTH = 3;
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
-     * Aligns in a cell
+     * Aligns in a cell.
      * 
-     * @param  r         Rectangle
-     * @param  cell      Cell
-     * @param  alignment Alignment
-     * @param  fill      Fill
+     * @param r Rectangle
+     * @param cell Cell
+     * @param alignment Alignment
+     * @param fill Fill
      */
     public static void alignInCell(
         Rectangle r,
@@ -33,7 +52,7 @@ public class Alignment implements Direction
         r.x = cell.x;
         r.y = cell.y;
 
-        /* Horizontal fill */
+        // Horizontal fill 
         switch (fill)
         {
             case FILL_BOTH :
@@ -42,7 +61,7 @@ public class Alignment implements Direction
                 break;
         }
 
-        /* Vertical fill */
+        // Vertical fill 
         switch (fill)
         {
             case FILL_BOTH :
@@ -51,7 +70,7 @@ public class Alignment implements Direction
                 break;
         }
 
-        /* Horizontal alignment */
+        // Horizontal alignment 
         switch (alignment)
         {
             case CENTER :
@@ -70,7 +89,7 @@ public class Alignment implements Direction
                 break;
         }
 
-        /* Vertical alignment */
+        // Vertical alignment 
         switch (alignment)
         {
             case CENTER :

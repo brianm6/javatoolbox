@@ -17,7 +17,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.list.JListPopupMenu;
 
 /**
- * Unit test for JListPopupMenu
+ * Unit test for JListPopupMenu.
  */
 public class JListPopupMenuTest extends TestCase
 {
@@ -29,7 +29,7 @@ public class JListPopupMenuTest extends TestCase
     //--------------------------------------------------------------------------
     
     /** 
-     * Entry point
+     * Entry point.
      * 
      * @param args None
      * @throws Exception on error
@@ -45,7 +45,7 @@ public class JListPopupMenuTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests popupmenu
+     * Tests popupmenu.
      */
     public void testListPopup()
     {

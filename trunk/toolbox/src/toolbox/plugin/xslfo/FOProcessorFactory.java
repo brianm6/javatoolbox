@@ -5,6 +5,10 @@ package toolbox.util.xslfo;
  */
 public final class FOProcessorFactory
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Apache FOP http://xml.apache.org 
      */

@@ -44,25 +44,48 @@ public class JStatusBar extends JPanel
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Adds a component to the status bar.
+     * 
+     * @param component Component to add.
+     */
     public void addStatusComponent(JComponent component)
     {
         add(wrapBorder(component), new StatusConstraint());
     }
 
 
+    /**
+     * Adds a component to the status bar.
+     * 
+     * @param component Component to add.
+     * @param width Fixed width of the component.
+     */
     public void addStatusComponent(JComponent component, int width)
     {
         add(wrapBorder(component), new StatusConstraint(width));
     }
 
-
+    
+    /**
+     * Adds a component to the status bar.
+     * 
+     * @param component Component to add.
+     * @param relative True if the size is relative, false otherwise.
+     */
     public void addStatusComponent(JComponent component, boolean relative)
     {
         add(wrapBorder(component), new StatusConstraint(relative));
     }
 
-
+    /**
+     * Adds a component to the status bar.
+     * 
+     * @param component Component to add.
+     * @param relative True if the size is relative, false otherwise.
+     * @param width Fixed width of the component.
+     */
     public void addStatusComponent(JComponent component, boolean relative, 
         float width)
     {

@@ -63,6 +63,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     // TODO: Add checkbox/combo to set type of text (xml, java) and syntax 
     //       hilite as appropriate.
     
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     public static final Logger logger_ =
         Logger.getLogger(TextPlugin.class);   
     
@@ -70,6 +74,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     private static final String NODE_TEXTTOOLS_PLUGIN   = "TextToolsPlugin";
     private static final String   NODE_INPUT_TEXTAREA   = "InputTextArea";
     private static final String   NODE_OUTPUT_TEXTAREA  = "OutputTextArea";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Reference to the workspace status bar. 
@@ -277,7 +285,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     }
     
     //--------------------------------------------------------------------------
-    //  Actions
+    // SortAction
     //--------------------------------------------------------------------------
     
     /**
@@ -317,6 +325,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         }
     }
 
+    //--------------------------------------------------------------------------
+    // BannerAction
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a banner of the text.
@@ -340,7 +351,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     }
     
     //--------------------------------------------------------------------------
-    // Flippers
+    // FilterFlipper
     //--------------------------------------------------------------------------
     
     /**
@@ -421,6 +432,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        //----------------------------------------------------------------------
+        // FilterKeyListener
+        //----------------------------------------------------------------------
         
         /**
          * Enabled dynamic filtering  of regex as it is typed.
@@ -444,6 +458,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        //----------------------------------------------------------------------
+        // TextChangedListener
+        //----------------------------------------------------------------------
         
         /**
          * Catchs modifications to the original document so that we know when
@@ -474,6 +491,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         }
     }
     
+    //--------------------------------------------------------------------------
+    // TokenizerFlipper
+    //--------------------------------------------------------------------------
     
     /**
      * Flipper that allows the user to tokenize strings by providing the 
@@ -498,6 +518,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             add(new JSmartButton(new SingleLineAction()));
         }
     
+        //----------------------------------------------------------------------
+        // TokenizeAction
+        //----------------------------------------------------------------------
         
         /** 
          * Tokenizes the string in the input text area with the entered 
@@ -523,6 +546,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        //----------------------------------------------------------------------
+        // SingleLineAction
+        //----------------------------------------------------------------------
         
         /** 
          * Compresses multiple lines in the input text area to a single line
@@ -548,6 +574,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         }
     }
     
+    //--------------------------------------------------------------------------
+    // CodecFlipper
+    //--------------------------------------------------------------------------
     
     /**
      * Flipper containing common encoding/decoding schemes. 
@@ -570,7 +599,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             add(new JSmartButton(new XMLDecodeAction()));
         }
     
-        
+        //----------------------------------------------------------------------
+        // Base64EncodeAction
+        //----------------------------------------------------------------------
+
         class Base64EncodeAction extends AbstractAction
         {
             Base64EncodeAction()
@@ -585,7 +617,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
-        
+        //----------------------------------------------------------------------
+        // Base64DecodeAction
+        //----------------------------------------------------------------------
+
         class Base64DecodeAction extends AbstractAction
         {
             Base64DecodeAction()
@@ -600,7 +635,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
-        
+        //----------------------------------------------------------------------
+        // HTMLEncodeAction
+        //----------------------------------------------------------------------
+
         class HTMLEncodeAction extends AbstractAction
         {
             HTMLEncodeAction()
@@ -615,7 +653,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
-        
+        //----------------------------------------------------------------------
+        // HTMLDecodeAction
+        //----------------------------------------------------------------------
+
         class HTMLDecodeAction extends AbstractAction
         {
             HTMLDecodeAction()
@@ -630,7 +671,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
-        
+        //----------------------------------------------------------------------
+        // XMLEncodeAction
+        //----------------------------------------------------------------------
+
         class XMLEncodeAction extends AbstractAction
         {
             XMLEncodeAction()
@@ -645,6 +689,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        //----------------------------------------------------------------------
+        // XMLDecodeAction
+        //----------------------------------------------------------------------
         
         class XMLDecodeAction extends AbstractAction
         {

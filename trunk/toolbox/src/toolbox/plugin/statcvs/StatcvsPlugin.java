@@ -597,7 +597,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
  
  
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // CVSProject
     //--------------------------------------------------------------------------
     
     /**
@@ -902,7 +902,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // Actions
+    // StatcvsAction
     //--------------------------------------------------------------------------
 
     /** 
@@ -944,6 +944,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }        
     }
 
+    //--------------------------------------------------------------------------
+    // EverythingAction
+    //--------------------------------------------------------------------------
     
     /**
      * Executes all steps necessary to produce the StatCVS report.
@@ -964,6 +967,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             new LaunchAction().runAction(e);
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // LoginAction
+    //--------------------------------------------------------------------------
     
     /**
      * Logs into the cvs server.
@@ -1003,6 +1010,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // CheckoutAction
+    //--------------------------------------------------------------------------
     
     /**
      * Checks out the module from the cvs server to the local filesystem.
@@ -1043,6 +1053,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // LogAction
+    //--------------------------------------------------------------------------
     
     /**
      * Generates a cvs log file which is later used as input to statcvs.
@@ -1090,6 +1103,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // GenerateStatsAction
+    //--------------------------------------------------------------------------
     
     /**
      * Runs statcvs against the generatted cvs log file to create a HTML report.
@@ -1138,6 +1154,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
     
+    //--------------------------------------------------------------------------
+    // LaunchAction
+    //--------------------------------------------------------------------------
     
     /**
      * Launches web browser to view the generated Statcvs reports.
@@ -1155,6 +1174,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
     
+    //--------------------------------------------------------------------------
+    // ProjectChangedAction
+    //--------------------------------------------------------------------------
     
     /** 
      * Updates the cvs project fields when the project selection changes.
@@ -1179,6 +1201,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SaveAction
+    //--------------------------------------------------------------------------
     
     /**
      * Saves the current cvs project. If the project does not already exist,
@@ -1241,6 +1266,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DeleteAction
+    //--------------------------------------------------------------------------
     
     /**
      * Deletes the selected cvs project.

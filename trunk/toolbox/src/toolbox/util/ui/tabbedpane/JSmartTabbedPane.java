@@ -40,16 +40,16 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
-    /**
-     * Listeners.
-     */
-    private SmartTabbedPaneListener[] listeners_;
 
     /**
      * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
+    /**
+     * Listeners.
+     */
+    private SmartTabbedPaneListener[] listeners_;
 
     /**
      * If true, an icon will appear on each tab allowing the tab to be closed.
@@ -241,7 +241,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // MouseListener
     //--------------------------------------------------------------------------
     
     /**

@@ -186,7 +186,7 @@ public class SmartTableModel extends DefaultTableModel
     }
 
     //--------------------------------------------------------------------------
-    //  Interface IBatchingQueueListener
+    //  IBatchingQueueListener Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -201,7 +201,7 @@ public class SmartTableModel extends DefaultTableModel
     }
 
     //--------------------------------------------------------------------------
-    //  Inner Classes
+    //  AddRows
     //--------------------------------------------------------------------------
     
     /**

@@ -68,6 +68,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
 {
     // TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final Logger logger_ = 
         Logger.getLogger(XSLFOPlugin.class);
     
@@ -80,6 +84,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      * XML: Node for PDFViewer preferences.
      */
     private static final String NODE_PDF_VIEWER   = "PDFViewer";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Flip panel that houses the file explorer. 
@@ -494,7 +502,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // Listeners
+    // FileSelectionListener
     //--------------------------------------------------------------------------
     
     /**
@@ -520,7 +528,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // Actions
+    // FormatAction
     //--------------------------------------------------------------------------
     
     /**
@@ -539,6 +547,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         }
     }
 
+    //--------------------------------------------------------------------------
+    // FOPAWTAction
+    //--------------------------------------------------------------------------
     
     /**
      * Launches FOP AWT viewer.
@@ -559,6 +570,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         }
     }
     
+    //--------------------------------------------------------------------------
+    // FOPRenderAction
+    //--------------------------------------------------------------------------
     
     /**
      * Renders the XSLFO and views using the internal PDF viewer.
@@ -581,7 +595,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         }
     }
 
-
+    //--------------------------------------------------------------------------
+    // FOPLaunchAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Uses FOP formatter and views externally as a PDF.
      */
@@ -606,6 +623,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         }
     }    
     
+    //--------------------------------------------------------------------------
+    // FOPExportToPDFAction
+    //--------------------------------------------------------------------------
     
     /**
      * Saves generated PDF to file.
@@ -644,6 +664,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         }
     }
     
+    //--------------------------------------------------------------------------
+    // XEPRenderAction
+    //--------------------------------------------------------------------------
     
     /**
      * Uses XEP formatter and views as PDF.
@@ -664,6 +687,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         }
     }
     
+    //--------------------------------------------------------------------------
+    // XEPLaunchAction
+    //--------------------------------------------------------------------------
     
     /**
      * Uses XEP formatter and views externally as a PDF.
@@ -687,6 +713,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         }
     }    
     
+    //--------------------------------------------------------------------------
+    // FOPExportToPostcriptAction
+    //--------------------------------------------------------------------------
     
     /**
      * Exports XSL-FO to a Postscript file.

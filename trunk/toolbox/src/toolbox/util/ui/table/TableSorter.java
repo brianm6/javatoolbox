@@ -538,7 +538,7 @@ public class TableSorter extends TableMap
     }
     
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // SortingMouseListener
     //--------------------------------------------------------------------------
     
     /**
@@ -566,6 +566,9 @@ public class TableSorter extends TableMap
         }
     }
     
+    //--------------------------------------------------------------------------
+    // TableHeaderCellRenderer
+    //--------------------------------------------------------------------------
     
     /**
      * Renders the ascending/descending sort direction graphic in the table

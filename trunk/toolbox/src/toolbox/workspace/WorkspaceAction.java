@@ -82,7 +82,7 @@ public abstract class WorkspaceAction extends SmartAction
     }
 
     //--------------------------------------------------------------------------
-    // Actions
+    // BusyProgressBarAction
     //--------------------------------------------------------------------------
     
     /**
@@ -96,6 +96,9 @@ public abstract class WorkspaceAction extends SmartAction
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DoneProgressBarAction
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the progress bar to not busy.  
@@ -108,6 +111,9 @@ public abstract class WorkspaceAction extends SmartAction
         }
     }
 
+    //--------------------------------------------------------------------------
+    // DisplayErrorOnStatusBarAction
+    //--------------------------------------------------------------------------
     
     /**
      * Displays error message on the status bar.

@@ -15,6 +15,10 @@ import javax.swing.border.Border;
  */
 public class DynamicBevelBorder implements Border
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Raised bevel type.
      */
@@ -25,6 +29,10 @@ public class DynamicBevelBorder implements Border
      */
     public static final int LOWERED = 1;
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Type of bevel. 
      */

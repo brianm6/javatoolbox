@@ -336,7 +336,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     }
 
     //--------------------------------------------------------------------------
-    // Inner Classes
+    // MyTableModel
     //--------------------------------------------------------------------------
     
     /**
@@ -392,6 +392,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         }
     }
 
+    //--------------------------------------------------------------------------
+    // SampleRenderer
+    //--------------------------------------------------------------------------
     
     /**
      * Custom table cell renderer for showing text/colors/icons. 

@@ -3,59 +3,62 @@ package toolbox.util.ui.layout;
 import java.awt.Component;
 
 /**
- * GridLayoutPlus
+ * GridLayoutPlus.
  */
 public class GridLayoutPlus extends BasicGridLayout
 {
-    private int[]   rowWeights_, 
-                    colWeights_, 
-                    colFlags_;
+    private int[] rowWeights_;
+    private int[] colWeights_;
+    private int[] colFlags_;
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Default Constructor
+     * Creates a GridLayoutPlus.
      */
     public GridLayoutPlus()
     {
         super(0, 1, 2, 2);
     }
 
+
     /**
-     * Creates a GridLayoutPlus
+     * Creates a GridLayoutPlus.
      * 
-     * @param  rows  Number of rows
-     * @param  cols  Number of columns
+     * @param rows Number of rows
+     * @param cols Number of columns
      */
     public GridLayoutPlus(int rows, int cols)
     {
         super(rows, cols, 2, 2);
     }
 
+
     /**
-     * Creates a GridLayoutPlus
+     * Creates a GridLayoutPlus.
      * 
-     * @param  rows  Number of rows
-     * @param  cols  Number of columns
-     * @param  hGap  Horizontal gap
-     * @param  vGap  Vertical gap
+     * @param rows Number of rows
+     * @param cols Number of columns
+     * @param hGap Horizontal gap
+     * @param vGap Vertical gap
      */
     public GridLayoutPlus(int rows, int cols, int hGap, int vGap)
     {
         super(rows, cols, hGap, vGap, 0, 0);
     }
 
+
     /**
-     * Creates a GridLayoutPlus
+     * Creates a GridLayoutPlus.
      * 
-     * @param  rows     Number of rows
-     * @param  cols     Number of columns
-     * @param  hGap     Horizontal gap
-     * @param  vGap     Vertical gap
-     * @param  hMargin  Horizontal margin
-     * @param  vMargin  Vertical margin
+     * @param rows Number of rows
+     * @param cols Number of columns
+     * @param hGap Horizontal gap
+     * @param vGap Vertical gap
+     * @param hMargin Horizontal margin
+     * @param vMargin Vertical margin
      */
     public GridLayoutPlus(
         int rows,
@@ -73,52 +76,56 @@ public class GridLayoutPlus extends BasicGridLayout
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the row weight
+     * Sets the row weight.
      * 
-     * @param  row     Row number
-     * @param  weight  Row weight
+     * @param row Row number
+     * @param weight Row weight
      */
     public void setRowWeight(int row, int weight)
     {
         rowWeights_ = setWeight(rowWeights_, row, weight);
     }
 
+
     /**
-     * Sets the column weight
+     * Sets the column weight.
      * 
-     * @param  col     Column number
-     * @param  weight  Column weight
+     * @param col Column number
+     * @param weight Column weight
      */
     public void setColWeight(int col, int weight)
     {
         colWeights_ = setWeight(colWeights_, col, weight);
     }
 
+
     /**
-     * Sets column alignment
+     * Sets column alignment.
      * 
-     * @param  col  Column number
-     * @param  v    Alignment
+     * @param col Column number
+     * @param v Alignment
      */
     public void setColAlignment(int col, int v)
     {
         colFlags_ = setWeight(colFlags_, col, v);
     }
 
+
     /**
      * Adds the specified named component to the layout.
      * 
-     * @param   name  String name
-     * @param   comp  Component to be added
+     * @param name String name
+     * @param comp Component to be added
      */
     public void addLayoutComponent(String name, Component comp)
     {
     }
 
+
     /**
      * Removes the specified component from the layout.
      * 
-     * @param  comp  Component to be removed
+     * @param comp Component to be removed
      */
     public void removeLayoutComponent(Component comp)
     {
@@ -129,11 +136,11 @@ public class GridLayoutPlus extends BasicGridLayout
     //--------------------------------------------------------------------------
 
     /**
-     * Sets the weight
+     * Sets the weight.
      * 
-     * @param  w        Array of weights
-     * @param  index    Index into array of weights
-     * @param  weight   Weight to set
+     * @param w Array of weights
+     * @param index Index into array of weights
+     * @param weight Weight to set
      * @return New array of weights
      */
     private int[] setWeight(int[] w, int index, int weight)
@@ -150,10 +157,11 @@ public class GridLayoutPlus extends BasicGridLayout
         return w;
     }
 
+
     /**
-     * Returns weight for a given row
+     * Returns weight for a given row.
      * 
-     * @param  row  Row to get weight for
+     * @param row Row to get weight for
      * @return Row weight
      */
     protected int getRowWeight(int row)
@@ -163,10 +171,11 @@ public class GridLayoutPlus extends BasicGridLayout
         return 0;
     }
 
+
     /**
-     * Returns weight for a given column
+     * Returns weight for a given column.
      * 
-     * @param  col  Column to get weight for
+     * @param col Column to get weight for
      * @return Column weight
      */
     protected int getColWeight(int col)
@@ -176,10 +185,11 @@ public class GridLayoutPlus extends BasicGridLayout
         return 0;
     }
 
+
     /**
-     * Returns alignment for a given column
+     * Returns alignment for a given column.
      * 
-     * @param  col  Column to get alignment for
+     * @param col Column to get alignment for
      * @return Column alighment
      */
     protected int getColAlignment(int col)
@@ -190,12 +200,13 @@ public class GridLayoutPlus extends BasicGridLayout
         return getAlignment();
     }
 
+
     /**
-     * Returns aligment
+     * Returns aligment.
      * 
-     * @param  c    Component to get alignment for
-     * @param  row  Row to get alignment for
-     * @param  col  Column to get alightment for
+     * @param c Component to get alignment for
+     * @param row Row to get alignment for
+     * @param col Column to get alightment for
      * @return Alignment
      */
     protected int alignmentFor(Component c, int row, int col)
@@ -203,12 +214,13 @@ public class GridLayoutPlus extends BasicGridLayout
         return getColAlignment(col);
     }
 
+
     /**
-     * Returns fill
+     * Returns fill.
      * 
-     * @param  c    Component to get fill for
-     * @param  row  Row to get fill for
-     * @param  col  Column to get fill for
+     * @param c Component to get fill for
+     * @param row Row to get fill for
+     * @param col Column to get fill for
      * @return Fill
      */
     protected int fillFor(Component c, int row, int col)
@@ -216,10 +228,11 @@ public class GridLayoutPlus extends BasicGridLayout
         return getFill();
     }
 
+
     /**
-     * Returns weight for a given column
+     * Returns weight for a given column.
      * 
-     * @param  col  Column
+     * @param col Column
      * @return Column weight
      */
     protected int weightForColumn(int col)
@@ -227,11 +240,12 @@ public class GridLayoutPlus extends BasicGridLayout
         return 1;
     }
 
+
     /**
-     * Returns weight for a given (row, col)
+     * Returns weight for a given (row, col).
      * 
-     * @param  row  Row 
-     * @param  col  Column
+     * @param row Row 
+     * @param col Column
      * @return Weight
      */
     protected int weightForColumn(int row, int col)
