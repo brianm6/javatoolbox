@@ -335,6 +335,14 @@
     </dependency>
 
     <dependency>
+      <id>jsap</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>jtidy</id>
       <version/>
       <properties>
