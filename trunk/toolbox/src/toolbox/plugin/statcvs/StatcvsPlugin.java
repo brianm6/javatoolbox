@@ -166,7 +166,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Adds a project to the existing list displayed in the combobox.
      * 
-     * @param project CVSProject
+     * @param project CVSProject to add.
      */
     public void addProject(CVSProject project)
     {
@@ -184,7 +184,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */        
     protected void buildView()
     {
@@ -288,7 +288,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Sets the system property user.dir to the given value.
      * 
-     * @param dir Directory
+     * @param dir Directory.
      */    
     protected void setUserDir(String dir)
     {
@@ -320,9 +320,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Checks to make sure that the given field contains some data.
      * 
-     * @param field Field to check
-     * @param name Name to use in throw exception is field is blank
-     * @throws IllegalArgumentException if field is blank
+     * @param field Field to check.
+     * @param name Name to use in throw exception is field is blank.
+     * @throws IllegalArgumentException if field is blank.
      */
     protected void checkEmpty(JSmartTextField field, String name)
     {
@@ -338,7 +338,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * Checks the trailing character on directory fields to make sure then
      * have a terminating File.separator.
      * 
-     * @param field Field to check
+     * @param field Field to check.
      */
     protected void checkTrailer(JSmartTextField field)
     {
@@ -353,7 +353,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * with periods.
      * 
      * @param module Module to use for creating the log file name.
-     * @return Log file name 
+     * @return Log file name.
      */
     protected String moduleToLogFile(String module)
     {
@@ -367,7 +367,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Returns the absolute path to the cvs generated log file.
      * 
-     * @return Path to log file
+     * @return Path to log file.
      */
     protected String getCVSLogFile()
     {
@@ -381,7 +381,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Returns the base CVS checkout directory.
      * 
-     * @return Base CVS checkout directory
+     * @return Base CVS checkout directory.
      */
     protected String getCVSBaseDir()
     {
@@ -395,8 +395,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * Examines the cvs log and makes sure the first few lines don't contain
      * junk that will throw off the statcvs log file parser.
      * 
-     * @param contents Log file contents
-     * @return Fixed Log file contents
+     * @param contents Log file contents.
+     * @return Fixed Log file contents.
      */
     protected String fixLogFile(String contents)
     {
@@ -598,13 +598,21 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     // CVSProject
     //--------------------------------------------------------------------------
     
-    /** 
-     * Abstract base class for all actions that takes care of 
-     * settin/restoring the stdout and stderr streams before and after
-     * the action completes execution.
-     */ 
+    /**
+	 * Abstract base class for all actions that takes care of settin/restoring
+	 * the stdout and stderr streams before and after the action completes
+	 * execution.
+	 */ 
     abstract class StatcvsAction extends WorkspaceAction
     {
+        /**
+         * Creates a StatcvsAction.
+         *
+         * @param name Name of the action.
+         * @param async Is the action to be executed asynchronously?
+         * @param scope Is the scope of the action limited to a single component
+         * @param statusBar Status bar to update.
+         */
         StatcvsAction(
             String name, 
             boolean async, 
@@ -646,11 +654,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class EverythingAction extends StatcvsAction
     {
+        /**
+         * Creates a EverythingAction.
+         */
         EverythingAction()
         {
             super("I'm feeling lucky!", true, null, null);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             new LoginAction().runAction(e);
@@ -670,11 +686,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class LoginAction extends StatcvsAction
     {
+        /**
+         * Creates a LoginAction.
+         */
         LoginAction()
         {
             super("Login", true, null, statusBar_);
         }
         
+        
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             verify();
@@ -712,11 +736,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */    
     class CheckoutAction extends StatcvsAction
     {
+        /**
+         * Creates a CheckoutAction.
+         */
         CheckoutAction()
         {
             super("Checkout", true, null, statusBar_);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             verify();
@@ -755,11 +787,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */    
     class LogAction extends StatcvsAction
     {
+        /**
+         * Creates a LogAction.
+         */
         LogAction()
         {
             super("Generate CVS Log", true, null, statusBar_);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             statusBar_.setStatus("Generating log...");
@@ -805,11 +845,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */    
     class GenerateStatsAction extends StatcvsAction
     {
+        /**
+         * Creates a GenerateStatsAction.
+         */
         GenerateStatsAction()
         {
             super("Generate Stats", true, null, statusBar_);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             statusBar_.setStatus("Generating stats...");
@@ -856,11 +904,19 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class LaunchAction extends StatcvsAction
     {
+        /**
+         * Creates a LaunchAction.
+         */
         LaunchAction()
         {
             super("View stats report", false, null, null);
         }
+
         
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
         public void runAction(ActionEvent e) throws Exception
         {
             NativeBrowser.displayURL(launchURLField_.getText());
@@ -876,6 +932,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class ProjectChangedAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         { 
             Object obj = projectCombo_.getSelectedItem();
@@ -904,12 +964,20 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class SaveAction extends AbstractAction
     {
+        /**
+         * Creates a SaveAction.
+         */
         SaveAction()
         {
             super("", ImageCache.getIcon(ImageCache.IMAGE_SAVE));
             putValue(SHORT_DESCRIPTION, "Saves the project");
         }
-        
+
+            
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String current = projectCombo_.getEditor().getItem().toString();
@@ -968,12 +1036,20 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class DeleteAction extends AbstractAction
     {
+        /**
+         * Creates a DeleteAction.
+         */
         DeleteAction()  
         {
             super("", ImageCache.getIcon(ImageCache.IMAGE_DELETE));
             putValue(SHORT_DESCRIPTION, "Deletes the project");
         }
+
     
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             String current = projectCombo_.getEditor().getItem().toString();

@@ -13,6 +13,11 @@ import toolbox.util.XOMUtil;
  */
 public class CVSProject 
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    // XML nodes and attributes for saving of preferences.
     public  static final String NODE_CVSPROJECT    = "CVSProject";
     private static final String   ATTR_PROJECT     = "project";
     private static final String   ATTR_MODULE      = "module";
@@ -21,6 +26,10 @@ public class CVSProject
     private static final String   ATTR_CHECKOUTDIR = "checkoutdir";
     private static final String   ATTR_DEBUG       = "debug";
     private static final String   ATTR_LAUNCHURL   = "launchurl";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Field for the project name (required for saving). 
@@ -64,8 +73,8 @@ public class CVSProject
     /**
      * Creates a CVSProject from its XML representation.
      *
-     * @param xml String containing a valid XML persistence of CVSProject
-     * @throws Exception on error 
+     * @param xml String containing a valid XML persistence of CVSProject.
+     * @throws Exception on error.
      */
     public CVSProject(String xml) throws Exception
     {
@@ -94,13 +103,13 @@ public class CVSProject
     /**
      * Creates a CVSProject. 
      * 
-     * @param project Project name
-     * @param module CVS module name
-     * @param cvsRoot CVS root url
-     * @param password Cleartext password
-     * @param checkOutDir Directory to checkout files to
-     * @param debug Print debug output
-     * @param launchURL Launch URL for viewing generated statistics
+     * @param project Project name.
+     * @param module CVS module name.
+     * @param cvsRoot CVS root url.
+     * @param password Cleartext password.
+     * @param checkOutDir Directory to checkout files to.
+     * @param debug Print debug output.
+     * @param launchURL Launch URL for viewing generated statistics.
      */
     public CVSProject(String project, String module, String cvsRoot, 
         String password, String checkOutDir, boolean debug, 
@@ -122,7 +131,7 @@ public class CVSProject
     /**
      * Returns an XML representation of the data contained in this project.
      * 
-     * @return XML string
+     * @return XML string.
      */
     public String toXML()
     {
@@ -133,7 +142,7 @@ public class CVSProject
     /**
      * Returns a DOM representation of the data contained in this project.
      * 
-     * @return DOM tree
+     * @return DOM tree.
      */    
     public Element toDOM()
     {
@@ -159,7 +168,7 @@ public class CVSProject
     /**
      * Returns directory that files will be checked out to.
      * 
-     * @return Checkout directory 
+     * @return Checkout directory. 
      */
     public String getCheckoutDir()
     {
@@ -170,7 +179,7 @@ public class CVSProject
     /**
      * Returns the CVS module name that will be analyzed.
      * 
-     * @return CVS module name
+     * @return CVS module name.
      */
     public String getCVSModule()
     {
@@ -181,7 +190,7 @@ public class CVSProject
     /**
      * Returns the CVS password used for authentication.
      * 
-     * @return CVS password
+     * @return CVS password.
      */
     public String getCVSPassword()
     {
@@ -192,7 +201,7 @@ public class CVSProject
     /**
      * Returns the CVSROOT for the cvs module.
      * 
-     * @return CVSROOT
+     * @return CVSROOT.
      */
     public String getCVSRoot()
     {
@@ -203,7 +212,7 @@ public class CVSProject
     /**
      * Returns the debug flag for the CVS library.
      * 
-     * @return Debug flag
+     * @return Debug flag.
      */
     public boolean isDebug()
     {
@@ -214,7 +223,7 @@ public class CVSProject
     /**
      * Returns the URL that points to the generated statistics in HTML.
      * 
-     * @return URL to generated statistics
+     * @return URL to generated statistics.
      */
     public String getLaunchURL()
     {
@@ -226,7 +235,7 @@ public class CVSProject
      * Returns the project name used to identify the set of configuration
      * values.
      * 
-     * @return Project name
+     * @return Project name.
      */
     public String getProject()
     {
@@ -235,6 +244,8 @@ public class CVSProject
 
     
     /**
+     * Sets the checkout directory.
+     * 
      * @param string Path to existing directory that cvs files will be
      *        checked out to.
      */
@@ -243,8 +254,11 @@ public class CVSProject
         checkoutDir_ = string;
     }
 
+    
     /**
-     * @param string CVS module name
+     * Sets the name of the CVS module.
+     * 
+     * @param string CVS module name.
      */
     public void setCVSModule(String string)
     {
@@ -253,7 +267,9 @@ public class CVSProject
 
     
     /**
-     * @param string CVS authentication password
+     * Sets the CVS password in clear text.
+     * 
+     * @param string CVS authentication password.
      */
     public void setCVSPassword(String string)
     {
@@ -262,7 +278,9 @@ public class CVSProject
 
     
     /**
-     * @param string CVSROOT 
+     * Sets the CVSROOT.
+     * 
+     * @param string CVSROOT. 
      */
     public void setCVSRoot(String string)
     {
@@ -271,7 +289,9 @@ public class CVSProject
 
     
     /**
-     * @param b Debug flag
+     * Sets the debug flag.
+     * 
+     * @param b Debug flag.
      */
     public void setDebug(boolean b)
     {
@@ -280,7 +300,9 @@ public class CVSProject
 
     
     /**
-     * @param string URL to the generated statistics
+     * Sets the launch URL for the generated statistics.
+     * 
+     * @param string URL to the generated statistics.
      */
     public void setLaunchURL(String string)
     {
@@ -289,7 +311,9 @@ public class CVSProject
 
     
     /**
-     * @param string Project name
+     * Sets the project name.
+     * 
+     * @param string Project name.
      */
     public void setProject(String string)
     {
