@@ -28,20 +28,21 @@ import toolbox.jtail.filter.LineNumberDecorator;
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
-import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * Tail pane
  */
 public class TailPane extends JPanel
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(TailPane.class);
     
@@ -67,6 +68,8 @@ public class TailPane extends JPanel
     private CutLineFilter       cutFilter_;
     private LineNumberDecorator lineNumberDecorator_;
     
+    private IStatusBar  statusBar_;
+    
     /** 
      * Output for tail 
      */
@@ -90,11 +93,14 @@ public class TailPane extends JPanel
     /** 
      * Creates a TAilPane with the given configuration
      * 
-     * @param   config  TailConfig
+     * @param   config      TailConfig
+     * @param   statusBar   Status bar
      * @throws  FileNotFoundException if file not found
      */
-    public TailPane(ITailPaneConfig config) throws FileNotFoundException
+    public TailPane(ITailPaneConfig config, IStatusBar statusBar) 
+        throws FileNotFoundException
     {
+        statusBar_ = statusBar;
         buildView(config);
         buildFilters();        
         setConfiguration(config);                
@@ -366,7 +372,7 @@ public class TailPane extends JPanel
             }
             catch (InterruptedException ie)
             {
-                JSmartOptionPane.showExceptionMessageDialog(null, ie);
+                ExceptionUtil.handleUI(ie, logger_);
             }
         }
     }
@@ -490,7 +496,7 @@ public class TailPane extends JPanel
                     putValue(Action.NAME, mode_);
                     pauseButton_.setEnabled(true);
                     //queueListener_.resetLines();
-                    logger_.debug(method + "Started tail: " + tail_.getFile());
+                    statusBar_.setStatus("Started tail for " + tail_.getFile());
                 }
                 catch(FileNotFoundException fnfe)
                 {
@@ -503,7 +509,7 @@ public class TailPane extends JPanel
                 mode_ = MODE_START;
                 putValue(Action.NAME, mode_);                
                 pauseButton_.setEnabled(false);
-                logger_.debug(method + "Stopped tail: " + tail_.getFile());
+                statusBar_.setStatus("Stopped tail for " + tail_.getFile());
             }
         }
     }
@@ -537,12 +543,16 @@ public class TailPane extends JPanel
             if (tail_.isPaused())
             {
                 tail_.unpause();
-                putValue(Action.NAME, MODE_PAUSE);                
+                putValue(Action.NAME, MODE_PAUSE);
+                statusBar_.setStatus(
+                    "Unpaused tail for " + config_.getFilename());              
             }
             else
             {
                 tail_.pause();
                 putValue(Action.NAME, MODE_UNPAUSE);
+                statusBar_.setStatus(
+                    "Paused tail for " + config_.getFilename());
             }
         }
     }
@@ -574,6 +584,8 @@ public class TailPane extends JPanel
                 
             if (tail_.isAlive())
                 tail_.stop();
+                
+            statusBar_.setStatus("Closed tail for " + config_.getFilename());
         }
     }
 
