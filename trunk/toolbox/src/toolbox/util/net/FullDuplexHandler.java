@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ThreadUtil;
 
 /**
@@ -26,9 +24,6 @@ import toolbox.util.ThreadUtil;
  */
 public abstract class FullDuplexHandler implements IConnectionHandler
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(FullDuplexHandler.class);
-
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------

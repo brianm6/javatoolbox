@@ -325,12 +325,12 @@ public abstract class AbstractMessenger
         /**
          * Login success and failures both go in this queue.
          */
-        private BlockingQueue connected_;
+        private BlockingQueue connectedQueue_;
 
         /**
          * Disconnect notification goes into this queue.
          */
-        private BlockingQueue disconnected_;
+        private BlockingQueue disconnectedQueue_;
 
         //----------------------------------------------------------------------
         // Constructors
@@ -341,8 +341,8 @@ public abstract class AbstractMessenger
          */
         public MessengerListener()
         {
-            connected_    = new LinkedBlockingQueue();
-            disconnected_ = new LinkedBlockingQueue();
+            connectedQueue_    = new LinkedBlockingQueue();
+            disconnectedQueue_ = new LinkedBlockingQueue();
         }
 
         //----------------------------------------------------------------------
@@ -359,7 +359,7 @@ public abstract class AbstractMessenger
         public String waitForConnect() throws InterruptedException
         {
             LogLog.debug("Waiting for connect ack...");
-            String ack = (String) connected_.take();
+            String ack = (String) connectedQueue_.take();
             LogLog.debug("Received connect ack!");
             return ack;
         }
@@ -374,7 +374,7 @@ public abstract class AbstractMessenger
          */
         public Protocol waitForDisconnect() throws InterruptedException
         {
-            return (Protocol) disconnected_.take();
+            return (Protocol) disconnectedQueue_.take();
         }
 
         //----------------------------------------------------------------------
@@ -389,7 +389,7 @@ public abstract class AbstractMessenger
             LogLog.debug("Connected to " + protocol.getProtocolName());
             try
             {
-                connected_.put(CONNECT_SUCCEEDED);
+                connectedQueue_.put(CONNECT_SUCCEEDED);
             }
             catch (InterruptedException e)
             {
@@ -411,7 +411,7 @@ public abstract class AbstractMessenger
 
             try
             {
-                connected_.put(CONNECT_FAILED);
+                connectedQueue_.put(CONNECT_FAILED);
             }
             catch (InterruptedException e)
             {
@@ -436,7 +436,7 @@ public abstract class AbstractMessenger
         {
             try
             {
-                disconnected_.put(protocol);
+                disconnectedQueue_.put(protocol);
             }
             catch (InterruptedException e)
             {

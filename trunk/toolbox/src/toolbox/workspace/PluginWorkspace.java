@@ -147,11 +147,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     private LoggingMenu logMenu_;
 
     /**
-     * Plugin menu from which plugins can be activated directly.
-     */
-    private JSmartMenu pluginMenu_;
-
-    /**
      * Smooth fonts check box.
      */
     private JCheckBoxMenuItem smoothFontsCheckBoxItem_;

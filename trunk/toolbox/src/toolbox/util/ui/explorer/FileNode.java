@@ -21,11 +21,11 @@ public class FileNode extends DefaultMutableTreeNode
     /**
      * Creates a FileNode.
      *
-     * @param userObject Object to associate with this file node.
+     * @param someObject Object to associate with this file node.
      */
-    public FileNode(Object userObject)
+    public FileNode(Object someObject)
     {
-        super(userObject);
+        super(someObject);
     }
 
     //--------------------------------------------------------------------------

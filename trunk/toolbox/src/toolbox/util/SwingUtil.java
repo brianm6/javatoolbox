@@ -32,8 +32,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ui.AntiAliased;
 
 /**
@@ -51,10 +49,6 @@ import toolbox.util.ui.AntiAliased;
  */
 public final class SwingUtil
 {
-    
-    
-    private static final Logger logger_ = Logger.getLogger(SwingUtil.class);
-
     //--------------------------------------------------------------------------
     // Static Fields
     //--------------------------------------------------------------------------

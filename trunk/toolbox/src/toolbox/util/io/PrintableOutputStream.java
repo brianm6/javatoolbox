@@ -59,28 +59,28 @@ public class PrintableOutputStream extends FilterOutputStream
      * Creates a PrintableOutputStream that is enabled by default and discards
      * all non-printable characters.
      * 
-     * @param out OutputStream to filter.
+     * @param os OutputStream to filter.
      */
-    public PrintableOutputStream(OutputStream out)
+    public PrintableOutputStream(OutputStream os)
     {
-        this(out, true, "");
+        this(os, true, "");
     }
     
 
     /**
      * Creates a PrintableOutputStream.
      * 
-     * @param out OutputStream to filter.
+     * @param os OutputStream to filter.
      * @param enabled Enables the filter.
      * @param substitute Replacement character. Null to discard the filtered
      *        characters.
      */
     public PrintableOutputStream(
-        OutputStream out, 
+        OutputStream os, 
         boolean enabled, 
         String substitute)
     {
-        super(out);
+        super(os);
         setEnabled(enabled);
         setSubstitute(substitute);
     }

@@ -839,8 +839,6 @@ public class TailPane extends JHeaderPanel
          */
         public void nextBatch(Object[] objs)
         {
-            StringBuffer sb = new StringBuffer();
-
 //            if (objs.length > 1)
 //                logger_.debug("Batch size = " + objs.length);
 //            else

@@ -14,8 +14,6 @@ import javax.swing.JToolBar;
 
 import nu.xom.Element;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
@@ -32,9 +30,6 @@ import toolbox.workspace.IPreferenced;
  */
 public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(JCollapsablePanel.class);
-    
     //--------------------------------------------------------------------------
     // Javabean Constants
     //--------------------------------------------------------------------------

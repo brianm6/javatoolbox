@@ -2,7 +2,6 @@ package toolbox.log4j.im;
 
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Logger;
 import org.apache.log4j.helpers.LogLog;
 
 import toolbox.junit.testcase.StandaloneTestCase;
@@ -14,9 +13,6 @@ public class AIMMessengerTest extends AbstractMessengerTest implements
 	StandaloneTestCase
 {
     // TODO: Still broken...
-
-    private static final Logger logger_ =
-        Logger.getLogger(AIMMessengerTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -81,6 +77,7 @@ public class AIMMessengerTest extends AbstractMessengerTest implements
     {
         return new AIMMessenger();
     }
+
     
     /* (non-Javadoc)
      * @see toolbox.log4j.im.AbstractMessengerTest#testLifeCycle()

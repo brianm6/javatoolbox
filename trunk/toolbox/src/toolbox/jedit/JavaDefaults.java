@@ -59,38 +59,38 @@ public class JavaDefaults extends TextAreaDefaults
      */
     protected SyntaxStyle[] getSyntaxStyles()
     {
-        SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
+        SyntaxStyle[] myStyles = new SyntaxStyle[Token.ID_COUNT];
 
-        styles[Token.COMMENT1] =
+        myStyles[Token.COMMENT1] =
             new SyntaxStyle(Color.red.darker(), false, false);
             
-        styles[Token.COMMENT2] =
+        myStyles[Token.COMMENT2] =
             new SyntaxStyle(new Color(0x990033), false, false);
             
-        styles[Token.KEYWORD1] =
+        myStyles[Token.KEYWORD1] =
             new SyntaxStyle(Color.blue.darker(), false, false);
             
-        styles[Token.KEYWORD2] =
+        myStyles[Token.KEYWORD2] =
             new SyntaxStyle(Color.blue.darker(), false, false);
             
-        styles[Token.KEYWORD3] =
+        myStyles[Token.KEYWORD3] =
             new SyntaxStyle(new Color(0x009600), false, false);
             
-        styles[Token.LITERAL1] =
+        myStyles[Token.LITERAL1] =
             new SyntaxStyle(Color.green.darker(), false, false);
                 
-        styles[Token.LITERAL2] = 
+        myStyles[Token.LITERAL2] = 
             new SyntaxStyle(new Color(0x650099), false, false);
             
-        styles[Token.LABEL] =
+        myStyles[Token.LABEL] =
             new SyntaxStyle(new Color(0x990033), false, false);
             
-        styles[Token.OPERATOR] =
+        myStyles[Token.OPERATOR] =
             new SyntaxStyle(Color.blue.darker(), false, false);
             
-        styles[Token.INVALID] = 
+        myStyles[Token.INVALID] = 
             new SyntaxStyle(Color.red, false, false);
 
-        return styles;
+        return myStyles;
     }
 }

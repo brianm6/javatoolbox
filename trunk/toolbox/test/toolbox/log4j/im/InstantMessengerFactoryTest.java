@@ -82,7 +82,7 @@ public class InstantMessengerFactoryTest extends TestCase
 
         try
         {
-            InstantMessenger im = InstantMessengerFactory.create("xyz");
+            InstantMessengerFactory.create("xyz");
             fail("Should have failed for bogus messenger xyz");
         }
         catch (IllegalArgumentException iae)

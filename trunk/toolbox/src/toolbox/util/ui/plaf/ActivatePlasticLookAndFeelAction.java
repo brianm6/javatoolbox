@@ -3,16 +3,11 @@ package toolbox.util.ui.plaf;
 import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.PlasticTheme;
 
-import org.apache.log4j.Logger;
-
 /**
  * Action that activates the plastic look and feel.
  */    
 public class ActivatePlasticLookAndFeelAction extends ActivateLookAndFeelAction
 {
-    private static final Logger logger_ =
-        Logger.getLogger(ActivatePlasticLookAndFeelAction.class);
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

@@ -3,16 +3,11 @@ package toolbox.util.io.filter;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import org.apache.log4j.Logger;
-
 /**
  * ExtensionFilter filters files based on a file's extension.
  */
 public class ExtensionFilter implements FilenameFilter
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ExtensionFilter.class);
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------

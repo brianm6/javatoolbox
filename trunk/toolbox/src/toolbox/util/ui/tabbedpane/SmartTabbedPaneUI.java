@@ -8,17 +8,12 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
-import org.apache.log4j.Logger;
-
 /**
  * Specialization of the BasicTabbedPaneIU that allows for setting of the
  * horizontal text position.
  */
 public class SmartTabbedPaneUI extends BasicTabbedPaneUI
 {
-    private static final Logger logger_ =
-        Logger.getLogger(SmartTabbedPaneUI.class);
-    
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------

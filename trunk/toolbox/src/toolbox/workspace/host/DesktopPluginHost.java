@@ -166,7 +166,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
             public void internalFrameClosed(InternalFrameEvent e)
             {
                 JInternalFrame jif = e.getInternalFrame();
-                IPlugin plugin = (IPlugin) frameMap_.get(jif);
+                IPlugin myPlugin = (IPlugin) frameMap_.get(jif);
                 
                 //
                 // Delegate removal of the plugin to the workspace since we
@@ -178,7 +178,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
                 try
                 {
                     getWorkspace().deregisterPlugin(
-                        plugin.getClass().getName(), true);
+                        myPlugin.getClass().getName(), true);
                 }
                 catch (Exception e1)
                 {

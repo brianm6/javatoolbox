@@ -710,7 +710,6 @@ public class JDBCUtilTest extends TestCase
             results.absolute(numRows / 10);
 
             int cursorPos = results.getRow();
-            int size = JDBCUtil.getSize(results);
             logger_.debug("Restored cursor position: " + cursorPos);
             assertEquals(cursorPos, results.getRow());
         }

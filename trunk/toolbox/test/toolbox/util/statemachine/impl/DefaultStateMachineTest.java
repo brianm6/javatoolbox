@@ -313,7 +313,6 @@ public class DefaultStateMachineTest extends TestCase
 
         StateMachine machine = new DefaultStateMachine("testGetTransitions0");
         State state1 = StateMachineFactory.createState("state1");
-        State state2 = StateMachineFactory.createState("state2");
         machine.addState(state1);
         machine.setBeginState(state1);
         machine.reset();

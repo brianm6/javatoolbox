@@ -11,7 +11,6 @@ import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.TransformerUtils;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 import toolbox.util.statemachine.State;
 import toolbox.util.statemachine.StateMachine;
@@ -25,9 +24,6 @@ import toolbox.util.statemachine.Transition;
  */
 public class DefaultStateMachine implements StateMachine
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(DefaultStateMachine.class);
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------

@@ -47,7 +47,7 @@ public class PreferencesDialog extends JSmartDialog implements ActionListener
     /**
      * Preferences will be changed on the config object directly.
      */
-    private IJTailConfig config_;
+    //private IJTailConfig config_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -62,7 +62,7 @@ public class PreferencesDialog extends JSmartDialog implements ActionListener
     public PreferencesDialog(Frame owner, IJTailConfig config)
     {
         super(owner, "JTail Preferences", true);
-        config_ = config;
+        //config_ = config;
         buildView();
         pack();
     }

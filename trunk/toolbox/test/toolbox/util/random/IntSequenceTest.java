@@ -153,8 +153,6 @@ public class IntSequenceTest extends TestCase
         logger_.info("Running testNextValueNonRepeatingEnded...");
         
         IntSequence gen = new IntSequence(1, 1, true);
-        List nums = new ArrayList();
-        
         gen.nextValue();
         
         try
@@ -239,7 +237,7 @@ public class IntSequenceTest extends TestCase
 
         try
         {
-            IntSequence gen = new IntSequence(low, high, true);
+            new IntSequence(low, high, true);
         }
         catch (IllegalArgumentException iae)
         {

@@ -295,8 +295,6 @@ public class ResourceUtilTest extends TestCase
     {
         logger_.info("Running testExportToClass...");
         
-        String treeOpen  = FILE_IMAGE;
-        
         String classfile = RandomUtil.nextString(10);
         
         String javaSrc = 

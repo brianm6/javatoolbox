@@ -104,11 +104,6 @@ public class DBBenchmark implements Startable, IPreferenced
      */
     private static int numAccounts_ = 100000;
     
-    /** 
-     * Number of history recs in 1 tps db.   
-     */
-    private static int numHistory_  = 864000; 
-    
     /**
      * Table extension.
      */
@@ -585,8 +580,6 @@ public class DBBenchmark implements Startable, IPreferenced
      */
     protected void createDatabase() throws Exception
     {
-        DBProfile profile = plugin_.getCurrentProfile();
-        
         Connection conn = connect();
         writer_.println(conn.getMetaData().getDatabaseProductName());
         transactions_ = true;
@@ -1191,8 +1184,7 @@ public class DBBenchmark implements Startable, IPreferenced
                     query += "SET     Abalance = Abalance + " + delta + " ";
                     query += "WHERE   Aid = " + aid;
 
-                    int res = stmt.executeUpdate(query);
-
+                    stmt.executeUpdate(query);
                     stmt.clearWarnings();
 
                     query = "SELECT Abalance ";

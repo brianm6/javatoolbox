@@ -82,11 +82,11 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
     /**
      * Creates an MonitoredInputStream.
      * 
-     * @param in InputStream to chain. 
+     * @param is InputStream to chain. 
      */
-    public MonitoredInputStream(InputStream in)
+    public MonitoredInputStream(InputStream is)
     {
-        this(null, in);
+        this(null, is);
     }
     
     
@@ -94,11 +94,11 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
      * Creates an MonitoredInputStream.
      * 
      * @param name Stream name.
-     * @param in InputStream to chain. 
+     * @param is InputStream to chain. 
      */
-    public MonitoredInputStream(String name, InputStream in)
+    public MonitoredInputStream(String name, InputStream is)
     {
-        super(in);
+        super(is);
         setName(name);
         setThroughputMonitor(new DefaultThroughputMonitor());
         setTransferredMonitor(new DefaultTransferredMonitor());
@@ -194,7 +194,6 @@ public class MonitoredInputStream extends FilterInputStream implements Nameable
         for (int i = 0; i < listeners_.length; i++)
             listeners_[i].streamClosed(this);               
     }
-    
 
     //--------------------------------------------------------------------------
     // Nameable Interface

@@ -12,10 +12,7 @@ import bsh.util.JConsole;
 
 import nu.xom.Element;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.SwingUtil;
-import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.JSmartSplitPane;
@@ -27,13 +24,13 @@ import toolbox.workspace.AbstractPlugin;
  */
 public class BeanShellPlugin extends AbstractPlugin
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(BeanShellPlugin.class);
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * View component of this plugin.
+     */
     private JPanel view_;
     
     /**
@@ -58,8 +55,6 @@ public class BeanShellPlugin extends AbstractPlugin
         view_ = new JPanel();
         
         output_ = new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias());
-        
-        JTextAreaOutputStream taos = new JTextAreaOutputStream(output_);
         
         console_ = new JConsole();
         

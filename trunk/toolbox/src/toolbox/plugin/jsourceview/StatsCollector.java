@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ResourceUtil;
 
 /**
@@ -17,9 +15,6 @@ import toolbox.util.ResourceUtil;
  */
 public class StatsCollector
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(StatsCollector.class);
-    
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------

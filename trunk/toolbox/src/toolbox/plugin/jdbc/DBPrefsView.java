@@ -2,8 +2,6 @@ package toolbox.plugin.jdbc;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ui.BeanSheet;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
@@ -15,8 +13,6 @@ import toolbox.util.ui.JHeaderPanel;
  */
 public class DBPrefsView extends JHeaderPanel
 {
-    private static final Logger logger_ = Logger.getLogger(DBPrefsView.class);
-
     //--------------------------------------------------------------------------
     // Icons
     //--------------------------------------------------------------------------

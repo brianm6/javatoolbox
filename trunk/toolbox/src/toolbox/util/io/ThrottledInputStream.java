@@ -45,12 +45,12 @@ public class ThrottledInputStream extends FilterInputStream
     /**
      * Creates a ThrottledInputStream.
      * 
-     * @param in Inputstream to throttle.
+     * @param is Inputstream to throttle.
      * @param disabled True to enable throttling, false otherwise.
      */
-    public ThrottledInputStream(InputStream in, boolean disabled)
+    public ThrottledInputStream(InputStream is, boolean disabled)
     {
-        super(in);
+        super(is);
         setDisabled(disabled);
         
         // slow down the creation of new streams if bandwidth is low.

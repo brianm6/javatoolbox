@@ -47,11 +47,11 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
     /**
      * Creates a JSmartInternalFrame.
      *
-     * @param title Frame title.
+     * @param newTitle Frame title.
      */
-    public JSmartInternalFrame(String title)
+    public JSmartInternalFrame(String newTitle)
     {
-        super(title);
+        super(newTitle);
     }
 
 

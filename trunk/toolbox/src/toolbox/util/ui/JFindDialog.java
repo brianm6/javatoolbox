@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.action.DisposeAction;
@@ -23,8 +22,6 @@ import toolbox.util.ui.statusbar.SimpleStatusBar;
 public class JFindDialog extends JSmartDialog
 {
     // TODO: Search from current cursor position
-
-    private static final Logger logger_ = Logger.getLogger(JFindDialog.class);
 
     //--------------------------------------------------------------------------
     // Fields

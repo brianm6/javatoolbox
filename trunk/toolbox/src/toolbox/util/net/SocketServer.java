@@ -223,16 +223,14 @@ public class SocketServer implements Runnable
      */
     public String toString()
     {
-        String nl  = "\n";
-        String nlt = nl + "\t";
-
         return StringUtil.banner(
-               "SocketServer" + nl +
-               "serverSocket = " + serverSocket_ + nl +
-               "thread       = " + acceptThread_ + nl +
-               "publisher    = " + dispatcher_ + nl +
-               "shutdown     = " + shutdown_ + nl +
-               StringUtil.banner("ServerConfig" + nl + config_.toString()));
+               "SocketServer" + StringUtil.NL +
+               "serverSocket = " + serverSocket_ + StringUtil.NL +
+               "thread       = " + acceptThread_ + StringUtil.NL +
+               "publisher    = " + dispatcher_ + StringUtil.NL +
+               "shutdown     = " + shutdown_ + StringUtil.NL +
+               StringUtil.banner(
+                   "ServerConfig" + StringUtil.NL + config_.toString()));
     }
 
     //--------------------------------------------------------------------------

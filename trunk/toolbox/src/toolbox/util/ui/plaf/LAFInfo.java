@@ -12,7 +12,6 @@ import nu.xom.Elements;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.log4j.Logger;
 
 import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
@@ -26,8 +25,6 @@ import toolbox.workspace.IPreferenced;
  */
 public class LAFInfo implements IPreferenced, Nameable
 {
-    private static final Logger logger_ = Logger.getLogger(LAFInfo.class);
-
     //--------------------------------------------------------------------------
     // IPreferenced Constants
     //--------------------------------------------------------------------------
@@ -37,7 +34,6 @@ public class LAFInfo implements IPreferenced, Nameable
     private static final String   ATTR_NAME       = "name";
     private static final String   ATTR_CLASS      = "class";
     private static final String   ATTR_ACTION     = "action";
-    private static final String   NODE_THEME      = "Theme";
     private static final String     NODE_PROPERTY = "Property";
     private static final String     ATTR_VALUE    = "value";
 

@@ -36,7 +36,7 @@ public class QueuedInvoker implements Invoker
     /**
      * Invokable unit of work.
      */
-    private Invokable invokable_;
+    //private Invokable invokable_;
 
     /**
      * Optional delay between invocations in millis.
@@ -68,7 +68,7 @@ public class QueuedInvoker implements Invoker
 
         // Creates the consumer thread and starts it
         consumer_ = new Thread(
-            invokable_ = new Invokable(),
+            new Invokable(),
             Thread.currentThread().getName() + "->QueuedInvoker");
 
         // Start the consumer

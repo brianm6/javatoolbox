@@ -2,8 +2,6 @@ package toolbox.log4j.im;
 
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Logger;
-
 import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
@@ -12,9 +10,6 @@ import toolbox.junit.testcase.StandaloneTestCase;
 public class YahooMessengerTest extends AbstractMessengerTest implements 
 	StandaloneTestCase
 {
-    private static final Logger logger_ =
-        Logger.getLogger(YahooMessengerTest.class);
-
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------

@@ -8,8 +8,6 @@ import javax.swing.JPanel;
 
 import nu.xom.Element;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.formatter.HTMLFormatter;
 import toolbox.util.formatter.XMLFormatter;
 import toolbox.util.ui.BeanSheet;
@@ -22,9 +20,6 @@ import toolbox.workspace.prefs.IConfigurator;
  */
 public class TextToolsConfigurator extends JPanel implements IConfigurator
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(TextToolsConfigurator.class);
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -38,11 +33,6 @@ public class TextToolsConfigurator extends JPanel implements IConfigurator
      * Property sheet panel.
      */
     private BeanSheet xmlSheet_;
-
-    /**
-     * Property sheet panel.
-     */
-    private BeanSheet javaSheet_;
 
     /**
      * Property sheet panel.

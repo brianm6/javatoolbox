@@ -106,9 +106,9 @@ public class JHeaderPanelTest extends UITestCase
                     JCollapsablePanel source = 
                         (JCollapsablePanel) evt.getSource();
                     
-                    GridBagConstraints gbc = gbl.getConstraints(source);
-                    gbc.weighty = (source.isCollapsed() ? 1 : 0);
-                    gbl.setConstraints(source, gbc);
+                    GridBagConstraints gbc2 = gbl.getConstraints(source);
+                    gbc2.weighty = (source.isCollapsed() ? 1 : 0);
+                    gbl.setConstraints(source, gbc2);
                 }
             });
             

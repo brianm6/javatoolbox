@@ -159,7 +159,7 @@ public class ObjectSequenceTest extends TestCase
         
         try
         {
-            ObjectSequence gen = new ObjectSequence(new String[0], true);
+            new ObjectSequence(new String[0], true);
         }
         catch (IllegalArgumentException iae)
         {

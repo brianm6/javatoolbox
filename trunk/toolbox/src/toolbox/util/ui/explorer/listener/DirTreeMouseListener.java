@@ -6,8 +6,6 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.explorer.action.CreateDirAction;
@@ -20,9 +18,6 @@ import toolbox.util.ui.explorer.action.RenameDirAction;
 public class DirTreeMouseListener extends AbstractListener 
     implements MouseListener
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(DirTreeMouseListener.class);
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

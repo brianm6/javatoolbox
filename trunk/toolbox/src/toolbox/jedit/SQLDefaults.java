@@ -61,38 +61,38 @@ public class SQLDefaults extends TextAreaDefaults
      */
     protected SyntaxStyle[] getSyntaxStyles()
     {
-        SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
+        SyntaxStyle[] myStyles = new SyntaxStyle[Token.ID_COUNT];
 
-        styles[Token.COMMENT1] = 
+        myStyles[Token.COMMENT1] = 
             new SyntaxStyle(Colors.dark_red, false, false);
             
-        styles[Token.COMMENT2] = 
+        myStyles[Token.COMMENT2] = 
             new SyntaxStyle(Color.gray, false, true);
             
-        styles[Token.KEYWORD1] = 
+        myStyles[Token.KEYWORD1] = 
             new SyntaxStyle(Colors.dark_blue, false, false);
             
-        styles[Token.KEYWORD2] = 
+        myStyles[Token.KEYWORD2] = 
             new SyntaxStyle(Color.blue, true, true);
             
-        styles[Token.KEYWORD3] = 
+        myStyles[Token.KEYWORD3] = 
             new SyntaxStyle(Color.magenta, false, false);
             
-        styles[Token.LITERAL1] = 
+        myStyles[Token.LITERAL1] = 
             new SyntaxStyle(Colors.blue4, false, false);
                 
-        styles[Token.LITERAL2] = 
+        myStyles[Token.LITERAL2] = 
             new SyntaxStyle(Color.orange, false, false);
             
-        styles[Token.LABEL] = 
+        myStyles[Token.LABEL] = 
             new SyntaxStyle(Color.pink, false, false);
             
-        styles[Token.OPERATOR] = 
+        myStyles[Token.OPERATOR] = 
             new SyntaxStyle(Colors.red4, false, false);
             
-        styles[Token.INVALID] = 
+        myStyles[Token.INVALID] = 
             new SyntaxStyle(Colors.orange4, true, true);
 
-        return styles;
+        return myStyles;
     }
 }

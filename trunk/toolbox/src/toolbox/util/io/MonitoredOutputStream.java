@@ -94,11 +94,11 @@ public class MonitoredOutputStream extends FilterOutputStream
     /**
      * Creates an MonitoredOutputStream.
      * 
-     * @param out OutputStream to chain. 
+     * @param os OutputStream to chain. 
      */
-    public MonitoredOutputStream(OutputStream out)
+    public MonitoredOutputStream(OutputStream os)
     {
-        this(null, out);
+        this(null, os);
     }
     
     
@@ -107,11 +107,11 @@ public class MonitoredOutputStream extends FilterOutputStream
      * decorate.
      * 
      * @param name Stream name.
-     * @param out OutputStream to chain. 
+     * @param os OutputStream to chain. 
      */
-    public MonitoredOutputStream(String name, OutputStream out)
+    public MonitoredOutputStream(String name, OutputStream os)
     {
-        super(out);
+        super(os);
         setName(name);
         setThroughputMonitor(new DefaultThroughputMonitor());
         setTransferredMonitor(new DefaultTransferredMonitor());

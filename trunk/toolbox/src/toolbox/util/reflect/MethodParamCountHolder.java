@@ -9,7 +9,6 @@ public class MethodParamCountHolder implements IMethodHolder
     // Fields
     //--------------------------------------------------------------------------
     
-    private int paramOffset_;
     private IMethodHolder[] holders_;
 
     //--------------------------------------------------------------------------

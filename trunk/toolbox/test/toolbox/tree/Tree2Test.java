@@ -549,9 +549,16 @@ public class Tree2Test extends TestCase
         
         try 
         {
-        	Tree2 tree = new Tree2(rootTestDir_, 
-                false, false, false, false, 
-                Tree2.SORT_NONE, "", 0, new NullWriter());
+        	new Tree2(
+                rootTestDir_, 
+                false, 
+                false, 
+                false, 
+                false, 
+                Tree2.SORT_NONE, 
+                "", 
+                0, 
+                new NullWriter());
          
             fail("Max depth of zero should have choked");
         }

@@ -1,9 +1,7 @@
 package toolbox.plugin.netmeter;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -78,8 +76,6 @@ public class ClientFactoryView extends JHeaderPanel
      */
     protected void buildView()
     {
-        JPanel content = new JPanel(new BorderLayout());
-
         serverHostnameField_ = new JSmartTextField(12);
         serverHostnameField_.setText(NetMeterPlugin.DEFAULT_HOSTNAME);
         

@@ -80,12 +80,12 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
      * Creates a JSmartTableHeader.
      * 
      * @param cm Column model.
-     * @param table JTable which this header is going to belong.
+     * @param smartTable JTable which this header is going to belong.
      */
-    public JSmartTableHeader(TableColumnModel cm, JTable table)
+    public JSmartTableHeader(TableColumnModel cm, JTable smartTable)
     {
         super(cm);
-        setTable(table);
+        setTable(smartTable);
         addMouseListener(new DoubleClickListener());
     }
     
@@ -141,7 +141,6 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
         TableCellRenderer renderer;
         Component component;
         int requiredWidth = 0;
-        JTable table = getTable();
         int rows = table.getRowCount();
         
         for (int i = 0; i < rows; i++)

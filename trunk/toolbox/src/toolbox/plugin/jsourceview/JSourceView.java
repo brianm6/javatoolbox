@@ -227,11 +227,6 @@ public class JSourceView extends JPanel implements IPreferenced
     private IStatusBar workspaceStatusBar_;
 
     /**
-     * Remembers last selected directory in the Directory chooser.
-     */
-    private File lastDir_;
-
-    /**
      * Directory chooser.
      */
     private JSmartFileChooser chooser_;
@@ -339,10 +334,6 @@ public class JSourceView extends JPanel implements IPreferenced
         
         dirField_.setText(XOMUtil.getStringAttribute(root, ATTR_LAST_DIR, ""));
         dirField_.setCaretPosition(0);
-        
-        if (!StringUtils.isBlank(dirField_.getText()))
-            lastDir_ = new File(dirField_.getText());
-     
         chooser_.applyPrefs(root);
         table_.applyPrefs(root);
     }
@@ -625,8 +616,8 @@ public class JSourceView extends JPanel implements IPreferenced
             if (chooser_.showDialog(JSourceView.this, "Select Directory") 
                 == JFileChooser.APPROVE_OPTION)
             {
-                dirField_.setText(chooser_.getSelectedFile().getCanonicalPath());
-                lastDir_ = chooser_.getSelectedFile();
+                dirField_.setText(
+                    chooser_.getSelectedFile().getCanonicalPath());
             }
         }
     }

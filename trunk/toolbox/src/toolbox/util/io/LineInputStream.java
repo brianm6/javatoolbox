@@ -12,9 +12,13 @@ import java.io.InputStream;
  */
 public class LineInputStream extends FilterInputStream
 {
-    byte byteArray_[];
-    int arrayOffset_;
-    int arrayLength_;
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private byte byteArray_[];
+    private int arrayOffset_;
+    private int arrayLength_;
 
     //----------------------------------------------------------------------
     // Constructors
@@ -23,11 +27,11 @@ public class LineInputStream extends FilterInputStream
     /**
      * Creates a LineInputStream.
      * 
-     * @param in Stream to chain.
+     * @param is Stream to chain.
      */
-    public LineInputStream(InputStream in)
+    public LineInputStream(InputStream is)
     {
-        super(in);
+        super(is);
     }
 
     //----------------------------------------------------------------------
@@ -149,7 +153,7 @@ public class LineInputStream extends FilterInputStream
             {
                 // ^U: Remove all character in buffer.
                 bytesOut.reset();
-                int length = 0;
+                //int length = 0;
             }
             else if (ch == 10)
             {

@@ -38,11 +38,11 @@ public class ThrottledOutputStream extends FilterOutputStream
     /**
      * Creates a ThrottledOutputStream.
      * 
-     * @param out Outputstream to throttle.
+     * @param os Outputstream to throttle.
      */
-    public ThrottledOutputStream(OutputStream out)
+    public ThrottledOutputStream(OutputStream os)
     {
-        super(out);
+        super(os);
         
         // Force the use of a static method that checks if throttling
         // is on before creating a throttled stream.

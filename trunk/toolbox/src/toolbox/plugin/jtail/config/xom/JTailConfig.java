@@ -3,8 +3,6 @@ package toolbox.plugin.jtail.config.xom;
 import nu.xom.Element;
 import nu.xom.Elements;
 
-import org.apache.log4j.Logger;
-
 import toolbox.plugin.jtail.config.IJTailConfig;
 import toolbox.plugin.jtail.config.ITailViewConfig;
 import toolbox.util.ArrayUtil;
@@ -17,8 +15,6 @@ import toolbox.workspace.IPreferenced;
  */
 public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 { 
-    private static final Logger logger_ = Logger.getLogger(JTailConfig.class);
-    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------

@@ -34,15 +34,6 @@ public class SwingConsole extends AbstractConsole
     private static final Logger logger_ = Logger.getLogger(SwingConsole.class);
 
     //--------------------------------------------------------------------------
-    // Static
-    //--------------------------------------------------------------------------
-    
-    /**
-     * The number of consoles opened.
-     */
-    private static int consoleCount = 0;
-
-    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     

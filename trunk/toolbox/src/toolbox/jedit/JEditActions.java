@@ -106,18 +106,18 @@ public final class JEditActions
                 fontChooser = new JFontChooserDialog(
                     (Dialog) w, false, originalFont, area_.isAntiAliased());
             
-            /* Listener for font chooser dialog events */
+            // Listener for font chooser dialog events
                 
             fontChooser.addFontDialogListener(new IFontChooserDialogListener()
             {
-                public void okButtonPressed(JFontChooser fontChooser)
+                public void okButtonPressed(JFontChooser chooser)
                 {
                     try
                     {
                         area_.getPainter().setFont(
-                            fontChooser.getSelectedFont());
+                            chooser.getSelectedFont());
                             
-                        area_.setAntiAliased(fontChooser.isAntiAliased());    
+                        area_.setAntiAliased(chooser.isAntiAliased());    
                     }
                     catch (FontChooserException fce)
                     {
@@ -125,16 +125,16 @@ public final class JEditActions
                     }
                 }
 
-                public void cancelButtonPressed(JFontChooser fontChooser)
+                public void cancelButtonPressed(JFontChooser chooser)
                 {
                     // Just restore the original font
                     area_.getPainter().setFont(originalFont);
                 }
 
-                public void applyButtonPressed(JFontChooser fontChooser)
+                public void applyButtonPressed(JFontChooser chooser)
                 {
                     // Same as OK
-                    okButtonPressed(fontChooser);
+                    okButtonPressed(chooser);
                 }
             });
 

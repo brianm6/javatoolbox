@@ -355,11 +355,11 @@ public class HttpProxyConfigurator extends JHeaderPanel implements IConfigurator
          */
         public void actionPerformed()
         {
-            boolean enabled = proxyEnabledCheckBox_.isSelected();
-            proxyHostnameField_.setEnabled(enabled);
-            proxyPortField_.setEnabled(enabled);
-            proxyUserNameField_.setEnabled(enabled);
-            proxyPasswordField_.setEnabled(enabled);
+            boolean isEnabled = proxyEnabledCheckBox_.isSelected();
+            proxyHostnameField_.setEnabled(isEnabled);
+            proxyPortField_.setEnabled(isEnabled);
+            proxyUserNameField_.setEnabled(isEnabled);
+            proxyPasswordField_.setEnabled(isEnabled);
         }
     }
 

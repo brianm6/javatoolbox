@@ -15,7 +15,6 @@ import org.netbeans.jemmy.operators.JDialogOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JLabelOperator;
 import org.netbeans.jemmy.operators.JMenuBarOperator;
-import org.netbeans.jemmy.operators.JPopupMenuOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.util.NameComponentChooser;
 
@@ -107,7 +106,6 @@ public class JSourceViewPluginTest extends TestCase
         {
             JMenuBarOperator mbo = new JMenuBarOperator(window_);
             mbo.pushMenu(PluginMenu.LABEL);
-            JPopupMenuOperator pmo = new JPopupMenuOperator(window_);
             
             new JCheckBoxMenuItemOperator(
                 window_, 

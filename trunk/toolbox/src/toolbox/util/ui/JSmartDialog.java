@@ -13,8 +13,6 @@ import javax.swing.KeyStroke;
 
 import nu.xom.Element;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.action.DisposeAction;
@@ -33,8 +31,6 @@ public class JSmartDialog extends JDialog implements IPreferenced
 {
     // TODO: Write unit test to make sure initDialog() and dispose() are 
     //       maintaining a proper list of active dialogs.
-    
-    private static final Logger logger_ = Logger.getLogger(JSmartDialog.class);
     
     //--------------------------------------------------------------------------
     // Constants

@@ -366,7 +366,7 @@ public class PropertyPromptTask extends Task
         /**
          * Timeone in seconds. Zero is indefinite.
          */
-        private int timeout_ = 0;
+        private int myTimeout_ = 0;
         
         /**
          * Default string.
@@ -410,7 +410,7 @@ public class PropertyPromptTask extends Task
          */
         public void setTimeout(int seconds)
         {
-            timeout_ = seconds;
+            myTimeout_ = seconds;
         }
 
         
@@ -455,7 +455,7 @@ public class PropertyPromptTask extends Task
                 else
                     msec++;
                     
-                if (timeout_ != 0 && sec >= timeout_)
+                if (myTimeout_ != 0 && sec >= myTimeout_)
                 {
                     if (linefeed_)
                     {
