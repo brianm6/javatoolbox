@@ -18,7 +18,6 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.Banner;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
@@ -45,14 +44,14 @@ public class JTextComponentPopupMenu extends JPopupMenu
     //--------------------------------------------------------------------------
     
     /**
-     * Default Constructor
+     * Creates a JTextComponentPopupMenu
      */
     public JTextComponentPopupMenu()
     {
     }
     
     /**
-     * Constructor for JTextComponentPopupMenu.
+     * Creates a JTextComponentPopupMenu with an associated text component.
      * 
      * @param  textComponent  JTextComponent to add popup to
      */
@@ -165,8 +164,6 @@ public class JTextComponentPopupMenu extends JPopupMenu
                 textComponent_ instanceof AntiAliased ? 
                     ((AntiAliased) textComponent_).isAntiAlias():false;
 
-            logger_.debug("\n" + Banner.getBanner("Antialias = " + antialias));
-                    
             JFontChooserDialog fontChooser =
                 new JFontChooserDialog(
                     frame, false, textComponent_.getFont(), antialias);
