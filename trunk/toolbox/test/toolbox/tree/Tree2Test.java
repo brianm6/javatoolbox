@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.io.NullWriter;
 
 /**
@@ -56,7 +57,6 @@ public class Tree2Test extends TestCase
      */
     public void setUp() throws IOException
     {
-        System.out.println(StringUtils.repeat("=", 80));
         rootTestDir_ = FileUtil.createTempDir();
     }
 
@@ -97,7 +97,9 @@ public class Tree2Test extends TestCase
         Tree2 t5 = new Tree2(FileUtil.getTempDir(), true, true);
         assertNotNull(t5);
         
-        Tree2 t6 = new Tree2(FileUtil.getTempDir(), true, true, Tree2.SORT_NAME);
+        Tree2 t6 = new Tree2(FileUtil.getTempDir(), 
+            true, true, Tree2.SORT_NAME);
+        
         assertNotNull(t6);
 
         Tree2 t7 = new Tree2(FileUtil.getTempDir(), 
@@ -395,6 +397,7 @@ public class Tree2Test extends TestCase
         logger_.info("Running testMaxDepth...");
         
         // Setup ===============================================================
+        
         File depth1 = new File(rootTestDir_, "depth1");
         assertTrue(depth1.mkdir());
 
@@ -405,6 +408,7 @@ public class Tree2Test extends TestCase
         assertTrue(depth3.mkdir());
 
         // Depth = 1 ===========================================================
+        
         StringWriter sw = new StringWriter();
         
         Tree2 tree = new Tree2(
@@ -412,12 +416,16 @@ public class Tree2Test extends TestCase
         
         tree.showTree();
         
-        logger_.info("\nMax depth should be 1: \n" + sw);
+        logger_.info(
+            "Max depth should be 1:" 
+            + StringUtil.banner(sw.toString()));
+
         assertTrue(sw.toString().indexOf("depth1") >= 0);
         assertTrue(sw.toString().indexOf("depth2") < 0);
         assertTrue(sw.toString().indexOf("depth3") < 0);
 
         // Depth = 2 ===========================================================
+        
         sw = new StringWriter();
         
         tree = new Tree2(
@@ -425,20 +433,28 @@ public class Tree2Test extends TestCase
         
         tree.showTree();
         
-        logger_.info("\nMax depth should be 2: \n" + sw);        
+        logger_.info(
+            "Max depth should be 2:" 
+            + StringUtil.banner(sw.toString()));
+        
         assertTrue(sw.toString().indexOf("depth1") >= 0);
         assertTrue(sw.toString().indexOf("depth2") >= 0);
         assertTrue(sw.toString().indexOf("depth3") < 0);
         
         // Depth = unlimited ===================================================
+        
         sw = new StringWriter();
         
         tree = new Tree2(
-            rootTestDir_, false, false, false, false, Tree2.SORT_NONE, "", 99, sw);
+            rootTestDir_, false, false, false, false, Tree2.SORT_NONE, "", 99,
+            sw);
         
         tree.showTree();
         
-        logger_.info("\nMax depth should be unlimited: \n" + sw);        
+        logger_.info(
+            "Max depth should be unlimited:" 
+            + StringUtil.banner(sw.toString()));
+            
         assertTrue(sw.toString().indexOf("depth1") >= 0);
         assertTrue(sw.toString().indexOf("depth2") >= 0);
         assertTrue(sw.toString().indexOf("depth3") >= 0);
@@ -479,12 +495,14 @@ public class Tree2Test extends TestCase
         logger_.info("Running testShowFullPath...");
         
         // Setup ===============================================================
+        
         File dir1 = new File(rootTestDir_, "dir1");
         assertTrue(dir1.mkdir());
         createFile(dir1);
         StringWriter sw = new StringWriter();
         
         // Tree with fullpath ==================================================
+        
         Tree2 tree = new Tree2(
             rootTestDir_, 
             true,  // show files 
@@ -493,14 +511,18 @@ public class Tree2Test extends TestCase
             Tree2.SORT_NONE, "", Integer.MAX_VALUE, sw);
         
         tree.showTree();
-        
+
+        logger_.info(
+            "Full paths should be showing:" 
+            + StringUtil.banner(sw.toString()));
+
         // Verify ==============================================================
-        logger_.info("\nFull paths should be showing: \n" + sw);
         
-        // root dir substring should occur in 
-        // 1. root
-        // 2. dir1
-        // 3. file1
+        // Root dir substring should occur in of the following: 
+        //  1. root
+        //  2. dir1
+        //  3. file1
+        
         assertEquals(3, 
             StringUtils.countMatches(
                 sw.toString(), 
