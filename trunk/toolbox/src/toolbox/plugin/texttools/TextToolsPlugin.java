@@ -257,7 +257,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         topFlipPane_.savePrefs(root);
         
         Element input = new Element(NODE_INPUT_TEXTAREA);
-        outputArea_.savePrefs(input);
+        inputArea_.savePrefs(input);
         root.appendChild(input);
         
         Element output = new Element(NODE_OUTPUT_TEXTAREA);
