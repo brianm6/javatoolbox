@@ -129,6 +129,12 @@ public class QueryPlugin extends JPanel implements IPlugin
      * XML: Child of QueryPlugin that contains contents of the SQL text area.
      */
     public static final String NODE_CONTENTS = "SQLContents";
+    
+    /**
+     * Child of SQLContents that contains a single line of content (since XOM
+     * conveniently left out support for CDATA)
+     */
+    public static final String NODE_LINE = "Line";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -219,11 +225,40 @@ public class QueryPlugin extends JPanel implements IPlugin
         dbConfigPane_ = new DBConfig(this);
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("Databases", dbConfigPane_);
+        leftFlipPane_.addFlipper("Reference", buildReferencePane());
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);
     }
 
+    
+    protected JHeaderPanel buildReferencePane()
+    {
+        JHeaderPanel refPane = new JHeaderPanel("SQL Reference");
+        
+        String sqlRef = 
+            File.separator +
+            FileUtil.trailWithSeparator(
+                ClassUtil.packageToPath(
+                    ClassUtil.stripClass(
+                        QueryPlugin.class.getName()))) +
+            "sqlref.txt";
 
+        sqlRef = sqlRef.replace(File.separatorChar, '/');
+
+        //JSmartTextArea area = new JSmartTextArea(
+        //    ResourceUtil.getResourceAsString(sqlRef)+ "\n");
+        
+        JEditTextArea area = 
+            new JEditTextArea(new TSQLTokenMarker(), new SQLDefaults());
+        
+        area.getPainter().setFont(FontUtil.getPreferredMonoFont());
+        refPane.setContent(area);
+        area.setText( ResourceUtil.getResourceAsString(sqlRef)+ "\n");
+        area.scrollTo(0, 0);
+        return refPane;
+    }
+
+    
     /**
      * Constructs the SQL editor text area.
      *
@@ -582,10 +617,14 @@ public class QueryPlugin extends JPanel implements IPlugin
         sqlEditor_.applyPrefs(root);
         areaSplitPane_.applyPrefs(root);
 
-        sqlEditor_.setText(
-            XOMUtil.getString(
-                root.getFirstChildElement(NODE_CONTENTS), ""));
-
+        
+        Element contents = 
+            XOMUtil.getFirstChildElement(
+                root, 
+                NODE_CONTENTS, 
+                new Element(NODE_CONTENTS));
+        
+        sqlEditor_.setText(XOMUtil.decodeBlankLines(contents.getValue()));
         sqlEditor_.scrollTo(0, 0);
     }
 
@@ -605,8 +644,8 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
 
         Element contents = new Element(NODE_CONTENTS);
-        contents.appendChild(sqlEditor_.getText().trim());
-        root.appendChild(contents);
+        contents.appendChild(XOMUtil.encodeBlankLines(sqlEditor_.getText()));
+        root.appendChild(contents); 
 
         leftFlipPane_.savePrefs(root);
         dbConfigPane_.savePrefs(root);
