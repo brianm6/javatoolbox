@@ -1,11 +1,19 @@
 package toolbox.util.invoker.test;
 
+import java.io.StringWriter;
+import java.io.Writer;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
+import org.apache.log4j.WriterAppender;
 
 import toolbox.util.ElapsedTime;
+import toolbox.util.StringUtil;
+import toolbox.util.ThreadUtil;
 import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
 
@@ -228,5 +236,48 @@ public class QueuedInvokerTest extends TestCase
         {
             invoker.shutdown();
         }
+    }
+    
+    
+    /**
+     * Tests invoke() failure.
+     *
+     * @throws Exception on error.
+     */
+    public void testInvokeFailure() throws Exception
+    {
+        logger_.info("Running testInvokeFailure...");
+
+        //
+        // We have to hook into the logger of the QueuedInvoker to
+        // capture the error message that should be generated.
+        //
+        Logger l = Logger.getLogger(QueuedInvoker.class.getName());
+        Writer sw = new StringWriter();
+        Appender appender = new WriterAppender(new SimpleLayout(), sw);
+        l.addAppender(appender);
+
+        //
+        // Let it rip...
+        //
+        Invoker invoker = new QueuedInvoker();
+        invoker.invoke(new String(""), "invalid_method", null);
+        
+        //
+        // Needs time to run
+        //
+        ThreadUtil.sleep(2000);
+        
+        //
+        // Make sure the error message contains the name of the bogus method
+        //
+        String error = sw.toString();
+        logger_.debug(StringUtil.addBars(error));
+        assertTrue(error.indexOf("invalid_method") >= 0);
+        
+        //
+        // Cleanup
+        //
+        l.removeAppender(appender);
     }
 }
