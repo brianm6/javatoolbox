@@ -1,10 +1,12 @@
 package toolbox.util.ui.explorer.action;
 
+import java.awt.Event;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
-import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -34,7 +36,11 @@ public class RenameDirAction extends AbstractDirAction
     public RenameDirAction(JFileExplorer explorer)
     {
         super("Rename", explorer);
-        putValue(Action.MNEMONIC_KEY, new Integer('R'));
+        putValue(MNEMONIC_KEY, new Integer('R'));
+        
+        putValue(
+            ACCELERATOR_KEY, 
+            KeyStroke.getKeyStroke(KeyEvent.VK_F2, Event.F2));
     }
 
     //--------------------------------------------------------------------------
