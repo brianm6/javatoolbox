@@ -3,7 +3,9 @@ package toolbox.util.statemachine.impl;
 import toolbox.util.statemachine.Transition;
 
 /**
- * DefaultTransition is a default implementation of the Transition interface.
+ * Basic implementation of state {@link Transition}.
+ * 
+ * @see toolbox.util.statemachine.StateMachineFactory
  */
 public class DefaultTransition implements Transition
 {

@@ -5,9 +5,9 @@ import java.util.List;
 import toolbox.util.statemachine.State;
 
 /**
- * DefaultState is a default implemenation of the State interface.
+ * Basic implementation of a {@link State}.
  * 
- * @see toolbox.util.statemachine.State
+ * @see toolbox.util.statemachine.StateMachineFactory
  */
 public class DefaultState implements State
 {

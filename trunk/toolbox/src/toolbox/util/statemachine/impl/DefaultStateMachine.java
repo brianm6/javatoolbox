@@ -14,7 +14,9 @@ import toolbox.util.statemachine.StateMachineListener;
 import toolbox.util.statemachine.Transition;
 
 /**
- * Default implementation of a StateMachine.
+ * Basic implementation of a {@link StateMachine}.
+ * 
+ * @see toolbox.util.statemachine.StateMachineFactory
  */
 public class DefaultStateMachine implements StateMachine
 {
