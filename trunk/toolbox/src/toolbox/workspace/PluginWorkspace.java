@@ -67,6 +67,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      // TODO: Write log4j pattern layout that combines class name and method
      // TODO: Convert project build and layout to Maven
      // TODO: Added themes for Tiny Look and Feel
+     // TODO: Swipe memory monitor from JEdit
      
     
     //--------------------------------------------------------------------------
