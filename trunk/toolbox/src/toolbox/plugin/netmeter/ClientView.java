@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
-import toolbox.util.service.Initializable;
 import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -181,51 +180,12 @@ public class ClientView extends JHeaderPanel
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.service.ServiceListener#serviceInitialized(
-     *      toolbox.util.service.Service)
+     * @see toolbox.util.service.ServiceListener#serviceStateChanged(
+     *      toolbox.util.service.Service, toolbox.util.service.ServiceState, 
+     *      toolbox.util.service.ServiceState)
      */
-    public void serviceInitialized(Initializable service) throws ServiceException
+    public void serviceStateChanged(Service service) throws ServiceException
     {
-        statusField_.setText("Initialized");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceStarted(
-     *      toolbox.util.service.Service)
-     */
-    public void serviceStarted(Service service) throws ServiceException
-    {
-        statusField_.setText("Running...");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#servicePaused(
-     *      toolbox.util.service.Service)
-     */
-    public void servicePaused(Service service) throws ServiceException
-    {
-        statusField_.setText("Paused");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceResumed(
-     *      toolbox.util.service.Service)
-     */
-    public void serviceResumed(Service service) throws ServiceException
-    {
-        statusField_.setText("Running...");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceStopped(
-     *      toolbox.util.service.Service)
-     */
-    public void serviceStopped(Service service) throws ServiceException
-    {
-        statusField_.setText("Stopped");
+        statusField_.setText(service.getState().toString());
     }
 }
