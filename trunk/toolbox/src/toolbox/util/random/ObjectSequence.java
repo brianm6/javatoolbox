@@ -1,0 +1,107 @@
+package toolbox.util.random;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * ObjectSequence is responsible for generating a repeating/non-repeating 
+ * sequence of objects from a given list of objects.
+ */
+public class ObjectSequence extends AbstractSequence 
+    implements RandomSequence
+{
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Pool of object from which to pick values.
+     */
+    private List pool_;
+
+    /**
+     * Internal random integer sequence used to generate indices into the pool
+     * of objects.
+     */
+    private IntSequence sequence_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a ObjectSequence.
+     */
+    public ObjectSequence(List objectList, boolean repeating)
+    {
+        super(repeating);
+        setPool(objectList);
+        sequence_ = new IntSequence(0, getPool().size() - 1, repeating);
+    }
+    
+    
+    /**
+     * Creates a ObjectSequence.
+     */
+    public ObjectSequence(Object[] objectList, boolean repeating)
+    {
+        this(Arrays.asList(objectList), repeating);
+    }
+    
+    //--------------------------------------------------------------------------
+    // RandomSequence Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.random.RandomSequence#nextValue()
+     */
+    public Object nextValue() throws SequenceEndedException
+    {
+        return getPool().get(sequence_.nextInt());
+    }
+    
+    
+    /**
+     * @see toolbox.util.random.RandomSequence#hasMore()
+     */
+    public boolean hasMore()
+    {
+        return sequence_.isRepeating(); 
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the size of the sequence.
+     * 
+     * @return int
+     */
+    public int getSize()
+    {
+        return getPool().size();
+    }
+
+    
+    /**
+     * Returns the pool.
+     * 
+     * @return List
+     */
+    protected List getPool()
+    {
+        return pool_;
+    }
+    
+    
+    /**
+     * Sets the value of pool.
+     * 
+     * @param pool The pool to set.
+     */
+    protected void setPool(List pool)
+    {
+        pool_ = pool;
+    }
+}
