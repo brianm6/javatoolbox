@@ -114,6 +114,44 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * System.err redirected to the output text area
      */
     private PrintStream redirectedSystemErr_;
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a project to the existing list displayed in the combobox
+     * 
+     * @param  project  CVSProject
+     */
+    public void addProject(CVSProject project)
+    {
+        DefaultComboBoxModel model = 
+            (DefaultComboBoxModel) projectCombo_.getModel();
+        
+        if (model.getIndexOf(project) > 0)
+            return;
+        else
+            projectCombo_.addItem(project);
+    }
+
+    /**
+     * Returns an XML representation of the data making up the configuration.
+     *  
+     * @return XML string
+     */
+    public String toXML()
+    {
+        XMLNode projects = new XMLNode(ELEMENT_CVSPROJECTS);
+        
+        for (int i=0, n=projectCombo_.getItemCount(); i<n; i++)
+        {
+            CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
+            projects.addNode(project.toDOM());
+        }
+        
+        return projects.toString();
+    }
     
     //--------------------------------------------------------------------------
     // Protected
@@ -415,62 +453,58 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     
     public void savePrefs(Properties prefs)
     {
-        prefs.setProperty(PROP_CVSPROJECTS, toXML());            
+        prefs.setProperty(PROP_CVSPROJECTS, toXML());
+        outputArea_.savePrefs(prefs, "statcvs.plugin");
     }
 
-    public void applyPrefs(Properties prefs)
+    public void applyPrefs(Properties prefs) throws Exception
     {
         String xmlProjects = prefs.getProperty(PROP_CVSPROJECTS, "");
 
-        try
+        if (StringUtil.isNullOrBlank(xmlProjects) || 
+            xmlProjects.trim().equals("<CVSProjects/>"))
         {
-            if (StringUtil.isNullOrBlank(xmlProjects) || 
-                xmlProjects.trim().equals("<CVSProjects/>"))
+            projectCombo_.addItem(new CVSProject(
+                "Sourceforge",
+                "<module>",
+                ":pserver:anonymous@cvs.sourceforge.net:/cvsroot/",
+                "",
+                FileUtil.getTempDir().getCanonicalPath(), 
+                false,
+                ""));
+
+            projectCombo_.addItem(new CVSProject(
+                "Apache",
+                "<module>",
+                ":pserver:anoncvs@cvs.apache.org:/home/cvspublic",
+                "",
+                FileUtil.getTempDir().getCanonicalPath(), 
+                false,
+                ""));
+                
+            projectCombo_.addItem(new CVSProject(
+                "Statcvs",
+                "statcvs",
+                ":pserver:anonymous@cvs.sourceforge.net:/cvsroot/statcvs",
+                "",
+                FileUtil.getTempDir().getCanonicalPath(), 
+                false,
+                ""));
+        }
+        else
+        {
+            XMLNode projects = 
+                new XMLParser().parseXML(new StringReader(xmlProjects));
+                
+            for(Enumeration e=projects.enumerateNode();e.hasMoreElements();)
             {
-                projectCombo_.addItem(new CVSProject(
-                    "Sourceforge",
-                    "<module>",
-                    ":pserver:anonymous@cvs.sourceforge.net:/cvsroot/",
-                    "",
-                    FileUtil.getTempDir().getCanonicalPath(), 
-                    false,
-                    ""));
-    
-                projectCombo_.addItem(new CVSProject(
-                    "Apache",
-                    "<module>",
-                    ":pserver:anoncvs@cvs.apache.org:/home/cvspublic",
-                    "",
-                    FileUtil.getTempDir().getCanonicalPath(), 
-                    false,
-                    ""));
-                    
-                projectCombo_.addItem(new CVSProject(
-                    "Statcvs",
-                    "statcvs",
-                    ":pserver:anonymous@cvs.sourceforge.net:/cvsroot/statcvs",
-                    "",
-                    FileUtil.getTempDir().getCanonicalPath(), 
-                    false,
-                    ""));
-            }
-            else
-            {
-                XMLNode projects = 
-                    new XMLParser().parseXML(new StringReader(xmlProjects));
-                    
-                for(Enumeration e=projects.enumerateNode();e.hasMoreElements();)
-                {
-                    XMLNode projectNode = (XMLNode) e.nextElement();
-                    CVSProject project = new CVSProject(projectNode.toString());
-                    addProject(project);
-                }
+                XMLNode projectNode = (XMLNode) e.nextElement();
+                CVSProject project = new CVSProject(projectNode.toString());
+                addProject(project);
             }
         }
-        catch (IOException ioe)
-        {
-            ExceptionUtil.handleUI(ioe, logger_);
-        }
+        
+        outputArea_.applyPrefs(prefs, "statcvs.plugin");
     }
  
     //--------------------------------------------------------------------------
@@ -969,45 +1003,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         {
             NativeBrowser.displayURL(launchURLField_.getText());
         }
-    }
-    
-    
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Adds a project to the existing list displayed in the combobox
-     * 
-     * @param  project  CVSProject
-     */
-    public void addProject(CVSProject project)
-    {
-        DefaultComboBoxModel model = 
-            (DefaultComboBoxModel) projectCombo_.getModel();
-        
-        if (model.getIndexOf(project) > 0)
-            return;
-        else
-            projectCombo_.addItem(project);
-    }
-
-    /**
-     * Returns an XML representation of the data making up the configuration.
-     *  
-     * @return XML string
-     */
-    public String toXML()
-    {
-        XMLNode projects = new XMLNode(ELEMENT_CVSPROJECTS);
-        
-        for (int i=0, n=projectCombo_.getItemCount(); i<n; i++)
-        {
-            CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
-            projects.addNode(project.toDOM());
-        }
-        
-        return projects.toString();
     }
     
     /** 
