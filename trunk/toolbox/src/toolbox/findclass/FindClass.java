@@ -38,7 +38,11 @@ import toolbox.util.io.filter.OrFilter;
  * candidate.<br>
  * archive - collectively refers to either a jar file or a zip file.<br>
  * 
- * 
+ * @has * - - toolbox.findclass.FindClassListener
+ * @has - - - toolbox.findclass.FindClassCollector
+ * @depend - util - toolbox.util.ArrayUtil
+ * @depend - util - toolbox.util.ClassUtil
+ * @depend - util - toolbox.util.FileUtil
  */
 public class FindClass 
 { 
