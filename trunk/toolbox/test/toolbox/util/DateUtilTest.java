@@ -9,9 +9,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for DateUtil.
- * 
- * @see toolbox.util.DateUtil
+ * Unit test for {@link toolbox.util.DateUtil}.
  */
 public class DateUtilTest extends TestCase
 {

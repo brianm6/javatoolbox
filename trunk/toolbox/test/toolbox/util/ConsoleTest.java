@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.Console;
 
 /**
- * Unit test for Console.
+ * Unit test for {@link toolbox.util.Console}.
  */
 public class ConsoleTest extends TestCase
 {

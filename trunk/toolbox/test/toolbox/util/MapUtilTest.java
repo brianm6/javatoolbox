@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.MapUtil;
 
 /**
- * Unit test for MapUtil
+ * Unit test for {@link toolbox.util.MapUtil}.
  */
 public class MapUtilTest extends TestCase
 {

@@ -18,10 +18,8 @@ import toolbox.util.random.IntSequence;
 import toolbox.util.random.SequenceEndedException;
 
 /**
- * Unit test for JDBCUtil. This test case uses an in-process file instance of 
- * HSQLDB for a test database.
- * 
- * @see toolbox.util.JDBCUtil
+ * Unit test for {@link toolbox.util.JDBCUtil}. This test case uses an 
+ * in-process file instance of HSQLDB for a test database.
  */
 public class JDBCUtilTest extends TestCase
 {

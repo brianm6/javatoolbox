@@ -10,7 +10,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for ArrayUtil.
+ * Unit test for {@link toolbox.util.ArrayUtil}.
  * 
  * @see toolbox.util.ArrayUtil
  */

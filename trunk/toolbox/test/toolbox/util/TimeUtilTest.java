@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.TimeUtil;
 
 /**
- * Unit test for TimeUtil.
+ * Unit test for {@link toolbox.util.TimeUtil}.
  */
 public class TimeUtilTest extends TestCase
 {

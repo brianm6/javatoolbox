@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 
 /**
- * Unit test for ExceptionUtil.
+ * Unit test for {@link toolbox.util.ExceptionUtil}.
  */
 public class ExceptionUtilTest extends TestCase
 {

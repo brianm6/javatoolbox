@@ -16,7 +16,7 @@ import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for SocketUtil.
+ * Unit test for {@link toolbox.util.SocketUtil}.
  */
 public class SocketUtilTest extends TestCase
 {

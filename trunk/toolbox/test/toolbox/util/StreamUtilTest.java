@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.StringInputStream;
 
 /**
- * Unit test for StreamUtil.
+ * Unit test for {@link toolbox.util.StreamUtil}.
  */
 public class StreamUtilTest extends TestCase
 {

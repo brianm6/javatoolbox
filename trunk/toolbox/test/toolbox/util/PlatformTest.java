@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.Platform;
 
 /**
- * Unit test for Platform.
+ * Unit test for {@link toolbox.util.Platform}.
  */
 public class PlatformTest extends TestCase
 {

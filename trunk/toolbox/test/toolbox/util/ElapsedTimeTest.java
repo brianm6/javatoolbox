@@ -9,9 +9,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for ElapsedTime.
- * 
- * @see toolbox.util.ElapsedTime
+ * Unit test for {@link toolbox.util.ElapsedTime).
  */
 public class ElapsedTimeTest extends TestCase
 {

@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 /**
- * Unit Test for BrowserLauncher.
+ * Unit Test for {@link toolbox.util.BrowserLauncher}.
  */
 public class BrowserLauncherTest extends TestCase
 {
@@ -21,6 +21,9 @@ public class BrowserLauncherTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests openURL() on a page at yahoo.com.
+     */
     public void testOpenURL() throws Exception
     {
         BrowserLauncher.openURL("http://www.yahoo.com");

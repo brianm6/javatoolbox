@@ -16,10 +16,8 @@ import toolbox.showclasspath.Main;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for JDBCSession. This test case uses an in-process file instance of 
- * HSQLDB for a test database.
- * 
- * @see toolbox.util.JDBCSession
+ * Unit test for {@link toolbox.util.JDBCSession}. This test case uses an 
+ * in-process file instance of HSQLDB for a test database.
  */
 public class JDBCSessionTest extends TestCase
 {

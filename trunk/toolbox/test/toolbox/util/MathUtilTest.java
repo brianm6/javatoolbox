@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.MathUtil;
 
 /**
- * Unit test for MathUtil.
+ * Unit test for {@link toolbox.util.MathUtil}.
  */
 public class MathUtilTest extends TestCase
 {

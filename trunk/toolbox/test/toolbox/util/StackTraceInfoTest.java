@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit Test for StrackTraceInfo.
+ * Unit Test for {@link toolbox.util.StackTraceInfo}.
  */
 public class StackTraceInfoTest extends TestCase
 {

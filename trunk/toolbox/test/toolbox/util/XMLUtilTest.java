@@ -11,7 +11,7 @@ import org.w3c.dom.Node;
 import toolbox.util.XMLUtil;
 
 /**
- * Unit test for XMLUtil.
+ * Unit test for {@link toolbox.util.XMLUtil}.
  */
 public class XMLUtilTest extends TestCase
 {

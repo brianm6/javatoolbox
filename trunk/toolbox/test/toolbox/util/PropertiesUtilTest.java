@@ -14,7 +14,7 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.PropertiesUtil;
 
 /**
- * Unit Test for PropertiesUtil.
+ * Unit Test for {@link toolbox.util.PropertiesUtil}.
  */
 public class PropertiesUtilTest extends TestCase
 {

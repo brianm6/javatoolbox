@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.RollingCounter;
 
 /**
- * Unit test for RollingCounter.
+ * Unit test for {@link toolbox.util.RollingCounter}.
  */
 public class RollingCounterTest extends TestCase
 {

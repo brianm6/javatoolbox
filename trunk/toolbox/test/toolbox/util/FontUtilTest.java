@@ -16,7 +16,7 @@ import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 
 /**
- * Unit test for FontUtil.
+ * Unit test for {@link toolbox.util.FontUtil}.
  */
 public class FontUtilTest extends TestCase
 {

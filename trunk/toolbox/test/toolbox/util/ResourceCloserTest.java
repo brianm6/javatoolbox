@@ -21,7 +21,7 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
 /**
- * Unit test for ResourceCloser.
+ * Unit test for {@link toolbox.util.ResourceCloser}.
  */
 public class ResourceCloserTest extends TestCase
 {

@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.CollectionUtil;
 
 /**
- * Unit test for CollectionUtil. 
+ * Unit test for {@link toolbox.util.CollectionUtil}. 
  */
 public class CollectionUtilTest extends TestCase
 {

@@ -10,12 +10,16 @@ import org.apache.log4j.Logger;
 import toolbox.util.DoubleUtil;
 
 /**
- * Unit test for DoubleUtil.
+ * Unit test for {@link toolbox.util.DoubleUtil}.
  */
 public class DoubleUtilTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(DoubleUtilTest.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
     
     /** 
      * Format for 2 digit accuracy.

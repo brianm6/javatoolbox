@@ -16,7 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for ResourceUtilTest.
+ * Unit test for {@link toolbox.util.ResourceUtil}.
  */
 public class ResourceUtilTest extends TestCase
 {

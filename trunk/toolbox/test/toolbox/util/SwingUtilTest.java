@@ -42,9 +42,7 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
- * Unit test for SwingUtil.
- * 
- * @see toolbox.util.SwingUtil
+ * Unit test for {@link toolbox.util.SwingUtil}.
  */
 public class SwingUtilTest extends UITestCase
 {

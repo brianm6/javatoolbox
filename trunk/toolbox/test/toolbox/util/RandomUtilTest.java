@@ -13,9 +13,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for RandomUtil.
- * 
- * @see toolbox.util.RandomUtil
+ * Unit test for {@link toolbox.util.RandomUtil}.
  */
 public class RandomUtilTest extends TestCase
 {

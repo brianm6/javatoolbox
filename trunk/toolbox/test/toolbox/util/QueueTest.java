@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.Queue;
 
 /**
- * Unit test for Queue.
+ * Unit test for {@link toolbox.util.Queue}.
  */
 public class QueueTest extends TestCase
 {

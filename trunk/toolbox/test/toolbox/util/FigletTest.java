@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.Figlet;
 
 /**
- * Unit test for Figlet.
+ * Unit test for {@link toolbox.util.Figlet}.
  */
 public class FigletTest extends TestCase
 {

@@ -9,9 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for BeanUtil.
- * 
- * @see toolbox.util.BeanUtil
+ * Unit test for {@link toolbox.util.BeanUtil}.
  */
 public class BeanUtilTest extends TestCase
 {

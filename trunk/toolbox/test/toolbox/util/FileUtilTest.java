@@ -12,9 +12,7 @@ import toolbox.tree.Tree;
 import toolbox.util.io.filter.DirectoryFilter;
 
 /**
- * Unit test for FileUtil.
- * 
- * @see FileUtilTest
+ * Unit test for {@link toolbox.util.FileUtil}.
  */
 public class FileUtilTest extends TestCase
 {

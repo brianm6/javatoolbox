@@ -13,9 +13,7 @@ import org.apache.log4j.Logger;
 import toolbox.log4j.SmartLogger;
 
 /**
- * Unit test for StringUtil.
- * 
- * @see toolbox.util.StringUtil
+ * Unit test for {@link toolbox.util.StringUtil}.
  */
 public class StringUtilTest extends TestCase
 {

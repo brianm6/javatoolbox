@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.DateTimeUtil;
 
 /**
- * Unit test for DateTimeUtil.
+ * Unit test for {@link toolbox.util.DateTimeUtil}.
  */
 public class DateTimeUtilTest extends TestCase
 {

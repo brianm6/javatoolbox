@@ -8,9 +8,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 
 /**
- * Unit Test for PreferencedUtil.
- * 
- * @see toolbox.util.PreferencedUtil
+ * Unit Test for {@link toolbox.util.PreferencedUtil}.
  */
 public class PreferencedUtilTest extends TestCase
 {

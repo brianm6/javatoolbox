@@ -13,7 +13,7 @@ import toolbox.util.ElapsedTime;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for ThreadUtil.
+ * Unit test for {@link toolbox.util.ThreadUtil}.
  */
 public class ThreadUtilTest extends TestCase
 {

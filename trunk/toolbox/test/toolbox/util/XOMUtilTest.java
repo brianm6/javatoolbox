@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.XOMUtil;
 
 /**
- * Unit test for XOMUtil.
+ * Unit test for {@link toolbox.util.XOMUtil}.
  */
 public class XOMUtilTest extends TestCase
 {
