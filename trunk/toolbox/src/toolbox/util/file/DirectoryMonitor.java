@@ -17,7 +17,7 @@ import toolbox.util.ThreadUtil;
  */
 public class DirectoryMonitor
 {
-    /** Logger **/
+    /** Logger */
     private static Logger logger_ = 
         Logger.getLogger(DirectoryMonitor.class);
 
@@ -56,9 +56,9 @@ public class DirectoryMonitor
     //--------------------------------------------------------------------------
     
     /**
-     *  Creates a DirectoryMonitor with the given directory and selection policy
-     *
-     *  @param    dir    Directory to monitor for files
+     * Creates a DirectoryMonitor with the given directory and selection policy
+     * 
+     * @param  dir  Directory to monitor for file activity
      */
     public DirectoryMonitor(File dir)
     {
@@ -71,8 +71,10 @@ public class DirectoryMonitor
     
     /**
      * Starts execution of the directory monitor
+     * 
+     * @throws IllegalStateException if monitor already running
      */
-    public void start()
+    public void start() throws IllegalStateException
     {
         if (monitor_ != null && monitor_.isAlive())
             throw new IllegalStateException(
@@ -82,7 +84,6 @@ public class DirectoryMonitor
         monitor_.start();
         shutdown_ = false;               
     }
-
 
     /**
      * Requests termination of the monitor. Does not block on termination
@@ -109,7 +110,7 @@ public class DirectoryMonitor
      */
     public int getDelay()
     {
-        return this.delay_;
+        return delay_;
     }
 
     /**
@@ -119,7 +120,7 @@ public class DirectoryMonitor
      */
     public void setDelay(int newDelay)
     {
-        this.delay_ = newDelay;
+        delay_ = newDelay;
     }
 
     /**
@@ -139,7 +140,7 @@ public class DirectoryMonitor
      */
     public void setDirectory(File directory)
     {
-        this.directory_ = directory;
+        directory_ = directory;
     }
 
     /**
@@ -163,7 +164,7 @@ public class DirectoryMonitor
     }
 
     //--------------------------------------------------------------------------
-    //  Event Support
+    // Event Notification Support
     //--------------------------------------------------------------------------
 
     /**
