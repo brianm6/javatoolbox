@@ -15,7 +15,7 @@ public interface IPreferenced
      * @param prefs Document object model from which to read preferences. 
      * @throws Exception on error
      */
-    public void applyPrefs(Element prefs) throws Exception;
+    void applyPrefs(Element prefs) throws Exception;
     
     
     /**
@@ -24,5 +24,5 @@ public interface IPreferenced
      * @param prefs Document object model to persist preferences to
      * @throws Exception on error
      */
-    public void savePrefs(Element prefs) throws Exception;
+    void savePrefs(Element prefs) throws Exception;
 }

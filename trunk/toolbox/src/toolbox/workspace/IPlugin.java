@@ -26,7 +26,7 @@ public interface IPlugin extends IPreferenced
      * 
      * @param props Initialization properties and parameters
      */
-    public void startup(Map props);
+    void startup(Map props);
 
     
     /**
@@ -34,7 +34,7 @@ public interface IPlugin extends IPreferenced
      * 
      * @return Name of the plugin
      */
-    public String getPluginName();
+    String getPluginName();
 
     
     /**
@@ -42,7 +42,7 @@ public interface IPlugin extends IPreferenced
      * 
      * @return Short description of the plugin
      */
-    public String getDescription();
+    String getDescription();
 
     
     /**
@@ -50,11 +50,11 @@ public interface IPlugin extends IPreferenced
      * 
      * @return GUI component of the plugin
      */
-    public JComponent getComponent();
+    JComponent getComponent();
     
     
     /**
      * Cleans up resources before the plugin is discarded.
      */
-    public void shutdown();
+    void shutdown();
 }

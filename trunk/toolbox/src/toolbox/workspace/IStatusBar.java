@@ -15,17 +15,17 @@ public interface IStatusBar
      * 
      * @param  status  Status text
      */
-    public void setStatus(String status);
+    void setStatus(String status);
     
-    public void setBusy(boolean busy);
-    public void setError(String status);
-    public void setInfo(String status);
-    public void setWarning(String status);
+    void setBusy(boolean busy);
+    void setError(String status);
+    void setInfo(String status);
+    void setWarning(String status);
     
     /**
      * Retrieves the status text
      * 
      * @return  Status text
      */
-    public String getStatus();
+    String getStatus();
 }
