@@ -28,8 +28,9 @@ import org.apache.log4j.Logger;
 
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
+import toolbox.plugin.docviewer.DocumentViewer;
+import toolbox.plugin.docviewer.WebWindowViewer;
 import toolbox.util.ArrayUtil;
-import toolbox.util.BrowserLauncher;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -50,6 +51,7 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SortedComboBoxModel;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
@@ -187,6 +189,11 @@ public class StatcvsPlugin extends AbstractPlugin
      */
     private IStatusBar statusBar_;
 
+    /**
+     * HTML viewer for the generated statcvs report.
+     */
+    private DocumentViewer reportViewer_;
+    
     //--------------------------------------------------------------------------
     // Non-UI Fields
     //--------------------------------------------------------------------------
@@ -243,7 +250,8 @@ public class StatcvsPlugin extends AbstractPlugin
     protected void buildView()
     {
         view_ = new JPanel(new BorderLayout());
-        view_.add(BorderLayout.CENTER, buildOutputConsoleView());
+//        view_.add(BorderLayout.CENTER, buildOutputConsoleView());
+        view_.add(BorderLayout.CENTER, buildOutputTabPanel());
         view_.add(BorderLayout.NORTH, cvsProjectsView_ = buildCVSProjectsView());
     }
 
@@ -334,7 +342,21 @@ public class StatcvsPlugin extends AbstractPlugin
         return wrapper;
     }
 
+    
+    /**
+     * Builds the tab panel that houses the output console and report viewer.
+     * 
+     * @return JComponent
+     */
+    protected JComponent buildOutputTabPanel()
+    {
+        JSmartTabbedPane tabPanel = new JSmartTabbedPane();
+        tabPanel.addTab("Output", buildOutputConsoleView());
+        tabPanel.addTab("Report", buildReportView());
+        return tabPanel;
+    }
 
+    
     /**
      * Builds the output panel.
      *
@@ -351,6 +373,16 @@ public class StatcvsPlugin extends AbstractPlugin
                 new JScrollPane(outputArea_));
 
         return hp;
+    }
+    
+
+    /**
+     * Builds the html component used to view the generated reports.
+     */
+    protected JComponent buildReportView()
+    {
+        reportViewer_ = new WebWindowViewer();
+        return reportViewer_.getComponent();
     }
 
     //--------------------------------------------------------------------------
@@ -1053,7 +1085,8 @@ public class StatcvsPlugin extends AbstractPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            BrowserLauncher.openURL(launchURLField_.getText());
+            reportViewer_.view(new File(launchURLField_.getText()));
+            //BrowserLauncher.openURL(launchURLField_.getText());
         }
     }
 
