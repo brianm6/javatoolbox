@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+
 import toolbox.util.ThreadUtil;
 import toolbox.util.service.AbstractService;
 import toolbox.util.service.Nameable;
@@ -217,7 +219,7 @@ public class BatchingQueueReader implements Startable, Nameable
             {
                 try
                 {
-                    Object first = queue_.pull();
+                    Object first = queue_.take();
 
                     int size = queue_.size();
 
@@ -231,7 +233,7 @@ public class BatchingQueueReader implements Startable, Nameable
 
                         // Read the rest from the queue
                         for (int i = 1; i <= size; i++)
-                            objs[i] = queue_.pull();
+                            objs[i] = queue_.take();
 
                         fireNextBatch(objs);
                     }

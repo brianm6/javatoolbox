@@ -1,8 +1,9 @@
 package toolbox.tunnel;
 
-import org.apache.log4j.Logger;
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
 
-import toolbox.util.concurrent.BlockingQueue;
+import org.apache.log4j.Logger;
 
 /**
  * Default implementation of the TcpTunnelListener Interface that adds
@@ -41,7 +42,7 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
      */
     public DefaultTcpTunnelListener() 
     {
-        started_ = new BlockingQueue();
+        started_ = new LinkedBlockingQueue();
     }
     
     //--------------------------------------------------------------------------
@@ -87,7 +88,14 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
      */
     public void tunnelStarted(TcpTunnel tunnel)
     {
-        started_.push(tunnel);
+        try
+        {
+            started_.put(tunnel);
+        }
+        catch (InterruptedException e)
+        {
+            logger_.error(e);
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -102,7 +110,7 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
      */
     public TcpTunnel waitForStarted() throws InterruptedException
     {
-        return (TcpTunnel) started_.pull();
+        return (TcpTunnel) started_.take();
     }
 
 

@@ -25,6 +25,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.text.StyleConstants;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -44,7 +47,6 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
-import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
 import toolbox.util.service.ServiceException;
@@ -262,7 +264,7 @@ public class TailPane extends JHeaderPanel
      */
     protected void init() throws IOException
     {
-        queue_          = new BlockingQueue();
+        queue_          = new LinkedBlockingQueue();
         queueListener_  = new TailQueueListener();
         queueReader_    = new BatchingQueueReader(queue_,
                               ArrayUtil.toString(config_.getFilenames()) +
@@ -753,7 +755,14 @@ public class TailPane extends JHeaderPanel
          */
         public void nextLine(Tail tail, String line)
         {
-            queue_.push(line);
+            try
+            {
+                queue_.put(line);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
         }
 
 

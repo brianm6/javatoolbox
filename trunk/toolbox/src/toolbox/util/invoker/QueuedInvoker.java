@@ -1,10 +1,12 @@
 package toolbox.util.invoker;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
-import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.service.ServiceException;
 
 /**
@@ -61,7 +63,7 @@ public class QueuedInvoker implements Invoker
      */
     public QueuedInvoker(final long millis)
     {
-        queue_ = new BlockingQueue();
+        queue_ = new LinkedBlockingQueue();
         delay_ = millis;
 
         // Creates the consumer thread and starts it
@@ -109,7 +111,7 @@ public class QueuedInvoker implements Invoker
      */
     public void invoke(Runnable invokable) throws Exception
     {
-        queue_.push(invokable);
+        queue_.put(invokable);
     }
 
     
@@ -181,7 +183,7 @@ public class QueuedInvoker implements Invoker
             {
                 try
                 {
-                    Runnable r = (Runnable) queue_.pull();
+                    Runnable r = (Runnable) queue_.take();
                     running_ = true;
                     r.run();
                     running_ = false;

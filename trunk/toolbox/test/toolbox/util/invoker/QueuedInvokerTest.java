@@ -261,7 +261,10 @@ public class QueuedInvokerTest extends TestCase
         // Let it rip...
         //
         Invoker invoker = new QueuedInvoker();
-        invoker.invoke(new String(""), "invalid_method", null);
+        
+        invoker.invoke(
+            new String(""), 
+            StringUtil.banner("SUCCESS - invalid method"), null);
         
         //
         // Needs time to run
@@ -273,7 +276,7 @@ public class QueuedInvokerTest extends TestCase
         //
         String error = sw.toString();
         logger_.debug(StringUtil.banner(error));
-        assertTrue(error.indexOf("invalid_method") >= 0);
+        assertTrue(error.indexOf("invalid method") >= 0);
         
         //
         // Cleanup

@@ -1,5 +1,8 @@
 package toolbox.util.concurrent;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -8,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 
 /**
- * Unit test for BatchingQueueReader.
+ * Unit test for {@link toolbox.util.concurrent.BatchingQueueReader}.
  */
 public class BatchingQueueReaderTest extends TestCase
 {
@@ -47,7 +50,7 @@ public class BatchingQueueReaderTest extends TestCase
      */
     protected void setUp() throws Exception
     {
-        qout_ = new BlockingQueue();        
+        qout_ = new LinkedBlockingQueue();        
     }
     
     //--------------------------------------------------------------------------
@@ -64,10 +67,10 @@ public class BatchingQueueReaderTest extends TestCase
         logger_.info("Running testNextBatch...");
         
         // Create queue and stuff with > 1 objects
-        BlockingQueue qin = new BlockingQueue();
-        qin.push("one");
-        qin.push("two");
-        qin.push("three");
+        BlockingQueue qin = new LinkedBlockingQueue();
+        qin.put("one");
+        qin.put("two");
+        qin.put("three");
         
         // Attaching batching reader and start
         BatchingQueueReader reader = new BatchingQueueReader(qin);
@@ -77,7 +80,7 @@ public class BatchingQueueReaderTest extends TestCase
 
 
         // Pulling from the queue should return all elements as a single array
-        Object[] batch = (Object[]) qout_.pull();
+        Object[] batch = (Object[]) qout_.take();
         
         // Test returned elements equal to pushed elements
         assertEquals(3, batch.length);
@@ -99,10 +102,10 @@ public class BatchingQueueReaderTest extends TestCase
     {
         logger_.info("Running testStartStop...");
         
-        BlockingQueue q = new BlockingQueue();
-        q.push("one");
-        q.push("two");
-        q.push("three");
+        BlockingQueue q = new LinkedBlockingQueue();
+        q.put("one");
+        q.put("two");
+        q.put("three");
         
         BatchingQueueReader bqr = new BatchingQueueReader(q);
         IBatchingQueueListener queueListener = new TestQueueListener();
@@ -111,7 +114,7 @@ public class BatchingQueueReaderTest extends TestCase
         
         logger_.info("Queue reader started...");
         
-        Object[] batch = (Object[]) qout_.pull();
+        Object[] batch = (Object[]) qout_.take();
         
         logger_.info("Pulled next batch from queue...");
         
@@ -135,9 +138,9 @@ public class BatchingQueueReaderTest extends TestCase
         
         assertTrue(q.size() == 0);        
         
-        q.push("three");
-        q.push("four");
-        q.push("five");
+        q.put("three");
+        q.put("four");
+        q.put("five");
         
         logger_.info(q);
         
@@ -147,7 +150,7 @@ public class BatchingQueueReaderTest extends TestCase
         
         logger_.info(q);        
         
-        Object[] batch2 = (Object[]) qout_.pull();
+        Object[] batch2 = (Object[]) qout_.take();
         
         assertEquals(batch2[0], "three");
         assertEquals(batch2[1], "four");
@@ -167,7 +170,9 @@ public class BatchingQueueReaderTest extends TestCase
     {
         logger_.info("Running testStartTwice...");
         
-        BatchingQueueReader r = new BatchingQueueReader(new BlockingQueue());
+        BatchingQueueReader r = 
+            new BatchingQueueReader(new LinkedBlockingQueue());
+        
         r.start();
         
         try
@@ -195,7 +200,9 @@ public class BatchingQueueReaderTest extends TestCase
     {
         logger_.info("Running testStopTwice...");
         
-        BatchingQueueReader r = new BatchingQueueReader(new BlockingQueue());
+        BatchingQueueReader r = 
+            new BatchingQueueReader(new LinkedBlockingQueue());
+        
         r.start();
         r.stop();
         
@@ -226,7 +233,15 @@ public class BatchingQueueReaderTest extends TestCase
         public void nextBatch(Object[] elements)
         {
             logger_.info("nextBatch: " + ArrayUtil.toString(elements));
-            qout_.push(elements);
+            
+            try
+            {
+                qout_.put(elements);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
         }
     }
 }

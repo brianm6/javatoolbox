@@ -7,10 +7,12 @@ import java.util.Vector;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.concurrent.BatchingQueueReader;
-import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 
 /**
@@ -107,8 +109,15 @@ public class SmartTableModel extends DefaultTableModel
     {
         if (!SwingUtilities.isEventDispatchThread())
         {
-            // If not event dispatch thread, push to queue
-            queue_.push(vector);
+            try
+            {
+                // If not event dispatch thread, push to queue
+                queue_.put(vector);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
         }
         else
         {
@@ -189,7 +198,7 @@ public class SmartTableModel extends DefaultTableModel
      */
     protected void init()
     {
-        queue_ = new BlockingQueue();
+        queue_ = new LinkedBlockingQueue();
         queueReader_ = new BatchingQueueReader(queue_);
         queueReader_.addBatchingQueueListener(this);
         queueReader_.start();

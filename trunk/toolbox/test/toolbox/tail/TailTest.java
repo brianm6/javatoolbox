@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -18,13 +21,12 @@ import toolbox.util.FileUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.io.NullWriter;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for Tail.
+ * Unit test for {@link toolbox.tail.Tail}.
  */
 public class TailTest extends TestCase
 {
@@ -58,7 +60,7 @@ public class TailTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor - builds the word list.
+     * Builds the word list.
      */
     public TailTest()
     {
@@ -494,12 +496,12 @@ class TestTailListener implements TailListener
     private static final Logger logger_ = 
         Logger.getLogger(TestTailListener.class);
         
-    private BlockingQueue startEvents_    = new BlockingQueue();
-    private BlockingQueue stopEvents_     = new BlockingQueue();
-    private BlockingQueue nextLineEvents_ = new BlockingQueue();
-    private BlockingQueue endedEvents_    = new BlockingQueue();
-    private BlockingQueue pauseEvents_    = new BlockingQueue();
-    private BlockingQueue unpauseEvents_  = new BlockingQueue();
+    private BlockingQueue startEvents_    = new LinkedBlockingQueue();
+    private BlockingQueue stopEvents_     = new LinkedBlockingQueue();
+    private BlockingQueue nextLineEvents_ = new LinkedBlockingQueue();
+    private BlockingQueue endedEvents_    = new LinkedBlockingQueue();
+    private BlockingQueue pauseEvents_    = new LinkedBlockingQueue();
+    private BlockingQueue unpauseEvents_  = new LinkedBlockingQueue();
 
     /**
      * @see TailListener#nextLine(Tail, String)
@@ -510,7 +512,7 @@ class TestTailListener implements TailListener
         
         try
         {
-            nextLineEvents_.push(line);    
+            nextLineEvents_.put(line);    
         }
         catch (Exception e)
         {
@@ -529,7 +531,7 @@ class TestTailListener implements TailListener
         
         try
         {
-            startEvents_.push("start");    
+            startEvents_.put("start");    
         }
         catch (Exception e)
         {
@@ -547,7 +549,7 @@ class TestTailListener implements TailListener
         
         try
         {
-            stopEvents_.push("stop");    
+            stopEvents_.put("stop");    
         }
         catch (Exception e)
         {
@@ -565,7 +567,7 @@ class TestTailListener implements TailListener
         
         try
         {
-            endedEvents_.push("ended");    
+            endedEvents_.put("ended");    
         }
         catch (Exception e)
         {
@@ -583,7 +585,7 @@ class TestTailListener implements TailListener
         
         try
         {
-            pauseEvents_.push("pause");    
+            pauseEvents_.put("pause");    
         }
         catch (Exception e)
         {
@@ -601,7 +603,7 @@ class TestTailListener implements TailListener
         
         try
         {
-            unpauseEvents_.push("unpause");    
+            unpauseEvents_.put("unpause");    
         }
         catch (Exception e)
         {
@@ -626,7 +628,7 @@ class TestTailListener implements TailListener
      */
     public void waitForStart() throws InterruptedException
     {
-        startEvents_.pull();
+        startEvents_.take();
     }
     
     
@@ -637,7 +639,7 @@ class TestTailListener implements TailListener
      */
     public void waitForStop() throws InterruptedException
     {
-        stopEvents_.pull();
+        stopEvents_.take();
     }
     
     
@@ -648,7 +650,7 @@ class TestTailListener implements TailListener
      */
     public void waitForPause() throws InterruptedException
     {
-        pauseEvents_.pull();
+        pauseEvents_.take();
     }
     
     
@@ -659,7 +661,7 @@ class TestTailListener implements TailListener
      */
     public void waitForUnpause() throws InterruptedException
     {
-        unpauseEvents_.pull();
+        unpauseEvents_.take();
     }
     
     
@@ -670,7 +672,7 @@ class TestTailListener implements TailListener
      */
     public void waitForEnded() throws InterruptedException
     {
-        endedEvents_.pull();
+        endedEvents_.take();
     }
     
     
@@ -682,6 +684,6 @@ class TestTailListener implements TailListener
      */
     public String waitForNextLine() throws InterruptedException
     {
-        return (String) nextLineEvents_.pull();
+        return (String) nextLineEvents_.take();
     }
 }

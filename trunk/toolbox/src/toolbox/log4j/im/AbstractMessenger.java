@@ -11,11 +11,14 @@ import hamsam.protocol.ProtocolManager;
 
 import java.util.Map;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import org.apache.commons.collections.MapUtils;
+import org.apache.log4j.Logger;
 import org.apache.log4j.helpers.LogLog;
 
 import toolbox.util.ThreadUtil;
-import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.invoker.Invoker;
 import toolbox.util.invoker.QueuedInvoker;
 import toolbox.util.service.AbstractService;
@@ -29,6 +32,9 @@ import toolbox.util.service.ServiceTransition;
 public abstract class AbstractMessenger extends AbstractService 
     implements InstantMessenger
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(AbstractMessenger.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -284,6 +290,10 @@ public abstract class AbstractMessenger extends AbstractService
      */
     class MessengerListener extends IMAdapter
     {
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
+        
         /**
          * Login success and failures both go in this queue.
          */
@@ -303,8 +313,8 @@ public abstract class AbstractMessenger extends AbstractService
          */
         public MessengerListener()
         {
-            connected_    = new BlockingQueue();
-            disconnected_ = new BlockingQueue();
+            connected_    = new LinkedBlockingQueue();
+            disconnected_ = new LinkedBlockingQueue();
         }
 
         //----------------------------------------------------------------------
@@ -321,7 +331,7 @@ public abstract class AbstractMessenger extends AbstractService
         public String waitForConnect() throws InterruptedException
         {
             LogLog.debug("Waiting for connect ack...");
-            String ack = (String) connected_.pull();
+            String ack = (String) connected_.take();
             LogLog.debug("Received connect ack!");
             return ack;
         }
@@ -336,7 +346,7 @@ public abstract class AbstractMessenger extends AbstractService
          */
         public Protocol waitForDisconnect() throws InterruptedException
         {
-            return (Protocol) disconnected_.pull();
+            return (Protocol) disconnected_.take();
         }
 
         //----------------------------------------------------------------------
@@ -349,7 +359,14 @@ public abstract class AbstractMessenger extends AbstractService
         public void connected(Protocol protocol)
         {
             LogLog.debug("Connected to " + protocol.getProtocolName());
-            connected_.push(CONNECT_SUCCEEDED);
+            try
+            {
+                connected_.put(CONNECT_SUCCEEDED);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
         }
 
 
@@ -364,7 +381,14 @@ public abstract class AbstractMessenger extends AbstractService
                 "Connect to " + protocol.getProtocolName() +
                 " failed: " + reasonMessage);
 
-            connected_.push(CONNECT_FAILED);
+            try
+            {
+                connected_.put(CONNECT_FAILED);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
         }
 
 
@@ -382,7 +406,14 @@ public abstract class AbstractMessenger extends AbstractService
          */
         public void disconnected(Protocol protocol)
         {
-            disconnected_.push(protocol);
+            try
+            {
+                disconnected_.put(protocol);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
             LogLog.debug("Disconnected from " + protocol.getProtocolName());
         }
 
