@@ -4,26 +4,17 @@ import javax.swing.JComponent;
 
 import edu.berkeley.guir.prefuse.Display;
 import edu.berkeley.guir.prefuse.ItemRegistry;
+import edu.berkeley.guir.prefuse.action.Action;
 import edu.berkeley.guir.prefuse.action.RepaintAction;
-import edu.berkeley.guir.prefuse.action.assignment.Layout;
 import edu.berkeley.guir.prefuse.action.filter.GraphFilter;
 import edu.berkeley.guir.prefuse.activity.ActionList;
 import edu.berkeley.guir.prefuse.graph.Graph;
 import edu.berkeley.guir.prefuse.render.DefaultEdgeRenderer;
 import edu.berkeley.guir.prefuse.render.DefaultRendererFactory;
-import edu.berkeley.guir.prefuse.render.Renderer;
 import edu.berkeley.guir.prefuse.render.ShapeRenderer;
 import edu.berkeley.guir.prefuse.render.TextImageItemRenderer;
-import edu.berkeley.guir.prefuse.render.TextItemRenderer;
 import edu.berkeley.guir.prefusex.controls.DragControl;
-import edu.berkeley.guir.prefusex.distortion.FisheyeDistortion;
-import edu.berkeley.guir.prefusex.layout.BalloonTreeLayout;
-import edu.berkeley.guir.prefusex.layout.CircleLayout;
-import edu.berkeley.guir.prefusex.layout.ForceDirectedLayout;
-import edu.berkeley.guir.prefusex.layout.FruchtermanReingoldLayout;
-import edu.berkeley.guir.prefusex.layout.GridLayout;
 import edu.berkeley.guir.prefusex.layout.RandomLayout;
-import edu.berkeley.guir.prefusex.layout.ScatterplotLayout;
 
 import toolbox.graph.GraphView;
 
@@ -40,6 +31,8 @@ public class PrefuseGraphView implements GraphView
      * Prefuse version of a GraphView.
      */
     private Display delegate_;
+    
+    private ItemRegistry registry_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -53,7 +46,7 @@ public class PrefuseGraphView implements GraphView
     public PrefuseGraphView(toolbox.graph.Graph graph)
     {
         Graph g = (Graph) graph.getDelegate();
-        ItemRegistry registry = new ItemRegistry(g);
+        registry_ = new ItemRegistry(g);
         
         // set up a renderer such that nodes show text labels
         TextImageItemRenderer nodeRenderer = new TextImageItemRenderer();
@@ -69,12 +62,12 @@ public class PrefuseGraphView implements GraphView
         
         // create a new renderer factory and associate it 
         // with the item registry
-        registry.setRendererFactory(new DefaultRendererFactory(
+        registry_.setRendererFactory(new DefaultRendererFactory(
                 nodeRenderer,
                 edgeRenderer,
                 null));
         
-        delegate_ = new Display(registry);
+        delegate_ = new Display(registry_);
         delegate_.addControlListener(new DragControl());
         delegate_.setHighQuality(true);
         
@@ -82,8 +75,8 @@ public class PrefuseGraphView implements GraphView
         // (a) filters visual representations from the original graph
         // (b) performs a random layout of graph nodes
         // (c) calls repaint on displays so that we can see the result
-        ActionList actions = new ActionList(registry);
-        actions = new ActionList(registry);
+        
+        ActionList actions = new ActionList(registry_);
         actions.add(new GraphFilter());
         //actions.add(new CircleLayout());
         //actions.add(new FruchtermanReingoldLayout());
@@ -112,6 +105,10 @@ public class PrefuseGraphView implements GraphView
      */
     public void setLayout(toolbox.graph.Layout layout)
     {
-        // TODO
+        ActionList actions = new ActionList(registry_);
+        actions.add(new GraphFilter());
+        actions.add((Action) layout.getDelegate());
+        actions.add(new RepaintAction());
+        actions.runNow();
     }
 }
