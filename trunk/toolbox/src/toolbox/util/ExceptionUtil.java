@@ -3,6 +3,10 @@ package toolbox.util;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
+
 /**
  * Exception utilities
  */
@@ -27,4 +31,20 @@ public class ExceptionUtil
         t.printStackTrace(new PrintWriter(sw));
         return sw.toString();
     }
+    
+    /**
+     * Generic Error handler for exceptions generated on a client side UI
+     * 
+     * @param  t   Exception causing Error
+     * @param  c   Logger to log to
+     */
+    public static void handleUI(Throwable t, Logger c)
+    {
+        c.warn(t.getMessage(), t);
+        
+        JOptionPane.showMessageDialog(null,
+            t.getMessage() + "\n\n" + getStackTrace(t),
+            "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
 }
