@@ -5,15 +5,34 @@ import toolbox.util.statemachine.impl.DefaultStateMachine;
 import toolbox.util.statemachine.impl.DefaultTransition;
 
 /**
- * StateMachineFactory returns default implemenations of the various state
- * machine classes.
+ * StateMachineFactory returns default implemenations of a StateMachine and its
+ * associated State and Transition components.
+ * 
+ * @see toolbox.util.statemachine.StateMachine
+ * @see toolbox.util.statemachine.State
+ * @see toolbox.util.statemachine.Transition
  */
 public class StateMachineFactory
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Prevent construction of this static singleton.
+     */
+    private StateMachineFactory()
+    {
+    }
+    
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns a default implementation of a State.
      * 
-     * @param name Name of the state.
+     * @param name Name to assign to the state.
      * @return State
      */
     public static final State createState(String name)
@@ -23,9 +42,9 @@ public class StateMachineFactory
 
     
     /**
-     * Retruns a default implementation of a Transition.
+     * Returns a default implementation of a Transition.
      * 
-     * @param name Name of the transition.
+     * @param name Name to assign to the transition.
      * @return Transition
      */
     public static final Transition createTransition(String name)
@@ -35,9 +54,9 @@ public class StateMachineFactory
     
     
     /**
-     * Retruns a default implementation of a StateMachine.
+     * Returns a default implementation of a StateMachine.
      * 
-     * @param name Name of the state machine.
+     * @param name Name to assign to the StateMachine.
      * @return StateMachine
      */
     public static final StateMachine createStateMachine(String name)
