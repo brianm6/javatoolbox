@@ -532,4 +532,38 @@ public final class StringUtil
         
         return sb.toString();
     }
+    
+    
+    /**
+     * Replaces one string with another ignoring case.
+     * 
+     * @param text String to apply the replacement to.
+     * @param repl String to be replaced.
+     * @param with Replacement string.
+     * @return String
+     */
+    public static String replaceIgnoreCase(
+        String text,
+        String repl,
+        String with) 
+    {
+        StringBuffer result = new StringBuffer(text);
+        repl = repl.toUpperCase();
+        int pos = 0;
+        
+        // For all instances found in the original text
+        for (int startIndex = result.toString().toUpperCase().indexOf(repl);
+            startIndex != -1;
+            startIndex = result.toString().toUpperCase().indexOf(repl, pos)) 
+        {
+                
+            // Make the replacement in the result
+            result.replace(startIndex, startIndex + repl.length(), with);
+            
+            // Skip over replaced text before starting next search
+            pos = startIndex + with.length();
+        }
+        
+        return result.toString();
+    }
 }
