@@ -140,6 +140,8 @@ public class SwingConsole extends AbstractConsole
     //--------------------------------------------------------------------------
     
     /**
+     * Reads a command from the console.
+     * 
      * @see toolbox.util.ui.console.Console#read()
      */
     public String read() throws InterruptedIOException
@@ -173,6 +175,8 @@ public class SwingConsole extends AbstractConsole
 
 
     /**
+     * Writes a character string to the console.
+     * 
      * @see toolbox.util.ui.console.Console#write(java.lang.String)
      */
     public synchronized void write(String msg)
@@ -239,16 +243,16 @@ public class SwingConsole extends AbstractConsole
 
 
     /**
-     * @see toolbox.util.ui.console.Console#setPrompt(java.lang.String)
+     * @see toolbox.util.ui.console.Console#renderPrompt()
      */
-    public synchronized void setPrompt(String prompt)
+    public synchronized void renderPrompt()
     {
         try
         {
-            text_.replaceRange(prompt, 
+            text_.replaceRange(getPrompt(), 
                 textLength_, textLength_ + promptLength_);
             
-            promptLength_ = prompt.length();
+            promptLength_ = getPrompt().length();
             
             text_.setCaretPosition(
                 textLength_ + promptLength_ + insertionPoint_);
@@ -704,9 +708,9 @@ public class SwingConsole extends AbstractConsole
             if (appendNewLine)
             {
                 text_.append("\n");
-                textLength_ += promptLength_ + lineLength_ + 1;
-                promptLength_ = 0;
-                lineLength_ = 0;
+                textLength_     += promptLength_ + lineLength_ + 1;
+                promptLength_   = 0;
+                lineLength_     = 0;
                 insertionPoint_ = 0;
             }
 
