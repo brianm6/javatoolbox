@@ -1,4 +1,4 @@
-package toolbox.util.ui.plugin;
+package toolbox.plugin.uidefaults;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
