@@ -1,4 +1,4 @@
-package toolbox.plugin.netmeter;
+package toolbox.util.service;
 
 /**
  * The ServiceListener interface provides notification of service related 

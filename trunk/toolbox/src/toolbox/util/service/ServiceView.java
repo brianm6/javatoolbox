@@ -1,4 +1,4 @@
-package toolbox.plugin.netmeter;
+package toolbox.util.service;
 
 import java.awt.event.ActionEvent;
 

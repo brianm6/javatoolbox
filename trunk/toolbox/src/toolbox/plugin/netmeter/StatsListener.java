@@ -1,5 +1,7 @@
 package toolbox.plugin.netmeter;
 
+import toolbox.util.service.*;
+
 /**
  * StatsListener provides notification related to collected statistics based on 
  * network activity.

@@ -1,4 +1,4 @@
-package toolbox.plugin.netmeter;
+package toolbox.util.service;
 
 /**
  * An object that implements the Service interface adheres to basic lifecycle
