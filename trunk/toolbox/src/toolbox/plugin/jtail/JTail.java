@@ -40,6 +40,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.FileStuffer;
+import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.font.FontChooserException;
@@ -219,7 +220,7 @@ public class JTail extends JFrame
             
         menuBar.add(fileMenu);
         
-        recentMenu_ = new JMenu("Recent");
+        recentMenu_ = new JConveyorMenu("Recent", 10);
         recentMenu_.add(new ClearRecentAction());
         menuBar.add(recentMenu_);
         
@@ -379,7 +380,8 @@ public class JTail extends JFrame
                 
                 if (a instanceof TailRecentAction) 
                 {
-                    TailRecentAction action = (TailRecentAction) menuItem.getAction();
+                    TailRecentAction action = 
+                        (TailRecentAction) menuItem.getAction();
                     
                     ITailPaneConfig config = 
                         (ITailPaneConfig) action.getValue("config");
