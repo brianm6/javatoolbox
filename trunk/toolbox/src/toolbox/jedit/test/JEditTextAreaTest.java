@@ -20,6 +20,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.jedit.DynamicTokenMarker;
 import toolbox.jedit.JEditTextArea;
 
 /**
@@ -71,6 +72,7 @@ public class JEditTextAreaTest extends TestCase
            Container c = getContentPane();
            
            jeta_ = new JEditTextArea();
+           jeta_.setTokenMarker(new DynamicTokenMarker());
            c.add(BorderLayout.CENTER, new JScrollPane(jeta_));
            c.add(BorderLayout.SOUTH, buildControlView());
            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
