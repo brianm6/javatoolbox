@@ -20,6 +20,17 @@
         <exec vmlauncher="false" executable="${browser.file}"/>
     </goal>
     
+
+    <!-- =================================================================== -->
+    <!-- JUNIT                                                               -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:junit" description="Runs junit and generates a report">
+        <attainGoal name="maven-junit-report-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.junit.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+      
     
     <!-- =================================================================== -->
     <!-- CHANGELOG                                                           -->
