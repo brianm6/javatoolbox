@@ -15,6 +15,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
+import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.TableSorter;
 
 /**
@@ -54,7 +55,7 @@ public class TableSorterTest extends UITestCase
     
         TestTableModel myModel = new TestTableModel();
         TableSorter sorter = new TableSorter(myModel);
-        JTable table = new JTable(sorter);
+        JTable table = new JSmartTable(sorter);
         sorter.addMouseListenerToHeaderInTable(table);
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
         
