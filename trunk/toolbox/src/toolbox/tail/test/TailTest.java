@@ -256,7 +256,7 @@ public class TailTest extends TestCase
             "writeDelayed",
             new Object[] {
                 writer,
-                new Integer(5),
+                new Integer(20),
                 new Integer(500),
                 "line " });
 
