@@ -37,7 +37,7 @@ public class QueryPluginTest extends TestCase
      */
     public void testPreferenced() throws Exception
     {
-        logger_.info("Running testApplyPrefs...");
+        logger_.info("Running testPreferenced...");
 
         // Save ---------------------------------------------------------------
         
