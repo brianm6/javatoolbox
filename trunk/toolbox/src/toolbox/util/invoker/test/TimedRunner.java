@@ -8,16 +8,24 @@ import java.util.Date;
  */
 public class TimedRunner implements Runnable
 {
-    /** Number of milliseconds run() should take to execute */
+    /**
+     * Number of milliseconds run() should take to execute
+     */
     private long millis_;
 
-    /** Flag for whether run() was executed */
+    /**
+     * Flag for whether run() was executed
+     */
     private boolean wasInvoked_;
 
-    /** Timestamp on entry of invocation */
+    /**
+     * Timestamp on entry of invocation
+     */
     private Date begin_;
 
-    /** Timestamp on exit from invocation */
+    /**
+     * Timestamp on exit from invocation
+     */
     private Date end_;
 
     //--------------------------------------------------------------------------
@@ -64,7 +72,9 @@ public class TimedRunner implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * @return  True if the run() method was executed, false otherwise
+     * Returns true if the run() method was executed, false otherwise
+     *
+     * @return boolean
      */
     public boolean wasInvoked()
     {
@@ -72,7 +82,9 @@ public class TimedRunner implements Runnable
     }
 
     /**
-     * @return Timestamp on entry to run()
+     * Returns the timestamp on entry to run()
+     *
+     * @return Date
      */
     public Date getBegin()
     {
@@ -80,7 +92,9 @@ public class TimedRunner implements Runnable
     }
 
     /**
-     * @return Timestamp on exit of run()
+     * Returns the timestamp on exit of run()
+     *
+     * @return Date
      */
     public Date getEnd()
     {
