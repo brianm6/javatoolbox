@@ -1,18 +1,18 @@
 package toolbox.util.ui.plaf;
 
-import javax.swing.LookAndFeel;
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.LineBorder;
 
 import com.incors.plaf.alloy.AlloyLookAndFeel;
 import com.incors.plaf.alloy.AlloyTheme;
-import com.incors.plaf.alloy.themes.acid.AcidTheme;
-import com.incors.plaf.alloy.themes.bedouin.BedouinTheme;
-import com.incors.plaf.alloy.themes.glass.GlassTheme;
+import com.incors.plaf.alloy.DefaultAlloyTheme;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ResourceUtil;
+import toolbox.util.StringUtil;
 
 /**
  * Action that activates the Alloy Look And Feel.
@@ -28,12 +28,9 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
 
     /**
      * Creates a ActivateAlloyLookAndFeelAction.
-     *
-     * @param info
      */
     public ActivateAlloyLookAndFeelAction()
     {
-        // for newInstance()
     }
     
     //--------------------------------------------------------------------------
@@ -56,28 +53,45 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
      */
     public void activate() throws Exception
     {
-
-        
-        //com.incors.plaf.alloy.AlloyTheme theme = new com.incors.plaf.alloy.themes.bedouin.BedouinTheme();  // The lines below can be used for setting the other themes.  // com.incors.plaf.alloy.AlloyTheme theme = new com.incors.plaf.alloy.themes.glass.GlassTheme();  // com.incors.plaf.alloy.AlloyTheme theme = new com.incors.plaf.alloy.themes.acid.AcidTheme();  javax.swing.LookAndFeel alloyLnF = new com.incors.plaf.alloy.AlloyLookAndFeel(theme);
-        com.incors.plaf.alloy.AlloyTheme themex = new com.incors.plaf.alloy.DefaultAlloyTheme();
-        
         LAFInfo info = getLookAndFeelInfo();
         String name = info.getProperty("theme.name");
+        String clazz = info.getProperty("theme.class");
         String license = info.getProperty("theme.license");
-
+      
+        AlloyLookAndFeel.setProperty("alloy.licenseCode", license);
+        AlloyTheme defaultTheme = new DefaultAlloyTheme();
+        AlloyTheme theme = defaultTheme;
         
-        //"2#Horst_Heistermann#1w2sca#5qzosw");
+        if (!StringUtil.isNullOrEmpty(clazz))
+        {
+            try
+            {
+                theme = (AlloyTheme) Class.forName(clazz).newInstance();
+            }
+            catch (Exception e)
+            {
+                logger_.warn("Error setting Alloy theme: " + info, e);
+                theme = defaultTheme;
+            }
+        }
         
-        AlloyLookAndFeel.setProperty("alloy.licenseCode", license); 
-        //AlloyTheme theme = new GlassTheme();        
-        //AlloyTheme theme = new BedouinTheme();
-        AlloyTheme theme = new AcidTheme();
         AlloyLookAndFeel alloy = new AlloyLookAndFeel(theme);
-
         UIManager.setLookAndFeel(alloy);
+
+        // Fix alloy fonts
+        Font f = new Font("Tahoma", Font.PLAIN, 11);
+        //Font f = FontUtil.getPreferredSerifFont();
+        UIManager.put("Label.font", f);
+        UIManager.put("Button.font", f);
+        UIManager.put("ComboBox.font", f);
+        UIManager.put("CheckBox.font", f);
+        UIManager.put("ToolTip.border", new LineBorder(Color.black));
+        
+        UIManager.put(
+            "ToolTip.background", UIManager.getColor("Panel.background"));
         
         UIManager.getLookAndFeel().getDefaults().put(
-                LAFInfo.PROP_HIDDEN_KEY, getLookAndFeelInfo());
+            LAFInfo.PROP_HIDDEN_KEY, getLookAndFeelInfo());
         
         LookAndFeelUtil.propagateChangeInLAF();
     }
