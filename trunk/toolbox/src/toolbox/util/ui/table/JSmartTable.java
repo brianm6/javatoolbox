@@ -36,7 +36,7 @@ public class JSmartTable extends JTable implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartTable
+     * Creates a JSmartTable.
      */
     public JSmartTable()
     {
@@ -44,7 +44,7 @@ public class JSmartTable extends JTable implements AntiAliased
     }
 
     /**
-     * Creates a JSmartTable
+     * Creates a JSmartTable.
      * 
      * @param numRows Number of rows
      * @param numColumns Number of columns
@@ -56,7 +56,7 @@ public class JSmartTable extends JTable implements AntiAliased
     }
 
     /**
-     * Creates a JSmartTable
+     * Creates a JSmartTable.
      * 
      * @param dm Table model
      */
@@ -67,7 +67,7 @@ public class JSmartTable extends JTable implements AntiAliased
     }
 
     /**
-     * Creates a JSmartTable
+     * Creates a JSmartTable.
      * 
      * @param rowData Row data
      * @param columnNames Column names
@@ -79,7 +79,7 @@ public class JSmartTable extends JTable implements AntiAliased
     }
 
     /**
-     * Creates a JSmartTable
+     * Creates a JSmartTable.
      * 
      * @param rowData Row data
      * @param columnNames Column names
@@ -91,7 +91,7 @@ public class JSmartTable extends JTable implements AntiAliased
     }
 
     /**
-     * Creates a JSmartTable
+     * Creates a JSmartTable.
      * 
      * @param dm Table model
      * @param cm Column model
@@ -103,7 +103,7 @@ public class JSmartTable extends JTable implements AntiAliased
     }
 
     /**
-     * Creates a JSmartTable
+     * Creates a JSmartTable.
      * 
      * @param dm Table model
      * @param cm Column model

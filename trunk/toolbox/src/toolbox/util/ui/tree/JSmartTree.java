@@ -33,14 +33,15 @@ public class JSmartTree extends JTree implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * 
+     * Creates a JSmartTree.
      */
     public JSmartTree()
     {
-        super();
     }
 
     /**
+     * Creates a JSmartTree.
+     * 
      * @param value
      */
     public JSmartTree(Object[] value)
@@ -49,6 +50,8 @@ public class JSmartTree extends JTree implements AntiAliased
     }
 
     /**
+     * Creates a JSmartTree.
+     * 
      * @param value
      */
     public JSmartTree(Hashtable value)
@@ -57,6 +60,8 @@ public class JSmartTree extends JTree implements AntiAliased
     }
 
     /**
+     * Creates a JSmartTree.
+     * 
      * @param value
      */
     public JSmartTree(Vector value)
@@ -65,6 +70,8 @@ public class JSmartTree extends JTree implements AntiAliased
     }
 
     /**
+     * Creates a JSmartTree.
+     * 
      * @param newModel
      */
     public JSmartTree(TreeModel newModel)
@@ -73,6 +80,8 @@ public class JSmartTree extends JTree implements AntiAliased
     }
 
     /**
+     * Creates a JSmartTree.
+     * 
      * @param root
      */
     public JSmartTree(TreeNode root)
@@ -81,6 +90,8 @@ public class JSmartTree extends JTree implements AntiAliased
     }
 
     /**
+     * Creates a JSmartTree.
+     * 
      * @param root
      * @param asksAllowsChildren
      */

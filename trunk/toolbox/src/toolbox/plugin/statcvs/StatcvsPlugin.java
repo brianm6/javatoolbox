@@ -165,7 +165,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Adds a project to the existing list displayed in the combobox
      * 
-     * @param  project  CVSProject
+     * @param project CVSProject
      */
     public void addProject(CVSProject project)
     {
@@ -312,8 +312,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Checks to make sure that the given field contains some data.
      * 
-     * @param  field  Field to check
-     * @param  name   Name to use in throw exception is field is blank
+     * @param field Field to check
+     * @param name Name to use in throw exception is field is blank
      * @throws IllegalArgumentException if field is blank
      */
     protected void checkEmpty(JSmartTextField field, String name)
@@ -329,7 +329,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * Checks the trailing character on directory fields to make sure then
      * have a terminating File.separator.
      * 
-     * @param field  Field to check
+     * @param field Field to check
      */
     protected void checkTrailer(JSmartTextField field)
     {
@@ -342,8 +342,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * the module name may be a hierarchy (a/b/c/b) and replaces file separators
      * with periods.
      * 
-     * @param   module  Module to use for creating the log file name.
-     * @return  Log file name 
+     * @param module Module to use for creating the log file name.
+     * @return Log file name 
      */
     protected String moduleToLogFile(String module)
     {
@@ -382,8 +382,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      * Examines the cvs log and makes sure the first few lines don't contain
      * junk that will throw off the statcvs log file parser.
      * 
-     * @param   contents  Log file contents
-     * @return  Fixed Log file contents
+     * @param contents Log file contents
+     * @return Fixed Log file contents
      */
     protected String fixLogFile(String contents)
     {
@@ -636,7 +636,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         /**
          * Creates a CVSProject from its XML representation
          *
-         * @param  xml  String containing a valid XML persistence of CVSProject
+         * @param xml String containing a valid XML persistence of CVSProject
          * @throws Exception on error 
          */
         public CVSProject(String xml) throws Exception
@@ -665,13 +665,13 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         /**
          * Creates a CVSProject 
          * 
-         * @param project      Project name
-         * @param module       CVS module name
-         * @param cvsRoot      CVS root url
-         * @param password     Cleartext password
-         * @param checkOutDir  Directory to checkout files to
-         * @param debug        Print debug output
-         * @param launchURL    Launch URL for viewing generated statistics
+         * @param project Project name
+         * @param module CVS module name
+         * @param cvsRoot CVS root url
+         * @param password Cleartext password
+         * @param checkOutDir Directory to checkout files to
+         * @param debug Print debug output
+         * @param launchURL Launch URL for viewing generated statistics
          */
         public CVSProject(String project, String module, String cvsRoot, 
             String password, String checkOutDir, boolean debug, 
@@ -797,8 +797,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string  Path to existing directory that cvs files will be
-         *                checked out to.
+         * @param string Path to existing directory that cvs files will be
+         *        checked out to.
          */
         public void setCheckoutDir(String string)
         {
@@ -806,7 +806,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string  CVS module name
+         * @param string CVS module name
          */
         public void setCVSModule(String string)
         {
@@ -814,7 +814,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string  CVS authentication password
+         * @param string CVS authentication password
          */
         public void setCVSPassword(String string)
         {
@@ -822,7 +822,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string  CVSROOT 
+         * @param string CVSROOT 
          */
         public void setCVSRoot(String string)
         {
@@ -830,7 +830,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param b  Debug flag
+         * @param b Debug flag
          */
         public void setDebug(boolean b)
         {
@@ -838,7 +838,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string  URL to the generated statistics
+         * @param string URL to the generated statistics
          */
         public void setLaunchURL(String string)
         {
@@ -846,7 +846,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
 
         /**
-         * @param string  Project name
+         * @param string Project name
          */
         public void setProject(String string)
         {

@@ -35,7 +35,7 @@ public class StatusConstraint implements StatusArea
     /**
      * Creates a StatusConstraint with the given width
      * 
-     * @param  width  Width of the constraint
+     * @param width Width of the constraint
      */
     public StatusConstraint(int width)
     {
@@ -45,8 +45,8 @@ public class StatusConstraint implements StatusArea
     /**
      * Creates a StatusConstraint setting the relative flag
      * 
-     * @param  relative  True if constraint is to be variable width, false
-     *                   otherwise.
+     * @param relative True if constraint is to be variable width, false
+     *        otherwise.
      */
     public StatusConstraint(boolean relative)
     {
@@ -56,8 +56,8 @@ public class StatusConstraint implements StatusArea
     /**
      * Creates a StatusConstraint with the given width and relative setting
      * 
-     * @param  relative  True if the constraint is to be variable width
-     * @param  width     Width of the constraint
+     * @param relative True if the constraint is to be variable width
+     * @param width Width of the constraint
      */
     public StatusConstraint(boolean relative, float width)
     {

@@ -27,16 +27,14 @@ public abstract class WorkspaceAction extends SmartAction
     /**
      * Creates a workspace action with exception handling turned on by default.
      * 
-     * @param name      Name of the action
-     * @param async     Set to true if the action is to be executes 
-     *                  asynchronously
-     * @param scope     Component that demarcates the scope of this action.
-     *                  This scope is used to set the wait/default cursor
-     *                  accordingly. Set to null if you do not want the 
-     *                  busy cursor to be set.
+     * @param name Name of the action
+     * @param async Set to true if the action is to be executed asynchronously.
+     * @param scope Component that demarcates the scope of this action. This 
+     *        scope is used to set the wait/default cursor accordingly. Set to 
+     *        null if you do not want the busy cursor to be set.
      * @param statusBar Workspace status bar on with the progress bar busy
-     *                  state will be set. Set to null if you do not want the
-     *                  progress bar to indicate the action is executing.
+     *        state will be set. Set to null if you do not want the progress 
+     *        bar to indicate the action is executing.
      */
     public WorkspaceAction(
         String name,
@@ -48,20 +46,18 @@ public abstract class WorkspaceAction extends SmartAction
     }
     
     /**
-     * Creates a workspace action
+     * Creates a workspace action.
      * 
-     * @param name      Name of the action
-     * @param tryCatch  Set to true if action is to be surrounded by a try/catch
-     *                  block with the accompanying error handler.
-     * @param async     Set to true if the action is to be executes 
-     *                  asynchronously
-     * @param scope     Component that demarcates the scope of this action.
-     *                  This scope is used to set the wait/default cursor
-     *                  accordingly. Set to null if you do not want the 
-     *                  busy cursor to be set.
+     * @param name Name of the action
+     * @param tryCatch Set to true if action is to be surrounded by a try/catch
+     *        block with the accompanying error handler.
+     * @param async Set to true if the action is to be executes asynchronously.
+     * @param scope Component that demarcates the scope of this action. This 
+     *        scope is used to set the wait/default cursor accordingly. Set to 
+     *        null if you do not want the busy cursor to be set.
      * @param statusBar Workspace status bar on with the progress bar busy
-     *                  state will be set. Set to null if you do not want the
-     *                  progress bar to indicate the action is executing.
+     *        state will be set. Set to null if you do not want the progress 
+     *        bar to indicate the action is executing.
      */
     public WorkspaceAction(
         String name,

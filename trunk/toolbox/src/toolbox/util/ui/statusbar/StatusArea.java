@@ -20,7 +20,7 @@ public interface StatusArea
     /**
      * Returns the required width of the given component.
      * 
-     * @param  component  Component to get required width of
+     * @param component Component to get required width of
      * @return Required width for the component
      */
     public float getRequiredWidth(Component component);

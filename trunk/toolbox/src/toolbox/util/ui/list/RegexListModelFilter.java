@@ -53,30 +53,32 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Creates a RegexListModelFilter
      * 
-     * @param  delegate  List model to filter
+     * @param delegate List model to filter
      */
     public RegexListModelFilter(ListModel delegate)
     {
         this(delegate, MATCH_ALL);
     }
 
+    
     /**
      * Creates a RegexListModelFilter
      * 
-     * @param  delegate  List model to filter
-     * @param  regex     Regular expression
+     * @param delegate List model to filter
+     * @param regex Regular expression
      */
     public RegexListModelFilter(ListModel delegate, String regex)
     {
         this(delegate, regex, false);
     }
 
+    
     /**
      * Creates a RegexListModelFilter
      * 
-     * @param  delegate   List model to filter
-     * @param  regex      Regular expression
-     * @param  matchCase  Flag to match case
+     * @param delegate List model to filter
+     * @param regex Regular expression
+     * @param matchCase Flag to match case
      */
     public RegexListModelFilter(ListModel delegate, String regex, 
         boolean matchCase)
@@ -86,14 +88,16 @@ public class RegexListModelFilter extends AbstractListModelFilter
         setRegex(regex);
     }
 
+    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
     
+    
     /**
      * Sets the regular expression to filter on   
      * 
-     * @param  regex  Regular expression
+     * @param regex Regular expression
      */
     public synchronized void setRegex(String regex)
     {
@@ -135,6 +139,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
         fireContentsChanged(this, 0, indexList_.size());
     }
 
+    
     /**
      * Returns the regular expression used to filter the list contents
      * 
@@ -149,6 +154,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     // Overrides AbstractListModelFilter
     //--------------------------------------------------------------------------
 
+    
     /**
      * Returns the size of the filtered model
      * 
@@ -160,11 +166,12 @@ public class RegexListModelFilter extends AbstractListModelFilter
         return indexList_.size();
     }
 
+    
     /**
      * Gets an element at a given zero based index
      * 
-     * @param   index  Index of element to retrieve
-     * @return  Element at specifiec index
+     * @param index Index of element to retrieve
+     * @return Element at specifiec index
      */
     public Object getElementAt(int index)
     {

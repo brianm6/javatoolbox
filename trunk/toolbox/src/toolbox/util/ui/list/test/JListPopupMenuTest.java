@@ -31,7 +31,7 @@ public class JListPopupMenuTest extends TestCase
     /** 
      * Entry point
      * 
-     * @param  args  None
+     * @param args None
      * @throws Exception on error
      */
     public static void main(String[] args) throws Exception

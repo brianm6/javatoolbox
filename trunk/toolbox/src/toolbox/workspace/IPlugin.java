@@ -22,35 +22,39 @@ import javax.swing.JComponent;
 public interface IPlugin extends IPreferenced
 {
     /**
-     * Friendly name of the plugin used for identification in workspace.
+     * Initializes the plugin.
      * 
-     * @return Name of the plugin (tab text)
+     * @param props Initialization properties and parameters
      */
-    public String getPluginName();
+    public void startup(Map props);
+
     
     /**
-     * Component that represents the graphical view of the plugin
+     * Friendly name of the plugin used for identification in workspace.
+     * 
+     * @return Name of the plugin
+     */
+    public String getPluginName();
+
+    
+    /**
+     * Returns a short description of the plugin.
+     * 
+     * @return Short description of the plugin
+     */
+    public String getDescription();
+
+    
+    /**
+     * Component that represents the graphical view of the plugin.
      * 
      * @return GUI component of the plugin
      */
     public JComponent getComponent();
     
-    /**
-     * Returns a short description of the plugin
-     * 
-     * @return Short description of the plugin
-     */
-    public String getDescription();
     
     /**
-     * Initializes the plugin
-     * 
-     * @param  props  Initialization properties and parameters
-     */
-    public void startup(Map props);
-    
-    /**
-     * Cleans up resources before the plugin is shutdown
+     * Cleans up resources before the plugin is discarded.
      */
     public void shutdown();
 }

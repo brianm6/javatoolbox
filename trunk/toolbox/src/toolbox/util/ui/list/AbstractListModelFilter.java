@@ -21,7 +21,7 @@ public abstract class AbstractListModelFilter extends AbstractListModel
     /**
      * Creates a list model filter with the given delegate
      * 
-     * @param  delegate  Reference to the model being filtered
+     * @param delegate Reference to the model being filtered
      */
     public AbstractListModelFilter(ListModel delegate)
     {

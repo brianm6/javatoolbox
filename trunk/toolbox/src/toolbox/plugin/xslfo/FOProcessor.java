@@ -10,7 +10,7 @@ import java.util.Properties;
 public interface FOProcessor
 {
     /**
-     * Intializes the FO processor
+     * Intializes the FO processor.
      * 
      * @param props Initialization properties
      */
@@ -28,7 +28,7 @@ public interface FOProcessor
         throws Exception;
     
     /**
-     * Renders XSL-FO to a Postscript document
+     * Renders XSL-FO to a Postscript document.
      * 
      * @param foStream Source of XSL-FO
      * @param psStream Destination of Postscript output

@@ -60,7 +60,7 @@ public class DynamicBevelBorder implements Border
     /**
      * Creates a DynamicBevelBorder of the given type (RAISED or LOWERED)
      * 
-     * @param  type  Bevel type
+     * @param type Bevel type
      */
     public DynamicBevelBorder(int type)
     {
@@ -71,8 +71,8 @@ public class DynamicBevelBorder implements Border
      * Creates a DynamicBevelBorder of the given type (RAISED or LOWERED) and
      * thickness
      * 
-     * @param  type       Bevel type
-     * @param  thickness  Border thickness in pixels
+     * @param type Bevel type
+     * @param thickness Border thickness in pixels
      */
     public DynamicBevelBorder(int type, int thickness)
     {
@@ -82,10 +82,10 @@ public class DynamicBevelBorder implements Border
     /**
      * Creates a DynamicBevelBorder with the given options
      * 
-     * @param  type       Bevel type
-     * @param  thickness  Border thickiness in pixels
-     * @param  highlight  Highlight color
-     * @param  shadow     Shadow color
+     * @param type Bevel type
+     * @param thickness Border thickiness in pixels
+     * @param highlight Highlight color
+     * @param shadow Shadow color
      */
     public DynamicBevelBorder(int type, int thickness, Color highlight, 
         Color shadow)
@@ -103,7 +103,7 @@ public class DynamicBevelBorder implements Border
     /**
      * Determines the hightlight color for a given component
      * 
-     * @param  c  Component being painted
+     * @param c Component being painted
      * @return Highlight color. If not specified, it is derived from the 
      *         component.
      */
@@ -117,7 +117,7 @@ public class DynamicBevelBorder implements Border
     /**
      * Determines the shadow color for a given component
      * 
-     * @param  c  Component being painted
+     * @param c Component being painted
      * @return Shadow color. If not specified, it is derived from the component
      */
     public Color getShadowColor(Component c)
