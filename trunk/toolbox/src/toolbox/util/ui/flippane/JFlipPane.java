@@ -425,13 +425,7 @@ public class JFlipPane extends JPanel
     public void applyPrefs(Element prefs)
     {
         Element root = prefs.getFirstChildElement("JFlipPane");
-        
-        boolean collapsed = 
-            XOMUtil.getBooleanAttribute(root, ATTR_COLLAPSED, false);  
- 
-        if (collapsed != isCollapsed())
-            toggleFlipper();
-        
+
         int dim = XOMUtil.getIntegerAttribute(root, ATTR_DIMENSION, 100);
         
         // HACK BEGIN
@@ -440,10 +434,18 @@ public class JFlipPane extends JPanel
         
         setDimension(dim);
         
+        boolean collapsed = 
+            XOMUtil.getBooleanAttribute(root, ATTR_COLLAPSED, false);  
+ 
+        if (collapsed != isCollapsed())
+            toggleFlipper();
+        
         String flipper = XOMUtil.getStringAttribute(root, ATTR_ACTIVE,"");
         
         if (!StringUtil.isNullOrEmpty(flipper))
             setActiveFlipper(flipper);
+            
+        repaint();
     }
 
     /**
@@ -531,7 +533,7 @@ public class JFlipPane extends JPanel
         buttonPanel_.addMouseListener(new PopupHandler());
         
         closeButton_ = new JButton(
-            ImageCache.getIcon("/toolbox/util/ui/images/Cross.gif"));
+            ImageCache.getIcon(ImageCache.IMAGE_CROSS));
                 
         closeButton_.setToolTipText("Close");
         
