@@ -203,7 +203,7 @@ public class JFontChooser extends JPanel
         setAntiAlias(antiAlias);
 
         // Add to gridbag
-        gbc.weightx    = 0.75; gbc.weighty   = 0s;
+        gbc.weightx    = 0.75; gbc.weighty   = 0;
         gbc.gridx      = 2;    gbc.gridy     = 3;
         gbc.gridheight = 1;    gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
