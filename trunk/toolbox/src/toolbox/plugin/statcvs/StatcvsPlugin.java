@@ -869,13 +869,12 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }        
     }
 
-
     /**
      * Executes all steps necessary to produce the StatCVS report
      */
     class EverythingAction extends StatcvsAction
     {
-        public EverythingAction()
+        EverythingAction()
         {
             super("I'm feeling lucky!", true, null, null);
         }
