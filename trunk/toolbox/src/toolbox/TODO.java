@@ -31,6 +31,7 @@ package toolbox;
  * TODO: Update banner with more external fonts.
  * TODO: Add Matra as a DTD doc viewer plugin.
  * TODO: Fix JTail recent menu
+ * TODO: Update all command line tools using new help format in findclass
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
