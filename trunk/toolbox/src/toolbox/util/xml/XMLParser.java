@@ -37,6 +37,10 @@ public class XMLParser
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Parse an XML text read in from a Reader. Returns the root node of the 
      * xml text.
