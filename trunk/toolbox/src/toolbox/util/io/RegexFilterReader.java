@@ -17,7 +17,7 @@ import org.apache.regexp.RESyntaxException;
 public class RegexFilterReader extends LineNumberReader
 {
     /** Logger **/
-	private static final Category logger_ = 
+    private static final Category logger_ = 
         Category.getInstance(RegexFilterReader.class);
     
     /** Default regular expression matches all if one is not specified **/    
@@ -76,7 +76,7 @@ public class RegexFilterReader extends LineNumberReader
      * 
      * @return  String that matches regular expression or null if the 
      *          end of the stream has been reached
-     * @throws  IOException
+     * @throws  IOException on error
      */
     public String readLine() throws IOException
     {

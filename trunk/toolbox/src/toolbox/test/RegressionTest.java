@@ -23,6 +23,8 @@ public class RegressionTest
 {
     /**
      * Launches the tests in text mode
+     * 
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {

@@ -5,10 +5,29 @@ package toolbox.tail;
  */
 public interface ITailListener 
 {
+    /**
+     * Tail has started 
+     */
     public void tailStarted();
+    
+    /**
+     * Tail has stopped 
+     */
     public void tailStopped();
+    
+    /** 
+     * Tail has ended
+     */
     public void tailEnded();
+    
+    /**
+     * Tail has been paused 
+     */
     public void tailPaused();
+    
+    /**
+     * Tails has been unpaused
+     */
     public void tailUnpaused();
     
     /**

@@ -12,15 +12,25 @@ import java.util.StringTokenizer;
 public class Main
 {
 
-    // max size for colums lenghts
+    /** max length for size column **/
     private static final int MAX_SIZE_LEN = 12;
+    
+    /** max length for date column **/
     private static final int MAX_DATE_LEN = 14;
+    
+    /** max length for time column **/
     private static final int MAX_TIME_LEN = 8;
 
-    // column headings
+    /** column heading for archive **/
     private static final String COL_ARCHIVE = "JAR/Directory";
+    
+    /** column heading for date **/
     private static final String COL_DATE = "Date";
+    
+    /** column heading for size **/
     private static final String COL_SIZE = "Size";
+    
+    /** column heading for time **/    
     private static final String COL_TIME = "Time";
 
 
@@ -103,9 +113,10 @@ public class Main
 
         // stuffed everything info main()
         String classPath = System.getProperty("java.class.path");
-        StringTokenizer st = new StringTokenizer(classPath, 
-                                                 System.getProperty(
-                                                         "path.separator"));
+        
+        StringTokenizer st = 
+            new StringTokenizer(classPath,System.getProperty("path.separator"));
+            
         int max = 0;
 
         // find longest for formatting
@@ -159,7 +170,10 @@ public class Main
                     String date = formatDate(lastModified);
                     String time = formatTime(lastModified);
                     String length = formatLength(f.length());
-                    System.out.print(repeatSpace(MAX_SIZE_LEN - length.length()));
+                    
+                    System.out.print(
+                        repeatSpace(MAX_SIZE_LEN - length.length()));
+                        
                     System.out.print(length);
                     System.out.print(repeatSpace(MAX_DATE_LEN - date.length()));
                     System.out.print(date);

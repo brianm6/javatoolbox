@@ -14,7 +14,7 @@ public class ExtensionFilter implements FilenameFilter
     /**
      * Creates an Extension filter with the given file extension
      * 
-     * @param  fileException   The file extension to filter on
+     * @param  fileExtension   The file extension to filter on
      */   
     public ExtensionFilter(String fileExtension)
     {

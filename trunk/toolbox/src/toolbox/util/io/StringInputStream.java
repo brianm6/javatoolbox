@@ -11,13 +11,13 @@ public class StringInputStream extends InputStream
 {
 
     /** size of string **/
-    int size;
+    private int size;
 
     /** current position in stream **/
-    int index;
+    private int index;
 
     /** stream buffer **/
-    String buf;
+    private String buf;
 
     /**
      * Creates a StringInputStream with the passed string
@@ -35,6 +35,7 @@ public class StringInputStream extends InputStream
      * Reads a byte from the stream
      *
      * @return The current character or -1 if stream is empty
+     * @throws IOException if IO error occurs
      */
     public int read() throws IOException 
     {

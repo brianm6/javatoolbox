@@ -1,10 +1,7 @@
 package toolbox.tail;
 
 /**
- * @author analogue
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
+ * Adapter for ITailListener interface 
  */
 public class TailAdapter implements ITailListener
 {

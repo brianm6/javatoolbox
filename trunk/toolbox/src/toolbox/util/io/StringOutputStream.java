@@ -8,7 +8,7 @@ import java.io.OutputStream;
 public class StringOutputStream extends OutputStream
 {
     /** output buffer **/
-    StringBuffer output;
+    private StringBuffer output;
 
     /**
      * Create a new StringOutputStream with the default initial buffer size.
@@ -21,7 +21,7 @@ public class StringOutputStream extends OutputStream
     /**
      * Create a new StringOutputStream with the specified initial buffer size.
      *
-     * @param initialBuffereSize  The size of the initial buffer
+     * @param initialBufferSize  The size of the initial buffer
      */
     public StringOutputStream(int initialBufferSize)
     {

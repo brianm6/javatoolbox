@@ -9,7 +9,10 @@ import java.io.FilenameFilter;
  */
 public class CompositeFilter implements FilenameFilter
 {
+    /** First filter to create composite **/
     private FilenameFilter firstFilter_;
+    
+    /** Second filter to create composite **/
     private FilenameFilter secondFilter_;
     
     /**
