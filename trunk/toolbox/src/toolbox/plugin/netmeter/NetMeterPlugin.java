@@ -54,6 +54,9 @@ public class NetMeterPlugin extends AbstractPlugin
      */
     private JPanel grid_;
     
+    /**
+     * User interface view.
+     */
     private JComponent view_;
     
     //--------------------------------------------------------------------------

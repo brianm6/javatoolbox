@@ -58,6 +58,9 @@ public class JUnitPlugin extends AbstractPlugin
     // Fields 
     //--------------------------------------------------------------------------
     
+    /**
+     * View component.
+     */
     private JComponent view_;
     
     /**
