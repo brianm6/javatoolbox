@@ -570,4 +570,12 @@ public final class StringUtil
     {
         return new StringBuffer(s).reverse().toString();
     }
+    
+    /**
+     * Converts a string into a boolean value
+     */
+    public static boolean toBoolean(String s)
+    {
+        return new Boolean(s).booleanValue();        
+    }
 }

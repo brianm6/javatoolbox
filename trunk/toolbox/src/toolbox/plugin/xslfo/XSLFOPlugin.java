@@ -25,20 +25,21 @@ import com.adobe.acrobat.Viewer;
 
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
-
 import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
 import org.jedit.syntax.XMLTokenMarker;
 
+import nu.xom.Element;
+
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
-import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XMLUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
@@ -64,17 +65,14 @@ import toolbox.util.ui.plugin.WorkspaceAction;
  */ 
 public class XSLFOPlugin extends JPanel implements IPlugin
 {
-    /*  
-     * TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
-     */
-
+    // TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
+     
     private static final Logger logger_ = 
         Logger.getLogger(XSLFOPlugin.class);
 
-    /** Prefix passed to sub components when asked to save their preferences */
-    private static final String PREFS_PREFIX =  
-        ClassUtil.stripPackage(XSLFOPlugin.class.getName()).toLowerCase();
-        
+    private static final String NODE_XSLFO_PLUGIN = "XSLFOPlugin";
+    private static final String NODE_PDF_VIEWER   = "PDFViewer";
+    
     /** Flip panel that houses the file explorer */
     private JFlipPane flipPane_;    
     
@@ -97,7 +95,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     private JFileExplorer explorer_;
 
     /** Full Path to acrobat reader executable */
-    private String acrobatPath_;
+    private String pdfViewerPath_;
 
     /** Apache XSLFO implementation = FOP */
     private FOProcessor fopProcessor_;
@@ -238,7 +236,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     private void viewPDFExternal(String outfile) throws IOException
     {
-        if (StringUtil.isNullOrEmpty(acrobatPath_))
+        if (StringUtil.isNullOrEmpty(pdfViewerPath_))
         {
             try
             {
@@ -248,7 +246,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
                         SwingUtil.getFrameAncestor(this)) == 
                             JFileChooser.APPROVE_OPTION) 
                 {
-                    acrobatPath_ = jfc.getSelectedFile().getCanonicalPath();
+                    pdfViewerPath_ = jfc.getSelectedFile().getCanonicalPath();
                 }
             }
             catch (FileNotFoundException fnfe)
@@ -263,13 +261,13 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         
         try
         {
-            logger_.info("Executing: " + acrobatPath_ + " " + outfile);
-            Runtime.getRuntime().exec(acrobatPath_ + " " + outfile);
+            logger_.info("Executing: " + pdfViewerPath_ + " " + outfile);
+            Runtime.getRuntime().exec(pdfViewerPath_ + " " + outfile);
         }
         catch (Exception ex)
         {
             ExceptionUtil.handleUI(ex, logger_);
-            acrobatPath_ = null;
+            pdfViewerPath_ = null;
         }
     }
 
@@ -363,21 +361,55 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         buildView();
     }
 
-    public void savePrefs(Properties prefs)
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    public void applyPrefs(Element prefs) throws Exception
     {
-        explorer_.savePrefs(prefs, PREFS_PREFIX);
-        flipPane_.savePrefs(prefs, PREFS_PREFIX);
+        Element root = prefs.getFirstChildElement(NODE_XSLFO_PLUGIN);
         
-        if (!StringUtil.isNullOrEmpty(acrobatPath_))
-            prefs.setProperty("xslfoplugin.acrobat.path", acrobatPath_);
+        if (root != null)
+        {
+            explorer_.applyPrefs(root);
+            flipPane_.applyPrefs(root);
+            
+            pdfViewerPath_ = XOMUtil.getString(
+                root.getFirstChildElement(NODE_PDF_VIEWER), null);
+        }
     }
 
-    public void applyPrefs(Properties prefs)
+    /**
+     * Saves preferences in following XML structure.
+     * <pre>
+     * 
+     * Parent
+     * |
+     * +--XSLFOPlugin
+     *    |
+     *    +--PDFViewer
+     *    |
+     *    +--JFileExplorer
+     *    |
+     *    +--JFlipPane
+     * 
+     * </pre>
+     */
+    public void savePrefs(Element prefs)
     {
-        explorer_.applyPrefs(prefs, PREFS_PREFIX);
-        flipPane_.applyPrefs(prefs, PREFS_PREFIX);
+        Element root = new Element(NODE_XSLFO_PLUGIN);
         
-        acrobatPath_ = prefs.getProperty("xslfoplugin.acrobat.path", null);
+        explorer_.savePrefs(root);
+        flipPane_.savePrefs(root);
+        
+        if (!StringUtil.isNullOrEmpty(pdfViewerPath_))
+        {
+            Element pdf = new Element(NODE_PDF_VIEWER);
+            pdf.appendChild(pdfViewerPath_);
+            root.appendChild(pdf);
+        }
+        
+        XOMUtil.injectChild(prefs, root);
     }
 
     public void shutdown()

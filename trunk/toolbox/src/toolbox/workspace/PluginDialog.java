@@ -8,8 +8,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -33,6 +35,7 @@ import toolbox.findclass.FindClassResult;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.collections.ObjectComparator;
 import toolbox.util.ui.JListPopupMenu;
 
 /**
@@ -230,12 +233,13 @@ public class ManagePluginsDialog extends JDialog
     {
         inactiveModel_.clear();
         FindClass fc = new FindClass();
-        FindClassResult[] foundPlugins = new FindClassResult[0];
-        
+        FindClassResult[] candidatePlugins = new FindClassResult[0];
+        List legitPlugins = new ArrayList();
+                
         try
         {
             // Find classes that end in "Plugin"
-            foundPlugins = fc.findClass("Plugin$", true);
+            candidatePlugins = fc.findClass("Plugin$", true);
         }
         catch (RESyntaxException mpe)
         {
@@ -246,14 +250,15 @@ public class ManagePluginsDialog extends JDialog
             ExceptionUtil.handleUI(ioe, logger_);
         }
 
-        logger_.debug("Results: " + foundPlugins.length);
+        logger_.debug("Results: " + candidatePlugins.length);
 
-        for (int i=0; i<foundPlugins.length; i++)
+        for (int i=0; i<candidatePlugins.length; i++)
         {
-            String clazz     = foundPlugins[i].getClassFQN();
+            String clazz     = candidatePlugins[i].getClassFQN();
             String clazzName = ClassUtil.stripPackage(clazz);
+            String clazzOnly = ClassUtil.stripPackage(clazz);
                      
-            logger_.debug("Inspecting " + clazzName + "...");
+            logger_.debug(clazzOnly + " : Inspecting...");
 
             boolean skip = false;
                 
@@ -271,12 +276,13 @@ public class ManagePluginsDialog extends JDialog
             }
             
             // Exclude plugins that already occur in the inactive list
-            for (Enumeration e=inactiveModel_.elements(); e.hasMoreElements();)
+            for (int j=0, n=legitPlugins.size(); j<n; j++)
             {
-                PluginMeta pm = (PluginMeta) e.nextElement();
+                PluginMeta pm = (PluginMeta) legitPlugins.get(j);
                 
                 if (pm.getClassName().equals(clazz))
                 {
+                    logger_.debug(clazzOnly + " : Excluding duplicate class");
                     skip = true;
                     break;
                 }
@@ -284,7 +290,7 @@ public class ManagePluginsDialog extends JDialog
 
             if (!skip)
             {
-                logger_.debug("Passed already loaded check : " + clazzName);
+                logger_.debug(clazzOnly + " : Passed already loaded check");
                     
                 Object plugin = null;
 
@@ -293,12 +299,13 @@ public class ManagePluginsDialog extends JDialog
                 try
                 {                            
                     plugin = Class.forName(clazz).newInstance();
-                    logger_.debug("Passed instantiation check: " + clazzName);
+                    logger_.debug(clazzOnly + " : Passed instantiation check");
                 }
                 catch (Throwable t)
                 {
-                    logger_.debug(
-                        "Failed newInstance() : " + clazzName + " " + t);
+                    logger_.debug(clazzOnly + " : Failed newInstance() : " +  
+                        t.getMessage());
+                        
                     skip = true;
                 }
                 
@@ -307,24 +314,26 @@ public class ManagePluginsDialog extends JDialog
                 {
                     if (plugin instanceof IPlugin)
                     {
-                        logger_.debug("Passed instanceof check: " + clazzName);
-                        
-                        inactiveModel_.addElement(
-                            (new PluginMeta((IPlugin)plugin)));
+                        logger_.debug(clazzOnly + " : We have a plugin!!!");
+                        legitPlugins.add(new PluginMeta((IPlugin) plugin));
                     }
                 }
             }
         }
+    
+        Collections.sort(legitPlugins, new ObjectComparator("name"));
+
+        for (int i=0; i<legitPlugins.size(); i++)
+            inactiveModel_.addElement(legitPlugins.get(i));
         
-        int activeCnt = activeModel_.size();
-        removeButton_.setEnabled(activeCnt > 0);
+        removeButton_.setEnabled(activeModel_.size() > 0);
         addButton_.setEnabled(inactiveModel_.size() > 0);
     }
     
     /**
      * PluginMeta info used to populate the active/inactive lists
      */
-    class PluginMeta
+    public class PluginMeta
     {
         private String className_;
         private IPlugin plugin_;

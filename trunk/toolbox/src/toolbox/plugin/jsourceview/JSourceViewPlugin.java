@@ -1,9 +1,10 @@
 package toolbox.jsourceview;
 
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JComponent;
+
+import nu.xom.Element;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -14,8 +15,10 @@ import toolbox.util.ui.plugin.PluginWorkspace;
  */
 public class JSourceViewPlugin implements IPlugin
 {
-    /** Delegate */
-    private JSourceView sourceView_;
+    /** 
+     * Delegate 
+     */
+    private JSourceView delegate_;
     
     //--------------------------------------------------------------------------
     // IPlugin Interface
@@ -34,7 +37,7 @@ public class JSourceViewPlugin implements IPlugin
      */
     public JComponent getComponent()
     {
-        return (JComponent) sourceView_.getContentPane();
+        return (JComponent) delegate_.getContentPane();
     }
 
     /**
@@ -55,24 +58,24 @@ public class JSourceViewPlugin implements IPlugin
         if (params != null)
             statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
         
-        sourceView_ = new JSourceView();
-        sourceView_.setStatusBar(statusBar);
+        delegate_ = new JSourceView();
+        delegate_.setStatusBar(statusBar);
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void savePrefs(Properties prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
-        sourceView_.savePrefs(prefs);
+        delegate_.applyPrefs(prefs);    
     }
-
+    
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void applyPrefs(Properties prefs)
+    public void savePrefs(Element prefs)
     {
-        sourceView_.applyPrefs(prefs);
+        delegate_.savePrefs(prefs);
     }
 
     /**

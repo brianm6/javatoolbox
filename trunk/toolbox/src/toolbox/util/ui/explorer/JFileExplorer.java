@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -40,12 +39,16 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.Platform;
-import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
+import toolbox.util.ui.plugin.IPreferenced;
 
 /**
  * Tree based file browser widget based on an open-source project and heavily 
@@ -57,15 +60,15 @@ import toolbox.util.io.filter.FileFilter;
  * TODO: Add file size and timestamp info somewhere
  * </pre>
  */
-public class JFileExplorer extends JPanel
+public class JFileExplorer extends JPanel implements IPreferenced
 {
     private static final Logger logger_ = 
         Logger.getLogger(JFileExplorer.class);
 
-    // Saved component properties
-    private static final String PROP_PATH    = ".explorer.path";
-    private static final String PROP_FILE    = ".explorer.file";
-    private static final String PROP_DIVIDER = ".explorer.dividerlocation";
+    private static final String NODE_JFILEEXPLORER = "JFileExplorer";
+    private static final String   ATTR_PATH        = "path";
+    private static final String   ATTR_FILE        = "file";
+    private static final String   ATTR_DIVIDER     = "dividerlocation";
 
     // Models
     private DefaultListModel        listModel_;
@@ -83,13 +86,20 @@ public class JFileExplorer extends JPanel
     private String currentPath_;
     private Icon   driveIcon_;
 
-    /** Collection of listeners */ 
+    /** 
+     * Collection of listeners 
+     */ 
     private List fileExplorerListeners_ = new ArrayList();
 
-	/** Flag to prevent events from triggering new events to be generated */
+	/** 
+	 * Flag to prevent events from triggering new events to be generated while
+	 * an operation is executing on the tree.
+	 */
     private boolean processingTreeEvent_;
     
-    /** Listener for the change in selection to the directory */
+    /** 
+     * Listener for the change in selection to the directory 
+     */
     private DirTreeSelectionListener treeSelectionListener_;
         
     //--------------------------------------------------------------------------
@@ -295,51 +305,52 @@ public class JFileExplorer extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Saves preferences to a properties object
+     * Saves preferences as XML
      * 
-     * @param props   Properties to save preferences to
-     * @param prefix  Prefix to tack onto the beginning of each property name
-     *                to allow for uniqueness if more than one JFileExplorer is
-     *                saves to the same properties object.
+     * @param prefs Element to save preferences to
      */
-    public void savePrefs(Properties props, String prefix)
+    public void savePrefs(Element prefs)
     {
+        Element root = new Element(NODE_JFILEEXPLORER);
+        
         String path = getCurrentPath();
         if (!StringUtil.isNullOrEmpty(path))
-            props.setProperty(prefix + PROP_PATH, path);
+            root.addAttribute(new Attribute(ATTR_PATH, path));
             
         String file = (String) fileList_.getSelectedValue();
         if (!StringUtil.isNullOrEmpty(file))
-            props.setProperty(prefix + PROP_FILE, file);
+            root.addAttribute(new Attribute(ATTR_FILE, file));
             
-        PropertiesUtil.setInteger(props, prefix + PROP_DIVIDER, 
-            splitPane_.getDividerLocation());
+        root.addAttribute(new Attribute(
+              ATTR_DIVIDER, ""+splitPane_.getDividerLocation()));
+            
+        XOMUtil.injectChild(prefs, root);
     }
     
     /**
-     * Restores preferences from a properties object and applies them.
+     * Restores preferences from XML and applies them.
      * 
-     * @param props   Properties to read preferences from  
-     * @param prefix  Prefix to tack onto the beginning of each property name
-     */    
-    public void applyPrefs(Properties props, String prefix)
+     * @param prefs XML DOM to read the preferences from  
+     */   
+    public void applyPrefs(Element prefs)
     {
+        Element root = prefs.getFirstChildElement(NODE_JFILEEXPLORER);
+        
         // Restore expanded directory
-        String path = props.getProperty(prefix + PROP_PATH);
-        if (!StringUtil.isNullOrEmpty(path))
-            selectFolder(path);
+        selectFolder(
+            XOMUtil.getStringAttribute(
+                root, ATTR_PATH, System.getProperty("user.dir")));
         
         // Restore selected file    
-        String file = props.getProperty(prefix + PROP_FILE);
+        String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
         if (!StringUtil.isNullOrEmpty(file))
             fileList_.setSelectedValue(file, true);
         
         // Restore divider location    
-        int dividerLoc = PropertiesUtil.getInteger(
-            props, prefix + PROP_DIVIDER, 150);
-            
-        splitPane_.setDividerLocation(dividerLoc);    
+        splitPane_.setDividerLocation(
+            XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER, 150));    
     }
+    
 
     //--------------------------------------------------------------------------
     //  Overridden from java.awt.Component

@@ -13,7 +13,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -33,6 +32,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import org.apache.log4j.Logger;
+
+import nu.xom.Element;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
@@ -86,14 +87,22 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         buildView();
     }
     
-    public void savePrefs(Properties prefs)
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs)
     {
+
     }
-    
-    public void applyPrefs(Properties prefs)
+
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
     {
-    }
     
+    }
+
     public void shutdown()
     {
     }

@@ -1,9 +1,10 @@
 package toolbox.jtail;
 
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JComponent;
+
+import nu.xom.Element;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -60,14 +61,20 @@ public class JTailPlugin implements IPlugin
         jtail_.setStatusBar(statusBar);
     }
 
-    public void savePrefs(Properties prefs)
-    {
-        jtail_.savePrefs(prefs);
-    }
-
-    public void applyPrefs(Properties prefs) throws Exception
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
     {
         jtail_.applyPrefs(prefs);
+    }
+    
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        jtail_.savePrefs(prefs);
     }
 
     public void shutdown()

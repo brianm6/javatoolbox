@@ -3,12 +3,9 @@ package toolbox.util.ui.plugin;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringReader;
-import java.util.Enumeration;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
@@ -28,9 +25,15 @@ import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 import net.sf.statcvs.Main;
 import net.sf.statcvs.output.CommandLineParser;
 
+import nu.xom.Attribute;
+import nu.xom.Builder;
+import nu.xom.Element;
+import nu.xom.Elements;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
@@ -38,8 +41,6 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.NativeBrowser;
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.util.ui.layout.ParagraphLayout;
-import toolbox.util.xml.XMLNode;
-import toolbox.util.xml.XMLParser;
 
 /**
  * StatcvsPlugin is a GUI wrapper for the 
@@ -59,9 +60,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     
     private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
     
-    private static final String PROP_CVSPROJECTS = "statcvs.plugin.cvsprojects";
-
-    private static final String ELEMENT_CVSPROJECTS = "CVSProjects";
+    private static final String NODE_CVSPROJECTS = "CVSProjects";
+    private static final String NODE_STATCVS_PLUGIN = "StatCVSPlugin";
     
     /** Reference to the workspace statusbar */
     private IStatusBar statusBar_;
@@ -134,24 +134,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             projectCombo_.addItem(project);
     }
 
-    /**
-     * Returns an XML representation of the data making up the configuration.
-     *  
-     * @return XML string
-     */
-    public String toXML()
-    {
-        XMLNode projects = new XMLNode(ELEMENT_CVSPROJECTS);
-        
-        for (int i=0, n=projectCombo_.getItemCount(); i<n; i++)
-        {
-            CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
-            projects.addNode(project.toDOM());
-        }
-        
-        return projects.toString();
-    }
-    
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -449,19 +431,20 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
-    
-    public void savePrefs(Properties prefs)
+ 
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
     {
-        prefs.setProperty(PROP_CVSPROJECTS, toXML());
-        outputArea_.savePrefs(prefs, "statcvs.plugin");
-    }
+        Element root = prefs.getFirstChildElement(NODE_STATCVS_PLUGIN);
+        
+        if (root == null)
+            return;
+            
+        Element projects = root.getFirstChildElement(NODE_CVSPROJECTS);
 
-    public void applyPrefs(Properties prefs) throws Exception
-    {
-        String xmlProjects = prefs.getProperty(PROP_CVSPROJECTS, "");
-
-        if (StringUtil.isNullOrBlank(xmlProjects) || 
-            xmlProjects.trim().equals("<CVSProjects/>"))
+        if (projects == null || projects.getChildCount() ==  0)
         {
             projectCombo_.addItem(new CVSProject(
                 "Sourceforge",
@@ -492,19 +475,40 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
         else
         {
-            XMLNode projects = 
-                new XMLParser().parseXML(new StringReader(xmlProjects));
-                
-            for(Enumeration e=projects.enumerateNode();e.hasMoreElements();)
+            Elements projectList = 
+                projects.getChildElements(CVSProject.NODE_CVSPROJECT);
+            
+            for(int i=0; i<projectList.size(); i++)
             {
-                XMLNode projectNode = (XMLNode) e.nextElement();
-                CVSProject project = new CVSProject(projectNode.toString());
+                Element projectNode = projectList.get(i);
+                CVSProject project = new CVSProject(projectNode.toXML());
                 addProject(project);
             }
         }
         
-        outputArea_.applyPrefs(prefs, "statcvs.plugin");
+        outputArea_.applyPrefs(root);
     }
+
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element root = new Element(NODE_STATCVS_PLUGIN);
+        Element projects = new Element(NODE_CVSPROJECTS);
+        
+        for (int i=0, n=projectCombo_.getItemCount(); i<n; i++)
+        {
+            CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
+            projects.appendChild(project.toDOM());
+        }
+        
+        root.appendChild(projects);
+        outputArea_.savePrefs(root);
+        
+        XOMUtil.injectChild(prefs, root);
+    }
+ 
  
     //--------------------------------------------------------------------------
     // Inner Classes
@@ -512,7 +516,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     
     class CVSProject 
     {
-        private static final String ELEMENT_CVSPROJECT  = "CVSProject";
+        private static final String NODE_CVSPROJECT  = "CVSProject";
         private static final String ATTR_PROJECT = "project";
         private static final String ATTR_MODULE  = "module";
         private static final String ATTR_CVSROOT = "cvsroot";
@@ -548,16 +552,17 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          * @param  xml  String containing a valid XML persistence of CVSProject
          * @throws IOException on I/O error 
          */
-        public CVSProject(String xml) throws IOException
+        public CVSProject(String xml) throws Exception
         {
-            XMLNode project = new XMLParser().parseXML(new StringReader(xml));
-            setProject(project.getAttr(ATTR_PROJECT));
-            setCVSModule(project.getAttr(ATTR_MODULE));
-            setCVSRoot(project.getAttr(ATTR_CVSROOT));
-            setCVSPassword(project.getAttr(ATTR_PASSWORD));
-            setCheckoutDir(project.getAttr(ATTR_CHECKOUTDIR));
-            setDebug(project.getAttr(ATTR_DEBUG).equalsIgnoreCase("true"));
-            setLaunchURL(project.getAttr(ATTR_LAUNCHURL));
+            Element project = new Builder().build(new StringReader(xml)).getRootElement();
+            
+            setProject(XOMUtil.getStringAttribute(project, ATTR_PROJECT, "???"));
+            setCVSModule(XOMUtil.getStringAttribute(project, ATTR_MODULE, ""));
+            setCVSRoot(XOMUtil.getStringAttribute(project, ATTR_CVSROOT, ""));
+            setCVSPassword(XOMUtil.getStringAttribute(project, ATTR_PASSWORD, ""));
+            setCheckoutDir(XOMUtil.getStringAttribute(project, ATTR_CHECKOUTDIR, ""));
+            setDebug(XOMUtil.getBooleanAttribute(project, ATTR_DEBUG, false));
+            setLaunchURL(XOMUtil.getStringAttribute(project, ATTR_LAUNCHURL, ""));
         }
         
         /**
@@ -599,17 +604,16 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          * 
          * @return  DOM tree
          */    
-        public XMLNode toDOM()
+        public Element toDOM()
         {
-            XMLNode project = new XMLNode(ELEMENT_CVSPROJECT);
-            
-            project.addAttr(ATTR_PROJECT, getProject());
-            project.addAttr(ATTR_MODULE, getCVSModule());
-            project.addAttr(ATTR_CVSROOT, getCVSRoot());
-            project.addAttr(ATTR_PASSWORD, getCVSPassword());
-            project.addAttr(ATTR_CHECKOUTDIR, getCheckoutDir());
-            project.addAttr(ATTR_DEBUG, isDebug() ? "true" : "false");
-            project.addAttr(ATTR_LAUNCHURL, getLaunchURL());
+            Element project = new Element(NODE_CVSPROJECT);
+            project.addAttribute(new Attribute(ATTR_PROJECT, getProject()));
+            project.addAttribute(new Attribute(ATTR_MODULE, getCVSModule()));
+            project.addAttribute(new Attribute(ATTR_CVSROOT, getCVSRoot()));
+            project.addAttribute(new Attribute(ATTR_PASSWORD, getCVSPassword()));
+            project.addAttribute(new Attribute(ATTR_CHECKOUTDIR, getCheckoutDir()));
+            project.addAttribute(new Attribute(ATTR_DEBUG, isDebug() ? "true" : "false"));
+            project.addAttribute(new Attribute(ATTR_LAUNCHURL, getLaunchURL()));
             return project;
         }
 

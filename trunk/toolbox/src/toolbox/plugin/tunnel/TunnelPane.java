@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -18,24 +17,37 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * Panel which houses the majority of the UI controls. 
  */
-public class JTcpTunnelPane extends JPanel
+public class JTcpTunnelPane extends JPanel implements IPreferenced
 {
     // TODO: Auto-clear text areas after # of bytes exceeded
-    
+
     private static final Logger logger_ = 
         Logger.getLogger(JTcpTunnelPane.class);
+    
+    private static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
+    private static final String NODE_INCOMING = "Incoming";
+    private static final String NODE_OUTGOING = "Outgoing";
+    
+    private static final String ATTR_REMOTE_PORT = "remoteport";
+    private static final String ATTR_REMOTE_HOST = "remotehost";
+    private static final String ATTR_LOCAL_PORT  = "localport";
     
     /** Textarea that incoming data from the tunnel is dumped to */
     private JSmartTextArea incomingTextArea_;
@@ -103,45 +115,6 @@ public class JTcpTunnelPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Saves connection propreties to a Properties object
-     * 
-     * @param  prefs  Properties to save preferences to
-     */
-    public void savePrefs(Properties prefs)
-    {
-        if (!StringUtil.isNullOrEmpty(listenPortField_.getText()))
-            prefs.setProperty(
-                "tcptunnel.listenport",listenPortField_.getText());
-            
-        if (!StringUtil.isNullOrEmpty(remotePortField_.getText()))    
-            prefs.setProperty(
-                "tcptunnel.remoteport", remotePortField_.getText());
-        
-        if (!StringUtil.isNullOrEmpty(remoteHostField_.getText()))    
-            prefs.setProperty(
-                "tcptunnel.remotehost", remoteHostField_.getText());
-                
-        incomingTextArea_.savePrefs(prefs, "tcptunnel.incoming");
-        outgoingTextArea_.savePrefs(prefs, "tcptunnel.outgoing");
-    }
-
-    /**
-     * Applies the preferences
-     * 
-     * @param  prefs  Properties to read the preferences from
-     */
-    public void applyPrefs(Properties prefs) throws Exception
-    {
-        remotePortField_.setText(prefs.getProperty("tcptunnel.remoteport",""));
-        remoteHostField_.setText(prefs.getProperty("tcptunnel.remotehost",""));
-        listenPortField_.setText(prefs.getProperty("tcptunnel.listenport",""));
-        
-        incomingTextArea_.applyPrefs(prefs, "tcptunnel.incoming");
-        outgoingTextArea_.applyPrefs(prefs, "tcptunnel.outgoing");
-        
-    }
-    
-    /**
      * Returns the local listen port number.
      * 
      * @return int
@@ -199,6 +172,63 @@ public class JTcpTunnelPane extends JPanel
     public void setStatusBar(IStatusBar statusBar)
     {
         statusBar_ = statusBar;
+    }
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = prefs.getFirstChildElement(NODE_TCPTUNNEL_PLUGIN);
+        
+        remotePortField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_REMOTE_PORT, ""));
+
+        remoteHostField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_REMOTE_HOST, ""));
+            
+        listenPortField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_LOCAL_PORT, ""));
+    
+        if (root != null)
+        {
+            incomingTextArea_.applyPrefs(
+                root.getFirstChildElement(NODE_INCOMING));
+                
+            outgoingTextArea_.applyPrefs(
+                root.getFirstChildElement(NODE_OUTGOING));
+        }
+    }
+
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
+        
+        root.addAttribute(
+            new Attribute(ATTR_LOCAL_PORT, listenPortField_.getText()));
+
+        root.addAttribute(
+            new Attribute(ATTR_REMOTE_PORT, remotePortField_.getText()));
+
+        root.addAttribute(
+            new Attribute(ATTR_REMOTE_HOST, remoteHostField_.getText()));
+        
+        Element incoming = new Element(NODE_INCOMING);
+        incomingTextArea_.savePrefs(incoming);
+        root.appendChild(incoming);
+
+        Element outgoing = new Element(NODE_OUTGOING);
+        outgoingTextArea_.savePrefs(outgoing);
+        root.appendChild(outgoing);
+        
+        XOMUtil.injectChild(prefs, root);
     }
 
     //--------------------------------------------------------------------------

@@ -1,10 +1,11 @@
 package toolbox.jtail.config;
 
+import toolbox.util.ui.plugin.IPreferenced;
 
 /**
  * Interface used for the persistence of the JTail application's preferences.
  */
-public interface IJTailConfig
+public interface IJTailConfig extends IPreferenced
 {
     /**
      * Returns the default tail pane configuration

@@ -1,6 +1,6 @@
 package toolbox.util.ui.plugin;
 
-import java.util.Properties;
+import nu.xom.Element;
 
 /**
  * IPreferenced provides a simple interface for saveing and restoring
@@ -9,19 +9,19 @@ import java.util.Properties;
 public interface IPreferenced
 {
     /**
-     * Saves preferences to the provided preferences object.
-     *  
-     * @param  prefs  Properties object to save the implementor preferences to.
-     */
-    public void savePrefs(Properties prefs);
-    
-    /**
-     * Reads preferences from the provided preferences object an apply them to
-     * the implementor.
+     * Reads preferences from the prefs DOM and applies them to the preferenced 
+     * target.
      * 
-     * @param  prefs  Properties object from which to read the implementors 
-     *                preferences from. 
+     * @param  prefs  Document object model from which to read preferences. 
      * @throws Exception on error
      */
-    public void applyPrefs(Properties prefs) throws Exception;
+    public void applyPrefs(Element prefs) throws Exception;
+    
+    /**
+     * Saves preferences to the prefs DOM.
+     *  
+     * @param  prefs  Document object model to persist preferences to.
+     */
+    public void savePrefs(Element prefs) throws Exception;
+    
 }

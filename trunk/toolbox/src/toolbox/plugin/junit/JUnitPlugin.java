@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -24,11 +23,14 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import toolbox.log4j.JTextAreaAppender;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.JListPopupMenu;
 import toolbox.util.ui.RegexListModelFilter;
 import toolbox.util.ui.plugin.IPlugin;
@@ -43,7 +45,8 @@ public class JUnitPlugin extends JPanel implements IPlugin
     public static final Logger logger_ =
         Logger.getLogger(JUnitPlugin.class);
 
-    private static final String PROP_FILTER = "junit.plugin.filter";
+    private static final String NODE_JUNIT_PLUGIN = "JUnitPlugin";
+    private static final String ATTR_FILTER       = "filter";
 
     private Action getPackagesAction_;
     private Action testPackagesAction_;
@@ -168,21 +171,24 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void savePrefs(Properties prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
-        if (!StringUtil.isNullOrEmpty(filterField_.getText()))
-            prefs.setProperty(PROP_FILTER, filterField_.getText());
+        Element root = prefs.getFirstChildElement(NODE_JUNIT_PLUGIN);
+        
+        filterField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_FILTER, ".*test"));
     }
-
+    
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void applyPrefs(Properties prefs)
+    public void savePrefs(Element prefs)
     {
-        // Set default to test packages
-        filterField_.setText(prefs.getProperty(PROP_FILTER, ".*test"));
+        Element root = new Element(NODE_JUNIT_PLUGIN);
+        root.addAttribute(new Attribute(ATTR_FILTER, filterField_.getText()));
+        XOMUtil.injectChild(prefs, root);    
     }
 
     /**

@@ -8,14 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -31,21 +29,29 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-// TODO: Remove dependency to another class
 import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
 import com.jgoodies.plaf.plastic.PlasticTheme;
 
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
 
+import nu.xom.Attribute;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Elements;
+import nu.xom.Node;
+import nu.xom.ParseException;
+import nu.xom.Serializer;
+
 import toolbox.log4j.SmartLogger;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.PropertiesUtil;
-import toolbox.util.StreamUtil;
-import toolbox.util.StringUtil;
+import toolbox.util.ResourceCloser;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
+import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
 
 /**
@@ -63,39 +69,62 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * TODO: Convert project build and layout to Maven
      * TODO: Added themes for Tiny Look and Feel
      */
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
         
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
-    private static final String FILE_PREFS     = ".toolbox.properties";
-    private static final String PROP_MAXXED    = "workspace.maximized";
-    private static final String PROP_WIDTH     = "workspace.width";
-    private static final String PROP_HEIGHT    = "workspace.height";
-    private static final String PROP_XCOORD    = "workspace.xcoord";
-    private static final String PROP_YCOORD    = "workspace.ycoord";
-    private static final String PROP_LAF       = "workspace.lookandfeel";
-    private static final String PROP_LOADED    = "workspace.plugins.loaded";
-    private static final String PROP_SELECTED  = "workspace.plugins.selected";
-    public  static final String PROP_STATUSBAR = "workspace.statusbar";
+    private static final String FILE_PREFS     = ".toolbox.xml";
+    
+    private static final String ATTR_MAXXED       = "maximized";
+    private static final String ATTR_WIDTH        = "width";
+    private static final String ATTR_HEIGHT       = "height";
+    private static final String ATTR_XCOORD       = "xcoord";
+    private static final String ATTR_YCOORD       = "ycoord";
+    private static final String ATTR_LAF          = "lookandfeel";
+    private static final String ATTR_SELECTED_TAB = "selectedtab";
+    private static final String ATTR_CLASS        = "class";
+    
+    private static final String NODE_WORKSPACE    = "Workspace";
+    private static final String NODE_PLUGIN       = "Plugin";
+    private static final String NODE_ROOT         = "Root";
+    
+    public  static final String PROP_STATUSBAR    = "workspace.statusbar";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
      
-    /** Plugins are added to this tab panel in order or registration */
+    /** 
+     * Plugins are added to this tab panel in order or registration 
+     */
     private JTabbedPane tabbedPane_;
     
-    /** Status bar at bottom of screen */
+    /** 
+     * Status bar at bottom of screen 
+     */
     private IStatusBar statusBar_;
     
-    /** Look and Feel Menu Items */
+    /** 
+     * Look and Feel Menu Items 
+     */
     private JMenu lookAndFeelMenu_;
     
-    /** Preferences stored as NV pairs */
-    private Properties prefs_;
+    /** 
+     * Preferences stored as XML 
+     */
+    private Element prefs_;
     
-    /** Map of plugin names -> plugins */
+    /** 
+     * Map of plugin names -> plugins 
+     */
     private Map plugins_ = new SequencedHashMap();
     
     /** 
-     * Default initialization map for all plugins. Passed into 
-     * IPlugin.startup(). 
+     * Default initialization map for all plugins. Passed into IPlugin.startup() 
      */
     private Map initMap_;
 
@@ -169,6 +198,31 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     /**
+     * Registers a plugin with the GUI. Must be called prior buildView()
+     * 
+     * @param  plugin  Plugin to add to the GUI
+     */
+    public void registerPlugin(IPlugin plugin, Element prefs) throws Exception
+    {
+        // Add to registry    
+        plugins_.put(plugin.getName(), plugin);
+
+        // Init plugin
+        plugin.startup(initMap_);
+
+        // Create tab
+        JPanel pluginPanel = new JPanel(new BorderLayout());
+        
+        pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
+        tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
+        tabbedPane_.setSelectedIndex(0);
+        
+        // Restore preferences
+        plugin.applyPrefs(prefs);
+    }
+
+
+    /**
      * Registeres a plugin given its FQN
      * 
      * @param  pluginClass  Name of plugin class that implements the IPlugin 
@@ -184,6 +238,24 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
         IPlugin plugin = (IPlugin) Class.forName(pluginClass).newInstance();
         registerPlugin(plugin);
+    }
+
+    /**
+     * Registeres a plugin given its FQN
+     * 
+     * @param  pluginClass  Name of plugin class that implements the IPlugin 
+     *                      interface
+     * @throws Exception on instantiation error
+     */
+    public void registerPlugin(String pluginClass, Element prefs) throws Exception
+    {
+        // Make sure this plugin hasn't already been loaded
+        for (Iterator i = plugins_.values().iterator(); i.hasNext(); )
+            if (i.next().getClass().getName().equals(pluginClass))
+                return;                
+    
+        IPlugin plugin = (IPlugin) Class.forName(pluginClass).newInstance();
+        registerPlugin(plugin, prefs);
     }
 
     /**
@@ -354,7 +426,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected void loadPrefs()
     {
-        prefs_ = new Properties();
+        prefs_ = new Element(NODE_ROOT);
         
         String userhome = System.getProperty("user.home");
         
@@ -366,8 +438,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         {
             try
             {
-                prefs_.load(new FileInputStream(f));
-                SmartLogger.debug(logger_, PropertiesUtil.toString(prefs_));
+                Document doc = new Builder().build(f);
+                Node root = doc.getRootElement().copy();
+                prefs_.appendChild(root);
+                SmartLogger.debug(logger_, prefs_.toXML());
+            }
+            catch (ParseException pe)
+            {
+                ExceptionUtil.handleUI(pe, logger_);
             }
             catch (IOException ioe)
             {
@@ -385,63 +463,68 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------
 
-    public void savePrefs(Properties prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
+        Element root = new Element(NODE_WORKSPACE);
+        
         boolean maxxed = 
             (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
             
-        PropertiesUtil.setBoolean(prefs, PROP_MAXXED, maxxed);
+        root.addAttribute(new Attribute(ATTR_MAXXED, maxxed+""));
         
         if (!maxxed)
         {
             // Save window location
-            PropertiesUtil.setInteger(prefs, PROP_XCOORD, getLocation().x);
-            PropertiesUtil.setInteger(prefs, PROP_YCOORD, getLocation().y);
+            root.addAttribute(new Attribute(ATTR_XCOORD, getLocation().x+""));
+            root.addAttribute(new Attribute(ATTR_YCOORD, getLocation().y+""));
         
             // Save window size
-            PropertiesUtil.setInteger(prefs, PROP_WIDTH, getSize().width);
-            PropertiesUtil.setInteger(prefs, PROP_HEIGHT, getSize().height); 
-        }
-        else
-        {
-            prefs.remove(PROP_XCOORD);
-            prefs.remove(PROP_YCOORD);
-            prefs.remove(PROP_WIDTH);
-            prefs.remove(PROP_HEIGHT);
+            root.addAttribute(new Attribute(ATTR_WIDTH, getSize().width+""));
+            root.addAttribute(new Attribute(ATTR_HEIGHT, getSize().height+"")); 
         }
 
         // Save look and feel
-        prefs.setProperty(PROP_LAF, 
-            UIManager.getLookAndFeel().getClass().getName());
+        root.addAttribute(new Attribute(
+            ATTR_LAF, UIManager.getLookAndFeel().getClass().getName()));
                 
         // Save plugin prefs too
-        String pluginLine = "";
-        
         for (Iterator i = plugins_.values().iterator(); i.hasNext();)
         {
             IPlugin plugin = (IPlugin) i.next();
-            plugin.savePrefs(prefs);
-            pluginLine += plugin.getClass().getName() + ",";
+            Element pluginNode = new Element(NODE_PLUGIN);
+            
+            pluginNode.addAttribute(
+                new Attribute(ATTR_CLASS, plugin.getClass().getName()));
+                
+            plugin.savePrefs(pluginNode);
+            root.appendChild(pluginNode);
         }
         
-        prefs.setProperty(PROP_LOADED , pluginLine);
-        
         // Save currently selected tab
-        PropertiesUtil.setInteger(prefs, PROP_SELECTED, 
-            tabbedPane_.getSelectedIndex());
+        root.addAttribute(
+            new Attribute(ATTR_SELECTED_TAB, tabbedPane_.getSelectedIndex()+""));
             
         // Save to file
         String userhome = System.getProperty("user.home");
-        
         userhome = FileUtil.trailWithSeparator(userhome);
             
-        File f = new File( userhome + FILE_PREFS);
-        FileOutputStream fos = null;
-
+        FileWriter writer = null;
+        String xml = null;
+        
         try
         {
-            fos = new FileOutputStream(f);
-            prefs.store(fos,"");
+            writer = new FileWriter(userhome + FILE_PREFS);
+            StringOutputStream sos = new StringOutputStream();
+            Serializer serializer = new Serializer(sos);
+            serializer.setIndent(3);
+            serializer.setLineSeparator("\n");
+            //serializer.setMaxLength(80);
+            serializer.write(new Document(root));
+            xml = sos.toString();
+            writer.write(xml);
+            
+            //writer.write(new Serializer();
+            
         }
         catch (IOException ioe)
         {
@@ -449,20 +532,18 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
         finally
         {
-            StreamUtil.close(fos);
+            ResourceCloser.close(writer);
         }
         
-        SmartLogger.debug(logger_, PropertiesUtil.toString(prefs));
-        
+        SmartLogger.debug(logger_, xml);
         statusBar_.setStatus("Saved preferences");
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(java.util.Properties)
-     */
-    public void applyPrefs(Properties prefs)
+    public void applyPrefs(Element prefs)
     {
-        boolean maxxed = PropertiesUtil.getBoolean(prefs, PROP_MAXXED, false);
+        Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
+        
+        boolean maxxed = XOMUtil.getBooleanAttribute(root, ATTR_MAXXED, false);
         
         // Frame has to be visible before it can be maximized so just queue
         // this bad boy up on the event queue 
@@ -483,72 +564,84 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
         // Restore window location
         setLocation(
-            PropertiesUtil.getInteger(prefs, PROP_XCOORD, 0),
-            PropertiesUtil.getInteger(prefs, PROP_YCOORD, 0));
+            XOMUtil.getIntegerAttribute(root, ATTR_XCOORD, 0),
+            XOMUtil.getIntegerAttribute(root, ATTR_YCOORD, 0));
         
         // Restore window size
         setSize(
-            PropertiesUtil.getInteger(prefs, PROP_WIDTH, 800),
-            PropertiesUtil.getInteger(prefs, PROP_HEIGHT, 600));
-            
-        // Reload Plugins that were saved
-        String pluginLine = prefs.getProperty(PROP_LOADED ,"");
-        String[] plugins = StringUtil.tokenize(pluginLine, ",");
+            XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, 800),
+            XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, 600));
 
-        // Restore look and feel
-        String lafClass = prefs.getProperty(PROP_LAF);
-        
-        if (lafClass != null)
-        {
-            try
+        if (root != null)
+        {    
+            // Restore look and feel
+            String lafClass = XOMUtil.getStringAttribute(root, ATTR_LAF, null);
+            
+            if (lafClass != null)
             {
-                UIManager.setLookAndFeel(lafClass);
-                
-                SwingUtilities.invokeLater(new Runnable()
+                try
                 {
-                    public void run()
+                    UIManager.setLookAndFeel(lafClass);
+                    
+                    SwingUtilities.invokeLater(new Runnable()
                     {
-                        SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
-                    }
-                });
+                        public void run()
+                        {
+                            SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    ExceptionUtil.handleUI(e, logger_);
+                }   
             }
-            catch (Exception e)
-            {
-                ExceptionUtil.handleUI(e, logger_);
-            }   
-        }
-
-        // Activate the currently loaded look and feel in the menu
-        String lafName = UIManager.getLookAndFeel().getName();        
-        
-        for (int i=0; i<lookAndFeelMenu_.getItemCount(); i++)
-        {
-            JMenuItem item = lookAndFeelMenu_.getItem(i);
+    
+            // Activate the currently loaded look and feel in the menu
+            String lafName = UIManager.getLookAndFeel().getName();        
             
-            if (item instanceof JCheckBoxMenuItem)
+            for (int i=0; i<lookAndFeelMenu_.getItemCount(); i++)
             {
-                if (item.getText().equals(lafName))
-                    item.setSelected(true);
+                JMenuItem item = lookAndFeelMenu_.getItem(i);
+                
+                if (item instanceof JCheckBoxMenuItem)
+                {
+                    if (item.getText().equals(lafName))
+                        item.setSelected(true);
+                }
             }
+
+            Elements plugins = root.getChildElements(NODE_PLUGIN);
+            
+            // Register plugins. Don't let failures stop process
+            for (int i=0; i<plugins.size(); i++) 
+            {
+                Element pluginNode = plugins.get(i);
+                
+                String pluginClass = 
+                    XOMUtil.getStringAttribute(pluginNode, ATTR_CLASS, "");
+                
+                try
+                {
+                    registerPlugin(pluginClass, pluginNode);       
+                }
+                catch (Throwable t)
+                {
+                    ExceptionUtil.handleUI(t, logger_);
+                }
+            }
+            
+            // Restore last selected tab
+            tabbedPane_.setSelectedIndex(
+                XOMUtil.getIntegerAttribute(root, ATTR_SELECTED_TAB, -1));
         }
-        
-        // Register plugins. Don't let failures stop process
-        for (int i=0; i<plugins.length; i++) 
+        else
         {
-            try
-            {
-                registerPlugin(plugins[i]);       
-            }
-            catch (Throwable t)
-            {
-                ExceptionUtil.handleUI(t, logger_);
-            }
+            logger_.warn(
+                "Root preferences object is empty.We're starting from scratch");
         }
-        
-        // Restore last selected tab
-        tabbedPane_.setSelectedIndex(
-            PropertiesUtil.getInteger(prefs, PROP_SELECTED,-1));
     }       
+
 
     //--------------------------------------------------------------------------
     //  Package Protected
@@ -586,20 +679,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-    /**
-     * Post initialization of the GUI after the frame has been realized
-     */    
-    class PostInit implements Runnable
-    {
-        public void run()
-        {
-            applyPrefs(prefs_);
-            //invalidate();
-            //doLayout();
-            //repaint();
-        }        
-    }
-    
     //--------------------------------------------------------------------------
     //  Actions
     //--------------------------------------------------------------------------
@@ -648,14 +727,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Saves the preferences for the workspaces in addition to all the
      * active plugins.
      */
-    class SavePreferencesAction extends AbstractAction
+    class SavePreferencesAction extends WorkspaceAction
     {
         public SavePreferencesAction()
         {
-            super("Save prefs");
+            super("Save prefs", false, null, null);
         }
         
-        public void actionPerformed(ActionEvent e)
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e) throws Exception
         {
             savePrefs(prefs_);
         }

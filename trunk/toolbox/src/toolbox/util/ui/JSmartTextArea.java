@@ -2,8 +2,6 @@ package toolbox.util.ui;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import java.io.StringReader;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
@@ -13,13 +11,12 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import nu.xom.Attribute;
-import nu.xom.Builder;
 import nu.xom.Element;
 
 import toolbox.util.Assert;
 import toolbox.util.FontUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 
 /**
  * Extends the functionality of JTextArea by adding the following features.
@@ -35,6 +32,11 @@ public class JSmartTextArea extends JTextArea
 {
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
+
+    private static final String NODE_JSMARTTEXTAREA = "JSmartTextArea";
+    private static final String NODE_FONT           = "Font";
+    private static final String ATTR_AUTOSCROLL     = "autoscroll";
+    private static final String ATTR_ANTIALIAS      = "antialias";
     
     /** 
      * Popup menu for this component 
@@ -116,7 +118,7 @@ public class JSmartTextArea extends JTextArea
     }
 
     //--------------------------------------------------------------------------
-    // Public 
+    // IPreferenced Interface 
     //--------------------------------------------------------------------------
     
     /**
@@ -127,46 +129,27 @@ public class JSmartTextArea extends JTextArea
         setCaretPosition(getDocument().getLength());
     }
 
-    public void savePrefs(Properties prefs, String prefix)
-    {
-        Element root = new Element("root");
-        savePrefs(root);
-        prefs.setProperty(prefix+".jtextarea", root.toXML());
-    }
-
-    public void applyPrefs(Properties prefs, String prefix) throws Exception
-    {
-        String xml = prefs.getProperty(prefix + ".jtextarea");
-        
-        if (!StringUtil.isNullOrBlank(xml))
-        {
-            Element root = 
-                new Builder().build(new StringReader(xml)).getRootElement();
-                
-            applyPrefs(root);
-        }
-    }
-
     public void applyPrefs(Element fromNode)
     {
-        Element prefs = fromNode.getFirstChildElement("JSmartTextArea");
-        
-        setAutoScroll(
-            Boolean.valueOf(
-                prefs.getAttributeValue("autoscroll")).booleanValue());
-                
-        setAntiAlias(
-            Boolean.valueOf(
-                prefs.getAttributeValue("antialias")).booleanValue());
-                
-        setFont(FontUtil.toFont(prefs.getChildElements("Font").get(0)));
+        if (fromNode != null)
+        {
+            Element prefs = fromNode.getFirstChildElement(NODE_JSMARTTEXTAREA);
+            
+            setAutoScroll(
+                XOMUtil.getBooleanAttribute(prefs, ATTR_AUTOSCROLL, false));
+                    
+            setAntiAlias(
+                XOMUtil.getBooleanAttribute(prefs, ATTR_ANTIALIAS, false));
+                    
+            setFont(FontUtil.toFont(prefs.getChildElements(NODE_FONT).get(0)));
+        }
     }
     
     public void savePrefs(Element inNode)
     {
-        Element prefs = new Element("JSmartTextArea");
-        prefs.addAttribute(new Attribute("autoscroll", isAutoScroll()+""));
-        prefs.addAttribute(new Attribute("antialias", isAntiAlias()+""));
+        Element prefs = new Element(NODE_JSMARTTEXTAREA);
+        prefs.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll()+""));
+        prefs.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias()+""));
         prefs.appendChild(FontUtil.toElement(getFont()));
         inNode.appendChild(prefs);
     }

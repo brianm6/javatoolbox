@@ -1,7 +1,6 @@
 package toolbox.jtail.config.xom;
 
 import java.awt.Font;
-import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
@@ -9,13 +8,17 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 
 import toolbox.jtail.config.ITailPaneConfig;
+import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
+import toolbox.util.ui.plugin.IPreferenced;
 
 /**
  * TailConfig is a data object that captures the configuration of a given tail 
  * instance with the ability to marshal itself to and from XML format.
  */
-public class TailPaneConfig implements ITailPaneConfig, XMLConstants
+public class TailPaneConfig implements ITailPaneConfig, XMLConstants, 
+    IPreferenced
 {
     private static final Logger logger_ =
         Logger.getLogger(TailPaneConfig.class);
@@ -82,142 +85,87 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    //  IPreferenced Interface
     //--------------------------------------------------------------------------
-    
+
     /**
-     * XML -> TailConfig
-     * 
-     * @param   tail  Element representing a TailPaneConfig
-     * @return  Fully populated TailPaneConfig
-     * @throws  IOException on IO error
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public static TailPaneConfig unmarshal(Element tail) throws IOException 
+    public void applyPrefs(Element prefs) throws Exception
     {
-        TailPaneConfig config = new TailPaneConfig();
+        Element root = prefs.getFirstChildElement(NODE_TAIL);
+       
+        setFilename(
+            XOMUtil.getStringAttribute(
+                root, ATTR_FILE, ""));
         
-        // Handle tail element
-        config.setFilename(tail.getAttributeValue(ATTR_FILE));
+        setAutoScroll(
+            XOMUtil.getBooleanAttribute(
+                root, ATTR_AUTOSCROLL, DEFAULT_AUTOSCROLL));
         
-        // Optional autoscroll
-        String autoscroll = tail.getAttributeValue(ATTR_AUTOSCROLL);
-        if (autoscroll != null)
-            config.setAutoScroll(new Boolean(autoscroll).booleanValue());
-        else
-            config.setAutoScroll(DEFAULT_AUTOSCROLL);
-                
-        // Optional show line numbers
-        String showLineNumbers = tail.getAttributeValue(ATTR_LINENUMBERS);
-        if (showLineNumbers != null)
-            config.setShowLineNumbers(
-                new Boolean(showLineNumbers).booleanValue());
-        else
-            config.setShowLineNumbers(DEFAULT_LINENUMBERS);
+        setShowLineNumbers(
+            XOMUtil.getBooleanAttribute(
+                root, ATTR_LINENUMBERS, DEFAULT_LINENUMBERS));
         
-        // Optional antiAlias attribute
-        String antiAlias = tail.getAttributeValue(ATTR_ANTIALIAS);
-        if (antiAlias != null)
-            config.setAntiAlias(new Boolean(antiAlias).booleanValue());
-        else
-            config.setAntiAlias(DEFAULT_ANTIALIAS);
+        setAntiAlias(
+            XOMUtil.getBooleanAttribute(
+                root, ATTR_ANTIALIAS, DEFAULT_ANTIALIAS));
 
-        // Optional autoStart attribute
-        String autoStart = tail.getAttributeValue(ATTR_AUTOSTART);
-        if (autoStart != null)
-            config.setAutoStart(new Boolean(autoStart).booleanValue());
-        else
-            config.setAutoStart(DEFAULT_AUTOSTART);
-        
-        // Handle optional font element    
-        Element fontNode = tail.getFirstChildElement(ELEMENT_FONT);
-        
-        if (fontNode != null)
-        {
-            String family = fontNode.getAttributeValue(ATTR_FAMILY);
-            int style = Integer.parseInt(fontNode.getAttributeValue(ATTR_STYLE));
-            int size = Integer.parseInt(fontNode.getAttributeValue(ATTR_SIZE));
-            config.setFont(new Font(family, style, size));
-        }
-        else
-        {
-            config.setFont(SwingUtil.getPreferredMonoFont());    
-        }
-        
-        // Handle optional regular expression element
-        Element regexNode = tail.getFirstChildElement(ELEMENT_REGULAR_EXPRESSION);
-        
-        if (regexNode != null)
-        {
-            config.setRegularExpression(regexNode.getAttributeValue(ATTR_EXPRESSION));
-            // TODO: support case sensetivity
-        }
-        else
-        {
-            config.setRegularExpression(DEFAULT_REGEX);
-        }
+        setAutoStart(
+            XOMUtil.getBooleanAttribute(
+                root, ATTR_AUTOSTART, DEFAULT_AUTOSTART));
 
-        // Handle optional cut expression element
-        Element cutNode = tail.getFirstChildElement(ELEMENT_CUT_EXPRESSION);
-        
-        if (cutNode != null)
-            config.setCutExpression(cutNode.getAttributeValue(ATTR_EXPRESSION));
-        else
-            config.setCutExpression(DEFAULT_CUT_EXPRESSION);
+        if (root != null)
+        {
+            setFont(
+                FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
             
-        return config;
+            setRegularExpression( 
+                XOMUtil.getString(root.getFirstChildElement(
+                    NODE_REGULAR_EXPRESSION), DEFAULT_REGEX));
+
+            setCutExpression( 
+                XOMUtil.getString(root.getFirstChildElement(
+                    NODE_CUT_EXPRESSION), DEFAULT_CUT_EXPRESSION));
+        }
     }
 
     /**
-     * TailConfig -> XML.
-     * <pre>
-     * 
-     * Tail attr = [file, autoscroll, lineNumbes, antialias, autostart]
-     *   |
-     *   +--Font
-     *   |
-     *   +--RegularExpression
-     *   |
-     *   +--CutExpression
-     * 
-     * </pre>
-     * 
-     * @return  Tail XML node
-     * @throws  IOException on IO error
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public Element marshal() throws IOException 
+    public void savePrefs(Element prefs) throws Exception
     {
-        // Tail element
-        Element tail = new Element(ELEMENT_TAIL);
+        Element root = new Element(NODE_TAIL);
         
         if (getFilename() != null)
-            tail.addAttribute(new Attribute(ATTR_FILE, getFilename()));
-            
-        tail.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));
-        tail.addAttribute(new Attribute(ATTR_LINENUMBERS,isShowLineNumbers()+""));
-        tail.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias() + ""));
-        tail.addAttribute(new Attribute(ATTR_AUTOSTART, isAutoStart() + ""));
+            root.addAttribute(new Attribute(ATTR_FILE, getFilename()));
         
-        // Font element    
-        Element fontNode = new Element(ELEMENT_FONT);
-        fontNode.addAttribute(new Attribute(ATTR_FAMILY, getFont().getFamily()));
-        fontNode.addAttribute(new Attribute(ATTR_STYLE, getFont().getStyle() + ""));
-        fontNode.addAttribute(new Attribute(ATTR_SIZE, getFont().getSize() + ""));            
+        root.addAttribute(
+            new Attribute(ATTR_LINENUMBERS,isShowLineNumbers()+""));
         
-        // Regex element
-        Element regexNode = new Element(ELEMENT_REGULAR_EXPRESSION);
-        regexNode.addAttribute(new Attribute(ATTR_EXPRESSION, getRegularExpression()));
+        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));    
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAlias() + ""));
+        root.addAttribute(new Attribute(ATTR_AUTOSTART, isAutoStart() + ""));
+        
+        Element fontNode = FontUtil.toElement(getFont());
+        Element regexNode = new Element(NODE_REGULAR_EXPRESSION);
+        
+        regexNode.addAttribute(
+            new Attribute(ATTR_EXPRESSION, getRegularExpression()));
 
-        // Cut element
-        Element cutNode = new Element(ELEMENT_CUT_EXPRESSION);
-        cutNode.addAttribute(new Attribute(ATTR_EXPRESSION, getCutExpression()));
+        Element cutNode = new Element(NODE_CUT_EXPRESSION);
+        
+        cutNode.addAttribute(
+            new Attribute(ATTR_EXPRESSION, getCutExpression()));
         
         // Add child nodes to tail
-        tail.appendChild(fontNode);        
-        tail.appendChild(regexNode);
-        tail.appendChild(cutNode);        
+        root.appendChild(fontNode);        
+        root.appendChild(regexNode);
+        root.appendChild(cutNode);        
         
-        return tail;
+        XOMUtil.injectChild(prefs, root);
     }
+
 
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object 
@@ -232,7 +180,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         
         try
         {
-            s = marshal().toString();
+            s = super.toString();
         }
         catch (Exception ioe)
         {

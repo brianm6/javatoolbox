@@ -1,9 +1,10 @@
 package toolbox.tunnel;
 
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JComponent;
+
+import nu.xom.Element;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -14,8 +15,10 @@ import toolbox.util.ui.plugin.PluginWorkspace;
  */
 public class JTcpTunnelPlugin implements IPlugin
 {
-    /** Delegate */
-    private JTcpTunnelPane jtcpTunnelPane_;
+    /** 
+     * Delegate 
+     */
+    private JTcpTunnelPane delegate_;
 
     //--------------------------------------------------------------------------
     // IPlugin Interface
@@ -31,8 +34,8 @@ public class JTcpTunnelPlugin implements IPlugin
         if (params != null)
             statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
 
-        jtcpTunnelPane_ = new JTcpTunnelPane();
-        jtcpTunnelPane_.setStatusBar(statusBar);    
+        delegate_ = new JTcpTunnelPane();
+        delegate_.setStatusBar(statusBar);    
     }
     
     /**
@@ -58,23 +61,23 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public JComponent getComponent()
     {
-        return jtcpTunnelPane_;
+        return delegate_;
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Properties prefs) throws Exception
+    public void applyPrefs(Element prefs) throws Exception
     {
-        jtcpTunnelPane_.applyPrefs(prefs);
+        delegate_.applyPrefs(prefs);        
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Properties prefs)
+    public void savePrefs(Element prefs)
     {
-        jtcpTunnelPane_.savePrefs(prefs);
+        delegate_.savePrefs(prefs);
     }
 
     /**
@@ -82,6 +85,6 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void shutdown()
     {
-        jtcpTunnelPane_ = null;
+        delegate_ = null;
     }
 }

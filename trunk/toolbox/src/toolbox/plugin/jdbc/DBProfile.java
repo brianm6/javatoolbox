@@ -3,8 +3,10 @@ package toolbox.jdbc;
 import java.io.IOException;
 import java.io.StringReader;
 
-import toolbox.util.xml.XMLNode;
-import toolbox.util.xml.XMLParser;
+import nu.xom.Attribute;
+import nu.xom.Builder;
+import nu.xom.Element;
+import nu.xom.ParseException;
 
 /**
  * Database connection profile for JDBC
@@ -76,14 +78,16 @@ public class DBProfile
      * @param  xml  String containing a valid XML persistence of DBProfile
      * @throws IOException on I/O error 
      */
-    public DBProfile(String xml) throws IOException
+    public DBProfile(String xml) throws ParseException, IOException
     {
-        XMLNode profile = new XMLParser().parseXML(new StringReader(xml));
-        setProfileName(profile.getAttr(ATTR_PROFILE_NAME));
-        setDriver(profile.getAttr(ATTR_DRIVER));
-        setUrl(profile.getAttr(ATTR_URL));
-        setUsername(profile.getAttr(ATTR_USERNAME));
-        setPassword(profile.getAttr(ATTR_PASSWORD));   
+        Element profile = 
+            new Builder().build(new StringReader(xml)).getRootElement();
+        
+        setProfileName(profile.getAttributeValue(ATTR_PROFILE_NAME));
+        setDriver(profile.getAttributeValue(ATTR_DRIVER));
+        setUrl(profile.getAttributeValue(ATTR_URL));
+        setUsername(profile.getAttributeValue(ATTR_USERNAME));
+        setPassword(profile.getAttributeValue(ATTR_PASSWORD));   
     }
 
     /**
@@ -120,7 +124,7 @@ public class DBProfile
      */
     public String toXML()
     {
-        return toDOM().toString();
+        return toDOM().toXML();
     }
 
     /**
@@ -128,16 +132,14 @@ public class DBProfile
      * 
      * @return  DOM tree
      */    
-    public XMLNode toDOM()
+    public Element toDOM()
     {
-        // Tail element
-        XMLNode profile = new XMLNode(ELEMENT_PROFILE);
-        profile.addAttr(ATTR_PROFILE_NAME, profileName_);
-        profile.addAttr(ATTR_DRIVER, driver_);
-        profile.addAttr(ATTR_URL, url_);
-        profile.addAttr(ATTR_USERNAME, username_);
-        profile.addAttr(ATTR_PASSWORD, password_);
-        
+        Element profile = new Element(ELEMENT_PROFILE);
+        profile.addAttribute(new Attribute(ATTR_PROFILE_NAME, profileName_));
+        profile.addAttribute(new Attribute(ATTR_DRIVER, driver_));
+        profile.addAttribute(new Attribute(ATTR_URL, url_));
+        profile.addAttribute(new Attribute(ATTR_USERNAME, username_));
+        profile.addAttribute(new Attribute(ATTR_PASSWORD, password_));
         return profile;
     }
 

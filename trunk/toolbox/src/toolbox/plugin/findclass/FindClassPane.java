@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -46,18 +45,19 @@ import org.jedit.syntax.TextAreaDefaults;
 
 import net.sf.jode.decompiler.Decompiler;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
-import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.MathUtil;
-import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
@@ -76,20 +76,33 @@ import toolbox.util.ui.table.TableSorter;
  */
 public class JFindClass extends JFrame implements IPreferenced
 {
-    /*
-     * TODO: Update tablecell renderer to highlight the matching substring
-     */
+    // TODO: Update tablecell renderer to highlight the matching substring
 
-    private static final Logger logger_ = Logger.getLogger(JFindClass.class);
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    	
+    private static final Logger logger_ = 
+        Logger.getLogger(JFindClass.class);
 
-    /** Prefix tacked onto the beginning of all properties assoc w/ JTail */
-    private static final String PROP_PREFIX = "jfindclass.plugin";
+    // XML stuff for preferences
+    private static final String NODE_JFINDCLASS_PLUGIN = "JFindClassPlugin";
+    private static final String   ATTR_IGNORECASE      = "ignorecase";
+    private static final String   ATTR_SEARCH          = "search";
+    private static final String   ATTR_SHOWPATH        = "showpath";
+    private static final String NODE_TOP_FLIPPANE      = "TopFlipPane";
+    private static final String NODE_LEFT_FLIPPANE     = "LeftFlipPane";
  
-    //private static final int COL_NUM       = 0;
+    // Table columns
+    private static final int COL_NUM       = 0;
     private static final int COL_SOURCE    = 1;
     private static final int COL_CLASS     = 2;
-    //private static final int COL_SIZE      = 3;
-    //private static final int COL_TIMESTAMP = 4;
+    private static final int COL_SIZE      = 3;
+    private static final int COL_TIMESTAMP = 4;
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
 
     // Search    
     private JTextField           searchField_;
@@ -129,26 +142,6 @@ public class JFindClass extends JFrame implements IPreferenced
         "Size", 
         "Timestamp"
     };
-    
-    //--------------------------------------------------------------------------
-    // Main
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Entrypoint
-     * 
-     * @param  args  None recognized
-     * @throws Exception on error
-     */    
-    public static void main(String[] args) throws Exception
-    {
-        SwingUtil.setPreferredLAF();           
-        JFindClass jfc = new JFindClass();
-        jfc.init(null);
-        jfc.setSize(800,600);
-        SwingUtil.centerWindow(jfc);        
-        jfc.setVisible(true);
-    }
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -160,47 +153,6 @@ public class JFindClass extends JFrame implements IPreferenced
     public JFindClass()
     {
         super("JFindClass");
-    }
-    
-    //--------------------------------------------------------------------------
-    // IPreferenced Interface
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(Properties)
-     */
-    public void savePrefs(Properties prefs)
-    {
-        fileExplorer_.savePrefs(prefs, PROP_PREFIX);
-        leftFlipPane_.savePrefs(prefs, PROP_PREFIX + ".left");
-        topFlipPane_.savePrefs(prefs, PROP_PREFIX + ".top");
-        
-        PropertiesUtil.setBoolean(
-            prefs,PROP_PREFIX + ".ignorecase",ignoreCaseCheckBox_.isSelected());
-            
-        PropertiesUtil.setBoolean(
-            prefs,PROP_PREFIX + ".showpath", showPathCheckBox_.isSelected());
-            
-        prefs.setProperty(
-            PROP_PREFIX + ".lastsearch", searchField_.getText().trim());
-    }
-
-    /**
-     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(Properties)
-     */
-    public void applyPrefs(Properties prefs)
-    {
-        fileExplorer_.applyPrefs(prefs, PROP_PREFIX);
-        leftFlipPane_.applyPrefs(prefs, PROP_PREFIX + ".left");
-        topFlipPane_.applyPrefs(prefs, PROP_PREFIX + ".top");
-
-        ignoreCaseCheckBox_.setSelected(
-            PropertiesUtil.getBoolean(prefs,PROP_PREFIX + ".ignorecase", true));
-            
-        showPathCheckBox_.setSelected(
-            PropertiesUtil.getBoolean(prefs, PROP_PREFIX + ".showpath", true));
-            
-        searchField_.setText(prefs.getProperty(PROP_PREFIX + ".lastsearch","")); 
     }
 
     //--------------------------------------------------------------------------
@@ -434,6 +386,67 @@ public class JFindClass extends JFrame implements IPreferenced
         for (int i=0; i < resultColumns_.length; i++)
             resultTable_.setDefaultRenderer(resultTable_.getColumnClass(i), 
                 new AlternatingCellRenderer());
+    }
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = prefs.getFirstChildElement(NODE_JFINDCLASS_PLUGIN);
+        
+        fileExplorer_.applyPrefs(prefs);
+        
+        if (root != null)
+        {
+            leftFlipPane_.applyPrefs(
+                root.getFirstChildElement(NODE_LEFT_FLIPPANE));
+                
+            topFlipPane_.applyPrefs(
+                root.getFirstChildElement(NODE_TOP_FLIPPANE));
+        }
+
+        ignoreCaseCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_IGNORECASE, true));
+            
+        showPathCheckBox_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_SHOWPATH, true));
+            
+        searchField_.setText(
+            XOMUtil.getStringAttribute(root, ATTR_SEARCH, "")); 
+    }
+    
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element root = new Element(NODE_JFINDCLASS_PLUGIN);
+        
+        fileExplorer_.savePrefs(root);
+        
+        Element topFlipPane = new Element(NODE_TOP_FLIPPANE);
+        topFlipPane_.savePrefs(topFlipPane);
+        root.appendChild(topFlipPane);
+
+        Element leftFlipPane = new Element(NODE_LEFT_FLIPPANE);
+        leftFlipPane_.savePrefs(leftFlipPane);
+        root.appendChild(leftFlipPane);
+        
+        root.addAttribute(new Attribute(
+            ATTR_IGNORECASE, ignoreCaseCheckBox_.isSelected()+""));
+
+        root.addAttribute(new Attribute(
+            ATTR_SHOWPATH, showPathCheckBox_.isSelected()+""));
+
+        root.addAttribute(new Attribute(
+            ATTR_SEARCH, searchField_.getText().trim()));
+            
+        XOMUtil.injectChild(prefs, root);
     }
 
     //--------------------------------------------------------------------------
@@ -798,20 +811,20 @@ public class JFindClass extends JFrame implements IPreferenced
     /**
      * Action to decompile the currently selected class file
      */
-    class DecompileAction extends AbstractAction
+    class DecompileAction extends WorkspaceAction
     {
         DecompileAction()
         {
-            super("Decompile");
+            super("Decompile", true, null, statusBar_);
             putValue(MNEMONIC_KEY, new Integer('D'));    
-            putValue(SHORT_DESCRIPTION, "Decompiles class");
+            putValue(SHORT_DESCRIPTION, "Decompiles the selected class");
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             int idx = resultTable_.getSelectedRow();
             
-            if (idx >=0)
+            if (idx >= 0)
             {
                 // Jar or directory path
                 String location = (String) 
@@ -834,23 +847,16 @@ public class JFindClass extends JFrame implements IPreferenced
                 // Java source code will be dumped here                
                 StringWriter writer = new StringWriter();
                                      
-                try
-                {
-                    decompiler.decompile(clazz, writer, null);
+                decompiler.decompile(clazz, writer, null);
+                
+                // Nuke the tabs                
+                String javaSource = StringUtil.replace(
+                    writer.getBuffer().toString(), "\t", "    ");
                     
-                    // Nuke the tabs                
-                    String javaSource = StringUtil.replace(
-                        writer.getBuffer().toString(), "\t", "    ");
-                        
-                    //logger_.debug("\n" + javaSource);    
-                    
-                    sourceArea_.setText(javaSource);
-                    sourceArea_.setCaretPosition(0);
-                }
-                catch(IOException ioe)
-                {
-                    ExceptionUtil.handleUI(ioe, logger_);
-                }
+                //logger_.debug("\n" + javaSource);    
+                
+                sourceArea_.setText(javaSource);
+                sourceArea_.setCaretPosition(0);
             }           
         }
     }

@@ -1,11 +1,12 @@
 package toolbox.findclass;
 
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
+
+import nu.xom.Element;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.ui.plugin.IPlugin;
@@ -18,8 +19,10 @@ public class JFindClassPlugin implements IPlugin
     public static final Logger logger_ =
         Logger.getLogger(JFindClassPlugin.class);
         
-    /** Delegate JFindClass */    
-    private JFindClass jfindClass_;
+    /** 
+     * Delegate JFindClass 
+     */    
+    private JFindClass delegate_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -30,7 +33,7 @@ public class JFindClassPlugin implements IPlugin
      */
     public JFindClassPlugin()
     {
-        jfindClass_ = new JFindClass();
+        delegate_ = new JFindClass();
     }
     
     //--------------------------------------------------------------------------
@@ -50,7 +53,7 @@ public class JFindClassPlugin implements IPlugin
      */
     public JComponent getComponent()
     {
-        return (JComponent) jfindClass_.getContentPane();
+        return (JComponent) delegate_.getContentPane();
     }
 
     /**
@@ -70,7 +73,7 @@ public class JFindClassPlugin implements IPlugin
     {
         try
         {
-            jfindClass_.init(params);        
+            delegate_.init(params);        
         }
         catch (Exception ioe)
         {
@@ -79,19 +82,19 @@ public class JFindClassPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void savePrefs(Properties prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
-        jfindClass_.savePrefs(prefs);
+        delegate_.applyPrefs(prefs);
     }
-
+    
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void applyPrefs(Properties prefs)
+    public void savePrefs(Element prefs)
     {
-        jfindClass_.applyPrefs(prefs);
+        delegate_.savePrefs(prefs);    
     }
 
     /**

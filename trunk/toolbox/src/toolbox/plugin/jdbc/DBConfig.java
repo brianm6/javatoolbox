@@ -1,10 +1,6 @@
 package toolbox.jdbc;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Enumeration;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
@@ -17,23 +13,34 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
+import nu.xom.Element;
+import nu.xom.Elements;
+
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
-import toolbox.util.xml.XMLNode;
-import toolbox.util.xml.XMLParser;
 
 /**
  * JDBC Drivers configuration panel
  */    
 public class DBConfig extends JPanel implements IPreferenced
 {
-    private static final Logger logger_ = Logger.getLogger(DBConfig.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(DBConfig.class);
+    
+    /**
+     * XML: DBConfig has [0..n] DBProfile children
+     */
+    private static final String NODE_DBCONFIG = "DBConfig";
+    
+    /**
+     * XML: DBProfile is a child of DBConfig
+     */
+    private static final String NODE_DBPROFILE = "DBProfile";
     
     /**
      * Parent of this panel
@@ -105,24 +112,6 @@ public class DBConfig extends JPanel implements IPreferenced
         else
             profileCombo_.addItem(profile);
     }
-
-    /**
-     * Returns an XML representation of the data making up the configuration.
-     *  
-     * @return XML string
-     */
-    public String toXML()
-    {
-        XMLNode profiles = new XMLNode("DBProfileList");
-        
-        for (int i=0, n=profileCombo_.getItemCount(); i<n; i++)
-        {
-            DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
-            profiles.addNode(profile.toDOM());
-        }
-        
-        return profiles.toString();
-    }
     
     //--------------------------------------------------------------------------
     // Protected 
@@ -169,18 +158,17 @@ public class DBConfig extends JPanel implements IPreferenced
     // IPreferenced Interface
     //--------------------------------------------------------------------------    
         
-    public void savePrefs(Properties prefs)
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs)
     {
-        prefs.setProperty(QueryPlugin.PROP_PROFILES, toXML());
-    }
-    
-    public void applyPrefs(Properties prefs)
-    {
-        String xmlProfiles = prefs.getProperty(QueryPlugin.PROP_PROFILES, "");
-        
-        if (StringUtil.isNullOrBlank(xmlProfiles) || 
-            xmlProfiles.trim().equals("<DBProfileList/>"))
+        Element dbConfig = prefs.getFirstChildElement(NODE_DBCONFIG);
+          
+        if (dbConfig == null || dbConfig.getChildCount() == 0)      
         {
+            // First time..pre-populate with some canned profiles
+            
             profileCombo_.addItem(new DBProfile(
                 "DB2",
                 "COM.ibm.db2.jdbc.app.DB2Driver",
@@ -199,29 +187,42 @@ public class DBConfig extends JPanel implements IPreferenced
                 "HSQL",
                 "org.hsqldb.jdbcDriver",
                 "jdbc:hsqldb:<database>",
-                "",
+                "SA",
                 ""));
         }
         else
         {
             try
-            {
-                XMLNode profiles = 
-                    new XMLParser().parseXML(new StringReader(xmlProfiles));
-                    
-                for(Enumeration e=profiles.enumerateNode();e.hasMoreElements();)
-                {
-                    XMLNode profile = (XMLNode) e.nextElement();
-                    DBProfile dbProfile = new DBProfile(profile.toString());
-                    addProfile(dbProfile);
-                }
+            { 
+                Elements dbProfiles = dbConfig.getChildElements(NODE_DBPROFILE);
+                
+                for (int i=0, n = dbProfiles.size(); i<n; i++)
+                    addProfile(new DBProfile(dbProfiles.get(i).toXML()));
             }
-            catch (IOException ioe)
+            catch (Exception ioe)
             {
                 ExceptionUtil.handleUI(ioe, logger_);
             }
         }
+
     }
+
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element dbConfig = new Element(NODE_DBCONFIG);
+        
+        for (int i=0, n=profileCombo_.getItemCount(); i<n; i++)
+        {
+            DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
+            dbConfig.appendChild(profile.toDOM());
+        }
+       
+        prefs.appendChild(dbConfig);        
+    }
+
     
     //--------------------------------------------------------------------------
     // Actions

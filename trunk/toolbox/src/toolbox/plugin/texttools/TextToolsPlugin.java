@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
@@ -27,11 +26,14 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
+import nu.xom.Element;
+
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
 import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -55,6 +57,8 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     
     public static final Logger logger_ =
         Logger.getLogger(TextPlugin.class);   
+    
+    private static final String NODE_TEXTTOOLS_PLUGIN = "TextToolsPlugin";
     
     /** 
      * Reference to the workspace status bar 
@@ -143,16 +147,23 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
                "tokenizing, and regular expression based filtering.";
     }
 
-    public void applyPrefs(Properties prefs) throws Exception
+    public void applyPrefs(Element prefs) 
     {
-        topFlipPane_.applyPrefs(prefs, "textplugin");
-        textArea_.applyPrefs(prefs, "textplugin");
+        Element root = prefs.getFirstChildElement(NODE_TEXTTOOLS_PLUGIN);
+        
+        if (root != null)
+        {
+            topFlipPane_.applyPrefs(root);
+            textArea_.applyPrefs(root);
+        }
     }
 
-    public void savePrefs(Properties prefs)
+    public void savePrefs(Element prefs)
     {
-        topFlipPane_.savePrefs(prefs, "textplugin");
-        textArea_.savePrefs(prefs, "textplugin");
+        Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
+        topFlipPane_.savePrefs(root);
+        textArea_.savePrefs(root);
+        XOMUtil.injectChild(prefs, root);
     }
 
     public void shutdown()

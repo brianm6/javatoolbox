@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -21,14 +20,17 @@ import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
 
+import nu.xom.Element;
+import nu.xom.Elements;
+
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
-import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -59,55 +61,76 @@ import toolbox.util.ui.plugin.WorkspaceAction;
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
 {
-    /*
-     * TODO: create SQLDefaults for syntax hiliting
-     * TODO: Ctrl-Up/Down should scroll through query history
-     * TODO: Move num rows to top of display and stop scrolling down to bottom
-     */
+    // TODO: create SQLDefaults for syntax hiliting
+    // TODO: Ctrl-Up/Down should scroll through query history
      
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
-    /** Prefix for embedded configurable components */
-    public static final String PROP_PREFIX = "query.plugin";
-    
-    /** Property key for SQL history */
-    public static final String PROP_HISTORY = "query.plugin.history";
+    /**
+     * XML: Root preferences element for the query plugin
+     */
+    public static final String NODE_QUERY_PLUGIN = "QueryPlugin";
 
-    /** Max number of entries in sql history popup menu */
-    public static final String PROP_HISTORY_MAX = "query.plugin.history.max";
-    
-    /** Property key for the contents of the SQL text area */
-    public static final String PROP_CONTENTS = "query.plugin.contents";
+    /**
+     * XML: Attribute of QueryPlugin that stores the max number of entries 
+     *      in the sql history popup menu before getting truncated. 
+     */
+    public static final String ATTR_HISTORY_MAX = "maxHistory";
 
-    /** Property key for the database profiles */    
-    public static final String PROP_PROFILES = "query.plugin.profiles";    
+    /**
+     * XML: Child of QueryPlugin that contains a single "remembered" SQL stmt
+     */
+    public static final String NODE_HISTORY_ITEM = "HistoryItem";
+        
+    /** 
+     * XML: Child of QueryPlugin that contains the contents of the SQL text area 
+     */
+    public static final String NODE_CONTENTS = "SQLContents";
     
-    /** Status bar of plugin host */
+    /** 
+     * Reference to the workspace statusbar 
+     */
     private IStatusBar statusBar_;
     
-    /** Text area for entering sql statements */    
+    /** 
+     * Text area for entering sql statements 
+     */    
     private JEditTextArea sqlArea_;
     
-    /** Text are for sql execution results */
+    /** 
+     * Text are for sql execution results 
+     */
     private JSmartTextArea resultsArea_;
     
-    /** Invokes execution of sql command */
+    /** 
+     * Invokes execution of sql command 
+     */
     private JButton queryButton_;
     
-    /** Clears the contents of the sql results area */
+    /** 
+     * Clears the contents of the sql results area 
+     */
     private JButton clearButton_;
     
-    /** Flippane which houses the jdbc configuration panel */
+    /** 
+     * Flippane which houses the jdbc configuration panel 
+     */
     private JFlipPane leftFlipPane_;
     
-    /** Popup menu that contains a history of recently executed sql */
+    /** 
+     * Popup menu that contains a history of recently executed sql 
+     */
     private JConveyorPopupMenu sqlPopup_;    
     
-    /** Maps sqlpopup_ menu items to the actual sql text */
+    /** 
+     * Maps sqlpopup_ menu items to the actual sql text 
+     */
     private Map sqlHistory_;
 
-    /** Database configuration panel */
+    /** 
+     * Database configuration panel 
+     */
     private DBConfig dbConfigPane_;
     
     //--------------------------------------------------------------------------
@@ -288,39 +311,60 @@ public class QueryPlugin extends JPanel implements IPlugin
 	// IPreferenced Interface
 	//--------------------------------------------------------------------------
 
-    public void applyPrefs(Properties prefs) throws Exception
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs)
     {
-        // Restore sql history
-        sqlPopup_.setCapacity(
-            PropertiesUtil.getInteger(prefs, PROP_HISTORY_MAX, 10));
+        Element queryPlugin = prefs.getFirstChildElement(NODE_QUERY_PLUGIN);
         
-        String[] historyItems = 
-            StringUtil.tokenize(prefs.getProperty(PROP_HISTORY,""), "|");
+        if (queryPlugin != null)
+        {
+            sqlPopup_.setCapacity(XOMUtil.getInteger(
+                queryPlugin.getFirstChildElement(ATTR_HISTORY_MAX), 10));
             
-        logger_.debug("Restoring " + historyItems.length + " saved sql stmts");
-        
-        for (int i=0; i<historyItems.length; i++)
-            addToHistory(historyItems[i]);
-        
-        sqlArea_.setText(prefs.getProperty(PROP_CONTENTS, ""));
-        leftFlipPane_.applyPrefs(prefs, PROP_PREFIX);
-        dbConfigPane_.applyPrefs(prefs);
-        resultsArea_.applyPrefs(prefs, PROP_PREFIX);
+            Elements historyItems = 
+                queryPlugin.getChildElements(NODE_HISTORY_ITEM);
+                    
+            logger_.debug(
+                "Restoring " + historyItems.size() + " saved sql stmts");
+            
+            for (int i=0; i<historyItems.size(); i++)
+                addToHistory(historyItems.get(i).getValue());
+            
+            sqlArea_.setText(
+                XOMUtil.getString(
+                    queryPlugin.getFirstChildElement(NODE_CONTENTS),""));
+            
+            leftFlipPane_.applyPrefs(queryPlugin);
+            dbConfigPane_.applyPrefs(queryPlugin);
+            resultsArea_.applyPrefs(queryPlugin);
+        }
     }
 
-    public void savePrefs(Properties prefs)
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
     {
-        // Munge all SQL statements into one string and save
-        StringBuffer sb = new StringBuffer("");
-        
+        Element root = new Element(NODE_QUERY_PLUGIN);
+         
         for (Iterator i =  sqlHistory_.values().iterator(); i.hasNext(); )
-            sb.append(i.next().toString() + "|");
+        {
+            Element historyItem = new Element(NODE_HISTORY_ITEM);
+            historyItem.appendChild(i.next().toString());
+            root.appendChild(historyItem);
+        }
         
-        prefs.setProperty(PROP_HISTORY,  sb.toString());
-        prefs.setProperty(PROP_CONTENTS, sqlArea_.getText().trim());
-        leftFlipPane_.savePrefs(prefs, PROP_PREFIX);
-        dbConfigPane_.savePrefs(prefs);
-        resultsArea_.savePrefs(prefs, PROP_PREFIX);
+        Element contents = new Element(NODE_CONTENTS);
+        contents.appendChild(sqlArea_.getText().trim());
+        root.appendChild(contents);
+        
+        leftFlipPane_.savePrefs(root);
+        dbConfigPane_.savePrefs(root);
+        resultsArea_.savePrefs(root);
+
+        XOMUtil.injectChild(prefs, root);
     }
     
     //--------------------------------------------------------------------------

@@ -9,7 +9,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,13 +24,16 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.Queue;
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
@@ -60,8 +62,16 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         
     private static final Logger logger_ = 
         Logger.getLogger(JSourceView.class);
+
+	/**
+	 * XML: Root preferences element
+	 */
+    private static final String NODE_JSOURCEVIEW_PLUGIN = "JSourceViewPlugin";
     
-    private static final String PROP_LAST_DIR = "jsourceview.dir";
+    /**
+     * XML: Attribute of JSourceViewPlugin that stores the current directory
+     */
+    private static final String ATTR_LAST_DIR = "dir";
     
     private static final String LABEL_GO     = "Go!";
     private static final String LABEL_CANCEL = "Cancel";
@@ -85,13 +95,19 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     private Thread        parserThread_;
     private ParserWorker  parserWorker_;
 
-    /** Workspace status bar (in addition to the two we're already got) */
+    /** 
+     * Workspace status bar (in addition to the two we're already got) 
+     */
     private IStatusBar workspaceStatusBar_;
     
-    /** Platform path separator */
+    /** 
+     * Platform path separator 
+     */
     private String pathSeparator_;
 
-    /** Table column names */    
+    /** 
+     * Table column names 
+     */    
     private String colNames_[] = 
     {
         "Num",
@@ -105,7 +121,9 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         "Percentage"
     };
 
-    /** Filter to identify source files */
+    /** 
+     * Filter to identify source files 
+     */
     private static OrFilter sourceFilter_;
     
     static
@@ -250,33 +268,29 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
 	//--------------------------------------------------------------------------
 
     /**
-     * Saves preferences 
-     * 
-     * @param prefs Properties to save preferences to
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void savePrefs(Properties prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
-        String dir = dirField_.getText();
+        Element root = prefs.getFirstChildElement(NODE_JSOURCEVIEW_PLUGIN);
         
-        if (!StringUtil.isNullOrEmpty(dir))
-            prefs.setProperty(PROP_LAST_DIR, dir.trim());
+        dirField_.setText(XOMUtil.getStringAttribute(root, ATTR_LAST_DIR, ""));
+        dirField_.setCaretPosition(0);
     }
 
     /**
-     * Applies preferences
-     * 
-     * @param prefs Properties to read preferences from
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void applyPrefs(Properties prefs)
+    public void savePrefs(Element prefs)
     {
-        String dir = prefs.getProperty(PROP_LAST_DIR);
+        Element root = new Element(NODE_JSOURCEVIEW_PLUGIN);
         
-        if (!StringUtil.isNullOrEmpty(dir))
-        {
-            dirField_.setText(dir);
-            dirField_.setCaretPosition(0);
-        }
+        root.addAttribute(
+            new Attribute(ATTR_LAST_DIR, dirField_.getText().trim()));
+            
+        XOMUtil.injectChild(prefs, root);
     }
+
 
     //--------------------------------------------------------------------------
     // Protected

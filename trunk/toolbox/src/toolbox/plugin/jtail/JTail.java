@@ -7,15 +7,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -29,18 +25,18 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 
-import nu.xom.Builder;
+import nu.xom.Element;
+import nu.xom.Elements;
 
-import toolbox.jtail.config.IConfigManager;
 import toolbox.jtail.config.IJTailConfig;
 import toolbox.jtail.config.ITailPaneConfig;
-import toolbox.jtail.config.tinyxml.ConfigManager;
+import toolbox.jtail.config.xom.JTailConfig;
 import toolbox.jtail.config.xom.TailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.PropertiesUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JConveyorMenu;
 import toolbox.util.ui.JFileExplorerAdapter;
@@ -57,28 +53,38 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JTail extends JFrame implements IPreferenced
 {
-    /*
-     * TODO: Add configurable "aggregator" for existing tails 
-     */
+     // TODO: Add configurable "aggregator" for existing tails 
 
     private static final Logger logger_ = 
         Logger.getLogger(JTail.class);
+    
+    private static final String NODE_JTAIL_PLUGIN = "JTailPlugin";
+    private static final String NODE_RECENT       = "Recent";
+    private static final String NODE_RECENT_TAIL  = "RecentTail";
          
-    private int lastNumRecent_;
-
-    /** Presents list of recently tailed files */
+    /** 
+     * Presents list of recently tailed files 
+     */
     private JMenu recentMenu_;
 
-    /** File explorer flipper that allows the user to select a file to tail */
+    /** 
+     * File explorer flipper that allows the user to select a file to tail 
+     */
     private FileSelectionPane fileSelectionPane_;
-    
-    /** Tab panel that contains each tail as a single tab */
-    private JTabbedPane tabbedPane_;
-    
-    /** Flip panel that houses the file explorer */
-    private JFlipPane flipPane_;    
 
-    /** Map of each tail that is active */
+    /** 
+     * Tab panel that contains each tail as a single tab 
+     */
+    private JTabbedPane tabbedPane_;
+
+    /** 
+     * Flip panel that houses the file explorer 
+     */
+    private JFlipPane flipPane_;
+
+    /** 
+     * Map of each tail that is active 
+     */
     private Map tailMap_;
     
     /** 
@@ -92,13 +98,6 @@ public class JTail extends JFrame implements IPreferenced
      * to the file menu which creates a running tail for testing purposes
      */
     private boolean testMode_ = true;
-    
-    /** 
-     * Configuration manager which oversees the reading and saving of 
-     * application specific preferences. This includes the current active
-     * tails and also window size/position, etc.
-     */
-    private IConfigManager configManager_ = new ConfigManager();
     
     /** 
      * Data object that captures all known application settings/preferences. 
@@ -146,13 +145,13 @@ public class JTail extends JFrame implements IPreferenced
     {
         try
         {
-            // Init variables
             tailMap_  = new HashMap();
+            jtailConfig_ = new JTailConfig();
             
             buildView();
             wireView();
             setDefaultCloseOperation(EXIT_ON_CLOSE);            
-            loadConfiguration();
+            //loadConfiguration();
         }
         catch (Exception e)
         {
@@ -194,8 +193,7 @@ public class JTail extends JFrame implements IPreferenced
         fileMenu.add(new TailSystemOutAction());
         fileMenu.add(new TailLog4JAction());
         fileMenu.addSeparator();
-        fileMenu.add(new SaveAction());
-        
+                
         if (testMode_)
         {
             fileMenu.addSeparator();
@@ -248,25 +246,12 @@ public class JTail extends JFrame implements IPreferenced
             ExceptionUtil.handleUI(e, logger_);
         }
     }
-         
-    /**
-     * Loads properties (delegated to configuration manager)
-     * 
-     * @throws  IOException on I/O error
-     */
-    protected void loadConfiguration()
-    {
-        jtailConfig_ = configManager_.load();
-    }    
     
     /**
      * Adds listeners
      */
     protected void wireView()
     {
-        // Intercept closing of app to save configuration
-        addWindowListener(new WindowListener());
-        
         fileSelectionPane_.getFileExplorer().
             addJFileExplorerListener(new FileSelectionListener());
             
@@ -295,130 +280,98 @@ public class JTail extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------    
 
     /**
-     * Saves the current configuration of all tail instances (delegated to 
-     * configuration manager).
-     * 
-     * @param  props  Used to save file explorer and flip pane properties
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void savePrefs(Properties props)
+    public void applyPrefs(Element prefs) throws Exception
     {
-        try
+        Element root = prefs.getFirstChildElement(NODE_JTAIL_PLUGIN);
+
+        if (root != null)
         {
-            // Since each of the ITailPaneConfigs are maintained inside the 
-            // TailPane itself, gather them up and update jtailConfig before
-            // saving. Essentially, do the reverse of applyConfiguration(). 
             
-            ITailPaneConfig configs[] = new ITailPaneConfig[0];
+            jtailConfig_.applyPrefs(root);
             
-            for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext(); )
+            // Tails left running since last save
+            ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
+            
+            for (int i=0; i< tailPaneConfigs.length; i++)
             {
-                Map.Entry entry = (Map.Entry) i.next();
-                TailPane tailPane = (TailPane) entry.getValue();            
-                ITailPaneConfig config = tailPane.getConfiguration();
-                configs = (ITailPaneConfig[]) ArrayUtil.add(configs, config);    
+                ITailPaneConfig config = tailPaneConfigs[i];
+                
+                // Apply defaults if any
+                if (config.getFont() == null)
+                    config.setFont(jtailConfig_.getDefaultConfig().getFont());
+                
+                addTail(config);
             }
-            
-            jtailConfig_.setTailConfigs(configs);
-            
-            configManager_.save(jtailConfig_);
-            
-            // Save properties that are separate from 
-            // IJTailConfig/ITailPaneConfig
-            if (props != null)
+        
+            fileSelectionPane_.getFileExplorer().applyPrefs(root);
+            flipPane_.applyPrefs(root);
+
+            Element recent = root.getFirstChildElement(NODE_RECENT);
+            Elements recentTails = recent.getChildElements(NODE_RECENT_TAIL);
+                
+            for (int i=0, n=recentTails.size(); i<n; i++)
             {
-                fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
-                flipPane_.savePrefs(props, "jtail");
+                Element recentTail = recentTails.get(i);
+                TailPaneConfig config = new TailPaneConfig();
+                config.applyPrefs(recentTail);
+                recentMenu_.add(new TailRecentAction(config));
             }
-            
-            // Save recent menu
-            Component[] items = recentMenu_.getMenuComponents();
-            
-            // Sub 1 for the unaccounted "Clear" menuitem
-            PropertiesUtil.setInteger(
-                props, "jtail.recent.num", items.length - 1); 
-            
-            int cnt = 0;
-            
-            // Clear out old properties since the number we're now persisting
-            // may have changed and that will leave dangling properties
-            for (int i=0; i<lastNumRecent_-1; i++)
-                props.remove("jtail.recent.tail." + i++);
-                
-            
-            for (int i=0; i<items.length; i++)
-            {
-                logger_.debug(
-                    "Menuitem " + i + " = " + items[i].getClass().getName());
-                
-                JMenuItem menuItem = (JMenuItem) items[i];
-                
-                Action a = (Action) menuItem.getAction();
-                
-                if (a instanceof TailRecentAction) 
-                {
-                    TailRecentAction action = 
-                        (TailRecentAction) menuItem.getAction();
-                    
-                    ITailPaneConfig config = 
-                        (ITailPaneConfig) action.getValue("config");
-                        
-                    props.setProperty(
-                        "jtail.recent.tail." + cnt++, config.toString());
-                }
-            }
-            
-            lastNumRecent_ = cnt;
-        }
-        catch (Throwable t)
-        {
-            ExceptionUtil.handleUI(t, logger_);
         }
     }
     
     /**
-     * Applies configurations
-     * 
-     * @param  props  File explorer and flip pane properties read from here
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void applyPrefs(Properties props) throws Exception
+    public void savePrefs(Element prefs) throws Exception
     {
-        // Tails left running since last save
-        ITailPaneConfig[] tailPaneConfigs = jtailConfig_.getTailConfigs();
+        Element root = new Element(NODE_JTAIL_PLUGIN);
         
-        for (int i=0; i< tailPaneConfigs.length; i++)
+        ITailPaneConfig configs[] = new ITailPaneConfig[0];
+        
+        for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext(); )
         {
-            ITailPaneConfig config = tailPaneConfigs[i];
-            
-            // Apply defaults if any
-            if (config.getFont() == null)
-                config.setFont(jtailConfig_.getDefaultConfig().getFont());
-            
-            addTail(config);
+            Map.Entry entry = (Map.Entry) i.next();
+            TailPane tailPane = (TailPane) entry.getValue();            
+            ITailPaneConfig config = tailPane.getConfiguration();
+            configs = (ITailPaneConfig[]) ArrayUtil.add(configs, config);    
         }
         
-        // Apply properties that are separate from IJTailConfig/ITailPaneConfig
-        if (props != null)
-        {
-            fileSelectionPane_.getFileExplorer().applyPrefs(props, "jtail");
-            flipPane_.applyPrefs(props, "jtail");
-        }
+        jtailConfig_.setTailConfigs(configs);
         
-        int numRecent = PropertiesUtil.getInteger(props, "jtail.recent.num", 0);
+        jtailConfig_.savePrefs(root);
+        
+        //configManager_.save(jtailConfig_);
+        
+        // Other preferenced components
+        fileSelectionPane_.getFileExplorer().savePrefs(root);
+        flipPane_.savePrefs(root);
+        
+        // Save recent menu
+        Element recent = new Element(NODE_RECENT);
+        Component[] items = recentMenu_.getMenuComponents();
+       
+        for (int i=0; i<items.length; i++)
+        {
+            JMenuItem menuItem = (JMenuItem) items[i];
+            Action action = (Action) menuItem.getAction();
+            
+            if (action instanceof TailRecentAction) 
+            {
+                ITailPaneConfig config = 
+                    (ITailPaneConfig) action.getValue("config");
 
-        for (int i=0; i<numRecent; i++)
-        {
-            String xmlConfig = props.getProperty("jtail.recent.tail." + i);
-            TailPaneConfig config = null;
-            
-            logger_.debug("tailnum=" + i + " xml=" + xmlConfig);
-            
-            config = 
-                TailPaneConfig.unmarshal(new Builder().build(
-                    new StringReader(xmlConfig)).getRootElement());
-
-            recentMenu_.add(new TailRecentAction(config));
+                Element recentTail = new Element(NODE_RECENT_TAIL);
+                config.savePrefs(recentTail);
+                recent.appendChild(recentTail);
+            }
         }
-    }    
+        
+        root.appendChild(recent);
+        XOMUtil.injectChild(prefs, root);
+    }
+
     
     //--------------------------------------------------------------------------
     //  Event Listeners
@@ -433,7 +386,7 @@ public class JTail extends JFrame implements IPreferenced
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
             
-            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            ITailPaneConfig config = new TailPaneConfig();
             config.setFilename(file);
             config.setAutoScroll(defaults.isAutoScroll());
             config.setShowLineNumbers(defaults.isShowLineNumbers());
@@ -453,7 +406,7 @@ public class JTail extends JFrame implements IPreferenced
         public void actionPerformed(ActionEvent e)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
-            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            ITailPaneConfig config = new TailPaneConfig();
             
             config.setFilename(
                 fileSelectionPane_.getFileExplorer().getFilePath());
@@ -497,16 +450,6 @@ public class JTail extends JFrame implements IPreferenced
         }
     }
 
-    /**
-     * Saves the configuration when the application is being closed
-     */
-    private class WindowListener extends WindowAdapter
-    {
-        public void windowClosing(WindowEvent e)
-        {
-            savePrefs(null);
-        }
-    }
 
     //--------------------------------------------------------------------------
     //  GUI Actions
@@ -554,27 +497,6 @@ public class JTail extends JFrame implements IPreferenced
                 if (menuItem.getAction() instanceof TailRecentAction)
                     recentMenu_.remove(menuItem);
             }
-        }
-    }
-    
-    /**
-     * Action to save configurations
-     */
-    private class SaveAction extends AbstractAction
-    {
-        public SaveAction()
-        {
-            super("Save Settings");
-            putValue(MNEMONIC_KEY, new Integer('S'));
-            putValue(SHORT_DESCRIPTION, "Saves tail configuration");
-            putValue(ACCELERATOR_KEY, 
-                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
-        }
-    
-        public void actionPerformed(ActionEvent e)
-        {
-            savePrefs(null);
-            statusBar_.setStatus("Saved configuration");
         }
     }
     
@@ -740,7 +662,7 @@ public class JTail extends JFrame implements IPreferenced
                 
         public void actionPerformed(ActionEvent e)
         {
-            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            ITailPaneConfig config = new TailPaneConfig();
             config.setAntiAlias(false);
             config.setAutoScroll(true);
             config.setAutoStart(true);
@@ -769,7 +691,7 @@ public class JTail extends JFrame implements IPreferenced
                 
         public void actionPerformed(ActionEvent e)
         {
-            ITailPaneConfig config = configManager_.createTailPaneConfig();
+            ITailPaneConfig config = new TailPaneConfig();
             config.setAntiAlias(false);
             config.setAutoScroll(true);
             config.setAutoStart(true);

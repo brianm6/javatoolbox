@@ -16,7 +16,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -29,9 +28,12 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import toolbox.util.ArrayUtil;
-import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 
 /**
@@ -48,31 +50,49 @@ public class JFlipPane extends JPanel
     private static final Logger logger_ =
         Logger.getLogger(JFlipPane.class);
 
-    /** Boolean flag that captures the collapsed state of the flip pane */
-    private static final String PROP_COLLAPSED = ".flippane.collapsed";
+    /** 
+     * Attribute for the collapsed state of the flippane
+     */
+    private static final String ATTR_COLLAPSED = "collapsed";
     
-    /** Integer value that captures the height/widht of the flippane */
-    private static final String PROP_DIMENSION = ".flippane.dimension";
+    /** 
+     * Attribute for the height/width of the flippane 
+     */
+    private static final String ATTR_DIMENSION = "dimension";
     
-    /** String value that captures the currently selected flipper */
-    private static final String PROP_ACTIVE = ".flippane.active";
+    /** 
+     * Attribute for the currently selected flipper 
+     */
+    private static final String ATTR_ACTIVE = "activeFlipper";
     
-    /** Flippane attached to the top wall */
+    /** 
+     * Flippane attached to the top wall 
+     */
     public static final String TOP = "top";
     
-    /** Flippane attached to the left wall */
+    /** 
+     * Flippane attached to the left wall 
+     */
     public static final String LEFT = "left";
     
-    /** Flippane attached to the bottom wall */
+    /** 
+     * Flippane attached to the bottom wall 
+     */
     public static final String BOTTOM = "bottom";
     
-    /** Flippane attached to the right wall */
+    /** 
+     * Flippane attached to the right wall 
+     */
     public static final String RIGHT  = "right";
     
-    /** Draggable splitpane like splitter bar width */
+    /** 
+     * Draggable splitpane like splitter bar width 
+     */
     public static final int SPLITTER_WIDTH = 10;
 
-    /** The wall of the enclosing panel that the flippane is attached to */
+    /** 
+     * The wall of the enclosing panel that the flippane is attached to 
+     */
     private String position_;
     
     /**
@@ -82,10 +102,14 @@ public class JFlipPane extends JPanel
      */
     private int dimension_;
     
-    /** Houses the buttons that expand/collapse a flipper */
+    /** 
+     * Houses the buttons that expand/collapse a flipper 
+     */
     private JPanel buttonPanel_;
     
-    /** Button attached to every flippane used to collapse all flippers */
+    /** 
+     * Button attached to every flippane used to collapse all flippers 
+     */
     private JButton closeButton_;
     
     /**
@@ -94,16 +118,24 @@ public class JFlipPane extends JPanel
      */
     private ButtonGroup buttonGroup_;
 
-    /** Internal layout used by the flippane to switch between flippers */
+    /** 
+     * Internal layout used by the flippane to switch between flippers 
+     */
     private FlipCardPanel flipCardPanel_;
 
-    /** Currently selected/active flipper */
+    /** 
+     * Currently selected/active flipper 
+     */
     private JComponent current_;
     
-    /** Interested listeners to flippane events */
+    /** 
+     * Interested listeners to flippane events 
+     */
     private List listeners_;
     
-    /** Hashtable mapping a name (button text) to a flippane component */
+    /** 
+     * Hashtable mapping a name (button text) to a flippane component 
+     */
     private Hashtable flippers_;
 
     // Not really used            
@@ -384,44 +416,23 @@ public class JFlipPane extends JPanel
 //        }
 
     //--------------------------------------------------------------------------
-    // Preferences Support
+    // IPreferenced Interface
     //--------------------------------------------------------------------------
 
     /**
-     * Saves flippane properties for later retrieval
-     * 
-     * @param  prefs   Properties object to save prefs in
-     * @param  prefix  Unique prefix specified by the client/user of the pane
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void savePrefs(Properties prefs, String prefix)
+    public void applyPrefs(Element prefs)
     {
-        PropertiesUtil.setBoolean(
-            prefs, prefix + PROP_COLLAPSED, isCollapsed());
+        Element root = prefs.getFirstChildElement("JFlipPane");
         
-        PropertiesUtil.setInteger(
-            prefs, prefix + PROP_DIMENSION, getDimension());
-            
-        JComponent flipper = getActiveFlipper();
-        
-        if (flipper != null)
-            prefs.setProperty(prefix + PROP_ACTIVE , flipper.getName());
-    }
-    
-    /**
-     * Restores flippane properties and applies them to the current instance
-     * 
-     * @param  prefs   Properties to retrieve preferences from
-     * @param  prefix  Unique prefix by which to identify the set of prefs
-     */
-    public void applyPrefs(Properties prefs, String prefix)
-    {
         boolean collapsed = 
-            PropertiesUtil.getBoolean(prefs, prefix + PROP_COLLAPSED, false); 
-        
+            XOMUtil.getBooleanAttribute(root, ATTR_COLLAPSED, false);  
+ 
         if (collapsed != isCollapsed())
             toggleFlipper();
         
-        int dim = PropertiesUtil.getInteger(prefs, prefix + PROP_DIMENSION,100);
+        int dim = XOMUtil.getIntegerAttribute(root, ATTR_DIMENSION, 100);
         
         // HACK BEGIN
         dim += SPLITTER_WIDTH + 3;
@@ -429,10 +440,31 @@ public class JFlipPane extends JPanel
         
         setDimension(dim);
         
-        String flipper = prefs.getProperty(prefix + PROP_ACTIVE );
+        String flipper = XOMUtil.getStringAttribute(root, ATTR_ACTIVE,"");
+        
         if (!StringUtil.isNullOrEmpty(flipper))
             setActiveFlipper(flipper);
     }
+
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element flipPane = new Element("JFlipPane");
+        
+        flipPane.addAttribute(new Attribute(ATTR_COLLAPSED, isCollapsed()+""));
+        flipPane.addAttribute(new Attribute(ATTR_DIMENSION, getDimension()+""));
+        
+        JComponent flipper = getActiveFlipper();
+        
+        if (getActiveFlipper() != null)
+            flipPane.addAttribute(
+                new Attribute(ATTR_ACTIVE, getActiveFlipper().getName()));
+
+        XOMUtil.injectChild(prefs, flipPane);
+    }
+
 
     //--------------------------------------------------------------------------
     // Event Notification Support

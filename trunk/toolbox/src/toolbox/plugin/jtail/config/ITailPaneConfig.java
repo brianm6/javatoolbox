@@ -2,10 +2,12 @@ package toolbox.jtail.config;
 
 import java.awt.Font;
 
+import toolbox.util.ui.plugin.IPreferenced;
+
 /**
  * ITailPaneConfig describes the interface necessary to configure a TailPane
  */
-public interface ITailPaneConfig
+public interface ITailPaneConfig extends IPreferenced
 {
     /** Default antialis is false */
     public static final boolean DEFAULT_ANTIALIAS = false;    
