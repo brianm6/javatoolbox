@@ -31,6 +31,14 @@ import toolbox.util.io.filter.OrFilter;
  * arbitrary archives (includes both jars and zips). There is a public
  * API for use as a third library or a command line interface for direct
  * usage.
+ * <p>
+ * Lingo:
+ * <p>
+ * searchTarget - a directory or jar/zip file that is a potential search
+ * candidate.<br>
+ * archive - collectively refers to either a jar file or a zip file.<br>
+ * 
+ * 
  */
 public class FindClass 
 { 
@@ -125,8 +133,10 @@ public class FindClass
      * @throws IOException on I/O error
      * @throws RESyntaxException on regular expression error
      */
-    public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
-        throws RESyntaxException, IOException
+    public FindClassResult[] findClass(
+            String classToFind, 
+            boolean ignoreCase) 
+            throws RESyntaxException, IOException
     {
         ignoreCase_  = ignoreCase;
         classToFind_ = classToFind;
@@ -135,14 +145,17 @@ public class FindClass
 
         // Setup regexp based on case sensetivity flag
         regExp_ = new RE(classToFind_);
+        
         if (ignoreCase_)
             regExp_.setMatchFlags(RE.MATCH_CASEINDEPENDENT);        
 
-        String[] targets = (String[])getSearchTargets().toArray(new String[0]);
+        String[] targets = (String[]) getSearchTargets().toArray(new String[0]);
 
         // Search each target
         for (int i=0; i< targets.length; i++) 
         { 
+            //logger_.info("isCancelled = " + isCancelled_ + " for " + targets[i]);
+            
             if (!isCancelled_)
             {
                 String target = targets[i];
@@ -157,12 +170,13 @@ public class FindClass
             else
             {
                 fireSearchCancelled();
-                isCancelled_ = false;
+                //isCancelled_ = true;
                 break;                    
             }
         }
         
-        fireSearchCompleted();
+        if (!isCancelled_)
+            fireSearchCompleted();
         
         return defaultCollector_.getResults();
     }
@@ -171,7 +185,7 @@ public class FindClass
     /**
      * Returns a list of target jar, zips, and directories to be searched.
      * 
-     * @return List of strings
+     * @return List of strings containing names of directories or jar files.
      */
     public List getSearchTargets()
     {
@@ -194,14 +208,17 @@ public class FindClass
         List targets = new ArrayList();
         String cp = ClassUtil.getClasspath();
         StringTokenizer t = new StringTokenizer(cp, File.pathSeparator, false);
+        
         while (t.hasMoreTokens())
             targets.add(t.nextToken());
+        
         return targets;
     }
         
     
     /**
-     * Cancels a pending search.
+     * Cancels a pending search. The search will stop after processing the
+     * current search target. 
      */
     public void cancelSearch()
     {
@@ -246,7 +263,7 @@ public class FindClass
     /**
      * Removes a search target from the list of search targets.
      *
-     * @param searchTarget Search Target to remove
+     * @param searchTarget Search target to remove
      */
     public void removeSearchTarget(String searchTarget)
     {
@@ -491,6 +508,8 @@ public class FindClass
      */
     protected void fireSearchCancelled()
     {
+        logger_.info(findListeners_.length + " listeners to notify of cancel.");
+        
         for (int i=0; i<findListeners_.length; i++)
             findListeners_[i].searchCancelled();
     }
