@@ -1,5 +1,5 @@
 ================================================================================
-                              HSQLDB
+ HSQLDB
 ================================================================================
 
 DROP TABLE "AUCT_SRCE"; 
@@ -30,7 +30,17 @@ ALTER TABLE <tablename>
   REFERENCES <exptablename> (<column list>) [ON DELETE CASCADE];
 
 ================================================================================
-                              GENERIC SQL
+ ORACLE
+================================================================================
+ 
+-- find out all owners of a given table
+select owner
+  from all_objects 
+ where object_type in ('TABLE','VIEW')
+   and object_name = 'AUCT';
+
+================================================================================
+ GENERIC SQL
 ================================================================================
 
 CREATE TABLE <table name> 
