@@ -201,9 +201,9 @@ public class ManagePluginsDialog extends JDialog
         buttonPanel.add(new JButton(new CloseAction()));
 
         // Glue everything together in the root pane
-        getRootPane().setLayout(new BorderLayout());
-        getRootPane().add(BorderLayout.CENTER, listPanel);
-        getRootPane().add(BorderLayout.SOUTH, buttonPanel);
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(BorderLayout.CENTER, listPanel);
+        getContentPane().add(BorderLayout.SOUTH, buttonPanel);
     }
 
     /**
