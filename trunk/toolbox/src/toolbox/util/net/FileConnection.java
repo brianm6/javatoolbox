@@ -39,7 +39,7 @@ public class FileConnection extends AbstractConnection implements IConnection
     private OutputStream outputStream_;
 
     /**
-     * IsConnected flag
+     * Flag that tracks the connected state of the connection
      */
     private boolean connected_ = false;
 
@@ -148,8 +148,8 @@ public class FileConnection extends AbstractConnection implements IConnection
     /**
      * Accessor for the output stream
      * 
-     * @return  OutputStream
-     * @throws  IOException on I/O error
+     * @return OutputStream
+     * @throws IOException on I/O error
      */
     public OutputStream getOutputStream() throws IOException
     {
@@ -157,7 +157,9 @@ public class FileConnection extends AbstractConnection implements IConnection
     }
 
     /**
-     * @return True if connected
+     * Returns true if connected, false otherwise
+     * 
+     * @return boolean
      */
     public boolean isConnected()
     {
@@ -165,11 +167,14 @@ public class FileConnection extends AbstractConnection implements IConnection
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from java.lang.Object
+    // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
     /**
-     * @return Stringified form
+     * Returns string containing file connections name, input file, and output
+     * file.
+     * 
+     * @return String
      */
     public String toString()
     {

@@ -10,13 +10,19 @@ import toolbox.util.thread.ThreadDispatcher;
  */
 public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
 {
-    /** Connection to handle */
+    /** 
+     * Connection to handle 
+     */
     private IConnection conn_;
 
-    /** Connection handler delegate */
+    /** 
+     * Connection handler delegate 
+     */
     private IConnectionHandler handler_;
 
-    /** Dispatcher responsible for thread pool behavior */
+    /** 
+     * Dispatcher responsible for pooling the connection handlers 
+     */
     private ThreadDispatcher dispatcher_;
 
     //--------------------------------------------------------------------------
@@ -24,13 +30,13 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     //--------------------------------------------------------------------------
 
     /**
-     * Creates AsyncConnectionHandler
+     * Creates an AsyncConnectionHandler
      * 
-     * @param newHandler    Handler to wrap with async behavior
+     * @param newHandler Handler to wrap with async behavior
      * @param newDispatcher Dispatcher to use for thread acquisition/dispatching
      */
-    public AsyncConnectionHandler(IConnectionHandler newHandler, 
-                                  ThreadDispatcher newDispatcher)
+    public AsyncConnectionHandler(
+        IConnectionHandler newHandler, ThreadDispatcher newDispatcher)
     {
         setConnectionHandler(newHandler);
         setDispatcher(newDispatcher);
@@ -39,7 +45,11 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     //--------------------------------------------------------------------------
     //  IConnectionHandler Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see toolbox.util.net.IConnectionHandler
+     *      #handle(toolbox.util.net.IConnection)
+     */
     public Object handle(IConnection conn)
     {
         setConnection(conn);
@@ -50,6 +60,9 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     //  IThreadable Interface
     //--------------------------------------------------------------------------
     
+    /**
+     * @see toolbox.util.thread.IThreadable#run()
+     */
     public Object run()
     {
         return getConnectionHandler().handle(getConnection());
@@ -69,7 +82,6 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         handler_ = newHandler;
     }
 
-
     /**
      * Mutator for the connection
      * 
@@ -79,7 +91,6 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     {
         conn_ = newConn;
     }
-
 
     /**
      * Accessor for the connection
@@ -91,7 +102,6 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         return conn_;
     }
 
-
     /**
      * Accessor for the connection handler 
      * 
@@ -102,7 +112,6 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         return handler_;
     }
 
-
     /**
      * Mutator for the dispatcher
      * 
@@ -112,7 +121,6 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     {
         dispatcher_ = newDispatcher;
     }
-
 
     /**
      * Accessor for the dispatcher
