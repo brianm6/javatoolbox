@@ -41,4 +41,11 @@ public class FindClassAdapter implements IFindClassListener
     public void searchCancelled()
     {
     }
+    
+    /**
+     * @see toolbox.findclass.IFindClassListener#searchCompleted(java.lang.String)
+     */
+    public void searchCompleted(String search)
+    {
+    }
 }
