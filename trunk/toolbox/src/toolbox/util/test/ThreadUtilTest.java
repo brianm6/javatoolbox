@@ -114,6 +114,21 @@ public class ThreadUtilTest extends TestCase
 
 
     /**
+     * Tests run() on a method with a single arg
+     * 
+     * @throws Exception on error
+     */
+    public void testRunOneArg() throws Exception
+    {
+        logger_.info("Running testRunOneArg...");
+        
+        Tester target = new Tester();
+        ThreadUtil.run(target, "pingOneArg", "hello").join();
+        assertTrue("ping was not executed", target.pingOneArgCalled_);
+    }
+
+
+    /**
      * Tests run() on a method with simple args and arrays
      * 
      * @throws Exception on error
@@ -147,15 +162,22 @@ public class ThreadUtilTest extends TestCase
         
         Tester target = new Tester();
         
-        PrintWriter writer = new PrintWriter(System.out);
+        Writer writer = new PrintWriter(System.out);
         
         ThreadUtil.run(target, "pingComplex", 
             new Object[] 
             { 
-                writer, 
+                (Writer) writer, 
                 new Integer(10), 
                 new Integer(1000), 
                 "hello from testRunComplex()"
+            },
+            new Class[]
+            {
+                PrintWriter.class,
+                Integer.class,
+                Integer.class,
+                String.class
             }).join();
             
         assertTrue("pingComplex was not executed", target.pingComplexCalled_);
@@ -211,6 +233,7 @@ public class ThreadUtilTest extends TestCase
     protected class Tester
     {
         private boolean pingSimpleCalled_;
+        private boolean pingOneArgCalled_;
         private boolean pingArgsCalled_;
         private boolean pingComplexCalled_;
         private boolean pingPrimitiveCalled_;
@@ -222,6 +245,7 @@ public class ThreadUtilTest extends TestCase
         public Tester()
         {
             pingSimpleCalled_    = false;
+            pingOneArgCalled_    = false;
             pingArgsCalled_      = false;
             pingComplexCalled_   = false;
             pingPrimitiveCalled_ = false;
@@ -235,6 +259,15 @@ public class ThreadUtilTest extends TestCase
         {
             pingSimpleCalled_ = true;
             logger_.info("Called ping()");
+        }
+        
+        /**
+         * Method with a single arg
+         */
+        public void pingOneArg(String str)
+        {
+            pingOneArgCalled_ = true;
+            logger_.info("Called pingOneArg(" + str + ", " + str + ")");
         }
         
         /**
