@@ -6,17 +6,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.Mutex;
-import toolbox.util.net.IConnection;
-import toolbox.util.net.IConnectionListener;
+import toolbox.util.net.DefaultConnectionListener;
 import toolbox.util.net.SocketConnection;
 
 /**
@@ -34,7 +33,7 @@ public class SocketConnectionTest extends TestCase
     /**
      * Entry point
      * 
-     * @param  args  None
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
@@ -191,7 +190,7 @@ public class SocketConnectionTest extends TestCase
         s.waitForStart();
         
         SocketConnection connection = new SocketConnection();
-        Listener listener = new Listener();
+        DefaultConnectionListener listener = new DefaultConnectionListener();
         connection.addConnectionListener(listener);
         connection.setHost("localhost");
         connection.setPort(s.getPort());
@@ -218,7 +217,7 @@ public class SocketConnectionTest extends TestCase
         s.waitForStart();
          
         SocketConnection connection = new SocketConnection();
-        connection.addConnectionListener(new Listener());
+        connection.addConnectionListener(new DefaultConnectionListener());
         connection.setHost("localhost");
         connection.setPort(s.getPort());
         
@@ -280,96 +279,10 @@ public class SocketConnectionTest extends TestCase
         }
     }
 
-    //--------------------------------------------------------------------------
-    //  Test helper classes
-    //--------------------------------------------------------------------------
 
-    /**
-     * Socket connection listener used to make sure notification is working
-     */
-    class Listener implements IConnectionListener
-    {
-        private BlockingQueue closed_ = new BlockingQueue();
-        private BlockingQueue closing_ = new BlockingQueue();
-        private BlockingQueue interrupted_ = new BlockingQueue();
-        private BlockingQueue started_ = new BlockingQueue(); 
-        
-        public void connectionClosed(IConnection connection)
-        {
-            logger_.info("Notification: Connection closed " + connection);
-            
-            try
-            {
-                closed_.push("Closed");
-            }
-            catch (InterruptedException e)
-            {
-                logger_.error(e);
-            }
-        }
-        
-        public void connectionClosing(IConnection connection)
-        {
-            logger_.info("Notification: Connection closing " + connection);
-            
-            try
-            {
-                closing_.push("Closing");
-            }
-            catch (InterruptedException e)
-            {
-                logger_.error(e);
-            }
-        }
-        
-        public void connectionInterrupted(IConnection connection)
-        {
-            logger_.info("Notification: Connection interrupted" + connection);
-            
-            try
-            {
-                interrupted_.push("Interrupted");
-            }
-            catch (InterruptedException e)
-            {
-                logger_.error(e);
-            }
-        }
-        
-        public void connectionStarted(IConnection connection)
-        {
-            logger_.info("Notification: Connection started" + connection);
-            
-            try
-            {
-                started_.push("Started");
-            }
-            catch (InterruptedException e)
-            {
-                logger_.error(e);
-            }
-        }
-        
-        public void waitForClose() throws InterruptedException
-        {
-            closed_.pull();
-        }
-        
-        public void waitForClosing() throws InterruptedException
-        {
-            closing_.pull();
-        }
-        
-        public void waitForInterrupted() throws InterruptedException
-        {
-            interrupted_.pull();
-        }
-
-        public void waitForStarted() throws InterruptedException
-        {
-            started_.pull();
-        }
-    }
+    //--------------------------------------------------------------------------
+    // Test helper classes
+    //--------------------------------------------------------------------------
 
     /**
      * Internal test socket server
