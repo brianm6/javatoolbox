@@ -27,9 +27,11 @@ import org.apache.log4j.Logger;
 
 import toolbox.graph.Edge;
 import toolbox.graph.Graph;
+import toolbox.graph.GraphConfigurator;
 import toolbox.graph.GraphLib;
 import toolbox.graph.GraphLibFactory;
 import toolbox.graph.GraphView;
+import toolbox.graph.Layout;
 import toolbox.graph.Vertex;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
@@ -104,7 +106,12 @@ public class JarDepsPlugin extends AbstractPlugin
      * Graphing library implementation.
      */
     private GraphLib graphLib_ = 
-        GraphLibFactory.create(GraphLibFactory.TYPE_PREFUSE); 
+        GraphLibFactory.create(GraphLibFactory.TYPE_JUNG);
+    
+    /**
+     * Allows configuration of the graph library and layout at runtime.
+     */
+    private GraphConfigurator graphConfigurator_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -131,12 +138,44 @@ public class JarDepsPlugin extends AbstractPlugin
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
         flipPane_.addFlipper(JFileExplorer.ICON, "File Explorer", explorer_);
         workArea_ = new JPanel(new BorderLayout());
+        graphConfigurator_ = new GraphConfigurator();
+        view_.add(BorderLayout.NORTH, graphConfigurator_);
         view_.add(BorderLayout.CENTER, workArea_);
         view_.add(BorderLayout.WEST, flipPane_);
-        view_.add(BorderLayout.SOUTH, new JSmartButton(new ViewJarDepsAction()));
+        
+        view_.add(
+            BorderLayout.SOUTH, 
+            new JSmartButton(new ViewJarDepsAction()));
+        
+        graphConfigurator_.addListener(new ConfiguratorListener());
+    }
+
+    //--------------------------------------------------------------------------
+    // ConfiguratorListener
+    //--------------------------------------------------------------------------
+    
+    class ConfiguratorListener implements GraphConfigurator.Listener
+    {
+        /**
+         * @see toolbox.graph.GraphConfigurator.Listener#graphLibChanged(
+         *      toolbox.graph.GraphLib)
+         */
+        public void graphLibChanged(GraphLib graphLib)
+        {
+        }
+        
+        
+        /**
+         * @see toolbox.graph.GraphConfigurator.Listener#layoutChanged(
+         *      toolbox.graph.Layout)
+         */
+        public void layoutChanged(Layout layout)
+        {
+            graphView_.setLayout(layout);
+        }
     }
     
-
+    
     /**
      * Views a jar dependencies.
      * 
@@ -285,7 +324,6 @@ public class JarDepsPlugin extends AbstractPlugin
      */
     protected void viewDependencies2(List files) 
     {
-        
         String classpath = "";
         
         for (Iterator i = files.iterator(); i.hasNext();)
