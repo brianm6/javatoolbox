@@ -318,4 +318,39 @@ public class ClassUtilTest extends TestCase
         logger_.info("Class Location = " + loc3);
         assertNull(loc3);
     }
+    
+    
+    /**
+     * Tests findInPath()
+     */
+    public void testFindInPath() throws Exception
+    {
+        logger_.info("Running testFindInPath...");
+        
+        String findMe = null;
+        
+        if (Platform.isUnix())
+            findMe = "sh";
+        else if (Platform.isWindows() || Platform.isOS2())
+            findMe = "cmd.exe";
+        else
+        {
+            logger_.info("Skipping testFindInPath due to current platform.");
+            return;
+        }
+        
+        File f = ClassUtil.findInPath(findMe);
+        assertNotNull(f);
+        logger_.debug("Found " + f);
+    }
+    
+    
+    /**
+     * Test findInPath() for a file not found.
+     */
+    public void testFindInPathNotFound() throws Exception
+    {
+        logger_.info("Running testFindInPathNotFound...");
+        assertNull(ClassUtil.findInPath("SomeNonExistantFile.exe"));
+    }    
 }
