@@ -283,14 +283,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         throws Exception
     {
         // Make sure this plugin hasn't already been loaded
-        if (hasPlugin(pluginClass))
+        if (!hasPlugin(pluginClass))
         {
             IPlugin plugin = (IPlugin) Class.forName(pluginClass).newInstance();
             registerPlugin(plugin, prefs);
         }
         else
         {
-            logger_.warn("Plugin " + pluginClass + "has already ");
+            logger_.warn("Plugin " + pluginClass + "has already been loaded.");
         }                
     }
 
@@ -362,8 +362,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         
         addWindowListener(new CloseWindowListener());
         
-        setIconImage(
-            ImageCache.getImage("/toolbox/util/ui/images/Toolbox.gif"));
+        setIconImage(ImageCache.getImage(ImageCache.IMAGE_TOOLBOX));
     }
 
     /**
@@ -646,7 +645,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                     {
                         public void run()
                         {
-                            SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
+                            SwingUtilities.updateComponentTreeUI(
+                                PluginWorkspace.this);
                         }
                     });
                 }
@@ -799,7 +799,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class SavePreferencesAction extends WorkspaceAction
     {
-        public SavePreferencesAction()
+        SavePreferencesAction()
         {
             super("Save prefs", false, null, null);
             putValue(Action.MNEMONIC_KEY, new Integer('S'));
@@ -821,7 +821,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         private UIManager.LookAndFeelInfo lafInfo_;
         
-        public SetLAFAction(UIManager.LookAndFeelInfo lafInfo)
+        SetLAFAction(UIManager.LookAndFeelInfo lafInfo)
         {
             super(lafInfo.getName(), false, null, null);
             putValue(Action.MNEMONIC_KEY, new Integer('L'));
@@ -842,7 +842,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         private PlasticTheme theme_;
         
-        public SetThemeAction(PlasticTheme theme)
+        SetThemeAction(PlasticTheme theme)
         {
             super(theme.getName(), false, null, null);
             theme_ = theme;
@@ -861,7 +861,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     class GarbageCollectAction extends WorkspaceAction
     {
-        public GarbageCollectAction()
+        GarbageCollectAction()
         {
             super("Run GC", false, null, null);
             putValue(Action.MNEMONIC_KEY, new Integer('G'));
