@@ -155,7 +155,7 @@ public class JMultiSplitPane extends JPanel
      * otherwise push a JSplitPane on top, taking the current contents and 
      * placing it as top/left component and adding comp as bottom/right 
      * component. The adding of the component will be deferred using 
-     * {@link javax.swing.SwingUtilities#invokeLater}.
+     * {@link javax.swing.SwingUtilities#invokeLater(java.lang.Runnable)}.
      *
      * @param comp Component to add.
      */
@@ -167,7 +167,7 @@ public class JMultiSplitPane extends JPanel
 
     /**
      * Removes a component from the multisplitpane. Removal is be deferred 
-     * using {@link javax.swing.SwingUtilities#invokeLater}.
+     * using {@link javax.swing.SwingUtilities#invokeLater(java.lang.Runnable)}.
      *
      * @param comp Component to remove.
      */
