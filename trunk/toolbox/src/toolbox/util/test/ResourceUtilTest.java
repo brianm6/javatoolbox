@@ -5,6 +5,7 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 import org.apache.log4j.BasicConfigurator;
+import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
 
 /**
@@ -32,6 +33,8 @@ public class ResourceUtilTest extends TestCase
     
     /**
      * Tests the exportToClass() method
+     * 
+     * @throws Exception on error
      */
     public void testExportToClass() throws Exception
     {
@@ -39,9 +42,16 @@ public class ResourceUtilTest extends TestCase
 		String treeClose = "images" + File.separator + "tree_close.gif";
 		String cdrive    = "images" + File.separator + "cdrive.gif";
 		
-		ResourceUtil.exportToClass(treeOpen, "toolbox.util.ui", "TreeOpenGIF");    	
-		ResourceUtil.exportToClass(treeClose, "toolbox.util.ui", "TreeCloseGIF");
-		ResourceUtil.exportToClass(cdrive, "toolbox.util.ui", "HardDriveGIF");
+		ResourceUtil.exportToClass(treeOpen, "toolbox.util.ui", 
+            FileUtil.getTempDir().getAbsolutePath() + File.separator + 
+                "TreeOpenGIF");    	
+            
+		ResourceUtil.exportToClass(treeClose, "toolbox.util.ui", 
+            FileUtil.getTempDir().getAbsolutePath() + File.separator + 
+                "TreeCloseGIF");
+                
+		ResourceUtil.exportToClass(cdrive, "toolbox.util.ui", 
+            FileUtil.getTempDir().getAbsolutePath() + File.separator + 
+                "HardDriveGIF");
     }
 }
-
