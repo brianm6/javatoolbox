@@ -2,11 +2,13 @@ package toolbox.util;
 
 import java.awt.Font;
 
+import javax.swing.JComponent;
+
 import nu.xom.Attribute;
 import nu.xom.Element;
 
 /**
- * Font Utilities
+ * Font Utilities.
  */
 public final class FontUtil
 {
@@ -28,6 +30,7 @@ public final class FontUtil
         return font;
     }
     
+    
     /**
      * Hydrates a font from its XML representation.
      * 
@@ -40,5 +43,16 @@ public final class FontUtil
         int size = Integer.parseInt(e.getAttributeValue("size"));
         int style = Integer.parseInt(e.getAttributeValue("style"));
         return new Font(name, style, size);
+    }
+    
+    
+    /**
+     * Simple way to apply the bold style to an existing component.
+     * 
+     * @param c Component to bold.
+     */
+    public static void setBold(JComponent c)
+    {
+        c.setFont(c.getFont().deriveFont(Font.BOLD));
     }
 }
