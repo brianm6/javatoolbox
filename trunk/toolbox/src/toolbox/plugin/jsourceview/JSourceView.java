@@ -344,7 +344,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JSOURCEVIEW_PLUGIN);
         
@@ -425,7 +425,8 @@ public class JSourceView extends JPanel implements IPreferenced
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
                 "Auto scroll",
                 new AutoTailAction(table_));
-        tail.toggleOnProperty(table_, "autotail");
+        
+        tail.toggleOnProperty(table_, JSmartTable.PROP_AUTOTAIL);
         
         JButton save =
             JHeaderPanel.createButton(
