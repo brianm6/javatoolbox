@@ -1,5 +1,7 @@
 package toolbox.findclass;
 
+import java.io.IOException;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import org.apache.regexp.RESyntaxException;
@@ -67,6 +69,10 @@ public class Main implements IFindClassListener
         {
             logger_.error("main", re);   
         }
+        catch (IOException ioe)
+        {
+            logger_.error("main", ioe);               
+        }
     }
 
     /**
@@ -95,5 +101,9 @@ public class Main implements IFindClassListener
         System.out.println(
             searchResult.getClassLocation() + " => " + 
             searchResult.getClassFQN());   
+    }
+    
+    public void searchingTarget(String target)    
+    {
     }
 }
