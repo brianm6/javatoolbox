@@ -438,7 +438,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         String stack = ExceptionUtil.getStackTrace(exception);
         String message = exception.getMessage();
         
-        if (StringUtil.isNullEmptyOrBlank(message))
+        if (StringUtil.isNullOrBlank(message))
             message = StringUtil.getLine(stack,0);
 
         showDetailedMessageDialog(

@@ -456,7 +456,7 @@ public final class FileUtil
      */    
     public static void delete(String file)
     {
-        if (file != null && !StringUtil.isNullEmptyOrBlank(file))
+        if (file != null && !StringUtil.isNullOrBlank(file))
             new File(file).delete();
     }
 }

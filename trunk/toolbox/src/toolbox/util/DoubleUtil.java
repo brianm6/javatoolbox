@@ -6,7 +6,7 @@ import java.text.ParseException;
 /**
  * Utility class for doubles
  */
-public class DoubleUtil
+public final class DoubleUtil
 {
     // Clover private constructor workaround
     static { new DoubleUtil(); }
@@ -36,7 +36,7 @@ public class DoubleUtil
     {
         boolean b = false;
         
-        if (StringUtil.isNullEmptyOrBlank(s))
+        if (StringUtil.isNullOrBlank(s))
             b = false;
         else
         {

@@ -241,7 +241,7 @@ public final class StringUtil
      * @param   s   String to check
      * @return  True if not null, empty, or blank; false otherwise
      */
-    public static final boolean isNullEmptyOrBlank(String s)
+    public static final boolean isNullOrBlank(String s)
     {
         return (isNullOrEmpty(s) || s.trim().length() == 0);
     }
