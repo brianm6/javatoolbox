@@ -62,6 +62,17 @@ public class PreferencedUtil
     /**
      * Reads properties from a javabean and adds them to an XML node as 
      * atttributes.
+     * <p>
+     * <b>Example implementation of IPreferenced.savePrefs(Element):</b>
+     * <pre class="snippet">
+     * public void savePrefs(Element prefs) throws Exception
+     * {
+     *     String[] props = {"width", "height", "weight"};
+     *     Element root = new Element("root");
+     *     PreferencedUtil.writePreferences(this, root, props);
+     *     XOMUtil.insertOrReplace(prefs, root);
+     * }
+     * </pre>
      * 
      * @param bean Javabean to extract values from.
      * @param node XML node to add attributes to.
@@ -99,6 +110,19 @@ public class PreferencedUtil
     /**
      * Reads attributes from an XML node and applies them to a javabean as
      * properties.
+     * <p>
+     * <b>Example implementation of IPreferenced.applyPrefs(Element)</b>
+     * <pre class="snippet">
+     * public void applyPrefs(Element prefs) throws Exception
+     * {
+     *     String[] props = {"width", "height", "weight"};
+     * 
+     *     Element root = XOMUtil.getFirstChildElement(
+     *         prefs, "root", new Element("root"));
+     * 
+     *     PreferencedUtil.readPreferences(this, root, props);
+     * }
+     * </pre>
      * 
      * @param bean Javabean to apply the preferences to.
      * @param node XML node to read the attributes from.
