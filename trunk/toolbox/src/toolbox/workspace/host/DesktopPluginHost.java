@@ -1,7 +1,7 @@
 package toolbox.workspace.host;
 
 import java.awt.BorderLayout;
-import java.beans.PropertyVetoException;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +51,23 @@ public class DesktopPluginHost extends AbstractPluginHost
         {
             public void run() 
             {
-                SwingUtil.tile(desktop_);
+                SwingUtil.cascade(desktop_);
+                JInternalFrame[] jifs = desktop_.getAllFrames();
+                
+                for (int i = 0; i < jifs.length; i++)
+                {
+                    jifs[i].pack();
+                    
+                    Dimension d = jifs[i].getSize();
+                    
+                    if (d.width > desktop_.getWidth())
+                        d.width = ((int) (desktop_.getWidth() * 0.9));
+                                
+                    if (d.height > desktop_.getHeight())
+                        d.height = ((int) (desktop_.getHeight() * 0.9));
+
+                    jifs[i].setSize(d);
+                }
             }
         });
     }
@@ -94,18 +110,14 @@ public class DesktopPluginHost extends AbstractPluginHost
         
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(plugin.getComponent(), BorderLayout.CENTER);
-        frame.setVisible(true);
         desktop_.add(frame);
-        pluginToFrameMap_.put(plugin, frame);
         
-        try
-        {
-            frame.setSelected(true);    
-        }
-        catch (PropertyVetoException e)
-        {
-            ; // Ignore
-        }
+        if (frame.getSize().equals(new Dimension(0,0)))
+            frame.pack();
+        
+        frame.setVisible(true);
+        frame.moveToFront();
+        pluginToFrameMap_.put(plugin, frame);
     }
 
     
@@ -123,6 +135,35 @@ public class DesktopPluginHost extends AbstractPluginHost
     
     
     /**
+     * @see toolbox.workspace.host.PluginHost#getComponent()
+     */
+    public JComponent getComponent()
+    {
+        return desktop_;
+    }
+    
+    
+    /**
+     * @see toolbox.workspace.host.PluginHost#selectPlugin(
+     *      toolbox.workspace.IPlugin)
+     */
+    public void selectPlugin(IPlugin plugin)
+    {
+        JInternalFrame jif = (JInternalFrame) pluginToFrameMap_.get(plugin);
+        jif.moveToFront();
+    }
+    
+    
+    /**
+     * @see toolbox.workspace.host.PluginHost#getName()
+     */
+    public String getName()
+    {
+        return "Desktop";
+    }
+    
+    
+    /**
      * @see toolbox.workspace.host.PluginHost#shutdown()
      */
     public void shutdown()
@@ -134,23 +175,5 @@ public class DesktopPluginHost extends AbstractPluginHost
         pluginToFrameMap_ = null;
         
         super.shutdown();
-    }
-
-    
-    /**
-     * @see toolbox.workspace.host.PluginHost#getComponent()
-     */
-    public JComponent getComponent()
-    {
-        return desktop_;
-    }
-    
-    
-    /**
-     * @see toolbox.workspace.host.PluginHost#getName()
-     */
-    public String getName()
-    {
-        return "Desktop";
     }
 }
