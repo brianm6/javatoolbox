@@ -435,7 +435,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         setLayout(new BorderLayout());
 
-        // pw depends on the results text area
+        // PrintWriter depends on the results text area so this goes first
         JHeaderPanel resultsPanel = buildResultsArea();
         
         PrintWriter pw = 
@@ -443,7 +443,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 new OutputStreamWriter(
                     new JTextAreaOutputStream(getResultsArea())), true);
         
-        // buildSQLEditor() depends on a non-null benchmark_
+        // buildSQLEditor() depends on a non-null benchmark_ so this goes first
         benchmark_ = new DBBenchmark(this, true, pw);
 
         // Split SQL editor and results panel
@@ -454,21 +454,42 @@ public class QueryPlugin extends JPanel implements IPlugin
                 resultsPanel);
         
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
+     
+        //
+        // Hookup the flippers!
+        //
         
-        dbConfigPane_ = new DBConfig(this);
-        leftFlipPane_.addFlipper("Databases", dbConfigPane_);
+        // Databases
+        leftFlipPane_.addFlipper(
+            DBConfig.ICON_DBCONFIG, 
+            "Databases", 
+            dbConfigPane_ = new DBConfig(this));
         
+        // Query Plugin Prefs
+        leftFlipPane_.addFlipper(
+            DBPrefsView.ICON_DBPREFS,
+            "Preferences", 
+            prefsView_ = new DBPrefsView(this));
+
+        // Formatter
         formatter_ = new SQLFormatter();
-        formatterView_ = new SQLFormatterView(formatter_);
-        leftFlipPane_.addFlipper("Formatter", formatterView_);
         
-        prefsView_ = new DBPrefsView(this);
-        leftFlipPane_.addFlipper("Preferences", prefsView_);
-        
-        benchmarkView_ = new DBBenchmarkView(benchmark_);
-        leftFlipPane_.addFlipper("Benchmark", benchmarkView_);
-        
-        leftFlipPane_.addFlipper("Reference", buildSQLReferencePane());
+        leftFlipPane_.addFlipper(
+            SQLFormatterView.ICON_SQLFORMATTER, 
+            "Formatter", 
+            formatterView_ = new SQLFormatterView(formatter_));
+
+        // Benchmark
+        leftFlipPane_.addFlipper(
+            DBBenchmarkView.ICON_DBBENCHMARK,
+            "Benchmark", 
+            benchmarkView_ = new DBBenchmarkView(benchmark_));
+
+        // Reference
+        leftFlipPane_.addFlipper(
+            ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK),
+            "Reference", 
+            buildSQLReferencePane());
         
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);
@@ -482,12 +503,16 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected JHeaderPanel buildSQLReferencePane()
     {
-        JHeaderPanel refPane = new JHeaderPanel("SQL Reference");
+        JHeaderPanel refPane = 
+            new JHeaderPanel(
+                ImageCache.getIcon(ImageCache.IMAGE_QUESTION_MARK),
+                "SQL Reference");
 
         String sqlRef =
-            File.separator +
-            FileUtil.trailWithSeparator(ClassUtil.packageToPath(
-                ClassUtils.getPackageName(QueryPlugin.class))) + "sqlref.txt";
+            File.separator + FileUtil.trailWithSeparator(
+                ClassUtil.packageToPath(
+                    ClassUtils.getPackageName(
+                        QueryPlugin.class))) + "sqlref.txt";
 
         sqlRef = sqlRef.replace(File.separatorChar, '/');
 
@@ -496,7 +521,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 
         area.getPainter().setFont(FontUtil.getPreferredMonoFont());
         refPane.setContent(area);
-        area.setText( ResourceUtil.getResourceAsString(sqlRef)+ "\n");
+        area.setText(ResourceUtil.getResourceAsString(sqlRef)+ "\n");
         area.scrollTo(0, 0);
         return refPane;
     }
