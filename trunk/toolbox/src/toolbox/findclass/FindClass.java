@@ -169,7 +169,7 @@ public class FindClass implements Cancelable
             }
             else
             {
-                fireSearchCancelled();
+                fireSearchCanceled();
                 break;                    
             }
         }
@@ -273,6 +273,7 @@ public class FindClass implements Cancelable
     {
         canceled_ = true;
         
+        // since search is async, wait to receive the cancel event.
         try
         {
             defaultCollector_.waitForCancel();
@@ -467,9 +468,9 @@ public class FindClass implements Cancelable
     
     
     /**
-     * Called when the search is cancelled.
+     * Called when the search is canceled.
      */
-    protected void fireSearchCancelled()
+    protected void fireSearchCanceled()
     {
         for (int i = 0; i < findListeners_.length; i++)
             findListeners_[i].searchCanceled();
