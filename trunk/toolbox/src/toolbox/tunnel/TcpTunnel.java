@@ -378,5 +378,10 @@ public class TcpTunnel implements TcpTunnelListener
         public void streamFlushed(EventOutputStream stream)
         {
         }
+        
+        public void streamThroughput(EventOutputStream stream, 
+            float bytesPerPeriod)
+        {
+        }
     }
 }
