@@ -62,7 +62,7 @@ import org.apache.log4j.Logger;
  */
 public final class JDBCUtil
 {
-    public static final Logger logger_ = Logger.getLogger(JDBCUtil.class);
+    private static final Logger logger_ = Logger.getLogger(JDBCUtil.class);
 
     //--------------------------------------------------------------------------
     // Fields
@@ -109,8 +109,7 @@ public final class JDBCUtil
      * @throws SQLException on SQL error.
      * @throws ClassNotFoundException if the JDBC driver is not found.
      * @throws IllegalAccessException if problems accessing jdbc driver.
-     * @throws InstantiationExce3ption if problems instantiating the jdbc 
-     *         driver.
+     * @throws InstantiationException if problems instantiating the jdbc driver.
      */    
     public static void init(
         String driver, 
@@ -153,8 +152,7 @@ public final class JDBCUtil
      * @throws MalformedURLException if jar file URL is invalid.
      * @throws ClassNotFoundException if the JDBC driver is not found.
      * @throws IllegalAccessException if problems accessing jdbc driver.
-     * @throws InstantiationExce3ption if problems instantiating the jdbc 
-     *         driver.
+     * @throws InstantiationException if problems instantiating the jdbc driver.
      */    
     public static void init(
         String jarFile,
@@ -363,8 +361,8 @@ public final class JDBCUtil
             colName = 
                 (StringUtil.isNullOrBlank(colName) ? "[NULL]" : colName.trim());
                     
-            header  [i-1] = colName;
-            colWidth[i-1] = colName.length();
+            header  [i - 1] = colName;
+            colWidth[i - 1] = colName.length();
         }
         
         int numRows = 0;
@@ -403,10 +401,10 @@ public final class JDBCUtil
                 if (obj != null)
                     value = obj.toString().trim();
                 else
-                    value= "[NULL]";
+                    value = "[NULL]";
    
-                colWidth[i-1] = Math.max(value.length(), colWidth[i-1]);
-                row[i-1] = value;
+                colWidth[i - 1] = Math.max(value.length(), colWidth[i - 1]);
+                row[i - 1] = value;
             }
 
             rows.add(row);
@@ -414,22 +412,22 @@ public final class JDBCUtil
 
         time.setEndTime();
 
-        for (int i=0; i<colWidth.length; colWidth[i] = colWidth[i++] + 2);
+        for (int i = 0; i < colWidth.length; colWidth[i] = colWidth[i++] + 2);
 
         String[] dashes = new String[numCols];
         
-        for(int i=0; i<numCols; i++)
+        for (int i = 0; i < numCols; i++)
             dashes[i] = StringUtil.repeat("-", colWidth[i]);
 
         rows.add(1, dashes);
 
         StringBuffer sb = new StringBuffer();            
         
-        for (Iterator i = rows.iterator(); i.hasNext(); ) 
+        for (Iterator i = rows.iterator(); i.hasNext();) 
         {
             String[] row = (String[]) i.next();
 
-            for (int j=0; j < row.length; j++) 
+            for (int j = 0; j < row.length; j++) 
                 sb.append(StringUtil.left(row[j], colWidth[j]));
             
             sb.append("\n");
@@ -466,7 +464,7 @@ public final class JDBCUtil
         rs.last();
         int last = rs.getRow();
         
-        if(currentPos == 0)
+        if (currentPos == 0)
             rs.first();
         else
             rs.absolute(currentPos);
@@ -510,7 +508,7 @@ public final class JDBCUtil
         {
             rs.close();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             ; // Quiet please
         }
@@ -557,7 +555,7 @@ public final class JDBCUtil
                     connection = null;
                 }
             } 
-            catch(SQLException e) 
+            catch (SQLException e) 
             {
                 ; // Ignore
             }
@@ -588,37 +586,67 @@ public final class JDBCUtil
     {
         private Driver driver_;
     
+        /**
+         * Creates a DriverProxy.
+         * 
+         * @param d Driver
+         */
         public DriverProxy(Driver d)
         {
             driver_ = d;
         }
     
+        
+        /**
+         * @see java.sql.Driver#acceptsURL(java.lang.String)
+         */
         public boolean acceptsURL(String u) throws SQLException
         {
             return driver_.acceptsURL(u);
         }
     
+        
+        /**
+         * @see java.sql.Driver#connect(java.lang.String, java.util.Properties)
+         */
         public Connection connect(String u, Properties p) throws SQLException
         {
             return driver_.connect(u, p);
         }
     
+        
+        /**
+         * @see java.sql.Driver#getMajorVersion()
+         */
         public int getMajorVersion()
         {
             return driver_.getMajorVersion();
         }
     
+        
+        /**
+         * @see java.sql.Driver#getMinorVersion()
+         */
         public int getMinorVersion()
         {
             return driver_.getMinorVersion();
         }
     
+        
+        /**
+         * @see java.sql.Driver#getPropertyInfo(java.lang.String, 
+         *      java.util.Properties)
+         */
         public DriverPropertyInfo[] getPropertyInfo(String u, Properties p)
             throws SQLException
         {
             return driver_.getPropertyInfo(u, p);
         }
     
+        
+        /**
+         * @see java.sql.Driver#jdbcCompliant()
+         */
         public boolean jdbcCompliant()
         {
             return driver_.jdbcCompliant();

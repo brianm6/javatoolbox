@@ -70,8 +70,8 @@ public final class FontUtil
     public static Element toElement(Font f)
     {
         Element font = new Element("Font");
-        font.addAttribute(new Attribute("size", f.getSize()+""));
-        font.addAttribute(new Attribute("style", f.getStyle()+""));
+        font.addAttribute(new Attribute("size", f.getSize() + ""));
+        font.addAttribute(new Attribute("style", f.getStyle() + ""));
         font.addAttribute(new Attribute("family", f.getFamily()));
         font.addAttribute(new Attribute("fontName", f.getFontName()));
         font.addAttribute(new Attribute("name", f.getName()));
@@ -140,6 +140,7 @@ public final class FontUtil
     /**
      * Returns the first available font from the given list of preferred fonts.
      * 
+     * @param preferred List of preferred fonts to choose from.
      * @return Font
      */
     private static Font getPreferredFont(String[] preferred)

@@ -38,16 +38,16 @@ public final class Assert
     //--------------------------------------------------------------------------
     
     /**
-	 * Assert that two doubles are equals within some tolerance.
-	 * 
-	 * @param doubleA The first number to compare
-	 * @param doubleB The second number to compare
-	 * @param tolerance Allowed difference between doubleA and doubleB
-	 * @param errorMsg A text message used in the construction of an exception
-	 *        when the two numbers differ beyond tolerance
-	 * @throws AssertionException raised with errorMsg when the condition
-	 *         fails.
-	 */
+     * Assert that two doubles are equals within some tolerance.
+     * 
+     * @param doubleA The first number to compare
+     * @param doubleB The second number to compare
+     * @param tolerance Allowed difference between doubleA and doubleB
+     * @param errorMsg A text message used in the construction of an exception
+     *        when the two numbers differ beyond tolerance
+     * @throws AssertionException raised with errorMsg when the condition
+     *         fails.
+     */
     public static void equals(double doubleA, double doubleB, 
         double tolerance, String errorMsg) throws AssertionException
     {
@@ -60,16 +60,16 @@ public final class Assert
 
     
     /**
-	 * Assert that two floats are equals within some tolerance.
-	 * 
-	 * @param floatA The first number to compare
-	 * @param floatB The second number to compare
-	 * @param tolerance The allowed diff between floatA and floatB
-	 * @param errorMsg A text message used in the construction of an exception
-	 *        when the two numbers differ beyond tolerance.
-	 * @throws AssertionException raised with errorMsg when the condition
-	 *         fails.
-	 */
+     * Assert that two floats are equals within some tolerance.
+     * 
+     * @param floatA The first number to compare
+     * @param floatB The second number to compare
+     * @param tolerance The allowed diff between floatA and floatB
+     * @param errorMsg A text message used in the construction of an exception
+     *        when the two numbers differ beyond tolerance.
+     * @throws AssertionException raised with errorMsg when the condition
+     *         fails.
+     */
     public static void equals(float floatA, float floatB, 
         float tolerance, String errorMsg) throws AssertionException
     {
@@ -82,14 +82,14 @@ public final class Assert
     
 
     /**
-	 * Assert that two longs are <code>equal</code>.
-	 * 
-	 * @param longA First long to compare
-	 * @param longB Second long to compare
-	 * @param message Text message used in the construction of an exception
-	 *        when not equal.
-	 * @throws AssertionException raised with message when not equal.
-	 */
+     * Assert that two longs are <code>equal</code>.
+     * 
+     * @param longA First long to compare
+     * @param longB Second long to compare
+     * @param message Text message used in the construction of an exception
+     *        when not equal.
+     * @throws AssertionException raised with message when not equal.
+     */
     public static void equals(long longA, long longB, String message)
         throws AssertionException
     {
@@ -102,12 +102,12 @@ public final class Assert
 
     
     /**
-	 * Assert that two objects are equal.
-	 * 
-	 * @param objectA The first object to compare
-	 * @param objectB The second object to compare
-	 * @throws AssertionException raised when the objectA not equal to objectB
-	 */
+     * Assert that two objects are equal.
+     * 
+     * @param objectA The first object to compare
+     * @param objectB The second object to compare
+     * @throws AssertionException raised when the objectA not equal to objectB
+     */
     public static void equals(Object objectA, Object objectB)
         throws AssertionException
     {
@@ -116,14 +116,14 @@ public final class Assert
 
     
     /**
-	 * Assert that two objects are equal.
-	 * 
-	 * @param objectA The first object to compare
-	 * @param objectB The second object to compare
-	 * @param errorMsg Text message used in the construction of an exception
-	 *        when the condition fails.
-	 * @throws AssertionException raised when the objectA not equal to objectB
-	 */
+     * Assert that two objects are equal.
+     * 
+     * @param objectA The first object to compare
+     * @param objectB The second object to compare
+     * @param errorMsg Text message used in the construction of an exception
+     *        when the condition fails.
+     * @throws AssertionException raised when the objectA not equal to objectB
+     */
     public static void equals(Object objectA, Object objectB, 
         String errorMsg) throws AssertionException
     {
@@ -137,11 +137,11 @@ public final class Assert
 
     
     /**
-	 * Assert that the expressionResult is false.
-	 * 
-	 * @param expressionResult Results in a boolean value
-	 * @throws AssertionException raised when expressionResult is true
-	 */
+     * Assert that the expressionResult is false.
+     * 
+     * @param expressionResult Results in a boolean value
+     * @throws AssertionException raised when expressionResult is true
+     */
     public static void isFalse(boolean expressionResult)
         throws AssertionException
     {
@@ -150,14 +150,14 @@ public final class Assert
 
     
     /**
-	 * Assert that the parameter is false.
-	 * 
-	 * @param expressionResult A boolean; should be false.
-	 * @param errorMsg Text message used in the construction of an exception
-	 *        when expressionResult is true.
-	 * @throws AssertionException raised with message when expressionResult is
-	 *         true
-	 */
+     * Assert that the parameter is false.
+     * 
+     * @param expressionResult A boolean; should be false.
+     * @param errorMsg Text message used in the construction of an exception
+     *        when expressionResult is true.
+     * @throws AssertionException raised with message when expressionResult is
+     *         true
+     */
     public static void isFalse(boolean expressionResult, String errorMsg)
         throws AssertionException
     {
@@ -166,11 +166,11 @@ public final class Assert
 
     
     /**
-	 * Assert that the expressionResult is true.
-	 * 
-	 * @param expressionResult Results in a boolean value
-	 * @throws AssertionException raised when expressionResult is false
-	 */
+     * Assert that the expressionResult is true.
+     * 
+     * @param expressionResult Results in a boolean value
+     * @throws AssertionException raised when expressionResult is false
+     */
     public static void isTrue(boolean expressionResult)
         throws AssertionException
     {
@@ -179,14 +179,14 @@ public final class Assert
 
     
     /**
-	 * Assert that the parameter is true.
-	 * 
-	 * @param expressionResult A boolean; should be true.
-	 * @param errorMsg Text message used in the construction of an exception
-	 *        when expressionResult is false.
-	 * @throws AssertionException raised with message when expressionResult is
-	 *         false
-	 */
+     * Assert that the parameter is true.
+     * 
+     * @param expressionResult A boolean; should be true.
+     * @param errorMsg Text message used in the construction of an exception
+     *        when expressionResult is false.
+     * @throws AssertionException raised with message when expressionResult is
+     *         false
+     */
     public static void isTrue(boolean expressionResult, String errorMsg)
         throws AssertionException
     {
@@ -198,11 +198,11 @@ public final class Assert
 
     
     /**
-	 * Assert that an object is not null.
-	 * 
-	 * @param object The non-null object
-	 * @throws AssertionException raised when object is null.
-	 */
+     * Assert that an object is not null.
+     * 
+     * @param object The non-null object
+     * @throws AssertionException raised when object is null.
+     */
     public static void notNull(Object object) throws AssertionException
     {
         notNull(object, DEFAULT_MSG);
@@ -210,13 +210,13 @@ public final class Assert
 
     
     /**
-	 * Assert that an object is not null.
-	 * 
-	 * @param object The non-null object
-	 * @param errorMsg Text message used in the construction of an exception
-	 *        when object is null.
-	 * @throws AssertionException raised with message when object is null.
-	 */
+     * Assert that an object is not null.
+     * 
+     * @param object The non-null object
+     * @param errorMsg Text message used in the construction of an exception
+     *        when object is null.
+     * @throws AssertionException raised with message when object is null.
+     */
     public static void notNull(Object object, String errorMsg)
         throws AssertionException
     {
@@ -231,11 +231,10 @@ public final class Assert
     //--------------------------------------------------------------------------
 
     /**
-	 * A factory method for creating and throwing AssertionExceptions.
-	 * 
-	 * @param errorMsg String message for the new exception
-	 * @throws AssertionException with given error message
-	 */
+     * A factory method for creating and throwing AssertionExceptions.
+     * 
+     * @param errorMsg String message for the new exception
+     */
     protected static void raiseAssertionException(String errorMsg)
     {
         throw new AssertionException(errorMsg);

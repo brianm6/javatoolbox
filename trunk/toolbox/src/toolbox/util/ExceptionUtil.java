@@ -58,7 +58,7 @@ public final class ExceptionUtil
     {
         c.error(t.getMessage(), t);
         JFrame frame = new JFrame();
-        JSmartOptionPane.showExceptionMessageDialog(frame,t);
+        JSmartOptionPane.showExceptionMessageDialog(frame, t);
         frame.dispose();
     }
 }

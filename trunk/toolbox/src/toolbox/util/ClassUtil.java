@@ -46,12 +46,12 @@ public final class ClassUtil
     //--------------------------------------------------------------------------
     
     /**
-	 * Retrieves the names of all classes in a given package.
-	 * 
-	 * @param packageName Name of package to search.
-	 * @return Array of fully qualified class names in the package. Empty array
-	 *         if no classes are found.
-	 */
+     * Retrieves the names of all classes in a given package.
+     * 
+     * @param packageName Name of package to search.
+     * @return Array of fully qualified class names in the package. Empty array
+     *         if no classes are found.
+     */
     public static String[] getClassesInPackage(String packageName)
     {
         // Collect results here
@@ -68,7 +68,7 @@ public final class ClassUtil
         // logger_.info("Classpath: " + 
         //      ArrayUtil.toString(classpathEntries, false));
         
-        for (int i=0; i<classpathEntries.length; i++)
+        for (int i = 0; i < classpathEntries.length; i++)
         {
             String pathElement = classpathEntries[i];
         
@@ -163,7 +163,7 @@ public final class ClassUtil
         String[] classpathEntries = 
             StringUtil.tokenize(getClasspath(),  File.pathSeparator);
         
-        for (int i=0; i<classpathEntries.length; i++)
+        for (int i = 0; i < classpathEntries.length; i++)
         {
             String pathElement = classpathEntries[i];
         
@@ -220,7 +220,7 @@ public final class ClassUtil
                     pathElement, new ExtensionFilter(".class"));
                        
                 // Roundup parent directories and tag as package names
-                for (Iterator c = classFiles.iterator(); c.hasNext(); )
+                for (Iterator c = classFiles.iterator(); c.hasNext();)
                 {
                     String filepath = (String) c.next();
 
@@ -259,7 +259,7 @@ public final class ClassUtil
         String packageName = path.replace('/', '.').replace('\\', '.');
         
         if (packageName.endsWith("."))
-            packageName = packageName.substring(0, packageName.length() -1);
+            packageName = packageName.substring(0, packageName.length() -  1);
             
         return packageName;
     }
@@ -278,12 +278,12 @@ public final class ClassUtil
     
     
     /**
-	 * Determines if a files name indicates a java archive. This includes zip
-	 * and jar file types.
-	 * 
-	 * @param filename File to examine.
-	 * @return True if the name is a valid java archive, false otherwise.
-	 */
+     * Determines if a files name indicates a java archive. This includes zip
+     * and jar file types.
+     * 
+     * @param filename File to examine.
+     * @return True if the name is a valid java archive, false otherwise.
+     */
     public static boolean isArchive(String filename)
     {
         String f = filename.toLowerCase().trim();
@@ -331,7 +331,7 @@ public final class ClassUtil
         int idx = fqn.lastIndexOf('.');
         
         if (idx >= 0)
-            return fqn.substring(idx+1);
+            return fqn.substring(idx + 1);
         else
             return fqn;
     }
@@ -364,14 +364,15 @@ public final class ClassUtil
      * @param params Array of objects. 
      * @return Array of Class objects.
      */    
-    public static final Class[] getMatchingClasses(Object[] params)
+    public static Class[] getMatchingClasses(Object[] params)
     {
         Class[] ca = new Class[0];
             
         if (params != null && params.length > 0)
         {
             ca = new Class[params.length];
-            for (int i=0; i<params.length; i++)
+            
+            for (int i = 0; i < params.length; i++)
                 ca[i] = params[i].getClass();
         }
             
@@ -430,6 +431,7 @@ public final class ClassUtil
                     }
                     catch (MalformedURLException ignore)
                     {
+                        ; // Ignore
                     }
                 }
             }

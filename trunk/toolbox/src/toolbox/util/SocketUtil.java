@@ -13,13 +13,17 @@ import org.apache.log4j.Logger;
 /**
  * Socket Utility Class.
  */
-public class SocketUtil
+public final class SocketUtil
 {
     private static final Logger logger_ = Logger.getLogger(SocketUtil.class);
 
     // Clover private constructor workaround
     static { new SocketUtil(); }
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
      * Value embedded in message for an accept() timeout. 
      */
@@ -29,8 +33,11 @@ public class SocketUtil
      * Value embedded in exception message for a socket closed exception. 
      */
     public static final String MSG_SOCKET_CLOSED_13 = "Socket closed";
+    
+    /**
+     * Alternative value.
+     */
     public static final String MSG_SOCKET_CLOSED_14 = "Socket is closed";
-
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -48,17 +55,17 @@ public class SocketUtil
     //--------------------------------------------------------------------------
     
     /**
-	 * Establishes a connection to a server socket with a retry strategy.
-	 * 
-	 * @param hostname Host to connect to
-	 * @param port Port to connect to
-	 * @param interval Retry interval in seconds. Zero = no interval
-	 * @param maxRetries Maximum number of times to retry. Zero = infinite
-	 * @return Socket if connection succeeded, null otherwise
-	 * @throws IOException if an I/O error occurs
-	 * @throws UnknownHostException if host is not found, invalid, or network
-	 *         connection is down.
-	 */
+     * Establishes a connection to a server socket with a retry strategy.
+     * 
+     * @param hostname Host to connect to.
+     * @param port Port to connect to.
+     * @param interval Retry interval in seconds. Zero = no interval.
+     * @param maxRetries Maximum number of times to retry. Zero = infinite.
+     * @return Socket if connection succeeded, null otherwise.
+     * @throws IOException if an I/O error occurs.
+     * @throws UnknownHostException if host is not found, invalid, or network
+     *         connection is down.
+     */
     public static Socket connectWithRetry(
         String hostname, 
         int port, 
@@ -105,8 +112,8 @@ public class SocketUtil
      *       logic based on this exception.
      * </pre>
      * 
-     * @param iioe Exception to check
-     * @return True if caused by an accept timeout, false otherwise
+     * @param iioe Exception to check.
+     * @return True if caused by an accept timeout, false otherwise.
      */
     public static boolean isReasonAcceptTimeout(InterruptedIOException iioe)
     {
@@ -123,13 +130,13 @@ public class SocketUtil
      *       logic based on this exception.
      * </pre>
      * 
-     * @param se SocketException to check
-     * @return True if exception raised by a closed socket , false otherwise
+     * @param se SocketException to check.
+     * @return True if exception raised by a closed socket , false otherwise.
      */
     public static boolean isReasonSocketClosed(SocketException se)
     {
         return se.getMessage().equalsIgnoreCase(MSG_SOCKET_CLOSED_13) ||
-               se.getMessage().equalsIgnoreCase(MSG_SOCKET_CLOSED_14) ;
+               se.getMessage().equalsIgnoreCase(MSG_SOCKET_CLOSED_14);
     }
     
     
@@ -137,8 +144,8 @@ public class SocketUtil
      * Returns a "free" port on the local host which is guaranteed not to be
      * occupied by existing services.
      * 
-     * @return Port number
-     * @throws IOException on I/O error
+     * @return Port number.
+     * @throws IOException on I/O error.
      */
     public static int getFreePort() throws IOException
     {
@@ -152,7 +159,7 @@ public class SocketUtil
     /**
      * Closes a socket quietly.
      * 
-     * @param socket Socket to close
+     * @param socket Socket to close.
      */    
     public static void close(Socket socket)
     {
@@ -173,7 +180,7 @@ public class SocketUtil
     /**
      * Closes a server socket quietly
      * 
-     * @param serverSocket Server socket to close
+     * @param serverSocket Server socket to close.
      */    
     public static void close(ServerSocket serverSocket)
     {

@@ -44,7 +44,7 @@ public class XOMUtil
             }
             catch (NumberFormatException nfe)
             {
-                // return default
+                ;// return default
             }
         }
             
@@ -121,6 +121,7 @@ public class XOMUtil
             }
             catch (NumberFormatException nfe)
             {
+                ; // Ignore
             }
             
         return intValue;
@@ -215,7 +216,7 @@ public class XOMUtil
         Serializer serializer = new Serializer(sos);
         serializer.setIndent(3);
         serializer.setLineSeparator("\n");
-        serializer.write(new Document((Element)node.copy()));
+        serializer.write(new Document((Element) node.copy()));
         return sos.toString();
     }
     

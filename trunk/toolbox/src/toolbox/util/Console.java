@@ -194,7 +194,7 @@ public abstract class Console
             getPrintStream().print(getPrompt());
             cmd = lnr_.readLine();        
         }
-        catch(IOException io)
+        catch (IOException io)
         {
             System.err.println(io);
             io.printStackTrace();    
@@ -211,7 +211,7 @@ public abstract class Console
      */
     public void handleCommand(String cmd)
     {
-        if(cmd.equals(CMD_QUIT) || cmd.equals(CMD_EXIT))
+        if (cmd.equals(CMD_QUIT) || cmd.equals(CMD_EXIT))
             commandQuit();
         else if (cmd.equals(CMD_CLASSPATH))
             commandClasspath();
@@ -244,9 +244,9 @@ public abstract class Console
      */
     protected void commandSetProp(String cmd)
     {
-        StringTokenizer st = new StringTokenizer(cmd," ");
+        StringTokenizer st = new StringTokenizer(cmd, " ");
         
-        if(st.countTokens() != 3)
+        if (st.countTokens() != 3)
             ps_.println("setprop <property name> <value>");
         else
         {
@@ -263,9 +263,9 @@ public abstract class Console
      */
     protected void commandDelProp(String cmd)
     {
-        StringTokenizer st = new StringTokenizer(cmd," ");
+        StringTokenizer st = new StringTokenizer(cmd, " ");
         
-        if(st.countTokens() != 2)
+        if (st.countTokens() != 2)
             ps_.println("delprop <property name>");
         else
         {
@@ -296,7 +296,7 @@ public abstract class Console
         int numSecs = 10000;
         
         getPrintStream().println("Detaching from inputstream for " + 
-            numSecs/1000 + " secs...");
+            numSecs / 1000 + " secs...");
             
         ThreadUtil.sleep(10000);
         getPrintStream().println("Re-attached to inputstream.");
@@ -333,12 +333,12 @@ public abstract class Console
         
         int max = 0;
         
-        for(Enumeration e = props.propertyNames(); e.hasMoreElements(); )
+        for (Enumeration e = props.propertyNames(); e.hasMoreElements();)
         {
-            String name = (String)e.nextElement();
+            String name = (String) e.nextElement();
             
             // keep track of max length to line columns up
-            if(name.length() > max)
+            if (name.length() > max)
                 max = name.length();
             list.add(name);
         }
@@ -347,11 +347,11 @@ public abstract class Console
         Object[] arr = list.toArray();
         Arrays.sort(arr);
 
-        for(int i=0; i<arr.length; i++ )
+        for (int i = 0; i < arr.length; i++)
         {
-            String name = (String)arr[i];
+            String name = (String) arr[i];
             String value = props.getProperty(name);
-            getPrintStream().println(StringUtil.left(name, max+1) + value);
+            getPrintStream().println(StringUtil.left(name, max + 1) + value);
         }
     }
 
@@ -377,10 +377,12 @@ public abstract class Console
         StringBuffer sb = new StringBuffer();
         String path = System.getProperty("java.class.path");
         
-        for (StringTokenizer st = new StringTokenizer(
-            path, System.getProperty("path.separator")); 
-                st.hasMoreTokens();)
+        for (StringTokenizer st = new StringTokenizer(path, 
+                System.getProperty("path.separator")); st.hasMoreTokens();)
+        {          
             sb.append(" " + st.nextToken() + "\n");
+        }
+        
         getPrintStream().print(sb.toString());
     }
     
@@ -399,13 +401,13 @@ public abstract class Console
         long hour   = 60 * minute;
         long day    = 24 * hour;
         
-        long days = delta/day;
+        long days = delta / day;
         delta -= days * day;
-        long hours = delta/hour;
+        long hours = delta / hour;
         delta -= hours * hour;
-        long minutes = delta/minute;
+        long minutes = delta / minute;
         delta -= minute * minutes;
-        long seconds = delta/second;
+        long seconds = delta / second;
         delta -= second * seconds;
         long millis = delta;
         

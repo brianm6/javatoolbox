@@ -24,7 +24,7 @@ public class StackTraceInfo implements Serializable
      * <code>NA</code> is returned. Current value of this string
      * constant is <b>?</b>.  
      */
-    private final static String NA = "?";
+    private static final String NA = "?";
     
     //--------------------------------------------------------------------------
     // Private Fields 

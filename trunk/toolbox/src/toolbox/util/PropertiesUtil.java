@@ -30,16 +30,16 @@ public final class PropertiesUtil
     //--------------------------------------------------------------------------
     
     /**
-	 * Gets a boolean value from a properties object. The case of the string is
-	 * irrelevant.
-	 * 
-	 * @param props Properties to retrieve boolean from
-	 * @param name Name of the property
-	 * @param defaultValue Default value if property is not present or invalid
-	 * @return True if property represents the string "true". False if the
-	 *         property represents the string "false". Default value if the
-	 *         property is non-existant or an error is encountered.
-	 */
+     * Gets a boolean value from a properties object. The case of the string is
+     * irrelevant.
+     * 
+     * @param props Properties to retrieve boolean from.
+     * @param name Name of the property.
+     * @param defaultValue Default value if property is not present or invalid
+     * @return True if property represents the string "true". False if the
+     *         property represents the string "false". Default value if the
+     *         property is non-existant or an error is encountered.
+     */
     public static boolean getBoolean(Properties props, String name, 
         boolean defaultValue)
     {
@@ -62,12 +62,12 @@ public final class PropertiesUtil
 
     
     /**
-	 * Sets a boolean property in a properties object.
-	 * 
-	 * @param props Properties to set property in
-	 * @param name Name of the property
-	 * @param value Value to set
-	 */
+     * Sets a boolean property in a properties object.
+     * 
+     * @param props Properties to set property in.
+     * @param name Name of the property.
+     * @param value Value to set.
+     */
     public static void setBoolean(Properties props, String name, 
         boolean value)
     {
@@ -76,15 +76,18 @@ public final class PropertiesUtil
     
     
     /**
-	 * Gets an signed integer value from a properties object.
-	 * 
-	 * @param props Properties to retrieve integer from
-	 * @param name Name of the property
-	 * @param defaultValue Default value if property is not present or invalid
-	 * @return Integer if property exists and is a valid integer, default value
-	 *         otherwise.
-	 */
-    public static int getInteger(Properties props, String name,int defaultValue)
+     * Gets an signed integer value from a properties object.
+     * 
+     * @param props Properties to retrieve integer from.
+     * @param name Name of the property.
+     * @param defaultValue Default value if property is not present or invalid
+     * @return Integer if property exists and is a valid integer, default value
+     *         otherwise.
+     */
+    public static int getInteger(
+        Properties props,
+        String name,
+        int defaultValue)
     {
         int i = defaultValue;
         String value = props.getProperty(name);
@@ -106,14 +109,14 @@ public final class PropertiesUtil
 
     
     /**
-	 * Gets an signed long value from a properties object.
-	 * 
-	 * @param props Properties to retrieve long from
-	 * @param name Name of the property
-	 * @param defaultValue Default value if property is not present or invalid
-	 * @return Long if property exists and is a valid long, default value
-	 *         otherwise.
-	 */
+     * Gets an signed long value from a properties object.
+     * 
+     * @param props Properties to retrieve long from.
+     * @param name Name of the property.
+     * @param defaultValue Default value if property is not present or invalid
+     * @return Long if property exists and is a valid long, default value
+     *         otherwise.
+     */
     public static long getLong(Properties props, String name, long defaultValue)
     {
         long i = defaultValue;
@@ -136,12 +139,12 @@ public final class PropertiesUtil
     
     
     /**
-	 * Sets an integer property in a properties object.
-	 * 
-	 * @param props Properties to set property in
-	 * @param name Name of the property
-	 * @param value Value to set
-	 */
+     * Sets an integer property in a properties object.
+     * 
+     * @param props Properties to set property in.
+     * @param name Name of the property.
+     * @param value Value to set.
+     */
     public static void setInteger(Properties props, String name, int value)
     {
         props.setProperty(name, value + "");   
@@ -149,11 +152,11 @@ public final class PropertiesUtil
 
     
     /**
-	 * Returns string of sorted properties for easy inspection.
-	 * 
-	 * @param props Properties to output to a string
-	 * @return List of sorted properties with their values, one per line
-	 */    
+     * Returns string of sorted properties for easy inspection.
+     * 
+     * @param props Properties to output to a string.
+     * @return List of sorted properties with their values, one per line.
+     */    
     public static String toString(Properties props)
     {
         List keyList = new ArrayList(props.keySet());
@@ -162,7 +165,7 @@ public final class PropertiesUtil
         int max = 0;
 
         // Find the longest key for padding
-        for (Iterator i = keyList.iterator(); i.hasNext(); )
+        for (Iterator i = keyList.iterator(); i.hasNext();)
         {
             String key = (String) i.next();
             if (key.length() > max)
@@ -172,11 +175,11 @@ public final class PropertiesUtil
         StringBuffer sb = new StringBuffer();
         
                 
-        for (Iterator i = keyList.iterator(); i.hasNext(); )
+        for (Iterator i = keyList.iterator(); i.hasNext();)
         {
             String key = (String) i.next();
             String value = props.getProperty(key);
-            sb.append(key + StringUtil.repeat(" ", max-key.length()) + 
+            sb.append(key + StringUtil.repeat(" ", max - key.length()) + 
                 " = " + value + "\n");
         }
              

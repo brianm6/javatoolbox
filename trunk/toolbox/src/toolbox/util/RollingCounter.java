@@ -8,6 +8,10 @@ import java.util.List;
  */
 public class RollingCounter
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Start of range. 
      */
@@ -35,9 +39,9 @@ public class RollingCounter
     /**
      * Creates a counter that wraps around.
      * 
-     * @param start Starting value of range
-     * @param end Ending value of range
-     * @param initialValue Initial value of counter 
+     * @param start Starting value of range.
+     * @param end Ending value of range.
+     * @param initialValue Initial value of counter. 
      */        
     public RollingCounter(int start, int end, int initialValue)
     {
@@ -54,7 +58,7 @@ public class RollingCounter
     /**
      * Increments the counter by 1.
      *
-     * @return Counter value after increment
+     * @return Counter value after increment.
      */
     public int increment()
     {   
@@ -110,29 +114,29 @@ public class RollingCounter
     //--------------------------------------------------------------------------
     
     /**
-     * Fires event for before a roll occurs
+     * Fires event for before a roll occurs.
      */
     public void fireBeforeRoll()
     {
-        for(int i=0; i<listeners_.size(); i++)
-            ((IRollingCounterListener)listeners_.get(i)).beforeRoll(this);
+        for (int i = 0; i < listeners_.size(); i++)
+             ((IRollingCounterListener) listeners_.get(i)).beforeRoll(this);
     }
 
     
     /**
-     * Fires event for after a roll occurs
+     * Fires event for after a roll occurs.
      */
     public void fireAfterRoll()
     {
-        for(int i=0; i<listeners_.size(); i++)
-            ((IRollingCounterListener)listeners_.get(i)).afterRoll(this);
+        for (int i = 0; i < listeners_.size(); i++)
+            ((IRollingCounterListener) listeners_.get(i)).afterRoll(this);
     }
 
     
     /**
      * Adds a listener.
      *
-     * @param listener Listener to add
+     * @param listener Listener to add.
      */
     public void addRollingCounterListener(IRollingCounterListener listener)
     {

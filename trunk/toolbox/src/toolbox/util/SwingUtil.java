@@ -64,9 +64,9 @@ public final class SwingUtil
     /**
      * Sets the size of a window to a given percentage of the users desktop.
      *
-     * @param w Window to size
-     * @param percentWidth Percent width from 1 to 100
-     * @param percentHeight Percent height from 1 to 100
+     * @param w Window to size.
+     * @param percentWidth Percent width from 1 to 100.
+     * @param percentHeight Percent height from 1 to 100.
      */
     public static void setWindowSizeAsPercentage(Window w, int percentWidth,
         int percentHeight)
@@ -85,7 +85,7 @@ public final class SwingUtil
     /**
      * Moves the window to the center of the screen.
      * 
-     * @param w Window to move
+     * @param w Window to move.
      */
     public static void centerWindow(Window w)
     {
@@ -102,8 +102,8 @@ public final class SwingUtil
     /**
      * Centers a child window relative to its parent window.
      * 
-     * @param parent Parent window
-     * @param child Child window
+     * @param parent Parent window.
+     * @param child Child window.
      */
     public static void centerWindow(Window parent, Window child)
     {
@@ -118,12 +118,12 @@ public final class SwingUtil
    
 
     /**
-     * Finds the frame for a given component. 
+     * Finds the frame for a given component.
      * 
-     * @param component Component to find parent frame for
-     * @return Frame that component is a child of or null if the component
-     *         does not have a parent frame or if the parent frame is not
-     *         a Frame (could be a Dialog).
+     * @param component Component to find parent frame for.
+     * @return Frame that component is a child of or null if the component does
+     *         not have a parent frame or if the parent frame is not a Frame
+     *         (could be a Dialog).
      * @see javax.swing.SwingUtilities#getWindowAncestor(Component)
      */
     public static Frame getFrameAncestor(Component component)
@@ -151,7 +151,7 @@ public final class SwingUtil
         if (c instanceof Container)
         {
             Component[] comps = ((Container) c).getComponents();
-            for (int i=0; i<comps.length; setDefaultCursor(comps[i++]));
+            for (int i = 0; i < comps.length; setDefaultCursor(comps[i++]));
         }
     }
 
@@ -160,6 +160,7 @@ public final class SwingUtil
      * Sets the cursor to the wait cursor on the given component.
      * 
      * @param c Component to set the cursor on.
+     * @return int
      */
     public static int setWaitCursor(Component c)
     {
@@ -170,7 +171,7 @@ public final class SwingUtil
         if (c instanceof Container)
         {
             Component[] comps = ((Container) c).getComponents();
-            for (int i=0; i<comps.length; cnt += setWaitCursor(comps[i++]));
+            for (int i = 0; i < comps.length; cnt += setWaitCursor(comps[i++]));
         }
         
         return cnt;
@@ -282,7 +283,7 @@ public final class SwingUtil
     /**
      * Cascades all internal frames on a desktop.
      * 
-     * @param desktop Desktop on with to cascade all internal frames
+     * @param desktop Desktop on with to cascade all internal frames.
      */
     public static void cascade(JDesktopPane desktop)
     {
@@ -298,8 +299,8 @@ public final class SwingUtil
             if (!frame.isIcon())
             {
                 // Fix me
-                frame.setSize( new Dimension(200,200) 
-                    /*f.getInitialDimensions()*/);
+                frame.setSize(new Dimension(200, 200) 
+                 /*f.getInitialDimensions()*/);
                     
                 frame.setLocation(cascade(desktop, frame, cnt++));
             }
@@ -307,16 +308,16 @@ public final class SwingUtil
     }
 
 
-    /** 
-     * Cascades the given internal frame based upon the current number 
-     * of internal frames.
-     *
-     * @param desktop Desktop
-     * @param frame Internal frame to cascade
-     * @return Point object representing the location assigned to the 
-     *         internal frame upon the virtual desktop
+    /**
+     * Cascades the given internal frame based upon the current number of
+     * internal frames.
+     * 
+     * @param desktop Desktop.
+     * @param frame Internal frame to cascade.
+     * @return Point object representing the location assigned to the internal
+     *         frame upon the virtual desktop.
      */
-    public static Point cascade(JDesktopPane desktop,JInternalFrame frame)
+    public static Point cascade(JDesktopPane desktop, JInternalFrame frame)
     {
         return cascade(desktop, frame, desktop.getAllFrames().length);
     }
@@ -325,13 +326,15 @@ public final class SwingUtil
     /**
      * Cascades the given internal frame based upon supplied count.
      *
-     * @param desktop Desktop upon which frame is visible
-     * @param f Internal frame to cascade
-     * @param count Count to use in cascading the internal frame
+     * @param desktop Desktop upon which frame is visible.
+     * @param f Internal frame to cascade.
+     * @param count Count to use in cascading the internal frame.
      * @return Point object representing the location assigned to the internal 
-     *         frame upon the virtual desktop
+     *         frame upon the virtual desktop.
      */
-    private static Point cascade(JDesktopPane desktop, JInternalFrame f, 
+    private static Point cascade(
+        JDesktopPane desktop,
+        JInternalFrame f,
         int count)
     {
         int windowWidth = f.getWidth();
@@ -382,8 +385,8 @@ public final class SwingUtil
     /**
      * Wraps a component in a JPanel using a flowlayout.
      *
-     * @param component Component to wrap
-     * @return JPanel 
+     * @param component Component to wrap.
+     * @return JPanel
      */    
     public static JPanel wrap(JComponent component)
     {
@@ -396,7 +399,7 @@ public final class SwingUtil
     /**
      * Wraps a component tightly in a JPanel using BorderLayout.
      *
-     * @param component Component to wrap
+     * @param component Component to wrap.
      * @return JPanel 
      */    
     public static JPanel wrapTight(JComponent component)
@@ -412,7 +415,7 @@ public final class SwingUtil
      * cannibalized from the JPopupMenu so it is no longer valid after this
      * call.
      * 
-     * @param popup Popupmenu to convert
+     * @param popup Popupmenu to convert.
      * @return JMenu
      */
     public static JMenu popupToMenu(JPopupMenu popup)
@@ -440,7 +443,7 @@ public final class SwingUtil
      * 
      * @return boolean
      */
-    public static final boolean getDefaultAntiAlias()
+    public static boolean getDefaultAntiAlias()
     {
         return defaultAntiAlias_;
     }
@@ -449,9 +452,9 @@ public final class SwingUtil
     /**
      * Sets the flag for antialiasing all 'smart' components.
      * 
-     * @param b Antialias flag
+     * @param b Antialias flag.
      */
-    public static final void setDefaultAntiAlias(boolean b)
+    public static void setDefaultAntiAlias(boolean b)
     {
         defaultAntiAlias_ = b; 
     }
@@ -460,10 +463,10 @@ public final class SwingUtil
     /**
      * Sets the antialiased flag on a tree of components.
      * 
-     * @param c Root component
-     * @param b Antialias flag
+     * @param c Root component.
+     * @param b Antialias flag.
      */
-    public static final void setAntiAliased(Component c, boolean b)
+    public static void setAntiAliased(Component c, boolean b)
     {
         if (c instanceof AntiAliased)
         {
@@ -477,7 +480,7 @@ public final class SwingUtil
         if (c instanceof Container)
         {
             Component[] comps = ((Container) c).getComponents();
-            for (int i=0; i<comps.length; setAntiAliased(comps[i++],b));
+            for (int i = 0; i < comps.length; setAntiAliased(comps[i++], b));
         }
     }
 
@@ -485,18 +488,18 @@ public final class SwingUtil
     /**
      * Turns on antialiasing for a graphics context.
      * 
-     * @param graphics Graphics context
+     * @param graphics Graphics context.
      * @param antiAliased Set to true to turn antialiasing on for the graphics
      *        context; false to turn it off.
      */
-    public static final void makeAntiAliased(Graphics graphics, 
+    public static void makeAntiAliased(Graphics graphics, 
         boolean antiAliased)
     {    
         //((Graphics2D)g).setRenderingHint
         //  (RenderingHints.KEY_ANTIALIASING,
         //   RenderingHints.VALUE_ANTIALIAS_ON);
     
-        ((Graphics2D)graphics).setRenderingHint(
+        ((Graphics2D) graphics).setRenderingHint(
             RenderingHints.KEY_TEXT_ANTIALIASING,
             (antiAliased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
                        : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));

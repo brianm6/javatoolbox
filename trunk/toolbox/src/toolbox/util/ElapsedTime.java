@@ -112,7 +112,7 @@ public class ElapsedTime
      * Creates an elapsed time with the start and end times equal to the start 
      * time.
      * 
-     * @param startTime Starting time
+     * @param startTime Starting time.
      */
     public ElapsedTime(Date startTime)
     {
@@ -123,8 +123,8 @@ public class ElapsedTime
     /**
      * Creates an elapsed time from the given time span.
      * 
-     * @param startTime Starting time
-     * @param endTime Ending time
+     * @param startTime Starting time.
+     * @param endTime Ending time.
      */
     public ElapsedTime(Date startTime, Date endTime)
     {
@@ -135,8 +135,8 @@ public class ElapsedTime
     /**
      * Creates an elapsed time from the given time span.
      * 
-     * @param startTime Staring time in milliseconds
-     * @param endTime Ending time in milliseconds
+     * @param startTime Staring time in milliseconds.
+     * @param endTime Ending time in milliseconds.
      */
     public ElapsedTime(long startTime, long endTime)
     {
@@ -169,7 +169,7 @@ public class ElapsedTime
     /** 
      * Creates a copy of the given elapsed time.
      * 
-     * @param elapsedTime Elapsed time to copy
+     * @param elapsedTime Elapsed time to copy.
      */
     public ElapsedTime(ElapsedTime elapsedTime)
     {
@@ -185,7 +185,7 @@ public class ElapsedTime
     /**
      * Accessor for the number of days elapsed [0..Integer.MAXINT].
      * 
-     * @return Days elapsed
+     * @return Days elapsed.
      */    
     public long getDays()
     {
@@ -196,7 +196,7 @@ public class ElapsedTime
     /**
      * Accessor for the number of hours elapsed [0..23].
      * 
-     * @return Hours elapsed
+     * @return Hours elapsed.
      */    
     public int getHours()
     {
@@ -206,7 +206,7 @@ public class ElapsedTime
     /**
      * Accessor for the number of minutes elapsed [0..59].
      * 
-     * @return Minutes elapsed
+     * @return Minutes elapsed.
      */    
     public int getMinutes()
     {
@@ -216,7 +216,7 @@ public class ElapsedTime
     /**
      * Accessor for the number of seconds elapsed [0..59].
      * 
-     * @return Seconds elapsed
+     * @return Seconds elapsed.
      */    
     public int getSeconds()
     {
@@ -227,7 +227,7 @@ public class ElapsedTime
     /**
      * Accessor for the number of milliseconds elapsed [0..999].
      * 
-     * @return Milliseconds elapsed
+     * @return Milliseconds elapsed.
      */
     public int getMillis()
     {
@@ -238,7 +238,7 @@ public class ElapsedTime
     /**
      * Accessor for the staring time of the elapsed time.
      * 
-     * @return Starting time
+     * @return Starting time.
      */
     public Date getStartTime()
     {
@@ -249,7 +249,7 @@ public class ElapsedTime
     /**
      * Accessor for the ending time of the elapsed time.
      * 
-     * @return Ending time
+     * @return Ending time.
      */
     public Date getEndTime()
     {
@@ -260,7 +260,7 @@ public class ElapsedTime
     /**
      * Sets the starting time for the elapsed time.
      *
-     * @param startTime Starting time
+     * @param startTime Starting time.
      */
     public void setStartTime(Date startTime)
     {
@@ -280,7 +280,7 @@ public class ElapsedTime
     /**
      * Sets the ending time for the elapsed time.
      * 
-     * @param endTime Ending time
+     * @param endTime Ending time.
      */
     public void setEndTime(Date endTime)
     {
@@ -344,15 +344,15 @@ public class ElapsedTime
         long delta;
          
         delta     = endTime_ - startTime_;
-        days_     = delta/DAY;
+        days_     = delta / DAY;
         delta     = delta - (days_ * DAY);
-        hours_    = (int)(delta/HOUR);
+        hours_    = (int) (delta / HOUR);
         delta     = delta - (hours_ * HOUR);
-        minutes_  = (int)(delta/MINUTE);
+        minutes_  = (int) (delta / MINUTE);
         delta     = delta - (minutes_ * MINUTE);
-        seconds_  = (int)(delta/SECOND);
+        seconds_  = (int) (delta / SECOND);
         delta     = delta - (seconds_ * SECOND);
-        millis_   = (int)delta;
+        millis_   = (int) delta;
     }
     
     //--------------------------------------------------------------------------
@@ -362,7 +362,7 @@ public class ElapsedTime
     /**
      * Returns elapsed time as a formatted string: 3d 23h 34m 23s 897ms.
      * 
-     * @return Elapsed time as a formatted string
+     * @return Elapsed time as a formatted string.
      */
     public String toString()        
     {
@@ -391,8 +391,8 @@ public class ElapsedTime
      * Compares elapsed times for the span of time regardless of the start or 
      * ending time.
      * 
-     * @param obj Elapsed time to compare
-     * @return True if elapsed time is equals, false otherwise
+     * @param obj Elapsed time to compare.
+     * @return True if elapsed time is equals, false otherwise.
      */    
     public boolean equals(Object obj)
     {
@@ -409,7 +409,7 @@ public class ElapsedTime
     /**
      * Override hashcode implementation to match equals().
      * 
-     * @return Unique hashcode
+     * @return Unique hashcode.
      */
     public int hashCode()
     {

@@ -69,7 +69,7 @@ public final class FileUtil
      * Deletes the contents of a directory including nested directories. The
      * directory itself is not deleted.
      *
-     * @param dir Directory to clean
+     * @param dir Directory to clean.
      */
     public static void cleanDir(File dir)
     {
@@ -98,10 +98,10 @@ public final class FileUtil
     /**
      * Reads in the contents of a text file into a single string.
      *
-     * @param filename Name of the file
-     * @return Contents of the file as a string
-     * @throws FileNotFoundException if file not found
-     * @throws IOException on I/O error
+     * @param filename Name of the file.
+     * @return Contents of the file as a string.
+     * @throws FileNotFoundException if file not found.
+     * @throws IOException on I/O error.
      */
     public static String getFileContents(String filename)
         throws FileNotFoundException, IOException
@@ -129,10 +129,10 @@ public final class FileUtil
     /**
      * Reads in the contents of a file into byte array.
      *
-     * @param filename Name of the file to read in
-     * @return Files contents as a byte array
-     * @throws FileNotFoundException if file not found
-     * @throws IOException on I/O error
+     * @param filename Name of the file to read in.
+     * @return Files contents as a byte array.
+     * @throws FileNotFoundException if file not found.
+     * @throws IOException on I/O error.
      */
     public static byte[] getFileAsBytes(String filename)
         throws FileNotFoundException, IOException
@@ -146,7 +146,7 @@ public final class FileUtil
             int b;
 
             while ((b = is.read()) != -1)
-                byteBuffer.add(new Byte((byte)b));
+                byteBuffer.add(new Byte((byte) b));
         }
         finally
         {
@@ -155,7 +155,7 @@ public final class FileUtil
 
         byte[] buffer = new byte[byteBuffer.size()];
         
-        for (int i=0; i<byteBuffer.size(); i++)
+        for (int i = 0; i < byteBuffer.size(); i++)
             buffer[i] = ((Byte) byteBuffer.get(i)).byteValue();
             
         return buffer;
@@ -165,12 +165,12 @@ public final class FileUtil
     /**     
      * Writes out the contents to a text file from a single string.     
      *     
-     * @param filename Name of the file     
-     * @param contents Contents to store in the file
-     * @param append Specify if you want to append to the file     
-     * @return Contents of the file as a string
-     * @throws FileNotFoundException if file not found
-     * @throws IOException on I/O error
+     * @param filename Name of the file.    
+     * @param contents Contents to store in the file.
+     * @param append Specify if you want to append to the file.     
+     * @return Contents of the file as a string.
+     * @throws FileNotFoundException if file not found.
+     * @throws IOException on I/O error.
      */
     public static String setFileContents(
         String filename,
@@ -196,11 +196,11 @@ public final class FileUtil
     /**     
      * Writes out the contents of a byte array to a file.
      *     
-     * @param filename Name of the file     
-     * @param data Byte array of data
-     * @param append True if append if the file already exists
-     * @throws FileNotFoundException if file not found
-     * @throws IOException on I/O error
+     * @param filename Name of the file.     
+     * @param data Byte array of data.
+     * @param append True if append if the file already exists.
+     * @throws FileNotFoundException if file not found.
+     * @throws IOException on I/O error.
      */
     public static void setFileContents(
         String filename,
@@ -224,12 +224,12 @@ public final class FileUtil
     /**     
      * Writes a string to a file.
      *     
-     * @param file File to write to
-     * @param contents Contents to store in the file
-     * @param append Specify if you want to append to the file     
-     * @return Contents of the file as a string
-     * @throws FileNotFoundException if file not found
-     * @throws IOException on I/O error
+     * @param file File to write to.
+     * @param contents Contents to store in the file.
+     * @param append Specify if you want to append to the file.     
+     * @return Contents of the file as a string.
+     * @throws FileNotFoundException if file not found.
+     * @throws IOException on I/O error.
      */
     public static String setFileContents(
         File file,
@@ -244,7 +244,7 @@ public final class FileUtil
     /**
      * Retrieves the System specific temp file directory.
      *
-     * @return Temp file directory
+     * @return Temp file directory.
      */
     public static File getTempDir()
     {
@@ -255,8 +255,8 @@ public final class FileUtil
     /**
      * Creates a temporary directory in the System temporary directory.
      * 
-     * @return Created temporary directory
-     * @throws IOException on I/O error
+     * @return Created temporary directory.
+     * @throws IOException on I/O error.
      */
     public static File createTempDir() throws IOException
     {
@@ -301,8 +301,8 @@ public final class FileUtil
      * Retrieves a suitable temporary file name for arbitrary use based on the 
      * system's temporary directory. The returned string is absolute in form.
      *
-     * @return Temporary file name
-     * @throws IOException on I/O error
+     * @return Temporary file name.
+     * @throws IOException on I/O error.
      */
     public static String createTempFilename() throws IOException
     {
@@ -313,9 +313,9 @@ public final class FileUtil
     /**
      * Creates a temporary filename for a file in the given directory.
      * 
-     * @param forDir Directory to assume the file will be created in
-     * @return Tempory filename in absolute form
-     * @throws IOException on I/O error
+     * @param forDir Directory to assume the file will be created in.
+     * @return Tempory filename in absolute form.
+     * @throws IOException on I/O error.
      */
     public static String createTempFilename(File forDir) throws IOException
     {
@@ -327,8 +327,8 @@ public final class FileUtil
      * Moves a file to a given directory. The destination directory must exist 
      * and be writable.
      *
-     * @param srcFile File to move
-     * @param destDir Destination directory
+     * @param srcFile File to move.
+     * @param destDir Destination directory.
      */
     public static void moveFile(File srcFile, File destDir)
     {
@@ -380,8 +380,8 @@ public final class FileUtil
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
      * 
-     * @param startingDir Start directory for the search
-     * @param filter Filename filter criteria
+     * @param startingDir Start directory for the search.
+     * @param filter Filename filter criteria.
      * @return List of filesnames as strings that match the filter from the 
      *         start dir.
      */
@@ -420,8 +420,8 @@ public final class FileUtil
      * Appends the file separator char to the end of a path if it already
      * doesn't exist.
      * 
-     * @param path Path to append file separator
-     * @return Path with suffixed file separator
+     * @param path Path to append file separator.
+     * @return Path with suffixed file separator.
      */
     public static String trailWithSeparator(String path)
     {
@@ -436,8 +436,8 @@ public final class FileUtil
      * For a given file path, the file separator characters are changed to
      * match the File.separator for the current platform.
      * 
-     * @param path Path to change
-     * @return Changed path
+     * @param path Path to change.
+     * @return Changed path.
      */
     public static String matchPlatformSeparator(String path)
     {
@@ -450,8 +450,8 @@ public final class FileUtil
     /**
      * Chops the extension off of a file's name.
      * 
-     * @param file File name
-     * @return File name without the extension
+     * @param file File name.
+     * @return File name without the extension.
      */
     public static String dropExtension(String file)
     {
@@ -476,13 +476,13 @@ public final class FileUtil
      * 
      * </pre>
      * 
-     * @param file Relative or absolute path reference to a file
-     * @return Just the name of the file
+     * @param file Relative or absolute path reference to a file.
+     * @return Just the name of the file.
      */
     public static String stripPath(String file)
     {
         int i = file.lastIndexOf(File.separatorChar);
-        return (i >= 0 ? file.substring(i+1) : file); 
+        return (i >= 0 ? file.substring(i + 1) : file); 
     }
     
     
@@ -499,8 +499,8 @@ public final class FileUtil
      * 
      * </pre>
      *
-     * @param filepath Path including filename
-     * @return Just the path portion of the filepath
+     * @param filepath Path including filename.
+     * @return Just the path portion of the filepath.
      */
     public static String stripFile(String filepath)
     {
@@ -513,7 +513,7 @@ public final class FileUtil
      * Deletes a file quietly. If the file can be deleted, ok. If not, 
      * does not cause a fuss.
      * 
-     * @param file File to delete
+     * @param file File to delete.
      */    
     public static void delete(String file)
     {
@@ -526,7 +526,7 @@ public final class FileUtil
      * Deletes a file quietly. If the file can be deleted, ok. If not, 
      * does not cause a fuss.
      * 
-     * @param file File to delete
+     * @param file File to delete.
      */    
     public static void delete(File file)
     {
@@ -540,8 +540,8 @@ public final class FileUtil
      * longest length, then the first file encountered in the array will be
      * returned.
      * 
-     * @param files Array of files to scan
-     * @return File with longest name
+     * @param files Array of files to scan.
+     * @return File with longest name.
      */    
     public static File getLongestFilename(File[] files)
     {
@@ -550,7 +550,7 @@ public final class FileUtil
         if (!ArrayUtil.isNullOrEmpty(files))
         {   
             longest = files[0]; 
-            for (int i=1; i<files.length; i++)
+            for (int i = 1; i < files.length; i++)
                 if (files[i].getName().length() > longest.getName().length())
                     longest = files[i];
         }
@@ -564,8 +564,8 @@ public final class FileUtil
      * file has the largest size, then the first file encountered in the array 
      * will be returned.
      * 
-     * @param files Array of files to scan
-     * @return File with the largest size in bytes
+     * @param files Array of files to scan.
+     * @return File with the largest size in bytes.
      */    
     public static File getLargestFile(File[] files)
     {
@@ -574,7 +574,7 @@ public final class FileUtil
         if (!ArrayUtil.isNullOrEmpty(files))
         {   
             largest = files[0]; 
-            for (int i=1; i<files.length; i++)
+            for (int i = 1; i < files.length; i++)
                 if (files[i].length() > largest.length())
                     largest = files[i];
         }
@@ -612,7 +612,7 @@ public final class FileUtil
         String ext = "";
         
         if (i >= 0)
-            ext = s.substring(i+1);
+            ext = s.substring(i + 1);
         
         return ext;
     }

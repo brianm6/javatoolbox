@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Utility functionality for Maps.
  */
-public class MapUtil
+public final class MapUtil
 {
     // Clover private constructor workaround
     static { new MapUtil(); }
@@ -30,7 +30,7 @@ public class MapUtil
     {
         StringBuffer sb = new StringBuffer();
         
-        for (Iterator i = map.entrySet().iterator(); i.hasNext(); )
+        for (Iterator i = map.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             sb.append(entry.getKey() + " : " + entry.getValue() + "\n");

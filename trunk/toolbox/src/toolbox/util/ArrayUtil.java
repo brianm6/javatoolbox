@@ -119,7 +119,7 @@ public final class ArrayUtil
                  endIndex < len)
         { 
             int subLen = endIndex - startIndex + 1;
-            Object[] subset = (Object[])Array.newInstance(clazz, subLen);
+            Object[] subset = (Object[]) Array.newInstance(clazz, subLen);
             System.arraycopy(array, startIndex, subset, 0, subLen);
             return subset;
         }
@@ -127,7 +127,7 @@ public final class ArrayUtil
         {
             throw new IllegalArgumentException(
                 "Subset [" + startIndex + ", " + endIndex + "] " +
-                "is not valid for the range [0," + (len-1) + "]");
+                "is not valid for the range [0," + (len - 1) + "]");
         }
     }
 
@@ -228,7 +228,7 @@ public final class ArrayUtil
     
     
     /**
-     * Determines if an object exists in a given array of objects. Uses equals() 
+     * Determines if an object exists in a given array of objects. Uses equals()
      * for comparison.
      * 
      * @param array Array of objects to search.
@@ -419,10 +419,10 @@ public final class ArrayUtil
             System.arraycopy(array, 0, newArray, 0, index);
             System.arraycopy(
                 array, 
-                Math.min(index+1, array.length-1), 
+                Math.min(index + 1, array.length - 1), 
                 newArray, 
-                Math.min(index, array.length-1), 
-                Math.min(length - index - 1 , array.length-1));
+                Math.min(index, array.length - 1), 
+                Math.min(length - index - 1, array.length - 1));
             
             result = newArray;            
         }
@@ -444,7 +444,7 @@ public final class ArrayUtil
      */    
     public static void invoke(Object[] array, String method, Object[] params)
     {
-        for (int i=0; i<array.length; i++)
+        for (int i = 0; i < array.length; i++)
         {
             try
             {

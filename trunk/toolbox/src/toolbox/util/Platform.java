@@ -22,7 +22,7 @@ public final class Platform
     //--------------------------------------------------------------------------
 
     // Clover private constructor workaround
-    static {new Platform();}
+    static { new Platform(); }
 
     static 
     {
@@ -62,8 +62,8 @@ public final class Platform
     //--------------------------------------------------------------------------
 
     /**
-	 * Private constructor.
-	 */
+     * Private constructor.
+     */
     private Platform()
     {
     }
@@ -73,88 +73,88 @@ public final class Platform
     //--------------------------------------------------------------------------
 
     /**
-	 * Returns true if we're running Windows 95/98/ME/NT/2000/XP, or OS/2.
+     * Returns true if we're running Windows 95/98/ME/NT/2000/XP, or OS/2.
      * 
      * @return boolean
-	 */
-    public static final boolean isDOSDerived()
+     */
+    public static boolean isDOSDerived()
     {
         return isWindows() || isOS2();
     }
 
     
     /**
-	 * Returns true if we're running Windows 95/98/ME/NT/2000/XP.
+     * Returns true if we're running Windows 95/98/ME/NT/2000/XP.
      * 
      * @return boolean
-	 */
-    public static final boolean isWindows()
+     */
+    public static boolean isWindows()
     {
         return os == WINDOWS_9X || os == WINDOWS_NT;
     }
 
     
     /**
-	 * Returns true if we're running Windows 95/98/ME.
+     * Returns true if we're running Windows 95/98/ME.
      * 
      * @return boolean
-	 */
-    public static final boolean isWindows9x()
+     */
+    public static boolean isWindows9x()
     {
         return os == WINDOWS_9X;
     }
 
     
     /**
-	 * Returns true if we're running Windows NT/2000/XP.
+     * Returns true if we're running Windows NT/2000/XP.
      * 
      * @return boolean
-	 */
-    public static final boolean isWindowsNT()
+     */
+    public static boolean isWindowsNT()
     {
         return os == WINDOWS_NT;
     }
 
     
     /**
-	 * Returns true if we're running OS/2.
+     * Returns true if we're running OS/2.
      * 
      * @return boolean
-	 */
-    public static final boolean isOS2()
+     */
+    public static boolean isOS2()
     {
         return os == OS2;
     }
 
     
     /**
-	 * Returns true if we're running Unix (this includes MacOS X).
+     * Returns true if we're running Unix (this includes MacOS X).
      * 
      * @return boolean
-	 */
-    public static final boolean isUnix()
+     */
+    public static boolean isUnix()
     {
         return os == UNIX || os == MAC_OS_X;
     }
 
     
     /**
-	 * Returns true if we're running MacOS X.
+     * Returns true if we're running MacOS X.
      * 
      * @return boolean
-	 */
-    public static final boolean isMacOS()
+     */
+    public static boolean isMacOS()
     {
         return os == MAC_OS_X;
     }
 
     
     /**
-	 * Returns true if Java 2 version 1.4 is in use.
+     * Returns true if Java 2 version 1.4 is in use.
      * 
      * @return boolean
-	 */
-    public static final boolean hasJava14()
+     */
+    public static boolean hasJava14()
     {
         return java14;
     }
