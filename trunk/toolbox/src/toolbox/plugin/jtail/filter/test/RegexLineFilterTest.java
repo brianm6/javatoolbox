@@ -1,11 +1,11 @@
-package toolbox.jtail.filter.test;
+package toolbox.plugin.jtail.filter.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.jtail.filter.RegexLineFilter;
+import toolbox.plugin.jtail.filter.RegexLineFilter;
 
 /**
  * Unit test for RegexLineFilter.

@@ -1,4 +1,4 @@
-package toolbox.jtail;
+package toolbox.plugin.jtail;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import toolbox.jtail.config.IJTailConfig;
+import toolbox.plugin.jtail.config.IJTailConfig;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;

@@ -1,19 +1,19 @@
-package toolbox.jtail.config.xom;
+package toolbox.plugin.jtail.config.xom;
 
 import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
 
-import toolbox.jtail.config.IJTailConfig;
-import toolbox.jtail.config.ITailPaneConfig;
+import toolbox.plugin.jtail.config.IJTailConfig;
+import toolbox.plugin.jtail.config.ITailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
 /**
- * Tiny XML implemenation of IJTailConfig interface that marshals configuration 
- * information to and from XML.
+ * XOM based implemenation of the IJTailConfig interface that marshals 
+ * configuration information to and from XML.
  */
 public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 { 
@@ -58,6 +58,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     {
         defaultConfig_ = defaultConfig;
     }
+
     
     /**
      * @see toolbox.jtail.config.IJTailConfig#getDefaultConfig()
@@ -67,6 +68,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
         return defaultConfig_;
     }
 
+    
     /**
      * @see toolbox.jtail.config.IJTailConfig#getTailConfigs()
      */
@@ -75,6 +77,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
         return tailPaneConfigs_;
     }
 
+    
     /**
      * @see toolbox.jtail.config.IJTailConfig#setTailConfigs(
      *      toolbox.jtail.config.ITailPaneConfig[])
@@ -120,6 +123,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
             setTailConfigs(tailPaneConfigs);
         }
     }
+    
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)

@@ -1,4 +1,4 @@
-package toolbox.jtail.filter;
+package toolbox.plugin.jtail.filter;
 
 /**
  * Appends a line number to the beginning of the line.

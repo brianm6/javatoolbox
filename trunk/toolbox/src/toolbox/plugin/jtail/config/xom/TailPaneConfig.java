@@ -1,4 +1,4 @@
-package toolbox.jtail.config.xom;
+package toolbox.plugin.jtail.config.xom;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
 
-import toolbox.jtail.config.ITailPaneConfig;
+import toolbox.plugin.jtail.config.ITailPaneConfig;
 import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;

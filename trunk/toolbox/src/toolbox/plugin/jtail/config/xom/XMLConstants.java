@@ -1,4 +1,4 @@
-package toolbox.jtail.config.xom;
+package toolbox.plugin.jtail.config.xom;
 
 /**
  * XML configuration constants.

@@ -1,4 +1,4 @@
-package toolbox.jtail.filter;
+package toolbox.plugin.jtail.filter;
 
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;

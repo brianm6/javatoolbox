@@ -1,4 +1,4 @@
-package toolbox.jtail.filter;
+package toolbox.plugin.jtail.filter;
 
 /**
  * Filter for a single line of text.

@@ -1,4 +1,4 @@
-package toolbox.jtail.config;
+package toolbox.plugin.jtail.config;
 
 import toolbox.workspace.IPreferenced;
 

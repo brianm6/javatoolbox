@@ -1,4 +1,4 @@
-package toolbox.jtail;
+package toolbox.plugin.jtail;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -26,10 +26,10 @@ import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
 
-import toolbox.jtail.config.IJTailConfig;
-import toolbox.jtail.config.ITailPaneConfig;
-import toolbox.jtail.config.xom.JTailConfig;
-import toolbox.jtail.config.xom.TailPaneConfig;
+import toolbox.plugin.jtail.config.IJTailConfig;
+import toolbox.plugin.jtail.config.ITailPaneConfig;
+import toolbox.plugin.jtail.config.xom.JTailConfig;
+import toolbox.plugin.jtail.config.xom.TailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;

@@ -1,4 +1,4 @@
-package toolbox.jtail.filter;
+package toolbox.plugin.jtail.filter;
 
 import java.util.StringTokenizer;
 

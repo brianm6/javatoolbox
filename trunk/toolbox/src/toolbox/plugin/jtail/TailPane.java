@@ -1,4 +1,4 @@
-package toolbox.jtail;
+package toolbox.plugin.jtail;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -27,11 +27,11 @@ import org.apache.log4j.TTCCLayout;
 import org.apache.log4j.WriterAppender;
 import org.apache.regexp.RESyntaxException;
 
-import toolbox.jtail.config.ITailPaneConfig;
-import toolbox.jtail.filter.CutLineFilter;
-import toolbox.jtail.filter.ILineFilter;
-import toolbox.jtail.filter.LineNumberDecorator;
-import toolbox.jtail.filter.RegexLineFilter;
+import toolbox.plugin.jtail.config.ITailPaneConfig;
+import toolbox.plugin.jtail.filter.CutLineFilter;
+import toolbox.plugin.jtail.filter.ILineFilter;
+import toolbox.plugin.jtail.filter.LineNumberDecorator;
+import toolbox.plugin.jtail.filter.RegexLineFilter;
 import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
 import toolbox.util.ArrayUtil;
@@ -93,12 +93,12 @@ public class TailPane extends JPanel
      * TODO: Add option to tail the whole file from the beginning
      * TODO: Create filter that will accept a beanshell script 
      */
+    
+    private static final Logger logger_ = Logger.getLogger(TailPane.class);
 
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-         
-    private static final Logger logger_ = Logger.getLogger(TailPane.class);
     
     /** 
      * Special tail type for System.out. 

@@ -1,4 +1,4 @@
-package toolbox.jtail;
+package toolbox.plugin.jtail;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

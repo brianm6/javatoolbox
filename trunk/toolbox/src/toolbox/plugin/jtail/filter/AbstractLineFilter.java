@@ -1,4 +1,4 @@
-package toolbox.jtail.filter;
+package toolbox.plugin.jtail.filter;
 
 /**
  * Base abstract implementation of an ILineFilter that adds behavior to keep

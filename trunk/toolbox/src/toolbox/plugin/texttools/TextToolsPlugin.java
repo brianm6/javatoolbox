@@ -32,7 +32,7 @@ import org.apache.regexp.RESyntaxException;
 
 import org.w3c.tidy.Tidy;
 
-import toolbox.jtail.filter.RegexLineFilter;
+import toolbox.plugin.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
@@ -45,6 +45,7 @@ import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
+import toolbox.util.ui.JSmartTextArea.ClearAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
