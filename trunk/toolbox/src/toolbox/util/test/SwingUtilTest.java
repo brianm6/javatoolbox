@@ -22,12 +22,13 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 
 /**
- * Unit test for SwingUtil
+ * Unit test for SwingUtil.
  */
 public class SwingUtilTest extends TestCase
 {
@@ -39,7 +40,7 @@ public class SwingUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      * @throws Exception on LAF error
@@ -55,13 +56,16 @@ public class SwingUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the tiling of a JDesktopPane
+     * Tests the tiling of a JDesktopPane.
      */
     public void testTile()
     {
+        logger_.info("Running testTime...");
+        
         TestFrame frame = new TestFrame();
         frame.setVisible(true);
     }
+    
     
     /**
      * Tests getLAFs() to make sure all default and additional LAF's have been
@@ -69,8 +73,10 @@ public class SwingUtilTest extends TestCase
      */
     public void testGetLAFs()
     {
+        logger_.info("Running testGetLAFs...");
+        
         UIManager.LookAndFeelInfo[] lafs = SwingUtil.getLAFs();
-        logger_.debug("\n" + ArrayUtil.toString(lafs, true));
+        logger_.debug(StringUtil.addBars(ArrayUtil.toString(lafs, true)));
     }
     
     //--------------------------------------------------------------------------
@@ -84,6 +90,8 @@ public class SwingUtilTest extends TestCase
         public TestFrame()
         {
             super("InternalFrameDemo");
+            
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             
             // Make the big window be indented 50 pixels from each edge 
             // of the screen.
@@ -101,7 +109,7 @@ public class SwingUtilTest extends TestCase
             {
                 public void windowClosing(WindowEvent e)
                 {
-                    System.exit(0);
+                    //dispose();
                 }
             });
             
@@ -152,8 +160,6 @@ public class SwingUtilTest extends TestCase
                     SwingUtil.cascade(desktop_);
                 }
             });
-
-
             
             menu.add(menuItem);
             menu.add(tileItem);
