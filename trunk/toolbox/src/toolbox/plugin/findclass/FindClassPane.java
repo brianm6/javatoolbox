@@ -157,7 +157,7 @@ public class JFindClass extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Preferences Support
     //--------------------------------------------------------------------------
     
     /**
@@ -167,6 +167,10 @@ public class JFindClass extends JFrame
     {
         fileExplorer_.savePrefs(prefs, 
             ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
+            
+        leftFlipPane_.savePrefs(prefs, 
+            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
+        
     }
 
     /**
@@ -176,6 +180,10 @@ public class JFindClass extends JFrame
     {
         fileExplorer_.applyPrefs(prefs, 
             ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
+            
+        leftFlipPane_.applyPrefs(prefs, 
+            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
+         
     }
 
     /**
