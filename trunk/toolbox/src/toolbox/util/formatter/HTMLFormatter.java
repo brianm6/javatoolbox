@@ -3,25 +3,39 @@ package toolbox.util.formatter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import org.w3c.tidy.Tidy;
+
+import toolbox.util.PreferencedUtil;
+import toolbox.util.XOMUtil;
 
 /**
  * HTML formatter that uses Tidy internally.
  * <p>
  * <b>Example:</b>
  * <pre class="snippet">
- * Formatter f = new HTMLFormatter();
- * String html = getSomeHTML();
- * String formattedHTML = f.format(html);
+ *   Formatter f = new HTMLFormatter();
+ *   String html = getSomeHTML();
+ *   String formattedHTML = f.format(html);
  * </pre>
  */
 public class HTMLFormatter extends AbstractFormatter
 {
-    // TODO: Implement IPreferenced
-    
     private static final Logger logger_ = Logger.getLogger(HTMLFormatter.class);
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String NODE_HTMLFORMATTER = "HTMLFormatter";
+    
+    public static final String[] SAVED_PROPS = {
+        "indent",
+        "wrapLength"
+    };
 
     //--------------------------------------------------------------------------
     // Fields
@@ -118,5 +132,31 @@ public class HTMLFormatter extends AbstractFormatter
     public void setWrapLength(int wrapLength)
     {
         tidy_.setWraplen(wrapLength);
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_HTMLFORMATTER, new Element(NODE_HTMLFORMATTER));
+        
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_HTMLFORMATTER);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 }
