@@ -15,14 +15,14 @@ public class ThreadSafeListModel extends DefaultListModel
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for ThreadSafeListModel.
+     * Creates a ThreadSafeListModel
      */
     public ThreadSafeListModel()
     {
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from javax.swing.DefaultListModel
+    // Overrides javax.swing.DefaultListModel
     //--------------------------------------------------------------------------
     
     /**

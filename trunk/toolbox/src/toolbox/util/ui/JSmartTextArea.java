@@ -25,14 +25,14 @@ import toolbox.util.SwingUtil;
  * Extends the functionality of JTextArea by adding the following features.
  * <ul>
  *   <li>Autoscrolling of output
+ *   <li>Anti-aliased text 
  *   <li>Popup menu with cut/copy/paste/save/insert
- *   <li>Anti-aliased text
+ *   <li>Capacity limit with the automatic pruning of text
+ *   <li>Support to save/restore preferences to XML
  * </ul>
  */
 public class JSmartTextArea extends JTextArea
 {
-    // TODO: Implement saving of preferences  
-    
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
     
@@ -64,7 +64,7 @@ public class JSmartTextArea extends JTextArea
     private int pruningFactor_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
 
     /**
@@ -116,7 +116,7 @@ public class JSmartTextArea extends JTextArea
     }
 
     //--------------------------------------------------------------------------
-    //  Public 
+    // Public 
     //--------------------------------------------------------------------------
     
     /**
@@ -172,7 +172,7 @@ public class JSmartTextArea extends JTextArea
     }
 
     //--------------------------------------------------------------------------
-    //  Overrides java.awt.Component
+    // Overrides java.awt.Component
     //--------------------------------------------------------------------------
     
     /**
@@ -187,7 +187,7 @@ public class JSmartTextArea extends JTextArea
     }
     
     //--------------------------------------------------------------------------
-    //  Overrides javax.swing.JTextArea
+    // Overrides javax.swing.JTextArea
     //--------------------------------------------------------------------------
     
     /**
@@ -230,7 +230,9 @@ public class JSmartTextArea extends JTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * @return  True is autoscroll is enabled, false otherwise
+     * Returns true if autoscroll is enabled, false otherwise
+     * 
+     * @return boolean
      */
     public boolean isAutoScroll()
     {
@@ -248,7 +250,9 @@ public class JSmartTextArea extends JTextArea
     }
    
     /**
-     * @return True if antialiasing is enabled, false otherwise
+     * Returns true if antialiasing is enabled, false otherwise
+     * 
+     * @return boolean
      */
     public boolean isAntiAlias()
     {

@@ -17,7 +17,6 @@ import toolbox.util.StringUtil;
  */
 public class RegexListModelFilter extends AbstractListModelFilter
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(RegexListModelFilter.class);
 
@@ -48,11 +47,11 @@ public class RegexListModelFilter extends AbstractListModelFilter
 
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a list model
+     * Creates a RegexListModelFilter
      * 
      * @param  delegate  List model to filter
      */
@@ -62,7 +61,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     }
 
     /**
-     * Creates a list model
+     * Creates a RegexListModelFilter
      * 
      * @param  delegate  List model to filter
      * @param  regex     Regular expression
@@ -73,7 +72,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     }
 
     /**
-     * Creates a list model
+     * Creates a RegexListModelFilter
      * 
      * @param  delegate   List model to filter
      * @param  regex      Regular expression
@@ -88,7 +87,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    // Public
     //--------------------------------------------------------------------------
     
     /**
@@ -137,7 +136,9 @@ public class RegexListModelFilter extends AbstractListModelFilter
     }
 
     /**
-     * @return  The regular expression used to filter
+     * Returns the regular expression used to filter the list contents
+     * 
+     * @return Regular expression
      */
     public String getRegex()
     {
@@ -145,11 +146,13 @@ public class RegexListModelFilter extends AbstractListModelFilter
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from AbstractListModelFilter
+    // Overrides AbstractListModelFilter
     //--------------------------------------------------------------------------
 
     /**
-     * @return The size of the filtered model
+     * Returns the size of the filtered model
+     * 
+     * @return size
      */
     public int getSize()
     {
