@@ -381,4 +381,43 @@ public final class ArrayUtil
 
         return true;
     }
+
+    /**
+     * Removes the first occurence of an object from an array
+     * 
+     * @param   array    Array to remove object from
+     * @param   element  Object to remove
+     * @return  New array with the object removed, or the original array if
+     *          the object was not a memver of the array
+     */    
+    public static Object[] remove(Object[] array, Object element)
+    {
+        Object[] result = null;
+        int index = indexOf(array, element);
+        
+        if (index >= 0)
+        {
+            int length = array.length;
+            
+            Object[] newArray = 
+                (Object[]) Array.newInstance(
+                    array.getClass().getComponentType(), length - 1);
+        
+            System.arraycopy(array, 0, newArray, 0, index);
+            System.arraycopy(
+                array, 
+                Math.min(index+1, array.length-1), 
+                newArray, 
+                Math.min(index, array.length-1), 
+                Math.min(length - index - 1 , array.length-1));
+            
+            result = newArray;            
+        }
+        else
+        {
+            result = array;
+        }
+            
+        return result;
+    }
 }
