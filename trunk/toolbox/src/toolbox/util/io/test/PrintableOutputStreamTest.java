@@ -108,4 +108,21 @@ public class PrintableOutputStreamTest extends TestCase
         logger_.info("output:'" + sos.toString() + "'");
         assertEquals(expected, sos.toString());
     }
+
+    
+    /**
+     * Tests to make sure tabs and newlines are preserved.
+     * 
+     * @throws Exception on error.
+     */
+    public void testWriteTabsNewlinesPreserved() throws Exception
+    {
+        logger_.info("Running testWriteTabsNewlinesPreserved...");
+        
+        StringOutputStream sos = new StringOutputStream();
+        PrintableOutputStream pos = new PrintableOutputStream(sos);
+        String input = "\n\t\n\t\n";
+        pos.write(input.getBytes());
+        assertEquals(input, sos.toString());
+    }
 }
