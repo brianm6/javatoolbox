@@ -320,7 +320,7 @@ public final class ResourceUtil
         else
         {
             url = file.toURL();
-            logger_.debug("Loaded " + filename + " by URL " + url);
+            //logger_.debug("Loaded " + filename + " by URL " + url);
         }                
 
         return url; 
@@ -404,7 +404,9 @@ public final class ResourceUtil
             throw new IOException(
                 "Resource '" + resource + "' not found as a class resource.");
         else
-            logger_.debug("Loaded " + resource + " by URL " + url);
+        {    
+            ; //logger_.debug("Loaded " + resource + " by URL " + url);
+        }
 
         return url;
     }
@@ -464,7 +466,9 @@ public final class ResourceUtil
                 throw new IOException("Resource '" + resource + 
                     "' not found as a package resource.");
             else
-                logger_.debug("Loaded " + resource + " by URL " + url);
+            {    
+                ;//logger_.debug("Loaded " + resource + " by URL " + url);
+            }
         }
 
         return url;
