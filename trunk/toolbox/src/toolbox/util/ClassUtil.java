@@ -49,7 +49,7 @@ public final class ClassUtil
     /**
      * Retrieves the names of all classes in a given package
      *
-     * @param  packageName  Name of package to search
+     * @param packageName Name of package to search
      * @return Array of fully qualified class names in the package.
      *         Empty array if no classes are found.
      */
@@ -152,7 +152,7 @@ public final class ClassUtil
      * Returns a list of all known packages in the classpath that contain
      * class files
      * 
-     * @return  Array of fully qualified package names
+     * @return Array of fully qualified package names
      */    
     public static String[] getPackagesInClasspath()
     {
@@ -250,7 +250,7 @@ public final class ClassUtil
     /**
      * Converts a file path into a package name
      * 
-     * @param  path  File path
+     * @param path File path
      * @return Fully qualified package name
      */
     public static String pathToPackage(String path)
@@ -266,7 +266,7 @@ public final class ClassUtil
     /**
      * Converts a package name into a file path
      * 
-     * @param  packageName  Package name
+     * @param packageName Package name
      * @return File path
      */
     public static String packageToPath(String packageName)
@@ -278,8 +278,8 @@ public final class ClassUtil
      * Determines if a files name indicates a java archive. This includes
      * zip and jar file types.
      * 
-     * @param   filename  File to examine
-     * @return  True if the name is a valid java archive, false otherwise
+     * @param filename File to examine
+     * @return True if the name is a valid java archive, false otherwise
      */
     public static boolean isArchive(String filename)
     {
@@ -290,7 +290,7 @@ public final class ClassUtil
     /**
      * Returns true if the filename indicates a java class file
      * 
-     * @param  filename  File to examine
+     * @param filename File to examine
      * @return True if a class file, false otherwise
      */
     public static boolean isClassFile(String filename)
@@ -299,7 +299,9 @@ public final class ClassUtil
     }
     
     /**
-     * @return  The complete system classpath
+     * Returns the complete system classpath separated by pathSeparator
+     * 
+     * @return String
      */
     public static String getClasspath()
     {
@@ -315,8 +317,8 @@ public final class ClassUtil
     /**
      * Strips package name from a fully qualified class name
      * 
-     * @param   fqn  Fully qualified class name
-     * @return  Name of class only
+     * @param fqn Fully qualified class name
+     * @return Name of class only
      */
     public static String stripPackage(String fqn)
     {
@@ -338,8 +340,8 @@ public final class ClassUtil
      * Widget              => "" (empty string)
      * </pre>
      * 
-     * @param   fqcn  Fully qualified class name
-     * @return  Package of the fqcn
+     * @param fqcn Fully qualified class name
+     * @return Package of the fqcn
      */
     public static String stripClass(String fqcn)
     {
@@ -350,8 +352,8 @@ public final class ClassUtil
     /**
      * Returns array of Class object matching the types for the passed in params
      * 
-     * @param   params  Array of objects 
-     * @return  Array of Class objects
+     * @param params Array of objects 
+     * @return Array of Class objects
      */    
     public static final Class[] getMatchingClasses(Object[] params)
     {
