@@ -447,4 +447,16 @@ public final class FileUtil
         int i = filepath.lastIndexOf(File.separatorChar);
         return (i >= 0 ? filepath.substring(0, i) : "");
     }    
+
+    /**
+     * Deletes a file quietly. If the file can be deleted, ok. If not, 
+     * does not cause a fuss.
+     * 
+     * @param  file  File to delete
+     */    
+    public static void delete(String file)
+    {
+        if (file != null && !StringUtil.isNullEmptyOrBlank(file))
+            new File(file).delete();
+    }
 }
