@@ -1,4 +1,4 @@
-package toolbox.tunnel;
+package toolbox.plugin.tunnel;
 
 import java.util.Map;
 
@@ -13,12 +13,12 @@ import toolbox.workspace.PluginWorkspace;
 /**
  * Plugin wrapper for JTcpTunnel
  */
-public class JTcpTunnelPlugin implements IPlugin
+public class TunnelPlugin implements IPlugin
 {
     /** 
-     * Delegate 
+     * Delegate. 
      */
-    private JTcpTunnelPane delegate_;
+    private TunnelPane delegate_;
 
     //--------------------------------------------------------------------------
     // IPlugin Interface
@@ -34,7 +34,7 @@ public class JTcpTunnelPlugin implements IPlugin
         if (params != null)
             statusBar = (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
 
-        delegate_ = new JTcpTunnelPane();
+        delegate_ = new TunnelPane();
         delegate_.setStatusBar(statusBar);    
     }
     

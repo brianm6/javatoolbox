@@ -1,4 +1,4 @@
-package toolbox.tunnel;
+package toolbox.plugin.tunnel;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -20,6 +20,8 @@ import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
+import toolbox.tunnel.TcpTunnel;
+import toolbox.tunnel.TcpTunnelListener;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
@@ -38,14 +40,13 @@ import toolbox.workspace.IStatusBar;
 /**
  * Panel which houses the majority of the UI controls. 
  */
-public class JTcpTunnelPane extends JPanel implements IPreferenced
+public class TunnelPane extends JPanel implements IPreferenced
 {
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
     
-    private static final Logger logger_ = 
-        Logger.getLogger(JTcpTunnelPane.class);
+    private static final Logger logger_ = Logger.getLogger(TunnelPane.class);
     
     // Preferences
     private static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
@@ -124,22 +125,22 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JTcpTunnelPane.
+     * Creates a TunnelPane.
      */
-    public JTcpTunnelPane()
+    public TunnelPane()
     {
         buildView();
     }
         
     
     /**
-     * Creates a JTcpTunnelPane with the given parameters.
+     * Creates a TunnelPane with the given parameters.
      * 
      * @param listenPort Port to listen on
      * @param remoteHost Host to tunnel to
      * @param remotePort Port to tunnel to
      */
-    public JTcpTunnelPane(int listenPort, String remoteHost, int remotePort)
+    public TunnelPane(int listenPort, String remoteHost, int remotePort)
     {
         buildView();
                 
