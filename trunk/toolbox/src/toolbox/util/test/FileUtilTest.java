@@ -13,7 +13,7 @@ import toolbox.util.RandomUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 
 /**
- * Unit test for FileUtil
+ * Unit test for FileUtil.
  */
 public class FileUtilTest extends TestCase
 {
@@ -25,7 +25,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Runs the test case in text mode
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -39,7 +39,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the getTempDir() method 
+     * Tests the getTempDir() method. 
      * 
      * @throws Exception on error
      */    
@@ -58,7 +58,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the generateTempFilename() method 
+     * Tests the generateTempFilename() method. 
      * 
      * @throws Exception on error
      */    
@@ -79,8 +79,9 @@ public class FileUtilTest extends TestCase
         logger_.info("Passed: Created temp file " + tempFile);
     }
 
+    
     /**
-     * Tests the generateTempFilename(File forDir) method 
+     * Tests the generateTempFilename(File forDir) method. 
      * 
      * @throws Exception on error
      */    
@@ -106,7 +107,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests cleanDir() for cleaning the contents of a single directory
+     * Tests cleanDir() for cleaning the contents of a single directory.
      * 
      * @throws Exception on error
      */
@@ -152,8 +153,9 @@ public class FileUtilTest extends TestCase
         assertEquals("No files should be left in " + dir, 0, after.length);
     }
     
+    
     /**
-     * Tests cleanDir() for failure by passing a file instead of a directory
+     * Tests cleanDir() for failure by passing a file instead of a directory.
      * 
      * @throws Exception on error
      */
@@ -181,8 +183,9 @@ public class FileUtilTest extends TestCase
         }
     }
     
+    
     /**
-     * Tests cleanDir() for failure by passing in a non-existant directory
+     * Tests cleanDir() for failure by passing in a non-existant directory.
      * 
      * @throws Exception on error
      */
@@ -209,7 +212,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests getFileContents()
+     * Tests getFileContents().
      * 
      * @throws Exception on error
      */
@@ -232,8 +235,9 @@ public class FileUtilTest extends TestCase
         new File(file).delete();
     }
 
+    
     /**
-     * Tests getFileContents() for a large file (500k)
+     * Tests getFileContents() for a large file (500k).
      * 
      * @throws Exception on error
      */
@@ -270,7 +274,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests getFileAsBytes()
+     * Tests getFileAsBytes().
      * 
      * @throws Exception on error
      */
@@ -300,7 +304,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Tests setFileContents()
+     * Tests setFileContents().
      * 
      * @throws Exception on error
      */
@@ -324,8 +328,9 @@ public class FileUtilTest extends TestCase
         reread.delete();
     }
 
+    
     /**
-     * Tests setFileContents()
+     * Tests setFileContents().
      * 
      * @throws Exception on error
      */
@@ -349,8 +354,9 @@ public class FileUtilTest extends TestCase
         new File(file).delete();
     }
 
+    
     /**
-     * Tests setFileContents(File)
+     * Tests setFileContents(File).
      * 
      * @throws Exception on error
      */
@@ -380,7 +386,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests moveFile() for simple case
+     * Tests moveFile() for simple case.
      * 
      * @throws Exception on error
      * 
@@ -480,7 +486,7 @@ public class FileUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests trailWithSeparator() with the separator missing
+     * Tests trailWithSeparator() with the separator missing.
      */
     public void testTrailWithSeparatorMissing()
     {
@@ -491,8 +497,9 @@ public class FileUtilTest extends TestCase
         assertEquals(path + File.separator, trailed);
     }    
     
+    
     /**
-     * Tests trailWithSeparator() with separator already there
+     * Tests trailWithSeparator() with separator already there.
      */
     public void testTrailWithSeparatorAlreadyExists()
     {
@@ -503,8 +510,9 @@ public class FileUtilTest extends TestCase
         assertEquals(path, trailed);
     }    
     
+    
     /**
-     * Tests matchPlatformSeparator()
+     * Tests matchPlatformSeparator().
      */
     public void testMatchPlatformSeparator()
     {
@@ -515,8 +523,9 @@ public class FileUtilTest extends TestCase
         assertEquals(match, FileUtil.matchPlatformSeparator("/a/b"));
     }
     
+    
     /**
-     * Tests dropExtension()
+     * Tests dropExtension().
      */
     public void testDropExtension()
     {
@@ -527,8 +536,9 @@ public class FileUtilTest extends TestCase
         assertEquals("foobar.old", FileUtil.dropExtension("foobar.old.txt"));
     }
     
+    
     /**
-     * Tests stripPath()
+     * Tests stripPath().
      */
     public void testStripPath()
     {
@@ -546,8 +556,9 @@ public class FileUtilTest extends TestCase
             "c:" + s + "a" + s + "c" + s + ".." + s + "file.txt"));
     }
     
+    
     /**
-     * Tests stripFile()
+     * Tests stripFile().
      */
     public void testStripFile()
     {
@@ -568,8 +579,9 @@ public class FileUtilTest extends TestCase
                 "c:" + s + "a" + s + "c" + s + ".." + s + "file.txt"));
     }
     
+    
     /**
-     * Tests delete()
+     * Tests delete().
      * 
      * @throws Exception on error
      */
@@ -585,8 +597,9 @@ public class FileUtilTest extends TestCase
         assertTrue(!f.exists());
     }
     
+    
     /**
-     * Tests createTempDir()
+     * Tests createTempDir().
      * 
      * @throws Exception on error
      */
@@ -604,8 +617,9 @@ public class FileUtilTest extends TestCase
         FileUtil.removeDir(tempDir);
     }
     
+    
     /**
-     * Tests findFiles()
+     * Tests findFiles().
      * 
      * @throws Exception on error
      */
@@ -617,6 +631,7 @@ public class FileUtilTest extends TestCase
         
         //assertTrue(true);
     }
+    
     
     /**
      * Tests getLargestFile()
@@ -632,6 +647,7 @@ public class FileUtilTest extends TestCase
         //assertTrue(true);
     }
 
+    
     /**
      * Tests getLongestFilename()
      * 
@@ -646,6 +662,7 @@ public class FileUtilTest extends TestCase
         //assertTrue(true);
     }
 
+    
     /**
      * Tests removeDir()
      * 
@@ -660,4 +677,36 @@ public class FileUtilTest extends TestCase
         //assertTrue(true);
     }
     
+    
+    /**
+     * Tests getExtension(String)
+     */
+    public void testGetExtensionByFilename()
+    {
+        logger_.info("Running testGetExtensionByFilename...");
+        
+        assertEquals("txt", FileUtil.getExtension("file.txt"));
+        assertEquals("txt", FileUtil.getExtension("file.name.txt"));
+        assertEquals("txt", FileUtil.getExtension(".txt"));
+        assertEquals("", FileUtil.getExtension("noextension"));
+        assertEquals("", FileUtil.getExtension(""));
+        assertEquals("", FileUtil.getExtension("file.txt."));
+    }
+    
+    
+    /**
+     * Tests getExtension(File)
+     */
+    public void testGetExtensionByFile()
+    {
+        logger_.info("Running testGetExtensionByFile...");
+        
+        File t = FileUtil.getTempDir();
+        assertEquals("txt", FileUtil.getExtension(new File(t, "file.txt")));
+        assertEquals("txt", FileUtil.getExtension(new File(t, "file.ame.txt")));
+        assertEquals("txt", FileUtil.getExtension(new File(t, ".txt")));
+        assertEquals("", FileUtil.getExtension(new File(t, "noextension")));
+        assertEquals("", FileUtil.getExtension(new File(t, "")));
+        assertEquals("", FileUtil.getExtension(new File(t, "file.txt.")));
+    }
 }
