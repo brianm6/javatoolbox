@@ -13,42 +13,30 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.Stringz;
+import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.io.NullWriter;
 import toolbox.util.io.ReverseFileReader;
 
 /**
- * Tail is similar to the Unix "tail -f" command used to tail or follow the
- * end of a stream (usually a log file of some sort). In addition to covering
- * basic functionality, there is an API to facilitate lifecycle management
- * of a tail process. This includes start/stop/pause/unpause behavior for
- * easy inclusion in your own applications. Additionally, for those of you 
- * interested in an event driven interface, TailListener is available to 
- * provide notification on the key events occuring in the tail's lifecycle.
+ * Tail is similar to the Unix "tail -f" command used to tail or follow the end
+ * of a stream (usually a log file of some sort). In addition to covering basic
+ * functionality, there is an API to facilitate lifecycle management of a tail
+ * process. This includes start/stop/pause/unpause behavior for easy inclusion
+ * in your own applications. Additionally, for those of you interested in an
+ * event driven interface, TailListener is available to provide notification on
+ * the key events occuring in the tail's lifecycle.
  * <p>
  * To tail a file and send the output to System.out:
+ * 
  * <pre>
- * Tail tail = new Tail();
- * 
- * // Tail server.log and send output to stdout
- * tail.follow(
- *     new File("server.log"), 
- *     new OutputStreamWriter(System.out));
- * 
- * // Starts tailer thread; returns immediately
- * tail.start();
- * 
- * // Later on... 
- * tail.pause();
- * tail.unpause();
- * 
- * // All done..cleanup 
- * tail.stop();
- * 
- * // Change of mind...wheee
- * tail.start();  
+ *  Tail tail = new Tail();
+ * // Tail server.log and send output to stdout tail.follow( new File("server.log"), new OutputStreamWriter(System.out));
+ * // Starts tailer thread; returns immediately tail.start();
+ * // Later on... tail.pause(); tail.unpause();
+ * // All done..cleanup tail.stop();
+ * // Change of mind...wheee tail.start();  
  * </pre>
  */
 public class Tail
@@ -429,7 +417,7 @@ public class Tail
     {
         try
         {
-            sink_.write(line + Stringz.NL);
+            sink_.write(line + StringUtil.NL);
             sink_.flush();
         }
         catch (Exception e)

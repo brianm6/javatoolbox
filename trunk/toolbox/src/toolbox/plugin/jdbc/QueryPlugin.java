@@ -35,7 +35,6 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.db.SQLFormatter;
@@ -572,7 +571,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 resultsArea_.append(results);
                 
                 if ((!StringUtil.isNullOrBlank(results)) &&
-                    (StringUtil.tokenize(results, Stringz.NL).length < 50))
+                    (StringUtil.tokenize(results, StringUtil.NL).length < 50))
                     resultsArea_.scrollToEnd();
                     
                 statusBar_.setStatus("Done");
@@ -610,7 +609,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 resultsArea_.append(results);
                 
                 if ((!StringUtil.isNullOrBlank(results)) &&
-                    (StringUtil.tokenize(results, Stringz.NL).length < 50))
+                    (StringUtil.tokenize(results, StringUtil.NL).length < 50))
                     resultsArea_.scrollToEnd();
 
                 statusBar_.setInfo("Done");
