@@ -3,7 +3,6 @@ package toolbox.jdbc;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,7 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import org.apache.log4j.Logger;
-
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
@@ -66,7 +64,6 @@ public class QueryPlugin extends JPanel implements IPlugin
      * TODO: create SQLDefaults for syntax hiliting
      * TODO: Ctrl-Up/Down should scroll through query history
      * TODO: Move num rows to top of display and stop scrolling down to bottom
-     * TODO: Remberber database profiles and make them user selectable
      */
      
     public static final Logger logger_ =
@@ -81,21 +78,10 @@ public class QueryPlugin extends JPanel implements IPlugin
     /** Max number of entries in sql history popup menu */
     public static final String PROP_HISTORY_MAX = "query.plugin.history.max";
     
-//    /** Property key for JDBC driver name */
-//    public static final String PROP_DRIVER = "query.plugin.driver";
-//    
-//    /** Property key for JDBC driver URL */
-//    public static final String PROP_URL = "query.plugin.url";
-//    
-//    /** Property key for JDBC user */
-//    public static final String PROP_USER = "query.plugin.user";
-//    
-//    /** Property key for JDBC password */
-//    public static final String PROP_PASSWORD = "query.plugin.password";
-    
     /** Property key for the contents of the SQL text area */
     public static final String PROP_CONTENTS = "query.plugin.contents";
-    
+
+    /** Property key for the database profiles */    
     public static final String PROP_PROFILES = "query.plugin.profiles";    
     
     /** Status bar of plugin host */
@@ -124,7 +110,6 @@ public class QueryPlugin extends JPanel implements IPlugin
 
     /** Database configuration panel */
     private DBConfig dbConfigPane_;
-
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -321,15 +306,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         sqlArea_.setText(prefs.getProperty(PROP_CONTENTS, ""));
         leftFlipPane_.applyPrefs(prefs, PROP_PREFIX);
-        
-        try
-        {
-            dbConfigPane_.applyPrefs(prefs);
-        }
-        catch (IOException e)
-        {
-            ExceptionUtil.handleUI(e, logger_);
-        }
+        dbConfigPane_.applyPrefs(prefs);
     }
 
     public void savePrefs(Properties prefs)
