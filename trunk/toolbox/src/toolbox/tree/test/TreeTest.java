@@ -14,15 +14,14 @@ import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for Tree
+ * Unit test for Tree.
  */
 public class TreeTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(TreeTest.class);
+    private static final Logger logger_ = Logger.getLogger(TreeTest.class);
     
     /** 
-     * Temporary directory that will serve as the root dir for tests 
+     * Temporary directory that will serve as the root dir for tests. 
      */
     private File rootDir_;
 
@@ -31,7 +30,7 @@ public class TreeTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -45,9 +44,9 @@ public class TreeTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Create a temp directory to play around in
+     * Create a temp directory to play around in.
      * 
-     * @throws IOException on IO error
+     * @throws IOException on I/O error
      */
     public void setUp() throws IOException
     {
@@ -55,8 +54,9 @@ public class TreeTest extends TestCase
         rootDir_ = FileUtil.createTempDir();
     }
 
+    
     /**
-     * Remote the temp directory
+     * Removes the temp directory.
      */
     public void tearDown()
     {
@@ -66,9 +66,43 @@ public class TreeTest extends TestCase
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
-        
+
     /**
-     * Tests for a simple cascading structure
+     * Tests the constructors.
+     * 
+     * @throws Exception on error
+     */
+    public void testConstructors() throws Exception
+    {
+        logger_.info("Running testConstructors...");
+        
+        Tree t = new Tree(FileUtil.getTempDir());
+        assertNotNull(t);
+        
+        Tree t2 = new Tree(FileUtil.getTempDir(), true);
+        assertNotNull(t2);
+        
+        Tree t3 = new Tree(FileUtil.getTempDir(), new StringWriter());
+        assertNotNull(t3);
+        
+        Tree t4 = new Tree(FileUtil.getTempDir(), new StringWriter());        
+        assertNotNull(t4);
+        
+        Tree t5 = new Tree(FileUtil.getTempDir(), true, true);
+        assertNotNull(t5);
+        
+        Tree t6 = new Tree(FileUtil.getTempDir(), true, true, Tree.SORT_NAME);
+        assertNotNull(t6);
+
+        Tree t7 = 
+        new Tree(FileUtil.getTempDir(), true, true, true, Tree.SORT_NAME);
+        assertNotNull(t7);
+        
+    }
+
+    
+    /**
+     * Tests for a simple cascading structure.
      * 
      * @throws Exception on error
      */
@@ -95,8 +129,9 @@ public class TreeTest extends TestCase
         printNativeTree(rootDir_);
     }
 
+    
     /**
-     * Tests for a simple flat structure
+     * Tests for a simple flat structure.
      * 
      * @throws Exception on error
      */
@@ -123,8 +158,9 @@ public class TreeTest extends TestCase
         printNativeTree(rootDir_);
     }
 
+    
     /**
-     * Tests for an extension bar
+     * Tests for an extension bar.
      * 
      * @throws Exception on error
      */
@@ -152,6 +188,7 @@ public class TreeTest extends TestCase
         printNativeTree(rootDir_);
     }
 
+    
     /**
      * Tests for more then one dir in the root.
      * <pre> 
@@ -191,6 +228,7 @@ public class TreeTest extends TestCase
         printNativeTree(rootDir_);
     }
 
+    
     /**
      * Tests for an empty root directory.
      * <pre> 
@@ -211,6 +249,7 @@ public class TreeTest extends TestCase
         printNativeTree(rootDir_);
     }
 
+    
     /**
      * Tests tree with only one folder.
      * <pre> 
@@ -237,8 +276,9 @@ public class TreeTest extends TestCase
         printNativeTree(rootDir_);
     }
 
+    
     /**
-     * Tests for a large directory structure
+     * Tests for a large directory structure.
      * 
      * @throws Exception on error
      */
@@ -253,7 +293,7 @@ public class TreeTest extends TestCase
 
 
     /**
-     * Tests for a simple cascading structure with one file
+     * Tests for a simple cascading structure with one file.
      * 
      * @throws Exception on error
      */
@@ -286,8 +326,9 @@ public class TreeTest extends TestCase
         printNativeFileTree(rootDir_);
     }
 
+    
     /**
-     * Tests for an empty tree with files in the root only
+     * Tests for an empty tree with files in the root only.
      * 
      * @throws Exception on error
      */
@@ -308,8 +349,9 @@ public class TreeTest extends TestCase
         printNativeFileTree(rootDir_);
     }
 
+    
     /**
-     * Tests printing the help/usage information
+     * Tests printing the help/usage information.
      * 
      * @throws Exception on error
      */
@@ -320,35 +362,29 @@ public class TreeTest extends TestCase
         // Send in an invalid flag so usage information is shown
         Tree.main(new String[] { "-xyz"});
     }
-
+    
+    
     /**
-     * Tests the constructors
+     * Tests execution via main().
      * 
      * @throws Exception on error
      */
-    public void testConstructors() throws Exception
+    public void testMain() throws Exception
     {
-        logger_.info("Running testConstructors...");
+        // TODO: Fix me to use options
         
-        Tree t = new Tree(FileUtil.getTempDir());
-        assertNotNull(t);
+        logger_.info("Running testMain...");
         
-        Tree t2 = new Tree(FileUtil.getTempDir(), true);
-        assertNotNull(t2);
-        
-        Tree t3 = new Tree(FileUtil.getTempDir(), new StringWriter());
-        assertNotNull(t3);
-        
-        Tree t4 = new Tree(FileUtil.getTempDir(), new StringWriter());        
-        assertNotNull(t4);
+        Tree.main(new String[] {FileUtil.getTempDir().getAbsolutePath()});
     }
+    
     
     //--------------------------------------------------------------------------
     // Helper Methods
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a temp file in the given directory
+     * Creates a temp file in the given directory.
      * 
      * @param dir Dir to create file in
      * @throws IOException on error
@@ -360,8 +396,9 @@ public class TreeTest extends TestCase
         return new File(f);
     }
 
+    
     /**
-     * Executes the native version of tree to use as a comparison
+     * Executes the native version of tree to use as a comparison.
      * 
      * @param dir Directory
      * @throws IOException on error
@@ -382,8 +419,9 @@ public class TreeTest extends TestCase
         */
     }
 
+    
     /**
-     * Executes the native version of tree to use as a comparison
+     * Executes the native version of tree to use as a comparison.
      * 
      * @param dir Directory
      * @throws IOException on IO error
