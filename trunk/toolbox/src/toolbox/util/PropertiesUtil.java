@@ -1,5 +1,9 @@
 package toolbox.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -108,5 +112,40 @@ public final class PropertiesUtil
     public static void setInteger(Properties props, String name, int value)
     {
         props.setProperty(name, value + "");   
+    }
+
+    /**
+     * Returns string of sorted properties for easy inspection
+     * 
+     * @param   props  Properties to output to a string
+     * @return  List of sorted properties with their values, one per line
+     */    
+    public static String toString(Properties props)
+    {
+        List keyList = new ArrayList(props.keySet());
+        Collections.sort(keyList);
+        
+        int max = 0;
+
+        // Find the longest key for padding
+        for (Iterator i = keyList.iterator(); i.hasNext(); )
+        {
+            String key = (String) i.next();
+            if (key.length() > max)
+                max = key.length();
+        }
+
+        StringBuffer sb = new StringBuffer();
+        
+                
+        for (Iterator i = keyList.iterator(); i.hasNext(); )
+        {
+            String key = (String) i.next();
+            String value = props.getProperty(key);
+            sb.append(key + StringUtil.repeat(" ", max-key.length()) + 
+                " = " + value + "\n");
+        }
+             
+        return sb.toString();
     }
 }
