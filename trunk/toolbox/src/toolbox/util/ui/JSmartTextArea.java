@@ -196,20 +196,6 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     }
     
     //--------------------------------------------------------------------------
-    // Protected 
-    //--------------------------------------------------------------------------
-    
-    /**
-     * JSmartTextArea specific initialization routine for the constructors.
-     */
-    protected void init()
-    {
-        buildView();
-        setCapacity(Integer.MAX_VALUE);
-        setPruneFactor(0);
-    }
-    
-    //--------------------------------------------------------------------------
     // IPreferenced Interface 
     //--------------------------------------------------------------------------
 
@@ -329,6 +315,17 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         super.setLineWrap(wrap);
     }
     
+    
+    /**
+     * @see javax.swing.JTextArea#getLineWrap()
+     */
+    public boolean getLineWrap()
+    {
+        // This is here so that the PropertySheet java bean info finds the
+        // getter/setter pair.
+        return super.getLineWrap();
+    }
+    
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -438,6 +435,18 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
+
+    /**
+     * JSmartTextArea specific initialization routine for the constructors.
+     */
+    protected void init()
+    {
+        buildView();
+        setCapacity(Integer.MAX_VALUE);
+        setPruneFactor(0);
+        setAntiAliased(SwingUtil.getDefaultAntiAlias());
+    }
+    
     
     /**
      * Adds a popupmenu to the textarea.
