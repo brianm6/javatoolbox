@@ -9,6 +9,10 @@ import java.text.ParseException;
 public class DoubleUtil
 {
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for DoubleUtil.
      */
@@ -16,7 +20,10 @@ public class DoubleUtil
     {
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Determines if the contents of a string can be expressed as a double
      * 
@@ -36,7 +43,7 @@ public class DoubleUtil
                 Double.parseDouble(s);
                 b = true;
             }
-            catch(NumberFormatException nfe)
+            catch (NumberFormatException nfe)
             {
                 b = false;
             }
@@ -54,12 +61,12 @@ public class DoubleUtil
      */
     public static double average(double[] d) 
     {
-        if( d.length == 0)
+        if (d.length == 0)
             return 0;
             
         double sum = 0;
         
-        for(int i=0; i<d.length; i++)
+        for (int i=0; i<d.length; i++)
             sum+=d[i];
 
         double avg = (double)sum/(double)d.length;
@@ -98,9 +105,11 @@ public class DoubleUtil
     public static int occurs(double value, double[] arr) 
     {
         int cnt = 0;
+        
         for(int i=0; i<arr.length; i++)
             if(arr[i] == value)
                 ++cnt;
+                
         return cnt;
     }
 
@@ -113,13 +122,11 @@ public class DoubleUtil
      */
     public static double median(double[] array) 
     {
-
         double median;
         int len = array.length;
 
         switch (len) 
         {
-
             case 0 :
                 throw new IllegalArgumentException(
                     "Cannot calculate the median of an empty set");
