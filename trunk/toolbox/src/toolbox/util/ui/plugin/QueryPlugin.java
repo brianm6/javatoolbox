@@ -20,7 +20,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
@@ -32,10 +31,9 @@ import toolbox.util.JDBCUtil;
 import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ThreadUtil;
 import toolbox.util.ui.JConveyorPopupMenu;
 import toolbox.util.ui.JTextComponentPopupMenu;
-import toolbox.util.ui.TryCatchAction;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
@@ -65,7 +63,6 @@ public class QueryPlugin extends JPanel implements IPlugin
      * TODO: create SQLDefaults for syntax hiliting
      * TODO: Ctrl-Up/Down should scroll through query history
      * TODO: Move num rows to top of display and stop scrolling down to bottom
-     * TODO: find busy cursor that goes down ui hierarchy
      */
      
     public static final Logger logger_ =
@@ -348,71 +345,55 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteAction extends TryCatchAction implements Runnable
+    private class ExecuteAction extends SmartAction
     {
         public ExecuteAction()
         {
-            super("Execute SQL");
+            super("Execute SQL", true, QueryPlugin.this);
             putValue(MNEMONIC_KEY, new Integer('E'));
             putValue(SHORT_DESCRIPTION, "Executes the SQL statement");
         }
-    
-        public void tryActionPerformed(ActionEvent e)
+
+        public void runAction(ActionEvent e) throws Exception
         {
-            if (StringUtil.isNullOrBlank(sqlArea_.getText()))
+            String sql = sqlArea_.getText();
+            
+            if (StringUtil.isNullOrBlank(sql))
                 statusBar_.setStatus("Enter SQL to execute");
             else
-                ThreadUtil.run(this, "run", null);
-        }
-        
-        public void run()
-        {
-            try
-            {   
-                statusBar_.setStatus("Executing...");
-                SwingUtil.setWaitCursor(getComponent());
+            {
+                statusBar_.setBusy("Executing...");
                 String results = executeSQL(sqlArea_.getText());        
                 resultsArea_.append(results);
-            }
-            finally
-            {
-                SwingUtil.setDefaultCursor(getComponent());
                 statusBar_.setStatus("Done");
             }
+                
         }
     }
 
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteCurrentAction extends TryCatchAction implements Runnable
+    private class ExecuteCurrentAction extends SmartAction
     {
         public ExecuteCurrentAction()
         {
-            super("Execute Current Statement");
+            super("Execute Current Statement", true, QueryPlugin.this);
         }
     
-        public void tryActionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
-            if (StringUtil.isNullOrBlank(sqlArea_.getText()))
+            String sql = sqlArea_.getLineText(sqlArea_.getCaretLine());
+            
+            if (StringUtil.isNullOrBlank(sql))
+            {
                 statusBar_.setStatus("Enter SQL to execute");
+            }
             else
-                ThreadUtil.run(this, "run", null);
-        }
-        
-        public void run()
-        {
-            try
             {   
-                String sql = sqlArea_.getLineText(sqlArea_.getCaretLine());
-                statusBar_.setStatus("Executing...");
-                SwingUtil.setWaitCursor(getComponent());
+                statusBar_.setBusy("Executing...");
                 String results = executeSQL(sql);        
                 resultsArea_.append(results);
-            }
-            finally
-            {
-                SwingUtil.setDefaultCursor(getComponent());
                 statusBar_.setStatus("Done");
             }
         }
@@ -476,30 +457,31 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Connects to the database
      */
-    class ConnectAction extends AbstractAction
+    class ConnectAction extends SmartAction
     {
         public ConnectAction()
         {
-            super("Connect");
+            super("Connect", true, QueryPlugin.this);
         }
-        
-        public void actionPerformed(ActionEvent e)
+
+        public void runAction(ActionEvent e) throws Exception
         {
             try
             {
+                statusBar_.setBusy("Connecting to database...");
+                
                 JDBCUtil.init(
                     driverField_.getText(),
                     urlField_.getText(),
                     userField_.getText(),
                     passwordField_.getText());
-                    
-                statusBar_.setStatus("Connected to DB!");
+             
+                statusBar_.setInfo("Connected to database!");
             }
-            catch (Throwable se)
+            catch (Exception se)
             {
-                statusBar_.setStatus("Connect failed: " + se.getMessage());
-                ExceptionUtil.handleUI(se, logger_);
-                
+                statusBar_.setError("Connect failed: " + se.getMessage());
+                throw se;
             }
         }
     }
