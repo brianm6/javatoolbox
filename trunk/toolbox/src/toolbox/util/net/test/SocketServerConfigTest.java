@@ -90,7 +90,10 @@ public class SocketServerConfigTest extends TestCase
                 3000, config.getSocketQueueSize());
                
             assertEquals("handler sizes don't match", 
-                4000, config.getHandlerQueueSize()); 
+                4000, config.getHandlerQueueSize());
+                
+            // Load by file via constructor
+            SocketServerConfig config2 = new SocketServerConfig(file);
         }
         finally
         {
