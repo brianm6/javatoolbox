@@ -64,6 +64,10 @@ public class QueryPlugin extends JPanel implements IPlugin
     // TODO: create SQLDefaults for syntax hiliting
     // TODO: Ctrl-Up/Down should scroll through query history
      
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------     
+     
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
@@ -87,6 +91,10 @@ public class QueryPlugin extends JPanel implements IPlugin
      * XML: Child of QueryPlugin that contains the contents of the SQL text area 
      */
     public static final String NODE_CONTENTS = "SQLContents";
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /** 
      * Reference to the workspace statusbar 
@@ -371,15 +379,15 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    //  Actions
+    // Actions
     //--------------------------------------------------------------------------
     
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteAction extends WorkspaceAction
+    class ExecuteAction extends WorkspaceAction
     {
-        public ExecuteAction()
+        ExecuteAction()
         {
             super("Execute SQL", true, QueryPlugin.this, statusBar_);
             putValue(MNEMONIC_KEY, new Integer('E'));
@@ -391,7 +399,9 @@ public class QueryPlugin extends JPanel implements IPlugin
             String sql = sqlArea_.getText();
             
             if (StringUtil.isNullOrBlank(sql))
+            {
                 statusBar_.setStatus("Enter SQL to execute");
+            }
             else
             {
                 statusBar_.setStatus("Executing...");
@@ -410,9 +420,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteCurrentAction extends WorkspaceAction
+    class ExecuteCurrentAction extends WorkspaceAction
     {
-        public ExecuteCurrentAction()
+        ExecuteCurrentAction()
         {
             super("Execute Current Statement", true, QueryPlugin.this, 
                 statusBar_);
@@ -444,11 +454,11 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query selected from the SQL history popup menu
      */
-    private class ExecutePriorAction extends AbstractAction
+    class ExecutePriorAction extends AbstractAction
     {
         private String sql_;
         
-        public ExecutePriorAction(String sql)
+        ExecutePriorAction(String sql)
         {
             super(sql);
             sql_ = sql;
@@ -465,9 +475,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Ctrl-Up Key action
      */
-    private class CtrlUpAction extends AbstractAction
+    class CtrlUpAction extends AbstractAction
     {
-        public CtrlUpAction()
+        CtrlUpAction()
         {
             super("Scroll History Up");
         }
