@@ -3,6 +3,8 @@ package toolbox.findclass;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.emory.mathcs.util.concurrent.Semaphore;
+
 /**
  * FindClassCollector collects the results of a FindClass operation.
  * 
@@ -13,6 +15,11 @@ public class FindClassCollector extends FindClassAdapter
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
+    
+    /**
+     * Counting semaphore that keeps track of cancel requests.
+     */
+    private Semaphore cancels_;
     
     /** 
      * Storage for search results. 
@@ -29,6 +36,7 @@ public class FindClassCollector extends FindClassAdapter
     public FindClassCollector()
     {
         results_ = new ArrayList();
+        cancels_ = new Semaphore(0);
     }
 
     //--------------------------------------------------------------------------
@@ -43,10 +51,28 @@ public class FindClassCollector extends FindClassAdapter
     {
         results_.add(result);            
     }
+
+    
+    /**
+     * @see toolbox.findclass.FindClassAdapter#searchCanceled()
+     */
+    public void searchCanceled()
+    {
+        cancels_.release();
+    }
     
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+    
+    /**
+     * @throws InterruptedException
+     */
+    public void waitForCancel() throws InterruptedException
+    {
+        cancels_.acquire();
+    }
+    
     
     /**
      * Returns an array of FindClassResult objects. 
