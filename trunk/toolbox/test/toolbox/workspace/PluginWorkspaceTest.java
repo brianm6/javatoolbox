@@ -1,7 +1,6 @@
 package toolbox.workspace;
 
-import java.awt.event.ActionEvent;
-
+import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
@@ -13,14 +12,13 @@ import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JMenuBarOperator;
 import org.netbeans.jemmy.operators.JPopupMenuOperator;
 
-import toolbox.junit.testcase.UITestCase;
 import toolbox.util.FileUtil;
 import toolbox.workspace.action.ExitAction;
 
 /**
  * Unit test for {@link toolbox.workspace.PluginWorkspace}.
  */
-public class PluginWorkspaceTest extends UITestCase
+public class PluginWorkspaceTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(PluginWorkspaceTest.class);
@@ -45,7 +43,6 @@ public class PluginWorkspaceTest extends UITestCase
     public static void main(String[] args) throws Exception
     {
         TestRunner.run(PluginWorkspaceTest.class);
-        //System.exit(0);
     }
 
     //--------------------------------------------------------------------------
@@ -57,8 +54,8 @@ public class PluginWorkspaceTest extends UITestCase
      */
     protected void setUp() throws Exception
     {
-        JemmyProperties.setCurrentDispatchingModel(
-            JemmyProperties.ROBOT_MODEL_MASK);
+        //JemmyProperties.setCurrentDispatchingModel(
+        //    JemmyProperties.ROBOT_MODEL_MASK);
 
         JemmyProperties.setCurrentOutput(TestOut.getNullOutput());
 
@@ -73,14 +70,16 @@ public class PluginWorkspaceTest extends UITestCase
      */
     protected void tearDown() throws Exception
     {
-        new ExitAction(workspace_).actionPerformed(
-            new ActionEvent(this, 10, "exit"));
+        new ExitAction(workspace_).exitForTesting();
     }
 
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
 
+    /**
+     * Invokes all plugins on the plugin menu. 
+     */
     public void testPluginWorkspace()
     {
         logger_.info("Running testPluginWorkspace...");
