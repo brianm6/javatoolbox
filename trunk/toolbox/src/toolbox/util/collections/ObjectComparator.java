@@ -199,7 +199,7 @@ public class ObjectComparator implements Comparator, java.io.Serializable
 
     //--------------------------------------------------------------------------
     // Inner Classes
-    //--------------------------------------------------------------------------     
+    //--------------------------------------------------------------------------
 
     /**
      * A description of the property to compare.  If a Comparator

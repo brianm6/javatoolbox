@@ -343,7 +343,7 @@ public class LRUMap implements Map, Serializable
      *
      * @param   key    Key with which the specified value is to be associated.
      * @param   value  Value to be associated with the specified key.
-     * @return  
+     * @return  Object
      * 
      * Previous value associated with specified key, or <tt>null</tt>
      * if there was no mapping for key.  A <tt>null</tt> return can also
