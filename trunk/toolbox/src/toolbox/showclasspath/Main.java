@@ -19,9 +19,8 @@ import toolbox.util.StringUtil;
  * and invalid classpath entries such as jars/dirs that don't exist.
  *
  * <p>
- * Example:
- * <pre>
- *
+ * <b>Example:</b>
+ * <pre class="snippet">
  * ========================================================================
  * JAR/Directory                               Size          Date    Time
  * ========================================================================
@@ -30,7 +29,6 @@ import toolbox.util.StringUtil;
  * \toolbox\lib\junit.jar                   117,522    04-21-2002  05:57p
  * \toolbox\lib\log4j.jar                   158,892    04-21-2002  05:57p
  * \toolbox\lib\jakarta-regexp-1.2.jar       29,871    05-14-2002  06:58p
- *
  * </pre>
  */
 public final class Main
