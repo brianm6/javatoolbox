@@ -2,26 +2,20 @@ package toolbox.plugin.docviewer;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Map;
 
 import javax.swing.JComponent;
+
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.Initializable;
+import toolbox.util.service.Nameable;
 
 /**
  * Generic interface that defines API necessary to view a document.
  * 
  * @see toolbox.plugin.docviewer.DocumentViewerPlugin
  */
-public interface DocumentViewer
+public interface DocumentViewer extends Initializable, Destroyable, Nameable
 {
-    /**
-     * Starts up or initializes the document viewer.
-     * 
-     * @param init Initialization properties.
-     * @throws DocumentViewerException on error.
-     */
-    void startup(Map init) throws DocumentViewerException;
-    
-    
     /**
      * Views the given file.
      * 
@@ -64,18 +58,4 @@ public interface DocumentViewer
      * @return JComponent
      */
     JComponent getComponent();
-    
-    
-    /**
-     * Returns the UI friendly name of this document viewer.
-     * 
-     * @return String
-     */
-    String getName();
-    
-    
-    /**
-     * Shuts down the document viewer.
-     */
-    void shutdown();
 }
