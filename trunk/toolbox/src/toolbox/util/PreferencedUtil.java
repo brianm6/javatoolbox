@@ -207,4 +207,21 @@ public class PreferencedUtil
         node.addAttribute(new Attribute(ATTR_WIDTH, r.width + ""));
         node.addAttribute(new Attribute(ATTR_HEIGHT, r.height + ""));
     }
+
+    /**
+     * Convenience method to return the child element of a given node.
+     * If the child element does not exist, it is created and returned.
+     *
+     * @param root Parent node.
+     * @param name Child node's name.
+     * @return Element
+     */
+    public static Element getElement(Element root, String name)
+    {
+        return 
+            XOMUtil.getFirstChildElement(
+                root, 
+                name, 
+                new  Element(name));
+    }
 }
