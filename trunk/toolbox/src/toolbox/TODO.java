@@ -11,7 +11,6 @@ package toolbox;
  * TODO: Add support to minimize to system tray - systray4j
  * TODO: Integrate automatic build number generation into the build process.
  * TODO: Get PropertyPrompt working properly
- * TODO: Add tabs to FIndClass -> Decompiler. One per file
  * TODO: Fix tailing of Log4j in JTail
  * TODO: Fix SkinLF resource loading
  * </pre>
