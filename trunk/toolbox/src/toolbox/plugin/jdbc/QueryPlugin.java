@@ -273,7 +273,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         dbConfigPane_ = new DBConfig(this);
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
-        leftFlipPane_.addFlipper("JDBC Drivers", dbConfigPane_);
+        leftFlipPane_.addFlipper("Databases", dbConfigPane_);
 
         add(leftFlipPane_, BorderLayout.WEST);
         add(areaSplitPane_, BorderLayout.CENTER);                
