@@ -3,7 +3,7 @@ package toolbox.util.validator.functional;
 import org.apache.log4j.Logger;
 
 import toolbox.util.validator.AbstractValidatorConstraint;
-import toolbox.util.validator.ValidatorContext;
+import toolbox.util.validator.ValidatorContextIfc;
 
 /**
  * Constraint that verifies the area code in a phone number.
@@ -27,9 +27,9 @@ public class BabyBellAreaCodeConstraint extends AbstractValidatorConstraint
 
     /**
      * @see toolbox.util.validator.ValidatorConstraint#validate(
-     *      toolbox.util.validator.ValidatorContext)
+     *      toolbox.util.validator.ValidatorContextIfc)
      */
-    public void validate(ValidatorContext context)
+    public void validate(ValidatorContextIfc context)
     {
         // logger.debug("Running BabyBellAreaCodeConstraint::validate()");
 

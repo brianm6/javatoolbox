@@ -15,9 +15,9 @@ public abstract class AbstractValidator implements Validator
 
     /**
      * @see toolbox.util.validator.Validator#validate(
-     *      toolbox.util.validator.ValidatorContext)
+     *      toolbox.util.validator.ValidatorContextIfc)
      */
-    public final void validate(ValidatorContext context)
+    public final void validate(ValidatorContextIfc context)
     {
         // Build the constraint fully...
         build(context);

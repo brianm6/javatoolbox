@@ -55,7 +55,7 @@ public class ValidatorFunctionalTest extends TestCase
         IPhoneNumber number = new BabyBellPhoneNumber();
         number.setNumber("972-555-1212");
 
-        ValidatorContext context = new DefaultValidatorContext();
+        ValidatorContextIfc context = new ValidatorContext();
         context.addParticipant("number", number);
 
         Validator validator = new BabyBellPhoneNumberValidator();
@@ -83,7 +83,7 @@ public class ValidatorFunctionalTest extends TestCase
         number.setNumber("565-555");
 
         Validator validator = new BabyBellPhoneNumberValidator();
-        ValidatorContext context = new PhoneNumberValidatorContext(number);
+        ValidatorContextIfc context = new PhoneNumberValidatorContext(number);
         context.setFailFast(false);
         validator.validate(context);
 
@@ -109,7 +109,7 @@ public class ValidatorFunctionalTest extends TestCase
         number.setNumber("565-555");
 
         Validator validator = new BabyBellPhoneNumberValidator();
-        ValidatorContext context = new PhoneNumberValidatorContext(number);
+        ValidatorContextIfc context = new PhoneNumberValidatorContext(number);
         context.setFailFast(true);
         validator.validate(context);
 

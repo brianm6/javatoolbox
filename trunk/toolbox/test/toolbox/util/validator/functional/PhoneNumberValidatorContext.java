@@ -1,11 +1,11 @@
 package toolbox.util.validator.functional;
 
-import toolbox.util.validator.DefaultValidatorContext;
+import toolbox.util.validator.ValidatorContext;
 
 /**
  * Validator context for validating a phone number.
  */
-public class PhoneNumberValidatorContext extends DefaultValidatorContext
+public class PhoneNumberValidatorContext extends ValidatorContext
 {
     //--------------------------------------------------------------------------
     // Keys

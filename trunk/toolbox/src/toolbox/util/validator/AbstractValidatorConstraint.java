@@ -16,7 +16,7 @@ public abstract class AbstractValidatorConstraint implements ValidatorConstraint
      */
     public final boolean evaluate(Object object)
     {
-        ValidatorContext context = (ValidatorContext) object;
+        ValidatorContextIfc context = (ValidatorContextIfc) object;
         validate(context);
 
         // Terminate evaluation of the expression if failfast is turned on and

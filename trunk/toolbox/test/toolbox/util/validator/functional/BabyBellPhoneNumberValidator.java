@@ -2,7 +2,7 @@ package toolbox.util.validator.functional;
 
 import org.apache.commons.collections.PredicateUtils;
 
-import toolbox.util.validator.ValidatorContext;
+import toolbox.util.validator.ValidatorContextIfc;
 
 /**
  * Specialized validator for baby bell phone numbers.
@@ -15,9 +15,9 @@ public class BabyBellPhoneNumberValidator extends PhoneNumberValidator
 
     /**
      * @see toolbox.util.validator.Validator#build(
-     *      toolbox.util.validator.ValidatorContext)
+     *      toolbox.util.validator.ValidatorContextIfc)
      */
-    public void build(ValidatorContext context)
+    public void build(ValidatorContextIfc context)
     {
         // Let the superclass build the expression first
         super.build(context);

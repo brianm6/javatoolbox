@@ -22,5 +22,5 @@ public interface ValidatorConstraint extends Predicate
      * @param context Context from which to retrieve participants that are
      *        involved in the evaluation of this constraint.
      */
-    void validate(ValidatorContext context);
+    void validate(ValidatorContextIfc context);
 }

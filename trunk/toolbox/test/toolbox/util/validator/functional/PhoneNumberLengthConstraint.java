@@ -3,7 +3,7 @@ package toolbox.util.validator.functional;
 import org.apache.log4j.Logger;
 
 import toolbox.util.validator.AbstractValidatorConstraint;
-import toolbox.util.validator.ValidatorContext;
+import toolbox.util.validator.ValidatorContextIfc;
 
 /**
  * Constraint that validates the length of a phone number is correct.
@@ -27,9 +27,9 @@ public class PhoneNumberLengthConstraint extends AbstractValidatorConstraint
 
     /**
      * @see toolbox.util.validator.ValidatorConstraint#validate(
-     *      toolbox.util.validator.ValidatorContext)
+     *      toolbox.util.validator.ValidatorContextIfc)
      */
-    public void validate(ValidatorContext context)
+    public void validate(ValidatorContextIfc context)
     {
         // logger.info("Running PhoneNumberLengthConstraint::validate()");
 

@@ -1,138 +1,223 @@
 package toolbox.util.validator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections.functors.TruePredicate;
 
 /**
- * ValidatorContext places the following responsiblities on implementing
- * classes.
- * <ul>
- *   <li>Provides access to arbitrary contextual information to evaluate the
- *       validity of an entity.
- *   <li>Serves as a repository of validation results from any number of
- *       constraints evaluated in a validation plan.
- *   <li>Decides whether an entity is deemded valid based on the results of a
- *       validation constraint.
- *   <li>Contains the failfast option used to prematurely terminate a validation
- *       plan as soon as the first failure is encountered.
- * </ul>
+ * Default implementation of a {@link ValidatorContextIfc}.
  */
-public interface ValidatorContext
+public class ValidatorContext implements ValidatorContextIfc
 {
-    /**
-     * Returns the constraint associated with this context.
-     * 
-     * @return Predicate
-     */
-    Predicate getConstraint();
-
+    //--------------------------------------------------------------------------
+    // Default Constants
+    //--------------------------------------------------------------------------
 
     /**
-     * Sets the constraint associated with this context.
-     * 
-     * @param constraint Constraint to set.
+     * Failfast is enabled by default.
      */
-    void setConstraint(Predicate constraint);
+    private boolean DEFAULT_FAILFAST = true;
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
 
     /**
-     * Returns true if the entity is valid, false otherwise.
-     * 
-     * @return boolean
+     * List of failures that occurred during validation.
      */
-    boolean isValid();
+    private List failures_;
+    
+    /**
+     * List of warnings generated during validation.
+     */
+    private List warnings_;
+    
+    /**
+     * Flag to enable the failfast feature.
+     */
+    private boolean failFast_;
+    
+    /**
+     * A map of arbitrary objects that are participants in the validation 
+     * process. Individual {@link ValidatorConstraint}s should know which 
+     * participants to lookup to evaulate themselves.
+     */
+    private Map participants_;
+    
+    /**
+     * Evaluation of this constraint performs the validation.
+     */
+    private Predicate constraint_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     /**
-     * Returns the list of failures.
-     * 
-     * @return List<Reason>
+     * Creates a ValidatorContext.
      */
-    List getFailures();
+    public ValidatorContext()
+    {
+        failures_ = new ArrayList(1);
+        warnings_ = new ArrayList(0);
+        participants_ = new HashMap();
+        reset();
+    }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
-     * Returns the list of warnings.
-     * 
-     * @return List<Reason>
+     * Resets this context so that a new one does not have to be instantiated.
      */
-    List getWarnings();
+    public void reset()
+    {
+        failures_.clear();
+        warnings_.clear();
+        participants_.clear();
+        failFast_ = DEFAULT_FAILFAST;
+        constraint_ = TruePredicate.INSTANCE;
+    }
 
+    //--------------------------------------------------------------------------
+    // ValidatorContextIfc Interface
+    //--------------------------------------------------------------------------
 
     /**
-     * Returns true if the evaluation of the constraint should terminate at the
-     * occurence of the first failure, false otherwise.
-     * 
-     * @return boolean
+     * @see toolbox.util.validator.ValidatorContextIfc#isValid()
      */
-    boolean isFailFast();
-
-
-    /**
-     * Sets the failfast flag.
-     * 
-     * @param b True to enable failfast, false otherwise.
-     */
-    void setFailFast(boolean b);
-
-
-    /**
-     * Adds a participant to the constraint evaluation.
-     * 
-     * @param key Key of the participant.
-     * @param participant Participant object.
-     */
-    void addParticipant(Object key, Object participant);
-
-
-    /**
-     * Retrieves a participant given its key.
-     * 
-     * @param key Key of the participant.
-     * @return Object
-     */
-    Object getParticipant(Object key);
-
-
-    /**
-     * Removes a participant from the constraint evaluation.
-     * 
-     * @param key Key of the participant to remove.
-     */
-    void removeParticipant(Object key);
-
-
-    /**
-     * Adds a failure to this context.
-     * 
-     * @param failure Failure message.
-     */
-    void addFailure(String failure);
+    public boolean isValid()
+    {
+        return getFailures().isEmpty();
+    }
 
 
     /**
-     * Adds a failure to this context.
-     * 
-     * @param failure Failure message.
-     * @param cause Cause of the failure.
+     * @see toolbox.util.validator.ValidatorContextIfc#getErrors()
      */
-    void addFailure(String failure, Throwable cause);
+    public List getFailures()
+    {
+        return failures_;
+    }
 
 
     /**
-     * Adds a warning to this context.
-     * 
-     * @param warning Warning message.
+     * @see toolbox.util.validator.ValidatorContextIfc#getWarnings()
      */
-    void addWarning(String warning);
+    public List getWarnings()
+    {
+        return warnings_;
+    }
 
 
     /**
-     * Adds a warning to this context.
-     * 
-     * @param warning Warning message.
-     * @param cause Cause of this warning.
+     * @see toolbox.util.validator.ValidatorContextIfc#isFailFast()
      */
-    void addWarning(String warning, Throwable cause);
+    public boolean isFailFast()
+    {
+        return failFast_;
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#setFailFast(boolean)
+     */
+    public void setFailFast(boolean failfast)
+    {
+        failFast_ = failfast;
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#addParticipant(
+     *      java.lang.Object, java.lang.Object)
+     */
+    public void addParticipant(Object key, Object participant)
+    {
+        participants_.put(key, participant);
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#getParticipant(
+     *      java.lang.Object)
+     */
+    public Object getParticipant(Object key)
+    {
+        return participants_.get(key);
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#removeParticipant(
+     *      java.lang.Object)
+     */
+    public void removeParticipant(Object key)
+    {
+        participants_.remove(key);
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#addFailure(
+     *      java.lang.String)
+     */
+    public void addFailure(String failure)
+    {
+        failures_.add(new Reason(failure));
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#addFailure(
+     *      java.lang.String, java.lang.Throwable)
+     */
+    public void addFailure(String failure, Throwable cause)
+    {
+        failures_.add(new Reason(failure, cause));
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#addWarning(
+     *      java.lang.String)
+     */
+    public void addWarning(String warning)
+    {
+        warnings_.add(new Reason(warning));
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#addWarning(
+     *      java.lang.String, java.lang.Throwable)
+     */
+    public void addWarning(String warning, Throwable cause)
+    {
+        warnings_.add(new Reason(warning, cause));
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#getConstraint()
+     */
+    public Predicate getConstraint()
+    {
+        return constraint_;
+    }
+
+
+    /**
+     * @see toolbox.util.validator.ValidatorContextIfc#setConstraint(
+     *      org.apache.commons.collections.Predicate)
+     */
+    public void setConstraint(Predicate constraint)
+    {
+        constraint_ = constraint;
+    }
 }

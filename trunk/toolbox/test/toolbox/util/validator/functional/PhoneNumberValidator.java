@@ -3,7 +3,7 @@ package toolbox.util.validator.functional;
 import org.apache.commons.collections.PredicateUtils;
 
 import toolbox.util.validator.AbstractValidator;
-import toolbox.util.validator.ValidatorContext;
+import toolbox.util.validator.ValidatorContextIfc;
 
 /**
  * Generic validator for a phone number. Currently only validates a phone
@@ -17,9 +17,9 @@ public class PhoneNumberValidator extends AbstractValidator
 
     /**
      * @see toolbox.util.validator.Validator#build(
-     *      toolbox.util.validator.ValidatorContext)
+     *      toolbox.util.validator.ValidatorContextIfc)
      */
-    public void build(ValidatorContext context)
+    public void build(ValidatorContextIfc context)
     {
         // Add the length constraint to the existing constraint.
         context.setConstraint(
