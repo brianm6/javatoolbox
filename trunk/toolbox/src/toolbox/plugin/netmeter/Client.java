@@ -3,14 +3,15 @@ package toolbox.plugin.netmeter;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.io.EventOutputStream;
+import toolbox.util.io.MonitoredOutputStream;
+import toolbox.util.io.throughput.DefaultThroughputMonitor;
+import toolbox.util.io.throughput.ThroughputEvent;
+import toolbox.util.io.throughput.ThroughputListener;
+import toolbox.util.io.throughput.ThroughputMonitor;
 import toolbox.util.net.SocketConnection;
 import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
@@ -49,7 +50,9 @@ public class Client extends AbstractService
     /**
      * Stream that can measure data throughput.
      */
-    private EventOutputStream os_;
+    private MonitoredOutputStream mos_;
+    
+    private ThroughputMonitor monitor_;
     
     /**
      * Internal flag used to terminate the connection.
@@ -61,17 +64,6 @@ public class Client extends AbstractService
      * to return immediately.
      */
     private Thread clientThread_;
-    
-    /**
-     * Timer that triggers the gathering of throughput statistics once per
-     * second.
-     */
-    private Timer timer_;
-    
-    /**
-     * Array of listeners interested in the collected throughput stats.
-     */
-    private StatsListener[] listeners_;
     
     //--------------------------------------------------------------------------
     // Main
@@ -133,9 +125,9 @@ public class Client extends AbstractService
      */
     public Client(String hostname, int port)
     {
-        hostname_ = hostname;
-        port_ = port;
-        listeners_ = new StatsListener[0];
+        setHostname(hostname);
+        setPort(port);
+        monitor_ = new DefaultThroughputMonitor();
     }
 
     //--------------------------------------------------------------------------
@@ -147,9 +139,9 @@ public class Client extends AbstractService
      * 
      * @param listener Listener to add.
      */
-    public void addStatsListener(StatsListener listener)
+    public void addThroughputListener(ThroughputListener listener)
     {
-        listeners_ = (StatsListener[]) ArrayUtil.add(listeners_, listener); 
+        monitor_.addThroughputListener(listener); 
     }
     
     
@@ -197,22 +189,6 @@ public class Client extends AbstractService
     }
 
     //--------------------------------------------------------------------------
-    // Protected
-    //--------------------------------------------------------------------------
-
-    /**
-     * Fires notification of a new throughput statistic.
-     * 
-     * @param throughput Throughput in kilobytes per second.
-     */
-    protected void fireThroughput(int throughput)
-    {
-        for (int i = 0; 
-             i < listeners_.length; 
-             listeners_[i++].throughput(throughput));
-    }
-    
-    //--------------------------------------------------------------------------
     // Service Interface 
     //--------------------------------------------------------------------------
     
@@ -229,19 +205,23 @@ public class Client extends AbstractService
                 {
                     conn_ = new SocketConnection(hostname_, port_);
             
-                    os_ = new EventOutputStream("Client", 
-                              new BufferedOutputStream(
-                                  conn_.getOutputStream()));
-            
-                    timer_ = new Timer();
-                    timer_.schedule(new ThroughputCollector(), 1000, 1000);
-            
+                    mos_ = new MonitoredOutputStream(
+                            "Client", 
+                            new BufferedOutputStream(conn_.getOutputStream()));
+                    
+                    mos_.setThroughputMonitor(monitor_);
+                    mos_.getThroughputMonitor().setSampleInterval(1000);
+                    mos_.getThroughputMonitor().setMonitoringThroughput(true);
+
+//                    mos_.getThroughputMonitor().addThroughputListener(
+//                        new ThroughputCollector());
+                    
                     byte[] b = "abcdefghijklmnopqrstuvwxyz123456789".getBytes();
             
                     while (!stopped_)
-                        os_.write(b);
+                        mos_.write(b);
             
-                    os_.flush();
+                    mos_.flush();
                     conn_.close();
                 }
                 catch (IOException ioe)
@@ -261,7 +241,7 @@ public class Client extends AbstractService
      */
     public void stop() throws ServiceException
     {
-        timer_.cancel();    
+        monitor_.setMonitoringThroughput(false);
         stopped_ = true;
         ThreadUtil.join(clientThread_);
         super.stop();
@@ -273,7 +253,7 @@ public class Client extends AbstractService
      */
     public void pause() throws ServiceException
     {
-        super.pause();
+        throw new IllegalArgumentException("Pause not supported");
     }
 
 
@@ -282,7 +262,7 @@ public class Client extends AbstractService
      */
     public void resume() throws ServiceException
     {
-        super.resume();
+        throw new IllegalArgumentException("Resume not supported");
     }
 
 
@@ -291,7 +271,7 @@ public class Client extends AbstractService
      */
     public boolean isRunning()
     {
-        return false;
+        return !stopped_;
     }
 
 
@@ -300,7 +280,7 @@ public class Client extends AbstractService
      */
     public boolean isPaused()
     {
-        return false;
+        throw new IllegalArgumentException("Pause not supported");
     }
     
     //--------------------------------------------------------------------------
@@ -311,24 +291,18 @@ public class Client extends AbstractService
      * ThroughputCollector is attached to the timer and collects throughput
      * statistics every second. 
      */
-    class ThroughputCollector extends TimerTask
+    class ThroughputCollector implements ThroughputListener
     {
-        private int lastCount_ = 0;
+        NumberFormat nf = NumberFormat.getIntegerInstance();
         
         /**
-         * @see java.lang.Runnable#run()
+         * @see toolbox.util.io.throughput.ThroughputListener#currentThroughput(
+         *      toolbox.util.io.throughput.ThroughputEvent)
          */
-        public void run()
+        public void currentThroughput(ThroughputEvent event)
         {
-            int current = os_.getCount();
-            int delta = current - lastCount_;
-            lastCount_ = current;
-            
-            NumberFormat nf = NumberFormat.getIntegerInstance();
             logger_.info(
-                "Client thruput: " + nf.format(delta / 1000) + " kb/s");
-
-            fireThroughput(delta / 1000);
+                "Client thruput: " + nf.format(event.getThroughput()) + " bytes/s");
         }
     }
 }
