@@ -12,8 +12,12 @@ import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.StringUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.IBatchingQueueListener;
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceState;
 
 /**
  * SmartTableModel extends DefaultTableModel by adding the following
@@ -26,7 +30,7 @@ import toolbox.util.concurrent.IBatchingQueueListener;
  * </ul>
  */
 public class SmartTableModel extends DefaultTableModel
-    implements IBatchingQueueListener
+    implements IBatchingQueueListener, Destroyable
 {
     private static final Logger logger_ =
         Logger.getLogger(SmartTableModel.class);
@@ -219,6 +223,27 @@ public class SmartTableModel extends DefaultTableModel
         SwingUtilities.invokeLater(new AddRows(elements));
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Destroyable#destroy()
+     */
+    public void destroy() throws IllegalStateException, ServiceException
+    {
+        logger_.debug(StringUtil.banner("SmartTableModel.destroy"));
+        queueReader_.stop();
+    }
+    
+    /**
+     * @see toolbox.util.service.Service#getState()
+     */
+    public ServiceState getState()
+    {
+        return null;
+    }
+    
     //--------------------------------------------------------------------------
     //  AddRows
     //--------------------------------------------------------------------------
