@@ -208,6 +208,31 @@ public class ElapsedTimeTest extends TestCase
         assertTrue("times should not match", !time.equals(compare));        
     }
     
+
+    /**
+     * Test hashCode()
+     */
+    public void testHashCode()
+    {
+        logger_.info("Running testHashCode...");
+        
+        ElapsedTime time = new ElapsedTime(1, 2, 3, 4, 5);
+        ElapsedTime compare = new ElapsedTime(1, 2, 3, 4, 5);
+        assertEquals(time.hashCode(), compare.hashCode());
+    }
+    
+    
+    /**
+     * Tests equals() failure.
+     */
+    public void testEqualsFailure()    
+    {
+        logger_.info("Running testEqualsFailure...");
+        
+        ElapsedTime time = new ElapsedTime();
+        assertFalse(time.equals("Cannot be compared to a string!"));
+    }
+    
     
     /**
      * Tests constructor 1.
@@ -247,9 +272,9 @@ public class ElapsedTimeTest extends TestCase
     /**
      * Tests constructor 3.
      */
-    public void testConsturctor3()
+    public void testConstructor3()
     {
-        logger_.info("Running testConsturctor3...");
+        logger_.info("Running testConstructor3...");
         
         Date start = new Date();
         ThreadUtil.sleep(RandomUtil.nextInt(1000));
