@@ -7,11 +7,31 @@ import java.io.OutputStream;
 import toolbox.util.StringUtil;
 
 /**
- * PrintableOutputStream is a stream that recognizes only letters of the
- * alpha, digits, and symbols. All binary characters are filtered out.
+ * A {@link java.io.OutputStream} that filters out non-printable characters
+ * and replaces them with a printable one. The tab and newline characters are
+ * exempt from filtering.
+ * <p>
+ * Example:
+ * <pre>
+ * 
+ * StringOutputStream sos = new StringOutputStream();
+ * PrintableOutputStream pos = new PrintableOutputStream(sos, true, ".");
+ * 
+ * // Assume we've got some binary data.
+ * pos.write(binaryByteArray);  
+ * pos.close();
+ * 
+ * // Prints out all ASCII chars with binary chars replaced with a period. 
+ * System.out.println(sos.toString()); 
+ * </pre>
+ * 
+ * @see java.io.OutputStream
  */
 public class PrintableOutputStream extends FilterOutputStream
 {
+    // TODO: Allow exempt characters to be specified at runtime.
+    // TODO: Allow customizable replacement characters with a map.
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -64,6 +84,8 @@ public class PrintableOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
+     * Filters out non-printable characters.
+     * 
      * @see java.io.FilterOutputStream#write(int)
      */
     public void write(int b) throws IOException
@@ -83,7 +105,7 @@ public class PrintableOutputStream extends FilterOutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the enabled.
+     * Returns true if filtering is enabled, false otherwise.
      * 
      * @return boolean
      */
@@ -94,7 +116,7 @@ public class PrintableOutputStream extends FilterOutputStream
     
     
     /**
-     * Sets the enabled.
+     * Sets the enabled state of the filter.
      * 
      * @param enabled The enabled to set.
      */
@@ -105,7 +127,7 @@ public class PrintableOutputStream extends FilterOutputStream
     
     
     /**
-     * Returns the replacement.
+     * Returns the replacement string for non-printable characters. 
      * 
      * @return String
      */
@@ -116,9 +138,10 @@ public class PrintableOutputStream extends FilterOutputStream
     
     
     /**
-     * Sets the replacement.
-     * 
-     * @param String The replacement to set.
+     * Sets the replacement string. Set to the empty string to discard 
+     * completely.
+     *  
+     * @param String The non-printable character replacement string.
      */
     public void setReplacement(String replacement)
     {
