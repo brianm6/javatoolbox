@@ -4,20 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.swing.JTextArea;
+import toolbox.util.ResourceCloser;
 
 /**
  * A Relay object is used by TcpTunnel and JTcpTunnel to relay bytes from an
  * InputStream to a OutputStream.
  */
-public class Relay extends Thread
+public class Relay implements Runnable
 {
-    private static final int BUFSIZ = 1000;
+    private static final int BUFSIZ = 1024;
     
     private InputStream   in_;
     private OutputStream  out_;
     private byte[]        buf_ = new byte[BUFSIZ];
-    private JTextArea     textArea_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -31,22 +30,8 @@ public class Relay extends Thread
      */
     public Relay(InputStream in, OutputStream out)
     {
-        this(in, out, null);
-    }
-
-
-    /**
-     * Creates a new relay
-     * 
-     * @param  in   Input stream
-     * @param  out  Output stream
-     * @param  ta   Textarea
-     */
-    public Relay(InputStream in, OutputStream out, JTextArea ta)
-    {
         in_ = in;
         out_ = out;
-        textArea_ = ta;
     }
 
     //--------------------------------------------------------------------------
@@ -66,9 +51,6 @@ public class Relay extends Thread
             {
                 out_.write(buf_, 0, n);
                 out_.flush();
-
-                if (textArea_ != null)
-                    textArea_.append(new String(buf_, 0, n));
             }
         }
         catch (IOException e)
@@ -77,15 +59,8 @@ public class Relay extends Thread
         }
         finally
         {
-            try
-            {
-                in_.close();
-                out_.close();
-            }
-            catch (IOException e)
-            {
-                // Ignore
-            }
+            ResourceCloser.close(in_);
+            ResourceCloser.close(out_);
         }
     }
 }
