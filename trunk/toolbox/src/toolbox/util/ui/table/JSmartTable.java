@@ -1,34 +1,65 @@
 package toolbox.util.ui.table;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Vector;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.SwingUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.AntiAliased;
+import toolbox.workspace.IPreferenced;
 
 /**
  * JSmartTable adds the following behavior.
  * <p>
  * <ul>
- *   <li>Support for antialised text
+ *   <li>Antialised text.
+ *   <li>Automatic tailing as the number of rows increases.
  * </ul>
  * 
  * @see JSmartTableHeader
  * @see JSmartTableModel
  * @see SmartTableCellRender
  */
-public class JSmartTable extends JTable implements AntiAliased
+public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(JSmartTable.class);
+
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Prefences node for all JSmartTable settings.
+     */
+    private static final String NODE_JSMARTTABLE = "JSmartTable";
+
+    /** 
+     * Preference that stores automatic tailing of the table flag as a boolean.
+     */
+    private static final String ATTR_AUTOTAIL = null;
+
+    /**
+     * Preference that stores antialiasing of the text flag as a boolean.
+     */
+    private static final String ATTR_ANTIALIAS = null;
     
     //--------------------------------------------------------------------------
     // Fields 
@@ -38,7 +69,26 @@ public class JSmartTable extends JTable implements AntiAliased
      * Antialiased flag.
      */
     private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
+
+    /**
+     * Listens for switching out of the table model so that the tracker that
+     * is responsible for "following" the table is transferred over seamlessly.
+     */
+    private PropertyChangeListener tableModelTracker_;
     
+    /**
+     * Listens for changes to the tables model (specifically insert and delete
+     * row operations) so that the table can be scrolled to the very end
+     * (assumning that the follow flag is turned on).
+     */
+    private TableModelListener followTracker_;
+    
+    /**
+     * Toggles automatic scrolling of table to its very last row as rows are 
+     * added in real time.
+     */
+    private boolean autoTail_;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -55,8 +105,8 @@ public class JSmartTable extends JTable implements AntiAliased
     /**
      * Creates a JSmartTable.
      * 
-     * @param numRows Number of rows
-     * @param numColumns Number of columns
+     * @param numRows Number of rows.
+     * @param numColumns Number of columns.
      */
     public JSmartTable(int numRows, int numColumns)
     {
@@ -112,7 +162,7 @@ public class JSmartTable extends JTable implements AntiAliased
     public JSmartTable(TableModel dm, TableColumnModel cm)
     {
         super(dm, cm);
-        setTableHeader(new JSmartTableHeader(cm));
+        smartInit();
     }
 
 
@@ -129,9 +179,9 @@ public class JSmartTable extends JTable implements AntiAliased
         ListSelectionModel sm)
     {
         super(dm, cm, sm);
-        setTableHeader(new JSmartTableHeader(cm));
+        smartInit();
     }
-    
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
@@ -141,7 +191,66 @@ public class JSmartTable extends JTable implements AntiAliased
      */
     protected void smartInit()
     {
-        setTableHeader(new JSmartTableHeader(getColumnModel()));        
+        setTableHeader(new JSmartTableHeader(getColumnModel()));
+        followTracker_ = new FollowTracker();
+        autoTail_ = false;
+        
+        addPropertyChangeListener(
+            "model", 
+            tableModelTracker_ = new TableModelTracker());
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns true if automatic tailing is active, false otherwise.
+     * 
+     * @return boolean
+     */
+    public boolean isAutoTail()
+    {
+        return autoTail_;
+    }
+   
+    
+    /**
+     * Activates autoatic tailing of the table as the number of rows increases.
+     * 
+     * @param autoTail True to activate tailing, false otherwise.
+     */
+    public void setAutoTail(boolean autoTail)
+    {
+        autoTail_ = autoTail;
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs)
+    {
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_JSMARTTABLE, new Element(NODE_JSMARTTABLE));
+        
+        setAutoTail(XOMUtil.getBooleanAttribute(root, ATTR_AUTOTAIL, true));
+        setAntiAliased(XOMUtil.getBooleanAttribute(root, ATTR_ANTIALIAS, true));
+    }
+
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs)
+    {
+        Element root = new Element(NODE_JSMARTTABLE);
+        root.addAttribute(new Attribute(ATTR_AUTOTAIL, isAutoTail() + ""));
+        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
+        prefs.appendChild(root);
     }
     
     //--------------------------------------------------------------------------
@@ -191,4 +300,65 @@ public class JSmartTable extends JTable implements AntiAliased
         SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
     }
+    
+    //--------------------------------------------------------------------------
+    // TableModelTracker
+    //--------------------------------------------------------------------------
+
+    /**
+     * Keeps track of when a model is associated/disassociated with the current
+     * table. Whenever the  model is switched out, the followTracker is removed
+     * from the old table and associated with the replacement.
+     */
+    class TableModelTracker implements PropertyChangeListener
+    {
+        /**
+         * @see java.beans.PropertyChangeListener#propertyChange(
+         *      java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent evt)
+        {
+            TableModel old = (TableModel) evt.getOldValue();
+            TableModel knew = (TableModel) evt.getNewValue();
+            
+            if (old != null)
+                old.removeTableModelListener(followTracker_);
+            
+            if (knew != null)
+                knew.addTableModelListener(followTracker_);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // FollowTracker
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Listens for insertions/deletions from the table model. Whenever this 
+     * happens, if the follow flag is active, the table will automatically be
+     * scrolled to the end. 
+     */
+    class FollowTracker implements TableModelListener
+    {
+        public void tableChanged(TableModelEvent e)
+        {
+            // Only update scrolly bar if a row was inserted or deleted.
+            
+            if (isAutoTail() &&
+                (e.getType() == TableModelEvent.INSERT ||
+                 e.getType() == TableModelEvent.DELETE))
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        Rectangle rect = getCellRect(
+                            getRowCount(), getColumnCount(), true);
+                        
+                        scrollRectToVisible(rect);
+                    }
+                });
+            }
+        }
+    }    
 }
