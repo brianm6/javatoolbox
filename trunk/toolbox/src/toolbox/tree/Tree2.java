@@ -573,16 +573,9 @@ public class Tree2
 
         sortByMap_ = new HashMap();
         sortByMap_.put(SORT_NONE, null);
-        
-        sortByMap_.put(SORT_NAME, 
-            new FileComparator(FileComparator.COMPARE_NAME));
-        
-        sortByMap_.put(SORT_SIZE,
-            new FileComparator(FileComparator.COMPARE_SIZE));
-        
-        sortByMap_.put(SORT_DATE,
-            new FileComparator(FileComparator.COMPARE_DATE));
-        
+        sortByMap_.put(SORT_NAME, FileComparator.COMPARE_NAME);
+        sortByMap_.put(SORT_SIZE, FileComparator.COMPARE_SIZE);
+        sortByMap_.put(SORT_DATE, FileComparator.COMPARE_DATE);
         sortBy_ = sortBy;
         
         if (!sortByMap_.containsKey(sortBy_))

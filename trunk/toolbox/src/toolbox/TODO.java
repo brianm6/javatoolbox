@@ -30,7 +30,7 @@ package toolbox;
  * TODO: Investigate JModalWindow
  * TODO: Update banner with more external fonts.
  * TODO: Fix JTail recent menu
- * TODO: Update all command line tools using new help format in findclass
+ * TODO: Update all command line tools using new help format in findclass 
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -79,6 +79,8 @@ package toolbox;
  *  - Upgraded to commons-io-1.0
  *  - Added 3D look and feel
  *  - Added a tree based DTD DocumentViewer
+ *  - Updated usage template in FindClass
+ *  - Updated FileComparator to use static instances
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 

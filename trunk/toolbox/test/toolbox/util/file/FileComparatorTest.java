@@ -3,7 +3,6 @@ package toolbox.util.file;
 import java.io.File;
 import java.util.Date;
 
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -14,6 +13,8 @@ import toolbox.util.RandomUtil;
 
 /**
  * Unit test for FileComparator.
+ * 
+ * @see toolbox.util.file.FileComparator
  */
 public class FileComparatorTest extends TestCase
 {
@@ -77,45 +78,6 @@ public class FileComparatorTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the constructor for underflow condition.
-     */
-    public void testConstructorUnderFlow()
-    {
-        logger_.info("Running testConstructorUnderFlow...");
-        
-        try
-        {
-            new FileComparator(-1);
-            fail("Construction should have failed for invalid type.");
-        }
-        catch (AssertionFailedError afe)
-        {
-            ; // Success
-        }
-    }
-
-    
-    /**
-     * Tests the constructor for an overflow condition of the comparison 
-     * criteria.
-     */
-    public void testConstructorOverFlow()
-    {
-        logger_.info("Running testConstructorOverFlow...");
-        
-        try
-        {
-            new FileComparator(999);
-            fail("Construction should have failed for invalid type.");
-        }
-        catch (AssertionFailedError afe)
-        {
-            ; // Success
-        }
-    }
-    
-    
-    /**
      * Tests file comparison by name.
      * 
      * @throws Exception on error.
@@ -130,7 +92,7 @@ public class FileComparatorTest extends TestCase
         
         try
         {
-            FileComparator fc = new FileComparator(FileComparator.COMPARE_NAME);
+            FileComparator fc = FileComparator.COMPARE_NAME;
             assertTrue(fc.compare(fileA, fileB) < 0);
             assertTrue(fc.compare(fileB, fileA) > 0);
             assertTrue(fc.compare(fileA, fileA) == 0);
@@ -155,7 +117,7 @@ public class FileComparatorTest extends TestCase
         FileUtil.setFileContents(fileA_, "smaller", false);
         FileUtil.setFileContents(fileB_, "l a r g e r", false);
         
-        FileComparator fc = new FileComparator(FileComparator.COMPARE_SIZE);
+        FileComparator fc = FileComparator.COMPARE_SIZE;
         assertTrue(fc.compare(fileA_, fileB_) < 0);
         assertTrue(fc.compare(fileB_, fileA_) > 0);
         assertTrue(fc.compare(fileA_, fileA_) == 0);
@@ -182,7 +144,7 @@ public class FileComparatorTest extends TestCase
         fileC_.setLastModified(d);
         fileD_.setLastModified(d + 10000);
         
-        FileComparator fc = new FileComparator(FileComparator.COMPARE_DATE);
+        FileComparator fc = FileComparator.COMPARE_DATE;
         
         assertTrue(fc.compare(fileA_, fileB_) < 0);
         assertTrue(fc.compare(fileB_, fileB_) == 0);
@@ -206,9 +168,7 @@ public class FileComparatorTest extends TestCase
         FileUtil.setFileContents(fileC_, "yabba dabba doo,i see you!", false);
         FileUtil.setFileContents(fileD_, "abcdefgijklmnopq", false);
         
-        FileComparator fc = 
-            new FileComparator(FileComparator.COMPARE_CONTENTS);
-        
+        FileComparator fc = FileComparator.COMPARE_CONTENTS;
         assertTrue(fc.compare(fileA_, fileA_) == 0);
         assertTrue(fc.compare(fileA_, fileB_) == 0);
         assertTrue(fc.compare(fileB_, fileA_) == 0);
@@ -227,7 +187,7 @@ public class FileComparatorTest extends TestCase
         logger_.info("Running testCompareByContentsNull...");
         
         FileUtil.setFileContents(fileA_, "this_file_should_match", false);
-        FileComparator fc = new FileComparator(FileComparator.COMPARE_CONTENTS);
+        FileComparator fc = FileComparator.COMPARE_CONTENTS;
         
         assertTrue(fc.compare(fileA_, null) > 0);
         assertTrue(fc.compare(null, fileA_) < 0);
@@ -245,7 +205,7 @@ public class FileComparatorTest extends TestCase
         logger_.info("Running testCompareByContentsSelf...");
         
         FileUtil.setFileContents(fileA_, "fileA", false);
-        FileComparator fc = new FileComparator(FileComparator.COMPARE_CONTENTS);
+        FileComparator fc = FileComparator.COMPARE_CONTENTS;
         
         assertTrue(fc.compare(fileA_, fileA_) == 0);
     }
@@ -262,7 +222,7 @@ public class FileComparatorTest extends TestCase
         logger_.info("Running testCompareByContentsFileNotExist...");
         
         FileUtil.setFileContents(fileA_, "fileB", false);
-        FileComparator fc = new FileComparator(FileComparator.COMPARE_CONTENTS);
+        FileComparator fc = FileComparator.COMPARE_CONTENTS;
         
         try
         {
@@ -308,7 +268,7 @@ public class FileComparatorTest extends TestCase
         
         File dir = FileUtil.createTempDir();
         FileUtil.setFileContents(fileB_, "fileB", false);
-        FileComparator fc = new FileComparator(FileComparator.COMPARE_CONTENTS);
+        FileComparator fc = FileComparator.COMPARE_CONTENTS;
         
         try
         {

@@ -666,7 +666,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         File[] files = 
             new File(pathToAddFolders).listFiles(new DirectoryFilter());
             
-        Arrays.sort(files, new FileComparator(FileComparator.COMPARE_NAME));
+        Arrays.sort(files, FileComparator.COMPARE_NAME);
         String[] fileList = new String[files.length];
 
         for (int i = 0; i < files.length; i++)
@@ -688,7 +688,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         listModel_.clear();
         File f = new File(path);
         File[] files = f.listFiles(new FileFilter());
-        Arrays.sort(files, new FileComparator(FileComparator.COMPARE_NAME));
+        Arrays.sort(files, FileComparator.COMPARE_NAME);
         
         for (int i = 0; i < files.length; i++)
             listModel_.addElement(files[i].getName());

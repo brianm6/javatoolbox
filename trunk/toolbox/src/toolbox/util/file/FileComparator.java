@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.Date;
 
-import junit.framework.Assert;
-
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -31,22 +29,36 @@ public class FileComparator implements Comparator
     /**
      * Compare by file name (case insensetive).
      */
-    public static final int COMPARE_NAME = 1;
+    private static final int COMPARE_NAME_ = 1;
     
     /**
      * Compare by file size.
      */
-    public static final int COMPARE_SIZE = 2;
+    private static final int COMPARE_SIZE_ = 2;
     
     /**
      * Compare by file timestamp.
      */
-    public static final int COMPARE_DATE = 3;
+    private static final int COMPARE_DATE_ = 3;
 
     /**
      * Compare by file contents.
      */
-    public static final int COMPARE_CONTENTS = 4;
+    private static final int COMPARE_CONTENTS_ = 4;
+    
+    
+    public static final FileComparator COMPARE_NAME = 
+        new FileComparator(COMPARE_NAME_);
+    
+    public static final FileComparator COMPARE_SIZE = 
+        new FileComparator(COMPARE_SIZE_);
+    
+    public static final FileComparator COMPARE_DATE = 
+        new FileComparator(COMPARE_DATE_);
+    
+    public static final FileComparator COMPARE_CONTENTS = 
+        new FileComparator(COMPARE_CONTENTS_);
+    
     
     //--------------------------------------------------------------------------
     // Fields
@@ -67,12 +79,8 @@ public class FileComparator implements Comparator
      * @param compareBy Method by which to compare the files. 
      *        Use FileComparator.COMPARE_[NAME|SIZE|DATE|CONTENTS]
      */
-    public FileComparator(int compareBy)
+    private FileComparator(int compareBy)
     {
-        // Check bounds...
-        Assert.assertTrue(compareBy >= COMPARE_NAME);
-        Assert.assertTrue(compareBy <= COMPARE_CONTENTS);
-        
         compareBy_ = compareBy;
     }
     
@@ -84,7 +92,6 @@ public class FileComparator implements Comparator
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     public int compare(Object a, Object b)
-
     {
         int result = Integer.MAX_VALUE;
         
@@ -93,13 +100,13 @@ public class FileComparator implements Comparator
         
         switch (compareBy_)
         {
-            case COMPARE_NAME :
+            case COMPARE_NAME_ :
              
                 result = fileA.getName().compareToIgnoreCase(fileB.getName());
                 break;
             
                 
-            case COMPARE_SIZE :
+            case COMPARE_SIZE_ :
             
                 long sizeA = fileA.length();
                 long sizeB = fileB.length();
@@ -113,7 +120,7 @@ public class FileComparator implements Comparator
                 break;
 
                 
-            case COMPARE_DATE :
+            case COMPARE_DATE_ :
                 
                 Date dateA = new Date(fileA.lastModified());
                 Date dateB = new Date(fileB.lastModified());
@@ -121,17 +128,16 @@ public class FileComparator implements Comparator
                 break;
 
                 
-            case COMPARE_CONTENTS :
+            case COMPARE_CONTENTS_ :
                 
                 result = compareByContents(fileA, fileB);
                 break;
                 
                 
-//            default:
-//            
-//                throw new IllegalArgumentException(
-//                    "File comparator does not support comparisons by " + 
-//                    compareBy_); 
+            default:
+            
+                throw new IllegalArgumentException(
+                    "Invalid compare option: " + compareBy_); 
         }
         
         return result;
