@@ -148,7 +148,7 @@ public class TailPane extends JPanel
         // Start tail through action so button states are OK
         if (config_.isAutoStart())
             startButton_.getAction().actionPerformed(
-            	new ActionEvent(this, 0, "Start"));
+                new ActionEvent(this, 0, "Start"));
     }
     
     /**
@@ -164,8 +164,8 @@ public class TailPane extends JPanel
         pauseButton_    = new JButton(new PauseUnpauseAction());
         
         String startMode =  config.isAutoStart() ? 
-        					StartStopAction.MODE_STOP :
-        					StartStopAction.MODE_START;
+                            StartStopAction.MODE_STOP :
+                            StartStopAction.MODE_START;
         
         startButton_    = new JButton(new StartStopAction(startMode));
         closeButton_    = new JButton(new CloseAction());

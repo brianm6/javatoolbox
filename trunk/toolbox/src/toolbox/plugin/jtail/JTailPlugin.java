@@ -19,7 +19,10 @@ public class JTailPlugin implements IPlugin
     //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
-        
+    
+    /**
+     * Default constructor     
+     */
     public JTailPlugin()
     {
         jtail_ = new JTail();
@@ -53,12 +56,12 @@ public class JTailPlugin implements IPlugin
         return jtail_.getJMenuBar().getMenu(0);
     }
 
-	/**
+    /**
      * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
      */
     public JMenuBar getMenuBar()
     {
-    	return jtail_.getJMenuBar();
+        return jtail_.getJMenuBar();
     }
 
     /**
@@ -73,7 +76,7 @@ public class JTailPlugin implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
-    	jtail_.saveConfiguration();
+        jtail_.saveConfiguration();
     }
 
     /**
@@ -81,7 +84,7 @@ public class JTailPlugin implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
-    	jtail_.applyConfiguration();
+        jtail_.applyConfiguration();
     }
 
     /**
@@ -97,6 +100,6 @@ public class JTailPlugin implements IPlugin
      */
     public void shutdown()
     {
-		jtail_.saveConfiguration();
+        jtail_.saveConfiguration();
     }
 }
