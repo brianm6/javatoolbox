@@ -71,6 +71,27 @@ public final class ThreadUtil
      * Joins the given thread
      * 
      * @param  thread   Thread to join
+     */
+    public static void join (Thread thread)
+    {
+        if (thread != null)
+        {
+            try
+            {
+                thread.join();
+            }
+            catch(InterruptedException e)
+            {
+                // Ignore
+            }
+        }
+    }
+
+
+    /**
+     * Joins the given thread
+     * 
+     * @param  thread   Thread to join
      * @param  millis   Timeout
      */
     public static void join (Thread thread, long millis)
