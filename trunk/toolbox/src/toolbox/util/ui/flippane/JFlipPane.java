@@ -38,7 +38,8 @@ import toolbox.util.ResourceUtil;
  * number of children.
  * 
  * <pre>
- * TODO: Add ability to save/restore preferences (selected flipper, open state)
+ * TODO: Figure out way to remember size of expanded panel even though it
+ *       is collapsed
  * </pre>
  */
 public class JFlipPane extends JPanel
@@ -52,40 +53,82 @@ public class JFlipPane extends JPanel
     private static final String PROP_HEIGHT    = ".jflippane.height";
     private static final String PROP_WIDTH     = ".jflippane.width";
     
-    // Positions
-    
-    /** Top position */
+    /** 
+     * Flippane attached to the top wall 
+     */
     public static final String TOP = "top";
     
-    /** Left position */
+    /** 
+     * Flippane attached to the left wall
+     */
     public static final String LEFT = "left";
     
-    /** Bottom position */
+    /** 
+     * Flippane attached to the bottom wall
+     */
     public static final String BOTTOM = "bottom";
     
-    /** Right position */
+    /** 
+     * Flippane attached to the right wall
+     */
     public static final String RIGHT  = "right";
     
-    /** Splitter bar width in pixels */
+    /** 
+     * Draggable splitpane like splitter bar width  
+     */
     public static final int SPLITTER_WIDTH = 10;
 
-    // Instance variables
-
-    private String          position_;
-    private int             dimension_;
+    /**
+     * The wall of the enclosing panel that the flippane is attached to
+     */
+    private String position_;
     
-    private JPanel          buttonPanel_;
-    private JButton         closeButton_;
+    /**
+     * The dimension_ is the width of the flippane if the position_ is left or
+     * right. Conversely, the dimension_ is the height of the flippane when
+     * the position is top or bottom. 
+     */
+    private int dimension_;
+    
+    /**
+     * Houses the buttons that expand/collapse a flipper
+     */
+    private JPanel buttonPanel_;
+    
+    /**
+     * Button attached to every flippane used to collapse all flippers
+     */
+    private JButton closeButton_;
+    
+    /**
+     * Button group used to ensure that all flippane selections are mutually
+     * exclusive
+     */
+    private ButtonGroup buttonGroup_;
+
+    /** 
+     * Internal layout used by the flippane to switch between multiple flippers
+     */
+    private FlipCardPanel flipCardPanel_;
+
+    /**
+     * The component in the currently selected flippane
+     */
+    private JComponent current_;
+    
+    /**
+     * Interested listeners to flippane events
+     */
+    private List listeners_;
+    
+    /**
+     * Hashtable mapping flippane components to a name (used as the button text)
+     */
+    private Hashtable flippers_;
+            
     private JButton         popupButton_;
-    private ButtonGroup     buttonGroup_;
     private JToggleButton   nullButton_;
     private JPopupMenu      popup_;
-    private FlipCardPanel   flipCardPanel_;
-    
-    private JComponent      current_;
-    private Hashtable       flippers_;
-    private List            listeners_;
-    
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -323,19 +366,19 @@ public class JFlipPane extends JPanel
         return pref;
     }
 
-    //    public Dimension getMinimumSize()
-    //    {
-    //        if (isCollapsed())
-    //            return buttonPanel_.getMinimumSize();
-    //        else
-    //            return new Dimension(200, 0);
-    //    }
+        public Dimension getMinimumSize()
+        {
+            if (isCollapsed())
+                return buttonPanel_.getMinimumSize();
+            else
+                return new Dimension(200, 0);
+        }
     
     
-    //    public Dimension getMaximumSize()
-    //    {
-    //        return getPreferredSize();
-    //    }
+        public Dimension getMaximumSize()
+        {
+            return getPreferredSize();
+        }
 
     //--------------------------------------------------------------------------
     // Preferences Support
@@ -369,21 +412,20 @@ public class JFlipPane extends JPanel
      */
     public void applyPrefs(Properties prefs, String prefix)
     {
-        boolean collapsed = PropertiesUtil.getBoolean(
-            prefs, prefix + PROP_COLLAPSED, false); 
+        Dimension size = new Dimension();
+        size.width = PropertiesUtil.getInteger(prefs, prefix + PROP_WIDTH, 100);
+        size.height = PropertiesUtil.getInteger(prefs,prefix+ PROP_HEIGHT, 100);
+        //setSize(size);
+        
+        
+
+        boolean collapsed = 
+            PropertiesUtil.getBoolean(prefs, prefix + PROP_COLLAPSED, false); 
         
         if (collapsed != isCollapsed())
             toggleFlipper();
         
-        Dimension size = new Dimension();
-        
-        size.width = PropertiesUtil.getInteger(
-            prefs, prefix + PROP_WIDTH, 100);
-            
-        size.height = PropertiesUtil.getInteger(
-            prefs, prefix + PROP_HEIGHT, 100);
-            
-        setPreferredSize(size);
+        setDimension(size.width);
     }
 
     //--------------------------------------------------------------------------
