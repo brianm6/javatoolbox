@@ -123,6 +123,17 @@ public class SQLFormatter
         return indent_;
     }
     
+    
+    /**
+     * Returns true if debugging is turned on, false otherwise.
+     * 
+     * @return boolean
+     */
+    public boolean isDebug() 
+    {
+        return debug_;
+    }
+    
     //--------------------------------------------------------------------------
     // Mutators
     //--------------------------------------------------------------------------
