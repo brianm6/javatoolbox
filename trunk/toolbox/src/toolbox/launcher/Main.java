@@ -27,8 +27,8 @@ public class Main
         programMap.put("jsourceview",   "toolbox.jsourceview.JSourceView");
         programMap.put("jtail",         "toolbox.jtail.Main");
         programMap.put("tail",          "toolbox.tail.Main");
-        programMap.put("jtcptunnel",    "toolbox.tcptunnel.JTcpTunnel");
-        programMap.put("tcptunnel",     "toolbox.tcptunnel.TcpTunnel");
+        programMap.put("jtcptunnel",    "toolbox.tunnel.JTcpTunnel");
+        programMap.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
     }
     
     /**
