@@ -213,8 +213,7 @@ public final class ArrayUtil
                     sb.append(array[i].toString());
                 }
     
-                if (array.length > 1)
-                    sb.append(", ");
+                sb.append(", ");
     
                 if (onePerLine)
                     sb.append("\n");
