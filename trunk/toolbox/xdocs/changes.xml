@@ -111,7 +111,7 @@
       <action type="add"   >Added rotate(Image) method to SwingUtil</action>
       <action type="add"   >Added Window menu to DesktopPluginHost so plugin frames can be tiled or cascaded</action>
       <action type="add"   >Added FH Look and Feel</action>
-      <action type="update">Upgraded to commons-codec-1.3</action>
+      <action type="update">Upgraded to commons-codec-1.3 and commons-net-1.2.2</action>
     </release>
 
     <release version="2.0" date="June 2004">

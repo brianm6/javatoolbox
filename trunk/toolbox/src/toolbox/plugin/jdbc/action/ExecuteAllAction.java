@@ -75,7 +75,7 @@ public class ExecuteAllAction extends BaseAction
                     if (!StringUtil.isMultiline(results))
                     {
                         String command = StringUtils.split(stmts[i])[0];
-                        plugin.getResultsArea().append(command + " ");
+                        //plugin.getResultsArea().append(command + " ");
                     }
                     else
                     {
