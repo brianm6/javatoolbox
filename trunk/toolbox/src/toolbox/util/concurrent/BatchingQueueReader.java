@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import toolbox.util.ThreadUtil;
 
 /**
@@ -14,18 +12,10 @@ import toolbox.util.ThreadUtil;
  */
 public class BatchingQueueReader
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(BatchingQueueReader.class);
-        
     /** 
      * Queue to read elements from
      */
     private BlockingQueue queue_;
-    
-    /** 
-     * Exit flag 
-     */
-    private boolean continue_ = true;
     
     /**
      * Started flag
@@ -120,7 +110,6 @@ public class BatchingQueueReader
             listener.nextBatch(elements);
         }    
     }
- 
     
     /**
      * Adds a listener 
@@ -192,5 +181,4 @@ public class BatchingQueueReader
             }
         }
     }
-    
 }

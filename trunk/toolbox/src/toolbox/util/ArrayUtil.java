@@ -265,10 +265,7 @@ public class ArrayUtil
      */
     public static boolean contains(Object[] array, Object obj)
     {
-        if (indexOf(array, obj) == -1)
-            return false;
-        else
-            return true;    
+        return !(indexOf(array, obj) == -1);
     }
     
 

@@ -153,12 +153,15 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
         {
             String str = (String) key.toString();
             int index = str.indexOf('.');
+            
             if (index > 0)
             {
                 String thisKey = str.substring(0, index);
+                
                 if (super.containsKey(thisKey))
                 {
                     Object value = super.get(thisKey);
+                    
                     if (value != null)
                     {
                         try
@@ -170,6 +173,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
                         {
                             if (isSilent())
                                 return false;
+                                
                             throw e;
                         }
                     }
@@ -323,7 +327,7 @@ public class ObjectMap extends AbstractMap implements Serializable, Cloneable
             }
             catch (UnsupportedOperationException ignore)
             {
-                // Get Method Not Present
+                ; // Get Method Not Present
             }
         }
         

@@ -34,11 +34,6 @@ public class Dumper
     private int maxDepth_ = Integer.MAX_VALUE;
 
     /** 
-     * Amount of space reserved for the label
-     */
-    private static final int LABEL_LENGTH = 8;
-
-    /** 
      * Generates distinct labels
      */
     private Sequence labelGenerator_ = new Sequence();
@@ -53,7 +48,6 @@ public class Dumper
      */
     private IDumpFormatter formatter_;
     
-    private static final String SPACER   = "    ";
     private static final String BAR      = "|   ";
     private static final String JUNCTION = "+";
     private static final String ARM      = "---";
@@ -320,7 +314,7 @@ public class Dumper
         {
             if (clazz.isPrimitive())
             {
-                // NOOP
+                ; // NOOP
             }
             else
             {

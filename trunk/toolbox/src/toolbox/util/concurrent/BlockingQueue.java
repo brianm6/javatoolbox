@@ -68,7 +68,6 @@ public class BlockingQueue
         }
     }
 
-
     /**
      * Pulls element off the queue. Blocks until an element is available if the
      * queue is empty
@@ -112,7 +111,6 @@ public class BlockingQueue
         }
     }
 
-
     /**
      * Pushes an element onto the queue.
      * 
@@ -136,7 +134,6 @@ public class BlockingQueue
             mutex_.release();
         }
     }
-
 
     /**
      * Returns the size of the queue
