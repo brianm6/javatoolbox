@@ -3,8 +3,10 @@ package toolbox.util.io;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import toolbox.util.ArrayUtil;
 
 /**
  * Output stream that generates events for common stream operations and also
@@ -13,9 +15,9 @@ import java.util.List;
 public class EventOutputStream extends FilterOutputStream
 {
     /**
-     * List of registered Listeners interested in stream events
+     * Array of registered listeners
      */
-    private List listeners_;
+    private Listener[] listeners_;
     
     /**
      * Total number of bytes written to the stream
@@ -26,6 +28,21 @@ public class EventOutputStream extends FilterOutputStream
      * Friendly name for this stream
      */
     private String name_;
+    
+    /**
+     * Number of bytes written last time a sample was taken
+     */
+    private int lastSample_;
+    
+    /** 
+     * Sample period in milliseconds
+     */
+    private long samplePeriod_ = 1000;
+
+    /**
+     * Timer that takes samples to monitor the stream throughput
+     */    
+    private Timer throughputTimer_;
     
     //--------------------------------------------------------------------------
     // Constructors 
@@ -52,7 +69,7 @@ public class EventOutputStream extends FilterOutputStream
     {
         super(out);
         name_ = name;
-        listeners_ = new ArrayList(2);
+        listeners_ = new Listener[0];
         count_ = 0;
     }
     
@@ -105,8 +122,9 @@ public class EventOutputStream extends FilterOutputStream
      * @param  listener  Listener to register
      */
     public void addListener(Listener listener)
-    {
-        listeners_.add(listener);
+    {  
+        // Stored in array for faster access
+        listeners_ = (Listener[]) ArrayUtil.add(listeners_, listener);
     }
     
     /** 
@@ -114,8 +132,13 @@ public class EventOutputStream extends FilterOutputStream
      */
     protected void fireStreamClosed()
     {
-        for (int i=0, n=listeners_.size(); i<n; i++)
-            ((Listener) listeners_.get(i)).streamClosed(this);               
+        switch (listeners_.length)
+        {
+            case 0 : return;
+            case 1 : listeners_[0].streamClosed(this); return;
+            default: for (int i=0, n=listeners_.length; i<n; i++)
+                        listeners_[i].streamClosed(this);
+        }
     }
 
     /** 
@@ -123,8 +146,13 @@ public class EventOutputStream extends FilterOutputStream
      */
     protected void fireStreamFlushed()
     {
-        for (int i=0, n=listeners_.size(); i<n; i++)
-            ((Listener) listeners_.get(i)).streamFlushed(this);               
+        switch (listeners_.length)
+        {
+            case 0 : return;
+            case 1 : listeners_[0].streamFlushed(this); return;
+            default: for (int i=0, n=listeners_.length; i<n; i++)
+                        listeners_[i].streamFlushed(this);
+        }
     }
 
     /** 
@@ -134,8 +162,88 @@ public class EventOutputStream extends FilterOutputStream
      */
     protected void fireByteWritten(int b)
     {
-        for (int i=0, n=listeners_.size(); i<n; i++)
-            ((Listener) listeners_.get(i)).byteWritten(this, b);               
+        //
+        // Throughput in bytes/second using various strategies for 
+        // notification
+        //
+        
+        // 4.7 million
+        //for (int i=0, n=listeners_.size(); i<n; i++)
+        //    ((Listener) listeners_.get(i)).byteWritten(this, b);  
+        
+        // 7.3 million
+        //((Listener) listeners_.get(0)).byteWritten(this, b);
+        
+        // 10.5 million
+        //if (listener == null)
+        //    listener = (Listener) listeners_.get(0);
+        //    
+        //listener.byteWritten(this, b);
+        
+        // 7.9 million
+        //if (larray == null)
+        //{
+        //    larray = new Listener[listeners_.size()];
+        //    for (int i=0; i<larray.length; i++)
+        //        larray[i] = (Listener) listeners_.get(i);
+        //}
+        
+        //for (int i=0, n=larray.length; i<n; i++)
+        //    larray[i].byteWritten(this, b);
+                
+        // 9.5 million                
+        //        if (larray == null)
+        //        {
+        //            larray = new Listener[listeners_.size()];
+        //            for (int i=0; i<larray.length; i++)
+        //                larray[i] = (Listener) listeners_.get(i);
+        //        }
+        //        
+        //        if (larray.length == 1)
+        //            larray[0].byteWritten(this, b);
+        //        else
+        //            for (int i=0, n=larray.length; i<n; i++)
+        //                larray[i].byteWritten(this, b);
+        
+        // 9.8 million
+        //        if (listenerArray_.length == 1)
+        //            listenerArray_[0].byteWritten(this, b);
+        //        else
+        //            for (int i=0, n=listenerArray_.length; i<n; i++)
+        //                listenerArray_[i].byteWritten(this, b);
+                
+        // 9.3 million
+        //for (int i=0, n=listenerArray_.length; i<n; i++)
+        //    listenerArray_[i].byteWritten(this, b);
+               
+               
+        // 18.1 million - no code        
+        
+        // 10.2 millions - best compromise
+        switch (listeners_.length)
+        {
+            case 0 : return;
+            case 1 : listeners_[0].byteWritten(this, b); return;
+            default: for (int i=0, n=listeners_.length; i<n; i++)
+                        listeners_[i].byteWritten(this, b);
+        }
+    }
+
+    /** 
+     * Fires notification of stream throughput per sample period
+     * 
+     * @param  throughput  Number of bytes written per sample period
+     */
+    protected void fireStreamThroughput(float throughput)
+    {
+        switch (listeners_.length)
+        {
+            case 0 : return;
+            case 1 : listeners_[0].streamThroughput(this, throughput); 
+                     return;
+            default: for (int i=0, n=listeners_.length; i<n; i++)
+                        listeners_[i].streamThroughput(this, throughput);
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -164,6 +272,28 @@ public class EventOutputStream extends FilterOutputStream
     public String getName()
     {
         return name_;
+    }
+    
+    /**
+     * Starts monitoring of stream throughtput
+     * 
+     * @see #streamThroughput()
+     */
+    public void startThroughputMonitor()
+    {
+        lastSample_ = 0;
+        throughputTimer_ = new Timer(false);
+        throughputTimer_.schedule(new ThroughputTask(), 0, samplePeriod_);
+    }
+
+    /**
+     * Stops monitoring of stream throughput
+     * 
+     * @see #unmonitorThroughput()
+     */    
+    public void stopThroughputMonitor()
+    {
+        throughputTimer_.cancel();
     }
     
     //--------------------------------------------------------------------------
@@ -197,5 +327,36 @@ public class EventOutputStream extends FilterOutputStream
          * @param b       Byte written to the stream
          */
         public void byteWritten(EventOutputStream stream, int b);
+        
+        /**
+         * Notification of the number of bytes transfered through the stream
+         * over the last sample period
+         * 
+         * @param stream          Stream being monitored for throughput
+         * @param bytesPerPeriod  Number of bytes transferred over sample period
+         */
+        public void streamThroughput(EventOutputStream stream, 
+            float bytesPerPeriod);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /** 
+     * Task that collects samples on stream throughput and firesNotification
+     * to interested listeners.
+     */
+    class ThroughputTask extends TimerTask
+    {
+        public void run()
+        {
+            int current = getCount();
+            
+            fireStreamThroughput(
+                (current - lastSample_)/(samplePeriod_/1000));
+                
+            lastSample_ = current;
+        }
     }
 }
