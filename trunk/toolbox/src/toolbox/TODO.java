@@ -34,6 +34,8 @@ package toolbox;
  * TODO: Tree - add inverse regex, case sensetive regex, and html output
  * TODO: Change String parameter to a File object in FileExplorerListener
  * TODO: Added number of files/selected files to the JFileExplorer InfoBar
+ * TODO: Add Swing preferences (window drag, resize outline, etc)
+ * TODO: Investigate carbon.sf.net
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
