@@ -3,10 +3,10 @@ package toolbox.util.test;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
@@ -23,7 +23,7 @@ public class ThreadUtilTest extends TestCase
     /**
      * Entrypoint
      * 
-     * @param  args  Args
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
@@ -166,21 +166,38 @@ public class ThreadUtilTest extends TestCase
         
         ThreadUtil.run(target, "pingComplex", 
             new Object[] 
-            { 
-                (Writer) writer, 
+            {  
+                writer, 
                 new Integer(10), 
                 new Integer(1000), 
                 "hello from testRunComplex()"
-            },
-            new Class[]
-            {
-                PrintWriter.class,
-                Integer.class,
-                Integer.class,
-                String.class
             }).join();
             
         assertTrue("pingComplex was not executed", target.pingComplexCalled_);
+    } 
+
+    /**
+     * Tests run() on a method with ???
+     * 
+     * @throws Exception on error
+     */
+    public void testRunAssignable() throws Exception
+    {
+        logger_.info("Running testRunAssignable...");
+        
+        Tester target = null; 
+        
+        Writer writer = new PrintWriter(System.out);
+        PrintWriter pw = new PrintWriter(System.out);
+        
+        target = new Tester();
+        ThreadUtil.run(target, "pingAssignable", writer).join();
+        assertTrue("pingAssignable was not executed for w", target.pingAssignableCalled_);
+        
+        target = new Tester();
+        ThreadUtil.run(target, "pingAssignable", pw).join();
+        assertTrue("pingAssignable was not executed for pw", target.pingAssignableCalled_);
+        
     } 
 
 
@@ -230,8 +247,9 @@ public class ThreadUtilTest extends TestCase
     /**
      * Test class for testRun()
      */   
-    protected class Tester
+    public class Tester
     {
+        public boolean pingAssignableCalled_;
         private boolean pingSimpleCalled_;
         private boolean pingOneArgCalled_;
         private boolean pingArgsCalled_;
@@ -299,6 +317,11 @@ public class ThreadUtilTest extends TestCase
             
             logger_.info("Called pingPrimitive with " + 
                 a + " " + b + " " + l + " " + f);
+        }
+        
+        public void pingAssignable(Writer w)
+        {
+            pingAssignableCalled_ = true;        
         }
         
         /**
