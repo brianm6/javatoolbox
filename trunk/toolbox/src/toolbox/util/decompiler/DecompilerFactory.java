@@ -3,7 +3,7 @@ package toolbox.util.decompiler;
 import toolbox.util.ArrayUtil;
 
 /**
- * Factory class for creating Decompilers.
+ * Factory class for creating a {@link Decompiler}.
  * 
  * @see toolbox.util.decompiler.Decompiler
  */

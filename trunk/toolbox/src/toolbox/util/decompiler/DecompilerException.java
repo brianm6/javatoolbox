@@ -3,7 +3,7 @@ package toolbox.util.decompiler;
 /**
  * Decompiler specific exceptions.
  */
-public class DecompilerException extends Exception
+public class DecompilerException extends RuntimeException
 {
     /**
      * Creates a DecompilerException.

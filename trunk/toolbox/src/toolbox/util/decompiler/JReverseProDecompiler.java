@@ -7,7 +7,8 @@ import jreversepro.revengine.JSerializer;
 import org.apache.log4j.Logger;
 
 /**
- * Decompiler bridge to the JReversePro decompiler @ http://jrevpro.sf.net.
+ * Decompiler adapter for the <a href="http://jrevpro.sf.net">JReversePro</a>
+ * decompiler. 
  * 
  * @see toolbox.util.decompiler.DecompilerFactory 
  */
@@ -64,12 +65,14 @@ public class JReverseProDecompiler extends AbstractDecompiler
     
     
     /**
+     * Not supported.
+     * 
      * @see toolbox.util.decompiler.Decompiler#decompile(
      *      java.lang.String, java.lang.String)
      */
     public String decompile(String className, String classPath)
         throws DecompilerException
     {
-        throw new IllegalArgumentException("Not supported");
+        throw new UnsupportedOperationException("Not supported");
     }
 }

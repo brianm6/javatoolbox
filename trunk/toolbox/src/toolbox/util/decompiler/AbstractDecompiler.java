@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Abstract base class implementation of a Decompiler that contains the 
- * implementation for the common Nameable interface.
+ * implementation for the Nameable interface.
  */
 public abstract class AbstractDecompiler implements Decompiler
 {
@@ -60,10 +60,13 @@ public abstract class AbstractDecompiler implements Decompiler
     //--------------------------------------------------------------------------
     
     /**
+     * Returns the name of this decompiler if not null, otherwise the default
+     * toString() implementation is returned.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString()
     {
-        return getName();
+        return getName() != null ? getName() : super.toString();
     }
 }

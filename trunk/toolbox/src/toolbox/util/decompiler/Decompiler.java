@@ -19,21 +19,22 @@ import toolbox.util.service.Nameable;
 public interface Decompiler extends Nameable
 {
     /**
-     * Decompiles the given classFile.
+     * Decompiles a class file and returns the source code as a string.
      * 
      * @param classFile Class file to decompile.
-     * @return Souce code of the decompiled class.
+     * @return String
      * @throws DecompilerException on decompilation error.
      */
     String decompile(File classFile) throws DecompilerException;
     
     
     /**
-     * Decompiles a class that exists on the given classpath.
+     * Decompiles a class that exists on the given classpath and returns the
+     * source code as a string.
      *  
      * @param className Name of the class.
      * @param classPath Classpath that the class exists in.
-     * @return Source code of the decompiled class.
+     * @return String
      * @throws DecompilerException on decompilation error.
      */
     String decompile(String className, String classPath) 

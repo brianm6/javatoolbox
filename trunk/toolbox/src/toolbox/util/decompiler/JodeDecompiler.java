@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.io.NullWriter;
 
 /**
- * Decompiler adapter for the Jode decompiler @ http://jode.sf.net.
+ * Decompiler adapter for the <a href="http://jode.sf.net">Jode</a> decompiler.
  * 
  * @see toolbox.util.decompiler.DecompilerFactory 
  */
@@ -52,11 +52,13 @@ public class JodeDecompiler extends AbstractDecompiler
     //--------------------------------------------------------------------------
     
     /**
+     * Not supported.
+     * 
      * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
      */
     public String decompile(File classFile)
     {
-        throw new IllegalArgumentException("Not supported");
+        throw new UnsupportedOperationException("Not supported");
     }
     
     

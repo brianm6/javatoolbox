@@ -8,7 +8,8 @@ import org.apache.log4j.Logger;
 import toolbox.util.ClassUtil;
 
 /**
- * Decompiler bridge to the windows only JAD decompiler.
+ * Decompiler adapter for the <a href="http://kpdus.tripod.com/jad.html">JAD</a>
+ * decompiler.
  * 
  * @see toolbox.util.decompiler.DecompilerFactory 
  */
@@ -38,7 +39,7 @@ public class JadDecompiler extends AbstractDecompiler
     }
     
     //--------------------------------------------------------------------------
-    // Private
+    // Public
     //--------------------------------------------------------------------------
 
     /**
@@ -92,12 +93,14 @@ public class JadDecompiler extends AbstractDecompiler
     
     
     /**
+     * Not supported.
+     * 
      * @see toolbox.util.decompiler.Decompiler#decompile(
      *      java.lang.String, java.lang.String)
      */
     public String decompile(String className, String classPath)
         throws DecompilerException
     {
-        throw new IllegalArgumentException("Not supported");
+        throw new UnsupportedOperationException("Not supported");
     }
 }
