@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
+
 import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 
@@ -132,13 +134,13 @@ public final class Main
                 MAX_DATE_LEN +
                 MAX_TIME_LEN;
 
-            pout.println(StringUtil.repeat("=", rowLength));
+            pout.println(StringUtils.repeat("=", rowLength));
             pout.print(StringUtil.left(COL_ARCHIVE, max));
             pout.print(StringUtil.right(COL_SIZE, MAX_SIZE_LEN));
             pout.print(StringUtil.right(COL_DATE, MAX_DATE_LEN));
             pout.print(StringUtil.right(COL_TIME, MAX_TIME_LEN));
             pout.println();
-            pout.println(StringUtil.repeat("=", rowLength));
+            pout.println(StringUtils.repeat("=", rowLength));
         }
 
         // loop through classpath

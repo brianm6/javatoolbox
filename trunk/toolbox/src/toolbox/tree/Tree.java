@@ -692,14 +692,14 @@ public class Tree
                             FileUtil.getLargestFile(files).length()).length();
                       
                     writer_.print(
-                        StringUtil.repeat(" ", 
+                        StringUtils.repeat(" ", 
                             longestName - files[i].getName().length()));
         
                     String formatted = 
                         formatter_.format(files[i].length());
                               
                     writer_.print(" " + 
-                        StringUtil.repeat(" ", largestFile - formatted.length())
+                        StringUtils.repeat(" ", largestFile - formatted.length())
                         + formatted);
             
                     // Accumulate directory size
@@ -722,9 +722,9 @@ public class Tree
             {
                 String total = formatter_.format(dirSize);
                 int tlen = total.length();
-                //String dashy = StringUtil.repeat("-", tlen);
+                //String dashy = StringUtils.repeat("-", tlen);
                 int alotted = longestName + largestFile + 1;
-                //String header = StringUtil.repeat(" ", alotted - tlen); 
+                //String header = StringUtils.repeat(" ", alotted - tlen); 
                 
                 //writer_.println(level + filler + header + dashy);
                 //writer_.println(level + filler + 
@@ -733,7 +733,7 @@ public class Tree
                 String s = files.length + " file(s) ";
                 
                 String gap =
-                    StringUtil.repeat(" ", alotted - s.length() - tlen);
+                    StringUtils.repeat(" ", alotted - s.length() - tlen);
                 
                 writer_.println(level + filler + s + gap + total);
             }

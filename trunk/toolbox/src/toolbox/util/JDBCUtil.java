@@ -462,7 +462,7 @@ public final class JDBCUtil
         String[] dashes = new String[numCols];
         
         for (int i = 0; i < numCols; i++)
-            dashes[i] = StringUtil.repeat("-", colWidth[i]);
+            dashes[i] = StringUtils.repeat("-", colWidth[i]);
 
         rows.add(1, dashes);
 

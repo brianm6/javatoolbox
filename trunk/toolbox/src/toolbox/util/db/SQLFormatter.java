@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.StringUtil;
 
 /**
  * SQLFormatter is a pretty printer for SQL statements.
@@ -289,7 +288,7 @@ public class SQLFormatter
         for (int l2 = 1; l2 < l - 1; l2++)
         {
             if (ai[l2 - 1] == 2)
-                sb.append(StringUtil.repeat(indent_, ai1[l2]));
+                sb.append(StringUtils.repeat(indent_, ai1[l2]));
             
             sb.append(as[l2] + as1[ai[l2]]);
         }
@@ -387,7 +386,7 @@ public class SQLFormatter
         if (i < 0)
             indent_ = "\t";
         else
-            indent_ = StringUtil.repeat(" ", i);
+            indent_ = StringUtils.repeat(" ", i);
     }
 
     

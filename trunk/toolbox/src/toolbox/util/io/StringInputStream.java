@@ -193,7 +193,7 @@ public class StringInputStream extends InputStream
         sb.append(StringUtil.NL + StringUtil.BRNL);
         sb.append(ClassUtil.stripPackage(getClass().getName()));
         sb.append(" (" + super.toString() + ")" + StringUtil.NL);
-        sb.append(StringUtil.repeat("-", 80) + StringUtil.NL);        
+        sb.append(StringUtils.repeat("-", 80) + StringUtil.NL);        
         sb.append("index     = " + index_ + StringUtil.NL);
         sb.append("ignoreEOF = " + ignoreEOF_ + StringUtil.NL);
         

@@ -1,12 +1,10 @@
 package toolbox.log4j;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import toolbox.log4j.SmartLogger;
-import toolbox.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Unit Test for SmartLogger.
@@ -40,7 +38,7 @@ public class SmartLoggerTest extends TestCase
     {
         logger_.info("Running testLog...");
         
-        String br = StringUtil.repeat("=", 60); 
+        String br = StringUtils.repeat("=", 60); 
         
         String s = "one\ntwo\nthree\nfour\nfive";
         logger_.info("There should be 5 lines one...five");

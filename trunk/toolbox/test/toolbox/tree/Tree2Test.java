@@ -7,10 +7,10 @@ import java.io.StringWriter;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
-import toolbox.util.StringUtil;
 
 /**
  * Unit test for Tree.
@@ -53,7 +53,7 @@ public class Tree2Test extends TestCase
      */
     public void setUp() throws IOException
     {
-        System.out.println(StringUtil.repeat("=", 80));
+        System.out.println(StringUtils.repeat("=", 80));
         rootDir_ = FileUtil.createTempDir();
     }
 

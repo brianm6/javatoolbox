@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Properties Utility Class.
  */
@@ -180,7 +182,7 @@ public final class PropertiesUtil
         {
             String key = (String) i.next();
             String value = props.getProperty(key);
-            sb.append(key + StringUtil.repeat(" ", max - key.length()) + 
+            sb.append(key + StringUtils.repeat(" ", max - key.length()) + 
                 " = " + value + "\n");
         }
              

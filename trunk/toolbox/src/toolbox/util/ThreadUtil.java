@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.collections.AsMap;
@@ -164,11 +165,11 @@ public final class ThreadUtil
     {
         StringBuffer sb = new StringBuffer();
         
-        sb.append(StringUtil.repeat("=", 80) + "\n");
+        sb.append(StringUtils.repeat("=", 80) + "\n");
         sb.append("Thread Info - " + t.getName() + "\n");
-        sb.append(StringUtil.repeat("-", 80) + "\n");
+        sb.append(StringUtils.repeat("-", 80) + "\n");
         sb.append(AsMap.of(t).toString() + "\n");
-        sb.append(StringUtil.repeat("=", 80) + "\n");
+        sb.append(StringUtils.repeat("=", 80) + "\n");
         
         return sb.toString();
     }

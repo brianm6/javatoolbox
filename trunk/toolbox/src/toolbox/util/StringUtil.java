@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.io.WrappingWriter;
@@ -26,7 +27,7 @@ public final class StringUtil
     /** 
      * Line break. 
      */
-    public static final String BR = repeat("=", 80);
+    public static final String BR = StringUtils.repeat("=", 80);
     
     /** 
      * New line.
@@ -308,24 +309,6 @@ public final class StringUtil
             return s.substring(0, n);    
     }  
 
-    
-    /**
-     * Repeats a string a specified number of times.
-     * 
-     * @param s String to repeat.
-     * @param numTimes Number of times to repeat the string.
-     * @return String containing numTimes concatenated instances of s.
-     */
-    public static String repeat(String s, int numTimes)
-    {
-        StringBuffer sb = new StringBuffer();
-        
-        for (int i = 0; i < numTimes; i++)
-            sb.append(s);
-            
-        return sb.toString();
-    }
-    
     
     /**
      * Wraps a string to a default width of 80.
@@ -620,7 +603,7 @@ public final class StringUtil
     public static String addBars(String s)
     {
         StringBuffer sb = new StringBuffer();
-        String bar = StringUtil.repeat("=", 80);
+        String bar = StringUtils.repeat("=", 80);
         sb.append("\n");
         sb.append(" ");
         sb.append(bar);

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
@@ -530,7 +531,7 @@ public class StringUtilTest extends TestCase
         
         // String with multiple newlines
         int cnt = 10;
-        s = StringUtil.repeat(StringUtil.NL, cnt);
+        s = StringUtils.repeat(StringUtil.NL, cnt);
         
         for (int i = 0; i < cnt; i++)
             assertEquals("", StringUtil.getLine(s, i));
