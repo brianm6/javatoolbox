@@ -169,9 +169,16 @@ public class YahooMessenger implements InstantMessenger
         }
     }
 
-    public void shutdown()
+    public void shutdown() throws InstantMessengerException 
     {
-        // Nothing to do
+        try
+        {
+            invoker_.shutdown();
+        }
+        catch (Exception e)
+        {
+            throw new InstantMessengerException(e);
+        }
     }
     
     public boolean isConnected()

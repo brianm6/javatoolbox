@@ -165,8 +165,9 @@ public class AOLMessenger implements InstantMessenger
         try
         {
             connection_.disconnect();
+            invoker_.shutdown();
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             throw new InstantMessengerException(e);
         }
