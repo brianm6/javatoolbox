@@ -24,7 +24,10 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 
 /**
- * ProxyView is responsible for ___.
+ * Configures proxy settings for the JVM. Plain old proxy servers are supported
+ * in addition to those requiring user authentication. A button to test the
+ * validity of the proxy information is on the same panel to provide immediate
+ * feedback.
  */
 public class ProxyView extends JHeaderPanel implements PreferencesView
 {
@@ -32,7 +35,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
     // XML Constants
     //--------------------------------------------------------------------------
 
-    public  static final String NODE_HTTP_PROXY          = "HttpProxy"; 
+    public  static final String NODE_HTTP_PROXY          = "HttpProxy";
     private static final String ATTR_HTTP_PROXY_ENABLED  =   "enabled";
     private static final String ATTR_HTTP_PROXY_HOST     =   "hostname";
     private static final String ATTR_HTTP_PROXY_PORT     =   "port";
@@ -42,11 +45,33 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Enables/disables entry of proxy settings.
+     */
     private JSmartCheckBox proxyEnabledCheckBox_;
+
+    /**
+     * Field for the proxy hostname. Can also be an IP address.
+     */
     private JSmartTextField proxyHostnameField_;
+
+    /**
+     * Field for the proxy port. Must be a valid integer.
+     */
     private JSmartTextField proxyPortField_;
+
+    /**
+     * Field for the username if the proxy requires authentication. If the
+     * field is left blank, then it us assumed that the proxy does not require
+     * authentication.
+     */
     private JSmartTextField proxyUserNameField_;
+
+    /**
+     * Field for the passward if the proxy requires authentication. The password
+     * is stored in clear text.
+     */
     protected JSmartTextField proxyPasswordField_;
 
     //--------------------------------------------------------------------------
@@ -66,7 +91,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructs the user interface.
      */
@@ -81,13 +106,13 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 4, 7, 4);
-        
+
         p.add(new JSmartLabel("Enable Proxy", SwingConstants.RIGHT), gbc);
 
         gbc.gridx++;
-        p.add(proxyEnabledCheckBox_ = 
+        p.add(proxyEnabledCheckBox_ =
             new JSmartCheckBox(new ProxyEnabledAction()), gbc);
-        
+
         gbc.gridy++;
         gbc.gridx--;
         p.add(new JSmartLabel("Hostname", SwingConstants.RIGHT), gbc);
@@ -115,17 +140,17 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
 
         gbc.gridx++;
         p.add(proxyPasswordField_ = new JSmartTextField(14), gbc);
-        
+
         gbc.gridy++;
         p.add(new JSmartButton(new TestProxyAction()), gbc);
-        
+
         setContent(p);
     }
-    
+
     //--------------------------------------------------------------------------
     // PreferencesView Interface
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see toolbox.workspace.prefs.PreferencesView#getLabel()
      */
@@ -133,8 +158,8 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
     {
         return "HTTP Proxy";
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.prefs.PreferencesView#getView()
      */
@@ -163,21 +188,21 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             System.setProperty("proxySet", "true");
             System.setProperty("proxyHost", proxyHostnameField_.getText());
             System.setProperty("proxyPort", proxyPortField_.getText());
-            
+
             if (!StringUtil.isNullOrBlank(proxyUserNameField_.getText()))
             {
                 Authenticator.setDefault(new Authenticator()
                 {
                     protected PasswordAuthentication getPasswordAuthentication()
                     {
-                        return new PasswordAuthentication( 
+                        return new PasswordAuthentication(
                             proxyUserNameField_.getText(),
                             proxyPasswordField_.getText().toCharArray());
-                
+
                             //proxyPassword == null ? new char[0] : proxyPassword.toCharArray() );
                     }
                 });
-            }            
+            }
         }
         else
         {
@@ -194,7 +219,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
     public void onCancel()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
@@ -237,12 +262,12 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
                 httpProxy,
                 ATTR_HTTP_PROXY_PASSWORD,
                 ""));
-        
+
         new ProxyEnabledAction().actionPerformed();
         onApply();
     }
-    
-    
+
+
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -254,7 +279,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             new Attribute(
                 ATTR_HTTP_PROXY_ENABLED,
                 proxyEnabledCheckBox_.isSelected() + ""));
-        
+
         httpProxy.addAttribute(
             new Attribute(
                 ATTR_HTTP_PROXY_HOST,
@@ -264,7 +289,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             new Attribute(
                 ATTR_HTTP_PROXY_PORT,
                 proxyPortField_.getText().trim()));
-        
+
         httpProxy.addAttribute(
             new Attribute(
                 ATTR_HTTP_PROXY_USERNAME,
@@ -274,14 +299,14 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             new Attribute(
                 ATTR_HTTP_PROXY_PASSWORD,
                 proxyPasswordField_.getText().trim()));
-        
+
         XOMUtil.insertOrReplace(prefs, httpProxy);
     }
-    
+
     //--------------------------------------------------------------------------
     // ProxyEnabledAction
     //--------------------------------------------------------------------------
-    
+
     /**
      * Sets the editability of the host and port fields based on whether the
      * proxy is enabled or not.
@@ -296,9 +321,9 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
         {
             actionPerformed();
         }
-        
+
         /**
-         * Non-event triggered execution. 
+         * Non-event triggered execution.
          */
         public void actionPerformed()
         {
@@ -309,11 +334,11 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             proxyPasswordField_.setEnabled(enabled);
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // TestProxyAction
     //--------------------------------------------------------------------------
-    
+
     /**
      * Tests the proxy against a well known web site.
      */
@@ -323,7 +348,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
         {
             super("Test");
         }
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
@@ -332,14 +357,15 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
         {
             actionPerformed();
         }
-        
+
         /**
-         * Non-event triggered execution. 
+         * Non-event triggered execution.
          */
         public void actionPerformed()
         {
             onApply();
-            
+
+            // TODO: test here
         }
     }
 }
