@@ -29,7 +29,7 @@ public class LAFInfo implements IPreferenced, Nameable
     private static final Logger logger_ = Logger.getLogger(LAFInfo.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     // Node and attribute names used for persistence to XML.

@@ -48,6 +48,6 @@ public class SelectAllAction extends AbstractAction
     {
         int[] indexes = new int[list_.getModel().getSize()];
         for (int i = 0; i < indexes.length; indexes[i] = i++);
-        this.list_.setSelectedIndices(indexes);
+        list_.setSelectedIndices(indexes);
     }
 }

@@ -1,8 +1,9 @@
 package toolbox.util.ui.plaf;
 
 /**
- * LookAndFeelActivator is an interface for object which wish to activate a
- * look and feel in a consistent manner using LAFInfo.
+ * LookAndFeelActivator is an interface for objects which wish to activate a
+ * look and feel in a consistent manner using information available from 
+ * {@link LAFInfo}.
  */
 public interface LookAndFeelActivator
 {

@@ -27,7 +27,7 @@ public class FileListSelectionListener extends AbstractListener
     }
 
     //--------------------------------------------------------------------------
-    // ListselectionListenerInterface
+    // ListSelectionListener Interface
     //--------------------------------------------------------------------------
     
     /**
