@@ -17,9 +17,7 @@ import javax.swing.border.Border;
  */
 public class FlipCardPanel extends JPanel
 {
-    /** 
-     * Flippane encompassing this panel
-     */
+    /** Flippane encompassing this panel */
     private JFlipPane flipPane_;
     
     //--------------------------------------------------------------------------
@@ -55,7 +53,7 @@ public class FlipCardPanel extends JPanel
     } 
 
     //--------------------------------------------------------------------------
-    // Overridden from JComponent
+    // Overrides javax.swing.JComponent
     //--------------------------------------------------------------------------
     
     /**

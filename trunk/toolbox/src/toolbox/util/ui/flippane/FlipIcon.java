@@ -29,6 +29,10 @@ public class FlipIcon implements Icon
     private float ascent_;
     private RenderingHints renderHints_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a FlipIcon
      * 
@@ -65,6 +69,10 @@ public class FlipIcon implements Icon
             RenderingHints.VALUE_RENDER_QUALITY);
     } 
 
+    //--------------------------------------------------------------------------
+    // javax.swing.Icon Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @return Icon width
      */

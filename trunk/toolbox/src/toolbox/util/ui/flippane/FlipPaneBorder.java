@@ -20,6 +20,10 @@ public class FlipPaneBorder implements Border
     private Color color2_;
     private Color color3_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a FlipPaneBorder for the given position
      * 
@@ -35,6 +39,10 @@ public class FlipPaneBorder implements Border
             position.equals(JFlipPane.LEFT)  ?JFlipPane.SPLITTER_WIDTH : 0);
     } 
 
+    //--------------------------------------------------------------------------
+    // javax.swing.border.Border Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Paints the border
      * 
@@ -83,6 +91,10 @@ public class FlipPaneBorder implements Border
     {
         return false;
     } 
+    
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
     
     /**
      * Paints horizontal border

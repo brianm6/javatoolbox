@@ -15,34 +15,46 @@ public class ParagraphLayout extends ConstraintLayout
 {
     /** TYPE */
     public static final int TYPE_MASK = 0x03;
+    
     /** Horiz stretch */
     public static final int STRETCH_H_MASK = 0x04;
+    
     /** Vert stretch */
     public static final int STRETCH_V_MASK = 0x08;
 
     /** Value */
     public static final int NEW_PARAGRAPH_VALUE = 1;
+    
     /** Top value */
     public static final int NEW_PARAGRAPH_TOP_VALUE = 2;
+    
     /** New line value */
     public static final int NEW_LINE_VALUE = 3;
 
     /** New paragraph */
     public static final Integer NEW_PARAGRAPH = new Integer(0x01);
+    
     /** New paragraph top */
     public static final Integer NEW_PARAGRAPH_TOP = new Integer(0x02);
+    
     /** New line */
     public static final Integer NEW_LINE = new Integer(0x03);
+    
     /** Stretch horiz */
     public static final Integer STRETCH_H = new Integer(0x04);
+    
     /** Stretch vert */
     public static final Integer STRETCH_V = new Integer(0x08);
+    
     /** Stretch h/v */
     public static final Integer STRETCH_HV = new Integer(0x0c);
+    
     /** New line stretch horiz */
     public static final Integer NEW_LINE_STRETCH_H = new Integer(0x07);
+    
     /** New line stretch vert */
     public static final Integer NEW_LINE_STRETCH_V = new Integer(0x0b);
+    
     /** New line stretch h/v */
     public static final Integer NEW_LINE_STRETCH_HV = new Integer(0x0f);
 
@@ -291,7 +303,7 @@ public class ParagraphLayout extends ConstraintLayout
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    //  Protected
     //--------------------------------------------------------------------------
 
     protected void layoutRow(

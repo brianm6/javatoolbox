@@ -37,51 +37,42 @@ import toolbox.util.ui.ImageCache;
 /**
  * JFlipPane is a panel with flipper like behavior to hide a and show any
  * number of children.
- * 
- * <pre>
- * TODO: Figure out way to remember size of expanded panel even though it
- *       is collapsed
- * </pre>
  */
 public class JFlipPane extends JPanel
 {
-    /** Logger */
+    /*
+     * TODO: Figure out way to remember size of expanded panel even though it
+     *       is collapsed
+     */
+
     private static final Logger logger_ =
         Logger.getLogger(JFlipPane.class);
 
-    // Property keys for storing/retreiving preferences
+    /** Boolean flag that captures the collapsed state of the flip pane */
     private static final String PROP_COLLAPSED = ".flippane.collapsed";
-    private static final String PROP_DIMENSION = ".flippane.dimension";
-    private static final String PROP_ACTIVE    = ".flippane.active";
     
-    /** 
-     * Flippane attached to the top wall 
-     */
+    /** Integer value that captures the height/widht of the flippane */
+    private static final String PROP_DIMENSION = ".flippane.dimension";
+    
+    /** String value that captures the currently selected flipper */
+    private static final String PROP_ACTIVE = ".flippane.active";
+    
+    /** Flippane attached to the top wall */
     public static final String TOP = "top";
     
-    /** 
-     * Flippane attached to the left wall
-     */
+    /** Flippane attached to the left wall */
     public static final String LEFT = "left";
     
-    /** 
-     * Flippane attached to the bottom wall
-     */
+    /** Flippane attached to the bottom wall */
     public static final String BOTTOM = "bottom";
     
-    /** 
-     * Flippane attached to the right wall
-     */
+    /** Flippane attached to the right wall */
     public static final String RIGHT  = "right";
     
-    /** 
-     * Draggable splitpane like splitter bar width  
-     */
+    /** Draggable splitpane like splitter bar width */
     public static final int SPLITTER_WIDTH = 10;
 
-    /**
-     * The wall of the enclosing panel that the flippane is attached to
-     */
+    /** The wall of the enclosing panel that the flippane is attached to */
     private String position_;
     
     /**
@@ -91,14 +82,10 @@ public class JFlipPane extends JPanel
      */
     private int dimension_;
     
-    /**
-     * Houses the buttons that expand/collapse a flipper
-     */
+    /** Houses the buttons that expand/collapse a flipper */
     private JPanel buttonPanel_;
     
-    /**
-     * Button attached to every flippane used to collapse all flippers
-     */
+    /** Button attached to every flippane used to collapse all flippers */
     private JButton closeButton_;
     
     /**
@@ -107,26 +94,19 @@ public class JFlipPane extends JPanel
      */
     private ButtonGroup buttonGroup_;
 
-    /** 
-     * Internal layout used by the flippane to switch between multiple flippers
-     */
+    /** Internal layout used by the flippane to switch between flippers */
     private FlipCardPanel flipCardPanel_;
 
-    /**
-     * The component in the currently selected flippane
-     */
+    /** Currently selected/active flipper */
     private JComponent current_;
     
-    /**
-     * Interested listeners to flippane events
-     */
+    /** Interested listeners to flippane events */
     private List listeners_;
     
-    /**
-     * Hashtable mapping a name (button text) to a flippane component
-     */
+    /** Hashtable mapping a name (button text) to a flippane component */
     private Hashtable flippers_;
-            
+
+    // Not really used            
     private JButton         popupButton_;
     private JToggleButton   nullButton_;
     private JPopupMenu      popup_;
@@ -138,7 +118,7 @@ public class JFlipPane extends JPanel
     /**
      * Creates a JFlipPane with the given position
      * 
-     * @param  position  Position (JSplitPane.[TOP|LEFT|BOTTOM|RIGHT]
+     * @param  position  Position (JFlipPane.[TOP|LEFT|BOTTOM|RIGHT]
      */
     public JFlipPane(String position)
     {
@@ -291,6 +271,8 @@ public class JFlipPane extends JPanel
     }
 
     /**
+     * Returns the currently active flipper
+     * 
      * @return  Currently active flipper
      */
     public JComponent getActiveFlipper()
@@ -351,10 +333,12 @@ public class JFlipPane extends JPanel
     }
 
     //--------------------------------------------------------------------------
-    // Overridden from javax.swing.JComponent
+    // Overrides javax.swing.JComponent
     //--------------------------------------------------------------------------
 
     /**
+     * Preferred size
+     * 
      * @return Dimension that reflects the preferred size of the flip pane.
      *         The preferred size varies based on whether the flip pane is
      *         expanded or collapsed.
@@ -514,7 +498,7 @@ public class JFlipPane extends JPanel
         buttonPanel_.addMouseListener(new PopupHandler());
         
         closeButton_ = new JButton(
-            ImageCache.getIcon("toolbox/util/ui/images/Cross.gif"));
+            ImageCache.getIcon("/toolbox/util/ui/images/Cross.gif"));
                 
         closeButton_.setToolTipText("Close");
         
@@ -531,7 +515,7 @@ public class JFlipPane extends JPanel
 
         // Popup button
         popupButton_ = new JButton(
-            ImageCache.getIcon("toolbox/util/ui/images/Triangle.gif"));
+            ImageCache.getIcon("/toolbox/util/ui/images/Triangle.gif"));
             
         popupButton_.setRequestFocusEnabled(false);
         popupButton_.setToolTipText("Popup menu");
@@ -582,6 +566,8 @@ public class JFlipPane extends JPanel
     } 
 
     /**
+     * Returns flippane's collapsed state
+     * 
      * @return  True if the flipPane is collapsed, false otherwise
      */    
     protected boolean isCollapsed()
@@ -686,6 +672,8 @@ public class JFlipPane extends JPanel
     //--------------------------------------------------------------------------
     
     /**
+     * Returns flippane dimension 
+     * 
      * @return  Dimension (width if position is left/right  or height if 
      *          position is top/bottom)
      */
