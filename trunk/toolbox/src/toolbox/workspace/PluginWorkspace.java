@@ -67,6 +67,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
     
+    // Workspace preferences nodes and attributes.
     private static final String NODE_WORKSPACE      = "Workspace";
     private static final String   ATTR_MAXXED       = "maximized";
     private static final String   ATTR_WIDTH        = "width";
@@ -76,6 +77,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
     private static final String   ATTR_LOG_LEVEL    = "loglevel";
     
+    // Plugin preferences nodes and attributes.
     private static final String   NODE_PLUGIN       = "Plugin";
     private static final String     ATTR_CLASS      = "class";
     private static final String     ATTR_LOADED     = "loaded";
@@ -149,7 +151,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Starts up the workspace. 
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String args[])
     {
@@ -176,7 +178,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Creates a PluginWorkspace.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public PluginWorkspace() throws Exception
     {
@@ -196,8 +198,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Registers a plugin with the GUI. Must be called prior buildView().
      * 
-     * @param plugin Plugin to add to the GUI
-     * @throws Exception on error
+     * @param plugin Plugin to add to the GUI.
+     * @throws Exception on error.
      */
     public void registerPlugin(IPlugin plugin) throws Exception
     {
@@ -235,9 +237,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Registers a plugin with the GUI. Must be called prior buildView().
      * 
-     * @param plugin Plugin to add to the GUI
-     * @param prefs Plugin preferences DOM
-     * @throws Exception on error
+     * @param plugin Plugin to add to the GUI.
+     * @param prefs Plugin preferences DOM.
+     * @throws Exception on error.
      */
     public void registerPlugin(IPlugin plugin, Element prefs) throws Exception
     {
@@ -253,8 +255,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Registers a plugin given its FQCN.
      * 
      * @param pluginClass Name of plugin class that implements the IPlugin 
-     *        interface
-     * @throws Exception on instantiation error
+     *        interface.
+     * @throws Exception on instantiation error.
      */
     public void registerPlugin(String pluginClass) throws Exception
     {
@@ -274,9 +276,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Registers a plugin given its FQCN and preferences. 
      * 
      * @param pluginClass Name of plugin class that implements the IPlugin 
-     *        interface
-     * @param prefs Plugin preferences DOM
-     * @throws Exception on instantiation error
+     *        interface.
+     * @param prefs Plugin preferences DOM.
+     * @throws Exception on instantiation error.
      */
     public void registerPlugin(String pluginClass, Element prefs) 
         throws Exception
@@ -297,8 +299,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Deregisters a plugin given its fully qualified name.
      * 
-     * @param pluginClass Class name of plugin to remove
-     * @throws Exception on error
+     * @param pluginClass Class name of plugin to remove.
+     * @throws Exception on error.
      */
     public void deregisterPlugin(String pluginClass, boolean removeTab) 
         throws Exception
@@ -328,7 +330,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Returns the workspace status bar.
      * 
-     * @return Status bar
+     * @return Status bar.
      */
     IStatusBar getStatusBar()
     {
@@ -357,7 +359,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      * 
      * @throws PluginException on plugin error.
      */
@@ -435,7 +437,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menu.add(new JSmartMenuItem(new SavePreferencesAction()));
 
         smoothFontsCheckBoxItem_ = 
-            new JSmartCheckBoxMenuItem(new AntiAliasAction());
+            new JSmartCheckBoxMenuItem(new SmoothFontsAction());
 
         menu.add(smoothFontsCheckBoxItem_);
         menu.add(pluginHostManager_.createMenu());
@@ -458,8 +460,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Determines if a plugin is active given its FQN.
      * 
-     * @param pluginClass FQN of plugin class
-     * @return True if plugin is registered, false otherwise
+     * @param pluginClass FQN of plugin class.
+     * @return True if plugin is registered, false otherwise.
      */
     protected boolean hasPlugin(String pluginClass) 
     {
@@ -470,7 +472,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Returns a plugin given its class name.
      * 
-     * @param pluginClass FQCN of the plugin
+     * @param pluginClass FQCN of the plugin.
      * @return IPlugin
      */
     protected IPlugin getPluginByClass(String pluginClass)
@@ -650,7 +652,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         smoothFontsCheckBoxItem_.setSelected(
             XOMUtil.getBooleanAttribute(root, ATTR_SMOOTH_FONTS, false));
         
-        new AntiAliasAction().actionPerformed(
+        new SmoothFontsAction().actionPerformed(
             new ActionEvent(smoothFontsCheckBoxItem_, -1, null));
         
         boolean maxxed = XOMUtil.getBooleanAttribute(root, ATTR_MAXXED, false);
@@ -923,12 +925,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Toggles smooth fonts.  
      */
-    class AntiAliasAction extends AbstractAction
+    class SmoothFontsAction extends AbstractAction
     {
         /**
-         * Creates a AntiAliasAction.
+         * Creates a SmoothFontAction.
          */
-        AntiAliasAction()
+        SmoothFontsAction()
         {
             super("Smooth Fonts");
         }

@@ -17,14 +17,18 @@ import toolbox.util.ui.statusbar.JStatusBar;
  * <br> 
  * This includes:
  * <ul>
- *   <li>Area to display arbitrary status text
- *   <li>Progress bar for long running operations
- *   <li>Memory usage bar
- *   <li>Quick-click icon to trigger garbage collection
+ *   <li>Area to display arbitrary status text.
+ *   <li>Progress bar for long running operations.
+ *   <li>Memory usage bar.
+ *   <li>Quick-click icon to trigger garbage collection.
  * </ul> 
  */
 public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Progress bar for indicating execution of an operation is in progress. 
      */
@@ -52,7 +56,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {

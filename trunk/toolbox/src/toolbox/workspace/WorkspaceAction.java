@@ -15,6 +15,10 @@ import toolbox.util.ui.SmartAction;
  */
 public abstract class WorkspaceAction extends SmartAction
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Reference to the workspace status bar. 
      */
@@ -27,7 +31,7 @@ public abstract class WorkspaceAction extends SmartAction
     /**
      * Creates a workspace action with exception handling turned on by default.
      * 
-     * @param name Name of the action
+     * @param name Name of the action.
      * @param async Set to true if the action is to be executed asynchronously.
      * @param scope Component that demarcates the scope of this action. This 
      *        scope is used to set the wait/default cursor accordingly. Set to 
@@ -49,7 +53,7 @@ public abstract class WorkspaceAction extends SmartAction
     /**
      * Creates a workspace action.
      * 
-     * @param name Name of the action
+     * @param name Name of the action.
      * @param tryCatch Set to true if action is to be surrounded by a try/catch
      *        block with the accompanying error handler.
      * @param async Set to true if the action is to be executes asynchronously.

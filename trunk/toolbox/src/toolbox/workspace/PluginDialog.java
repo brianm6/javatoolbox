@@ -45,8 +45,7 @@ import toolbox.util.ui.list.JSmartList;
  */
 public class PluginDialog extends JDialog
 {
-    public static final Logger logger_ =
-        Logger.getLogger(PluginDialog.class);
+    public static final Logger logger_ = Logger.getLogger(PluginDialog.class);
     
     //--------------------------------------------------------------------------
     // Fields
@@ -94,7 +93,7 @@ public class PluginDialog extends JDialog
     /**
      * Creates dialog to add/remove plugins from the workspace.
      * 
-     * @param parent Plugin workspace
+     * @param parent Plugin workspace.
      */    
     protected PluginDialog(PluginWorkspace parent)
     {
@@ -111,7 +110,7 @@ public class PluginDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the view of the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -600,7 +599,9 @@ public class PluginDialog extends JDialog
         {
             inactiveModel_.clear();
             List legitPlugins = new ArrayList();
-
+                    
+            // TODO: move to external file
+            
             legitPlugins.add(new PluginMeta(
                 "toolbox.util.xslfo.XSLFOPlugin"));
             legitPlugins.add(new PluginMeta(
