@@ -375,7 +375,7 @@ public class PluginDialog extends JDialog
     /**
      * Returns a list of plugins read from plugins.xml.
      * 
-     * @return List[PluginMetas]
+     * @return List[PluginMeta]
      */
     public static List getPluginList() 
     {
