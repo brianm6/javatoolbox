@@ -21,10 +21,10 @@ import org.apache.log4j.Logger;
 
 import toolbox.graph.Edge;
 import toolbox.graph.Graph;
-import toolbox.graph.GraphFactory;
+import toolbox.graph.GraphLib;
 import toolbox.graph.GraphView;
 import toolbox.graph.Vertex;
-import toolbox.graph.jung.JungGraphFactory;
+import toolbox.graph.jung.JungGraphLib;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.service.ServiceException;
@@ -86,7 +86,7 @@ public class JarDepsPlugin extends AbstractPlugin
 
     private GraphView graphView_;
     private Graph graph_;
-    private GraphFactory graphFactory_ = new JungGraphFactory();
+    private GraphLib graphFactory_ = new JungGraphLib();
 
     //--------------------------------------------------------------------------
     // Constructors
