@@ -47,6 +47,18 @@ public final class ExceptionUtil
      * Generic Error handler for exceptions generated on a client side UI. 
      * Logs the error to the given logger and displays the error via a dialog 
      * box to the user.
+     * <p>
+     * <b>Example:</b>
+     * <pre class="snippet">
+     * try
+     * {
+     *     blowUp();
+     * }
+     * catch (Exception e)
+     * {
+     *     ExceptionUtil.handleUI(t, logger_);
+     * }
+     * </pre>
      * 
      * @param t Exception causing Error.
      * @param c Logger to log to.
