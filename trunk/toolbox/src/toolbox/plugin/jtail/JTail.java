@@ -30,6 +30,7 @@ import toolbox.plugin.jtail.config.IJTailConfig;
 import toolbox.plugin.jtail.config.ITailPaneConfig;
 import toolbox.plugin.jtail.config.xom.JTailConfig;
 import toolbox.plugin.jtail.config.xom.TailPaneConfig;
+import toolbox.plugin.jtail.filter.DynamicFilterView;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
@@ -136,7 +137,12 @@ public class JTail extends JPanel implements IPreferenced
     /** 
      * Data object that captures all known application settings/preferences.
      */ 
-    private IJTailConfig jtailConfig_;            
+    private IJTailConfig jtailConfig_;
+
+    /**
+     * Panel on flippane for creating dynamic filters. 
+     */
+    private DynamicFilterView dynamicFilterView_;            
         
     //--------------------------------------------------------------------------
     // Constructors
@@ -257,6 +263,13 @@ public class JTail extends JPanel implements IPreferenced
         
         flipPane_.addFlipper(
             JFileExplorer.ICON, "File Explorer", fileSelectionPane_);
+        
+        dynamicFilterView_ = new DynamicFilterView(this);
+        
+        flipPane_.addFlipper(
+            DynamicFilterView.ICON, 
+            DynamicFilterView.LABEL, 
+            dynamicFilterView_);
         
         tabbedPane_ = new JTailTabbedPane();
         
@@ -404,6 +417,7 @@ public class JTail extends JPanel implements IPreferenced
         }
     
         fileSelectionPane_.getFileExplorer().applyPrefs(root);
+        dynamicFilterView_.applyPrefs(root);
         flipPane_.applyPrefs(root);
 
         Element recent = 
@@ -447,6 +461,7 @@ public class JTail extends JPanel implements IPreferenced
         // Other preferenced components
         fileSelectionPane_.getFileExplorer().savePrefs(root);
         flipPane_.savePrefs(root);
+        dynamicFilterView_.savePrefs(root);
         
         // Save recent menu
         Element recent = new Element(NODE_RECENT);
