@@ -30,15 +30,13 @@ import toolbox.util.io.ReverseFileReader;
  * <p>
  * To tail a file and send the output to System.out:
  *
- * <pre>
- *  Tail tail = new Tail();
+ * <pre class="snippet">
+ * Tail tail = new Tail();
  *
  * // Tail server.log and send output to stdout
- * tail.follow(
- *     new File("server.log"),
- *     new OutputStreamWriter(System.out));
+ * tail.follow(new File("server.log"), new OutputStreamWriter(System.out));
  *
- * // Starts tailer thread; returns immediately
+ * // Starts tail in another thread and returns immediately
  * tail.start();
  *
  * // Later on...
