@@ -11,7 +11,7 @@ import toolbox.log4j.im.InstantMessengerAppender;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for InstantMessengerAppender
+ * Unit test for InstantMessengerAppender.
  */
 public class InstantMessengerAppenderTest extends TestCase
 {
@@ -20,9 +20,9 @@ public class InstantMessengerAppenderTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
-     * @param  args  None recognized
+     * @param args None recognized
      */
     public static void main(String[] args)
     {
@@ -30,24 +30,21 @@ public class InstantMessengerAppenderTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Overrides junit.framework.TestCase
-    //--------------------------------------------------------------------------
-    
-    public void tearDown()
-    {
-        
-    }
-
-    //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Tests append()
+     * 
+     * @throws Exception on error.
+     */
     public void testAppend() throws Exception
     {
         Logger root = Logger.getRootLogger();
         
         InstantMessengerAppender imAppender = new InstantMessengerAppender();
         
+        imAppender.setMessenger("null");
         imAppender.setThreshold(Priority.INFO);
         root.addAppender(imAppender);
 
