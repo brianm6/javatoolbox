@@ -128,7 +128,7 @@ public class BatchingQueueReader
      * @param  listener  Listener to add
      */   
     public synchronized void addBatchingQueueListener(
-    	IBatchingQueueListener listener)
+        IBatchingQueueListener listener)
     {
         listeners_.add(listener);
     }
@@ -140,7 +140,7 @@ public class BatchingQueueReader
      * @param  listener  Listener to remove
      */
     public synchronized void removeBatchingQueueListener(
-    	IBatchingQueueListener listener)
+        IBatchingQueueListener listener)
     {
         listeners_.remove(listener);
     }

@@ -167,6 +167,11 @@ public class BlockingQueue
     // Overridden from java.lang.Object
     //--------------------------------------------------------------------------
     
+    /**
+     * Dumps contents of queue one line at a time
+     * 
+     * @return  Queue contents as a string, one line per element
+     */
     public String toString()
     {
         return ArrayUtil.toString(queue_.toArray());
