@@ -4,7 +4,7 @@ import org.apache.commons.math.random.RandomData;
 import org.apache.commons.math.random.RandomDataImpl;
 
 /**
- * AbstractSequence is responsible for _____.
+ * Abstract base class for sequences.
  */
 public abstract class AbstractSequence implements RandomSequence
 {
@@ -13,9 +13,9 @@ public abstract class AbstractSequence implements RandomSequence
     //--------------------------------------------------------------------------
 
     /**
-     * Flag for repeating values in this sequence.
+     * Non-repeating sequence flag.
      */    
-    private boolean repeating_;
+    private boolean nonRepeating_;
 
     /**
      * Random data generator.
@@ -27,11 +27,14 @@ public abstract class AbstractSequence implements RandomSequence
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a AbstractSequence.
+     * Creates an AbstractSequence.
+     * 
+     * @param nonRepeating Set to true to create a non-repeating sequence or 
+     *        false to create a repeating sequence.
      */
-    public AbstractSequence(boolean repeating)
+    public AbstractSequence(boolean nonRepeating)
     {
-        setRepeating(repeating);
+        setNonRepeating(nonRepeating);
         setRandomData(new RandomDataImpl());
     }
 
@@ -40,11 +43,11 @@ public abstract class AbstractSequence implements RandomSequence
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.random.RandomSequence#isRepeating()
+     * @see toolbox.util.random.RandomSequence#isNonRepeating()
      */
-    public boolean isRepeating()
+    public boolean isNonRepeating()
     {
-        return repeating_;
+        return nonRepeating_;
     }
     
     //--------------------------------------------------------------------------
@@ -52,13 +55,13 @@ public abstract class AbstractSequence implements RandomSequence
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the value of repeating.
+     * Sets the value for the non-repeating flag.
      * 
-     * @param repeating The repeating to set.
+     * @param nonRepeating True for non-repeating, false otherwise.
      */
-    protected void setRepeating(boolean repeating)
+    protected void setNonRepeating(boolean nonRepeating)
     {
-        repeating_ = repeating;
+        nonRepeating_ = nonRepeating;
     }
 
     
