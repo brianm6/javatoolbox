@@ -46,11 +46,12 @@ public final class ArrayUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Initializes an array of double with a given value.
+     * Initializes an array of double with a given value. Returns the passed in
+     * array for convenience if chaining.
      * 
      * @param d Array of doubles.
-     * @param value Initialization value.
-     * @return Initialized array of doubles.
+     * @param value Value to initialize each index of the array with.
+     * @return double[]
      */
     public static double[] init(double[] d, double value)
     {
@@ -60,11 +61,12 @@ public final class ArrayUtil
 
     
     /**
-     * Initializes an array of ints with a given value.
+     * Initializes an array of ints with a given value. Returns the passed in
+     * array for convenience if chaining.
      * 
      * @param d Array of ints.
-     * @param value Initialization value.
-     * @return Initialized array of ints.
+     * @param value Value to initialize each index of the array with.
+     * @return int[]
      */
     public static int[] init(int[] d, int value)
     {
@@ -74,13 +76,13 @@ public final class ArrayUtil
 
     
     /**
-     * Returns subset of a given double array.
+     * Returns a subset of a given array of doubles.
      *
      * @param array The array to get subset of.
-     * @param startIndex The starting index (inclusive).
-     * @param endIndex The ending index (inclusive).
-     * @return Subset of the array.
-     * @throws IllegalArgumentException on illegal bounds.
+     * @param startIndex The starting index of the subset (inclusive).
+     * @param endIndex The ending index of the subset (inclusive).
+     * @return double[]
+     * @throws IllegalArgumentException on illegal array bounds.
      */
     public static double[] subset(double[] array, int startIndex, int endIndex)
     {
@@ -99,19 +101,14 @@ public final class ArrayUtil
             "End index " + endIndex + " must be <= array length of " + len);
 
         // Copy array
-        int subLen = (endIndex - startIndex) + 1;
-        double[] sub = new double[subLen];
-        int s = 0;
-
-        for (int i = startIndex; i <= endIndex;)
-            sub[s++] = array[i++];
-
+        double[] sub = new double[endIndex - startIndex + 1];
+        System.arraycopy(array, startIndex, sub, 0, sub.length);
         return sub;
     }
 
     
     /**
-     * Returns subset of a given byte array.
+     * Returns a subset of the given byte array.
      *
      * @param array The array to get subset of.
      * @param startIndex The starting index (inclusive).
@@ -137,8 +134,7 @@ public final class ArrayUtil
 
         // Copy array
         byte[] sub = new byte[endIndex - startIndex + 1];
-        for (int s = 0, i = startIndex; i <= endIndex;)
-            sub[s++] = array[i++];
+        System.arraycopy(array, startIndex, sub, 0, sub.length);
         return sub;
     }
 
