@@ -50,47 +50,39 @@ import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.xml.XMLParser;
 
 /**
- * JTail is a GUI front end for toolbox.tail.Tail
- * 
- * <pre>
- * TODO: Add configurable "aggregator" for existing tails 
- * </pre>
+ * JTail is a GUI front end for {@link toolbox.tail.Tail}.
  */
 public class JTail extends JFrame
 {
-    private int lastNumRecent_;
+    /*
+     * TODO: Add configurable "aggregator" for existing tails 
+     */
 
-    private JMenu recentMenu_;
-
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(JTail.class);
+         
+    private int lastNumRecent_;
 
-    /**
-     * File explorer flipper that allows the user to select a file to tail
-     */
+    /** Presents list of recently tailed files */
+    private JMenu recentMenu_;
+
+    /** File explorer flipper that allows the user to select a file to tail */
     private FileSelectionPane fileSelectionPane_;
     
-    /**
-     * Tab panel that contains each tail as a single tab
-     */
+    /** Tab panel that contains each tail as a single tab */
     private JTabbedPane tabbedPane_;
     
-    /**
-     * Flip panel that houses the file explorer 
-     */
+    /** Flip panel that houses the file explorer */
     private JFlipPane flipPane_;    
+
+    /** Map of each tail that is active */
+    private Map tailMap_;
     
-    /**
+    /** 
      * Status bar at the bottom of the screen that shows the status of various 
      * activities
      */
     private IStatusBar statusBar_;    
-    
-    /** 
-     * Map of each tail that is active
-     */
-    private Map tailMap_;
     
     /**
      * Puts the application into test mode. An additional menu item is added
@@ -112,6 +104,9 @@ public class JTail extends JFrame
      */
     private IJTailConfig jtailConfig_;            
         
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
     
     /**
      * Entry point 
@@ -359,7 +354,8 @@ public class JTail extends JFrame
             
             configManager_.save(jtailConfig_);
             
-            // Save properties that are separate from IJTailConfig/ITailPaneConfig
+            // Save properties that are separate from 
+            // IJTailConfig/ITailPaneConfig
             if (props != null)
             {
                 fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
@@ -370,7 +366,8 @@ public class JTail extends JFrame
             Component[] items = recentMenu_.getMenuComponents();
             
             // Sub 1 for the unaccounted "Clear" menuitem
-            PropertiesUtil.setInteger(props, "jtail.recent.num", items.length - 1); 
+            PropertiesUtil.setInteger(
+                props, "jtail.recent.num", items.length - 1); 
             
             int cnt = 0;
             
@@ -491,11 +488,6 @@ public class JTail extends JFrame
      */
     private class FileSelectionListener extends JFileExplorerAdapter
     {
-        /**
-         * Tail files that have been double clicked on
-         * 
-         * @param  file  File double clicked
-         */
         public void fileDoubleClicked(String file)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
@@ -718,12 +710,6 @@ public class JTail extends JFrame
         // Interface IFontChooserDialogListener
         //----------------------------------------------------------------------
         
-        /**
-         * Sets the font of the currently selected tail to the font chosen in 
-         * the font selection dialog
-         * 
-         * @param  fontChooser  Font chooser component
-         */
         public void applyButtonPressed(JFontChooser fontChooser)
         {
             try
@@ -740,9 +726,6 @@ public class JTail extends JFrame
             }
         }
 
-        /**
-         *  Cancel button was pressed 
-         */
         public void cancelButtonPressed(JFontChooser fontChooser)
         {
             // Restore saved state
@@ -752,9 +735,6 @@ public class JTail extends JFrame
             getSelectedTail().setConfiguration(config);
         }
         
-        /**
-         * OK button was pressed
-         */
         public void okButtonPressed(JFontChooser fontChooser)
         {
             try

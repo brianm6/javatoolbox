@@ -27,10 +27,6 @@ public class JTailTabbedPane extends JTabbedPane
     {
         addPropertyChangeListener( new PropertyChangeListener()
         {
-            /**
-             * @see java.beans.PropertyChangeListener#
-             *      propertyChange(PropertyChangeEvent)
-             */
             public void propertyChange(PropertyChangeEvent evt)
             {
                 logger_.debug(evt);
@@ -43,10 +39,6 @@ public class JTailTabbedPane extends JTabbedPane
      */
     public class TailPaneListener implements TailPane.ITailPaneListener
     {
-        /**
-         * @see toolbox.jtail.TailPane.ITailPaneListener#
-         *      newDataAvailable(TailPane)
-         */
         public void newDataAvailable(TailPane tailPane)
         {
             int index = indexOfComponent(tailPane);

@@ -44,20 +44,20 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * Tail pane
- * 
- * <pre>
- * TOOD: Figure why anti alias select from font chooser dialog does not get
- *       applied/persisted to the tailpane!
- * TODO: Color code keywords
- * TODO: Color code time lapse delays
- * TODO: Verify regex filtering is working
- * TODO: Move button panel to its own flippane
- * TODO: Add option to tail the whole file from the beginning
- * </pre> 
+ * GUI component that encompasses the tailing activity of a single file.
  */
 public class TailPane extends JPanel
 {
+    /*
+    * TOOD: Figure why anti alias select from font chooser dialog does not get
+    *       applied/persisted to the tailpane!
+    * TODO: Color code keywords
+    * TODO: Color code time lapse delays
+    * TODO: Verify regex filtering is working
+    * TODO: Move button panel to its own flippane
+    * TODO: Add option to tail the whole file from the beginning
+    */
+     
     private static final Logger logger_ = 
         Logger.getLogger(TailPane.class);
     
@@ -418,12 +418,6 @@ public class TailPane extends JPanel
         //  IBatchingQueueListener Interface
         //----------------------------------------------------------------------
        
-        /**
-         * Adds next batch of lines from the queue to the output area
-         * in a one shot dilly-o
-         *
-         * @param  objs  Next batch of lines
-         */
         public void nextBatch(Object[] objs)
         {
             // Iterate over each line delivered            
