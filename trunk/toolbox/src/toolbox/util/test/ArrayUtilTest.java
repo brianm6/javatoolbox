@@ -16,8 +16,7 @@ import toolbox.util.RandomUtil;
  */
 public class ArrayUtilTest extends TestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(ArrayUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(ArrayUtilTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -26,7 +25,7 @@ public class ArrayUtilTest extends TestCase
     /**
      * Entrypoint.
      *
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -34,9 +33,109 @@ public class ArrayUtilTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests: subset()
+    // Unit Tests: subset(double[])
     //--------------------------------------------------------------------------
+    
+    /**
+     * Test subset() for subset equal to array.
+     */
+    public void testSubsetByteAll() 
+    {
+        logger_.info("Running testSubsetByteAll...");
+        
+        int len = 10;
+        byte[] d = new byte[len];
 
+        for (int i = 0; i < d.length; i++)
+            d[i] = (byte) RandomUtil.nextInt(255);
+
+        byte[] e = ArrayUtil.subset(d, 0, d.length - 1);
+        assertEquals("subset should be same size as original", d.length, 
+                e.length);
+
+        for (int i = 0; i < d.length; i++)
+            assertEquals("values don't match", d[i], e[i], 0);
+    }
+
+    
+    /**
+     * Test subset() for empty array.
+     */
+    public void testSubsetByteEmpty() 
+    {
+        logger_.info("Running testSubsetByteEmpty...");
+        
+        byte[] d = new byte[0];
+        byte[] e = ArrayUtil.subset(d, 0, 0);
+        assertEquals("subset should be empty", 0, e.length);
+    }
+
+    
+    /**
+     * Test subset() for subset first half of array.
+     */
+    public void testSubsetByteFirstHalf() 
+    {
+        logger_.info("Running testSubsetByteFirstHalf...");
+        int len = 10;
+        byte[] d = new byte[len];
+
+        for (int i = 0; i < d.length; i++)
+            d[i] = (byte) RandomUtil.nextInt(255);
+
+        byte[] e = ArrayUtil.subset(d, 0, (d.length / 2) - 1);
+        assertEquals("subset should be half size of original", d.length / 2, 
+                e.length);
+
+        for (int i = 0; i < e.length; i++)
+            assertEquals("values don't match", d[i], e[i], 0);
+    }
+
+    
+    /**
+     * Test subset() for array of length 1.
+     */
+    public void testSubsetByteOne() 
+    {
+        logger_.info("Running testSubsetByteOne...");
+        
+        byte[] d = new byte[]{99};
+        byte[] e = ArrayUtil.subset(d, 0, 0);
+        assertEquals("subset should have one element", 1, e.length);
+        assertEquals("values don't match", d[0], e[0], 0);
+    }
+
+    
+    /**
+     * Test subset() for subset second half of the array.
+     */
+    public void testSubsetByteSecondHalf()
+    {
+        logger_.info("Running testSubsetByteSecondHalf...");
+        
+        int len = 10;
+        byte[] d = new byte[len];
+
+        for (int i = 0; i < d.length; i++)
+            d[i] = (byte) RandomUtil.nextInt(255);
+
+        byte[] e = ArrayUtil.subset(d, d.length / 2, d.length - 1);
+        assertEquals("subset should be half size of original", d.length / 2, 
+                e.length);
+
+        int ei = 0;
+
+        for (int i = d.length / 2; i < d.length; i++)
+        {
+            assertEquals("values don't match", d[i], e[ei], 0);
+            ei++;
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests: subset(double[])
+    //--------------------------------------------------------------------------
+    
     /**
      * Test subset() for subset equal to array.
      */
@@ -133,6 +232,9 @@ public class ArrayUtilTest extends TestCase
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Unit Tests: subset(Object[])
+    //--------------------------------------------------------------------------
     
     /**
      * Test subset(Object[]) for all.
