@@ -474,6 +474,7 @@ Commands:
                 <include name="squarenesslf.jar"/>
                 <include name="napkinlf.jar"/>
                 <include name="3dlf.jar"/>
+                <include name="fhlaf.jar"/>
 
             </fileset>
         </unjar>

@@ -92,7 +92,6 @@
     <!-- xml-apis has to come before saxon because they both have difference -->
     <!-- versions of org.w3c.dom apis                                        --> 
     
-
     <dependency>
       <id>xml-apis</id>
       <version/>
@@ -102,6 +101,7 @@
     </dependency>
 
     
+
     <!-- 
     <dependency>
       <id>saxon</id>
@@ -337,6 +337,15 @@
       </properties>
     </dependency>
 
+    <dependency>
+      <id>fhlaf</id>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+      <version>LATEST</version>
+      <url>http://fhlaf.sf.net</url>
+    </dependency>
+    
     <dependency>
       <id>fop</id>
       <properties>
