@@ -35,16 +35,20 @@ public class IntSequence extends AbstractSequence implements RandomSequence
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a IntSequence.
+     * Creates an IntSequence.
      * 
-     * @param low Lower bound of the sequence (inclusive)
-     * @param high Upper bound of the sequence (inclusive)
+     * @param low Lower bound of the sequence (inclusive).
+     * @param high Upper bound of the sequence (inclusive).
+     * @param nonRepeating True for non-repeating, false otherwise.
      */
-    public IntSequence(int low, int high, boolean repeating)
+    public IntSequence(int low, int high, boolean nonRepeating)
     {
-        super(repeating);
+        super(nonRepeating);
         
-        Validate.isTrue(low <= high, "Invalid bounds: low <= high");
+        Validate.isTrue(
+            low <= high, 
+            "Lower bound " + low + " must be less than or equal to upper bound "
+            + high + ".");
         
         setLow(low);
         setHigh(high);
@@ -62,17 +66,17 @@ public class IntSequence extends AbstractSequence implements RandomSequence
     {
         Integer result = null;
         
-        if (!isRepeating())
+        if (isNonRepeating())
         {
-            if (gened_.size() == getSize())
+            if (!hasMore())
                 throw new SequenceEndedException("End of sequence");
             
             boolean unique = false;
-            
+
+            // Keep on looping until we find an integer that hasn't been picked
             while (!unique)
             {
-                result = 
-                    new Integer(getRandomData().nextInt(getLow(), getHigh()));
+                result = nextInternal();
                 
                 if (!gened_.contains(result))
                 {
@@ -83,7 +87,7 @@ public class IntSequence extends AbstractSequence implements RandomSequence
         }
         else
         {
-            result = new Integer(getRandomData().nextInt(getLow(), getHigh()));
+            result = nextInternal();
         }
         
         return result;
@@ -95,7 +99,7 @@ public class IntSequence extends AbstractSequence implements RandomSequence
      */
     public boolean hasMore()
     {
-        return isRepeating() ? true : gened_.size() < getSize(); 
+        return isNonRepeating() ? gened_.size() < getSize() : true; 
     }
     
     //--------------------------------------------------------------------------
@@ -112,18 +116,7 @@ public class IntSequence extends AbstractSequence implements RandomSequence
     {
         return ((Integer) nextValue()).intValue();
     }
-    
-    
-    /**
-     * Returns the size of the sequence.
-     * 
-     * @return int
-     */
-    public int getSize()
-    {
-        return getHigh() - getLow() + 1;
-    }
-    
+
     
     /**
      * Returns the high.
@@ -134,18 +127,7 @@ public class IntSequence extends AbstractSequence implements RandomSequence
     {
         return high_;
     }
-    
-    
-    /**
-     * Sets the value of high.
-     * 
-     * @param high The high to set.
-     */
-    public void setHigh(int high)
-    {
-        high_ = high;
-    }
-    
+
     
     /**
      * Returns the low.
@@ -157,13 +139,53 @@ public class IntSequence extends AbstractSequence implements RandomSequence
         return low_;
     }
     
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+
+    /**
+     * Internal delegate for creation of the next value in the sequence. 
+     * Special cases is a sequence of bounds (x, x) in which case the value
+     * should always be x.
+     * 
+     * @return Integer
+     */
+    protected Integer nextInternal() 
+    {
+        if (getHigh() == getLow())
+            return new Integer(getHigh());
+        else
+            return new Integer(getRandomData().nextInt(getLow(), getHigh()));
+    }
+    
+    /**
+     * Returns the size of the sequence.
+     * 
+     * @return int
+     */
+    protected int getSize()
+    {
+        return getHigh() - getLow() + 1;
+    }
+    
+    
+    /**
+     * Sets the value of high.
+     * 
+     * @param high The high to set.
+     */
+    protected void setHigh(int high)
+    {
+        high_ = high;
+    }
+    
     
     /**
      * Sets the value of low.
      * 
      * @param low The low to set.
      */
-    public void setLow(int low)
+    protected void setLow(int low)
     {
         low_ = low;
     }
