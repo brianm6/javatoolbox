@@ -578,28 +578,6 @@ public class StringUtilTest extends TestCase
     
     
     /**
-     * Tests reverse().
-     */
-    public void testReverse()
-    {
-        logger_.info("Running testReverse...");
-        
-        // Zero
-        assertEquals("", StringUtil.reverse(""));
-        
-        // One
-        assertEquals("x", StringUtil.reverse("x"));
-        
-        // Many
-        assertEquals("ydwoh", StringUtil.reverse("howdy"));
-        
-        // Reverse x 2 = original
-        assertEquals("original", 
-            StringUtil.reverse(StringUtil.reverse("original")));
-    }
-    
-    
-    /**
      * Tests addBars().
      */
     public void testAddBars()

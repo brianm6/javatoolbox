@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Reader;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.StringUtil;
 
 /**
  * Reads a file efficiently in reverse order.
@@ -207,6 +206,6 @@ public class ReverseFileReader extends Reader
     public String readLineNormal() throws IOException
     {
         String line = readLine();
-        return (line != null ? StringUtil.reverse(line) : line);
+        return (line != null ? StringUtils.reverse(line) : line);
     }
 }

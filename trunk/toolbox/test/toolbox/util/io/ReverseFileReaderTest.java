@@ -5,11 +5,11 @@ import java.io.File;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
 import toolbox.util.StreamUtil;
-import toolbox.util.StringUtil;
 
 /**
  * Unit test for ReverseFileReader.
@@ -118,7 +118,7 @@ public class ReverseFileReaderTest extends TestCase
         FileUtil.setFileContents(file_, "howdy doody", false);
         reader_ = new ReverseFileReader(file_);
         
-        assertEquals(StringUtil.reverse("howdy doody"), reader_.readLine());
+        assertEquals(StringUtils.reverse("howdy doody"), reader_.readLine());
         assertNull(reader_.readLine());            
     }
 
@@ -136,11 +136,11 @@ public class ReverseFileReaderTest extends TestCase
         
         reader_ = new ReverseFileReader(file_);
 
-        assertEquals(StringUtil.reverse("five"), reader_.readLine());
-        assertEquals(StringUtil.reverse("four"), reader_.readLine());
-        assertEquals(StringUtil.reverse("three"), reader_.readLine());
-        assertEquals(StringUtil.reverse("two"), reader_.readLine());
-        assertEquals(StringUtil.reverse("one"), reader_.readLine());
+        assertEquals(StringUtils.reverse("five"), reader_.readLine());
+        assertEquals(StringUtils.reverse("four"), reader_.readLine());
+        assertEquals(StringUtils.reverse("three"), reader_.readLine());
+        assertEquals(StringUtils.reverse("two"), reader_.readLine());
+        assertEquals(StringUtils.reverse("one"), reader_.readLine());
         assertNull(reader_.readLine());
     }
 

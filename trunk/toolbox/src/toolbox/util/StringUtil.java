@@ -563,18 +563,6 @@ public final class StringUtil
 
     
     /**
-     * Reverses a string.
-     * 
-     * @param s String to reverse.
-     * @return Reversed string.
-     */
-    public static String reverse(String s)
-    {
-        return new StringBuffer(s).reverse().toString();
-    }
-
-    
-    /**
      * Converts a string into a boolean value.
      * 
      * @param s String containing boolean value.
