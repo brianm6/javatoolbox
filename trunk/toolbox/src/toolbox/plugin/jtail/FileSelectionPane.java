@@ -2,8 +2,6 @@ package toolbox.jtail;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -13,11 +11,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.ui.JFileExplorer;
 
 /**
- * Custom explorer panel for JTail window
+ * Custom file explorer panel for JTail. Just adds a "Tail" button to the
+ * bottom of the panel.
  */
-public class FileSelectionPane extends JPanel implements ActionListener
+public class FileSelectionPane extends JPanel
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(FileSelectionPane.class);
     
@@ -35,7 +33,6 @@ public class FileSelectionPane extends JPanel implements ActionListener
     {
         this(null);
     }
-
     
     /**
      * Creates a FileSelectionPane with the given directory selected
@@ -67,74 +64,27 @@ public class FileSelectionPane extends JPanel implements ActionListener
         // Button panel    
         JPanel buttonPanel = new JPanel(new FlowLayout());
         tailButton_ = new JButton("Tail");
-        tailButton_.addActionListener(this);
         buttonPanel.add(tailButton_);
         add(buttonPanel, BorderLayout.SOUTH);
     }
-
-    
-    /**
-     * Tail button 
-     */
-    protected void tailButtonClicked()
-    {
-        logger_.info("tail");
-    }
-
-    
-    //--------------------------------------------------------------------------
-    // ActionListener Interface
-    //--------------------------------------------------------------------------
-        
-    /**
-     * ActionListener interface
-     * 
-     * @param  e Action event
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        Object obj = e.getSource();
-        
-        if(obj == tailButton_)
-            tailButtonClicked();
-        else
-            logger_.warn("No handler for " + e);
-    }
-    
     
     //--------------------------------------------------------------------------
     //  Accessors/Mutators
     //--------------------------------------------------------------------------
         
     /**
-     * Returns the file explorer component
-     * 
-     * @return JFileExplorer
+     * @return File explorer
      */
     public JFileExplorer getFileExplorer()
     {
         return fileExplorer_;
     }
 
-
     /**
-     * Returns the tailButton.
-     * 
-     * @return JButton
+     * @return Tail button
      */
     public JButton getTailButton()
     {
         return tailButton_;
-    }
-
-
-    /**
-     * Sets the tailButton.
-     * 
-     * @param tailButton The tailButton to set
-     */
-    public void setTailButton(JButton tailButton)
-    {
-        tailButton_ = tailButton;
     }
 }
