@@ -953,6 +953,7 @@
       <!-- Tests that are excluded because they exercise a GUI component or -->
       <!-- require interactivity                                            -->      
       <excludes>
+        <exclude>**/graph/**</exclude>  
         <exclude>**/jedit/**</exclude>
         <exclude>**/log4j/im/**/*Test.java</exclude>
         <exclude>**/ui/**/*Test.java</exclude>
@@ -1016,8 +1017,8 @@
     <report>maven-javadoc-plugin</report>
     <report>maven-changelog-plugin</report>
     <report>maven-statcvs-plugin</report>
-    <report>maven-jblanket-plugin</report>
     <report>maven-clover-plugin</report>
+    <report>maven-jblanket-plugin</report>
 
           
     <!--
