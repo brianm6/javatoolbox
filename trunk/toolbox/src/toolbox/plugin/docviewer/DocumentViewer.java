@@ -1,4 +1,4 @@
-package toolbox.plugin.pdf;
+package toolbox.plugin.docviewer;
 
 import java.io.File;
 import java.io.InputStream;

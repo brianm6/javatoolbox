@@ -1,4 +1,4 @@
-package toolbox.plugin.pdf;
+package toolbox.plugin.docviewer;
 
 import java.awt.BorderLayout;
 import java.io.BufferedInputStream;
@@ -17,7 +17,8 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 
 /**
- * AcrobatViewer is a wrapper for Acrobat JavaBean used to view PDF documents.
+ * AcrobatViewer is a wrapper for the Acrobat JavaBean which is used to 
+ * render and view PDF documents.
  */
 public class AcrobatViewer extends JPanel implements DocumentViewer
 {

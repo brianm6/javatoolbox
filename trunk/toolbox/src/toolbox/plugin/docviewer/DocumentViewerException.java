@@ -1,4 +1,4 @@
-package toolbox.plugin.pdf;
+package toolbox.plugin.docviewer;
 
 /**
  * Exception throws by methods defined in the DocumentViewer interface.

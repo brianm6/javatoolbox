@@ -1,4 +1,4 @@
-package toolbox.plugin.pdf;
+package toolbox.plugin.docviewer;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

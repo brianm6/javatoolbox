@@ -1,4 +1,4 @@
-package toolbox.plugin.pdf;
+package toolbox.plugin.docviewer;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -26,12 +26,12 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * PDF Viewer Plugin.
+ * Document Viewer Plugin.
  */ 
-public class PDFPlugin extends JPanel implements IPlugin
+public class DocumentViewerPlugin extends JPanel implements IPlugin
 {
     private static final Logger logger_ = 
-        Logger.getLogger(PDFPlugin.class);
+        Logger.getLogger(DocumentViewerPlugin.class);
     
     //--------------------------------------------------------------------------
     // Constants
@@ -82,9 +82,9 @@ public class PDFPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a PDF Plugin.
+     * Creates a DocumentViewerPlugin.
      */
-    public PDFPlugin()
+    public DocumentViewerPlugin()
     {
     }
 
