@@ -1,8 +1,9 @@
 package toolbox.workspace;
 
-import toolbox.util.ArrayUtil;
+import toolbox.util.service.ObservableService;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
+import toolbox.util.service.ServiceNotifier;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.service.ServiceUtil;
@@ -10,9 +11,9 @@ import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.prefs.IConfigurator;
 
 /**
- * Abstract base class for IPlugin implementors.
+ * Abstract base class for IPlugins.
  */
-public abstract class AbstractPlugin implements IPlugin
+public abstract class AbstractPlugin implements IPlugin, ObservableService
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -23,12 +24,12 @@ public abstract class AbstractPlugin implements IPlugin
      * states.
      */
     private StateMachine machine_;
-    
+
     /**
-     * Array of listeners interested in events that this service generates.
+     * Handles notification of service state changes.
      */
-    private ServiceListener[] listeners_;
-     
+    private ServiceNotifier notifier_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ public abstract class AbstractPlugin implements IPlugin
     protected AbstractPlugin()
     {
         machine_ = ServiceUtil.createStateMachine(this);
+        notifier_ = new ServiceNotifier(this);
     }
     
     //--------------------------------------------------------------------------
@@ -55,31 +57,20 @@ public abstract class AbstractPlugin implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // Public
+    // Service Interface
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the state.
-     * 
-     * @return ServiceState
+     * @see toolbox.util.service.Service#getState()
      */
     public ServiceState getState()
     {
         return (ServiceState) machine_.getState();
     }
 
-    
-    /**
-     * Sets the value of state.
-     * 
-     * @param state The state to set.
-     */
-//    public void forceState(ServiceState state)
-//    {
-//        machine_.setBeginState(state);
-//        machine_.reset();
-//    }
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the previousState or null if a change in state has not occurred
@@ -91,46 +82,29 @@ public abstract class AbstractPlugin implements IPlugin
     {
         return (ServiceState) machine_.getPreviousState();
     }
-    
-    //--------------------------------------------------------------------------
-    // Service Interface
-    //--------------------------------------------------------------------------
+
     
     /**
-     * @see toolbox.util.service.Service
-     *      #addServiceListener(toolbox.util.service.ServiceListener)
+     * @param listener
      */
     public void addServiceListener(ServiceListener listener)
     {
-        listeners_ = (ServiceListener[]) ArrayUtil.add(listeners_, listener);
+        notifier_.addServiceListener(listener);
     }
 
     
     /**
-     * @see toolbox.util.service.Service
-     *      #removeServiceListener(toolbox.util.service.ServiceListener)
+     * @param listener
      */
     public void removeServiceListener(ServiceListener listener)
     {
-        listeners_ = (ServiceListener[]) ArrayUtil.remove(listeners_, listener);
+        notifier_.removeServiceListener(listener);
     }
     
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
 
-    /**
-     * Notifies registered listeners that this service's state has changed.
-     * 
-     * @throws ServiceException on service related error.
-     */
-    protected void fireServiceStateChanged() throws ServiceException
-    {
-        for (int i = 0; i < listeners_.length; 
-            listeners_[i++].serviceStateChanged(this));
-    }
-
-    
     /**
      * Answers the following question is strict state transitions are enabled.
      * Does the given activity result in a valid state transition from the 
