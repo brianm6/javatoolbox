@@ -30,6 +30,10 @@ public class ThreadUtilTest extends TestCase
         TestRunner.run(ThreadUtilTest.class);
     }
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Arg constructor
      * 

@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
 import org.apache.log4j.Logger;
+
 import toolbox.util.StringUtil;
 
 /**
@@ -19,15 +21,6 @@ public class StringUtilTest extends TestCase
         Logger.getLogger(StringUtilTest.class);
 
     /**
-     * StringUtilTest constructor comment.
-     * @param name java.lang.String
-     */
-    public StringUtilTest(String name)
-    {
-        super(name);
-    }
-
-    /**
      * Entrypoint
      * 
      * @param  args  Args
@@ -37,6 +30,24 @@ public class StringUtilTest extends TestCase
         TestRunner.run(StringUtilTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * StringUtilTest constructor comment.
+     * 
+     * @param name java.lang.String
+     */
+    public StringUtilTest(String name)
+    {
+        super(name);
+    }
+
+    //--------------------------------------------------------------------------
+    //  Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests right() for proper truncation behavior
      */
