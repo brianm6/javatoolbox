@@ -1,10 +1,13 @@
 package toolbox.util.ui;
 
 import java.awt.Graphics;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 
 import toolbox.util.SwingUtil;
 
@@ -117,6 +120,28 @@ public class JSmartCheckBox extends JCheckBox implements AntiAliased
         super(text, icon, selected);
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Toggles the state of the checkbox based on a property change event
+     * originating from a component.
+     * 
+     * @param comp Component generating the property change event.
+     * @param property Property name to listen for.
+     */
+    public void toggleOnProperty(JComponent comp, String property)
+    {
+        comp.addPropertyChangeListener(property, new PropertyChangeListener() 
+        {
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                setSelected(((Boolean) evt.getNewValue()).booleanValue());
+            }
+        });
+    }
+    
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
