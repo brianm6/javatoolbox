@@ -38,4 +38,11 @@ public interface TcpTunnelListener
      */
     public void bytesWritten(TcpTunnel tunnel, int connBytesWritten, 
                              int totalBytesWritten);
+                             
+    /**
+     * Notification that the tunnel has been started successfully.
+     * 
+     * @param  tunnel  The tunnel
+     */                             
+    public void tunnelStarted(TcpTunnel tunnel);                             
 }
