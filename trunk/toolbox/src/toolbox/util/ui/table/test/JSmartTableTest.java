@@ -11,10 +11,13 @@ import javax.swing.table.DefaultTableModel;
 
 import junit.textui.TestRunner;
 
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
 import toolbox.util.RandomUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.table.AutoTailAction;
@@ -97,5 +100,44 @@ public class JSmartTableTest extends UITestCase
         content.add(buttons, BorderLayout.SOUTH);
         
         launchInDialog(content);
+    }
+
+    
+    /**
+     * Tests to make sure table preferences are save/restored correctly.
+     * 
+     * @throws Exception on error.
+     */
+    public void testPreferences() throws Exception
+    {
+        logger_.info("Running testPreferences...");
+        
+        JSmartTable table = new JSmartTable();
+        
+        {
+            table.setAutoTail(true);
+            
+            Element root = new Element("root");
+            table.savePrefs(root);
+            logger_.info("Saved preferences:\n" + XOMUtil.toXML(root));
+            
+            JSmartTable restored = new JSmartTable();
+            restored.applyPrefs(root);
+            
+            assertTrue(restored.isAutoTail());
+        }
+
+        {
+            table.setAutoTail(false);
+            
+            Element root = new Element("root");
+            table.savePrefs(root);
+            logger_.info("Saved preferences:\n" + XOMUtil.toXML(root));
+            
+            JSmartTable restored = new JSmartTable();
+            restored.applyPrefs(root);
+            
+            assertFalse(restored.isAutoTail());
+        }
     }
 }
