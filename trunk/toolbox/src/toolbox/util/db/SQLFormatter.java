@@ -19,6 +19,12 @@ import toolbox.workspace.IPreferenced;
 
 /**
  * SQLFormatter is a pretty printer for SQL statements.
+ * 
+ * <pre class="snippet">
+ * Formatter f = new SQLFormatter();
+ * f.setIndent(4);
+ * System.out.println(f.format("select * from person where name = 'joe'"));
+ * </pre>
  */
 public class SQLFormatter extends AbstractFormatter implements IPreferenced
 {
@@ -140,6 +146,28 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
     private static final String ESCAPE_MISC_COMMENT = "1";
 
     //--------------------------------------------------------------------------
+    // IPreferenced Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Root preferences node.
+     */
+    private static final String NODE_SQLFORMATTER = "SQLFormatter";
+
+    /**
+     * Attributes of NODE_SQLFORMATTER.
+     */
+    public static final String[] SAVED_PROPS = new String[] {
+        "debug", 
+        "indent", 
+        "newLineBeforeAnd", 
+        //"newLine",
+        "majorCapsMode",
+        "minorCapsMode", 
+        "namesCapsMode"
+    };
+    
+    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
@@ -177,28 +205,6 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
      * Flag to send debug output to the logger.
      */
     private boolean debug_;
-
-    //--------------------------------------------------------------------------
-    // IPreferenced Constants
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Root preferences node.
-     */
-    private static final String NODE_SQLFORMATTER = "SQLFormatter";
-
-    /**
-     * Attributes of NODE_SQLFORMATTER.
-     */
-    public static final String[] SAVED_PROPERTIES = new String[] {
-        "debug", 
-        "indent", 
-        "newLineBeforeAnd", 
-        //"newLine",
-        "majorCapsMode",
-        "minorCapsMode", 
-        "namesCapsMode"
-    };
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -433,15 +439,16 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-
     
     /**
-     * @param keywords
-     * @param numTokens
-     * @param breakFlags
-     * @return
+     * Flags any subselect statements in the sql statement. Returns an array
+     * of indices into the SQL statement.
+     * 
+     * @param keywords List of keywords.
+     * @param breakFlags List of break flags.
+     * @return int[]
      */
-    private int[] flagSubSelects(String[] keywords, int[] breakFlags)
+    protected int[] flagSubSelects(String[] keywords, int[] breakFlags)
     {
         int numTokens = keywords.length;
         int subIdx = 0;
@@ -497,12 +504,13 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
     /**
      * Each index of the returned array will specify a code that maps to an
      * empty string, space, or a newline as the break character for the given 
-     * token at that index.
+     * token at that index. Returns an array of indices into the sql statement
+     * of the break locations.
      * 
      * @param keywords SQL keywords.
      * @return int[]
      */
-    private int[] flagBreaks(String[] keywords)
+    protected int[] flagBreaks(String[] keywords)
     {
         // TODO: Replace 0, 1, and 2 with break constants.
         
@@ -553,42 +561,7 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
         return breakFlags;
     }
 
-
-    /**
-     * Dumps the flags as debug output.
-     * 
-     * @param keywords SQL keywords.
-     * @param escapeList List of escape sequences.
-     * @param newlineFlags Newline flags.
-     * @param indentFlags Indentation flags.
-     */
-    private void dumpFlags(
-        String[] keywords, 
-        List escapeList,
-        int[] newlineFlags, 
-        int[] indentFlags)
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append("Tokens:\n");
-        
-        for (int i = 1; i < keywords.length - 1; i++)
-            sb.append(
-                indentFlags[i] 
-                + " [" 
-                + keywords[i] 
-                + "] " 
-                + newlineFlags[i] 
-                + "\n");
-
-        sb.append("Escapes:\n");
-        
-        for (int j = 0, n = escapeList.size(); j < n; j++)
-            sb.append(escapeList.get(j) + "\n");
-
-        logger_.debug(sb.toString());
-    }
-
-
+    
     /**
      * Finds all escape sequences in the sql statement and replaces them with
      * a special token that will be used as a marker to unescape them later. An
@@ -713,7 +686,6 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
                 sql = sqlParsed + escapeToken + sqlUnparsed;
                 break;
             }
-
         }
         return sql;
     }
@@ -754,7 +726,7 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
      * Reinserts the escaped sequences back into the sql statement.
      * 
      * @param sql SQL statement.
-     * @param escapeList escapeList
+     * @param escapeList List of escapes.
      * @return String
      */
     protected String unescape(String sql, List escapeList)
@@ -970,7 +942,7 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
                 NODE_SQLFORMATTER,
                 new Element(NODE_SQLFORMATTER));
      
-        PreferencedUtil.readPreferences(this, root, SAVED_PROPERTIES);
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
     }
 
 
@@ -980,7 +952,45 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_SQLFORMATTER);
-        PreferencedUtil.writePreferences(this, root, SAVED_PROPERTIES);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
         XOMUtil.insertOrReplace(prefs, root);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Debug
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Dumps the flags as debug output.
+     * 
+     * @param keywords SQL keywords.
+     * @param escapeList List of escape sequences.
+     * @param newlineFlags Newline flags.
+     * @param indentFlags Indentation flags.
+     */
+    protected void dumpFlags(
+        String[] keywords, 
+        List escapeList,
+        int[] newlineFlags, 
+        int[] indentFlags)
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Tokens:\n");
+        
+        for (int i = 1; i < keywords.length - 1; i++)
+            sb.append(
+                indentFlags[i] 
+                + " [" 
+                + keywords[i] 
+                + "] " 
+                + newlineFlags[i] 
+                + "\n");
+
+        sb.append("Escapes:\n");
+        
+        for (int j = 0, n = escapeList.size(); j < n; j++)
+            sb.append(escapeList.get(j) + "\n");
+
+        logger_.debug(sb.toString());
     }
 }
