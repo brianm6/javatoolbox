@@ -209,10 +209,10 @@ public final class ResourceUtil
 
     
     /**
-     * Returns a temp file that contains the resource with the given name.
-     * The caller is responsible for deleting after being used. This method is
-     * especially useful for passing resources that don't exist as Files (image
-     * in a jar file for example) to a method that requires a File as input. 
+     * Returns a temp file that contains the resource with the given name. This
+     * method is especially useful for passing resources that don't exist as
+     * Files (image in a jar file for example) to a method that requires a File
+     * as input.
      * 
      * @param name Resource name (file, url, etc).
      * @return File
@@ -228,6 +228,7 @@ public final class ResourceUtil
         {   
             is = getResource(name);
             f = FileUtil.createTempFile();
+            f.deleteOnExit();
             os = new FileOutputStream(f);
             CopyUtils.copy(is, os);
         }
