@@ -1,11 +1,19 @@
 package toolbox.plugin.pdf;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.io.File;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JComponent;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.ListCellRenderer;
 
 import nu.xom.Element;
 
@@ -15,7 +23,11 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.layout.StackLayout;
+import toolbox.util.ui.list.JSmartList;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
@@ -96,14 +108,57 @@ public class PDFPlugin extends JPanel implements IPlugin
         
         explorer_ = new JFileExplorer(false);
         explorer_.addFileExplorerListener(new FileSelectionListener());
+
+        //        Vector v = new Vector();
+        //        v.add(new JSmartButton("One"));
+        //        v.add(new JSmartButton("Two"));
+        //        v.add(new JSmartButton("Three"));
+        //        
+        //        JList viewerList = new JSmartList(v);
+        //
+        //        class ButtonCellRenderer extends JSmartButton implements ListCellRenderer
+        //        {
+        //            public Component getListCellRendererComponent(
+        //                    JList list,
+        //                    Object value,
+        //                    int index,
+        //                    boolean isSelected,
+        //                    boolean cellHasFocus)
+        //            {
+        //                setText(value.toString());
+        //                return this;
+        //            }
+        //        }
+        //        
+        //        viewerList.setCellRenderer( new ButtonCellRenderer());
+
+        
+        JPanel viewerList = new JPanel(new StackLayout(StackLayout.VERTICAL));
+        viewerList.add("Top Wide Flush", new JSmartButton("One"));
+        viewerList.add("Top Wide Flush", new JSmartButton("Two"));
+        viewerList.add("Top Wide Flush", new JSmartButton("Three"));
+        
+        
+//        viewerList.setPreferredSize(
+//            new Dimension(
+//                viewerList.getPreferredSize().width,
+//                100));
+                
+        
+        JSplitPane splitter = 
+            new JSmartSplitPane(
+                JSplitPane.VERTICAL_SPLIT,
+                explorer_,
+                new JScrollPane(viewerList));
         
         flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper("File Explorer", explorer_);
+        flipPane_.addFlipper("File Explorer", splitter);
+        
         
         outputPanel_ = new JPanel(new BorderLayout());
         
-        add(BorderLayout.WEST, flipPane_);
         add(BorderLayout.CENTER, outputPanel_);
+        add(BorderLayout.WEST, flipPane_);
     }
     
 
