@@ -14,7 +14,6 @@
 	<classpathentry sourcepath="lib/src/commons-lang-src.zip" kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry sourcepath="lib/src/commons-net-src.zip" kind="lib" path="lib/commons-net.jar"/>
 	<classpathentry sourcepath="lib/src/jakarta-regexp-src.zip" kind="lib" path="lib/jakarta-regexp.jar"/>
-	<classpathentry kind="lib" path="lib/plastic.jar"/>
 	<classpathentry kind="lib" path="lib/kunststoff.jar"/>
 	<classpathentry kind="lib" path="lib/xplookandfeel.jar"/>
 	<classpathentry kind="lib" path="lib/batik.jar"/>
@@ -54,7 +53,9 @@
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
 	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
-	<classpathentry kind="lib" path="lib/calpahtml.jar"/>
 	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
+	<classpathentry kind="lib" path="lib/calphahtml.jar"/>
+	<classpathentry kind="lib" path="lib/looks.jar"/>
+	<classpathentry kind="lib" path="lib/hippolf.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
