@@ -32,11 +32,24 @@ import toolbox.util.io.ReverseFileReader;
  * 
  * <pre>
  *  Tail tail = new Tail();
- * // Tail server.log and send output to stdout tail.follow( new File("server.log"), new OutputStreamWriter(System.out));
- * // Starts tailer thread; returns immediately tail.start();
- * // Later on... tail.pause(); tail.unpause();
- * // All done..cleanup tail.stop();
- * // Change of mind...wheee tail.start();  
+ * 
+ * // Tail server.log and send output to stdout
+ * tail.follow(
+ *     new File("server.log"), 
+ *     new OutputStreamWriter(System.out));
+ * 
+ * // Starts tailer thread; returns immediately
+ * tail.start();
+ * 
+ * // Later on... 
+ * tail.pause();
+ * tail.unpause();
+ * 
+ * // All done..cleanup 
+ * tail.stop();
+ * 
+ * // Change of mind...wheee
+ * tail.start();  
  * </pre>
  */
 public class Tail
