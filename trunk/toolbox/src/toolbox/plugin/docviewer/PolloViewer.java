@@ -14,6 +14,7 @@ import org.outerj.pollo.xmleditor.model.XmlModel;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.FontUtil;
 
 /**
  * XML document viewer that uses Pollo for rendering the document.
@@ -38,13 +39,17 @@ public class PolloViewer implements DocumentViewer
                 new GenericDisplaySpecification();
             
             HashMap initMap = new HashMap();
-            init.put("use-random-colors", "true");
+            initMap.put("use-random-colors", "true");
             //init.put("fixed-color", "0xffeeff");
             //init.put("background-color", null);
-            init.put("treetype", "pollo");
+            initMap.put("treetype", "pollo");
             
             displaySpec.init(initMap);
             editor_ = new XmlEditor(null, displaySpec, -1);
+            editor_.setAntialiasing(true);
+            editor_.setCharacterDataFont(FontUtil.getPreferredMonoFont());
+            editor_.setElementNameFont(FontUtil.getPreferredMonoFont());
+            
         }
         catch (Exception pe)
         {
