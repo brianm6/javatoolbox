@@ -22,7 +22,6 @@ package toolbox;
  * TODO: Add a filled bar mode to JSourceView
  * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
- * TODO: Update to latest TableSorter - http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/TableSorter.java
  * =============================================================================
  * TODO: StatCVS: Integrate statcvs-xml from berlios
  * =============================================================================
@@ -55,6 +54,7 @@ package toolbox;
  * - DesktopPluginHost now rembers window position and sizes
  * - Add wildcard matchine to the file switch in tree
  * - Scan source for refactorings to use DisposeAction 
+ * - Update to latest Sun TableSorter
  * ============================================================================= 
  * </pre>
  */
