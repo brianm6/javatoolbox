@@ -102,7 +102,7 @@ public class FindClassPlugin implements IPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         delegate_.savePrefs(prefs);    
     }
