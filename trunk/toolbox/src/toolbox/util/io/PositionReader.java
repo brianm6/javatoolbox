@@ -15,52 +15,53 @@ public class PositionReader extends Reader
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a position reader
      * 
      * @param  reader  Reader to chain
      */
-    public PositionReader( Reader reader )
+    public PositionReader(Reader reader)
     {
-        super( reader );
-        in_ = reader;;
+        super(reader);
+        in_ = reader;
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Overridden from java.io.Reader
     //--------------------------------------------------------------------------
-    
+
     /**
      * Read a single character.
      *
      * @return     Single character read
      * @throws     IOException  If an I/O error occurs
      */
-    public int read() throws IOException 
+    public int read() throws IOException
     {
         int read = in_.read();
-        if( read != -1 )
+        if (read != -1)
             offset_++;
-            
+
         return read;
     }
-    
+
     /**
       * Read characters into a portion of an array.
       * 
       * @param      array   Storage for read characters
       * @param      off     Offset in array to store chars
       * @param      len     NUmber of chars to read
+      * 
       * @return     Number of characters read
-      * @throws  IOException  If an I/O error occurs
+      * @throws     IOException  If an I/O error occurs
       */
     public int read(char[] array, int off, int len) throws IOException
     {
-        int read = in_.read( array, off, len );
+        int read = in_.read(array, off, len);
 
         // count characters read
-        if( read > 0 )
+        if (read > 0)
         {
             offset_ += read;
         }
@@ -75,12 +76,12 @@ public class PositionReader extends Reader
      * @return  Number of characters skipped
      * @throws  IOException  If an I/O error occurs
      */
-    public long skip( long n ) throws IOException 
+    public long skip(long n) throws IOException
     {
         long skipped = in_.skip(n);
-        
+
         offset_ += skipped;
-        
+
         return skipped;
     }
 
@@ -90,7 +91,7 @@ public class PositionReader extends Reader
      * @return  True if read, false otherwise
      * @throws  IOException  If an I/O error occurs
      */
-    public boolean ready() throws IOException 
+    public boolean ready() throws IOException
     {
         return in_.ready();
     }
@@ -100,7 +101,7 @@ public class PositionReader extends Reader
      * 
      * @return  True if mark supported, false otherwise
      */
-    public boolean markSupported() 
+    public boolean markSupported()
     {
         return in_.markSupported();
     }
@@ -111,9 +112,9 @@ public class PositionReader extends Reader
      * @param      readAheadLimit  Read ahead limit
      * @throws     IOException  If an I/O error occurs
      */
-    public void mark( int readAheadLimit ) throws IOException 
+    public void mark(int readAheadLimit) throws IOException
     {
-        in_.mark( readAheadLimit );
+        in_.mark(readAheadLimit);
         markOffset_ = offset_;
     }
 
@@ -122,7 +123,7 @@ public class PositionReader extends Reader
      *
      * @throws  IOException  If an I/O error occurs
      */
-    public void reset() throws IOException 
+    public void reset() throws IOException
     {
         in_.reset();
         offset_ = markOffset_;
@@ -133,43 +134,46 @@ public class PositionReader extends Reader
      *
      * @throws  IOException  If an I/O error occurs
      */
-    public void close() throws IOException 
+    public void close() throws IOException
     {
         in_.close();
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
 
     /**
      * @param  stopAt  Character to stop at
-     * @return the characters from the current postion
-     *         until the stopAt or EOF is found.
+     * @return Characters from the current postion until the stopAt or 
+     *         EOF is found.
      * @throws IOException on IOError
      */
-    public String readUntil( char stopAt ) throws IOException
+    public String readUntil(char stopAt) throws IOException
     {
-        StringBuffer sb = new StringBuffer( 256 );
-        
-        synchronized( lock ) 
+        StringBuffer sb = new StringBuffer(256);
+
+        synchronized (lock)
         {
             int c;
-            
-            while( ( c = read() ) != -1 )
+
+            while ((c = read()) != -1)
             {
-                sb.append( (char) c );
-                
-                if( c == stopAt )
+                sb.append((char) c);
+
+                if (c == stopAt)
                     break;
             }
         }
-        
+
         return sb.toString();
     }
 
     /**
      * @return  Offset
      */
-    public long getOffset() 
-    { 
-        return offset_; 
+    public long getOffset()
+    {
+        return offset_;
     }
 }

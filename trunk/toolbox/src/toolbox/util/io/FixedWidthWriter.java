@@ -88,7 +88,7 @@ public class FixedWidthWriter extends FilterWriter
      * @param   str      String to justify
      * @param   width    Width of resulting screen
      * @param   padChar  Character to use for padding
-     * @param   padRight if true, pad on the right; if false, pad on the left
+     * @param   padRight If true, pad on the right; if false, pad on the left
      * @throws  IOException on IO error
      */
     public void write(String str, int width, char padChar, boolean padRight)

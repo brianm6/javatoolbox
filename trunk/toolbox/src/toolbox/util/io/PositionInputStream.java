@@ -17,40 +17,40 @@ public class PositionInputStream extends InputStream
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor for PositionInputStream
      * 
      * @param  iStream  Input stream
      */
-    public PositionInputStream( InputStream iStream )
+    public PositionInputStream(InputStream iStream)
     {
-        if( iStream == null )
+        if (iStream == null)
             throw new NullPointerException();
-            
+
         in_ = iStream;
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Overridden from java.io.InputStream
     //--------------------------------------------------------------------------
-    
+
     /**
      * Read a single byte.
      *
      * @return     Single byte that was read
      * @throws     IOException  If an I/O error occurs
      */
-    public int read() throws IOException 
+    public int read() throws IOException
     {
         int read = in_.read();
-        if( read != -1 )
+        if (read != -1)
             offset_++;
-            
+
         lastByteRead_ = read;
         return read;
     }
-    
+
     /**
      * Read a byte into a portion of an array.
      * 
@@ -60,15 +60,15 @@ public class PositionInputStream extends InputStream
      * @return  Number of bytes read
      * @throws  IOException  If an I/O error occurs
      */
-    public int read(byte b[], int off, int len) throws IOException 
+    public int read(byte b[], int off, int len) throws IOException
     {
-        int read = in_.read( b, off, len );
+        int read = in_.read(b, off, len);
 
         // count characters read
-        if( read > 0 )
+        if (read > 0)
         {
             offset_ += read;
-            lastByteRead_ = b[ off + read - 1 ];
+            lastByteRead_ = b[off + read - 1];
         }
 
         return read;
@@ -81,12 +81,12 @@ public class PositionInputStream extends InputStream
      * @return   Number of characters skipped
      * @throws   IOException  If an I/O error occurs
      */
-    public long skip(long n) throws IOException 
+    public long skip(long n) throws IOException
     {
         long skipped = in_.skip(n);
-        
+
         offset_ += skipped;
-        
+
         return skipped;
     }
 
@@ -96,17 +96,17 @@ public class PositionInputStream extends InputStream
      * @return  Number of bytes available to read
      * @throws  IOException on IO error
      */
-    public int available() throws IOException 
+    public int available() throws IOException
     {
         return in_.available();
     }
-    
+
     /**
      * Close the stream.
      *
      * @exception  IOException  If an I/O error occurs
      */
-    public void close() throws IOException 
+    public void close() throws IOException
     {
         in_.close();
     }
@@ -116,19 +116,19 @@ public class PositionInputStream extends InputStream
      * 
      * @return  True if mark is supported, false otherwise
      */
-    public boolean markSupported() 
+    public boolean markSupported()
     {
         return in_.markSupported();
     }
-    
+
     /**
      * Mark the present position in the stream.
      *
      * @param readAheadLimit  Read ahead limit
      */
-    public void mark( int readAheadLimit )
+    public void mark(int readAheadLimit)
     {
-        in_.mark( readAheadLimit );
+        in_.mark(readAheadLimit);
         markOffset_ = offset_;
     }
 
@@ -137,12 +137,16 @@ public class PositionInputStream extends InputStream
      *
      * @exception  IOException  If an I/O error occurs
      */
-    public void reset() throws IOException 
+    public void reset() throws IOException
     {
         in_.reset();
         offset_ = markOffset_;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Reads until a given byte
      * 
@@ -150,9 +154,9 @@ public class PositionInputStream extends InputStream
      * @return  Bytes from the current postion until the stopAt or EOF is found.
      * @throws  IOException on IO error
      */
-    public byte[] readUntil( byte stopAt ) throws IOException
+    public byte[] readUntil(byte stopAt) throws IOException
     {
-        return readUntil( new byte[] { stopAt } );
+        return readUntil(new byte[] { stopAt });
     }
 
     /**
@@ -162,38 +166,37 @@ public class PositionInputStream extends InputStream
      * @return  Bytes from the current postion until the stopAt or EOF is found.
      * @throws  IOException on IO error
      */
-    public byte[] readUntil( byte[] stopAt ) throws IOException
+    public byte[] readUntil(byte[] stopAt) throws IOException
     {
-        ByteArrayOutputStream oStream = new ByteArrayOutputStream( 256 );
-        
-        synchronized( this )
+        ByteArrayOutputStream oStream = new ByteArrayOutputStream(256);
+
+        synchronized (this)
         {
             int b;
-            
-            outer:
-            while( ( b = read() ) != -1 )
+
+            outer : while ((b = read()) != -1)
             {
-                oStream.write( b );
-                for( int i = 0; i < stopAt.length; i++ )
+                oStream.write(b);
+                for (int i = 0; i < stopAt.length; i++)
                 {
-                    if( b == stopAt[i] )
+                    if (b == stopAt[i])
                         break outer;
                 }
             }
-            
+
         }
-        
+
         return oStream.toByteArray();
     }
 
     /**
      * @return  Current offset read using the InputStream
      */
-    public long getOffset() 
-    { 
-        return offset_; 
+    public long getOffset()
+    {
+        return offset_;
     }
-    
+
     /**
      * @return Last byte read by this InputStream.
      */
