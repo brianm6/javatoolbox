@@ -17,8 +17,11 @@ public class ReverseFileReader extends Reader
 {
     private static final Logger logger_ =
         Logger.getLogger(ReverseFileReader.class);
-        
+
+    /** File to read in reverse order */        
     private RandomAccessFile file_;
+    
+    /** Current position in the file */
     private long pointer_;
 
     //--------------------------------------------------------------------------
@@ -26,15 +29,15 @@ public class ReverseFileReader extends Reader
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a ReverseFileReader for the given file
+     * Creates a ReverseFileReader
      * 
-     * @param  f  File to read in reverse order from
+     * @param  file  File to read in reverse order
      * @throws IOException on I/O error
      * @throws FileNotFoundException for non-existant file 
      */        
-    public ReverseFileReader(File f) throws IOException, FileNotFoundException
+    public ReverseFileReader(File file) throws IOException,FileNotFoundException
     {
-        file_ = new RandomAccessFile(f, "r");
+        file_ = new RandomAccessFile(file, "r");
         pointer_ = file_.length() - 1;
     }
     

@@ -7,9 +7,7 @@ import java.io.OutputStream;
  */
 public class StringOutputStream extends OutputStream
 {
-    /** 
-     * Output buffer 
-     */
+    /** Output buffer */
     private StringBuffer output_;
 
     //--------------------------------------------------------------------------
@@ -17,25 +15,15 @@ public class StringOutputStream extends OutputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Create a new StringOutputStream with the default initial buffer size.
+     * Creates a StringOutputStream
      */
     public StringOutputStream()
     {
         output_ = new StringBuffer();
     }
 
-    /**
-     * Create a new StringOutputStream with the specified initial buffer size.
-     *
-     * @param initialBufferSize  The size of the initial buffer
-     */
-    public StringOutputStream(int initialBufferSize)
-    {
-        output_ = new StringBuffer(initialBufferSize);
-    }
-
     //--------------------------------------------------------------------------
-    //  Overriden Methods from OutputStream
+    //  Overrides java.io.OutputStream
     //--------------------------------------------------------------------------
 
     /**
@@ -55,9 +43,9 @@ public class StringOutputStream extends OutputStream
     }
 
     /**
-     * Write a single character. Ignores end of file.
+     * Write a single character
      *
-     * @param  outputChar  The character to write to the stream
+     * @param  outputChar  Character to write to the stream
      */
     public void write(int outputChar)
     {
@@ -65,8 +53,14 @@ public class StringOutputStream extends OutputStream
             output_.append((char) outputChar);
     }
 
+    //--------------------------------------------------------------------------
+    // Overrides java.lang.Object
+    //--------------------------------------------------------------------------
+
     /**
-     * @return the output as a String.
+     * Output buffer
+     * 
+     * @return Output as a string.
      */
     public String toString()
     {
@@ -78,7 +72,9 @@ public class StringOutputStream extends OutputStream
     //--------------------------------------------------------------------------
         
     /**
-     * @return The stringbuffer
+     * Stringbuffer backing the stream
+     * 
+     * @return StringBuffer
      */
     public StringBuffer getBuffer()
     {

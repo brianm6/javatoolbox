@@ -11,37 +11,26 @@ import org.apache.regexp.RESyntaxException;
 /**
  * RegexFilterReader applies a regular expression to each line read from a 
  * Reader. If the line matches the regular expression, it is included and 
- * returned to the caller, otherwise the line is omitted (/dev/null).
+ * remains in the stream, otherwise the line is omitted.
  */
 public class RegexFilterReader extends LineNumberReader
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(RegexFilterReader.class);
     
-    /** 
-     * Default regular expression matches all if one is not specified 
-     */    
+    /** Default regular expression matches all if one is not specified */    
     private static final String DEFAULT_MATCH = ".";
 
-    /** 
-     * Regular expression as a string 
-     */
+    /** Regular expression as a string */
     private String strRegExp_;
     
-    /** 
-     * Flag to match case 
-     */
+    /** Flag to match case */
     private boolean matchCase_;
 
-    /** 
-     * Inverse match flag 
-     */
+    /** Inverse match flag */
     private boolean matchInverse_;
     
-    /** 
-     * Regular expression 
-     */
+    /** Regular expression */
     private RE regExp_;
 
     //--------------------------------------------------------------------------
@@ -51,18 +40,17 @@ public class RegexFilterReader extends LineNumberReader
     /**
      * Creates a RegexFilterReader
      * 
-     * @param  in  Reader to wrap
+     * @param  in  Reader to filter
      */
     public RegexFilterReader(Reader in)
     {
         this(in, DEFAULT_MATCH, false);
     }
 
-
     /**
      * Creates a RegexFilterReader
      * 
-     * @param  in         Reader to wrap
+     * @param  in         Reader to filter
      * @param  regExp     Regular expression to match
      * @param  matchCase  Set to true to observe case sensetivity
      */
@@ -71,11 +59,10 @@ public class RegexFilterReader extends LineNumberReader
         this(in, regExp, matchCase, false);
     }
 
-
     /**
      * Creates a RegexFilterReader
      * 
-     * @param  in           Reader to wrap
+     * @param  in           Reader to filter
      * @param  regExp       Regular expression to match
      * @param  matchCase    Set to true to observe case sensetivity
      * @param  matchInverse Match all lines that do not satisty the regular
@@ -103,7 +90,7 @@ public class RegexFilterReader extends LineNumberReader
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.io.LineNumberReader
+    //  Overrides java.io.LineNumberReader
     //--------------------------------------------------------------------------
         
     /**

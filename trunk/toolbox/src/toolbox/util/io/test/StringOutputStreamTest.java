@@ -41,10 +41,7 @@ public class StringOutputStreamTest extends TestCase
         logger_.info("Running testConstructors...");
         
         StringOutputStream sos = new StringOutputStream();
-        StringOutputStream sos2 = new StringOutputStream(1024);
-        
         assertNotNull(sos);
-        assertNotNull(sos2);
     }
         
     /**
@@ -57,9 +54,7 @@ public class StringOutputStreamTest extends TestCase
         logger_.info("Running testWrite...");
         
         StringOutputStream sos = new StringOutputStream();
-        
         String testString = "holy moly!";
-        
         sos.write(testString.getBytes());
         
         assertEquals("strings don't match", testString, sos.toString());
@@ -76,11 +71,8 @@ public class StringOutputStreamTest extends TestCase
         
         StringOutputStream sos = new StringOutputStream();
         sos.close();
-        
         StringOutputStream sos2 = new StringOutputStream();
         sos2.write("hello".getBytes());
         sos2.close();
     }
 }
-
-
