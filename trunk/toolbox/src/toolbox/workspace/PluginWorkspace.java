@@ -3,11 +3,8 @@ package toolbox.util.ui.plugin;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -27,34 +24,22 @@ import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
-import org.apache.regexp.RESyntaxException;
 
-import toolbox.findclass.FindClass;
-import toolbox.findclass.FindClassResult;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.PropertiesUtil;
 import toolbox.util.ResourceCloser;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JListPopupMenu;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
@@ -98,8 +83,8 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     /**
      * Entrypoint 
      * 
-     * Args can be a list of one or more classnames that implement the 
-     * IPlugin interface
+     * @param  args  Args can be a list of one or more classnames that 
+     *               implement the IPlugin interface
      */
     public static void main(String args[])
     {

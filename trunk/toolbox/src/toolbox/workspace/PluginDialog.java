@@ -29,7 +29,6 @@ import org.apache.regexp.RESyntaxException;
 
 import toolbox.findclass.FindClass;
 import toolbox.findclass.FindClassResult;
-import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JListPopupMenu;
@@ -225,7 +224,7 @@ public class ManagePluginsDialog extends JDialog
             {
                 String pluginClass = it.next().getClass().getName();
 
-                // Exclude the plugins that are already loaded                        
+                // Exclude the plugins that are already loaded
                 if (pluginClass.equals(clazz))
                 {
                     skip = true;
@@ -235,7 +234,7 @@ public class ManagePluginsDialog extends JDialog
 
             if (!skip)
             {
-                logger_.debug("Passed already loaded check : " + clazz);                    
+                logger_.debug("Passed already loaded check : " + clazz);
                     
                 Object plugin = null;
 
@@ -253,7 +252,7 @@ public class ManagePluginsDialog extends JDialog
                 }
                 
                 // Make sure plugin class implements 
-                // the IPlugin interface                                            
+                // the IPlugin interface
                 if (!skip)
                 {
                     if (plugin instanceof IPlugin)
@@ -305,10 +304,12 @@ public class ManagePluginsDialog extends JDialog
                 {
                     if (className_ != null)
                     {
-                        plugin_ = (IPlugin) Class.forName(className_).newInstance();    
+                        plugin_ = (IPlugin) 
+                            Class.forName(className_).newInstance();    
                     }
                     else
-                        throw new IllegalArgumentException("Classname not provided");
+                        throw new IllegalArgumentException(
+                            "Classname not provided"); 
                 }
             }
             catch (Exception e)
@@ -343,16 +344,14 @@ public class ManagePluginsDialog extends JDialog
            
         public void actionPerformed(ActionEvent e)
         {
-            //Object meta[] = inactiveList_.getSelectedValues();
-            //logger_.debug("===> " + meta[0].getClass() + " " + meta[0].getClass().getName());
-            
             Object[] meta = inactiveList_.getSelectedValues();
             
             for (int i=0; i<meta.length; i++)
             {
                 try
                 {
-                    parent_.registerPlugin(((PluginMeta)meta[i]).getClassName());
+                    parent_.registerPlugin(
+                        ((PluginMeta)meta[i]).getClassName());
                 }
                 catch (Exception ex)
                 {
@@ -387,7 +386,9 @@ public class ManagePluginsDialog extends JDialog
                 for (int i=0; i<meta.length; i++)
                 {
                     // Get the class name for the selected plugin name
-                    parent_.deregisterPlugin(((PluginMeta)meta[i]).getClassName());
+                    parent_.deregisterPlugin(
+                        ((PluginMeta)meta[i]).getClassName());
+                        
                     inactiveModel_.addElement(meta[i]);
                 }
             }

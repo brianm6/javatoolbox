@@ -40,8 +40,14 @@ public class QueryPlugin extends JPanel implements IPlugin
     public static final Logger logger_ =
         Logger.getLogger(QueryPlugin.class);   
 
+    /** 
+     * Key to the history of SQL statements
+     */
     public static final String KEY_HISTORY = "querypanel.history";
-        
+    
+    /**
+     * Newline character
+     */    
     public static final String NEWLINE = "\n";
 
     private IStatusBar  statusBar_;    
@@ -66,6 +72,8 @@ public class QueryPlugin extends JPanel implements IPlugin
     
     /**
      * Constructor for QueryPlugin.
+     * 
+     * @param  statusBar  IStatusBar interface
      */
     public QueryPlugin(IStatusBar statusBar)
     {
@@ -75,7 +83,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     
     //--------------------------------------------------------------------------
     //  Private
-    //-------------------------------------------------------------------------- 
+    //--------------------------------------------------------------------------
     
     /** 
      * Builds the GUI
@@ -174,7 +182,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         if (!sqlHistory_.containsValue(sql))
         {   
             sqlHistory_.put(sql, sql);
-            JMenuItem menuItem = new JMenuItem(new RunHistoryQueryAction(sql));            
+            JMenuItem menuItem = new JMenuItem(new RunHistoryQueryAction(sql));
             sqlPopup_.add(menuItem);
         }
     }
@@ -226,6 +234,8 @@ public class QueryPlugin extends JPanel implements IPlugin
 
     /**
      * Saves contents of sqlPopupMenu to a Properties object 
+     * 
+     * @param  prefs  Preferences object
      */
     public void applyPrefs(Properties prefs)
     {
@@ -248,6 +258,8 @@ public class QueryPlugin extends JPanel implements IPlugin
 
     /**
      * Restores the of the sqlPopupMenu from a Properties object
+     * 
+     * @param  prefs  Preferences object
      */
     public void savePrefs(Properties prefs)
     {
@@ -341,7 +353,7 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     private class RunHistoryQueryAction extends AbstractAction
     {
-        String sql_;
+        private String sql_;
         
         public RunHistoryQueryAction(String sql)
         {
