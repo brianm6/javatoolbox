@@ -589,7 +589,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         menu.add(decorationsCheckBoxItem_);
         menu.add(pluginHostManager_.createMenu());
 
-        menu.add(new AbstractAction(LABEL_PREFERENCES_MENU)
+        menu.add(new JSmartMenuItem(new AbstractAction(LABEL_PREFERENCES_MENU)
         {
             /**
              * @see java.awt.event.ActionListener#actionPerformed(
@@ -601,7 +601,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
                     PluginWorkspace.this,
                     preferencesManager_).setVisible(true);
             }
-        });
+        }));
 
         return menu;
     }
