@@ -10,7 +10,20 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
- * Abstract base class for constant types that support serialization.
+ * Abstract base class for constants. Automatically supports "safe"
+ * serialization so that hydration in VMs other that the original will result
+ * in a single instance per instance of the constant.
+ * <p> 
+ * <b>Example:</b>
+ * <pre class="snippet">
+ * public class MyConstant extends AbstractConstant
+ * {
+ *     public static final MyConstant ONE = new MyConstant();
+ *     public static final MyConstant TWO = new MyConstant();
+ * 
+ *     private MyConstant() {}
+ * }                                                               
+ * </pre>
  */
 public abstract class AbstractConstant implements Serializable
 {
