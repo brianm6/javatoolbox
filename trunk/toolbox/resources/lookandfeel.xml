@@ -296,5 +296,44 @@
       <Property name="theme.path" value="skinlf/xpluna.zip"/>
   </LookAndFeel>
   -->
+
+  <!-- ==================================================================== -->
+  <!-- Jide Look and Feels                                                  -->
+  <!-- ==================================================================== -->
+  
+  <!--
+  <LookAndFeel 
+      name="Eclipse Metal"
+      class="com.jidesoft.plaf.eclipse.EclipseMetalLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Eclipse Windows"
+      class="com.jidesoft.plaf.eclipse.EclipseWindowsLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+  
+  <LookAndFeel 
+      name="VS.Net Metal"
+      class="com.jidesoft.plaf.vsnet.VsnetMetalLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+  
+  <LookAndFeel 
+      name="VS.Net Windows"
+      class="com.jidesoft.plaf.vsnet.VsnetWindowsLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+  </LookAndFeel>
+  
+  <LookAndFeel 
+      name="Alloy Jide"
+      class="com.jidesoft.plaf.vsnet.AlloyJideLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateAlloyLookAndFeelAction">
+      <Property	name="theme.name"    value="Alloy"/>
+      <Property	name="theme.class"   value="com.incors.plaf.alloy.DefaultAlloyTheme"/>
+      <Property	name="theme.license" value="2#Horst_Heistermann#1w2sca#5qzosw"/>
+  </LookAndFeel>
+  -->
   
 </LookAndFeels>
