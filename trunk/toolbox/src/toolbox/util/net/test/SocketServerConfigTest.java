@@ -16,7 +16,7 @@ import toolbox.util.net.SocketServerConfig;
  */
 public class SocketServerConfigTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(SocketServerConfigTest.class);
 

@@ -21,7 +21,7 @@ import toolbox.util.net.SocketConnection;
  */
 public class SocketConnectionTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(SocketConnectionTest.class);
     

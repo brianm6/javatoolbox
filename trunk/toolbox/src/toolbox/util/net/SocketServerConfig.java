@@ -16,7 +16,7 @@ import toolbox.util.collections.AsMap;
  */
 public class SocketServerConfig
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(SocketServerConfig.class);
 
@@ -407,7 +407,7 @@ public class SocketServerConfig
     //--------------------------------------------------------------------------
 
     /**
-     * @return Dumped to string
+     * @return Configuration as a string
      */
     public String toString()
     {
