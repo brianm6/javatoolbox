@@ -33,8 +33,8 @@ public class JFileExplorerTest extends UITestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
-     * @throws Exception on error
+     * @param args None recognized.
+     * @throws Exception on error.
      */
     public static void main(String[] args) throws Exception
     {

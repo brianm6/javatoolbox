@@ -23,8 +23,11 @@ public class JConveyorMenuTest extends UITestCase
     private static final Logger logger_ =
         Logger.getLogger(JConveyorMenuTest.class);
 
-    private static int cnt = 1;
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
+    private static int cnt = 1;
     private JMenu menu_;
     
     //--------------------------------------------------------------------------
@@ -34,7 +37,7 @@ public class JConveyorMenuTest extends UITestCase
     /** 
      * Entry point.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -72,7 +75,7 @@ public class JConveyorMenuTest extends UITestCase
     //--------------------------------------------------------------------------
     
     /**
-     * TestAction
+     * TestAction.
      */
     class TestAction extends AbstractAction
     {

@@ -21,13 +21,22 @@ public class JSmartOptionPaneTest extends UITestCase
     private static final Logger logger_ =
         Logger.getLogger(JSmartOptionPaneTest.class);
         
-    private static final String MSG_TITLE = "JSmartOptionPane";
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
     
-    private static final String MSG_TEXT = 
-        "This is the test of the JOptionPane";
-        
+    private static final String MSG_TITLE = "JSmartOptionPane";
+    private static final String MSG_TEXT = "This is the test of JOptionPane";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private static String MSG_DETAIL;
 
+    /**
+     * Parent frame.
+     */    
     private JFrame parent_;
 
     //--------------------------------------------------------------------------
@@ -37,7 +46,7 @@ public class JSmartOptionPaneTest extends UITestCase
     /**
      * Entry point.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */    
     public static void main(String[] args)
     {
@@ -51,7 +60,7 @@ public class JSmartOptionPaneTest extends UITestCase
     /**
      * Creates the detail portion of the test message.
      * 
-     * @throws Exception on error 
+     * @throws Exception on error. 
      */
     public void setUp() throws Exception
     {
@@ -90,7 +99,7 @@ public class JSmartOptionPaneTest extends UITestCase
     /**
      * Tests showMessageDialog() for error msg type.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */ 
     public void testShowDetailedMessageDialogError() throws Exception
     {
@@ -110,7 +119,7 @@ public class JSmartOptionPaneTest extends UITestCase
     /**
      * Tests showMessageDialog() for variable parameters.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowDetailedMessageDialogParams() throws Exception
     {
@@ -126,7 +135,7 @@ public class JSmartOptionPaneTest extends UITestCase
     /**
      * Tests showExceptionMessageDialog()
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testShowExceptionMessageDialog()  throws Exception
     {

@@ -22,6 +22,10 @@ public class SmartActionTest extends UITestCase
     private static final Logger logger_ =
         Logger.getLogger(SmartActionTest.class);
         
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Time to simulate action execution doing work. 
      */        
@@ -34,7 +38,7 @@ public class SmartActionTest extends UITestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {

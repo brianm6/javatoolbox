@@ -30,7 +30,7 @@ public class JFlipPaneTest extends UITestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entry point.
+     * Entrypoint.
      * 
      * @param args None recognized.
      * @throws Exception on error.
@@ -75,8 +75,7 @@ public class JFlipPaneTest extends UITestCase
     /**
      * Creates a JFlipPane for the given position.
      * 
-     * @param pos Position to place the flip pane. 
-     *        JFlipPane.TOP|RIGHT|LEFT|RIGHT
+     * @param pos Position to place the flip pane.JFlipPane.TOP|RIGHT|LEFT|RIGHT
      * @return JFlipPane
      */
     protected JFlipPane createFlipPane(String pos)

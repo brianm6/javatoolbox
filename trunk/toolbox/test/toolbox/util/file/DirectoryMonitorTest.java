@@ -26,7 +26,7 @@ public class DirectoryMonitorTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -40,7 +40,7 @@ public class DirectoryMonitorTest extends TestCase
     /**
      * Tests a full lifecycle of the DirectoryMonitor. 
      * 
-     * @throws Exception on IO error
+     * @throws Exception on I/O error.
      */
     public void testDirectoryMonitor() throws Exception
     {
@@ -94,7 +94,7 @@ public class DirectoryMonitorTest extends TestCase
      * Tests failure of an attempt to start an already running directory 
      * monitor. 
      * 
-     * @throws Exception on I/O error
+     * @throws Exception on I/O error.
      */
     public void testDirectoryMonitorFalseStart() throws Exception
     {

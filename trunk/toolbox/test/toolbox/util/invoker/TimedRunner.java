@@ -8,6 +8,10 @@ import java.util.Date;
  */
 public class TimedRunner implements Runnable
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Number of milliseconds run() should take to execute.
      */

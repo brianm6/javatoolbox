@@ -22,6 +22,10 @@ public class JConveyorPopupMenuTest extends UITestCase
     private static final Logger logger_ =
         Logger.getLogger(JConveyorPopupMenuTest.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     private static int cnt = 1;
     private JPopupMenu popupMenu_;
     
@@ -32,7 +36,7 @@ public class JConveyorPopupMenuTest extends UITestCase
     /** 
      * Entry point.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
