@@ -276,8 +276,8 @@ public class ClassUtil
      */
     public static boolean isArchive(String filename)
     {
-        filename = filename.toLowerCase().trim();
-        return (filename.endsWith(".zip") || filename.endsWith(".jar"));        
+        String f = filename.toLowerCase().trim();
+        return (f.endsWith(".zip") || f.endsWith(".jar"));        
     }
 
     /**
