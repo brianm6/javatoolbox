@@ -1,4 +1,4 @@
-package toolbox.jdbc;
+package toolbox.plugin.jdbc;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;

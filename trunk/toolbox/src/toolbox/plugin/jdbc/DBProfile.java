@@ -1,4 +1,4 @@
-package toolbox.jdbc;
+package toolbox.plugin.jdbc;
 
 import java.io.IOException;
 import java.io.StringReader;
