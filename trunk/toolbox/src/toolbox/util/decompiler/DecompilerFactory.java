@@ -14,19 +14,19 @@ public final class DecompilerFactory
     /**
      * Decompiler enumeration for Jode.
      */
-    private static final String DECOMPILER_JODE = 
+    public static final String DECOMPILER_JODE = 
         "toolbox.util.decompiler.JodeDecompiler";
 
     /**
      * Decompiler enumeration for Jad.
      */
-    private static final String DECOMPILER_JAD = 
+    public static final String DECOMPILER_JAD = 
         "toolbox.util.decompiler.JadDecompiler";
     
     /**
-     * Decomiler enumeration for JReversePro.
+     * Decompiler enumeration for JReversePro.
      */
-    private static final String DECOMPILER_JREVERSEPRO = 
+    public static final String DECOMPILER_JREVERSEPRO = 
         "toolbox.util.decompiler.JReverseProDecompiler";
 
     /**
