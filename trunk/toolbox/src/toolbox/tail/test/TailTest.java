@@ -1,5 +1,7 @@
 package toolbox.tail.test;
 
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.PrintWriter;
@@ -115,6 +117,70 @@ public class TailTest extends TestCase
         tail.removeWriter(sw);
         tail.removeTailListener(listener);
     }
+
+    /**
+     * Tests tailing of a stream
+     * 
+     * @throws  Exception on error
+     */
+    public void testTailStream() throws Exception
+    {
+//       logger_.info("Running testTailStream...");
+//       
+//        PipedOutputStream pos = new PipedOutputStream();
+//        PipedInputStream  pis = new PipedInputStream(pos);
+//
+//        ThreadUtil.run(
+//            this,
+//            "writeDelayed",
+//            new Object[] {
+//                pos,
+//                new Integer(5),
+//                new Integer(500),
+//                "line " });
+//
+//        Tail tail = new Tail();
+//        
+//        // Create sinks for tail and attach them to the tail
+//        StringOutputStream sos = new StringOutputStream();
+//        StringWriter sw = new StringWriter();
+//        tail.addOutputStream(sos);
+//        tail.addWriter(sw);
+//
+//        // Create a listener so we can test event
+//        TestTailListener listener = new TestTailListener();        
+//        tail.addTailListener(listener);
+//        
+//        logger_.info(tail.toString());
+//        
+//        // Attach the input reader to the tail
+//        tail.setTailReader(pis);
+//        
+//        // Lifecycle of tail
+//        tail.start();
+//        listener.waitForStart();
+//        ThreadUtil.sleep(1000);
+//        
+//        tail.pause();
+//        listener.waitForPause();
+//        ThreadUtil.sleep(1000);
+//        
+//        tail.unpause();
+//        listener.waitForUnpause();
+//        ThreadUtil.sleep(1000);
+//        
+//        tail.stop();
+//        listener.waitForStop();
+//        
+//        // Dump contents of the sinks
+//        logger_.info("OutputStream sink:\n" + sos.getBuffer());
+//        logger_.info("OutputWriter sink:\n" + sw.toString());
+//        
+//        tail.removeOutputStream(sos);
+//        tail.removeWriter(sw);
+//        tail.removeTailListener(listener);
+    }
+
     
     //--------------------------------------------------------------------------
     // Helpers
