@@ -833,13 +833,13 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // IPlugin Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map params)
+    public void initialize(Map params)
     {
         if (params != null)
             statusBar_ = (IStatusBar)
@@ -848,6 +848,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         buildView();
     }
 
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
@@ -875,11 +878,14 @@ public class QueryPlugin extends JPanel implements IPlugin
         return "Simple SQL driven interface to a JDBC accessible database.";
     }
 
-
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.workspace.IPlugin#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
     }
 

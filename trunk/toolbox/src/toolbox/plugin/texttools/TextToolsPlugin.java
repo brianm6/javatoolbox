@@ -61,7 +61,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         Logger.getLogger(TextToolsPlugin.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     private static final String NODE_TEXTTOOLS_PLUGIN   = "TextToolsPlugin";
@@ -226,13 +226,13 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // IPlugin Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map params)
+    public void initialize(Map params)
     {
         if (params != null)
             statusBar_ = (IStatusBar)
@@ -241,6 +241,9 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         buildView();
     }
 
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
@@ -269,11 +272,14 @@ public class TextToolsPlugin extends JPanel implements IPlugin
                "tokenizing, and regular expression based filtering.";
     }
 
-
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.workspace.IPlugin#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
         outputArea_.setText("");
         inputArea_.setText("");

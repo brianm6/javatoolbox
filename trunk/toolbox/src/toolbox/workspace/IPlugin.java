@@ -1,8 +1,9 @@
 package toolbox.workspace;
 
-import java.util.Map;
-
 import javax.swing.JComponent;
+
+import toolbox.util.service.Destroyable;
+import toolbox.util.service.Initializable;
 
 /**
  * IPlugin defines the interface for any plugins that can hosted by the 
@@ -17,18 +18,10 @@ import javax.swing.JComponent;
  *     host environment.
  * </ul>
  * 
- * @see PluginWorkspace
+ * @see toolbox.workspace.PluginWorkspace
  */
-public interface IPlugin extends IPreferenced
+public interface IPlugin extends Initializable, Destroyable, IPreferenced
 {
-    /**
-     * Initializes the plugin.
-     * 
-     * @param props Initialization properties and parameters.
-     */
-    void startup(Map props);
-
-    
     /**
      * Friendly name of the plugin used for identification in workspace.
      * 
@@ -51,10 +44,4 @@ public interface IPlugin extends IPreferenced
      * @return GUI component of the plugin.
      */
     JComponent getComponent();
-    
-    
-    /**
-     * Cleans up resources before the plugin is discarded.
-     */
-    void shutdown();
 }

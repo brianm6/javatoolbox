@@ -100,7 +100,19 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         add(builder.getPanel(), BorderLayout.WEST);
         add(grid_, BorderLayout.CENTER);
     }
+
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
     
+    /**
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
+    public void initialize(Map props)
+    {
+        buildView();
+    }
+
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
@@ -131,20 +143,14 @@ public class NetMeterPlugin extends JPanel implements IPlugin
         return "NetMeter";
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void startup(Map props)
-    {
-        buildView();
-    }
-
-    
-    /**
-     * @see toolbox.workspace.IPlugin#shutdown()
-     */
-    public void shutdown()
+    public void destroy()
     {
     }
 

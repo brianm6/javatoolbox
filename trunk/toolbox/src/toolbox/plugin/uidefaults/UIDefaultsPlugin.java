@@ -78,6 +78,18 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     }
 
     //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
+    public void initialize(Map params)
+    {
+        buildView();
+    }
+    
+    //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
@@ -107,15 +119,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return "Displays UI defaults for the installed Look and Feels.";
     }
 
-
-    /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
-     */
-    public void startup(Map params)
-    {
-        buildView();
-    }
-
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
 
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -132,11 +138,14 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.workspace.IPlugin#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
     }
 

@@ -63,11 +63,14 @@ public class JSourceViewPlugin implements IPlugin
         return "Provides statistics on java source code.";
     }
 
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#startup(Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map params)
+    public void initialize(Map params) 
     {
         IStatusBar statusBar = null;
         
@@ -78,6 +81,9 @@ public class JSourceViewPlugin implements IPlugin
         delegate_.setStatusBar(statusBar);
     }
 
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -96,11 +102,14 @@ public class JSourceViewPlugin implements IPlugin
         delegate_.savePrefs(prefs);
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
     }
 }

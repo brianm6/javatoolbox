@@ -527,6 +527,28 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
+    public void initialize(Map params)
+    {
+        if (params != null)
+            statusBar_ = (IStatusBar)
+                params.get(PluginWorkspace.KEY_STATUSBAR);
+
+        buildView();
+
+        cvsOut_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
+        cvsErr_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
+        
+        savedSystemOut_ = System.out;
+        savedSystemErr_ = System.err;
+    }
+    
+    //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
@@ -556,30 +578,14 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         return "Runs Statcvs on a CVS module";
     }
 
-
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void startup(Map params)
-    {
-        if (params != null)
-            statusBar_ = (IStatusBar)
-                params.get(PluginWorkspace.KEY_STATUSBAR);
-
-        buildView();
-
-        cvsOut_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
-        cvsErr_ = new PrintStream(new JTextAreaOutputStream(outputArea_));
-        
-        savedSystemOut_ = System.out;
-        savedSystemErr_ = System.err;
-    }
-
-
-    /**
-     * @see toolbox.workspace.IPlugin#shutdown()
-     */
-    public void shutdown()
+    public void destroy()
     {
     }
 

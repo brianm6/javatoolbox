@@ -296,13 +296,13 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // IPlugin Interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map params)
+    public void initialize(Map params)
     {
         if (params != null)
             statusBar_ = (IStatusBar) 
@@ -314,6 +314,9 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         buildViewerList();
     }
 
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
@@ -341,11 +344,14 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
         return "Views documents.";
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
         for (Iterator i = viewers_.iterator(); i.hasNext();)
         {

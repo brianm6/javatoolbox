@@ -48,7 +48,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
     private static final Logger logger_ = Logger.getLogger(JUnitPlugin.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants 
+    // IPreferenced Constants 
     //--------------------------------------------------------------------------
     
     private static final String NODE_JUNIT_PLUGIN = "JUnitPlugin";
@@ -162,18 +162,21 @@ public class JUnitPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    // IPlugin interface
+    // Initializable Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#startup(Map)
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
      */
-    public void startup(Map params)
+    public void initialize(Map params)
     {
         buildView();        
     }
 
-
+    //--------------------------------------------------------------------------
+    // IPlugin Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
@@ -200,7 +203,10 @@ public class JUnitPlugin extends JPanel implements IPlugin
         return "JUnit add-on that enables running of test cases by package.";
     }
 
-
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -224,11 +230,14 @@ public class JUnitPlugin extends JPanel implements IPlugin
         XOMUtil.insertOrReplace(prefs, root);    
     }
 
-
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.workspace.IPlugin#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
     }
 

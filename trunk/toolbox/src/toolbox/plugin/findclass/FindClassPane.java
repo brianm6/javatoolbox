@@ -76,7 +76,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     private static final Logger logger_ = Logger.getLogger(FindClassPane.class);
     
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     private static final String NODE_JFINDCLASS_PLUGIN = "JFindClassPlugin";
@@ -187,7 +187,7 @@ public class FindClassPane extends JPanel implements IPreferenced
      *
      * @param params Map of initialization objects
      */
-    protected void init(Map params)
+    protected void initialize(Map params)
     {
         if (params != null)
             statusBar_ = (IStatusBar)
@@ -200,7 +200,16 @@ public class FindClassPane extends JPanel implements IPreferenced
         searchTargetPanel_.new AddClasspathTargetAction().addClasspathTargets();
     }
 
-
+    
+    /**
+     * @see toolbox.util.service.Destroyable#destroy()
+     */
+    public void destroy()
+    {
+        ; // No-op
+    }
+    
+    
     /**
      * Builds the GUI and adds it to the contentPane.
      */
@@ -1064,6 +1073,7 @@ public class FindClassPane extends JPanel implements IPreferenced
             findClass_.addSearchListener(new SearchListener());
 
             Object[] targets = searchTargetPanel_.getSearchTargets();
+            
             for (int i = 0; i < targets.length; i++) 
                 findClass_.addSearchTarget(targets[i].toString());
             

@@ -36,6 +36,24 @@ public class JTailPlugin implements IPlugin
     }
 
     //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
+    public void initialize(Map params)
+    {
+        IStatusBar statusBar = null;
+        
+        if (params != null)
+            statusBar = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
+        
+        jtail_ = new JTail();
+        jtail_.setStatusBar(statusBar);
+    }
+    
+    //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
 
@@ -65,28 +83,15 @@ public class JTailPlugin implements IPlugin
         return "Tails files as they grow. Similar to 'tail -f' on Unix";
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void startup(Map params)
+    public void destroy()
     {
-        IStatusBar statusBar = null;
-        
-        if (params != null)
-            statusBar = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
-        
-        jtail_ = new JTail();
-        jtail_.setStatusBar(statusBar);
-    }
-
-    
-    /**
-     * @see toolbox.workspace.IPlugin#shutdown()
-     */
-    public void shutdown()
-    {
-        
     }
     
     //--------------------------------------------------------------------------

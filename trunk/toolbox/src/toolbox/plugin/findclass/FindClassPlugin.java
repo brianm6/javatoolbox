@@ -41,6 +41,25 @@ public class FindClassPlugin implements IPlugin
     }
     
     //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPlugin#initialize(Map)
+     */
+    public void initialize(Map params)
+    {
+        try
+        {
+            delegate_.initialize(params);        
+        }
+        catch (Exception ioe)
+        {
+            ExceptionUtil.handleUI(ioe, logger_);
+        }
+    }
+    
+    //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
     
@@ -73,22 +92,9 @@ public class FindClassPlugin implements IPlugin
           "regular expression for added flexbility.";
     }
 
-    
-    /**
-     * @see toolbox.workspace.IPlugin#startup(Map)
-     */
-    public void startup(Map params)
-    {
-        try
-        {
-            delegate_.init(params);        
-        }
-        catch (Exception ioe)
-        {
-            ExceptionUtil.handleUI(ioe, logger_);
-        }
-    }
-
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -107,11 +113,15 @@ public class FindClassPlugin implements IPlugin
         delegate_.savePrefs(prefs);    
     }
 
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown()
+    public void destroy()
     {
+        delegate_.destroy();
     }
 }

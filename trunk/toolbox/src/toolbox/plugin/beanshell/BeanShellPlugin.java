@@ -41,7 +41,44 @@ public class BeanShellPlugin extends JPanel implements IPlugin
      * Input area.
      */
     private JConsole console_;
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Constructs the user interface.
+     */
+    protected void buildView()
+    {
+        output_ = new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias());
         
+        JTextAreaOutputStream taos = new JTextAreaOutputStream(output_);
+        
+        console_ = new JConsole();
+        
+        Interpreter interpreter = new Interpreter(console_);
+        new Thread(interpreter).start();
+        
+        JSplitPane splitter = 
+            new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT, console_, output_);
+            
+        setLayout(new BorderLayout());
+        add(BorderLayout.CENTER, splitter);
+    }    
+    
+    //--------------------------------------------------------------------------
+    // Initializable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.service.Initializable#initialize(java.util.Map)
+     */
+    public void initialize(Map props)
+    {
+        buildView();
+    }
+
     //--------------------------------------------------------------------------
     // IPlugin Interface 
     //--------------------------------------------------------------------------
@@ -72,21 +109,17 @@ public class BeanShellPlugin extends JPanel implements IPlugin
         return "Beanshell Console";
     }
 
-
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
+    
     /**
-     * @see toolbox.workspace.IPlugin#startup(java.util.Map)
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void startup(Map props)
+    public void destroy()
     {
-        buildView();
-    }
-
-
-    /**
-     * @see toolbox.workspace.IPlugin#shutdown()
-     */
-    public void shutdown()
-    {
+        console_ = null;
+        output_ = null;
     }
 
     //--------------------------------------------------------------------------
@@ -106,31 +139,5 @@ public class BeanShellPlugin extends JPanel implements IPlugin
      */
     public void savePrefs(Element prefs) throws Exception
     {
-    
-    }
-
-    //--------------------------------------------------------------------------
-    // Protected
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Constructs the user interface.
-     */
-    protected void buildView()
-    {
-        output_ = new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias());
-        
-        JTextAreaOutputStream taos = new JTextAreaOutputStream(output_);
-        
-        console_ = new JConsole();
-        
-        Interpreter interpreter = new Interpreter(console_);
-        new Thread(interpreter).start();
-        
-        JSplitPane splitter = 
-            new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT, console_, output_);
-            
-        setLayout(new BorderLayout());
-        add(BorderLayout.CENTER, splitter);
     }
 }
