@@ -206,7 +206,7 @@ public class TailPane extends JHeaderPanel
     /**
      * List of listeners interested in newData() and tailAggregated().
      */
-    private TailPaneListener[] listeners_;
+    private TailViewListener[] listeners_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -226,7 +226,7 @@ public class TailPane extends JHeaderPanel
     {
         super(config.getFilenames()[0]);
         statusBar_ = statusBar;
-        listeners_ = new TailPaneListener[0];
+        listeners_ = new TailViewListener[0];
         contexts_ = new TailContext[0];
         buildView(config);
         buildFilters();
@@ -554,7 +554,7 @@ public class TailPane extends JHeaderPanel
     }
 
     //--------------------------------------------------------------------------
-    //  TailPaneListener Interface & Supporting Event Methods
+    //  TailViewListener Interface & Supporting Event Methods
     //--------------------------------------------------------------------------
 
     /**
@@ -584,22 +584,22 @@ public class TailPane extends JHeaderPanel
     /**
      * Adds a listener.
      *
-     * @param listener TailPaneListener.
+     * @param listener TailViewListener.
      */
-    public void addTailPaneListener(TailPaneListener listener)
+    public void addTailPaneListener(TailViewListener listener)
     {
-        listeners_ = (TailPaneListener[]) ArrayUtil.add(listeners_, listener);
+        listeners_ = (TailViewListener[]) ArrayUtil.add(listeners_, listener);
     }
 
 
     /**
      * Removes a listener.
      *
-     * @param listener TailPaneListener.
+     * @param listener TailViewListener.
      */
-    public void removeTailPaneListener(TailPaneListener listener)
+    public void removeTailPaneListener(TailViewListener listener)
     {
-        listeners_ = (TailPaneListener[])
+        listeners_ = (TailViewListener[])
             ArrayUtil.remove(listeners_, listener);
     }
 

@@ -12,7 +12,7 @@ import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
  * tails and appends an asterisk to tab with the most recent tail activity.
  */
 public class JTailTabbedPane extends JSmartTabbedPane
-    implements TailPaneListener
+    implements TailViewListener
 {
     private static final Logger logger_ =
         Logger.getLogger(JTailTabbedPane.class);
@@ -41,11 +41,11 @@ public class JTailTabbedPane extends JSmartTabbedPane
     }
 
     //--------------------------------------------------------------------------
-    // TailPaneListener Interface
+    // TailViewListener Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.plugin.jtail.TailPaneListener#newDataAvailable(
+     * @see toolbox.plugin.jtail.TailViewListener#newDataAvailable(
      *      toolbox.plugin.jtail.TailPane)
      */
     public void newDataAvailable(TailPane tailPane)
@@ -58,7 +58,7 @@ public class JTailTabbedPane extends JSmartTabbedPane
 
 
     /**
-     * @see toolbox.plugin.jtail.TailPaneListener#tailAggregated(
+     * @see toolbox.plugin.jtail.TailViewListener#tailAggregated(
      *      toolbox.plugin.jtail.TailPane)
      */
     public void tailAggregated(TailPane tailPane)
