@@ -87,9 +87,9 @@ public class JStatusBar extends JPanel implements IStatusBar
     /**
      * @see toolbox.util.ui.plugin.IStatusBar#setBusy(java.lang.String)
      */
-    public void setBusy(String status)
+    public void setBusy(boolean busy)
     {
-        setStatus(IStatusBar.BUSY, status);
+        //setStatus(IStatusBar.BUSY, status);
     }
 
     /**
