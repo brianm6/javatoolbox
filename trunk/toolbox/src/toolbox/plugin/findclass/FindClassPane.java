@@ -64,6 +64,7 @@ import toolbox.util.ui.plugin.IStatusBar;
  * 
  * <pre>
  * TODO: Replace decompiler HTML view with jedit-syntax editor
+ * TODO: Update tablecell renderer to highlight the matching substring
  * </pre>
  */
 public class JFindClass extends JFrame
