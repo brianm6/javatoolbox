@@ -37,20 +37,6 @@
   </LookAndFeel>
 
   <LookAndFeel
-      name="Motif"
-      class="com.sun.java.swing.plaf.motif.MotifLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
-      <Property name="group.name" value="Sun"/>
-  </LookAndFeel>
-
-  <LookAndFeel
-      name="Windows"
-      class="com.sun.java.swing.plaf.windows.WindowsLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
-      <Property name="group.name" value="Sun"/>
-  </LookAndFeel>
-
-  <LookAndFeel
       name="GTK"
       class="com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
