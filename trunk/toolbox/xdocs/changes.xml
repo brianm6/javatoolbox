@@ -48,7 +48,6 @@
  * TODO: Make monospaced fonts stand out in JFontChooser
  * TODO: Add dbcopy functionality from dbunit
  * TODO: Replace invoker with executor
- * TODO: Try to get JSplitPane splitter to draw the same as the currently installed look and feeel.
  * =============================================================================
  *                              Build
  * =============================================================================
@@ -125,6 +124,7 @@
             <action type="add"   >Util - Added ClassUtils.toClass(Object[]) to convert an array of objects to its corresponding array of types</action>
             <action type="add"   >Util - Added ReflectionUtil with a convenience method to invoke static methods</action>
             <action type="add"   >Util - Added theme support for the FH Look and Feel</action>
+            <action type="update">Util - Updated JFlipPane divider to match the colors of the currently installed Look and Feel</action>
         </release>
 
         <!-- =================================================================== -->
