@@ -7,6 +7,8 @@ import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -19,8 +21,10 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ThreadUtil;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
@@ -42,14 +46,15 @@ public class JTcpTunnelPane extends JPanel
     private JTextArea   listenText_;
     private JTextArea   tunnelText_;
     private JLabel      status_;
-    private Relay       inRelay_;
-    private Relay       outRelay_;
     private JSplitPane  splitter_;
     private JButton     clearButton_;
 
     private JTextField  localPortField_;
     private JTextField  remoteHostField_;
     private JTextField  remotePortField_;
+    
+	private Thread server_;    
+    private TunnelRunner tunnelRunner_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -62,7 +67,7 @@ public class JTcpTunnelPane extends JPanel
     {
         buildView();
     }
-    
+        
     /**
      * Creates a JTCPTunnel with the given parameters
      * 
@@ -76,12 +81,7 @@ public class JTcpTunnelPane extends JPanel
         tunnelHost_ = tunnelHost;
         tunnelPort_ = tunnelPort;
 
-        // Build the GUI
         buildView();
-        
-        // Start the server
-        //Thread server = new Thread(new TunnelRunner());
-        //server.start();
     }
 
     //--------------------------------------------------------------------------
@@ -228,6 +228,32 @@ public class JTcpTunnelPane extends JPanel
         });
     }
     
+    
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     */
+    public void savePrefs(Properties prefs)
+    {
+        if (!StringUtil.isNullOrEmpty(localPortField_.getText()))
+            prefs.setProperty("tcptunnel.listenport",localPortField_.getText());
+            
+        if (!StringUtil.isNullOrEmpty(remotePortField_.getText()))    
+            prefs.setProperty("tcptunnel.remoteport", remotePortField_.getText());
+        
+        if (!StringUtil.isNullOrEmpty(remoteHostField_.getText()))    
+            prefs.setProperty("tcptunnel.remotehost", remoteHostField_.getText());
+    }
+
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     */
+    public void applyPrefs(Properties prefs)
+    {
+        remotePortField_.setText(prefs.getProperty("tcptunnel.remoteport",""));
+        remoteHostField_.setText(prefs.getProperty("tcptunnel.remotehost",""));
+        localPortField_.setText(prefs.getProperty("tcptunnel.listenport",""));
+    }
+    
     //--------------------------------------------------------------------------
     //  Actions
     //--------------------------------------------------------------------------
@@ -276,8 +302,9 @@ public class JTcpTunnelPane extends JPanel
                         "Please specify the tunnel hostname");
                         
                 // Start the server
-                Thread server = new Thread(new TunnelRunner());
-                server.start();
+                tunnelRunner_ = new TunnelRunner();
+                server_ = new Thread(tunnelRunner_);
+                server_.start();
             } 
             catch (Exception ex)
             {
@@ -299,6 +326,19 @@ public class JTcpTunnelPane extends JPanel
         
         public void actionPerformed(ActionEvent e)
         {
+            tunnelRunner_.stop();
+            
+        	ThreadUtil.stop(server_, 5000);
+        	
+        	if (server_ != null)
+        	{
+        		if (server_.isAlive())
+        			status_.setText("Could not kill server.");
+        		else
+                    status_.setText("Server may have stopped.");
+        	}
+        	else
+                status_.setText("Server stopped.");
         }
     }
     
@@ -311,24 +351,41 @@ public class JTcpTunnelPane extends JPanel
      */
     class TunnelRunner implements Runnable
     {
+        ServerSocket ss_;
+        boolean stop_ = false;
+        
+        public void stop()
+        {
+            try
+            {
+                stop_ = true;
+                ss_.close();    
+            }
+            catch (IOException e)
+            {
+                logger_.debug("stop", e);
+            }
+            
+        }
+        
         /**
          * Creates server socket and reads
          */
         public void run()
         {
-            ServerSocket ss = null;
+            ss_ = null;
 
             try
             {
-                ss = new ServerSocket(getListenPort());
+                ss_ = new ServerSocket(getListenPort());
+                ss_.setSoTimeout(2000);
             }
             catch (IOException ioe)
             {
-                JSmartOptionPane.showExceptionMessageDialog(
-                    JTcpTunnelPane.this, ioe);
+                ExceptionUtil.handleUI(ioe, logger_);
             }
 
-            while (true)
+            while (!stop_)
             {
                 try
                 {
@@ -336,29 +393,35 @@ public class JTcpTunnelPane extends JPanel
                         getListenPort());
 
                     // accept the connection from my client
-                    Socket sc = ss.accept();
+                    if (!ss_.isClosed())
+                    {
+                        Socket sc = ss_.accept();
+    
+                        // connect to the thing I'm tunnelling for
+                        Socket st = new Socket(getTunnelHost(), getTunnelPort());
+                        
+                        status_.setText("Tunnelling port "+ getListenPort()+ 
+                                        " to port " + getTunnelPort() + 
+                                        " on host " + getTunnelHost() + 
+                                        " ...");
+    
+                        // relay the stuff thru
+                        new Relay(sc.getInputStream(), st.getOutputStream(), 
+                            getListenText()).start();
+                                  
+                        new Relay(st.getInputStream(), sc.getOutputStream(), 
+                            getTunnelText()).start();
 
-                    // connect to the thing I'm tunnelling for
-                    Socket st = new Socket(getTunnelHost(), getTunnelPort());
-                    
-                    status_.setText("Tunnelling port "+ getListenPort()+ 
-                                    " to port " + getTunnelPort() + 
-                                    " on host " + getTunnelHost() + 
-                                    " ...");
-
-                    // relay the stuff thru
-                    new Relay(sc.getInputStream(), st.getOutputStream(), 
-                        getListenText()).start();
-                              
-                    new Relay(st.getInputStream(), sc.getOutputStream(), 
-                        getTunnelText()).start();
-
-                    // that's it .. they're off
+                        // that's it .. they're off
+                    }
+                }
+                catch (SocketTimeoutException ste)
+                {
+                    // NOOP
                 }
                 catch (Exception e)
                 {
-                    JSmartOptionPane.showExceptionMessageDialog(
-                        JTcpTunnelPane.this, e);
+                    ExceptionUtil.handleUI(e, logger_);
                 }
             }
         }
