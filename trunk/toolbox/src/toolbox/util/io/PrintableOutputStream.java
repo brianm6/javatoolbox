@@ -9,7 +9,8 @@ import org.apache.commons.lang.StringUtils;
 /**
  * A {@link java.io.OutputStream} that filters out non-printable characters
  * and replaces them with a printable one. The tab and newline characters are
- * exempt from filtering.
+ * exempt from filtering. This implementation also has an on/off switch to
+ * enable or disable the filtering at runtime via the setEnabled() method.
  * <p>
  * Example:
  * <pre>
@@ -97,7 +98,7 @@ public class PrintableOutputStream extends FilterOutputStream
         else if ((b >=  32 && b <= 126) || c == '\n' || c == '\t') 
             super.write(b);
         else if (!StringUtils.isEmpty(replacement_))
-            out.write(replacement_.getBytes());  // Is this a NO NO?
+            out.write(replacement_.getBytes()); 
     }
     
     //--------------------------------------------------------------------------
@@ -123,17 +124,6 @@ public class PrintableOutputStream extends FilterOutputStream
     public void setEnabled(boolean enabled)
     {
         enabled_ = enabled;
-    }
-    
-    
-    /**
-     * Returns the replacement string for non-printable characters. 
-     * 
-     * @return String
-     */
-    public String getReplacement()
-    {
-        return replacement_;
     }
     
     
