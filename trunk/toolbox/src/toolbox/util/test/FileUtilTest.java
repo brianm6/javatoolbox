@@ -451,4 +451,24 @@ public class FileUtilTest extends TestCase
         assertEquals("foobar", FileUtil.dropExtension("foobar.txt"));
         assertEquals("foobar.old", FileUtil.dropExtension("foobar.old.txt"));
     }
+    
+    
+    /**
+     * Tests stripPath()
+     */
+    public void testStripPath()
+    {
+        logger_.info("Running testStripPath...");
+        
+        String s = File.separator;
+        
+        assertEquals("file.txt", FileUtil.stripPath("c:" + s + "file.txt"));
+        assertEquals("file.txt", FileUtil.stripPath(".." + s + "file.txt"));
+        assertEquals("file.txt", FileUtil.stripPath("file.txt"));
+        assertEquals("file.txt", FileUtil.stripPath(s + "file.txt"));
+        assertEquals("a", FileUtil.stripPath("a"));
+        assertEquals("", FileUtil.stripPath(""));
+        assertEquals("file.txt", FileUtil.stripPath(
+            "c:" + s + "a" + s + "c" + s + ".." + s + "file.txt"));
+    }
 }

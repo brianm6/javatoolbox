@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import toolbox.util.io.filter.DirectoryFilter;
 
 /**
@@ -25,7 +26,8 @@ import toolbox.util.io.filter.DirectoryFilter;
  */
 public final class FileUtil
 {
-    private static final Logger logger_ = Logger.getLogger(FileUtil.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(FileUtil.class);
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -39,7 +41,7 @@ public final class FileUtil
     }
 
     //--------------------------------------------------------------------------
-    //  Static Methods
+    //  Public Static
     //--------------------------------------------------------------------------
 
     /**
@@ -351,5 +353,27 @@ public final class FileUtil
             return file;
         else
             return file.substring(0, dot);
+    }
+    
+    
+    /**
+     * Strips the path portion away from the relative or absolulte file path
+     * leaving only the filename.
+     * <pre>
+     * 
+     * Examples:
+     * 
+     * c:\data\work\tmp\orders.txt  => orders.txt
+     * /usr/home/user/orders.xml    => orders.xml
+     * 
+     * </pre>
+     * 
+     * @param   file  Relative or absolute path reference to a file
+     * @return  Just the name of the file
+     */
+    public static String stripPath(String file)
+    {
+        int i = file.lastIndexOf(File.separatorChar);
+        return (i >= 0 ? file.substring(i+1) : file); 
     }
 }
