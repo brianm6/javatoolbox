@@ -59,7 +59,7 @@ public class Main extends FindClassAdapter
     /**
      * FindClass entry point.
      * 
-     * @param args Optional switches + name of class to find
+     * @param args Optional switches + name of class to find.
      */
     public static void main(String args[])
     {
@@ -103,7 +103,7 @@ public class Main extends FindClassAdapter
                 {
                     mainClass.setShowTargets(true);
                 }
-                else if (opt.equals(helpOption.getOpt())  ||
+                else if (opt.equals(helpOption.getOpt()) ||
                          opt.equals(helpOption2.getOpt()))
                 {
                     mainClass.printUsage();
@@ -148,7 +148,7 @@ public class Main extends FindClassAdapter
     /**
      * Creates main with the given writer for output.
      * 
-     * @param  writer  Writer that output will be written to
+     * @param  writer  Writer that output will be written to.
      */
     public Main(Writer writer)
     {
@@ -162,8 +162,8 @@ public class Main extends FindClassAdapter
     /**
      * Starts the search.
      * 
-     * @throws RESyntaxException on invalid regular expression
-     * @throws IOException on I/O error
+     * @throws RESyntaxException on invalid regular expression.
+     * @throws IOException on I/O error.
      */
     public void search() throws RESyntaxException, IOException
     {
@@ -193,7 +193,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for case sensetive flag.
      * 
-     * @param b Case sensetive flag
+     * @param b Case sensetive flag.
      */    
     public void setCaseSensetive(boolean b)
     {
@@ -204,7 +204,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the show targets flag.
      * 
-     * @param b Show targets flag
+     * @param b Show targets flag.
      */    
     public void setShowTargets(boolean b)
     {
@@ -215,7 +215,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the class to find.
      * 
-     * @param find Class to find
+     * @param find Class to find.
      */
     public void setClassToFind(String find)
     {
@@ -226,7 +226,7 @@ public class Main extends FindClassAdapter
     /**
      * Mutator for the output of the program.
      *
-     * @param writer Writer to send output to
+     * @param writer Writer to send output to.
      */
     public void setWriter(Writer writer)
     {
