@@ -33,6 +33,7 @@ import org.jedit.syntax.XMLTokenMarker;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JEditTextAreaPopupMenu;
+import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
@@ -384,10 +385,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
-        String path = explorer_.getCurrentPath();
-        
-        if (!StringUtil.isNullOrEmpty(path))
-            prefs.setProperty("xslfoplugin.explorer.path", path);
+        explorer_.savePrefs(prefs, 
+            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
             
         if (!StringUtil.isNullOrEmpty(acrobatPath_))
             prefs.setProperty("xslfoplugin.acrobat.path", acrobatPath_);
@@ -398,11 +397,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
-        String path = prefs.getProperty("xslfoplugin.explorer.path");
+        explorer_.applyPrefs(prefs, 
+            ClassUtil.stripPackage(this.getClass().getName()).toLowerCase());
         
-        if (!StringUtil.isNullOrEmpty(path))
-            explorer_.selectFolder(path);
-            
         acrobatPath_ = prefs.getProperty("xslfoplugin.acrobat.path", null);
     }
 
