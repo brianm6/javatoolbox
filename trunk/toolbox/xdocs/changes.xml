@@ -17,7 +17,6 @@
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Add a filled bar mode to JSourceView
- * TODO: Create JSmartDialog - rememver size and position, bind esc to cancel
  * TODO: Writer a proper multisplit pane.
  * TODO: Integrate new icons from 
  *       http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/jdt-ui-home/r3_0/proposals/icons/
@@ -95,6 +94,7 @@
       <action type="update">Util - JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>
       <action type="add   ">Util - Added emphasis of monospaced fonts to JFontChooser</action>
       <action type="add   ">Util - Added ability to render font names in the listbox using the font itself in JFontChooser</action>
+      <action type="add   ">Util - Added JSmartDialog. Persists size, location, and esc key is bound to dispose.</action>
     </release>
     
     <release version="2.0" date="July 2004">
