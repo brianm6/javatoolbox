@@ -203,4 +203,20 @@ public class DoubleUtil
     {
         return round(Double.parseDouble(s), format);
     }
+    
+    
+    /**
+     * Determines if a double is in a range [a..b]
+     * (inclusive of the start and end)
+     * 
+     * @param   number      Double to check
+     * @param   rangeBegin  Start of the range 
+     * @param   rangeEnd    End of the range   
+     * @return  True if the given double is in the range, false otherwise 
+     */
+    public static boolean isBetween(double number, double rangeBegin, 
+        double rangeEnd) 
+    {
+        return ((number >= rangeBegin) && (number <= rangeEnd));
+    }
 }
