@@ -707,52 +707,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // FileNode
-    //--------------------------------------------------------------------------
-
-    /**
-     * FileNode used to represent directories in the directory tree
-     */
-    class FileNode extends DefaultMutableTreeNode
-    {
-        /**
-         * Creates a FileNode.
-         * 
-         * @param userObject Object to associate with the file node
-         */
-        FileNode(Object userObject)
-        {
-            super(userObject);
-        }
-    
-        /**
-         * Compares based on directory/file name. Is sensetive to the host
-         * platform w.r.t. case sensetivity.
-         * 
-         * @param obj Object to compare
-         * @return True if nodes are equal, false otherwise
-         */
-        public boolean equals(Object obj)
-        {
-            if (!(obj instanceof DefaultMutableTreeNode))
-                return false;
-            
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)obj;
-            
-            String file1 = (String) getUserObject();
-            String file2 = (String) node.getUserObject();
-            
-            if (Platform.isUnix())
-                return file1.equals(file2);
-            else
-                return file1.equalsIgnoreCase(file2);
-        }
-    }
-
-    //--------------------------------------------------------------------------
     // DriveIconCellRenderer
     //--------------------------------------------------------------------------
-    
+
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
      */
