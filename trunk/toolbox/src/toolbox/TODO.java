@@ -85,6 +85,9 @@ package toolbox;
  *    commons-logging-1.0.4
  *    xom-1.0a2
  *  - Look and feel decorations flag now works but requires a restart
+ *  - Minor updates to NetMeter - button states, init state, etc.
+ *  - Added JavaViewer to DocumentViewerPlugin
+ *  - Added SortedListModel
  * 
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin
