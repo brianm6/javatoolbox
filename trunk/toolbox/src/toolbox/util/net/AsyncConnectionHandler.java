@@ -4,9 +4,9 @@ import toolbox.util.thread.IThreadable;
 import toolbox.util.thread.ThreadDispatcher;
 
 /**
- * Decorates a connection handler to provide asynchronous dispatching 
- * (when handle() is called) on a separate pooled thread. handle()
- * returns immediately and is not a blocking call.
+ * AsyncConnectionHandler decorates a connection handler by providing 
+ * asynchronous dispatching (when handle() is called) on a separate pooled 
+ * thread. handle() returns immediately and is not a blocking call.
  */
 public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
 {
@@ -50,8 +50,8 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Initiates handling of the connection on a new thread.
      * 
-     * @param    conn    Connection to handle
-     * @return   Object
+     * @param   conn    Connection to handle
+     * @return  Object
      */
     public Object handle(IConnection conn)
     {
@@ -65,8 +65,8 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     //--------------------------------------------------------------------------
     
     /**
-     * Implemented as part of the Request interface.
-     * Processes request once on a separate thread
+     * Implemented as part of the Request interface. Processes request once 
+     * on a separate thread.
      * 
      * @return    Object
      */
@@ -82,7 +82,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Mutator for the connection handler
      * 
-     * @param    newHandler        IConnectionHandler
+     * @param  newHandler  IConnectionHandler
      */
     public void setConnectionHandler(IConnectionHandler newHandler)
     {
@@ -93,7 +93,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Mutator for the connection
      * 
-     * @param    newConn    IConnection
+     * @param  newConn  IConnection
      */
     public void setConnection(IConnection newConn)
     {
@@ -104,7 +104,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Accessor for the connection
      * 
-     * @return    IConnection
+     * @return  IConnection
      */
     public IConnection getConnection()
     {
@@ -115,7 +115,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Accessor for the connection handler 
      * 
-     * @return    IConnectionHandler
+     * @return  IConnectionHandler
      */
     public IConnectionHandler getConnectionHandler()
     {
@@ -126,7 +126,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Mutator for the dispatcher
      * 
-     * @param    newDispatcher    Dispatcher
+     * @param  newDispatcher  Dispatcher
      */
     public void setDispatcher(ThreadDispatcher newDispatcher)
     {
@@ -137,7 +137,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Accessor for the dispatcher
      * 
-     * @return    Dispatcher
+     * @return  Dispatcher
      */
     public ThreadDispatcher getDispatcher()
     {

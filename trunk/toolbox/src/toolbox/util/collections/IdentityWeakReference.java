@@ -74,7 +74,7 @@ public class IdentityWeakReference extends WeakReference
     }
 
     //--------------------------------------------------------------------------
-    //  Public
+    //  Overridden from java.lang.Object
     //--------------------------------------------------------------------------
 
     /**

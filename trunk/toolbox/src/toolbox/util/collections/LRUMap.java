@@ -88,10 +88,10 @@ public class LRUMap implements Map, Serializable
      */
     public LRUMap(int maxSize, long timeLimit, Map backingMap)
     {
-        this.maxSize_ = maxSize;
-        this.timeLimit_ = timeLimit;
-        this.map_ = backingMap;
-        this.keys_ = new LinkedList();
+        maxSize_   = maxSize;
+        timeLimit_ = timeLimit;
+        map_       = backingMap;
+        keys_      = new LinkedList();
     }
 
     //--------------------------------------------------------------------------

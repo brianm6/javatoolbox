@@ -26,7 +26,7 @@ import toolbox.util.ThreadUtil;
  */
 public abstract class FullDuplexHandler implements IConnectionHandler
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(FullDuplexHandler.class);
 
@@ -73,11 +73,8 @@ public abstract class FullDuplexHandler implements IConnectionHandler
         conn_ = conn;
         
         // Startup input/output stream handlers on separate threads
-        inputStreamThread_  =
-             ThreadUtil.run(this, "handleInput", null);
-             
-        outputStreamThread_ = 
-            ThreadUtil.run(this, "handleOutput", null);
+        inputStreamThread_  = ThreadUtil.run(this, "handleInput", null);
+        outputStreamThread_ = ThreadUtil.run(this, "handleOutput", null);
         
         return null;
     }

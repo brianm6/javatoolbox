@@ -15,7 +15,9 @@ import toolbox.util.typecast.Typecast;
  */
 public final class AsMap
 {
-    /** Instance */
+    /** 
+     * Instance 
+     */
     public static final Typecast TYPECAST = new Typecast(Map.class);
 
     static 
@@ -23,6 +25,10 @@ public final class AsMap
         TYPECAST.addSearchPackage(AsMap.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Maps an object
      * 
@@ -33,6 +39,7 @@ public final class AsMap
     {
         return of(object, null);
     }
+
 
     /**
      * Maps an object

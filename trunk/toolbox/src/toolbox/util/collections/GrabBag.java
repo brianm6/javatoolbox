@@ -11,7 +11,9 @@ import toolbox.util.RandomUtil;
  */
 public class GrabBag
 {
-    /** delegate **/
+    /** 
+     * Backing store delegate 
+     */
     private List delegate_ = new ArrayList();
 
     //--------------------------------------------------------------------------

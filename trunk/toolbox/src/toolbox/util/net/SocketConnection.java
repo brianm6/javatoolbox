@@ -65,7 +65,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
      * Creates a SocketConnection with an existing Socket by wrapping the
      * socket. Assumes the socket is already connected to an endpoint.
      * 
-     * @param    s    Existing socket endpoint
+     * @param  s  Existing socket endpoint
      */
     public SocketConnection(Socket s)
     {
@@ -187,8 +187,8 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * Accessor for the output stream
      * 
-     * @return    OutputStream
-     * @throws    IOException on I/O error
+     * @return  OutputStream
+     * @throws  IOException on I/O error
      */
     public OutputStream getOutputStream() throws IOException
     {
