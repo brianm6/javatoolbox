@@ -54,6 +54,7 @@ import toolbox.util.ui.table.TableSorter;
  *       high or low numbers, etc
  * TODO: Add regex filter to include/exclude files
  * TODO: Unit tests for non-gui statistics collection
+ * TODO: Don't count java lines that start with import (add generic rules)
  * </pre> 
  * 
  */
