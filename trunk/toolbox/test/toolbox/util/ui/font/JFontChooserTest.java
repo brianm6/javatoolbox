@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.junit.testcase.UITestCase;
 import toolbox.util.FontUtil;
+import toolbox.util.ui.JHeaderPanel;
 
 /**
  * Unit test for {@link toolbox.util.ui.font.JFontChooser}.
@@ -38,7 +39,8 @@ public class JFontChooserTest extends UITestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Test for void JFontChooser().
+     * Renders the JFontChooser using the default, monospace emphasis, and
+     * render with font settings.
      */
     public void testJFontChooser()
     {
@@ -49,20 +51,20 @@ public class JFontChooserTest extends UITestCase
         JFontChooser fc = null;
         
         fc = new JFontChooser(FontUtil.getPreferredMonoFont());
-        p.add(fc);
+        p.add(new JHeaderPanel("Default", null, fc));
         
         fc = new JFontChooser(FontUtil.getPreferredSerifFont());
         fc.setMonospaceEmphasized(true);
-        p.add(fc);
+        p.add(new JHeaderPanel("Monospace On", null, fc));
         
         fc = new JFontChooser(FontUtil.getPreferredMonoFont());
         fc.setRenderedUsingFont(true);
-        p.add(fc);
+        p.add(new JHeaderPanel("Render w/ Font On", null, fc));
         
         fc = new JFontChooser(FontUtil.getPreferredSerifFont());
         fc.setRenderedUsingFont(true);
         fc.setMonospaceEmphasized(true);
-        p.add(fc);
+        p.add(new JHeaderPanel("Monospace and Render w/ Font On", null, fc));
         
         launchInDialog(p);
     }
