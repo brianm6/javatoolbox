@@ -13,13 +13,23 @@ import toolbox.util.ElapsedTime;
  */
 public class BlockingQueue
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(BlockingQueue.class);
-        
-    private List       queue_      = null;
-    private Semaphore  semaphore_  = null;
-    private Mutex      mutex_      = new Mutex();
+
+    /**
+     * The backing queue
+     */        
+    private List queue_;
+    
+    /**
+     * Mutex semaphore
+     */
+    private Semaphore semaphore_;
+    
+    /**
+     * Mutex
+     */
+    private Mutex mutex_;
 
     //--------------------------------------------------------------------------
     // Constuctors
@@ -31,7 +41,8 @@ public class BlockingQueue
     public BlockingQueue()
     {
         semaphore_ = new Semaphore(0);
-        queue_ = new ArrayList(50);
+        queue_     = new ArrayList(50);
+        mutex_     = new Mutex();
     }
 
     //--------------------------------------------------------------------------
