@@ -4,11 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -17,12 +17,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
+
 import net.sf.statcvs.Main;
 import net.sf.statcvs.output.CommandLineParser;
 
-import org.apache.log4j.Logger;
-
-import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 import toolbox.util.ArrayUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.PropertiesUtil;
@@ -47,8 +47,8 @@ import toolbox.util.ui.layout.ParagraphLayout;
 public class StatcvsPlugin extends JPanel implements IPlugin
 {
     // TODO: Add nuke checkout dir
-    // TODO: Add one button to do everything
     // TODO: Implement recent pattern
+    // TODO: Add support for projects that span multiple modules
     
     private static final Logger logger_ = Logger.getLogger(StatcvsPlugin.class);
     
@@ -65,10 +65,10 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     private static final String PROP_CVSMODULE = "statcvs.plugin.cvsmodule";
     
     /** Property key for the cvs root */
-    private static final String PROP_CVSROOT    = "statcvs.plugin.cvsroot";
+    private static final String PROP_CVSROOT = "statcvs.plugin.cvsroot";
     
     /** Property key for the cvs password */
-    private static final String PROP_CVSPASSWORD= "statcvs.plugin.cvspassword";
+    private static final String PROP_CVSPASSWORD = "statcvs.plugin.cvspassword";
     
     /** Reference to the workspace statusbar */
     private IStatusBar statusBar_;
@@ -92,19 +92,34 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     private JTextField checkoutDirField_;
     
     /** Checkbox to toggle the cvslib.jar debug flag */
-    private JCheckBox  debugCheckBox_;
+    private JCheckBox debugCheckBox_;
     
     /** Field that contains the URL to view the generated statcvs report */
     private JTextField launchURLField_;
     
     /** Saved user.dir before being overwritten (cvs commands require this) */
-    private String      originalUserDir_;
+    private String originalUserDir_;
     
     /** 
      * Saved System.out before being overwritten (hijacked to capture the
      * output of cvs log command).
      */
     private PrintStream originalSystemOut_;
+
+    /**
+     * Saved System.err
+     */
+    private PrintStream originalSystemErr_;
+    
+    /**
+     * System.out redirected to the output text area
+     */
+    private PrintStream redirectedSystemOut_;
+    
+    /**
+     * System.err redirected to the output text area
+     */
+    private PrintStream redirectedSystemErr_;
     
     //--------------------------------------------------------------------------
     // Protected
@@ -115,19 +130,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */        
     protected void buildView()
     {
-        // Save original user directory since we're gonna muck w/ it
-        originalUserDir_ = System.getProperty("user.dir");
-        
-        
         setLayout(new BorderLayout());
         add(BorderLayout.CENTER, buildOutputPanel());
         add(BorderLayout.NORTH, buildControlPanel());
-        
-        System.setOut(new PrintStream(new JTextAreaOutputStream(outputArea_)));
-        System.setErr(new PrintStream(new JTextAreaOutputStream(outputArea_)));
-        
-        // Save original System.out 
-        originalSystemOut_ = System.out;
     }
     
     /**
@@ -156,13 +161,14 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 
         JPanel b = new JPanel(new GridLayoutPlus(4,1,5,5,5,5));
         
+        b.add(new JButton(new EverythingAction()));
         b.add(new JButton(new LoginAction()));
         b.add(new JButton(new CheckoutAction()));
         b.add(new JButton(new LogAction()));
-        b.add(new JButton(new StatcvsAction()));
+        b.add(new JButton(new GenerateStatsAction()));
         b.add(new JButton(new LaunchAction()));
-        b.add(new JButton(outputArea_.createClearAction()));
-
+        b.add(new JButton(outputArea_.new ClearAction()));
+        
         JPanel base = new JPanel(new BorderLayout());
         base.add(BorderLayout.WEST, p);
         base.add(BorderLayout.CENTER, b);
@@ -216,24 +222,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         System.setProperty("user.dir", originalUserDir_);
     }
 
-    /**
-     * Sets System.out to the given stream
-     * 
-     * @param os  Stream to set to System.out
-     */
-    protected void setSystemOut(OutputStream os)
-    {
-        System.setOut(new PrintStream(os));
-    }
-    
-    /**
-     * Restores System.out to the value before it was changed
-     */
-    protected void restoreSystemOut()
-    {
-        System.setOut(originalSystemOut_);
-    }
-    
     /**
      * Verifies that all the fields pass simple verification checks.
      * 
@@ -328,7 +316,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         boolean firstBlank = false;
         boolean firstRCS   = false;
         boolean secondWhat = false;
-        boolean secondRCS = false;
         boolean tossFirst = false;
         boolean addFirst  = false;
         
@@ -346,8 +333,6 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                         
         if (lines[1].startsWith("?"))
             secondWhat = true;
-        else if (lines[1].startsWith("RCS"))
-            secondRCS = true;
 
         if (firstBlank && secondWhat)
             tossFirst = true;
@@ -394,8 +379,21 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {
         if (params != null)
             statusBar_= (IStatusBar) params.get(PluginWorkspace.PROP_STATUSBAR);
-            
+
         buildView();
+        
+        // Save original user directory since we're gonna muck w/ it
+        originalUserDir_ = System.getProperty("user.dir");
+
+        // Save original System.out 
+        originalSystemOut_ = System.out;
+        originalSystemErr_ = System.err;
+
+        redirectedSystemOut_ = 
+            new PrintStream(new JTextAreaOutputStream(outputArea_));
+            
+        redirectedSystemErr_ = 
+            new PrintStream(new JTextAreaOutputStream(outputArea_));
     }
 
     public void shutdown()
@@ -444,11 +442,71 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // Actions
     //--------------------------------------------------------------------------
+
+    /** 
+     * Abstract base class for all actions that takes care of 
+     * settin/restoring the stdout and stderr streams before and after
+     * the action completes execution.
+     */ 
+    abstract class StatcvsAction extends WorkspaceAction
+    {
+        StatcvsAction(
+            String name, 
+            boolean async, 
+            JComponent scope, 
+            IStatusBar statusBar)
+        {
+            super(name, async, scope, statusBar);
+
+            // Add an action to run before the main action to set the system
+            // out and err stream to the text area.            
+            addPreAction(new AbstractAction() 
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    System.setOut(redirectedSystemOut_);
+                    System.setErr(redirectedSystemErr_);
+                }
+            });
+
+            // This will restore the system out and err to their original 
+            // values when the main action has completed execution.
+            addFinallyAction(new AbstractAction() 
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    System.setOut(originalSystemOut_);
+                    System.setErr(originalSystemErr_);
+                }
+            });
+        }        
+    }
+
+
+    /**
+     * Executes all steps necessary to produce the StatCVS report
+     */
+    class EverythingAction extends StatcvsAction
+    {
+        public EverythingAction()
+        {
+            super("I'm feeling lucky!", true, null, null);
+        }
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            new LoginAction().runAction(e);
+            new CheckoutAction().runAction(e);
+            new LogAction().runAction(e);
+            new GenerateStatsAction().runAction(e);
+            new LaunchAction().runAction(e);
+        }
+    }
     
     /**
      * Logs into the cvs server
      */
-    class LoginAction extends WorkspaceAction
+    class LoginAction extends StatcvsAction
     {
         public LoginAction()
         {
@@ -486,7 +544,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Checks out the module from the cvs server to the local filesystem
      */    
-    class CheckoutAction extends WorkspaceAction
+    class CheckoutAction extends StatcvsAction
     {
         public CheckoutAction()
         {
@@ -498,11 +556,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             verify();
             setDebug();
             
-            statusBar_.setStatus(
-                "Checkout out module " + cvsModuleField_.getText() + 
-                    " to " + checkoutDirField_.getText() + "...");
-            
-            setDebug();
+            statusBar_.setStatus("Checking out " + cvsModuleField_.getText() + 
+                " module to " + checkoutDirField_.getText() + "...");
 
             setUserDir(checkoutDirField_.getText());
 
@@ -528,11 +583,11 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     /**
      * Generates a cvs log file which is later used as input to statcvs
      */    
-    class LogAction extends WorkspaceAction
+    class LogAction extends StatcvsAction
     {
         public LogAction()
         {
-            super("Generate Log", true, null, statusBar_);
+            super("Generate CVS Log", true, null, statusBar_);
         }
         
         public void runAction(ActionEvent e) throws Exception
@@ -547,44 +602,43 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
             String[] args = new String[] {"-d", cvsRootField_.getText(), "log"};
             
-            
             logger_.debug("cvsLogFile = " + getCVSLogFile());
                     
             StringOutputStream sos = new StringOutputStream();
+            PrintStream before = System.out;
             
             try
             {
-                setSystemOut(sos);
+                System.setOut(new PrintStream(sos));
                 CVSCommand.main(args);
+                String fixedLogFile = fixLogFile(sos.toString());
+                FileUtil.setFileContents(getCVSLogFile(), fixedLogFile, false);
+                
+                statusBar_.setStatus(
+                    "Generated CVS log containing " + 
+                        fixedLogFile.length() + " bytes");
             }
             finally
             {
-                restoreSystemOut();
+                System.setOut(before);
+                restoreUserDir();
             }
-            
-            logger_.debug("Log file size = " + sos.getBuffer().length());
-            
-            String fixedLogFile = fixLogFile(sos.toString());
-             
-            FileUtil.setFileContents(getCVSLogFile(), fixedLogFile, false);
-            
-            statusBar_.setStatus("Generating log done.");            
         }
     }
 
     /**
      * Runs statcvs against the generatted cvs log file to create a HTML report
      */    
-    class StatcvsAction extends WorkspaceAction
+    class GenerateStatsAction extends StatcvsAction
     {
-        public StatcvsAction()
+        public GenerateStatsAction()
         {
-            super("Generate stats", true, null, statusBar_);
+            super("Generate Stats", true, null, statusBar_);
         }
         
         public void runAction(ActionEvent e) throws Exception
         {
-            statusBar_.setStatus("Running statcvs...");
+            statusBar_.setStatus("Generating stats...");
             
             verify();
             setDebug();
@@ -615,14 +669,14 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 File.separator + 
                 "index.html");
             
-            statusBar_.setStatus("Running statcvs done.");
+            statusBar_.setStatus("Generating stats done.");
         }
     }
     
     /**
      * Launches web browser to view the generated Statcvs reports
      */
-    class LaunchAction extends WorkspaceAction
+    class LaunchAction extends StatcvsAction
     {
         public LaunchAction()
         {
