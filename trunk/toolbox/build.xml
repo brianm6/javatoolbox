@@ -181,7 +181,8 @@
 
             <fileset dir="${lib}">
                 <include name="log4j.jar"/>
-                <include name="jode.jar"/> 
+                <include name="jode.jar"/>
+                <include name="jreversepro.jar"/>
                 <include name="junit.jar"/>
                 <include name="xml-apis.jar"/>
                 <include name="xercesImpl.jar"/>
@@ -200,15 +201,6 @@
                 <include name="commons-codec.jar"/>
                 <include name="jakarta-regexp.jar"/>
                 
-                <!-- ===== Look and Feels ==== 
-                <include name="plastic.jar"/>
-                <include name="kunststoff.jar"/>
-                <include name="xplookandfeel.jar"/>
-                <include name="metouia.jar"/>
-                <include name="tinylaf.jar"/>
-                <include name="skinlf.jar"/>
-				-->                    
-				
                 <!-- ===== Log4j IM Appenders ==== -->
                 <include name="hamsam.jar"/>
                 <include name="jaimlib.jar"/>
