@@ -38,10 +38,10 @@ public class JTcpTunnelPane extends JPanel
         Logger.getLogger(JTcpTunnelPane.class);
     
     /** Textarea that incoming data from the tunnel is dumped to */
-    private JTextArea incomingTextArea_;
+    private JSmartTextArea incomingTextArea_;
     
     /** Textarea that outgoing data to the tunnel is dumped to */ 
-    private JTextArea outgoingTextArea_;
+    private JSmartTextArea outgoingTextArea_;
     
     /** Workspace status bar */
     private IStatusBar statusBar_;
@@ -120,6 +120,9 @@ public class JTcpTunnelPane extends JPanel
         if (!StringUtil.isNullOrEmpty(remoteHostField_.getText()))    
             prefs.setProperty(
                 "tcptunnel.remotehost", remoteHostField_.getText());
+                
+        incomingTextArea_.savePrefs(prefs, "tcptunnel.incoming");
+        outgoingTextArea_.savePrefs(prefs, "tcptunnel.outgoing");
     }
 
     /**
@@ -127,11 +130,15 @@ public class JTcpTunnelPane extends JPanel
      * 
      * @param  prefs  Properties to read the preferences from
      */
-    public void applyPrefs(Properties prefs)
+    public void applyPrefs(Properties prefs) throws Exception
     {
         remotePortField_.setText(prefs.getProperty("tcptunnel.remoteport",""));
         remoteHostField_.setText(prefs.getProperty("tcptunnel.remotehost",""));
         listenPortField_.setText(prefs.getProperty("tcptunnel.listenport",""));
+        
+        incomingTextArea_.applyPrefs(prefs, "tcptunnel.incoming");
+        outgoingTextArea_.applyPrefs(prefs, "tcptunnel.outgoing");
+        
     }
     
     /**
