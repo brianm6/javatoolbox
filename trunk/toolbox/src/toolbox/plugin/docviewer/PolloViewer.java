@@ -8,11 +8,14 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
+
 import org.outerj.pollo.xmleditor.XmlEditor;
 import org.outerj.pollo.xmleditor.displayspec.GenericDisplaySpecification;
 import org.outerj.pollo.xmleditor.model.XmlModel;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 
@@ -21,6 +24,8 @@ import toolbox.util.FontUtil;
  */
 public class PolloViewer implements DocumentViewer
 {
+    private static final Logger logger_ = Logger.getLogger(PolloViewer.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -38,34 +43,48 @@ public class PolloViewer implements DocumentViewer
     //--------------------------------------------------------------------------
     // DocumentViewer Interface 
     //--------------------------------------------------------------------------
+
+    /**
+     * Lazy loads the UI component for faster plugin loading.
+     */
+    protected void lazyLoad()
+    {
+        if (editor_ == null) 
+        {    
+            try
+            {
+                GenericDisplaySpecification displaySpec = 
+                    new GenericDisplaySpecification();
+                
+                HashMap initMap = new HashMap();
+                initMap.put("use-random-colors", "true");
+                //init.put("fixed-color", "0xffeeff");
+                //init.put("background-color", null);
+                initMap.put("treetype", "pollo");
+                
+                displaySpec.init(initMap);
+                editor_ = new XmlEditor(null, displaySpec, -1);
+                editor_.setAntialiasing(true);
+                editor_.setCharacterDataFont(FontUtil.getPreferredMonoFont());
+                editor_.setElementNameFont(FontUtil.getPreferredMonoFont());
+                scroller_ = new JScrollPane(editor_);                
+            }
+            catch (Exception pe)
+            {
+                ExceptionUtil.handleUI(pe, logger_);
+            }
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // DocumentViewer Interface 
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.plugin.docviewer.DocumentViewer#startup(java.util.Map)
      */
     public void startup(Map init) throws DocumentViewerException
     {
-        try
-        {
-            GenericDisplaySpecification displaySpec = 
-                new GenericDisplaySpecification();
-            
-            HashMap initMap = new HashMap();
-            initMap.put("use-random-colors", "true");
-            //init.put("fixed-color", "0xffeeff");
-            //init.put("background-color", null);
-            initMap.put("treetype", "pollo");
-            
-            displaySpec.init(initMap);
-            editor_ = new XmlEditor(null, displaySpec, -1);
-            editor_.setAntialiasing(true);
-            editor_.setCharacterDataFont(FontUtil.getPreferredMonoFont());
-            editor_.setElementNameFont(FontUtil.getPreferredMonoFont());
-            
-        }
-        catch (Exception pe)
-        {
-            throw new DocumentViewerException(pe);
-        }
     }
     
     
@@ -83,9 +102,7 @@ public class PolloViewer implements DocumentViewer
      */
     public JComponent getComponent()
     {
-        if (scroller_ == null)
-            scroller_ = new JScrollPane(editor_);
-        
+        lazyLoad();
         return scroller_;
     }
     
@@ -115,6 +132,8 @@ public class PolloViewer implements DocumentViewer
      */
     public void view(File file) throws DocumentViewerException
     {
+        lazyLoad();
+        
         try
         {
             XmlModel model = new XmlModel(0);
@@ -143,5 +162,7 @@ public class PolloViewer implements DocumentViewer
      */
     public void shutdown()
     {
+        scroller_ = null;
+        editor_ = null;
     }
 }
