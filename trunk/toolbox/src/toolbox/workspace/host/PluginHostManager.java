@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
@@ -17,6 +18,7 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.PluginException;
+import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
 
 /**
@@ -75,6 +77,11 @@ public class PluginHostManager
      */
     private JComponent recepticle_;
     
+    /**
+     * Reference to the workspace.
+     */
+    private PluginWorkspace workspace_;
+    
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -82,8 +89,9 @@ public class PluginHostManager
     /**
      * Creates a PluginHostManager for the given workspace.
      */
-    public PluginHostManager()
+    public PluginHostManager(PluginWorkspace workspace)
     {
+        workspace_ = workspace;
         recepticle_ = new JPanel(new BorderLayout());
     }
     
@@ -149,6 +157,25 @@ public class PluginHostManager
         if (firstTime)
         {
             current_.startup(props);
+            
+            SwingUtilities.invokeLater(new Runnable()
+            { 
+                /**
+                 * @see java.lang.Runnable#run()
+                 */
+                public void run()
+                {
+                    try
+                    {
+                        current_.applyPrefs(workspace_.getPreferences());
+                    }
+                    catch (Exception e1)
+                    {
+                        logger_.error(e1);
+                    }
+                }
+            });
+            
         }
         else
         {
@@ -283,6 +310,8 @@ public class PluginHostManager
             recepticle_.add(newPluginHost_.getComponent());
             current_ = newPluginHost_;
             recepticle_.validate();
+            
+            current_.applyPrefs(workspace_.getPreferences());
         }
     }
 }
