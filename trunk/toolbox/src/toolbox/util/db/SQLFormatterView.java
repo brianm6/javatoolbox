@@ -56,8 +56,6 @@ public class SQLFormatterView extends JPanel
 
     /**
      * Creates a SQLFormatterView.
-     * 
-     * @param formatter SQL formatter.
      */
     public SQLFormatterView()
     {
