@@ -44,11 +44,11 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
      * 
      * @param lookAndFeel LookAndFeelInfo of look and feel to activate
      */
-//    ActivateLookAndFeelAction(LAFInfo info)
-//    {
-//        super(info.getName(), false, null, null);
-//        setLookAndFeelInfo(info);
-//    }
+    //ActivateLookAndFeelAction(LAFInfo info)
+    //{
+    //    super(info.getName(), false, null, null);
+    //    setLookAndFeelInfo(info);
+    //}
 
     //--------------------------------------------------------------------------
     // LookAndFeelActivator Interface
@@ -71,31 +71,23 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
     public void activate() throws Exception
     {
         
-//        if (info_.getClassName().equals(
-//        "novaworx.plaf.novaworx.NovaworxLookAndFeel"))
-//           {
-//            MetalTheme mt = (MetalTheme) RandomUtil.nextElement(themes_);
-//            logger_.debug("setting custom theme " + mt);
-//            NovaworxLookAndFeel.setCurrentTheme(mt);
-//        }
-        
         logger_.debug("Activating " + info_.getClassName());
         UIManager.setLookAndFeel(info_.getClassName());
         
         UIManager.getLookAndFeel().getDefaults().put(
                 LAFInfo.PROP_HIDDEN_KEY, getLookAndFeelInfo());
         
-//        boolean decorate = 
-//            UIManager.getLookAndFeel().getSupportsWindowDecorations();
-//        
-//        JFrame.setDefaultLookAndFeelDecorated(decorate);  // to decorate frames
-//        JDialog.setDefaultLookAndFeelDecorated(decorate); // to decorate dialogs
+        //boolean decorate = 
+        //    UIManager.getLookAndFeel().getSupportsWindowDecorations();
+        //
+        //JFrame.setDefaultLookAndFeelDecorated(decorate);  // to decorate frames
+        //JDialog.setDefaultLookAndFeelDecorated(decorate); // to decorate dialogs
          
         LookAndFeelUtil.propagateChangeInLAF();
     }
     
     //--------------------------------------------------------------------------
-    // SmartAction Implementation
+    // Abstract SmartAction Impl
     //--------------------------------------------------------------------------
         
     /**
@@ -105,22 +97,6 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
     {
         activate();
     }
-    
-//    static MetalTheme[] themes_ = new MetalTheme[]
-//    {
-//        new PolloTheme(),
-//        new DeepBlueTheme(),
-//        new PurpleTheme(),
-//        new NovaworxDesktopTheme(),
-//        new NovaworxPresentationTheme(),
-//        new NovaworxNotebookTheme(),
-//        new SkyBluerTheme(),
-//        new BrownSugar(),
-//        new DarkStar(),
-//        new SkyBluerTahoma(),
-//        new DesertBluer(),
-//		new SoftBlueTheme()
-//    };
     
     //--------------------------------------------------------------------------
     // Public
