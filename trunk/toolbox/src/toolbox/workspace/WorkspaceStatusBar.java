@@ -14,15 +14,31 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.statusbar.JStatusBar;
 
 /**
- * Specialization of JStatusBar with pre-assembled components.
- * <br> 
- * This includes:
+ * <code>WorkspaceStatusBar</code> is an extension of 
+ * {@link toolbox.util.ui.statusbar.JStatusBar} with commonly used 
+ * pre-assembled components. This includes:
  * <ul>
  *   <li>Area to display arbitrary status text.
  *   <li>Progress bar for long running operations.
  *   <li>Memory usage bar.
  *   <li>Quick-click icon to trigger garbage collection.
- * </ul> 
+ * </ul>
+ * The status text can optionally have an associated priority which is denoted 
+ * by an icon. The priorities are:
+ * <ul>
+ *   <li>INFO  - Informational status message
+ *   <li>WARN  - Warning status message.
+ *   <li>ERROR - Error status message.
+ * </ul>
+ * Intended usage:
+ * <pre>
+ * WorkspaceStatusBar sb = new WorkspaceStatusBar();
+ * sb.setInfo("Logging in ..");
+ * sb.setBusy(true);
+ * // go login
+ * sb.setBusy(false);
+ * sb.setInfo("Login succeeded.");
+ * </pre>
  */
 public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
 {
