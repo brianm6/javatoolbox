@@ -42,6 +42,9 @@ import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * Tail pane
+ * <p>
+ * TOOD: Figure why anti alias select from font chooser dialog does not get
+ *       applied/persisted to the tailpane!
  */
 public class TailPane extends JPanel
 {
