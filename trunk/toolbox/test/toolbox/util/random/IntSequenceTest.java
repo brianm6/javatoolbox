@@ -226,7 +226,7 @@ public class IntSequenceTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Bounds Testing
+    // Bounds Tests
     //--------------------------------------------------------------------------
     
     /**
@@ -248,5 +248,32 @@ public class IntSequenceTest extends TestCase
             // Success
             logger_.info("SUCCESS: " + iae.getMessage());
         }
+    }
+    
+    //--------------------------------------------------------------------------
+    // Misc Tests
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests getSize(). 
+     */
+    public void testGetSize()
+    {
+        logger_.info("Running testGetSize...");
+        
+        assertEquals(1, (new IntSequence(1, 1, true)).getSize());
+        assertEquals(101, (new IntSequence(100, 200, true)).getSize());
+    }
+
+    
+    /**
+     * Tests toString(). 
+     */
+    public void testToString()
+    {
+        logger_.info("Running testToString...");
+        
+        assertEquals("[1..1]", (new IntSequence(1, 1, true)).toString());
+        assertEquals("[100..200]", (new IntSequence(100, 200, true)).toString());
     }
 }
