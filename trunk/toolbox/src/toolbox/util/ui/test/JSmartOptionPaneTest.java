@@ -8,6 +8,8 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.RandomUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartOptionPane;
 
@@ -122,5 +124,22 @@ public class JSmartOptionPaneTest extends TestCase
         SwingUtil.setMetalLAF();
         JSmartOptionPane.showExceptionMessageDialog(PARENT, 
             new Exception("testing"));
+    }
+    
+    /**
+     * Tests for a detailed message with a large number of rows
+     */
+    public void testShowDetailedMessageDialogLotsOfRows()
+    {
+        logger_.info("Running testShowExceptionMessageDialogLogsOfRows...");
+        
+        StringBuffer sb = new StringBuffer();
+        
+        for (int i=0; i<20000; i++)
+            sb.append(RandomUtil.nextUpperAlpha());
+            
+        String msg = StringUtil.wrap(sb.toString(), 50, true);
+        
+        JSmartOptionPane.showDetailedMessageDialog(PARENT, "yo yo yo!", msg);
     }
 }
