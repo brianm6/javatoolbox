@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
 import toolbox.util.FileUtil;
-import toolbox.util.ui.JSmartOptionPane;
 
 /**
  * Pops files off of the work queue and parses them to gather stats.
@@ -29,6 +28,11 @@ class SourceParser implements Runnable
      * Cancel flag.
      */
     private boolean cancel_;
+
+    /**
+     * Statistics totals.
+     */
+    private FileStats totals_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -68,7 +72,7 @@ class SourceParser implements Runnable
     public void run()
     {
         ElapsedTime elapsed = new ElapsedTime();
-        FileStats totals = new FileStats();
+        totals_ = new FileStats();
         int fileCount = 0;
         StatsCollector statsCollector = new StatsCollector();
         
@@ -95,7 +99,7 @@ class SourceParser implements Runnable
                 try
                 {
                     fileStats = statsCollector.getStats(filename);
-                    totals.add(fileStats);
+                    totals_.add(fileStats);
                     ++fileCount;
 
                     // Create table row data and append                    
@@ -125,12 +129,12 @@ class SourceParser implements Runnable
         NumberFormat df = DecimalFormat.getIntegerInstance();
         
         sourceView_.setParseStatus(
-            "[Total " + df.format(totals.getTotalLines()) + "]  " +
-            "[Code " + df.format(totals.getCodeLines()) + "]  " +
-            "[Comments " + df.format(totals.getCommentLines()) + "]  " +
-            "[Empty " + df.format(totals.getBlankLines()) + "]  " +
-            "[Thrown out " + df.format(totals.getThrownOutLines()) + "]  " + 
-            "[Percent code vs comments " + df.format(totals.getPercent()) + 
+            "[Total " + df.format(totals_.getTotalLines()) + "]  " +
+            "[Code " + df.format(totals_.getCodeLines()) + "]  " +
+            "[Comments " + df.format(totals_.getCommentLines()) + "]  " +
+            "[Empty " + df.format(totals_.getBlankLines()) + "]  " +
+            "[Thrown out " + df.format(totals_.getThrownOutLines()) + "]  " + 
+            "[Percent code vs comments " + df.format(totals_.getPercent()) + 
             "%]"); 
         
         sourceView_.setScanStatus("Done parsing.");
@@ -141,9 +145,16 @@ class SourceParser implements Runnable
         
         elapsed.setEndTime();
         sourceView_.setScanStatus("Elapsed time: " + elapsed.toString());
-        
-        
-        PieChart pieChart = new PieChart(totals);
-        JSmartOptionPane.showMessageDialog(sourceView_, pieChart);
+    }
+
+    
+    /**
+     * Returns the statistics totals.
+     * 
+     * @return FileStats
+     */
+    public FileStats getTotals()
+    {
+        return totals_;
     }
 }
