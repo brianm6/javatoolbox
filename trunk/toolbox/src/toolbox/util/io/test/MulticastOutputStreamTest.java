@@ -47,6 +47,23 @@ public class MulticastOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
+     * Tests the constructors
+     */
+    public void testConstructors()
+    {
+        logger_.info("Running testConstructors...");
+        
+        MulticastOutputStream mos = 
+            new MulticastOutputStream();
+            
+        MulticastOutputStream mos2 = 
+            new MulticastOutputStream(new StringOutputStream());
+            
+        assertNotNull(mos);
+        assertNotNull(mos2);
+    }
+    
+    /**
      * Tests write(byte[])
      * 
      * @throws Exception on error
@@ -99,6 +116,27 @@ public class MulticastOutputStreamTest extends TestCase
             assertEquals(testString, streams[i].getBuffer().toString());
             mos.removeStream(streams[i]);
         }
+    }
+
+    /**
+     * Tests write(int)
+     * 
+     * @throws Exception on error
+     */
+    public void testWrite3() throws Exception
+    {
+        logger_.info("Running testWrite3...");
+        
+        StringOutputStream[] streams = new StringOutputStream[10];
+        MulticastOutputStream mos = new MulticastOutputStream();
+                
+        for(int i=0; i<streams.length; i++)
+        {
+            streams[i] = new StringOutputStream();
+            mos.addStream(streams[i]);
+        }
+            
+        mos.write(0);
     }
     
     /**
