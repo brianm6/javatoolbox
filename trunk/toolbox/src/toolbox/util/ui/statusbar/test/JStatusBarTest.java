@@ -10,6 +10,8 @@ import javax.swing.JProgressBar;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.RandomUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.statusbar.JStatusBar;
@@ -19,6 +21,9 @@ import toolbox.util.ui.statusbar.JStatusBar;
  */
 public class JStatusBarTest extends TestCase
 {
+    private static final Logger logger_ =
+        Logger.getLogger(JStatusBarTest.class);
+        
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -46,6 +51,8 @@ public class JStatusBarTest extends TestCase
      */    
     public void testJStatusBar() throws Exception
     {
+        logger_.info("Running testJStatusBar...");
+        
         JStatusBar status = new JStatusBar();
 
         // Relative, twice normal

@@ -88,10 +88,29 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String     ATTR_CLASS      = "class";
     private static final String     ATTR_LOADED     = "loaded";
     
-    private static final String NODE_ROOT           = "Root";
-    private static final String NODE_UNLOADED       = "Unloaded";
+    /**
+     * This is a wrapper for NODE_WORKSPACE so we can treat it as an 
+     * arbitrary element and not the document root.
+     */
+    private static final String NODE_ROOT = "Root";
+    
+    /**
+     * Maintains a DOM of the plugins which have been instantiated at one
+     * point in time but have been unloaded. Unloaded plugin prefs are 
+     * maintained so that on re-synthesis of the plugin, its preferences will
+     * be restored.
+     */
+    private static final String NODE_UNLOADED = "Unloaded";
 
-    private static final String FILE_PREFS     = ".toolbox.xml";    
+    /**
+     * Name of file that application and plugin preferences are stored in
+     */
+    private static final String FILE_PREFS = ".toolbox.xml";
+    
+    /**
+     * Plugin property used to identify a reference to the workspace's shared
+     * statusbar
+     */    
     public  static final String PROP_STATUSBAR = "workspace.statusbar";
     
     //--------------------------------------------------------------------------
@@ -448,6 +467,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Returns a plugin given its class name
      * 
+     * @param pluginClass FQCN of the plugin
      * @return IPlugin
      */
     protected IPlugin getPluginByClass(String pluginClass)
@@ -463,7 +483,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     /**
-     * Loads the workspace and plugin preferences from $HOME/.toolbox.xml
+     * Loads the workspace and plugin preferences from $user.home/.toolbox.xml
      */
     protected void loadPrefs()
     {
@@ -719,7 +739,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
 
     //--------------------------------------------------------------------------
-    // Package Protected
+    // Package
     //--------------------------------------------------------------------------
     
     /**

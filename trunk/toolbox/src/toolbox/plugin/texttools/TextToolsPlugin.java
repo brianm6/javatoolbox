@@ -96,18 +96,18 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     private JSplitPane splitter_;
    
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Default Constructor
+     * Creates a TextPlugin
      */
     public TextPlugin()
     {
     }
     
     //--------------------------------------------------------------------------
-    //  Private
+    // Private
     //--------------------------------------------------------------------------
     
     /** 
@@ -161,9 +161,12 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     }
     
     //--------------------------------------------------------------------------
-    //  IPlugin Interface
+    // IPlugin Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#startup(java.util.Map)
+     */
     public void startup(Map params)
     {
         if (params != null)
@@ -171,23 +174,35 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         
         buildView();
     }
-
+    
+    /**
+     * @see java.awt.Component#getName()
+     */
     public String getName()
     {
         return "Text Tools";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
+     */
     public JComponent getComponent()
     {
         return this;
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     */
     public String getDescription()
     {
         return "Various text processing utilities including sorting, " + 
                "tokenizing, and regular expression based filtering.";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
+     */
     public void shutdown()
     {
         outputArea_.setText("");
@@ -201,6 +216,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     // IPreferenced Interface
     //--------------------------------------------------------------------------
     
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
     public void applyPrefs(Element prefs) 
     {
         Element root = 
@@ -230,6 +248,9 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         });
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element)
+     */
     public void savePrefs(Element prefs)
     {
         Element root = new Element(NODE_TEXTTOOLS_PLUGIN);
