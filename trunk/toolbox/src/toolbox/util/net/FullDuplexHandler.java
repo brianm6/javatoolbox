@@ -89,7 +89,6 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Handles the inputstream
      * 
-     * @param  is  Inputstream to handle
      * @throws Exception on error
      */
     public abstract void handleInput() throws Exception;
@@ -98,7 +97,6 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Handles the output stream
      * 
-     * @param  os  OutputStream to handle
      * @throws Exception on error
      */
     public abstract void handleOutput() throws Exception;
@@ -130,6 +128,9 @@ public abstract class FullDuplexHandler implements IConnectionHandler
 
     /**
      * Convenience accessor for the input stream
+     * 
+     * @return Inputstream
+     * @throws IOException on IO error
      */    
     public InputStream getInputStream() throws IOException
     {
@@ -138,6 +139,9 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     
     /**
      * Convenience accessor for the output stream
+     * 
+     * @return OutputStream
+     * @throws IOException on IO error
      */
     public OutputStream getOutputStream() throws IOException
     {

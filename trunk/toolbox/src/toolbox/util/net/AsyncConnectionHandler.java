@@ -16,7 +16,8 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     private IConnection conn_;
 
     /** 
-     * Connection handler to asynchronously run in a separate thread of execution
+     * Connection handler to asynchronously run in a separate 
+     * thread of execution
      */
     private IConnectionHandler handler_;
 
@@ -32,8 +33,8 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Creates AsyncConnectionHandler
      * 
-     * @param    handler      Handler to wrap with async behavior
-     * @param    dispatcher   Dispatcher to use for thread acquisition/dispatching
+     * @param newHandler    Handler to wrap with async behavior
+     * @param newDispatcher Dispatcher to use for thread acquisition/dispatching
      */
     public AsyncConnectionHandler(IConnectionHandler newHandler, 
                                   ThreadDispatcher newDispatcher)
@@ -81,7 +82,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Mutator for the connection handler
      * 
-     * @param    handler        IConnectionHandler
+     * @param    newHandler        IConnectionHandler
      */
     public void setConnectionHandler(IConnectionHandler newHandler)
     {
@@ -92,7 +93,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Mutator for the connection
      * 
-     * @param    conn    IConnection
+     * @param    newConn    IConnection
      */
     public void setConnection(IConnection newConn)
     {
@@ -125,7 +126,7 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     /**
      * Mutator for the dispatcher
      * 
-     * @param    dispatcher    Dispatcher
+     * @param    newDispatcher    Dispatcher
      */
     public void setDispatcher(ThreadDispatcher newDispatcher)
     {

@@ -46,7 +46,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     /**
      * IsConnected flag
      */
-    boolean connected_ = false;
+    private boolean connected_ = false;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -192,7 +192,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     }
 
     /**
-     * Returns true if connected
+     * @return True if connected
      */
     public boolean isConnected()
     {
@@ -224,7 +224,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     }
     
     /**
-     * toString()
+     * @return  Stringified form
      */
     public String toString()
     {

@@ -369,7 +369,8 @@ public class SocketServerConfig
     /**
      * Sets connection handler type.
      * 
-     * @param  tyype  String containing FQN of class implementing IConnectionHandler
+     * @param  type  String containing FQN of class 
+     *               implementing IConnectionHandler
      */
     public void setConnectionHandlerType(String type)
     {
@@ -394,9 +395,8 @@ public class SocketServerConfig
         name_ = name;
     }
 
-
     /**
-     * Dumps to string
+     * @return Dumped to string
      */
     public String toString()
     {

@@ -7,5 +7,10 @@ import java.net.Socket;
  */
 public interface ISocketServerListener
 {
+    /**
+     * Notication that a client socket connection was accepted
+     * 
+     * @param  socket  Newly created socket to communicate with the client
+     */
     public void socketAccepted(Socket socket);
 }

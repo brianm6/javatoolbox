@@ -20,7 +20,7 @@ public abstract class AbstractConnection implements IConnection
     private List listeners_ = new ArrayList();
 
     /**
-     * Connections name
+     * Connection's name
      */
     private String name_ = "";
         
@@ -68,6 +68,8 @@ public abstract class AbstractConnection implements IConnection
     
     /**
      * Sets the connection name
+     * 
+     * @param  name  Name
      */
     public void setName(String name)
     {
@@ -80,6 +82,8 @@ public abstract class AbstractConnection implements IConnection
 
     /**
      * Adds a connection to the list of listeners
+     * 
+     * @param  listener  Listener to add
      */
     public void addConnectionListener(IConnectionListener listener)
     {
@@ -88,6 +92,8 @@ public abstract class AbstractConnection implements IConnection
 
     /**
      * Removes a connection from the list of listeners
+     * 
+     * @param  listener  Listener to remove
      */
     public void removeConnectionListener(IConnectionListener listener)
     {

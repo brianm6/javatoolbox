@@ -77,7 +77,7 @@ public class SocketServer implements Runnable
     /**
      * Create a SocketServer with the given server configuration
      * 
-     * @param  newconfig    Server configuration
+     * @param  newConfig    Server configuration
      */
     public SocketServer(SocketServerConfig newConfig)
     {
@@ -153,10 +153,10 @@ public class SocketServer implements Runnable
         // Set exit variant to at least try to shutdown gracefully
         shutdown_ = true;
 
-        // TODO: more graceful way?
         serverSocket_.close();
         serverThread_.interrupt();
-        logger_.info(method + "Stopped socket server on port " + getServerPort());
+        logger_.info(method + 
+            "Stopped socket server on port " + getServerPort());
     }
 
 
@@ -168,7 +168,9 @@ public class SocketServer implements Runnable
     private void configure() throws SocketException
     {
         // Name thread based on server socket port
-        serverThread_.setName(config_.getName() + ":" + config_.getServerPort());
+        serverThread_.setName(
+            config_.getName() + ":" + config_.getServerPort());
+            
         serverThread_.setDaemon(true);
         serverSocket_.setSoTimeout(config_.getSocketTimeout());
 
