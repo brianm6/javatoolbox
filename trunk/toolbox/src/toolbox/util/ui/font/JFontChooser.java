@@ -32,35 +32,57 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.Assert;
 
 /**
- * Component that allows the selection of a font
+ * JFontChooser is a UI component that provides the ability to select a font
+ * and its associated characteristics.
  */
 public class JFontChooser extends JPanel
 {
-    /** JList for font family */
+	private static final Logger logger_ = 
+		Logger.getLogger(JFontChooser.class);
+	
+    /** 
+     * JList for font family 
+     */
     private JList fontFamilyList_;
     
-    /** FontStlyeList (subclass of JList) for font style */
+    /** 
+     * FontStlyeList (subclass of JList) for font style 
+     */
     private FontStyleList fontStyleList_;
     
-    /** JTextField for font size */
+    /** 
+     * Font size textfield. The size cannot be fractional (must be an integer) 
+     */
     private JTextField fontSize_;
     
-    /** JList for font size */
+    /** 
+     * List containing predefined font sizes 
+     */
     private JList fontSizeList_;
 
-    /** Anti-aliasing check box */
+    /** 
+     * Check box that toggles anti-aliasing of the selected font 
+     */
     private JCheckBox antiAliasCheckBox_;
     
-    /** PhraseCanvas in which font samples are displayed */
+    /** 
+     * PhraseCanvas in which font samples are displayed 
+     */
     private PhraseCanvas phraseCanvas_;
 
-    /** List of listeners */
+    /** 
+     * List of font chooser listeners 
+     */
     private List listeners_ = new ArrayList();
 
-    /** Maximum number of characters permissibile in a valid font size */
+    /** 
+     * Maximum number of characters permissibile in a valid font size 
+     */
     private int maxNumCharsInFontSize_ = 3;
 
     //--------------------------------------------------------------------------
@@ -88,7 +110,7 @@ public class JFontChooser extends JPanel
         
         // Don't change the following two values without changing the javadocs
         new String[] { "Plain", "Bold", "Italic", "Bold Italic" },
-            new int[] { 8, 9, 10, 12, 14 }, false);
+            new int[] { 7, 8, 9, 10, 11, 12, 14, 36}, false);
     }
 
     /**
@@ -485,8 +507,7 @@ public class JFontChooser extends JPanel
             }
         }
         
-        throw new IllegalArgumentException(
-            "The font family supplied, '" + family + 
+        logger_.warn("The font family supplied, '" + family + 
             "', is not in the list of availalbe font families.");
     }
 
