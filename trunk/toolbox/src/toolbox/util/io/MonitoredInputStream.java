@@ -7,6 +7,8 @@ import java.io.InputStream;
 import toolbox.util.ArrayUtil;
 import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputMonitor;
+import toolbox.util.io.transferred.DefaultTransferredMonitor;
+import toolbox.util.io.transferred.TransferredMonitor;
 
 /**
  * MonitoredInputStream supports the following features.
@@ -17,7 +19,8 @@ import toolbox.util.io.throughput.ThroughputMonitor;
  *   <li>Monitoring of significant stream events (close, flush,etc) (observable)
  * </ul>
  * 
- * @see toolbox.util.io.throughput.ThroughputMonitor 
+ * @see toolbox.util.io.throughput.ThroughputMonitor
+ * @see toolbox.util.io.transferred.TransferredMonitor 
  */
 public class MonitoredInputStream extends FilterInputStream
 {
@@ -26,24 +29,24 @@ public class MonitoredInputStream extends FilterInputStream
     //--------------------------------------------------------------------------
     
     /**
-     * List of registered listeners interested in stream events.
-     */
-    private Listener[] listeners_;
-    
-    /**
-     * Total number of bytes read from the stream.
-     */
-    private int count_;
-    
-    /**
      * Friendly name for this stream.
      */
     private String name_;
     
     /**
+     * List of registered listeners interested in stream events.
+     */
+    private Listener[] listeners_;
+    
+    /**
      * Bandwidth usage monitor.
      */
     private ThroughputMonitor throughputMonitor_;
+    
+    /**
+     * Bytes transferred monitor.
+     */
+    private TransferredMonitor transferredMonitor_;
     
     //--------------------------------------------------------------------------
     // Constructors 
@@ -71,9 +74,9 @@ public class MonitoredInputStream extends FilterInputStream
         super(in);
         setName(name);
         setThroughputMonitor(new DefaultThroughputMonitor());
+        setTransferredMonitor(new DefaultTransferredMonitor());
         listeners_ = new Listener[0];
-        //count_ = 0;
-    }
+     }
     
     //--------------------------------------------------------------------------
     // Overriddes java.io.FilterInputStream
@@ -87,8 +90,9 @@ public class MonitoredInputStream extends FilterInputStream
         int c = super.read();
         
         if (c != -1) {
-            count_++;
+            //count_++;
             getThroughputMonitor().newBytesTransferred(1);
+            getTransferredMonitor().newBytesTransferred(1);
             
             if (listeners_.length > 0)
                 fireBytesRead(new byte[] {(byte) c});
@@ -107,12 +111,13 @@ public class MonitoredInputStream extends FilterInputStream
         
         if (read > 0) 
         {
-            count_ += read;
+            //count_ += read;
             
             if (listeners_.length > 0)
                 fireBytesRead(ArrayUtil.subset(b, off, off + len - 1));
             
             getThroughputMonitor().newBytesTransferred(read);
+            getTransferredMonitor().newBytesTransferred(read);
         }
             
         return read;
@@ -181,26 +186,6 @@ public class MonitoredInputStream extends FilterInputStream
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the number of bytes read from the stream.
-     * 
-     * @return Num bytes read.
-     */
-    public int getCount()
-    {
-        return count_;
-    }
-        
-    
-    /**
-     * Resets the number of bytes read back to zero.
-     */
-    public void resetCount()
-    {
-        count_ = 0;
-    }    
-    
-    
-    /**
      * Returns the friendly name of the stream.
      * 
      * @return Stream name.
@@ -235,6 +220,24 @@ public class MonitoredInputStream extends FilterInputStream
     public void setThroughputMonitor(ThroughputMonitor throughputMonitor)
     {
         throughputMonitor_ = throughputMonitor;
+    }
+
+    
+    /**
+     * @return Returns the transferredMonitor.
+     */
+    public TransferredMonitor getTransferredMonitor()
+    {
+        return transferredMonitor_;
+    }
+    
+    
+    /**
+     * @param transferredMonitor The transferredMonitor to set.
+     */
+    public void setTransferredMonitor(TransferredMonitor transferredMonitor)
+    {
+        transferredMonitor_ = transferredMonitor;
     }
     
     //--------------------------------------------------------------------------
