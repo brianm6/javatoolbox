@@ -20,8 +20,8 @@ public class FileSelectionPane extends JPanel implements ActionListener
 	private static final Category logger_ =
 		Category.getInstance(FileSelectionPane.class);
 	
-	private JFileExplorer fileExplorer_;
-	private JButton tailButton_;
+	private JFileExplorer  fileExplorer_;
+	private JButton        tailButton_;
 	
     	
 	/**
@@ -29,15 +29,29 @@ public class FileSelectionPane extends JPanel implements ActionListener
 	 */
 	public FileSelectionPane()
 	{
-		super(new BorderLayout(), false);
-		build();	
+        this(null);
 	}
 
-	
+    
+    /**
+     * Creates a FileSelectionPane with the given directory selected
+     *
+     * @param  dir  Directory to select by default
+     */
+    public FileSelectionPane(String dir)
+    {
+        super(new BorderLayout(), false);
+        buildView();
+        
+        if (dir != null)
+            fileExplorer_.selectFolder(dir);        
+    }
+    
+    
 	/**
 	 * Builds the GUI
 	 */
-	protected void build()
+	protected void buildView()
 	{
         // File explorer         
 		fileExplorer_ = new JFileExplorer(false);
