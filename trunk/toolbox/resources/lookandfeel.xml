@@ -85,6 +85,13 @@
       <Property name="group.name" value="Others"/>            
   </LookAndFeel>
 
+  <LookAndFeel 
+      name="Oyoaha"
+      class="com.oyoaha.swing.plaf.oyoaha.OyoahaLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
+  </LookAndFeel>
+  
   <!-- ==================================================================== -->
   <!-- Alloy Look and Feels                                                 -->
   <!-- ==================================================================== -->
