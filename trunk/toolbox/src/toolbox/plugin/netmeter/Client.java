@@ -12,7 +12,6 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.io.Bandwidth;
 import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.ThrottledOutputStream;
-import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
 import toolbox.util.net.SocketConnection;
@@ -76,13 +75,8 @@ public class Client implements Initializable, Startable, Destroyable,
     private Bandwidth bandwidth_;
     
     /**
-     * Monitors the throughput of the stream.
-     */
-    private DefaultThroughputMonitor monitor_;
-    
-    /**
-     * Thread that client request is spawned off on in order for start()
-     * to return immediately.
+     * Thread that client request is spawned off on in order for start() to 
+     * return immediately.
      */
     private Thread clientThread_;
     
@@ -177,7 +171,7 @@ public class Client implements Initializable, Startable, Destroyable,
      */
     public void addThroughputListener(ThroughputListener listener)
     {
-        monitor_.addThroughputListener(listener); 
+        mos_.getThroughputMonitor().addThroughputListener(listener);
     }
     
     
@@ -274,7 +268,6 @@ public class Client implements Initializable, Startable, Destroyable,
     public void initialize(Map configuration) throws ServiceException
     {
         machine_.checkTransition(ServiceTransition.INITIALIZE);
-        monitor_ = new DefaultThroughputMonitor();
         machine_.transition(ServiceTransition.INITIALIZE);
     }
     
@@ -299,7 +292,6 @@ public class Client implements Initializable, Startable, Destroyable,
                             "Client", 
                             new BufferedOutputStream(conn_.getOutputStream()));
                     
-                    mos_.setThroughputMonitor(monitor_);
                     mos_.getThroughputMonitor().setSampleInterval(1000);
                     mos_.getThroughputMonitor().setMonitoringThroughput(true);
                     
@@ -352,7 +344,7 @@ public class Client implements Initializable, Startable, Destroyable,
     {
         machine_.checkTransition(ServiceTransition.STOP);
         machine_.transition(ServiceTransition.STOP);
-        monitor_.setMonitoringThroughput(false);
+        mos_.getThroughputMonitor().setMonitoringThroughput(false);
         ThreadUtil.join(clientThread_);
     }
 
