@@ -996,7 +996,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             statusBar_.setWarning("TODO: Implement ctrl-up");
             String s = getActiveText();
-            logger_.debug(StringUtil.addBars(s));
+            logger_.debug(StringUtil.banner(s));
         }
     }
 

@@ -266,7 +266,7 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
          */
         public void actionPerformed(ActionEvent e)
         {
-            logger_.debug(StringUtil.addBars("Got a Ctrl-W"));
+            logger_.debug(StringUtil.banner("Got a Ctrl-W"));
             
             int tabNumber = getSelectedIndex();
             

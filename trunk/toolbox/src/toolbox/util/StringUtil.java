@@ -632,19 +632,19 @@ public final class StringUtil
     
     /**
      * Encloses a string in horizontal bars for easier identification when
-     * printing out. Example:
+     * printing out. 
+     * <p>
+     * <b>Example:</b>
      * <pre>
-     * 
-     * =========================================================================
-     * Your text goes here
-     * =========================================================================
-     * 
+     *  ========================================================================
+     * |Your text goes here
+     *  ========================================================================
      * </pre>
      * 
      * @param s String to enclose in bars.
      * @return String
      */
-    public static String addBars(String s)
+    public static String banner(String s)
     {
         StringBuffer sb = new StringBuffer();
         String bar = StringUtils.repeat("=", 80);
@@ -667,10 +667,5 @@ public final class StringUtil
         sb.append("\n");
         
         return sb.toString();
-    }
-    
-    public static String banner(String s)
-    {
-        return addBars(s);
     }
 }

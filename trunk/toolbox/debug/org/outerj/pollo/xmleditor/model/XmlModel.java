@@ -46,7 +46,7 @@ public class XmlModel
 {
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug org.outerj.pollo.xmleditor.model.XmlModel"));
     }
     

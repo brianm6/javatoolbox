@@ -225,13 +225,13 @@ public class SocketServer implements Runnable
         String nl  = "\n";
         String nlt = nl + "\t";
 
-        return StringUtil.addBars(
+        return StringUtil.banner(
                "SocketServer" + nl +
                "serverSocket = " + serverSocket_ + nl +
                "thread       = " + acceptThread_ + nl +
                "publisher    = " + dispatcher_ + nl +
                "shutdown     = " + shutdown_ + nl +
-               StringUtil.addBars("ServerConfig" + nl + config_.toString()));
+               StringUtil.banner("ServerConfig" + nl + config_.toString()));
     }
 
     //--------------------------------------------------------------------------

@@ -91,7 +91,7 @@ public class SwingUtilTest extends UITestCase
         logger_.info("Running testGetLAFs...");
         
         UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
-        logger_.debug(StringUtil.addBars(ArrayUtil.toString(lafs, true)));
+        logger_.debug(StringUtil.banner(ArrayUtil.toString(lafs, true)));
     }
     
     

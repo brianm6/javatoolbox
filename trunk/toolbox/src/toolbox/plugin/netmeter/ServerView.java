@@ -157,7 +157,7 @@ public class ServerView extends JHeaderPanel
      */
     public void connectionHandled(IConnectionHandler connectionHandler)
     {
-        logger_.debug(StringUtil.addBars("connectionHandled"));
+        logger_.debug(StringUtil.banner("connectionHandled"));
         
         AsyncConnectionHandler async =
             (AsyncConnectionHandler) connectionHandler;

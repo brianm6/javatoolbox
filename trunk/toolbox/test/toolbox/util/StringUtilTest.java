@@ -597,9 +597,9 @@ public class StringUtilTest extends TestCase
     {
         logger_.info("Running testAddBars...");
         
-        logger_.debug(StringUtil.addBars(""));
-        logger_.debug(StringUtil.addBars("this is a single line"));
-        logger_.debug(StringUtil.addBars("this\nis a\nmulti-line"));
+        logger_.debug(StringUtil.banner(""));
+        logger_.debug(StringUtil.banner("this is a single line"));
+        logger_.debug(StringUtil.banner("this\nis a\nmulti-line"));
     }
 
     

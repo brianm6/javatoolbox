@@ -72,7 +72,7 @@ public class FileStatsTest extends TestCase
         // Add them together
         fs.add(fs2);
         
-        logger_.debug(StringUtil.addBars(fs.toString()));
+        logger_.debug(StringUtil.banner(fs.toString()));
         
         assertEquals(
             base.getBlankLines() + fs2.getBlankLines(), fs.getBlankLines());

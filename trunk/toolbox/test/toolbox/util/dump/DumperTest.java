@@ -42,7 +42,7 @@ public class DumperTest extends TestCase
     public void testDumpEmptyObject()
     {
         logger_.info("Running testDumpEmptyObject...");
-        logger_.debug(StringUtil.addBars(Dumper.dump(new EmptyClass())));
+        logger_.debug(StringUtil.banner(Dumper.dump(new EmptyClass())));
     }
 
     
@@ -52,7 +52,7 @@ public class DumperTest extends TestCase
     public void testDumpSimpleObject()
     {
         logger_.info("Running testDumpSimpleObject...");
-        logger_.debug(StringUtil.addBars(Dumper.dump(new Address())));
+        logger_.debug(StringUtil.banner(Dumper.dump(new Address())));
     }
 
     
@@ -62,7 +62,7 @@ public class DumperTest extends TestCase
     public void testDumpNestedObject()
     {
         logger_.info("Running testDumpNestedObject...");
-        logger_.debug(StringUtil.addBars(Dumper.dump(new Employee())));
+        logger_.debug(StringUtil.banner(Dumper.dump(new Employee())));
     }
     
     
@@ -85,7 +85,7 @@ public class DumperTest extends TestCase
     {
         logger_.info("Running testDumpMultipleReferences...");
         logger_.debug(
-            StringUtil.addBars(Dumper.dump(new MultipleReferences())));        
+            StringUtil.banner(Dumper.dump(new MultipleReferences())));        
     }
     
     
@@ -101,17 +101,17 @@ public class DumperTest extends TestCase
         logger_.debug(
             StringUtil.NL + StringUtil.BRNL + "Max depth = 1" + 
             StringUtil.NL + StringUtil.BRNL +
-            StringUtil.addBars(Dumper.dump(emp, 1)));
+            StringUtil.banner(Dumper.dump(emp, 1)));
          
         logger_.debug(
             StringUtil.NL + StringUtil.BRNL + "Max depth = 2" + 
             StringUtil.NL + StringUtil.BRNL +
-            StringUtil.addBars(Dumper.dump(emp, 2)));        
+            StringUtil.banner(Dumper.dump(emp, 2)));        
 
         logger_.debug(
             StringUtil.NL + StringUtil.BRNL + "Max depth = 3" + 
             StringUtil.NL + StringUtil.BRNL +
-            StringUtil.addBars(Dumper.dump(emp, 3)));        
+            StringUtil.banner(Dumper.dump(emp, 3)));        
     }
     
     
@@ -152,7 +152,7 @@ public class DumperTest extends TestCase
             }
         }
         
-        logger_.debug(StringUtil.addBars(Dumper.dump(new CollectionDump())));
+        logger_.debug(StringUtil.banner(Dumper.dump(new CollectionDump())));
     }
 
     
@@ -171,7 +171,7 @@ public class DumperTest extends TestCase
         BasicDumpFormatter formatter = new BasicDumpFormatter();
         formatter.excludeFields("lastName_");
         String dump = Dumper.dump(emp, 10, formatter);
-        logger_.debug(StringUtil.addBars(dump));
+        logger_.debug(StringUtil.banner(dump));
         assertTrue(dump.indexOf("lastName_") < 0);        
     }
      
@@ -183,7 +183,7 @@ public class DumperTest extends TestCase
     {
         logger_.info("Running testLegacy...");
         String dump = Dumper.dump(new D());
-        logger_.debug(StringUtil.addBars(dump));
+        logger_.debug(StringUtil.banner(dump));
     }
             
     //--------------------------------------------------------------------------

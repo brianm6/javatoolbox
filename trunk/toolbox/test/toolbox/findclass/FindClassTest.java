@@ -63,7 +63,7 @@ public class FindClassTest extends TestCase
         {
             FindClassResult r = results[i];
             assertEquals(searchFor, r.getClassFQN());
-            logger_.debug(StringUtil.addBars(AsMap.of(r).toString()));
+            logger_.debug(StringUtil.banner(AsMap.of(r).toString()));
         }
     }
     

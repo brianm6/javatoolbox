@@ -463,7 +463,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             String[] lines = StringUtil.tokenize(text, StringUtil.NL, true);
             StringBuffer sb = new StringBuffer();
 
-            logger_.debug(StringUtil.addBars(ArrayUtil.toString(lines, true)));
+            logger_.debug(StringUtil.banner(ArrayUtil.toString(lines, true)));
 
             for (int i = 0; i < lines.length; i++)
             {

@@ -25,7 +25,7 @@ public class DocumentBlockView extends ChildrenBlockView
 {
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug org.outerj.pollo.xmleditor.view.DocumentBlockView"));
     }
     

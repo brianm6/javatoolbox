@@ -36,7 +36,7 @@ public class ServerConnectionHandler implements IConnectionHandler
      */
     public void setServerView(ServerView serverView) 
     {
-        logger_.debug(StringUtil.addBars("setServerView called"));
+        logger_.debug(StringUtil.banner("setServerView called"));
         serverView_ = serverView;
     }
     
@@ -67,7 +67,7 @@ public class ServerConnectionHandler implements IConnectionHandler
             mis = new MonitoredInputStream(conn.getInputStream());
             monitor = mis.getThroughputMonitor();
             
-            logger_.debug(StringUtil.addBars("getServerViewCalled"));
+            logger_.debug(StringUtil.banner("getServerViewCalled"));
         
             synchronized(this) {
                 wait();

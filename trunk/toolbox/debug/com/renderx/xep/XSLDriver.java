@@ -36,7 +36,7 @@ public class XSLDriver
 {
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug com.renderx.xep.XSLDriver"));
     }
     

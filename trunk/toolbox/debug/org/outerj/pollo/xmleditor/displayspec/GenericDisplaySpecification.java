@@ -31,7 +31,7 @@ public class GenericDisplaySpecification implements IDisplaySpecification
 {
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug org.outerj.pollo.xmleditor.displayspec.GenericDisplaySpecification.class"));
     }
     

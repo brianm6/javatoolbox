@@ -10,7 +10,7 @@ public class TerminalErrorDialog extends ErrorDialog
 {
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug com.adobe.acrobat.gui.TerminalErrorDialog"));
     }
     

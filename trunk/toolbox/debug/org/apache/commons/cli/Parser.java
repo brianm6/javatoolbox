@@ -84,7 +84,7 @@ public abstract class Parser implements CommandLineParser {
 
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug org.apache.commons.cli.Parser"));
     }
     

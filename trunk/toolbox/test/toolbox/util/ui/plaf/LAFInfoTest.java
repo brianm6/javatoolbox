@@ -117,7 +117,7 @@ public class LAFInfoTest extends TestCase
         Element root1 = new Element("root");
         info.savePrefs(root1);
         String xml1 = XOMUtil.toXML(root1);
-        logger_.debug(StringUtil.addBars(xml1));
+        logger_.debug(StringUtil.banner(xml1));
 
         // Serialize with properties
         info.getProperties().put("key1", "value1");
@@ -126,7 +126,7 @@ public class LAFInfoTest extends TestCase
         Element root2 = new Element("root");
         info.savePrefs(root2);
         String xml2 = XOMUtil.toXML(root2);
-        logger_.debug(StringUtil.addBars(xml2));        
+        logger_.debug(StringUtil.banner(xml2));        
     }
     
     

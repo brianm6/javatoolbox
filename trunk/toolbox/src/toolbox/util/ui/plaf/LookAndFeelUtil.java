@@ -138,7 +138,7 @@ public final class LookAndFeelUtil
             sb.append(ArrayUtil.toString(
                 menuItemMap_.keySet().toArray(), true));
             
-            logger_.debug(StringUtil.addBars(sb.toString()));
+            logger_.debug(StringUtil.banner(sb.toString()));
         }
     }
 
@@ -264,7 +264,7 @@ public final class LookAndFeelUtil
         if (current != null)
             selectOnMenu(current);
         else
-            logger_.debug(StringUtil.addBars(
+            logger_.debug(StringUtil.banner(
                 "Hidden key not found for LAF " + UIManager.getLookAndFeel()));
         
         return menu;

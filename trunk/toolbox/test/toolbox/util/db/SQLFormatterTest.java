@@ -240,7 +240,7 @@ public class SQLFormatterTest extends TestCase
         logger_.info("Running testFormatSQL1...");
         
         String s = formatter_.format("select name, age, height from user");
-        logger_.info(StringUtil.addBars(s));
+        logger_.info(StringUtil.banner(s));
     }
 
     
@@ -251,7 +251,7 @@ public class SQLFormatterTest extends TestCase
     {
         logger_.info("Running testFormatSQL1_1...");
         String s = formatter_.format("SELECT * FROM USER");
-        logger_.info(StringUtil.addBars(s));
+        logger_.info(StringUtil.banner(s));
     }
     
     
@@ -266,7 +266,7 @@ public class SQLFormatterTest extends TestCase
             "select one, two, three from user " +
             "where name like 'A%' and id = 34533 group by lastName");
         
-        logger_.info(StringUtil.addBars(s));
+        logger_.info(StringUtil.banner(s));
     }
 
     
@@ -286,7 +286,7 @@ public class SQLFormatterTest extends TestCase
             + "                PRIMARY KEY(id))"
             + "        in DATA01 index in INX01;");
         
-        logger_.info(StringUtil.addBars(s));
+        logger_.info(StringUtil.banner(s));
     }
     
     
@@ -332,7 +332,7 @@ public class SQLFormatterTest extends TestCase
             + "ssianFederation CHAR(6), russianFederation_L VARCHAR(35), PR"
             + "IMARY KEY(id));");
                 
-        logger_.info(StringUtil.addBars(s));
+        logger_.info(StringUtil.banner(s));
     }
     
     //--------------------------------------------------------------------------

@@ -42,7 +42,7 @@ public class PatternParser {
 
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug org.apache.log4j.helpers.PatternParser"));
     }
     

@@ -272,7 +272,7 @@ public class QueuedInvokerTest extends TestCase
         // Make sure the error message contains the name of the bogus method
         //
         String error = sw.toString();
-        logger_.debug(StringUtil.addBars(error));
+        logger_.debug(StringUtil.banner(error));
         assertTrue(error.indexOf("invalid_method") >= 0);
         
         //

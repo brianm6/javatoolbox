@@ -88,7 +88,7 @@ public class DecompilerTest extends TestCase
                     tmpClass, StreamUtil.toBytes(is), false);
                 
                 String source = d.decompile(new File(tmpClass));
-                logger_.debug(StringUtil.addBars("// " + d + "\n" + source));
+                logger_.debug(StringUtil.banner("// " + d + "\n" + source));
             }
             catch (IllegalArgumentException iae)
             {
@@ -120,7 +120,7 @@ public class DecompilerTest extends TestCase
                     decompilers_[i].decompile(
                         "java.lang.Object", ClassUtil.getClasspath());
                 
-                logger_.debug(StringUtil.addBars(source));
+                logger_.debug(StringUtil.banner(source));
             }
             catch (IllegalArgumentException iae)
             {

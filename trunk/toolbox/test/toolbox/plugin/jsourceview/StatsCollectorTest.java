@@ -71,7 +71,7 @@ public class StatsCollectorTest extends TestCase
         FileStats stats = new StatsCollector().getStats(
             "toolbox/jsourceview/test/StatsCollectorTest_testGetStatus.txt");
         
-        logger_.info(StringUtil.addBars(stats.toString()));
+        logger_.info(StringUtil.banner(stats.toString()));
         
         assertEquals(6,  stats.getBlankLines());
         assertEquals(7,  stats.getCodeLines());
@@ -96,7 +96,7 @@ public class StatsCollectorTest extends TestCase
                 "/toolbox/jsourceview/test/StatsCollectorTest_testGetStatus.txt"
             ))));
         
-        logger_.info(StringUtil.addBars(stats.toString()));
+        logger_.info(StringUtil.banner(stats.toString()));
         
         assertEquals(6,  stats.getBlankLines());
         assertEquals(7,  stats.getCodeLines());

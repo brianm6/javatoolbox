@@ -29,7 +29,7 @@ public class KC extends UC
 {
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug com.javio.webwindow.KC"));
     }
     

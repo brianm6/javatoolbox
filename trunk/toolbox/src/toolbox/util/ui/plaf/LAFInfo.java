@@ -271,7 +271,7 @@ public class LAFInfo implements IPreferenced, Nameable
      */
     public String toString()
     {
-        return StringUtil.addBars(AsMap.of(this).toString());
+        return StringUtil.banner(AsMap.of(this).toString());
     }
 
 

@@ -313,7 +313,7 @@ public class ResourceUtilTest extends TestCase
 
         logger_.info("Wrote " + classfile + ".java to " + 
             FileUtil.getTempDir().getCanonicalPath() + "\n" + 
-            StringUtil.addBars(javaSrc.substring(0, 200) + "..."));
+            StringUtil.banner(javaSrc.substring(0, 200) + "..."));
         
         FileUtil.delete(new File(FileUtil.getTempDir(), classfile + ".java"));
     }

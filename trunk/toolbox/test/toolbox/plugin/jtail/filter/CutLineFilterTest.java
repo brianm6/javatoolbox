@@ -152,7 +152,7 @@ public class CutLineFilterTest extends TestCase
         {
             String range = "5-4";
             filter.setCut(range);
-            logger_.debug(StringUtil.addBars(filter.toString()));
+            logger_.debug(StringUtil.banner(filter.toString()));
             fail("Test should have failed for invalid range: " + range);
         }
         catch (IllegalArgumentException iae)
@@ -166,7 +166,7 @@ public class CutLineFilterTest extends TestCase
         {
             String range = "this should fail";
             filter.setCut(range);
-            logger_.debug(StringUtil.addBars(filter.toString()));
+            logger_.debug(StringUtil.banner(filter.toString()));
             fail("Test should have failed for invalid range: " + range);
         }
         catch (IllegalArgumentException iae)

@@ -357,7 +357,7 @@ public class RandomUtilTest extends TestCase
             sb2.append(RandomUtil.nextString() + " ");
         }
         
-        logger_.info(StringUtil.addBars(StringUtil.wrap(sb.toString(), true)));
-        logger_.info(StringUtil.addBars(StringUtil.wrap(sb2.toString(), true)));
+        logger_.info(StringUtil.banner(StringUtil.wrap(sb.toString(), true)));
+        logger_.info(StringUtil.banner(StringUtil.wrap(sb2.toString(), true)));
     }
 }

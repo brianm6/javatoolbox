@@ -126,6 +126,6 @@ public class PreferencesManager implements IPreferenced
         
         XOMUtil.insertOrReplace(prefs, root);
         
-        logger_.debug(StringUtil.addBars(root.toXML()));
+        logger_.debug(StringUtil.banner(root.toXML()));
     }
 }

@@ -168,7 +168,7 @@ public class TailTest extends TestCase
             tail.stop();
             sink.flush();
             
-            logger_.info(StringUtil.addBars(sos.toString()));
+            logger_.info(StringUtil.banner(sos.toString()));
         }
         finally
         {

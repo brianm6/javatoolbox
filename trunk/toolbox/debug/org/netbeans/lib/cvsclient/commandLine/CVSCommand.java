@@ -40,7 +40,7 @@ public class CVSCommand {
     
     static
     {
-        System.out.println(StringUtil.addBars(
+        System.out.println(StringUtil.banner(
             "Loaded debug org.netbeans.lib.cvsclient.commandLine.CVSCommand"));
     }
     
