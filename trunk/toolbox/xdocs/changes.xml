@@ -42,6 +42,7 @@
  * TODO: Update to latest statcvs
  * TODO: Redo ObservableService using decorator pattern
  * TODO: Look into JXTA shell
+ * TODO: Implements Service Transitions using Aspects
  * =============================================================================
  *                              Build
  * =============================================================================
