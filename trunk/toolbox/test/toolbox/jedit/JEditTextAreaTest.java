@@ -25,6 +25,7 @@ import org.jedit.syntax.XMLTokenMarker;
 import toolbox.junit.testcase.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
@@ -73,7 +74,7 @@ public class JEditTextAreaTest extends UITestCase
     /**
      * Frame to encompass the JEditTextArea.
      */
-    class JEditTester extends JDialog implements ActionListener
+    class JEditTester extends JSmartDialog implements ActionListener
     {
         private JEditTextArea jeta_;
         private JComboBox fgCombo_;

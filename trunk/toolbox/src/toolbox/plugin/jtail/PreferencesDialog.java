@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -20,13 +19,14 @@ import org.apache.log4j.Logger;
 import toolbox.plugin.jtail.config.IJTailConfig;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
+import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 
 /**
  * JTail preferences dialog.
  */
-public class PreferencesDialog extends JDialog implements ActionListener
+public class PreferencesDialog extends JSmartDialog implements ActionListener
 {
     // TODO: Finish UI for setting the defaults
 

@@ -18,7 +18,6 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -44,15 +43,19 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.collections.ObjectComparator;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.action.DisposeAction;
 import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 
 /**
- * Dialog that allows user to add/remove/find plugins.
+ * Dialog that allows user to add/remove/find plugins. Not used too much anymore
+ * since the addition of the PluginMenu to the workspace menubar.
+ * 
+ * @see toolbox.workspace.PluginWorkspace
  */
-public class PluginDialog extends JDialog
+public class PluginDialog extends JSmartDialog
 {
     private static final Logger logger_ = Logger.getLogger(PluginDialog.class);
 

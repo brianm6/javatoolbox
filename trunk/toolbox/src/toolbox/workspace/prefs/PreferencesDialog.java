@@ -9,7 +9,6 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -24,6 +23,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartDialog;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
@@ -40,7 +40,7 @@ import toolbox.util.ui.tree.SmartTreeCellRenderer;
  * @see toolbox.workspace.prefs.PreferencesManager
  * @see toolbox.workspace.prefs.PreferencesView
  */
-public class PreferencesDialog extends JDialog
+public class PreferencesDialog extends JSmartDialog
 {
     private static final Logger logger_ =
         Logger.getLogger(PreferencesDialog.class);
@@ -76,7 +76,7 @@ public class PreferencesDialog extends JDialog
     //--------------------------------------------------------------------------
 
     /**
-     * Constructor for PreferencesView.
+     * Creates a PreferencesDialog.
      *
      * @param parent Parent frame.
      * @param preferencesManager PreferencesManager from the workspace.
@@ -89,7 +89,7 @@ public class PreferencesDialog extends JDialog
         preferencesManager_ = preferencesManager;
         buildView();
         pack();
-        SwingUtil.setSizeAsPercentage(this, 20, -20); // May have to tweak later
+        SwingUtil.setSizeAsPercentage(this, 20, -15); // May have to tweak later
         SwingUtil.centerWindow(parent, this);
     }
 

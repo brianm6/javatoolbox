@@ -15,18 +15,18 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
+import toolbox.util.ui.JSmartDialog;
 
 /**
  * Simple font selection dialog. Includes ability to view fonts anti-aliased
  * and also to apply font selection changes on the fly.
  */
-public class JFontChooserDialog extends JDialog
+public class JFontChooserDialog extends JSmartDialog
 {
     //--------------------------------------------------------------------------
     // UI Component Name Constants
