@@ -661,5 +661,200 @@ public class ArrayUtilTest extends TestCase
         for (int i=0; i<tail.length; i++)
             assertEquals("concatted array contents incorrect", tail[i], 
                 concatted[i+head.length]);
-    }    
+    }   
+
+    
+    /**
+     * Tests init(double)
+     */
+    public void testInitDouble()
+    {
+		logger_.info("Running testInitDouble...");
+		    	
+    	double[] d = new double[10];
+    	ArrayUtil.init(d, 99.9);
+    	
+    	for (int i=0; i<d.length; assertEquals(99.9d, d[i++], 0.0));
+    }
+
+    
+	/**
+	 * Tests init(int)
+	 */
+	public void testInitInt()
+	{
+		logger_.info("Running testInitInt...");
+		    	
+		int[] d = new int[10];
+		ArrayUtil.init(d, 99);
+    	
+		for (int i=0; i<d.length; assertEquals(99, d[i++]));
+	}
+	
+	
+	/**
+	 * Tests toString(int[])
+	 */
+	public void testToStringIntArray()
+	{
+		logger_.info("Running testToStringIntArray...");
+		
+		int[] i = new int[] {1, 2, 3, 4, 5};
+		logger_.info(ArrayUtil.toString(i));	    
+	}
+
+
+    /**
+     * Tests toString(double[])
+     */
+    public void testToStringDoubleArray()
+    {
+        logger_.info("Running testToStringDoubleArray...");
+		
+        double[] d = new double[] {1.1, 2.2, 3.3, 4.4, 5.5};
+        logger_.info(ArrayUtil.toString(d));	    
+    }
+
+
+	/**
+	 * Tests add() for adding an object to an empty array
+	 */
+	public void testAddToEmptyArray()
+	{
+		logger_.info("Running testAddToEmptyArray...");
+		
+		String[] arr = new String[0];
+		String obj = "foo";
+
+		String[] result = (String[])ArrayUtil.add(arr, obj);
+			
+		assertEquals(1, result.length);
+		assertEquals(obj, result[0]);	
+	}
+	
+	
+	/**
+	 * Tests add() for adding an object to a non-empty array
+	 */
+	public void testAddToArray()
+	{
+        logger_.info("Running testAddToArray...");
+		
+        String[] arr = new String[] { "one", "two", "three" };
+        String four = "four";        
+        String[] expected = new String[] {"one", "two", "three", four};
+
+
+        String[] result = (String[])ArrayUtil.add(arr, four);
+			
+        assertEquals(arr.length + 1, result.length);
+        assertTrue(ArrayUtil.equals(expected, result));	
+	}
+
+	
+    /**
+     * Tests insert() for inserting an object into an empty array
+     */
+    public void testInsertToEmptyArray()
+    {
+        logger_.info("Running testInsertToEmptyArray...");
+		
+        String[] arr = new String[0];
+        String obj = "foo";
+
+        String[] result = (String[])ArrayUtil.insert(arr, obj);
+			
+        assertEquals(1, result.length);
+        assertEquals(obj, result[0]);	
+    }
+	
+	
+    /**
+     * Tests insert() for adding an object to a non-empty array
+     */
+    public void testInsertToArray()
+    {
+        logger_.info("Running testInsertToArray...");
+		
+        String[] arr = new String[] { "one", "two", "three" };
+        String zero = "zero";        
+        String[] expected = new String[] {"zero", "one", "two", "three"};
+
+
+        String[] result = (String[]) ArrayUtil.insert(arr, zero);
+			
+        assertEquals(arr.length + 1, result.length);
+        assertTrue(ArrayUtil.equals(expected, result));	
+    }
+    
+    
+    /**
+     * Tests insertAt() for inserting an object into an empty array
+     */
+    public void testInsertAtToEmptyArray()
+    {
+        logger_.info("Running testInsertAtToEmptyArray...");
+		
+        String[] arr = new String[0];
+        String obj = "foo";
+
+        String[] result = (String[])ArrayUtil.insertAt(arr, obj, 0);
+			
+        assertEquals(1, result.length);
+        assertEquals(obj, result[0]);	
+    }
+	
+	
+    /**
+     * Tests insertAt() for adding an object to the front of a non-empty array
+     */
+    public void testInsertAtFront()
+    {
+        logger_.info("Running testInsertAtFront...");
+		
+        String[] arr = new String[] { "one", "two", "three" };
+        String zero = "zero";        
+        String[] expected = new String[] {"zero", "one", "two", "three"};
+
+        String[] result = (String[]) ArrayUtil.insertAt(arr, zero, 0);
+			
+        assertEquals(arr.length + 1, result.length);
+        assertTrue(ArrayUtil.equals(expected, result));	
+    }
+
+    
+    /**
+     * Tests insertAt() for adding an object to the end of a non-empty array
+     */
+    public void testInsertAtBack()
+    {
+        logger_.info("Running testInsertAtBack...");
+		
+        String[] arr = new String[] { "one", "two", "three" };
+        String four = "four";        
+        String[] expected = new String[] {"one", "two", "three", "four"};
+
+        String[] result = (String[]) ArrayUtil.insertAt(arr, four, 3);
+			
+        assertEquals(arr.length + 1, result.length);
+        assertTrue(ArrayUtil.equals(expected, result));	
+    }
+    
+
+    /**
+     * Tests insertAt() for adding an object to the middle of a non-empty array
+     */
+    public void testInsertAtMiddle()
+    {
+        logger_.info("Running testInsertAtMiddle...");
+		
+        String[] arr = new String[] { "one", "three" };
+        String two = "two";        
+        String[] expected = new String[] {"one", "two", "three"};
+
+        String[] result = (String[]) ArrayUtil.insertAt(arr, two, 1);
+			
+        assertEquals(arr.length + 1, result.length);
+        assertTrue(ArrayUtil.equals(expected, result));	
+    }
 }
