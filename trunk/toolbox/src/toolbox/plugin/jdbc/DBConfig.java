@@ -37,6 +37,7 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartFileChooser;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.workspace.IPreferenced;
@@ -79,11 +80,6 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      * DBProfile is a child of DBConfig.
      */
     private static final String NODE_DBPROFILE = "DBProfile";
-
-    /**
-     * Persisted javabean properties.
-     */
-    private static final String[] SAVED_PROPS = {"jarChooserDir"};
     
     //--------------------------------------------------------------------------
     // Fields
@@ -129,11 +125,11 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
      * Reference to the workspace statusbar.
      */
     private IStatusBar statusBar_;
-    
+
     /**
-     * Last directory that the jar file chooser was opened in.
+     * Chooser to select a jar file containing jdbc drivers.
      */
-    private String jarChooserDir_;
+    private JSmartFileChooser chooser_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -192,28 +188,6 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     public String getSession()
     {
         return getCurrentProfile().getProfileName();
-    }
-    
-    
-    /**
-     * Returns the jarChooserDir.
-     * 
-     * @return String
-     */
-    public String getJarChooserDir()
-    {
-        return jarChooserDir_;
-    }
-
-    
-    /**
-     * Sets the jarChooserDir.
-     * 
-     * @param jarChooserDir The jarChooserDir to set.
-     */
-    public void setJarChooserDir(String jarChooserDir)
-    {
-        jarChooserDir_ = jarChooserDir;
     }
     
     //--------------------------------------------------------------------------
@@ -290,6 +264,9 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         
         //setContent(new FormDebugPanel(layout));
         setContent(builder.getPanel());
+        
+        chooser_ = new JSmartFileChooser();
+        chooser_.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 
     //--------------------------------------------------------------------------
@@ -299,7 +276,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element dbConfig = prefs.getFirstChildElement(NODE_DBCONFIG);
           
@@ -371,7 +348,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                 ExceptionUtil.handleUI(ioe, logger_);
             }
         }
-
+        
+        chooser_.applyPrefs(dbConfig);
     }
 
     
@@ -404,7 +382,8 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                 new Attribute(ATTR_SELECTED, 
                 profileCombo_.getSelectedIndex() + ""));
 
-        prefs.appendChild(dbConfig);        
+        chooser_.savePrefs(dbConfig);
+        XOMUtil.insertOrReplace(prefs, dbConfig);
     }
     
     //--------------------------------------------------------------------------
@@ -684,7 +663,6 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             //putValue(SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_FIND));
         }
 
-        // TODO: Left off here adding last dir as a propertyy
         
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
@@ -692,18 +670,11 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            JFileChooser chooser = null;
-            if (getJarChooserDir() != null)
-                chooser = new JFileChooser(getJarChooserDir());
-            else
-                chooser = new JFileChooser();
-            
-            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            
-            if (chooser.showDialog(DBConfig.this, 
+            if (chooser_.showDialog(DBConfig.this, 
                 "Select JDBC Driver Jar File") == JFileChooser.APPROVE_OPTION)
             {
-                jarField_.setText(chooser.getSelectedFile().getCanonicalPath());
+                jarField_.setText(
+                    chooser_.getSelectedFile().getCanonicalPath());
             }
         }
     }
