@@ -13,5 +13,9 @@
     <classpathentry kind="lib" path="lib/commons-cli.jar"/>
     <classpathentry kind="lib" path="lib/commons-lang-1.0-rc1.jar"/>
     <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+    <classpathentry kind="lib" path="lib/commons-beanutils.jar"
+        rootpath="commons-beanutils-1.4.1-src/beanutils/src/java" sourcepath="G:/java/dev/commons-beanutils-1.4.1/src.zip"/>
+    <classpathentry kind="lib" path="lib/commons-logging.jar"
+        rootpath="commons-logging-1.0.2-src/logging/src/java" sourcepath="G:/java/dev/commons-logging-1.0.2/src.zip"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
