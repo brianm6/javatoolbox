@@ -585,7 +585,7 @@ public class TableSorter extends TableMap
      * Renders the ascending/descending sort direction graphic in the table
      * header cell. 
      */
-    final class TableHeaderCellRenderer extends DefaultTableCellRenderer
+    final class TableHeaderCellRenderer extends SmartTableCellRenderer
     {
         /**
          * @see javax.swing.table.TableCellRenderer#
