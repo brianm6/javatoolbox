@@ -240,7 +240,7 @@ public class PropertyPromptTask extends Task
     public void execute() throws BuildException
     {
         initTimeout();
-        proposedValue_ = project.getProperty(propertyName_);
+        proposedValue_ = getProject().getProperty(propertyName_);
         String currentValue = defaultValue_;
         
         if (StringUtil.isNullOrBlank(currentValue) && proposedValue_ != null)
@@ -291,7 +291,7 @@ public class PropertyPromptTask extends Task
                      * (as opposed to user-properties and the use of multiple
                      * <property> tags to 'mutate' property values).
                      */
-                    project.setProperty(propertyName_, proposedValue_);
+                    getProject().setProperty(propertyName_, proposedValue_);
                 }
             }
         }
@@ -306,7 +306,7 @@ public class PropertyPromptTask extends Task
      */
     protected void initTimeout()
     {
-        String timeoutProperty = project.getProperty(PROP_PROMPT_TIMEOUT);
+        String timeoutProperty = getProject().getProperty(PROP_PROMPT_TIMEOUT);
 
         if (timeoutProperty == null)
         {
