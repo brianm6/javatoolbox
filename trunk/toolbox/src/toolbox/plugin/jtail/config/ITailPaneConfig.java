@@ -7,12 +7,12 @@ import java.awt.Font;
  */
 public interface ITailPaneConfig
 {
-    public static final boolean DEFAULT_AUTOSCROLL       = true;
-    public static final boolean DEFAULT_LINENUMBERS      = false;
-    public static final String  DEFAULT_FILTER           = "";
-    public static final boolean DEFAULT_FILTER_NEGATE    = true;
-    public static final boolean DEFAULT_FILTER_MATCHCASE = false;
-    public static final boolean DEFAULT_ANTIALIAS        = false;
+    public static final boolean DEFAULT_ANTIALIAS       = false;    
+    public static final boolean DEFAULT_AUTOSCROLL      = true;
+    public static final boolean DEFAULT_LINENUMBERS     = false;
+    public static final String  DEFAULT_REGEX           = "";
+    public static final boolean DEFAULT_REGEX_MATCHCASE = false;
+    public static final String  DEFAULT_CUT_EXPRESSION  = "";
 
     /**
      * Returns the autoScroll nature of the text area.
@@ -83,7 +83,7 @@ public interface ITailPaneConfig
      * 
      * @return String
      */
-    public String getFilter();
+    public String getRegularExpression();
 
 
     /**
@@ -91,7 +91,24 @@ public interface ITailPaneConfig
      * 
      * @param filter The filter to set
      */
-    public void setFilter(String filter);
+    public void setRegularExpression(String regex);
+
+
+    /**
+     * Returns the cut expression used to exclude columns 
+     * 
+     * @return String
+     */
+    public String getCutExpression();
+
+
+    /**
+     * Sets the cut expression used to exclude columns
+     * 
+     * @param  cutExpression  Cut expression
+     */
+    public void setCutExpression(String cutExpression);
+
     
     
     /**
