@@ -67,7 +67,6 @@ public class RegexFilterTest extends TestCase
         super.setUp();
     }
 
-
     /**
      * Clean up temporary directory 
      */
@@ -95,7 +94,6 @@ public class RegexFilterTest extends TestCase
         String matches[] = testDir_.list(filter);
         assertEquals("No matches should have been found", 0, matches.length);
     } 
-    
 
     /**
      * Tests accept() for not matching one file
@@ -111,7 +109,6 @@ public class RegexFilterTest extends TestCase
         assertEquals("One match should have been found", 1, matches.length);
         assertEquals("One match should have been found", "b2b.xml", matches[0]);
     } 
-    
     
     /**
      * Tests accept() for matching many files
@@ -130,5 +127,26 @@ public class RegexFilterTest extends TestCase
         for(int i=0; i<matches.length; i++)
             assertTrue("java file should have been found", 
                 matches[i].endsWith("java"));
-    } 
+    }
+    
+	/**
+	 * Tests accept() for case sensetivity
+	 * 
+	 * @throws Exception on error
+	 */
+	public void testAcceptMatchesCase() throws Exception
+	{
+		logger_.info("Running testAcceptMatchesCase...");
+        
+        // Match found        
+		RegexFilter filter = new RegexFilter("^b2b", true);
+		String matches[] = testDir_.list(filter);
+		assertEquals("One match should have been found", 1, matches.length);
+		assertEquals("One match should have been found", "b2b.xml", matches[0]);
+		
+		// Match not found
+		filter = new RegexFilter("^B2B", true);
+		matches = testDir_.list(filter);
+		assertEquals("No matches should have been found", 0, matches.length);
+	} 
 }
