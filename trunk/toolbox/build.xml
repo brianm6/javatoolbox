@@ -691,6 +691,7 @@
                 
     </target>
 
+
     <!--=============================--> 
     <!--          CVSLOG             -->
     <!--=============================-->
@@ -743,5 +744,43 @@
             showCredits="no"/>
             
     </target>
+
+
+    <!--=============================--> 
+    <!--       JAVA2HTML             -->
+    <!--=============================-->
+    <taskdef name="java2html" 
+             classname="com.java2html.Java2HTMLTask"
+             classpath="build/lib/j2h.jar"/>
+
+    <target name="java2html"
+            depends="init"
+            description="Generates colorized HTML version of the source code useful for browsing">
+    
+        <mkdir dir="${doc}/java2html"/>
+        
+        <java2html title="Toolbox"
+                   simple="no"
+                   tabsize="4"
+                   marginsize="2"
+                   header="true"
+                   footer="false"
+                   destination="${doc}/java2html">
+                   
+            <fileset dir="${src}">
+                <include name="**/*.java"/>
+            </fileset>
+            
+            <!--javadoc localRef="c:\jdk1.4\docs\api" webRef="http://somewebsite.com/docs/api"/-->
+            <!--javadoc localRef="c:\ant\docs\api" webRef="http://somewebsite.com/docs/api"/-->
+            
+        </java2html>
+        
+        <copy overwrite = "true" 
+         	  verbose   = "true"
+        	  file      = "${build.conf}/java2html-stylesheet.css" 
+        	  tofile    = "${doc}/java2html/stylesheet.css"/>
+        
+    </target>    
     
 </project>
