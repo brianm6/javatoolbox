@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,7 +27,9 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.Queue;
+import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
@@ -39,9 +42,7 @@ import toolbox.util.ui.ThreadSafeTableModel;
  * 
  * <pre>
  * TODO: Added explorer to pick directory
- * TODO: Save last picked directory
  * TODO: Update Queue to BlockingQueue
- * TODO: Remove Exit menu item
  * </pre> 
  * 
  */
@@ -62,7 +63,6 @@ public class JSourceView extends JFrame implements ActionListener
     
     private JMenuBar    menuBar_;
     private JMenuItem   saveMenuItem_;
-    private JMenuItem   exitMenuItem_;
     private JMenuItem   aboutMenuItem_;
     
     private JTable               table_;
@@ -127,8 +127,7 @@ public class JSourceView extends JFrame implements ActionListener
     {
         super("JSourceView");
         
-        dirField_ = new JTextField(12);
-        //dirField_.setFont(SwingUtil.getPreferredSerifFont());
+        dirField_ = new JTextField(20);
         dirField_.addActionListener(this);
         
         goButton_ = new JButton(LABEL_GO);
@@ -146,7 +145,6 @@ public class JSourceView extends JFrame implements ActionListener
         goButton_.addActionListener(this);
         tableModel_ = new ThreadSafeTableModel(colNames_, 0);
         table_ = new JTable(tableModel_);
-        //table_.setFont(SwingUtil.getPreferredSerifFont());
         
         getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
@@ -158,7 +156,6 @@ public class JSourceView extends JFrame implements ActionListener
         getContentPane().add(jpanel, BorderLayout.SOUTH);
         
         setJMenuBar(createMenuBar());
-        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         pack();
@@ -188,11 +185,6 @@ public class JSourceView extends JFrame implements ActionListener
                 saveResults();
             else if (obj == aboutMenuItem_)
                 showAbout();
-            else if (obj == exitMenuItem_)
-            {
-                dispose();
-                System.exit(0);
-            }
         }
         catch (Exception e)
         {
@@ -224,6 +216,33 @@ public class JSourceView extends JFrame implements ActionListener
         parseStatusLabel_.setText(s);
     }
 
+    /**
+     * Saves preferences 
+     * 
+     * @param prefs
+     */
+    public void savePrefs(Properties prefs)
+    {
+        String dir = dirField_.getText();
+        if (!StringUtil.isNullOrEmpty(dir))
+            prefs.setProperty("jsourceview.dir", dir.trim());
+    }
+
+    /**
+     * Applies preferences
+     * 
+     * @param prefs
+     */
+    public void applyPrefs(Properties prefs)
+    {
+        String dir = prefs.getProperty("jsourceview.dir");
+        if (!StringUtil.isNullOrEmpty(dir))
+        {
+            dirField_.setText(dir);
+            dirField_.setCaretPosition(0);
+        }
+    }
+
     //--------------------------------------------------------------------------
     //  Private
     //--------------------------------------------------------------------------
@@ -241,12 +260,8 @@ public class JSourceView extends JFrame implements ActionListener
         saveMenuItem_ = new JMenuItem("Save");
         saveMenuItem_.addActionListener(this);
         
-        exitMenuItem_ = new JMenuItem("Exit");
-        exitMenuItem_.addActionListener(this);
-        
         jmenu.add(saveMenuItem_);
         jmenu.addSeparator();
-        jmenu.add(exitMenuItem_);
         
         aboutMenuItem_ = new JMenuItem("About");
         aboutMenuItem_.addActionListener(this);
@@ -330,28 +345,6 @@ public class JSourceView extends JFrame implements ActionListener
             setScanStatus("Operation canceled");
             setParseStatus("");
         }
-    }
-
-    /**
-     * Returns directory portion only of a path
-     * 
-     * @param  s  Path 
-     * @return Directory portion of the path
-     */
-    protected String getDirectoryOnly(String s)
-    {
-        return s.substring(0, s.lastIndexOf(pathSeparator_));
-    }
-
-    /**
-     * Returns the file portion of a path
-     * 
-     * @param  s  Path
-     * @return File portion of a path
-     */
-    protected String getFileOnly(String s)
-    {
-        return s.substring(s.lastIndexOf(pathSeparator_) + 1, s.length());
     }
 
     //--------------------------------------------------------------------------
@@ -473,8 +466,8 @@ public class JSourceView extends JFrame implements ActionListener
                     // Create table row data and append                    
                     String tableRow[] = new String[colNames_.length];
                     tableRow[0] = fileCount+"";
-                    tableRow[1] = getDirectoryOnly(filename);
-                    tableRow[2] = getFileOnly(filename);
+                    tableRow[1] = FileUtil.stripFile(filename);
+                    tableRow[2] = FileUtil.stripPath(filename);
                     tableRow[3] = String.valueOf(fileStats.getCodeLines());
                     tableRow[4] = String.valueOf(fileStats.getCommentLines());
                     tableRow[5] = String.valueOf(fileStats.getBlankLines());
@@ -569,7 +562,7 @@ public class JSourceView extends JFrame implements ActionListener
         public void cancel()
         {
             cancel_ = true;
-            logger_.debug("Cancel called : " + cancel_);            
+            logger_.debug("Search cancelled: " + cancel_);            
         }
     }
 }
