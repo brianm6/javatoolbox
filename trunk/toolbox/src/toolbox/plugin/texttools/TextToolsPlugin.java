@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -42,6 +43,7 @@ import toolbox.util.ui.flippane.JFlipPane;
  * <ul>
  * <li>Sorting text alphabetically</li>
  * <li>Filtering text dynamically using regular expressions</li>
+ * <li>Tokenizing strings<li>
  * </ul>
  */ 
 public class TextPlugin extends JPanel implements IPlugin, Stringz
@@ -92,6 +94,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         // Top flip pane
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
         topFlipPane_.addFlipper("Filter", new RegexFlipper());
+        topFlipPane_.addFlipper("Tokenizer", new TokenizerFlipper());
         add(BorderLayout.NORTH, topFlipPane_);
     }
     
@@ -250,6 +253,11 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     // Flippers
     //--------------------------------------------------------------------------
     
+    /**
+     * Flipper that allows filtering of text dynamically i.e. As the regular
+     * expression is typed in, the matching set is updated accordingly with
+     * each keystroke.
+     */
     private class RegexFlipper extends JPanel
     {
         private JTextField filterField_;
@@ -317,6 +325,8 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
             catch (RESyntaxException e)
             {
+                // The regular expression is going to be invalid as the user
+                // types it in up just shoot the message to the status bar
                 statusBar_.setStatus(e.getMessage());
             }
         }
@@ -344,6 +354,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             }
         }
         
+        /**
+         * Catchs modifications to the original document so that we know when
+         * to throw away our cached copy of the text currently being regex'ed  
+         */
         class TextChangedListener implements DocumentListener
         {
             public void changedUpdate(DocumentEvent e)
@@ -363,8 +377,72 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
             
             protected void crud(String s)
             {
-                //statusBar_.setStatus("Reset cache " + s + new Date());
                 cache_ = null;
+            }
+        }
+    }
+    
+    /**
+     * Flipper that allows the user to tokenize strings by providing the 
+     * token delimiter. Multiline strings can also be merged into one line. 
+     */
+    private class TokenizerFlipper extends JPanel
+    {
+        private JTextField  delimiterField_;
+        
+        public TokenizerFlipper()
+        {
+            buildView();
+        }
+        
+        protected void buildView()
+        {
+            setLayout(new FlowLayout());
+            
+            add(new JLabel("Token Delimiter"));
+            add(delimiterField_ = new JTextField(20));
+            add(new JButton(new TokenizeAction()));
+            add(new JButton(new SingleLineAction()));
+        }
+        
+        class TokenizeAction extends AbstractAction
+        {
+            public TokenizeAction()
+            {
+                super("Tokenize");
+            }
+            
+            public void actionPerformed(ActionEvent e)
+            {
+                StringTokenizer st = 
+                    new StringTokenizer(textArea_.getText(), 
+                        delimiterField_.getText());
+            
+                while(st.hasMoreElements())
+                    textArea_.append(st.nextToken() + NL);
+                    
+                statusBar_.setStatus(st.countTokens() + " tokens identified.");
+            }
+        }
+        
+        class SingleLineAction extends AbstractAction
+        {
+            public SingleLineAction()
+            {
+                super("Convert to single line");
+            }
+                       
+            public void actionPerformed(ActionEvent e)
+            {
+                StringTokenizer st = 
+                    new StringTokenizer(textArea_.getText(), NL);
+                
+                StringBuffer sb = new StringBuffer();
+                    
+                while (st.hasMoreElements())
+                    sb.append(st.nextElement());
+                
+                textArea_.setText(sb.toString());    
             }
         }
     }
