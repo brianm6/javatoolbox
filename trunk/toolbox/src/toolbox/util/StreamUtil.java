@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,6 @@ public class StreamUtil
         return new String(toBytes(inputStream));
     }
 
-
     /**
      * Converts the remaining contents of an InputStream to a byte array
      * 
@@ -74,7 +74,6 @@ public class StreamUtil
         
         return byteArray;
     }
-
     
     /**
      * Reads an exact number of characters from a stream and returns them as a
@@ -125,7 +124,6 @@ public class StreamUtil
         return buffer;
     }
 
-
     /**
      * Reads an exact number of characters from a reader and returns them as a
      * String. If the given number of characters is not availble, the method
@@ -174,7 +172,6 @@ public class StreamUtil
         return sb.toString();
     }
 
-
     /**
      * Empties the contents of an inputstream based on the currently available
      * contents.
@@ -189,5 +186,47 @@ public class StreamUtil
         is.skip(avl);
 
         return avl;
+    }
+
+    /**
+     * Closes an inputstream quitely
+     * 
+     * @param  inputStream  Inputstraem to close
+     */    
+    public static void close(InputStream inputStream)
+    {
+        if (inputStream != null)
+        {
+            try
+            {
+                inputStream.close();
+            }
+            catch (IOException e)
+            {
+                logger_.warn(
+                    "An error occurred while closing an InputStream.", e);
+            }
+        }
+    }
+
+    /**
+     * Closes an outputstream quitely
+     * 
+     * @param  outputStream  Output stream to close
+     */    
+    public static void close(OutputStream outputStream)
+    {
+        if (outputStream != null)
+        {
+            try
+            {
+                outputStream.close();
+            }
+            catch (IOException e)
+            {
+                logger_.warn(
+                    "An error occurred while closing an OutputStream.", e);
+            }
+        }
     }
 }
