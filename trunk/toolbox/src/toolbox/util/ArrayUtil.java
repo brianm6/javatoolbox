@@ -8,7 +8,21 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 /**
- * Array utility class.
+ * Array utility class. Major operations include:
+ * <ul>
+ *  <li>add - Addition onto the end of an array
+ *  <li>concat - Concatenation of two existing arrays
+ *  <li>contains - Test for containment using default equals impl or a Comparator
+ *  <li>equals - Array equality
+ *  <li>indexOf - Find index of an element in an array
+ *  <li>init - Initialize an array with values
+ *  <li>insertAt - Insert an element into an array
+ *  <li>invoke - Invoke a method all all elements of an array
+ *  <li>isNullOrEmpty - Check for null or empty
+ *  <li>remove - Remove an element from an array
+ *  <li>subset - Extract a subset of an array
+ *  <li>toString -  Convenience methods to stringify an array
+ * </ul>
  */
 public final class ArrayUtil
 {
