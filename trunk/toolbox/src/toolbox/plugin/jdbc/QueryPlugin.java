@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import nu.xom.Element;
@@ -45,6 +46,7 @@ import toolbox.plugin.jdbc.action.FormatSQLAction;
 import toolbox.plugin.jdbc.action.ListColumnsAction;
 import toolbox.plugin.jdbc.action.ListTablesAction;
 import toolbox.plugin.jdbc.action.SQLReferenceAction;
+import toolbox.plugin.jdbc.action.ShowResultsFilterAction;
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
@@ -81,6 +83,7 @@ import toolbox.workspace.WorkspaceAction;
  *      other applications.
  *  <li>SQL statements can span multiple lines but must be terminated by a 
  *      semicolon.
+ *  <li>Results can be filtered "as you type" by regular expressions.
  * </ul>
  *
  * Shortcuts:
@@ -434,8 +437,6 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     protected JHeaderPanel buildSQLEditor()
     {
-        //sqlHistory_ = new HashMap();
-
         sqlMenu_ = new JConveyorMenu("SQL History", 10);
         JEditPopupMenu editMenu = new JEditPopupMenu();
         editMenu.setLabel("Edit");
@@ -538,13 +539,21 @@ public class QueryPlugin extends JPanel implements IPlugin
                 "List columns",
                 new ListColumnsAction(this));
 
+        JPanel p = new JPanel(new BorderLayout());
+        
+        JToggleButton filterResults = JHeaderPanel.createToggleButton(
+                ImageCache.getIcon(ImageCache.IMAGE_FUNNEL),
+                "Show results filter",
+                new ShowResultsFilterAction(this, p));
+                
         JToolBar toolbar = JHeaderPanel.createToolBar();
         toolbar.add(listTables);
         toolbar.add(listColumns);
+        toolbar.add(filterResults);
         toolbar.add(clear);
 
-        return new JHeaderPanel(
-                "Results", toolbar, new JScrollPane(resultsArea_));
+        p.add(BorderLayout.CENTER, new JScrollPane(resultsArea_));
+        return new JHeaderPanel("Results", toolbar, p);
     }
 
     //--------------------------------------------------------------------------
@@ -590,7 +599,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             // Find first semicolon after the caret and let that be our sql
             // statement terminator
-            int semi = all.indexOf(';', caret);
+            int semi = all.indexOf(SQL_TERMINATOR, caret);
 
             if (semi >= 0)
             {
@@ -602,7 +611,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 
                 for (begin = caret - 1; begin >= 0; begin--)
                 {
-                    if (all.charAt(begin) == ';')
+                    if (all.charAt(begin) == SQL_TERMINATOR)
                     {
                         break;
                     }
