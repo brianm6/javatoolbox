@@ -1,9 +1,15 @@
 package toolbox.util.statemachine.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
+import org.apache.commons.collections.TransformerUtils;
+import org.apache.commons.collections.functors.ChainedTransformer;
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -65,7 +71,13 @@ public class DefaultStateMachine implements StateMachine
     /**
      * Maps (fromState, transition) --> (toState)
      */
-    private MultiKeyMap stateMap_;
+    private MultiKeyMap fromStateMap_;
+    
+    /**
+     * Set of (fromState, transition, toState) tuples that models the graph of
+     * the state machine.
+     */
+    private Set tuples_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -88,9 +100,10 @@ public class DefaultStateMachine implements StateMachine
     public DefaultStateMachine(String name)
     {
         setName(name);
-        listeners_  = new ArrayList(1);
-        states_     = new ArrayList();
-        stateMap_   = new MultiKeyMap();
+        listeners_    = new ArrayList(1);
+        states_       = new ArrayList();
+        fromStateMap_ = new MultiKeyMap();
+        tuples_       = new HashSet();
     }
     
     //--------------------------------------------------------------------------
@@ -181,7 +194,7 @@ public class DefaultStateMachine implements StateMachine
         
         // Verify transition between the two states doesn't already exist ------
         
-        Validate.isTrue(!stateMap_.containsKey(fromState, transition),
+        Validate.isTrue(!fromStateMap_.containsKey(fromState, transition),
             "Transition '"
             + transition.getName() 
             + "' from state '"
@@ -189,8 +202,9 @@ public class DefaultStateMachine implements StateMachine
             + "' to state '"
             + toState.getName() 
             + "' already exists.");
-        
-        stateMap_.put(fromState, transition, toState);
+
+        fromStateMap_.put(fromState, transition, toState);
+        tuples_.add(new Tuple(fromState, transition, toState));
     }
 
     
@@ -202,7 +216,7 @@ public class DefaultStateMachine implements StateMachine
     {
         checkTransition(stimulus);
         
-        State targetState = (State) stateMap_.get(currentState_, stimulus);
+        State targetState = (State) fromStateMap_.get(currentState_, stimulus);
         previousState_ = currentState_;
         currentState_ = targetState;
         lastTransition_ = stimulus;
@@ -217,11 +231,16 @@ public class DefaultStateMachine implements StateMachine
      */
     public boolean canTransition(Transition transition)
     {
-        return stateMap_.containsKey(currentState_, transition);
+        return fromStateMap_.containsKey(currentState_, transition);
     }
 
     
-    public void checkTransition(Transition transition)
+    /**
+     * @see toolbox.util.statemachine.StateMachine#checkTransition(
+     *      toolbox.util.statemachine.Transition)
+     */
+    public void checkTransition(Transition transition) 
+        throws IllegalStateException
     {
         if (!canTransition(transition))
             throw new IllegalStateException(
@@ -230,6 +249,96 @@ public class DefaultStateMachine implements StateMachine
                 + "' using transition '"
                 + transition
                 + "'.");
+    }
+    
+    
+    /**
+     * @see toolbox.util.statemachine.StateMachine#getStates()
+     */
+    public List getStates()
+    {
+        Transformer fromTrans = 
+            TransformerUtils.invokerTransformer("getFromState");
+        
+        Transformer toTrans = 
+            TransformerUtils.invokerTransformer("getToState");
+      
+        ChainedTransformer stateTrans = 
+            new ChainedTransformer(new Transformer[] {
+                fromTrans, 
+                toTrans
+            });
+        
+        Set states = new HashSet(tuples_);
+        CollectionUtils.transform(states, stateTrans);
+        return new ArrayList(states);
+    }
+
+    
+    /**
+     * @see toolbox.util.statemachine.StateMachine#getTransitions()
+     */
+    public List getTransitions()
+    {
+        Set transitions = new HashSet(tuples_);
+        
+        CollectionUtils.transform(
+            transitions, 
+            TransformerUtils.invokerTransformer("getActivity"));
+        
+        return new ArrayList(transitions);
+    }
+    
+    
+    /**
+     * @see toolbox.util.statemachine.StateMachine#getTransitionsFrom(
+     *      toolbox.util.statemachine.State)
+     */
+    public List getTransitionsFrom(final State state)
+    {
+        Transformer t = new Transformer()
+        {
+            public Object transform(Object input)
+            {
+                Transition result = null;
+                Tuple tuple = (Tuple) input;
+                
+                if (tuple.getFromState().equals(state))
+                    result = tuple.getActivity();
+                
+                return result;
+            }
+        };
+        
+        Set fromTransitions = new HashSet(tuples_);
+        CollectionUtils.transform(fromTransitions, t);
+        return new ArrayList(fromTransitions);
+    }
+    
+    
+    /**
+     * @see toolbox.util.statemachine.StateMachine#getTransitionsTo(
+     *      toolbox.util.statemachine.State)
+     */
+    public List getTransitionsTo(final State state)
+    {
+        Transformer t = new Transformer()
+        {
+            public Object transform(Object input)
+            {
+                Transition result = null;
+                Tuple tuple = (Tuple) input;
+                
+                if (tuple.getToState().equals(state))
+                    result = tuple.getActivity();
+                
+                return result;
+            }
+        };
+        
+        Set toTransitions = new HashSet(tuples_);
+        CollectionUtils.transform(toTransitions, t);
+        return new ArrayList(toTransitions);
     }
     
     
@@ -315,6 +424,7 @@ public class DefaultStateMachine implements StateMachine
             listener.stateChanged(this);
         }
     }
+    
     
     /**
      * Notifies listeners of a machine reset.
