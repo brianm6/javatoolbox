@@ -31,12 +31,13 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     //--------------------------------------------------------------------------
     
     /** 
-     * Progress bar for indicating execution of an operation is in progress. 
+     * An indeterminate progress bar that is activated when the busy flag is
+     * set. 
      */
     private JProgressBar progressBar_;
     
     /** 
-     * Label for displaying status text. 
+     * Label for displaying status message. 
      */
     private JSmartLabel status_;
     
@@ -71,9 +72,9 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         {
             public void mousePressed(MouseEvent e)
             {
-                setStatus("Garbage collecting...");
+                setInfo("Garbage collecting...");
                 System.gc();
-                setStatus("Garbage collecting...done.");
+                setInfo("Garbage collecting...done.");
             }
         });
 
@@ -116,7 +117,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
     public void setStatus(String status)
     {
         //status_.setText(status);
-        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_DUKE));
+        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_INFO));
     }
 
     
@@ -143,7 +144,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public void setInfo(String status)
     {
-        setStatus(status);
+        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_INFO));
     }
 
     
@@ -152,7 +153,7 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public void setWarning(String status)
     {
-        setStatus(status);
+        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_WARNING));
     }
 
     

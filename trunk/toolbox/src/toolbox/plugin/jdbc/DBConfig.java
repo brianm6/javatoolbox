@@ -474,7 +474,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                 profileCombo_.setSelectedItem(profile);    
             }
             
-            statusBar_.setStatus("Profile " + current + " saved.");
+            statusBar_.setInfo("Profile " + current + " saved.");
         }
     }
 
@@ -519,7 +519,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
                     if (profileCombo_.getItemCount() > 0)
                         profileCombo_.setSelectedIndex(0);
                     
-                    statusBar_.setStatus("Profile " + current + " deleted.");
+                    statusBar_.setInfo("Profile " + current + " deleted.");
                     found |= true;
                     break;
                 }
@@ -527,7 +527,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
             
             if (!found)
             {
-                statusBar_.setStatus("Profile " + current + " does not exist.");
+                statusBar_.setWarning("Profile " + current + " does not exist.");
             }   
         }
     }

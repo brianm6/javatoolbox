@@ -377,7 +377,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     protected void buildView() throws PluginException
     {
         statusBar_ = new WorkspaceStatusBar();
-        statusBar_.setStatus("Howdy pardner!");
+        statusBar_.setInfo("Howdy pardner!");
 
         bootstrapMap_ = new HashMap(1);
         bootstrapMap_.put(KEY_STATUSBAR, statusBar_);
@@ -671,7 +671,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
         
         SmartLogger.debug(logger_, xml);
-        statusBar_.setStatus("Saved preferences");
+        statusBar_.setInfo("Saved preferences");
     }
 
     
@@ -964,7 +964,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             maxMem   = Runtime.getRuntime().maxMemory();
             long afterUsedMem  = (totalMem - freeMem) / 1000;
 
-            statusBar_.setStatus("" +
+            statusBar_.setInfo("" +
                 "<html>" + "<font color='black'>" +
                   "Finished GC in " + time + ".   " +
                   "Used Before: " + beforeUsedMem + "K   " +

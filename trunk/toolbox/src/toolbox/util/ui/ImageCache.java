@@ -37,6 +37,7 @@ public class ImageCache
     public static final String IMAGE_FIND          = ROOT + "Search.gif";
     public static final String IMAGE_FUNNEL        = ROOT + "Funnel.png";
     public static final String IMAGE_HARD_DRIVE    = ROOT + "HardDrive.gif";
+    public static final String IMAGE_INFO          = ROOT + "Info.png";
     public static final String IMAGE_LINEWRAP      = ROOT + "Linewrap.png";
     public static final String IMAGE_LOCK          = ROOT + "Lock.png";
     public static final String IMAGE_PASTE         = ROOT + "Paste.gif";
@@ -56,6 +57,7 @@ public class ImageCache
     public static final String IMAGE_TREE_CLOSED   = ROOT + "TreeClosed.gif";
     public static final String IMAGE_TREE_OPEN     = ROOT + "TreeOpen.gif";
     public static final String IMAGE_TRIANGLE      = ROOT + "Triangle.gif";
+    public static final String IMAGE_WARNING       = ROOT + "Warning.png";
     
     public static final String 
         IMAGE_DOUBLE_ARROW_DOWN = ROOT + "TreeOpen.gif"; // "DoubleArrowDown.png";

@@ -709,7 +709,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             verify();
             setDebug();
             
-            statusBar_.setStatus("Logging in...");
+            statusBar_.setInfo("Logging in...");
 
             // Override cvs password for netbeans cvs lib
             System.setProperty("cvs.password", cvsPasswordField_.getText());
@@ -728,7 +728,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             
             CVSCommand.main(args);
             
-            statusBar_.setStatus("Login done");
+            statusBar_.setInfo("Login done");
         }
     }
 
@@ -759,7 +759,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             verify();
             setDebug();
             
-            statusBar_.setStatus("Checking out " + cvsModuleField_.getText() + 
+            statusBar_.setInfo("Checking out " + cvsModuleField_.getText() + 
                 " module to " + checkoutDirField_.getText() + "...");
 
             setUserDir(checkoutDirField_.getText());
@@ -779,7 +779,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 restoreUserDir();                    
             }
             
-            statusBar_.setStatus("Checkout done");
+            statusBar_.setInfo("Checkout done");
         }
     }
 
@@ -807,7 +807,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            statusBar_.setStatus("Generating log...");
+            statusBar_.setInfo("Generating log...");
             verify();
             setDebug();
             
@@ -829,7 +829,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 String fixedLogFile = fixLogFile(sos.toString());
                 FileUtil.setFileContents(getCVSLogFile(), fixedLogFile, false);
                 
-                statusBar_.setStatus(
+                statusBar_.setInfo(
                     "Generated CVS log containing " + 
                         fixedLogFile.length() + " bytes");
             }
@@ -865,7 +865,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            statusBar_.setStatus("Generating stats...");
+            statusBar_.setInfo("Generating stats...");
             
             verify();
             setDebug();
@@ -905,7 +905,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 File.separator + 
                 "index.html");
             
-            statusBar_.setStatus("Generating stats done.");
+            statusBar_.setInfo("Generating stats done.");
         }
     }
     
@@ -999,7 +999,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             
             if (StringUtil.isNullOrBlank(current))
             {
-                statusBar_.setStatus("Project name cannot be empty");
+                statusBar_.setWarning("Project name cannot be empty");
             }
             else
             {
@@ -1038,7 +1038,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                     projectCombo_.setSelectedItem(project);    
                 }
                 
-                statusBar_.setStatus("Project " + current + " saved.");
+                statusBar_.setInfo("Project " + current + " saved.");
             }               
         }
     }
@@ -1084,7 +1084,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                     if (projectCombo_.getItemCount() > 0)
                         projectCombo_.setSelectedIndex(0);
                     
-                    statusBar_.setStatus("Project " + current + " deleted.");
+                    statusBar_.setInfo("Project " + current + " deleted.");
                     found |= true;
                     break;
                 }
@@ -1093,9 +1093,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             if (!found)
             {
                 if (StringUtil.isNullOrBlank(current))
-                    statusBar_.setStatus("Select a project to delete.");
+                    statusBar_.setInfo("Select a project to delete.");
                 else
-                    statusBar_.setStatus(
+                    statusBar_.setWarning(
                         "Project " + current + " does not exist.");    
             }   
         }

@@ -584,7 +584,7 @@ public class FindClassPane extends JPanel implements IPreferenced
             {
                 public void run()
                 {
-                    statusBar_.setStatus("Searching " + target2 + " ...");
+                    statusBar_.setInfo("Searching " + target2 + " ...");
                     searchList_.setSelectedValue(target2, true);    
                 }
             });
@@ -598,7 +598,7 @@ public class FindClassPane extends JPanel implements IPreferenced
          */
         public void searchCancelled()
         {
-            statusBar_.setStatus("Search cancelled");
+            statusBar_.setInfo("Search cancelled");
             resultTableSorter_.setEnabled(true);
         }
         
@@ -620,7 +620,7 @@ public class FindClassPane extends JPanel implements IPreferenced
                 public void run()
                 {
                     //resultTableSorter_.setEnabled(true);
-                    statusBar_.setStatus(
+                    statusBar_.setInfo(
                         resultTableModel_.getRowCount() + " matches found.");
                 }
             });
@@ -677,7 +677,7 @@ public class FindClassPane extends JPanel implements IPreferenced
                 {
                     resultTableSorter_.setEnabled(true);
                     
-                    statusBar_.setStatus(
+                    statusBar_.setInfo(
                         resultTableModel_.getRowCount() + 
                         " duplicates  found.");
                 }
@@ -724,7 +724,7 @@ public class FindClassPane extends JPanel implements IPreferenced
          */
         public void searchingTarget(String target)
         {
-            statusBar_.setStatus("Searching " + target + " ...");
+            statusBar_.setInfo("Searching " + target + " ...");
             searchList_.setSelectedValue(target, true);    
         }
         
@@ -734,7 +734,7 @@ public class FindClassPane extends JPanel implements IPreferenced
          */
         public void searchCancelled()
         {
-            statusBar_.setStatus("Search canceled");
+            statusBar_.setInfo("Search canceled");
             runFinally();
         }
         
@@ -772,7 +772,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         {
             List targets = findClass_.getArchivesInDir(new File(folder));
             
-            statusBar_.setStatus(
+            statusBar_.setInfo(
                 targets.size() + "archives added to the search list.");
             
             Iterator i = targets.iterator();
@@ -797,7 +797,7 @@ public class FindClassPane extends JPanel implements IPreferenced
             if (ClassUtil.isArchive(file))
                 searchListModel_.addElement(file);
             else
-                statusBar_.setStatus(file + " is not a valid archive.");
+                statusBar_.setWarning(file + " is not a valid archive.");
         }
     }
  
@@ -1007,8 +1007,7 @@ public class FindClassPane extends JPanel implements IPreferenced
             
             Object results[] = findClass_.findClass(".*", false);             
             
-            statusBar_.setStatus(results.length + " duplicates found.");
-            
+            statusBar_.setInfo(results.length + " duplicates found.");
         }
     }
 
@@ -1062,7 +1061,7 @@ public class FindClassPane extends JPanel implements IPreferenced
             }
             else
             {
-                statusBar_.setStatus("Canceling search...");
+                statusBar_.setInfo("Canceling search...");
                 findClass_.cancelSearch();
                 
                 if (searchThread_ != null)
@@ -1070,7 +1069,7 @@ public class FindClassPane extends JPanel implements IPreferenced
                     
                 putValue(NAME, SEARCH);
                 putValue(MNEMONIC_KEY, new Integer('S'));                    
-                statusBar_.setStatus("Search canceled");
+                statusBar_.setInfo("Search canceled");
             }
         }
 

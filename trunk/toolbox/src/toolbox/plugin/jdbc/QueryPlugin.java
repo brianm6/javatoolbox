@@ -670,11 +670,11 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             if (StringUtil.isNullOrBlank(sql))
             {
-                statusBar_.setStatus("Enter SQL to execute");
+                statusBar_.setInfo("Enter SQL to execute");
             }
             else
             {
-                statusBar_.setStatus("Executing...");
+                statusBar_.setInfo("Executing...");
                 String results = executeSQL(sqlEditor_.getText());
                 resultsArea_.append(results);
                 
@@ -682,7 +682,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                     (StringUtil.tokenize(results, StringUtil.NL).length < 50))
                     resultsArea_.scrollToEnd();
                     
-                statusBar_.setStatus("Done");
+                statusBar_.setInfo("Done");
             }
         }
     }
@@ -716,7 +716,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             if (StringUtil.isNullOrBlank(sql))
             {
-                statusBar_.setStatus("Enter SQL to execute");
+                statusBar_.setInfo("Enter SQL to execute");
             }
             else
             {   
@@ -761,7 +761,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             if (StringUtil.isNullOrBlank(sql))
             {
-                statusBar_.setStatus("Nothing to format.");
+                statusBar_.setWarning("Nothing to format.");
             }
             else
             {   
@@ -842,7 +842,7 @@ public class QueryPlugin extends JPanel implements IPlugin
          */
         public void actionPerformed(ActionEvent e)
         {
-            statusBar_.setStatus("TODO: Implement ctrl-up");
+            statusBar_.setWarning("TODO: Implement ctrl-up");
             
             String s = getActiveText();
             
