@@ -46,10 +46,9 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
+import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.workspace.host.PluginHost;
 import toolbox.workspace.host.PluginHostManager;
-import toolbox.workspace.lookandfeel.LookAndFeelException;
-import toolbox.workspace.lookandfeel.LookAndFeelManager;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
@@ -82,9 +81,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String     ATTR_LOADED     = "loaded";
     
     /**
-     * This is a wrapper for NODE_WORKSPACE so we can treat it as an 
-     * arbitrary element and not the document root.
-     */
+	 * This is a wrapper for NODE_WORKSPACE so we can treat it as an arbitrary
+	 * element and not the document root.
+	 */
     private static final String NODE_ROOT = "Root";
 
     /**
@@ -108,7 +107,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
      
     /** 
-     * Status bar at bottom of screen. 
+     * Status bar at the bottom of the window. Houses the progress bar, memory
+     * monitor, and garbage collection invoker.  
      */
     private IStatusBar statusBar_;
     
@@ -140,7 +140,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Delegate for all things look and feel related.
      */
-    private LookAndFeelManager lafManager_;
+    //private LookAndFeelUtil lafManager_;
 
     /**
      * Manages the plugin host.
@@ -161,7 +161,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         JFrame.setDefaultLookAndFeelDecorated(false);    // to decorate frames
         JDialog.setDefaultLookAndFeelDecorated(false);   // to decorate dialogs
 
-        SwingUtil.getLAFs();
+        //SwingUtil.getLAFs();
 
         try
         {
@@ -349,7 +349,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     protected void init()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        lafManager_ = new LookAndFeelManager();
+        //lafManager_ = new LookAndFeelUtil();
         pluginHostManager_ = new PluginHostManager();
         
         // Have to build log menu here cuz buildView() requires it to set
@@ -405,7 +405,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         JMenuBar menubar = new JMenuBar();
         menubar.add(createFileMenu());
-        menubar.add(lafManager_.createLookAndFeelMenu());
+        menubar.add(LookAndFeelUtil.createLookAndFeelMenu());
         menubar.add(createPreferencesMenu());
         menubar.add(logMenu_);
         return menubar;
@@ -529,20 +529,13 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * 
      * @param prefs DOM representing the saved preferences.
      */
-    protected void setLAF(Element prefs)
+    protected void setLAF(Element prefs) throws Exception
     {
         Element root = 
             XOMUtil.getFirstChildElement(
                 prefs, NODE_WORKSPACE, new Element(NODE_WORKSPACE));
         
-        try
-        {
-            lafManager_.setLookAndFeel(root);
-        }
-        catch (LookAndFeelException lfe)
-        {
-            ExceptionUtil.handleUI(lfe, logger_);
-        }
+        LookAndFeelUtil.setLookAndFeel(root);
     }       
 
     //--------------------------------------------------------------------------
@@ -589,7 +582,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             ATTR_LOG_LEVEL, Logger.getLogger("toolbox").getLevel().toString()));
         
         // Save look and feel
-        lafManager_.savePrefs(root);
+        LookAndFeelUtil.savePrefs(root);
         
         // Save loaded plugin prefs
         //for (Iterator i = plugins_.values().iterator(); i.hasNext();)
@@ -704,7 +697,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
 
         logMenu_.setLogLevel(level);
         
-        lafManager_.selectOnMenu();
+        // TODO: fix me!
+        //lafManager_.selectOnMenu();
         
         if (root != null)
         {    
