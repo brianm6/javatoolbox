@@ -107,7 +107,7 @@
       <action type="update">DBBenchmark in QueryPlugin can now be configured and persist its preferences</action>
       <action type="update">Removed overlap between toolbox.util.RandomUtil and commons-lang RandomUtils</action>
       <action type="add"   >Added unit test for BeanUtil</action>
-      <action type="add"   >Added concurrent-1.3.4</action>
+      <action type="add"   >Added concurrent-1.3.4 and removed overlapping toolbox implementations</action>
     </release>
 
     <release version="2.0" date="June 2004">
