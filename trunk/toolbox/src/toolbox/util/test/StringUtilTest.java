@@ -390,8 +390,10 @@ public class StringUtilTest extends TestCase implements Stringz
         
         String s = "0123456789";
         
-        SmartLogger.info(logger_, StringUtil.wrap(s));
-        SmartLogger.info(logger_, StringUtil.wrap(s, 5));
+        logger_.info(StringUtil.wrap(s));
+        logger_.info(NL + StringUtil.wrap(s, 5));
+        logger_.info(StringUtil.wrap(s, 5, true));
+        logger_.info(StringUtil.wrap(s, 5, false));
     }
 
     /**
