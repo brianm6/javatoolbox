@@ -20,17 +20,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import nu.xom.Attribute;
-import nu.xom.Element;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
+
+import nu.xom.Element;
 
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
@@ -150,7 +148,7 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
      * of the input area is returned, otherwise only the selected text is 
      * returned.
      * 
-     * @return  Input text to process
+     * @return Input text to process
      */
     protected String getInputText()
     {
