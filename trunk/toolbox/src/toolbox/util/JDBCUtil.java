@@ -160,11 +160,49 @@ public final class JDBCUtil
         String url, 
         String user, 
         String password) 
-        throws ClassNotFoundException, SQLException, MalformedURLException,
-               IllegalAccessException, InstantiationException
+        throws ClassNotFoundException, 
+               SQLException, 
+               MalformedURLException,
+               IllegalAccessException, 
+               InstantiationException
     {
-        URL jarURL = new File(jarFile).toURL();
-        URLClassLoader ucl = new URLClassLoader(new URL[]{jarURL});
+        init(new String[] {jarFile}, driver, url, user, password);
+    }
+    
+    
+    /**
+     * Initialzies the JDBC properties using a specific jdbc driver jar file.
+     * Must be called before any of the other methods are invoked.
+     * 
+     * @param jarFiles Jar files containing jdbc drivers.
+     * @param driver JDBC driver to use.
+     * @param url URL to database resource.
+     * @param user Username used for authentication.
+     * @param password Password used for authentication.
+     * @throws SQLException on SQL error.
+     * @throws MalformedURLException if jar file URL is invalid.
+     * @throws ClassNotFoundException if the JDBC driver is not found.
+     * @throws IllegalAccessException if problems accessing jdbc driver.
+     * @throws InstantiationException if problems instantiating the jdbc driver.
+     */    
+    public static void init(
+        String[] jarFiles,
+        String driver, 
+        String url, 
+        String user, 
+        String password) 
+        throws ClassNotFoundException,
+               SQLException, 
+               MalformedURLException, 
+               IllegalAccessException,
+               InstantiationException
+    {
+        // jarFiles[] -> jarURLs[]
+        URL[] jarURLs = new URL[jarFiles.length];
+        for (int i = 0; i< jarFiles.length; i++)
+            jarURLs[i] = new File(jarFiles[i]).toURL();
+        
+        URLClassLoader ucl = new URLClassLoader(jarURLs);
         Driver d = (Driver) Class.forName(driver, true, ucl).newInstance();
         driver_ = new JDBCUtil.DriverProxy(d);
         DriverManager.registerDriver(driver_);
