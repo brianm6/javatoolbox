@@ -130,6 +130,15 @@
         </table>
       </action>
 
+      <action type="update">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Updated toolbox.util.Colors to include constant definitions of all the rgb.txt colors</td>
+          </tr>
+        </table>
+      </action>
+
     </release>
 
     
