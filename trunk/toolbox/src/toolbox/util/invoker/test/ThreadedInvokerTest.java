@@ -116,6 +116,7 @@ public class ThreadedInvokerTest extends TestCase
 
         // Verify
         for (int i = 0; i < numIterations; i++)
-            assertTrue("Method was not invoked", invokables[i].wasInvoked());
+            assertTrue("Method was not invoked for iteration " + i,
+                invokables[i].wasInvoked());
     }
 }
