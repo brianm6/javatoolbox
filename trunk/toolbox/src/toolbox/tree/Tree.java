@@ -2,13 +2,14 @@ package toolbox.tree;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.StreamUtil;
-import toolbox.util.StringUtil;
+import toolbox.util.args.ArgumentParser;
+import toolbox.util.args.Option;
+import toolbox.util.args.OptionException;
 import toolbox.util.io.DirectoryFilter; 
 
 /**
@@ -17,63 +18,142 @@ import toolbox.util.io.DirectoryFilter;
  */
 public class Tree
 {
+    private static final boolean DEFAULT_SHOWFILES = false;
+    
+    private static final Writer  DEFAULT_WRITER = 
+        new OutputStreamWriter(System.out);
+        
+    private static final File DEFAULT_ROOT_DIR = 
+        new File(System.getProperty("user.dir"));
+    
     private PrintWriter writer_;
     private FilenameFilter dirFilter_;
-    
+    private boolean showFiles_;
+    private File rootDir_;
+        
     private static final String SPACER   = "    ";
     private static final String BAR      = "|   ";
     private static final String JUNCTION = "+";
     private static final String ARM      = "---";
+
     
     /**
      * Entrypoint
      *
-     * @param   args  TBD
+     * @param   args  [-f, rootDir]
      */
 	public static void main(String args[]) throws Exception
 	{
-		Tree t = new Tree();
-        t.showTree(new File("src/toolbox/tree/test"), "");
-        Process p = Runtime.getRuntime().exec("tree.com /a src/toolbox/tree/test");
-        InputStream is = p.getInputStream();
-        System.out.println(StreamUtil.asString(is));
+        // command line options and arguments
+        String rootDir = null;
+        boolean showFiles;
         
+        ArgumentParser parser = new ArgumentParser();
+        Option showFilesOption  = parser.addBooleanOption('f', "files");
+
+        try
+        {
+            parser.parse(args);
+        }
+        catch (OptionException e)
+        {
+            System.err.println(e.getMessage());
+            printUsage();
+            System.exit(2);
+        }
+
+        // Show files option
+        showFiles = ((Boolean) 
+            parser.getOptionValue(showFilesOption)).booleanValue();        
+
+        String[] otherArgs = parser.getRemainingArgs();
+
+        // Root directory argument        
+        switch (args.length)
+        {
+            case 0  :  rootDir = System.getProperty("user.dir"); break;
+            case 1  :  rootDir = otherArgs[0]; break;
+            default :  printUsage(); System.exit(2);
+                       break;
+        }
+        
+        // Create us a tree and let it ride..
+		Tree t = new Tree(new File(rootDir), showFiles);
+        t.showTree();
 	}
 
 
     /**
-     * Default constructor
+     * Prints program usage
      */
-    public Tree()
+    protected static void printUsage()
     {
-        dirFilter_ = new DirectoryFilter();
+        System.out.println("Tree shows a directory structure.");
+        System.out.println("Usage    : tree [-f] <dir>");
+        System.out.println("Options  : -f  => include files");
+    }
+
+    
+    /**
+     * Creates a tree with the given root directory
+     * 
+     * @param  rootDir   Root directory
+     */
+    public Tree(File rootDir)
+    {
+        this(rootDir, DEFAULT_SHOWFILES, DEFAULT_WRITER);
     }
     
 
     /**
-     * Prints the directory tree to System.out starting from the given
-     * root directory.
+     * Creates a tree with the given root directory and output
      * 
-     * @param  rootDir  Root directory of the tree
+     * @param  rootDir  Root directory
+     * @param  writer   Output destination    
      */
-    public void showTree(File rootDir)
+    public Tree(File rootDir, Writer writer)
     {
-        showTree(rootDir, new PrintWriter(System.out));
+        this(rootDir, DEFAULT_SHOWFILES, writer);    
+    }
+
+
+    /**
+     * Creates a tree with the given root directory and flag to show files
+     * 
+     * @param  rootDir    Root directory
+     * @param  showFiles  Set to true if you want file info in the tree,
+     *                    false otherwise
+     */
+    public Tree(File rootDir, boolean showFiles)
+    {
+        this(rootDir, showFiles, DEFAULT_WRITER);
     }
 
     /**
-     * Prints the directory tree to the given writer starting from the 
-     * given root directory.
+     * Creates a tree with the given criteria
      * 
-     * @param  rootDir  Root directory of the tree
-     * @param  writer   Output sent to this writer
+     * @param  rootDir    Root directory of the tree
+     * @param  showFiles  Set to true if you want file info in the tree,
+     *                    false otherwise
+     * @param  writer     Output destination
      */
-    public void showTree(File rootDir, Writer writer)
+    public Tree(File rootDir, boolean showFiles, Writer writer)
     {
-        writer_ = new PrintWriter(writer);
-        showTree(rootDir, "");
-        writer_.flush();
+        rootDir_ = rootDir;
+        showFiles_ = showFiles;
+        writer_ = new PrintWriter(writer, true);
+        dirFilter_ = new DirectoryFilter();
     }
+
+
+    /**
+     * Prints the tree
+     */    
+    public void showTree()
+    {
+        showTree(rootDir_, "");
+    }
+
     
     /**
      * Recurses the directory structure of the given rootDir and generates
