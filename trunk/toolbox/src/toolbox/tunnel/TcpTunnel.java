@@ -13,6 +13,11 @@ import java.util.List;
 
 import nu.xom.Element;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.log4j.Logger;
 
@@ -219,41 +224,139 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public static void main(String args[])
     {
-        if (args.length != 3)
-        {
-            System.err.println(
-                "Usage: java " 
-                + TcpTunnel.class.getName() 
-                + " listenport tunnelhost tunnelport");
-            
-            System.exit(1);
-        }
-
-        int localPort = Integer.parseInt(args[0]);
-        String tunnelhost = args[1];
-        int tunnelport = Integer.parseInt(args[2]);
-        
         try
         {
-            TcpTunnel tunnel = new TcpTunnel(localPort, tunnelhost, tunnelport);
-            //tunnel.setIncomingSink(System.out);
-            //tunnel.setOutgoingSink(System.out);
-            tunnel.addTcpTunnelListener(tunnel);
-            tunnel.start();
+            CommandLineParser parser = new PosixParser();
+            Options options = new Options();
+
+            // Valid options            
+            Option quietOption = 
+                new Option("q", "quiet", false, "Don't print data");
+                
+            Option throughputOption = 
+                new Option("t", "throughput", false, "Prints throughput");
+            
+            Option binaryOption = 
+                new Option("b", "suppress binary", false, 
+                    "Suppresses binary output");
+            
+            Option helpOption = new Option("h", "help", false, "Print usage");
+            Option helpOption2 = new Option("?", "/?", false, "Print Usage");
+            
+            options.addOption(helpOption2);
+            options.addOption(helpOption);
+            options.addOption(quietOption);        
+            options.addOption(throughputOption);
+            options.addOption(binaryOption);
+    
+            // Parse options
+            CommandLine cmdLine = parser.parse(options, args, true);
+    
+            // Send output to System.out
+            TcpTunnel tunnel = new TcpTunnel();
+            
+            // Handle options
+            for (Iterator i = cmdLine.iterator(); i.hasNext();)
+            {
+                Option option = (Option) i.next();
+                String opt = option.getOpt();
+                
+                if (opt.equals(quietOption.getOpt()))
+                {
+                    tunnel.setIncomingSink(new NullOutputStream());
+                    tunnel.setOutgoingSink(new NullOutputStream());
+                }
+                else if (opt.equals(binaryOption.getOpt()))
+                {
+                    tunnel.setSuppressBinary(true);
+                }
+                else if (opt.equals(throughputOption.getOpt()))
+                {
+                    // TODO
+                    //tunnel.setShowTargets(true);
+                }
+                else if (opt.equals(helpOption.getOpt()) ||
+                         opt.equals(helpOption2.getOpt()))
+                {
+                    printUsage();
+                    return;
+                }
+            }
+                
+            // Make sure class to find is the only arg
+            switch (cmdLine.getArgs().length)
+            {
+                // Start the search...
+                case 3:
+                    int localPort = Integer.parseInt(cmdLine.getArgs()[0]);
+                    String tunnelhost = cmdLine.getArgs()[1];
+                    int tunnelport = Integer.parseInt(cmdLine.getArgs()[2]);
+
+                    tunnel.setLocalPort(localPort);
+                    tunnel.setRemoteHost(tunnelhost);
+                    tunnel.setRemotePort(tunnelport);
+                    tunnel.addTcpTunnelListener(tunnel);
+                    tunnel.start();
+                    
+                    System.out.println(
+                        "TcpTunnel: Ready to service connections on port " 
+                        + tunnel.getLocalPort());
+                    
+                    break;                
+                
+                // Invalid
+                default: 
+                    printUsage(); 
+                    return;
+            }
         }
-        catch (ServiceException e)
+        catch (Exception e)
         {
-            logger_.error(e);
+            logger_.error("main", e);   
         }
         
-        System.out.println(
-            "TcpTunnel: Ready to service connections on port " + localPort);
+        ////////////////////////////////////////////////////////////////////////
+        
+//        if (args.length != 3)
+//        {
+//            printUsage();
+//            
+//            System.exit(1);
+//        }
+//
+//        int localPort = Integer.parseInt(args[0]);
+//        String tunnelhost = args[1];
+//        int tunnelport = Integer.parseInt(args[2]);
+//        
+//        try
+//        {
+//            TcpTunnel tunnel = new TcpTunnel(localPort, tunnelhost, tunnelport);
+//            //tunnel.setIncomingSink(System.out);
+//            //tunnel.setOutgoingSink(System.out);
+//            tunnel.addTcpTunnelListener(tunnel);
+//            tunnel.start();
+//        }
+//        catch (ServiceException e)
+//        {
+//            logger_.error(e);
+//        }
         
     }
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
+
+    /**
+     * 
+     */
+    private static void printUsage()
+    {
+        System.err.println(
+            "Usage: java " 
+            + TcpTunnel.class.getName() 
+            + " listenport tunnelhost tunnelport");
+    }
 
     /**
      * Creates a TcpTunnel listening on port 8888 and re-routing to port 9999
@@ -572,7 +675,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public void statusChanged(TcpTunnel tunnel, String status)
     {
-        System.out.println(status);
+        System.out.println("[Status changed: " + status + "]");
     }
 
 
