@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
+import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
@@ -115,8 +116,8 @@ public class FindClass
     /**
      * Finds a class
      * 
-     * @param   classToFind     Regular expression for class to find
-     * @param   ignoreCase      Ignores case in search
+     * @param   classToFind   Regular expression for class to find
+     * @param   ignoreCase    Ignores case in search
      * @return  Array of FindClassResults
      * @throws  IOException on I/O error
      * @throws  RESyntaxException on regular expression error
@@ -148,7 +149,7 @@ public class FindClass
                 
                 fireSearchingTarget(target);
                 
-                if (isArchive(target))
+                if (ClassUtil.isArchive(target))
                     findInArchive(target);
                 else
                     findInPath(target);
@@ -405,7 +406,7 @@ public class FindClass
     /**
      * Finds class in a given directory and subdirs
      * 
-     * @param   pathName   Absolute name of the directory to search
+     * @param  pathName  Absolute name of the directory to search
      */    
     protected void findInPath(String pathName) 
     { 
@@ -448,18 +449,6 @@ public class FindClass
         }
     }
     
-    /**
-     * Determines whether a given file is a java archive
-     * 
-     * @param   s   Absolute name of the java archive
-     * @return  True if a valid archive, false otherwise
-     */
-    protected static boolean isArchive(String s) 
-    { 
-        s = s.toUpperCase();
-        return (s.endsWith(".JAR") || s.endsWith(".ZIP"));
-    }
-
     //--------------------------------------------------------------------------
     // Event Listener Support
     //--------------------------------------------------------------------------

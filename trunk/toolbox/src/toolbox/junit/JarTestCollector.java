@@ -12,13 +12,14 @@ import java.util.zip.ZipFile;
 
 import junit.runner.TestCollector;
 
+import toolbox.util.ClassUtil;
+
 /**
  * Test collector that will find JUnit tests embeded in jar/zip files on the 
  * classpath.
  */
 public class JarTestCollector implements TestCollector
 {
-
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -67,30 +68,12 @@ public class JarTestCollector implements TestCollector
         while (tokenizer.hasMoreTokens()) 
         {   
             String entry = (String)tokenizer.nextToken();
-            if (isArchive(entry))
+            if (ClassUtil.isArchive(entry))
                 result.add(entry);
         }
             
         return result;
     }
-
-
-    /**
-     * Determines whether a given file is a java archive or not
-     * 
-     * @param   s   Absolute name of the java archive
-     * @return  True if a valid archive, false otherwise
-     */
-    protected boolean isArchive(String s) 
-    { 
-        s = s.toUpperCase();
-        
-        if (s.endsWith(".JAR") || s.endsWith(".ZIP"))
-            return true;
-        else
-            return false;
-    }
-    
     
     /**
      * Collects test classes in a jar/zip file
@@ -116,7 +99,6 @@ public class JarTestCollector implements TestCollector
             }
         }
     }
-    
     
     /**
      * Finds all classes in a given jar file and tests for criteria matching

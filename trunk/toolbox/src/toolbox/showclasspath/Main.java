@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 
 /**
@@ -28,7 +29,7 @@ import toolbox.util.StringUtil;
  * </pre>
  * 
  */
-public class Main
+public final class Main
 {
     /** Max length for size column */
     private static final int MAX_SIZE_LEN = 12;
@@ -50,7 +51,6 @@ public class Main
     
     /** Column heading for time */    
     private static final String COL_TIME = "Time";
-
 
     /**
      * Entry point
@@ -113,7 +113,7 @@ public class Main
             File f = new File(path);
 
             // if archive, get more info
-            if (isArchive(path))
+            if (ClassUtil.isArchive(path))
             {
                 if (f.exists() && f.isFile() && f.canRead())
                 {
@@ -163,7 +163,6 @@ public class Main
         }
     }
 
-
     /**
      * Formats date to specific format: 01/01/1980  12/31/1999
      * 
@@ -176,7 +175,6 @@ public class Main
 
         return dateFormat.format(d);
     }
-
 
     /**
      * Formats the file size length to include commas: 1,233,276
@@ -193,7 +191,6 @@ public class Main
 
         return new String(sbuf);
     }
-
 
     /**
      * Formats time to specific format:  12:47a  01:07p
@@ -214,24 +211,6 @@ public class Main
 
         return timeString;
     }
-
-
-    /**
-     * Determines if a file is a java archive
-     * 
-     * @param   s   absolute name of file
-     * @return  true if file is a java archive, false otherwise
-     */
-    static boolean isArchive(String s)
-    {
-        s = s.toUpperCase();
-
-        if (s.endsWith(".JAR") || s.endsWith(".ZIP"))
-            return true;
-        else
-            return false;
-    }
-
 
     /**
      * Builds a string with a given number of spaces
