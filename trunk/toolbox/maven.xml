@@ -386,6 +386,7 @@ Commands:
                 <include name="jemmy.jar"/>
                 <include name="jdom.jar"/>
                 <include name="jalopy.jar"/>
+                <include name="janino.jar"/>
 
                 <!-- Doc viewer plugin -->
                 <include name="calphahtml.jar"/>
