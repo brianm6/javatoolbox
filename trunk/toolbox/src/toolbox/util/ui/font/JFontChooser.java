@@ -34,7 +34,6 @@ import javax.swing.event.ListSelectionListener;
 
 import toolbox.util.Assert;
 
-
 /**
  * Component that allows the selection of a font
  */
@@ -92,7 +91,6 @@ public class JFontChooser extends JPanel
         this(null);
     }
 
-
     /**
      * Like {@link #JFontChooser(java.awt.Font, String[], int[])}, except 
      * that a default list of styles{"Plain", "Bold", "Italic", "Bold Italic"}
@@ -108,7 +106,6 @@ public class JFontChooser extends JPanel
         new String[] { "Plain", "Bold", "Italic", "Bold Italic" },
             new int[] { 8, 9, 10, 12, 14 }, false);
     }
-
 
     /**
      * Construct a new JFontChooser whose family, style & size widget
@@ -176,8 +173,11 @@ public class JFontChooser extends JPanel
 
         // Sets initial font if one is not provided
         if (initialFont == null)
-            initialFont =  new Font(availableFontFamilyNames[0], Font.PLAIN,
-                predefinedSizes[0]);
+            initialFont =  
+                new Font(
+                    availableFontFamilyNames[0], 
+                    Font.PLAIN, 
+                    predefinedSizes[0]);
 
         // Configure font family list
         fontFamilyList_ = new JList(availableFontFamilyNames);
@@ -265,7 +265,6 @@ public class JFontChooser extends JPanel
         fontSize_.setText(String.valueOf(initialFont.getSize()));
     }
 
-
     /**
      * Wraps a component in a panel with a heading
      * 
@@ -280,7 +279,6 @@ public class JFontChooser extends JPanel
         panel.add(BorderLayout.CENTER, component);
         return panel;    
     }
-    
     
     /**
      * Wires the GUI with appropriate event listeners
@@ -299,7 +297,6 @@ public class JFontChooser extends JPanel
         fontSizeList_.addListSelectionListener(fontSizeSynchronizer);
         fontSize_.getDocument().addDocumentListener(fontSizeSynchronizer);
     }
-
 
     /**
      * Validates predefinted font sizes
@@ -348,7 +345,6 @@ public class JFontChooser extends JPanel
         listeners_.add(listener);
     }
     
-    
     /**
      * Removes an listener from this JFontChooser
      * 
@@ -358,7 +354,6 @@ public class JFontChooser extends JPanel
     {
         listeners_.remove(listener);
     }
-    
     
     /**
      * Fires notification for font selection change
@@ -384,7 +379,6 @@ public class JFontChooser extends JPanel
         return antiAliasCheckBox_.isSelected();
     }
     
-    
     /**
      * Sets antialias flag
      * 
@@ -394,7 +388,6 @@ public class JFontChooser extends JPanel
     {
         antiAliasCheckBox_.setSelected(b);
     }
-    
     
     /**
      * Returns the currently selected font family
@@ -414,7 +407,6 @@ public class JFontChooser extends JPanel
         return fontFamily;
     }
 
-
     /**
      * Returns the currently selected font style.
      * 
@@ -427,7 +419,6 @@ public class JFontChooser extends JPanel
     {
         return fontStyleList_.getSelectedStyle();
     }
-
 
     /**
      * Returns the currently selected font size.
@@ -459,7 +450,6 @@ public class JFontChooser extends JPanel
         }
     }
 
-
     /**
      * Returns the currently selected font.
      * 
@@ -476,7 +466,6 @@ public class JFontChooser extends JPanel
             getSelectedFontSize());
     }
 
-
     /**
      * Changes the currently selected font by assigning all widget values to 
      * match the family/style/size values of the supplied font
@@ -492,7 +481,6 @@ public class JFontChooser extends JPanel
         setSelectedFontSize(font.getSize());
     }
 
-
     /**
      * Sets the currently selected font family.
      * 
@@ -500,8 +488,8 @@ public class JFontChooser extends JPanel
      * @throws  IllegalArgumentException thrown if the supplied font family is
      *          not among the list of available font families
      */
-    public void setSelectedFontFamily(String family) throws
-        IllegalArgumentException
+    public void setSelectedFontFamily(String family) 
+        throws IllegalArgumentException
     {
         ListModel familyListModel = fontFamilyList_.getModel();
         
@@ -519,7 +507,6 @@ public class JFontChooser extends JPanel
             "', is not in the list of availalbe font families.");
     }
 
-
     /**
      * Sets the currently selected font style.
      * 
@@ -532,7 +519,6 @@ public class JFontChooser extends JPanel
     {
         fontStyleList_.setSelectedStyle(style);
     }
-
 
     /**
      * Sets the currently selected font size.
@@ -572,7 +558,6 @@ public class JFontChooser extends JPanel
             textField_ = textField;
         }
 
-
         /** 
          * Called when a value is changed.
          * 
@@ -597,7 +582,6 @@ public class JFontChooser extends JPanel
             updating_ = false;
         }
 
-
         /** 
          * @see javax.swing.event.DocumentListener 
          */
@@ -605,8 +589,7 @@ public class JFontChooser extends JPanel
         {
             handle(e);
         }
-
-        
+       
         /**
          *  @see javax.swing.event.DocumentListener 
          */
@@ -615,7 +598,6 @@ public class JFontChooser extends JPanel
             handle(e);
         }
         
-        
         /** 
          * @see javax.swing.event.DocumentListener 
          */
@@ -623,7 +605,6 @@ public class JFontChooser extends JPanel
         {
             handle(e);
         }
-        
         
         /** 
          * Handles all DocumentEvents 
@@ -672,7 +653,6 @@ public class JFontChooser extends JPanel
             updating_ = false;
         }
     }
-
     
     /**
      * Listener for the font name list
@@ -684,7 +664,6 @@ public class JFontChooser extends JPanel
             fireFontSelectionChanged();
         }
     }
-    
     
     /**
      * Listener that notifies the phraseCanvas of font changes
@@ -726,17 +705,12 @@ public class JFontChooser extends JPanel
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK));
         }
     
-        /**
-         * Toggle antialiasing of fonts
-         */
         public void actionPerformed(ActionEvent e)
         {
             phraseCanvas_.setAntiAlias(antiAliasCheckBox_.isSelected());
             phraseCanvas_.repaint();
         }
     }
-    
-    
 }
 
 /**

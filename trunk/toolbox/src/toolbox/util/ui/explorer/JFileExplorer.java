@@ -87,7 +87,6 @@ public class JFileExplorer extends JPanel
         this(true);
     }
 
-
     /**
      * Creates a JFileExplorer
      * 
@@ -114,7 +113,6 @@ public class JFileExplorer extends JPanel
         return currentPath_;
     }
 
-
     /**
      * Sets the current directory path
      *
@@ -124,7 +122,6 @@ public class JFileExplorer extends JPanel
     {
         currentPath_ = currentPath;
     }
-
 
     /**
      * Returns the current file path.
@@ -139,7 +136,6 @@ public class JFileExplorer extends JPanel
         s.append(fileList_.getSelectedValue().toString());
         return s.toString();
     }
-
     
     /**
      * Selects the given folder. Folder is a fully qualified directory structure
@@ -293,7 +289,6 @@ public class JFileExplorer extends JPanel
         fileExplorerListeners_.add(listener);
     }
 
-
     /**
      * Removes a JFileExplorerListener
      *
@@ -303,7 +298,6 @@ public class JFileExplorer extends JPanel
     {
         fileExplorerListeners_.remove(listener);
     }
-
 
     /**
      * Fires an event when a file is double clicked by the user
@@ -316,7 +310,6 @@ public class JFileExplorer extends JPanel
              listener.fileDoubleClicked(getFilePath());
         }
     }
-
     
     /**
      * Fires an event when a directory is selected
@@ -331,7 +324,6 @@ public class JFileExplorer extends JPanel
              listener.folderSelected(folder);
         }
     }
-
     
     /**
      * Fire an event when a directory is double clicked
@@ -446,18 +438,6 @@ public class JFileExplorer extends JPanel
         splitPane.setDividerLocation(150);
     }
 
-
-    /**
-     * Returns the root of our JTree as a String.
-     *
-     * @return  String
-     */
-    private String getTreeRoot()
-    {
-        return root_;
-    }
-
-
     /**
      * Sets the root for the JTree.
      *
@@ -472,7 +452,6 @@ public class JFileExplorer extends JPanel
 
         root_ = root;
     }
-
 
     /**
      * Sets the tree folders
@@ -495,7 +474,6 @@ public class JFileExplorer extends JPanel
             addTreeNodes(fileList, currentNode);
     }
 
-
     /**
      * Finds, sorts, and adds the files according to the path to the file list.
      *
@@ -513,7 +491,6 @@ public class JFileExplorer extends JPanel
             listModel_.addElement(files[i].getName());
     }
 
-
     /**
      * Removes all children of the tree root.
      */
@@ -522,7 +499,6 @@ public class JFileExplorer extends JPanel
         rootNode_.removeAllChildren();
         treeModel_.reload();
     }
-
 
     /**
      * Adds folders to the tree.
@@ -569,7 +545,6 @@ public class JFileExplorer extends JPanel
         tree_.scrollPathToVisible(new TreePath(childNode.getPath()));
     }
 
-
     /**
      * Returns the default root.
      *
@@ -589,7 +564,6 @@ public class JFileExplorer extends JPanel
         // Should never happen
         return "";
     }
-
 
     /**
      * Gets the Drive Icon for the Roots drop down menu display.
@@ -662,13 +636,9 @@ public class JFileExplorer extends JPanel
             String file2 = (String)node.getUserObject();
             
             if (Platform.isUnix())
-            {
                 return file1.equals(file2);
-            }
             else
-            {
                 return file1.equalsIgnoreCase(file2);
-            }
         }
     }
     
@@ -691,7 +661,6 @@ public class JFileExplorer extends JPanel
             return fileA.getName().compareToIgnoreCase(fileB.getName());
         }
     }
-
 
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
@@ -736,7 +705,6 @@ public class JFileExplorer extends JPanel
         }
     }
 
-
     /**
      * Inner class for handling click events on the file list.
      */
@@ -760,7 +728,6 @@ public class JFileExplorer extends JPanel
             }
         }
     }
-
 
     /**
      * Inner class for handling click event on the JTree.
@@ -786,7 +753,6 @@ public class JFileExplorer extends JPanel
         }
     }
 
-
     /**
      * Inner class to give support for Roots ComboBox changes.
      */
@@ -805,7 +771,6 @@ public class JFileExplorer extends JPanel
             setTreeFolders(rootsComboBox_.getSelectedItem().toString(), null);
         }
     }
-
 
     /**
      * Inner class to give support for Tree selection events.

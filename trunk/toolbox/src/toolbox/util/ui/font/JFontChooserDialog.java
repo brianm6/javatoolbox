@@ -16,22 +16,16 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Logger;
-
 /**
  * Simple font selection dialog
  */
 public class JFontChooserDialog extends JDialog
 {
-    /** Logger */
-    private  static final Logger logger_ = 
-        Logger.getLogger(JFontChooserDialog.class);
-        
-    private  JFontChooser   fontChooser_;
-    private  JButton        okButton_;
-    private  JButton        cancelButton_;
-    private  JButton        applyButton_;
-    private  List           listeners_;
+    private  JFontChooser fontChooser_;
+    private  JButton      okButton_;
+    private  JButton      cancelButton_;
+    private  JButton      applyButton_;
+    private  List         listeners_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -45,7 +39,6 @@ public class JFontChooserDialog extends JDialog
         this(null);
     }
 
-
     /**
      * Creates a JFontChooserDialog
      * 
@@ -55,7 +48,6 @@ public class JFontChooserDialog extends JDialog
     {
         this(owner, true);
     }
-
 
     /**
      * Creates a JFontChooserDialog
@@ -68,7 +60,6 @@ public class JFontChooserDialog extends JDialog
         this(owner, "", modal);
     }
 
-
     /**
      * Creates a JFontChooserDialog
      * 
@@ -76,12 +67,10 @@ public class JFontChooserDialog extends JDialog
      * @param  modal        Set to true for a model dialog
      * @param  defaultFont  Font to select by default
      */
-    public JFontChooserDialog(Frame owner, boolean modal,
-        Font defaultFont)
+    public JFontChooserDialog(Frame owner, boolean modal, Font defaultFont)
     {
         this(owner, modal, defaultFont, false);
     }
-
 
     /**
      * Creates a JFontChooserDialog
@@ -91,14 +80,13 @@ public class JFontChooserDialog extends JDialog
      * @param  defaultFont  Font to select by default
      * @param  antiAlias    Turns antialias on
      */
-    public JFontChooserDialog(Frame owner, boolean modal,
-        Font defaultFont, boolean antiAlias)
+    public JFontChooserDialog(Frame owner, boolean modal, Font defaultFont, 
+        boolean antiAlias)
     {
         this(owner, "Select Font", modal);
         fontChooser_.setSelectedFont(defaultFont);
         fontChooser_.setAntiAlias(antiAlias);
     }
-
 
     /**
      * Creates a JFontChooserDialog
@@ -110,7 +98,6 @@ public class JFontChooserDialog extends JDialog
     {
         this(owner, title, true);
     }
-
 
     /**
      * Creates a JFontChooserDialog
@@ -166,7 +153,6 @@ public class JFontChooserDialog extends JDialog
         listeners_.add(listener);
     }
 
-
     /**
      * Removes a listener
      * 
@@ -193,12 +179,8 @@ public class JFontChooserDialog extends JDialog
             putValue(MNEMONIC_KEY, new Integer('o'));
             putValue(ACCELERATOR_KEY, 
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
-
         }
     
-        /**
-         * Notifies listener and disposes
-         */
         public void actionPerformed(ActionEvent e)
         {
             for (Iterator i = listeners_.iterator(); i.hasNext(); )
@@ -208,7 +190,6 @@ public class JFontChooserDialog extends JDialog
             dispose();
         }
     }
-
 
     /**
      * Notifies listeners that the apply was selected
@@ -223,9 +204,6 @@ public class JFontChooserDialog extends JDialog
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, 0));
         }
     
-        /**
-         * Notifies listener
-         */
         public void actionPerformed(ActionEvent e)
         {
             for (Iterator i = listeners_.iterator(); i.hasNext(); )
@@ -233,7 +211,6 @@ public class JFontChooserDialog extends JDialog
                     applyButtonPressed(fontChooser_);
         }
     }
-
 
     /**
      * Notifies listeners that cancel was selected and disposes of the
@@ -249,9 +226,6 @@ public class JFontChooserDialog extends JDialog
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
         }
     
-        /**
-         * Notifies listeners and disposess
-         */
         public void actionPerformed(ActionEvent e)
         {
             for (Iterator i = listeners_.iterator(); i.hasNext(); )
