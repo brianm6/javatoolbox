@@ -23,6 +23,7 @@ import nu.xom.Elements;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.plugin.jdbc.action.BaseAction;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
@@ -37,7 +38,6 @@ import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * JDBC driver and connection settings configuration panel.
@@ -336,11 +336,18 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Connects/Disconnects from the database.
+     * Dual mode action that handles connect/disconnect from the database.
      */
-    class ConnectDisconnectAction extends WorkspaceAction
+    class ConnectDisconnectAction extends BaseAction
     {
+        /**
+         * Action name when in connect mode.
+         */
         public static final String MODE_CONNECT    = "Connect";
+        
+        /**
+         * Action name when in disconnect mode.
+         */
         public static final String MODE_DISCONNECT = "Disconnect";
         
         /**
@@ -350,7 +357,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
          */
         ConnectDisconnectAction(String mode)  
         {
-            super(mode, false, plugin_.getComponent(), statusBar_);
+            super(plugin_, mode, false, plugin_.getComponent(), statusBar_);
             
             putValue(SHORT_DESCRIPTION, 
                 "Connects/disconnects from the database");
