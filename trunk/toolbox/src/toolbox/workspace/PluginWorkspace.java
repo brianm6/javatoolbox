@@ -1,6 +1,7 @@
 package toolbox.util.ui.plugin;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -53,6 +54,9 @@ import toolbox.util.SwingUtil;
  * TODO: Make webstart enabled
  * TODO: Added close icon to plugin tabs
  * TODO: Add differentiation between maximized and sized frame 
+ * TODO: Save last selected plugin on shutdown and restore on startup
+ * TODO: Write log4j pattern layout that combines class name and method
+ * TODO: Abstraction for concrete regular expression engine implementation
  * 
  * </pre>
  */
@@ -62,13 +66,14 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
-    private static final String FILE_PREFS  = ".toolbox.properties";
-    private static final String KEY_WIDTH   = "workspace.width";
-    private static final String KEY_HEIGHT  = "workspace.height";
-    private static final String KEY_XCOORD  = "workspace.xcoord";
-    private static final String KEY_YCOORD  = "workspace.ycoord";
-    private static final String KEY_PLUGINS = "workspace.plugins";
-    private static final String KEY_LAF     = "workspace.lookandfeel";
+    private static final String FILE_PREFS   = ".toolbox.properties";
+    private static final String PROP_WIDTH    = "workspace.width";
+    private static final String PROP_HEIGHT   = "workspace.height";
+    private static final String PROP_XCOORD   = "workspace.xcoord";
+    private static final String PROP_YCOORD   = "workspace.ycoord";
+    private static final String PROP_LAF      = "workspace.lookandfeel";
+    private static final String PROP_LOADED   = "workspace.plugins.loaded";
+    private static final String PROP_SELECTED = "workspace.plugins.selected";
     
     /**
      * Plugins are added to this tab panel in order or registration
@@ -344,15 +349,15 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     protected void savePrefs()
     {
         // Save window location
-        PropertiesUtil.setInteger(prefs_, KEY_XCOORD, getLocation().x);
-        PropertiesUtil.setInteger(prefs_, KEY_YCOORD, getLocation().y);
+        PropertiesUtil.setInteger(prefs_, PROP_XCOORD, getLocation().x);
+        PropertiesUtil.setInteger(prefs_, PROP_YCOORD, getLocation().y);
         
         // Save window size
-        PropertiesUtil.setInteger(prefs_, KEY_WIDTH, getSize().width);
-        PropertiesUtil.setInteger(prefs_, KEY_HEIGHT, getSize().height); 
+        PropertiesUtil.setInteger(prefs_, PROP_WIDTH, getSize().width);
+        PropertiesUtil.setInteger(prefs_, PROP_HEIGHT, getSize().height); 
 
         // Save look and feel
-        prefs_.setProperty(KEY_LAF, 
+        prefs_.setProperty(PROP_LAF, 
             UIManager.getLookAndFeel().getClass().getName());
                 
         // Save plugin prefs too
@@ -365,8 +370,12 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             pluginLine += plugin.getClass().getName() + ",";
         }
         
-        prefs_.setProperty(KEY_PLUGINS, pluginLine);
-    
+        prefs_.setProperty(PROP_LOADED , pluginLine);
+        
+        // Save currently selected tab
+        PropertiesUtil.setInteger(prefs_, PROP_SELECTED, 
+            tabbedPane_.getSelectedIndex());
+            
         // Save to file
         String userhome = System.getProperty("user.home");
         
@@ -401,20 +410,20 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     {
         // Restore window location
         setLocation(
-            PropertiesUtil.getInteger(prefs_, KEY_XCOORD, 0),
-            PropertiesUtil.getInteger(prefs_, KEY_YCOORD, 0));
+            PropertiesUtil.getInteger(prefs_, PROP_XCOORD, 0),
+            PropertiesUtil.getInteger(prefs_, PROP_YCOORD, 0));
         
         // Restore window size
         setSize(
-            PropertiesUtil.getInteger(prefs_, KEY_WIDTH, 800),
-            PropertiesUtil.getInteger(prefs_, KEY_HEIGHT, 600)); 
+            PropertiesUtil.getInteger(prefs_, PROP_WIDTH, 800),
+            PropertiesUtil.getInteger(prefs_, PROP_HEIGHT, 600)); 
             
         // Reload Plugins that were saved
-        String pluginLine = prefs_.getProperty(KEY_PLUGINS,"");
+        String pluginLine = prefs_.getProperty(PROP_LOADED ,"");
         String[] plugins = StringUtil.tokenize(pluginLine, ",");
 
         // Restore look and feel
-        String lafClass = prefs_.getProperty(KEY_LAF);
+        String lafClass = prefs_.getProperty(PROP_LAF);
         
         if (lafClass != null)
         {
@@ -455,6 +464,10 @@ public class PluginWorkspace extends JFrame implements IStatusBar
                 ExceptionUtil.handleUI(t, logger_);
             }
         }
+        
+        // Restore last selected tab
+        tabbedPane_.setSelectedIndex(
+            PropertiesUtil.getInteger(prefs_, PROP_SELECTED,-1));
     }       
 
     //--------------------------------------------------------------------------
@@ -510,12 +523,14 @@ public class PluginWorkspace extends JFrame implements IStatusBar
     {
         public void windowClosing(WindowEvent e)
         {
-            savePrefs();            
-        }
-        
-        public void windowOpened(WindowEvent e)
-        {
-            logger_.info("windowOpened()");
+            try
+            {    
+                savePrefs();
+            }
+            catch (Throwable t)
+            {
+                ExceptionUtil.handleUI(t, logger_);
+            }
         }
     }
 
@@ -524,16 +539,12 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */    
     class PostInit implements Runnable
     {
-        public PostInit()
-        {
-        }
-        
         public void run()
         {
             applyPrefs();
-            invalidate();
-            doLayout();
-            repaint();
+            //invalidate();
+            //doLayout();
+            //repaint();
         }        
     }
     
