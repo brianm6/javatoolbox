@@ -46,7 +46,7 @@ public class JFontChooserTest extends UITestCase
     {
         logger_.info("Running testJFontChooser...");
         
-        JPanel p = new JPanel(new GridLayout(2,2));
+        JPanel p = new JPanel(new GridLayout(2, 3));
         
         JFontChooser fc = null;
         
@@ -65,6 +65,17 @@ public class JFontChooserTest extends UITestCase
         fc.setRenderedUsingFont(true);
         fc.setMonospaceEmphasized(true);
         p.add(new JHeaderPanel("Monospace and Render w/ Font On", null, fc));
+        
+        fc = new JFontChooser(
+            FontUtil.getPreferredMonoFont(), 
+            JFontChooser.DEFAULT_STYLES, 
+            JFontChooser.DEFAULT_SIZES, 
+            true, 
+            true);
+        
+        //fc.setRenderedUsingFont(true);
+        fc.setMonospaceEmphasized(true);
+        p.add(new JHeaderPanel("Render w/ Monospaced only", null, fc));
         
         launchInDialog(p);
     }
