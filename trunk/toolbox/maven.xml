@@ -1,24 +1,6 @@
 <!-- ===========================================================================
-    
-  Maven Base Project Customizations
-  
-  USAGE:
 
-    You do not invoke this file explicitly. It is picked up by Maven 
-    automatically if 'maven.xml' exists in the same directory as the Maven
-    project file that is being executed (usually project.xml, but in our case
-    base-project.xml). Goals that are defined in this file can be passed to
-    maven via the command line to be executed. Execute maven with no command
-    line args to print out additional help information on each of the goals.
-
-  PURPOSE:
-  
-    This file contains additional behavior that is applicable and common to the
-    build process of each individual PWSW sub-project (framework, rules, etc).
-    
-  EXAMPLE:
-  
-    maven cvs-update    
+  Maven Custom Goals for the Java Toolbox    
 
 ============================================================================ -->
 
@@ -34,12 +16,13 @@
     <!-- [PRE] JAVA:COMPILE                                                  -->
     <!-- =================================================================== -->
     <preGoal name="java:compile"> 
+        
        <!-- Piggybacks the debug source tree onto the compile goal -->
        <path id="debug.src" location="${basedir}/debug"/> 
        <maven:addPath id="maven.compile.src.set" refid="debug.src"/> 
+        
     </preGoal> 
 
-    <preGoal name="jnlp"/> 
     
     <!-- =================================================================== -->
     <!-- CVS-UPDATE                                                          -->
@@ -47,14 +30,9 @@
     <goal name="cvs-update" description="Updates the project from CVS">
 
       <mkdir dir="${basedir}/src"/>
-    
-      <!-- Only the uiframework module has a 'src' dir built into the cvs structure -->
       <j:set var="dest" value="${basedir}/src"/>
-      <j:if test="${pom.artifactId == 'uiframework'}">
-        <j:set var="dest" value="${basedir}"/>
-      </j:if>
     
-      <!-- Update from CVS. TODO: Clean checkout -->
+      <!-- Update from CVS -->
       <cvs command     = "update -d"
            dest        = "${dest}"
            failonerror = "false"/>
