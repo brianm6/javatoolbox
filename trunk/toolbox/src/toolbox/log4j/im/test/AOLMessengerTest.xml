@@ -13,6 +13,7 @@
     	<param name="Username"  value="supahfuzzy"/>
     	<param name="Password"  value="techno"/>
     	<param name="Recipient" value="analogue"/>
+    	<param name="Delay"     value="500"/>
 	   
    	</appender>
 
