@@ -459,11 +459,21 @@ public final class StringUtil
      */  
     public static String[] tokenize(String s, String delimiter)
     {
-        StringTokenizer st = new StringTokenizer(s, delimiter);
+        return tokenize(s, delimiter, false);
+    }
+
+    /**
+     * Returns arary of individual tokens from a string
+     * 
+     * @param   s          String to tokenize
+     * @param   delimiter  Delimiter used for separate tokens
+     * @return  Array of string tokens
+     */  
+    public static String[] tokenize(String s, String delimiter, boolean saveDelims)
+    {
+        StringTokenizer st = new StringTokenizer(s, delimiter, saveDelims);
         String[] tokens = new String[st.countTokens()];   
-        
         for(int i=0; st.hasMoreTokens(); tokens[i++] = st.nextToken());
-        
         return tokens;
     }
 
