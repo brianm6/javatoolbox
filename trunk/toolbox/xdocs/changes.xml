@@ -47,6 +47,7 @@
  * TODO: Write a plugin to view humongous files.
  * TODO: Add System wide prefs for the default mono and serif fonts
  * TODO: Make monospaced fonts stand out in JFontChooser
+ * TODO: Add dbcopy functionality from dbunit
  * =============================================================================
  *                              Build
  * =============================================================================
