@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -29,6 +30,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+// TODO: Remove dependency to another class
+import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
+import com.jgoodies.plaf.plastic.PlasticTheme;
 
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
@@ -55,26 +60,22 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * TODO: Make plugins detachable
      * TODO: Make webstart enabled
      * TODO: Write log4j pattern layout that combines class name and method
-     * TODO: Abstraction for concrete regular expression engine implementation
      * TODO: Convert project build and layout to Maven
-     * TODO: Use Quilt for JUnit Test coverage instead of Clover
-     * TODO: Add support for selecting Plastic Look & Feel color themes
      */
         
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
-    private static final String FILE_PREFS    = ".toolbox.properties";
-    private static final String PROP_MAXXED   = "workspace.maximized";
-    private static final String PROP_WIDTH    = "workspace.width";
-    private static final String PROP_HEIGHT   = "workspace.height";
-    private static final String PROP_XCOORD   = "workspace.xcoord";
-    private static final String PROP_YCOORD   = "workspace.ycoord";
-    private static final String PROP_LAF      = "workspace.lookandfeel";
-    private static final String PROP_LOADED   = "workspace.plugins.loaded";
-    private static final String PROP_SELECTED = "workspace.plugins.selected";
-    
-    public static final String PROP_STATUSBAR = "workspace.statusbar";
+    private static final String FILE_PREFS     = ".toolbox.properties";
+    private static final String PROP_MAXXED    = "workspace.maximized";
+    private static final String PROP_WIDTH     = "workspace.width";
+    private static final String PROP_HEIGHT    = "workspace.height";
+    private static final String PROP_XCOORD    = "workspace.xcoord";
+    private static final String PROP_YCOORD    = "workspace.ycoord";
+    private static final String PROP_LAF       = "workspace.lookandfeel";
+    private static final String PROP_LOADED    = "workspace.plugins.loaded";
+    private static final String PROP_SELECTED  = "workspace.plugins.selected";
+    public  static final String PROP_STATUSBAR = "workspace.statusbar";
      
     /** Plugins are added to this tab panel in order or registration */
     private JTabbedPane tabbedPane_;
@@ -83,7 +84,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private IStatusBar statusBar_;
     
     /** Look and Feel Menu Items */
-    private JMenu lafMenu_;
+    private JMenu lookAndFeelMenu_;
     
     /** Preferences stored as NV pairs */
     private Properties prefs_;
@@ -91,7 +92,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /** Map of plugin names -> plugins */
     private Map plugins_ = new SequencedHashMap();
     
-    /** Default initialization map for all plugins */
+    /** 
+     * Default initialization map for all plugins. Passed into 
+     * IPlugin.startup(). 
+     */
     private Map initMap_;
 
     //--------------------------------------------------------------------------
@@ -99,7 +103,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint 
+     * Starts up the workspace 
      * 
      * @param  args  None recognized
      */
@@ -107,8 +111,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         try
         {
-            PluginWorkspace frame = new PluginWorkspace();
-            //frame.setVisible(true);
+            new PluginWorkspace();
         }
         catch(Exception e)
         {
@@ -245,29 +248,58 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic('F');        
         fileMenu.add(new PluginsAction());
-
-        lafMenu_ = new JMenu("Look and Feel");
-        
-        UIManager.LookAndFeelInfo[] lafs = SwingUtil.getLAFs();
-        ButtonGroup group = new ButtonGroup();
-        
-        for (int i=0; i<lafs.length; i++)
-        {
-            JCheckBoxMenuItem lafItem = 
-                new JCheckBoxMenuItem(new SetLAFAction(lafs[i]));
-            
-            group.add(lafItem);
-            lafMenu_.add(lafItem);
-        }
-        
         fileMenu.add(new SavePreferencesAction());
-        fileMenu.add(lafMenu_);
+        fileMenu.add(createLookAndFeelMenu());
         fileMenu.add(new GarbageCollectAction());
         fileMenu.add(new ExitAction());            
         
         JMenuBar menubar = new JMenuBar();
         menubar.add(fileMenu);
         return menubar;
+    }
+
+    /**
+     * Creates the look and feel menu by querying the UIManager for all 
+     * installed look and feels.
+     * 
+     * @return Menu with all look and feels installed.
+     */
+    protected JMenu createLookAndFeelMenu()
+    {
+        lookAndFeelMenu_ = new JMenu("Look and Feel");
+        
+        UIManager.LookAndFeelInfo[] lookAndFeels_ = SwingUtil.getLAFs();
+        ButtonGroup group = new ButtonGroup();
+        
+        for (int i=0; i<lookAndFeels_.length; i++)
+        {
+            JCheckBoxMenuItem lookAndFeelItem_ = 
+                new JCheckBoxMenuItem(new SetLAFAction(lookAndFeels_[i]));
+            
+            group.add(lookAndFeelItem_);
+            lookAndFeelMenu_.add(lookAndFeelItem_);
+        }
+        
+        lookAndFeelMenu_.addSeparator();
+        lookAndFeelMenu_.add(createThemesMenu());
+        
+        return lookAndFeelMenu_;
+    }
+
+    /**
+     * Creates a themes menu for the plastic jgoodies.com look and feels
+     * 
+     * @return  Menu with all the themes 
+     */
+    protected JMenu createThemesMenu()
+    {
+        JMenu menu = new JMenu("Themes");
+        List themes = PlasticLookAndFeel.getInstalledThemes();
+        
+        for (int i=0, n=themes.size(); i<n; i++)
+            menu.add(new SetThemeAction((PlasticTheme) themes.get(i)));
+        
+        return menu;
     }
 
     /**
@@ -467,9 +499,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Activate the currently loaded look and feel in the menu
         String lafName = UIManager.getLookAndFeel().getName();        
         
-        for (int i=0; i<lafMenu_.getItemCount(); i++)
+        for (int i=0; i<lookAndFeelMenu_.getItemCount(); i++)
         {
-            JMenuItem item = lafMenu_.getItem(i);
+            JMenuItem item = lookAndFeelMenu_.getItem(i);
             
             if (item instanceof JCheckBoxMenuItem)
             {
@@ -623,6 +655,27 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         public void runAction(ActionEvent e) throws Exception
         {
             UIManager.setLookAndFeel(lafInfo_.getClassName());
+            SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
+        }
+    }
+
+    /**
+     * Action that sets the plastic theme
+     */    
+    class SetThemeAction extends WorkspaceAction
+    {
+        private PlasticTheme theme_;
+        
+        public SetThemeAction(PlasticTheme theme)
+        {
+            super(theme.getName(), false, null, null);
+            theme_ = theme;
+        }
+
+        public void runAction(ActionEvent e) throws Exception
+        {
+            PlasticLookAndFeel.setMyCurrentTheme(theme_);
+            UIManager.setLookAndFeel(UIManager.getLookAndFeel());
             SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
         }
     }
