@@ -287,7 +287,10 @@ public class QueryPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
-
+    
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#startup(java.util.Map)
+     */
     public void startup(Map params)
     {
         if (params != null)
@@ -296,22 +299,34 @@ public class QueryPlugin extends JPanel implements IPlugin
         buildView();
     }
 
+    /**
+     * @see java.awt.Component#getName()
+     */
     public String getName()
     {
         return "JDBC Query";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
+     */
     public JComponent getComponent()
     {
         return this;
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     */
     public String getDescription()
     {
         return "Simple SQL driven interface to a JDBC accessible database.";
     }
     
-	public void shutdown()
+	/**
+     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
+     */
+    public void shutdown()
 	{
 	}
 

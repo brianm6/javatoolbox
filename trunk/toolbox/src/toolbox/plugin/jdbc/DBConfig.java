@@ -119,8 +119,6 @@ public class DBConfig extends JPanel implements IPreferenced
     
     /**
      * Builds the panel which displays all the JDBC configuration information 
-     * 
-     * @return JDBC configuration panel
      */
     protected void buildView()
     {

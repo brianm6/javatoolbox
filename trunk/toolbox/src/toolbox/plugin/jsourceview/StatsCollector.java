@@ -21,10 +21,14 @@ public class StatsCollector
     private static final Logger logger_ =
         Logger.getLogger(StatsCollector.class);
     
-    /** List of collectors that will analyze the source code */
+    /** 
+     * List of collectors that will analyze the source code 
+     */
     private List collectors_;
     
-    /** Current line of source code being analyzed */        
+    /** 
+     * Current line of source code being analyzed 
+     */        
     private String line_;
             
     //--------------------------------------------------------------------------
@@ -32,7 +36,7 @@ public class StatsCollector
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a StatsCollector
      */
     public StatsCollector()
     {

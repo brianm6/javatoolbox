@@ -5,6 +5,8 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.text.PlainDocument;
 
+import org.apache.log4j.Logger;
+
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.TokenMarker;
 
@@ -42,10 +44,17 @@ import toolbox.util.SwingUtil;
 public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     implements MouseWheelListener
 {
-    //private static final Logger logger_ = 
-    //    Logger.getLogger(JEditTextArea.class);
-        
+    private static final Logger logger_ = 
+        Logger.getLogger(JEditTextArea.class);
+    
+    /**
+     * Number of lines to scroll per mouse wheel scroll
+     */    
     private int mouseWheelUnit_ = 3;
+    
+    /**
+     * Number of spaces in a tab
+     */
     private int tabSize_ = 4;
 
     //--------------------------------------------------------------------------
@@ -111,7 +120,9 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * @return Number of lines to scroll on mouse wheel activity
+     * Returns number of lines to scroll on mouse wheel activity
+     * 
+     * @return int
      */
     public int getMouseWheelUnit()
     {
@@ -132,6 +143,10 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     // MouseWheelListener Interface
     //--------------------------------------------------------------------------
     
+    /**
+     * @see java.awt.event.MouseWheelListener
+     *      #mouseWheelMoved(java.awt.event.MouseWheelEvent)
+     */
     public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent)
     {
         if (mouseWheelEvent.getScrollAmount() == 0)

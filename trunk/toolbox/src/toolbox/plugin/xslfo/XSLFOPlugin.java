@@ -25,11 +25,11 @@ import com.adobe.acrobat.Viewer;
 
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
 import org.jedit.syntax.XMLTokenMarker;
-
 import nu.xom.Element;
 
 import toolbox.jedit.JEditPopupMenu;
@@ -367,25 +367,37 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     }
 
     //--------------------------------------------------------------------------
-    //  IPlugin Interface
+    // IPlugin Interface
     //--------------------------------------------------------------------------
     
+    /**
+     * @see java.awt.Component#getName()
+     */
     public String getName()
     {
         return "XSL-FO";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
+     */
     public JComponent getComponent()
     {
         return this;
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
+     */
     public String getDescription()
     {
         return "Transforms valid XSL-FO to either PDF or Postscript using " + 
                "Apache FOP or RenderX XEP.";
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#startup(java.util.Map)
+     */
     public void startup(Map params)
     {
         if (params != null)
@@ -394,6 +406,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         buildView();
     }
 
+    /**
+     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
+     */
     public void shutdown()
     {
         if (viewer_ != null)
@@ -404,6 +419,9 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     // IPreferenced Interface
     //--------------------------------------------------------------------------
     
+    /**
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(nu.xom.Element)
+     */
     public void applyPrefs(Element prefs) throws Exception
     {
         Element root = null;
@@ -436,6 +454,8 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      *    +--JFlipPane
      * 
      * </pre>
+     * 
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(nu.xom.Element) 
      */
     public void savePrefs(Element prefs)
     {

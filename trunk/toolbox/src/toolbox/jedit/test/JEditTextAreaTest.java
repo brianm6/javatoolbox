@@ -40,6 +40,12 @@ public class JEditTextAreaTest extends TestCase
     // Main
     //--------------------------------------------------------------------------
     
+    /**
+     * Entrypoint
+     * 
+     * @param args None recognized
+     * @throws Exception on error
+     */
     public static void main(String[] args) throws Exception
     {
         SwingUtil.setPreferredLAF();
@@ -50,6 +56,10 @@ public class JEditTextAreaTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Instantiates the JEditTextArea so that it can be tested manually by
+     * the user.
+     */
     public void testJEditTextArea()
     {
         JEditTest test = new JEditTest();
@@ -60,6 +70,9 @@ public class JEditTextAreaTest extends TestCase
     // Helper Classes
     //--------------------------------------------------------------------------
     
+    /**
+     * Frame to encompass the JEditTextArea
+     */
     class JEditTest extends JFrame implements ActionListener
     {
         private JEditTextArea jeta_;

@@ -1,7 +1,7 @@
 package toolbox.jsourceview;
 
 /**
- * LineScanner scanner
+ * LineScanner tokenizes a line of source code
  */
 public class LineScanner implements MachineConstants
 {
@@ -25,7 +25,7 @@ public class LineScanner implements MachineConstants
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a LineScanner
      */
     public LineScanner()
     {

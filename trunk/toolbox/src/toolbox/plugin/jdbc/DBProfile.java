@@ -256,7 +256,7 @@ public class DBProfile
      * what is used by default to render the text value of this profile when
      * added to a JComboBox.
      * 
-     * @param  Profile name
+     * @return  Profile name
      */ 
     public String toString()
     {

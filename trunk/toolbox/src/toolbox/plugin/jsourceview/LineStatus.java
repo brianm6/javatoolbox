@@ -21,7 +21,7 @@ public class LineStatus
     //--------------------------------------------------------------------------
     
     /**
-     * Default constuctor 
+     * Creates a LineStatus 
      */
     public LineStatus()
     {

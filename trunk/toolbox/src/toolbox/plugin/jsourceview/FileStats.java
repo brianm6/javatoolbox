@@ -39,7 +39,7 @@ public class FileStats
     //--------------------------------------------------------------------------
         
     /**
-     * Default constructor
+     * Creates a FileStats
      */
     public FileStats()
     {
@@ -176,6 +176,11 @@ public class FileStats
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
     
+    /**
+     * Returns the stringified state of this object.
+     * 
+     * @return String
+     */
     public String toString()
     {
         return AsMap.of(this).toString();
