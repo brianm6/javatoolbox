@@ -6,24 +6,17 @@ import toolbox.util.thread.ThreadDispatcher;
 /**
  * AsyncConnectionHandler decorates a connection handler by providing 
  * asynchronous dispatching (when handle() is called) on a separate pooled 
- * thread. handle() returns immediately and is not a blocking call.
+ * thread. The call to handle() returns immediately and is not a blocking call.
  */
-public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
+public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
 {
-    /** 
-     * Connection to handle 
-     */
+    /** Connection to handle */
     private IConnection conn_;
 
-    /** 
-     * Connection handler to asynchronously run in a separate thread of 
-     * execution
-     */
+    /** Connection handler delegate */
     private IConnectionHandler handler_;
 
-    /** 
-     * Dispatcher responsible for thread pool behavior 
-     */
+    /** Dispatcher responsible for thread pool behavior */
     private ThreadDispatcher dispatcher_;
 
     //--------------------------------------------------------------------------
@@ -44,32 +37,19 @@ public class AsyncConnectionHandler implements IConnectionHandler,  IThreadable
     }
 
     //--------------------------------------------------------------------------
-    //  Interface IConnectionHandler
+    //  IConnectionHandler Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * Initiates handling of the connection on a new thread.
-     * 
-     * @param   conn    Connection to handle
-     * @return  Object
-     */
     public Object handle(IConnection conn)
     {
         setConnection(conn);
-
         return getDispatcher().dispatch(this);
     }
 
     //--------------------------------------------------------------------------
-    //  Interface IThreadable
+    //  IThreadable Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * Implemented as part of the Request interface. Processes request once 
-     * on a separate thread.
-     * 
-     * @return    Object
-     */
     public Object run()
     {
         return getConnectionHandler().handle(getConnection());

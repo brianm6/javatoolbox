@@ -12,7 +12,7 @@ import toolbox.util.net.IConnection;
 import toolbox.util.net.IConnectionHandler;
 
 /**
- * Simple connection handler that adheres to the following sequence of events
+ * Simple connection handler that adheres to the following sequence of events.
  * <pre>
  * 
  * 1. Client initiates connection
@@ -24,24 +24,24 @@ import toolbox.util.net.IConnectionHandler;
  */
 public class PingConnectionHandler implements IConnectionHandler
 {
-    /** Logger **/
     private static final Logger logger_ = 
         Logger.getLogger(PingConnectionHandler.class);
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
-     * Constructor for TestConnectionHandler
+     * Default constructor
      */
     public PingConnectionHandler()
     {
     }
     
-    /**
-     * Implemenation of IConnectionHandler interface
-     * 
-     * @param   conn  Connection to handle
-     * @return  Object
-     * @see     AsyncConnectionHandler#handle(IConnection)
-     */
+    //--------------------------------------------------------------------------
+    // IConnectionHandler Interface
+    //--------------------------------------------------------------------------
+    
     public Object handle(IConnection conn)
     {
         logger_.info("ping->handle()");

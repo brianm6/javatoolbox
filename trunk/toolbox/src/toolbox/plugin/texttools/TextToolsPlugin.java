@@ -38,15 +38,17 @@ import toolbox.util.ui.JTextComponentPopupMenu;
 import toolbox.util.ui.flippane.JFlipPane;
 
 /**
- * Plugin for simple text manipulation that include:
- * 
+ * Plugin for simple text manipulation.
+ * <p>
+ * Features:
  * <ul>
  * <li>Sorting text alphabetically</li>
  * <li>Filtering text dynamically using regular expressions</li>
  * <li>Tokenizing strings<li>
  * </ul>
  * 
- * <p><pre>
+ * <p>
+ * <pre>
  * TODO: Add checkbox/combo to set type of text (xml, java) and syntax hilite
  *       as appropriate
  * </pre>
@@ -107,65 +109,41 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     //  IPlugin Interface
     //--------------------------------------------------------------------------
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#init()
-     */
     public void init()
     {
         buildView();
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getName()
-     */
     public String getName()
     {
         return "Text";
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
-     */
     public Component getComponent()
     {
         return this;
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
-     */
     public JMenuBar getMenuBar()
     {
         return null;
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
-     */
     public void applyPrefs(Properties prefs)
     {
         topFlipPane_.applyPrefs(prefs, "textplugin");
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
-     */
     public void savePrefs(Properties prefs)
     {
         topFlipPane_.savePrefs(prefs, "textplugin");
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
-     */
     public void setStatusBar(IStatusBar statusBar)
     {
         statusBar_ = statusBar;
     }
     
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
-     */
     public void shutdown()
     {
     }

@@ -13,17 +13,14 @@ import toolbox.util.net.IConnectionHandler;
 /**
  * Sample connection handler that echoes all messages that come in on the
  * input stream back to the output stream. The secret token to terminate
- * the connection is "terminate"
+ * the connection is "terminate".
  */
 public class EchoConnectionHandler implements IConnectionHandler
 {
-    /** Logger **/
     private static final Logger logger_ = 
         Logger.getLogger(EchoConnectionHandler.class);
     
-    /** 
-     * Terminate token 
-     */
+    /** Terminate token */
     public static final String TOKEN_TERMINATE = "terminate";
     
     //--------------------------------------------------------------------------
@@ -38,14 +35,9 @@ public class EchoConnectionHandler implements IConnectionHandler
     }
     
     //--------------------------------------------------------------------------
-    //  Interface IConnectionHandler
+    //  IConnectionHandler Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * Implementation for IConnectionHandler
-     * 
-     * @see AsyncConnectionHandler#handle(IConnection)
-     */
     public Object handle(IConnection conn)
     {
         try

@@ -15,7 +15,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * JStatusPane is a simple component to show a text message as status
+ * JStatusPane is a simple component to show a text message as status.
  * 
  * <pre>
  * TODO: Rename to JStatusBar

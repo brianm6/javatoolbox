@@ -17,7 +17,7 @@ import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.flippane.FlipPaneListener;
 
 /**
- * Unit test for JFlipPane
+ * Unit test for JFlipPane.
  * <p>
  * 
  * TODO: Figure out how to use JFCUnit/Abbott/other tool to test GUIS

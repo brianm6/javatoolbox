@@ -9,47 +9,33 @@ import java.net.UnknownHostException;
 import toolbox.util.SocketUtil;
 
 /**
- * Concrete implementation of an IConnection that wraps a socket
- * 
- * <pre>
- * TODO: Implement notification for connectionInterrupted
- * </pre>
+ * Concrete implementation of an IConnection that wraps a socket.
  */
 public class SocketConnection extends AbstractConnection implements IConnection
 {
-    /**
-     * Retry interval defaults to 10 secs
-     */
+    /*
+    * TODO: Implement notification for connectionInterrupted
+    */
+    
+    /** Retry interval defaults to 10 secs */
     private static final int DEFAULT_RETRY_INTERVAL = 10;
     
-    /** 
-     * Socket being wrapped 
-     */
+    /** Socket being wrapped */
     private Socket socket_;
 
-    /**
-     * Hostname of connection endpoint
-     */
+    /** Hostname of connection endpoint */
     private String host_;
     
-    /**
-     * Port number of connection endpoint
-     */
+    /** Port number of connection endpoint */
     private int port_;
 
-    /**
-     * Flag for indefinite retry in case of connection failure
-     */
+    /** Flag for indefinite retry in case of connection failure */
     private boolean forceConnect_;    
 
-    /**
-     * Retry interval for forceConnect is 10 secs
-     */
+    /** Retry interval for forceConnect is 10 secs */
     private int retryInterval_;
 
-    /**
-     * IsConnected flag
-     */
+    /** IsConnected flag */
     private boolean connected_ = false;
 
     //--------------------------------------------------------------------------

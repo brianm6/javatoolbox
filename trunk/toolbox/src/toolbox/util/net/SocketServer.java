@@ -18,56 +18,39 @@ import toolbox.util.thread.strategy.ThreadPoolStrategy;
 import toolbox.util.thread.strategy.ThreadedDispatcherStrategy;
 
 /**
- * Generic SocketServer implementation that supports 
- * <pre>
- * 
- * - pluggable connection handlers (anything that implements IConnectionHandler)
- * - sync/async dispatch of incoming connections to handlers
- * - dispatching of handlers is done via a configurable thread pool
- * 
- * </pre>
+ * Generic SocketServer implementation. 
+ * <p>
+ * Features include:
+ * <ul>
+ * <li>pluggable connection handlers
+ * <li>sync/async dispatch of incoming connections to handlers
+ * <li>dispatching of handlers is done via a configurable thread pool
+ * </ul>
  */
 public class SocketServer implements Runnable
 {
-    /** 
-     * Logger 
-     */
     private static final Logger logger_ = 
         Logger.getLogger(SocketServer.class);
 
-    /** 
-     * Server configuration 
-     */
+    /** Server configuration */
     private SocketServerConfig config_;
 
-    /** 
-     * Server socket 
-     */
+    /** Server socket */
     private ServerSocket serverSocket_;
 
-    /** 
-     * Thread of execution for the server socket accept()
-     */
+    /** Thread of execution for the server socket accept() */
     private Thread serverThread_;
 
-    /** 
-     * Thead pool used to service connection handlers 
-     */
+    /** Thead pool used to service connection handlers */
     private ThreadDispatcher dispatcher_;
 
-    /** 
-     * Mutex used for coord between calling and server threads 
-     */
+    /** Mutex used for coord between calling and server threads */
     private Mutex startedMutex_;
 
-    /** 
-     * Exit variant for loop accepting incoming connections 
-     */
+    /** Exit variant for loop accepting incoming connections */
     private boolean shutdown_ = false;
 
-    /** 
-     * List of socket server listeners 
-     */
+    /** List of socket server listeners */
     private List listeners_ = new ArrayList();
 
     //--------------------------------------------------------------------------
@@ -205,7 +188,7 @@ public class SocketServer implements Runnable
     }
 
     //--------------------------------------------------------------------------
-    //  Overidden from java.lang.Object
+    //  Overrides java.lang.Object
     //--------------------------------------------------------------------------
 
     /**
@@ -267,7 +250,7 @@ public class SocketServer implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Called once socket server has a dedicated thread
+     * Thread for socket.accept()
      */
     public void run()
     {
