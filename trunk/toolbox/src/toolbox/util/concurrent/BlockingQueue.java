@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import EDU.oswego.cs.dl.util.concurrent.Mutex;
+import EDU.oswego.cs.dl.util.concurrent.Semaphore;
 
 import org.apache.log4j.Logger;
 
