@@ -42,6 +42,8 @@ import toolbox.workspace.IStatusBar;
 
 /**
  * User interface for TCPTunnel.
+ * 
+ * @see toolbox.tunnel.TcpTunnel
  */
 public class TunnelPane extends JPanel implements IPreferenced
 {
@@ -52,11 +54,11 @@ public class TunnelPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     private static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
-    private static final String   ATTR_REMOTE_PORT    = "remoteport";
-    private static final String   ATTR_REMOTE_HOST    = "remotehost";
-    private static final String   ATTR_LOCAL_PORT     = "localport";
-    private static final String   NODE_INCOMING       = "Incoming";
-    private static final String   NODE_OUTGOING       = "Outgoing";
+    private static final String   ATTR_REMOTE_PORT    =   "remoteport";
+    private static final String   ATTR_REMOTE_HOST    =   "remotehost";
+    private static final String   ATTR_LOCAL_PORT     =   "localport";
+    private static final String   NODE_INCOMING       =   "Incoming";
+    private static final String   NODE_OUTGOING       =   "Outgoing";
 
     //--------------------------------------------------------------------------
     // Fields
