@@ -249,7 +249,7 @@ public class JDBCUtil
         String user, 
         String password) throws ClassNotFoundException
     {
-        // Will forge DriverManager.register() to get called
+        // Will force DriverManager.register() to get called
         Class.forName(driver);
         connProps_ = new Properties();
         connProps_.put("user", user);
