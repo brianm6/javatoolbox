@@ -18,6 +18,15 @@ import toolbox.util.io.StringOutputStream;
  */
 public class XOMUtil
 {
+    public static final String TOKEN_BLANK_LINE_REPLACEMENT = 
+        "${token.blankline}\n";
+
+    public static final String TOKEN_BLANK_LINE_REPLACEMENT2 = 
+        "${token.blankline} ";
+    
+    public static final String TOKEN_BLANK_LINE = "\n\n";
+
+    
     /**
      * Gets the integer value from a node with the option to have a default
      * value returned when one or more of the following conditions are true.
@@ -260,4 +269,20 @@ public class XOMUtil
             
         return (child == null ? defaultNode : child);
     }
+    
+    
+    public static String encodeBlankLines(String s)
+    {
+        return StringUtil.replace(s, TOKEN_BLANK_LINE, 
+            TOKEN_BLANK_LINE_REPLACEMENT);  
+    }
+    
+
+    public static String decodeBlankLines(String s)
+    {
+        return StringUtil.replace(s, TOKEN_BLANK_LINE_REPLACEMENT2, 
+            TOKEN_BLANK_LINE);
+    }
+    
+    
 }
