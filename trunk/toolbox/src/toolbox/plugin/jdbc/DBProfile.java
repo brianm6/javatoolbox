@@ -1,21 +1,21 @@
 package toolbox.plugin.jdbc;
 
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.Serializable;
 
 import nu.xom.Attribute;
-import nu.xom.Builder;
 import nu.xom.Element;
-import nu.xom.ParsingException;
 
 import org.apache.commons.codec.binary.Base64;
 
+import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
+import toolbox.workspace.IPreferenced;
 
 /**
- * Database connection profile for JDBC.
+ * DBProfile contains all necessary attributes to locate, authenticate, and 
+ * converse with a database via JDBC.
  */
-public class DBProfile
+public class DBProfile implements IPreferenced, Serializable
 {
     //--------------------------------------------------------------------------
     // Constants
@@ -24,38 +24,54 @@ public class DBProfile
     /**
      * XML element name for a DBProfile.
      */
-    private static final String ELEMENT_PROFILE = "DBProfile";
+    private static final String NODE_DBPROFILE = "DBProfile";
+    
+    //--------------------------------------------------------------------------
+    // Javabean Property Names
+    //--------------------------------------------------------------------------
     
     /**
-     * XML attribute name for the profile name.
+     * Property name for the profile name.
      */
-    private static final String ATTR_PROFILE_NAME = "profilename";
+    private static final String PROP_PROFILE_NAME = "profileName";
 
     /**
-     * XML attribute name for the JDBC driver jar file. This field is optional
+     * Property name for the JDBC driver jar file. This field is optional
      * if the jar file is already on the classpath. 
      */
-    private static final String ATTR_JARFILE = "jarfile";
+    private static final String PROP_JARFILE = "jarFile";
 
     /**
-     * XML attribute name for the JDBC driver. 
+     * Property name for the JDBC driver. 
      */
-    private static final String ATTR_DRIVER = "driver";
+    private static final String PROP_DRIVER = "driver";
     
     /**
-     * XML attribute name for the JDBC url. 
+     * Property name for the JDBC url. 
      */
-    private static final String ATTR_URL = "url";
+    private static final String PROP_URL = "url";
     
     /**
-     * XML attribute name for the JDBC user.
+     * Property name for the JDBC user.
      */
-    private static final String ATTR_USERNAME = "username";
+    private static final String PROP_USERNAME = "username";
     
     /**
-     * XML attribute name for the JDBC authentication password (clear text).
+     * Property name for the JDBC authentication password (clear text).
      */
-    private static final String ATTR_PASSWORD = "password";
+    private static final String PROP_PASSWORD = "password";
+
+    /**
+     * Properties handled by IPreferenced interface.
+     */
+    private static final String[] SAVED_PROPS = {
+        PROP_PROFILE_NAME,
+        PROP_JARFILE,
+        PROP_DRIVER,
+        PROP_URL,
+        PROP_USERNAME,
+        // PROP_PASSWORD,  must be encoded prior to save
+    };
     
     //--------------------------------------------------------------------------
     // Fields
@@ -97,33 +113,15 @@ public class DBProfile
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DBProfile from XML.
-     *
-     * @param xml String containing a valid XML persistence of DBProfile.
-     * @throws IOException on I/O error.
-     * @throws ParsingException on XML parsing error. 
+     * Creates an empty DBProfile.
      */
-    public DBProfile(String xml) throws IOException, ParsingException 
+    public DBProfile() 
     {
-        Element profile = 
-            new Builder().build(new StringReader(xml)).getRootElement();
-        
-        setProfileName(profile.getAttributeValue(ATTR_PROFILE_NAME));
-        setJarFile(XOMUtil.getStringAttribute(profile, ATTR_JARFILE, ""));
-        setDriver(profile.getAttributeValue(ATTR_DRIVER));
-        setUrl(profile.getAttributeValue(ATTR_URL));
-        setUsername(profile.getAttributeValue(ATTR_USERNAME));
-        
-        String decodedPassword = 
-            new String(Base64.decodeBase64(
-                profile.getAttributeValue(ATTR_PASSWORD).getBytes()));
-
-        setPassword(decodedPassword);
     }
-
+    
     
     /**
-     * Creates a DBProfile.
+     * Creates a fully populated DBProfile.
      *
      * @param profileName Friendly name of the profile.
      * @param jarFile JDBC driver jar file.
@@ -140,50 +138,47 @@ public class DBProfile
         String username,
         String password)
     {
-        profileName_ = profileName;
-        jarFile_     = jarFile;
-        driver_      = driver;
-        url_         = url;
-        username_    = username;
-        password_    = password;
+        setProfileName(profileName);
+        setJarFile(jarFile);
+        setDriver(driver);
+        setUrl(url);
+        setUsername(username);
+        setPassword(password);
     }
-    
+
     //--------------------------------------------------------------------------
-    // Public
+    // IPreferenced Interface
     //--------------------------------------------------------------------------
 
     /**
-     * Returns an XML representation of the data contained in this profile.
-     * 
-     * @return XML string.
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public String toXML()
+    public void applyPrefs(Element prefs) throws Exception
     {
-        return toDOM().toXML();
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_DBPROFILE, new Element(NODE_DBPROFILE));
+        
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+        String scrambled = XOMUtil.getStringAttribute(root, PROP_PASSWORD, "");
+        setPassword(new String(Base64.decodeBase64(scrambled.getBytes())));
     }
 
-    
+
     /**
-     * Returns a DOM representation of the data contained in this profile.
-     * 
-     * @return DOM tree.
-     */    
-    public Element toDOM()
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
     {
-        Element profile = new Element(ELEMENT_PROFILE);
-        profile.addAttribute(new Attribute(ATTR_PROFILE_NAME, profileName_));
-        profile.addAttribute(new Attribute(ATTR_JARFILE, jarFile_));
-        profile.addAttribute(new Attribute(ATTR_DRIVER, driver_));
-        profile.addAttribute(new Attribute(ATTR_URL, url_));
-        profile.addAttribute(new Attribute(ATTR_USERNAME, username_));
-        
-        String encodedPassword = 
-            new String(Base64.encodeBase64(password_.getBytes()));
-        
-        profile.addAttribute(new Attribute(ATTR_PASSWORD, encodedPassword));
-        return profile;
-    }
+        Element root = new Element(NODE_DBPROFILE);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
 
+        // Password has to be done explicitly because of encoding
+        root.addAttribute(new Attribute(PROP_PASSWORD, 
+            new String(Base64.encodeBase64(password_.getBytes()))));
+        
+        XOMUtil.insertOrReplace(prefs, root);
+    }
+    
     //--------------------------------------------------------------------------
     // Accessors/Mutators
     //--------------------------------------------------------------------------
@@ -211,7 +206,7 @@ public class DBProfile
 
     
     /**
-     * Returns the path and name of the jar file containing the JDBC driver
+     * Returns the path and name of the jar file containing the JDBC driver.
      * 
      * @return String
      */
