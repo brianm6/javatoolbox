@@ -2,6 +2,8 @@ package toolbox.util.test;
 
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -13,7 +15,7 @@ import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
 /**
- * Unit test for StreamUtil
+ * Unit test for StreamUtil.
  */
 public class StreamUtilTest extends TestCase
 {
@@ -25,7 +27,7 @@ public class StreamUtilTest extends TestCase
     //--------------------------------------------------------------------------
             
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -39,7 +41,7 @@ public class StreamUtilTest extends TestCase
     //--------------------------------------------------------------------------
         
     /**
-     * Tests the asString() method
+     * Tests the asString() method.
      * 
      * @throws Exception on error
      */
@@ -53,6 +55,7 @@ public class StreamUtilTest extends TestCase
         assertEquals(testString, asString);
     }
 
+    
     /**
      * Tests toBytes()
      * 
@@ -67,6 +70,7 @@ public class StreamUtilTest extends TestCase
         byte[] bytes = StreamUtil.toBytes(sis);
         assertEquals(testString, new String(bytes));
     }
+    
     
     /**
      * Tests empty()
@@ -93,8 +97,9 @@ public class StreamUtilTest extends TestCase
         assertEquals("read() should be -1", -1, sis.read());
     }
     
+    
     /**
-     * Tests readExactly() for a stream
+     * Tests readExactly() for a stream.
      * 
      * @throws Exception on error
      */
@@ -115,8 +120,9 @@ public class StreamUtilTest extends TestCase
         assertEquals("second pass does not match", "ing", new String(pass2));
     }
     
+    
     /**
-     * Tests readExactly() for a reader
+     * Tests readExactly() for a reader.
      * 
      * @throws Exception on error
      */
@@ -137,6 +143,7 @@ public class StreamUtilTest extends TestCase
         assertEquals("second pass does not match", "ing", pass2);
     }
     
+    
     /**
      * Tests close(OutputStream)
      * 
@@ -152,6 +159,7 @@ public class StreamUtilTest extends TestCase
         StreamUtil.close((OutputStream) null);
     }
    
+    
     /**
      * Tests close(InputStream)
      * 
@@ -166,4 +174,46 @@ public class StreamUtilTest extends TestCase
        StreamUtil.close(sos);
        StreamUtil.close((OutputStream) null);
     }
+    
+    
+    /**
+     * Tests close(Writer)
+     * 
+     * @throws Exception on error
+     */
+    public void testCloseWriter() throws Exception
+    {
+        logger_.info("Running testCloseWriter...");
+        
+        StringWriter w = new StringWriter();
+        w.write("testing");
+        StreamUtil.close(w);
+    }
+    
+    
+    /**
+     * Tests close(Writer) when passing in a null value. Expected behavior is
+     * to ignore and not raise any error conditions.
+     * 
+     * @throws Exception on error.
+     */
+    public void testCloseWriterNull() throws Exception
+    {
+        logger_.info("Running testCloseWriterNull...");
+        
+        Writer w = null;
+        
+        try
+        {
+          StreamUtil.close(w);
+          
+          // Success.
+          assertTrue(true);
+        }
+        catch (Exception e)
+        {
+            fail("Null writer should not generate exception");
+        }
+        
+    }    
 }
