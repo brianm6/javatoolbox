@@ -377,7 +377,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * Returns the SaveAsAction.
      * 
-     * @return SaveAsAction.
+     * @return SaveAsAction
      */
     protected SaveAsAction getSaveAsAction()
     {

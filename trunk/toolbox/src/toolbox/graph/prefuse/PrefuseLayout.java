@@ -45,6 +45,7 @@ public class PrefuseLayout implements toolbox.graph.Layout
     {
         return name_;
     }
+    
     //--------------------------------------------------------------------------
     // Delegator Interface
     //--------------------------------------------------------------------------
@@ -62,7 +63,7 @@ public class PrefuseLayout implements toolbox.graph.Layout
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the value of name.
+     * Sets the name of this layout.
      * 
      * @param name The name to set.
      */
@@ -76,6 +77,8 @@ public class PrefuseLayout implements toolbox.graph.Layout
     //--------------------------------------------------------------------------
     
     /**
+     * Returns the name of this layout.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString()

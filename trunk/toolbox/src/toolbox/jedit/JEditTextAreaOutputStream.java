@@ -3,7 +3,7 @@ package toolbox.jedit;
 import java.io.OutputStream;
 
 /**
- * An outputStream that dumps into a JEditTextArea.
+ * An outputStream that dumps into a {@link JEditTextArea}.
  */
 public class JEditTextAreaOutputStream extends OutputStream
 {
@@ -12,7 +12,7 @@ public class JEditTextAreaOutputStream extends OutputStream
     //--------------------------------------------------------------------------
     
     /** 
-     * Textarea to dump to. 
+     * Textarea to dump the outputstream contents to. 
      */
     private JEditTextArea textArea_;
 
@@ -37,7 +37,7 @@ public class JEditTextAreaOutputStream extends OutputStream
     /**
      * Writes a byte to the textarea.
      * 
-     * @param b Byte
+     * @see java.io.OutputStream#write(int)
      */
     public void write(int b)
     {

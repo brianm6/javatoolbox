@@ -36,9 +36,9 @@ public class JarTestCollector implements TestCollector
     //--------------------------------------------------------------------------
     
     /**
-     * Return an enumeration of classnames identified as JUnit tests.
+     * Returns an enumeration of classnames identified as JUnit tests.
      * 
-     * @return Enumeration
+     * @see junit.runner.TestCollector#collectTests()
      */
     public Enumeration collectTests()
     {
@@ -58,7 +58,7 @@ public class JarTestCollector implements TestCollector
      * Retrieves list of classpath path entries that are jars.
      * 
      * @param classPath Classpath to search for archives.
-     * @return List of classpath path entries that are jars.
+     * @return List<String> of classpath path entries that are jars.
      */
     protected List getArchives(String classPath) 
     {
@@ -81,8 +81,8 @@ public class JarTestCollector implements TestCollector
     /**
      * Collects test classes in a jar/zip file.
      * 
-     * @param archives List of archive files.
-     * @param result Running list of test files that where found.
+     * @param archives List<String> of archive files.
+     * @param result List<String> of test files that where found.
      */
     protected void collectFilesInJars(List archives, List result)
     {
@@ -108,7 +108,7 @@ public class JarTestCollector implements TestCollector
      * a JUnit test case.
      * 
      * @param jarName Name of the jar file to search.
-     * @param result Running list of test files that were found.
+     * @param result List<String> of test files that were found.
      * @throws IOException on I/O error.
      */
     protected void findInArchive(String jarName, List result) 

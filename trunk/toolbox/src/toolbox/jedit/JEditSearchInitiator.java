@@ -21,7 +21,7 @@ public class JEditSearchInitiator implements JFindDialog.SearchInitiator
     private String searchString_;
     
     /**
-     * Search text container.
+     * Textarea to search.
      */
     private JEditTextArea jeta_;
     

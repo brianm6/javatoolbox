@@ -5,7 +5,8 @@ import toolbox.util.service.ServiceUtil;
 import toolbox.util.statemachine.StateMachine;
 
 /**
- * AbstractViewer is a base class implemenation of DocumentViewer.
+ * AbstractViewer is a base class implemenation of 
+ * {@link toolbox.plugin.docviewer.DocumentViewer}.
  */
 public abstract class AbstractViewer implements DocumentViewer
 {
@@ -14,7 +15,7 @@ public abstract class AbstractViewer implements DocumentViewer
     //--------------------------------------------------------------------------
    
     /**
-     * Viewer name.
+     * Displayable name of this document viewer.
      */
     private String name_;
     

@@ -14,7 +14,7 @@ import junitx.framework.Assert;
 import org.apache.log4j.Logger;
 
 /**
- * Various assertion methods for JUnit.
+ * Various assertion methods for JUnit test cases.
  */
 public class AssertUtil
 {
@@ -88,13 +88,13 @@ public class AssertUtil
      *      deserialization.
      *  <li>Optionally tests equality by value using a.equals(b). 
      *  <li>Optionally tests equality by reference using (a == b).
-     *  <li>Optionally tests equality by a given Comparator.
+     *  <li>Optionally tests equality using a {@link java.util.Comparator}.
      * </ul>
      * 
      * @param serializable Object to be tested for serialization.
      * @param testEquals Set to true to test a.equals(b), false otherwise.
      * @param testEquality Set to true to test via (a == b), false otherwise.
-     * @param testComparator Test equality using a Comparator, null otherwise.
+     * @param testComparator Test equality using a Comparator. Can be null.
      * @throws AssertionFailedError on failure.
      */
     public static void assertSerializable(
@@ -105,7 +105,7 @@ public class AssertUtil
     {
         // Implements serialization check
         Assert.assertTrue(
-            "Object does not implements Serializable", 
+            "Object does not implement java.io.Serializable", 
             serializable instanceof Serializable);
         
         Serializable deserialized = null;
@@ -141,20 +141,30 @@ public class AssertUtil
         }
         
         // Verify
-        Assert.assertNotNull("Deserialized object is null", deserialized);
+        Assert.assertNotNull(
+            "Deserialized object is null", 
+            deserialized);
         
         Assert.assertEquals(
-            "Invalid type", serializable.getClass(), deserialized.getClass());
+            "Invalid type", serializable.getClass(), 
+            deserialized.getClass());
 
         if (testEquals)
             Assert.assertEquals(
-                "Failed a.equals(b)", serializable, deserialized);
+                "Failed a.equals(b)", 
+                serializable, 
+                deserialized);
         
         if (testEquality)
-            Assert.assertTrue("Failed a == b", serializable == deserialized);
+            Assert.assertTrue(
+                "Failed a == b", 
+                serializable == deserialized);
         
         if (testComparator != null)
-            Assert.assertEquals("Failed a.compare(b)", 0, 
-                testComparator.compare(serializable, deserialized));
+            Assert.assertEquals(
+                "Failed a.compare(b)", 0, 
+                testComparator.compare(
+                    serializable, 
+                    deserialized));
     }
 }

@@ -20,9 +20,10 @@ import toolbox.util.ArrayUtil;
  * <p> 
  * <ul>
  *   <li>Rejects classes that extends UITestCase (can't run swing tests 
- *       unattended)
+ *       unattended).
  *   <li>Rejects classes that implement StandAloneTestCase (tests which 
- *       advertise that they like to be run standalone or in an attended manner)
+ *       advertise that they like to be run standalone or in an attended 
+ *       manner).
  * </ul>
  */
 public class CloverTestFilter extends BasicTestFilter
@@ -90,15 +91,17 @@ public class CloverTestFilter extends BasicTestFilter
             {
                 b = false;
 
-                logger_.debug("Rejecting UITestCase " +
-                    ClassUtils.getShortClassName(clazz));
+                logger_.debug(
+                    "Rejecting UITestCase " 
+                    + ClassUtils.getShortClassName(clazz));
             }
             else if (ArrayUtil.contains(c.getInterfaces(), standAloneTestCase_))
             {
                 b = false;
 
-                logger_.debug("Rejecting StandAloneTestCase " +
-                    ClassUtils.getShortClassName(clazz));
+                logger_.debug(
+                    "Rejecting StandAloneTestCase " 
+                    + ClassUtils.getShortClassName(clazz));
             }
         }
         catch (NotFoundException e)
@@ -109,8 +112,9 @@ public class CloverTestFilter extends BasicTestFilter
         {
             if (b)
             {
-                logger_.debug("Accepted unit test " +
-                    ClassUtils.getShortClassName(clazz));
+                logger_.debug(
+                    "Accepted unit test " 
+                    + ClassUtils.getShortClassName(clazz));
             }
         }
 
@@ -119,6 +123,8 @@ public class CloverTestFilter extends BasicTestFilter
 
 
     /**
+     * Just prints out classes that were accepted.
+     * 
      * @see junitx.util.TestFilter#include(java.lang.String)
      */
     public boolean include(String arg0)

@@ -60,8 +60,7 @@ public class CompleteTestCollector implements TestCollector
     /**
      * Merges the results of the JarTestCollector and the FileTestCollector.
      * 
-     * @return Enumeration of class names.
-     * @see TestCollector#collectTests()
+     * @see junit.runner.TestCollector#collectTests()
      */
     public Enumeration collectTests()
     {
