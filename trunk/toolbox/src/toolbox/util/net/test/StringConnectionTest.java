@@ -38,6 +38,17 @@ public class StringConnectionTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
+     * Tests constructors
+     */
+    public void testConstructors()
+    {
+        logger_.info("Running testConstructors...");
+        
+        assertNotNull(new StringConnection());
+        assertNotNull(new StringConnection("string"));
+    }
+
+    /**
      * Tests getInputStream()
      * 
      * @throws  Exception on error
@@ -82,5 +93,21 @@ public class StringConnectionTest extends TestCase
         conn.connect();
         assertTrue(conn.isConnected());
         conn.close();
+    }
+    
+    /**
+     * Tests getOutputString()
+     * 
+     * @throws Exception
+     */
+    public void testGetOutputString() throws Exception
+    {
+        logger_.info("Running testGetOutputString...");
+        
+        StringConnection conn = new StringConnection();
+        conn.getOutputStream().write("hello".getBytes());
+        conn.getOutputStream().flush();
+        String s = conn.getOutputString();
+        assertEquals("hello", s);
     }
 }
