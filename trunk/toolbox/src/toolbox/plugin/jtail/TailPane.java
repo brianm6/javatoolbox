@@ -320,10 +320,10 @@ public class TailPane extends JHeaderPanel
         JSmartToggleButton autoScrollButton =
             JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_LOCK),
-                "Autoscroll",
+                "AutoTail",
                 new AutoTailAction(tailArea_),
                 tailArea_,
-                "autoscroll");
+                JSmartTextArea.PROP_AUTOTAIL);
 
         JSmartToggleButton wrapLinesButton =
             JHeaderPanel.createToggleButton(
@@ -331,7 +331,7 @@ public class TailPane extends JHeaderPanel
                 "Wrap Lines",
                 new LineWrapAction(tailArea_),
                 tailArea_,
-                "lineWrap");
+                JSmartTextArea.PROP_LINEWRAP);
 
         JSmartToggleButton showLineNumbersButton =
             JHeaderPanel.createToggleButton(
