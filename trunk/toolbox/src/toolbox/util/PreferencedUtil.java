@@ -96,12 +96,14 @@ public class PreferencedUtil
             
             if (ArrayUtil.contains(propNames, propName))
             {    
-                Attribute attr = 
-                    new Attribute(
-                        propName, 
-                        BeanUtils.getProperty(bean, propName).toString());
-                
-                node.addAttribute(attr);
+                // If the value is null, leave it out
+                String value = BeanUtils.getProperty(bean, propName);
+
+                if (value != null)
+                {
+                    Attribute attr = new Attribute(propName, value);
+                    node.addAttribute(attr);
+                }
             }
         }
     }
