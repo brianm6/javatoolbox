@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import nu.xom.Attribute;
 import nu.xom.Builder;
@@ -62,12 +63,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     // TODO: Make plugins detachable
     // TODO: Write log4j pattern layout that combines class name and method
     
+    private static final Logger logger_ = 
+        Logger.getLogger(PluginWorkspace.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-        
-    private static final Logger logger_ = 
-        Logger.getLogger(PluginWorkspace.class);
     
     // Workspace preferences nodes and attributes.
     private static final String NODE_WORKSPACE      = "Workspace";
@@ -78,6 +79,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String   ATTR_YCOORD       = "ycoord";
     private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
     private static final String   ATTR_LOG_LEVEL    = "loglevel";
+    private static final String   ATTR_DECORATIONS  = "decorations";
     
     // Plugin preferences nodes and attributes.
     private static final String   NODE_PLUGIN       = "Plugin";
@@ -99,12 +101,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Plugin property used to identify a reference to the workspace's shared
      * statusbar.
      */    
-    public static final String PROP_STATUSBAR = "workspace.statusbar";
+    public static final String KEY_STATUSBAR = "workspace.statusbar";
     
     /**
      * Plugin property that refers to the PluginWorkspace.
      */
-    public static final String PROP_WORKSPACE = "workspace.self";
+    public static final String KEY_WORKSPACE = "workspace.self";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -143,6 +145,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private JCheckBoxMenuItem smoothFontsCheckBoxItem_;
     
     /**
+     * Use Look and Feel frame and dialog border decorations check box.
+     */
+    private JCheckBoxMenuItem decorationsCheckBoxItem_;
+    
+    /**
      * Manages the plugin host.
      */
     private PluginHostManager pluginHostManager_;
@@ -161,8 +168,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         // Workaround for annoying WebStart dlg box asking for disk in drive a:
         System.setSecurityManager(null);
         
-        JFrame.setDefaultLookAndFeelDecorated(false);    // to decorate frames
-        JDialog.setDefaultLookAndFeelDecorated(false);   // to decorate dialogs
+        //JFrame.setDefaultLookAndFeelDecorated(true);    // to decorate frames
+        //JDialog.setDefaultLookAndFeelDecorated(true);   // to decorate dialogs
 
         try
         {
@@ -373,8 +380,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         statusBar_.setStatus("Howdy pardner!");
 
         bootstrapMap_ = new HashMap(1);
-        bootstrapMap_.put(PROP_STATUSBAR, statusBar_);
-        bootstrapMap_.put(PROP_WORKSPACE, PluginWorkspace.this);
+        bootstrapMap_.put(KEY_STATUSBAR, statusBar_);
+        bootstrapMap_.put(KEY_WORKSPACE, PluginWorkspace.this);
                 
         pluginHostManager_.setPluginHost(
             PluginHostManager.PLUGIN_HOST_TABBED,
@@ -441,9 +448,15 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menu.add(new JSmartMenuItem(new SavePreferencesAction()));
 
         smoothFontsCheckBoxItem_ = 
-            new JSmartCheckBoxMenuItem(new SmoothFontsAction());
+            new JSmartCheckBoxMenuItem(
+                new SmoothFontsAction());
 
+        decorationsCheckBoxItem_ =
+            new JSmartCheckBoxMenuItem(
+                new UseDecorationsAction());
+        
         menu.add(smoothFontsCheckBoxItem_);
+        menu.add(decorationsCheckBoxItem_);
         menu.add(pluginHostManager_.createMenu());
         
         return menu;
@@ -587,6 +600,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             new Attribute(
                 ATTR_SMOOTH_FONTS, 
                 smoothFontsCheckBoxItem_.isSelected() + ""));
+
+        // Save user decorations flag
+        root.addAttribute(
+            new Attribute(
+                ATTR_DECORATIONS, 
+                decorationsCheckBoxItem_.isSelected() + ""));
         
         // Save log level
         root.addAttribute(new Attribute(
@@ -663,16 +682,30 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
 
+        //
+        // Restore smooth fonts
+        //
         smoothFontsCheckBoxItem_.setSelected(
             XOMUtil.getBooleanAttribute(root, ATTR_SMOOTH_FONTS, false));
         
         new SmoothFontsAction().actionPerformed(
             new ActionEvent(smoothFontsCheckBoxItem_, -1, null));
+
+        //
+        // Restore use window decorations
+        //
+        decorationsCheckBoxItem_.setSelected(
+            XOMUtil.getBooleanAttribute(root, ATTR_DECORATIONS, false));
+        
+        new UseDecorationsAction().actionPerformed(
+            new ActionEvent(decorationsCheckBoxItem_, -1, null));
         
         boolean maxxed = XOMUtil.getBooleanAttribute(root, ATTR_MAXXED, false);
-        
+
+        //
         // Frame has to be visible before it can be maximized so just queue
-        // this bad boy up on the event queue 
+        // this bad boy up on the event queue
+        //
         if (maxxed)
         {
             SwingUtilities.invokeLater(new Runnable()
@@ -685,20 +718,28 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             
         }
         
+        //
         // Set size/loc regardless of maximized state since this will be used
         // as the restored state
+        //
         
+        //
         // Restore window location
+        //
         setLocation(
             XOMUtil.getIntegerAttribute(root, ATTR_XCOORD, 0),
             XOMUtil.getIntegerAttribute(root, ATTR_YCOORD, 0));
         
+        //
         // Restore window size
+        //
         setSize(
             XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, 800),
             XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, 600));
 
+        //
         // Restore log level even if it conflicts with log4j.xml
+        //
         Level level = 
             Level.toLevel(
                 XOMUtil.getStringAttribute(
@@ -708,11 +749,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         logMenu_.setLogLevel(level);
         
         if (root != null)
-        {    
+        {  
+            //
             // Iterate over the list of plugins. If the plugin has the 'loaded'
             // attribute then register() it otherwise add to the unloadedPrefs_
             // DOM for later use.
-            
+            //  
             Elements plugins = root.getChildElements(NODE_PLUGIN);
             
             for (int i = 0; i < plugins.size(); i++) 
@@ -740,9 +782,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 }
             }
 
+            //
             // Restore last selected tab
+            //
             
-            // Fix me!!!
+            // TODO: Fix me
             //tabbedPane_.setSelectedIndex(
             //    XOMUtil.getIntegerAttribute(root, ATTR_SELECTED_TAB, -1));
         }
@@ -934,7 +978,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
-    // AntiAliasAction
+    // SmoothFontsAction
     //--------------------------------------------------------------------------
 
     /**
@@ -981,4 +1025,43 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             PluginWorkspace.this.repaint();
         }
     }
+    
+    
+    //--------------------------------------------------------------------------
+    // UseDecorationsAction
+    //--------------------------------------------------------------------------
+
+    /**
+     * Toggles using the Look and Feel frame and dialog border decorations.  
+     */
+    class UseDecorationsAction extends AbstractAction
+    {
+        /**
+         * Creates a UseDecorationsAction.
+         */
+        UseDecorationsAction()
+        {
+            super("Use Decorations");
+        }
+
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            if (UIManager.getLookAndFeel().getSupportsWindowDecorations())
+            {
+                boolean useDecorations = decorationsCheckBoxItem_.isSelected();
+                JFrame.setDefaultLookAndFeelDecorated(useDecorations);
+                JDialog.setDefaultLookAndFeelDecorated(useDecorations);
+            }
+            else
+            {
+                statusBar_.setWarning("The current look and feel does not " +
+                    "support window decorations.");
+            }
+        }
+    }    
 }
