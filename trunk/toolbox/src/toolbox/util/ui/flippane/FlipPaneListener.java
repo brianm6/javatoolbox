@@ -2,6 +2,8 @@ package toolbox.util.ui.flippane;
 
 /**
  * Listener interface for notifications provided by JFlipPane.
+ * 
+ * @see toolbox.util.ui.flippane.JFlipPane
  */
 public interface FlipPaneListener
 {

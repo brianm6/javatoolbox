@@ -50,7 +50,7 @@ public class JFlipPane extends JPanel implements IPreferenced
     private static final Logger logger_ = Logger.getLogger(JFlipPane.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Constants
     //--------------------------------------------------------------------------
 
     /**
@@ -73,6 +73,10 @@ public class JFlipPane extends JPanel implements IPreferenced
      */
     private static final String ATTR_ACTIVE = "activeFlipper";
 
+    //--------------------------------------------------------------------------
+    // Directional Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Flippane attached to the top wall.
      */
