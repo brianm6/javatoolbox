@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- * Just a place where project wide to do items are lumped...
- * <pre>
  * TODO: SSH on CVS
  * TODO: Move Tomcat server to booger2
  * TODO: Add vizant for visualization of build dependencies
@@ -48,6 +46,10 @@
  * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
+ * TODO: Add search and replace to text editors
+ * TODO: Ctrl-S in Save Dialog box should remember where it was last opened up
+ * TODO: Fileexplorer: right click on a directory to create a new directory
+ * TODO: Fileexplorer: F2 to rename a file or directory
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -58,6 +60,8 @@
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
  * TODO: Lift more stuff from hsqldb manager
+ * TODO: Add time elapsed to "x statemnts executed succ. in y seconds"
+ * TODO: Execute statements in batch mode
  * =============================================================================
  *                              FindClassPlugin
  * =============================================================================
