@@ -3,31 +3,35 @@ package toolbox.util.decompiler;
 import java.io.File;
 
 /**
- * Decompiler Interface
+ * Decompiler Interface.
  */
 public interface Decompiler
 {
     /**
-     * Returns UI friendly name for the decompiler
+     * Returns UI friendly name for the decompiler.
      * 
      * @return String
      */
-    public String getName();
+    String getName();
+    
     
     /**
-     * Decompiles the given classFile
+     * Decompiles the given classFile.
      * 
      * @param classFile Class to decompile
-     * @return Java code representing the class file
+     * @return Decompiled class
+     * @throws DecompilerException on error
      */
-    public String decompile(File classFile) throws DecompilerException;
+    String decompile(File classFile) throws DecompilerException;
+    
     
     /**
-     * 
-     * @param className
-     * @param classPath
-     * @return
+     * Decompiles the given class.
+     *  
+     * @param className Name of the class.
+     * @param classPath Classpath to search for the class on.
+     * @return Decompiled class.
      */
-    public String decompile(String className, String classPath)
+    String decompile(String className, String classPath) 
         throws DecompilerException;    
 }

@@ -1,45 +1,45 @@
-/*
- * Created on Oct 17, 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package toolbox.util.decompiler;
 
 /**
- * @author analogue
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * Decompiler specific exceptions.
  */
 public class DecompilerException extends Exception
 {
     /**
-     * 
+     * Creates a DecompilerException.
      */
     public DecompilerException()
     {
     }
 
+    
     /**
-     * @param message
+     * Creates a DecompilerException.
+     * 
+     * @param message Error message
      */
     public DecompilerException(String message)
     {
         super(message);
     }
 
+    
     /**
-     * @param cause
+     * Creates a DecompilerException.
+     * 
+     * @param cause Cause of the error
      */
     public DecompilerException(Throwable cause)
     {
         super(cause);
     }
 
+    
     /**
-     * @param message
-     * @param cause
+     * Creates a DecompilerException.
+     * 
+     * @param message Error message.
+     * @param cause Cause of the error.
      */
     public DecompilerException(String message, Throwable cause)
     {

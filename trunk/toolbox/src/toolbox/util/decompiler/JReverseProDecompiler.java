@@ -7,7 +7,7 @@ import jreversepro.revengine.JSerializer;
 import org.apache.log4j.Logger;
 
 /**
- * Decompiler bridge to the JReversePro decompiler @ http://jrevpro.sf.net 
+ * Decompiler bridge to the JReversePro decompiler @ http://jrevpro.sf.net. 
  */
 public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
 {
@@ -15,7 +15,7 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
         Logger.getLogger(JReverseProDecompiler.class);
     
     /**
-     * JReversePro decompiler
+     * JReversePro decompiler.
      */
     private JSerializer decompiler_;
     
@@ -24,7 +24,7 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JReverseProDecompiler
+     * Creates a JReverseProDecompiler.
      */
     public JReverseProDecompiler()
     {
@@ -42,6 +42,7 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
     {
         return "JReversePro";
     }
+    
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
@@ -62,6 +63,7 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
         
         return javaSource;
     }
+    
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(
@@ -84,5 +86,4 @@ public class JReverseProDecompiler implements toolbox.util.decompiler.Decompiler
     {
         return getName();
     }
-    
 }

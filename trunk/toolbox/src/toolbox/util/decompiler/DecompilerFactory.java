@@ -3,7 +3,7 @@ package toolbox.util.decompiler;
 import toolbox.util.ArrayUtil;
 
 /**
- * Factory class for creating Decompilers
+ * Factory class for creating Decompilers.
  */
 public class DecompilerFactory
 {
@@ -21,7 +21,7 @@ public class DecompilerFactory
         "toolbox.util.decompiler.JReverseProDecompiler";
 
     /**
-     * List of decompiler FQCN
+     * List of decompiler FQCN.
      */
     private static String[] decompilers_;
     
@@ -40,7 +40,7 @@ public class DecompilerFactory
     //--------------------------------------------------------------------------
     
     /**
-     * Prevent construction
+     * Private constructor.
      */
     private DecompilerFactory()
     {
@@ -83,6 +83,7 @@ public class DecompilerFactory
         return d;
     }
 
+    
     /**
      * Creates the preferred decompiler. Right now, its JODE. 
      * 
@@ -100,6 +101,7 @@ public class DecompilerFactory
         
         return create(DECOMPILER_JODE);
     }
+    
     
     /**
      * Returns all known decompilers.

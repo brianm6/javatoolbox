@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StreamUtil;
 
 /**
- * Decompiler bridge to the windows only JAD decompiler 
+ * Decompiler bridge to the windows only JAD decompiler. 
  */
 public class JadDecompiler implements toolbox.util.decompiler.Decompiler
 {
@@ -19,7 +19,7 @@ public class JadDecompiler implements toolbox.util.decompiler.Decompiler
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JadDecompiler
+     * Creates a JadDecompiler.
      */
     public JadDecompiler()
     {
@@ -36,6 +36,7 @@ public class JadDecompiler implements toolbox.util.decompiler.Decompiler
     {
         return "Jad";
     }
+    
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
@@ -62,6 +63,7 @@ public class JadDecompiler implements toolbox.util.decompiler.Decompiler
         
         return javaSource;
     }
+    
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(

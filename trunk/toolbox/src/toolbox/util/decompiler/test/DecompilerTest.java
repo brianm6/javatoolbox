@@ -14,7 +14,7 @@ import toolbox.util.decompiler.Decompiler;
 import toolbox.util.decompiler.DecompilerFactory;
 
 /**
- * Unit test for all Decompiler implementors
+ * Unit test for all Decompiler implementors.
  */
 public class DecompilerTest extends TestCase
 {
@@ -22,7 +22,7 @@ public class DecompilerTest extends TestCase
         Logger.getLogger(DecompilerTest.class);
     
     /**
-     * Array of decompilers to test
+     * Array of decompilers to test.
      */
     private Decompiler[] decompilers_;
     
@@ -31,7 +31,7 @@ public class DecompilerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -45,7 +45,7 @@ public class DecompilerTest extends TestCase
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a DecompilerTest
+     * Creates a DecompilerTest.
      * 
      * @throws Exception on error
      */
@@ -59,7 +59,7 @@ public class DecompilerTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Class to test for String decompile(File)
+     * Class to test for String decompile(File).
      * 
      * @throws Exception on error
      */
@@ -88,8 +88,9 @@ public class DecompilerTest extends TestCase
         }
     }
 
+    
     /**
-     * Tests decompile(className, classPath)
+     * Tests decompile(className, classPath).
      * 
      * @throws Exception on error
      */

@@ -13,7 +13,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.io.NullWriter;
 
 /**
- * Decompiler bridge to the Jode decompiler @ http://jode.sf.net 
+ * Decompiler bridge to the Jode decompiler @ http://jode.sf.net. 
  */
 public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
 {
@@ -21,7 +21,7 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
         Logger.getLogger(JodeDecompiler.class);
     
     /**
-     * Jode decompiler 
+     * Jode decompiler.
      */
     private Decompiler decompiler_;
     
@@ -29,6 +29,9 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
     // Constructors
     //--------------------------------------------------------------------------
     
+    /**
+     * Creates a JodeDecompiler.
+     */
     public JodeDecompiler()
     {
         decompiler_ = new Decompiler();
@@ -48,6 +51,7 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
     {
         return "Jode";
     }
+
     
     /**
      * @see toolbox.util.decompiler.Decompiler#decompile(java.io.File)
@@ -57,12 +61,10 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
         throw new IllegalArgumentException("Not supported");
     }
     
+    
     /**
-     * 
-     * @param className
-     * @param classPath
-     * @return
-     * @throws IOException
+     * @see toolbox.util.decompiler.Decompiler#decompile(
+     *      java.lang.String, java.lang.String)
      */
     public String decompile(String className, String classPath)
         throws DecompilerException
@@ -99,5 +101,4 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
     {
         return getName();
     }
-    
 }
