@@ -57,6 +57,12 @@ public class ImageCache
     public static final String IMAGE_TRIANGLE      = ROOT + "Triangle.gif";
     
     public static final String 
+        IMAGE_DOUBLE_ARROW_DOWN = ROOT + "DoubleArrowDown.png";
+
+    public static final String 
+        IMAGE_DOUBLE_ARROW_UP = ROOT + "DoubleArrowUp.png";
+    
+    public static final String 
         IMAGE_SORT_ASCENDING = ROOT + "SortAscending.gif";
     
     public static final String 
