@@ -6,10 +6,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceCloser;
 import toolbox.util.SocketUtil;
@@ -64,7 +64,6 @@ public class SocketUtilTest extends TestCase
             
         assertTrue(SocketUtil.isReasonAcceptTimeout(iioe));
     }
-
     
     /**
      * Tests isReasonSocketClosed()
@@ -73,10 +72,16 @@ public class SocketUtilTest extends TestCase
     {
         logger_.info("Running testIsReasonSocketClosed...");
         
-        SocketException se  = new SocketException(SocketUtil.MSG_SOCKET_CLOSED);
+        SocketException se  = 
+            new SocketException(SocketUtil.MSG_SOCKET_CLOSED_13);
+            
         assertTrue(SocketUtil.isReasonSocketClosed(se));
+        
+        SocketException se2  = 
+            new SocketException(SocketUtil.MSG_SOCKET_CLOSED_14);
+            
+        assertTrue(SocketUtil.isReasonSocketClosed(se2));
     }
-
     
     /**
      * Tests connectWithRetry() for failure scenario
@@ -92,7 +97,6 @@ public class SocketUtilTest extends TestCase
             InetAddress.getLocalHost().getHostAddress(), 
             55555, 1, 5);
     }
-
     
     /**
      * Tests connectWithRetry() for success scenario
@@ -119,7 +123,6 @@ public class SocketUtilTest extends TestCase
         // cleanup
         ResourceCloser.close(socket);
     }
-
     
     /**
      * Tests getFreePort()
