@@ -290,15 +290,17 @@ public final class ClassUtil
         return 
             (f.endsWith(".zip") || 
              f.endsWith(".jar") || 
-             f.endsWith(".ear"));        
+             f.endsWith(".ear") ||
+             f.endsWith(".war"));        
     }
 
     
     /**
-     * Returns true if the filename indicates a java class file.
+     * Returns true if the filename indicates a java class file. The file is
+     * not checked for content.
      * 
      * @param filename File to examine.
-     * @return True if a class file, false otherwise.
+     * @return True if the name indicates a class file, false otherwise.
      */
     public static boolean isClassFile(String filename)
     {
@@ -343,17 +345,17 @@ public final class ClassUtil
      */    
     public static Class[] getMatchingClasses(Object[] params)
     {
-        Class[] ca = new Class[0];
+        Class[] classes = new Class[0];
             
-        if (params != null && params.length > 0)
+        if (!ArrayUtil.isNullOrEmpty(params))
         {
-            ca = new Class[params.length];
+            classes = new Class[params.length];
             
             for (int i = 0; i < params.length; i++)
-                ca[i] = params[i].getClass();
+                classes[i] = params[i].getClass();
         }
             
-        return ca;
+        return classes;
     }
     
     
@@ -361,14 +363,17 @@ public final class ClassUtil
      * Given a Class object, attempts to find its .class location [returns null
      * if no such definition can be found]. Use for testing/debugging only.
      *
-     * @param cls Class to find.
+     * @param clazz Class to find.
      * @return URL that points to the class definition or null if not found.
      */
-    public static URL getClassLocation(Class cls)
+    public static URL getClassLocation(Class clazz)
     {
         URL result = null;
-        String clsAsResource = cls.getName().replace('.', '/').concat(".class");
-        ProtectionDomain pd = cls.getProtectionDomain();
+        
+        String clazzAsResource = 
+            clazz.getName().replace('.', '/').concat(".class");
+        
+        ProtectionDomain pd = clazz.getProtectionDomain();
         CodeSource cs = pd.getCodeSource();
         
         // 'cs' can be null depending on the classloader behavior:
@@ -384,16 +389,17 @@ public final class ClassUtil
             {
                 try
                 {
-                    if (result.toExternalForm().endsWith(".jar") || 
-                        result.toExternalForm().endsWith(".zip"))
+                    // Embedded in an archive
+                    
+                    if (isArchive(result.toExternalForm()))
                     {    
                         result = new URL(
                             "jar:".concat(result.toExternalForm()).
-                                concat("!/").concat(clsAsResource));
+                                concat("!/").concat(clazzAsResource));
                     }
                     else if (new File(result.getFile()).isDirectory())
                     {
-                        result = new URL(result, clsAsResource);
+                        result = new URL(result, clazzAsResource);
                     }
                 }
                 catch (MalformedURLException ignore)
@@ -405,15 +411,15 @@ public final class ClassUtil
 
         if (result == null)
         {
-            // Try to find 'cls' definition as a resource; this is not
+            // Try to find 'clazz' definition as a resource; this is not
             // documented to be legal, but Sun's implementations seem to allow 
             // this:
             
-            ClassLoader clsLoader = cls.getClassLoader();
+            ClassLoader loader = clazz.getClassLoader();
 
-            result = clsLoader != null 
-                        ? clsLoader.getResource(clsAsResource)
-                        : ClassLoader.getSystemResource(clsAsResource);
+            result = loader != null 
+                        ? loader.getResource(clazzAsResource)
+                        : ClassLoader.getSystemResource(clazzAsResource);
         }
 
         return result;
