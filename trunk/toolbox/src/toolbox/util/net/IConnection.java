@@ -11,7 +11,7 @@ import java.io.OutputStream;
 public interface IConnection
 {
     /**
-     * Returns connection name for easy identification
+     * Returns connection name for easy identification.
      * 
      * @return Connection name
      */
@@ -19,7 +19,7 @@ public interface IConnection
 
     
     /**
-     * Connects to an endpoint
+     * Connects to an endpoint.
      * 
      * @throws IOException on I/O error
      */
@@ -27,7 +27,7 @@ public interface IConnection
 
 
     /**
-     * Checks the connection to the endpoint has been establisthed
+     * Checks the connection to the endpoint has been establisthed.
      * 
      * @return True if connected, false otherwise
      */
@@ -35,7 +35,7 @@ public interface IConnection
     
 
     /**
-     * Closes the connection 
+     * Closes the connection.
      * 
      * @throws IOException on I/O error
      */
@@ -43,7 +43,7 @@ public interface IConnection
 
 
     /**
-     * Accessor for the connections' input stream
+     * Accessor for the connections' input stream.
      * 
      * @return InputStream
      * @throws IOException on I/O error
@@ -52,7 +52,7 @@ public interface IConnection
 
 
     /**
-     * Accessor for the connections' output stream
+     * Accessor for the connections' output stream.
      * 
      * @return OutputStream
      * @throws IOException on I/O error
@@ -61,7 +61,7 @@ public interface IConnection
     
     
     /**
-     * Adds a listener to the connection
+     * Adds a listener to the connection.
      * 
      * @param listener Connection listener to add
      */
@@ -69,7 +69,7 @@ public interface IConnection
 
 
     /**
-     * Removes a listener from the connection
+     * Removes a listener from the connection.
      * 
      * @param listener Connection listener to remove
      */

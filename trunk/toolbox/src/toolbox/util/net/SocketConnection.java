@@ -16,22 +16,22 @@ public class SocketConnection extends AbstractConnection implements IConnection
     // TODO: Implement notification for connectionInterrupted
     
     /** 
-     * Default retry interval is 10 seconds 
+     * Default retry interval is 10 seconds. 
      */
     private static final int DEFAULT_RETRY_INTERVAL = 10;
     
     /** 
-     * Socket to manage 
+     * Socket to manage.
      */
     private Socket socket_;
 
     /** 
-     * Hostname or IP address of the connection endpoint 
+     * Hostname or IP address of the connection endpoint. 
      */
     private String host_;
     
     /** 
-     * Port number of connection endpoint 
+     * Port number of connection endpoint. 
      */
     private int port_;
 
@@ -48,7 +48,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     private int retryInterval_;
 
     /** 
-     * Connected state of the connection 
+     * Connected state of the connection.
      */
     private boolean connected_ = false;
 
@@ -57,18 +57,19 @@ public class SocketConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SocketConnection with no connection endpoint
+     * Creates a SocketConnection with no connection endpoint.
      */
     public SocketConnection()
     {
         addConnectionListener(new InternalSocketConnectionListener());
     }
     
+    
     /**
      * Creates a SocketConnection with an existing Socket by wrapping the
      * socket. Assumes the socket is already connected to an endpoint.
      * 
-     * @param  s  Existing socket endpoint
+     * @param s Existing socket endpoint
      */
     public SocketConnection(Socket s)
     {
@@ -79,14 +80,15 @@ public class SocketConnection extends AbstractConnection implements IConnection
         connected_ = true;
     }
 
+
     /**
      * Creates a SocketConnection with the given host and port. Connects 
      * by default.
      * 
-     * @param   host  Hostname to connect to
-     * @param   port  Port number to connect to 
-     * @throws  IOException on I/O error
-     * @throws  UnknownHostException on invalid hostname
+     * @param host Hostname to connect to
+     * @param port Port number to connect to 
+     * @throws IOException on I/O error
+     * @throws UnknownHostException on invalid hostname
      */
     public SocketConnection(String host, int port) 
         throws IOException, UnknownHostException
@@ -96,38 +98,45 @@ public class SocketConnection extends AbstractConnection implements IConnection
 
 
     /**
-     * Creates a SocketConnection with given connection parameters. Connects by
-     * default
+     * Creates a SocketConnection with given connection parameters. Connects 
+     * on construction by default.
      * 
-     * @param  host          Hostname to connect to
-     * @param  port          Port number to connect to 
-     * @param  forceConnect  Forces connection to be established. Retries 
-     *                       indefinitely until successful.
+     * @param host Hostname to connect to
+     * @param port Port number to connect to 
+     * @param forceConnect Forces connection to be established. Retries 
+     *        indefinitely until successful.
      * @throws IOException on I/O error
      * @throws UnknownHostException on invalid hostname
      */
-    public SocketConnection(String host, int port, boolean forceConnect) 
+    public SocketConnection(
+    	String host, 
+    	int port, 
+    	boolean forceConnect) 
         throws IOException, UnknownHostException
     {
         this(host, port, forceConnect, DEFAULT_RETRY_INTERVAL);
     }
 
+
     /**
      * Creates a SocketConnection with the given connection parameters. Connects
-     * by default.
+     * on construction by default.
      * 
-     * @param  host          Hostname to connect to
-     * @param  port          Port number to connect to 
-     * @param  forceConnect  Forces connection to be established. Retries 
-     *                       indefinitely until successful.
-     * @param  retryInterval Delay between connect attempts if forceConnect 
-     *                       is true
+     * @param host Hostname to connect to
+     * @param port Port number to connect to 
+     * @param forceConnect Forces connection to be established. Retries 
+     *        indefinitely until successful.
+     * @param retryInterval Delay between connect attempts if forceConnect 
+     *        is true.
      * @throws IOException on I/O error
      * @throws UnknownHostException on invalid hostname
      */
     public SocketConnection(
-        String host, int port, boolean forceConnect, int retryInterval) 
-            throws IOException, UnknownHostException
+        String host, 
+        int port, 
+        boolean forceConnect, 
+        int retryInterval) 
+        throws IOException, UnknownHostException
     {
        addConnectionListener(new InternalSocketConnectionListener());
        setHost(host);
@@ -142,7 +151,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Opens the connection
+     * Opens the connection.
      * 
      * @throws IOException on I/O error
      */
@@ -157,8 +166,9 @@ public class SocketConnection extends AbstractConnection implements IConnection
         fireConnectionStarted(this);
     }
 
+
     /**
-     * Closes the connection
+     * Closes the connection.
      * 
      * @throws IOException on I/O error
      */
@@ -172,8 +182,9 @@ public class SocketConnection extends AbstractConnection implements IConnection
         }
     }
 
+
     /**
-     * Accessor for the input stream
+     * Accessor for the input stream.
      * 
      * @return InputStream
      * @throws IOException on I/O error
@@ -183,19 +194,21 @@ public class SocketConnection extends AbstractConnection implements IConnection
         return socket_.getInputStream();
     }
 
+
     /**
-     * Accessor for the output stream
+     * Accessor for the output stream.
      * 
-     * @return  OutputStream
-     * @throws  IOException on I/O error
+     * @return OutputStream
+     * @throws IOException on I/O error
      */
     public OutputStream getOutputStream() throws IOException
     {
         return socket_.getOutputStream();
     }
 
+
     /**
-     * Returns true if connected, false otherwise
+     * Returns true if connected, false otherwise.
      * 
      * @return boolean
      */
@@ -209,24 +222,26 @@ public class SocketConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Mutator for the socket
+     * Mutator for the socket.
      * 
-     * @param  newSocket    Socket
+     * @param newSocket Socket
      */
     protected void setSocket(Socket newSocket)
     {
         socket_ = newSocket;
     }
 
+
     /**
-     * Accessor for the socket
+     * Accessor for the socket.
      * 
-     * @return    Socket
+     * @return Socket
      */
     public Socket getSocket()
     {
         return socket_;
     }
+    
     
     /**
      * Returns the host.
@@ -238,6 +253,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
         return host_;
     }
 
+
     /**
      * Returns the port.
      * 
@@ -247,6 +263,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     {
         return port_;
     }
+
 
     /**
      * Sets the host.
@@ -258,6 +275,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
         host_ = host;
     }
 
+
     /**
      * Sets the port.
      * 
@@ -267,6 +285,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     {
         port_ = port;
     }
+
     
     /**
      * Returns the forceConnect.
@@ -278,6 +297,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
         return forceConnect_;
     }
 
+
     /**
      * Returns the retryInterval.
      * 
@@ -288,6 +308,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
         return retryInterval_;
     }
 
+
     /**
      * Sets the forceConnect.
      * 
@@ -297,6 +318,7 @@ public class SocketConnection extends AbstractConnection implements IConnection
     {
         forceConnect_ = forceConnect;
     }
+
 
     /**
      * Sets the retryInterval.

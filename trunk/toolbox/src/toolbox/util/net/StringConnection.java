@@ -14,17 +14,17 @@ import toolbox.util.io.StringOutputStream;
 public class StringConnection extends AbstractConnection implements IConnection
 {
     /** 
-     * Internal string based InputStream 
+     * Internal string based InputStream. 
      */
     private StringInputStream sis_;
 
     /** 
-     * Internal string based OutputStream 
+     * Internal string based OutputStream. 
      */
     private StringOutputStream sos_;
     
     /** 
-     * Connected flag 
+     * Connected flag.
      */
     private boolean connected_;
 
@@ -33,15 +33,16 @@ public class StringConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a StringConnection
+     * Creates a StringConnection.
      */
     public StringConnection()
     {
         this("");
     }
 
+
     /**
-     * Creates a StringConnection with the given input string
+     * Creates a StringConnection with the given input string.
      * 
      * @param str Input stream contents
      */
@@ -64,6 +65,7 @@ public class StringConnection extends AbstractConnection implements IConnection
         connected_ = true;
     }
 
+
     /**
      * @see toolbox.util.net.IConnection#close()
      */
@@ -71,6 +73,7 @@ public class StringConnection extends AbstractConnection implements IConnection
     {
         connected_ = false;
     }
+
 
     /**
      * @see toolbox.util.net.IConnection#getInputStream()
@@ -80,6 +83,7 @@ public class StringConnection extends AbstractConnection implements IConnection
         return sis_;
     }
 
+
     /**
      * @see toolbox.util.net.IConnection#getOutputStream()
      */
@@ -87,6 +91,7 @@ public class StringConnection extends AbstractConnection implements IConnection
     {
         return sos_;
     }
+
 
     /**
      * @see toolbox.util.net.IConnection#isConnected()
@@ -101,7 +106,7 @@ public class StringConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the contents of the output stream as a string
+     * Returns the contents of the output stream as a string.
      * 
      * @return String
      */

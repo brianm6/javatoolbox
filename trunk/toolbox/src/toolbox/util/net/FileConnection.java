@@ -19,27 +19,27 @@ import toolbox.util.StreamUtil;
 public class FileConnection extends AbstractConnection implements IConnection
 {
     /**
-     * File tied to the InputStream
+     * File tied to the InputStream.
      */
     private File inputFile_;
 
     /**
-     * InputStream tied to the connection
+     * InputStream tied to the connection.
      */
     private InputStream inputStream_;
         
     /**
-     * File tied to the OutputStream
+     * File tied to the OutputStream.
      */
     private File outputFile_;
     
     /**
-     * OutputStream tied to the connection
+     * OutputStream tied to the connection.
      */
     private OutputStream outputStream_;
 
     /**
-     * Flag that tracks the connected state of the connection
+     * Flag that tracks the connected state of the connection.
      */
     private boolean connected_ = false;
 
@@ -48,12 +48,13 @@ public class FileConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a FileConnection with no connection endpoint
+     * Creates a FileConnection with no connection endpoint.
      */
     public FileConnection()
     {
         addConnectionListener(new InternalFileConnectionListener());
     }
+    
     
     /**
      * Creates a FileConnection with a single file for input and another file
@@ -70,8 +71,9 @@ public class FileConnection extends AbstractConnection implements IConnection
         connected_ = true;
     }
 
+
     /**
-     * Creates a FileConnection with the given input and output file names
+     * Creates a FileConnection with the given input and output file names.
      * 
      * @param inputFile File tied to the input stream
      * @param outputFile File tied to the output stream
@@ -88,7 +90,7 @@ public class FileConnection extends AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Opens the connection
+     * Opens the connection.
      * 
      * @throws IOException on I/O error
      */
@@ -116,8 +118,9 @@ public class FileConnection extends AbstractConnection implements IConnection
         fireConnectionStarted(this);
     }
 
+
     /**
-     * Closes the connection
+     * Closes the connection.
      * 
      * @throws IOException on I/O error
      */
@@ -134,8 +137,9 @@ public class FileConnection extends AbstractConnection implements IConnection
         fireConnectionClosed(this);
     }
 
+
     /**
-     * Accessor for the input stream
+     * Accessor for the input stream.
      * 
      * @return InputStream
      * @throws IOException on I/O error
@@ -145,8 +149,9 @@ public class FileConnection extends AbstractConnection implements IConnection
         return inputStream_;
     }
 
+
     /**
-     * Accessor for the output stream
+     * Accessor for the output stream.
      * 
      * @return OutputStream
      * @throws IOException on I/O error
@@ -156,8 +161,9 @@ public class FileConnection extends AbstractConnection implements IConnection
         return outputStream_;
     }
 
+
     /**
-     * Returns true if connected, false otherwise
+     * Returns true if connected, false otherwise.
      * 
      * @return boolean
      */

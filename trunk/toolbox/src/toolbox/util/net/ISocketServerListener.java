@@ -8,12 +8,13 @@ import java.net.Socket;
 public interface ISocketServerListener
 {
     /**
-     * Notication that a client socket connection was accepted
+     * Notification that a client socket connection was accepted.
      * 
      * @param socket Newly created socket to communicate with the client.
      * @param connection Resulting connection that was created. 
      */
     public void socketAccepted(Socket socket, IConnection connection);
+
 
     /**
      * Notification that the socket server has started and is ready to accept

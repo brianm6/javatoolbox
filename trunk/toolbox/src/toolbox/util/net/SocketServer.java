@@ -36,32 +36,32 @@ public class SocketServer implements Runnable
     private SocketServerConfig config_;
 
     /** 
-     * Lower level server socket delegate 
+     * Lower level server socket delegate. 
      */
     private ServerSocket serverSocket_;
 
     /** 
-     * Thread of execution that the server socket accept()'s on  
+     * Thread of execution that the server socket accept()'s on.  
      */
-    private Thread serverThread_;
+    private Thread acceptThread_;
 
     /** 
-     * Thead pool used to service socket clients 
+     * Thead pool used to service socket clients.
      */
     private ThreadDispatcher dispatcher_;
 
     /** 
-     * Mutex used at startup to reduce likelyhood of a race condition 
+     * Mutex used at startup to reduce likelyhood of a race condition. 
      */
     private Mutex startedMutex_;
 
     /** 
-     * Shutdown flag 
+     * Shutdown flag. 
      */
     private boolean shutdown_ = false;
 
     /** 
-     * List of socket server listeners 
+     * List of socket server listeners. 
      */
     private ISocketServerListener[] listeners_;
 
@@ -85,7 +85,7 @@ public class SocketServer implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Starts the socket server
+     * Starts the socket server.
      * 
      * @throws IOException on I/O error
      */
@@ -115,13 +115,13 @@ public class SocketServer implements Runnable
                     config_.getSocketQueueSize());
 
             // Create thread that server socket will be spun off on
-            serverThread_ = new Thread(this);
+            acceptThread_ = new Thread(this);
 
             // Configure additional elements of the socket and thread
             configure();
 
             // Start listening on a separate thread
-            serverThread_.start();
+            acceptThread_.start();
 
             // Wait to acquire mutex that is released in run() method
             startedMutex_.acquire();
@@ -132,8 +132,9 @@ public class SocketServer implements Runnable
         }
     }
 
+
     /** 
-     * Stops the socket server
+     * Stops the socket server.
      * 
      * @throws IOException on I/O error
      */
@@ -146,9 +147,10 @@ public class SocketServer implements Runnable
         dispatcher_ = null;
         
         serverSocket_.close();
-        serverThread_.interrupt();
+        acceptThread_.interrupt();
         logger_.info("Stopped socket server on port " + getServerPort());
     }
+
 
     /**
      * Default behavior is to ask the server config for a concrete instance of 
@@ -163,8 +165,9 @@ public class SocketServer implements Runnable
             config_.getConnectionHandler(), dispatcher_);
     }
 
+
     /**
-     * Accessor for the port the server is running on
+     * Accessor for the port the server is running on.
      * 
      * @return Server port number
      */
@@ -178,17 +181,17 @@ public class SocketServer implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * Configure the server with config info provided at time of construction
+     * Configure the server with config info provided at time of construction.
      * 
-     * @throws  SocketException  When socket error occurs
+     * @throws SocketException When socket error occurs
      */
     private void configure() throws SocketException
     {
         // Name thread based on server socket port
-        serverThread_.setName("SocketServer-" + 
+        acceptThread_.setName("SocketServer-" + 
             config_.getName() + ":" + config_.getServerPort());
             
-        serverThread_.setDaemon(true);
+        acceptThread_.setDaemon(true);
         serverSocket_.setSoTimeout(config_.getSocketTimeout());
 
         // Create thread pool
@@ -205,7 +208,7 @@ public class SocketServer implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * Dumps SocketServer state to a string 
+     * Dumps SocketServer state to a string. 
      * 
      * @return String
      */
@@ -217,7 +220,7 @@ public class SocketServer implements Runnable
         return "SocketServer" + nl + "{" + nlt + 
                "serverConfig = " + config_ + nlt + 
                "serverSocket = " + serverSocket_ + nlt + 
-               "thread       = " + serverThread_ + nlt + 
+               "thread       = " + acceptThread_ + nlt + 
                "publisher    = " + dispatcher_ + nlt + 
                "shutdown     = " + shutdown_ + nl + 
                "}";
@@ -228,7 +231,7 @@ public class SocketServer implements Runnable
     //--------------------------------------------------------------------------
 
     /**
-     * Fires notification that a new socket client was just accepted
+     * Fires notification that a new socket client was just accepted.
      * 
      * @param socket New socket that was created
      */
@@ -237,6 +240,7 @@ public class SocketServer implements Runnable
         for (int i=0; i<listeners_.length; 
             listeners_[i++].socketAccepted(socket, conn));
     }
+
 
     /**
      * Fires notification that the server has started and ready to accept
@@ -247,8 +251,9 @@ public class SocketServer implements Runnable
         for (int i=0; i<listeners_.length; listeners_[i++].serverStarted(this));
     }
 
+
     /**
-     * Adds a listener to the socket server
+     * Adds a listener to the socket server.
      * 
      * @param listener Implementor of ISocketServerListener
      */
@@ -258,8 +263,9 @@ public class SocketServer implements Runnable
             (ISocketServerListener[]) ArrayUtil.add(listeners_, listener);
     }
     
+    
     /**
-     * Removes a listener from the socket server
+     * Removes a listener from the socket server.
      * 
      * @param listener Implementor of ISocketServerListener
      */
@@ -279,8 +285,9 @@ public class SocketServer implements Runnable
     public void run()
     {
         logger_.info(
-            config_.getName() + " waiting for connection on " + 
-                serverSocket_.getLocalPort());
+            config_.getName() + 
+            " waiting for connection on " + 
+            serverSocket_.getLocalPort());
 
         fireServerStarted();
         
@@ -319,6 +326,7 @@ public class SocketServer implements Runnable
             {
                 // If socket closed exception, ignore because 
                 // it occurs in shutdown process
+                
                 if (!SocketUtil.isReasonSocketClosed(se))
                     logger_.error("run", se);
             }
@@ -326,6 +334,7 @@ public class SocketServer implements Runnable
             {
                 // If accept times out, just ignore and 
                 // let it loop around again
+                
                 if (!SocketUtil.isReasonAcceptTimeout(iioe))
                     logger_.error("run", iioe);
             }

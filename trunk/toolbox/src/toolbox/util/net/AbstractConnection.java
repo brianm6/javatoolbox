@@ -9,17 +9,17 @@ import toolbox.util.ArrayUtil;
 /**
  * Abstract connection with support for listenter interface. Subclasses are 
  * expected to call the fire* notification methods to satifsy the requirements 
- * of IConnectionListener
+ * of IConnectionListener.
  */
 public abstract class AbstractConnection implements IConnection
 {
     /**
-     * List of connection listeners
+     * List of connection listeners.
      */
     private IConnectionListener[] listeners_ = new IConnectionListener[0];
 
     /**
-     * Connection's name
+     * Connection's name.
      */
     private String name_ = "";
         
@@ -52,7 +52,7 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Returns name used to easily identify connection's context
+     * Returns name used to easily identify connection's context.
      * 
      * @return Connection Name
      */
@@ -66,7 +66,7 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
     
     /**
-     * Sets the connection name
+     * Sets the connection name.
      * 
      * @param name Connection name
      */
@@ -80,7 +80,7 @@ public abstract class AbstractConnection implements IConnection
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a connection to the list of listeners
+     * Adds a connection to the list of listeners.
      * 
      * @param listener Listener to add
      */
@@ -89,8 +89,9 @@ public abstract class AbstractConnection implements IConnection
         listeners_ = (IConnectionListener[])ArrayUtil.add(listeners_, listener);
     }
 
+
     /**
-     * Removes a connection from the list of listeners
+     * Removes a connection from the list of listeners.
      * 
      * @param listener Listener to remove
      */
@@ -100,8 +101,9 @@ public abstract class AbstractConnection implements IConnection
             (IConnectionListener[])ArrayUtil.remove(listeners_, listener);
     }
 
+
     /**
-     * Fires notification of Connection having been closed
+     * Fires notification of Connection having been closed.
      * 
      * @param connection Connection that was closed
      */    
@@ -111,8 +113,9 @@ public abstract class AbstractConnection implements IConnection
             listeners_[i++].connectionClosed(connection));
     }
     
+    
     /**
-     * Fires notification of Connection being closing
+     * Fires notification of Connection being closing.
      * 
      * @param connection Connection that is being closed
      */    
@@ -122,8 +125,9 @@ public abstract class AbstractConnection implements IConnection
             listeners_[i++].connectionClosing(connection));
     }
     
+    
     /**
-     * Fires notification that Connection was interrupted
+     * Fires notification that Connection was interrupted.
      * 
      * @param connection Connection that was interrupted
      */    
@@ -133,8 +137,9 @@ public abstract class AbstractConnection implements IConnection
             listeners_[i++].connectionInterrupted(connection));
     }
     
+    
     /**
-     * Fires notification that Connection was started
+     * Fires notification that Connection was started.
      * 
      * @param connection Connection that was started
      */    

@@ -16,12 +16,12 @@ public class DefaultSocketServerListener implements ISocketServerListener
         Logger.getLogger(DefaultSocketServerListener.class);
     
     /**
-     * Queue for accepted events
+     * Queue for accepted events.
      */    
     private BlockingQueue accepted_ = new BlockingQueue();
     
     /**
-     * Queue for started evetnts
+     * Queue for started evetnts.
      */
     private BlockingQueue started_  = new BlockingQueue();
     
@@ -31,19 +31,17 @@ public class DefaultSocketServerListener implements ISocketServerListener
 
     /**
      * @see toolbox.util.net.ISocketServerListener#socketAccepted(
-     *          java.net.Socket, toolbox.util.net.IConnection)
+     *      java.net.Socket, toolbox.util.net.IConnection)
      */
     public void socketAccepted(Socket socket, IConnection connection)
     {
-        //SocketServerTest.logger_.info(
-        //  "Listener notified of accept on socket " + socket);
-        
         accepted_.push(connection);
     }
+
     
     /**
      * @see toolbox.util.net.ISocketServerListener#serverStarted(
-     *          toolbox.util.net.SocketServer)
+     *      toolbox.util.net.SocketServer)
      */
     public void serverStarted(SocketServer server)
     {
@@ -55,7 +53,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
     //--------------------------------------------------------------------------
     
     /**
-     * Wait for a server socket to accept()
+     * Wait for a server socket to accept().
      * 
      * @return Connection after its socket has been accepted
      * @throws InterruptedException on error
@@ -64,6 +62,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
     {
         return (IConnection) accepted_.pull();
     }
+    
     
     /**
      * Waits for a server socket to startup successfully.

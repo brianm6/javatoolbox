@@ -14,28 +14,31 @@ package toolbox.util.net;
 public interface IConnectionListener
 {
     /**
-     * Notification that a connection is about to be closed
+     * Notification that a connection is about to be closed.
      * 
      * @param connection Connection about to be closed
      */
     public void connectionClosing(IConnection connection);
     
+    
     /**
-     * Notification that a connection has been closed
+     * Notification that a connection has been closed.
      * 
      * @param connection Connection that was closed
      */
     public void connectionClosed(IConnection connection);
     
+    
     /**
-     * Notification that a connection was interrupted
+     * Notification that a connection was interrupted.
      * 
      * @param connection Connection that was interrupted
      */
     public void connectionInterrupted(IConnection connection);
     
+    
     /**
-     * Notification that a connection was established/connected/started
+     * Notification that a connection was established/connected/started.
      * 
      * @param connection Connection that was started
      */

@@ -12,7 +12,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 
 /**
- * Encapsulates configuration properties for a {@link SocketServer}
+ * Encapsulates configuration properties for a {@link SocketServer}.
  */
 public class SocketServerConfig
 {
@@ -20,31 +20,31 @@ public class SocketServerConfig
         Logger.getLogger(SocketServerConfig.class);
 
     /** 
-     * Property for server socket port number
+     * Property for server socket port number.
      */
     public static final String PROP_SERVER_PORT = 
         "socketserver.serverport";
 
     /** 
-     * Property for max number of threads in pool 
+     * Property for max number of threads in pool. 
      */
     public static final String PROP_ACTIVE_CONNECTIONS = 
         "socketserver.activeconnections";
 
     /** 
-     * Property for waiting queue size for socket 
+     * Property for waiting queue size for socket. 
      */
     public static final String PROP_SOCKET_QUEUE_SIZE = 
         "socketserver.socketqueuesize";
 
     /** 
-     * Property for waiting queue size for the handler/thread pool 
+     * Property for waiting queue size for the handler/thread pool. 
      */
     public static final String PROP_HANDLER_QUEUE_SIZE = 
         "socketserver.handlerqueuesize";
 
     /** 
-     * Property for server socket timeout 
+     * Property for server socket timeout.
      */
     public static final String PROP_SOCKET_TIMEOUT = 
         "socketserver.sockettimeout";
@@ -58,48 +58,48 @@ public class SocketServerConfig
         "socketserver.connectionhandler";
 
     /**
-     * Property for the name of the socket server
+     * Property for the name of the socket server.
      */
     public static final String PROP_SERVER_NAME = 
         "socketserver.name";
 
     /**
-     * Optional name of socket server for identification purposes
+     * Optional name of socket server for identification purposes.
      */
     private String name_;
     
     /** 
-     * Server socket port number
+     * Server socket port number.
      */
     private int serverPort_;
 
     /** 
-     * Max active connections aka size of thread pool 
+     * Max active connections aka size of thread pool. 
      */
     private int activeConnections_;
 
     /** 
-     * Number of handlers that can be queued up by the thread pool 
+     * Number of handlers that can be queued up by the thread pool. 
      */
     private int handlerQueueSize_;
 
     /** 
-     * Number of sockets that can be queued up by OS 
+     * Number of sockets that can be queued up by OS.
      */
     private int socketQueueSize_;
  
     /** 
-     * Socket timeout in millis 
+     * Socket timeout in millis.
      */
     private int socketTimeout_;
 
     /**
-     * Connection handler type for this server config 
+     * Connection handler type for this server config. 
      */
     private String connectionHandlerType_;
 
     /** 
-     * Default properties 
+     * Default properties.
      */
     private static Properties defaults_;
 
@@ -122,15 +122,16 @@ public class SocketServerConfig
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a SocketServerConfig with default configuration
+     * Creates a SocketServerConfig with default configuration.
      */
     public SocketServerConfig()
     {
         this(defaults_);
     }
 
+
     /**
-     * Creates a socket server configuration with the given properties
+     * Creates a socket server configuration with the given properties.
      * 
      * @param props Properties
      */
@@ -139,9 +140,10 @@ public class SocketServerConfig
         load(props);
     }
 
+
     /**
-     * Creates a socket server configuration with the 
-     * properties from the given file
+     * Creates a socket server configuration with the properties from the given 
+     * file.
      * 
      * @param file Properties file to read configuration from
      * @throws IOException on I/O error
@@ -156,7 +158,7 @@ public class SocketServerConfig
     //--------------------------------------------------------------------------
 
     /**
-     * Loads configuration properties from a file on the classpath
+     * Loads configuration properties from a file on the classpath.
      * 
      * @param file Properties file on the classpath
      * @throws IOException on I/O error
@@ -184,8 +186,9 @@ public class SocketServerConfig
         }
     }
 
+
     /**
-     * Loads configuration properties from an existing set of properties 
+     * Loads configuration properties from an existing set of properties. 
      *
      * @param props Properties
      */
@@ -221,8 +224,9 @@ public class SocketServerConfig
             defaults_.getProperty(PROP_SERVER_NAME)));
     }
 
+
     /**
-     * Accessor for server socket port
+     * Accessor for server socket port.
      * 
      * @return int
      */
@@ -231,8 +235,9 @@ public class SocketServerConfig
         return serverPort_;
     }
 
+
     /**
-     * Mutator for server socket port
+     * Mutator for server socket port.
      * 
      * @param port Server socket port
      */
@@ -241,8 +246,9 @@ public class SocketServerConfig
         serverPort_ = port;
     }
 
+
     /**
-     * Accessor for the max number of active connections (threads)
+     * Accessor for the max number of active connections (threads).
      * 
      * @return int
      */
@@ -251,8 +257,9 @@ public class SocketServerConfig
         return activeConnections_;
     }
 
+
     /**
-     * Mutator for the max number of active connections
+     * Mutator for the max number of active connections.
      * 
      * @param activeConnections Max active connections
      */
@@ -261,8 +268,9 @@ public class SocketServerConfig
         activeConnections_ = activeConnections;
     }
 
+
     /**
-     * Accessor for the max number of connections in the socket waiting queue
+     * Accessor for the max number of connections in the socket waiting queue.
      * 
      * @return int
      */
@@ -271,8 +279,9 @@ public class SocketServerConfig
         return socketQueueSize_;
     }
 
+
     /**
-     * Mutator for the max number of connections in the socket waiting queue
+     * Mutator for the max number of connections in the socket waiting queue.
      * 
      * @param socketQueueSize Max number of queued sockets
      */
@@ -281,8 +290,9 @@ public class SocketServerConfig
         socketQueueSize_ = socketQueueSize;
     }
 
+
     /**
-     * Accessor for the max number of connections in the handler waiting queue
+     * Accessor for the max number of connections in the handler waiting queue.
      * 
      * @return int
      */
@@ -291,8 +301,9 @@ public class SocketServerConfig
         return handlerQueueSize_;
     }
 
+
     /**
-     * Mutator for the max number of connections in the handler waiting queue
+     * Mutator for the max number of connections in the handler waiting queue.
      * 
      * @param handlerQueueSize Max number of queued handlers
      */
@@ -301,8 +312,9 @@ public class SocketServerConfig
         handlerQueueSize_ = handlerQueueSize;
     }
 
+
     /**
-     * Accessor for the server socket timeout
+     * Accessor for the server socket timeout.
      * 
      * @return int
      */
@@ -311,18 +323,20 @@ public class SocketServerConfig
         return socketTimeout_;
     }
 
+
     /**
      * Mutator for the server socket timeout
      * 
-     * @param socketTimeout Server socket timeout
+     * @param socketTimeout Server socket timeout.
      */
     public void setSocketTimeout(int socketTimeout)
     {
         socketTimeout_ = socketTimeout;
     }
 
+
     /**
-     * Returns IConnectionHandler class
+     * Returns IConnectionHandler class.
      * 
      * @return IConnectionHandler
      */
@@ -360,8 +374,9 @@ public class SocketServerConfig
         return handler;
     }
 
+
     /** 
-     * Returns type of connection handler 
+     * Returns type of connection handler. 
      * 
      * @return String
      */
@@ -369,6 +384,7 @@ public class SocketServerConfig
     {
         return connectionHandlerType_;
     }
+
 
     /**
      * Sets connection handler type.
@@ -380,6 +396,7 @@ public class SocketServerConfig
         connectionHandlerType_ = type;
     }
 
+
     /**
      * Returns the name.
      * 
@@ -389,6 +406,7 @@ public class SocketServerConfig
     {
         return name_;
     }
+
 
     /**
      * Sets the name.
@@ -405,7 +423,7 @@ public class SocketServerConfig
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the configuration as a string
+     * Returns the configuration as a string.
      * 
      * @return String
      */

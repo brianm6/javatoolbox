@@ -11,17 +11,17 @@ import toolbox.util.thread.ThreadDispatcher;
 public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
 {
     /** 
-     * Connection to handle 
+     * Connection to handle. 
      */
     private IConnection conn_;
 
     /** 
-     * Connection handler delegate 
+     * Connection handler delegate. 
      */
     private IConnectionHandler handler_;
 
     /** 
-     * Dispatcher responsible for pooling the connection handlers 
+     * Dispatcher responsible for pooling the connection handlers. 
      */
     private ThreadDispatcher dispatcher_;
 
@@ -30,7 +30,7 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     //--------------------------------------------------------------------------
 
     /**
-     * Creates an AsyncConnectionHandler
+     * Creates an AsyncConnectionHandler.
      * 
      * @param newHandler Handler to wrap with async behavior
      * @param newDispatcher Dispatcher to use for thread acquisition/dispatching
@@ -73,7 +73,7 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
     //--------------------------------------------------------------------------
     
     /**
-     * Mutator for the connection handler
+     * Mutator for the connection handler.
      * 
      * @param newHandler IConnectionHandler
      */
@@ -82,8 +82,9 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         handler_ = newHandler;
     }
 
+
     /**
-     * Mutator for the connection
+     * Mutator for the connection.
      * 
      * @param newConn IConnection
      */
@@ -92,8 +93,9 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         conn_ = newConn;
     }
 
+
     /**
-     * Accessor for the connection
+     * Accessor for the connection.
      * 
      * @return IConnection
      */
@@ -102,8 +104,9 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         return conn_;
     }
 
+
     /**
-     * Accessor for the connection handler 
+     * Accessor for the connection handler. 
      * 
      * @return IConnectionHandler
      */
@@ -112,8 +115,9 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         return handler_;
     }
 
+
     /**
-     * Mutator for the dispatcher
+     * Mutator for the dispatcher.
      * 
      * @param newDispatcher Dispatcher
      */
@@ -122,8 +126,9 @@ public class AsyncConnectionHandler implements IConnectionHandler, IThreadable
         dispatcher_ = newDispatcher;
     }
 
+
     /**
-     * Accessor for the dispatcher
+     * Accessor for the dispatcher.
      * 
      * @return Dispatcher
      */

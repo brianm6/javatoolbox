@@ -14,22 +14,22 @@ public class DefaultConnectionListener implements IConnectionListener
         Logger.getLogger(DefaultConnectionListener.class);
     
     /**
-     * Queue for connection closed events
+     * Queue for connection closed events.
      */    
     private BlockingQueue closed_ = new BlockingQueue();
     
     /**
-     * Queue for connection closing events
+     * Queue for connection closing events.
      */
     private BlockingQueue closing_ = new BlockingQueue();
     
     /**
-     * Queue for connection interrupted events
+     * Queue for connection interrupted events.
      */
     private BlockingQueue interrupted_ = new BlockingQueue();
     
     /**
-     * Queue for connection started events
+     * Queue for connection started events.
      */
     private BlockingQueue started_ = new BlockingQueue(); 
     
@@ -48,6 +48,7 @@ public class DefaultConnectionListener implements IConnectionListener
         closed_.push(connection);
     }
     
+    
     /**
      * @see toolbox.util.net.IConnectionListener#connectionClosing(
      *          toolbox.util.net.IConnection)
@@ -59,6 +60,7 @@ public class DefaultConnectionListener implements IConnectionListener
         closing_.push(connection);
     }
     
+    
     /**
      * @see toolbox.util.net.IConnectionListener#connectionInterrupted(
      *          toolbox.util.net.IConnection)
@@ -68,6 +70,7 @@ public class DefaultConnectionListener implements IConnectionListener
         logger_.info("Notification: Connection interrupted" + connection);
         interrupted_.push(connection);
     }
+    
     
     /**
      * @see toolbox.util.net.IConnectionListener#connectionStarted(
@@ -84,7 +87,7 @@ public class DefaultConnectionListener implements IConnectionListener
     //--------------------------------------------------------------------------
     
     /**
-     * Blocks indefinitely until a close event is received
+     * Blocks indefinitely until a close event is received.
      * 
      * @return IConnection
      * @throws InterruptedException on error
@@ -94,8 +97,9 @@ public class DefaultConnectionListener implements IConnectionListener
         return (IConnection) closed_.pull();
     }
 
+
     /**
-     * Blocks indefinitely until a closing event is received
+     * Blocks indefinitely until a closing event is received.
      * 
      * @return IConnection
      * @throws InterruptedException on error
@@ -105,8 +109,9 @@ public class DefaultConnectionListener implements IConnectionListener
         return (IConnection) closing_.pull();
     }
     
+    
     /**
-     * Blocks indefinitely until a interrupted event is received
+     * Blocks indefinitely until a interrupted event is received.
      * 
      * @return IConnection
      * @throws InterruptedException on error
@@ -116,8 +121,9 @@ public class DefaultConnectionListener implements IConnectionListener
         return (IConnection) interrupted_.pull();
     }
 
+
     /**
-     * Blocks indefinitely until a started event is received
+     * Blocks indefinitely until a started event is received.
      * 
      * @return IConnection
      * @throws InterruptedException on error
