@@ -6,14 +6,21 @@ import java.io.OutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.log4j.Logger;
+
 import toolbox.util.ArrayUtil;
 
 /**
  * Output stream that generates events for common stream operations and also
- * tracks the number of bytes written to the stream.
+ * tracks the number of bytes written to the stream. The count of bytes written
+ * to the stream is only sent out when the stream is closed for performance
+ * reasons.
  */
 public class EventOutputStream extends FilterOutputStream
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(EventOutputStream.class);
+    
     //--------------------------------------------------------------------------
     // Fields 
     //--------------------------------------------------------------------------
@@ -115,8 +122,14 @@ public class EventOutputStream extends FilterOutputStream
      */
     public void close() throws IOException
     {
-        super.close();
-        fireStreamClosed();
+        try
+        {
+            super.close();
+        }
+        finally
+        {
+            fireStreamClosed();
+        }
     }
 
     //--------------------------------------------------------------------------
