@@ -427,6 +427,14 @@
     </dependency>
 
     <dependency>
+      <id>napkinlf</id>
+      <version/>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>oyoahalf</id>
       <version/>
       <properties>
