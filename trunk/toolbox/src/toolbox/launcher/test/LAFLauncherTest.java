@@ -35,8 +35,10 @@ public class LAFLauncherTest extends TestCase
     
     /**
      * Tests main() with no args for the target class
+     * 
+     * @throws Exception on error 
      */
-    public void testMainNoArgs()
+    public void testMainNoArgs() throws Exception
     {
         logger_.info("Running testMainNoArgs...");
         
@@ -46,8 +48,10 @@ public class LAFLauncherTest extends TestCase
     
     /**
      * Tests main() with one args for the target class
+     * 
+     * @throws Exception on error 
      */
-    public void testMainOneArg()
+    public void testMainOneArg() throws Exception
     {
         logger_.info("Running testMainOneArg...");
         
@@ -57,8 +61,10 @@ public class LAFLauncherTest extends TestCase
 
     /**
      * Tests main() with > 1 args
+     * 
+     * @throws Exception on error 
      */
-    public void testMainManyArgs()
+    public void testMainManyArgs() throws Exception
     {
         logger_.info("Running testMainManyArgs...");
         
@@ -69,8 +75,10 @@ public class LAFLauncherTest extends TestCase
     
     /**
      * Tests printUsage()
+     * 
+     * @throws Exception on error 
      */
-    public void testPrintUsage()
+    public void testPrintUsage() throws Exception
     {
         logger_.info("Running testPrintUsage...");
         
