@@ -2,6 +2,7 @@ package toolbox.util.file;
 
 import java.io.File;
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * A {@java.util.File} comparator that can compare on varios file attributes.
@@ -14,9 +15,9 @@ import java.util.Comparator;
  */
 public class FileComparator implements Comparator
 {
-    public static final int COMPARE_NAME = 1;             // File name
-    public static final int COMPARE_SIZE = 2; 			  // File size
-    public static final int COMPARE_TIMESTAMP = 3;		  // File timestamp
+    public static final int COMPARE_NAME = 1; // File name
+    public static final int COMPARE_SIZE = 2; // File size
+    public static final int COMPARE_DATE = 3; // File timestamp
     
 	/**
 	 * Field to compare
@@ -31,7 +32,7 @@ public class FileComparator implements Comparator
      * Creates a FileComparator
      * 
      * @param compareBy File attribute to base comparision on. 
-     *        Use FileComparator.COMPARE_[NAME|SIZE|TIMESTAMP]
+     *        Use FileComparator.COMPARE_[NAME|SIZE|DATE]
      */
     public FileComparator(int compareBy)
     {
@@ -73,7 +74,16 @@ public class FileComparator implements Comparator
                 else
                     result = -1;
                 break;
-                    
+
+                
+            case COMPARE_DATE :
+                
+                Date dateA = new Date(fileA.lastModified());
+                Date dateB = new Date(fileB.lastModified());
+                result = dateA.compareTo(dateB);
+                break;
+
+                
             default:
             
                 throw new IllegalArgumentException(
