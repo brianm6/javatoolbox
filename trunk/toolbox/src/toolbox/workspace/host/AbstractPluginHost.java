@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ArrayUtil;
 import toolbox.workspace.IPlugin;
 
 /**
@@ -31,6 +32,11 @@ public abstract class AbstractPluginHost implements PluginHost
      */
     private Map plugins_;
 
+    /**
+     * List of listeners.
+     */
+    private PluginHostListener[] pluginHostListeners_;
+    
     //--------------------------------------------------------------------------
     // PluginHost Interface
     //--------------------------------------------------------------------------
@@ -48,6 +54,7 @@ public abstract class AbstractPluginHost implements PluginHost
         // Make sure map is ordered by insertion.
         plugins_ = new LinkedHashMap();
         init_ = props;
+        pluginHostListeners_ = new PluginHostListener[0];
     }
 
     
@@ -63,6 +70,8 @@ public abstract class AbstractPluginHost implements PluginHost
         
         plugin.startup(init_);
         importPlugin(plugin);
+        
+        firePluginAdded(plugin);
     }
 
     
@@ -78,6 +87,8 @@ public abstract class AbstractPluginHost implements PluginHost
         
         exportPlugin(plugin);
         plugin.shutdown();
+        
+        firePluginRemoved(plugin);
     }
 
     
@@ -169,5 +180,63 @@ public abstract class AbstractPluginHost implements PluginHost
         
         plugins_.clear();
         plugins_ = null;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Event Notification
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a PluginHostListener.
+     *
+     * @param listener Listener to add.
+     */
+    public void addPluginHostListener(PluginHostListener listener)
+    {
+        pluginHostListeners_ = 
+            (PluginHostListener[]) 
+                ArrayUtil.add(pluginHostListeners_, listener);
+    }
+
+
+    /**
+     * Removes a PluginHostListener.
+     *
+     * @param listener Listener to remove.
+     */
+    public void removePluginHostListener(PluginHostListener listener)
+    {
+        pluginHostListeners_ = 
+            (PluginHostListener[]) 
+                ArrayUtil.remove(pluginHostListeners_, listener);
+    }
+
+
+    /**
+     * Fires an event when a plugin is added.
+     */
+    protected void firePluginAdded(IPlugin plugin)
+    {
+        for (int i = 0; i < pluginHostListeners_.length; 
+            pluginHostListeners_[i++].pluginAdded(this, plugin));
+    }
+
+
+    /**
+     * Fires an event when a plugin is removed.
+     */
+    protected void firePluginRemoved(IPlugin plugin)
+    {
+        for (int i = 0; i < pluginHostListeners_.length;
+            pluginHostListeners_[i++].pluginRemoved(this, plugin));
+    }
+    
+    
+    /**
+     * @see toolbox.workspace.host.PluginHost#getPluginHostListeners()
+     */
+    public PluginHostListener[] getPluginHostListeners()
+    {
+        return pluginHostListeners_;
     }
 }
