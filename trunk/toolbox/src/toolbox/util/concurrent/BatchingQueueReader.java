@@ -12,6 +12,10 @@ import toolbox.util.ThreadUtil;
  */
 public class BatchingQueueReader
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Queue to read elements from. 
      */
@@ -20,12 +24,12 @@ public class BatchingQueueReader
     /** 
      * Started flag. 
      */
-    private boolean started_ = false;
+    private boolean started_;
     
     /** 
      * Queue Listeners. 
      */
-    private List listeners_ = new ArrayList();    
+    private List listeners_;    
 
     /** 
      * Batch thread. 
@@ -44,7 +48,7 @@ public class BatchingQueueReader
     /**
      * Creates a BatchingQueueReader.
      * 
-     * @param queue Queue to read in batch mode from
+     * @param queue Queue to read in batch mode from.
      */
     public BatchingQueueReader(BlockingQueue queue)
     {
@@ -55,13 +59,15 @@ public class BatchingQueueReader
     /**
      * Creates a BatchingQueueReader.
      * 
-     * @param queue Queue to read in batch mode from
-     * @param name Friendly name assigned to the batch thread
+     * @param queue Queue to read in batch mode from.
+     * @param name Friendly name assigned to the batch thread.
      */
     public BatchingQueueReader(BlockingQueue queue, String name)
     {
         queue_ = queue;
-        name_  = name;        
+        name_ = name;
+        started_ = false;
+        listeners_ = new ArrayList();
     }
 
     //--------------------------------------------------------------------------
@@ -71,7 +77,7 @@ public class BatchingQueueReader
     /**
      * Stops the reader.
      * 
-     * @throws IllegalStateException if the reader has already been stopped
+     * @throws IllegalStateException if the reader has already been stopped.
      */
     public synchronized void stop() throws IllegalStateException
     {
@@ -91,7 +97,7 @@ public class BatchingQueueReader
     /**
      * Starts the reader.
      * 
-     * @throws IllegalStateException if the reader is already started
+     * @throws IllegalStateException if the reader is already started.
      */
     public synchronized void start() throws IllegalStateException
     {
@@ -115,7 +121,7 @@ public class BatchingQueueReader
     /**
      * Fires notification of new batch of elements available.
      * 
-     * @param elements New elements available
+     * @param elements New elements available.
      */
     protected synchronized void fireNextBatch(Object[] elements)
     {
@@ -134,7 +140,7 @@ public class BatchingQueueReader
     /**
      * Adds a listener. 
      * 
-     * @param listener Listener to add
+     * @param listener Listener to add.
      */   
     public synchronized void addBatchingQueueListener(
         IBatchingQueueListener listener)
@@ -146,7 +152,7 @@ public class BatchingQueueReader
     /**
      * Removes a listener.
      * 
-     * @param listener Listener to remove
+     * @param listener Listener to remove.
      */
     public synchronized void removeBatchingQueueListener(
         IBatchingQueueListener listener)
