@@ -12,8 +12,11 @@ import junit.textui.TestRunner;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
+import org.netbeans.jemmy.JemmyProperties;
+import org.netbeans.jemmy.TestOut;
 import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JCheckBoxOperator;
+import org.netbeans.jemmy.operators.JComponentOperator;
 import org.netbeans.jemmy.operators.JDialogOperator;
 import org.netbeans.jemmy.operators.JListOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
@@ -24,9 +27,12 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.JemmyUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ThreadUtil;
 
 /**
  * Unit test for JFontChooserDialog.
+ * 
+ * @see toolbox.util.ui.font.JFontChooserDialog
  */
 public class JFontChooserDialogTest extends UITestCase
 {
@@ -41,6 +47,9 @@ public class JFontChooserDialogTest extends UITestCase
     private JButtonOperator applyButton_;
     private JButtonOperator cancelButton_;
     private JButtonOperator okButton_;
+    private JListOperator fontList_;
+    private JListOperator styleList_;
+    private JListOperator sizeList_;
 
     //--------------------------------------------------------------------------
     // Main
@@ -56,6 +65,7 @@ public class JFontChooserDialogTest extends UITestCase
     {
         logger_.info(StringUtil.banner("Main " + ArrayUtil.toString(args)));
         TestRunner.run(suite());
+        System.exit(0); 
     }
 
     
@@ -94,7 +104,7 @@ public class JFontChooserDialogTest extends UITestCase
         //JemmyProperties.setCurrentDispatchingModel(
         //    JemmyProperties.ROBOT_MODEL_MASK);
 
-        //JemmyProperties.setCurrentOutput(TestOut.getNullOutput());
+        JemmyProperties.setCurrentOutput(TestOut.getNullOutput());
         
         final JFontChooserDialog fsd = 
             new JFontChooserDialog(new JFrame(), "Select font", false);
@@ -147,6 +157,7 @@ public class JFontChooserDialogTest extends UITestCase
         //QueueTool.uninstallQueue();
     }
 
+    
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -168,7 +179,17 @@ public class JFontChooserDialogTest extends UITestCase
         okButton_ =
             JemmyUtil.findButton(dialog_, 
                 JFontChooserDialog.NAME_OK_BUTTON);
+        
+        fontList_ = new JListOperator(
+            dialog_, new NameComponentChooser(JFontChooser.NAME_FONT_LIST));
+
+        styleList_ = new JListOperator(
+            dialog_, new NameComponentChooser(JFontChooser.NAME_STYLE_LIST));
+
+        sizeList_ = new JListOperator(
+            dialog_, new NameComponentChooser(JFontChooser.NAME_SIZE_LIST));
     }
+   
     
     /**
      * @see junit.framework.TestCase#tearDown()
@@ -199,27 +220,15 @@ public class JFontChooserDialogTest extends UITestCase
                 new NameComponentChooser(JFontChooser.NAME_SIZE_FIELD));
         
         sizeField.enterText("55");
-        
-        JListOperator fontList = 
-            new JListOperator(dialog_, 
-                new NameComponentChooser(JFontChooser.NAME_FONT_LIST));
-
-        JListOperator styleList = 
-            new JListOperator(dialog_, 
-                new NameComponentChooser(JFontChooser.NAME_STYLE_LIST));
-
-        JListOperator sizeList = 
-            new JListOperator(dialog_, 
-                new NameComponentChooser(JFontChooser.NAME_SIZE_LIST));
 
         JCheckBoxOperator antialiasCheckBox = 
             new JCheckBoxOperator(dialog_, 
                 new NameComponentChooser(
                     JFontChooser.NAME_ANTIALIAS_CHECKBOX));
 
-        JList fontListSource = (JList) fontList.getSource();
-        JList styleListSource = (JList) styleList.getSource();
-        JList sizeListSource = (JList) sizeList.getSource();
+        JList fontListSource = (JList) fontList_.getSource();
+        JList styleListSource = (JList) styleList_.getSource();
+        JList sizeListSource = (JList) sizeList_.getSource();
         
         int numStyles = styleListSource.getModel().getSize();
         int numSizes = sizeListSource.getModel().getSize();
@@ -229,17 +238,17 @@ public class JFontChooserDialogTest extends UITestCase
             //==============================================================
             // Font name
             //--------------------------------------------------------------
-            fontList.selectItem(i);
+            fontList_.selectItem(i);
             
             //==============================================================
             // Font style
             //--------------------------------------------------------------
-            styleList.selectItem(RandomUtils.nextInt(numStyles));
+            styleList_.selectItem(RandomUtils.nextInt(numStyles));
             
             //==============================================================
             // Font Size List
             //--------------------------------------------------------------
-            sizeList.selectItem(RandomUtils.nextInt(numSizes));
+            sizeList_.selectItem(RandomUtils.nextInt(numSizes));
             
             //==============================================================
             // AntiAlias CheckBox
@@ -279,5 +288,23 @@ public class JFontChooserDialogTest extends UITestCase
         logger_.info("Running testOKButton...");
         okButton_.clickMouse();
         assertTrue(!dialog_.getSource().isVisible());
+    }
+    
+    /**
+     * Tests
+     */
+    public void testRenderUsingFont()
+    {
+        logger_.info("Running testRenderUsingFont...");
+        
+        JFontChooser chooser = (JFontChooser) 
+            new JComponentOperator(dialog_, 
+                new NameComponentChooser(
+                    JFontChooser.NAME_FONT_CHOOSER)).getSource();
+        
+        chooser.setRenderedUsingFont(true);
+        chooser.setMonospaceEmphasized(true);
+        fontList_.repaint();
+        ThreadUtil.sleep(5000);
     }
 }
