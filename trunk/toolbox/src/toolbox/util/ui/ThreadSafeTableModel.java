@@ -16,9 +16,9 @@ import toolbox.util.concurrent.IBatchingQueueListener;
 /**
  * A thread safe table model that adds elements to the model on the 
  * EventDispatch thread. Updates that are made on an arbitrary thread can 
- * cause erratic repaint behavior and out of sync behavior between the 
- * model and view. To minimize thread creation (SwingUtilities.invokeLater())
- * rows are added to the table in a batch like manned (=>1 rows) per invocation
+ * cause erratic repaint behavior and out of sync behavior between the model 
+ * and view. To minimize thread creation (SwingUtilities.invokeLater()) rows 
+ * are added to the table in a batch like manned (=>1 rows) per invocation
  * based on however many rows are availble to add. A blocking queue is used as
  * the bridge between the table row producer and the table row consumer.
  */
@@ -109,21 +109,8 @@ public class ThreadSafeTableModel extends DefaultTableModel
     }
     
     //--------------------------------------------------------------------------
-    //  Implementation
+    // Public
     //--------------------------------------------------------------------------
-    
-    /**
-     * Inits table model
-     */
-    protected void init()
-    {
-        queue_ = new BlockingQueue();
-        queueReader_ = new BatchingQueueReader(queue_);
-        queueReader_.addBatchQueueListener(this);
-        Thread t = new Thread(queueReader_);
-        t.start();
-    }
-    
     
     /**
      * Adds a vector of data as a row to the table
@@ -199,11 +186,28 @@ public class ThreadSafeTableModel extends DefaultTableModel
     }
 
     //--------------------------------------------------------------------------
-    //  Interfaces
+    //  Private
     //--------------------------------------------------------------------------
     
     /**
-     * Interface for IBatchQueueListner
+     * Inits table model
+     */
+    protected void init()
+    {
+        queue_ = new BlockingQueue();
+        queueReader_ = new BatchingQueueReader(queue_);
+        queueReader_.addBatchQueueListener(this);
+        Thread t = new Thread(queueReader_);
+        t.start();
+    }
+    
+
+    //--------------------------------------------------------------------------
+    //  IBatchQueueListener Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Next batch of rows is available
      * 
      * @param  elements  Array of rows to add to the table
      */
