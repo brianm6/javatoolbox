@@ -48,6 +48,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
+import toolbox.util.ThreadUtil;
 
 /**
  * JFlipPane - panel with flipper like behavior
@@ -224,10 +225,12 @@ public class JFlipPane extends JPanel
         popup_.add(menuItem);
 
         // Make newly added flipper selected by default
-        setSelectedFlipper(flipper);
+        if (!isCollapsed())
+            setSelectedFlipper(flipper);
         
         // TODO: find proper way to do this
         revalidate();
+        repaint();
     } 
 
 
@@ -358,6 +361,10 @@ public class JFlipPane extends JPanel
      */   
     public Dimension getPreferredSize()
     {
+        String method = "[prfSiz] ";
+        
+        Dimension pref;
+        
         if (!isCollapsed())
         {
             int width = buttonPanel_.getPreferredSize().width +
@@ -366,10 +373,18 @@ public class JFlipPane extends JPanel
             int height = buttonPanel_.getPreferredSize().height + 
                          flipCardPanel_.getPreferredSize().height;
                         
-            return new Dimension(width, height);
+            pref = new Dimension(width, height);
+            
+            logger_.info(method + "prefSize expanded = " + pref);                        
         }
         else
-            return buttonPanel_.getPreferredSize();
+        {
+            pref = buttonPanel_.getPreferredSize();
+            
+            logger_.info(method + "prefSize collapsed = " + pref);            
+        }
+        
+        return pref;
     }
 
 
@@ -485,7 +500,7 @@ public class JFlipPane extends JPanel
      * Toggles the flipper from its current state to the opposite state.
      * Also notifies all IFlipPaneListeners.
      */
-    protected void toggleFlipper()
+    public void toggleFlipper()
     {
         if (!isCollapsed())
         {
@@ -1171,8 +1186,11 @@ public class JFlipPane extends JPanel
     /**
      * Card like panel for use in JFlipPane that houses all the flippers
      */
-    public class FlipCardPanel extends JPanel
+    public static class FlipCardPanel extends JPanel
     {
+        private static final Category fcpLogger_ = 
+            Category.getInstance(FlipCardPanel.class);
+        
         private JFlipPane flipPane_;
         
         /**
@@ -1214,8 +1232,14 @@ public class JFlipPane extends JPanel
          */
         public Dimension getPreferredSize()
         {
+            String method = "[prfSiz] ";
+            
+            Dimension pref;
+            
             if(flipPane_ == null)
-                return new Dimension(0,0);
+            {
+                pref = new Dimension(0,0);
+            }
             else
             {
                 int    dim = flipPane_.getDimension();
@@ -1229,14 +1253,19 @@ public class JFlipPane extends JPanel
     
                 if(pos.equals(JFlipPane.TOP) || pos.equals(JFlipPane.BOTTOM))
                 {
-                    return new Dimension(0,
+                    pref = new Dimension(0,
                         dim + JFlipPane.SPLITTER_WIDTH + 3);
                 }
                 else
                 {
-                    return new Dimension(dim + JFlipPane.SPLITTER_WIDTH + 3, 0);
+                    pref = new Dimension(dim + JFlipPane.SPLITTER_WIDTH + 3, 0);
                 }
             }
+            
+
+            fcpLogger_.info(method + "prefsize=" + pref);
+            
+            return pref;
         } 
     
     
