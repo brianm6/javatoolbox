@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
+
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.flippane.FlipPaneListener;
@@ -35,7 +37,7 @@ public class JFlipPaneTest extends JFrame
      * 
      * @param  args  None
      */    
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         JFrame frame = new JFlipPaneTest();
         frame.setSize(400,400);
@@ -50,8 +52,9 @@ public class JFlipPaneTest extends JFrame
     /**
      * Constructor
      */
-    public JFlipPaneTest()
+    public JFlipPaneTest() throws Exception
     {
+        SwingUtil.setPreferredLAF();
         init();
         buildView();
     }
