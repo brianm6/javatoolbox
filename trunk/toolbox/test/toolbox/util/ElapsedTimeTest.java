@@ -255,6 +255,7 @@ public class ElapsedTimeTest extends TestCase
         ElapsedTime time = new ElapsedTime(start, end);
         logger_.info("Elapsed time = " + time);
         assertTrue(time.getTotalMillis() >= delta);
+        assertTrue(time.getStartTime().before(time.getEndTime()));
     }
      
     
@@ -292,5 +293,7 @@ public class ElapsedTimeTest extends TestCase
         
         ElapsedTime time = new ElapsedTime(start.getTime(), end.getTime());
         logger_.info("Elapsed time = " + time);
+        
+        time.setStartTime(new Date());
     }
 }
