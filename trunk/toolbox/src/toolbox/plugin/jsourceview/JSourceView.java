@@ -35,27 +35,30 @@ import toolbox.util.SwingUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.ExtensionFilter;
 import toolbox.util.io.filter.OrFilter;
+import toolbox.util.ui.JStatusBar;
 import toolbox.util.ui.ThreadSafeTableModel;
 import toolbox.util.ui.plugin.IPreferenced;
+import toolbox.util.ui.plugin.IStatusBar;
+import toolbox.util.ui.plugin.WorkspaceAction;
 import toolbox.util.ui.table.TableSorter;
 
 /**
  * JSourceView gathers statistics on one or more source files and presents
  * them in a table format for viewing.
- * 
- * <pre>
- * TODO: Added explorer to pick directory
- * TODO: Update Queue to BlockingQueue
- * TODO: Figure out how to save table column sizes
- * TODO: Convert actionPerformed() to Actions
- * TODO: Add chart for visualization
- * TODO: Custom table cell renders to align cell contents/color code unusually
- *       high or low numbers, etc
- * TODO: Add regex filter to include/exclude files
- * </pre> 
  */
 public class JSourceView extends JFrame implements ActionListener, IPreferenced
 {
+    /*
+    * TODO: Added explorer to pick directory
+    * TODO: Update Queue to BlockingQueue
+    * TODO: Figure out how to save table column sizes
+    * TODO: Convert actionPerformed() to Actions
+    * TODO: Add chart for visualization
+    * TODO: Custom table cell renders to align cell contents/color code unusually
+    *       high or low numbers, etc
+    * TODO: Add regex filter to include/exclude files
+    */
+        
     private static final Logger logger_ = 
         Logger.getLogger(JSourceView.class);
     
@@ -82,6 +85,8 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     private ScanDirWorker scanDirWorker_;
     private Thread        parserThread_;
     private ParserWorker  parserWorker_;
+
+    private IStatusBar workspaceStatusBar_ = new JStatusBar();
     
     /** Platform path separator */
     private String pathSeparator_;
@@ -140,10 +145,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         super("JSourceView");
         
         dirField_ = new JTextField(25);
-        dirField_.addActionListener(this);
-        
-        goButton_ = new JButton(LABEL_GO);
-        goButton_.addActionListener(this);
+        goButton_ = new JButton();
         
         JPanel topPanel = new JPanel();
         scanStatusLabel_ = new JLabel(" ");
@@ -202,6 +204,21 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
 		parseStatusLabel_.setText(status);
 	}
 
+    /**
+     * Workspace status bar!
+     * 
+     * @param statusBar  Workspace statusbar
+     */
+    public void setStatusBar(IStatusBar statusBar)
+    {
+        workspaceStatusBar_ = statusBar;
+        
+        // The action depends on havign a reference to the workspace status
+        // bar (not available yet in buildView()).
+        goButton_.setAction(new SearchAction());
+        dirField_.setAction(new SearchAction());
+    }
+
     //--------------------------------------------------------------------------
     //  ActionListener Interface
     //--------------------------------------------------------------------------
@@ -217,11 +234,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         
         try
         {
-            if (obj == goButton_)
-                goButtonPressed();
-            else if (obj == dirField_)
-                goButtonPressed();
-            else if (obj == saveMenuItem_)
+            if (obj == saveMenuItem_)
                 saveResults();
             else if (obj == aboutMenuItem_)
                 showAbout();
@@ -324,49 +337,64 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
             "About JSourceView", 1);
     }
     
-    /** 
-     * Starts the scanning/parsing activities in parallel
-     */
-    protected void goButtonPressed()
+    //--------------------------------------------------------------------------
+    // Actions
+    //--------------------------------------------------------------------------
+
+    class SearchAction extends WorkspaceAction
     {
-        if (goButton_.getText().equals(LABEL_GO))
+        public SearchAction()
         {
-            goButton_.setText(LABEL_CANCEL);
-            String dir = dirField_.getText();
-            workQueue_ = new Queue();
-            tableModel_.setRowCount(0);
-            
-            // To avoid a whole mess of sorting going on while the table is
-            // being populated, just disable the sorter temporarily. This is 
-            // turned back on when the parser thread completes
-            tableSorter_.setEnabled(false);
-            
-            scanDirWorker_ = new ScanDirWorker(new File(dir));
-            scanDirThread_ = new Thread(scanDirWorker_);
-            scanDirThread_.start();
-            
-            parserWorker_  = new ParserWorker();
-            parserThread_  = new Thread(parserWorker_);
-            parserThread_.start();
+            super(LABEL_GO, true, null, workspaceStatusBar_);
         }
-        else
+
+        public void runAction(ActionEvent e) throws Exception
         {
-            goButton_.setText(LABEL_GO);
-            scanDirWorker_.cancel();
-            parserWorker_.cancel();
-            
-            try
+            if (goButton_.getText().equals(LABEL_GO))
             {
-                scanDirThread_.join();
-                parserThread_.join();
-            }
-            catch (InterruptedException ie)
-            {
-                ; // Ignore
-            }
+                goButton_.setText(LABEL_CANCEL);
+                String dir = dirField_.getText();
+                workQueue_ = new Queue();
+                tableModel_.setRowCount(0);
             
-            setScanStatus("Operation canceled");
-            setParseStatus("");
+                // To avoid a whole mess of sorting going on while the table is
+                // being populated, just disable the sorter temporarily. This is 
+                // turned back on when the parser thread completes
+                tableSorter_.setEnabled(false);
+            
+                scanDirWorker_ = new ScanDirWorker(new File(dir));
+                scanDirThread_ = new Thread(scanDirWorker_);
+                scanDirThread_.start();
+            
+                parserWorker_  = new ParserWorker();
+                parserThread_  = new Thread(parserWorker_);
+                parserThread_.start();
+                
+                if (scanDirThread_ != null && scanDirThread_.isAlive())
+                    scanDirThread_.join();
+                
+                if (parserThread_ != null && parserThread_.isAlive())    
+                    parserThread_.join();
+            }
+            else
+            {
+                goButton_.setText(LABEL_GO);
+                scanDirWorker_.cancel();
+                parserWorker_.cancel();
+            
+                try
+                {
+                    scanDirThread_.join();
+                    parserThread_.join();
+                }
+                catch (InterruptedException ie)
+                {
+                    ; // Ignore
+                }
+            
+                setScanStatus("Operation canceled");
+                setParseStatus("");
+            }
         }
     }
 
