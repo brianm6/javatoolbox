@@ -1,8 +1,3 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst space 
-// Source File Name:   LicAgreement.java
-
 package com.adobe.acrobat.gui;
 
 import java.awt.BorderLayout;
@@ -15,14 +10,14 @@ import java.awt.event.WindowEvent;
 
 import com.adobe.acrobat.util.Util;
 
-// Referenced classes of package com.adobe.acrobat.gui:
-//            BasicDialog, ReaderPrefs
+import toolbox.util.StringUtil;
 
 public class LicAgreement extends BasicDialog
 {
     static
     {
-        System.out.println("\n\n\t\tHacked com.adobee.acrobat.gui.LicAgreement v1\n\n");
+        System.out.println(StringUtil.addBars(
+            "Loaded debug com.adobee.acrobat.gui.LicAgreement v1"));
     }
     
     public LicAgreement(Frame frame)
