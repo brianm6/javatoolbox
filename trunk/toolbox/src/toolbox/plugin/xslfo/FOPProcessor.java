@@ -18,7 +18,10 @@ import org.apache.fop.messaging.MessageHandler;
 import org.xml.sax.InputSource;
 
 /**
- * Interface to access the Apache FOP XSLFO processor
+ * FOPProcessor is a concrete implementation of a 
+ * {@link FOProcessor <b>FO</b>Processor} specific to the Apache implementation
+ * of formatting objects called  <a href=http://xml.apache.org/fop>FOP</a> 
+ * (Formatting Objects Processor).
  */
 public class FOPProcessor implements FOProcessor
 {
@@ -32,9 +35,6 @@ public class FOPProcessor implements FOProcessor
     // FOProcessor Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.ui.plugin.FOProcessor#initialize()
-     */
     public void initialize()
     {
         // Common
@@ -52,19 +52,11 @@ public class FOPProcessor implements FOProcessor
         psDriver_.setRenderer(Driver.RENDER_PS);
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.FOProcessor#
-     *      renderToPDF(java.io.File, java.io.File)
-     */
     public void renderPDF(File foFile, File pdfFile) throws Exception
     {
         renderPDF(new FileInputStream(foFile), new FileOutputStream(pdfFile));
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.FOProcessor#
-     *      render2PDF(java.io.InputStream, java.io.OutputStream)
-     */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
     {
@@ -83,9 +75,6 @@ public class FOPProcessor implements FOProcessor
         }
     }
     
-    /**
-     * @see toolbox.util.xslfo.FOProcessor#renderToPDF(java.lang.String)
-     */
     public byte[] renderPDF(String foXML) throws Exception
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -93,10 +82,6 @@ public class FOPProcessor implements FOProcessor
         return baos.toByteArray();
     }
 
-    /**
-     * @see toolbox.util.xslfo.FOProcessor
-     *      #renderPostscript(java.io.InputStream, java.io.OutputStream)
-     */    
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
     {

@@ -12,7 +12,9 @@ import toolbox.util.FileUtil;
 import toolbox.util.StreamUtil;
 
 /**
- * Interface to access the RenderX XSLFO processor
+ * FOPProcessor is a concrete implementation of a 
+ * {@link FOProcessor <b>FO</b>Processor} specific to the RenderX implementation
+ * of formatting objects called  <a href=http://www.renderx.com>XEP</a>. 
  */
 public class XEPProcessor implements FOProcessor
 {
@@ -20,29 +22,18 @@ public class XEPProcessor implements FOProcessor
     // FOProcessor Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.ui.plugin.FOProcessor#initialize()
-     */
     public void initialize()
     {
-        // Get rid of this
+        // TODO: Get rid of XEP absolute key
         System.setProperty("com.renderx.xep.ROOT", "C:\\dev\\XEP");
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.FOProcessor#
-     *      renderToPDF(java.io.File, java.io.File)
-     */
     public void renderPDF(File foFile, File pdfFile) throws Exception
     {
         XSLDriver.main(new String[] { 
             "-fo", foFile.getAbsolutePath(), pdfFile.getAbsolutePath() } );
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.FOProcessor#
-     *      render2PDF(java.io.InputStream, java.io.OutputStream)
-     */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
         throws Exception
     {
@@ -56,9 +47,6 @@ public class XEPProcessor implements FOProcessor
         pdfStream.close();
     }
     
-    /**
-     * @see toolbox.util.xslfo.FOProcessor#renderToPDF(java.lang.String)
-     */
     public byte[] renderPDF(String foXML) throws Exception
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -66,14 +54,9 @@ public class XEPProcessor implements FOProcessor
         return baos.toByteArray();
     }
     
-    /**
-     * @see toolbox.util.xslfo.FOProcessor
-     *      #renderPostscript(java.io.InputStream, java.io.OutputStream)
-     */
     public void renderPostscript(InputStream foStream, OutputStream psStream)
         throws Exception
     {
         // to do 
     }
-
 }

@@ -46,20 +46,25 @@ import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * XSL-FO Plugin
- * 
- * <pre>
- * 
- * o formats XML
- * o transforms XSL-FO to PDF and views with embedded PDF viewer
- * o transforms XSL-FO and renders output directly to a GUI
- * 
- * TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
- * </pre>
- * 
+ * XSLFO Plugin is a simple GUI interface to edit, process and view transformed
+ * XSL-FO documents.
+ * <p>
+ * Features:
+ * <p>
+ * <ul>
+ * <li>user selectable FO implementation (Apache FOP or RenderX XEP)
+ * <li>user selectable output format (PDF or Postscript)
+ * <li>user selectable viewer  (Embedded PDF viewer or can launch Acrobat)
+ * <li>XML editor is capable of syntax-hiliting and formatting the XML for
+ *     increased legibility
+ * </ul>
  */ 
 public class XSLFOPlugin extends JPanel implements IPlugin
 {
+    /*  
+     * TODO: Create XMLDefaults ala JavaDefaults for JEditTextArea and refactor
+     */
+
     private static final Logger logger_ = 
         Logger.getLogger(XSLFOPlugin.class);
 
@@ -67,9 +72,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     private static final String PREFS_PREFIX =  
         ClassUtil.stripPackage(XSLFOPlugin.class.getName()).toLowerCase();
         
-    /**
-     * Flip panel that houses the file explorer 
-     */
+    /** Flip panel that houses the file explorer */
     private JFlipPane flipPane_;    
     
     /** Shared status bar with plugin host */
@@ -333,41 +336,26 @@ public class XSLFOPlugin extends JPanel implements IPlugin
     //  IPlugin Interface
     //--------------------------------------------------------------------------
     
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getName()
-     */
     public String getName()
     {
         return "XSL-FO";
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getComponent()
-     */
     public Component getComponent()
     {
         return this;
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
-     */
     public JMenuBar getMenuBar()
     {
         return null;
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#init()
-     */
     public void init()
     {
         buildView();
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
-     */
     public void savePrefs(Properties prefs)
     {
         explorer_.savePrefs(prefs, PREFS_PREFIX);
@@ -377,9 +365,6 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             prefs.setProperty("xslfoplugin.acrobat.path", acrobatPath_);
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
-     */
     public void applyPrefs(Properties prefs)
     {
         explorer_.applyPrefs(prefs, PREFS_PREFIX);
@@ -388,17 +373,11 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         acrobatPath_ = prefs.getProperty("xslfoplugin.acrobat.path", null);
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#setStatusBar(IStatusBar)
-     */
     public void setStatusBar(IStatusBar statusBar)
     {
         statusBar_ = statusBar;
     }
 
-    /**
-     * @see toolbox.util.ui.plugin.IPlugin#shutdown()
-     */
     public void shutdown()
     {
         if (viewer_ != null)
@@ -668,12 +647,6 @@ public class XSLFOPlugin extends JPanel implements IPlugin
                     
                     getFOP().renderPostscript(
                         new StringInputStream(xmlArea_.getText()), fos);
-
-//                  getFOP().renderPostscript(
-//                      new FileInputStream(
-//                        "c:\\documents and settings\\administrator\\my documents\\_fopui_raw.xml"), 
-//                        fos);
-                        
                 }
                 
                 lastDir_ = chooser.getCurrentDirectory();
