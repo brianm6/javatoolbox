@@ -22,11 +22,14 @@ public class EvictingList
     /**
      * Creates an EvictingList
      * 
-     * @param  max  Maximum size of the list before elements start getting
-     *              evicted
+     * @param  max  Maximum size of the list before elements start getting 
+     *              bumped off. Must be > 0.
      */
     public EvictingList(int max)
     {
+        if (max <=0)
+            throw new IllegalArgumentException("List size must be > 0");
+            
         max_ = max;
         list_ = new ArrayList(max_);
     }
@@ -38,20 +41,11 @@ public class EvictingList
     public void add(Object element)
     {
         if (list_.size() == max_)
-            makeRoom();
+            list_.remove(max_ - 1);
             
         list_.add(0, element);
     }
 
-    //--------------------------------------------------------------------------
-    // Protected
-    //--------------------------------------------------------------------------
-
-    protected void makeRoom()
-    {
-        list_.remove(max_ - 1);
-    }
-    
     //--------------------------------------------------------------------------
     // Delegations
     //--------------------------------------------------------------------------
