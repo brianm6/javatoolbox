@@ -356,6 +356,15 @@
     </dependency>
 
     <dependency>
+      <id>forms</id>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+      </properties>
+      <version>LATEST</version>
+      <url>https://forms.dev.java.net</url>
+    </dependency>
+      
+    <dependency>
       <id>hamsam</id>
       <properties/>
       <version>LATEST</version>

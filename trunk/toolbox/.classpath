@@ -33,6 +33,7 @@
 	<classpathentry sourcepath="lib/cvslib.jar" kind="lib" path="lib/cvslib.jar"/>
 	<classpathentry kind="lib" path="lib/fhlaf.jar"/>
 	<classpathentry sourcepath="lib/src/fop-src.zip" kind="lib" path="lib/fop.jar"/>
+	<classpathentry sourcepath="lib/src/forms-src.zip" kind="lib" path="lib/forms.jar"/>
 	<classpathentry sourcepath="lib/src/hamsam-src.zip" kind="lib" path="lib/hamsam.jar"/>
 	<classpathentry kind="lib" path="lib/hippolf.jar"/>
 	<classpathentry sourcepath="lib/src/hsqldb-src.zip" kind="lib" path="lib/hsqldb.jar"/>

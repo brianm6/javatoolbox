@@ -382,6 +382,7 @@ Commands:
                 <include name="statcvs.jar"/>
                 <include name="l2fprod-common.jar"/>
                 <include name="concurrent.jar"/>
+                <include name="forms.jar"/>
 
                 <!-- Doc viewer plugin -->
                 <include name="calphahtml.jar"/>
