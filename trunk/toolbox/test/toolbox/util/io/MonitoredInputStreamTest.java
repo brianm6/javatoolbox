@@ -60,7 +60,7 @@ public class MonitoredInputStreamTest extends TestCase
     {
         logger_.info("Running testCurrentThroughput...");
         
-        String data = StringUtils.repeat("*", 2000000);
+        String data = StringUtils.repeat("*", 200000);
 
         Bandwidth bandwidth = 
             new Bandwidth(33000, 33000, Bandwidth.TYPE_RECEIVED);
