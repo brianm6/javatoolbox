@@ -108,6 +108,8 @@ public class RegexLineFilter extends AbstractLineFilter
      */
     public void setMatchCase(boolean matchCase) 
     {
+        matchCase_ = matchCase;
+        
         if (!matchCase_)
             regExp_.setMatchFlags(RE.MATCH_CASEINDEPENDENT);
         else
