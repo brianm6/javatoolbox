@@ -35,7 +35,7 @@ class ThreadSafeTableModel extends DefaultTableModel
     {
         super(i, j);
     }
- 
+
     public ThreadSafeTableModel(Vector vector, int i)
     {
         super(vector, i);
@@ -43,7 +43,7 @@ class ThreadSafeTableModel extends DefaultTableModel
 
     public ThreadSafeTableModel(Object aobj[], int i)
     {
-        this(convertToVector(aobj), i);
+        this(DefaultTableModel.convertToVector(aobj), i);
     }
 
     public ThreadSafeTableModel(Vector vector, Vector vector1)
