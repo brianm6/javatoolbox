@@ -1,5 +1,6 @@
 package toolbox.util.ui;
 
+import java.awt.Graphics;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -8,13 +9,15 @@ import javax.swing.filechooser.FileSystemView;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
 /**
  * JSmartFileChooser can remember the last chosen directory.
  */
-public class JSmartFileChooser extends JFileChooser implements IPreferenced
+public class JSmartFileChooser extends JFileChooser 
+    implements IPreferenced, AntiAliased
 {
     //--------------------------------------------------------------------------
     // IPreferenced Constants
@@ -22,6 +25,12 @@ public class JSmartFileChooser extends JFileChooser implements IPreferenced
     
     private static final String NODE_JFILECHOOSER = "JFileChooser";
     private static final String ATTR_LAST_DIRECTORY = "lastDirectory";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private boolean antiAliased_ = SwingUtil.getDefaultAntiAlias();
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -123,4 +132,38 @@ public class JSmartFileChooser extends JFileChooser implements IPreferenced
 
         XOMUtil.insertOrReplace(prefs, root);
     }    
+    
+    //--------------------------------------------------------------------------
+    // AntiAliased Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.util.ui.AntiAliased#isAntiAliased()
+     */
+    public boolean isAntiAliased()
+    {
+        return antiAliased_;
+    }
+
+
+    /**
+     * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
+     */
+    public void setAntiAliased(boolean b)
+    {
+        antiAliased_ = b;
+    }
+
+    //--------------------------------------------------------------------------
+    // Overrides JComponent
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     */
+    public void paintComponent(Graphics gc)
+    {
+        SwingUtil.makeAntiAliased(gc, isAntiAliased());
+        super.paintComponent(gc);
+    }
 }
