@@ -14,7 +14,7 @@ import toolbox.util.io.RegexFilterReader;
  */
 public class RegexFilterReaderTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(RegexFilterReaderTest.class);
         
@@ -51,20 +51,16 @@ public class RegexFilterReaderTest extends TestCase
      * 
      * @throws Exception on error
      */
-    public void testRegexReader() throws Exception
+    public void testReadLine() throws Exception
     {
-        logger_.info("Running testRegexReader...");
+        logger_.info("Running testReadLine...");
         
         String data = "one\ntwo\nthree\nfour\n";
         
         StringReader sr = new StringReader(data);
         RegexFilterReader rr = new RegexFilterReader(sr, "three", true);
         
-        String result;
-        
-        while( (result = rr.readLine()) != null)
-        {
-            logger_.info("result=" + result);            
-        }
+        assertEquals("three", rr.readLine());
+        assertNull(rr.readLine());
     }
 }
