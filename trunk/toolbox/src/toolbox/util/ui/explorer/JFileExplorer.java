@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -50,6 +49,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.list.JSmartList;
@@ -578,7 +578,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         File[] files = 
             new File(pathToAddFolders).listFiles(new DirectoryFilter());
             
-        Arrays.sort(files, new FileComparator());
+        Arrays.sort(files, new FileComparator(FileComparator.COMPARE_NAME));
         String[] fileList = new String[files.length];
 
         for (int i = 0; i < files.length; i++)
@@ -599,7 +599,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         listModel_.clear();
         File f = new File(path);
         File[] files = f.listFiles(new FileFilter());
-        Arrays.sort(files, new FileComparator());
+        Arrays.sort(files, new FileComparator(FileComparator.COMPARE_NAME));
         
         for (int i = 0; i < files.length; i++)
             listModel_.addElement(files[i].getName());
@@ -728,19 +728,6 @@ public class JFileExplorer extends JPanel implements IPreferenced
         }
     }
     
-    /**
-     * Compares file names for sorting.
-     */
-    class FileComparator implements Comparator
-    {
-        public int compare(Object a, Object b)
-        {
-            File fileA = (File) a;
-            File fileB = (File) b;
-            return fileA.getName().compareToIgnoreCase(fileB.getName());
-        }
-    }
-
     /**
      * Inner class for rendering our own display for the Roots drop down menu.
      */
