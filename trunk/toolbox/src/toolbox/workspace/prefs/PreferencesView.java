@@ -22,7 +22,6 @@ import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 
-
 /**
  * Workspace preferences dialog box.
  */
