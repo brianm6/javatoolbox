@@ -507,7 +507,8 @@ public class JFindClass extends JFrame
         {
             List targets = findClass_.getArchivesInDir(new File(folder));
             
-            logger_.info("Found " + targets.size() + " targets to add");
+            statusBar_.setStatus(
+                targets.size() + "archives added to the search list.");
             
             Iterator i = targets.iterator();
             
@@ -516,6 +517,8 @@ public class JFindClass extends JFrame
                 String target = (String) i.next();
                 searchListModel_.addElement(target);
             }
+            
+            searchListModel_.addElement(folder);
         }
  
         /**
