@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import tool.ExtractText;
+import tool.doc.ExtractText;
 
 import toolbox.util.FileUtil;
 import toolbox.util.collections.CaseInsensetiveSet;
