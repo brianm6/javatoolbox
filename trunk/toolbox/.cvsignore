@@ -4,3 +4,4 @@ dist
 targets
 javadoc.xml
 test
+*.*~
