@@ -10,11 +10,11 @@ import java.awt.Point;
 public interface IJTailConfig
 {
     /**
-     * Returns the defaultFont.
+     * Returns the default tail pane configuration
      * 
-     * @return Font
+     * @return ITailPaneConfiguration
      */
-    public Font getDefaultFont();
+    public ITailPaneConfig getDefaultConfig();
 
     /**
      * Returns the location.
@@ -45,11 +45,11 @@ public interface IJTailConfig
     public void setDirectory(String directory);
 
     /**
-     * Sets the defaultFont.
+     * Sets the default tail pane configuration
      * 
-     * @param defaultFont The defaultFont to set
+     * @param defaultTailPaneConfig  The default tail pane configuration
      */
-    public void setDefaultFont(Font defaultFont);
+    public void setDefaultConfig(ITailPaneConfig config);
 
     /**
      * Sets the location.
@@ -70,54 +70,13 @@ public interface IJTailConfig
      * 
      * @return ITailPaneConfig[]
      */
-    public ITailPaneConfig[] getTailPaneConfigs();
+    public ITailPaneConfig[] getTailConfigs();
 
     /**
      * Sets the tailPaneConfigs.
      * 
      * @param tailPaneConfigs The tailPaneConfigs to set
      */
-    public void setTailPaneConfigs(ITailPaneConfig[] tailPaneConfigs);
+    public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs);
     
-    /**
-     * Returns the autoScroll.
-     * 
-     * @return boolean
-     */
-    public boolean getDefaultAutoScroll();
-
-    /**
-     * Returns the filter.
-     * 
-     * @return String
-     */
-    public String getDefaultFilter();
-
-    /**
-     * Returns the showLineNumbers.
-     * 
-     * @return boolean
-     */
-    public boolean getDefaultShowLineNumbers();
-
-    /**
-     * Sets the autoScroll.
-     * 
-     * @param autoScroll The autoScroll to set
-     */
-    public void setDefaultAutoScroll(boolean autoScroll);
-
-    /**
-     * Sets the filter.
-     * 
-     * @param filter The filter to set
-     */
-    public void setDefaultFilter(String filter);
-
-    /**
-     * Sets the showLineNumbers.
-     * 
-     * @param showLineNumbers The showLineNumbers to set
-     */
-    public void setDefaultShowLineNumbers(boolean showLineNumbers);
 }
