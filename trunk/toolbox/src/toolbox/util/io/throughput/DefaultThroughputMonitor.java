@@ -63,7 +63,7 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
 
 	/**
 	 * @see toolbox.util.io.throughput.ThroughputMonitor#addThroughputListener(
-     *      toolbox.util.io.monitored.ThroughputListener)
+     *      toolbox.util.io.throughput.ThroughputListener)
 	 */
 	public void addThroughputListener(ThroughputListener listener) 
     {
@@ -74,7 +74,7 @@ public class DefaultThroughputMonitor implements ThroughputMonitor {
 	/**
 	 * @see toolbox.util.io.throughput.ThroughputMonitor
      *      #removeThroughputListener(
-     *      toolbox.util.io.monitored.ThroughputListener)
+     *      toolbox.util.io.throughput.ThroughputListener)
 	 */
 	public void removeThroughputListener(ThroughputListener listener) 
     {
