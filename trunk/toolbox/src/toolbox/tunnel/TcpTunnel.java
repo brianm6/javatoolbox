@@ -25,7 +25,7 @@ import toolbox.util.io.PrintableOutputStream;
  * the intended recipient. This allows a view into a "real time" window
  * of the data being sent back and forth. Very useful for socket level
  * degugging.
- * <pre>
+ * <pre class="snippet">
  *
  * Without Tunnel:
  *
@@ -67,18 +67,18 @@ import toolbox.util.io.PrintableOutputStream;
  *                 |     write    |            |
  *                 |<-------------|            |
  *                 |              |            |
- *
+ * </pre>
  *
  * Sequence of events:
- *
- * 1. socket client connects to TcpTunnel (localhost:port)
- * 2. TcpTunnel connects to remote host (remotehost:remoteport)
- * 3. socket client sends request to TcpTunnel
- * 4. TcpTunnel dumps request to screen and forwards to remote host
- * 5. Remote host receives request and replies to TcpTunnel
- * 6. TcpTunnel dumps response to screen and forwards to socket client
- * 7. Socket client receives response and processes as normal
- * </pre>
+ * <ol>
+ *   <li>socket client connects to TcpTunnel (localhost:port)
+ *   <li>TcpTunnel connects to remote host (remotehost:remoteport)
+ *   <li>socket client sends request to TcpTunnel
+ *   <li>TcpTunnel dumps request to screen and forwards to remote host
+ *   <li>Remote host receives request and replies to TcpTunnel
+ *   <li>TcpTunnel dumps response to screen and forwards to socket client
+ *   <li>Socket client receives response and processes as normal
+ * </ol>
  */
 public class TcpTunnel implements TcpTunnelListener
 {
