@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -448,7 +449,7 @@ public class JFindClass extends JFrame
          */
         public void folderDoubleClicked(String folder)
         {
-            findClass_.addSearchTarget(folder);
+            findClass_.addSearchTarget(new File(folder));
             syncPathModel();
         }
  
