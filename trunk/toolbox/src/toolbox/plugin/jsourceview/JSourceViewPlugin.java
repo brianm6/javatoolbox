@@ -71,6 +71,7 @@ public class JSourceViewPlugin implements IPlugin
      */
     public void setStatusBar(IStatusBar statusBar)
     {
+        sourceView_.setStatusBar(statusBar);
     }
 
     /**
