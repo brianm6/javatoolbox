@@ -95,6 +95,7 @@
       <action type="add   ">Util - Added emphasis of monospaced fonts to JFontChooser</action>
       <action type="add   ">Util - Added ability to render font names in the listbox using the font itself in JFontChooser</action>
       <action type="add   ">Util - Added JSmartDialog. Persists size, location, and esc key is bound to dispose.</action>
+      <action type="add   ">Util - Added convenience methods to PreferenceUtil to save/restore bounds for a component</action>
     </release>
     
     <release version="2.0" date="July 2004">
