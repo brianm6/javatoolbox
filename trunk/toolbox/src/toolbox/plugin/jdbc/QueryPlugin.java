@@ -134,61 +134,39 @@ import toolbox.workspace.PluginWorkspace;
  * 
  * @see toolbox.util.JDBCUtil
  */
-public class QueryPlugin extends JPanel implements IPlugin
+public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
 {
     public static final Logger logger_ = Logger.getLogger(QueryPlugin.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
-    //--------------------------------------------------------------------------
-
-    /**
-     * Root preferences element for the query plugin.
-     */
-    public static final String NODE_QUERY_PLUGIN = "QueryPlugin";
-
-    /**
-     * Attribute of QueryPlugin that stores the max number of entries in the sql
-     * history popup menu before getting truncated.
-     */
-    public static final String ATTR_HISTORY_MAX = "maxHistory";
-
-    /**
-     * Child of QueryPlugin that contains a single "remembered" SQL stmt.
-     */
-    public static final String NODE_HISTORY_ITEM = "HistoryItem";
-
-    //--------------------------------------------------------------------------
-    // Constants
+    // JavaBean Fields
     //--------------------------------------------------------------------------
     
     /**
-     * Terminator character for SQL statements is a semicolon.
+     * Flag to send error messages to the console. Defaults to true.
      */
-    public static final char SQL_TERMINATOR = ';';
-    
-    /**
-     * The number of lines that must be contained in a given resultset before
-     * the output textarea will autoscroll to the end.
-     */
-    public static final int AUTO_SCROLL_THRESHOLD = 50;
-    
-    /**
-     * List of javabean properties that are persisted.
-     */
-    public static final String[] SAVED_PROPS = 
-        new String[] {"sendErrorToConsole"};
+    private boolean sendErrorToConsole_;
 
     /**
-     * Name of the card in the results panel associated with the results text 
-     * area.
+     * Flag to continue executing SQL statements in batch regardless of any
+     * failures. Defaults to false.
      */
-    private static final String CARD_TEXTAREA = "resultsTextArea";
+    private boolean continueOnError_;
 
     /**
-     * Name of the card in the results panel associated with the results table.
+     * Max number of items on the sql history menu. Defaults to 10.
      */
-    private static final String CARD_TABLE = "resultsTable";
+    private int maxHistory_;
+    
+    /**
+     * SQL terminator defaults to ';' 
+     */
+    private String sqlTerminator_;
+    
+    /**
+     * Number of lines of output necessary for autoscroll. Defaults to 50.
+     */
+    private int autoScrollThreshold_;
     
     //--------------------------------------------------------------------------
     // Fields
@@ -245,11 +223,6 @@ public class QueryPlugin extends JPanel implements IPlugin
     private DBPrefsView prefsView_;
     
     /**
-     * Flag to send error messages to the console.
-     */
-    private boolean sendErrorToConsole_;
-
-    /**
      * Database benchmark.
      */
     private DBBenchmark benchmark_;
@@ -283,7 +256,11 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     public QueryPlugin()
     {
-        sendErrorToConsole_ = true;
+        setSendErrorToConsole(true);
+        setContinueOnError(false);
+        setMaxHistory(10);
+        setSqlTerminator(";");
+        setAutoScrollThreshold(50);
     }
 
     //--------------------------------------------------------------------------
@@ -343,29 +320,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         formatter_ = formatter;
     }
-    
-    
-    /**
-     * Returns the sendErrorToConsole.
-     * 
-     * @return boolean
-     */
-    public boolean isSendErrorToConsole()
-    {
-        return sendErrorToConsole_;
-    }
 
-
-    /**
-     * Sets the sendErrorToConsole.
-     * 
-     * @param sendErrorToConsole The sendErrorToConsole to set.
-     */
-    public void setSendErrorToConsole(boolean sendErrorToConsole)
-    {
-        sendErrorToConsole_ = sendErrorToConsole;
-    }
-    
     
     /**
      * Returns the currently selected database profile.
@@ -801,7 +756,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             
             // Find first semicolon after the caret and let that be our sql
             // statement terminator
-            int semi = all.indexOf(SQL_TERMINATOR, caret);
+            int semi = all.indexOf(sqlTerminator_, caret);
 
             if (semi >= 0)
             {
@@ -813,7 +768,7 @@ public class QueryPlugin extends JPanel implements IPlugin
 
                 for (begin = caret - 1; begin >= 0; begin--)
                 {
-                    if (all.charAt(begin) == SQL_TERMINATOR)
+                    if (all.charAt(begin) == sqlTerminator_.charAt(0))
                     {
                         break;
                     }
@@ -904,8 +859,10 @@ public class QueryPlugin extends JPanel implements IPlugin
                 NODE_QUERY_PLUGIN,
                 new Element(NODE_QUERY_PLUGIN));
 
-        sqlMenu_.setCapacity(XOMUtil.getInteger(
-            root.getFirstChildElement(ATTR_HISTORY_MAX), 10));
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+        prefsView_.setPlugin(this);
+        
+        sqlMenu_.setCapacity(getMaxHistory());
 
         Elements historyItems = root.getChildElements(NODE_HISTORY_ITEM);
 
@@ -927,8 +884,6 @@ public class QueryPlugin extends JPanel implements IPlugin
         // Update the db benchmark configuration view
         benchmark_.applyPrefs(root);
         benchmarkView_.setBenchmark(benchmark_);
-        
-        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
     }
 
 
@@ -939,6 +894,8 @@ public class QueryPlugin extends JPanel implements IPlugin
     {
         Element root = new Element(NODE_QUERY_PLUGIN);
 
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        
         for (Iterator i = new ArrayIterator(sqlMenu_.getMenuComponents()); 
             i.hasNext();)
         {
@@ -964,10 +921,122 @@ public class QueryPlugin extends JPanel implements IPlugin
         areaSplitPane_.savePrefs(root);
         formatter_.savePrefs(root);
         benchmark_.savePrefs(root);
-        
-        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
 
         XOMUtil.insertOrReplace(prefs, root);
+    }
+    
+    
+    //--------------------------------------------------------------------------
+    // JavaBean Accessors/Mutators
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the sendErrorToConsole.
+     * 
+     * @return boolean
+     */
+    public boolean isSendErrorToConsole()
+    {
+        return sendErrorToConsole_;
+    }
+
+
+    /**
+     * Sets the sendErrorToConsole.
+     * 
+     * @param sendErrorToConsole The sendErrorToConsole to set.
+     */
+    public void setSendErrorToConsole(boolean sendErrorToConsole)
+    {
+        sendErrorToConsole_ = sendErrorToConsole;
+    }
+
+    
+    /**
+     * Returns the continueOnError.
+     * 
+     * @return boolean
+     */
+    public boolean isContinueOnError()
+    {
+        return continueOnError_;
+    }
+
+
+    /**
+     * Sets the continueOnError.
+     * 
+     * @param continueOnError The continueOnError to set.
+     */
+    public void setContinueOnError(boolean continueOnError)
+    {
+        continueOnError_ = continueOnError;
+    }
+
+
+    /**
+     * Returns the maxHistory.
+     * 
+     * @return int
+     */
+    public int getMaxHistory()
+    {
+        return maxHistory_;
+    }
+
+
+    /**
+     * Sets the maxHistory.
+     * 
+     * @param maxHistory The maxHistory to set.
+     */
+    public void setMaxHistory(int maxHistory)
+    {
+        maxHistory_ = maxHistory;
+    }
+
+
+    /**
+     * Returns the autoScrollThreshold.
+     * 
+     * @return int
+     */
+    public int getAutoScrollThreshold()
+    {
+        return autoScrollThreshold_;
+    }
+
+
+    /**
+     * Sets the autoScrollThreshold.
+     * 
+     * @param autoScrollThreshold The autoScrollThreshold to set.
+     */
+    public void setAutoScrollThreshold(int autoScrollThreshold)
+    {
+        autoScrollThreshold_ = autoScrollThreshold;
+    }
+
+
+    /**
+     * Returns the sqlTerminator.
+     * 
+     * @return String
+     */
+    public String getSqlTerminator()
+    {
+        return sqlTerminator_;
+    }
+
+
+    /**
+     * Sets the sqlTerminator.
+     * 
+     * @param sqlTerminator The sqlTerminator to set.
+     */
+    public void setSqlTerminator(String sqlTerminator)
+    {
+        sqlTerminator_ = sqlTerminator;
     }
     
     //--------------------------------------------------------------------------
@@ -1014,4 +1083,6 @@ public class QueryPlugin extends JPanel implements IPlugin
             resultsLayout_.next(resultsCardPanel_);
         }
     }
+    
+
 }
