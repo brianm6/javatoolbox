@@ -608,7 +608,7 @@ public class PluginDialog extends JDialog
             legitPlugins.add(new PluginMeta(
                 "toolbox.plugin.texttools.TextToolsPlugin"));
             legitPlugins.add(new PluginMeta(
-                "toolbox.plugin.pdf.PDFPlugin"));
+                "toolbox.plugin.docviewer.DocumentViewerPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.plugin.tunnel.TunnelPlugin"));
             legitPlugins.add(new PluginMeta(
