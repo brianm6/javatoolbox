@@ -8,7 +8,10 @@ import edu.uci.ics.jung.visualization.Layout;
 import edu.uci.ics.jung.visualization.SpringLayout;
 import edu.uci.ics.jung.visualization.graphdraw.SettableRenderer;
 
+import org.apache.log4j.Logger;
+
 import toolbox.graph.GraphView;
+import toolbox.util.ThreadUtil;
 import toolbox.util.ui.Colors;
 
 /**
@@ -16,6 +19,8 @@ import toolbox.util.ui.Colors;
  */
 public class JungGraphView implements GraphView
 {
+    private static final Logger logger_ = Logger.getLogger(JungGraphView.class);
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -38,6 +43,8 @@ public class JungGraphView implements GraphView
     {
         Graph g = (Graph) graph.getDelegate();
         delegate_ = new GraphDraw(g);
+        
+        delegate_.showStatus();
         
         //Layout layout = new DAGLayout(g);
         //Layout layout = new SpringLayout(g);
@@ -79,8 +86,6 @@ public class JungGraphView implements GraphView
         //delegate_.setBackground(Colors.light_steel_blue);
         //sr.setLightDrawing(false);
         renderer.setEdgeColor(Colors.black);
-        
-        
     }
 
     //--------------------------------------------------------------------------
@@ -103,6 +108,26 @@ public class JungGraphView implements GraphView
     {
         Layout l = (Layout) layout.getDelegate();
         delegate_.setGraphLayout(l);
-        delegate_.repaint();
+        
+//        SettableRenderer renderer = (SettableRenderer) delegate_.getRenderer();
+//        renderer.setLightDrawing(false);
+//        //renderer.setEdgeThickness(2);
+//        renderer.setVertexBGColor(Colors.dark_orange);
+//        //srenderer.setVertexForegroundColor(Colors.whitesmoke);
+//        //delegate_.setBackground(Colors.light_steel_blue);
+//        //sr.setLightDrawing(false);
+//        renderer.setEdgeColor(Colors.black);
+        
+        //delegate_.repaint();
+        //delegate_.resetRenderer();
+        delegate_.getVisualizationViewer().stop();
+        
+        while (delegate_.getVisualizationViewer().isVisRunnerRunning())
+        {
+            logger_.debug("Waiting for vis runner to stop...");
+            ThreadUtil.sleep(1000);
+        }
+        
+        delegate_.restartLayout();
     }
 }
