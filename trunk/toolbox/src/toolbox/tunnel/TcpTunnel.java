@@ -104,20 +104,31 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     private static final String NAME_STREAM_OUT = "tunnel --> server";
 
-    
+    /**
+     * IPreferenced root node.
+     */
     public static final String NODE_TCPTUNNEL = "TCPTunnel";
     
+    // Javaabean properties
     public static final String PROP_SUPPRESS_BINARY = "suppressBinary";
     public static final String PROP_REMOTE_PORT = "remotePort";
     public static final String PROP_REMOTE_HOST = "remoteHost";
     public static final String PROP_LOCAL_PORT = "localPort";
     
+    /**
+     * Java bean properties that are saved via the IPreferenced interface.
+     */
     public static final String[] SAVED_PROPS = {
         PROP_LOCAL_PORT,
         PROP_REMOTE_HOST,
         PROP_REMOTE_PORT,
         PROP_SUPPRESS_BINARY 
     };
+    
+    /**
+     * Substitution character used to suppress printout of non-ascii characters.
+     */
+    private static final String SUBSTITUTION_CHAR = ".";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -315,36 +326,67 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     }
 
     
+    /**
+     * Returns the port on the local machine where the tunnel is listening for
+     * connections to route to a remote machine.
+     * 
+     * @return int
+     */
     public int getLocalPort()
     {
         return localPort_;
     }
 
 
+    /**
+     * Sets the local port number that the tunnel is listening on.
+     * 
+     * @param localPort Local port number.
+     */
     public void setLocalPort(int localPort)
     {
         localPort_ = localPort;
     }
 
 
+    /**
+     * Returns the hostname of the remote machine to tunnel connections to.
+     * 
+     * @return String
+     */
     public String getRemoteHost()
     {
         return remoteHost_;
     }
 
 
+    /**
+     * Sets the hostname of the remote machine to tunnel connections to.
+     * 
+     * @param remoteHost Remote host.
+     */
     public void setRemoteHost(String remoteHost)
     {
         remoteHost_ = remoteHost;
     }
 
 
+    /**
+     * Returns the port on the remote machine to tunnel connections to.
+     * 
+     * @return int
+     */
     public int getRemotePort()
     {
         return remotePort_;
     }
 
 
+    /**
+     * Sets the port on the remote machine to tunnel connections to.
+     * 
+     * @param remotePort Remote port.
+     */
     public void setRemotePort(int remotePort)
     {
         remotePort_ = remotePort;
@@ -425,7 +467,9 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
 
                         printableOutgoingSink_ =
                             new PrintableOutputStream(
-                                outgoingSink_, supressBinary_, ".");
+                                outgoingSink_, 
+                                supressBinary_, 
+                                SUBSTITUTION_CHAR);
 
                         outStreams.addStream(printableOutgoingSink_);
 
@@ -445,7 +489,9 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
 
                         printableIncomingSink_ =
                             new PrintableOutputStream(
-                                incomingSink_, supressBinary_, ".");
+                                incomingSink_, 
+                                supressBinary_, 
+                                SUBSTITUTION_CHAR);
 
                         inStreams.addStream(printableIncomingSink_);
 

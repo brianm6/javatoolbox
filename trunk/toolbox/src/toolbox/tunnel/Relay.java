@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
  * A Relay transfers bytes from an InputStream to an OutputStream
  * asynchronously.
  * 
- * @see TcpTunnel
+ * @see toolbox.tunnel.TcpTunnel
  */
 public class Relay implements Runnable
 {
