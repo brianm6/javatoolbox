@@ -42,6 +42,20 @@ public class StringOutputStreamTest extends TestCase
     //--------------------------------------------------------------------------
     //  Unit Tests
     //--------------------------------------------------------------------------
+       
+    /**
+     * Tests the constructors
+     */
+    public void testConstructors()
+    {
+        logger_.info("Running testConstructors...");
+        
+        StringOutputStream sos = new StringOutputStream();
+        StringOutputStream sos2 = new StringOutputStream(1024);
+        
+        assertNotNull(sos);
+        assertNotNull(sos2);
+    }
         
     /**
      * Tests the write() method
@@ -59,6 +73,23 @@ public class StringOutputStreamTest extends TestCase
         sos.write(testString.getBytes());
         
         assertEquals("strings don't match", testString, sos.toString());
+    }
+    
+    /**
+     * Tests the close() method
+     * 
+     * @throws Exception on error
+     */
+    public void testClose() throws Exception
+    {
+        logger_.info("Running testClose...");
+        
+        StringOutputStream sos = new StringOutputStream();
+        sos.close();
+        
+        StringOutputStream sos2 = new StringOutputStream();
+        sos2.write("hello".getBytes());
+        sos2.close();
     }
 }
 
