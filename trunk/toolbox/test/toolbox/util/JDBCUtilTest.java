@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.NDC;
 
 import toolbox.showclasspath.Main;
 import toolbox.util.io.StringOutputStream;
@@ -104,6 +105,39 @@ public class JDBCUtilTest extends TestCase
     }
     
 
+    /**
+     * Stress tests init()/shutdown() with connection pooling
+     * 
+     * @throws Exception on error.
+     */
+    public void testStressInitShutdownWithPooling() throws Exception 
+    {
+        NDC.push("wooha!");
+        
+        logger_.info("Running testInitShutdWithPooling...");
+
+        int max = 100;
+        
+        for (int i = 0; i < max; i++) {
+            String table = "table99";
+            String prefix = "JDBCUtilTest-StressInit-" + RandomUtil.nextInt();
+            
+            JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD, true);
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            JDBCUtil.executeUpdate("insert into " + table + " (id)values(99)");
+            JDBCUtil.executeUpdate("update " + table + " set id=999 where id=99");
+            JDBCUtil.executeUpdate("delete from " + table + " where id=999");
+            JDBCUtil.executeQuery("select * from " + table);
+            JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
+            cleanup(prefix);
+            logger_.info("Stress loop : " + i);
+        }
+        
+        NDC.pop();
+    }
+    
+    
     /**
      * Tests init() loading the jdbc driver from a jar file.
      *
