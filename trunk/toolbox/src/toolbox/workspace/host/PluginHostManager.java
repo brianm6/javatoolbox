@@ -21,47 +21,50 @@ import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * Manages multiple plugin hosts and the behavior required to switch between 
+ * Manages multiple plugin hosts and the behavior required to switch between
  * them.
  * <p>
  * <ul>
  *   <li>A recepticle is the only container an external entity (in our case the
  *       PluginWorkspace) needs to expose plugins.
- *   <li>A PluginHostManager manages a single PluginHost.
- *   <li>A PluginHostManager facilitates the dynamic switching out of one 
+ *   <li>A PluginHostManager manages a multiple PluginHosts.
+ *   <li>Only one PluginHost is active at a given time.
+ *   <li>A PluginHostManager facilitates the dynamic switching out of one
  *       PluginHost for another at runtime.
  * </ul>
+ *
+ * @see toolbox.workspace.host.PluginHost
  */
 public class PluginHostManager
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(PluginHostManager.class);
-    
+
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-    
+
     /**
      * Tab panel plugin host.
      */
-    public static final String PLUGIN_HOST_TABBED = 
+    public static final String PLUGIN_HOST_TABBED =
         "toolbox.workspace.host.TabbedPluginHost";
-    
+
     /**
      * Internal frame plugin host.
      */
-    public static final String PLUGIN_HOST_DESKTOP = 
+    public static final String PLUGIN_HOST_DESKTOP =
         "toolbox.workspace.host.DesktopPluginHost";
 
     /**
      * Array of all know plugin host types.
      */
-    public static final String[] pluginHosts_ = new String[] 
-    { 
-        PLUGIN_HOST_TABBED, 
+    public static final String[] pluginHosts_ = new String[]
+    {
+        PLUGIN_HOST_TABBED,
         PLUGIN_HOST_DESKTOP
-    }; 
-    
+    };
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -75,19 +78,19 @@ public class PluginHostManager
      * Wrapper component for the plugin hosts UI 'component'.
      */
     private JComponent recepticle_;
-    
+
     /**
      * Reference to the workspace.
      */
     private PluginWorkspace workspace_;
-    
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a PluginHostManager for the given workspace.
-     * 
+     *
      * @param workspace Parent workspace.
      */
     public PluginHostManager(PluginWorkspace workspace)
@@ -95,25 +98,25 @@ public class PluginHostManager
         workspace_ = workspace;
         recepticle_ = new JPanel(new BorderLayout());
     }
-    
+
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns the UI recepticle for the plugin host.
-     * 
+     *
      * @return JComponent
      */
     public JComponent getPluginRecepticle()
     {
-        return recepticle_;        
+        return recepticle_;
     }
-    
-    
+
+
     /**
      * Returns the currently active plugin host.
-     * 
+     *
      * @return PluginHost
      */
     public PluginHost getPluginHost()
@@ -121,24 +124,24 @@ public class PluginHostManager
         return current_;
     }
 
-    
+
     /**
-     * Creates a plugin hosts given its class name. 
+     * Creates a plugin hosts given its class name.
      * Use PluginHostManager.HOST_* constants.
-     * 
+     *
      * @param pluginHostClass Class name of plugin host to create.
      * @param props Properties map.
      * @throws PluginException on plugin error.
      */
-    public void setPluginHost(String pluginHostClass, Map props) 
+    public void setPluginHost(String pluginHostClass, Map props)
         throws PluginException
     {
         boolean firstTime = (current_ == null);
         PluginHost previous = current_;
-        
+
         try
         {
-            current_ = (PluginHost) 
+            current_ = (PluginHost)
                 Class.forName(pluginHostClass).newInstance();
         }
         catch (InstantiationException e)
@@ -153,7 +156,7 @@ public class PluginHostManager
         {
             throw new PluginException(e);
         }
-        
+
         if (firstTime)
         {
             current_.startup(props);
@@ -166,28 +169,28 @@ public class PluginHostManager
 
         recepticle_.add(current_.getComponent());
     }
-    
-    
+
+
     /**
      * Creates a menu that exposes functionality of the plugin host manager to
      * the user.
-     * 
+     *
      * @return Newly created menu.
      */
     public JMenu createMenu()
     {
         JMenu menu = new JSmartMenu("Plugin Host");
-        
+
         for (int i = 0; i < pluginHosts_.length; i++)
         {
             try
             {
-                PluginHost pluginHost = (PluginHost) 
+                PluginHost pluginHost = (PluginHost)
                     Class.forName(pluginHosts_[i]).newInstance();
-                
+
                 JMenuItem menuItem = new JSmartMenuItem(
                     new ActivatePluginHostAction(pluginHost));
-                
+
                 menu.add(menuItem);
             }
             catch (Exception e)
@@ -195,35 +198,35 @@ public class PluginHostManager
                 ExceptionUtil.handleUI(e, logger_);
             }
         }
-        
+
         return menu;
     }
-    
+
     //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
-    
+
     /**
      * Transfers the assets from one plugin host to another.
-     * 
+     *
      * @param source Plugin host to transfer assets from.
      * @param dest Plugin host to transfer assets to.
      */
     protected void transferAssets(PluginHost source, PluginHost dest)
     {
         logger_.debug(
-            "Transferring " + 
+            "Transferring " +
             source.getPlugins().length + " plugins from " +
-            source.getClass().getName() + " --> " + 
+            source.getClass().getName() + " --> " +
             dest.getClass().getName());
-        
+
         dest.startup(source.getStartupConfig());
-        
+
         //
         // Transfer over the plugins
         //
         IPlugin[] sourcePlugins = source.getPlugins();
-        
+
         for (int i = 0; i < sourcePlugins.length; i++)
         {
             IPlugin plugin = sourcePlugins[i];
@@ -235,20 +238,20 @@ public class PluginHostManager
         // Transfer over the pluginost's listeners
         //
         PluginHostListener[] listeners = source.getPluginHostListeners();
-        
+
         for (int i = 0; i < listeners.length; i++)
         {
             source.removePluginHostListener(listeners[i]);
             dest.addPluginHostListener(listeners[i]);
         }
-        
+
         source.shutdown();
     }
-    
+
     //--------------------------------------------------------------------------
     // ActivatePluginHostAction
     //--------------------------------------------------------------------------
-    
+
     /**
      * Switches out the current PluginHost for the given PluginHost.
      */
@@ -258,20 +261,20 @@ public class PluginHostManager
          * The plugin host to activate.
          */
         private PluginHost newPluginHost_;
-        
-        
+
+
         /**
          * Creates an ActivatePluginHostAction.
-         * 
+         *
          * @param pluginHost Plugin host to activate.
          */
         ActivatePluginHostAction(PluginHost pluginHost)
         {
             super(pluginHost.getName(), false, null, null);
-            newPluginHost_ = pluginHost;    
+            newPluginHost_ = pluginHost;
         }
-        
-        
+
+
         /**
          * @see toolbox.util.ui.SmartAction#runAction(
          *      java.awt.event.ActionEvent)
@@ -279,19 +282,19 @@ public class PluginHostManager
         public void runAction(ActionEvent e) throws Exception
         {
             String selected = newPluginHost_.getClass().getName();
-            
+
             if (selected.equals(current_.getClass().getName()))
             {
                 JSmartOptionPane.showMessageDialog(
                     null, "Plugin host " + selected + " is already active.");
             }
-            
+
             recepticle_.remove(current_.getComponent());
             transferAssets(current_, newPluginHost_);
             recepticle_.add(newPluginHost_.getComponent());
             current_ = newPluginHost_;
             recepticle_.validate();
-            
+
             current_.applyPrefs(workspace_.getPreferences());
         }
     }
