@@ -352,7 +352,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             
             if (StringUtil.isNullOrEmpty(text))
             {
-                statusBar_.setStatus("Nothing to sort.");
+                statusBar_.setInfo("Nothing to sort.");
             }
             else
             {
