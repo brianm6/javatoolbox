@@ -71,7 +71,10 @@ public class EventInputStream extends FilterInputStream
     {
         int c = super.read();
         count_++;
-        fireByteRead(c);
+        
+        if (listeners_.length > 0)
+            fireBytesRead(new byte[] {(byte) c});
+        
         return c;
     }
 
@@ -87,8 +90,8 @@ public class EventInputStream extends FilterInputStream
         {
             count_ += read;
             
-            for (int i = 0; i < read; i++)
-                fireByteRead(b[off + i]);
+            if (listeners_.length > 0)
+                fireBytesRead(ArrayUtil.subset(b, off, off + len - 1));
         }
             
         return read;
@@ -104,6 +107,7 @@ public class EventInputStream extends FilterInputStream
         fireStreamClosed();
     }
 
+    
     //--------------------------------------------------------------------------
     // Event Listener Support
     //--------------------------------------------------------------------------
@@ -116,6 +120,17 @@ public class EventInputStream extends FilterInputStream
     public void addListener(Listener listener)
     {
         listeners_ = (Listener[]) ArrayUtil.add(listeners_, listener);
+    }
+    
+    
+    /**
+     * Removes a Listener from the list of registered stream listeners.
+     * 
+     * @param listener Listener to remove.
+     */
+    public void removeListener(Listener listener)
+    {
+        listeners_ = (Listener[]) ArrayUtil.remove(listeners_, listener);
     }
     
     
@@ -134,10 +149,10 @@ public class EventInputStream extends FilterInputStream
      * 
      * @param b Bytes that was read.
      */
-    protected void fireByteRead(int b)
+    protected void fireBytesRead(byte[] bytes)
     {
         for (int i = 0; i < listeners_.length; i++)
-            listeners_[i].byteRead(this, b);               
+            listeners_[i].bytesRead(this, bytes);               
     }
 
     //--------------------------------------------------------------------------
@@ -196,8 +211,8 @@ public class EventInputStream extends FilterInputStream
          * Notification that data was read from the stream.
          * 
          * @param stream Stream data was read from.
-         * @param b Byte read from the stream.
+         * @param bytes Bytes read from the stream.
          */
-        void byteRead(EventInputStream stream, int b);
+        void bytesRead(EventInputStream stream, byte[] bytes);
     }
 }
