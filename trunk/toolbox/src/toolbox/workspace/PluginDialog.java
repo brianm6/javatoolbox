@@ -82,7 +82,7 @@ public class ManagePluginsDialog extends JDialog
     private DefaultListModel inactiveModel_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -336,12 +336,12 @@ public class ManagePluginsDialog extends JDialog
     /**
      * PluginMeta info used to populate the active/inactive lists
      */
-    class PluginMeta
+    public class PluginMeta
     {
         private String className_;
         private IPlugin plugin_;
 
-        PluginMeta(String pluginClass)
+        public PluginMeta(String pluginClass)
         {
             className_ = pluginClass;
         }
@@ -394,9 +394,9 @@ public class ManagePluginsDialog extends JDialog
         }
     }
     
-    //--------------------------------------------------------------------------
-    // Actions
-    //--------------------------------------------------------------------------
+    //----------------------------------------------------------------------
+    //  Actions
+    //----------------------------------------------------------------------
     
     /**
      * Adds a plugin - moves the plugin from the inactive list to the active 
