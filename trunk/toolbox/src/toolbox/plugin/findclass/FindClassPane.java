@@ -37,6 +37,7 @@ import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
+import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
 /**
@@ -48,15 +49,15 @@ public class JFindClass extends JFrame
     private static final Category logger_ = 
         Category.getInstance(JFindClass.class);
     
-    private JTextField          searchField_;
-    private JButton             searchButton_;
-    private JLabel              statusLabel_;
+    private JTextField           searchField_;
+    private JButton              searchButton_;
+    private JStatusPane          statusBar_;
     
-    private JCheckBox           ignoreCaseCheckBox_;
+    private JCheckBox            ignoreCaseCheckBox_;
     
-    private JList               pathList_;
-    private DefaultListModel    pathModel_;
-    private JFlipPane           flipPane_;
+    private JList                pathList_;
+    private DefaultListModel     pathModel_;
+    private JFlipPane            flipPane_;
     
     private JTable               resultTable_;
     private ThreadSafeTableModel resultTableModel_;
@@ -209,8 +210,9 @@ public class JFindClass extends JFrame
         contentPane.add(splitPane, BorderLayout.CENTER);
 
         // Status bar        
-        statusLabel_ = new JLabel("Enter a regular expression and hit Find!");
-        contentPane.add(statusLabel_, BorderLayout.SOUTH);
+        statusBar_ = new JStatusPane();
+        statusBar_.setStatus("Enter a regular expression and hit Find!");
+        contentPane.add(statusBar_, BorderLayout.SOUTH);
         
         // Post tweaks
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
@@ -259,7 +261,6 @@ public class JFindClass extends JFrame
             
         resultTable_.setDefaultRenderer(resultTable_.getColumnClass(4) , 
             new AlternatingCellRenderer());
-            
     }
 
 
@@ -278,7 +279,7 @@ public class JFindClass extends JFrame
             
             if (StringUtil.isNullOrEmpty(search))
             {
-                setStatus("Enter class to search");
+                statusBar_.setStatus("Enter class to search");
             }
             else
             {
@@ -288,24 +289,13 @@ public class JFindClass extends JFrame
                 Object results[]  = findClass_.findClass(
                     search, ignoreCaseCheckBox_.isSelected());             
                     
-                setStatus(results.length + " matches found");
+                statusBar_.setStatus(results.length + " matches found");
             }
         }
         catch (Exception e)
         {
             JSmartOptionPane.showExceptionMessageDialog(JFindClass.this, e);
         }
-    }
-    
-    
-    /**
-     * Sets the text of the status bar
-     * 
-     * @param  s  Status text
-     */
-    protected void setStatus(String s)
-    {
-        statusLabel_.setText(s);
     }
 
     //
@@ -369,7 +359,7 @@ public class JFindClass extends JFrame
          */
         public void searchingTarget(String target)
         {
-            setStatus("Searching " + target + " ...");
+            statusBar_.setStatus("Searching " + target + " ...");
             pathList_.setSelectedValue(target, true);    
         }
 
@@ -379,7 +369,7 @@ public class JFindClass extends JFrame
          */
         public void searchCancelled()
         {
-            setStatus("Search cancelled");
+            statusBar_.setStatus("Search cancelled");
         }    
     }
 
