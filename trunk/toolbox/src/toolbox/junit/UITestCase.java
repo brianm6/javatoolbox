@@ -61,6 +61,9 @@ public class UITestCase extends TestCase
     // Fields 
     //--------------------------------------------------------------------------
     
+    /**
+     * Optional menu bar.
+     */
     private JMenuBar menuBar_;
 
     //--------------------------------------------------------------------------
@@ -303,7 +306,7 @@ public class UITestCase extends TestCase
                     StringBuffer sb = new StringBuffer();
                     sb.append("Prop: " + evt.getPropertyName() + "\n");
                     sb.append("Old : " + evt.getOldValue() + "\n");
-                    sb.append("New : " + evt.getNewValue() + "\n");
+                    sb.append("New : " + evt.getNewValue() + "\n\n");
                     area.append(sb.toString());
                 }
             }
