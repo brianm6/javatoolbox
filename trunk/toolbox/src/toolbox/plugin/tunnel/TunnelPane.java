@@ -27,6 +27,7 @@ import toolbox.forms.SmartComponentFactory;
 import toolbox.tunnel.TcpTunnel;
 import toolbox.tunnel.TcpTunnelListener;
 import toolbox.util.FontUtil;
+import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
@@ -55,14 +56,21 @@ public class TunnelPane extends JPanel implements IPreferenced
     // XML Constants
     //--------------------------------------------------------------------------
 
-    private static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
-    private static final String   ATTR_REMOTE_PORT    =   "remoteport";
-    private static final String   ATTR_REMOTE_HOST    =   "remotehost";
-    private static final String   ATTR_LOCAL_PORT     =   "localport";
-    private static final String   NODE_INCOMING       =   "Incoming";
-    private static final String   NODE_OUTGOING       =   "Outgoing";
+    public static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
+    public static final String   NODE_INCOMING       =   "Incoming";
+    public static final String   NODE_OUTGOING       =   "Outgoing";
     
-    public static final String PROP_SUPRESS_BINARY = "supress";
+    public static final String PROP_REMOTE_PORT    = "remoteport";
+    public static final String PROP_REMOTE_HOST    = "remotehost";
+    public static final String PROP_LOCAL_PORT     = "localport";
+    
+    public static final String[] SAVED_PROPS = {
+        PROP_LOCAL_PORT,
+        PROP_REMOTE_HOST,
+        PROP_REMOTE_PORT
+    };
+    
+    public static final String PROP_SUPRESS_BINARY = "supressBinary";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -151,10 +159,9 @@ public class TunnelPane extends JPanel implements IPreferenced
     public TunnelPane(int listenPort, String remoteHost, int remotePort)
     {
         buildView();
-
-        listenPortField_.setText(listenPort + "");
-        remoteHostField_.setText(remoteHost);
-        remotePortField_.setText(remotePort + "");
+        setListenPort(listenPort);
+        setRemoteHost(remoteHost);
+        setRemotePort(remotePort);
     }
 
     //--------------------------------------------------------------------------
@@ -171,6 +178,17 @@ public class TunnelPane extends JPanel implements IPreferenced
         return Integer.parseInt(listenPortField_.getText().trim());
     }
 
+
+    /**
+     * Sets the value of the listen port.
+     * 
+     * @param listenPort Listen port.
+     */
+    public void setListenPort(int listenPort)
+    {
+        listenPortField_.setText(listenPort + "");
+    }
+    
 
     /**
      * Returns the text area for incoming data.
@@ -193,7 +211,18 @@ public class TunnelPane extends JPanel implements IPreferenced
         return remoteHostField_.getText().trim();
     }
 
-
+    
+    /**
+     * Sets the value of the remote host.
+     * 
+     * @param remoteHost Remote host.
+     */
+    public void setRemoteHost(String remoteHost)
+    {
+        remoteHostField_.setText(remoteHost);
+    }
+    
+    
     /**
      * Returns port to forward traffic to.
      *
@@ -205,6 +234,17 @@ public class TunnelPane extends JPanel implements IPreferenced
     }
 
 
+    /**
+     * Sets the value of the remote port.
+     * 
+     * @param remotePort Remote port.
+     */
+    public void setRemotePort(int remotePort)
+    {
+        remotePortField_.setText(remotePort + "");
+    }
+
+    
     /**
      * Returns the text area for incoming data.
      *
@@ -388,13 +428,13 @@ public class TunnelPane extends JPanel implements IPreferenced
                 new Element(NODE_TCPTUNNEL_PLUGIN));
 
         remotePortField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_REMOTE_PORT, ""));
+            XOMUtil.getStringAttribute(root, PROP_REMOTE_PORT, ""));
 
         remoteHostField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_REMOTE_HOST, ""));
+            XOMUtil.getStringAttribute(root, PROP_REMOTE_HOST, ""));
 
         listenPortField_.setText(
-            XOMUtil.getStringAttribute(root, ATTR_LOCAL_PORT, ""));
+            XOMUtil.getStringAttribute(root, PROP_LOCAL_PORT, ""));
 
         configFlipPane_.applyPrefs(root);
         splitter_.applyPrefs(root);
@@ -419,27 +459,27 @@ public class TunnelPane extends JPanel implements IPreferenced
     {
         Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
 
-        root.addAttribute(
-            new Attribute(ATTR_LOCAL_PORT, listenPortField_.getText()));
-
-        root.addAttribute(
-            new Attribute(ATTR_REMOTE_PORT, remotePortField_.getText()));
-
-        root.addAttribute(
-            new Attribute(ATTR_REMOTE_HOST, remoteHostField_.getText()));
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        
+//        root.addAttribute(
+//            new Attribute(PROP_LOCAL_PORT, listenPortField_.getText()));
+//
+//        root.addAttribute(
+//            new Attribute(PROP_REMOTE_PORT, remotePortField_.getText()));
+//
+//        root.addAttribute(
+//            new Attribute(PROP_REMOTE_HOST, remoteHostField_.getText()));
 
         configFlipPane_.savePrefs(root);
         splitter_.savePrefs(root);
 
         Element incoming = new Element(NODE_INCOMING);
-        incomingArea_.setCapacity(
-            Integer.parseInt(capacityField_.getText()));
+        incomingArea_.setCapacity(Integer.parseInt(capacityField_.getText()));
         incomingArea_.savePrefs(incoming);
         root.appendChild(incoming);
 
         Element outgoing = new Element(NODE_OUTGOING);
-        outgoingArea_.setCapacity(
-            Integer.parseInt(capacityField_.getText()));
+        outgoingArea_.setCapacity(Integer.parseInt(capacityField_.getText()));
         outgoingArea_.savePrefs(outgoing);
         root.appendChild(outgoing);
 
