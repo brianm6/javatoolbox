@@ -53,9 +53,12 @@ import toolbox.util.SwingUtil;
  */
 public abstract class SmartAction extends AbstractAction
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(SmartAction.class);
+    private static final Logger logger_ = Logger.getLogger(SmartAction.class);
 
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Surround the action with a try/catch block? 
      */
@@ -103,13 +106,16 @@ public abstract class SmartAction extends AbstractAction
     /**
      * Creates a SmartAction with the given options.
      * 
-     * @param name Name of action
-     * @param tryCatch Set to true to surround the action with a try/catch block
-     * @param async Set to tree to execute the action asynchronously
+     * @param name Name of action.
+     * @param tryCatch True to surround the action with a try/catch block.
+     * @param async Set to true to execute the action asynchronously.
      * @param scope Component to set the busy cursor on (implies that you want 
      *        the busy cursor set). Pass in null to ignore.
      */
-    public SmartAction(String name, boolean tryCatch, boolean async, 
+    public SmartAction(
+        String name,
+        boolean tryCatch,
+        boolean async,
         Component scope)
     {
         super(name);
@@ -191,8 +197,8 @@ public abstract class SmartAction extends AbstractAction
      * Called by actionPerformed() as a delegate for subclasses to override
      * and implement their "actionPerformed" behavior.
      * 
-     * @param e ActionEvent
-     * @throws Exception on error
+     * @param e ActionEvent.
+     * @throws Exception on error.
      */
     public abstract void runAction(ActionEvent e) throws Exception;
     
@@ -201,9 +207,9 @@ public abstract class SmartAction extends AbstractAction
     //--------------------------------------------------------------------------
     
     /**
-     * Adds an action to be executed prior the exection of this action
+     * Adds an action to be executed prior the exection of this action.
      * 
-     * @param action Action to execute before main action
+     * @param action Action to execute before main action.
      */
     public void addPreAction(Action action)
     {
@@ -215,7 +221,7 @@ public abstract class SmartAction extends AbstractAction
      * Adds an action to be executed after the execution of the main action
      * regardless or an error condition or not.
      * 
-     * @param action Action to execute after the main action
+     * @param action Action to execute after the main action.
      */
     public void addFinallyAction(Action action)
     {
@@ -225,9 +231,9 @@ public abstract class SmartAction extends AbstractAction
     
     /**
      * Adds an action to be executed in the event of an error condition (an
-     * exception is thrown)
+     * exception is thrown).
      * 
-     * @param action Action to execute if an exception is thrown
+     * @param action Action to execute if an exception is thrown.
      */
     public void addErrorAction(Action action)
     {
@@ -236,9 +242,9 @@ public abstract class SmartAction extends AbstractAction
 
 
     /**
-     * Returns thrown exception
+     * Returns thrown exception.
      * 
-     * @return Exception that was thrown if an error occurred
+     * @return Exception that was thrown if an error occurred.
      */
     public Throwable getCaught()
     {
@@ -266,6 +272,10 @@ public abstract class SmartAction extends AbstractAction
      */
     class BusyCursorAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             SwingUtil.setWaitCursor(scope_);
@@ -281,6 +291,10 @@ public abstract class SmartAction extends AbstractAction
      */    
     class DefaultCursorAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             SwingUtil.setDefaultCursor(scope_);
@@ -296,6 +310,10 @@ public abstract class SmartAction extends AbstractAction
      */
     class HandleErrorAction extends AbstractAction
     {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
            ExceptionUtil.handleUI(getCaught(), logger_);
