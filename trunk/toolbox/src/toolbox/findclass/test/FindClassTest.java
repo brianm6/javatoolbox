@@ -203,19 +203,26 @@ public class FindClassTest extends TestCase
         
         logger_.info("Before search...");
         
+        // Searching for 'a' should have a lot of results so we're guaranteed
+        // the search is going to be busy for a while.
+        
         ThreadUtil.run(
                 finder, 
                 "findClass", 
-                new Object[] {"xxx", new Boolean(false)});
+                new Object[] {"a", new Boolean(false)});
+
+        logger_.info("Waiting for first search target...");
+        listener.waitForFirst(); 
         
-        logger_.info("Giving finder a head start..");
-        ThreadUtil.sleep(5000); 
+        // Snooze
+        ThreadUtil.sleep(500);
         
         logger_.info("Before cancel..");
         finder.cancelSearch();
         logger_.info("After cancelled..");
         
         listener.waitForCancel();
+        logger_.info("Received notification of cancel!!");
         
         finder.removeSearchListener(listener);
         finder.removeSearchListeners();
@@ -229,7 +236,7 @@ public class FindClassTest extends TestCase
     {
         private Mutex cancel_ = new Mutex();
         private Mutex first_ = new Mutex();
-        
+        private int counter_ = 0;
         
         /**
          * Creates a SearchListener.
@@ -292,7 +299,11 @@ public class FindClassTest extends TestCase
          */
         public void classFound(FindClassResult searchResult)
         {
-            logger_.info("ClassFound " + searchResult.getClassFQN());
+            counter_++;
+            if (counter_ % 1000 == 0)
+                logger_.info("Found " + counter_ + " matching classes.");
+            
+            //logger_.info("ClassFound " + searchResult.getClassFQN());
         }
 
         
