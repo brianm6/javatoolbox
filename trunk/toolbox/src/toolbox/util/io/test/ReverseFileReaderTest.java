@@ -8,6 +8,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FileUtil;
+import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.io.ReverseFileReader;
 
@@ -18,7 +19,22 @@ public class ReverseFileReaderTest extends TestCase
 {
     private static final Logger logger_ =
         Logger.getLogger(ReverseFileReaderTest.class);
-        
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Temp file initialized and reset in for each test.
+     */
+    private File file_;
+    
+    /**
+     * Reverse file reader attached to the temp file that is initialized and
+     * reset for each test.
+     */
+    private ReverseFileReader reader_;
+ 
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -26,13 +42,36 @@ public class ReverseFileReaderTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
         TestRunner.run(ReverseFileReaderTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Overrides TestCase
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        file_ = FileUtil.createTempFile();
+        reader_ = null;
+    }
+    
+    
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception
+    {
+        StreamUtil.close(reader_);   
+        FileUtil.delete(file_);
+    }
+    
     //--------------------------------------------------------------------------
     // Unit Tests : readLine()
     //--------------------------------------------------------------------------
@@ -46,18 +85,9 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineEmptyFile...");
         
-        String f = FileUtil.createTempFilename();
-        
-        try
-        {
-            FileUtil.setFileContents(f, "", false);
-            ReverseFileReader rfr = new ReverseFileReader(new File(f));
-            assertNull(rfr.readLine());
-        }
-        finally
-        {
-            FileUtil.delete(f);
-        }
+        FileUtil.setFileContents(file_, "", false);
+        reader_ = new ReverseFileReader(file_);
+        assertNull(reader_.readLine());
     }
     
     
@@ -70,19 +100,10 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineOneByteFile...");
         
-        String f = FileUtil.createTempFilename();
-        
-        try
-        {
-            FileUtil.setFileContents(f, "x", false);
-            ReverseFileReader rfr = new ReverseFileReader(new File(f));
-            assertEquals("x", rfr.readLine());
-            assertNull(rfr.readLine());
-        }
-        finally
-        {
-            FileUtil.delete(f);
-        }
+        FileUtil.setFileContents(file_, "a", false);
+        reader_ = new ReverseFileReader(file_);
+        assertEquals("a", reader_.readLine());
+        assertNull(reader_.readLine());
     }
     
     
@@ -95,20 +116,11 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineOneLineFile...");
         
-        String f = FileUtil.createTempFilename();
+        FileUtil.setFileContents(file_, "howdy doody", false);
+        reader_ = new ReverseFileReader(file_);
         
-        try
-        {
-            FileUtil.setFileContents(f, "howdy doody", false);
-            ReverseFileReader rfr = new ReverseFileReader(new File(f));
-            
-            assertEquals(StringUtil.reverse("howdy doody"), rfr.readLine());
-            assertNull(rfr.readLine());            
-        }
-        finally
-        {
-            FileUtil.delete(f);
-        }
+        assertEquals(StringUtil.reverse("howdy doody"), reader_.readLine());
+        assertNull(reader_.readLine());            
     }
 
     
@@ -121,24 +133,16 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineMultiLineFile...");
         
-        String f = FileUtil.createTempFilename();
-        FileUtil.setFileContents(f, "one\ntwo\nthree\nfour\nfive", false);
+        FileUtil.setFileContents(file_, "one\ntwo\nthree\nfour\nfive", false);
         
-        try
-        {
-            ReverseFileReader rfr = new ReverseFileReader(new File(f));
+        reader_ = new ReverseFileReader(file_);
 
-            assertEquals(StringUtil.reverse("five"), rfr.readLine());
-            assertEquals(StringUtil.reverse("four"), rfr.readLine());
-            assertEquals(StringUtil.reverse("three"), rfr.readLine());
-            assertEquals(StringUtil.reverse("two"), rfr.readLine());
-            assertEquals(StringUtil.reverse("one"), rfr.readLine());
-            assertNull(rfr.readLine());
-        }
-        finally
-        {            
-            FileUtil.delete(f);
-        }
+        assertEquals(StringUtil.reverse("five"), reader_.readLine());
+        assertEquals(StringUtil.reverse("four"), reader_.readLine());
+        assertEquals(StringUtil.reverse("three"), reader_.readLine());
+        assertEquals(StringUtil.reverse("two"), reader_.readLine());
+        assertEquals(StringUtil.reverse("one"), reader_.readLine());
+        assertNull(reader_.readLine());
     }
 
     
@@ -151,24 +155,15 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadLineMultiLineFile...");
         
-        String f = FileUtil.createTempFilename();
-        FileUtil.setFileContents(f, "one\ntwo\nthree\nfour\nfive", false);
-        
-        try
-        {
-            ReverseFileReader rfr = new ReverseFileReader(new File(f));
+        FileUtil.setFileContents(file_, "one\ntwo\nthree\nfour\nfive", false);
+        reader_ = new ReverseFileReader(file_);
 
-            assertEquals("five", rfr.readLine());
-            assertEquals("four", rfr.readLine());
-            assertEquals("three", rfr.readLine());
-            assertEquals("two", rfr.readLine());
-            assertEquals("one", rfr.readLine());
-            assertNull(rfr.readLine());
-        }
-        finally
-        {            
-            FileUtil.delete(f);
-        }
+        assertEquals("five", reader_.readLine());
+        assertEquals("four", reader_.readLine());
+        assertEquals("three", reader_.readLine());
+        assertEquals("two", reader_.readLine());
+        assertEquals("one", reader_.readLine());
+        assertNull(reader_.readLine());
     }
 
     //--------------------------------------------------------------------------
@@ -184,20 +179,11 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadEmptyFile...");
         
-        String f = FileUtil.createTempFilename();
-        FileUtil.setFileContents(f, "", false);
-        
-        try
-        {
-            ReverseFileReader rfr = new ReverseFileReader(new File(f));
-            assertEquals(-1, rfr.read());
-        }
-        finally
-        {
-            FileUtil.delete(f);
-        }
+        FileUtil.setFileContents(file_, "", false);
+        reader_ = new ReverseFileReader(file_);
+        assertEquals(-1, reader_.read());
     }
-
+           
     
     /**
      * Tests read() on a one byte file.
@@ -208,18 +194,9 @@ public class ReverseFileReaderTest extends TestCase
     {
         logger_.info("Running testReadOneByteFile...");
         
-        String f = FileUtil.createTempFilename();
-        FileUtil.setFileContents(f, "x", false);
-        
-        try
-        {
-            ReverseFileReader rfr = new ReverseFileReader(new File(f));
-            assertEquals('x', rfr.read());
-            assertEquals(-1, rfr.read());
-        }
-        finally
-        {
-            FileUtil.delete(f);
-        }
+        FileUtil.setFileContents(file_, "b", false);
+        reader_ = new ReverseFileReader(file_);
+        assertEquals('b', reader_.read());
+        assertEquals(-1, reader_.read());
     }
 }
