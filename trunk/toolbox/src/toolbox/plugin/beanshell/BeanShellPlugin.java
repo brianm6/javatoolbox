@@ -1,19 +1,20 @@
 package toolbox.plugin.beanshell;
 
 import java.awt.BorderLayout;
-import java.io.IOException;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import bsh.Interpreter;
 import bsh.util.JConsole;
 
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
@@ -117,21 +118,14 @@ public class BeanShellPlugin extends JPanel implements IPlugin
      */
     protected void buildView()
     {
-        
-        output_ = new JSmartTextArea(true, false);
+        output_ = new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias());
         
         JTextAreaOutputStream taos = new JTextAreaOutputStream(output_);
-           
-        console_ = new JConsole(System.in, taos);
         
-        try
-        {
-            taos.write("ping".getBytes());
-        }
-        catch (IOException e)
-        {
-            logger_.error(e);
-        }
+        console_ = new JConsole();
+        
+        Interpreter interpreter = new Interpreter(console_);
+        new Thread(interpreter).start();
         
         JSplitPane splitter = 
             new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT, console_, output_);
