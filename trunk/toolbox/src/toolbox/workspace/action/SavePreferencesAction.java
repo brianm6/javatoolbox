@@ -62,6 +62,6 @@ public class SavePreferencesAction extends WorkspaceAction
      */
     public void runAction() throws Exception
     {
-        workspace_.savePrefs((Element) workspace_.getPreferences().getParent());
+        workspace_.savePrefs((Element) workspace_.getPreferences() /*.getParent() */);
     }
 }
