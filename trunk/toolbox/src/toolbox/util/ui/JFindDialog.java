@@ -26,21 +26,29 @@ import toolbox.util.SwingUtil;
  */
 public class JFindDialog extends JDialog
 {
-    /** TODO: Search from current cursor position */
+    // TODO: Search from current cursor position
     
     private static final Logger logger_ =
         Logger.getLogger(JFindDialog.class);
    
-    /** Textfield for the user to change/updatee the search string */     
+    /** 
+     * Textfield for the user to change/updatee the search string 
+     */     
     private JTextField findField_;
     
-    /** Search client */
+    /** 
+     * Search client 
+     */
     private SearchInitiator initiator_;
     
-    /** Used to display informative information regarding the search */
+    /** 
+     * Used to display informative information regarding the search 
+     */
     private JStatusBar status_;
 
-    /** Most recently used search string */
+    /** 
+     * Most recently used search string 
+     */
     private String lastSearched_;
     
     /** 
@@ -74,7 +82,7 @@ public class JFindDialog extends JDialog
     }
     
     //--------------------------------------------------------------------------
-    // Private 
+    // Protected 
     //--------------------------------------------------------------------------
     
     /**
@@ -97,7 +105,6 @@ public class JFindDialog extends JDialog
         c.add(BorderLayout.CENTER, buttonPanel);
         
         c.add(BorderLayout.SOUTH, status_ = new JStatusBar());
-
 
         // Bind ESC to the CancelAction
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW ).
