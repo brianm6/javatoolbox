@@ -32,7 +32,9 @@ import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.IPreferenced;
 
 /**
- * Log4J specific logging menu that allows you to do the following.
+ * Log4J specific logging menu that provides useful functionality. Perfect for
+ * adding to an existing application. Just instantiate and add to an existing
+ * JMenu or JMenuBar. Features include:
  * 
  * <ul>
  *  <li>Change the logger level
@@ -48,9 +50,9 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     //--------------------------------------------------------------------------
 
     private static final String NODE_LOGGING_MENU     = "LoggingMenu";
-    private static final String   ATTR_LEVEL          = "level";
-    private static final String   ATTR_LOG_TO_CONSOLE = "logToConsole";
-    private static final String   ATTR_LOG_TO_WINDOW  = "logToWindow";
+    private static final String   ATTR_LEVEL          =   "level";
+    private static final String   ATTR_LOG_TO_CONSOLE =   "logToConsole";
+    private static final String   ATTR_LOG_TO_WINDOW  =   "logToWindow";
     
     //--------------------------------------------------------------------------
     // Default Constants

@@ -35,7 +35,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextField;
 
 /**
- * HTML document viewer that uses the Calpha HTML component.
+ * HTML document viewer that uses the WebWindow java component.
  */
 public class WebWindowViewer implements DocumentViewer
 {

@@ -2,6 +2,10 @@ package toolbox.log4j.im;
 
 /**
  * Factory class for the various instant messenger implementations.
+ * 
+ * @see toolbox.log4j.im.AIMMessenger
+ * @see toolbox.log4j.im.MSNMessenger
+ * @see toolbox.log4j.im.YahooMessenger
  */
 public class InstantMessengerFactory
 {

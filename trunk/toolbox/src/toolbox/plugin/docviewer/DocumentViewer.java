@@ -8,6 +8,8 @@ import javax.swing.JComponent;
 
 /**
  * Generic interface that defines API necessary to view a document.
+ * 
+ * @see toolbox.plugin.docviewer.DocumentViewerPlugin
  */
 public interface DocumentViewer
 {

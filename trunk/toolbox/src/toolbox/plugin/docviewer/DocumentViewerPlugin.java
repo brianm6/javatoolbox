@@ -35,7 +35,11 @@ import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * Document Viewer Plugin.
+ * DocumentViewerPlugin is a plugin specifically targeted towards viewing 
+ * different types and formats of files. Viewers must implement the 
+ * DocumentViewer interface and register themselves with the plugin.
+ * 
+ * @see toolbox.plugin.docviewer.DocumentViewer
  */ 
 public class DocumentViewerPlugin extends JPanel implements IPlugin
 {
@@ -51,10 +55,10 @@ public class DocumentViewerPlugin extends JPanel implements IPlugin
      * introspection doesn't work under Webstart.
      * <pre>
      *  
-     * <docviewers>
-     *   <docviewer name="Widget Viewer" class="org.viewer.WidgetViewer"/>
-     *   <docviewer ... />
-     * </docviewers>
+     * &lt;docviewers&gt;
+     *   &lt;docviewer name=&quot;Widget Viewer&quot; class=&quot;org.viewer.WidgetViewer&quot;/&gt;
+     *   &lt;docviewer ... /&gt;
+     * &lt;/docviewers&gt;
      * 
      * </pre>
      */
