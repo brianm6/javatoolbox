@@ -198,16 +198,9 @@ public class DefaultStateMachine implements StateMachine
      */
     public State transition(Transition stimulus)
     {
-        State targetState = (State) stateMap_.get(currentState_, stimulus);
+        checkTransition(stimulus);
         
-        Validate.notNull(targetState,
-            "No transitions exist from state '" 
-            + currentState_.getName() 
-            + "' using transition '"
-            + stimulus
-            + "'.");
- 
-        // We have a state change!!
+        State targetState = (State) stateMap_.get(currentState_, stimulus);
         previousState_ = currentState_;
         currentState_ = targetState;
         lastTransition_ = stimulus;
@@ -225,6 +218,18 @@ public class DefaultStateMachine implements StateMachine
         return stateMap_.containsKey(currentState_, transition);
     }
 
+    
+    public void checkTransition(Transition transition)
+    {
+        if (!canTransition(transition))
+            throw new IllegalStateException(
+                "No transitions exist from state '" 
+                + currentState_.getName() 
+                + "' using transition '"
+                + transition
+                + "'.");
+    }
+    
     
     /**
      * @see toolbox.util.statemachine.StateMachine#getState()

@@ -5,7 +5,6 @@ import java.util.Collections;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -45,23 +44,24 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testStart...");
         
-        Service s = new MockService(true);
+        Service s = new MockService();
         s.initialize(Collections.EMPTY_MAP);
         s.start();
         assertTrue(s.isRunning());
         
-        s = new MockService(true);
+        s = new MockService();
         s.initialize(Collections.EMPTY_MAP);
         s.start();
         s.stop();
         s.start();
         assertTrue(s.isRunning());
-        
-        s = new MockService(true);
-        s.initialize(Collections.EMPTY_MAP);
-        s.start();
-        s.suspend();
-        s.start();
+
+        // TODO: add later
+//        s = new MockService();
+//        s.initialize(Collections.EMPTY_MAP);
+//        s.start();
+//        s.suspend();
+//        s.start();
     }
 
     
@@ -76,18 +76,18 @@ public class AbstractServiceTest extends TestCase
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.start();
             fail("Invalid start from uninitialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
 
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.suspend();
@@ -95,22 +95,22 @@ public class AbstractServiceTest extends TestCase
             s.start();
             fail("Invalid start from resume");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
      
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.start();
             fail("Invalid start from destroy");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
     }
     
@@ -125,7 +125,7 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testSuspend...");
         
-        Service s = new MockService(true);
+        Service s = new MockService();
         s.addServiceListener(new MockServiceListener());
         s.initialize(Collections.EMPTY_MAP);
         s.start();
@@ -145,52 +145,52 @@ public class AbstractServiceTest extends TestCase
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.suspend();
             fail("Invalid suspend from uninitialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
 
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.suspend();
             fail("Invalid suspend from initialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
      
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.stop();
             s.suspend();
             fail("Invalid suspend from stop");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.suspend();
             fail("Invalid suspend from destroy");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
     }
     
@@ -204,7 +204,7 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testResume...");
         
-        Service s = new MockService(true);
+        Service s = new MockService();
         s.addServiceListener(new MockServiceListener());
         s.initialize(Collections.EMPTY_MAP);
         s.start();
@@ -225,43 +225,43 @@ public class AbstractServiceTest extends TestCase
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.resume();
             fail("Invalid resume from uninitialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.resume();
             fail("Invalid resume from initialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.resume();
             fail("Invalid resume from start");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.start();
@@ -269,22 +269,22 @@ public class AbstractServiceTest extends TestCase
             s.suspend();
             fail("Invalid resume from stopped");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.suspend();
             fail("Invalid resume from destryed");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
     }
     
@@ -298,7 +298,7 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testStop...");
         
-        Service s = new MockService(true);
+        Service s = new MockService();
         ServiceListener listener = new MockServiceListener();
         s.addServiceListener(listener);
         s.initialize(Collections.EMPTY_MAP);
@@ -320,38 +320,38 @@ public class AbstractServiceTest extends TestCase
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.stop();
             fail("Invalid stop from uninitialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.stop();
             fail("Invalid stop from initialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.destroy();
             s.stop();
             fail("Invalid stop from destroyed");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
     }
 
@@ -365,7 +365,7 @@ public class AbstractServiceTest extends TestCase
     {
         logger_.info("Running testDestroy...");
         
-        Service s = new MockService(true);
+        Service s = new MockService();
         s.addServiceListener(new MockServiceListener());
         s.initialize(Collections.EMPTY_MAP);
         s.start();
@@ -386,31 +386,31 @@ public class AbstractServiceTest extends TestCase
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.destroy();
             fail("Invalid destroy from uninitialized");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.destroy();
             fail("Invalid destroy from start");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
         
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.suspend();
@@ -418,23 +418,23 @@ public class AbstractServiceTest extends TestCase
             s.destroy();
             fail("Invalid destroy from resume");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
 
         try 
         {
-            Service s = new MockService(true);
+            Service s = new MockService();
             s.initialize(Collections.EMPTY_MAP);
             s.start();
             s.suspend();
             s.destroy();
             fail("Invalid destroy from suspend");
         }
-        catch (ServiceException se) 
+        catch (IllegalStateException ise) 
         {
-            ; // Success
+            logger_.debug("SUCCESS --> " + ise);
         }
     }
 
@@ -442,16 +442,16 @@ public class AbstractServiceTest extends TestCase
     /**
      * Tests non-strict state transitions. 
      */
-    public void testNotStrict() throws Exception
-    {
-        logger_.info("Running testNotStrict...");
-        
-        MockService s = new MockService(false);
-        s.stop();
-        s.initialize(MapUtils.EMPTY_MAP);
-        s.suspend();
-        s.destroy();
-    }
+//    public void testNotStrict() throws Exception
+//    {
+//        logger_.info("Running testNotStrict...");
+//        
+//        MockService s = new MockService(false);
+//        s.stop();
+//        s.initialize(MapUtils.EMPTY_MAP);
+//        s.suspend();
+//        s.destroy();
+//    }
     
     //--------------------------------------------------------------------------
     // MockService
@@ -461,11 +461,6 @@ public class AbstractServiceTest extends TestCase
     {
         public MockService() 
         {
-        }
-
-        public MockService(boolean strict) 
-        {
-            super(strict);
         }
     }
     

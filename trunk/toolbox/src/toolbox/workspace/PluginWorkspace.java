@@ -833,7 +833,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
             serializer.setLineSeparator("\n");
             serializer.write(new Document(root));
             String xml = sos.toString();
-            //SmartLogger.debug(logger_, xml);
+            SmartLogger.debug(logger_, xml);
             writer.write(xml);
             statusBar_.setInfo("Saved preferences to " + getPrefsFile());
         }

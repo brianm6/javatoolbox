@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
+import toolbox.util.service.ServiceTransition;
 
 /**
  * MemoryWatcher is a service that monitors memory in realtime and is able to 
@@ -30,11 +31,6 @@ public class MemoryWatcher extends AbstractService
     private long max_;
     
     /**
-     * Shutdown flag.
-     */
-    private boolean keepRunning_;
-
-    /**
      * Thread that the memory watcher runs on.
      */
     private Thread runner_;
@@ -48,12 +44,14 @@ public class MemoryWatcher extends AbstractService
      */
     public MemoryWatcher()
     {
-        super(true);
         min_ = 0;
         max_ = 0;
-        keepRunning_ = true;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns the max.
      * 
@@ -86,11 +84,14 @@ public class MemoryWatcher extends AbstractService
      */
     public void initialize(Map configuration) throws ServiceException
     {
+        checkTransition(ServiceTransition.INITIALIZE);
+        
         System.gc();
         long currentFree = Runtime.getRuntime().freeMemory();
         long currentAlloc = Runtime.getRuntime().totalMemory();
-        min_ = max_ = (currentAlloc - currentFree);        
-        super.initialize(configuration);
+        min_ = max_ = (currentAlloc - currentFree);
+        
+        transition(ServiceTransition.INITIALIZE);
     }
     
     
@@ -99,9 +100,12 @@ public class MemoryWatcher extends AbstractService
      */
     public void start() throws ServiceException
     {
+        checkTransition(ServiceTransition.START);
+        
         runner_ = new Thread(new Runner());
         runner_.start();
-        super.start();
+        
+        transition(ServiceTransition.START);
     }
 
     
@@ -112,7 +116,8 @@ public class MemoryWatcher extends AbstractService
      */
     public void stop() throws ServiceException
     {
-        keepRunning_ = false;
+        checkTransition(ServiceTransition.STOP);
+        transition(ServiceTransition.STOP);
         
         try
         {
@@ -122,8 +127,6 @@ public class MemoryWatcher extends AbstractService
         {
             throw new ServiceException(e);
         }
-        
-        super.stop();
     }
     
     
@@ -132,10 +135,12 @@ public class MemoryWatcher extends AbstractService
      */
     public void destroy() throws ServiceException
     {
+        checkTransition(ServiceTransition.DESTROY);
+        
         if (runner_ != null)
             ThreadUtil.stop(runner_, 1000);
         
-        super.destroy();
+        transition(ServiceTransition.DESTROY);
     }
     
     //--------------------------------------------------------------------------
@@ -152,7 +157,7 @@ public class MemoryWatcher extends AbstractService
          */
         public void run()
         {
-            while (keepRunning_)
+            while (isRunning())
             {
                 long currentFree = Runtime.getRuntime().freeMemory();
                 long currentAlloc = Runtime.getRuntime().totalMemory();

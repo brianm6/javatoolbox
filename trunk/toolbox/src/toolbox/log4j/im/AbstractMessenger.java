@@ -86,7 +86,6 @@ public abstract class AbstractMessenger extends AbstractService
      */
     protected AbstractMessenger()
     {
-        super(true);
     }
     
     //--------------------------------------------------------------------------

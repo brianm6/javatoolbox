@@ -1,11 +1,10 @@
 package toolbox.util.service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.keyvalue.MultiKey;
-import org.apache.commons.lang.ClassUtils;
-
+import toolbox.util.ArrayUtil;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.util.statemachine.StateMachineFactory;
 
@@ -15,16 +14,14 @@ import toolbox.util.statemachine.StateMachineFactory;
 public abstract class AbstractService implements Service
 {
     // TODO: Left off here!
-    
-    public static StateMachine createStateMachine(ServiceNature serviceNature)
+
+    public static StateMachine createStateMachine(Class[] serviceNatures)
     {
         StateMachine machine = 
-            StateMachineFactory.createStateMachine(
-                ClassUtils.getShortClassName(
-                    serviceNature, "ServiceStateMachine"));
+            StateMachineFactory.createStateMachine("ServiceStateMachine");
 
         
-        if (serviceNature instanceof Startable)
+        if (ArrayUtil.contains(serviceNatures, Startable.class))
         {
             machine.addState(ServiceState.RUNNING);
             machine.addState(ServiceState.STOPPED);
@@ -41,7 +38,7 @@ public abstract class AbstractService implements Service
                 ServiceState.STOPPED);
         }
         
-        if (serviceNature instanceof Suspendable)
+        if (ArrayUtil.contains(serviceNatures,Suspendable.class))
         {
             machine.addState(ServiceState.SUSPENDED);
             
@@ -56,7 +53,7 @@ public abstract class AbstractService implements Service
                 ServiceState.RUNNING);
         }
         
-        if (serviceNature instanceof Initializable)
+        if (ArrayUtil.contains(serviceNatures, Initializable.class))
         {
             machine.addState(ServiceState.UNINITIALIZED);
             machine.addState(ServiceState.INITIALIZED);
@@ -73,7 +70,7 @@ public abstract class AbstractService implements Service
                 ServiceState.RUNNING);
         }
         
-        if (serviceNature instanceof Destroyable)
+        if (ArrayUtil.contains(serviceNatures, Destroyable.class))
         {
             machine.addState(ServiceState.DESTROYED);
             
@@ -82,7 +79,7 @@ public abstract class AbstractService implements Service
                 ServiceState.STOPPED, 
                 ServiceState.DESTROYED);
             
-            if (serviceNature instanceof Initializable)
+            if ((ArrayUtil.contains(serviceNatures, Initializable.class)))
             {
                 machine.addTransition(
                     ServiceTransition.DESTROY, 
@@ -93,6 +90,26 @@ public abstract class AbstractService implements Service
         
         machine.reset();
         return machine;
+    }
+
+    
+    public static StateMachine createStateMachine(ServiceNature serviceNature)
+    {
+        List natures = new ArrayList();
+        
+        if (serviceNature instanceof Startable)
+            natures.add(Startable.class);
+
+        if (serviceNature instanceof Suspendable)
+            natures.add(Suspendable.class);
+
+        if (serviceNature instanceof Initializable)
+            natures.add(Initializable.class);
+
+        if (serviceNature instanceof Destroyable)
+            natures.add(Destroyable.class);
+
+        return createStateMachine((Class[]) natures.toArray(new Class[0]));
     }
     
     //--------------------------------------------------------------------------
@@ -111,7 +128,7 @@ public abstract class AbstractService implements Service
      * Value = (ServiceState endState)
      * </pre>
      */
-    private static final Map TRANSITIONS_STRICT;
+    //private static final Map TRANSITIONS_STRICT;
     
     /**
      * Mapping of the relaxed or unchecked set of transitions.
@@ -120,7 +137,7 @@ public abstract class AbstractService implements Service
      * Value = (ServiceState endState)
      * </pre>
      */
-    private static final Map TRANSITIONS_RELAXED;
+    //private static final Map TRANSITIONS_RELAXED;
     
     //--------------------------------------------------------------------------
     // Static Initializers
@@ -128,95 +145,95 @@ public abstract class AbstractService implements Service
     
     static 
     {
-        // Populate strict service state transitions
-        TRANSITIONS_STRICT = new HashMap(8);
-
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.UNINITIALIZED, 
-                ServiceActivity.INITIALIZE), 
-            ServiceState.INITIALIZED);
-
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.INITIALIZED, 
-                ServiceActivity.START), 
-            ServiceState.RUNNING);
-        
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.RUNNING, 
-                ServiceActivity.STOP), 
-            ServiceState.STOPPED); 
-        
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.RUNNING, 
-                ServiceActivity.SUSPEND), 
-            ServiceState.SUSPENDED); 
-        
-        TRANSITIONS_STRICT.put(
-             new MultiKey(
-                ServiceState.SUSPENDED, 
-                ServiceActivity.RESUME), 
-             ServiceState.RUNNING);
-
-        TRANSITIONS_STRICT.put(
-                new MultiKey(
-                   ServiceState.SUSPENDED, 
-                   ServiceActivity.START), 
-                ServiceState.RUNNING);
-        
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.SUSPENDED, 
-                ServiceActivity.STOP), 
-            ServiceState.STOPPED); 
-        
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.STOPPED, 
-                ServiceActivity.START), 
-            ServiceState.RUNNING); 
-        
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.STOPPED, 
-                ServiceActivity.DESTROY), 
-            ServiceState.DESTROYED); 
-
-        TRANSITIONS_STRICT.put(
-            new MultiKey(
-                ServiceState.DESTROYED, 
-                ServiceActivity.INITIALIZE), 
-            ServiceState.INITIALIZED); 
-        
-        // Populate relaxed service state transitions
-        TRANSITIONS_RELAXED = new HashMap(6);
-        
-        TRANSITIONS_RELAXED.put(
-            ServiceActivity.INITIALIZE, 
-            ServiceState.INITIALIZED);
-        
-        TRANSITIONS_RELAXED.put(
-            ServiceActivity.START, 
-            ServiceState.RUNNING);
-        
-        TRANSITIONS_RELAXED.put(
-            ServiceActivity.STOP, 
-            ServiceState.STOPPED);
-        
-        TRANSITIONS_RELAXED.put(
-            ServiceActivity.SUSPEND, 
-            ServiceState.SUSPENDED);
-        
-        TRANSITIONS_RELAXED.put(
-            ServiceActivity.RESUME, 
-            ServiceState.RUNNING);
-        
-        TRANSITIONS_RELAXED.put(
-            ServiceActivity.DESTROY, 
-            ServiceState.DESTROYED);
+//        // Populate strict service state transitions
+//        TRANSITIONS_STRICT = new HashMap(8);
+//
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.UNINITIALIZED, 
+//                ServiceActivity.INITIALIZE), 
+//            ServiceState.INITIALIZED);
+//
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.INITIALIZED, 
+//                ServiceActivity.START), 
+//            ServiceState.RUNNING);
+//        
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.RUNNING, 
+//                ServiceActivity.STOP), 
+//            ServiceState.STOPPED); 
+//        
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.RUNNING, 
+//                ServiceActivity.SUSPEND), 
+//            ServiceState.SUSPENDED); 
+//        
+//        TRANSITIONS_STRICT.put(
+//             new MultiKey(
+//                ServiceState.SUSPENDED, 
+//                ServiceActivity.RESUME), 
+//             ServiceState.RUNNING);
+//
+//        TRANSITIONS_STRICT.put(
+//                new MultiKey(
+//                   ServiceState.SUSPENDED, 
+//                   ServiceActivity.START), 
+//                ServiceState.RUNNING);
+//        
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.SUSPENDED, 
+//                ServiceActivity.STOP), 
+//            ServiceState.STOPPED); 
+//        
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.STOPPED, 
+//                ServiceActivity.START), 
+//            ServiceState.RUNNING); 
+//        
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.STOPPED, 
+//                ServiceActivity.DESTROY), 
+//            ServiceState.DESTROYED); 
+//
+//        TRANSITIONS_STRICT.put(
+//            new MultiKey(
+//                ServiceState.DESTROYED, 
+//                ServiceActivity.INITIALIZE), 
+//            ServiceState.INITIALIZED); 
+//        
+//        // Populate relaxed service state transitions
+//        TRANSITIONS_RELAXED = new HashMap(6);
+//        
+//        TRANSITIONS_RELAXED.put(
+//            ServiceActivity.INITIALIZE, 
+//            ServiceState.INITIALIZED);
+//        
+//        TRANSITIONS_RELAXED.put(
+//            ServiceActivity.START, 
+//            ServiceState.RUNNING);
+//        
+//        TRANSITIONS_RELAXED.put(
+//            ServiceActivity.STOP, 
+//            ServiceState.STOPPED);
+//        
+//        TRANSITIONS_RELAXED.put(
+//            ServiceActivity.SUSPEND, 
+//            ServiceState.SUSPENDED);
+//        
+//        TRANSITIONS_RELAXED.put(
+//            ServiceActivity.RESUME, 
+//            ServiceState.RUNNING);
+//        
+//        TRANSITIONS_RELAXED.put(
+//            ServiceActivity.DESTROY, 
+//            ServiceState.DESTROYED);
     }
     
     //--------------------------------------------------------------------------
@@ -247,7 +264,7 @@ public abstract class AbstractService implements Service
      * @see #TRANSITIONS_RELAXED
      * @see #TRANSITIONS_STRICT
      */
-    private boolean strict_;
+    //private boolean strict_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -261,7 +278,7 @@ public abstract class AbstractService implements Service
      */
     protected AbstractService()
     {
-        this(DEFAULT_STRICT);
+        machine_ = createStateMachine(this);
     }
 
     
@@ -270,14 +287,28 @@ public abstract class AbstractService implements Service
      * 
      * @param strict True for strict state transitions, false otherwise.
      */
-    protected AbstractService(boolean strict)
+//    protected AbstractService(boolean strict)
+//    {
+//        setStrict(strict);
+//        //setPreviousState(ServiceState.UNINITIALIZED);
+//        //setState(ServiceState.UNINITIALIZED);
+//        //listeners_ = new ServiceListener[0];
+//        
+//    }
+
+    
+    /**
+     * Creates an AbstractService.
+     * 
+     * @param strict True for strict state transitions, false otherwise.
+     */
+    protected AbstractService(Class[] natures)
     {
-        setStrict(strict);
         //setPreviousState(ServiceState.UNINITIALIZED);
         //setState(ServiceState.UNINITIALIZED);
         //listeners_ = new ServiceListener[0];
         
-        machine_ = createStateMachine(this);
+        machine_ = createStateMachine(natures);
     }
 
     //--------------------------------------------------------------------------
@@ -432,7 +463,8 @@ public abstract class AbstractService implements Service
      */
     public boolean isStrict() 
     {
-        return strict_;
+        // TODO: remove
+        return true; //strict_;
     }
     
     
@@ -441,7 +473,8 @@ public abstract class AbstractService implements Service
      */
     public void setStrict(boolean b) 
     {
-        strict_ = b;
+        // TODO: remove
+        //strict_ = b;
     }
 
     //--------------------------------------------------------------------------
@@ -466,28 +499,15 @@ public abstract class AbstractService implements Service
      * current state to a target state?
      * 
      * @param activity Activity to check.
-     * @throws ServiceException if the activity is not a valid from the current
-     *         state.
+     * @throws IllegalStateException if the activity is not a valid from the 
+     *         current state.
      */
-//    protected void checkTransition(ServiceActivity activity) 
-//        throws ServiceException
-//    {
-//        if (isStrict()) 
-//        {
-//            ServiceState nextState = (ServiceState)
-//                TRANSITIONS_STRICT.get(new MultiKey(getState(), activity));
-//
-//            if (nextState == null)
-//            {
-//                throw new ServiceException(
-//                    "Invalid service state transition from " 
-//                    + getState()
-//                    + " state with the "
-//                    + activity 
-//                    + " activity.");
-//            }
-//        }
-//    }
+    protected void checkTransition(ServiceTransition activity) throws 
+        IllegalStateException 
+    {
+        if (isStrict()) 
+            machine_.checkTransition(activity); 
+    }
     
     
     /**

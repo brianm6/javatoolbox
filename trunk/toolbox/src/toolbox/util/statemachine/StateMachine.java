@@ -15,7 +15,7 @@ public interface StateMachine extends Nameable
      * 
      * @param state Initial state.
      */
-    public void setBeginState(State state);
+    void setBeginState(State state);
     
     
     /**
@@ -26,7 +26,7 @@ public interface StateMachine extends Nameable
      * @param state State to add to the state machine.
      * @throws IllegalArgumentException if the state has already been added.
      */
-    public void addState(State state);
+    void addState(State state);
 
     
     /**
@@ -40,8 +40,7 @@ public interface StateMachine extends Nameable
      * @throws IllegalArgumentException if a transition between the states 
      *         already exists.
      */
-    public void addTransition(
-        Transition transition, State fromState, State toState);
+    void addTransition(Transition transition, State fromState, State toState);
 
 
     /**
@@ -49,10 +48,10 @@ public interface StateMachine extends Nameable
      * 
      * @param stimulus Activity inducing the machine to change state.
      * @return The state resulting from the evaluation of the stimulus.
-     * @throws IllegalArgumentException if the stimulus is not a valid
+     * @throws IllegalStateException if the stimulus is not a valid
      *         transition from the current state.
      */
-    public State transition(Transition stimulus);
+    State transition(Transition stimulus) throws IllegalStateException;
 
     
     /**
@@ -60,7 +59,7 @@ public interface StateMachine extends Nameable
      * 
      * @return State
      */
-    public State getState();
+    State getState();
 
 
     /**
@@ -68,7 +67,7 @@ public interface StateMachine extends Nameable
      * 
      * @return Transition
      */
-    public Transition getLastTransition();
+    Transition getLastTransition();
 
 
     /**
@@ -76,20 +75,20 @@ public interface StateMachine extends Nameable
      * 
      * @return State
      */
-    public State getPreviousState();
+    State getPreviousState();
     
 
     /**
      * Resets the state machine to the begin state.
      */
-    public void reset();
+    void reset();
 
     
     /**
-     * Returns true if the given transition exists from the current state to a new
-     * state, false otherwise.
+     * Returns true if the given transition exists from the current state to a 
+     * new state, false otherwise.
      */
-    public boolean canTransition(Transition transition);
+    boolean canTransition(Transition transition);
 
     
     /**
@@ -97,7 +96,7 @@ public interface StateMachine extends Nameable
      * 
      * @param listener Implementor of StateMachineListener to add as a listener.
      */
-    public void addStateMachineListener(StateMachineListener listener);
+    void addStateMachineListener(StateMachineListener listener);
 
 
     /**
@@ -105,5 +104,12 @@ public interface StateMachine extends Nameable
      * 
      * @param listener Implementor of StateMachineListener to remove.
      */
-    public void removeStateMachineListener(StateMachineListener listener);
+    void removeStateMachineListener(StateMachineListener listener);
+
+
+    /**
+     * @param transition
+     */
+    void checkTransition(Transition transition) throws IllegalStateException;
+    
 }

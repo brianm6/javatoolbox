@@ -42,4 +42,23 @@ public class MemoryWatcherTest extends TestCase
         mw.stop();
         mw.destroy();
     }
+    
+    
+    public void testInvalidUsage() throws Exception
+    {
+        logger_.info("Running testInvalidUsage...");
+        
+        MemoryWatcher mw = new MemoryWatcher();
+        mw.initialize(MapUtils.EMPTY_MAP);
+        mw.start();
+        
+        try
+        {
+            mw.start();
+        }
+        catch (IllegalStateException se)
+        {
+            logger_.debug(se);
+        }
+    }
 }
