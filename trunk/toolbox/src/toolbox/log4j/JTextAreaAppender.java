@@ -13,13 +13,17 @@ import toolbox.util.ui.JSmartTextArea;
 /**
  * A Log4J appender that dumps into a text area
  */
-public class JTextAreaAppender extends AppenderSkeleton 
+public class JTextAreaAppender extends AppenderSkeleton
     implements DocumentListener
 {
-    /** Text area that logging statements are directed to */ 
+    /** 
+     * Text area that logging statements are directed to 
+     */ 
     private JSmartTextArea textArea_;
     
-    /** Layout for logging statements */ 
+    /** 
+     * Layout for logging statements 
+     */ 
     private PatternLayout layout_;
 
     //--------------------------------------------------------------------------
@@ -82,7 +86,7 @@ public class JTextAreaAppender extends AppenderSkeleton
     }
 
     //--------------------------------------------------------------------------
-    //  javax.swing.event.DocumentListener Interface
+    // javax.swing.event.DocumentListener Interface
     //--------------------------------------------------------------------------
     
     /** 
