@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<project name="BannerTaskTest" default="testBannerTask" basedir=".">
+
+    <description>
+        Unit Test for BannerTask
+    </description>
+    
+    <target name="testBannerTask">
+	    <taskdef name="banner"  classname="toolbox.ant.BannerTask" />
+		<banner message="Yippee!"/>
+	</target>
+	
+</project>

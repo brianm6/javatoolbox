@@ -1,0 +1,13 @@
+classes
+doc
+dist
+targets
+javadoc.xml
+test
+*.*~
+debug
+incubator
+System.out
+target
+junit*.properties
+*.log
