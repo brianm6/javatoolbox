@@ -52,6 +52,7 @@ import toolbox.util.SwingUtil;
  * TODO: Make plugins detachable
  * TODO: Make webstart enabled
  * TODO: Added close icon to plugin tabs
+ * TODO: Add differentiation between maximized and sized frame 
  * 
  * </pre>
  */
