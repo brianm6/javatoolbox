@@ -38,7 +38,6 @@
  * TODO: Fix broken stop on JTail
  * TODO: Find out why Tiny LAFs are not working
  * TODO: Checkout SIGAR http://www.hyperic.net/downloads/sigar-download.htm
- * TODO: Added rename/delete file to JFileExplorer file list.
  * TODO: Redo ObservableService using decorator pattern
  * TODO: Implements Service Transitions using Aspects
  * TODO: JFileExplorer - color code directories and file names based on  file attribs
@@ -131,6 +130,7 @@
             <action type="add"   >Util - Added hotkeys to JFileExplorer for rename (F2), up one level (Backspace), refresh (F5), and delete (DEL).</action>
             <action type="add"   >Workspace - Implemented FramePluginHost which starts each plugin in its own JFrame instance</action>
             <action type="add"   >Util - Added a 'View' option to popup menu for the file list in JFileExplorer</action>
+            <action type="add"   >Util - Added a 'Properties' option to the popup menu for directories in JFileExplorer. This option is capable of showing recursive directory, number of dirs, and number of files total</action>
         </release>
 
         <!-- =================================================================== -->
