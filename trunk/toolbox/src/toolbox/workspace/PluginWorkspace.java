@@ -48,7 +48,7 @@ import toolbox.util.SwingUtil;
  */
 public class PluginWorkspace extends JFrame implements IStatusBar
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
