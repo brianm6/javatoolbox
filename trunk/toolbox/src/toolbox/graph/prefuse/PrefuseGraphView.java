@@ -8,6 +8,10 @@ import edu.berkeley.guir.prefuse.action.RepaintAction;
 import edu.berkeley.guir.prefuse.action.filter.GraphFilter;
 import edu.berkeley.guir.prefuse.activity.ActionList;
 import edu.berkeley.guir.prefuse.graph.Graph;
+import edu.berkeley.guir.prefuse.render.DefaultEdgeRenderer;
+import edu.berkeley.guir.prefuse.render.DefaultRendererFactory;
+import edu.berkeley.guir.prefuse.render.ShapeRenderer;
+import edu.berkeley.guir.prefuse.render.TextItemRenderer;
 import edu.berkeley.guir.prefusex.controls.DragControl;
 import edu.berkeley.guir.prefusex.layout.RandomLayout;
 
@@ -40,6 +44,18 @@ public class PrefuseGraphView implements GraphView
     {
         Graph g = (Graph) graph.getDelegate();
         ItemRegistry registry = new ItemRegistry(g);
+        
+        // set up a renderer such that nodes show text labels
+        TextItemRenderer nodeRenderer = new TextItemRenderer();
+        ShapeRenderer    edgeRenderer = new DefaultEdgeRenderer();
+        //nodeRenderer.setRenderType(ShapeRenderer.RENDER_TYPE_FILL);
+        
+        // create a new renderer factory and associate it 
+        // with the item registry
+        registry.setRendererFactory(new DefaultRendererFactory(
+                nodeRenderer,
+                edgeRenderer,
+                null));
         
         delegate_ = new Display(registry);
         delegate_.addControlListener(new DragControl());
