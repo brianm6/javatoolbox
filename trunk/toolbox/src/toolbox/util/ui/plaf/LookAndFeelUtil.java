@@ -3,6 +3,7 @@ package toolbox.util.ui.plaf;
 import java.awt.Frame;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,9 +20,11 @@ import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
@@ -40,7 +43,7 @@ public final class LookAndFeelUtil
     // TODO: Fix frame decoration for LAFs that don't support it
     // TODO: Gracefully fail when toolbox-lookandfeel.jar is not on the claspath
        
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(LookAndFeelUtil.class);
     
     //--------------------------------------------------------------------------
@@ -186,7 +189,12 @@ public final class LookAndFeelUtil
     {
         JMenu menu = new JSmartMenu("Look and Feel");
         menu.setMnemonic('L');
+        
         group_ = new JButtonGroup();
+        Map submenus = new HashMap();
+        
+        // Create the menu whilst also groups similar look and feels together
+        // on the same submenu.
         
         for (Iterator i = lookAndFeels_.iterator(); i.hasNext();)
         {   
@@ -194,35 +202,61 @@ public final class LookAndFeelUtil
             {
                 LAFInfo info = (LAFInfo) i.next();
                 
-                logger_.debug(
-                    "LAF[" + StringUtil.left(i + "", 2) + "]: " + 
-                    StringUtil.left(info.getName(), 20) + " "  + 
-                    info.getClassName());
+                // Group look and feels by property group.name. If group.name
+                // is not available, then just use the look and feels name
+                // instead.
                 
-                String actionClassName = info.getAction();
-                Class actionClass = Class.forName(actionClassName);
+                String clazz = info.getProperty("group.name");
+                if (clazz == null)
+                    clazz = info.getName();
+
+                JMenu submenu = (JMenu) submenus.get(clazz);
+
+                if (submenu == null)
+                {
+                    submenu = new JSmartMenu(clazz);
+                    submenus.put(clazz, submenu);
+                }
+
+                Class actionClass = Class.forName(info.getAction());
                 
-                LookAndFeelActivator activator = 
+                LookAndFeelActivator activator =
                     (LookAndFeelActivator) actionClass.newInstance();
                 
                 activator.setLookAndFeelInfo(info);
 
-                JCheckBoxMenuItem cb = 
+                JCheckBoxMenuItem cb =
                     new JSmartCheckBoxMenuItem((Action) activator);
 
                 group_.add(cb);
-                menu.add(cb);
+                submenu.add(cb);
                 menuItemMap_.put(info, cb);
             }
             catch (Exception e)
             {
-                logger_.error(e);
+                ExceptionUtil.handleUI(e, logger_);
             }
         }
+
+        // Sort entries in the menu
+        List sorted = new ArrayList(submenus.keySet());
+        Collections.sort(sorted, new ReverseComparator());
+
+        // Add the resulting submenus to the top level menu. Groups that contain
+        // only one item are placed on the toplevel menu instead of having their
+        // own submenu.
         
-        //
+        for (Iterator i = sorted.iterator(); i.hasNext();)
+        {
+            JMenu submenu = (JMenu) submenus.get(i.next());
+            
+            if (submenu.getMenuComponentCount() == 1)
+                menu.add(submenu.getMenuComponent(0));
+            else
+                menu.insert(submenu, 0);
+        }
+        
         // Select the active look and feel if it is available on the menu.
-        //
         
         LAFInfo current = (LAFInfo) 
             UIManager.getLookAndFeel().getDefaults().get(
@@ -316,6 +350,7 @@ public final class LookAndFeelUtil
         propagateChangeInLAF();            
     }
 
+    
     /**
      * Sets the Skin LAF.
      * 
