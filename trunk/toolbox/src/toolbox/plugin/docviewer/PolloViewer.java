@@ -18,6 +18,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
+import toolbox.util.SwingUtil;
 
 /**
  * XML document viewer that uses Pollo for rendering the document.
@@ -69,16 +70,21 @@ public class PolloViewer extends AbstractViewer
                     new GenericDisplaySpecification();
                 
                 HashMap initMap = new HashMap();
+                
                 initMap.put("use-random-colors", "true");
                 //init.put("fixed-color", "0xffeeff");
                 //init.put("background-color", null);
+                
                 initMap.put("treetype", "pollo");
+                //initMap.put("treetype", "classic");
                 
                 displaySpec.init(initMap);
                 editor_ = new XmlEditor(null, displaySpec, -1);
-                editor_.setAntialiasing(true);
-                editor_.setCharacterDataFont(FontUtil.getPreferredMonoFont());
+                editor_.setAntialiasing(SwingUtil.getDefaultAntiAlias());
                 editor_.setElementNameFont(FontUtil.getPreferredMonoFont());
+                editor_.setCharacterDataFont(FontUtil.getPreferredMonoFont());
+                editor_.setAttributeNameFont(FontUtil.getPreferredMonoFont());
+                editor_.setAttributeValueFont(FontUtil.getPreferredMonoFont());
                 scroller_ = new JScrollPane(editor_);                
             }
             catch (Exception pe)

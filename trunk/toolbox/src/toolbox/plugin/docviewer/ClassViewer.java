@@ -14,7 +14,8 @@ import toolbox.util.decompiler.DecompilerFactory;
 import toolbox.util.io.StringInputStream;
 
 /**
- * Java class file viewer.
+ * Java class file viewer that decompiles a <code>class<code> file and displays
+ * the resulting source code in a syntax hilighting editor. 
  */
 public class ClassViewer extends JavaViewer
 {
@@ -25,7 +26,7 @@ public class ClassViewer extends JavaViewer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a ClassViewer. Necessary for instantiation via reflection.
+     * Creates a ClassViewer.
      */
     public ClassViewer()
     {
@@ -62,21 +63,17 @@ public class ClassViewer extends JavaViewer
      */
     public void view(File file) throws DocumentViewerException
     {
-            Decompiler d;
+        try
+        {
+            Decompiler d = DecompilerFactory.createPreferred();
+            String javacode = d.decompile(file);
+            super.view(new StringInputStream(javacode));
             
-            try
-            {
-                d = DecompilerFactory.create(
-                    DecompilerFactory.DECOMPILER_JREVERSEPRO);
-                
-                String javacode = d.decompile(file);
-                super.view(new StringInputStream(javacode));
-                
-            }
-            catch (DecompilerException e)
-            {
-                logger_.error(e);
-            }
+        }
+        catch (DecompilerException e)
+        {
+            throw new DocumentViewerException(e);
+        }
     }
 
     

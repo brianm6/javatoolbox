@@ -10,23 +10,26 @@ import toolbox.util.service.Initializable;
 import toolbox.util.service.Nameable;
 
 /**
- * Generic interface that defines API necessary to view a document.
+ * Generic interface that defines an API necessary to view any arbitrary 
+ * document based on its file type (extension). 
+ * <p>
+ * TODO: Extend to also support mime/types.
  * 
  * @see toolbox.plugin.docviewer.DocumentViewerPlugin
  */
 public interface DocumentViewer extends Initializable, Destroyable, Nameable
 {
     /**
-     * Views the given file.
+     * Views the document associated with the given file.
      * 
-     * @param file File containing document to view.
+     * @param file File associated with the document to view.
      * @throws DocumentViewerException on error.
      */
     void view(File file) throws DocumentViewerException;
     
     
     /**
-     * Views the document associated with the given inputstream.
+     * Views the document associated with the given InputStream.
      * 
      * @param is InputStream to read the document from.
      * @throws DocumentViewerException on error.
@@ -35,25 +38,26 @@ public interface DocumentViewer extends Initializable, Destroyable, Nameable
 
     
     /**
-     * Determines if a given file type extension is viewable by this document
-     * viewer.
+     * Returns true if the given file is viewable by this DocumentViewer based 
+     * on the file's extension, false otherwise.
      * 
-     * @param file File to test if this viewer is capable of viewing it.
-     * @return True if the file is viewable by the plugin, false. 
+     * @param file File to check.
+     * @return boolean 
       */    
     boolean canView(File file);
     
     
     /**
      * Returns a list of all the file types that this document viewer supports.
+     * The list of extensions is not prefixed with a dot.
      * 
-     * @return String array of file types.
+     * @return String[]
      */
     String[] getViewableFileTypes();
     
     
     /**
-     * Returns the UI component of the document viewer.
+     * Returns the UI component of this document viewer.
      * 
      * @return JComponent
      */
