@@ -80,7 +80,7 @@ public class Main
         {
             String check = (String) i.next();
 
-            if (dupe.toUpperCase().equals(check.toUpperCase()))
+            if (dupe.equalsIgnoreCase(check))
                 return true;
         }
 
