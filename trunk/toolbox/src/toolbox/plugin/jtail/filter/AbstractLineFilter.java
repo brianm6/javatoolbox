@@ -10,12 +10,21 @@ public abstract class AbstractLineFilter implements ILineFilter
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-        
+
     /**
      * Constructor for AbstractLineFilter.
      */
     public AbstractLineFilter()
     {
+        this(false);    
+    }
+        
+    /**
+     * Constructor for AbstractLineFilter.
+     */
+    public AbstractLineFilter(boolean enabled)
+    {
+        enabled_ = enabled;    
     }
 
     //--------------------------------------------------------------------------
