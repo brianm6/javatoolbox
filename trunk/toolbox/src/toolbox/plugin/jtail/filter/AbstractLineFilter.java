@@ -6,7 +6,9 @@ package toolbox.jtail.filter;
  */
 public abstract class AbstractLineFilter implements ILineFilter
 {
-    /** Tracks enabled state of the filter */
+    /** 
+     * Tracks enabled state of the filter 
+     */
     private boolean enabled_;
 
     //--------------------------------------------------------------------------
@@ -24,8 +26,8 @@ public abstract class AbstractLineFilter implements ILineFilter
     /**
      * Creates an AbstractLineFilter with the given state
      * 
-     * @param  enabled  Set to true to enable the filter or false to disable
-     *                  the filter.
+     * @param enabled Set to true to enable the filter or false to disable the 
+     *                filter.
      */
     public AbstractLineFilter(boolean enabled)
     {

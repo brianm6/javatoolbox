@@ -14,34 +14,40 @@ public class CutLineFilter extends AbstractLineFilter
 {
     // TODO: Update cut expression to support "x-y,a-b,..."
     
-    /** Cut expression */
+    /** 
+     * Cut expression 
+     */
     private String cut_;
     
-    /** Beginning column number */
+    /** 
+     * Beginning column number 
+     */
     private int begin_ = 0;
     
-    /** Ending column number */
+    /** 
+     * Ending column number 
+     */
     private int end_ = 0;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a cut filter
+     * Creates a CutLineFilter
      */
     public CutLineFilter()
     {
     }
 
     //--------------------------------------------------------------------------
-    //  ILineFilter Interface
+    // ILineFilter Interface
     //--------------------------------------------------------------------------
     
     /**
      * Filters a line by cutting 
      * 
-     * @param  line  Line to cut
+     * @param line Line to cut
      * @return Line after cut operation
      */
     public String filter(String line)
@@ -80,7 +86,7 @@ public class CutLineFilter extends AbstractLineFilter
     /**
      * Sets the cut expression
      * 
-     * @param  cut  Cut expression
+     * @param cut Cut expression
      * @throws IllegalArgumentException on bad cut expression
      */
     public void setCut(String cut) throws IllegalArgumentException
@@ -103,7 +109,7 @@ public class CutLineFilter extends AbstractLineFilter
     }
     
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**

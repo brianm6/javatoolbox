@@ -9,13 +9,19 @@ import org.apache.regexp.RESyntaxException;
  */
 public class RegexLineFilter extends AbstractLineFilter
 {
-    /** Regular expression */
+    /** 
+     * Regular expression 
+     */
     private String strRegExp_;
     
-    /** Flag to match case */
+    /** 
+     * Flag to match case 
+     */
     private boolean matchCase_;
     
-    /** Regular expression engine */
+    /** 
+     * Regular expression engine 
+     */
     private RE regExp_;
     
     //--------------------------------------------------------------------------
@@ -23,9 +29,9 @@ public class RegexLineFilter extends AbstractLineFilter
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor that matches everything.
+     * Creates a RegexLineFilter that matches any string.
      * 
-     * @throws  RESyntaxException on an invalid regular expression
+     * @throws RESyntaxException on an invalid regular expression
      */
     public RegexLineFilter() throws RESyntaxException
     {
@@ -36,8 +42,8 @@ public class RegexLineFilter extends AbstractLineFilter
      * Creates a RegexLineFilter with the given regular expression. The match
      * is case insensetive by default. 
      * 
-     * @param   regularExpression   Regular expression to match against
-     * @throws  RESyntaxException on an invalid regular expression
+     * @param regularExpression Regular expression to match against
+     * @throws RESyntaxException on an invalid regular expression
      */
     public RegexLineFilter(String regularExpression) throws RESyntaxException
     {
@@ -48,9 +54,9 @@ public class RegexLineFilter extends AbstractLineFilter
      * Creates a RegexLineFilter with the given regular expression and case
      * matching flag.
      * 
-     * @param   regularExpression     Regular expression to match
-     * @param   matchCase             Set to true to observe case sensetivity
-     * @throws  RESyntaxException if the regular expression is invalid
+     * @param regularExpression Regular expression to match
+     * @param matchCase Set to true to observe case sensetivity
+     * @throws RESyntaxException if the regular expression is invalid
      */
     public RegexLineFilter(String regularExpression, boolean matchCase)
         throws RESyntaxException
@@ -66,8 +72,8 @@ public class RegexLineFilter extends AbstractLineFilter
     /**
      * Filters a line based on a regular expression
      * 
-     * @param   line  Line to match
-     * @return  Line if it matched the regular expression, null otherwise
+     * @param line Line to match
+     * @return Line if it matched the regular expression, null otherwise
      */
     public String filter(String line)
     {
@@ -87,8 +93,8 @@ public class RegexLineFilter extends AbstractLineFilter
     /**
      * Sets the regular expression
      * 
-     * @param   regExp  Regular expression
-     * @throws  RESyntaxException on invalid regular expression
+     * @param regExp Regular expression
+     * @throws RESyntaxException on invalid regular expression
      */
     public void setRegularExpression(String regExp) throws RESyntaxException
     {
@@ -99,7 +105,7 @@ public class RegexLineFilter extends AbstractLineFilter
     /**
      * Sets case matching
      * 
-     * @param  matchCase  Flag to match case
+     * @param matchCase Flag to match case
      */
     public void setMatchCase(boolean matchCase) 
     {
