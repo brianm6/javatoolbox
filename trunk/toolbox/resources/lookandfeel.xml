@@ -85,6 +85,15 @@
       <Property name="group.name" value="Others"/>            
   </LookAndFeel>
   
+  <!--
+  <LookAndFeel 
+      name="FH"
+      class="com.shfarr.ui.plaf.fh.FhLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
+  </LookAndFeel>
+  -->
+  
   <!-- ==================================================================== -->
   <!-- Alloy Look and Feels                                                 -->
   <!-- ==================================================================== -->
