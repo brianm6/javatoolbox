@@ -30,6 +30,7 @@ import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.jtail.config.tinyxml.ConfigManager;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
@@ -106,6 +107,7 @@ public class JTail extends JFrame
      * Entry point 
      * 
      * @param  args  None recognized
+     * @throws Exception on error
      */
     public static void main(String[] args) throws Exception
     {
@@ -249,7 +251,13 @@ public class JTail extends JFrame
             
             closeButton.addActionListener(new CloseButtonListener());
             
-            tabbedPane_.addTab(config.getFilename(), tailPane);
+            tabbedPane_.addTab(
+                FileUtil.stripPath(config.getFilename()), tailPane);
+                
+            tabbedPane_.setToolTipTextAt(
+                tabbedPane_.getTabCount()-1, config.getFilename());
+            
+                
             tabbedPane_.setSelectedComponent(tailPane);
             
             statusBar_.setStatus("Added tail for " + config.getFilename());
