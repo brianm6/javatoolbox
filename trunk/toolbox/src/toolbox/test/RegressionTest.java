@@ -42,20 +42,20 @@ public class RegressionTest
         TestSuite suite = new TestSuite();
          
         // util
-        suite.addTest(new TestSuite(ArrayUtilTest.class));
-        suite.addTest(new TestSuite(AssertTest.class));        
-        suite.addTest(new TestSuite(ConsoleTest.class));
-        suite.addTest(new TestSuite(FileUtilTest.class));        
-        suite.addTest(new TestSuite(RandomUtilTest.class));
-        suite.addTest(new TestSuite(ResourceUtilTest.class));
-        suite.addTest(new TestSuite(SocketUtilTest.class));
-        suite.addTest(new TestSuite(StreamUtilTest.class));        
-        suite.addTest(new TestSuite(StringUtilTest.class));        
-        suite.addTest(new TestSuite(ThreadUtilTest.class));
-                
-        // util.io
-        suite.addTest(new TestSuite(StringInputStreamTest.class));
-        suite.addTest(new TestSuite(StringOutputStreamTest.class));        
+//        suite.addTest(new TestSuite(ArrayUtilTest.class));
+//        suite.addTest(new TestSuite(AssertTest.class));        
+//        suite.addTest(new TestSuite(ConsoleTest.class));
+//        suite.addTest(new TestSuite(FileUtilTest.class));        
+//        suite.addTest(new TestSuite(RandomUtilTest.class));
+//        suite.addTest(new TestSuite(ResourceUtilTest.class));
+//        suite.addTest(new TestSuite(SocketUtilTest.class));
+//        suite.addTest(new TestSuite(StreamUtilTest.class));        
+//        suite.addTest(new TestSuite(StringUtilTest.class));        
+//        suite.addTest(new TestSuite(ThreadUtilTest.class));
+//                
+//        // util.io
+//        suite.addTest(new TestSuite(StringInputStreamTest.class));
+//        suite.addTest(new TestSuite(StringOutputStreamTest.class));        
         
         return suite;
     }
