@@ -21,7 +21,7 @@ import javax.swing.table.TableModel;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ResourceUtil;
+import toolbox.util.ui.ImageCache;
 
 /**
  * A sorter for TableModels. The sorter has a model (conforming to TableModel) 
@@ -244,12 +244,10 @@ public class TableSorter extends TableMap
         enabled_         = true;
         
         forwardSortIcon_ = 
-            ResourceUtil.getResourceAsIcon(
-                "/toolbox/util/ui/images/SortAscending.gif");
+            ImageCache.getIcon("/toolbox/util/ui/images/SortAscending.gif");
                 
         reverseSortIcon_ = 
-            ResourceUtil.getResourceAsIcon(
-                "/toolbox/util/ui/images/SortDescending.gif");
+            ImageCache.getIcon("/toolbox/util/ui/images/SortDescending.gif");
     }
 
     /**

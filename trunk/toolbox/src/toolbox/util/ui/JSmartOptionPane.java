@@ -37,7 +37,6 @@ import javax.swing.plaf.OptionPaneUI;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
-import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 
@@ -299,6 +298,9 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         Object[] options,
         Object initialValue)
     {
+        forwardIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Forward.gif"); 
+        reverseIcon_ = ImageCache.getIcon("toolbox/util/ui/images/Reverse.gif"); 
+        
         message_ = message;
         details_ = details;
 
@@ -1295,7 +1297,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         expanded_ = true;
         detailsButton_.setText(BUTTON_EXPANDED);
         detailsButton_.setHorizontalTextPosition(SwingConstants.TRAILING);
-        detailsButton_.setIcon(getReverseIcon());
+        detailsButton_.setIcon(reverseIcon_);
         
         
 //        Dimension collapsed = getEnclosingDialog().getSize();
@@ -1317,7 +1319,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         expanded_ = false;
         detailsButton_.setText(BUTTON_COLLAPSED);
         detailsButton_.setHorizontalTextPosition(SwingConstants.LEADING);
-        detailsButton_.setIcon(getForwardIcon());        
+        detailsButton_.setIcon(forwardIcon_);        
         
 //        Dimension expanded = getEnclosingDialog().getSize();
 //        Dimension collapsed  = 
@@ -1341,7 +1343,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 
             detailsButton_ = new JButton(BUTTON_COLLAPSED);
             detailsButton_.setHorizontalTextPosition(SwingConstants.LEADING);            
-            detailsButton_.setIcon(getForwardIcon());
+            detailsButton_.setIcon(forwardIcon_);
             detailsButton_.addActionListener(this);
 
             buttons_ = new JButton[2];
@@ -1350,29 +1352,5 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         }
 
         return buttons_;
-    }
- 
-    /**
-     * @return  Cached forward icon
-     */   
-    protected Icon getForwardIcon()
-    {
-        if (forwardIcon_ == null)
-            forwardIcon_ = ResourceUtil.getResourceAsIcon(
-                "toolbox/util/ui/images/Forward.gif"); 
-            
-        return forwardIcon_;    
-    }
-    
-    /**
-     * @return  Cached reverse icon
-     */
-    protected Icon getReverseIcon()
-    {
-        if (reverseIcon_ == null)
-            reverseIcon_ = ResourceUtil.getResourceAsIcon(
-                "toolbox/util/ui/images/Reverse.gif"); 
-            
-        return reverseIcon_;    
     }
 }
