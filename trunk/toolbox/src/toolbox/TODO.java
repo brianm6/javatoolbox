@@ -28,6 +28,7 @@ package toolbox;
  * TODO: Make plugins detachable
  * TODO: Write log4j pattern layout that combines class name and method
  * TODO: Lift icons from DbVisualizer
+ * TODO: Automatically flushing Writer/OutputStream
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -38,6 +39,9 @@ package toolbox;
  * TODO: Build error pane because dialog boxes are annoying
  * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
  *       a selection.
+ * TODO: Switch between grid and text view
+ * TODO: Add sql formatter preferences to prefsview
+ * TODO: Lift more stuff from hsqldb manager
  * =============================================================================
  * 								FindClassPlugin
  * =============================================================================
