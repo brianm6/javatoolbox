@@ -86,6 +86,7 @@ public class FindClass
      * @return  Array of FindClassResults
      */
     public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
+        throws RESyntaxException
     { 
         /* result collector */
         defaultCollector_.clear();
@@ -99,17 +100,10 @@ public class FindClass
         ignoreCase_  = ignoreCase;
         classToFind_ = classToFind;
 
-        try
-        {
-            /* setup regexp based on flag */                    
-            regExp_ = new RE(classToFind_);
-            if (ignoreCase)
-                regExp_.setMatchFlags(RE.MATCH_CASEINDEPENDENT);        
-        }
-        catch (RESyntaxException e)
-        {
-            logger_.error("constructor", e);
-        }
+        /* setup regexp based on flag */                    
+        regExp_ = new RE(classToFind_);
+        if (ignoreCase)
+            regExp_.setMatchFlags(RE.MATCH_CASEINDEPENDENT);        
 
         /* build list of archives and dirs to search */        
         List searchList = new ArrayList();
