@@ -56,7 +56,7 @@ public class FileStats
     /**
      * Returns percentage of source code lines to total lines.
      * 
-     * @return Percent of source to total.
+     * @return int
      */
     public int getPercent()
     {
