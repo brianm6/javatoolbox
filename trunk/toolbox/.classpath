@@ -38,11 +38,14 @@
 	<classpathentry sourcepath="lib/src/hamsam-src.zip" kind="lib" path="lib/hamsam.jar"/>
 	<classpathentry kind="lib" path="lib/hippolf.jar"/>
 	<classpathentry sourcepath="lib/src/hsqldb-src.zip" kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta-oro.jar"/>
 	<classpathentry sourcepath="lib/src/jakarta-regexp-src.zip" kind="lib" path="lib/jakarta-regexp.jar"/>
+	<classpathentry sourcepath="lib/src/jalopy-src.zip" kind="lib" path="lib/jalopy.jar"/>
 	<classpathentry sourcepath="lib/src/janino-src.zip" kind="lib" path="lib/janino.jar"/>
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon.jar"/>
+	<classpathentry kind="lib" path="lib/jdom.jar"/>
 	<classpathentry sourcepath="lib/src/jedit-syntax-src.zip" kind="lib" path="lib/jedit-syntax.jar"/>
 	<classpathentry sourcepath="lib/src/jemmy-src.zip" kind="lib" path="lib/jemmy.jar"/>
 	<classpathentry sourcepath="lib/src/jfreechart-src.zip" kind="lib" path="lib/jfreechart.jar"/>
