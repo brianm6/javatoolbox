@@ -13,6 +13,7 @@ package toolbox;
  * TODO: Get PropertyPrompt working properly
  * TODO: Add tabs to FIndClass -> Decompiler. One per file
  * TODO: Add support for JAD to decompiler in FindClass
+ * TODO: Add dynamic loading of JDBC drivers to JDBC plugin
  * </pre>
  */
 public class TODO
