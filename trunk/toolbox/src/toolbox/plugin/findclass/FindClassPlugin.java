@@ -26,6 +26,15 @@ public class JFindClassPlugin implements IPlugin
     private JFindClass jfindClass_;
     
     //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    public JFindClassPlugin()
+    {
+        jfindClass_ = new JFindClass();
+    }
+    
+    //--------------------------------------------------------------------------
     // IPlugin Interface
     //--------------------------------------------------------------------------
     
@@ -60,7 +69,7 @@ public class JFindClassPlugin implements IPlugin
     {
         try
         {
-            jfindClass_ = new JFindClass();        
+            jfindClass_.init();        
         }
         catch (Exception ioe)
         {
@@ -89,6 +98,7 @@ public class JFindClassPlugin implements IPlugin
      */
     public void setStatusBar(IStatusBar statusBar)
     {
+        jfindClass_.setStatusBar(statusBar);
     }
 
     /**
