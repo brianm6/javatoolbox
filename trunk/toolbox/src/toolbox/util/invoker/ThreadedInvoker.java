@@ -30,7 +30,9 @@ public class ThreadedInvoker implements Invoker
      *      java.lang.Object, java.lang.String, java.lang.Object[])
      */
     public void invoke(
-        final Object target, final String method, final Object[] params) 
+        final Object target,
+        final String method,
+        final Object[] params)
         throws Exception
     {
         invoke(new Runnable()
@@ -43,7 +45,8 @@ public class ThreadedInvoker implements Invoker
                 }
                 catch (Exception e)
                 {
-                    logger_.error(logger_, e);
+                    logger_.error("Exception thrown: " + e);
+                    logger_.error("Root cause: " + e.getCause().getMessage());
                 }
             }
         });
