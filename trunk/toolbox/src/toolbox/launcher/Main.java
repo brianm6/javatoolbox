@@ -25,16 +25,11 @@ public class Main
         programMap_ = new HashMap(15);
         
         programMap_.put("findclass",  "toolbox.findclass.Main");
-        programMap_.put("jfindclass", "toolbox.findclass.JFindClass");
         programMap_.put("showclasspath", "toolbox.showclasspath.Main");
         programMap_.put("showpath",   "toolbox.showpath.Main");
-        programMap_.put("jsourceview","toolbox.jsourceview.JSourceView");
-        programMap_.put("jtail",      "toolbox.jtail.JTail");
         programMap_.put("tail",       "toolbox.tail.Main");
-        programMap_.put("jtcptunnel", "toolbox.tunnel.JTcpTunnel");
         programMap_.put("tcptunnel",  "toolbox.tunnel.TcpTunnel");
         programMap_.put("tree",       "toolbox.tree.Tree");
-        programMap_.put("sqlviewer",  "toolbox.sqlviewer.SQLViewer");
         programMap_.put("banner",     "toolbox.util.Banner");
         programMap_.put("workspace",  "toolbox.util.ui.plugin.PluginWorkspace");
         programMap_.put("laflauncher","toolbox.launcher.LAFLauncher");
@@ -144,11 +139,6 @@ public class Main
             "       tcptunnel     => tcp tunnel                     \n" +
             "       tree          => prints directory as tree       \n" +
             "                                                       \n" +
-            "       jfindclass    => gui version of findclass       \n" +
-            "       jsourceview   => java code counter              \n" +
-            "       jtail         => java tailer (GUI)              \n" +
-            "       jtcptunnel    => tcp tunnel  (GUI)              \n" +
-            "       sqlviewer     => unmangles sql statements       \n" +
             "       laflauncher   => launches program with look and feel\n" +
             "       workspace     => plugin workspace               \n");
     }
