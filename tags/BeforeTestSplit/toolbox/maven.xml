@@ -1,0 +1,229 @@
+<!-- ===========================================================================
+    
+  Maven Base Project Customizations
+  
+  USAGE:
+
+    You do not invoke this file explicitly. It is picked up by Maven 
+    automatically if 'maven.xml' exists in the same directory as the Maven
+    project file that is being executed (usually project.xml, but in our case
+    base-project.xml). Goals that are defined in this file can be passed to
+    maven via the command line to be executed. Execute maven with no command
+    line args to print out additional help information on each of the goals.
+
+  PURPOSE:
+  
+    This file contains additional behavior that is applicable and common to the
+    build process of each individual PWSW sub-project (framework, rules, etc).
+    
+  EXAMPLE:
+  
+    maven cvs-update    
+
+============================================================================ -->
+
+<project
+  default="help"
+  xmlns:maven="jelly:maven"
+  xmlns:j="jelly:core"
+  xmlns:u="jelly:util"
+  xmlns:ant="jelly:ant"
+  xmlns:bsh="jelly:beanshell">
+
+    <!-- =================================================================== -->
+    <!-- [PRE] JAVA:COMPILE                                                  -->
+    <!-- =================================================================== -->
+    <preGoal name="java:compile"> 
+       <!-- Piggybacks the debug source tree onto the compile goal -->
+       <path id="debug.src" location="${basedir}/debug"/> 
+       <maven:addPath id="maven.compile.src.set" refid="debug.src"/> 
+    </preGoal> 
+
+    <preGoal name="jnlp"/> 
+    
+    <!-- =================================================================== -->
+    <!-- CVS-UPDATE                                                          -->
+    <!-- =================================================================== -->
+    <goal name="cvs-update" description="Updates the project from CVS">
+
+      <mkdir dir="${basedir}/src"/>
+    
+      <!-- Only the uiframework module has a 'src' dir built into the cvs structure -->
+      <j:set var="dest" value="${basedir}/src"/>
+      <j:if test="${pom.artifactId == 'uiframework'}">
+        <j:set var="dest" value="${basedir}"/>
+      </j:if>
+    
+      <!-- Update from CVS. TODO: Clean checkout -->
+      <cvs command     = "update -d"
+           dest        = "${dest}"
+           failonerror = "false"/>
+           <!-- noexec  = "true" -->         
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- JNLP-DEPLOY                                                         -->
+    <!-- =================================================================== -->
+    <goal name="jnlp-deploy" description="Deploys the JNLP distribution to Tomcat">
+      
+      <!-- Fix the main jar in the jnlp file to occur before all the 3rd  -->
+      <!-- party jars so that the debug classes will be loaded from the   -->
+      <!-- main jar first.                                                -->
+      
+      <!--echoproperties/-->
+     
+      <bsh:script><![CDATA[
+        import java.util.*;
+        import java.io.*;
+        import nu.xom.*;
+         
+        //print("===== fixjnlp.bsh begin ========");
+        
+        String fs = File.separator+"";
+        
+        String inputFile = "target" + fs + "jnlp" + fs + "toolbox.jnlp";
+        
+        System.out.println("JNLP file = " + inputFile);
+        	
+        String outputFile = inputFile;
+        
+        //which(java.lang.Object.class);
+        //which(System.class);
+        //which("nu.xom.Builder");
+        //print(getClassPath());
+        
+        InputStream is = new FileInputStream(new File(inputFile));
+        
+        //print(is);
+        
+        Builder parser = new Builder();
+        Document doc = parser.build(is);
+        Element root = doc.getRootElement();
+        
+        //print(root.toXML());
+        
+        Element resources = root.getFirstChildElement("resources");
+        Element firstJar = resources.getFirstChildElement("jar");
+        Elements jars = resources.getChildElements("jar");
+        
+        for (int i = 0; i<jars.size(); i++)
+        { 
+          Element jar = jars.get(i);
+            
+          //print("Iterating..." + jar.toXML());
+          
+          Attribute main = jar.getAttribute("main");
+            
+          if (main != null)
+          {
+              System.out.println("Fixing jnlp file...");
+              jar.detach();
+              int idx = resources.indexOf(firstJar);
+              //print("index=" + idx);
+              resources.insertChild(jar, idx);
+              break;
+          }
+        }
+        
+        //print(resources.toXML()); 
+        
+        is.close();
+        
+        Writer w = new FileWriter(outputFile);
+        w.write(root.toXML());
+        w.close();
+        
+        //print("===== fixjnlp.bsh end ========");        
+        
+        ]]>
+      </bsh:script>
+
+      <!-- Copy everything over to the tomcat directory -->
+      <copy todir="${toolbox.jnlp.deploy}" 
+            verbose="true"
+            quiet="false" 
+            overwrite="false">
+        <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
+        <fileset dir="${basedir}/resources/toolbox/util/ui/images" 
+                 includes="toolbox.gif"/>
+      </copy>
+    </goal>
+
+
+    <!-- =================================================================== -->
+    <!-- UPDATE-PROPS                                                        -->
+    <!-- =================================================================== -->
+    <goal name="update-props" description="Copy build.properties to $HOME">
+        <property environment="sysenv"/>
+        <copy todir="${sysenv.USERPROFILE}" verbose="true" overwrite="true">
+            <fileset dir="${basedir}" includes="build.properties"/>
+        </copy>
+    </goal> 
+
+
+    <!-- =================================================================== -->
+    <!-- HELP                                                                -->
+    <!-- =================================================================== -->
+    <goal name="help" description="Help for build targets">
+        <echo>
+================================================================================
+                             Project Build Help
+================================================================================
+
+Scope: 
+
+  Maven goals for the Java Toolbox
+
+Commands:
+
+  clean         Deletes residual class files, jars, directories generated by 
+                the build process.
+  compile       Compiles the project only.
+  cvs-update    Does a cvs update of the project.
+  jar           Compiles, unit tests, and jars the project.
+  jnlp          Creates jnlp distribution in target/jnlp
+  jnlp-deploy   Copies the jnlp distribution to the http server
+  test          Runs unit tests
+  site          Generates project website with reports and all.
+  update-props  Copies build.properties to $HOME
+
+================================================================================
+        </echo>
+    </goal>
+    
+    <!-- =================================================================== -->
+    <!-- UMLGRAPH                                                            -->
+    <!-- =================================================================== -->
+    <goal name="umlgraph" description="Generates UML class diagrams">
+        
+        <!-- TODO: This task is unfinished because dot is not implemented    --> 
+        <!--       in java. Maybe finish if dot ever gets ported.            -->
+        
+        <path id="umlgraph.classpath">
+            <fileset dir="${basedir}/lib">
+                <include name="*.jar"/>
+                <include name="*.zip"/>
+            </fileset>
+        </path>
+        
+        <!--
+		<pathconvert 
+		    targetos="windows" 
+		    property="umlgraph.classpath" 
+		    refid="umlgraph.classpath"/>
+		    
+        <echo>classpath=${umlgraph.classpathy}</echo>
+        -->
+        
+        <javadoc 
+            doclet           = "UmlGraph"
+            docletpath       = "${basedir}/lib/UmlGraph.jar"
+            source           = "*.java"
+            sourcepath       = "${basedir}/src"
+            packagenames     = "toolbox.jtail.*"
+            classpathref     = "umlgraph.classpath"
+            verbose          = "false"/>
+    </goal>
+    
+</project>
