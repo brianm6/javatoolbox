@@ -28,7 +28,17 @@ public final class DateTimeUtil
     
     /**
      * Formats a timestamp in MM-dd-yyyy hh:mm a format.
-     *  
+     * <p>
+     * <b>Example:</b>
+     * <pre class="snippet">
+     * System.out.println(DateTimeUtil.format(new Date()));
+     * </pre>
+     * 
+     * <b>Output:</b>
+     * <pre class="snippet">
+     * 08-12-2004 04:05 PM
+     * </pre>
+     * 
      * @param d Date to format.
      * @return Date/time in dashed MM-dd-yyyy hh:mm a format.
      */
@@ -41,7 +51,17 @@ public final class DateTimeUtil
     
     /**
      * Formats a timestamp down to the second.
-     *  
+     * <p>
+     * <b>Example:</b>
+     * <pre class="snippet">
+     * System.out.println(DateTimeUtil.formatToSecond(new Date()));
+     * </pre>
+     * 
+     * <b>Output:</b>
+     * <pre class="snippet">
+     * 08-12-2004 04:06:33 PM
+     * </pre>
+     * 
      * @param d Date to format.
      * @return Date/time in dashed MM-dd-yyyy hh:mm:ss a format.
      */
