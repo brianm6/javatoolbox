@@ -1,19 +1,24 @@
-package toolbox.util;
+package toolbox.util.ui.console;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ui.console.AbstractConsole;
-
 /**
  * Unit test for {@link toolbox.util.ui.console.AbstractConsole}.
  */
-public class ConsoleTest extends TestCase
+public class DefaultCommandHandlerTest extends TestCase
 {
-    private static final Logger logger_ = Logger.getLogger(ConsoleTest.class);
+    private static final Logger logger_ = Logger.getLogger(DefaultCommandHandlerTest.class);
 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    private CommandHandler handler_;
+    private Console console_ = new MockConsole();
+    
     //--------------------------------------------------------------------------
     // Main
     //--------------------------------------------------------------------------
@@ -25,9 +30,21 @@ public class ConsoleTest extends TestCase
      */
     public static void main(String[] args)
     {
-        TestRunner.run(ConsoleTest.class);
+        TestRunner.run(DefaultCommandHandlerTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Overrides TestCase
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        handler_ = new DefaultCommandHandler();
+    }
+    
     //--------------------------------------------------------------------------
     // Unit Tests
     //--------------------------------------------------------------------------
@@ -35,78 +52,66 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(classpath)
      */
-    public void testHandleCommandClasspath()
+    public void testHandleCommandClasspath() throws Exception
     {
         logger_.info("Running testHandleCommandClasspath...");
-        
-        TestConsole console = new TestConsole();
-        console.handleCommand(AbstractConsole.CMD_CLASSPATH);
+        handler_.handleCommand(console_, DefaultCommandHandler.CMD_CLASSPATH);
     }
     
     
     /**
      * Tests handleCommand(help)
      */
-    public void testHandleCommandHelp() 
+    public void testHandleCommandHelp() throws Exception 
     {
         logger_.info("Running testHandleCommandHelp...");
-        
-        TestConsole console = new TestConsole();
-        console.handleCommand(AbstractConsole.CMD_HELP);
+        handler_.handleCommand(console_, DefaultCommandHandler.CMD_HELP);
     }
     
     
     /**
      * Tests handleCommand(mem)
      */
-    public void testHandleCommandMem() 
+    public void testHandleCommandMem() throws Exception 
     {
         logger_.info("Running testHandleCommandMem...");
-        
-        TestConsole console = new TestConsole();
-        console.handleCommand(AbstractConsole.CMD_MEM);
+        handler_.handleCommand(console_, DefaultCommandHandler.CMD_MEM);
     }
     
     
     /**
      * Tests handleCommand(props)
      */
-    public void testHandleCommandProps() 
+    public void testHandleCommandProps() throws Exception 
     {
         logger_.info("Running testHandleCommandProps...");
-        
-        TestConsole console = new TestConsole();
-        console.handleCommand(AbstractConsole.CMD_PROPS);
+        handler_.handleCommand(console_, DefaultCommandHandler.CMD_PROPS);        
     }
     
     
     /**
      * Tests handleCommand(uptime)
      */
-    public void testHandleCommandUptime() 
+    public void testHandleCommandUptime() throws Exception 
     {
         logger_.info("Running testHandleCommandUptime...");
-        
-        TestConsole console = new TestConsole();
-        console.handleCommand(AbstractConsole.CMD_UPTIME);
+        handler_.handleCommand(console_, DefaultCommandHandler.CMD_UPTIME);        
     }
     
     
     /**
      * Tests handleCommand(setprop)
      */
-    public void testHandleCommandSetProp() 
+    public void testHandleCommandSetProp() throws Exception 
     {
         logger_.info("Running testHandleCommandSetProp...");
         
-        TestConsole console = new TestConsole();
-
         String prop = "console.test";
         String value = "123";        
         
-        console.handleCommand(
-            AbstractConsole.CMD_SETPROP + " " + prop + " " + value);
-            
+        handler_.handleCommand(console_, 
+            DefaultCommandHandler.CMD_SETPROP + " " + prop + " " + value);
+        
         assertEquals("property should be set", value, System.getProperty(prop));
     }
     
@@ -114,37 +119,17 @@ public class ConsoleTest extends TestCase
     /**
      * Tests handleCommand(delprop)
      */
-    public void testHandleCommandDelProp() 
+    public void testHandleCommandDelProp() throws Exception 
     {
         logger_.info("Running testHandleCommandDelProp...");
         
-        TestConsole console = new TestConsole();
-
         String prop = "console.delprop";
         String value = "123";        
         System.setProperty(prop, value);
         
-        console.handleCommand(
-            AbstractConsole.CMD_DELPROP + " " + prop);
-            
+        handler_.handleCommand(console_, 
+            DefaultCommandHandler.CMD_DELPROP + " " + prop);
+        
         assertNull("property should be null", System.getProperty(prop));    
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Inner Classes
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Test implementation of console.
-     */
-    class TestConsole extends AbstractConsole
-    {
-        /**
-         * @see toolbox.util.ui.console.AbstractConsole#getPrompt()
-         */
-        public String getPrompt()
-        {
-            return "TestConsole>";
-        }
     }
 }

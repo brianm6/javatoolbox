@@ -8,15 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import toolbox.util.ui.JSmartFrame;
 
 /**
- * Text mode application console wrapped in a Swing frame.
- * 
- * @see toolbox.util.ui.console.UIConsoleArea
+ * Frame containing a console.
  */
 public class SwingConsoleFrame extends JSmartFrame 
 {
@@ -53,13 +50,8 @@ public class SwingConsoleFrame extends JSmartFrame
         setJMenuBar(buildMenuBar());
         console_ = new SwingConsole("SwingConsole", rows, columns);
         getContentPane().setLayout(new BorderLayout());
-        
-        getContentPane().add(
-            BorderLayout.CENTER, 
-            new JScrollPane(console_));
-        
+        getContentPane().add(BorderLayout.CENTER, console_.getView());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        console_.requestFocus();        
     }
 
     //--------------------------------------------------------------------------

@@ -1,47 +1,57 @@
 package toolbox.util.ui.console;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import toolbox.util.service.Destroyable;
-import toolbox.util.service.Nameable;
+import java.io.InterruptedIOException;
 
 /**
- * Basic interface to an application console that supports intput/output via
- * streams.
+ * Console interface suitable for the entry and execution of commands.
  */
-public interface Console extends Nameable, Destroyable
+public interface Console
 {
     /**
-     * Stream used to read input from the console.
+     * Returns the name of this console.
      * 
-     * @return InputStream
+     * @return Console name.
      */
-    InputStream getInputStream();
+    String getName();
 
 
     /**
-     * Stream used to write output to the console.
+     * Reads a line of input from the console.
      * 
-     * @return PrintStream
+     * @return Line read from the console.
+     * @throws InterruptedIOException when the reading thread is interrupted
+     *         before a line has been read.
      */
-    OutputStream getOutputStream();
+    String read() throws InterruptedIOException;
 
 
     /**
-     * Sends text to the console.
+     * Writes to the console.
      * 
-     * @param text Text to send to the console.
+     * @param msg Message to write.
      */
-    void send(String text) throws IOException;
+    void write(String msg);
 
 
     /**
-     * Clears the contents of the console.
+     * Returns the handler responsible for executing commands entered into this
+     * console.
+     * 
+     * @return CommandHandler
+     */
+    CommandHandler getCommandHandler();
+
+
+    /**
+     * Clear the contents of the console.
      */
     void clear();
-    
-    
-    String getPrompt();
+
+
+    /**
+     * Sets the prompt to be used when reading input.
+     * 
+     * @param prompt Command prompt.
+     */
+    void setPrompt(String prompt);
 }

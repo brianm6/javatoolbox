@@ -9,626 +9,319 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.JViewport;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Keymap;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import toolbox.util.StringUtil;
-import toolbox.util.io.MulticastOutputStream;
-import toolbox.util.io.StringInputStream;
-import toolbox.util.io.TextAreaInputStream;
-import toolbox.util.service.ServiceException;
-import toolbox.util.service.ServiceState;
-import toolbox.util.ui.event.DebugPropertyChangeListener;
+import toolbox.util.FontUtil;
 
 /**
- * UIConsoleArea exhibit basic behavior necessary for a simple text based 
- * console.
- * 
- * @see toolbox.util.ui.console.Console
+ * A Swing based console.
  */
-public class SwingConsole extends JComponent implements Console 
+public class SwingConsole extends AbstractConsole
 {
     private static final Logger logger_ = Logger.getLogger(SwingConsole.class);
+
+    //--------------------------------------------------------------------------
+    // Static
+    //--------------------------------------------------------------------------
     
+    /**
+     * The number of consoles opened.
+     */
+    private static int consoleCount = 0;
+
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
     /**
-     * The calling console
-     */ 
-    protected Console delegate_; 
+     * Lines of console input (Strings) awaiting processing.
+     */
+    private List lines_;
 
     /**
-     * Composite textarea.
+     * Wraps the textarea and is exported via getView().
      */
-    protected JTextArea textArea_;
+    private JPanel view_;
     
     /**
-     * The length of the static text displayed, excludes the prompt and the
-     * current input line.
+     * Textarea that is the guts of the console.
      */
-    private int historyLength = 0;
-    
+    private JTextArea text_;
+ 
     /**
-     * Length of the prompt.
+     * Length of the displayed text excluding the prompt and the current input
+     * line.
      */
-    private int promptLength = 0;
-    
+    private int textLength_;
+
+    /**
+     * Length of the command prompt.
+     */
+    private int promptLength_;
+
     /**
      * Length of the current input line.
      */
-    private int lineLength = 0;
-    
+    private int lineLength_;
+
     /**
-     * Location of the insertion point within the current input line
+     * Location of the insertion point within the current input line.
      */
-    private int insertionPoint = 0;
-    
-    /**
-     * Lines of console input awaiting shell processing.
-     */
-    private List lines = new ArrayList();
-    
+    private int insertionPoint_;
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-
-    /**
-     * Create a new console with the specified number of rows and columns.
-     * 
-     * @param console The calling console program to send back data to.
-     * @param rows Number of displayable rows.
-     * @param columns Number of displayable columns.
-     */
-    public SwingConsole(String name)
-    {
-        this(name, 25, 80);
-    }
-
     
     /**
-     * Create a new console with the specified number of rows and columns.
+     * Creates a SwingConsole with the given name and dimensions. Use getView()
+     * after instantiation to obtain a reference to the JComponent handle of
+     * the console.
      * 
-     * @param console The calling console program to send back data to.
-     * @param rows Number of displayable rows.
-     * @param columns Number of displayable columns.
+     * @param name Name of the console.
+     * @param rows Number of rows to display.
+     * @param cols Number of columns to display.
      */
-    public SwingConsole(String name, int rows, int columns)
+    public SwingConsole(String name, int rows, int cols)
     {
-        buildView(rows, columns);
+        super(name);
         
-        new Thread(new Runnable()
-        {
-            public void run()
-            {
-                while (true)
-                {
-                    synchronized(lines)
-                    {
-                        if (lines.isEmpty())
-                        {
-                            try
-                            {
-                                logger_.debug("Waiting for command...");
-                                lines.wait();
-                            }
-                            catch (InterruptedException e)
-                            {
-                                logger_.error(e);
-                            }
-                        }
-                        
-                        String line = lines.remove(0).toString().trim();
-                        logger_.debug("XXRead command: [" + line + "]");
-                        
-                        try
-                        {
-                            TextAreaInputStream tais = 
-                                (TextAreaInputStream) getInputStream();
-                            
-                            tais.stuff(line + "\n");
-                                
-                            //send("You entered commmand: " + line);
-                        }
-                        catch (NullPointerException e)
-                        {
-                            logger_.error(e);
-                        }
-                        
-                        ((AbstractConsole) delegate_).handleCommand(line);
-                    }
-                }
-            }
-        }).start();
+        textLength_     = 0;
+        promptLength_   = 0;
+        lineLength_     = 0;
+        insertionPoint_ = 0;
         
+        lines_ = new ArrayList();
+        view_  = new JPanel(new BorderLayout());
+        text_  = new JTextArea();
+        
+        text_.setRows(rows);
+        text_.setColumns(cols);
+        text_.setFont(FontUtil.getPreferredMonoFont());
+        text_.setEditable(false);
+        text_.addKeyListener(new SwingConsole.keyHandler());
+        text_.setWrapStyleWord(true);
+        text_.setLineWrap(true);
+        text_.getCaret().setVisible(true);
+
+        JScrollPane scroller = new JScrollPane();
+        
+        //scroller.setVerticalScrollBarPolicy(
+        //  JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        
+        scroller.getViewport().add(text_);
+        scroller.getViewport().setScrollMode(JViewport.BLIT_SCROLL_MODE);
+
+        view_.add(scroller, BorderLayout.CENTER);
+        text_.requestFocus();
     }
 
-    class TrackerOutputstream extends OutputStream
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the user interface component of this SwingConsole. Add the view
+     * to a Container to display the console.
+     * 
+     * @return JComponent
+     */
+    public JComponent getView()
     {
-        /**
-         * @see java.io.OutputStream#write(int)
-         */
-        public void write(int b) throws IOException
+        return view_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Console Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.util.ui.console.Console#read()
+     */
+    public String read() throws InterruptedIOException
+    {
+        synchronized (lines_)
         {
-            char ch = (char) b;
-            
-            switch (ch)
+            while ((null != view_) && lines_.isEmpty())
             {
-                case '\n' :
-                    historyLength += promptLength + lineLength + 1;
-                    lineLength = 0;
-                    insertionPoint = promptLength;
-                    break;
+                try
+                {
+                    lines_.wait(0);
+                }
+                catch (InterruptedException woken)
+                {
+                    Thread.interrupted();
                     
-                default :
-                    lineLength++;
-                    insertionPoint++;
-                    break;
-            }
-            
-            logger_.debug(SwingConsole.this.toString());
-        }
-    }
-    
-    public String toString()
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append("historyLength = " + historyLength);
-        sb.append("\npromptLength = " + promptLength);
-        sb.append("\nlineLength = " + lineLength);
-        sb.append("\ninsertionPoing = " + insertionPoint);
-        return StringUtil.banner(sb.toString());
-    }
-    
-    //--------------------------------------------------------------------------
-    // Protected
-    //--------------------------------------------------------------------------
-
-    class MyTextArea extends JTextArea
-    {
-        public MyTextArea(int rows, int cols)
-        {
-            super(rows, cols);
-            addPropertyChangeListener(new DebugPropertyChangeListener());
-            
-            addCaretListener(new CaretListener()
-            {
-                public void caretUpdate(CaretEvent e)
-                {
-                    logger_.debug("Caret = " + e.getDot()); 
+                    InterruptedIOException wake = 
+                        new InterruptedIOException("Interrupted");
+                    
+                    wake.initCause(woken);
+                    throw wake;
                 }
-            });
-            
-            KeyListener[] kl = getKeyListeners();
-            logger_.debug("Removing " + kl.length + " key listeners");
-            for (int i = 0; i < kl.length; removeKeyListener(kl[i++]));
-            
-            Keymap keyMap = getKeymap();
-            
-            if (keyMap != null)
-            {
-                logger_.debug("Removing keymap " + keyMap.getName());
-                removeKeymap(keyMap.getName());
             }
-            
-        }
 
-        
-        /**
-         * @see javax.swing.JTextArea#insert(java.lang.String, int)
-         */
-        public void insert(String str, int pos)
-        {
-            logger_.debug("inserting: '" + str + "'");
-            super.insert(str, pos);
-        }
-        
-        /**
-         * @see javax.swing.JTextArea#append(java.lang.String)
-         */
-        public void append(String str)
-        {
-            logger_.debug("appending: '" + str + "'");
-            super.append(str);
-        }
-        
-        /**
-         * @see javax.swing.JTextArea#replaceRange(java.lang.String, int, int)
-         */
-        public void replaceRange(String str, int start, int end)
-        {
-            logger_.debug("replace range: '" + str + "'");
-            super.replaceRange(str, start, end);
-        }
-        
-        /**
-         * @see javax.swing.text.JTextComponent#setText(java.lang.String)
-         */
-        public void setText(String t)
-        {
-            logger_.debug("setText: '" + t + "'");
-            super.setText(t);
+            if (view_ == null)
+                return null;
+
+            return (String) lines_.remove(0);
         }
     }
-    
-    
+
+
     /**
-     * Constructs the user interface.
+     * @see toolbox.util.ui.console.Console#write(java.lang.String)
      */
-    protected void buildView(int rows, int columns)
+    public synchronized void write(String msg)
     {
-        setLayout(new BorderLayout());
-        textArea_ = new MyTextArea(rows, columns);
-        add(new JScrollPane(textArea_), BorderLayout.CENTER);
-        
-        // Create the stream for I/O in the consoles
-        InputStream is = new StringInputStream(); //new TextAreaInputStream();
-        
-        MulticastOutputStream os = new MulticastOutputStream();
-        //os.addStream(new JTextAreaOutputStream(textArea_));
-        //os.addStream(new TrackerOutputstream());
-        
-        delegate_ = new MyConsole(is, os);
-
-        Keymap keyMap = textArea_.getKeymap();
-        
-        if (keyMap != null)
+        try
         {
+            text_.getCaret().setVisible(false);
+            text_.insert(msg, textLength_);
+            textLength_ += msg.length();
             
-            logger_.debug("Removing keymap " + keyMap.getName());
-            textArea_.removeKeymap(keyMap.getName());
-            Keymap keyMap2 = textArea_.getKeymap();
-            logger_.debug("Removed keymap " + keyMap2.getName());
+            text_.setCaretPosition(
+                textLength_ + promptLength_ + insertionPoint_);
+            
+            text_.getCaret().setVisible(true);
         }
-        
-        
-        textArea_.addKeyListener(new KeyHandler());
+        catch (Throwable ohno)
+        {
+            logger_.error(
+                "Failure : TextLength=" 
+                + textLength_
+                + " promptLength=" 
+                + promptLength_ 
+                + " lineLength="
+                + lineLength_ 
+                + " text=" 
+                + text_.getText().length(), 
+                ohno);
+        }
     }
+
 
     /**
      * @see toolbox.util.ui.console.Console#clear()
      */
-    public void clear()
+    public synchronized void clear()
     {
-        textArea_.setText("");
-        historyLength = 0;
-        lineLength = 0;
-        insertionPoint = 0;
-        promptLength = 0;
+        try
+        {
+            text_.setText("");
+            textLength_     = 0;
+            promptLength_   = 0;
+            lineLength_     = 0;
+            insertionPoint_ = 0;
+            
+            text_.setCaretPosition(
+                textLength_ + promptLength_ + insertionPoint_);
+            
+            text_.getCaret().setVisible(true);
+        }
+        catch (Throwable ohno)
+        {
+            logger_.error(
+                "Failure : TextLength=" 
+                + textLength_ 
+                + " promptLength="
+                + promptLength_ 
+                + " lineLength=" 
+                + lineLength_ 
+                + " text="
+                + text_.getText().length(), 
+                ohno);
+        }
     }
-    
-    
+
+
     /**
-     * @see toolbox.util.service.Destroyable#destroy()
+     * @see toolbox.util.ui.console.Console#setPrompt(java.lang.String)
      */
-    public void destroy() throws IllegalStateException, ServiceException
+    public synchronized void setPrompt(String prompt)
     {
-        delegate_.destroy();
+        try
+        {
+            text_.replaceRange(prompt, 
+                textLength_, textLength_ + promptLength_);
+            
+            promptLength_ = prompt.length();
+            
+            text_.setCaretPosition(
+                textLength_ + promptLength_ + insertionPoint_);
+            
+            text_.getCaret().setVisible(true);
+        }
+        catch (Throwable ohno)
+        {
+            logger_.error(
+                "Failure : TextLength=" 
+                + textLength_ 
+                + " promptLength="
+                + promptLength_ 
+                + " lineLength=" 
+                + lineLength_ 
+                + " text="
+                + text_.getText().length(), 
+                ohno);
+        }
     }
-    
-    
-    /**
-     * @see toolbox.util.ui.console.Console#getInputStream()
-     */
-    public InputStream getInputStream()
-    {
-        return delegate_.getInputStream();
-    }
-    
-    /**
-     * @see toolbox.util.service.Nameable#getName()
-     */
-    public String getName()
-    {
-        return delegate_.getName();
-    }
-    
-    /**
-     * @see toolbox.util.ui.console.Console#getOutputStream()
-     */
-    public OutputStream getOutputStream()
-    {
-        return delegate_.getOutputStream();
-    }
-    
-    /**
-     * @see toolbox.util.service.Service#getState()
-     */
-    public ServiceState getState()
-    {
-        return delegate_.getState();
-    }
-    
-    /**
-     * @see toolbox.util.ui.console.Console#send(java.lang.String)
-     */
-    public void send(String text) throws IOException
-    {
-        delegate_.send(text);
-    }
-    
-    /**
-     * @see toolbox.util.service.Nameable#setName(java.lang.String)
-     */
-    public void setName(String name)
-    {
-        delegate_.setName(name);
-    }
-    
-    /**
-     * @see toolbox.util.ui.console.Console#getPrompt()
-     */
-    public String getPrompt()
-    {
-        return delegate_.getPrompt();
-    }
-    
+
     //--------------------------------------------------------------------------
-    // MyConsole
-    //--------------------------------------------------------------------------
-    
-    class MyConsole extends AbstractConsole 
-    {
-        public MyConsole(InputStream is, OutputStream os)
-        {
-            super("MyConsole", is, os);
-        }
-        
-        /**
-         * @see toolbox.util.ui.console.Console#clear()
-         */
-        public void clear()
-        {
-        }
-        
-        /**
-         * @see toolbox.util.service.Destroyable#destroy()
-         */
-        public void destroy() throws IllegalStateException, ServiceException
-        {
-        }
-        
-        /**
-         * @see toolbox.util.ui.console.AbstractConsole#getPrompt()
-         */
-        public String getPrompt()
-        {
-            return "COMMAND>";
-        }
-        
-        /**
-         * @see toolbox.util.service.Service#getState()
-         */
-        public ServiceState getState()
-        {
-            return null;
-        }
-        
-        /**
-         * @see toolbox.util.ui.console.Console#send(java.lang.String)
-         */
-        public void send(String text) throws IOException
-        {
-            logger_.debug("[MyConsole::send] " + text);
-            getOutputStream().write(text.getBytes());
-            getOutputStream().flush();
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    // KeyHandler
+    // AbstractConsole Impl
     //--------------------------------------------------------------------------
     
     /**
-     * Handle key actions
+     * @see toolbox.util.ui.console.AbstractConsole#setCommandLine(
+     *      java.lang.String)
      */
-    class KeyHandler extends KeyAdapter 
+    public synchronized void setCommandLine(String cmd)
     {
-        /**
-         * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-         */
-        public synchronized void keyPressed(KeyEvent e) 
+        try
         {
-            int val = e.getKeyCode();
-            char ch = e.getKeyChar();
-            int mod = e.getModifiers();
+            text_.replaceRange(
+                cmd, 
+                textLength_ + promptLength_, 
+                textLength_ + promptLength_ + lineLength_);
             
-            boolean consumed = false;
+            lineLength_ = cmd.length();
+            insertionPoint_ = lineLength_;
             
-            // There may be user confusion about Ctrl-C: since this is a shell,
-            // users might expect Ctrl-C to terminate the currently running
-            // command. At this writing, we don't have command termination, so
-            // we'll go ahead and grab Ctrl-C for copy.  (Suggest "ESC" for
-            // termination...)
+            text_.setCaretPosition(
+                textLength_ + promptLength_ + insertionPoint_);
             
-            try {
-                if( (mod & InputEvent.CTRL_MASK) != 0 ) 
-                {
-                    consumed = control(val, ch, mod);
-                } 
-                else 
-                {
-                    if( KeyEvent.CHAR_UNDEFINED == ch ) 
-                    {
-                        consumed = handling(val, ch, mod);
-                    } 
-                    else 
-                    {
-                        consumed = typing(val, ch, mod);
-                    }
-                }
-                
-                if( consumed ) 
-                {
-                    textArea_.setCaretPosition(
-                        historyLength + promptLength + insertionPoint);
-                    
-                    textArea_.getCaret().setVisible(true);
-                    
-                    // consume the event so that it doesn't get processed by 
-                    // the TextArea control.
-                    
-                    e.consume();
-                }
-            } 
-            catch( Throwable ohno ) 
-            {
-                logger_.error( "Failure : TextLength=" + historyLength +
-                " promptLength=" + promptLength +
-                " lineLength=" + lineLength +
-                " text=" + textArea_.getText().length(), ohno );
-            }
+            text_.getCaret().setVisible(true);
+        }
+        catch (Throwable ohno)
+        {
+            logger_.error(
+                "Failure : TextLength=" 
+                + textLength_ 
+                + " promptLength="
+                + promptLength_ 
+                + " lineLength=" 
+                + lineLength_ 
+                + " text="
+                + text_.getText().length(), 
+                ohno);
         }
     }
-    
-    
+
+
     /**
-     *  Handles non-character editing of the command line. Handling is as follows:
-     *
-     *  <p/><ul>
-     *    <li> Ctrl-C - copys the current selection to the Clipboard.</li>
-     *    <li> Ctrl-V - Inserts text from the ClipBoard into the current line.</li>
-     *    <li> Ctrl-D - Sends an EOT command.</li>
-     *    <li> Ctrl-L - Clear the text area.</li>
-     *    <li> Ctrl-U - Clear the command line</li>
-     *    <li> Ctrl-bksp - Clear the command line</li>
-     *  </ul>
-     *
-     * <p/>There may be user confusion about Ctrl-C: since this is a shell, users
-     * might expect Ctrl-C to terminate the currently running command.
-     * At this writing, we don't have command termination, so we'll go ahead
-     * and grab Ctrl-C for copy.  (Suggest Esc for termination...)
-     *
-     *@param  val        the KeyCode value of the key pressed
-     *@param  ch         the character associated with the key pressed
-     *@param  modifiers  any modifiers that might have been pressed
-     **/
-    private boolean control(int val, char ch, int modifiers) 
-    {
-        switch (val) 
-        {
-            case KeyEvent.VK_C :
-                if (logger_.isEnabledFor(Level.INFO)) {
-                    logger_.info("--> COPY <--");
-                }
-                copy();
-                return true;
-                
-            case KeyEvent.VK_V:
-                if (logger_.isEnabledFor(Level.INFO)) {
-                    logger_.info("--> PASTE <--");
-                }
-                paste();
-                return true;
-                
-            // Let's try a ^D quit...
-            case KeyEvent.VK_D :
-                if (logger_.isEnabledFor(Level.INFO)) {
-                    logger_.info("--> QUIT <--");
-                }
-                setCommandLine( "\u0004" );
-                submit(true);
-                setCommandLine( "" );
-                return true;
-                
-            case KeyEvent.VK_L :
-                if (logger_.isEnabledFor(Level.INFO)) {
-                    logger_.info("--> CLEAR <--");
-                }
-                setCommandLine( "clear" );
-                submit(true);
-                return true;
-                
-            case  KeyEvent.VK_U :
-            case  KeyEvent.VK_BACK_SPACE :
-                setCommandLine( "" );
-                return true;
-                
-            default :
-                return false;
-        }
-    }
-    
-    /**
-     *  Handles non-character editing of the command line. Handling is as follows:
-     *
-     *  <p/><ul>
-     *    <li> Cursor keys left and right - move the caret and update the
-     *    current insertLine value
-     *    <li> <Home> - Move cursor to the begining of the current line.
-     *    <li> <End> - Move cursor to the end of the current line.
-     *  </ul>
-     *
-     *@param  val        the KeyCode value of the key pressed
-     *@param  ch         the character associated with the key pressed
-     *@param  modifiers  any modifiers that might have been pressed
-     **/
-    private boolean handling(int val, char ch, int modifiers) 
-    {
-        switch (val) 
-        {
-            case KeyEvent.VK_HOME :
-                insertionPoint = 0;
-                return true;
-                
-            case KeyEvent.VK_END :
-                insertionPoint = lineLength;
-                return true;
-                
-            case KeyEvent.VK_KP_LEFT :
-            case KeyEvent.VK_LEFT :
-                insertionPoint--;
-            
-                if (insertionPoint < 0) 
-                {
-                    insertionPoint = 0;
-                }
-                return true;
-                
-            case KeyEvent.VK_KP_RIGHT :
-            case KeyEvent.VK_RIGHT :
-                insertionPoint++;
-                if (insertionPoint > lineLength) 
-                {
-                    insertionPoint = lineLength;
-                }
-                return true;
-                
-            case KeyEvent.VK_KP_UP:
-            case KeyEvent.VK_UP:
-                setCommandLine( getCursorUpName() );
-                submit(false);
-                return true;
-                
-            case KeyEvent.VK_KP_DOWN :
-            case KeyEvent.VK_DOWN :
-                setCommandLine(getCursorDownName());
-                submit(false);
-                return true;
-                
-            default :
-                return false;
-        }
-    }
-    
-    /**
-     * {@inheritDoc}
+     * @see toolbox.util.ui.console.AbstractConsole#getCursorDownName()
      */
     public String getCursorDownName()
     {
@@ -637,73 +330,287 @@ public class SwingConsole extends JComponent implements Console
 
 
     /**
-     * {@inheritDoc}
+     * @see toolbox.util.ui.console.AbstractConsole#getCursorUpName()
      */
     public String getCursorUpName()
     {
         return KeyEvent.getKeyText(KeyEvent.VK_UP);
     }
+
+    //--------------------------------------------------------------------------
+    // KeyHandler
+    //--------------------------------------------------------------------------
     
     /**
-     *  Handles the editing of the command line. Handling is as follows:
-     *
-     *  <p/><ul>
-     *    <li> backspace - Delete the character ahead of lineInsert from input line.</li>
-     *    <li> delete - Delete the character after lineInsert from input line.</li>
-     *    <li>enter - Finish the input line by calling <code>submit()</code>.</li>
-     *    <li>otherwise insert the character.</li>
-     *  </ul>
-     *
-     *@param  val        the KeyCode value of the key pressed
-     *@param  ch         the character associated with the key pressed
-     *@param  modifiers  any modifiers that might have been pressed
-     **/
-    private boolean typing(int val, char ch, int modifiers) 
+     * Handle key actions
+     */
+    private class keyHandler extends KeyAdapter
     {
-        switch (ch) 
+        public synchronized void keyPressed(KeyEvent e)
         {
-            case KeyEvent.VK_BACK_SPACE :
-                if (insertionPoint >= 1 && insertionPoint <= lineLength) {
-                    textArea_.replaceRange( "", historyLength + promptLength + insertionPoint - 1, historyLength + promptLength + insertionPoint);
-                    insertionPoint--;
-                    lineLength--;
-                }
-                return true;
-                
-            case KeyEvent.VK_DELETE :
-                if (insertionPoint < lineLength) 
+            int val = e.getKeyCode();
+            char ch = e.getKeyChar();
+            int mod = e.getModifiers();
+
+            boolean consumed = false;
+
+            // There may be user confusion about Ctrl-C: since this is a shell,
+            // users might expect Ctrl-C to terminate the currently running
+            // command. At this writing, we don't have command termination, so
+            // we'll go ahead and grab Ctrl-C for copy. (Suggest "ESC" for
+            // termination...)
+
+            try
+            {
+                if ((mod & InputEvent.CTRL_MASK) != 0)
                 {
-                    textArea_.replaceRange( "", historyLength + promptLength + insertionPoint, historyLength + promptLength + insertionPoint + 1);
-                    lineLength--;
+                    consumed = control(val, ch, mod);
                 }
+                else
+                {
+                    if (KeyEvent.CHAR_UNDEFINED == ch)
+                    {
+                        consumed = handling(val, ch, mod);
+                    }
+                    else
+                    {
+                        consumed = typing(val, ch, mod);
+                    }
+                }
+
+
+                if (consumed)
+                {
+                    text_.setCaretPosition(
+                        textLength_ + promptLength_ + insertionPoint_);
+                    
+                    text_.getCaret().setVisible(true);
+
+                    // consume the event so that it doesn't get processed by the
+                    // TextArea control.
+                    e.consume();
+                }
+            }
+            catch (Throwable ohno)
+            {
+                logger_.error("Failure : TextLength=" + textLength_
+                    + " promptLength=" + promptLength_ + " lineLength="
+                    + lineLength_ + " text=" + text_.getText().length(), ohno);
+            }
+        }
+    }
+
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Handles non-character editing of the command line. Handling is as
+     * follows: <p/>
+     * <ul>
+     * <li>Ctrl-C - copys the current selection to the Clipboard.</li>
+     * <li>Ctrl-V - Inserts text from the ClipBoard into the current line.
+     * </li>
+     * <li>Ctrl-D - Sends an EOT command.</li>
+     * <li>Ctrl-L - Clear the text area.</li>
+     * <li>Ctrl-U - Clear the command line</li>
+     * <li>Ctrl-bksp - Clear the command line</li>
+     * </ul>
+     * <p/>There may be user confusion about Ctrl-C: since this is a shell,
+     * users might expect Ctrl-C to terminate the currently running command. At
+     * this writing, we don't have command termination, so we'll go ahead and
+     * grab Ctrl-C for copy. (Suggest Esc for termination...)
+     * 
+     * @param val the KeyCode value of the key pressed
+     * @param ch the character associated with the key pressed
+     * @param modifiers any modifiers that might have been pressed
+     */
+    private boolean control(int val, char ch, int modifiers)
+    {
+        switch (val)
+        {
+            case KeyEvent.VK_C:
+                if (logger_.isEnabledFor(Level.INFO))
+                {
+                    logger_.info("--> COPY <--");
+                }
+                copy();
                 return true;
-                
-            case KeyEvent.VK_ENTER :
+
+            case KeyEvent.VK_V:
+                if (logger_.isEnabledFor(Level.INFO))
+                {
+                    logger_.info("--> PASTE <--");
+                }
+                paste();
+                return true;
+
+            // Let's try a ^D quit...
+            case KeyEvent.VK_D:
+                if (logger_.isEnabledFor(Level.INFO))
+                {
+                    logger_.info("--> QUIT <--");
+                }
+                setCommandLine("\u0004");
+                submit(true);
+                setCommandLine("");
+                return true;
+
+            case KeyEvent.VK_L:
+                if (logger_.isEnabledFor(Level.INFO))
+                {
+                    logger_.info("--> CLEAR <--");
+                }
+                setCommandLine("clear");
                 submit(true);
                 return true;
-                
-            default :
-                //textArea_.insert( Character.toString( ch ), historyLength + promptLength + insertionPoint++ );
-                lineLength++;
-                logger_.debug(this);
+
+            case KeyEvent.VK_U:
+            case KeyEvent.VK_BACK_SPACE:
+                setCommandLine("");
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+
+    /**
+     * Handles non-character editing of the command line. Handling is as
+     * follows: <p/>
+     * <ul>
+     * <li>Cursor keys left and right - move the caret and update the current
+     * insertLine value
+     * <li><Home>- Move cursor to the begining of the current line.
+     * <li><End>- Move cursor to the end of the current line.
+     * </ul>
+     * 
+     * @param val the KeyCode value of the key pressed
+     * @param ch the character associated with the key pressed
+     * @param modifiers any modifiers that might have been pressed
+     */
+    private boolean handling(int val, char ch, int modifiers)
+    {
+        switch (val)
+        {
+            case KeyEvent.VK_HOME:
+                insertionPoint_ = 0;
+                return true;
+
+            case KeyEvent.VK_END:
+                insertionPoint_ = lineLength_;
+                return true;
+
+            case KeyEvent.VK_KP_LEFT:
+            case KeyEvent.VK_LEFT:
+                insertionPoint_--;
+                if (insertionPoint_ < 0)
+                {
+                    insertionPoint_ = 0;
+                }
+                return true;
+
+            case KeyEvent.VK_KP_RIGHT:
+            case KeyEvent.VK_RIGHT:
+                insertionPoint_++;
+                if (insertionPoint_ > lineLength_)
+                {
+                    insertionPoint_ = lineLength_;
+                }
+                return true;
+
+            case KeyEvent.VK_KP_UP:
+            case KeyEvent.VK_UP:
+                setCommandLine(getCursorUpName());
+                submit(false);
+                return true;
+
+            case KeyEvent.VK_KP_DOWN:
+            case KeyEvent.VK_DOWN:
+                setCommandLine(getCursorDownName());
+                submit(false);
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+
+    /**
+     * Handles the editing of the command line. Handling is as follows: <p/>
+     * <ul>
+     * <li>backspace - Delete the character ahead of lineInsert from input
+     * line.</li>
+     * <li>delete - Delete the character after lineInsert from input line.
+     * </li>
+     * <li>enter - Finish the input line by calling <code>submit()</code>.
+     * </li>
+     * <li>otherwise insert the character.</li>
+     * </ul>
+     * 
+     * @param val the KeyCode value of the key pressed
+     * @param ch the character associated with the key pressed
+     * @param modifiers any modifiers that might have been pressed
+     */
+    private boolean typing(int val, char ch, int modifiers)
+    {
+
+        switch (ch)
+        {
+            case KeyEvent.VK_BACK_SPACE:
+                if (insertionPoint_ >= 1 && insertionPoint_ <= lineLength_)
+                {
+                    text_.replaceRange("", textLength_ + promptLength_
+                        + insertionPoint_ - 1, textLength_ + promptLength_
+                        + insertionPoint_);
+                    insertionPoint_--;
+                    lineLength_--;
+                }
+                return true;
+
+            case KeyEvent.VK_DELETE:
+                if (insertionPoint_ < lineLength_)
+                {
+                    text_.replaceRange("", textLength_ + promptLength_
+                        + insertionPoint_, textLength_ + promptLength_ + insertionPoint_
+                        + 1);
+                    lineLength_--;
+                }
+                return true;
+
+            case KeyEvent.VK_ENTER:
+                submit(true);
+                return true;
+
+            default:
+                text_.insert(Character.toString(ch), textLength_ + promptLength_
+                    + insertionPoint_++);
+                lineLength_++;
                 return true;
         }
     }
-    
+
+
     /**
      * Copy the selection to the system clipboard.
-     **/
-    private void copy() {
-        
-        String selection = textArea_.getSelectedText();
-        
-        if ( (null != selection) && (selection.length() > 0) ) {
+     */
+    private void copy()
+    {
+
+        String selection = text_.getSelectedText();
+
+        if ((null != selection) && (selection.length() > 0))
+        {
             StringSelection select = new StringSelection(selection);
-            Clipboard clip = textArea_.getToolkit().getSystemClipboard();
+            Clipboard clip = text_.getToolkit().getSystemClipboard();
             clip.setContents(select, select);
         }
     }
-    
+
+
     /**
      * Paste text from the clipboard into the shell. Text is added to at the end
      * of the current command line. If the clipboard contents is non-text, we'll
@@ -712,7 +619,7 @@ public class SwingConsole extends JComponent implements Console
     private void paste()
     {
 
-        Clipboard cb = textArea_.getToolkit().getSystemClipboard();
+        Clipboard cb = text_.getToolkit().getSystemClipboard();
         Transferable trans = cb.getContents(this);
         if (trans == null)
         {
@@ -755,9 +662,9 @@ public class SwingConsole extends JComponent implements Console
 
             // Append text to the current line.
             String aLine = cbText.substring(current, lineEnd);
-            textArea_.insert(aLine, historyLength + promptLength + insertionPoint);
-            insertionPoint += aLine.length();
-            lineLength += aLine.length();
+            text_.insert(aLine, textLength_ + promptLength_ + insertionPoint_);
+            insertionPoint_ += aLine.length();
+            lineLength_ += aLine.length();
 
             if (fullLine)
             {
@@ -768,7 +675,7 @@ public class SwingConsole extends JComponent implements Console
         while (current < cbText.length());
     }
 
-    
+
     /**
      * Finishes an input line and provides it as input to the console reader.
      * 
@@ -776,12 +683,12 @@ public class SwingConsole extends JComponent implements Console
      */
     private void submit(boolean appendNewLine)
     {
-        synchronized (lines)
+
+        synchronized (lines_)
         {
             try
             {
-                lines.add(textArea_.getText(historyLength + promptLength,
-                    lineLength)
+                lines_.add(text_.getText(textLength_ + promptLength_, lineLength_)
                     + "\n");
             }
             catch (BadLocationException ble)
@@ -794,143 +701,14 @@ public class SwingConsole extends JComponent implements Console
 
             if (appendNewLine)
             {
-                textArea_.append("\n");
-                historyLength += promptLength + lineLength + 1;
-                promptLength = 0;
-                lineLength = 0;
-                insertionPoint = 0;
+                text_.append("\n");
+                textLength_ += promptLength_ + lineLength_ + 1;
+                promptLength_ = 0;
+                lineLength_ = 0;
+                insertionPoint_ = 0;
             }
 
-            lines.notify();
-        }
-    }
-
-    
-    public synchronized void setCommandLine(String cmd)
-    {
-        logger_.debug("[setCommandLine] " + cmd);
-        
-        try
-        {
-            textArea_.replaceRange(cmd, historyLength + promptLength, historyLength
-                + promptLength + lineLength);
-            lineLength = cmd.length();
-            insertionPoint = lineLength;
-            textArea_.setCaretPosition(historyLength + promptLength + insertionPoint);
-            textArea_.getCaret().setVisible(true);
-        }
-        catch (Throwable ohno)
-        {
-            logger_.error("Failure : TextLength=" + historyLength + " promptLength="
-                + promptLength + " lineLength=" + lineLength + " text="
-                + textArea_.getText().length(), ohno);
+            lines_.notify();
         }
     }
 }
-
-///**
-//* Move caret to the end.
-//*/
-//protected void atEnd()
-//{
-// Document doc = textArea_.getDocument();
-// int dot = doc.getLength();
-// textArea_.setCaretPosition(dot);
-//}
-
-///**
-//* Cuts the selected region and place its contents into the system
-//* clipboard.
-//* 
-//* @see DefaultEditorKit#cutAction
-//* @see DefaultEditorKit#getActions
-//*/
-//public static class CutAction extends TextAction
-//{
-// public CutAction()
-// {
-//     super(DefaultEditorKit.cutAction);
-// }
-//
-//
-// /**
-//  * @see java.awt.event.ActionListener#actionPerformed(
-//  *      java.awt.event.ActionEvent)
-//  */
-// public void actionPerformed(ActionEvent e)
-// {
-//     JTextComponent target = getTextComponent(e);
-//     if (target != null)
-//     {
-//         target.cut();
-//     }
-// }
-//}
-
-////--------------------------------------------------------------------------
-//// CopyAction
-////--------------------------------------------------------------------------
-//
-///**
-//* Copies the selected region and place its contents into the system
-//* clipboard.
-//* 
-//* @see DefaultEditorKit#copyAction
-//* @see DefaultEditorKit#getActions
-//*/
-//public static class CopyAction extends TextAction
-//{
-//  public CopyAction()
-//  {
-//      super(DefaultEditorKit.copyAction);
-//  }
-//
-//  /**
-//   * @see java.awt.event.ActionListener#actionPerformed(
-//   *      java.awt.event.ActionEvent)
-//   */
-//  public void actionPerformed(ActionEvent e)
-//  {
-//      JTextComponent target = getTextComponent(e);
-//      if (target != null)
-//      {
-//          target.copy();
-//      }
-//  }
-//}
-//
-////--------------------------------------------------------------------------
-//// PasteAction
-////--------------------------------------------------------------------------
-//
-///**
-//* Pastes the contents of the system clipboard at the end of the text area.
-//* Mark the first input location if needed.
-//* 
-//* @see DefaultEditorKit#pasteAction
-//* @see DefaultEditorKit#getActions
-//*/
-//public static class PasteAction extends TextAction
-//{
-//  private SwingConsole console;
-//
-//  public PasteAction(SwingConsole console)
-//  {
-//      super(DefaultEditorKit.pasteAction);
-//      this.console = console;
-//  }
-//
-//  /**
-//   * @see java.awt.event.ActionListener#actionPerformed(
-//   *      java.awt.event.ActionEvent)
-//   */
-//  public void actionPerformed(ActionEvent e)
-//  {
-//      JTextComponent target = getTextComponent(e);
-//      if (target != null)
-//      {
-//          target.paste();
-//      }
-//  }
-//}
-
