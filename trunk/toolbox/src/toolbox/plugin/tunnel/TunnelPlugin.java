@@ -69,6 +69,7 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
+        jtcpTunnelPane_.savePrefs(prefs);
     }
 
     /**
@@ -76,6 +77,7 @@ public class JTcpTunnelPlugin implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
+        jtcpTunnelPane_.applyPrefs(prefs);
     }
 
     /**
