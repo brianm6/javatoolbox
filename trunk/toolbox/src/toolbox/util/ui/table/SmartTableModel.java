@@ -22,7 +22,11 @@ public class SmartTableModel extends DefaultTableModel
 {
     private static final Logger logger_ = 
         Logger.getLogger(SmartTableModel.class);
-        
+    
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Holding pen for rows that need to be added to the table.
      */    
@@ -90,7 +94,7 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Adds a vector of data as a row to the table.
      * 
-     * @param vector Adds vector of data to the table as a new row
+     * @param vector Adds vector of data to the table as a new row.
      * @see javax.swing.table.DefaultTableModel#addRow(Vector)
      */
     public void addRow(Vector vector)
@@ -131,7 +135,7 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Adds an array of rows to the table.
      * 
-     * @param rows Rows to add to the table
+     * @param rows Rows to add to the table.
      */
     public void addRows(Object[] rows)
     {
@@ -153,8 +157,8 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Saves the contents of the table model to a file.
      * 
-     * @param s Filename
-     * @throws IOException on IO error
+     * @param s Filename to save to.
+     * @throws IOException on I/O error.
      */
     public void saveToFile(String s) throws IOException
     {
@@ -192,7 +196,7 @@ public class SmartTableModel extends DefaultTableModel
     /**
      * Next batch of rows is available.
      * 
-     * @param elements Array of rows to add to the table
+     * @param elements Array of rows to add to the table.
      */
     public void nextBatch(Object[] elements)
     {
@@ -218,7 +222,7 @@ public class SmartTableModel extends DefaultTableModel
         /**
          * Creates a Runnable to add a row to the table model.
          * 
-         * @param rowData Data to add to the table
+         * @param rowData Data to add to the table.
          */
         public AddRows(Object[] rows)
         {

@@ -24,47 +24,48 @@ import org.apache.log4j.Logger;
 import toolbox.util.ui.ImageCache;
 
 /**
- * A sorter for TableModels. The sorter has a model (conforming to TableModel) 
- * and itself implements TableModel. TableSorter does not store or copy 
- * the data in the TableModel, instead it maintains an array of 
- * integers which it keeps the same size as the number of rows in its 
- * model. When the model changes it notifies the sorter that something 
- * has changed eg. "rowsAdded" so that its internal array of integers 
- * can be reallocated. As requests are made of the sorter (like 
- * getValueAt(row, col) it redirects them to its model via the mapping 
- * array. That way the TableSorter appears to hold another copy of the table 
- * with the rows in a different order. The sorting algorthm used is stable 
- * which means that it does not move around rows when its comparison 
- * function returns 0 to denote that they are equivalent. 
- *
+ * A sorter for TableModels. The sorter has a model (conforming to TableModel)
+ * and itself implements TableModel. TableSorter does not store or copy the
+ * data in the TableModel, instead it maintains an array of integers which it
+ * keeps the same size as the number of rows in its model. When the model
+ * changes it notifies the sorter that something has changed eg. "rowsAdded" so
+ * that its internal array of integers can be reallocated. As requests are made
+ * of the sorter (like getValueAt(row, col) it redirects them to its model via
+ * the mapping array. That way the TableSorter appears to hold another copy of
+ * the table with the rows in a different order. The sorting algorthm used is
+ * stable which means that it does not move around rows when its comparison
+ * function returns 0 to denote that they are equivalent.
+ * 
  * <p>
  * Extended toolbox version provides the following additional functionality:
  * <ul>
- * <li>
- * The sorter can be enabled/disabled. This is useful when populating a 
- * table with a large amount of data. If populating a row at a time, a sort
- * is executed for each change in the table model thus making it very
- * inefficient. Example: 
- * <pre>
- * TableSorter sorter = new TableSorter(myModel);
- * sorter.setEnabled(false);
- * // do lots of model manipulation 
- * sorter.setEnabled(true);
- * </pre>
+ * <li>The sorter can be enabled/disabled. This is useful when populating a
+ * table with a large amount of data. If populating a row at a time, a sort is
+ * executed for each change in the table model thus making it very inefficient.
+ * Example:
+ * 
+ * <code>
+ *  TableSorter sorter = new TableSorter(myModel); 
+ *  sorter.setEnabled(false); 
+ *  // do lots of model manipulation 
+ *  sorter.setEnabled(true);
+ * </code>
+ * 
  * </li>
- * <li>
- * It is no longer necessary to press &lt;shift&gt; + &lt;left click&gt; on the 
- * header to trigger a reverse sort. Just click on the header again and the
- * sort order will be reversed.
- * </li>
+ * <li>It is no longer necessary to press &lt;shift&gt; + &lt;left click&gt;
+ * on the header to trigger a reverse sort. Just click on the header again and
+ * the sort order will be reversed.</li>
  * </ul>
- *
+ * 
  * @author Philip Milne (original)
  */
 public class TableSorter extends TableMap
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(TableSorter.class);
+    private static final Logger logger_ = Logger.getLogger(TableSorter.class);
+    
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
     
     private int     indexes_[];
     private List    sortingColumns_;
@@ -92,7 +93,7 @@ public class TableSorter extends TableMap
     /**
      * Creates a TableSorter for the given TableModel.
      * 
-     * @param model Model to provide a sorted view of
+     * @param model Model to provide a sorted view of.
      */
     public TableSorter(TableModel model)
     {
@@ -107,7 +108,7 @@ public class TableSorter extends TableMap
     /**
      * Sets the model.
      * 
-     * @param model Table model
+     * @param model Table model.
      */
     public void setModel(TableModel model)
     {
@@ -121,7 +122,7 @@ public class TableSorter extends TableMap
      * 
      * @param row Row number
      * @param column Column number
-     * @return Table cell value at the given coordinates 
+     * @return Table cell value at the given coordinates. 
      */
     public Object getValueAt(int row, int column)
     {
@@ -153,7 +154,7 @@ public class TableSorter extends TableMap
     /**
      * Notification that the table model has changed.
      * 
-     * @param e Table model event
+     * @param e Table model event.
      */
     public void tableChanged(TableModelEvent e)
     {

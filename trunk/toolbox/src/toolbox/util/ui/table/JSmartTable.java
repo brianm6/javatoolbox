@@ -26,6 +26,10 @@ import toolbox.util.ui.AntiAliased;
  */
 public class JSmartTable extends JTable implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -147,6 +151,7 @@ public class JSmartTable extends JTable implements AntiAliased
         return antiAliased_;
     }
 
+    
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */

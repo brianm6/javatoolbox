@@ -17,6 +17,10 @@ import toolbox.util.ui.AntiAliased;
  */
 public class JSmartTableHeader extends JTableHeader implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -57,7 +61,7 @@ public class JSmartTableHeader extends JTableHeader implements AntiAliased
     }
 
     /**
-     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
     {
