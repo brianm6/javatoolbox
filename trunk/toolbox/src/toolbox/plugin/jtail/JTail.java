@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
@@ -34,10 +35,9 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartStatusBar;
-import toolbox.util.ui.flipper.IFlipPaneListener;
-import toolbox.util.ui.flipper.JFlipPane;
 import toolbox.util.ui.font.FontSelectionDialog;
 import toolbox.util.ui.font.FontSelectionException;
 import toolbox.util.ui.font.FontSelectionPane;
@@ -145,15 +145,18 @@ public class JTail extends JFrame
         
         tabbedPane_ = new JTailTabbedPane();
 
-        rootSplitPane_ = 
-            new JSplitPane(
-                JSplitPane.HORIZONTAL_SPLIT,
-                flipPane_, 
-                tabbedPane_);                
+//        rootSplitPane_ = 
+//            new JSplitPane(
+//                JSplitPane.HORIZONTAL_SPLIT,
+//                flipPane_, 
+//                tabbedPane_);                
 
-        rootSplitPane_.setOneTouchExpandable(true);
+//        rootSplitPane_.setOneTouchExpandable(true);
 
-        getContentPane().add(BorderLayout.CENTER, rootSplitPane_);
+        getContentPane().add(BorderLayout.WEST, flipPane_);
+        getContentPane().add(BorderLayout.CENTER, tabbedPane_);
+
+//        getContentPane().add(BorderLayout.CENTER, rootSplitPane_);
   
 //        getContentPane().add(BorderLayout.WEST, flipPane_);
 //        getContentPane().add(BorderLayout.CENTER, tabbedPane_);     
@@ -163,24 +166,24 @@ public class JTail extends JFrame
         
         setJMenuBar(createMenuBar());
         
-        flipPane_.addFlipPaneListener(new IFlipPaneListener()
-        {
-            public void flipperCollapsed(JFlipPane flipPane)
-            {
-                logger_.debug("Repainting cuz flipper collapsed");
-                //getContentPane().validate();
-                //rootSplitPane_.revalidate();
-                rootSplitPane_.resetToPreferredSizes();
-            }
-
-            public void flipperExpanded(JFlipPane flipPane)
-            {
-                logger_.debug("Repainting cuz flipper expanded");
-                //getContentPane().validate();
-                //rootSplitPane_.revalidate();
-                rootSplitPane_.resetToPreferredSizes();
-            }
-        });
+//        flipPane_.addFlipPaneListener(new JFlipPane.JFlipPaneListener()
+//        {
+//            public void collapsed(JFlipPane flipPane)
+//            {
+//                //logger_.debug("Repainting cuz flipper collapsed");
+//                //getContentPane().validate();
+//                //rootSplitPane_.revalidate();
+//                //rootSplitPane_.resetToPreferredSizes();
+//            }
+//
+//            public void expanded(JFlipPane flipPane)
+//            {
+//                //logger_.debug("Repainting cuz flipper expanded");
+//                //getContentPane().validate();
+//                //rootSplitPane_.revalidate();
+//                //rootSplitPane_.resetToPreferredSizes();
+//            }
+//        });
     }
     
     
@@ -380,8 +383,6 @@ public class JTail extends JFrame
     {
         /**
          * Tail button clicked
-         * 
-         * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
