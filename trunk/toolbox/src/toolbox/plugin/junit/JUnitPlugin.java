@@ -30,6 +30,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.list.JListPopupMenu;
@@ -56,10 +57,26 @@ public class JUnitPlugin extends JPanel implements IPlugin
     // Fields 
     //--------------------------------------------------------------------------
     
-    private JTextField              filterField_;
-    private JList                   packageList_;
-    private DefaultListModel        packageModel_;
-    private RegexListModelFilter    filterModel_;
+    /**
+     * User enters text to filter down the number of listed packages here.
+     */
+    private JTextField filterField_;
+    
+    /**
+     * Shows the list of filtered packages. When the filter is .*, all packages
+     * are shown.
+     */
+    private JList packageList_;
+    
+    /**
+     * Model for the pacakge list.
+     */
+    private DefaultListModel packageModel_;
+    
+    /**
+     * Model that supports regular expressions for the filter.
+     */
+    private RegexListModelFilter filterModel_;
            
     //--------------------------------------------------------------------------
     // Constructors
@@ -120,8 +137,13 @@ public class JUnitPlugin extends JPanel implements IPlugin
 
         // configure the root panel        
         setLayout(new BorderLayout());
-        add(BorderLayout.WEST, selectPanel);
-        add(BorderLayout.CENTER, outputPanel);
+        
+        add(BorderLayout.WEST, 
+            new JHeaderPanel("Test Packages", null, selectPanel));
+        
+        add(BorderLayout.CENTER, 
+            new JHeaderPanel("Output", null, outputPanel));
+        
         add(BorderLayout.SOUTH, buttonPanel);        
     }     
     
