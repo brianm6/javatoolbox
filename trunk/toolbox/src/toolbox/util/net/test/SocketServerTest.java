@@ -1,7 +1,3 @@
-/**
- * Copyright 2002, Southwest Airlines
- * All Rights Reserved
- */
 package toolbox.util.net.test;
 
 import java.io.BufferedReader;
@@ -10,15 +6,15 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import junit.framework.TestCase;
-import junit.swingui.TestRunner;
+import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
+import toolbox.util.net.ISocketServerListener;
 import toolbox.util.net.SocketConnection;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
-
 
 /**
  * Unit test for SocketServer
@@ -37,6 +33,10 @@ public class SocketServerTest extends TestCase
         TestRunner.run(SocketServerTest.class);
     }
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Constructor for SocketServerTest
      */
@@ -44,45 +44,47 @@ public class SocketServerTest extends TestCase
     {
         super(arg);
     }
-
+    
+    //--------------------------------------------------------------------------
+    //  Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests simple ping pong between client and server
      */
     public void testSocketServerPingPong() throws Exception
     {
-        /* TODO: try/catch/finally */
-        
-        /* config server */
+        // Config server
         SocketServerConfig config = new SocketServerConfig();
         
-        /* set handler */
+        // Set handler
         config.setConnectionHandlerType(
-            "toolbox.util.net.test.PingConnectionHandler");
+            "com.swa.turbo.util.comm.test.PingConnectionHandler");
         
-        /* start server */
+        // Start server
         SocketServer server = new SocketServer(config);
         server.start();
 
-        /* send server some messages */
+        // Send server some messages
         int port = server.getServerPort();
         Socket socket = new Socket("localhost", port);
         SocketConnection sc = new SocketConnection(socket);
 
-        /* send request */      
+        // Send request
         PrintWriter pw = new PrintWriter(sc.getOutputStream());
         logger_.info("Client sent ping...");
         pw.println("ping");
         pw.flush();
         
-        /* read response */
+        // Read response
         BufferedReader br = new BufferedReader(
             new InputStreamReader(sc.getInputStream()));
             
         String response = br.readLine();
         logger_.info("Client received " + response);
-        
-        sc.close();
 
+        // Cleanup        
+        sc.close();
         server.stop();
     }
     
@@ -93,16 +95,16 @@ public class SocketServerTest extends TestCase
     { 
         SocketServer ss = new SocketServer(new SocketServerConfig());
         
-        /* start/stop immediately */
+        // Start/stop immediately
         ss.start();
         ss.stop();  
         
-        /* start/stop with a small delay */
+        // Start/stop with a small delay
         ss.start();
         ThreadUtil.sleep(500);
         ss.stop();  
         
-        /* start/stop with a longder delay */
+        // Start/stop with a longer delay
         ss.start();
         ThreadUtil.sleep(5000);
         ss.stop();
@@ -127,12 +129,10 @@ public class SocketServerTest extends TestCase
      */
     public void testSocketServerManyClients() throws Exception
     {
-        /* TODO: try/catch/finally */
-        
         SocketServerConfig config = new SocketServerConfig();
         
         config.setConnectionHandlerType(
-            "toolbox.util.net.test.EchoConnectionHandler");
+            "com.swa.turbo.util.comm.test.EchoConnectionHandler");
             
         config.setActiveConnections(10);
         SocketServer ss = new SocketServer(config);
@@ -171,17 +171,81 @@ public class SocketServerTest extends TestCase
         int max = 10;
         Task tasks[] = new Task[max];
         
-        /* spawn off a whole bunch of threads */
+        // Spawn off a whole bunch of threads
         for(int i=0; i< max; i++)
         { 
             tasks[i] = new Task(i);
             tasks[i].start();
         }
         
-        /* wait for each thread to end */
+        // Wait for each thread to end
         for(int j=0; j<max; j++)
             tasks[j].join();
             
         ss.stop();
     }
+    
+    /**
+     * Tests firing of notification events exposed by ISocketServerListener
+     */
+    public void testFireNotification() throws Exception
+    {
+        String method = "[firNot] ";
+        
+        logger_.info(method + "Testing notification...");
+        
+        // Config server
+        SocketServerConfig config = new SocketServerConfig();
+        
+        // Set handler
+        config.setConnectionHandlerType(
+            "com.swa.turbo.util.comm.test.NullConnectionHandler");
+
+        // SocketServer listener        
+        class TestListener implements ISocketServerListener
+        {
+            public boolean success = false;
+            
+            public void socketAccepted(Socket socket)
+            {
+                logger_.info(
+                    "[socAcp] Listener notified of  accept on socket " + socket);
+                success = true;
+            }
+        }
+        
+        // Start server and attach listener
+        SocketServer server = new SocketServer(config);
+        TestListener listener = new TestListener();
+        server.addSocketServerListener(listener);
+        server.start();
+
+        // Connect to server
+        int port = server.getServerPort();
+        Socket socket = new Socket("localhost", port);
+        SocketConnection sc = new SocketConnection(socket);
+        sc.close();
+
+        // Just a little bit..
+        ThreadUtil.sleep(2000);
+        
+        // Make sure listener was notified
+        assertTrue(method + "listener was not notified", listener.success);
+
+        // Remove the listener and make sure no notification generated
+        listener.success = false;
+        server.removeSocketServerListener(listener);
+        
+        // Connect to server again
+        port = server.getServerPort();
+        socket = new Socket("localhost", port);
+        sc = new SocketConnection(socket);
+        sc.close();
+        
+        // Make sure listener was not notified
+        assertTrue(method + "listener was notified", !listener.success);
+        
+        // Cleanup
+        server.stop();
+    }    
 }
