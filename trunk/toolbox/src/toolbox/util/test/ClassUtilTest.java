@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import toolbox.log4j.SmartLogger;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
@@ -53,6 +54,9 @@ public class ClassUtilTest extends TestCase
     public void testGetClassesInPackageDirectory()
     {
         assertTrue(true);
+        
+        // TODO: Revisit testcase 
+        
         // Have to revisit because no classes files are hanging out in
         // a directory on the classpath when the test is run from outside
         // eclipse
@@ -86,6 +90,7 @@ public class ClassUtilTest extends TestCase
         logger_.info("Running testGetClassesInPackageBoot...");
         
         String[] classes = ClassUtil.getClassesInPackage("java.lang");
+        
         //logger_.info("\n" + ArrayUtil.toString(classes, true));
         assertTrue(String.class.getName() + " not found in package", 
             ArrayUtil.contains(classes, String.class.getName()));
@@ -99,7 +104,7 @@ public class ClassUtilTest extends TestCase
         logger_.info("Running testGetPackagesInClasspath...");
         
         String[] packages = ClassUtil.getPackagesInClasspath();
-        logger_.info("\n" + ArrayUtil.toString(packages, true));
+        SmartLogger.info(logger_, ArrayUtil.toString(packages, true));
         assertTrue("tgpic1", ArrayUtil.contains(packages, "java.lang"));
         assertTrue("tgpic3", ArrayUtil.contains(packages, "junit.textui"));
     }
@@ -114,7 +119,7 @@ public class ClassUtilTest extends TestCase
         String classpath = ClassUtil.getClasspath();
         assertNotNull("cp null", classpath);
         String[] paths = StringUtil.tokenize(classpath, File.pathSeparator);
-        logger_.info("\n" + ArrayUtil.toString(paths, true));
+        SmartLogger.info(logger_, ArrayUtil.toString(paths, true));
     }
     
     /**
@@ -197,5 +202,22 @@ public class ClassUtilTest extends TestCase
             
         assertEquals("Class names don't match", "NoPackage",
             ClassUtil.stripPackage("NoPackage"));
+    }
+    
+    /**
+     * Tests stripClass()
+     */
+    public void testStripClass()
+    {
+        logger_.info("Running testStripClass...");
+        
+        assertEquals("Package names don't match", "java.io", 
+            ClassUtil.stripClass("java.io.InputStream"));
+            
+        assertEquals("Package names don't match", "", 
+            ClassUtil.stripClass("Widget"));
+            
+        assertEquals("Package names don't match", "", 
+            ClassUtil.stripClass("")); 
     }
 }
