@@ -4,6 +4,7 @@ import javax.swing.JComponent;
 
 import toolbox.util.service.Destroyable;
 import toolbox.util.service.Initializable;
+import toolbox.workspace.prefs.Preferences;
 
 /**
  * IPlugin defines the interface for any plugins that can hosted by the 
@@ -11,11 +12,11 @@ import toolbox.util.service.Initializable;
  * <p>
  * Plugin writing guidelines:
  * <ul>
- * <li>Make sure your plugins default constructor does absolutely nothing; 
- *     Instead, move that functionality to the init() method. This is 
- *     necessary so that plugins can be found and identified via 
- *     Class.forname().newInstance() but not necessary loaded into the 
- *     host environment.
+ *   <li>Make sure your plugins default constructor does absolutely nothing; 
+ *       Instead, move that functionality to the init() method. This is 
+ *       necessary so that plugins can be found and identified via 
+ *       Class.forname().newInstance() but not necessary loaded into the 
+ *       host environment.
  * </ul>
  * 
  * @see toolbox.workspace.PluginWorkspace
@@ -44,4 +45,10 @@ public interface IPlugin extends Initializable, Destroyable, IPreferenced
      * @return JComponent
      */
     JComponent getView();
+    
+    
+    /**
+     * Returns the preferences configurator for this plugin.  
+     */
+    Preferences getPreferences();
 }
