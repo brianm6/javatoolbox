@@ -16,9 +16,11 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ui.layout.ParagraphLayout;
+import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
 import toolbox.util.xml.XMLNode;
@@ -27,19 +29,54 @@ import toolbox.util.xml.XMLParser;
 /**
  * JDBC Drivers configuration panel
  */    
-public class DBConfig extends JPanel
+public class DBConfig extends JPanel implements IPreferenced
 {
     private static final Logger logger_ = Logger.getLogger(DBConfig.class);
     
+    /**
+     * Parent of this panel
+     */
     private final QueryPlugin plugin_;
+    
+    /**
+     * Combobox that allows selection of the database profile to use
+     */
     private JComboBox  dbCombo_;
+    
+    /**
+     * JDBC driver (dot notated class name)
+     */
     private JTextField driverField_;
+    
+    /**
+     * JDBC access URL (driver implementation dependent)
+     */
     private JTextField urlField_;
+    
+    /**
+     * JDBC username
+     */
     private JTextField userField_;
+    
+    /**
+     * JDBC password. This is clear text
+     */
     private JTextField passwordField_;
     
+    /**
+     * Reference to the workspace statusbar
+     */
     private IStatusBar statusBar_;
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a DBConfig for the given plugin
+     * 
+     * @param  plugin  Query plugin
+     */
     public DBConfig(QueryPlugin plugin)
     {
         plugin_    = plugin;
@@ -47,6 +84,15 @@ public class DBConfig extends JPanel
         buildView();
     }
     
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds a profile to the existing list displayed in the combobox
+     * 
+     * @param  profile  Database profile
+     */
     public void addProfile(DBProfile profile)
     {
         DefaultComboBoxModel model = (DefaultComboBoxModel) dbCombo_.getModel();
@@ -56,6 +102,28 @@ public class DBConfig extends JPanel
         else
             dbCombo_.addItem(profile);
     }
+
+    /**
+     * Returns an XML representation of the data making up the configuration.
+     *  
+     * @return XML string
+     */
+    public String toXML()
+    {
+        XMLNode profiles = new XMLNode("DBProfileList");
+        
+        for (int i=0, n=dbCombo_.getItemCount(); i<n; i++)
+        {
+            DBProfile profile = (DBProfile) dbCombo_.getItemAt(i);
+            profiles.addNode(profile.toDOM());
+        }
+        
+        return profiles.toString();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Protected 
+    //--------------------------------------------------------------------------
     
     /**
      * Builds the panel which displays all the JDBC configuration information 
@@ -87,13 +155,17 @@ public class DBConfig extends JPanel
         add(new JLabel(""), ParagraphLayout.NEW_PARAGRAPH);
         add(new JButton(new ConnectAction()));
     }
-    
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------    
+        
     public void savePrefs(Properties prefs)
     {
         prefs.setProperty(QueryPlugin.PROP_PROFILES, toXML());
     }
     
-    public void applyPrefs(Properties prefs) throws IOException
+    public void applyPrefs(Properties prefs)
     {
         String xmlProfiles = prefs.getProperty(QueryPlugin.PROP_PROFILES, "");
         
@@ -122,32 +194,32 @@ public class DBConfig extends JPanel
         }
         else
         {
-            XMLNode profiles = 
-                new XMLParser().parseXML(new StringReader(xmlProfiles));
-                
-            for (Enumeration e = profiles.enumerateNode(); e.hasMoreElements();)
+            try
             {
-                XMLNode profile = (XMLNode) e.nextElement();
-                DBProfile dbProfile = new DBProfile(profile.toString());
-                addProfile(dbProfile);
+                XMLNode profiles = 
+                    new XMLParser().parseXML(new StringReader(xmlProfiles));
+                    
+                for(Enumeration e=profiles.enumerateNode();e.hasMoreElements();)
+                {
+                    XMLNode profile = (XMLNode) e.nextElement();
+                    DBProfile dbProfile = new DBProfile(profile.toString());
+                    addProfile(dbProfile);
+                }
             }
-            
+            catch (IOException ioe)
+            {
+                ExceptionUtil.handleUI(ioe, logger_);
+            }
         }
     }
     
-    public String toXML()
-    {
-        XMLNode profiles = new XMLNode("DBProfileList");
-        
-        for (int i=0, n=dbCombo_.getItemCount(); i<n; i++)
-        {
-            DBProfile profile = (DBProfile) dbCombo_.getItemAt(i);
-            profiles.addNode(profile.toDOM());
-        }
-        
-        return profiles.toString();
-    }
+    //--------------------------------------------------------------------------
+    // Actions
+    //--------------------------------------------------------------------------
     
+    /** 
+     * Updated database profile fields when the profile selection changes.
+     */
     class ProfileChangedAction extends AbstractAction
     {
         public void actionPerformed(ActionEvent e)
@@ -157,9 +229,6 @@ public class DBConfig extends JPanel
             if (obj instanceof DBProfile)
             {
                 DBProfile profile = (DBProfile) dbCombo_.getSelectedItem();
-                
-                logger_.debug("Profile changed to: " + profile);
-                
                 driverField_.setText(profile.getDriver());
                 urlField_.setText(profile.getUrl());
                 userField_.setText(profile.getUsername());
@@ -168,6 +237,10 @@ public class DBConfig extends JPanel
         }
     }
 
+    /**
+     * Saves the current DB profile. If the profile does not already exist,
+     * it is created.
+     */
     class SaveAction extends AbstractAction
     {
         public SaveAction()
@@ -186,7 +259,7 @@ public class DBConfig extends JPanel
             {
                 DBProfile profile = (DBProfile) dbCombo_.getItemAt(i);
                 
-                if (profile.getDatabase().equals(current))
+                if (profile.getProfileName().equals(current))
                 {
                     profile.setDriver(driverField_.getText());
                     profile.setUrl(urlField_.getText());
