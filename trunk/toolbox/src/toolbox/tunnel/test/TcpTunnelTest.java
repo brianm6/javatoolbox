@@ -16,7 +16,6 @@ import toolbox.tunnel.TcpTunnel;
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.net.DefaultSocketServerListener;
-import toolbox.util.net.SocketConnection;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
 
@@ -100,8 +99,7 @@ public class TcpTunnelTest extends TestCase
         pw.flush();
         
         // Send of data should trigger tunnel to connect to server
-        SocketConnection conn = 
-            (SocketConnection) serverListener.waitForAccept();
+        serverListener.waitForAccept();
         
         // Read result
         String echo = br.readLine();
