@@ -37,7 +37,7 @@ public final class ThreadUtil
     /**
      * Sleep without all the try/catch business
      * 
-     * @param  millis  Milliseconds for the current thread to sleep
+     * @param millis Milliseconds for the current thread to sleep
      */
     public static void sleep(int millis)
     {
@@ -62,7 +62,7 @@ public final class ThreadUtil
     /**
      * Joins the current thread without try/catch business
      * 
-     * @param  millis  Max number of millis to wait
+     * @param millis Max number of millis to wait
      */
     public static void join(long millis)
     {
@@ -72,7 +72,7 @@ public final class ThreadUtil
     /**
      * Joins the given thread
      * 
-     * @param  thread  Thread to join
+     * @param thread Thread to join
      */
     public static void join (Thread thread)
     {
@@ -92,8 +92,8 @@ public final class ThreadUtil
     /**
      * Joins the given thread
      * 
-     * @param  thread  Thread to join
-     * @param  millis  Timeout
+     * @param thread Thread to join
+     * @param millis Timeout
      */
     public static void join (Thread thread, long millis)
     {
@@ -114,7 +114,7 @@ public final class ThreadUtil
      * Stops a thread as gracefully as possible with a default max wait of 
      * 1 second
      * 
-     * @param  t  Thread to stop
+     * @param t Thread to stop
      */
     public static void stop(Thread t)
     {
@@ -126,8 +126,8 @@ public final class ThreadUtil
      * If the thread is stopped successfully, the thread is set equal to null
      * otherwise a warning is logged and the thread is not left alone.
      * 
-     * @param  t       Thread to stop
-     * @param  millis  Max number of millis to wait for thread to die
+     * @param t Thread to stop
+     * @param millis Max number of millis to wait for thread to die
      */
     public static void stop(Thread t, long millis)
     {
@@ -170,10 +170,10 @@ public final class ThreadUtil
     /**
      * Runs an objects method in a separate thread 
      * 
-     * @param   target      Object which contains method to run
-     * @param   methodName  Name of the method to execute
-     * @param   param       Method's single argument
-     * @return  Thread that method is/was executed on
+     * @param target Object which contains method to run
+     * @param methodName Name of the method to execute
+     * @param param Method's single argument
+     * @return Thread that method is/was executed on
      */
     public static Thread run(Object target, String methodName, Object param)
     {
@@ -183,10 +183,10 @@ public final class ThreadUtil
     /**
      * Runs an objects method in a separate thread 
      * 
-     * @param   target      Object which contains method to run
-     * @param   methodName  Name of the method to execute
-     * @param   params      Method arguments
-     * @return  Thread that method is/was executed on
+     * @param target Object which contains method to run
+     * @param methodName Name of the method to execute
+     * @param params Method arguments
+     * @return Thread that method is/was executed on
      */
     public static Thread run(Object target, String methodName, Object[] params)
     {
@@ -204,11 +204,11 @@ public final class ThreadUtil
     /**
      * Runs an object's method in a separate thread 
      * 
-     * @param   target   Object to invoke method upon
-     * @param   method   Name of the method to execute
-     * @param   params   Methods arguments
-     * @param   clazzes  Parameter class types
-     * @return  Started thread of execution 
+     * @param target Object to invoke method upon
+     * @param method Name of the method to execute
+     * @param params Methods arguments
+     * @param clazzes Parameter class types
+     * @return Started thread of execution 
      */
     public static Thread run(Object target, String method, Object[] params, 
         Class[] clazzes)
@@ -262,9 +262,9 @@ public final class ThreadUtil
         /**
          * Creates a MethodRunner
          * 
-         * @param  target  Target object of method invocation
-         * @param  method  Method name on target object
-         * @param  params  List of parameters to the method
+         * @param target Target object of method invocation
+         * @param method Method name on target object
+         * @param params List of parameters to the method
          */
         public MethodRunner(Object target, String method, Object[] params)
         {
@@ -274,10 +274,10 @@ public final class ThreadUtil
         /**
          * Creates a MethodRunner
          * 
-         * @param  target   Target object of method invocation
-         * @param  method   Method name on target object
-         * @param  params   List of parameters to the method
-         * @param  clazzes  List of classes for parameter types
+         * @param target Target object of method invocation
+         * @param method Method name on target object
+         * @param params List of parameters to the method
+         * @param clazzes List of classes for parameter types
          */
         public MethodRunner(Object target, String method, Object[] params, 
             Class[] clazzes)
@@ -333,13 +333,13 @@ public final class ThreadUtil
         }
         
         //----------------------------------------------------------------------
-        //  Overrides java.lang.Object
+        // Overrides java.lang.Object
         //----------------------------------------------------------------------
         
         /**
          * Dump to string
          * 
-         * @return  Object state as a string
+         * @return Object state as a string
          */
         public String toString()
         {
