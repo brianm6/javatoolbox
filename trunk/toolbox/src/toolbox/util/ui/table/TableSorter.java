@@ -243,11 +243,8 @@ public class TableSorter extends TableMap
         sortingColumn_   = -1;
         enabled_         = true;
         
-        forwardSortIcon_ = 
-            ImageCache.getIcon("/toolbox/util/ui/images/SortAscending.gif");
-                
-        reverseSortIcon_ = 
-            ImageCache.getIcon("/toolbox/util/ui/images/SortDescending.gif");
+        forwardSortIcon_ = ImageCache.getIcon(ImageCache.IMAGE_SORT_ASCENDING);
+        reverseSortIcon_ = ImageCache.getIcon(ImageCache.IMAGE_SORT_DESCENDING);
     }
 
     /**
@@ -405,7 +402,10 @@ public class TableSorter extends TableMap
     protected void checkModel()
     {
         if (indexes_.length != getModel().getRowCount())
-            logger_.error("Sorter not informed of a change in model.");
+        {
+            if (enabled_)
+                logger_.error("Sorter not informed of a change in model.");
+        }
     }
     
     /**
