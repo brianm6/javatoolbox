@@ -11,9 +11,6 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -136,11 +133,6 @@ public class TailPane extends JPanel
     private JSmartTextArea tailArea_;
     
     /** 
-     * Clears the output text area 
-     */
-    private JButton clearButton_;
-    
-    /** 
      * Dual action button that handles pause/unpause of tail 
      */
     private JButton pauseButton_;
@@ -193,7 +185,7 @@ public class TailPane extends JPanel
     /** 
      * List of filters that are applied to each line 
      */
-    private List filters_;
+    private ILineFilter[] filters_;
     
     /** 
      * Filter that includes lines matching a regular expression 
@@ -295,8 +287,8 @@ public class TailPane extends JPanel
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
         
-        clearButton_    = new JButton(tailArea_.new ClearAction());
-        pauseButton_    = new JButton(new PauseUnpauseAction());
+        JButton clearButton_ = new JButton(tailArea_.new ClearAction());
+        pauseButton_ = new JButton(new PauseUnpauseAction());
         
         String startMode =  
             config.isAutoStart() ? MODE_START : MODE_STOP;
@@ -333,14 +325,14 @@ public class TailPane extends JPanel
      */
     protected void buildFilters()
     {
-        filters_ = new ArrayList(3);
+        filters_ = new ILineFilter[3];
         
         try
         {
             // Filter based on regular expression
             regexFilter_ = new RegexLineFilter();
             regexFilter_.setEnabled(false);
-            filters_.add(regexFilter_);
+            filters_[0] = regexFilter_;
         }
         catch (RESyntaxException re)
         {
@@ -350,12 +342,12 @@ public class TailPane extends JPanel
         // Cut filter
         cutFilter_ = new CutLineFilter();
         cutFilter_.setEnabled(false);
-        filters_.add(cutFilter_);
+        filters_[1] = cutFilter_;
         
         // Show line numbers
         lineNumberDecorator_ = new LineNumberDecorator();
         lineNumberDecorator_.setEnabled(false);
-        filters_.add(lineNumberDecorator_);
+        filters_[2] = lineNumberDecorator_;
     }
 
     /**
@@ -700,14 +692,11 @@ public class TailPane extends JPanel
             // Iterate over each line delivered            
             for (int i=0; i<objs.length; i++)
             {
-                String line = (String)objs[i];
+                String line = (String) objs[i];
 
                 // Apply filters
-                for (Iterator e = filters_.iterator(); e.hasNext(); )
-                {
-                    ILineFilter filter = (ILineFilter) e.next();
-                    line = filter.filter(line);
-                }
+                for (int j=0; j<filters_.length; j++)
+                    line = filters_[j].filter(line);
 
                 if (line != null)
                     tailArea_.append(line + "\n");                 
