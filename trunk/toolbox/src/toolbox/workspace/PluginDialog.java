@@ -619,6 +619,14 @@ public class ManagePluginsDialog extends JDialog
                 "toolbox.jdbc.QueryPlugin"));
             legitPlugins.add(new PluginMeta(
                 "toolbox.findclass.JFindClassPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.plugin.netmeter.NetMeterPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.junit.JUnitPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.plugin.beanshell.BeanShellPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.util.ui.plugin.UIDefaultsPlugin"));
 
             // Exclude the plugins that are already loaded                
             for (int j=0; j<workspace_.getPluginHost().getPlugins().length; j++)     
