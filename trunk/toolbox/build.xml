@@ -145,7 +145,7 @@
             debug="${project.debug}" 
             optimize="${optimize}" 
             target="${javavm}" 
-            fork="yes"
+            fork="no"
             failonerror="${project.failonerror}">
             
             <classpath refid="project.class.path"/>
