@@ -10,9 +10,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for FileStats.
- * 
- * @see toolbox.plugin.jsourceview.FileStats
+ * Unit test for {@link toolbox.plugin.jsourceview.FileStats}.
  */
 public class FileStatsTest extends TestCase
 {

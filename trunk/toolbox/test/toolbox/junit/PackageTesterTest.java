@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for PackageTester.
+ * Unit test for {@link toolbox.junit.PackageTester}.
  */
 public class PackageTesterTest extends TestCase
 {

@@ -7,13 +7,12 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for AssertUtil.
- * 
- * @see toolbox.junit.AssertUtil
+ * Unit test for {@link toolbox.junit.AssertUtil}.
  */
 public class AssertUtilTest extends TestCase
 {
-    private static final Logger logger_ = Logger.getLogger(AssertUtilTest.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(AssertUtilTest.class);
     
     //--------------------------------------------------------------------------
     // Main

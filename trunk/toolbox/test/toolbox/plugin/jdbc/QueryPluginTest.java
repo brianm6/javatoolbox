@@ -12,9 +12,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.formatter.XMLFormatter;
 
 /**
- * Unit test for QueryPlugin.
- * 
- * @see toolbox.plugin.statcvs.QueryPlugin
+ * Unit test for {@link toolbox.plugin.jdbc.QueryPlugin}.
  */
 public class QueryPluginTest extends TestCase
 {
@@ -34,6 +32,9 @@ public class QueryPluginTest extends TestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Tests save/restore of preferences.
+     */
     public void testPreferenced() throws Exception
     {
         logger_.info("Running testApplyPrefs...");

@@ -13,7 +13,7 @@ import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for StatsCollector.
+ * Unit test for {@link toolbox.plugin.jsourceview.StatsCollector}.
  */
 public class StatsCollectorTest extends TestCase
 {

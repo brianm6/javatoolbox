@@ -12,8 +12,9 @@ import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
 
 /**
- * Unit test for PropertyPromptTask. This test is marked as standalone 
- * because the call into Ant results in call to System.exit() on completion.
+ * Unit test for {@link toolbox.ant.PropertyPromptTask}. This test is marked as 
+ * standalone because the call into Ant results in call to System.exit() on 
+ * completion.
  */
 public class PropertyPromptTaskTest extends TestCase 
                                     implements StandaloneTestCase 

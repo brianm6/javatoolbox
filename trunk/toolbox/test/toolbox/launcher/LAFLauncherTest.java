@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
- * Unit test for LAFLauncher.
+ * Unit test for {@link toolbox.launcher.LAFLauncher}.
  */
 public class LAFLauncherTest extends TestCase implements StandaloneTestCase
 {

@@ -25,9 +25,7 @@ import toolbox.workspace.PluginMenu;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * Unit test for JSourceViewPlugin.
- * 
- * @see toolbox.plugin.jsourceview.JSourceViewPlugin
+ * Unit test for {@link toolbox.plugin.jsourceview.JSourceViewPlugin}.
  */
 public class JSourceViewPluginTest extends UITestCase
 {
@@ -91,6 +89,11 @@ public class JSourceViewPluginTest extends UITestCase
     // Unit Tests
     //--------------------------------------------------------------------------
     
+    /**
+     * Exercises the source view plugin to generate stats for source code in
+     * a given directory and then finally displays a pie chart showing the 
+     * source code categories.
+     */
     public void testJSourceViewPlugin() throws IOException
     {
         logger_.info("Running testJSourceViewPlugin...");

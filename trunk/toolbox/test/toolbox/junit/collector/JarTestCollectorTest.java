@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.collector.JarTestCollector;
 
 /**
- * Unit test for JarTestCollector.
+ * Unit test for {@link toolbox.junit.collector.JarTestCollector}.
  */
 public class JarTestCollectorTest extends TestCase
 {

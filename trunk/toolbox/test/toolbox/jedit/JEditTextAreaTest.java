@@ -35,7 +35,7 @@ import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
- * Unit test for JEditTextArea.
+ * Unit test for {@link toolbox.jedit.JEditTextArea}.
  */
 public class JEditTextAreaTest extends UITestCase
 {

@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Unit Test for SmartLogger.
+ * Unit test for {@link toolbox.log4j.SmartLogger}.
  */
 public class SmartLoggerTest extends TestCase
 {

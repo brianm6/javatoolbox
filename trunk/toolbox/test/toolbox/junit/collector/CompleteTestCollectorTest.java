@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.collector.CompleteTestCollector;
 
 /**
- * Unit test for CompleteTestCollector.
+ * Unit test for {@link toolbox.junit.collector.CompleteTestCollector}.
  */
 public class CompleteTestCollectorTest extends TestCase
 {

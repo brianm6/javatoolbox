@@ -6,14 +6,14 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for Main.
+ * Unit test for {@link toolbox.findclass.Main}.
  */
 public class MainTest extends TestCase
 {
     private static final Logger logger_ = Logger.getLogger(MainTest.class);
 
     //--------------------------------------------------------------------------
-    // Constructors
+    // Main
     //--------------------------------------------------------------------------
     
     /**

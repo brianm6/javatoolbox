@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for Main.
+ * Unit test for {@link toolbox.launcher.Main}.
  */
 public class MainTest extends TestCase
 {

@@ -8,8 +8,9 @@ import org.apache.tools.ant.Main;
 import toolbox.junit.testcase.StandaloneTestCase;
 
 /**
- * Unit test for FigletTask. This test is marked as standalone because the call
- * into Ant results in call to System.exit() on completion.
+ * Unit test for {@link toolbox.ant.FigletTask}. This test is marked as 
+ * standalone because the call into Ant results in call to System.exit() on 
+ * completion.
  */
 public class FigletTaskTest extends TestCase implements StandaloneTestCase
 {
