@@ -28,27 +28,46 @@ import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * JTcpTunnel tunnels TCP traffic between a port on the localhost and a port
- * on a remote host. All bytes sent/received are displayed in the GUI for
- * visual inspection.
+ * Panel which houses the majority of the UI controls. 
  */
 public class JTcpTunnelPane extends JPanel
 {
+    // TODO: Auto-clear text areas after # of bytes exceeded
+    
     private static final Logger logger_ = 
         Logger.getLogger(JTcpTunnelPane.class);
     
-    private JTextArea   incomingTextArea_;
-    private JTextArea   outgoingTextArea_;
-    private IStatusBar  statusBar_;
-    private JSplitPane  splitter_;
-    private JButton     clearButton_;
-    private JLabel      remoteLabel_;
-    private JLabel      localLabel_;
-
-    private JTextField  listenPortField_;
-    private JTextField  remoteHostField_;
-    private JTextField  remotePortField_;
+    /** Textarea that incoming data from the tunnel is dumped to */
+    private JTextArea incomingTextArea_;
     
+    /** Textarea that outgoing data to the tunnel is dumped to */ 
+    private JTextArea outgoingTextArea_;
+    
+    /** Workspace status bar */
+    private IStatusBar statusBar_;
+    
+    /** Splits the input and output textareas */
+    private JSplitPane splitter_;
+    
+    /** Clears the text areas */
+    private JButton clearButton_;
+    
+    /** Status label for the incoming text area */
+    private JLabel remoteLabel_;
+    
+    /** Status label for the outgoing text area */
+    private JLabel localLabel_;
+
+    /** Field for the port number of the local host */
+    private JTextField listenPortField_;
+    
+    /** Field for the remote hostname */
+    private JTextField remoteHostField_;
+    
+    /** Field for the remote port number */
+    private JTextField remotePortField_;
+    
+    /** Tunnel object */
     private TcpTunnel tunnel_;    
 
     //--------------------------------------------------------------------------
@@ -116,7 +135,9 @@ public class JTcpTunnelPane extends JPanel
     }
     
     /**
-     * @return  Port to listen
+     * Returns the local listen port number.
+     * 
+     * @return int
      */
     public int getListenPort()
     {
@@ -124,7 +145,9 @@ public class JTcpTunnelPane extends JPanel
     }
 
     /**
-     * @return  Text area for incoming data
+     * Returns the text area for incoming data
+     * 
+     * @return JTextArea
      */
     public JTextArea getIncomingTextArea()
     {
@@ -132,7 +155,9 @@ public class JTcpTunnelPane extends JPanel
     }
 
     /**
-     * @return  Host to forward traffic to
+     * Returns host to forward traffic to
+     * 
+     * @return String
      */
     public String getRemoteHost()
     {
@@ -140,7 +165,9 @@ public class JTcpTunnelPane extends JPanel
     }
 
     /**
-     * @return  Port to forward traffic to
+     * Returns port to forward traffic to
+     * 
+     * @return int
      */
     public int getRemotePort()
     {
@@ -148,7 +175,9 @@ public class JTcpTunnelPane extends JPanel
     }
 
     /**
-     * @return Outgoing data text area
+     * Returns the text area for incoming data
+     * 
+     * @return JTextArea
      */
     public JTextArea getOutgoingTextArea()
     {
@@ -266,7 +295,7 @@ public class JTcpTunnelPane extends JPanel
     //--------------------------------------------------------------------------
 
     /**
-     * Clears the contents of the two output text areas
+     * Clears the contents of the input and output text areas
      */
     class ClearAction extends AbstractAction
     {
