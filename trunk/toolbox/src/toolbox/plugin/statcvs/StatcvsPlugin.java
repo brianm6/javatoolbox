@@ -437,14 +437,18 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_STATCVS_PLUGIN);
-        
-        if (root == null)
-            return;
-            
-        Element projects = root.getFirstChildElement(NODE_CVSPROJECTS);
+        boolean useDefaults = false;
 
-        if (projects == null || projects.getChildCount() ==  0)
+        if (prefs == null)
+            useDefaults = true;
+        else if (prefs.getFirstChildElement(NODE_STATCVS_PLUGIN) == null)
+            useDefaults = true;
+        else if (prefs.getFirstChildElement(NODE_STATCVS_PLUGIN).getFirstChildElement(NODE_CVSPROJECTS) == null)
+            useDefaults = true;
+        else if (prefs.getFirstChildElement(NODE_STATCVS_PLUGIN).getFirstChildElement(NODE_CVSPROJECTS).getChildCount() == 0)
+            useDefaults = true;
+
+        if (useDefaults)
         {
             projectCombo_.addItem(new CVSProject(
                 "Sourceforge",
@@ -475,8 +479,11 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
         else
         {
+            Element root = prefs.getFirstChildElement(NODE_STATCVS_PLUGIN);
+            
             Elements projectList = 
-                projects.getChildElements(CVSProject.NODE_CVSPROJECT);
+                root.getFirstChildElement(NODE_CVSPROJECTS).
+                    getChildElements(CVSProject.NODE_CVSPROJECT);
             
             for(int i=0; i<projectList.size(); i++)
             {
@@ -484,9 +491,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 CVSProject project = new CVSProject(projectNode.toXML());
                 addProject(project);
             }
+            
+            outputArea_.applyPrefs(root);            
         }
-        
-        outputArea_.applyPrefs(root);
     }
 
     /**
