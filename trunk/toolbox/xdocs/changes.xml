@@ -45,6 +45,7 @@
  * TODO: StatCVS: Create output directory if it doesn't already exist
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
+ * TODO: Add monospaced indicators to the FontChooserDialog
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
