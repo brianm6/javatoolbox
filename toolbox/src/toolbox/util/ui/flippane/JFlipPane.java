@@ -36,7 +36,6 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
-import toolbox.util.ui.JSmartButton;
 
 /**
  * JFlipPane is a panel with flipper like behavior to hide a and show any
@@ -530,7 +529,7 @@ public class JFlipPane extends JPanel
         buttonPanel_ = new JPanel(new FlipButtonLayout(this));
         buttonPanel_.addMouseListener(new PopupHandler());
         
-        closeButton_ = new JSmartButton(
+        closeButton_ = new JButton(
             ImageCache.getIcon(ImageCache.IMAGE_CROSS));
                 
         closeButton_.setToolTipText("Close");
@@ -548,7 +547,7 @@ public class JFlipPane extends JPanel
 
         // Popup button
         popupButton_ = 
-            new JSmartButton(ImageCache.getIcon(ImageCache.IMAGE_TRIANGLE));
+            new JButton(ImageCache.getIcon(ImageCache.IMAGE_TRIANGLE));
             
         popupButton_.setRequestFocusEnabled(false);
         popupButton_.setToolTipText("Popup menu");
