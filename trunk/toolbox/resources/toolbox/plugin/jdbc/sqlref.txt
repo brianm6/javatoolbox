@@ -1,0 +1,49 @@
+SQL Quick Reference Syntax
+
+------------------------------------------------------------------------
+CREATE TABLE <table name> ( <column name> <column type> [<attribute
+constraint>]
+{, <column name> <column type> [<attribute constraint>] } [<table
+constraint> {,<table constraint>}] )
+
+DROP TABLE <table name>
+
+ALTER TABLE <table name> ADD <column name> <column type>
+
+SELECT [DISTINCT] <attribute list>
+FROM ( <table name> { <alias>} | <joined table> ) {, ( <table name> {
+<alias>} | <joined table>
+[WHERE <condition>]
+[GROUP BY <grouping attributes> [HAVING <group selection condition> ] ]
+[ORDER BY <column name> [<order>] {, <column name> [<order>] } ]
+
+<attribute list>::= (* | ( <column name> | <function>(
+([DISTINCT)<column name> | *)))
+{,( <column name> | <function>( ([DISTINCT) <column name> | *))
+
+<grouping attributes>::= <column name> { , <column name>}
+<order>::= (ASC | DESC)
+
+INSERT INTO <table name> [( <column name>{, <column name>} ) ]
+(VALUES ( <constant value> , { <constant value>} ){,( <constant
+value>{,<constant value>})} | <select statement> )
+
+DELETE FROM <table name>
+[WHERE <selection condition>]
+
+UPDATE <table name>
+SET <column name>=<value expression>
+[WHERE <selection condition>l
+
+CREATE [UNIQUE] INDEX <index name>
+ON <table name> ( <column name> [ <order> [CLUSTER]
+
+DROP INDEX <index name>
+
+CREATE VIEW <view name> [ ( <column name> {, <column name>} ) ]
+AS <select statement>
+
+DROP VIEW <view name>
+
+------------------------------------------------------------------------
+
