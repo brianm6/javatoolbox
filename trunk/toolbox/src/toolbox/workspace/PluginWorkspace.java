@@ -259,6 +259,17 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * Returns the plugin host.
+     *
+     * @return PluginHost
+     */
+    public PluginHost getPluginHost()
+    {
+        return pluginHostManager_.getPluginHost();
+    }
+
+    
+    /**
      * Registers a plugin with the PluginHostManager. Must be called prior
      * buildView().
      *
@@ -604,17 +615,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         }));
 
         return menu;
-    }
-
-
-    /**
-     * Returns the plugin host.
-     *
-     * @return PluginHost
-     */
-    protected PluginHost getPluginHost()
-    {
-        return pluginHostManager_.getPluginHost();
     }
 
 
