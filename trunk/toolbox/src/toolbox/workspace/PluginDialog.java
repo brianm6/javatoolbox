@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -48,6 +47,10 @@ public class ManagePluginsDialog extends JDialog
 {
     public static final Logger logger_ =
         Logger.getLogger(ManagePluginsDialog.class);
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /**
      * Button to remove a plugin from the workspace
@@ -199,7 +202,8 @@ public class ManagePluginsDialog extends JDialog
         listPanel.add(activeScroller, gbc);
         
         // Find/Close Buttons on bottom
-        JPanel buttonPanel = new JPanel(new FlowLayout());        
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(new JSmartButton(new ListPluginsAction()));
         buttonPanel.add(new JSmartButton(new FindPluginsAction()));            
         buttonPanel.add(new JSmartButton(new CloseAction()));
 
@@ -216,9 +220,9 @@ public class ManagePluginsDialog extends JDialog
     {
         activeModel_.clear();
         
-        for (Iterator i = workspace_.getPlugins().values().iterator();i.hasNext();)
+        for (int i = 0; i<workspace_.getPluginHost().getPlugins().length; i++)
         {
-            IPlugin plugin = (IPlugin)i.next();
+            IPlugin plugin = workspace_.getPluginHost().getPlugins()[i];
             PluginMeta meta = new PluginMeta(plugin);
             activeModel_.addElement(meta);
         }
@@ -265,10 +269,10 @@ public class ManagePluginsDialog extends JDialog
             boolean skip = false;
                 
             // Exclude the plugins that are already loaded                
-            for (Iterator it = workspace_.getPlugins().values().iterator(); 
-                 it.hasNext(); )
+            for (int j=0; i<workspace_.getPluginHost().getPlugins().length; j++)
             {
-                String pluginClass = it.next().getClass().getName();
+                String pluginClass = 
+                    workspace_.getPluginHost().getPlugins()[j].getClass().getName();
                 
                 if (pluginClass.equals(clazz))
                 {
@@ -321,23 +325,6 @@ public class ManagePluginsDialog extends JDialog
                     }
                 }
             }
-        }
-    
-        // If not plugins found, assume we're running via WebStart and use a 
-        // static list of plugins instead.
-         
-        if (legitPlugins.isEmpty())
-        {
-            // TODO: fill in rest of the plugins or move to external file
-            legitPlugins.add(new PluginMeta("toolbox.util.xslfo.XSLFOPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.util.ui.plugin.StatcvsPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.util.ui.plugin.TextPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.plugin.pdf.PDFPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.tunnel.JTcpTunnelPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.jtail.JTailPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.jsourceview.JSourceViewPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.jdbc.QueryPlugin"));
-            legitPlugins.add(new PluginMeta("toolbox.findclass.JFindClassPlugin"));
         }
     
         Collections.sort(legitPlugins, new ObjectComparator("name"));
@@ -415,7 +402,7 @@ public class ManagePluginsDialog extends JDialog
     }
     
     //----------------------------------------------------------------------
-    //  Actions
+    // Actions
     //----------------------------------------------------------------------
     
     /**
@@ -473,6 +460,10 @@ public class ManagePluginsDialog extends JDialog
         }
     }
     
+    //--------------------------------------------------------------------------
+    // RemovePluginAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Deactivates/removes a plugin and moves the plugin from the active list 
      * to the inactive list
@@ -529,6 +520,10 @@ public class ManagePluginsDialog extends JDialog
         }
     }
     
+    //--------------------------------------------------------------------------
+    // CloseAction
+    //--------------------------------------------------------------------------
+    
     /**
      * Dismisses the dialog box
      */
@@ -545,6 +540,10 @@ public class ManagePluginsDialog extends JDialog
             dispose();
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // FindPluginsAction
+    //--------------------------------------------------------------------------
     
     /**
      * Finds plugins on the classpath and populates the inactive plugins list
@@ -566,4 +565,80 @@ public class ManagePluginsDialog extends JDialog
             populateInactive(); 
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // ListPluginsAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Lists the plugins from a predetermined list for cases where the
+     * classpath can't be accessed or search efficiently (WebStart).
+     */
+    class ListPluginsAction extends WorkspaceAction
+    {
+        /**
+         * Creates a ListPluginsAction
+         */
+        ListPluginsAction()
+        {
+            super("List Plugins", 
+                  true, 
+                  ManagePluginsDialog.this, 
+                  workspace_.getStatusBar());
+                
+            putValue(Action.MNEMONIC_KEY, new Integer('L')); 
+        }
+
+        /**
+         * @see toolbox.util.ui.SmartAction#runAction(
+         *      java.awt.event.ActionEvent)
+         */
+        public void runAction(ActionEvent e)
+        {
+            inactiveModel_.clear();
+            List legitPlugins = new ArrayList();
+
+            legitPlugins.add(new PluginMeta(
+                "toolbox.util.xslfo.XSLFOPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.util.ui.plugin.StatcvsPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.util.ui.plugin.TextPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.plugin.pdf.PDFPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.tunnel.JTcpTunnelPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.jtail.JTailPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.jsourceview.JSourceViewPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.jdbc.QueryPlugin"));
+            legitPlugins.add(new PluginMeta(
+                "toolbox.findclass.JFindClassPlugin"));
+
+            // Exclude the plugins that are already loaded                
+            for (int j=0; j<workspace_.getPluginHost().getPlugins().length; j++)     
+            {
+                String pluginClass = 
+                    workspace_.getPluginHost().getPlugins()[j].getClass().getName();
+
+                for (int i=0; i<legitPlugins.size(); i++)
+                {
+                    PluginMeta meta = (PluginMeta) legitPlugins.get(i);
+                    if (meta.getClassName().equals(pluginClass))
+                        legitPlugins.remove(meta);
+                }
+            }
+            
+            Collections.sort(legitPlugins, new ObjectComparator("name"));
+
+            for (int i=0; i<legitPlugins.size(); i++)
+                inactiveModel_.addElement(legitPlugins.get(i));
+        
+            removeButton_.setEnabled(activeModel_.size() > 0);
+            addButton_.setEnabled(inactiveModel_.size() > 0);
+        }
+    }
+    
 }
