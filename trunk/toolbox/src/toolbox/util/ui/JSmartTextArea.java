@@ -6,27 +6,28 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.text.Document;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import toolbox.util.FontUtil;
+import toolbox.util.PreferencedUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.action.AntiAliasAction;
-import toolbox.util.ui.textarea.action.AutoScrollAction;
+import toolbox.util.ui.textarea.action.AutoTailAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
 
 /**
  * Extends the functionality of JTextArea by adding the following features.
  * <ul>
- *   <li>Autoscrolling of output
+ *   <li>Autotailing of output
  *   <li>Anti-aliased text
  *   <li>Popup menu with cut/copy/paste/save/insert
- *   <li>Capacity limit with the automatic pruning of text
+ *   <li>Capacity limit with the automatic pruning of text to a given percentage
+ *       when the capacity is reached.
  *   <li>Support to save/restore preferences to XML
  *   <li>Makes sure all appends are executed on the event dispatch thread
  *   <li>Popupmenu access to toggle the built in line wrapping
@@ -39,17 +40,32 @@ public class JSmartTextArea extends JTextArea
         Logger.getLogger(JSmartTextArea.class);
 
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
-    private static final String NODE_JSMARTTEXTAREA   = "JSmartTextArea";
-    private static final String   ATTR_AUTOSCROLL     = "autoscroll";
-    private static final String   ATTR_ANTIALIAS      = "antialias";
-    private static final String   ATTR_CAPACITY       = "capacity";
-    private static final String   ATTR_PRUNING_FACTOR = "pruningFactor";
-    private static final String   ATTR_WRAPLINES      = "wrapLines";
-    private static final String NODE_FONT             = "Font";
+    private static final String NODE_JSMARTTEXTAREA = "JSmartTextArea";
+    private static final String NODE_FONT = "Font";
 
+    //--------------------------------------------------------------------------
+    // JavaBean Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String PROP_AUTOTAIL = "autoTail";
+    public static final String PROP_CAPACITY = "capacity";
+    public static final String PROP_LINEWRAP = "lineWrap";
+    public static final String PROP_PRUNING_FACTOR = "pruningFactor";
+
+    /**
+     * List of properties that are saved via the IPreferenced interface.
+     */
+    public static final String[] SAVED_PROPS = {
+        PROP_AUTOTAIL,
+        PROP_CAPACITY,
+        PROP_PRUNING_FACTOR,
+        PROP_LINEWRAP,
+        AntiAliased.PROP_ANTIALIAS
+    };
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -65,10 +81,10 @@ public class JSmartTextArea extends JTextArea
     private boolean antiAlias_;
 
     /**
-     * Flag that toggle autoscrolling of the output as it is appended to the
+     * Flag that toggles autotailing of output as it is appended to this
      * textarea.
      */
-    private boolean autoScroll_;
+    private boolean autoTail_;
 
     /**
      * Maximum number of characters allowable in the text area before the text
@@ -87,7 +103,7 @@ public class JSmartTextArea extends JTextArea
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JSmartTextArea with autoscroll and antialias turned off by
+     * Creates a JSmartTextArea with autotail and antialias turned off by
      * default.
      */
     public JSmartTextArea()
@@ -97,7 +113,7 @@ public class JSmartTextArea extends JTextArea
 
 
     /**
-     * Creates a JSmartTextArea with the given text and autoscroll and antialias
+     * Creates a JSmartTextArea with the given text and autotail and antialias
      * turned off by default.
      *
      * @param text Initial text of textarea.
@@ -111,12 +127,12 @@ public class JSmartTextArea extends JTextArea
     /**
      * Creates a JSmartTextArea with the given options.
      *
-     * @param autoScroll Turns on autoscroll of output.
+     * @param autoTail Turns on autotailing of output.
      * @param antiAlias Turns on antialiasing of the text.
      */
-    public JSmartTextArea(boolean autoScroll, boolean antiAlias)
+    public JSmartTextArea(boolean autoTail, boolean antiAlias)
     {
-        this("", autoScroll, antiAlias);
+        this("", autoTail, antiAlias);
     }
 
 
@@ -124,14 +140,14 @@ public class JSmartTextArea extends JTextArea
      * Creates a JSmartTextArea with the given text and options.
      *
      * @param text Initial text.
-     * @param autoScroll Turns on autoscroll of output.
+     * @param autoTail Turns on autoTail of output.
      * @param antiAlias Turns on antialiasing of the text.
      */
-    public JSmartTextArea(String text, boolean autoScroll, boolean antiAlias)
+    public JSmartTextArea(String text, boolean autoTail, boolean antiAlias)
     {
         super(text);
         init();
-        setAutoScroll(autoScroll);
+        setAutoTail(autoTail);
         setAntiAliased(antiAlias);
     }
 
@@ -204,26 +220,26 @@ public class JSmartTextArea extends JTextArea
 
 
     /**
-     * Returns true if autoscroll is enabled, false otherwise.
+     * Returns true if autotail is enabled, false otherwise.
      *
      * @return boolean
      */
-    public boolean isAutoScroll()
+    public boolean isAutoTail()
     {
-        return autoScroll_;
+        return autoTail_;
     }
 
 
     /**
-     * Sets the autoScroll feature.
+     * Sets the autoTail feature.
      *
-     * @param autoScroll True to enable autoscroll, false to disable autoscroll.
+     * @param autoTail True to enable autoTail, false otherwise.
      */
-    public void setAutoScroll(boolean autoScroll)
+    public void setAutoTail(boolean autoTail)
     {
-        boolean old = isAutoScroll();
-        autoScroll_ = autoScroll;
-        firePropertyChange("autoscroll", old, autoScroll);
+        boolean old = isAutoTail();
+        autoTail_ = autoTail;
+        firePropertyChange(PROP_AUTOTAIL, old, autoTail);
     }
 
     
@@ -242,13 +258,13 @@ public class JSmartTextArea extends JTextArea
     /**
      * Sets the max capacity of the text area.
      *
-     * @param i Max capacity.
+     * @param capacity Max capacity.
      */
-    public void setCapacity(int i)
+    public void setCapacity(int capacity)
     {
         int old = capacity_;
-        capacity_ = i;
-        firePropertyChange("capacity", old, capacity_);
+        capacity_ = capacity;
+        firePropertyChange(PROP_CAPACITY, old, capacity_);
     }
 
 
@@ -256,9 +272,9 @@ public class JSmartTextArea extends JTextArea
      * Returns the percentage of text that gets pruned from the text area when
      * the capacity is reached.
      *
-     * @return  Percent of text to prune (0 - 100).
+     * @return Percent of text to prune (0 - 100).
      */
-    public int getPruneFactor()
+    public int getPruningFactor()
     {
         return pruningFactor_;
     }
@@ -267,19 +283,19 @@ public class JSmartTextArea extends JTextArea
     /**
      * Sets the pruning factor.
      *
-     * @param f Pruning factor.
+     * @param pruningFactor Pruning factor.
      * @throws IllegalArgumentException if the pruning factor is not between
      *         0 and 100.
      */
-    public void setPruneFactor(int f)
+    public void setPruningFactor(int pruningFactor)
     {
         Validate.isTrue(
-            f >= 0 && f <= 100,
+            pruningFactor >= 0 && pruningFactor <= 100,
             "Pruning factor must be an integer between 0 and 100");
 
         int old = pruningFactor_;
-        pruningFactor_ = f;
-        firePropertyChange("prune", old, pruningFactor_);
+        pruningFactor_ = pruningFactor;
+        firePropertyChange(PROP_PRUNING_FACTOR, old, pruningFactor_);
     }
 
     //--------------------------------------------------------------------------
@@ -293,9 +309,9 @@ public class JSmartTextArea extends JTextArea
     {
         buildView();
         setCapacity(Integer.MAX_VALUE);
-        setPruneFactor(0);
+        setPruningFactor(0);
         setAntiAliased(SwingUtil.getDefaultAntiAlias());
-        setAutoScroll(true);
+        setAutoTail(true);
         setLineWrap(false);
     }
 
@@ -306,7 +322,7 @@ public class JSmartTextArea extends JTextArea
     protected void buildView()
     {
         //
-        // Build popup menu and append autoscroll, line wrap, and antialias
+        // Build popup menu and append autotail, line wrap, and antialias
         // onto the end.
         //
         popupMenu_ = new JTextComponentPopupMenu(this);
@@ -314,21 +330,21 @@ public class JSmartTextArea extends JTextArea
 
         popupMenu_.add(
             new JSmartCheckBoxMenuItem(
-                new AutoScrollAction(this),
+                new AutoTailAction(this),
                 this,
-                "autoscroll"));
+                PROP_AUTOTAIL));
 
         popupMenu_.add(
             new JSmartCheckBoxMenuItem(
                 new LineWrapAction(this),
                 this,
-                "lineWrap"));
+                PROP_LINEWRAP));
 
         popupMenu_.add(
             new JSmartCheckBoxMenuItem(
                 new AntiAliasAction(this),
                 this,
-                "antialias"));
+                AntiAliased.PROP_ANTIALIAS));
     }
 
     //--------------------------------------------------------------------------
@@ -355,7 +371,7 @@ public class JSmartTextArea extends JTextArea
     {
         boolean old = antiAlias_;
         antiAlias_ = antiAlias;
-        firePropertyChange("antialias", old, antiAlias_);
+        firePropertyChange(AntiAliased.PROP_ANTIALIAS, old, antiAlias_);
     }
     
     //--------------------------------------------------------------------------
@@ -365,25 +381,12 @@ public class JSmartTextArea extends JTextArea
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws Exception
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JSMARTTEXTAREA, new Element(NODE_JSMARTTEXTAREA));
 
-        setAutoScroll(XOMUtil.getBooleanAttribute(
-            root, ATTR_AUTOSCROLL, true));
-
-        setAntiAliased(XOMUtil.getBooleanAttribute(
-            root, ATTR_ANTIALIAS, true));
-
-        setCapacity(XOMUtil.getIntegerAttribute(
-            root, ATTR_CAPACITY, Integer.MAX_VALUE));
-
-        setPruneFactor(XOMUtil.getIntegerAttribute(
-            root, ATTR_PRUNING_FACTOR, 0));
-
-        setLineWrap(XOMUtil.getBooleanAttribute(
-            root, ATTR_WRAPLINES, false));
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
 
         if (XOMUtil.getFirstChildElement(root, NODE_FONT, null) != null)
             setFont(FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
@@ -393,19 +396,12 @@ public class JSmartTextArea extends JTextArea
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_JSMARTTEXTAREA);
-        root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll() + ""));
-        root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased() + ""));
-        root.addAttribute(new Attribute(ATTR_CAPACITY, getCapacity() + ""));
-        root.addAttribute(new Attribute(ATTR_WRAPLINES, getLineWrap() + ""));
-
-        root.addAttribute(
-            new Attribute(ATTR_PRUNING_FACTOR, getPruneFactor() + ""));
-
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
         root.appendChild(FontUtil.toElement(getFont()));
-        prefs.appendChild(root);
+        XOMUtil.insertOrReplace(prefs, root);
     }
 
     //--------------------------------------------------------------------------
@@ -452,8 +448,8 @@ public class JSmartTextArea extends JTextArea
                 setText(getText().substring(nlen));
             }
 
-            // Handle autoscrolling
-            if (isAutoScroll() && str.indexOf('\n') >= 0)
+            // Handle autotailing
+            if (isAutoTail() && str.indexOf('\n') >= 0)
                 scrollToEnd();
         }
         else
