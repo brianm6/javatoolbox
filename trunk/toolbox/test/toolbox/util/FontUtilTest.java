@@ -186,4 +186,55 @@ public class FontUtilTest extends TestCase
             if (FontUtil.isMonospaced(fonts[i]))
                 logger_.info(fonts[i].getName() + " is monospaced"); 
     }
+    
+    
+    /**
+     * Tests save/restore of preferences.
+     */
+    public void testPreferenced() throws Exception
+    {
+        logger_.info("Running testPreferenced...");
+        
+        // Induce initialization
+        FontUtil.getPreferredMonoFont();
+        FontUtil.getPreferredSerifFont();
+        
+        Element root = new Element("root");
+        FontUtil.getInstance().savePrefs(root);
+        
+        logger_.debug(StringUtil.banner(XMLUtil.format(root.toXML())));
+ 
+        assertEquals(
+            FontUtil.getPreferredMonoFont().getName(),
+            root.getFirstChildElement(FontUtil.NODE_FONTUTIL)
+                .getFirstChildElement(FontUtil.NODE_DEFAULT_MONO)
+                .getFirstChildElement(FontUtil.NODE_FONT)
+                .getAttributeValue(FontUtil.ATTR_NAME));
+        
+        assertEquals(
+            FontUtil.getPreferredSerifFont().getName(),
+            root.getFirstChildElement(FontUtil.NODE_FONTUTIL)
+                .getFirstChildElement(FontUtil.NODE_DEFAULT_SERIF)
+                .getFirstChildElement(FontUtil.NODE_FONT)
+                .getAttributeValue(FontUtil.ATTR_NAME));
+        
+        // Increase font size to 20, read back in, and verify
+        root.getFirstChildElement(FontUtil.NODE_FONTUTIL)
+            .getFirstChildElement(FontUtil.NODE_DEFAULT_MONO)
+            .getFirstChildElement(FontUtil.NODE_FONT)
+            .getAttribute(FontUtil.ATTR_SIZE)
+            .setValue("20");
+        
+        root.getFirstChildElement(FontUtil.NODE_FONTUTIL)
+            .getFirstChildElement(FontUtil.NODE_DEFAULT_SERIF)
+            .getFirstChildElement(FontUtil.NODE_FONT)
+            .getAttribute(FontUtil.ATTR_SIZE)
+            .setValue("20");
+        
+        logger_.debug(StringUtil.banner(XMLUtil.format(root.toXML())));
+        
+        FontUtil.getInstance().applyPrefs(root);
+        assertEquals(20, FontUtil.getPreferredMonoFont().getSize());
+        assertEquals(20, FontUtil.getPreferredSerifFont().getSize());
+    }
 }
