@@ -8,9 +8,6 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
-import toolbox.util.SwingUtil;
-import toolbox.util.ui.JSmartTextArea;
-
 /**
  * A Log4J appender that empties into a text area.
  */
@@ -34,15 +31,6 @@ public class JTextAreaAppender extends AppenderSkeleton
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-
-    /**
-     * Creates a new text area appender.
-     */
-    public JTextAreaAppender()
-    {
-        this(new JSmartTextArea(true, SwingUtil.getDefaultAntiAlias()));
-    }
-
 
     /**
      * Creates a new text area appender.
