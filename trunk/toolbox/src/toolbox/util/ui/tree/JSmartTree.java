@@ -23,6 +23,10 @@ import toolbox.util.ui.AntiAliased;
  */
 public class JSmartTree extends JTree implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -43,7 +47,7 @@ public class JSmartTree extends JTree implements AntiAliased
     /**
      * Creates a JSmartTree.
      * 
-     * @param value
+     * @param value Array of nodes.
      */
     public JSmartTree(Object[] value)
     {
@@ -54,7 +58,7 @@ public class JSmartTree extends JTree implements AntiAliased
     /**
      * Creates a JSmartTree.
      * 
-     * @param value
+     * @param value Hashtable of nodes.
      */
     public JSmartTree(Hashtable value)
     {
@@ -65,7 +69,7 @@ public class JSmartTree extends JTree implements AntiAliased
     /**
      * Creates a JSmartTree.
      * 
-     * @param value
+     * @param value Vector of nodes.
      */
     public JSmartTree(Vector value)
     {
@@ -76,7 +80,7 @@ public class JSmartTree extends JTree implements AntiAliased
     /**
      * Creates a JSmartTree.
      * 
-     * @param newModel
+     * @param newModel Tree model.
      */
     public JSmartTree(TreeModel newModel)
     {
@@ -87,7 +91,7 @@ public class JSmartTree extends JTree implements AntiAliased
     /**
      * Creates a JSmartTree.
      * 
-     * @param root
+     * @param root Tree node
      */
     public JSmartTree(TreeNode root)
     {
@@ -98,8 +102,8 @@ public class JSmartTree extends JTree implements AntiAliased
     /**
      * Creates a JSmartTree.
      * 
-     * @param root
-     * @param asksAllowsChildren
+     * @param root Root node of the tree.
+     * @param asksAllowsChildren Allows children.
      */
     public JSmartTree(TreeNode root, boolean asksAllowsChildren)
     {
@@ -120,7 +124,7 @@ public class JSmartTree extends JTree implements AntiAliased
 
 
     /**
-     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
     {

@@ -17,6 +17,10 @@ import toolbox.util.ui.AntiAliased;
 public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
     implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -45,6 +49,7 @@ public class SmartTreeCellRenderer extends DefaultTreeCellRenderer
         return antiAliased_;
     }
 
+    
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */
