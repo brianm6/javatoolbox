@@ -5,10 +5,10 @@
   
   USAGE:
 
-	You do not invoke this file explicitly. Each subproject has a maven 
-	project.xml which directly extends/inherits base functionality from this
-	project. Change to an individual project's directory and invoke maven from 
-	there instead.
+    You do not invoke this file explicitly. Each subproject has a maven 
+    project.xml which directly extends/inherits base functionality from this
+    project. Change to an individual project's directory and invoke maven from 
+    there instead.
 
   PURPOSE:
   
@@ -46,7 +46,7 @@
 
   <repository>
     <connection>
-      scm|cvs|pserver|analogue@192.168.1.103|c:\cvs\cvsrep|${pom.artifactId}
+      scm|cvs|pserver|analogue@12.239.81.65|c:\cvs\cvsrep|${pom.artifactId}
     </connection>
     <url>http://toolbox.sf.net/</url>
   </repository>
@@ -96,381 +96,391 @@
     <dependency><id>cryptix32</id><version/></dependency>
     <dependency><id>cryptix32-pgp</id><version/></dependency>        
     <dependency><id>cvslib</id><version/></dependency>        
-	<dependency><id>fop</id><version/></dependency>        	    
+    <dependency><id>fop</id><version/></dependency>                
     <dependency><id>hamsam</id><version/></dependency>
     <dependency><id>hsqldb</id><version/></dependency>
     <dependency><id>jaimlib</id><version/></dependency>
-    <dependency><id>jakarta-regexp</id><version/></dependency>	    
-	<dependency><id>jedit-syntax</id><version/></dependency>
+    <dependency><id>jakarta-regexp</id><version/></dependency>        
+    <dependency><id>jedit-syntax</id><version/></dependency>
     <dependency><id>jode</id><version/></dependency>
     <dependency><id>junit</id><version/></dependency>
     <dependency><id>kunststoff</id><version/></dependency>
-	<dependency><id>log4j</id><version/></dependency>
+    <dependency><id>log4j</id><version/></dependency>
     <dependency><id>metouia</id><version/></dependency>
-    <dependency><id>plastic</id><version/></dependency>    	
+    <dependency><id>plastic</id><version/></dependency>        
     <dependency><id>sametime-comm</id><version/></dependency>
-    <dependency><id>sametime-comm-res</id><version/></dependency>    	        	
-    <dependency><id>saxon</id><version/></dependency>	    
+    <dependency><id>sametime-comm-res</id><version/></dependency>                    
+    <dependency><id>saxon</id><version/></dependency>        
     <dependency><id>skinlf</id><version/></dependency>
-    <dependency><id>statcvs</id><version/></dependency>	    
-    <dependency><id>tinylaf</id><version/></dependency>	    
-	<dependency><id>xercesImpl</id><version/></dependency>
+    <dependency><id>statcvs</id><version/></dependency>        
+    <dependency><id>tinylaf</id><version/></dependency>        
+    <dependency><id>xercesImpl</id><version/></dependency>
     <dependency><id>xep</id><version/></dependency>
-	<dependency><id>xml-apis</id><version/></dependency>
-	<dependency><id>xom</id><version/></dependency>	
-	<dependency><id>xplookandfeel</id><version/></dependency>
+    <dependency><id>xml-apis</id><version/></dependency>
+    <dependency><id>xom</id><version/></dependency>    
+    <dependency><id>xplookandfeel</id><version/></dependency>
     <dependency><id>xt</id><version/></dependency>
   </dependencies>
   -->
-	  
+      
 
-	<dependencies>
-	
-	  <dependency>
-	    <id>debug</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>acrobat</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>ant</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>apple-mrj</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>avalon-framework</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>batik</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>bsh</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-cli</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-collections</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-lang</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-beanutils</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-logging</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-net</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-io</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>commons-codec</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>cryptix32</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>cryptix32-pgp</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>cvslib</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>fop</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>hamsam</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>hsqldb</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>jaimlib</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>jakarta-regexp</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>jedit-syntax</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>jode</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>junit</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>kunststoff</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>log4j</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>metouia</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
+    <dependencies>
+    
+      <dependency>
+        <id>debug</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>acrobat</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>ant</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>apple-mrj</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>avalon-framework</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>batik</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>bsh</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-cli</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-collections</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-lang</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-beanutils</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-logging</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-net</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-io</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>commons-codec</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>cryptix32</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>cryptix32-pgp</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>cvslib</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
 
-	  <dependency>
-	    <id>multivalent</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>plastic</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>sametime-comm</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>sametime-comm-res</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>saxon</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>skinlf</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>statcvs</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>tinylaf</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>xercesImpl</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>xep</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>xml-apis</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>xom</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>xplookandfeel</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	  <dependency>
-	    <id>xt</id>
-	    <version/>
-	    <properties>
-	      <jnlp.jar>true</jnlp.jar>
-	    </properties>
-	  </dependency>
-	
-	</dependencies>
+      <dependency>
+        <id>db2java</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>fop</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>hamsam</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>hsqldb</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>jaimlib</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>jakarta-regexp</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>jedit-syntax</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>jode</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>junit</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>kunststoff</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>log4j</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>metouia</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+
+      <dependency>
+        <id>multivalent</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>plastic</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>sametime-comm</id>
+        <version/>
+        <!--
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+        -->
+      </dependency>
+    
+      <dependency>
+        <id>sametime-comm-res</id>
+        <version/>
+        <!--properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties-->
+      </dependency>
+    
+      <dependency>
+        <id>saxon</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>skinlf</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>statcvs</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>tinylaf</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>xercesImpl</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>xep</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>xml-apis</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>xom</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>xplookandfeel</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
+        <id>xt</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+    </dependencies>
   
   
   <build>
