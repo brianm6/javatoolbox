@@ -26,7 +26,6 @@ import toolbox.forms.SmartComponentFactory;
 import toolbox.tunnel.TcpTunnel;
 import toolbox.tunnel.TcpTunnelListener;
 import toolbox.util.FontUtil;
-import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
@@ -59,18 +58,6 @@ public class TunnelPane extends JPanel implements IPreferenced
     public static final String   NODE_INCOMING       =   "Incoming";
     public static final String   NODE_OUTGOING       =   "Outgoing";
     
-    public static final String PROP_REMOTE_PORT    = "remoteport";
-    public static final String PROP_REMOTE_HOST    = "remotehost";
-    public static final String PROP_LOCAL_PORT     = "localport";
-    
-    public static final String[] SAVED_PROPS = {
-        PROP_LOCAL_PORT,
-        PROP_REMOTE_HOST,
-        PROP_REMOTE_PORT
-    };
-    
-    public static final String PROP_SUPRESS_BINARY = "supressBinary";
-
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -145,6 +132,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     public TunnelPane()
     {
         buildView();
+        tunnel_ = new TcpTunnel();
     }
 
 
@@ -161,6 +149,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         setListenPort(listenPort);
         setRemoteHost(remoteHost);
         setRemotePort(remotePort);
+        tunnel_ = new TcpTunnel(listenPort, remoteHost, remotePort);
     }
 
     //--------------------------------------------------------------------------
@@ -393,7 +382,7 @@ public class TunnelPane extends JPanel implements IPreferenced
         tb.add(JHeaderPanel.createToggleButton(
             new SupressBinaryAction(),
             area,
-            PROP_SUPRESS_BINARY));
+            TcpTunnel.PROP_SUPPRESS_BINARY));
         
         tb.add(JHeaderPanel.createToggleButton(
             new LineWrapAction(area),
@@ -426,14 +415,11 @@ public class TunnelPane extends JPanel implements IPreferenced
                 NODE_TCPTUNNEL_PLUGIN,
                 new Element(NODE_TCPTUNNEL_PLUGIN));
 
-        remotePortField_.setText(
-            XOMUtil.getStringAttribute(root, PROP_REMOTE_PORT, ""));
-
-        remoteHostField_.setText(
-            XOMUtil.getStringAttribute(root, PROP_REMOTE_HOST, ""));
-
-        listenPortField_.setText(
-            XOMUtil.getStringAttribute(root, PROP_LOCAL_PORT, ""));
+        tunnel_.applyPrefs(root);
+        
+        listenPortField_.setText(tunnel_.getLocalPort() + "");
+        remoteHostField_.setText(tunnel_.getRemoteHost());
+        remotePortField_.setText(tunnel_.getRemotePort() + "");
 
         configFlipPane_.applyPrefs(root);
         splitter_.applyPrefs(root);
@@ -457,21 +443,10 @@ public class TunnelPane extends JPanel implements IPreferenced
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
-
-        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
-        
-//        root.addAttribute(
-//            new Attribute(PROP_LOCAL_PORT, listenPortField_.getText()));
-//
-//        root.addAttribute(
-//            new Attribute(PROP_REMOTE_PORT, remotePortField_.getText()));
-//
-//        root.addAttribute(
-//            new Attribute(PROP_REMOTE_HOST, remoteHostField_.getText()));
-
+        tunnel_.savePrefs(root);
         configFlipPane_.savePrefs(root);
         splitter_.savePrefs(root);
-
+        
         Element incoming = new Element(NODE_INCOMING);
         incomingArea_.setCapacity(Integer.parseInt(capacityField_.getText()));
         incomingArea_.savePrefs(incoming);
@@ -602,11 +577,12 @@ public class TunnelPane extends JPanel implements IPreferenced
                 throw new IllegalArgumentException(
                     "Please specify the remote hostname");
 
-            tunnel_ =
-                new TcpTunnel(
-                    getListenPort(),
-                    getRemoteHost(),
-                    getRemotePort());
+//            tunnel_ =
+//                new TcpTunnel(
+            
+            tunnel_.setLocalPort(getListenPort());
+            tunnel_.setRemoteHost(getRemoteHost());
+            tunnel_.setRemotePort(getRemotePort());
 
             tunnel_.setIncomingSink(new BufferedOutputStream(//System.out));
                 new JTextAreaOutputStream(outgoingArea_), 20480));
