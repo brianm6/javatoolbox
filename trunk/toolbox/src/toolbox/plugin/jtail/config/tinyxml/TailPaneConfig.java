@@ -224,9 +224,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the autoScroll.
-     * 
-     * @return boolean
+     * @see toolbox.jtail.config.ITailPaneConfig#isAutoScroll()
      */
     public boolean isAutoScroll()
     {
@@ -234,9 +232,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Returns the filename.
-     * 
-     * @return String
+     * @see toolbox.jtail.config.ITailPaneConfig#getFilename()
      */
     public String getFilename()
     {
@@ -244,19 +240,15 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Returns the showLineNumbers.
-     * 
-     * @return boolean
+     * @see toolbox.jtail.config.ITailPaneConfig#isShowLineNumbers()
      */
     public boolean isShowLineNumbers()
     {
         return showLineNumbers_;
     }
-
+ 
     /**
-     * Sets the autoScroll.
-     * 
-     * @param autoScroll The autoScroll to set
+     * @see toolbox.jtail.config.ITailPaneConfig#setAutoScroll(boolean)
      */
     public void setAutoScroll(boolean autoScroll)
     {
@@ -264,9 +256,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Sets the filename.
-     * 
-     * @param filename The filename to set
+     * @see toolbox.jtail.config.ITailPaneConfig#setFilename(java.lang.String)
      */
     public void setFilename(String filename)
     {
@@ -274,19 +264,15 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Sets the showLineNumbers.
-     * 
-     * @param showLineNumbers The showLineNumbers to set
+     * @see toolbox.jtail.config.ITailPaneConfig#setShowLineNumbers(boolean)
      */
     public void setShowLineNumbers(boolean showLineNumbers)
     {
         showLineNumbers_ = showLineNumbers;
     }
-
+ 
     /**
-     * Returns the font.
-     * 
-     * @return Font
+     * @see toolbox.jtail.config.ITailPaneConfig#getFont()
      */
     public Font getFont()
     {
@@ -294,19 +280,15 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Sets the font.
-     * 
-     * @param font The font to set
+     * @see toolbox.jtail.config.ITailPaneConfig#setFont(java.awt.Font)
      */
     public void setFont(Font font)
     {
         font_ = font;
     }
-
+ 
     /**
-     * Returns the filter.
-     * 
-     * @return String
+     * @see toolbox.jtail.config.ITailPaneConfig#getRegularExpression()
      */
     public String getRegularExpression()
     {
@@ -314,9 +296,8 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Sets the filter.
-     * 
-     * @param filter The filter to set
+     * @see toolbox.jtail.config.ITailPaneConfig#
+     *          setRegularExpression(java.lang.String)
      */
     public void setRegularExpression(String filter)
     {
@@ -340,9 +321,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Accessor for the antialias flag
-     * 
-     * @return  True if antialias is on, false otherwise
+     * @see toolbox.jtail.config.ITailPaneConfig#isAntiAlias()
      */
     public boolean isAntiAlias()
     {
@@ -350,17 +329,15 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Mutator for the antialias flag
-     * 
-     * @param  b  True to turn antialias on, false otherwise
+     * @see toolbox.jtail.config.ITailPaneConfig#setAntiAlias(boolean)
      */
     public void setAntiAlias(boolean b)
     {
         antiAlias_ = b;
     }
-
+ 
     /**
-     * @return boolean
+     * @see toolbox.jtail.config.ITailPaneConfig#isAutoStart()
      */
     public boolean isAutoStart()
     {
@@ -368,9 +345,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
     /**
-     * Sets the autoStart.
-     * 
-     * @param autoStart The autoStart to set
+     * @see toolbox.jtail.config.ITailPaneConfig#setAutoStart(boolean)
      */
     public void setAutoStart(boolean autoStart)
     {
