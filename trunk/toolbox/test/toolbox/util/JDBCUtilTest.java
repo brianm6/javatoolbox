@@ -421,6 +421,8 @@ public class JDBCUtilTest extends TestCase
         }
     }
 
+    
+    
 
     /**
      * Tests getSize() on an empty table.
@@ -458,6 +460,55 @@ public class JDBCUtilTest extends TestCase
         {
             JDBCUtil.close(results);
             JDBCUtil.releaseConnection(conn);
+            JDBCUtil.dropTable(table);
+            JDBCUtil.shutdown();
+            cleanup(prefix);
+        }
+    }
+
+    
+    /**
+     * Tests executeCount()
+     *
+     * @throws Exception on error.
+     */
+    public void testExecuteCount() throws Exception
+    {
+        logger_.info("Running testExecuteCount...");
+
+        String prefix = "JDBCUtilTest_ExecuteCount" + RandomUtil.nextInt(1000);
+        JDBCUtil.init(DB_DRIVER, DB_URL + prefix, DB_USER, DB_PASSWORD);
+        String table = "table_exec_cnt";
+
+        try
+        {
+            // Count == 0
+            JDBCUtil.executeUpdate("create table " + table + "(id integer)");
+            
+            assertEquals(
+                0, JDBCUtil.executeCount("select count(*) from " + table));
+            
+            JDBCUtil.executeUpdate("insert into " + table + "(id) values(999)");
+            
+            // Count == 1
+            assertEquals(
+                1, JDBCUtil.executeCount("select count(*) from " + table));                
+
+            // Count == many
+            int many = RandomUtil.nextInt(1000);
+            
+            for (int i = 0; i < many; i++) 
+            {
+                JDBCUtil.executeUpdate(
+                    "insert into " + table + "(id) " + 
+                    "values(" + RandomUtil.nextInt(many) + ")");
+            }
+            
+            assertEquals(
+                many+1, JDBCUtil.executeCount("select count(*) from " + table));
+        }
+        finally
+        {
             JDBCUtil.dropTable(table);
             JDBCUtil.shutdown();
             cleanup(prefix);
