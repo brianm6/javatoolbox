@@ -1,9 +1,8 @@
 package toolbox.graph;
 
 /**
- * Layout is responsible for _____.
+ * A Layout is responsible for arranging the vertices and edges on a GraphView.
  */
 public interface Layout extends Delegator
 {
-
 }

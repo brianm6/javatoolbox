@@ -8,19 +8,31 @@ import edu.uci.ics.jung.graph.impl.DirectedSparseVertex;
 
 import org.apache.log4j.Logger;
 
-
 /**
- * JungVertex is responsible for ___.
+ * Jung implemenation of a {@link toolbox.graph.Vertex}.
  */
 public class JungVertex implements toolbox.graph.Vertex
 {
     private static final Logger logger_ = Logger.getLogger(JungVertex.class);
+ 
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
-    Vertex vertex_;
+    /**
+     * Jung vertex delegate.
+     */
+    private Vertex vertex_;
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a JungVertex.
      * 
+     * @param graph Graph to add this vertex to.
+     * @param label Label to associate with this vertex. 
      */
     public JungVertex(toolbox.graph.Graph graph, String label)
     {
@@ -38,6 +50,9 @@ public class JungVertex implements toolbox.graph.Vertex
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Delegator Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.graph.Delegator#getDelegate()
@@ -46,5 +61,4 @@ public class JungVertex implements toolbox.graph.Vertex
     {
         return vertex_;
     }
-    
 }

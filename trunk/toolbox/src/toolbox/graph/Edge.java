@@ -1,9 +1,9 @@
 package toolbox.graph;
 
 /**
- * Edge is responsible for ___.
+ * An edge connects two vertices. It can be directed (have an arrow) or
+ * undirected.
  */
 public interface Edge extends Delegator
 {
-    
 }

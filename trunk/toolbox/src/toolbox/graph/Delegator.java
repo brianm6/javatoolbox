@@ -1,9 +1,14 @@
 package toolbox.graph;
 
 /**
- * Delegator is responsible for ___.
+ * A Delegator is an object that delegates behavior to another object.
  */
 public interface Delegator
 {
+    /**
+     * Returns the delegate.
+     * 
+     * @return Object
+     */
     Object getDelegate();
 }

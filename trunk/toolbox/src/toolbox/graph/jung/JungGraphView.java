@@ -11,17 +11,28 @@ import scratch.scott.AestheticSpringVisualizer;
 import toolbox.graph.GraphView;
 import toolbox.util.ui.Colors;
 
-
 /**
- * JungGraphView is responsible for ___.
+ * Jung implementation of a {@link toolbox.graph.GraphView}.
  */
 public class JungGraphView implements GraphView
 {
-    GraphDraw delegate_;
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Jung versio of a GraphView.
+     */
+    private GraphDraw delegate_;
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a JungGraphView.
      * 
+     * @param graph Graph to associate with this view.
      */
     public JungGraphView(toolbox.graph.Graph graph)
     {
@@ -69,6 +80,9 @@ public class JungGraphView implements GraphView
         
     }
 
+    //--------------------------------------------------------------------------
+    // GraphView Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see toolbox.graph.GraphView#getComponent()
@@ -87,5 +101,4 @@ public class JungGraphView implements GraphView
         Layout l = (Layout) layout.getDelegate();
         delegate_.setGraphLayout(l);
     }
-
 }
