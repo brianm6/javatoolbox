@@ -11,13 +11,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,12 +39,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import net.sf.jode.decompiler.Decompiler;
+
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
+
 import org.jedit.syntax.JavaTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
-
-import net.sf.jode.decompiler.Decompiler;
 
 import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
@@ -49,7 +53,9 @@ import toolbox.jedit.JavaDefaults;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.MathUtil;
+import toolbox.util.PropertiesUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
@@ -63,6 +69,7 @@ import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 import toolbox.util.ui.plugin.WorkspaceAction;
+import toolbox.util.ui.table.TableSorter;
 
 /**
  * GUI for finding class files by regular expression from the classpath
@@ -75,15 +82,17 @@ public class JFindClass extends JFrame implements IPreferenced
      * TODO: Add sorting to table
      * TODO: Add button to search for all duplicates
      */
-    
+
     private static final Logger logger_ = 
         Logger.getLogger(JFindClass.class);
 
     // Search    
     private JTextField           searchField_;
     private JButton              searchButton_;
+    private JButton              dupesButton_;
     private JCheckBox            ignoreCaseCheckBox_;
-
+    private JCheckBox            showPathCheckBox_;
+   
     // Left flip pane            
     private JFlipPane            leftFlipPane_;
     private JFileExplorer        fileExplorer_;
@@ -98,6 +107,7 @@ public class JFindClass extends JFrame implements IPreferenced
     // Results    
     private JTable               resultTable_;
     private ThreadSafeTableModel resultTableModel_;
+    private TableSorter          resultTableSorter_;    
     private JScrollPane          resultPane_;
     private int                  resultCount_;
     private FindClass            findClass_;
@@ -105,9 +115,7 @@ public class JFindClass extends JFrame implements IPreferenced
     // Status
     private IStatusBar statusBar_ = new JStatusBar();
     
-    /** 
-     * Result table column headers 
-     */    
+    /** Result table column headers */    
     private String[] resultColumns_ = new String[] 
     {
         "Num", 
@@ -124,8 +132,7 @@ public class JFindClass extends JFrame implements IPreferenced
     private static final int COL_TIMESTAMP = 4;
 
     /** Prefix tacked onto the beginning of all properties assoc w/ JTail */
-    private static final String PROP_PREFIX = 
-        ClassUtil.stripPackage(JFindClass.class.getName()).toLowerCase();
+    private static final String PROP_PREFIX = "jfindclass.plugin";
     
     //--------------------------------------------------------------------------
     // Main
@@ -185,6 +192,15 @@ public class JFindClass extends JFrame implements IPreferenced
         fileExplorer_.savePrefs(prefs, PROP_PREFIX);
         leftFlipPane_.savePrefs(prefs, PROP_PREFIX + ".left");
         topFlipPane_.savePrefs(prefs, PROP_PREFIX + ".top");
+        
+        PropertiesUtil.setBoolean(
+            prefs,PROP_PREFIX + ".ignorecase",ignoreCaseCheckBox_.isSelected());
+            
+        PropertiesUtil.setBoolean(
+            prefs,PROP_PREFIX + ".showpath", showPathCheckBox_.isSelected());
+            
+        prefs.setProperty(
+            PROP_PREFIX + ".lastsearch", searchField_.getText().trim());
     }
 
     /**
@@ -195,6 +211,14 @@ public class JFindClass extends JFrame implements IPreferenced
         fileExplorer_.applyPrefs(prefs, PROP_PREFIX);
         leftFlipPane_.applyPrefs(prefs, PROP_PREFIX + ".left");
         topFlipPane_.applyPrefs(prefs, PROP_PREFIX + ".top");
+
+        ignoreCaseCheckBox_.setSelected(
+            PropertiesUtil.getBoolean(prefs,PROP_PREFIX + ".ignorecase", true));
+            
+        showPathCheckBox_.setSelected(
+            PropertiesUtil.getBoolean(prefs, PROP_PREFIX + ".showpath", true));
+            
+        searchField_.setText(prefs.getProperty(PROP_PREFIX + ".lastsearch","")); 
     }
 
     //--------------------------------------------------------------------------
@@ -208,7 +232,7 @@ public class JFindClass extends JFrame implements IPreferenced
     {
         buildView();
         findClass_ = new FindClass();
-        findClass_.addFindClassListener(new FindClassHandler());        
+        //findClass_.addSearchListener(new SearchListener());        
         List targets = findClass_.getSearchTargets();
         
         for (Iterator i = targets.iterator(); i.hasNext(); 
@@ -247,21 +271,29 @@ public class JFindClass extends JFrame implements IPreferenced
     protected void buildSearchPanel()
     {
         // Search Panel
-        SearchCancelAction searchAction = new SearchCancelAction();
+        
+        // Action is stared by search textfield and button
+        Action searchAction = new SearchAction();
 
         JLabel searchLabel = new JLabel("Find Class");
+        
         searchField_ = new JTextField(20);
-        searchField_.addActionListener(searchAction);
+        searchField_.setAction(searchAction);
         searchField_.setToolTipText("I like Regular expressions!");
-        searchButton_ = new JButton(searchAction);
+        
+        searchButton_       = new JButton(searchAction);
+        dupesButton_        = new JButton(new FindDupesAction());
         ignoreCaseCheckBox_ = new JCheckBox("Ignore Case", true);
+        showPathCheckBox_   = new JCheckBox("Show Path", true);
         
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchPanel.add(searchLabel);
         searchPanel.add(searchField_);
         searchPanel.add(searchButton_);
+        searchPanel.add(dupesButton_);
         searchPanel.add(new JLabel("      "));
         searchPanel.add(ignoreCaseCheckBox_);
+        searchPanel.add(showPathCheckBox_);
         
         getContentPane().add(searchPanel, BorderLayout.NORTH);
     }
@@ -305,10 +337,10 @@ public class JFindClass extends JFrame implements IPreferenced
         
         // Create popup menu and wire it to the JList
         searchPopupMenu_ = new JPopupMenu();
-        searchPopupMenu_.add(new JMenuItem(new ClearSearchListAction()));
+        searchPopupMenu_.add(new JMenuItem(new ClearTargetsAction()));
         
         searchPopupMenu_.add(
-            new JMenuItem(new AddClasspathToSearchListAction()));
+            new JMenuItem(new AddClasspathTargetAction()));
             
         searchList_.addMouseListener(new JPopupListener(searchPopupMenu_));
         
@@ -347,9 +379,17 @@ public class JFindClass extends JFrame implements IPreferenced
         // Search Results panel        
         JLabel resultLabel = new JLabel("Results");
         
-        resultTableModel_ = new ThreadSafeTableModel(resultColumns_,0);
-        resultTable_      = new JTable(resultTableModel_);
-        resultPane_       = new JScrollPane(resultTable_);
+        // Setup sortable table
+//        tableModel_  = new ThreadSafeTableModel(colNames_, 0);
+//        tableSorter_ = new TableSorter(tableModel_);
+//        table_       = new JTable(tableSorter_);
+//        tableSorter_.addMouseListenerToHeaderInTable(table_);
+        
+        resultTableModel_  = new ThreadSafeTableModel(resultColumns_,0);
+        resultTableSorter_ = new TableSorter(resultTableModel_);
+        resultTable_       = new JTable(resultTableSorter_);
+        resultPane_        = new JScrollPane(resultTable_);
+        resultTableSorter_.addMouseListenerToHeaderInTable(resultTable_);
         tweakTable();
         
         JPanel resultPanel = new JPanel(new BorderLayout());
@@ -372,7 +412,7 @@ public class JFindClass extends JFrame implements IPreferenced
     {
         // Left flip pane - file explorer
         fileExplorer_ = new JFileExplorer(false);
-        fileExplorer_.addJFileExplorerListener(new JFileExplorerHandler());
+        fileExplorer_.addJFileExplorerListener(new FileExplorerListener());
         leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         leftFlipPane_.addFlipper("File Explorer", fileExplorer_);
         leftFlipPane_.setExpanded(false);
@@ -419,7 +459,7 @@ public class JFindClass extends JFrame implements IPreferenced
     /**
      * Handler for events generated by JFileExplorer
      */
-    class FindClassHandler extends FindClassAdapter
+    class SearchListener extends FindClassAdapter
     {
         //----------------------------------------------------------------------
         // Overrides toolbox.findclass.FindClassAdapter
@@ -471,15 +511,112 @@ public class JFindClass extends JFrame implements IPreferenced
             statusBar_.setStatus("Search canceled");
         }    
     }
+
+    /**
+     * Handler for events generated by JFileExplorer
+     */
+    class FindDupesListener extends FindClassAdapter
+    {
+        private Map dupes_;
+        
+        public FindDupesListener()
+        {
+            dupes_ = new HashMap();
+        }
+        
+        protected void addResults(FindClassResult result)
+        {        
+            Vector row = new Vector(5);
+            String offset = " ";
+                
+            row.add(offset + (++resultCount_));
+                    
+            if (showPathCheckBox_.isSelected())
+                row.add(offset + result.getClassLocation());
+            else
+            {
+                // TODO: handle non-jar targets
+                row.add(offset + FileUtil.stripPath(result.getClassLocation()));
+            }
+                        
+            row.add(offset + result.getClassFQN());
+            row.add(offset + result.getFileSize()+"");
+            row.add(offset + DateTimeUtil.format(result.getTimestamp()));
+            resultTableModel_.addRow(row);
+        }
+                
+        //----------------------------------------------------------------------
+        // Overrides toolbox.findclass.FindClassAdapter
+        //----------------------------------------------------------------------
+            
+        /**
+         * When a class is found, add it to the result table
+         * 
+         * @param  searchResult  Info on class that was found
+         */
+        public void classFound(FindClassResult searchResult)
+        {
+            String className = searchResult.getClassFQN();
+            
+            if (dupes_.containsKey(className))
+            {
+                List dupesList = (List) dupes_.get(className);
+                
+                if (dupesList.size() == 1)
+                    addResults( (FindClassResult) dupesList.get(0));
+                 
+                dupesList.add(searchResult);
+                addResults(searchResult);
+            }
+            else
+            {
+                List dupesList = new ArrayList(1);
+                dupesList.add(searchResult);
+                dupes_.put(className, dupesList);
+            }
+        }
+        
+        /**
+         * When a target is searched, update the status bar and hilight the
+         * archive being search in the search list.
+         * 
+         * @param  target  Target that is being searched
+         */
+        public void searchingTarget(String target)
+        {
+            final String target2 = target;
+            
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    statusBar_.setStatus("Searching " + target2 + " ...");
+                    searchList_.setSelectedValue(target2, true);    
+                }
+            });
+        }
+        
+        /**
+         * When a search is cancelled, update the status bar
+         */
+        public void searchCancelled()
+        {
+            statusBar_.setStatus("Search canceled");
+        }
+        
+        public void searchCompleted(String search)
+        {
+            logger_.debug("Search completed.");
+            resultTableSorter_.setEnabled(true);
+        }
+    
+    }
     
     /**
      * Handler class for the file explorer
      */
-    class JFileExplorerHandler extends JFileExplorerAdapter
+    class FileExplorerListener extends JFileExplorerAdapter
     {
-        private Logger logger_ = 
-            Logger.getLogger(JFileExplorerHandler.class);
-        
         //----------------------------------------------------------------------
         // Overrides toolbox.util.ui.explorer.JFileExplorerAdapter
         //----------------------------------------------------------------------
@@ -599,6 +736,49 @@ public class JFindClass extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * Searches for duplicate classes
+     */
+    protected class FindDupesAction extends WorkspaceAction
+    {
+        public FindDupesAction()
+        {
+            super("Find Duplicates", true, null, statusBar_);
+            putValue(MNEMONIC_KEY, new Integer('F'));    
+            putValue(SHORT_DESCRIPTION, "Searches for duplicates classes");
+        }
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            statusBar_.setInfo("Searching...");
+            findDupes();
+        }
+        
+        public void findDupes() throws RESyntaxException, IOException 
+        {
+            logger_.debug("Finding duplicates");
+            
+            // Empty results table
+            resultTableModel_.setNumRows(0);
+            resultCount_ = 0;
+            resultTableSorter_.setEnabled(false);
+            
+            // Refresh search targets in case of change
+            findClass_.removeSearchTargets();
+            findClass_.removeSearchListeners();
+            findClass_.addSearchListener(new FindDupesListener());
+                        
+            // Copy targets from GUI --> findClass_
+            for (int i = 0, n = searchListModel_.size(); i<n; i++)
+                findClass_.addSearchTarget(""+searchListModel_.elementAt(i));
+            
+            Object results[] = findClass_.findClass(".*", false);             
+            
+            statusBar_.setStatus(results.length + " duplicates found.");
+            
+        }
+    }
+
+    /**
      * Action to decompile the currently selected class file
      */
     private class DecompileAction extends AbstractAction
@@ -659,9 +839,9 @@ public class JFindClass extends JFrame implements IPreferenced
     }
     
     /**
-     * Searches for a class in the displayed classpaths
+     * Searches for a class in the displayed targets
      */
-    protected class SearchCancelAction extends WorkspaceAction
+    protected class SearchAction extends WorkspaceAction
     {
         private static final String SEARCH = "Search";
         private static final String CANCEL = "Cancel";
@@ -672,7 +852,7 @@ public class JFindClass extends JFrame implements IPreferenced
         /**
          * Creates action that will run async
          */        
-        public SearchCancelAction()
+        public SearchAction()
         {
             super(SEARCH, true, null, statusBar_);
             putValue(MNEMONIC_KEY, new Integer('S'));    
@@ -714,7 +894,7 @@ public class JFindClass extends JFrame implements IPreferenced
         /**
          * Do the search 
          * 
-         * @throws RESyntaxException
+         * @throws RESyntaxException 
          * @throws IOException
          */
         public void doSearch() throws RESyntaxException, IOException 
@@ -730,16 +910,13 @@ public class JFindClass extends JFrame implements IPreferenced
             resultCount_ = 0;
             
             // Clear out from previous runs
-            findClass_.removeAllSearchTargets();
+            findClass_.removeSearchTargets();
+            findClass_.removeSearchListeners();
+            findClass_.addSearchListener(new SearchListener());
             
             // Copy 1-1 from the seach list model to FindClass
-            for (Enumeration e = searchListModel_.elements(); 
-                 e.hasMoreElements(); )
-            {
-                String target = (String)e.nextElement();
-                findClass_.addSearchTarget(target);
-                //logger_.debug("Added target: " + target);
-            }
+            for (int i=0, n=searchListModel_.size(); i<n; i++) 
+                findClass_.addSearchTarget(""+searchListModel_.elementAt(i));
             
             // Execute the search
             Object results[]  = 
@@ -755,9 +932,9 @@ public class JFindClass extends JFrame implements IPreferenced
     /**
      * Clears all entries in the search list
      */
-    protected class ClearSearchListAction extends AbstractAction
+    protected class ClearTargetsAction extends AbstractAction
     {
-        public ClearSearchListAction()
+        public ClearTargetsAction()
         {
             super("Clear");
             putValue(MNEMONIC_KEY, new Integer('C'));
@@ -773,9 +950,9 @@ public class JFindClass extends JFrame implements IPreferenced
     /**
      * Adds the current classpath to the search list
      */
-    protected class AddClasspathToSearchListAction extends AbstractAction
+    protected class AddClasspathTargetAction extends AbstractAction
     {
-        public AddClasspathToSearchListAction()
+        public AddClasspathTargetAction()
         {
             super("Add Classpath");
             putValue(MNEMONIC_KEY, new Integer('A'));
