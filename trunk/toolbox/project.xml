@@ -228,6 +228,14 @@
       </dependency>
     
       <dependency>
+        <id>hippolf</id>
+        <version/>
+        <properties>
+          <jnlp.jar>true</jnlp.jar>
+        </properties>
+      </dependency>
+    
+      <dependency>
         <id>hsqldb</id>
         <version/>
         <properties>
