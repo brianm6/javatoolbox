@@ -394,7 +394,7 @@ public class JTail extends JFrame
             config.setShowLineNumbers(defaults.isShowLineNumbers());
             config.setAntiAlias(defaults.isAntiAlias());
             config.setFont(defaults.getFont());
-            config.setFilter(defaults.getFilter());
+            config.setRegularExpression(defaults.getRegularExpression());
                 
             addTail(config);
         }
@@ -421,7 +421,7 @@ public class JTail extends JFrame
             config.setShowLineNumbers(defaults.isShowLineNumbers());
             config.setAntiAlias(defaults.isAntiAlias());
             config.setFont(defaults.getFont());
-            config.setFilter(defaults.getFilter());
+            config.setRegularExpression(defaults.getRegularExpression());
                 
             addTail(config);
         }
