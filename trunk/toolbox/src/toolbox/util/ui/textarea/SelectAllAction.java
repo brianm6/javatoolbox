@@ -2,29 +2,30 @@ package toolbox.util.ui.textarea;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.text.JTextComponent;
+
+import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Selects all items in the list box.
  */
-public class SelectAllAction extends AbstractAction
+public class SelectAllAction extends AbstractTextComponentAction
 {
-    /**
-     * Text component in which to select all the text.
-     */
-    private final JTextComponent textComponent_;
-
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a SelectAllAction.
      */
     public SelectAllAction(JTextComponent textComponent)
     {
-        super("Select All");
-        textComponent_ = textComponent;
+        super(textComponent, "Select All");
     }
     
+    //--------------------------------------------------------------------------
+    // ActionListener Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see java.awt.event.ActionListener#actionPerformed(
@@ -32,6 +33,6 @@ public class SelectAllAction extends AbstractAction
      */
     public void actionPerformed(ActionEvent e)
     {
-        textComponent_.selectAll();
+        getTextComponent().selectAll();
     }
 }

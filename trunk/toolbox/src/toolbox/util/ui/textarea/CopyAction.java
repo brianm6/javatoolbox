@@ -2,34 +2,34 @@ package toolbox.util.ui.textarea;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.text.JTextComponent;
 
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Copies the contents of the currently selected indices to the clipboard.
  */    
-public class CopyAction extends AbstractAction
+public class CopyAction extends AbstractTextComponentAction
 {
-    /**
-     * Text component to copy from.
-     */
-    private final JTextComponent textComponent_;
-
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Creates a CopyAction.
      */
     public CopyAction(JTextComponent textComponent)
     {
-        super("Copy");
-        textComponent_ = textComponent;
+        super(textComponent, "Copy");
         putValue(Action.MNEMONIC_KEY, new Integer('C'));
         putValue(Action.SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_COPY));
     }
     
+    //--------------------------------------------------------------------------
+    // ActionListener Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see java.awt.event.ActionListener#actionPerformed(
@@ -37,6 +37,6 @@ public class CopyAction extends AbstractAction
      */
     public void actionPerformed(ActionEvent e)
     {
-        textComponent_.copy();
+        getTextComponent().copy();
     }
 }

@@ -2,25 +2,17 @@ package toolbox.util.ui.textarea;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
+import javax.swing.JTextArea;
 
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Toggles linewrapping in a JSmartTextArea.
  */    
-public class LineWrapAction extends AbstractAction 
+public class LineWrapAction extends AbstractTextComponentAction 
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-	/**
-     * Text area to mutate passed in at time of construction.
-     */
-    private final JSmartTextArea area_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -30,8 +22,10 @@ public class LineWrapAction extends AbstractAction
      */
     public LineWrapAction(JSmartTextArea area)
     {
-        super("Wrap Lines", ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP));
-        area_ = area;
+        super(
+            area, 
+            "Wrap Lines", 
+            ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP));
     }
     
     //--------------------------------------------------------------------------
@@ -44,6 +38,7 @@ public class LineWrapAction extends AbstractAction
      */
     public void actionPerformed(ActionEvent e)
     {
-        area_.setLineWrap(!area_.getLineWrap());
+        JTextArea ta = (JTextArea) getTextComponent();
+        ta.setLineWrap(!ta.getLineWrap());
     }
 }

@@ -2,34 +2,34 @@ package toolbox.util.ui.textarea;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.text.JTextComponent;
 
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Pastes the contents of the clipboard into the text component.
  */    
-public class PasteAction extends AbstractAction
+public class PasteAction extends AbstractTextComponentAction
 {
-    /**
-     * Text component to paste to.
-     */
-    private final JTextComponent textComponent_;
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a PasteAction.
      */
     public PasteAction(JTextComponent textComponent)
     {
-        super("Paste");
-        textComponent_ = textComponent;
+        super(textComponent, "Paste");
         putValue(Action.MNEMONIC_KEY, new Integer('P'));
         putValue(Action.SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_PASTE));
     }
     
+    //--------------------------------------------------------------------------
+    // ActionListener Interface
+    //--------------------------------------------------------------------------
     
     /**
      * @see java.awt.event.ActionListener#actionPerformed(
@@ -37,6 +37,6 @@ public class PasteAction extends AbstractAction
      */
     public void actionPerformed(ActionEvent e)
     {
-        textComponent_.paste();
+        getTextComponent().paste();
     }
 }

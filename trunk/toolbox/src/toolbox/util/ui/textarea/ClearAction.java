@@ -2,25 +2,16 @@ package toolbox.util.ui.textarea;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.text.JTextComponent;
 
 import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Clears the contents of a text component.
  */
-public class ClearAction extends AbstractAction
+public class ClearAction extends AbstractTextComponentAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Target text component.
-     */
-    private final JTextComponent textComponent_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -42,8 +33,7 @@ public class ClearAction extends AbstractAction
      */
     public ClearAction(JTextComponent textComponent, String name)
     {
-        super(name, ImageCache.getIcon(ImageCache.IMAGE_CLEAR));
-        textComponent_ = textComponent;
+        super(textComponent, name, ImageCache.getIcon(ImageCache.IMAGE_CLEAR)); 
         putValue(MNEMONIC_KEY, new Integer('C'));
         putValue(SHORT_DESCRIPTION, "Clear");
     }
@@ -58,6 +48,6 @@ public class ClearAction extends AbstractAction
      */
     public void actionPerformed(ActionEvent e)
     {
-        textComponent_.setText("");
+        getTextComponent().setText("");
     }
 }

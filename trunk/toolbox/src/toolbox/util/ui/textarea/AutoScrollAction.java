@@ -2,25 +2,15 @@ package toolbox.util.ui.textarea;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Toggles autoscrolling in a JSmartTextArea.
  */    
-public class AutoScrollAction extends AbstractAction 
+public class AutoScrollAction extends AbstractTextComponentAction 
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-	/**
-     * Text area.
-     */
-    private final JSmartTextArea area_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -32,8 +22,7 @@ public class AutoScrollAction extends AbstractAction
      */
     public AutoScrollAction(JSmartTextArea area)
     {
-        super("AutoScroll", ImageCache.getIcon(ImageCache.IMAGE_LOCK));
-        area_ = area;
+        super(area, "AutoScroll", ImageCache.getIcon(ImageCache.IMAGE_LOCK));
     }
     
     //--------------------------------------------------------------------------
@@ -46,9 +35,11 @@ public class AutoScrollAction extends AbstractAction
      */
     public void actionPerformed(ActionEvent e)
     { 
-        area_.setAutoScroll(!area_.isAutoScroll());
+        JSmartTextArea ta = (JSmartTextArea) getTextComponent();
         
-        if (area_.isAutoScroll())
-            area_.scrollToEnd();
+        ta.setAutoScroll(!ta.isAutoScroll());
+        
+        if (ta.isAutoScroll())
+            ta.scrollToEnd();
     }
 }

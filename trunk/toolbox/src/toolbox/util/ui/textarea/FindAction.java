@@ -5,28 +5,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.text.JTextComponent;
 
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JFindDialog;
+import toolbox.util.ui.textarea.action.AbstractTextComponentAction;
 
 /**
  * Triggers activation of the Find Dialog box.
  */    
-public class FindAction extends AbstractAction
+public class FindAction extends AbstractTextComponentAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-
-    /**
-     * Text component to search.
-     */
-    private final JTextComponent textComponent_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -38,8 +29,7 @@ public class FindAction extends AbstractAction
      */
     public FindAction(final JTextComponent textComponent)
     {
-        super("Find..");
-        textComponent_ = textComponent;
+        super(textComponent, "Find..");
         putValue(Action.MNEMONIC_KEY, new Integer('F'));
         putValue(Action.SMALL_ICON, ImageCache.getIcon(ImageCache.IMAGE_FIND));
         
@@ -68,7 +58,7 @@ public class FindAction extends AbstractAction
     public void actionPerformed(ActionEvent e)
     {
         JFindDialog findDialog = 
-            new JFindDialog(new SearchInitiator(textComponent_));
+            new JFindDialog(new SearchInitiator(getTextComponent()));
             
         findDialog.setVisible(true);
     }
