@@ -29,7 +29,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Category;
-
+import sun.security.krb5.internal.crypto.e;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
@@ -37,6 +37,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
+import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
@@ -49,19 +50,22 @@ public class JFindClass extends JFrame
     private static final Category logger_ = 
         Category.getInstance(JFindClass.class);
     
-    private JTextField  searchField_;
-    private JButton     searchButton_;
-    private JLabel      statusLabel_;
+    private JTextField          searchField_;
+    private JButton             searchButton_;
+    private JLabel              statusLabel_;
     
-    private JCheckBox   ignoreCaseCheckBox_;
+    private JCheckBox           ignoreCaseCheckBox_;
     
-    private JList            pathList_;
-    private DefaultListModel pathModel_;
+    private JList               pathList_;
+    private DefaultListModel    pathModel_;
+    private JFlipPane           flipPane_;
     
-    private JTable            resultTable_;
-    private DefaultTableModel resultTableModel_;
-    private JScrollPane       resultPane_;
-    private int               resultCount_;
+    private JTable               resultTable_;
+    private ThreadSafeTableModel resultTableModel_;
+    private JScrollPane          resultPane_;
+    private int                  resultCount_;
+    
+    
     
     /** Result table columns **/    
     private String[] resultColumns_ = new String[] 
@@ -167,16 +171,26 @@ public class JFindClass extends JFrame
         JPanel pathPanel = new JPanel(new BorderLayout());
         pathPanel.add(pathListLabel, BorderLayout.NORTH);
         pathPanel.add(new JScrollPane(pathList_), BorderLayout.CENTER);
-        
-        explorer_ = new JFileExplorer();
+
+                
+        explorer_ = new JFileExplorer(false);
         explorer_.addJFileExplorerListener(new JFileExplorerHandler());
         
         //JPanel explorerPanel = new JPanel(new BorderLayout());
         //explorerPanel.add(explorer_, BorderLayout.WEST);
         //explorerPanel.add(pathPanel, BorderLayout.EAST);
-        
-        JSplitPane topSplitPane = 
-            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, explorer_, pathPanel);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+
+        flipPane_ = new JFlipPane(JFlipPane.LEFT);
+        flipPane_.addFlipper("File Explorer", explorer_);
+        flipPane_.setExpanded(false);
+            
+        topPanel.add(BorderLayout.WEST, flipPane_);
+        topPanel.add(BorderLayout.CENTER, pathPanel);
+                         
+//        JSplitPane topSplitPane = 
+//            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, explorer_, pathPanel);
         
         // Result panel        
         JLabel resultLabel = new JLabel("Results");
@@ -195,7 +209,7 @@ public class JFindClass extends JFrame
         JSplitPane splitPane = 
             new JSplitPane(
                 JSplitPane.VERTICAL_SPLIT, 
-                topSplitPane, 
+                topPanel, //topSplitPane, 
                 resultPanel);
         
         contentPane.add(splitPane, BorderLayout.CENTER);
@@ -275,7 +289,7 @@ public class JFindClass extends JFrame
             else
             {
                 resultTableModel_.setNumRows(0);
-                resultCount_      = 0;
+                resultCount_ = 0;
                 
                 Object results[]  = findClass_.findClass(
                     search, ignoreCaseCheckBox_.isSelected());             
