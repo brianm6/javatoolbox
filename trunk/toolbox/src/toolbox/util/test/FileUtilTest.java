@@ -118,39 +118,34 @@ public class FileUtilTest extends TestCase
         int numFiles = 10;
         
         // Create a directory
-        String dirName = FileUtil.createTempFilename();
-        File dir = new File(dirName);
-        dir.mkdir();
+        File dir = FileUtil.createTempDir();
         
         // Populate with files
         for (int i=0; i< numFiles; i++)
         {
             String filename = i + ".txt";
-            File  file = new File(dir, filename);
-            FileUtil.setFileContents(
-                file.getAbsolutePath(), "testing..", false);
+            File file = new File(dir, filename);
+            FileUtil.setFileContents(file, "testing..", false);
         }
 
         // Verify test files created
         String[] before = dir.list();
         logger_.info("Contents before: " + ArrayUtil.toString(before));
-        assertEquals("Dir " + dir + " should have files", 
+        assertEquals("Dir " + dir + " should have files",
             numFiles, before.length); 
 
-        // Nuke the directory
         try
-        {        
+        {   
+            // Clean dir and verify no files are left
             FileUtil.cleanDir(dir);
+            String[] after = dir.list();
+            logger_.info("Contents after: " + ArrayUtil.toString(after));
+            assertEquals("No files should be left in " + dir, 0, after.length);
         }
         finally
         {
-            // cleanup
+            FileUtil.removeDir(dir);
         }
-        
-        // Verify no files left
-        String[] after = dir.list();
-        logger_.info("Contents after: " + ArrayUtil.toString(after));
-        assertEquals("No files should be left in " + dir, 0, after.length);
     }
     
     
