@@ -21,6 +21,7 @@ import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -37,6 +38,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
+import org.apache.regexp.RESyntaxException;
 import org.jedit.syntax.JavaTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
 
@@ -57,15 +59,17 @@ import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JStatusBar;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.ThreadSafeTableModel;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.plugin.IPreferenced;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * GUI for finding class files by regular expression from the classpath
  * or any arbitrary java archive or directory.
  */
-public class JFindClass extends JFrame
+public class JFindClass extends JFrame implements IPreferenced
 {
     /*
      * TODO: Update tablecell renderer to highlight the matching substring
@@ -152,19 +156,9 @@ public class JFindClass extends JFrame
      */
     public JFindClass()
     {
-        this("JFindClass");
+        super("JFindClass");
     }
     
-    /**
-     * Constructor for JFindClass
-     * 
-     * @param  title  Window title
-     */
-    public JFindClass(String title)
-    {
-        super(title);
-    }
-
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -180,11 +174,11 @@ public class JFindClass extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    // Preferences Support
+    // IPreferenced Interface
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#savePrefs(Properties)
      */
     public void savePrefs(Properties prefs)
     {
@@ -194,7 +188,7 @@ public class JFindClass extends JFrame
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(Properties)
      */
     public void applyPrefs(Properties prefs)
     {
@@ -204,7 +198,7 @@ public class JFindClass extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    //  Protected
     //--------------------------------------------------------------------------
  
     /**
@@ -667,26 +661,45 @@ public class JFindClass extends JFrame
     /**
      * Searches for a class in the displayed classpaths
      */
-    protected class SearchCancelAction extends AbstractAction
+    protected class SearchCancelAction extends SmartAction
     {
         private static final String SEARCH = "Search";
         private static final String CANCEL = "Cancel";
         
         private Thread searchThread_;
-        
+        private String search_;
+
+        /**
+         * Creates action that will run async
+         */        
         public SearchCancelAction()
         {
-            super(SEARCH);
+            super(SEARCH, true, (JComponent) getContentPane());
             putValue(MNEMONIC_KEY, new Integer('S'));    
             putValue(SHORT_DESCRIPTION, "Searches for a class");
         }
         
-        public void actionPerformed(ActionEvent e)
+        /**
+         * Branch on whether we're searching of canceling an existing search
+         */
+        public void runAction(ActionEvent e) throws Exception
         {
             if (getValue(NAME).equals(SEARCH))
             {
-                searchThread_ = 
-                    ThreadUtil.run(SearchCancelAction.this, "doSearch", null);
+                statusBar_.setBusy("Searching...");
+                
+                //searchThread_ = 
+                //    ThreadUtil.run(SearchCancelAction.this, "doSearch", null);
+
+                search_ = searchField_.getText().trim();
+                
+                if (StringUtil.isNullOrEmpty(search_))
+                    statusBar_.setStatus("Enter class to search for");
+                else
+                {
+                    searchThread_ = Thread.currentThread();                
+                    doSearch();
+                }
             }
             else
             {
@@ -702,52 +715,44 @@ public class JFindClass extends JFrame
             }
         }
         
-        public void doSearch()
+        /**
+         * Do the search 
+         * 
+         * @throws RESyntaxException
+         * @throws IOException
+         */
+        public void doSearch() throws RESyntaxException, IOException 
         {
-            try
+            logger_.debug("Searching for: " + search_);
+            
+            // Flip title
+            putValue(NAME, CANCEL);
+            putValue(MNEMONIC_KEY, new Integer('C'));
+            
+            // Empty results table
+            resultTableModel_.setNumRows(0);
+            resultCount_ = 0;
+            
+            // Clear out from previous runs
+            findClass_.removeAllSearchTargets();
+            
+            // Copy 1-1 from the seach list model to FindClass
+            for (Enumeration e = searchListModel_.elements(); 
+                 e.hasMoreElements(); )
             {
-                String search = searchField_.getText().trim();
-                
-                logger_.debug("Searching for: " + search);
-                
-                if (StringUtil.isNullOrEmpty(search))
-                {
-                    statusBar_.setStatus("Enter class to search");
-                }
-                else
-                {
-                    // Flip title
-                    putValue(NAME, CANCEL);
-                    putValue(MNEMONIC_KEY, new Integer('C'));
-                    
-                    // Empty results table
-                    resultTableModel_.setNumRows(0);
-                    resultCount_ = 0;
-                    
-                    // Clear out from previous runs
-                    findClass_.removeAllSearchTargets();
-                    
-                    // Copy 1-1 from the seach list model to FindClass
-                    for (Enumeration e = searchListModel_.elements(); 
-                         e.hasMoreElements(); )
-                    {
-                        findClass_.addSearchTarget((String)e.nextElement());
-                    }
-                    
-                    // Execute the search
-                    Object results[]  = findClass_.findClass(
-                        search, ignoreCaseCheckBox_.isSelected());             
-                    
-                    statusBar_.setStatus(results.length + " matches found.");
-                    
-                    putValue(NAME, SEARCH);
-                    putValue(MNEMONIC_KEY, new Integer('S'));
-                }
+                String target = (String)e.nextElement();
+                findClass_.addSearchTarget(target);
+                //logger_.debug("Added target: " + target);
             }
-            catch (Exception ex)
-            {
-                ExceptionUtil.handleUI(ex, logger_);
-            }
+            
+            // Execute the search
+            Object results[]  = 
+                findClass_.findClass(search_, ignoreCaseCheckBox_.isSelected());             
+            
+            statusBar_.setStatus(results.length + " matches found.");
+            
+            putValue(NAME, SEARCH);
+            putValue(MNEMONIC_KEY, new Integer('S'));
         }
     }
     
