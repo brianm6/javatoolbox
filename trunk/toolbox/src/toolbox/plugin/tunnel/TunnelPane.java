@@ -1,15 +1,10 @@
 package toolbox.tunnel;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.Properties;
 
 import javax.swing.AbstractAction;
@@ -24,14 +19,10 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
-import toolbox.util.ResourceCloser;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ThreadUtil;
 import toolbox.util.io.JTextAreaOutputStream;
-import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.ui.JFlipPane;
-import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -46,21 +37,18 @@ public class JTcpTunnelPane extends JPanel
     private static final Logger logger_ = 
         Logger.getLogger(JTcpTunnelPane.class);
     
-    private int         listenPort_;
-    private String      tunnelHost_;
-    private int         tunnelPort_;
-    private JTextArea   listenText_;
-    private JTextArea   tunnelText_;
+    private JTextArea   incomingTextArea_;
+    private JTextArea   outgoingTextArea_;
     private IStatusBar  statusBar_;
     private JSplitPane  splitter_;
     private JButton     clearButton_;
 
-    private JTextField  localPortField_;
+    private JTextField  listenPortField_;
     private JTextField  remoteHostField_;
     private JTextField  remotePortField_;
     
+    private TcpTunnel tunnel_;    
 	private Thread server_;    
-    private TunnelRunner tunnelRunner_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -77,17 +65,17 @@ public class JTcpTunnelPane extends JPanel
     /**
      * Creates a JTCPTunnel with the given parameters
      * 
-     * @param  listenPort  Port to listen on
-     * @param  tunnelHost  Host to tunnel to
-     * @param  tunnelPort  Port to tunnel to
+     * @param  listenPort   Port to listen on
+     * @param  remotelHost  Host to tunnel to
+     * @param  remotePort   Port to tunnel to
      */
-    public JTcpTunnelPane(int listenPort, String tunnelHost, int tunnelPort)
+    public JTcpTunnelPane(int listenPort, String remoteHost, int remotePort)
     {
-        listenPort_ = listenPort;
-        tunnelHost_ = tunnelHost;
-        tunnelPort_ = tunnelPort;
-
         buildView();
+                
+        listenPortField_.setText(listenPort+"");
+        remoteHostField_.setText(remoteHost);
+        remotePortField_.setText(remotePort+"");
     }
 
     //--------------------------------------------------------------------------
@@ -99,43 +87,39 @@ public class JTcpTunnelPane extends JPanel
      */
     public int getListenPort()
     {
-        return listenPort_;
+        return Integer.parseInt(listenPortField_.getText().trim());
     }
-
 
     /**
-     * @return  Listen text area
+     * @return  Text area for incoming data
      */
-    public JTextArea getListenText()
+    public JTextArea getIncomingTextArea()
     {
-        return listenText_;
+        return incomingTextArea_;
     }
-
 
     /**
      * @return  Host to forward traffic to
      */
-    public String getTunnelHost()
+    public String getRemoteHost()
     {
-        return tunnelHost_;
+        return remoteHostField_.getText().trim();
     }
-
 
     /**
      * @return  Port to forward traffic to
      */
-    public int getTunnelPort()
+    public int getRemotePort()
     {
-        return tunnelPort_;
+        return Integer.parseInt(remotePortField_.getText().trim());
     }
 
-
     /**
-     * @return Tunnel text area
+     * @return Outgoing data text area
      */
-    public JTextArea getTunnelText()
+    public JTextArea getOutgoingTextArea()
     {
-        return tunnelText_;
+        return outgoingTextArea_;
     }
 
     /**
@@ -165,33 +149,35 @@ public class JTcpTunnelPane extends JPanel
         
             //===================== NORTH ======================================
 
-            JPanel labelPanel = new JPanel(new BorderLayout());
+            JPanel labelPanel = new JPanel(new GridLayout(1,2));
     
-            JLabel localLabel = new JLabel("From localhost:" + listenPort_,
-                JLabel.CENTER);
+            JLabel localLabel = 
+                new JLabel("Sent to Remote Host", JLabel.CENTER);
     
-            JLabel remoteLabel = new JLabel("From " + tunnelHost_ + ":" +
-                tunnelPort_, JLabel.CENTER);
+            JLabel remoteLabel = 
+                new JLabel("Received from Remote Host", JLabel.CENTER);
     
-            labelPanel.add(BorderLayout.WEST, localLabel);
-            labelPanel.add(BorderLayout.EAST, remoteLabel);
+            labelPanel.add(localLabel);
+            labelPanel.add(remoteLabel);
     
             outputPane.add(BorderLayout.NORTH, labelPanel);
         
             //===================== CENTER =====================================
             
-            listenText_ = new JSmartTextArea(true, false);
-            listenText_.setFont(SwingUtil.getPreferredMonoFont());
-            listenText_.setRows(40);
-            listenText_.setColumns(80);
+            incomingTextArea_ = new JSmartTextArea(true, false);
+            incomingTextArea_.setFont(SwingUtil.getPreferredMonoFont());
+            incomingTextArea_.setRows(40);
+            incomingTextArea_.setColumns(80);
             
-            tunnelText_ = new JSmartTextArea(true, false);
-            tunnelText_.setFont(SwingUtil.getPreferredMonoFont());
-            tunnelText_.setRows(40);
-            tunnelText_.setColumns(80); 
+            outgoingTextArea_ = new JSmartTextArea(true, false);
+            outgoingTextArea_.setFont(SwingUtil.getPreferredMonoFont());
+            outgoingTextArea_.setRows(40);
+            outgoingTextArea_.setColumns(80); 
             
-            splitter_ = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
-                new JScrollPane(listenText_), new JScrollPane(tunnelText_));
+            splitter_ = 
+                new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
+                    new JScrollPane(incomingTextArea_), 
+                    new JScrollPane(outgoingTextArea_));
                 
             splitter_.setContinuousLayout(true);        
             outputPane.add(BorderLayout.CENTER, splitter_);
@@ -217,12 +203,17 @@ public class JTcpTunnelPane extends JPanel
         
         configPanel.add(new JLabel("Local Tunnel Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(localPortField_ = new JTextField(10));
+            
+        configPanel.add(listenPortField_ = new JTextField(10));
+        
         configPanel.add(new JLabel("Remote Host"), 
             ParagraphLayout.NEW_PARAGRAPH);
+            
         configPanel.add(remoteHostField_ = new JTextField(10));
+        
         configPanel.add(new JLabel("Remote Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
+            
         configPanel.add(remotePortField_ = new JTextField(10));      
         
         JFlipPane configFlipPane = new JFlipPane(JFlipPane.LEFT);
@@ -243,30 +234,36 @@ public class JTcpTunnelPane extends JPanel
         });
     }
     
-    
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#savePrefs(Properties)
+     * Saves connection propreties to a Properties object
+     * 
+     * @param  prefs  Properties to save preferences to
      */
     public void savePrefs(Properties prefs)
     {
-        if (!StringUtil.isNullOrEmpty(localPortField_.getText()))
-            prefs.setProperty("tcptunnel.listenport",localPortField_.getText());
+        if (!StringUtil.isNullOrEmpty(listenPortField_.getText()))
+            prefs.setProperty(
+                "tcptunnel.listenport",listenPortField_.getText());
             
         if (!StringUtil.isNullOrEmpty(remotePortField_.getText()))    
-            prefs.setProperty("tcptunnel.remoteport", remotePortField_.getText());
+            prefs.setProperty(
+                "tcptunnel.remoteport", remotePortField_.getText());
         
         if (!StringUtil.isNullOrEmpty(remoteHostField_.getText()))    
-            prefs.setProperty("tcptunnel.remotehost", remoteHostField_.getText());
+            prefs.setProperty(
+                "tcptunnel.remotehost", remoteHostField_.getText());
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#applyPrefs(Properties)
+     * Applies the preferences
+     * 
+     * @param  prefs  Properties to read the preferences from
      */
     public void applyPrefs(Properties prefs)
     {
         remotePortField_.setText(prefs.getProperty("tcptunnel.remoteport",""));
         remoteHostField_.setText(prefs.getProperty("tcptunnel.remotehost",""));
-        localPortField_.setText(prefs.getProperty("tcptunnel.listenport",""));
+        listenPortField_.setText(prefs.getProperty("tcptunnel.listenport",""));
     }
     
     //--------------------------------------------------------------------------
@@ -285,46 +282,60 @@ public class JTcpTunnelPane extends JPanel
         
         public void actionPerformed(ActionEvent e)
         {
-            listenText_.setText("");
-            tunnelText_.setText("");
+            incomingTextArea_.setText("");
+            outgoingTextArea_.setText("");
         }
     }
     
     /**
      * Starts the tunnel
      */    
-    class StartTunnelAction extends AbstractAction
+    class StartTunnelAction extends AbstractAction implements TcpTunnelListener
     {
         public StartTunnelAction()
         {
             super("Start");
         }
         
+        public void statusChanged(TcpTunnel tunnel, String status)
+        {
+            statusBar_.setStatus(status);
+        }
+
         public void actionPerformed(ActionEvent e)
         {
             try
             {
-                listenPort_ = 
-                    Integer.parseInt(localPortField_.getText().trim());
-                    
-                tunnelHost_ = remoteHostField_.getText().trim();
-                
-                tunnelPort_ = 
-                    Integer.parseInt(remotePortField_.getText().trim());
-                
-                if (StringUtil.isNullOrEmpty(tunnelHost_))
+                if (StringUtil.isNullOrEmpty(getRemoteHost()))
                     throw new IllegalArgumentException(
-                        "Please specify the tunnel hostname");
+                        "Please specify the remote hostname");
                         
-                // Start the server
-                tunnelRunner_ = new TunnelRunner();
-                server_ = new Thread(tunnelRunner_);
-                server_.start();
+                tunnel_ = 
+                    new TcpTunnel(
+                        getListenPort(), 
+                        getRemoteHost(), 
+                        getRemotePort());
+                        
+                tunnel_.addIncomingStream(
+                    new JTextAreaOutputStream(outgoingTextArea_));
+                
+                tunnel_.addOutgoingStream(
+                    new JTextAreaOutputStream(incomingTextArea_));
+                    
+                tunnel_.addTcpTunnelListener(this);
+                
+                new Thread(new Runnable()
+                {
+                    public void run()
+                    {
+                        tunnel_.start();
+                    }
+                }).start();    
+                
             } 
             catch (Exception ex)
             {
-                JSmartOptionPane.showExceptionMessageDialog(
-                    JTcpTunnelPane.this, ex);
+                ExceptionUtil.handleUI(ex, logger_);
             }
         }
     }
@@ -341,118 +352,7 @@ public class JTcpTunnelPane extends JPanel
         
         public void actionPerformed(ActionEvent e)
         {
-            tunnelRunner_.stop();
-            
-        	ThreadUtil.stop(server_, 5000);
-        	
-        	if (server_ != null)
-        	{
-        		if (server_.isAlive())
-        			statusBar_.setStatus("Could not kill server.");
-        		else
-                    statusBar_.setStatus("Server may have stopped.");
-        	}
-        	else
-                statusBar_.setStatus("Server stopped.");
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    //  Inner Classes
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Tunnel thread
-     */
-    class TunnelRunner implements Runnable
-    {
-        ServerSocket serverSocket_;
-        boolean stop_ = false;
-        
-        public void stop()
-        {
-            stop_ = true;
-            ResourceCloser.close(serverSocket_);    
-        }
-        
-        /**
-         * Creates server socket and reads
-         */
-        public void run()
-        {
-            serverSocket_ = null;
-
-            try
-            {
-                serverSocket_ = new ServerSocket(getListenPort());
-                serverSocket_.setSoTimeout(2000);
-            }
-            catch (IOException ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
-
-            while (!stop_)
-            {
-                try
-                {
-                    statusBar_.setStatus("Listening for connections on port " + 
-                        getListenPort());
-
-                    // accept the connection from my client
-                    if (!serverSocket_.isClosed())
-                    {
-                        Socket sc = serverSocket_.accept();
-    
-                        // connect to the thing I'm tunnelling for
-                        Socket st = new Socket(getTunnelHost(),getTunnelPort());
-                        
-                        statusBar_.setStatus(
-                            "Tunnelling port "+ getListenPort()+ 
-                            " to port " + getTunnelPort() + 
-                            " on host " + getTunnelHost() + " ...");
-    
-                        // relay the stuff thru. Make multicast output streams
-                        // that send to the socket and also to the textarea
-                        // for each direction
-                            
-                        MulticastOutputStream tos = new MulticastOutputStream();
-                        tos.addStream(st.getOutputStream());
-                        
-                        tos.addStream(
-                            new JTextAreaOutputStream(getListenText()));
-                        
-                        MulticastOutputStream sos = new MulticastOutputStream();
-                        sos.addStream(sc.getOutputStream());
-                        
-                        sos.addStream(
-                            new JTextAreaOutputStream(getTunnelText()));
-                        
-//                        new Relay(sc.getInputStream(), tos).start();
-//                        new Relay(st.getInputStream(), sos).start();
-
-                        new Thread(
-                            new Relay(
-                                new BufferedInputStream(sc.getInputStream()), 
-                                new BufferedOutputStream(tos))).start();
-                            
-                        new Thread(
-                            new Relay(
-                                new BufferedInputStream(st.getInputStream()), 
-                                new BufferedOutputStream(sos))).start();
-
-                        // that's it .. they're off
-                    }
-                }
-                catch (SocketTimeoutException ste)
-                {
-                    logger_.warn("run", ste);
-                }
-                catch (Exception e)
-                {
-                    ExceptionUtil.handleUI(e, logger_);
-                }
-            }
+            tunnel_.stop();
         }
     }
 }
