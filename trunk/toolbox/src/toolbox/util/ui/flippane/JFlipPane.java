@@ -31,8 +31,8 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.PropertiesUtil;
-import toolbox.util.ResourceUtil;
 import toolbox.util.StringUtil;
+import toolbox.util.ui.ImageCache;
 
 /**
  * JFlipPane is a panel with flipper like behavior to hide a and show any
@@ -514,7 +514,7 @@ public class JFlipPane extends JPanel
         buttonPanel_.addMouseListener(new PopupHandler());
         
         closeButton_ = new JButton(
-            ResourceUtil.getResourceAsIcon("toolbox/util/ui/images/Cross.gif"));
+            ImageCache.getIcon("toolbox/util/ui/images/Cross.gif"));
                 
         closeButton_.setToolTipText("Close");
         
@@ -531,8 +531,7 @@ public class JFlipPane extends JPanel
 
         // Popup button
         popupButton_ = new JButton(
-            ResourceUtil.getResourceAsIcon(
-                "toolbox/util/ui/images/Triangle.gif"));
+            ImageCache.getIcon("toolbox/util/ui/images/Triangle.gif"));
             
         popupButton_.setRequestFocusEnabled(false);
         popupButton_.setToolTipText("Popup menu");
@@ -791,12 +790,14 @@ public class JFlipPane extends JPanel
 /*
 Revision History before before change of package name
 ================================================================================
-revision 1.19  2003/04/16 02:12:47  analogue  Added saving/restoring of preferences. Still need to verify...
+revision 1.19  2003/04/16 02:12:47  analogue  Added saving/restoring of 
+                                              preferences. Still need to verify.
 revision 1.18  2003/04/15 11:41:52  analogue  Removed method name debugs
 revision 1.17  2003/04/14 01:42:01  analogue  Added T O D O for saved/restore
 revision 1.16  2003/04/08 23:09:07  analogue  Coding standard updates
 revision 1.15  2003/03/28 08:38:34  analogue  Removed unused code
-revision 1.14  2003/03/27 04:14:27  analogue  Axed loadIcon() and updated to load gifs via ResourceUtil
+revision 1.14  2003/03/27 04:14:27  analogue  Axed loadIcon() and updated to 
+                                              load gifs via ResourceUtil
 revision 1.13  2003/03/23 05:03:56  analogue  Removed tabs
 revision 1.12  2003/03/15 03:59:52  analogue  Checkstyle updates
 revision 1.11  2002/12/24 06:26:56  analogue  None
