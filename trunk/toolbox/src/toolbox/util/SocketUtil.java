@@ -26,7 +26,8 @@ public class SocketUtil
     /** 
      * Value embedded in exception message for a socket closed exception 
      */
-    public static final String MSG_SOCKET_CLOSED = "Socket closed";
+    public static final String MSG_SOCKET_CLOSED_13 = "Socket closed";
+    public static final String MSG_SOCKET_CLOSED_14 = "Socket is closed";
 
 
     //--------------------------------------------------------------------------
@@ -122,7 +123,8 @@ public class SocketUtil
      */
     public static boolean isReasonSocketClosed(SocketException se)
     {
-        return se.getMessage().equalsIgnoreCase(MSG_SOCKET_CLOSED);
+        return se.getMessage().equalsIgnoreCase(MSG_SOCKET_CLOSED_13) ||
+               se.getMessage().equalsIgnoreCase(MSG_SOCKET_CLOSED_14) ;
     }
     
     /**
