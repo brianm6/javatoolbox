@@ -64,7 +64,7 @@ public class FontStyleList extends JSmartList
     
     
     /**
-     * Change the currently selected style in this FontStyleList
+     * Change the currently selected style in this FontStyleList.
      * 
      * @param style New selected style for this FontStyleList
      * @throws IllegalArgumentException thrown if style is not one of 
@@ -102,8 +102,8 @@ public class FontStyleList extends JSmartList
      * @param styleDisplayNames Style display names
      * @return String array
      */
-    private static String[] 
-        validateStyleDisplayNames(String[] styleDisplayNames)
+    private static String[] validateStyleDisplayNames(
+            String[] styleDisplayNames)
     {
         if (styleDisplayNames == null)
             throw new IllegalArgumentException(

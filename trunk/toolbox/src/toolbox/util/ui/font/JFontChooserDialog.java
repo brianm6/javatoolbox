@@ -56,13 +56,13 @@ public class JFontChooserDialog extends JDialog
     private List listeners_;
     
     /**
-     * Checkbox that toggles automatic applying of the font on selection changes
+     * Checkbox that toggles automatic applying of the font on selection
+     * changes.
      */
     private JCheckBox autoApplyCheckBox_;
-    
-    
+        
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
