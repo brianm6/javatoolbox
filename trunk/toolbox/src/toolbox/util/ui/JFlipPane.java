@@ -47,8 +47,8 @@ import javax.swing.border.Border;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.Category;
-
 import toolbox.util.ArrayUtil;
+import toolbox.util.ThreadUtil;
 
 /**
  * JFlipPane - panel with flipper like behavior
