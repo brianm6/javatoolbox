@@ -97,8 +97,8 @@ public class TreeTest extends TestCase
         Tree t6 = new Tree(FileUtil.getTempDir(), true, true, Tree.SORT_NAME);
         assertNotNull(t6);
 
-        Tree t7 = 
-            new Tree(FileUtil.getTempDir(), true, true, true, Tree.SORT_NAME);
+        Tree t7 = new Tree(
+            FileUtil.getTempDir(), true, true, true, Tree.SORT_NAME, ".*");
         
         assertNotNull(t7);
         
