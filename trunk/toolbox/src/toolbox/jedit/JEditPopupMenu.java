@@ -15,7 +15,9 @@ public class JEditPopupMenu extends JPopupMenu
     private static final Logger logger_ =
         Logger.getLogger(JEditPopupMenu.class); 
         
-    /** Text component to associate this popup menu with */
+    /** 
+     * Text component to associate this popup menu with 
+     */
     private JEditTextArea textArea_;
 
     //--------------------------------------------------------------------------
@@ -53,17 +55,11 @@ public class JEditPopupMenu extends JPopupMenu
         textArea_ = area;
     }
 
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
     /**
      * Builds popupmenu and adds mouse listener to listbox
      */
     public void buildView()
     {
-        JEditActions a = new JEditActions();
-        
         add(new JMenuItem(new JEditActions.CopyAction(textArea_)));
         add(new JMenuItem(new JEditActions.CutAction(textArea_)));
         add(new JMenuItem(new JEditActions.PasteAction(textArea_)));
