@@ -15,9 +15,6 @@ import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
-import com.jgoodies.plaf.plastic.PlasticTheme;
-
 import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -32,7 +29,6 @@ import toolbox.util.XOMUtil;
 import toolbox.util.ui.JButtonGroup;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
 import toolbox.util.ui.JSmartMenu;
-import toolbox.util.ui.JSmartMenuItem;
 
 /**
  * LookAndFeelUtil manages the available Swing Look & Feels and provides
@@ -72,7 +68,7 @@ public class LookAndFeelUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Maps look and feel classname to its corresponding menu item.
+     * Maps a LAFInfo to its corresponding JCheckBoxMenuItem.
      */
     private static Map menuItemMap_;
 
@@ -81,12 +77,18 @@ public class LookAndFeelUtil
      */
     private static Map lookAndFeelMap_;
     
+    /**
+     * List of all LAFInfos. 
+     */
     private static List lookAndFeels_;
 
+    /**
+     * Checkbox group for the menu items.
+     */
     private static JButtonGroup group_;
     
     //--------------------------------------------------------------------------
-    // StaticO
+    // Static Initializer
     //--------------------------------------------------------------------------
     
     static
@@ -94,90 +96,7 @@ public class LookAndFeelUtil
         lookAndFeelMap_ = new HashMap();
         menuItemMap_ = new HashMap();
         lookAndFeels_ = new ArrayList();
-        
         initLookAndFeels();
-        
-//        UIManager.installLookAndFeel("Metouia", 
-//                "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
-//        
-//        UIManager.installLookAndFeel("Kunststoff",    
-//                "com.incors.plaf.kunststoff.KunststoffLookAndFeel");
-//        
-//        UIManager.installLookAndFeel("JGoodies Plastic",
-//                "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
-//        
-//        UIManager.installLookAndFeel("JGoodies Plastic 3D",
-//                "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel");
-//
-//        UIManager.installLookAndFeel("JGoodies Plastic XP",
-//                "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
-//        
-//        UIManager.installLookAndFeel("XPLookAndFeel", 
-//                "com.stefankrause.xplookandfeel.XPLookAndFeel");
-//        
-//        UIManager.installLookAndFeel("TinyLookAndFeel", 
-//                "de.muntjak.tinylookandfeel.TinyLookAndFeel");
-//        
-//        UIManager.installLookAndFeel("Tonic L&F", 
-//                "com.digitprop.tonic.TonicLookAndFeel");
-//
-//        UIManager.installLookAndFeel("Liquid L&F", 
-//                "com.birosoft.liquid.LiquidLookAndFeel");
-//
-//        UIManager.installLookAndFeel(
-//                "Cell Shaded", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "Mac", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "XP", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "Modern", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "Whistler", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "Aqua", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "Beos", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "BBJ", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "Toxic", 
-//                "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
-//        
-//        UIManager.installLookAndFeel(
-//                "Novaworx", 
-//                "novaworx.plaf.novaworx.NovaworxLookAndFeel");
-        
-        //UIManager.installLookAndFeel("FH Look & Feel",
-        //    "com.shfarr.ui.plaf.fh.FhLookAndFeel");
-        
-        //UIManager.installLookAndFeel("GTK+",
-        //    "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        
-        //UIManager.installLookAndFeel("Oyoaha",    
-        //    "com.oyoaha.swing.plaf.oyoaha.OyoahaLookAndFeel");
-
-
-        //SlafLookAndFeel.setCurrentTheme("Edbgruppen");
-        
-        //UIManager.installLookAndFeel("Slaf",    
-        //    "com.memoire.slaf.SlafLookAndFeel");                        
     }
     
     //--------------------------------------------------------------------------
@@ -185,11 +104,10 @@ public class LookAndFeelUtil
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a LookAndFeelUtil.
+     * Private constructor.
      */
     private LookAndFeelUtil()
     {
-        
     }
 
     //--------------------------------------------------------------------------
@@ -198,37 +116,41 @@ public class LookAndFeelUtil
     
     /**
      * Selects the given look and feel on the look and feel menu.
+     * 
+     * @param info Look And Feel that maps to a menu item.
      */ 
     public static void selectOnMenu(LAFInfo info)
     {
-        JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) menuItemMap_.get(info); 
-        
+        JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) menuItemMap_.get(info);
+
         if (cbmi != null)
-        {    
+        {
             cbmi.setSelected(true);
+            logger_.debug("Successlly selected laf: " + info.getName());
+        }
+        else
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append("Could not find lafinfo in menu map.\n" + info + "\n");
             
-            logger_.debug(StringUtil.addBars(
-                "Successlly selected laf\n" + info));
-         }
-         else
-         {    
-             StringBuffer sb = new StringBuffer();
-             sb.append("Could not find lafinfo in menu map.\n" + info + "\n");
-             sb.append(ArrayUtil.toString(menuItemMap_.keySet().toArray(), true));
-             logger_.debug(StringUtil.addBars(sb.toString()));
-         }
+            sb.append(ArrayUtil.toString(
+                menuItemMap_.keySet().toArray(), true));
+            
+            logger_.debug(StringUtil.addBars(sb.toString()));
+        }
     }
 
 
     /**
      * Sets the look and feel given a DOM.
      * 
-     * @param prefs DOM to read preferences from
+     * @param prefs XML tree to read the look and feel preferences from.
+     * @throws Exception on error.
      */
     public static void setLookAndFeel(Element prefs) throws Exception
     {
-        Element lafNode = XOMUtil.getFirstChildElement(
-            prefs, NODE_LOOKANDFEEL, null);
+        Element lafNode = 
+            XOMUtil.getFirstChildElement(prefs, NODE_LOOKANDFEEL, null);
 
         if (lafNode == null)
             logger_.info("Look and Feel not set. DOM is null");
@@ -238,8 +160,10 @@ public class LookAndFeelUtil
 
     
     /**
-     * @param info
-     * @throws Exception
+     * Sets the look and feel.
+     * 
+     * @param info Look and feel info.
+     * @throws Exception on error.
      */
     public static void setLookAndFeel(LAFInfo info) throws Exception
     {
@@ -315,27 +239,10 @@ public class LookAndFeelUtil
 
 
     /**
-     * Creates a themes menu for the plastic jgoodies.com look and feels.
-     * 
-     * @return JMenu 
-     */
-    protected static JMenu createThemesMenu()
-    {
-        JMenu menu = new JSmartMenu("Themes");
-        List themes = PlasticLookAndFeel.getInstalledThemes();
-        
-        for (int i=0, n=themes.size(); i<n; i++)
-            menu.add(new JSmartMenuItem(
-                new ActivatePlasticLookAndFeelAction((PlasticTheme) themes.get(i))));
-        
-        return menu;
-    }
-
-
-    /**
      * Saves currently active look and feel to a node in the given element.
      *
      * @param workspace Node in which to save look and feel info.
+     * @throws Exception on error.
      */
     public static void savePrefs(Element workspace) throws Exception
     {
@@ -452,6 +359,9 @@ public class LookAndFeelUtil
     // Protected
     //--------------------------------------------------------------------------
     
+    /**
+     * Initializes and installs the look and feels read from lookandfeel.xml.
+     */
     public static void initLookAndFeels() 
     {
         InputStream is = null;
