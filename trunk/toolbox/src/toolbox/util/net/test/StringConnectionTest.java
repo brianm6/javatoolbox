@@ -24,6 +24,10 @@ public class StringConnectionTest extends TestCase
         TestRunner.run(StringConnectionTest.class);
     }
     
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for StringConnectionTest.
      * 
@@ -33,6 +37,10 @@ public class StringConnectionTest extends TestCase
     {
         super(name);
     }
+
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
 
     /**
      * Tests getInputStream()
