@@ -51,38 +51,33 @@ public class CutLineFilter extends AbstractLineFilter
     //--------------------------------------------------------------------------
     
     /**
-     * Filters a line by cutting. 
-     * 
-     * @param line Line to cut.
-     * @return Line after cut operation.
+     * Filters a line by cutting out a column range.
+     *  
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
+     *      java.lang.StringBuffer)
      */
-    public String filter(String line)
+    public boolean filter(StringBuffer line)
     {
+        boolean NOOP = true;
+        
         if (!isEnabled())
-            return line;
+            return NOOP;
             
-        if (line == null || line.length() == 0)
-            return line;
-        
-        //if (begin_ < 0 || end_ < 0)
-        //    return line;
-        
-        StringBuffer sb = new StringBuffer(line);
+        if (line.length() == 0)
+            return NOOP;
         
         int localBegin = begin_;
-        int localEnd   = end_;
-        
+        int localEnd = end_;
         int len = line.length();
         
         if (localBegin >= len)
-            return line;
+            return NOOP;
             
         if (localEnd > len)
             localEnd = len;
         
-        sb.delete(localBegin, localEnd);
-        
-        return sb.toString();
+        line.delete(localBegin, localEnd);
+        return true;
     }
     
     //--------------------------------------------------------------------------
@@ -145,5 +140,4 @@ public class CutLineFilter extends AbstractLineFilter
     {
         return ToStringBuilder.reflectionToString(this);
     }
-    
 }

@@ -23,9 +23,21 @@ public class LineNumberDecorator extends AbstractLineFilter
      */
     public LineNumberDecorator()
     {
-        lineNumber_ = 1;
+        reset();
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Resets the number number to one. 
+     */
+    public void reset()
+    {
+        lineNumber_ = 1;
+    }
+    
     //--------------------------------------------------------------------------
     //  ILineFilter Interface
     //--------------------------------------------------------------------------
@@ -33,17 +45,14 @@ public class LineNumberDecorator extends AbstractLineFilter
     /**
      * Adds a line number to the beginning of a string.
      * 
-     * @param line String to decorate with a line number.
-     * @return String decorated with a line number.
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
+     *      java.lang.StringBuffer)
      */
-    public String filter(String line)
+    public boolean filter(StringBuffer line)
     {
-        if (!isEnabled())
-            return line;
+        if (isEnabled())
+            line.insert(0,"[" + lineNumber_++ + "] ");
         
-        if (line == null)
-            return line;
-                
-        return "[" + lineNumber_++ + "] " + line;
+        return true;
     }
 }

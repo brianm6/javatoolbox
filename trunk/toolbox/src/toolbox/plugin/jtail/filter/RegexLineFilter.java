@@ -78,20 +78,17 @@ public class RegexLineFilter extends AbstractLineFilter
     /**
      * Filters a line based on a regular expression.
      * 
-     * @param line Line to match.
-     * @return Line if it matched the regular expression, null otherwise.
+     * @see toolbox.plugin.jtail.filter.ILineFilter#filter(
+     *      java.lang.StringBuffer)
      */
-    public String filter(String line)
+    public boolean filter(StringBuffer line)
     {
-        if (!isEnabled())
-            return line;
-            
-        if (line == null)
-            return line;
-            
-        return regExp_.match(line) ? line : null;
+        if (isEnabled())
+            return regExp_.match(line.toString()) ? true : false;    
+        else
+            return true;
     }
-
+    
     //--------------------------------------------------------------------------
     //  Public
     //--------------------------------------------------------------------------

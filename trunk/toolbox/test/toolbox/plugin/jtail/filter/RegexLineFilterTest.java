@@ -6,7 +6,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for RegexLineFilter.
+ * Unit test for {@link toolbox.plugin.jtail.filter.RegexLineFilter}.
  */
 public class RegexLineFilterTest extends TestCase
 {
@@ -42,24 +42,29 @@ public class RegexLineFilterTest extends TestCase
         
         RegexLineFilter filter = new RegexLineFilter();
         filter.setEnabled(true);
-        String str = "abcdef";
+        String original = "abcdef";
+        StringBuffer str = new StringBuffer(original);
         
         // Match - case insensetive
-        filter.setRegularExpression("abc");        
-        assertEquals(str, filter.filter(str));
+        filter.setRegularExpression("abc");
+        assertTrue(filter.filter(str));
+        assertEquals(original, str.toString());
         
         // No match - case insensetive
         filter.setRegularExpression("xyz");
-        assertNull(filter.filter(str));
+        assertFalse(filter.filter(str));
+        assertEquals(original, str.toString());
         
         // Match case - case sensetive
         filter.setMatchCase(true);
         filter.setRegularExpression("abc");        
-        assertEquals(str, filter.filter(str));
+        assertTrue(filter.filter(str));
+        assertEquals(original, str.toString());
         
         // No match - case sensetive 
         filter.setRegularExpression("ABC");
-        assertNull(filter.filter(str));
+        assertFalse(filter.filter(str));
+        assertEquals(original, str.toString());
     }
     
     
@@ -72,20 +77,8 @@ public class RegexLineFilterTest extends TestCase
         
         RegexLineFilter d = new RegexLineFilter(".*");
         d.setEnabled(false);
-        assertEquals("howdy", d.filter("howdy"));        
+        StringBuffer sb = new StringBuffer("howdy");
+        assertTrue(d.filter(sb));        
+        assertEquals("howdy", sb.toString());
     }
-    
-    
-    /**
-     * Tests the filter for null input.
-     */
-    public void testFilterNull()
-    {
-        logger_.info("Running testFilterNull...");
-        
-        RegexLineFilter d = new RegexLineFilter();
-        d.setEnabled(true);
-        assertNull(d.filter(null)); 
-    }
-    
 }

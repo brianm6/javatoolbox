@@ -202,7 +202,9 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
             ILineFilter filter = (ILineFilter) filterClass.newInstance();
             filter.setEnabled(true);
             
-            logger_.debug(filter.filter("hello"));
+            StringBuffer crap = new StringBuffer("hello");
+            filter.filter(crap);
+            logger_.debug(crap);
         }
     }
 

@@ -8,9 +8,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.StringUtil;
 
 /**
- * Unit test for CutLineFilter.
- * 
- * @see toolbox.plugin.jtail.filter.CutLineFilter
+ * Unit test for {@link toolbox.plugin.jtail.filter.CutLineFilter}.
  */
 public class CutLineFilterTest extends TestCase
 {
@@ -46,38 +44,52 @@ public class CutLineFilterTest extends TestCase
         filter.setEnabled(true);
         
         // First char
-        filter.setCut("1-1");        
-        assertEquals("2345", filter.filter("12345"));
+        filter.setCut("1-1");
+        StringBuffer sb = new StringBuffer("12345");
+        assertTrue(filter.filter(sb));
+        assertEquals("2345", sb.toString());
         
         // First char + subset
+        sb = new StringBuffer("12345");
         filter.setCut("1-2");
-        assertEquals("345", filter.filter("12345"));
+        assertTrue(filter.filter(sb));
+        assertEquals("345", sb.toString());
         
         // All
+        sb = new StringBuffer("12345");
         filter.setCut("1-5");
-        assertEquals("", filter.filter("12345"));
+        assertTrue(filter.filter(sb));
+        assertEquals("", sb.toString());
         
         // Subset
+        sb = new StringBuffer("12345");
         filter.setCut("2-4");
-        assertEquals("15", filter.filter("12345"));
+        assertTrue(filter.filter(sb));
+        assertEquals("15", sb.toString());
         
         // Last char
+        sb = new StringBuffer("12345");
         filter.setCut("5-5");
-        assertEquals("1234", filter.filter("12345"));
+        assertTrue(filter.filter(sb));
+        assertEquals("1234", sb.toString());
     
         // Last char + subset
+        sb = new StringBuffer("12345");
         filter.setCut("3-5");
-        assertEquals("12", filter.filter("12345"));
+        assertTrue(filter.filter(sb));
+        assertEquals("12", sb.toString());
         
         // Out of range
+        sb = new StringBuffer("12345");
         filter.setCut("20-30");
-        assertEquals("12345", filter.filter("12345"));
+        assertTrue(filter.filter(sb));
+        assertEquals("12345", sb.toString());
         
         // Overlapping out of range
+        sb = new StringBuffer("12345");
         filter.setCut("3-30");
-        assertEquals("12", filter.filter("12345"));
-        
-        logger_.info(filter.toString());
+        assertTrue(filter.filter(sb));
+        assertEquals("12", sb.toString());
     }
     
     
@@ -91,22 +103,10 @@ public class CutLineFilterTest extends TestCase
         String s = "12345";
         CutLineFilter filter = new CutLineFilter();
         filter.setEnabled(false);
-        filter.setCut("1-1");        
-        assertEquals(s, filter.filter(s));
-    }
-    
-    
-    /**
-     * Tests the filter for null input.
-     */
-    public void testFilterNull()
-    {
-        logger_.info("Running testFilterNull...");
-        
-        CutLineFilter filter = new CutLineFilter();
-        filter.setEnabled(true);
-        filter.setCut("1-1");        
-        assertNull(filter.filter(null));
+        filter.setCut("1-1");
+        StringBuffer sb = new StringBuffer(s);
+        assertTrue(filter.filter(sb));
+        assertEquals(s, sb.toString());
     }
     
     
@@ -119,8 +119,10 @@ public class CutLineFilterTest extends TestCase
         
         CutLineFilter filter = new CutLineFilter();
         filter.setEnabled(true);
-        filter.setCut("1-1");        
-        assertEquals("", filter.filter(""));
+        filter.setCut("1-1");
+        StringBuffer sb = new StringBuffer("");
+        assertTrue(filter.filter(sb));
+        assertEquals("", sb.toString());
     }
     
     

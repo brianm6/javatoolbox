@@ -92,7 +92,7 @@ public class FilterView extends JPanel
         plugin_.getStatusBar().setInfo("Regex = '" + regex + "'");
 
         if (cache_ == null)
-            cache_ = StringUtil.tokenize(plugin_.getInputText(), StringUtil.NL);
+            cache_ = StringUtil.tokenize(plugin_.getInputText(), "\n");
 
         String[] lines = cache_;
 
@@ -106,12 +106,12 @@ public class FilterView extends JPanel
 
             for (int i = 0; i < lines.length; i++)
             {
-                String passed = filter.filter(lines[i]);
-
-                if (passed != null)
+                StringBuffer tmp = new StringBuffer(lines[i]);
+                
+                if (filter.filter(tmp))
                 {
-                    sb.append(passed);
-                    sb.append(StringUtil.NL);
+                    sb.append(tmp);
+                    sb.append("\n");
                 }
             }
 

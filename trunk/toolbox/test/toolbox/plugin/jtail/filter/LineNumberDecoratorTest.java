@@ -5,9 +5,8 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-
 /**
- * Unit test for LineNumberDecorator.
+ * Unit test for {@link toolbox.plugin.jtail.filter.LineNumberDecorator}.
  */
 public class LineNumberDecoratorTest extends TestCase
 {
@@ -39,11 +38,16 @@ public class LineNumberDecoratorTest extends TestCase
     {
         logger_.info("Running testFilter...");
         
-        LineNumberDecorator decorator = new LineNumberDecorator();
+        ILineFilter decorator = new LineNumberDecorator();
         decorator.setEnabled(true);
         
         for (int i = 0; i < 5000; i++)
-            assertEquals("[" + (i + 1) + "] Line", decorator.filter("Line"));
+        {  
+            StringBuffer sb = new StringBuffer("Line");
+            assertTrue(decorator.filter(sb));
+            assertEquals("[" + (i + 1) + "] Line", sb.toString());
+        }
+            
     }
     
     
@@ -54,21 +58,10 @@ public class LineNumberDecoratorTest extends TestCase
     {
         logger_.info("Running testFilterDisabled...");
         
-        LineNumberDecorator d = new LineNumberDecorator();
+        ILineFilter d = new LineNumberDecorator();
         d.setEnabled(false);
-        assertEquals("howdy", d.filter("howdy"));        
-    }
-    
-    
-    /**
-     * Tests the filter for null input.
-     */
-    public void testFilterNull()
-    {
-        logger_.info("Running testFilterNull...");
-        
-        LineNumberDecorator d = new LineNumberDecorator();
-        d.setEnabled(true);
-        assertNull(d.filter(null)); 
+        StringBuffer sb = new StringBuffer("howdy");
+        assertTrue(d.filter(sb));
+        assertEquals("howdy", sb.toString());        
     }
 }

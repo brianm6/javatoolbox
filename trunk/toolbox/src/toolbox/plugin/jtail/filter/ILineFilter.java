@@ -10,8 +10,8 @@ public interface ILineFilter extends Enableable
     /**
      * Filters the line of text.
      * 
-     * @param line  Line of text to filter.
-     * @return Mutated line of text as processed by the filter.
+     * @param line Line of text to filter.
+     * @return True if line is valid, false otherwise.
      */
-    String filter(String line);
+    boolean filter(StringBuffer line);
 }
