@@ -3,6 +3,8 @@ package toolbox.util.invoker;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Logger;
 
+import toolbox.util.service.ServiceException;
+
 /**
  * Invoker that executes a method on a separate thread resulting in
  * asynchronous execution behavior.
@@ -52,11 +54,14 @@ public class ThreadedInvoker implements Invoker
         });
     }
     
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.invoker.Invoker#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown() throws Exception
+    public void destroy() throws ServiceException
     {
     }
 }

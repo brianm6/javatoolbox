@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 import toolbox.util.concurrent.BlockingQueue;
+import toolbox.util.service.ServiceException;
 
 /**
  * Invoker that queues up invocations requests on a queue and executes them in
@@ -77,17 +78,6 @@ public class QueuedInvoker implements Invoker
     //--------------------------------------------------------------------------
 
     /**
-     * Returns true if there is no queued work pending.
-     * 
-     * @return boolean
-     */
-    //public boolean isIdle()
-    //{
-    //    return isEmpty() && !invokable_.isRunning();
-    //}
-
-    
-    /**
      * Returns true if the invocation queue is empty, false otherwise. Use to 
      * check if it is safe to shutdown invoker.
      * 
@@ -149,16 +139,21 @@ public class QueuedInvoker implements Invoker
         });
     }
     
+    //--------------------------------------------------------------------------
+    // Destroyable Interface
+    //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.invoker.Invoker#shutdown()
+     * @see toolbox.util.service.Destroyable#destroy()
      */
-    public void shutdown() throws Exception
+    public void destroy() throws ServiceException
     {
         if (!isEmpty())
         {    
-            logger_.warn("Shutting down queued invoker even though there are " +
-                getSize() + " items remaining in the invocation queue"); 
+            logger_.warn(
+                "Shutting down queued invoker even though there are " 
+                + getSize() + 
+                " items remaining in the invocation queue"); 
         }
         
         ThreadUtil.stop(consumer_);
@@ -200,16 +195,5 @@ public class QueuedInvoker implements Invoker
                 }
             }
         }
-
-        
-        /**
-         * Returns true if the invokable is executing, false otherwise.
-         * 
-         * @return boolean.
-         */
-        //public boolean isRunning()
-        //{
-        //    return running_;
-        //}
     }
 }
