@@ -33,7 +33,7 @@ public final class ExceptionUtil
     /**
      * Converts a <code>Throwable</code>'s stack trace to a string
      *
-     * @param  t   Throwable to extrace stack trace from
+     * @param t Throwable to extrace stack trace from
      * @return Stack trace of the throwable as a string
      */
     public static String getStackTrace(Throwable t) 
@@ -48,8 +48,8 @@ public final class ExceptionUtil
      * Logs the error to the given logger and displays the error via a dialog 
      * box to the user.
      * 
-     * @param  t  Exception causing Error
-     * @param  c  Logger to log to
+     * @param t Exception causing Error
+     * @param c Logger to log to
      */
     public static void handleUI(Throwable t, Logger c)
     {
