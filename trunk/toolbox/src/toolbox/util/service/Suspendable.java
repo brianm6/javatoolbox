@@ -1,32 +1,34 @@
 package toolbox.util.service;
 
 /**
- * A service that can be paused/resumed.
+ * A Suspendable service can suspend and resume operation at will.
  */              
 public interface Suspendable
 {
     /**
-     * Pauses the service indefinitely. Once a service is paused, it may only
-     * be resumed.
+     * Suspends the service indefinitely. Once a service is suspended, it has to
+     * be resumed before it can be stopped.
      * 
-     * @throws ServiceException if the service encounters problems pausing.
+     * @throws ServiceException if the service encounters problems suspending
+     *         itself.
      */
-    void pause() throws ServiceException;
+    void suspend() throws ServiceException;
     
     
     /**
      * Resumes the service and returns it to a running state. Once a service is
-     * resumed, it may either be paused again or stopped.
+     * resumed, it may either be suspended again or stopped.
      *  
-     * @throws ServiceException if the service encounters problems resuming.
+     * @throws ServiceException if the service encounters problems resuming
+     *         itself.
      */
     void resume() throws ServiceException;
     
     
     /**
-     * Returns true if the service is paused, false otherwise.
+     * Returns true if the service is suspended, false otherwise.
      * 
      * @return boolean
      */
-    boolean isPaused();
+    boolean isSuspended();
 }
