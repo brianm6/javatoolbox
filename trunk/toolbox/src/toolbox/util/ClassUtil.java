@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -24,8 +25,6 @@ import toolbox.util.io.filter.ExtensionFilter;
 /**
  * Class related utility methods that complements
  * {@link org.apache.commons.lang.ClassUtils}.
- * 
- * @see org.apache.commons.lang.ClassUtils
  */
 public final class ClassUtil
 {
@@ -420,6 +419,41 @@ public final class ClassUtil
             result = loader != null 
                         ? loader.getResource(clazzAsResource)
                         : ClassLoader.getSystemResource(clazzAsResource);
+        }
+
+        return result;
+    }
+    
+    
+    /**
+     * Finds a file if it exists on the system's executable PATH.
+     * 
+     * @param file Executable file to find.
+     * @return File if found, null otherwise.
+     */
+    public static File findInPath(String file)
+    {
+        // TODO: Move to a more system related utility class
+        
+        File result = null;
+        
+        StringTokenizer st = new StringTokenizer(
+            System.getProperty("java.library.path"),
+                System.getProperty("path.separator"));
+
+        while (st.hasMoreElements())
+        {
+            String path = st.nextToken();
+            String trying = FileUtil.trailWithSeparator(path) + file;
+            
+            //logger_.debug("Trying " + trying);
+            
+            File f = new File(trying);
+            if (f.exists())
+            {
+                result = f;
+                break;
+            }
         }
 
         return result;
