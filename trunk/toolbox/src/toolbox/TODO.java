@@ -72,6 +72,7 @@ package toolbox;
  *  - Added NapkinLookAndFeel to the Look and Feel menu
  *  - Upgraded to commons-net-1.2.1
  *  - Encoded passwords in JDBC plugin
+ *  - StatcvsPlugin cvs project combobox is sorted
  * 
  * April 2004 
  * 	- Scan source for refactorings to use DisposeAction 
