@@ -18,6 +18,10 @@ import toolbox.util.SwingUtil;
 public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -38,7 +42,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * Creates a JSmartCheckBoxMenuItem.
      * 
-     * @param text Checkbox text
+     * @param text Checkbox text.
      */
     public JSmartCheckBoxMenuItem(String text)
     {
@@ -49,8 +53,8 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * Creates a JSmartCheckBoxMenuItem.
      * 
-     * @param text Checkbox text
-     * @param b Checked state
+     * @param text Checkbox text.
+     * @param b Checked state.
      */
     public JSmartCheckBoxMenuItem(String text, boolean b)
     {
@@ -59,9 +63,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
 
 
     /**
-     * Creates a JSmartCheckedBoxMenuItem
+     * Creates a JSmartCheckedBoxMenuItem.
      * 
-     * @param a Action activated when the check box is toggled
+     * @param a Action activated when the check box is toggled.
      */
     public JSmartCheckBoxMenuItem(Action a)
     {
@@ -72,7 +76,7 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * Creates a JSmartCheckBoxMenuItem.
      * 
-     * @param icon Checkbox icon
+     * @param icon Checkbox icon.
      */
     public JSmartCheckBoxMenuItem(Icon icon)
     {
@@ -83,8 +87,8 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * Creates a JSmartCheckBoxMenuItem.
      * 
-     * @param text Checkbox text
-     * @param icon Checkbox icon
+     * @param text Checkbox text.
+     * @param icon Checkbox icon.
      */
     public JSmartCheckBoxMenuItem(String text, Icon icon)
     {
@@ -95,9 +99,9 @@ public class JSmartCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * Creates a JSmartCheckBoxMenuItem.
      * 
-     * @param text Checkbox text
-     * @param icon Checkbox icon
-     * @param b Checked state
+     * @param text Checkbox text.
+     * @param icon Checkbox icon.
+     * @param b Checked state.
      */
     public JSmartCheckBoxMenuItem(String text, Icon icon, boolean b)
     {

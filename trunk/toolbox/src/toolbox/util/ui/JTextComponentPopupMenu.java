@@ -44,7 +44,7 @@ public class JTextComponentPopupMenu extends JSmartPopupMenu
     /**
      * Creates a JTextComponentPopupMenu with an associated text component.
      * 
-     * @param textComponent JTextComponent to add popup to
+     * @param textComponent JTextComponent to add popup to.
      */
     public JTextComponentPopupMenu(JTextComponent textComponent)
     {

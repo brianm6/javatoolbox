@@ -16,6 +16,10 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartMenu extends JMenu implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -36,7 +40,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
     /**
      * Creates a JSmartMenu.
      * 
-     * @param s Menu text
+     * @param s Menu text.
      */
     public JSmartMenu(String s)
     {
@@ -47,8 +51,8 @@ public class JSmartMenu extends JMenu implements AntiAliased
     /**
      * Creates a JSmartMenu.
      * 
-     * @param s Menu text
-     * @param b Can the menu be torn off  
+     * @param s Menu text.
+     * @param b Can the menu be torn off.  
      */
     public JSmartMenu(String s, boolean b)
     {
@@ -59,7 +63,7 @@ public class JSmartMenu extends JMenu implements AntiAliased
     /**
      * Creates a JSmartMenu.
      * 
-     * @param a Action activated by the selection of this menu
+     * @param a Action activated by the selection of this menu.
      */
     public JSmartMenu(Action a)
     {

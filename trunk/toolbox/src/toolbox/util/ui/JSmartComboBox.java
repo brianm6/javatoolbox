@@ -20,6 +20,10 @@ import toolbox.util.ui.list.SmartListCellRenderer;
  */
 public class JSmartComboBox extends JComboBox implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -41,7 +45,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     /**
      * Creates a JSmartComboBox.
      * 
-     * @param items Dropdown items
+     * @param items Dropdown items.
      */
     public JSmartComboBox(Object[] items)
     {
@@ -53,7 +57,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     /**
      * Creates a JSmartComboBox.
      * 
-     * @param items Dropdown items
+     * @param items Dropdown items.
      */
     public JSmartComboBox(Vector items)
     {
@@ -65,7 +69,7 @@ public class JSmartComboBox extends JComboBox implements AntiAliased
     /**
      * Creates a JSmartComboBox.
      * 
-     * @param aModel Combobox model
+     * @param aModel Combobox model.
      */
     public JSmartComboBox(ComboBoxModel aModel)
     {

@@ -10,6 +10,10 @@ import javax.swing.JPopupMenu;
  */ 
 public class JPopupListener extends MouseAdapter
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Popup menu to add a listener to.
      */
@@ -22,7 +26,7 @@ public class JPopupListener extends MouseAdapter
     /**
      * Creates a JPopupListener.
      * 
-     * @param popupMenu Menu to add this listener to
+     * @param popupMenu Menu to add this listener to.
      */    
     public JPopupListener(JPopupMenu popupMenu)
     {
@@ -57,7 +61,7 @@ public class JPopupListener extends MouseAdapter
     /**
      * Determines if the popupmenu should be made visible.
      * 
-     * @param e Mouse event
+     * @param e Mouse event.
      */
     private void maybeShowPopup(MouseEvent e)
     {

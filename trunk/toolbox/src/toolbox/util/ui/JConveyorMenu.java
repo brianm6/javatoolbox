@@ -12,6 +12,10 @@ import toolbox.util.Assert;
  */
 public class JConveyorMenu extends JSmartMenu
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Max number of items that can be displayed by the menu. 
      */

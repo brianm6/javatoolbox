@@ -21,6 +21,10 @@ public class JSmartFrame extends JFrame implements IPreferenced
 {
 	// TODO: Needs to be tested.
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     // Preferences.
     private static final String NODE_JFRAME    = "JFrame";
     private static final String ATTR_MAXIMIZED = "maximized";

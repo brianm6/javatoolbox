@@ -66,7 +66,7 @@ public class JFindDialog extends JDialog
     /**
      * Creates a find dialog for the given search initiator.
      * 
-     * @param initiator Initiator of the searchs
+     * @param initiator Initiator of the search.
      */
     public JFindDialog(SearchInitiator initiator)
     {

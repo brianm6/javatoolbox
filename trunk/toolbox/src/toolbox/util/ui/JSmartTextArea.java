@@ -106,7 +106,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      * Creates a JSmartTextArea with the given text and autoscroll and antialias
      * turned off by default.
      * 
-     * @param text Initial text of textarea
+     * @param text Initial text of textarea.
      */
     public JSmartTextArea(String text)
     {
@@ -117,8 +117,8 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Creates a JSmartTextArea with the given options.
      * 
-     * @param autoScroll Turns on autoscroll of output
-     * @param antiAlias Turns on antialiasing of the text
+     * @param autoScroll Turns on autoscroll of output.
+     * @param antiAlias Turns on antialiasing of the text.
      */
     public JSmartTextArea(boolean autoScroll, boolean antiAlias)
     {
@@ -129,9 +129,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Creates a JSmartTextArea with the given text and options.
      * 
-     * @param text Initial text
-     * @param autoScroll Turns on autoscroll of output
-     * @param antiAlias Turns on antialiasing of the text
+     * @param text Initial text.
+     * @param autoScroll Turns on autoscroll of output.
+     * @param antiAlias Turns on antialiasing of the text.
      */
     public JSmartTextArea(String text, boolean autoScroll, boolean antiAlias)
     {
@@ -145,7 +145,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Creates a JSmartTextArea with the given number of rows and columns.
      * 
-     * @param rows Number of rows
+     * @param rows Number of rows.
      * @param columns Number of columns.
      */
     public JSmartTextArea(int rows, int columns)
@@ -160,7 +160,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      * 
      * @param text Initial text.
      * @param rows Number of rows.
-     * @param columns Number of columns
+     * @param columns Number of columns.
      */
     public JSmartTextArea(String text, int rows, int columns)
     {
@@ -172,7 +172,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Creates a JSmartTextArea from a Document.
      * 
-     * @param doc Document
+     * @param doc Document.
      */
     public JSmartTextArea(Document doc)
     {
@@ -184,7 +184,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Creates a JSmartTextArea from a Document.
      * 
-     * @param doc Document
+     * @param doc Document.
      * @param text Initial text.
      * @param rows Number of rows.
      * @param columns Number of columns.
@@ -270,7 +270,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      * event dispatch thread, then it is queued up on the event dispatch
      * thread.
      * 
-     * @param str String to append
+     * @param str String to append.
      * @see javax.swing.JTextArea#append(String)
      */
     public void append(final String str)
@@ -356,7 +356,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Sets the autoScroll feature.
      * 
-     * @param autoScroll  True to enable autoscroll, false to disable autoscroll
+     * @param autoScroll True to enable autoscroll, false to disable autoscroll.
      */
     public void setAutoScroll(boolean autoScroll)
     {
@@ -378,7 +378,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Activates antialiasing of text.
      * 
-     * @param antiAlias True turns antialiasing on; false turns it off
+     * @param antiAlias True turns antialiasing on; false turns it off.
      */
     public void setAntiAliased(boolean antiAlias)
     {
@@ -390,7 +390,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      * Returns the maximum number of characters displayable by the text area
      * before the contents get pruned.
      * 
-     * @return Max number of displayable characters
+     * @return Max number of displayable characters.
      */
     public int getCapacity()
     {
@@ -402,7 +402,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
      * Returns the percentage of text that gets pruned from the text area when
      * the capacity is reached.
      * 
-     * @return  Percent of text to prune (0 - 100)
+     * @return  Percent of text to prune (0 - 100).
      */
     public int getPruneFactor()
     {
@@ -413,7 +413,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Sets the max capacity of the text area.
      * 
-     * @param i Max capacity
+     * @param i Max capacity.
      */
     public void setCapacity(int i)
     {
@@ -424,7 +424,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Sets the pruning factor.
      * 
-     * @param f Pruning factor
+     * @param f Pruning factor.
      */
     public void setPruneFactor(int f)
     {

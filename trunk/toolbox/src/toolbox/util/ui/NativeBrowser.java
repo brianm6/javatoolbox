@@ -15,23 +15,27 @@ public class NativeBrowser
     private static final Logger logger_ = 
         Logger.getLogger(NativeBrowser.class);
     
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /** 
-     * The default system browser under windows 
+     * The default system browser under windows. 
      */
     private static final String WIN_PATH = "rundll32";
     
     /** 
-     * The flag to display a url 
+     * The flag to display a url.
      */
     private static final String WIN_FLAG = "url.dll,FileProtocolHandler";
     
     /** 
-     * The default browser under unix 
+     * The default browser under unix. 
      */
     private static final String UNIX_PATH = "netscape";
     
     /** 
-     * The flag to display a url 
+     * The flag to display a url. 
      */
     private static final String UNIX_FLAG = "-remote openURL";
     
@@ -40,10 +44,10 @@ public class NativeBrowser
     //--------------------------------------------------------------------------
     
     /**
-     * Display a file in the system browser. If you want to display a
-     * file, you must include the absolute path name.
+     * Display a file in the system browser. If you want to display a file, you
+     * must include the absolute path name.
      * 
-     * @param url URL to launch
+     * @param url URL to launch.
      */
     public static void displayURL(String url)
     {

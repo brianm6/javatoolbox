@@ -12,7 +12,7 @@ import javax.swing.JToggleButton;
 import toolbox.util.SwingUtil;
 
 /**
- * JSmartButton adds the following behavior.
+ * JSmartToggleButton adds the following behavior.
  * <p>
  * <ul>
  *   <li>Support for antialised text
@@ -22,6 +22,10 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartToggleButton extends JToggleButton implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -32,7 +36,7 @@ public class JSmartToggleButton extends JToggleButton implements AntiAliased
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a JSmartButton.
+     * Creates a JSmartToggleButton.
      */
     public JSmartToggleButton()
     {
@@ -40,9 +44,9 @@ public class JSmartToggleButton extends JToggleButton implements AntiAliased
 
 
     /**
-     * Creates a JSmartButton.
+     * Creates a JSmartToggleButton.
      * 
-     * @param text Button label
+     * @param text Button label.
      */
     public JSmartToggleButton(String text)
     {
@@ -51,9 +55,9 @@ public class JSmartToggleButton extends JToggleButton implements AntiAliased
 
 
     /**
-     * Creates a JSmartButton.
+     * Creates a JSmartToggleButton.
      * 
-     * @param a Action activated by the button
+     * @param a Action activated by the button.
      */
     public JSmartToggleButton(Action a)
     {
@@ -62,9 +66,9 @@ public class JSmartToggleButton extends JToggleButton implements AntiAliased
 
 
     /**
-     * Creates a JSmartButton.
+     * Creates a JSmartToggleButton.
      * 
-     * @param icon Button icon
+     * @param icon Button icon.
      */
     public JSmartToggleButton(Icon icon)
     {
@@ -73,10 +77,10 @@ public class JSmartToggleButton extends JToggleButton implements AntiAliased
 
 
     /**
-     * Creates a JSmartButton.
+     * Creates a JSmartToggleButton.
      * 
-     * @param text Button label
-     * @param icon Button icon
+     * @param text Button label.
+     * @param icon Button icon.
      */
     public JSmartToggleButton(String text, Icon icon)
     {

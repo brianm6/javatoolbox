@@ -45,7 +45,7 @@ public class JConveyorPopupMenu extends JSmartPopupMenu
     /**
      * Creates a JConveyorPopupMenu.
      * 
-     * @param title Popup menu title
+     * @param title Popup menu title.
      * @param capacity Max number of menu items allowed in the menu before
      *        items at the bottom of the menu start getting pushed off.
      */

@@ -22,6 +22,10 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     private static final Logger logger_ =
         Logger.getLogger(JSmartMenuItem.class);
         
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -42,7 +46,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     /**
      * Creates a JSmartMenuItem.
      * 
-     * @param text Menu item text
+     * @param text Menu item text.
      */
     public JSmartMenuItem(String text)
     {
@@ -53,8 +57,8 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     /**
      * Creates a JSmartMenuItem.
      * 
-     * @param text Menu item text
-     * @param mnemonic Text mnemonic
+     * @param text Menu item text.
+     * @param mnemonic Text mnemonic.
      */
     public JSmartMenuItem(String text, int mnemonic)
     {
@@ -65,7 +69,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     /**
      * Creates a JSmartMenuItem.
      * 
-     * @param a Action activated by the selection of this menu item
+     * @param a Action activated by the selection of this menu item.
      */
     public JSmartMenuItem(Action a)
     {
@@ -76,7 +80,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     /**
      * Creates a JSmartMenuItem.
      * 
-     * @param icon Menu item icon
+     * @param icon Menu item icon.
      */
     public JSmartMenuItem(Icon icon)
     {
@@ -87,8 +91,8 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
     /**
      * Creates a JSmartMenuItem.
      * 
-     * @param text Menu item text
-     * @param icon Menu item icon
+     * @param text Menu item text.
+     * @param icon Menu item icon.
      */
     public JSmartMenuItem(String text, Icon icon)
     {
@@ -107,6 +111,7 @@ public class JSmartMenuItem extends JMenuItem implements AntiAliased
         return antiAliased_;
     }
 
+    
     /**
      * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
      */

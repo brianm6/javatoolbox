@@ -17,6 +17,10 @@ import toolbox.util.SwingUtil;
  */
 public class JSmartButton extends JButton implements AntiAliased
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Antialiased flag.
      */
@@ -37,7 +41,7 @@ public class JSmartButton extends JButton implements AntiAliased
     /**
      * Creates a JSmartButton.
      * 
-     * @param text Button label
+     * @param text Button label.
      */
     public JSmartButton(String text)
     {
@@ -48,7 +52,7 @@ public class JSmartButton extends JButton implements AntiAliased
     /**
      * Creates a JSmartButton.
      * 
-     * @param a Action activated by the button
+     * @param a Action activated by the button.
      */
     public JSmartButton(Action a)
     {
@@ -59,7 +63,7 @@ public class JSmartButton extends JButton implements AntiAliased
     /**
      * Creates a JSmartButton.
      * 
-     * @param icon Button icon
+     * @param icon Button icon.
      */
     public JSmartButton(Icon icon)
     {
@@ -70,8 +74,8 @@ public class JSmartButton extends JButton implements AntiAliased
     /**
      * Creates a JSmartButton.
      * 
-     * @param text Button label
-     * @param icon Button icon
+     * @param text Button label.
+     * @param icon Button icon.
      */
     public JSmartButton(String text, Icon icon)
     {
