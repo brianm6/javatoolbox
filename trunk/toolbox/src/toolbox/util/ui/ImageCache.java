@@ -14,6 +14,10 @@ import toolbox.util.ResourceUtil;
  */
 public class ImageCache
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Directory where all the "known" images are located.
      */
@@ -41,6 +45,8 @@ public class ImageCache
     public static final String IMAGE_TREE_OPEN   = ROOT + "TreeOpen.gif";
     public static final String IMAGE_TREE_CLOSED = ROOT + "TreeClosed.gif";
     public static final String IMAGE_HARD_DRIVE  = ROOT + "HardDrive.gif";
+    
+    public static final String IMAGE_DATASOURCE  = ROOT + "Datasource.gif";
     
     /**
      * Map for cached icons.
