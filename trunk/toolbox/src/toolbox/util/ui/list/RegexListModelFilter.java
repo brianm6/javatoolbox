@@ -20,15 +20,23 @@ public class RegexListModelFilter extends AbstractListModelFilter
     private static final Logger logger_ =
         Logger.getLogger(RegexListModelFilter.class);
 
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Default regular expression is to match all.
      */    
     public static final String MATCH_ALL = ".*";
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Collection of indices that pass the filtering criteria.
      */
-    private List indexList_ = new ArrayList();
+    private List indexList_;
 
     /**
      * Regular expression used to filter list contents.
@@ -44,7 +52,6 @@ public class RegexListModelFilter extends AbstractListModelFilter
      * Regular expression matcher.
      */
     private RE matcher_;
-
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -84,8 +91,10 @@ public class RegexListModelFilter extends AbstractListModelFilter
         boolean matchCase)
     {
         super(delegate);
-        matchCase_ = matchCase;        
+        matchCase_ = matchCase;
+        indexList_ = new ArrayList();
         setRegex(regex);
+        
     }
     
     //--------------------------------------------------------------------------
@@ -108,7 +117,6 @@ public class RegexListModelFilter extends AbstractListModelFilter
             
         try
         {
-        
             matcher_ = new RE(regex_);
         
             if (!matchCase_)
@@ -155,7 +163,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
     /**
      * Returns the size of the filtered model.
      * 
-     * @return size
+     * @return int
      */
     public int getSize()
     {
