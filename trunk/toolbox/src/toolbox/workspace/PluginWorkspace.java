@@ -116,7 +116,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     public PluginWorkspace(String[] plugins) throws Exception
     {
-        super("Plugin Workspace");
+        super("Toolbox");
             
         buildView();
         loadPrefs();
