@@ -5,6 +5,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 import toolbox.util.ArrayUtil;
+import toolbox.util.StringUtil;
 
 /**
  * ArrayUtil unit test class
@@ -34,7 +35,6 @@ public class ArrayUtilTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
         TestRunner.run(ArrayUtilTest.class);
     }
 
@@ -188,7 +188,32 @@ public class ArrayUtilTest extends TestCase
             "nine", "ten"
         };
         
-        logger.info("[toStrn] " + ArrayUtil.toString(s));
+        String expected = "[10]{one, two, three, four, five, six, seven, eight, nine, ten}";
+        String result   = ArrayUtil.toString(s, false);
+        logger.info("[toStrn] " + result);
+        assertEquals("strings don't match", expected, result);
+
+    }
+
+
+    /**
+     * Tests toString() for empty array
+     */
+    public void testToStringEmpty()
+    {
+        String[] s = new String[0];
+        logger.info("[sempty] " + ArrayUtil.toString(s));
+    }
+    
+
+    /**
+     * Tests toString() for single element array with one per line = true
+     */
+    public void testToStringOneElementOnePerLine()
+    {
+        String[] s = new String[] { "hello"};
+        logger.info("[oneelm] " + ArrayUtil.toString(s, true));
+        logger.info("[oneelm] " + ArrayUtil.toString(s, false));        
     }
 
 
@@ -203,19 +228,10 @@ public class ArrayUtilTest extends TestCase
             "nine", "ten"
         };
         
-        logger.info("[toStrE] " + ArrayUtil.toString(s, true));
+        String result   = ArrayUtil.toString(s, true);
+        logger.info("[oneper]\n " + result);
     }
 
-
-    /**
-     * Tests toString() for empty array
-     */
-    public void testToStringEmpty()
-    {
-        String[] s = new String[0];
-        logger.info("[toStr1] " + ArrayUtil.toString(s));
-    }
-    
     
     /**
      * Tests indexOf() for an empty array 
