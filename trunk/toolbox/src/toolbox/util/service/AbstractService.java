@@ -102,6 +102,12 @@ public abstract class AbstractService implements Service
                 ServiceState.STOPPED, 
                 ServiceActivity.DESTROY), 
             ServiceState.DESTROYED); 
+
+        TRANSITIONS_STRICT.put(
+            new MultiKey(
+                ServiceState.DESTROYED, 
+                ServiceActivity.INITIALIZE), 
+            ServiceState.INITIALIZED); 
         
         // Populate relaxed service state transitions
         TRANSITIONS_RELAXED = new HashMap(6);
