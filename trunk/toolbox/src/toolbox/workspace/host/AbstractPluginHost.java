@@ -22,12 +22,12 @@ public abstract class AbstractPluginHost implements PluginHost
     //--------------------------------------------------------------------------
     
     /**
-     * Map of initialization parameters passed to each plugin on startup
+     * Map of initialization parameters passed to each plugin on startup.
      */
     private Map init_;
     
     /**
-     * Maps a plugin's FQCN -> IPlugin instance
+     * Maps a plugin's FQCN -> IPlugin instance.
      */
     private Map plugins_;
 
@@ -60,8 +60,8 @@ public abstract class AbstractPluginHost implements PluginHost
     {
         logger_.debug("addPlugin: " + plugin.getClass().getName());
         
-        importPlugin(plugin);
         plugin.startup(init_);
+        importPlugin(plugin);
     }
 
     
