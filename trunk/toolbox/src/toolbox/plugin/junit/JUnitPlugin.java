@@ -2,7 +2,6 @@ package toolbox.plugin.junit;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,7 +11,6 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,6 +30,7 @@ import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
@@ -72,7 +71,7 @@ public class JUnitPlugin extends AbstractPlugin
      * Shows the list of filtered packages. When the filter is .*, all packages
      * are shown.
      */
-    private JList packageList_;
+    private JSmartList packageList_;
     
     /**
      * Model for the the package list.
@@ -96,7 +95,7 @@ public class JUnitPlugin extends AbstractPlugin
     }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
@@ -123,31 +122,32 @@ public class JUnitPlugin extends AbstractPlugin
         filterField_.setFont(FontUtil.getPreferredMonoFont());
         filterField_.addKeyListener(new FilterKeyListener());
 
-        // Output panel
-        JPanel outputPanel = new JPanel(new BorderLayout());
-        JTextAreaAppender appender = new JTextAreaAppender();
-        Logger.getRootLogger().addAppender(appender);        
-        appender.setThreshold(Priority.DEBUG);
-        
-        JTextArea area = appender.getTextArea();
-        outputPanel.add(BorderLayout.CENTER, new JScrollPane(area));
+        // Text area
+        JTextArea area = new JSmartTextArea();
         area.setFont(FontUtil.getPreferredMonoFont());
         
-        // build button panel
+        // Appender
+        JTextAreaAppender appender = new JTextAreaAppender(area);
+        Logger.getRootLogger().addAppender(appender);        
+        appender.setThreshold(Priority.DEBUG);
+
+        // Output panel
+        JPanel outputPanel = new JPanel(new BorderLayout());
+        outputPanel.add(BorderLayout.CENTER, new JScrollPane(area));
+        
+        // Build button panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBorder(BorderFactory.createEtchedBorder());
-        
-        buttonPanel.add(
-            new JSmartButton(new GetPackageListAction()));
-            
-        buttonPanel.add(
-            new JSmartButton(new TestPackagesAction()));
+        buttonPanel.add(new JSmartButton(new GetPackageListAction()));
+        buttonPanel.add(new JSmartButton(new TestPackagesAction()));
 
-        // configure the root panel        
-        view_.add(BorderLayout.WEST, 
+        // Configure the root panel        
+        view_.add(
+            BorderLayout.WEST, 
             new JHeaderPanel("Test Packages", null, selectPanel));
         
-        view_.add(BorderLayout.CENTER, 
+        view_.add(
+            BorderLayout.CENTER, 
             new JHeaderPanel("Output", null, outputPanel));
         
         view_.add(BorderLayout.SOUTH, buttonPanel);        
@@ -163,7 +163,7 @@ public class JUnitPlugin extends AbstractPlugin
         packageList_.setModel(new DefaultListModel());
         filterModel_.setRegex(filterField_.getText());
         packageList_.setModel(filterModel_);
-        packageList_.scrollRectToVisible(new Rectangle(0, 0, 0, 0));
+        packageList_.scrollToTop();
     }
 
     //--------------------------------------------------------------------------
