@@ -90,6 +90,22 @@
         <attainGoal name="toolbox:browser"/>
     </goal>
 
+
+    <!-- =================================================================== -->
+    <!-- NDOC                                                                -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:ndoc" description="Runs ndoc report">
+        <attainGoal name="toolbox:xdoc-clean"/>        
+        <j:set var="maven.javadoc.doclet" value="ndoclet.NDoclet"/>
+        <j:set var="maven.javadoc.docletpath" value="${basedir}/build/lib/ndoclet.jar"/>
+        <j:set var="maven.javadoc.debug" value="false"/>
+        <j:set var="maven.javadoc.destdir" value="${maven.docs.dest}/ndocs"/>
+        <j:set var="maven.javadoc.additionalparam" value="-d ${maven.docs.dest}/ndocs"/>
+        <attainGoal name="maven-javadoc-plugin:report"/>
+        <j:set var="browser.file" value="${toolbox.ndoc.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+    
     
     <!-- =================================================================== -->
     <!-- CLOVER                                                              -->
