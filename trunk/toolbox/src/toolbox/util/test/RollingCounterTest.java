@@ -190,4 +190,30 @@ public class RollingCounterTest extends TestCase
         }       
     }    
     
+    /**
+     * Tests isAtStart()
+     */
+    public void testIsAtStart()
+    {
+        logger_.info("Running testIsAtStart...");
+        
+        RollingCounter c = new RollingCounter(1, 10, 1);
+        
+        assertTrue(c.isAtStart());
+        
+        c.increment();
+        
+        assertTrue(!c.isAtStart());
+    }
+    
+    /**
+     * Tests toString()
+     */
+    public void testToString()
+    {
+        logger_.info("Running testToString...");
+        
+        RollingCounter c = new RollingCounter(1,5,2);
+        logger_.info("toString: " + c);
+    }
 }
