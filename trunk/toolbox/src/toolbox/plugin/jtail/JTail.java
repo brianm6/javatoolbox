@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -35,7 +36,6 @@ import toolbox.util.SwingUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
-import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
@@ -67,8 +67,8 @@ public class JTail extends JFrame
     private JFlipPane flipPane_;    
     
     /**
-     * Status bar at the bottom of the screen that shows the status of
-     * varioys activities
+     * Status bar at the bottom of the screen that shows the status of various 
+     * activities
      */
     private IStatusBar statusBar_;    
     
@@ -108,7 +108,7 @@ public class JTail extends JFrame
         SwingUtil.setPreferredLAF();        
         JTail jtail = new JTail();
         jtail.setVisible(true);
-        jtail.applyConfiguration();
+        jtail.applyConfiguration(null);
     }
 
     //--------------------------------------------------------------------------
@@ -122,7 +122,6 @@ public class JTail extends JFrame
     {
         this("JTail");
     }
-
 
     /**
      * Constructor for JTail.
@@ -154,7 +153,8 @@ public class JTail extends JFrame
     //--------------------------------------------------------------------------
     
     /** 
-     * Initializes JTail
+     * Initializes JTail: builds the GUI, wires the events, and loads the
+     * configuration
      */
     protected void init()
     {
@@ -226,11 +226,9 @@ public class JTail extends JFrame
      */     
     protected void addTail(ITailPaneConfig config)
     {
-        String method = "[adTail] ";
-        
         try
         {
-            logger_.debug(method + "\n" + config);
+            logger_.debug("\n" + config);
             TailPane tailPane = new TailPane(config, statusBar_);
  
             JButton closeButton = tailPane.getCloseButton();
@@ -270,10 +268,12 @@ public class JTail extends JFrame
     }    
     
     /**
-     * Saves the current configuration of all tail instances
-     * (delegated to configuration manager)
+     * Saves the current configuration of all tail instances (delegated to 
+     * configuration manager).
+     * 
+     * @param  props  Properties to save file explorer to
      */
-    protected void saveConfiguration()
+    protected void saveConfiguration(Properties props)
     {
         // Size and location
         jtailConfig_.setSize(getSize());
@@ -300,14 +300,18 @@ public class JTail extends JFrame
         jtailConfig_.setTailConfigs(configs);
         
         configManager_.save(jtailConfig_);
+        
+        // Save file explorer settings
+        if (props != null)
+            fileSelectionPane_.getFileExplorer().savePrefs(props, "jtail");
     }
     
     /**
      * Applies configurations
      * 
-     * @param  configs  Tail configurations
+     * @param  props  Only JFileExplorer properties are saved here
      */
-    protected void applyConfiguration()
+    protected void applyConfiguration(Properties props)
     {
         // Window size
         if (jtailConfig_.getSize() != null)
@@ -341,6 +345,10 @@ public class JTail extends JFrame
             
             addTail(config);
         }
+        
+        // Apply saved file explorer settings
+        if (props != null)
+            fileSelectionPane_.getFileExplorer().applyPrefs(props, "jtail");
     }    
 
     /**
@@ -379,7 +387,7 @@ public class JTail extends JFrame
     //--------------------------------------------------------------------------
     
     /**
-     * Listener for the file explorer
+     * Adds a tail for a file double clicked by the user via the file explorer
      */
     private class FileSelectionListener extends JFileExplorerAdapter
     {
@@ -405,13 +413,10 @@ public class JTail extends JFrame
     }
     
     /**
-     * Tail button listener
+     * Adds a tail for the currently selected file in the file explorer
      */
     private class TailButtonListener implements ActionListener
     {
-        /**
-         * Tail button clicked
-         */
         public void actionPerformed(ActionEvent e)
         {
             ITailPaneConfig defaults = jtailConfig_.getDefaultConfig();
@@ -432,7 +437,7 @@ public class JTail extends JFrame
     }
     
     /**
-     * Tail button listener
+     * Removes a tail once the close button is clicked on the tail pane
      */
     private class CloseButtonListener implements ActionListener
     {
@@ -452,7 +457,7 @@ public class JTail extends JFrame
             tailMap_.remove(closeButton);
             
             // Save the configuration since the tail is gone
-            saveConfiguration();
+            saveConfiguration(null);
             
             statusBar_.setStatus(
                 "Closed " + pane.getConfiguration().getFilename());
@@ -466,7 +471,7 @@ public class JTail extends JFrame
     {
         public void windowClosing(WindowEvent e)
         {
-            saveConfiguration();
+            saveConfiguration(null);
         }
     }
 
@@ -475,8 +480,7 @@ public class JTail extends JFrame
     //--------------------------------------------------------------------------
     
     /**
-     * Action to exit the application. The configurations
-     * are saved before exit.
+     * Action to exit the application. The configurations are saved before exit.
      */
     private class ExitAction extends AbstractAction
     {
@@ -489,12 +493,9 @@ public class JTail extends JFrame
                 KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
         }
         
-        /**
-         * Saves the configuration and exits the application
-         */
         public void actionPerformed(ActionEvent e)
         {
-            saveConfiguration();
+            saveConfiguration(null);
             System.exit(0);
         }
     }
@@ -513,19 +514,16 @@ public class JTail extends JFrame
                 KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
         }
     
-        /**
-         * Saves the configuration
-         */
         public void actionPerformed(ActionEvent e)
         {
-            saveConfiguration();
+            saveConfiguration(null);
             statusBar_.setStatus("Saved configuration");
         }
     }
-
+    
     /**
      * Generates a file with intermittent output so that the file can be
-     * tailed.
+     * tailed for testing purposes. The file is created is $user.home
      */
     private class CreateFileAction extends AbstractAction
     {
@@ -542,12 +540,11 @@ public class JTail extends JFrame
                 KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
         }
     
-        /**
-         * Saves the configuration
-         */
         public void actionPerformed(ActionEvent e)
         {
-            String file = "c:\\crap.txt";
+            String file = FileUtil.trailWithSeparator(
+                System.getProperty("user.home")) + "jtail.test.txt";
+                 
             FileStuffer stuffer = new FileStuffer(new File(file), 100);
             stuffer.start();
             statusBar_.setStatus("Created " + file + " for tailing");
@@ -555,7 +552,7 @@ public class JTail extends JFrame
     }
     
     /**
-     * Select Font action
+     * Pops up a font selection dialog to change the font
      */
     private class SetFontAction extends AbstractAction 
         implements IFontChooserDialogListener
@@ -575,9 +572,6 @@ public class JTail extends JFrame
                 KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
         }
     
-        /**
-         * Pops up the Font selection dialog
-         */
         public void actionPerformed(ActionEvent e)
         {
             // Remember state just in case user cancels operation
@@ -596,9 +590,13 @@ public class JTail extends JFrame
             fsd.setVisible(true);
         }
         
+        //----------------------------------------------------------------------
+        // Interface IFontChooserDialogListener
+        //----------------------------------------------------------------------
+        
         /**
-         * Sets the font of the currently selected tail to the chosen 
-         * font in the font selection dialog
+         * Sets the font of the currently selected tail to the font chosen in 
+         * the font selection dialog
          * 
          * @param  fontChooser  Font chooser component
          */
@@ -614,7 +612,7 @@ public class JTail extends JFrame
             }
             catch (FontChooserException fse)
             {
-                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
+                ExceptionUtil.handleUI(fse, logger_);
             }
         }
 
@@ -645,13 +643,13 @@ public class JTail extends JFrame
             }
             catch (FontChooserException fse)
             {
-                JSmartOptionPane.showExceptionMessageDialog(JTail.this, fse);
+                ExceptionUtil.handleUI(fse, logger_);
             }
         }
     }
     
     /**
-     * Preferences action
+     * Pops up the preferences dialog
      */
     private class PreferencesAction extends AbstractAction 
     {
@@ -667,9 +665,6 @@ public class JTail extends JFrame
                 KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
         }
     
-        /**
-         * Pops up the Font selection dialog
-         */
         public void actionPerformed(ActionEvent e)
         {
             // Show font selection dialog with font from the current
