@@ -212,8 +212,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
         
         areaSplitPane_ = 
-            new JSmartSplitPane(JSplitPane.VERTICAL_SPLIT,
-                new JScrollPane(sqlArea_), 
+            new JSmartSplitPane(
+                JSplitPane.VERTICAL_SPLIT,
+                sqlArea_, // JEditTextArea is already wrapped in a scroller
                 new JScrollPane(resultsArea_));
 
         // Buttons 
