@@ -2,6 +2,11 @@ package toolbox.util.io;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import junit.framework.Assert;
 
 /**
  * A file filter that logically ANDs two existing filters so that the 
@@ -9,8 +14,12 @@ import java.io.FilenameFilter;
  */
 public class AndFilter implements FilenameFilter
 {
-    private FilenameFilter firstFilter_;
-    private FilenameFilter secondFilter_;
+    private List filters_ = new ArrayList();
+    
+    
+    public AndFilter()
+    {
+    }
     
     /**
      * Creates a filter that logically ANDs two filters
@@ -20,8 +29,8 @@ public class AndFilter implements FilenameFilter
      */   
     public AndFilter(FilenameFilter filterOne, FilenameFilter filterTwo)
     {
-        firstFilter_  = filterOne;
-        secondFilter_ = filterTwo;
+        addFilter(filterOne);
+        addFilter(filterTwo);
     }
     
     /**
@@ -34,7 +43,27 @@ public class AndFilter implements FilenameFilter
      */
     public boolean accept(File dir,String name)
     {
-        return firstFilter_.accept(dir, name) &&
-               secondFilter_.accept(dir, name);
+        Assert.assertTrue("No filters!", filters_.size() > 0);
+        
+        Iterator i = filters_.iterator();
+        
+        while(i.hasNext())
+        {
+            FilenameFilter f = (FilenameFilter) i.next();
+         
+            // short circuit on first FALSE   
+            if (!f.accept(dir, name))
+                return false;
+        }
+
+        return true;        
+    }
+    
+    /**
+     * Adds a filter
+     */
+    public void addFilter(FilenameFilter filter)
+    {
+        filters_.add(filter);        
     }
 }
