@@ -33,7 +33,6 @@ import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartTextArea;
-import toolbox.util.ui.JTextComponentPopupMenu;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 
@@ -95,7 +94,6 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
     {
         textArea_ = new JSmartTextArea();
         textArea_.setFont(SwingUtil.getPreferredMonoFont());
-        new JTextComponentPopupMenu(textArea_);
         
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -145,18 +143,21 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
                "tokenizing, and regular expression based filtering.";
     }
 
-    public void applyPrefs(Properties prefs)
+    public void applyPrefs(Properties prefs) throws Exception
     {
         topFlipPane_.applyPrefs(prefs, "textplugin");
+        textArea_.applyPrefs(prefs, "textplugin");
     }
 
     public void savePrefs(Properties prefs)
     {
         topFlipPane_.savePrefs(prefs, "textplugin");
+        textArea_.savePrefs(prefs, "textplugin");
     }
 
     public void shutdown()
     {
+        textArea_.setText("");
     }
     
     //--------------------------------------------------------------------------
