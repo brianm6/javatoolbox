@@ -3,7 +3,7 @@ package toolbox.util.decompiler;
 import java.io.File;
 
 /**
- * Decompiler Interface.
+ * Common interface for various decompiler implementations.
  */
 public interface Decompiler
 {
@@ -18,19 +18,20 @@ public interface Decompiler
     /**
      * Decompiles the given classFile.
      * 
-     * @param classFile Class to decompile
-     * @return Decompiled class
-     * @throws DecompilerException on error
+     * @param classFile Class file to decompile
+     * @return Souce code of the decompiled class
+     * @throws DecompilerException on decompilation error
      */
     String decompile(File classFile) throws DecompilerException;
     
     
     /**
-     * Decompiles the given class.
+     * Decompiles a class that exists on the given classpath.
      *  
      * @param className Name of the class.
-     * @param classPath Classpath to search for the class on.
-     * @return Decompiled class.
+     * @param classPath Classpath that the class exists in.
+     * @return Source code of the decompiled class.
+     * @throws DecompilerException on decompilation error.
      */
     String decompile(String className, String classPath) 
         throws DecompilerException;    

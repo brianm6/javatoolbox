@@ -13,27 +13,27 @@ import toolbox.util.ClassUtil;
 import toolbox.util.StringUtil;
 
 /**
- * Basic implementation of the {@link DumpFormatter} interface
+ * Basic implementation of the {@link DumpFormatter} interface.
  */
 public class BasicDumpFormatter implements DumpFormatter
 {
     /** 
-     * Classes that are excluded from the object dump 
+     * Classes that are excluded from the object dump. 
      */
     private List excludedClasses_;
 
     /** 
-     * Fields that are excluded from the object dump 
+     * Fields that are excluded from the object dump. 
      */
     private List excludedFields_;
 
     /** 
-     * Controls stripping of the package when printing out a classes' name 
+     * Controls stripping of the package when printing out a classes' name. 
      */
     private boolean stripPackage_;
 
     /** 
-     * Flag to show inheritance tree for each object that is traversed
+     * Flag to show inheritance tree for each object that is traversed.
      */
     private boolean showInheritance_;
     
@@ -42,9 +42,9 @@ public class BasicDumpFormatter implements DumpFormatter
     //--------------------------------------------------------------------------
 
     /**
-     * Default constructor
+     * Creates a BasicDumpFormatter.
      * 
-     * @throws  RESyntaxException on regular expression error
+     * @throws RESyntaxException on regular expression error
      */
     public BasicDumpFormatter() throws RESyntaxException
     {
@@ -63,59 +63,63 @@ public class BasicDumpFormatter implements DumpFormatter
     //--------------------------------------------------------------------------
     
     /**
-     * Excludes a class from the object dump
-     *
-     * @param   clazz  Class to exclude
-     * @throws  RESyntaxException on regular expression error 
-     */
+	 * Excludes a class from the object dump.
+	 * 
+	 * @param clazz Class to exclude
+	 * @throws RESyntaxException on regular expression error
+	 */
     public void excludeClass(Class clazz) throws RESyntaxException
     {
         excludedClasses_.add(new RE("^" + clazz.getName() + "$"));
     }
 
+    
     /**
-     * Excludes one or more classes matching a regular expression from the
-     * object dump.
-     *
-     * @param   classFilter  Regular expression representing classes to exclude
-     * @throws  RESyntaxException on regular expression error 
-     */
+	 * Excludes one or more classes matching a regular expression from the
+	 * object dump.
+	 * 
+	 * @param classFilter Regular expression representing classes to exclude
+	 * @throws RESyntaxException on regular expression error
+	 */
     public void excludeClasses(String classFilter) throws RESyntaxException
     {
         excludedClasses_.add(new RE(classFilter));
     }
 
+    
     /**
-     * Excludes one or more fields matching a regular expression from the
-     * object dump
-     *
-     * @param   fieldFilter  Regular expression represeting fields names to
-     *                       exclude
-     * @throws  RESyntaxException on regular expression error 
-     */
+	 * Excludes one or more fields matching a regular expression from the
+	 * object dump.
+	 * 
+	 * @param fieldFilter Regular expression represeting fields names to
+	 *        exclude
+	 * @throws RESyntaxException on regular expression error
+	 */
     public void excludeFields(String fieldFilter) throws RESyntaxException
     {
         excludedFields_.add(new RE(fieldFilter));
     }
 
+    
     /**
-     * Allows stripping of the package name when printing out a classes 
-     * fully qualified name.
-     * 
-     * @param  b  If true, package will be choped from a class name, otherwise 
-     *            the FQN will be used.
-     */
+	 * Allows stripping of the package name when printing out a classes fully
+	 * qualified name.
+	 * 
+	 * @param b If true, package will be choped from a class name, otherwise
+	 *        the FQN will be used.
+	 */
     public void setStripPackage(boolean b)
     {
         stripPackage_ = b;
     }
     
+    
     /**
-     * Flag to set the display of the class inheritance hierarchy
-     * 
-     * @param  b  If true, show inheritance hierarchy, otherwise just print
-     *            the name of the current class in the hierarchy.
-     */
+	 * Flag to set the display of the class inheritance hierarchy.
+	 * 
+	 * @param b If true, show inheritance hierarchy, otherwise just print the
+	 *        name of the current class in the hierarchy.
+	 */
     public void setShowInheritance(boolean b)
     {
         showInheritance_ = b;
@@ -125,6 +129,9 @@ public class BasicDumpFormatter implements DumpFormatter
     // DumpFormatter Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.util.dump.DumpFormatter#shouldInclude(java.lang.Class)
+     */
     public boolean shouldInclude(Class clazz)
     {
         String name = clazz.getName();
@@ -140,6 +147,11 @@ public class BasicDumpFormatter implements DumpFormatter
         return true;
     }
 
+    
+    /**
+	 * @see toolbox.util.dump.DumpFormatter#shouldInclude(
+     *      java.lang.reflect.Field)
+	 */
     public boolean shouldInclude(Field field)
     {
         String name = field.getName();
@@ -159,26 +171,46 @@ public class BasicDumpFormatter implements DumpFormatter
         return true;
     }
     
+    
+    /**
+     * @see toolbox.util.dump.DumpFormatter#formatClassName(java.lang.Class)
+     */
     public String formatClassName(Class clazz)
     {
         return formatClassName(clazz.getName());
     }
 
+    
+    /**
+     * @see toolbox.util.dump.DumpFormatter#formatClassName(java.lang.String)
+     */
     public String formatClassName(String className)
     {
         return (stripPackage_ ? ClassUtil.stripPackage(className) : className);
     }
 
+    
+    /**
+     * @see toolbox.util.dump.DumpFormatter#showInheritance()
+     */
     public boolean showInheritance()
     {
         return showInheritance_;
     }
     
+    
+    /**
+     * @see toolbox.util.dump.DumpFormatter#sortFields()
+     */
     public boolean sortFields()
     {
         return true;
     }
     
+    
+    /**
+     * @see toolbox.util.dump.DumpFormatter#formatFieldName(java.lang.String)
+     */
     public String formatFieldName(String fieldName)
     {
         //
@@ -187,5 +219,4 @@ public class BasicDumpFormatter implements DumpFormatter
         
         return StringUtil.trim(fieldName, '_');
     }
-
 }
