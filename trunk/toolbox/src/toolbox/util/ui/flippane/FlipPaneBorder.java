@@ -7,10 +7,9 @@ import java.awt.Insets;
 
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 /**
- * Custom border for JFlipPane.
+ * Custom border for JFlipPane that emulates the look of a JSplitPane divider.
  */
 public class FlipPaneBorder implements Border
 {
@@ -67,14 +66,10 @@ public class FlipPaneBorder implements Border
     //--------------------------------------------------------------------------
     
     /**
-     * Paints the border.
+     * Paint custom border to look like a split pane divider.
      * 
-     * @param c Component to paint border on.
-     * @param g Graphics context.
-     * @param x X coord.
-     * @param y Y coord.
-     * @param width Width.
-     * @param height Height.
+     * @see javax.swing.border.Border#paintBorder(java.awt.Component,
+     *      java.awt.Graphics, int, int, int, int)
      */
     public void paintBorder(Component c, Graphics g, int x, int y, 
         int width, int height)
@@ -95,12 +90,11 @@ public class FlipPaneBorder implements Border
             paintVertBorder(g, x + width - JFlipPane.SPLITTER_WIDTH, y, height);
     } 
 
-
+    
     /**
-     * Retrieves border insets.
+     * Return custom insets.
      * 
-     * @param c Component to get border insets for.
-     * @return Border insets.
+     * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
      */
     public Insets getBorderInsets(Component c)
     {
@@ -109,9 +103,9 @@ public class FlipPaneBorder implements Border
     
     
     /**
-     * Returns true if border is opaque, false otherwise.
+     * Border is never opaque.
      * 
-     * @return boolean
+     * @see javax.swing.border.Border#isBorderOpaque()
      */
     public boolean isBorderOpaque()
     {
@@ -177,19 +171,13 @@ public class FlipPaneBorder implements Border
 
 
     /**
-     * Updates colors to match bumps on metal look and feel.
+     * Updates colors to match bumps on the currently installed look and feel.
      */
     private void updateColors()
     {
-        if (UIManager.getLookAndFeel() instanceof MetalLookAndFeel)
-        {
-            color1_ = MetalLookAndFeel.getControlHighlight();
-            color2_ = MetalLookAndFeel.getControlDarkShadow();
-            color3_ = MetalLookAndFeel.getControl();
-        }
-        else
-        {
-            color1_ = color2_ = color3_ = null;
-        }
+        // Try to use the currently installed LAF's colors for the given keys...
+        color1_ = UIManager.getColor("controlHighlight");
+        color2_ = UIManager.getColor("controlDkShadow");
+        color3_ = UIManager.getColor("control");
     } 
 }
