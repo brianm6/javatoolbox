@@ -145,11 +145,10 @@ public class WrappingWriter extends Writer
     /**
      * Write a portion of an array of characters.
      *
-     * @param  cbuf  Array of characters
-     * @param  off   Offset from which to start writing characters
-     * @param  len   Number of characters to write
-     *
-     * @exception  IOException  If an I/O error occurs
+     * @param   cbuf  Array of characters
+     * @param   off   Offset from which to start writing characters
+     * @param   len   Number of characters to write
+     * @throws  IOException if an I/O error occurs
      */
     public void write(char cbuf[], int off, int len) throws IOException
     {
@@ -183,7 +182,7 @@ public class WrappingWriter extends Writer
      * byte stream, flush it.  Thus one flush() invocation will flush all the
      * buffers in a chain of Writers and OutputStreams.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @throws  IOException if an I/O error occurs
      */
     public void flush() throws IOException
     {   
@@ -196,7 +195,7 @@ public class WrappingWriter extends Writer
      * further write() or flush() invocations will cause an IOException to be
      * thrown.  Closing a previously-closed stream, however, has no effect.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @throws  IOException if an I/O error occurs
      */
     public void close() throws IOException
     {

@@ -38,8 +38,8 @@ public class PositionInputStream extends InputStream
     /**
      * Read a single byte.
      *
-     * @return     Single byte that was read
-     * @throws     IOException  If an I/O error occurs
+     * @return  Single byte that was read
+     * @throws  IOException if an I/O error occurs
      */
     public int read() throws IOException
     {
@@ -54,11 +54,12 @@ public class PositionInputStream extends InputStream
     /**
      * Read a byte into a portion of an array.
      * 
-     * @param   b       Byte array to store read data
-     * @param   off     Offset in byte array to store read data
-     * @param   len     Number of bytes to copy to byte array
+     * @param   b     Byte array to store read data
+     * @param   off   Offset in byte array to store read data
+     * @param   len   Number of bytes to copy to byte array
+     * 
      * @return  Number of bytes read
-     * @throws  IOException  If an I/O error occurs
+     * @throws  IOException if an I/O error occurs
      */
     public int read(byte b[], int off, int len) throws IOException
     {
@@ -79,7 +80,7 @@ public class PositionInputStream extends InputStream
      *
      * @param    n  Number of bytes to skip
      * @return   Number of characters skipped
-     * @throws   IOException  If an I/O error occurs
+     * @throws   IOException if an I/O error occurs
      */
     public long skip(long n) throws IOException
     {
@@ -94,7 +95,7 @@ public class PositionInputStream extends InputStream
      * Returns number of bytes available to read from stream without blocking
      * 
      * @return  Number of bytes available to read
-     * @throws  IOException on IO error
+     * @throws  IOException on I/O error
      */
     public int available() throws IOException
     {
@@ -104,7 +105,7 @@ public class PositionInputStream extends InputStream
     /**
      * Close the stream.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @exception  IOException if an I/O error occurs
      */
     public void close() throws IOException
     {
@@ -135,7 +136,7 @@ public class PositionInputStream extends InputStream
     /**
      * Reset the stream.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @exception  IOException if an I/O error occurs
      */
     public void reset() throws IOException
     {
@@ -152,7 +153,7 @@ public class PositionInputStream extends InputStream
      * 
      * @param   stopAt  Byte to stop at
      * @return  Bytes from the current postion until the stopAt or EOF is found.
-     * @throws  IOException on IO error
+     * @throws  IOException on I/O error
      */
     public byte[] readUntil(byte stopAt) throws IOException
     {
@@ -164,7 +165,7 @@ public class PositionInputStream extends InputStream
      * 
      * @param   stopAt  Any byte to stop at
      * @return  Bytes from the current postion until the stopAt or EOF is found.
-     * @throws  IOException on IO error
+     * @throws  IOException on I/O error
      */
     public byte[] readUntil(byte[] stopAt) throws IOException
     {
