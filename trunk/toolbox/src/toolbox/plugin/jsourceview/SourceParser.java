@@ -138,7 +138,7 @@ class SourceParser implements Runnable
             "%]"); 
         
         sourceView_.setScanStatus("Done parsing.");
-        sourceView_.goButton_.setText(JSourceView.LABEL_GO);
+        sourceView_.goButton_.setText(JSourceView.LABEL_GO_BUTTON);
         
         // Turn the sorter back on
         // REMOVE: sourceView_.getTableSorter().setEnabled(true);
