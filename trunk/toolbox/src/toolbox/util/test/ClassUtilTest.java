@@ -1,6 +1,7 @@
 package toolbox.util.test;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -209,5 +210,32 @@ public class ClassUtilTest extends TestCase
             
         assertEquals("Package names don't match", "", 
             ClassUtil.stripClass("")); 
+    }
+    
+    /**
+     * Tests getMatchingClasses() for null, zero, one, and > 1 as input
+     */
+    public void testGetMatchingClasses()
+    {
+        logger_.info("Running testGetMatchingClasses...");
+        
+        // Null
+        assertEquals(0, ClassUtil.getMatchingClasses(null).length);
+        
+        // Zero
+        assertEquals(0, ClassUtil.getMatchingClasses(new Object[0]).length);
+        
+        // One
+        Class[] one = ClassUtil.getMatchingClasses(new Object[] { "whoopee" } );
+        assertEquals(1, one.length);
+        assertEquals(String.class, one[0]);
+        
+        // Many
+        Object[] objs = new Object[] {"whoopee",new Integer(3),new ArrayList()};
+        Class[] many = ClassUtil.getMatchingClasses(objs);
+        assertEquals(3, many.length);
+        assertEquals(String.class, many[0]);
+        assertEquals(Integer.class, many[1]);
+        assertEquals(ArrayList.class, many[2]);
     }
 }
