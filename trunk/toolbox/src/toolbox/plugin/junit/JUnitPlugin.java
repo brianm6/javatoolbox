@@ -63,7 +63,6 @@ public class JUnitPlugin extends JPanel implements  IPlugin
      */
     public JUnitPlugin()
     {
-        buildView();
     }
 
     //--------------------------------------------------------------------------
@@ -149,6 +148,7 @@ public class JUnitPlugin extends JPanel implements  IPlugin
      */
     public void init()
     {
+        buildView();        
     }
 
     /**
