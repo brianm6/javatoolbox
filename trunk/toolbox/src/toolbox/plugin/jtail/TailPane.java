@@ -206,7 +206,7 @@ public class TailPane extends JHeaderPanel
     /**
      * List of listeners interested in newData() and tailAggregated().
      */
-    private TailPaneListener[] tailPaneListeners_;
+    private TailPaneListener[] listeners_;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -225,7 +225,7 @@ public class TailPane extends JHeaderPanel
     {
         super(config.getFilenames()[0]);
         statusBar_ = statusBar;
-        tailPaneListeners_ = new TailPaneListener[0];
+        listeners_ = new TailPaneListener[0];
         contexts_ = new TailContext[0];
         buildView(config);
         buildFilters();
@@ -562,8 +562,8 @@ public class TailPane extends JHeaderPanel
      */
     protected void fireNewDataAvailable(TailPane tailPane)
     {
-        for (int i = 0; i < tailPaneListeners_.length; i++)
-            tailPaneListeners_[i].newDataAvailable(tailPane);
+        for (int i = 0; i < listeners_.length; i++)
+            listeners_[i].newDataAvailable(tailPane);
     }
 
 
@@ -574,8 +574,8 @@ public class TailPane extends JHeaderPanel
      */
     public void fireTailAggregated(TailPane tailPane)
     {
-        for (int i = 0; i < tailPaneListeners_.length; i++)
-            tailPaneListeners_[i].tailAggregated(tailPane);
+        for (int i = 0; i < listeners_.length; i++)
+            listeners_[i].tailAggregated(tailPane);
     }
 
 
@@ -586,8 +586,7 @@ public class TailPane extends JHeaderPanel
      */
     public void addTailPaneListener(TailPaneListener listener)
     {
-        tailPaneListeners_ =
-            (TailPaneListener[]) ArrayUtil.add(tailPaneListeners_, listener);
+        listeners_ = (TailPaneListener[]) ArrayUtil.add(listeners_, listener);
     }
 
 
@@ -598,8 +597,8 @@ public class TailPane extends JHeaderPanel
      */
     public void removeTailPaneListener(TailPaneListener listener)
     {
-        tailPaneListeners_ = (TailPaneListener[])
-            ArrayUtil.remove(tailPaneListeners_, listener);
+        listeners_ = (TailPaneListener[])
+            ArrayUtil.remove(listeners_, listener);
     }
 
     //--------------------------------------------------------------------------
