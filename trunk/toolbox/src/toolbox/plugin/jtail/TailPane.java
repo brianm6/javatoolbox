@@ -2,9 +2,9 @@ package toolbox.jtail;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.swing.JButton;
@@ -404,4 +404,24 @@ public class TailPane extends JPanel implements ActionListener
         config_.setShowLineNumbers(lineNumbersBox_.isSelected());
         return config_;
     }    
+ 
+ 
+    /**
+     * @return  Font for the tail output area
+     */   
+    public Font getTailFont()
+    {
+        return tailArea_.getFont();
+    }
+ 
+    
+    /**
+     * Sets the tail output area's font
+     * 
+     * @param  font  Font to set for tail output
+     */
+    public void setTailFont(Font font)
+    {
+        tailArea_.setFont(font);
+    }
 }
