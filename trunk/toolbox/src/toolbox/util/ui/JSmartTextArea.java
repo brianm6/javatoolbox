@@ -1,13 +1,7 @@
 package toolbox.util.ui;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
@@ -17,19 +11,19 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Extends the functionality of JTextArea by adding
+ * Extends the functionality of JTextArea by adding:
  * <ul>
- *  <li>Tailing of output</li>
- *  <li>Toggle tailing of output via RMB</li>
+ *  <li>Autoscrolling of output</li>
+ *  <li>Popup menu with cut/copy/paste/save/insert</li>
  *  <li>Anti-aliased text</li>
  * </ul>
  */
 public class JSmartTextArea extends JTextArea
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(JSmartTextArea.class);
     
@@ -37,13 +31,6 @@ public class JSmartTextArea extends JTextArea
     private JCheckBoxMenuItem   autoScrollItem_;
     private JCheckBoxMenuItem   antiAliasItem_;
     
-    private Map   renderMap_;
-    private Color darkblue_   = new Color(63, 64, 124);
-    private Color darkrose_   = new Color(159, 61, 100);
-    
-    private GradientPaint myGradient_ = 
-        new GradientPaint(0, 0, darkblue_, 0, 50, darkrose_);
-
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
@@ -57,7 +44,7 @@ public class JSmartTextArea extends JTextArea
     }
 
     /**
-     * Constructor for JSmartTextArea.
+     * Creates a JSmartTextArea with the given text
      * 
      * @param text  Initial text of textarea
      */
@@ -67,10 +54,10 @@ public class JSmartTextArea extends JTextArea
     }
 
     /**
-     * Constructor for JSmartTextArea.
+     * Creates a JSmartTextArea with the given options
      * 
      * @param  autoScroll  Turns on autoscroll of output
-     * @param  antiAlias   Turns on antialiasing of the font
+     * @param  antiAlias   Turns on antialiasing of the text
      */
     public JSmartTextArea(boolean autoScroll, boolean antiAlias)
     {
@@ -78,11 +65,11 @@ public class JSmartTextArea extends JTextArea
     }
 
     /**
-     * Constructor for JSmartTextArea.
+     * Creates a JSmartTextArea with the given text and options
      * 
      * @param  text        Initial text
      * @param  autoScroll  Turns on autoscroll of output
-     * @param  antiAlias   Turns on antialiasing of the font
+     * @param  antiAlias   Turns on antialiasing of the text
      */
     public JSmartTextArea(String text, boolean autoScroll, boolean antiAlias)
     {
@@ -93,43 +80,22 @@ public class JSmartTextArea extends JTextArea
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden from java.awt.Component
+    //  Overrides java.awt.Component
     //--------------------------------------------------------------------------
     
     /**
-     * Override paint to enable antialiasing
+     * Overrides paint to enable antialiasing
      * 
      * @param  g  Graphics context
      */    
     public void paint(Graphics g) 
     {
-        if (isAntiAlias())
-        {
-            Graphics2D g2 = (Graphics2D) g;
-    
-            if (renderMap_ == null)
-            {
-                renderMap_ = new HashMap();
-                
-                renderMap_.put(
-                    RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-                    
-                renderMap_.put(
-                    RenderingHints.KEY_FRACTIONALMETRICS,
-                    RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-            }
-                
-            g2.setRenderingHints(renderMap_);
-            g2.setPaint(myGradient_);
-            super.paint(g2);
-        }
-        else
-            super.paint(g);
+        SwingUtil.setAntiAlias(g, isAntiAlias());
+        super.paint(g);
     }
     
     //--------------------------------------------------------------------------
-    //  Overridden from javax.swing.JTextArea
+    //  Overrides javax.swing.JTextArea
     //--------------------------------------------------------------------------
     
     /**
@@ -151,23 +117,10 @@ public class JSmartTextArea extends JTextArea
         }
         else
         {
-//            final String s = str;
-//            
-//            SwingUtilities.invokeLater(
-//            
-//                new Runnable()
-//                {
-//                    public void run()
-//                    {
-//                        append(s);
-//                    }
-//                });
-            
             ThreadUtil.MethodRunner runner = new ThreadUtil.MethodRunner(
                 this, "append", new String[] { str } );    
                 
             SwingUtilities.invokeLater(runner);
-            
         }
     }
     
@@ -176,7 +129,7 @@ public class JSmartTextArea extends JTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * Adds the popupmenu to the textarea
+     * Adds a popupmenu to the textarea
      */
     protected void buildView()
     {
@@ -194,7 +147,7 @@ public class JSmartTextArea extends JTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * Scrolls to the end of the text area
+     * Convenience method to scroll to the bottom of the text area
      */
     public void scrollToEnd()
     {
@@ -206,9 +159,7 @@ public class JSmartTextArea extends JTextArea
     //--------------------------------------------------------------------------
     
     /**
-     * Determines if the autoscroll feature is active
-     * 
-     * @return  True is autoscroll is enable, false otherwise
+     * @return  True is autoscroll is enabled, false otherwise
      */
     public boolean isAutoScroll()
     {
@@ -226,9 +177,7 @@ public class JSmartTextArea extends JTextArea
     }
    
     /**
-     * Returns the antiAlias.
-     * 
-     * @return boolean
+     * @return True if antialiasing is enabled, false otherwise
      */
     public boolean isAntiAlias()
     {
@@ -236,9 +185,9 @@ public class JSmartTextArea extends JTextArea
     }
 
     /**
-     * Sets the antiAlias.
+     * Activates antialiasing of text
      * 
-     * @param antiAlias The antiAlias to set
+     * @param antiAlias True turns antialiasing on; false turns it off
      */
     public void setAntiAlias(boolean antiAlias)
     {
