@@ -1,5 +1,8 @@
 package toolbox.plugin.jtail.config.xom;
 
+import toolbox.util.ui.AntiAliased;
+import toolbox.util.ui.JSmartTextArea;
+
 /**
  * XML configuration constants.
  */
@@ -13,9 +16,9 @@ public interface XMLConstants
 
     // Tail XML element
     String NODE_TAIL          = "Tail";
-    String   ATTR_AUTOSCROLL  = "autoScroll";
+    String   ATTR_AUTOSCROLL  = JSmartTextArea.PROP_AUTOTAIL;
     String   ATTR_LINENUMBERS = "showLineNumbers";
-    String   ATTR_ANTIALIAS   = "antiAlias";
+    String   ATTR_ANTIALIAS   = AntiAliased.PROP_ANTIALIAS;
     String   ATTR_AUTOSTART   = "autoStart";
     String   NODE_FILE        = "File";
     String     ATTR_FILENAME  = "name";
