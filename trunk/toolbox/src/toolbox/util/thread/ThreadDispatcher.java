@@ -32,13 +32,14 @@ public class ThreadDispatcher extends AbstractDispatcher
      * @throws   IllegalStateException if a join is currently active on this
      *           publication strategy.
      */
-    public void dispatchAsync(IThreadable request, ReturnValue.Listener callback)
+    public void dispatchAsync(IThreadable request,ReturnValue.Listener callback)
+        throws IllegalStateException
     {
-        if (!running_)
+        if (!isRunning())
             throw new IllegalStateException();
 
-        ((ThreadedDispatcherStrategy)strategy_).dispatchAsync(request, 
-                                                              callback);
+        ((ThreadedDispatcherStrategy)getStrategy()).
+            dispatchAsync(request, callback);
     }
 
 
@@ -47,7 +48,7 @@ public class ThreadDispatcher extends AbstractDispatcher
      */
     public void join()
     {
-        ((ThreadedDispatcherStrategy)strategy_).join();
+        ((ThreadedDispatcherStrategy)getStrategy()).join();
     }
 
 
@@ -60,6 +61,6 @@ public class ThreadDispatcher extends AbstractDispatcher
      */
     public void join(long timeout)
     {
-        ((ThreadedDispatcherStrategy)strategy_).join(timeout);
+        ((ThreadedDispatcherStrategy)getStrategy()).join(timeout);
     }
 }

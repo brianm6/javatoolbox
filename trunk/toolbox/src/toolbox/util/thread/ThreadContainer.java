@@ -1,13 +1,12 @@
 package toolbox.util.thread;
 
 /**
- * ThreadContainer.java
+ * ThreadContainer
  *
  * This class groups related threads.
  */
 public class ThreadContainer extends ThreadGroup
 {
-
     /**
      * Constructs a new thread container.
      */
@@ -21,8 +20,9 @@ public class ThreadContainer extends ThreadGroup
      * Creates a new thread encapsualting the behavior in runnable.
      *
      * @param    runnable     the runnable to run in the thread.
+     * @return   Newly created thread
      */
-    public Thread createThread(java.lang.Runnable runnable)
+    public Thread createThread(Runnable runnable)
     {
         return new Thread(this, runnable);
     }

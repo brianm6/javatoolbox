@@ -2,59 +2,37 @@ package toolbox.util.thread;
 
 import toolbox.util.thread.concurrent.EventSemaphore;
 
-
 /**
- * ReturnValue.java
+ * ReturnValue
  *
  * This class enabled the retrieval of a requests return value.  It can be
  * polled or blocked until the return value is available.
  */
 public final class ReturnValue
 {
+    // Constants to identify the state of the request.
+    
+    /**
+     * Pending state
+     */
+    public static final int PENDING_STATE = 0;
+    
+    /**
+     * Started state
+     */
+    public static final int STARTED_STATE = 1;
+    
+    /**
+     * Finished state
+     */
+    public static final int FINISHED_STATE = 2;
+
+    
     private int state_;
     private Object value_;
     private IThreadable request_;
     private Listener listener_;
     private EventSemaphore available_;
-
-    public static interface Listener
-    {
-
-        /**
-         * Signals reception of request.
-         *
-         * @param  request    the pending request.
-         */
-        void pending(IThreadable request);
-
-
-        /** 
-         * Signals initiation of request.
-         *
-         * @param  request    the initiated request.
-         */
-        void started(IThreadable request);
-
-
-        /**
-         * Signals completion of request.
-         *
-         * @param  request    the finished request.
-         * @param  result    the request result.
-         */
-        void finished(IThreadable request, Object result);
-    }
-
-    public static class ValueAlreadyAssignedException
-        extends RuntimeException
-    {
-    }
-
-
-    // Constants to identify the state of the request.
-    public static final int PENDING_STATE = 0;
-    public static final int STARTED_STATE = 1;
-    public static final int FINISHED_STATE = 2;
 
 
     /**
@@ -169,7 +147,7 @@ public final class ReturnValue
      * @param   value         the return value for the request.
      * @throws  ValueAlreadyAssignedException if value was already assigned.
      */
-    public void setValue(Object value)
+    public void setValue(Object value) throws ValueAlreadyAssignedException
     {
         if (isAvailable())
             throw new ValueAlreadyAssignedException();
@@ -193,4 +171,51 @@ public final class ReturnValue
         if (listener_ != null)
             listener_.finished(request_, value_);
     }
+
+    //--------------------------------------------------------------------------
+    // Interfaces
+    //--------------------------------------------------------------------------
+        
+    /**
+     * Listener
+     */
+    public static interface Listener
+    {
+        /**
+         * Signals reception of request.
+         *
+         * @param  request    the pending request.
+         */
+        void pending(IThreadable request);
+
+
+        /** 
+         * Signals initiation of request.
+         *
+         * @param  request    the initiated request.
+         */
+        void started(IThreadable request);
+
+
+        /**
+         * Signals completion of request.
+         *
+         * @param  request    the finished request.
+         * @param  result    the request result.
+         */
+        void finished(IThreadable request, Object result);
+    }
+
+    //--------------------------------------------------------------------------
+    // Inner Classes
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Inner Class
+     */
+    public static class ValueAlreadyAssignedException
+        extends RuntimeException
+    {
+    }
+
 }

@@ -11,10 +11,13 @@ import toolbox.util.thread.strategy.AbstractDispatcherStrategy;
  */
 public abstract class AbstractDispatcher
 {
-    protected boolean running_;
-    protected AbstractDispatcherStrategy strategy_;
+    private boolean running_;
+    private AbstractDispatcherStrategy strategy_;
 
-
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructs a new request publisher using the specified strategy.
      *
@@ -27,7 +30,10 @@ public abstract class AbstractDispatcher
         strategy_ = strategy;
     }
 
-
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Returns the associated strategy.
      *
@@ -81,4 +87,24 @@ public abstract class AbstractDispatcher
             running_ = false;
         }
     }
+    /**
+     * Returns the running.
+     * 
+     * @return boolean
+     */
+    public boolean isRunning()
+    {
+        return running_;
+    }
+
+    /**
+     * Returns the strategy.
+     * 
+     * @return AbstractDispatcherStrategy
+     */
+    public AbstractDispatcherStrategy getStrategy()
+    {
+        return strategy_;
+    }
+
 }
