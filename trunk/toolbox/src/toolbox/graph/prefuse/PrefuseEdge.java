@@ -51,9 +51,6 @@ public class PrefuseEdge implements toolbox.graph.Edge
         Node fromVertex = (Node) from.getDelegate();
         Node toVertex   = (Node) to.getDelegate();
         edge_ = new DefaultEdge(fromVertex, toVertex, directed);
-        
-        //Graph graph = (Graph) fromVertex.getGraph();
-        //graph.addEdge(edge_);
     }
     
     //--------------------------------------------------------------------------
