@@ -13,6 +13,82 @@
   xmlns:bsh="jelly:beanshell">
 
     <!-- =================================================================== -->
+    <!-- BROWSER                                                             -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:browser" description="Launches web browser">
+        <!-- Input: browser.file -->   
+        <exec vmlauncher="false" executable="${browser.file}"/>
+    </goal>
+    
+    
+    <!-- =================================================================== -->
+    <!-- CHANGELOG                                                           -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:changelog" description="Runs changelog report">
+        <attainGoal name="maven-changelog-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.changelog.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- GENERATE-CVSPASS                                                    -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:generate-cvspass" description="Creates a .cvspass">
+        <attainGoal name="changelog:create-cvspass"/>
+    </goal>
+    
+    
+    <!-- =================================================================== -->
+    <!-- JAVADOC                                                             -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:javadoc" description="Runs javadoc report">
+        <attainGoal name="maven-javadoc-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.javadoc.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- CLOVER                                                              -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:clover" description="Runs clover report">
+        <attainGoal name="maven-clover-plugin:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.clover.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    <!-- =================================================================== -->
+    <!-- INSTALL-PLUGINS                                                     -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:install-plugins" 
+          description="Installs plugins that don't ship with the standard Maven distribution">
+
+        <!-- Statcvs plugin -->
+        <j:set var="artifactId" value="maven-statcvs-plugin"/>
+        <j:set var="groupId" value="statcvs"/>
+        <j:set var="version" value="2.4"/>
+        <attainGoal name="plugin:download"/>
+        
+        <!--
+        
+        OR stick this in project.xml
+        
+        <dependency>
+          <groupId>statcvs</groupId>
+          <artifactId>maven-statcvs-plugin</artifactId>
+          <version>2.4</version>
+          <type>plugin</type>
+        </dependency>
+        -->
+    </goal>
+
+
+    
+    <!-- =================================================================== -->
     <!-- [PRE] JAVA:COMPILE                                                  -->
     <!-- =================================================================== -->
     <preGoal name="java:compile">
