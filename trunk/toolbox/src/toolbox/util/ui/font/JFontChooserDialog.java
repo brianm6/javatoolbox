@@ -94,7 +94,7 @@ public class JFontChooserDialog extends JDialog
     public JFontChooserDialog(Frame owner, boolean modal,
         Font defaultFont, boolean antiAlias)
     {
-        this(owner, "", modal);
+        this(owner, "Select Font", modal);
         fontChooser_.setSelectedFont(defaultFont);
     }
 
@@ -152,7 +152,7 @@ public class JFontChooserDialog extends JDialog
     }
 
 	//--------------------------------------------------------------------------
-    // Listener Support 
+    // Event Listener Support 
     //--------------------------------------------------------------------------
     
     /**
@@ -181,7 +181,7 @@ public class JFontChooserDialog extends JDialog
     //--------------------------------------------------------------------------
     
     /**
-     * Action when the OK button is pressed
+     * Notifies listeners that OK was selected and disposes of the dialog box.
      */
     private class OKAction extends AbstractAction
     {
@@ -210,7 +210,7 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Action when the apply button is pressed
+     * Notifies listeners that the apply was selected
      */
     private class ApplyAction extends AbstractAction
     {
@@ -235,7 +235,8 @@ public class JFontChooserDialog extends JDialog
 
 
     /**
-     * Action when the Cancel button is pressed
+     * Notifies listeners that cancel was selected and disposes of the
+     * dialog box.
      */
     private class CancelAction extends AbstractAction
     {
