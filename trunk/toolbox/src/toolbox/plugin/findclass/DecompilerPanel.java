@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.JavaTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
 
@@ -30,26 +31,62 @@ import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.workspace.WorkspaceAction;
 
 /**
- * Decompiler Panel
+ * Decompiler Panel facilitates decompiling of class files that are 
+ * identified by the JFindClass plugin.
+ * <p>
+ * Supports:
+ * <br>
+ * <ul>
+ *   <li>User selectable decompiler.
+ *   <li>Decompiled files are stacked on a tabbed pane.
+ * </ul>
  */
 public class DecompilerPanel extends JPanel
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(DecompilerPanel.class);
+
+    /**
+     * Allows user to choose which decompiler to use for decompiling.
+     */
 	private JSmartComboBox decompilerCombo_;
+    
+    /**
+     * Tab panel for decompiled source. One tab per class. 
+     */
 	private JSmartTabbedPane tabbedPane_;
+    
+    /**
+     * Reference to the enclosing plugin's results table that is passed in
+     * at time of construction. The table is the source for the location and
+     * FQCN for the class to decompile.
+     */
 	private JTable resultTable_;
 
-    private static final Logger logger_ = 
-		Logger.getLogger(DecompilerPanel.class);
-		
-			
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a DecompilerPanel.
+     * 
+     * @param resultTable Table containing list of class locations and names.
+     */
 	public DecompilerPanel(JTable resultTable)
 	{
 		resultTable_ = resultTable;
 		buildView();
 	}
-	
 
-	private void addTab (String source)
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+
+    /**
+     * Adds a tab to the tabbed pane. The class name is used as the tab title
+     * and the source is embedded in a text area for viewing.
+     */
+    protected void addTab(String clazz, String source)
 	{
 		TextAreaDefaults defaults = new JavaDefaults();
         
@@ -62,14 +99,15 @@ public class DecompilerPanel extends JPanel
 		
 		sourceArea.setText(source);
 		sourceArea.setCaretPosition(0);
-		
-		tabbedPane_.add(sourceArea);
+		tabbedPane_.addTab(clazz, sourceArea);
+        tabbedPane_.setSelectedComponent(sourceArea);
 	}
 
+    
     /**
-     * Builds the GUI
+     * Builds the GUI.
      */
-    private void buildView()
+    protected void buildView()
     {
 		Decompiler[] decompilers = null;
         
@@ -87,13 +125,12 @@ public class DecompilerPanel extends JPanel
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(decompilerCombo_);
 		buttonPanel.add(decompileButton);
-
         
-        tabbedPane_ = new JSmartTabbedPane();
+        tabbedPane_ = new JSmartTabbedPane(true);
         
+        setLayout(new BorderLayout());
 		add(tabbedPane_, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
-		//decompilerPanel.setPreferredSize(new Dimension(100, 400));
     }
     
 	//--------------------------------------------------------------------------
@@ -107,6 +144,7 @@ public class DecompilerPanel extends JPanel
 	{
 		DecompileAction()
 		{
+            // TODO: Re-integrate the status bar
 			super("Decompile", true, null, null /*statusBar_*/);
 			putValue(MNEMONIC_KEY, new Integer('D'));    
 			putValue(SHORT_DESCRIPTION, "Decompiles the selected class");
@@ -119,7 +157,6 @@ public class DecompilerPanel extends JPanel
 		 */
 		public void runAction(ActionEvent e) throws Exception
 		{
-			
 			int idx = resultTable_.getSelectedRow();
             
 			if (idx >= 0)
@@ -158,8 +195,7 @@ public class DecompilerPanel extends JPanel
 						sb.append(clazz.replace('.','/'));
 						sb.append(".class");
                     
-						//jar:file:/c:/almanac/my.jar!/com/mycompany/MyClass.class"
-                    
+						// jar:file:/c:/crap/my.jar!/com/company/MyClass.class"
 						logger_.debug("JAR URL=" + sb);
                     
 						// TODO: Also extract all anonymous/innerclasses
@@ -191,12 +227,13 @@ public class DecompilerPanel extends JPanel
 						FileUtil.delete(tempClassFile.getCanonicalPath());
 					}
 					else
+                    {                   
 						source = "Not supported";
+                    }
 				}
 
-				addTab(source);
+				addTab(clazz, source);
 			}           
 		}
 	}
-
 }
