@@ -1,5 +1,6 @@
 package toolbox.util.net.test;
 
+import java.io.File;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -7,6 +8,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.FileUtil;
 import toolbox.util.net.SocketServerConfig;
 
 /**
@@ -45,11 +47,67 @@ public class SocketServerConfigTest extends TestCase
      */
     public void testLoadByFile() throws Exception
     {
-        // TODO: generate props file on the fly
-        SocketServerConfig config = new SocketServerConfig();
-        config.load("SocketServer.properties");
-        assertEquals("ports don't match", 0, config.getServerPort());
-        logger_.info(config);
+        logger_.info("Running testLoadByFile...");
+        
+        // Create properties file
+        String file = FileUtil.getTempFilename();
+        
+        logger_.info("Props file: " + file);
+        
+        try
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append("socketserver.serverport=1000\n");
+            sb.append("socketserver.activeconnections=2000\n");
+            sb.append("socketserver.socketqueuesize=3000\n");
+            sb.append("socketserver.handlerqueuesize=4000\n");
+            sb.append("socketserver.name=server\n");            
+            sb.append("socketserver.sockettimeout=5000\n");
+            sb.append("socketserver.connectionhandler=" + 
+                      "toolbox.util.net.test.NullConnectionHandler\n");
+
+            FileUtil.setFileContents(file, sb.toString(), false);
+            
+            logger_.info("Generated properties file: \n" + 
+                FileUtil.getFileContents(file));
+            
+            // Create config and read props in from file
+            SocketServerConfig config = new SocketServerConfig();
+            config.load(file);
+
+            logger_.info("Loaded config: \n " + config);
+            assertEquals("ports don't match", 1000, config.getServerPort());
+            assertEquals("names don't match", "server", config.getName());
+            
+            assertEquals("timeouts don't match", 
+                5000, config.getSocketTimeout());
+                
+            assertEquals("handlers don't match", 
+                "toolbox.util.net.test.NullConnectionHandler", 
+                config.getConnectionHandlerType());
+                
+            assertEquals("active conns don't match", 
+                2000, config.getActiveConnections());
+    
+            assertEquals("queue sizes don't match", 
+                3000, config.getSocketQueueSize());
+               
+            assertEquals("handler sizes don't match", 
+                4000, config.getHandlerQueueSize()); 
+        }
+        finally
+        {
+            try
+            {
+                File f = new File(file);
+                if (f.exists())
+                    f.delete();
+            }
+            catch (Exception e) 
+            {
+                // Ignore
+            }
+        }
     }
     
     /**
@@ -59,6 +117,8 @@ public class SocketServerConfigTest extends TestCase
      */
     public void testLoadByProps() throws Exception
     {
+        logger_.info("Running testLoadByProps...");
+        
         Properties props = new Properties();
         props.put(SocketServerConfig.PROP_ACTIVE_CONNECTIONS, "3");
         props.put(SocketServerConfig.PROP_HANDLER_QUEUE_SIZE, "5");
