@@ -5,6 +5,7 @@ import junit.textui.TestRunner;
 
 import toolbox.plugin.netmeter.Client;
 import toolbox.plugin.netmeter.Server;
+import toolbox.util.ThreadUtil;
 
 /**
  * Unit test for NetMeter. 
@@ -31,5 +32,10 @@ public class NetMeterTest extends TestCase
         
         Client client = new Client();
         client.start();
+        
+        ThreadUtil.sleep(10000);
+        
+        client.stop();
+        server.stop();
     }
 }
