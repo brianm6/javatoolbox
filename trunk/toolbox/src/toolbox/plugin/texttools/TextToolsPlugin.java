@@ -445,7 +445,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             for (int i = 0; i < lines.length; i++)
             {
                 // Escape embedded quotes
-                String line = StringUtil.replace(lines[i], "\"", "\\\"");
+                String line = StringUtils.replace(lines[i], "\"", "\\\"");
 
                 if (i > 0)
                     sb.append("+ ");
@@ -501,7 +501,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
             for (int i = 0; i < lines.length; i++)
             {
                 // Escape embedded quotes
-                String line = StringUtil.replace(lines[i], "\"", "\\\"");
+                String line = StringUtils.replace(lines[i], "\"", "\\\"");
 
                 if (i > 0)
                     sb.append("+ ");

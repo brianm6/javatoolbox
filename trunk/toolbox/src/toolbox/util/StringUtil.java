@@ -406,50 +406,6 @@ public final class StringUtil
 
     
     /**
-     * Replace all occurences of a string within another string.
-     * 
-     * @param text Text to search and replace in.
-     * @param repl String to search for.
-     * @param with String to replace with.
-     * @return String with replacements.
-     */
-    public static String replace(String text, String repl, String with)
-    {
-        return replace(text, repl, with, -1);
-    }
-
-    
-    /**
-     * Replace a string with another string inside a larger string, for the
-     * first max values of the search string.
-     * 
-     * @param text Text to search and replace in.
-     * @param repl String to search for.
-     * @param with String to replace with.
-     * @param max Maximum number of values to replace, or -1 if no maximum.
-     * @return String with replacements.
-     */
-    public static String replace(String text, String repl, String with, int max)
-    {
-        StringBuffer buf = new StringBuffer(text.length());
-        
-        int start = 0, end = 0;
-        
-        while ((end = text.indexOf(repl, start)) != -1)
-        {
-            buf.append(text.substring(start, end)).append(with);
-            start = end + repl.length();
-
-            if (--max == 0)
-                break;
-        }
-        
-        buf.append(text.substring(start));
-        return buf.toString();
-    }
-    
-    
-    /**
      * Returns array of individual tokens from a string. <br>
      * Note, this differs from commons-lang split() in that split supports a set
      * of single character delimiters specified as a single string and tokenize

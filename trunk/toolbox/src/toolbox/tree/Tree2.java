@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.file.FileComparator;
 import toolbox.util.io.filter.AndFilter;
@@ -624,7 +623,7 @@ public class Tree2
         System.out.println("toolbox.tree.Tree " + jsap.getUsage());
             
         System.out.println();
-        System.out.println(StringUtil.replace(jsap.getHelp(), "\n\n", "\n"));
+        System.out.println(StringUtils.replace(jsap.getHelp(), "\n\n", "\n"));
     }
     
     

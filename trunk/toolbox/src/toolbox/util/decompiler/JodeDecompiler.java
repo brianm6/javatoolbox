@@ -7,9 +7,9 @@ import java.io.StringWriter;
 
 import net.sf.jode.decompiler.Decompiler;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.StringUtil;
 import toolbox.util.io.NullWriter;
 
 /**
@@ -87,7 +87,7 @@ public class JodeDecompiler implements toolbox.util.decompiler.Decompiler
                 
         // Nuke the tabs                
         String javaSource = 
-            StringUtil.replace(javaWriter.toString(), "\t", "    ");
+            StringUtils.replace(javaWriter.toString(), "\t", "    ");
                     
         //logger_.debug("\n" + javaSource);    
 

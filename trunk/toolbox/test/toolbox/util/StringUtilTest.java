@@ -396,48 +396,6 @@ public class StringUtilTest extends TestCase
 
     
     /**
-     * Tests replace() for zero replacements.
-     */
-    public void testReplaceNone()
-    {
-        logger_.info("Running testReplaceNone...");
-        
-        String a = "howdy";
-        String b = StringUtil.replace(a, "whatever", "blah");
-        
-        assertEquals(a, b);
-    }
-    
-    
-    /**
-     * Tests replace() for a single replacement.
-     */
-    public void testReplaceOne()
-    {
-        logger_.info("Running testReplaceOne...");
-        
-        String a = "howdy";
-        String b = StringUtil.replace(a, "howdy", "mister");
-        
-        assertEquals("mister", b);
-    }
-    
-    
-    /**
-     * Tests replace() with max number of replacements.
-     */
-    public void testReplaceMax()
-    {
-        logger_.info("Running testReplaceMax...");
-        
-        String a = "me me me";
-        String b = StringUtil.replace(a, "me", "ho", 2);
-        
-        assertEquals("ho ho me", b);
-    }
-    
-    
-    /**
      * Tests isMultiline().
      */
     public void testIsMultiline()

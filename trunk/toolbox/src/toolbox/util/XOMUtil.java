@@ -271,20 +271,4 @@ public class XOMUtil
             
         return (child == null ? defaultNode : child);
     }
-    
-    
-    public static String encodeBlankLines(String s)
-    {
-        return StringUtil.replace(s, TOKEN_BLANK_LINE, 
-            TOKEN_BLANK_LINE_REPLACEMENT);  
-    }
-    
-
-    public static String decodeBlankLines(String s)
-    {
-        return StringUtil.replace(s, TOKEN_BLANK_LINE_REPLACEMENT2, 
-            TOKEN_BLANK_LINE);
-    }
-    
-    
 }

@@ -418,7 +418,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     protected String moduleToLogFile(String module)
     {
-        return StringUtil.replace(
+        return StringUtils.replace(
             FileUtil.matchPlatformSeparator(module),
                 File.separator,
                 ".")
