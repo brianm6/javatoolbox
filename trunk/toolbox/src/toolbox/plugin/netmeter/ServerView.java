@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import toolbox.util.service.Initializable;
 import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -119,53 +118,13 @@ public class ServerView extends JHeaderPanel implements ServiceListener
     //--------------------------------------------------------------------------
     // ServiceListener Interface
     //--------------------------------------------------------------------------
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceInitialized(
-     *      toolbox.util.service.Service)
-     */
-    public void serviceInitialized(Initializable service) throws ServiceException
-    {
-        statusField_.setText("Initialized");
-    }
 
-    
     /**
-     * @see toolbox.util.service.ServiceListener#serviceStarted(
+     * @see toolbox.util.service.ServiceListener#serviceStateChanged(
      *      toolbox.util.service.Service)
      */
-    public void serviceStarted(Service service) throws ServiceException
+    public void serviceStateChanged(Service service) throws ServiceException
     {
-        statusField_.setText("Running...");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#servicePaused(
-     *      toolbox.util.service.Service)
-     */
-    public void servicePaused(Service service) throws ServiceException
-    {
-        statusField_.setText("Paused");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceResumed(
-     *      toolbox.util.service.Service)
-     */
-    public void serviceResumed(Service service) throws ServiceException
-    {
-        statusField_.setText("Running...");
-    }
-    
-    
-    /**
-     * @see toolbox.util.service.ServiceListener#serviceStopped(
-     *      toolbox.util.service.Service)
-     */
-    public void serviceStopped(Service service) throws ServiceException
-    {
-        statusField_.setText("Stopped");
+        statusField_.setText(service.getState().toString());
     }
 }
