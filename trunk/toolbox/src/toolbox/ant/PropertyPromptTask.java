@@ -9,24 +9,41 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
+import toolbox.util.StringUtil;
+
 /**
  * Task that prompts user for property values to allow interactive builds.
- * Admittedly, this task definitely falls way outside the bounds of
- * Ant's core functionality but is useful enough to warrant
- * inclusion amongst the optional tasks.
+ * Admittedly, this task definitely falls way outside the bounds of Ant's core
+ * functionality but is useful enough to warrant inclusion amongst the optional
+ * tasks.
  * <p>
  * Set project property "promptTimeout" to control behavior.
  * <ul>
- * <li>timeout = -1 --> Cancel prompting. Use default property values.
- * <li>timeout =  0 --> Wait indefinitely for user response (default).
- * <li>timeout =  x --> Wait x seconds for user reponse before using default
+ *  <li>timeout = -1 --> Cancel prompting. Use default property values.
+ *  <li>timeout = 0 --> Wait indefinitely for user response (default).
+ *  <li>timeout = x --> Wait x seconds for user reponse before using default
  *                      property values (for x > 0).
  * </ul>
- * 
+ * <p>
+ * Minor modifications made for inclusion in the Java Toolbox.
+ *  
  * @author <a href=mailto:ajyoung@alum.mit.edu>Anthony J. Young-Garner</a>
  */
 public class PropertyPromptTask extends Task
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Property for the timeout value.
+     */
+    private static final String PROP_PROMPT_TIMEOUT = "promptTimeout";
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Property that entered value will be saved to.
      */
@@ -226,16 +243,13 @@ public class PropertyPromptTask extends Task
         proposedValue_ = project.getProperty(propertyName_);
         String currentValue = defaultValue_;
         
-        if (currentValue == "" && proposedValue_ != null)
-        {
+        if (StringUtil.isNullOrBlank(currentValue) && proposedValue_ != null)
             currentValue = proposedValue_;
-        }
         
         if (!((useExistingValue_ == true) && (proposedValue_ != null)))
         {
             if (timeout_ > -1)
             {
-
                 log("Prompting user for " + propertyName_ + ". " + 
                     getDefaultMessage(), Project.MSG_VERBOSE);
                     
@@ -261,7 +275,7 @@ public class PropertyPromptTask extends Task
                 {
                     proposedValue_ = reader.readLine();
                 }
-                catch (IOException e)
+                catch (IOException ioe)
                 {
                     log("Prompt failed. Using default.");
                     proposedValue_ = defaultValue_;
@@ -292,7 +306,7 @@ public class PropertyPromptTask extends Task
      */
     protected void initTimeout()
     {
-        String timeoutProperty = project.getProperty("promptTimeout");
+        String timeoutProperty = project.getProperty(PROP_PROMPT_TIMEOUT);
 
         if (timeoutProperty == null)
         {
@@ -304,7 +318,7 @@ public class PropertyPromptTask extends Task
             {
                 timeout_ = Integer.parseInt(timeoutProperty);
             }
-            catch (NumberFormatException e)
+            catch (NumberFormatException nfe)
             {
                 log(
                     "Invalid promptTimeout value: "
@@ -320,11 +334,11 @@ public class PropertyPromptTask extends Task
      * Returns a string to be inserted in the log message indicating whether a 
      * default response was specified in the build file.
      * 
-     * @return Message
+     * @return String
      */
     private String getDefaultMessage()
     {
-        if (defaultValue_ == "")
+        if (defaultValue_.intern() == "")
             return "No default response specified.";
         else
             return "Default response is " + defaultValue_ + ".";
@@ -335,14 +349,14 @@ public class PropertyPromptTask extends Task
     //--------------------------------------------------------------------------
         
     /**
-     * Provides a BufferedReader with a readLine method that blocks for only a 
-     * specified number of seconds. If no input is read in that time, a 
-     * specified default string is returned. Otherwise, the input read is 
-     * returned. Thanks to <a href=mailto:doc@drjava.de>Stefan Reich </a>
-     * for suggesting this implementation.
-     * 
-     * @author <a href=mailto:ajyoung@alum.mit.edu>Anthony J. Young-Garner</a>
-     */
+	 * Provides a BufferedReader with a readLine method that blocks for only a
+	 * specified number of seconds. If no input is read in that time, a
+	 * specified default string is returned. Otherwise, the input read is
+	 * returned. Thanks to <a href=mailto:doc@drjava.de>Stefan Reich</a> for
+	 * suggesting this implementation.
+	 * 
+	 * @author <a href=mailto:ajyoung@alum.mit.edu>Anthony J. Young-Garner</a>
+	 */
     private class TimedBufferedReader extends BufferedReader
     {
         /**

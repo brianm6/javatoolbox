@@ -6,7 +6,10 @@ import org.apache.tools.ant.Task;
 import toolbox.util.Banner;
 
 /**
- * ANT Task thats converts text to an ASCII banner.
+ * BannerTask is an Ant task thats converts text to an ASCII banner and write 
+ * the result to standard out.
+ * 
+ * @see toolbox.util.Banner
  */
 public class BannerTask extends Task
 {
