@@ -11,12 +11,12 @@ import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 
 /**
- * Plugin wrapper for JTcpTunnel
+ * Plugin wrapper for JTcpTunnel.
  */
 public class TunnelPlugin implements IPlugin
 {
     /** 
-     * Delegate. 
+     * UI Delegate. 
      */
     private TunnelPane delegate_;
 
@@ -38,6 +38,7 @@ public class TunnelPlugin implements IPlugin
         delegate_.setStatusBar(statusBar);    
     }
     
+    
     /**
      * @see toolbox.workspace.IPlugin#getPluginName()
      */
@@ -46,6 +47,7 @@ public class TunnelPlugin implements IPlugin
         return "TCP Tunnel";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getDescription()
      */
@@ -56,6 +58,7 @@ public class TunnelPlugin implements IPlugin
                "connection endpoints.";
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#getComponent()
      */
@@ -64,6 +67,7 @@ public class TunnelPlugin implements IPlugin
         return delegate_;
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
@@ -72,6 +76,7 @@ public class TunnelPlugin implements IPlugin
         delegate_.applyPrefs(prefs);        
     }
 
+    
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
@@ -80,6 +85,7 @@ public class TunnelPlugin implements IPlugin
         delegate_.savePrefs(prefs);
     }
 
+    
     /**
      * @see toolbox.workspace.IPlugin#shutdown()
      */
