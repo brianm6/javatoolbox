@@ -7,7 +7,19 @@ import org.apache.commons.lang.Validate;
 
 /**
  * IntSequence is responsible for generating a sequence of 
- * repeating/non-repeating positive integers.
+ * repeating or non-repeating random integers in a given range.
+ * <p>
+ * <b>Example</b>
+ * <pre class="snippet">
+ *   // Generates repeating random ints between 10 and 20
+ *   IntSequence s = new IntSequence(10, 20, false);
+ *   int i = s.nextInt();
+ *   
+ *   // Generates non-repeating random ints between -20 and 30
+ *   IntSequence snr = new IntSequence(-20, 30, true);
+ *   while (snr.hasMore())
+ *       int j = snr.nextInt();
+ * </pre>
  */
 public class IntSequence extends AbstractSequence implements RandomSequence
 {
@@ -33,6 +45,16 @@ public class IntSequence extends AbstractSequence implements RandomSequence
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
+    
+    /**
+     * Creates an IntSequence that generates a repeating sequence of random
+     * integers between 0 and {@link Integer#MAX_VALUE} - 1.
+     */
+    public IntSequence()
+    {
+        this(0, Integer.MAX_VALUE - 1, false);
+    }
+    
     
     /**
      * Creates an IntSequence.
