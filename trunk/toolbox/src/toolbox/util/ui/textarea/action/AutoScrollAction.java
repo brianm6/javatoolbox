@@ -7,6 +7,8 @@ import toolbox.util.ui.JSmartTextArea;
 
 /**
  * Toggles autoscrolling in a JSmartTextArea.
+ * 
+ * @see toolbox.util.ui.JSmartTextArea
  */    
 public class AutoScrollAction extends AbstractTextComponentAction 
 {
@@ -22,6 +24,10 @@ public class AutoScrollAction extends AbstractTextComponentAction
     public AutoScrollAction(JSmartTextArea area)
     {
         super(area, "AutoScroll", ImageCache.getIcon(ImageCache.IMAGE_LOCK));
+        
+        putValue(
+            SHORT_DESCRIPTION, 
+            "Toggles autoscrolling of text");
     }
     
     //--------------------------------------------------------------------------
