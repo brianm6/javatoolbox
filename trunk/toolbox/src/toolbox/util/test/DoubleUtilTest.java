@@ -14,7 +14,7 @@ import toolbox.util.DoubleUtil;
  */
 public class DoubleUtilTest extends TestCase
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(DoubleUtilTest.class);
     
@@ -272,6 +272,19 @@ public class DoubleUtilTest extends TestCase
         assertEquals("Rounding failed.", "100", s);
     }
     
+
+    /**
+     * Tests round() for a double passed in as a string
+     */
+    public void testRoundString()
+    {
+        logger_.info("Running testRoundString...");
+        
+        double d = 100.123;
+        String s = DoubleUtil.round(d+"", TWO_DIGIT_FORMAT);
+        assertEquals("Rounding failed.", "100.12", s);
+    }
+
     
     /** 
      * Tests isBetween()
@@ -293,4 +306,63 @@ public class DoubleUtilTest extends TestCase
         assertTrue(!DoubleUtil.isBetween(a, b, b));
         assertTrue(!DoubleUtil.isBetween(c, a, b));
     }
+ 
+    
+    /**
+     * Tests average()
+     */
+    public void testAverage()
+    {
+        logger_.info("Running testAverage...");
+        
+        double[] d = new double[] { 1.0, 1.1, 1.2 };
+        assertEquals( (double) 1.1, (double) DoubleUtil.average(d), 
+            /* this should be 0.0 */ 0.01);
+    }
+    
+    
+    /**
+     * Tests difference()
+     */
+    public void testDifference()
+    {
+        logger_.info("Running testDifference...");
+        
+        double[] a = new double[] { 1.1, 4.5, 100.6 };
+        double[] b = new double[] { 1.1, 4.5, 100.6 };
+        double[] c = DoubleUtil.difference(a, b);
+    
+        for (int i=0; i<c.length; i++)
+            assertEquals(0.0, c[i], 0.0); 
+    }
+    
+    
+    /**
+     * Tests occurs()
+     */
+    public void testOccurs()
+    {
+        logger_.info("Running testOccurs...");
+           
+        double[] a = new double[] { 2.3, 4.5, 6.7 };  // occurs once
+        double[] b = new double[] { 4.5, 4.5, 4.5 };  // occurs thrice
+        double[] c = new double[] { 9.9, 9.9, 9.9 };  // occurs none
+        
+        assertEquals(1, DoubleUtil.occurs(4.5, a));
+        assertEquals(3, DoubleUtil.occurs(4.5, b));
+        assertEquals(0, DoubleUtil.occurs(4.5, c));
+    }
+    
+    
+    /**
+     * Tests sum()
+     */
+    public void testSum()
+    {
+        logger_.info("Running testSum...");
+        
+        double[] d = new double[] { 1.0, 1.1, 1.2 };
+        assertEquals( (double) 3.3, (double) DoubleUtil.sum(d), 0.0);
+    }
+    
 }
