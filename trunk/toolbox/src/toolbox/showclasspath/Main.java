@@ -103,7 +103,7 @@ public final class Main
      */
     public static void showPath(OutputStream out)
     {
-        PrintStream pout = new PrintStream(out, true);
+        PrintStream ps = new PrintStream(out, true);
         String classPath = ClassUtil.getClasspath();
 
         StringTokenizer st =
@@ -132,20 +132,20 @@ public final class Main
                 MAX_DATE_LEN +
                 MAX_TIME_LEN;
 
-            pout.println(StringUtils.repeat("=", rowLength));
-            pout.print(StringUtil.left(COL_ARCHIVE, max));
-            pout.print(StringUtil.right(COL_SIZE, MAX_SIZE_LEN));
-            pout.print(StringUtil.right(COL_DATE, MAX_DATE_LEN));
-            pout.print(StringUtil.right(COL_TIME, MAX_TIME_LEN));
-            pout.println();
-            pout.println(StringUtils.repeat("=", rowLength));
+            ps.println(StringUtils.repeat("=", rowLength));
+            ps.print(StringUtil.left(COL_ARCHIVE, max));
+            ps.print(StringUtil.right(COL_SIZE, MAX_SIZE_LEN));
+            ps.print(StringUtil.right(COL_DATE, MAX_DATE_LEN));
+            ps.print(StringUtil.right(COL_TIME, MAX_TIME_LEN));
+            ps.println();
+            ps.println(StringUtils.repeat("=", rowLength));
         }
 
         // loop through classpath
         while (st.hasMoreElements())
         {
             String path = st.nextToken();
-            pout.print(StringUtil.left(path, max));
+            ps.print(StringUtil.left(path, max));
             File f = new File(path);
 
             // If archive, get more info
@@ -155,55 +155,55 @@ public final class Main
                 {
                     Date lastModified = new Date(f.lastModified());
 
-                    pout.print(StringUtil.right(
+                    ps.print(StringUtil.right(
                         NumberFormat.getIntegerInstance().format(f.length()),
                         MAX_SIZE_LEN));
 
-                    pout.print(StringUtil.right(
+                    ps.print(StringUtil.right(
                         dateFormat_.format(lastModified), MAX_DATE_LEN));
 
-                    pout.print(StringUtil.right(
+                    ps.print(StringUtil.right(
                         formatTime(lastModified), MAX_TIME_LEN));
                 }
                 else
                 {
                     if (!f.exists())
                     {
-                        pout.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
+                        ps.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
                     }
                     else if (!f.isFile())
                     {
-                        pout.print(StringUtil.right(
+                        ps.print(StringUtil.right(
                             "[Not File]", MAX_SIZE_LEN));
                     }
                     else if (!f.canRead())
                     {
-                        pout.print(StringUtil.right(
+                        ps.print(StringUtil.right(
                             "[ReadOnly]", MAX_SIZE_LEN));
                     }
                     else
                     {
-                        pout.print(StringUtil.right("[Error]", MAX_SIZE_LEN));
+                        ps.print(StringUtil.right("[Error]", MAX_SIZE_LEN));
                     }
                 }
             }
             else if (f.isDirectory())
             {
                 Date lastModified = new Date(f.lastModified());
-                pout.print(StringUtil.right("[DIR]", MAX_SIZE_LEN));
+                ps.print(StringUtil.right("[DIR]", MAX_SIZE_LEN));
 
-                pout.print(StringUtil.right(
+                ps.print(StringUtil.right(
                     dateFormat_.format(lastModified), MAX_DATE_LEN));
 
-                pout.print(StringUtil.right(
+                ps.print(StringUtil.right(
                     formatTime(lastModified), MAX_TIME_LEN));
             }
             else if (!f.exists())
             {
-                pout.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
+                ps.print(StringUtil.right("[Missing]", MAX_SIZE_LEN));
             }
 
-            pout.println();
+            ps.println();
         }
     }
 
