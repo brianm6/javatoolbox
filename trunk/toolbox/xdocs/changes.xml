@@ -39,6 +39,8 @@
  * TODO: Find out why Tiny LAFs are not working
  * TODO: Checkout SIGAR http://www.hyperic.net/downloads/sigar-download.htm
  * TODO: Added rename/delete file to JFileExplorer file list.
+ * TODO: Update to latest statcvs
+ * TODO: Redo ObservableService using decorator pattern
  * TODO: Look into JXTA shell
  * =============================================================================
  *                              Build
