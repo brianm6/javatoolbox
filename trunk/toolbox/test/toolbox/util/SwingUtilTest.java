@@ -8,34 +8,41 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
 
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
-import toolbox.util.ArrayUtil;
-import toolbox.util.StringUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
  * Unit test for SwingUtil.
+ * 
+ * @see toolbox.util.SwingUtil
  */
 public class SwingUtilTest extends UITestCase
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(SwingUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(SwingUtilTest.class);
 
     //--------------------------------------------------------------------------
     // Main
@@ -62,7 +69,7 @@ public class SwingUtilTest extends UITestCase
      */
     public void testTile()
     {
-        logger_.info("Running testTime...");
+        logger_.info("Running testTile...");
         
         TestFrame frame = new TestFrame();
         frame.setVisible(true);
@@ -80,6 +87,97 @@ public class SwingUtilTest extends UITestCase
         UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
         logger_.debug(StringUtil.addBars(ArrayUtil.toString(lafs, true)));
     }
+    
+    
+    /**
+     * Tests findInstancesOf() for nothing found. 
+     * 
+     * @throws Exception
+     */
+    public void testFindInstancesOf_ZeroFound() throws Exception
+    {
+        logger_.info("Running testFindInstancesOf_ZeroFound...");
+        
+        JButton b = new JButton("Groovy");
+        List results = new ArrayList();
+        SwingUtil.findInstancesOf(JLabel.class, b, results);
+        assertTrue(results.isEmpty());
+        
+        JPanel p = new JPanel();
+        p.add(new JPanel());
+        p.add(new JLabel());
+        p.add(new JButton());
+        
+        JPanel sub1 = new JPanel();
+        sub1.add(new JCheckBox());
+        sub1.add(new JMenuItem());
+        p.add(sub1);
+        
+        List results2 = new ArrayList();
+        SwingUtil.findInstancesOf(JTextField.class, b, results);
+        assertTrue(results2.isEmpty());
+    }
+    
+
+    /**
+     * Tests findInstancesOf() for one instance found 
+     * 
+     * @throws Exception
+     */
+    public void testFindInstancesOf_OneFound() throws Exception
+    {
+        logger_.info("Running testFindInstancesOf_OneFound...");
+        
+        JButton b = new JButton("Groovy");
+        List results = new ArrayList();
+        SwingUtil.findInstancesOf(JButton.class, b, results);
+        assertEquals(1, results.size());
+        assertTrue(results.iterator().next() instanceof JButton);
+        
+        JPanel p = new JPanel();
+        p.add(new JPanel());
+        p.add(new JLabel());
+        p.add(new JButton());
+        
+        JPanel sub1 = new JPanel();
+        sub1.add(new JCheckBox());
+        sub1.add(new JMenuItem());
+        p.add(sub1);
+        
+        List results2 = new ArrayList();
+        SwingUtil.findInstancesOf(JCheckBox.class, p, results2);
+        assertEquals(1, results2.size());
+        assertTrue(results2.iterator().next() instanceof JCheckBox);
+    }
+    
+
+    
+    /**
+     * Tests findInstancesOf() for one instance found 
+     * 
+     * @throws Exception
+     */
+    public void testFindInstancesOf_SubclassFound() throws Exception
+    {
+        logger_.info("Running testFindInstancesOf_SubclassFound...");
+        
+        JPanel p = new JPanel();
+        p.add(new JPanel());
+        p.add(new JLabel());
+        p.add(new JButton());
+        
+        JPanel sub1 = new JPanel();
+        sub1.add(new JCheckBox());
+        sub1.add(new JMenuItem());
+        sub1.add(new JTextArea());
+        p.add(sub1);
+        
+        List results2 = new ArrayList();
+        SwingUtil.findInstancesOf(JTextComponent.class, p, results2);
+        assertEquals(1, results2.size());
+        assertTrue(results2.iterator().next() instanceof JTextComponent);
+    }
+    
     
     //--------------------------------------------------------------------------
     // Helper Classes
