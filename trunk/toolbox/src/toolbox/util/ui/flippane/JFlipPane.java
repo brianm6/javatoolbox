@@ -4,7 +4,6 @@ package toolbox.util.ui.flippane;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -24,12 +23,13 @@ import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -41,11 +41,12 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.BeanUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.ui.CompoundIcon;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
-import toolbox.util.ui.VerticalLabelUI;
+import toolbox.util.ui.layout.StackLayout;
 import toolbox.workspace.IPreferenced;
 
 /**
@@ -199,50 +200,49 @@ public class JFlipPane extends JPanel implements IPreferenced
         flipCardPanel_.add(name, flipper); // Add to card panel
         int rotation;                      // Figure out rotation
 
-        if (position_.equals(JFlipPane.TOP)
-            || position_.equals(JFlipPane.BOTTOM))
+        if (position_.equals(JFlipPane.TOP) || 
+            position_.equals(JFlipPane.BOTTOM))
             rotation = FlipIcon.NONE;
         else if (position_.equals(JFlipPane.LEFT))
             rotation = FlipIcon.CCW;
         else if (position_.equals(JFlipPane.RIGHT))
             rotation = FlipIcon.CW;
         else
-            throw new IllegalArgumentException("Invalid position: " + position_);
+            throw new IllegalArgumentException(
+                "Invalid position: " + position_);
 
         // Create the button
-        JToggleButton button = new JToggleButton();
+
+        if (icon != null)
+        {
+            Icon textIcon = 
+                new FlipIcon(
+                    rotation, 
+                    UIManager.getFont("Button.font"), 
+                    name);
+            
+            icon = new CompoundIcon(textIcon, icon, SwingConstants.VERTICAL);
+        }
+        else
+        {
+            icon = new FlipIcon(rotation, UIManager.getFont("Button.font"), name);
+        }
+
+        JToggleButton button = new JToggleButton(icon);
         button.setMargin(new Insets(0, 0, 0, 0));
         button.setRequestFocusEnabled(false);
-
-//        if (icon != null)
-//        {
-//            Icon textIcon = new FlipIcon(FlipIcon.NONE, button.getFont(), name);
-//            icon = new CompoundIcon(icon, textIcon, 0);
-//
-//        }
-//        else
-//        {
-//            icon = new FlipIcon(rotation, button.getFont(), name);
-//        }
-
-        //button.setIcon(icon);
-        
-        JLabel label = new JLabel(name);
-        if (icon != null)
-            label.setIcon(icon);
-        label.setFont(button.getFont());
-        label.setUI(new VerticalLabelUI(false));
-        
-        button.setLayout(new BorderLayout());
-        button.add(BorderLayout.CENTER, label);
         button.setActionCommand(name);
         button.addActionListener(new FlipperHandler());
         button.setName(name);
 
         // Add to button group and button panel
         buttonGroup_.add(button);
-        buttonPanel_.add(button);
-
+        
+        if (rotation != FlipIcon.NONE)
+            buttonPanel_.add("Top Wide Flush", button);
+        else
+            buttonPanel_.add("Left Tall Flush", button);
+        
         // Add mouse listener
         button.addMouseListener(new PopupHandler());
 
@@ -435,11 +435,6 @@ public class JFlipPane extends JPanel implements IPreferenced
 
         if (!isCollapsed())
         {
-            logger_.debug(StringUtil.banner(BeanUtil.toString(buttonPanel_)));
-            
-            //if (buttonPanel_.getPreferredSize() == null)
-                buttonPanel_.setPreferredSize(new Dimension(32,32));
-                
             int width = buttonPanel_.getPreferredSize().width
                 + flipCardPanel_.getPreferredSize().width;
 
@@ -602,7 +597,14 @@ public class JFlipPane extends JPanel implements IPreferenced
     {
         //buttonPanel_ = new JPanel(new FlipButtonLayout(this));
         
-        buttonPanel_ = new JPanel(new FlowLayout());
+        int stackLayoutOrientation = StackLayout.HORIZONTAL;
+        
+        if (position_.equals(JFlipPane.RIGHT) ||
+            position_.equals(JFlipPane.LEFT))
+            stackLayoutOrientation = StackLayout.VERTICAL;
+           
+        buttonPanel_ = new JPanel(new StackLayout(stackLayoutOrientation));
+        
         buttonPanel_.addMouseListener(new PopupHandler());
 
         closeButton_ = new JSmartButton(
@@ -635,7 +637,7 @@ public class JFlipPane extends JPanel implements IPreferenced
         popupButton_.setRequestFocusEnabled(false);
         popupButton_.setToolTipText("Popup menu");
         popupButton_.addMouseListener(new PopupHandler());
-        buttonPanel_.add(popupButton_);
+        //buttonPanel_.add(popupButton_);
 
         // Adds buttons to mutually exclusive button group
         popup_ = new JSmartPopupMenu();
