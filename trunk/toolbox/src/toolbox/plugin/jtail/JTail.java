@@ -38,7 +38,7 @@ import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
-import toolbox.util.ui.JSmartStatusBar;
+import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.font.FontSelectionDialog;
 import toolbox.util.ui.font.FontSelectionException;
 import toolbox.util.ui.font.FontSelectionPane;
@@ -56,7 +56,7 @@ public class JTail extends JFrame
     private FileSelectionPane fileSelectionPane_;
     private JTabbedPane       tabbedPane_;
     private JFlipPane         flipPane_;    
-    private JSmartStatusBar   statusBar_;    
+    private JStatusPane       statusBar_;    
     private JMenuBar          menuBar_;    
     private Map               tailMap_;
     private boolean           testMode_ = true;
@@ -96,7 +96,7 @@ public class JTail extends JFrame
     /**
      * Constructor for JTail.
      * 
-     * @param title
+     * @param title  Window title
      */
     public JTail(String title)
     {
@@ -149,7 +149,7 @@ public class JTail extends JFrame
         getContentPane().add(BorderLayout.WEST, flipPane_);
         getContentPane().add(BorderLayout.CENTER, tabbedPane_);
         
-        statusBar_ = new JSmartStatusBar();
+        statusBar_ = new JStatusPane();
         getContentPane().add(BorderLayout.SOUTH, statusBar_);
         
         setJMenuBar(createMenuBar());
