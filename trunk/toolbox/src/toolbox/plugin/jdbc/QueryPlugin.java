@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -72,9 +73,11 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.TableSorter;
 import toolbox.util.ui.textarea.action.ClearAction;
@@ -519,12 +522,11 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             "Databases", 
             dbConfigPane_ = new DBConfig(this));
         
-        // File Explorer
         leftFlipPane_.addFlipper(
             JFileExplorer.ICON, 
             "File Explorer", 
-            fileExplorer_ = new JFileExplorer(false));
-        fileExplorer_.addFileExplorerListener(new FileSelectionListener());
+            fileExplorer_ = buildFileExplorer());
+        
         
         // Query Plugin Prefs
         leftFlipPane_.addFlipper(
@@ -554,6 +556,23 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
         
         view_.add(leftFlipPane_, BorderLayout.WEST);
         view_.add(areaSplitPane_, BorderLayout.CENTER);
+    }
+
+    
+    /**
+     * Constructs a special version of the file explorer with a popup menu.
+     *
+     * @return JFileExplorer
+     */
+    protected JFileExplorer buildFileExplorer()
+    {
+        // File Explorer
+        JFileExplorer explorer = new JFileExplorer(false);
+        explorer.addFileExplorerListener(new FileSelectionListener());
+        JList fileList = explorer.getFileList();
+        JPopupMenu popup = new JListPopupMenu(fileList);
+        popup.add(new LoadFilesAction());
+        return explorer;
     }
 
     
@@ -1077,19 +1096,12 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
      */
     class CtrlUpAction extends AbstractAction
     {
-        /**
-         * Creates a CtrlUpAction.
-         */
         CtrlUpAction()
         {
             super("Scroll History Up");
         }
 
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
         public void actionPerformed(ActionEvent e)
         {
             statusBar_.setWarning("TODO: Implement ctrl-up");
@@ -1134,6 +1146,51 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
             {
                 ExceptionUtil.handleUI(ex, logger_);
             }
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // LoadFilesAction
+    //--------------------------------------------------------------------------
+
+    /**
+     * This action is activated by the popup menu on the file explorer's file
+     * list. Basically, loads all selected files into the sql editor in top
+     * down order. 
+     */
+    class LoadFilesAction extends SmartAction
+    {
+        LoadFilesAction()
+        {
+            super("Load Files", true, true, fileExplorer_);
+        }
+        
+        
+        public void runAction(ActionEvent e) throws Exception
+        {
+            JList list = fileExplorer_.getFileList();
+            Object[] values = list.getSelectedValues();
+            
+            //logger_.debug("Selection : " + ArrayUtil.toString(values, true));
+            
+            String dir = 
+                FileUtil.trailWithSeparator(fileExplorer_.getCurrentPath());
+
+            StringBuffer sb = new StringBuffer();
+            
+            for (int i = 0; i < values.length; i++)
+            {
+                String file = values[i].toString();
+                String absolute = dir + file;
+                getStatusBar().setInfo("Loading " + absolute + "...");
+                sb.append(FileUtil.getFileContents(absolute));
+                sb.append("\n");
+            }
+            
+            getSQLEditor().setText(sb.toString());
+            getSQLEditor().setCaretPosition(0);
+            getSQLEditor().scrollToCaret();
+            getStatusBar().setInfo("Loaded " + values.length + " files.");
         }
     }
 }
