@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 
 import junit.framework.TestCase;
 
@@ -28,7 +29,8 @@ public class UITestCase extends TestCase
     public static final int SCREEN_TWO_THIRDS     = 4;
     public static final int SCREEN_THREE_QUARTERS = 5;
      
-    
+    private JMenuBar menuBar_;
+
     //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
@@ -47,6 +49,31 @@ public class UITestCase extends TestCase
             logger_.error(e);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the menuBar.
+     *
+     * @return JMenuBar
+     */
+    public JMenuBar getMenuBar()
+    {
+        return menuBar_;
+    }
+
+    /**
+     * Sets the menuBar.
+     *
+     * @param menuBar The menuBar to set.
+     */
+    public void setMenuBar(JMenuBar menuBar)
+    {
+        menuBar_ = menuBar;
+    }
+    
     
     //--------------------------------------------------------------------------
     // Protected 
@@ -81,7 +108,7 @@ public class UITestCase extends TestCase
     {
         return launchInDialog(c, SCREEN_PACK);
     }
-    
+
     
     /**
      * Launches test component in a modal dialog.
@@ -99,6 +126,9 @@ public class UITestCase extends TestCase
         dlg.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dlg.getContentPane().setLayout(new BorderLayout());
         dlg.getContentPane().add(c, BorderLayout.CENTER);
+        
+        if (menuBar_ != null)
+            dlg.setJMenuBar(menuBar_);
         
         switch (size)
         {
