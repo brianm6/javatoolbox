@@ -73,7 +73,7 @@ public class FindClass
     private FindClassCollector defaultCollector_ = new FindClassCollector();
 
     /** Holds ordered list of search targets **/
-    private List searchTargets_ = new ArrayList();
+    private List searchTargets_ = null;
 
     /** Flag to cancel the search **/
     private boolean isCancelled_;
@@ -88,7 +88,7 @@ public class FindClass
             Category.getDefaultHierarchy().disableDebug();
         
         addFindClassListener(defaultCollector_);
-        buildSearchTargets();
+        //buildSearchTargets();
     }
 
 
@@ -151,7 +151,7 @@ public class FindClass
     protected void buildSearchTargets()
     {
         /* build list of archives and dirs to search */        
-        searchTargets_.clear();
+        searchTargets_ = new ArrayList();
         searchTargets_.addAll(getClassPathTargets());
         searchTargets_.addAll(getArchiveTargets());
         
@@ -424,19 +424,15 @@ public class FindClass
      */
     public List getSearchTargets()
     {
+        /* build lazily */
+        if (searchTargets_ == null)
+        {
+            buildSearchTargets();    
+        }
+        
         return searchTargets_;
     }
-    
-    
-    /**
-     * Adds a target to the search list
-     * 
-     * @param  target  Absolute location of directory or jar/zip file
-     */
-    public void addSearchTarget(String target)
-    {
-    }
-    
+
     
     /**
      * Cancels a pending search
@@ -444,5 +440,28 @@ public class FindClass
     public void  cancelSearch()
     {
         isCancelled_ = true;
+    }
+    
+    
+    /**
+     * Adds a search target to the front of the search target list.
+     * A search target is a valid directory or java archive.
+     * 
+     * @param  target  Absolute location of directory or jar/zip file
+     */
+    public void addSearchTarget(String searchTarget)
+    {
+        searchTargets_.add(0, searchTarget);
+    }
+    
+    
+    /**
+     * Removes a search target from the list of search targets
+     *
+     * @param  target  Search Target to remove
+     */
+    public void removeSearchTarget(String searchTarget)
+    {
+        searchTargets_.remove(searchTarget);
     }
 }     
