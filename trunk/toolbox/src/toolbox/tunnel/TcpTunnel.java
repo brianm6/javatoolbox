@@ -90,12 +90,12 @@ public class TcpTunnel implements TcpTunnelListener
     /** 
      * Stream name for event inputstream. 
      */
-    private static final String STREAM_IN = "in";
+    private static final String STREAM_IN = "client <-- tunnel";
     
     /** 
      * Stream name for event outputstream. 
      */
-    private static final String STREAM_OUT = "out";
+    private static final String STREAM_OUT = "tunnel --> server";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -273,10 +273,21 @@ public class TcpTunnel implements TcpTunnelListener
                             " to port " + remotePort_ + 
                             " on host " + remoteHost_ + " ...");
     
-                        // relay the stuff thru. Make multicast output streams
-                        // that send to the socket and also to the textarea
-                        // for each direction
-                        
+//                                                          +--------> outgoingSink_
+//                                                          | 
+//                                                          +--------> eos (event output stream)
+//                                             |outStreams  |
+//    cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()  
+//                                    |        |
+//                        instreams   | tunnel |
+//                                    |        |
+// cs.getOutputStream()<--------------| <===== |<------------ rs.geInputStream()
+//                      |             |        |
+// eventinputstream<----+
+//                      |
+// incomingSink_<-------+
+//
+
                         MulticastOutputStream outStreams = 
                             new MulticastOutputStream();
                             
@@ -476,11 +487,17 @@ public class TcpTunnel implements TcpTunnelListener
             
             if (name.equals(STREAM_IN))
             {
+                //logger_.debug(
+                //  "Tallying bytes on stream close event: " +stream.getName());
+                
                 inTotal_ += count;
                 fireBytesRead(count);
             }
             else if (name.equals(STREAM_OUT))
             {
+                //logger_.debug(
+                //  "Tallying bytes on stream close event: " +stream.getName());
+                
                 outTotal_ += count;
                 fireBytesWritten(count);
             }
@@ -514,7 +531,8 @@ public class TcpTunnel implements TcpTunnelListener
          * @see toolbox.util.io.EventOutputStream.Listener#streamThroughput(
          *      toolbox.util.io.EventOutputStream, float)
          */
-        public void streamThroughput(EventOutputStream stream, 
+        public void streamThroughput(
+            EventOutputStream stream, 
             float bytesPerPeriod)
         {
         }
