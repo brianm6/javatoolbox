@@ -12,6 +12,7 @@ import toolbox.util.SwingUtil;
  * <p>
  * <ul>
  *   <li>Support for antialised text
+ *   <li>Right mouse click popup menu with cut/copy/paste.
  * </ul>
  */
 public class JSmartTextField extends JTextField implements AntiAliased
@@ -45,6 +46,7 @@ public class JSmartTextField extends JTextField implements AntiAliased
     public JSmartTextField(int columns)
     {
         super(columns);
+        init();
     }
 
 
@@ -56,6 +58,7 @@ public class JSmartTextField extends JTextField implements AntiAliased
     public JSmartTextField(String text)
     {
         super(text);
+        init();        
     }
 
 
@@ -68,6 +71,7 @@ public class JSmartTextField extends JTextField implements AntiAliased
     public JSmartTextField(String text, int columns)
     {
         super(text, columns);
+        init();        
     }
 
 
@@ -81,8 +85,22 @@ public class JSmartTextField extends JTextField implements AntiAliased
     public JSmartTextField(Document doc, String text, int columns)
     {
         super(doc, text, columns);
+        init();        
     }
 
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Initialzies the text area by adding a popup menu with commonly used RMB 
+     * accessible operations.
+     */
+    protected void init()
+    {
+        new JTextComponentPopupMenu(this);
+    }
+    
     //--------------------------------------------------------------------------
     // AntiAliased Interface
     //--------------------------------------------------------------------------
