@@ -3,6 +3,7 @@ package toolbox.workspace;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.UIManager;
@@ -91,6 +92,20 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         //UIManager.put("ProgressBar.cellSpacing", new Integer(5));
     }
     
+    
+    /**
+     * Sets the status text and icon.
+     * 
+     * @param status Status text.
+     * @param icon Icon that visually classifies the status.
+     */
+    protected void setStatus(String status, Icon icon)
+    {
+        //setStatus(status);
+        status_.setText(status);
+        status_.setIcon(icon);
+    }
+    
     //--------------------------------------------------------------------------
     // IStatusBar Interface
     //--------------------------------------------------------------------------
@@ -100,7 +115,8 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
      */
     public void setStatus(String status)
     {
-        status_.setText(status);
+        //status_.setText(status);
+        setStatus(status, ImageCache.getIcon(ImageCache.IMAGE_CROSS));
     }
 
     

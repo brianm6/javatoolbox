@@ -1,4 +1,4 @@
-package toolbox.util.xslfo.test;
+package toolbox.plugin.xslfo.test;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Properties;
@@ -10,15 +10,15 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceUtil;
 import toolbox.util.io.StringInputStream;
-import toolbox.util.xslfo.FOProcessor;
-import toolbox.util.xslfo.FOProcessorFactory;
+import toolbox.plugin.xslfo.FOProcessor;
+import toolbox.plugin.xslfo.FOProcessorFactory;
 
 /**
  * Unit test for FOPProcessor.
  */
 public class FOPProcessorTest extends TestCase
 {
-    private static final Logger logger_ = 
+    private static final Logger logger_ =
         Logger.getLogger(FOPProcessorTest.class);
 
     //--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ public class FOPProcessorTest extends TestCase
      * File containing sample xslfo content suitable for testing.
      */
     private static final String FILE_TEST_XSLFO = 
-        "/toolbox/util/xslfo/test/FOPProcessorTest.fo";
+        "/toolbox/plugin/xslfo/test/FOPProcessorTest.fo";
 
     //--------------------------------------------------------------------------
     // Main

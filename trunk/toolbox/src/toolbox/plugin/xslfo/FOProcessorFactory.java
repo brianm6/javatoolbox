@@ -1,4 +1,4 @@
-package toolbox.util.xslfo;
+package toolbox.plugin.xslfo;
 
 /**
  * Factory class that creates implementations of the FOProcessor interface.

@@ -13,5 +13,5 @@
   <Plugin class="toolbox.plugin.texttools.TextToolsPlugin"/>
   <Plugin class="toolbox.plugin.tunnel.TunnelPlugin"/>
   <Plugin class="toolbox.plugin.uidefaults.UIDefaultsPlugin"/>
-  <Plugin class="toolbox.util.xslfo.XSLFOPlugin"/>
+  <Plugin class="toolbox.plugin.xslfo.XSLFOPlugin"/>
 </Plugins>

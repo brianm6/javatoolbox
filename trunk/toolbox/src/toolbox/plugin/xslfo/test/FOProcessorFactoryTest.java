@@ -1,12 +1,12 @@
-package toolbox.util.xslfo.test;
+package toolbox.plugin.xslfo.test;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.xslfo.FOProcessor;
-import toolbox.util.xslfo.FOProcessorFactory;
+import toolbox.plugin.xslfo.FOProcessor;
+import toolbox.plugin.xslfo.FOProcessorFactory;
 
 /**
  * Unit test for FOPProcessorFactory.

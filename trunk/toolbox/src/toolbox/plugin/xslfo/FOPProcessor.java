@@ -1,4 +1,4 @@
-package toolbox.util.xslfo;
+package toolbox.plugin.xslfo;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
