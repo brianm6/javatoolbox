@@ -62,6 +62,8 @@ public class AsyncConnectionHandlerTest extends TestCase
      */
     public void testHandle() throws Exception
     {
+        logger_.info("Running testHandle...");
+        
         final String helloWorld = "hello world!";
         
         /**

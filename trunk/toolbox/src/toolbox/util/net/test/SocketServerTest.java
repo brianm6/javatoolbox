@@ -50,7 +50,7 @@ public class SocketServerTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    //  Tests
+    //  Unit Tests
     //--------------------------------------------------------------------------
     
     /**
@@ -60,6 +60,8 @@ public class SocketServerTest extends TestCase
      */
     public void testSocketServerPingPong() throws Exception
     {
+        logger_.info("Running testSocketServerPingPong...");
+        
         // Config server
         SocketServerConfig config = new SocketServerConfig();
         
@@ -101,6 +103,8 @@ public class SocketServerTest extends TestCase
      */
     public void testSocketServerLifeCycle() throws Exception
     { 
+        logger_.info("Running testSocketServerLifeCycle...");
+        
         SocketServer ss = new SocketServer(new SocketServerConfig());
         
         // Start/stop immediately
@@ -125,6 +129,8 @@ public class SocketServerTest extends TestCase
      */
     public void testSocketServerLifecycleStress() throws Exception
     {
+        logger_.info("Running testSocketServerLifeCycleStress...");
+        
         SocketServer server = new SocketServer(new SocketServerConfig());
         
         for(int i=0; i<20; i++)
@@ -141,6 +147,8 @@ public class SocketServerTest extends TestCase
      */
     public void testSocketServerManyClients() throws Exception
     {
+        logger_.info("Running testSocketServerManyClients...");
+        
         SocketServerConfig config = new SocketServerConfig();
         
         config.setConnectionHandlerType(
@@ -204,9 +212,9 @@ public class SocketServerTest extends TestCase
      */
     public void testFireNotification() throws Exception
     {
+        logger_.info("Running testFireNotifcation...");
+                
         String method = "[firNot] ";
-        
-        logger_.info(method + "Testing notification...");
         
         // Config server
         SocketServerConfig config = new SocketServerConfig();

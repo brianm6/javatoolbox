@@ -50,9 +50,8 @@ public class SocketConnectionTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    //  Constructor Tests
+    //  Unit Tests
     //--------------------------------------------------------------------------
-    
     
     /**
      * Tests the default constructor
@@ -61,6 +60,8 @@ public class SocketConnectionTest extends TestCase
      */
     public void testDefaultConstructor() throws Exception
     {
+        logger_.info("Running testDefaultConstructor...");
+        
         Server server = new Server(false);
         SocketConnection sc = new SocketConnection();
 
@@ -78,6 +79,8 @@ public class SocketConnectionTest extends TestCase
      */    
     public void testHostPortConstructor() throws Exception
     {
+        logger_.info("Running testHostPortConstructor...");
+        
         Server server = new Server(false);
         server.start();        
         
@@ -95,6 +98,8 @@ public class SocketConnectionTest extends TestCase
      */    
     public void testForceConnectConstructor() throws Exception
     {
+        logger_.info("Running testForceConnectConstructor...");
+        
         final int port = SocketUtil.getFreePort();
         Server server = new Server(port,false);
         
@@ -122,11 +127,7 @@ public class SocketConnectionTest extends TestCase
         
         server.start();
     }        
-    
-    //--------------------------------------------------------------------------
-    //  Test methods
-    //--------------------------------------------------------------------------
-    
+   
     /**
      * Tests the getInputStream() method
      * 
@@ -134,6 +135,8 @@ public class SocketConnectionTest extends TestCase
      */
     public void testGetInputStream() throws Exception
     {
+        logger_.info("Running testGetInputStream...");
+        
         Server s = new Server();
         s.start();
         
@@ -157,6 +160,8 @@ public class SocketConnectionTest extends TestCase
      */
     public void testGetOutputStream() throws Exception
     {
+        logger_.info("Running testGetOutputStream...");
+        
         Server s = new Server();
         s.start();
 
@@ -182,6 +187,8 @@ public class SocketConnectionTest extends TestCase
      */
     public void testConnectionListener() throws Exception
     {
+        logger_.info("Running testConnectionListener...");
+        
         Server s = new Server();
         s.start();
         
@@ -203,6 +210,8 @@ public class SocketConnectionTest extends TestCase
      */
     public void xtestConnectionLifeCycle() throws Exception
     {
+        logger_.info("Running testConnectionLifeCycle...");
+        
         Server s = new Server(true);
         s.start();
         
@@ -242,6 +251,8 @@ public class SocketConnectionTest extends TestCase
      */
     public void testIsConnected() throws Exception
     {
+        logger_.info("Running testIsConnected...");
+        
         Server server = new Server(true);
         server.start();        
         
