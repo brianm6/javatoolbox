@@ -223,14 +223,13 @@ public class Client extends AbstractService
                     mos_.setThroughputMonitor(monitor_);
                     mos_.getThroughputMonitor().setSampleInterval(1000);
                     mos_.getThroughputMonitor().setMonitoringThroughput(true);
-
-//                    mos_.getThroughputMonitor().addThroughputListener(
-//                        new ThroughputCollector());
                     
                     byte[] b = "abcdefghijklmnopqrstuvwxyz123456789".getBytes();
             
-                    while (!stopped_)
+                    while (!stopped_) {
                         mos_.write(b);
+                        ThreadUtil.sleep(0);
+                    }
             
                     mos_.flush();
                     conn_.close();
@@ -242,7 +241,7 @@ public class Client extends AbstractService
             }
         });
 
-        // Connect before the thread is spawned to success/failure can be
+        // Connect before the thread is spawned so success/failure can be
         // handled.
         
         try
