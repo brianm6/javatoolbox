@@ -32,29 +32,28 @@ public final class FileUtil
     }
 
     /**
-     * Deletes the contents of a directory including nested directories
+     * Deletes the contents of a directory including nested directories. The
+     * directory itself is not deleted.
      *
-     * @param    directory    Directory to clean
+     * @param  directory  Directory to clean
      */
-    public static void cleanDir(File directory)
+    public static void cleanDir(File dir)
     {
-        if(!directory.isDirectory())
+        if(!dir.isDirectory())
         {
             throw new IllegalArgumentException(
-                "Directory " + directory + " is not a directory.");
+                "Directory " + dir + " is not a directory.");
         }
         else
         {
-            File[] contents = directory.listFiles();
+            File[] contents = dir.listFiles();
 
             for(int i=0; i<contents.length; i++)
             {
-                File f = contents[i];
-
-                if(f.isDirectory())
-                    cleanDir(directory);
-
-                f.delete();
+                File sub = contents[i];
+                if(sub.isDirectory())
+                    cleanDir(sub);
+                sub.delete();
             }
         }
     }
@@ -103,32 +102,18 @@ public final class FileUtil
     public static String setFileContents(String filename, String contents, 
         boolean append) throws FileNotFoundException, IOException    
     {   
-        //open the file     
+
         FileWriter file = new FileWriter(filename, append);     
         
-        //make sure we have a file      
         if (file == null)       
         {       
             logger_.error("File does not exist: " + filename);
-            throw new FileNotFoundException();      
+            throw new FileNotFoundException(filename);      
         }       
         
-        //write to the file
-        try         
-        { 
-            //write the contents          
-            file.write(contents);
-            
-            //close the file
-            file.close();
-        }
-        catch (IOException e)        
-        {           
-            logger_.error("Writing to file failed.", e);
-            throw e;        
-        }       
-        
-        //return the contents for validity
+        file.write(contents);
+        file.close();
+
         return contents;    
     }
     
@@ -142,6 +127,20 @@ public final class FileUtil
     {
         return new File(System.getProperty("java.io.tmpdir"));
     }
+
+    
+    /**
+     * Creates a temporary directory in the System temporary directory
+     * 
+     * @return  Created temporary directory
+     */
+    public static File createTempDir() throws IOException
+    {
+        File f = new File(getTempFilename(getTempDir()));
+        f.mkdir();
+        return f;
+    }
+
 
     /**
      * Retrieves a suitable temporary file name for arbitrary use
