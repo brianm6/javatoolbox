@@ -18,8 +18,24 @@ import toolbox.util.StringUtil;
  * to an ASCII tree like structure in a format that is easily recognizable. It 
  * is great for acquainting oneself with unfamiliar code or as a helpful
  * debugging aid to find out just what all may hanging around your object tree.
+ * <p>
  * 
- * @see BasicDumpFormatter 
+ * <b>Example:</b>
+ * <pre class="snippet">
+ * String s = Dumper.dump(new File("/tmp"));
+ * System.out.println(s);
+ * </pre>
+ * 
+ * <b>Output:</b>
+ * <pre class="snippet">
+ * java.io.File
+ * |   
+ * +---path = \tmp
+ * |   
+ * +---prefixLength = 1
+ * </pre>
+ * 
+ * @see toolbox.util.dump.BasicDumpFormatter 
  */
 public class Dumper
 {
