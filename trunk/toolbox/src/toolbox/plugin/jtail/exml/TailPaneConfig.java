@@ -20,28 +20,12 @@ import electric.xml.Element;
  * given tail instance with the ability to marshal itself to and from 
  * XML format. 
  */
-public class TailPaneConfig implements ITailPaneConfig
+public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 {
     /** Logger **/
     private static final Category logger_ =
         Category.getInstance(TailPaneConfig.class);
     
-    // Tail XML element
-    public  static final String ELEMENT_TAIL     = "Tail";
-    private static final String ATTR_FILE        = "file";
-    private static final String ATTR_AUTOSCROLL  = "autoScroll";
-    private static final String ATTR_LINENUMBERS = "showLineNumbers";
-    
-    // Font XML element
-    public static final String ELEMENT_FONT     = "Font";
-    public static final String ATTR_FAMILY      = "family";
-    public static final String ATTR_STYLE       = "style";        
-    public static final String ATTR_SIZE        = "size";
-
-    // Filter XML element
-    private static final String ELEMENT_FILTER = "Filter";
-    private static final String ATTR_NEGATE    = "negate";
-    private static final String ATTR_MATCH_CASE = "matchCase";
 
     private String  filename_;
     private boolean autoScroll_;
