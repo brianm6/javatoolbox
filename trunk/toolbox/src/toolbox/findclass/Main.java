@@ -261,6 +261,42 @@ public class Main extends FindClassAdapter
         writer_.flush();
     }
  
+    /*
+     * 
+     
+NAME
+    Matra - parse the DTD; display the merged DTD or the DTD Tree if specified.
+
+SYNOPSIS
+    Matra [-v] [-help] [-merge] [-tree] [-f file | -u url | -l file | -s string]
+
+OPTIONS
+
+    -f file     The <file> is a local DTD file.
+    -help       Display this help message.
+    -l file     The <file> is a local file containing a list of DTDs.
+    -merge      Display the merged DTD.
+    -s string   The <string> is the DTD passed as a String.
+    -tree       Display the DTD in a simple Tree format.
+    -u url      The <url> is a URL pointing to a DTD.
+    -v      Verbose mode
+
+EXAMPLES
+
+    Example 1: Parse a DTD file to check for syntax errors
+
+    com.conradroche.matra.Matra -f c:\path\filename.dtd
+
+    Example 2: Parse a DTD file, display the tree and merged dtd
+
+    com.conradroche.matra.Matra -merge -tree -f c:\path\filename.dtd
+
+    Example 3: Parse a DTD whose location is specified by a URL.
+
+    com.conradroche.matra.Matra -u http://host/path/name.dtd
+    
+*/
+    
     //--------------------------------------------------------------------------
     // Overrides FindClassAdapter
     //--------------------------------------------------------------------------
