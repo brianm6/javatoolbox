@@ -96,11 +96,6 @@ public class XSLFOPlugin extends AbstractPlugin
     private JComponent view_;
     
     /** 
-     * Flip panel that houses the file explorer. 
-     */
-    private JFlipPane flipPane_;    
-    
-    /** 
      * Shared status bar with plugin host.
      */
     private IStatusBar statusBar_;
@@ -121,11 +116,6 @@ public class XSLFOPlugin extends AbstractPlugin
     private Viewer viewer_;    
 
     /** 
-     * File explorer used to open XML files. 
-     */
-    private JFileExplorer explorer_;
-
-    /** 
      * Full Path to acrobat reader executable. 
      */
     private String pdfViewerPath_;
@@ -141,14 +131,9 @@ public class XSLFOPlugin extends AbstractPlugin
     private FOProcessor xepProcessor_;
 
     /**
-     * Splitter between the xmlArea and the outputPanel.
-     */
-    private JSmartSplitPane splitPane_;
-    
-    /**
      * Subcomponents that implement IPreferenced.
      */
-    private List subPref_;
+    private List preferenced_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -177,14 +162,16 @@ public class XSLFOPlugin extends AbstractPlugin
         ((JEditPopupMenu) defaults.popup).setTextArea(xmlArea_);
         ((JEditPopupMenu) defaults.popup).buildView();
         
-        explorer_ = new JFileExplorer(false);
-        explorer_.addFileExplorerListener(new FileSelectionListener());
+        JFileExplorer explorer = new JFileExplorer(false);
+        explorer.addFileExplorerListener(new FileSelectionListener());
         
-        flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper(JFileExplorer.ICON, "File Explorer", explorer_);
+        // Flip panel that houses the file explorer. 
+        JFlipPane flipPane = new JFlipPane(JFlipPane.LEFT);
+        flipPane.addFlipper(JFileExplorer.ICON, "File Explorer", explorer);
         outputPanel_ = new JPanel(new BorderLayout());
         
-        splitPane_ = 
+        // Splitter between the xmlArea and the outputPanel.
+        JSmartSplitPane splitPane = 
             new JSmartSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
                 xmlArea_,
@@ -200,16 +187,16 @@ public class XSLFOPlugin extends AbstractPlugin
         buttonPane.add(new JSmartButton(new XEPRenderAction()));
         buttonPane.add(new JSmartButton(new XEPLaunchAction()));
         
-        view_.add(BorderLayout.WEST, flipPane_);
-        view_.add(BorderLayout.CENTER, splitPane_);
+        view_.add(BorderLayout.WEST, flipPane);
+        view_.add(BorderLayout.CENTER, splitPane);
         view_.add(BorderLayout.SOUTH, buttonPane);
 
         // Roundup all components that get tickled when saving/applying prefs 
-        subPref_ = new ArrayList();
-        subPref_.add(explorer_);
-        subPref_.add(flipPane_);
-        subPref_.add(xmlArea_);
-        subPref_.add(splitPane_);
+        preferenced_ = new ArrayList();
+        preferenced_.add(explorer);
+        preferenced_.add(flipPane);
+        preferenced_.add(xmlArea_);
+        preferenced_.add(splitPane);
     }
 
 
@@ -337,9 +324,9 @@ public class XSLFOPlugin extends AbstractPlugin
     public void initialize(Map params) throws ServiceException
     {
         checkTransition(ServiceTransition.INITIALIZE);
+        
         if (params != null)
-            statusBar_ = (IStatusBar) 
-                params.get(PluginWorkspace.KEY_STATUSBAR);
+            statusBar_ = (IStatusBar) params.get(PluginWorkspace.KEY_STATUSBAR);
         
         buildView();
         transition(ServiceTransition.INITIALIZE);
@@ -404,7 +391,7 @@ public class XSLFOPlugin extends AbstractPlugin
             XOMUtil.getFirstChildElement(
                 prefs, NODE_XSLFO_PLUGIN, new Element(NODE_XSLFO_PLUGIN));    
         
-        ArrayUtil.invoke(subPref_.toArray(), "applyPrefs", new Object[] {root});
+        ArrayUtil.invoke(preferenced_.toArray(), "applyPrefs", new Object[] {root});
             
         pdfViewerPath_ = XOMUtil.getString(
             root.getFirstChildElement(NODE_PDF_VIEWER), null);
@@ -434,7 +421,7 @@ public class XSLFOPlugin extends AbstractPlugin
     public void savePrefs(Element prefs) throws Exception
     {
         Element root = new Element(NODE_XSLFO_PLUGIN);
-        ArrayUtil.invoke(subPref_.toArray(), "savePrefs", new Object[] {root});
+        ArrayUtil.invoke(preferenced_.toArray(), "savePrefs", new Object[] {root});
         
         if (!StringUtils.isBlank(pdfViewerPath_))
         {
@@ -464,6 +451,7 @@ public class XSLFOPlugin extends AbstractPlugin
             try
             {
                 xmlArea_.setText(FileUtil.getFileContents(file));
+                xmlArea_.setCaretPosition(0);
             }
             catch (FileNotFoundException fnfe)
             {
@@ -501,6 +489,7 @@ public class XSLFOPlugin extends AbstractPlugin
         public void runAction(ActionEvent e) throws Exception
         {
             xmlArea_.setText(new XMLFormatter().format(xmlArea_.getText()));
+            xmlArea_.setCaretPosition(0);
         }
     }
 
@@ -561,9 +550,7 @@ public class XSLFOPlugin extends AbstractPlugin
         {
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             StringInputStream input = new StringInputStream(xmlArea_.getText());
-            
             getFOP().renderPDF(input, output);
-            
             viewPDFEmbedded(new ByteArrayInputStream(output.toByteArray()));
         }
     }
