@@ -199,7 +199,7 @@ public class JFindClass extends JFrame implements ActionListener,
      */
     protected void tweakTable()
     {
-        resultTable_.setFont(SwingUtil.getPreferredFont());
+        resultTable_.setFont(SwingUtil.getPreferredSerifFont());
         resultTable_.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         
         TableColumnModel columnModel = resultTable_.getColumnModel();

@@ -105,7 +105,7 @@ public class JSourceView extends JFrame implements ActionListener
         super("JSourceView v1.1");
         
         dirField_ = new JTextField(12);
-        dirField_.setFont(SwingUtil.getPreferredFont());
+        dirField_.setFont(SwingUtil.getPreferredSerifFont());
         dirField_.addActionListener(this);
         
         goButton_ = new JButton("Go!");
@@ -124,7 +124,7 @@ public class JSourceView extends JFrame implements ActionListener
         goButton_.addActionListener(this);
         tableModel_ = new ThreadSafeTableModel(colNames, 0);
         table_ = new JTable(tableModel_);
-        table_.setFont(SwingUtil.getPreferredFont());
+        table_.setFont(SwingUtil.getPreferredSerifFont());
         
         getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
