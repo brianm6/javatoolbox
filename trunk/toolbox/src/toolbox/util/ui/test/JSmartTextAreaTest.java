@@ -14,7 +14,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
-import toolbox.util.SwingUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartTextArea;
 
@@ -69,7 +69,7 @@ public class JSmartTextAreaTest extends UITestCase
         logger_.info("Running testSaveApplyPrefs...");
         
         JSmartTextArea before = new JSmartTextArea("", true, true);
-        before.setFont(SwingUtil.getPreferredMonoFont());
+        before.setFont(FontUtil.getPreferredMonoFont());
         before.setCapacity(10000);
         before.setPruneFactor(50);
         

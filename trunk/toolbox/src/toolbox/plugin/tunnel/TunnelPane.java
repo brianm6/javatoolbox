@@ -22,8 +22,8 @@ import org.apache.log4j.Logger;
 
 import toolbox.tunnel.TcpTunnel;
 import toolbox.tunnel.TcpTunnelListener;
+import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.JSmartButton;
@@ -248,12 +248,12 @@ public class TunnelPane extends JPanel implements IPreferenced
         
             // Center
             incomingTextArea_ = new JSmartTextArea(true, false);
-            incomingTextArea_.setFont(SwingUtil.getPreferredMonoFont());
+            incomingTextArea_.setFont(FontUtil.getPreferredMonoFont());
             incomingTextArea_.setRows(40);
             incomingTextArea_.setColumns(80);
             
             outgoingTextArea_ = new JSmartTextArea(true, false);
-            outgoingTextArea_.setFont(SwingUtil.getPreferredMonoFont());
+            outgoingTextArea_.setFont(FontUtil.getPreferredMonoFont());
             outgoingTextArea_.setRows(40);
             outgoingTextArea_.setColumns(80); 
             

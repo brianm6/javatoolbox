@@ -233,7 +233,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
                         
         getPainter().setFont(FontUtil.toFont(XOMUtil.getFirstChildElement(
             root, NODE_FONT, FontUtil.toElement(
-                SwingUtil.getPreferredMonoFont()))));
+                FontUtil.getPreferredMonoFont()))));
     }
     
     

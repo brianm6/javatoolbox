@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.FontUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
 
@@ -48,7 +47,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants,
                 true,       // autoscroll
                 false,      // show linenumbers
                 false,      // antialias
-                SwingUtil.getPreferredMonoFont(), // font
+                FontUtil.getPreferredMonoFont(), // font
                 "",         // Regular exp
                 "",         // Cut exp
                 true );     // autostart

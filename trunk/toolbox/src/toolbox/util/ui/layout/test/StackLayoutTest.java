@@ -11,7 +11,7 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.UITestCase;
-import toolbox.util.SwingUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartTextArea;
@@ -59,7 +59,7 @@ public class StackLayoutTest extends UITestCase
         cp.setLayout(new StackLayout(StackLayout.VERTICAL));
 
         cp.add(new JSmartLabel("StackLayout Demo & Tester")).
-            setFont(SwingUtil.getPreferredMonoFont());
+            setFont(FontUtil.getPreferredMonoFont());
 
         p = addHPanel(cp);
         p.add("Left", new JSmartButton("Left"));

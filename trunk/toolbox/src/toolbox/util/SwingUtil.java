@@ -6,18 +6,13 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Window;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -39,16 +34,6 @@ public final class SwingUtil
 {
     private static final Logger logger_ = 
         Logger.getLogger(SwingUtil.class);
-
-    /** 
-     * Preferred monospaced font.
-     */
-    private static Font monofont_;
-    
-    /** 
-     * Preferred serif font. 
-     */
-    private static Font serifFont_;
 
     /**
      * Global antialias flag that all 'smart' components are aware of.
@@ -242,96 +227,9 @@ public final class SwingUtil
     }
     
     //--------------------------------------------------------------------------
-    // Font Stuff
-    //--------------------------------------------------------------------------
-        
-    /**
-     * Returns the preferred monospaced font available on the system.
-     * 
-     * @return Font
-     */
-    public static Font getPreferredMonoFont()
-    {
-        String favoredFont;
-        
-        if (Platform.isUnix())
-            favoredFont = "Monospaced";
-        else
-            favoredFont = "Lucida Typewriter";
-            
-        String backupFont  = "mono";
-        
-        if (monofont_ == null)
-        {
-            logger_.debug("Favored Font = " + favoredFont);
-            
-            GraphicsEnvironment ge = 
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
-                
-            String[] familyNames = ge.getAvailableFontFamilyNames();
-            
-            logger_.debug(ArrayUtil.toString(familyNames, false));
-            
-            Map attribMap = new HashMap();
-             
-            if (ArrayUtil.contains(familyNames, favoredFont))
-            {
-                attribMap.put(TextAttribute.FAMILY, favoredFont);
-                attribMap.put(TextAttribute.FONT, favoredFont);
-            }
-            else
-            {
-                attribMap.put(TextAttribute.FAMILY, backupFont);
-                attribMap.put(TextAttribute.FONT, backupFont);        
-            }
-
-            attribMap.put(TextAttribute.SIZE, new Float(12));
-            monofont_ = new Font(attribMap);
-        }
-        
-        return monofont_;               
-    }
-
-
-    /**
-     * Returns the preferred variable text font available on the system.
-     * 
-     * @return Font
-     */
-    public static Font getPreferredSerifFont()
-    {
-        String favoredFont = "Tahoma";
-        String backupFont  = "serif";
-        
-        if (serifFont_ == null)
-        {
-            GraphicsEnvironment ge = 
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
-                
-            String[] familyNames = ge.getAvailableFontFamilyNames();
-            Map attribMap = new HashMap();
-            
-            if (ArrayUtil.contains(familyNames, favoredFont))
-            {
-                attribMap.put(TextAttribute.FAMILY, favoredFont);
-                attribMap.put(TextAttribute.FONT, favoredFont);
-            }
-            else
-            {
-                attribMap.put(TextAttribute.FAMILY, backupFont);
-                attribMap.put(TextAttribute.FONT, backupFont);        
-            }
-
-            serifFont_ = new Font(attribMap);            
-        }
-        
-        return serifFont_;               
-    }
-    
-    //--------------------------------------------------------------------------
     // Look and Feel Stuff
     //--------------------------------------------------------------------------
-    
+        
     /**
      * Sets the Look and Feel to Metal.
      * 

@@ -33,6 +33,7 @@ import toolbox.jtail.config.xom.TailPaneConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.file.FileStuffer;
@@ -801,7 +802,7 @@ public class JTail extends JFrame implements IPreferenced
             config.setAutoStart(true);
             config.setCutExpression("");
             config.setFilenames(new String[] {TailPane.LOG_SYSTEM_OUT});
-            config.setFont(SwingUtil.getPreferredMonoFont());
+            config.setFont(FontUtil.getPreferredMonoFont());
             config.setRegularExpression("");
             config.setShowLineNumbers(false);
             addTail(config);
@@ -831,7 +832,7 @@ public class JTail extends JFrame implements IPreferenced
             config.setAutoStart(true);
             config.setCutExpression("");
             config.setFilenames(new String[] {TailPane.LOG_LOG4J});
-            config.setFont(SwingUtil.getPreferredMonoFont());
+            config.setFont(FontUtil.getPreferredMonoFont());
             config.setRegularExpression("");
             config.setShowLineNumbers(false);
             addTail(config);

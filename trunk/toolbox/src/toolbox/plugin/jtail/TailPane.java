@@ -36,8 +36,8 @@ import toolbox.tail.Tail;
 import toolbox.tail.TailAdapter;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.SwingUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
@@ -289,7 +289,7 @@ public class TailPane extends JPanel
     protected void buildView(ITailPaneConfig config)
     {
         tailArea_ = new JSmartTextArea("");
-        tailArea_.setFont(SwingUtil.getPreferredMonoFont());
+        tailArea_.setFont(FontUtil.getPreferredMonoFont());
         
         JButton clearButton_ = new JSmartButton(tailArea_.new ClearAction());
         pauseButton_ = new JSmartButton(new PauseUnpauseAction());

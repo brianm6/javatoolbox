@@ -27,7 +27,7 @@ import org.apache.log4j.Priority;
 import toolbox.log4j.JTextAreaAppender;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
-import toolbox.util.SwingUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartTextField;
@@ -84,9 +84,9 @@ public class JUnitPlugin extends JPanel implements IPlugin
         selectPanel.add(BorderLayout.CENTER, 
             new JScrollPane(packageList_ = new JSmartList(filterModel_)));
             
-        packageList_.setFont(SwingUtil.getPreferredMonoFont());
+        packageList_.setFont(FontUtil.getPreferredMonoFont());
         new JListPopupMenu(packageList_);
-        filterField_.setFont(SwingUtil.getPreferredMonoFont());
+        filterField_.setFont(FontUtil.getPreferredMonoFont());
         filterField_.addKeyListener(new FilterKeyListener());
 
         // Output panel
@@ -97,7 +97,7 @@ public class JUnitPlugin extends JPanel implements IPlugin
         
         JTextArea area = appender.getTextArea();
         outputPanel.add(BorderLayout.CENTER, new JScrollPane(area));
-        area.setFont(SwingUtil.getPreferredMonoFont());
+        area.setFont(FontUtil.getPreferredMonoFont());
         
         // build button panel
         JPanel buttonPanel = new JPanel(new FlowLayout());

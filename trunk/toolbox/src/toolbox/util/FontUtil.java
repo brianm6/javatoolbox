@@ -1,17 +1,66 @@
 package toolbox.util;
 
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
+
 /**
  * Font Utilities.
  */
 public final class FontUtil
 {
+    private static final Logger logger_ = Logger.getLogger(FontUtil.class);
+    
+    /** 
+     * Preferred monospaced font.
+     */
+    private static Font monoFont_;
+    
+    /** 
+     * Preferred serif font. 
+     */
+    private static Font serifFont_;
+
+    /**
+     * Pick list for mono fonts. First one has the highest priority.
+     */
+    private static String[] preferredMono_ = new String[] 
+    {
+        "Lucida Sans Typewriter",
+        "Lucida Console",
+        "Monospaced",
+        "Mono",
+        "mono",
+        "Courier",
+        "Dialog"
+    };
+    
+    /**
+     * Pick list for the serif fonts. First one has the highest priority.
+     */
+    private static String[] preferredSerif_ = new String[]
+    {
+        "Tahoma",
+        "Verdana",
+        "Trebuchet MS",
+        "Arial",
+        "serif",
+        "Dialog"
+    };
+    
+    //--------------------------------------------------------------------------
+    // Public 
+    //--------------------------------------------------------------------------
+    
     /**
      * Serializes a font to its XML representation.
      * 
@@ -54,5 +103,74 @@ public final class FontUtil
     public static void setBold(JComponent c)
     {
         c.setFont(c.getFont().deriveFont(Font.BOLD));
+    }
+
+
+    /**
+     * Returns the preferred monospaced font available on the system.
+     * 
+     * @return Font
+     */
+    public static synchronized Font getPreferredMonoFont()
+    {
+        if (monoFont_ == null)
+            monoFont_ = getPreferredFont(preferredMono_);
+        
+        return monoFont_;               
+    }
+
+
+    /**
+     * Returns the preferred variable text font available on the system.
+     * 
+     * @return Font
+     */
+    public static synchronized Font getPreferredSerifFont()
+    {
+        if (serifFont_ == null)
+            serifFont_ = getPreferredFont(preferredSerif_);
+        
+        return serifFont_;               
+    }
+
+    //--------------------------------------------------------------------------
+    // Private 
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the first available font from the given list of preferred fonts.
+     * 
+     * @return Font
+     */
+    private static Font getPreferredFont(String[] preferred)
+    {
+        GraphicsEnvironment ge =
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+        String[] fontNames = ge.getAvailableFontFamilyNames();
+        String fontName = null;
+
+        for (int i = 0; i < preferred.length; i++)
+        {
+            if (ArrayUtil.contains(fontNames, preferred[i]))
+            {
+                fontName = preferred[i];
+                break;
+            }
+        }
+
+        Map fontAttribs = new HashMap();
+
+        if (fontName != null)
+        {
+
+            fontAttribs = new HashMap();
+            fontAttribs.put(TextAttribute.FAMILY, fontName);
+            fontAttribs.put(TextAttribute.FONT, fontName);
+            fontAttribs.put(TextAttribute.SIZE, new Float(12));
+
+        }
+
+        return new Font(fontAttribs);
     }
 }

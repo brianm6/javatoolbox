@@ -30,9 +30,9 @@ import org.apache.regexp.RESyntaxException;
 
 import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
+import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
-import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
@@ -126,10 +126,10 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
     protected void buildView()
     {
         outputArea_ = new JSmartTextArea();
-        outputArea_.setFont(SwingUtil.getPreferredMonoFont());
+        outputArea_.setFont(FontUtil.getPreferredMonoFont());
         
         inputArea_ = new JSmartTextArea();
-        inputArea_.setFont(SwingUtil.getPreferredMonoFont());
+        inputArea_.setFont(FontUtil.getPreferredMonoFont());
         
         // Buttons 
         JPanel buttonPanel = new JPanel(new FlowLayout());

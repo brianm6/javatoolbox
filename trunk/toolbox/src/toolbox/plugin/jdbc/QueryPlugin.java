@@ -32,6 +32,7 @@ import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.SQLDefaults;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
@@ -213,7 +214,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         rootPopup.add(SwingUtil.popupToMenu(editMenu));
         
-        sqlArea_.setFont(SwingUtil.getPreferredMonoFont());
+        sqlArea_.setFont(FontUtil.getPreferredMonoFont());
         
         sqlArea_.getInputHandler().addKeyBinding(
             "C+ENTER", new ExecuteAction());
@@ -228,7 +229,7 @@ public class QueryPlugin extends JPanel implements IPlugin
             "CS+F", new FormatSQLAction());
         
         resultsArea_ = new JSmartTextArea();
-        resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
+        resultsArea_.setFont(FontUtil.getPreferredMonoFont());
         
         areaSplitPane_ = 
             new JSmartSplitPane(

@@ -38,6 +38,7 @@ import javax.swing.plaf.OptionPaneUI;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 
@@ -1337,7 +1338,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
         if (detailArea_ == null)
         {
             detailArea_ = new JSmartTextArea(false, SwingUtil.getDefaultAntiAlias());
-            detailArea_.setFont(SwingUtil.getPreferredMonoFont());
+            detailArea_.setFont(FontUtil.getPreferredMonoFont());
             detailScroller_ = new JScrollPane(detailArea_);
 
             Border topFiller = new EmptyBorder(10, 0, 0, 0);
