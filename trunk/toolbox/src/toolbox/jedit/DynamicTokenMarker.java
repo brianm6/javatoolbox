@@ -42,7 +42,7 @@ public class DynamicTokenMarker extends TokenMarker
     
  loop : for (int i = offset; i < length; i++)
         {
-            int i1 = (i + 1);
+            //int i1 = (i + 1);
     
             char c = array[i];
             

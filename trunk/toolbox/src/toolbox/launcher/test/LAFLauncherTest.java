@@ -82,7 +82,6 @@ public class LAFLauncherTest extends TestCase
     {
         logger_.info("Running testPrintUsage...");
         
-        String target = "toolbox.launcher.Main";
         LAFLauncher.main(new String[0]);
     }
 }
