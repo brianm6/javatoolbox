@@ -56,6 +56,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 {
     // TODO: Add nuke checkout dir
     // TODO: Add support for projects that span multiple modules
+    // TODO: Restore last selected project
     
     private static final Logger logger_ = 
         Logger.getLogger(StatcvsPlugin.class);
