@@ -23,6 +23,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.io.PrintableOutputStream;
+import toolbox.util.service.ServiceException;
 import toolbox.util.service.Startable;
 import toolbox.workspace.IPreferenced;
 
@@ -88,8 +89,6 @@ import toolbox.workspace.IPreferenced;
  */
 public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
 {
-    // TODO: Make start async
-    
     private static final Logger logger_ = Logger.getLogger(TcpTunnel.class);
 
     //--------------------------------------------------------------------------
@@ -111,7 +110,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public static final String NODE_TCPTUNNEL = "TCPTunnel";
     
-    // Javaabean properties
+    // JavaBean properties
     public static final String PROP_SUPPRESS_BINARY = "suppressBinary";
     public static final String PROP_REMOTE_PORT = "remotePort";
     public static final String PROP_REMOTE_HOST = "remoteHost";
@@ -139,7 +138,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     /**
      * Server socket for tunnel port on localhost.
      */
-    private ServerSocket ss_;
+    private ServerSocket serverSocket_;
 
     /**
      * Tunnel port on localhost.
@@ -227,15 +226,23 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
         int localPort = Integer.parseInt(args[0]);
         String tunnelhost = args[1];
         int tunnelport = Integer.parseInt(args[2]);
-
+        
+        try
+        {
+            TcpTunnel tunnel = new TcpTunnel(localPort, tunnelhost, tunnelport);
+            //tunnel.setIncomingSink(System.out);
+            //tunnel.setOutgoingSink(System.out);
+            tunnel.addTcpTunnelListener(tunnel);
+            tunnel.start();
+        }
+        catch (ServiceException e)
+        {
+            logger_.error(e);
+        }
+        
         System.out.println(
             "TcpTunnel: Ready to service connections on port " + localPort);
-
-        TcpTunnel tunnel = new TcpTunnel(localPort, tunnelhost, tunnelport);
-        //tunnel.setIncomingSink(System.out);
-        //tunnel.setOutgoingSink(System.out);
-        tunnel.addTcpTunnelListener(tunnel);
-        tunnel.start();
+        
     }
 
     //--------------------------------------------------------------------------
@@ -247,9 +254,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      */
     public TcpTunnel()
     {
-        listeners_  = new ArrayList();
-        inTotal_    = 0;
-        outTotal_   = 0;
+        this(8888, "localhost", 9999);
     }
 
     
@@ -403,110 +408,120 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
      * 
      * @see toolbox.util.service.Startable#start()
      */
-    public void start()
+    public void start() throws ServiceException
     {
-        boolean alreadyListened = false;
-
         try
         {
             // Server socket on listenPort
-            ss_ = new ServerSocket(localPort_);
-            ss_.setSoTimeout(5000);
+            serverSocket_ = new ServerSocket(localPort_);
+            serverSocket_.setSoTimeout(5000);
             stopped_ = false;
-
+            
+            Thread t = new Thread(new ServerThread());
+            t.start();
             fireTunnelStarted();
+        }
+        catch (IOException ioe)
+        {
+            throw new ServiceException(ioe);
+        }
+    }
 
-            while (!stopped_)
+    class ServerThread implements Runnable
+    {
+        /**
+         * @see java.lang.Runnable#run()
+         */
+        public void run()
+        {
+            boolean alreadyListened = false;
+            
+            while (isRunning())
             {
                 try
                 {
-                    if (!ss_.isClosed())
+                    if (serverSocket_.isClosed())
                     {
-                        if (!alreadyListened)
-                            fireStatusChanged(
-                                "Listening for connections on port " +
-                                    localPort_);
-
-                        // Client socket
-                        Socket cs = ss_.accept();
-
-                        // Remote socket
-                        Socket rs = new Socket(remoteHost_, remotePort_);
-
-                        fireStatusChanged(
-                            "Tunnelling port " + localPort_ +
-                            " to port " + remotePort_ +
-                            " on host " + remoteHost_ + " ...");
-
-//                                                          +--------> outgoingSink_
-//                                                          |
-//                                                          +--------> eos (event output stream)
-//                                             |outStreams  |
-//    cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()
-//                                    |        |
-//                        instreams   | tunnel |
-//                                    |        |
-// cs.getOutputStream()<--------------| <===== |<------------ rs.geInputStream()
-//                      |             |        |
-// eventinputstream<----+
-//                      |
-// incomingSink_<-------+
-//
-
-                        MulticastOutputStream outStreams =
-                            new MulticastOutputStream();
-
-                        outStreams.addStream(rs.getOutputStream());
-
-                        MonitoredOutputStream mos = 
-                            new MonitoredOutputStream(
-                                NAME_STREAM_OUT, new NullOutputStream());
-
-                        mos.addOutputStreamListener(
-                            new MyOutputStreamListener());
-
-                        outStreams.addStream(mos);
-
-                        printableOutgoingSink_ =
-                            new PrintableOutputStream(
-                                outgoingSink_, 
-                                supressBinary_, 
-                                SUBSTITUTION_CHAR);
-
-                        outStreams.addStream(printableOutgoingSink_);
-
-                        MulticastOutputStream inStreams =
-                            new MulticastOutputStream();
-
-                        inStreams.addStream(cs.getOutputStream());
-
-                        MonitoredOutputStream mis =
-                            new MonitoredOutputStream(
-                                NAME_STREAM_IN, new NullOutputStream());
-
-                        mis.addOutputStreamListener(
-                            new MyOutputStreamListener());
-
-                        inStreams.addStream(mis);
-
-                        printableIncomingSink_ =
-                            new PrintableOutputStream(
-                                incomingSink_, 
-                                supressBinary_, 
-                                SUBSTITUTION_CHAR);
-
-                        inStreams.addStream(printableIncomingSink_);
-
-                        new Thread(new Relay(
-                            new BufferedInputStream(cs.getInputStream()),
-                            new BufferedOutputStream(outStreams)),
-                            "TcpTunnel:incomingSink").start();
-
-                        new Thread(new Relay(
-                            new BufferedInputStream(rs.getInputStream()),
-                            new BufferedOutputStream(inStreams)),
-                            "TcpTunnel:outgoingSink").start();
+                        logger_.debug("Tunnel socket server is closed. Exiting..");
+                        return;
                     }
+                    
+                    if (!alreadyListened)
+                        fireStatusChanged( 
+                            "Listening for connections on port " + localPort_);
+
+                    // Client socket
+                    Socket client = serverSocket_.accept();
+
+                    // Remote socket
+                    Socket remote = new Socket(remoteHost_, remotePort_);
+
+                    fireStatusChanged(
+                        "Tunnelling port " + localPort_ +
+                        " to port " + remotePort_ +
+                        " on host " + remoteHost_ + " ...");
+                    
+//==============================================================================
+//
+//                                                              +--------> outgoingSink_
+//                                                              |
+//                                                              +--------> eos (event output stream)
+//                                                 |outStreams  |
+//        cs.getInputStream()------------>| =====> |---------------------> rs.getOutputStream()
+//                                        |        |
+//                            instreams   | tunnel |
+//                                        |        |
+//     cs.getOutputStream()<--------------| <===== |<------------ rs.geInputStream()
+//                          |             |        |
+//     eventinputstream<----+
+//                          |
+//     incomingSink_<-------+
+//
+// =============================================================================
+
+                    //----------Outgoing streams--------------------------------
+                    
+                    MulticastOutputStream outStreams = new MulticastOutputStream();
+                    outStreams.addStream(remote.getOutputStream());
+
+                    MonitoredOutputStream mos = new MonitoredOutputStream(
+                        NAME_STREAM_OUT, new NullOutputStream());
+
+                    mos.addOutputStreamListener(new MyOutputStreamListener());
+                    outStreams.addStream(mos);
+
+                    printableOutgoingSink_ = new PrintableOutputStream(
+                        outgoingSink_, supressBinary_, SUBSTITUTION_CHAR);
+
+                    outStreams.addStream(printableOutgoingSink_);
+
+                    //----------Incoming streams--------------------------------
+                    
+                    MulticastOutputStream inStreams = new MulticastOutputStream();
+                    inStreams.addStream(client.getOutputStream());
+
+                    MonitoredOutputStream mis = new MonitoredOutputStream(
+                        NAME_STREAM_IN, new NullOutputStream());
+
+                    mis.addOutputStreamListener(new MyOutputStreamListener());
+                    inStreams.addStream(mis);
+
+                    printableIncomingSink_ = new PrintableOutputStream(
+                        incomingSink_, supressBinary_, SUBSTITUTION_CHAR);
+
+                    inStreams.addStream(printableIncomingSink_);
+
+                    //----------------------------------------------------------
+                    
+                    new Thread(new Relay(
+                        new BufferedInputStream(client.getInputStream()),
+                        new BufferedOutputStream(outStreams)),
+                        "TcpTunnel:incomingSink").start();
+
+                    new Thread(new Relay(
+                        new BufferedInputStream(remote.getInputStream()),
+                        new BufferedOutputStream(inStreams)),
+                        "TcpTunnel:outgoingSink").start();
                 }
                 catch (SocketTimeoutException ste)
                 {
@@ -519,12 +534,8 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
                 }
             }
         }
-        catch (IOException ioe)
-        {
-            ExceptionUtil.handleUI(ioe, logger_);
-        }
     }
-
+    
 
     /**
      * Stops the tunnel.
@@ -534,7 +545,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     public void stop()
     {
         stopped_ = true;
-        SocketUtil.close(ss_);
+        SocketUtil.close(serverSocket_);
         fireStatusChanged("Tunnel stopped");
     }
 
