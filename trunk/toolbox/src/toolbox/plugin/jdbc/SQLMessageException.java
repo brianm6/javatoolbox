@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
- * Tries to make for for the annoying fact that a SQL exception does not
+ * Tries to make up for the annoying fact that a SQL exception does not
  * include the offending sql statement.
  */
 public class SQLMessageException extends SQLException
