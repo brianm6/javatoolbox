@@ -576,7 +576,7 @@ public class Tree
         showFiles_ = useRegex | showDate_ | showSize_ ? true : showFiles;
         
         if (showFiles_)
-            fileFilter_ = new FileOnlyFilter();
+            fileFilter_ = FileOnlyFilter.INSTANCE;
         
         if (useRegex)
         {

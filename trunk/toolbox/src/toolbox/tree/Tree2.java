@@ -598,7 +598,7 @@ public class Tree2
         showFiles_ = useRegex | showDate_ | showSize_ ? true : showFiles;
         
         if (showFiles_)
-            fileFilter_ = new FileOnlyFilter();
+            fileFilter_ = FileOnlyFilter.INSTANCE;
         
         // TODO: expose case sensetivity?
         if (useRegex)
