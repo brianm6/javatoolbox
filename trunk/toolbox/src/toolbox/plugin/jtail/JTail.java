@@ -750,7 +750,7 @@ public class JTail extends JPanel implements IPreferenced
             String file = FileUtil.trailWithSeparator(
                 System.getProperty("user.home")) + "jtail-test.txt";
                  
-            FileStuffer stuffer = new FileStuffer(new File(file), 100);
+            FileStuffer stuffer = new FileStuffer(new File(file), 50);
             stuffer.start();
             statusBar_.setInfo("Created " + file + " for tailing");
         }
