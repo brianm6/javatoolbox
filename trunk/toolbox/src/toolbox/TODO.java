@@ -36,6 +36,8 @@ package toolbox;
  * TODO: Added number of files/selected files to the JFileExplorer InfoBar
  * TODO: Add Swing preferences (window drag, resize outline, etc)
  * TODO: Update NetMeter to use MonitoredInput/Output streams.
+ * TODO: Upgrade to Maven RC4
+ * TODO: Upgrade to commons-collections-3.1
  * TODO: Save db profiles to a separate file.
  * TODO: Update JDBCUtil to handle multiple sessions.
  * =============================================================================
@@ -80,7 +82,9 @@ package toolbox;
  * =============================================================================
  * 
  * =============================== COMPLETED ===================================
+ * July 2004
  *
+ *  
  * June 2004
  *  - Updated Jode to 1.1.2-pre1
  *  - Added StringUtil.indent()
