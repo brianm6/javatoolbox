@@ -21,12 +21,12 @@ import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.JFontChooser;
-import toolbox.workspace.prefs.PreferencesView;
+import toolbox.workspace.prefs.Preferences;
 
 /**
  * Configures Look and Feel related preferences.
  */
-public class LookAndFeelPrefsView extends JHeaderPanel implements PreferencesView
+public class LookAndFeelPrefsView extends JHeaderPanel implements Preferences
 {
     private static final Logger logger_ = 
         Logger.getLogger(LookAndFeelPrefsView.class);
@@ -90,11 +90,11 @@ public class LookAndFeelPrefsView extends JHeaderPanel implements PreferencesVie
     }
 
     //--------------------------------------------------------------------------
-    // PreferencesView Interface
+    // Preferences Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#getLabel()
+     * @see toolbox.workspace.prefs.Preferences#getLabel()
      */
     public String getLabel()
     {
@@ -103,7 +103,7 @@ public class LookAndFeelPrefsView extends JHeaderPanel implements PreferencesVie
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#getView()
+     * @see toolbox.workspace.prefs.Preferences#getView()
      */
     public JComponent getView()
     {
@@ -112,7 +112,7 @@ public class LookAndFeelPrefsView extends JHeaderPanel implements PreferencesVie
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#onOK()
+     * @see toolbox.workspace.prefs.Preferences#onOK()
      */
     public void onOK()
     {
@@ -121,7 +121,7 @@ public class LookAndFeelPrefsView extends JHeaderPanel implements PreferencesVie
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#onApply()
+     * @see toolbox.workspace.prefs.Preferences#onApply()
      */
     public void onApply()
     {
@@ -183,7 +183,7 @@ public class LookAndFeelPrefsView extends JHeaderPanel implements PreferencesVie
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#onCancel()
+     * @see toolbox.workspace.prefs.Preferences#onCancel()
      */
     public void onCancel()
     {
