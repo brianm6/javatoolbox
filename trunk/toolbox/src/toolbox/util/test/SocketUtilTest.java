@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.apache.log4j.Category;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -17,6 +19,10 @@ import toolbox.util.ThreadUtil;
  */
 public class SocketUtilTest extends TestCase
 {
+    /** Logger **/
+    private static final Category logger_ = 
+        Category.getInstance(SocketUtilTest.class);
+        
     /**
      * Constructor for SocketUtilTest.
      * 
@@ -27,6 +33,7 @@ public class SocketUtilTest extends TestCase
         super(name);
     }
 
+
     /**
      * Entrypoint
      *
@@ -36,6 +43,7 @@ public class SocketUtilTest extends TestCase
     {
         TestRunner.run(SocketUtilTest.class);
     }
+
     
     /**
      * Tests isReasonAcceptTimeout()
@@ -47,6 +55,7 @@ public class SocketUtilTest extends TestCase
             
         assertTrue(SocketUtil.isReasonAcceptTimeout(iioe));
     }
+
     
     /**
      * Tests isReasonSocketClosed()
@@ -56,6 +65,7 @@ public class SocketUtilTest extends TestCase
         SocketException se  = new SocketException(SocketUtil.MSG_SOCKET_CLOSED);
         assertTrue(SocketUtil.isReasonSocketClosed(se));
     }
+
     
     /**
      * Tests connectWithRetry() for failure scenario
@@ -69,6 +79,7 @@ public class SocketUtilTest extends TestCase
             InetAddress.getLocalHost().getHostAddress(), 
             55555, 1, 5);
     }
+
     
     /**
      * Tests connectWithRetry() for success scenario
@@ -92,5 +103,19 @@ public class SocketUtilTest extends TestCase
              
         /* cleanup */
         socket.close();     
+    }
+
+    
+    /**
+     * Tests getFreePort()
+     */ 
+    public void testGetFreePort() throws Exception
+    {
+        for (int i=0; i<10; i++)
+        {
+            int freePort = SocketUtil.getFreePort();
+            logger_.info("Freeport = " + freePort);
+            assertTrue("Free port cannot be zero", freePort > 0);
+        }
     }
 }
