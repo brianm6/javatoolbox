@@ -9,14 +9,13 @@ import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * RegexFilterReader applies a regular expression to each line
- * read from a Reader. If the line matches the regular
- * expression, it is included and returned to the caller, 
- * otherwise the line is omitted (/dev/null).
+ * RegexFilterReader applies a regular expression to each line read from a 
+ * Reader. If the line matches the regular expression, it is included and 
+ * returned to the caller, otherwise the line is omitted (/dev/null).
  */
 public class RegexFilterReader extends LineNumberReader
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(RegexFilterReader.class);
     
@@ -72,6 +71,7 @@ public class RegexFilterReader extends LineNumberReader
         this(in, regExp, matchCase, false);
     }
 
+
     /**
      * Creates a RegexFilterReader
      * 
@@ -103,7 +103,7 @@ public class RegexFilterReader extends LineNumberReader
     }
 
     //--------------------------------------------------------------------------
-    //  Overridden Methods from LineNumberReader
+    //  Overridden from LineNumberReader
     //--------------------------------------------------------------------------
         
     /**
