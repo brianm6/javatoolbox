@@ -7,36 +7,36 @@ import javax.swing.JPopupMenu;
 
 /**
  * Popup menu listener activated by a right-mouse-button click event.
- */ 
+ */
 public class JPopupListener extends MouseAdapter
 {
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Popup menu to add a listener to.
      */
     private JPopupMenu popupMenu_;
 
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
-    
+
     /**
      * Creates a JPopupListener.
-     * 
+     *
      * @param popupMenu Menu to add this listener to.
-     */    
+     */
     public JPopupListener(JPopupMenu popupMenu)
     {
         popupMenu_ = popupMenu;
     }
-    
+
     //--------------------------------------------------------------------------
-    //  Overrides java.awt.event.MouseAdapter
+    // Overrides java.awt.event.MouseAdapter
     //--------------------------------------------------------------------------
-    
+
     /**
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
@@ -56,12 +56,12 @@ public class JPopupListener extends MouseAdapter
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Private
     //--------------------------------------------------------------------------
-    
+
     /**
      * Determines if the popupmenu should be made visible.
-     * 
+     *
      * @param e Mouse event.
      */
     private void maybeShowPopup(MouseEvent e)
