@@ -17,6 +17,8 @@ import org.apache.log4j.Logger;
 
 /**
  * JDBC Utility class
+ * 
+ * TODO: Write unit tests using HSQLDB
  */
 public final class JDBCUtil
 {
