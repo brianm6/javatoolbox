@@ -3,14 +3,21 @@ package toolbox.util.ui.statusbar;
 import java.awt.Component;
 
 /**
- * StatusConstraint
+ * StatusConstraint.
+ * <p>
+ * Originally created by Claude Duguay<br>
+ * Copyright (c) 2000<br>
  */
 public class StatusConstraint implements StatusArea
 {
-    /** Flag for relative layout */
+    /** 
+     * Flag for relative layout 
+     */
     private boolean relative_;
     
-    /** Requiremd width (implies fixed width) */
+    /** 
+     * Required width (implies fixed width) 
+     */
     private float width_;
 
     //--------------------------------------------------------------------------
@@ -61,12 +68,19 @@ public class StatusConstraint implements StatusArea
     //--------------------------------------------------------------------------
     // StatusArea Interface
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @see toolbox.util.ui.statusbar.StatusArea#isRelativeWidth()
+     */
     public boolean isRelativeWidth()
     {
         return relative_;
     }
 
+    /**
+     * @see toolbox.util.ui.statusbar.StatusArea#
+     *      getRequiredWidth(java.awt.Component)
+     */
     public float getRequiredWidth(Component component)
     {
         if (relative_ || width_ != 1)
@@ -75,9 +89,3 @@ public class StatusConstraint implements StatusArea
         return component.getPreferredSize().width;
     }
 }
-
-/*
-Originally created by Claude Duguay
-Copyright (c) 2000
-*/
-

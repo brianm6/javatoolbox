@@ -9,23 +9,40 @@ import javax.swing.border.Border;
 
 /**
  * Bevel Border with a variable thickness.
+ * <p>
+ * Originally created by Claude Duguay<br>
+ * Copyright (c) 2000<br>
  */
 public class DynamicBevelBorder implements Border
 {
-    // Bevel types
+    /** 
+     * Raised bevel type
+     */
     public static final int RAISED = 0;
+    
+    /**
+     * Lowered bebel type
+     */
     public static final int LOWERED = 1;
 
-    /** Types of bevel */
-    private int   type_;
+    /** 
+     * Type of bevel 
+     */
+    private int type_;
     
-    /** Thickness of the border */
-    private int   thickness_;
+    /** 
+     * Thickness of the bevel border in pixels 
+     */
+    private int thickness_;
     
-    /** Hightlight color */
+    /** 
+     * Hightlight color 
+     */
     private Color highlight_;
     
-    /** Shadow color */
+    /** 
+     * Shadow color 
+     */
     private Color shadow_;
 
     //--------------------------------------------------------------------------
@@ -33,7 +50,7 @@ public class DynamicBevelBorder implements Border
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a DynamicBevelBorder with default options raised and thickness=1
+     * Creates a raised DynamicBevelBorder with a thickness of 1.
      */
     public DynamicBevelBorder()
     {
@@ -73,26 +90,67 @@ public class DynamicBevelBorder implements Border
     public DynamicBevelBorder(int type, int thickness, Color highlight, 
         Color shadow)
     {
-        type_ = type;
+        type_      = type;
         thickness_ = thickness;
         highlight_ = highlight;
-        shadow_ = shadow;
+        shadow_    = shadow;
+    }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Determines the hightlight color for a given component
+     * 
+     * @param  c  Component being painted
+     * @return Highlight color. If not specified, it is derived from the 
+     *         component.
+     */
+    public Color getHighlightColor(Component c)
+    {
+        if (highlight_ == null)
+            highlight_ = c.getBackground().brighter();
+        return highlight_;
+    }
+
+    /**
+     * Determines the shadow color for a given component
+     * 
+     * @param  c  Component being painted
+     * @return Shadow color. If not specified, it is derived from the component
+     */
+    public Color getShadowColor(Component c)
+    {
+        if (shadow_ == null)
+            shadow_ = c.getBackground().darker();
+        return shadow_;
     }
 
     //--------------------------------------------------------------------------
     // Border Interface
     //--------------------------------------------------------------------------
     
+    /**
+     * @see javax.swing.border.Border#isBorderOpaque()
+     */
     public boolean isBorderOpaque()
     {
         return true;
     }
-
+    
+    /**
+     * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
+     */
     public Insets getBorderInsets(Component component)
     {
         return new Insets(thickness_, thickness_, thickness_, thickness_);
     }
 
+    /**
+     * @see javax.swing.border.Border#paintBorder(
+     *      java.awt.Component, java.awt.Graphics, int, int, int, int)
+     */
     public void paintBorder(
         Component c,
         Graphics g,
@@ -101,8 +159,8 @@ public class DynamicBevelBorder implements Border
         int w,
         int h)
     {
-        Color hi = (type_ == RAISED ? getHightlightColor(c): getShadowColor(c));
-        Color lo = (type_ == RAISED ? getShadowColor(c): getHightlightColor(c));
+        Color hi = (type_ == RAISED ? getHighlightColor(c): getShadowColor(c));
+        Color lo = (type_ == RAISED ? getShadowColor(c): getHighlightColor(c));
 
         for (int i = thickness_ - 1; i >= 0; i--)
         {
@@ -115,39 +173,4 @@ public class DynamicBevelBorder implements Border
             g.drawLine(x + i, y + h - i - 1, x + w - i - 1, y + h - i - 1);
         }
     }
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Determines hightlight color
-     * 
-     * @param  c  Component being painted
-     * @return Hight color. If not specified, it is derived from the component
-     */
-    public Color getHightlightColor(Component c)
-    {
-        if (highlight_ == null)
-            highlight_ = c.getBackground().brighter();
-        return highlight_;
-    }
-
-    /**
-     * Determines shadow color
-     * 
-     * @param  c  Component being painted
-     * @return Shadow color. If not specified, it is derived from the component
-     */
-    public Color getShadowColor(Component c)
-    {
-        if (shadow_ == null)
-            shadow_ = c.getBackground().darker();
-        return shadow_;
-    }
 }
-
-/*
-Originally created by Claude Duguay
-Copyright (c) 2000
-*/

@@ -8,7 +8,11 @@ import javax.swing.JPanel;
 import toolbox.util.SwingUtil;
 
 /**
- * JStatusBar
+ * Status bar component that supports individual status compartments of fixed
+ * and variable width.
+ * <p>
+ * Originally created by Claude Duguay<br>
+ * Copyright (c) 2000<br>
  */
 public class JStatusBar extends JPanel
 {
@@ -85,8 +89,3 @@ public class JStatusBar extends JPanel
         return c;
     }
 }
-
-/*
-Originally created by Claude Duguay
-Copyright (c) 2000
-*/
