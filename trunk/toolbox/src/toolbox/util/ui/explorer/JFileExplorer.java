@@ -75,7 +75,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Node for file explorer preferences.
+     * Root node under which JFileExplorer preferences are saved.
      */
     private static final String NODE_JFILEEXPLORER = "JFileExplorer";
     
@@ -90,7 +90,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private static final String ATTR_FILE = "file";
 
     //--------------------------------------------------------------------------
-    // Fields : Models
+    // Fields : Model
     //--------------------------------------------------------------------------
     
     /**
@@ -109,31 +109,40 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private DefaultTreeModel treeModel_;
 
     //--------------------------------------------------------------------------
-    // Fields : Views
+    // Fields : UI
     //--------------------------------------------------------------------------
     
     /**
-     * Splitter between the directory tree and file list.
+     * Splitter that separates the directory tree and file list. The location 
+     * of the splitter bar is saved between applications instances.
      */
     private JSmartSplitPane splitPane_;
     
     /**
-     * File list.
+     * JList that displays the list of files for the currently selected 
+     * directory. The index of the currently selected file is saved between
+     * application instances.
      */
     private JList fileList_;
     
     /**
-     * Directory tree.
+     * Directory tree that displays the filesystem directory structure. 
+     * Selecting a directory will automatically populate the its files in the
+     * file list. The currently selected directory path is saved between 
+     * application instances.
      */
     private JTree tree_;
     
     /**
-     * Drop down combo with drive letters.
+     * Drop down combo with drive letters. This combo usually only has one
+     * element on unix filesystems. Otherwise, drive letters are available for
+     * selection on FAT and other simililar filesystems. The currently selected
+     * root element is saved between application instances.
      */
     private JComboBox rootsComboBox_;
     
     /**
-     * Drive icon used in the root combo box.
+     * Drive icon used in the file roots combo box.
      */
     private Icon driveIcon_;
     
@@ -149,7 +158,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private InfoBar infoBar_;
     
     //--------------------------------------------------------------------------
-    // Fields : Events
+    // Fields : Event
     //--------------------------------------------------------------------------
     
     /** 
@@ -164,7 +173,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private boolean processingTreeEvent_;
     
     /** 
-     * Listener for the change in selection to the directory. 
+     * Listener for the change in selection to the directory tree. 
      */
     private DirTreeSelectionListener treeSelectionListener_;
 
@@ -456,7 +465,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Adds a FileExplorerListener.
      *
-     * @param listener Listener to add
+     * @param listener Listener to add.
      */
     public void addFileExplorerListener(FileExplorerListener listener)
     {
@@ -469,7 +478,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Removes a FileExplorerListener.
      *
-     * @param listener Listener to remove
+     * @param listener Listener to remove.
      */
     public void removeFileExplorerListener(FileExplorerListener listener)
     {
@@ -502,7 +511,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Fires an event when a directory is selected.
      * 
-     * @param folder Folder that was selected
+     * @param folder Folder that was selected.
      */
     protected void fireFolderSelected(String folder)
     {
@@ -514,7 +523,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Fire an event when a directory is double clicked.
      * 
-     * @param folder Folder that was double clicked
+     * @param folder Folder that was double clicked.
      */
     protected void fireFolderDoubleClicked(String folder)
     {
@@ -633,7 +642,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Sets the root for the JTree.
      *
-     * @param root Root of the tree
+     * @param root Root of the tree.
      */
     protected void setTreeRoot(String root)
     {
@@ -752,7 +761,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     /**
      * Returns the default root.
      *
-     * @return Default root drive/directory
+     * @return Default root drive/directory.
      */
     protected String getDefaultRoot()
     {
@@ -818,7 +827,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class FileListMouseListener extends MouseAdapter
     {
-        
+        /**
+         * @see java.awt.event.MouseListener#mouseClicked(
+         *      java.awt.event.MouseEvent)
+         */
         public void mouseClicked(MouseEvent evt)
         {
             if (evt.getClickCount() == 2 && fileList_.getSelectedIndex() != -1)
@@ -848,6 +860,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class FileListSelectionListener implements ListSelectionListener
     {
+        /**
+         * @see javax.swing.event.ListSelectionListener#valueChanged(
+         *      javax.swing.event.ListSelectionEvent)
+         */
         public void valueChanged(ListSelectionEvent e)
         {
             if (e.getValueIsAdjusting())
@@ -866,6 +882,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class DirTreeMouseListener extends MouseAdapter
     {
+        /**
+         * @see java.awt.event.MouseListener#mouseClicked(
+         *      java.awt.event.MouseEvent)
+         */
         public void mouseClicked(MouseEvent evt)
         {
             if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && 
@@ -889,6 +909,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class DriveComboListener implements ItemListener
     {
+        /**
+         * @see java.awt.event.ItemListener#itemStateChanged(
+         *      java.awt.event.ItemEvent)
+         */
         public void itemStateChanged(ItemEvent ie)
         {
             if (ie.getStateChange() == ItemEvent.SELECTED)
@@ -911,6 +935,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class DirTreeSelectionListener implements TreeSelectionListener
     {
+        /**
+         * @see javax.swing.event.TreeSelectionListener#valueChanged(
+         *      javax.swing.event.TreeSelectionEvent)
+         */
         public void valueChanged(TreeSelectionEvent e)
         {
             StringBuffer s = new StringBuffer();
@@ -956,6 +984,9 @@ public class JFileExplorer extends JPanel implements IPreferenced
         private JLabel refreshLabel_;
         private DecimalFormat df_;
         
+        /**
+         * Creates an InfoBar.
+         */
         InfoBar()
         {
             df_ = new DecimalFormat();
@@ -993,7 +1024,13 @@ public class JFileExplorer extends JPanel implements IPreferenced
             addStatusComponent(attribLabel_, false);
             addStatusComponent(refreshLabel_, false);
         }
+
         
+        /**
+         * Updates the bar to show information for the given file.
+         * 
+         * @param file File to show info for.
+         */
         public void showInfo(File file)
         {
             String size = df_.format(file.length()) + " bytes";
@@ -1019,6 +1056,10 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     class InfoBarUpdater extends FileExplorerAdapter
     {
+        /**
+         * @see toolbox.util.ui.explorer.FileExplorerListener#fileSelected(
+         *      java.lang.String)
+         */
         public void fileSelected(String file)
         {
             infoBar_.showInfo(new File(file));

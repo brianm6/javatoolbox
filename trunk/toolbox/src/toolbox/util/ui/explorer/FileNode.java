@@ -18,7 +18,7 @@ public class FileNode extends DefaultMutableTreeNode
     /**
      * Creates a FileNode.
      * 
-     * @param userObject Object to associate with the file node
+     * @param userObject Object to associate with the file node.
      */
     FileNode(Object userObject)
     {
@@ -33,8 +33,8 @@ public class FileNode extends DefaultMutableTreeNode
      * Compares based on directory/file name. Is sensetive to the host
      * platform w.r.t. case sensetivity.
      * 
-     * @param obj Object to compare
-     * @return True if nodes are equal, false otherwise
+     * @param obj Object to compare.
+     * @return True if nodes are equal, false otherwise.
      */
     public boolean equals(Object obj)
     {

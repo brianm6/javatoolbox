@@ -8,7 +8,7 @@ public interface FileExplorerListener
     /**
      * Called when a file is selected in the file list.
      * 
-     * @param file Name of the file selected
+     * @param file Name of the file selected.
      */
     void fileSelected(String file);    
     
@@ -16,7 +16,7 @@ public interface FileExplorerListener
     /**
      * Called when a file is double clicked in the details view.
      *
-     * @param file Name of the file that was clicked
+     * @param file Name of the file that was clicked.
      */
     void fileDoubleClicked(String file);
     
@@ -24,7 +24,7 @@ public interface FileExplorerListener
     /**
      * Called when a directory folder is selected in the tree view.
      * 
-     * @param folder Name of the directory selected
+     * @param folder Name of the directory selected.
      */
     void folderSelected(String folder);    
     
@@ -32,7 +32,7 @@ public interface FileExplorerListener
     /**
      * Called when a folder is doubleclicked in the tree view.
      * 
-     * @param folder Name of directory double clicked
+     * @param folder Name of directory double clicked.
      */
     void folderDoubleClicked(String folder);    
 }
