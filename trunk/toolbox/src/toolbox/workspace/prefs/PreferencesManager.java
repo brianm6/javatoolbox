@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.JPanel;
-
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
@@ -39,8 +37,6 @@ public class PreferencesManager implements IPreferenced
      */
     private Map nodeMap_;
     
-    private JPanel invisible_;
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -61,9 +57,9 @@ public class PreferencesManager implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the preferences.
+     * Returns an array of the preferences views.
      * 
-     * @return List
+     * @return PreferencesView[]
      */
     public PreferencesView[] getPreferences()
     {
