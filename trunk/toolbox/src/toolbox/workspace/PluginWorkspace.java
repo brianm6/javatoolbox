@@ -41,7 +41,6 @@ import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.ImageCache;
-import toolbox.util.ui.TryCatchAction;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
@@ -605,41 +604,35 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /**
      * Action that sets and look and feel
      */    
-    class SetLAFAction extends AbstractAction
+    class SetLAFAction extends WorkspaceAction
     {
         private UIManager.LookAndFeelInfo lafInfo_;
         
         public SetLAFAction(UIManager.LookAndFeelInfo lafInfo)
         {
-            super(lafInfo.getName());
+            super(lafInfo.getName(), false, null, null);
             lafInfo_ = lafInfo;
         }
-        
-        public void actionPerformed(ActionEvent e)
+
+        public void runAction(ActionEvent e) throws Exception
         {
-            try
-            { 
-                UIManager.setLookAndFeel(lafInfo_.getClassName());
-                SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
-            }
-            catch (Exception ex)
-            {
-                ExceptionUtil.handleUI(ex, logger_);
-            }
+            UIManager.setLookAndFeel(lafInfo_.getClassName());
+            SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
         }
     }
     
     /**
      * Triggers garbage collection
      */
-    class GarbageCollectAction extends TryCatchAction
+    class GarbageCollectAction extends WorkspaceAction
     {
         public GarbageCollectAction()
         {
-            super("Run GC");
+            super("Run GC", false, null, null);
+            
         }
         
-        public void tryActionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
             long freeMem  = Runtime.getRuntime().freeMemory();
             long totalMem = Runtime.getRuntime().totalMemory();
