@@ -8,21 +8,26 @@ public class InstantMessengerFactory
     /**
      * Creates an InstantMessenger given the name of the instant messaging
      * network.
-     * 
-     * @param network Instant messaging network. 
+     *
+     * @param network Instant messaging network.
      * @return InstantMessenger for the given instant messaging network.
      */
     public static InstantMessenger create(String network)
     {
         InstantMessenger im = null;
-        
+
         if (network.equalsIgnoreCase("yahoo"))
         {
             im = new YahooMessenger();
         }
-        else if (network.equalsIgnoreCase("aol"))
+        else if (network.equalsIgnoreCase("msg"))
         {
-            im = new AOLMessenger();
+            im = new MSNMessenger();
+        }
+        else if (network.equalsIgnoreCase("aol") ||
+                  network.equalsIgnoreCase("aim"))
+        {
+            im = new AIMMessenger();
         }
         else if (network.equalsIgnoreCase("null"))
         {
@@ -33,7 +38,7 @@ public class InstantMessengerFactory
             throw new IllegalArgumentException(
                 "Messenger type '" + network + "' not valid.");
         }
-            
-        return im;    
+
+        return im;
     }
 }
