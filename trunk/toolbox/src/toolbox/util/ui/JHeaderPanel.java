@@ -488,10 +488,9 @@ public class JHeaderPanel extends JPanel
             {
                 return;
             }
+            
             Color control = UIManager.getColor("control");
-
-            System.out.println("Control=" + control);
-
+            
             int width = getWidth();
             int height = getHeight();
 
