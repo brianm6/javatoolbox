@@ -14,7 +14,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.Stringz;
 
 /**
- * Unit test for StringUtil
+ * Unit test for StringUtil.
  */
 public class StringUtilTest extends TestCase implements Stringz
 {
@@ -26,7 +26,7 @@ public class StringUtilTest extends TestCase implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint
+     * Entrypoint.
      * 
      * @param args None recognized
      */
@@ -40,7 +40,7 @@ public class StringUtilTest extends TestCase implements Stringz
     //--------------------------------------------------------------------------
     
     /**
-     * Tests right() for proper truncation behavior
+     * Tests right() for proper truncation behavior.
      */
     public void testRightForTruncation()
     {
@@ -70,8 +70,9 @@ public class StringUtilTest extends TestCase implements Stringz
             fail("ERROR RIGHT 4");
     }
 
+    
     /**
-     * Tests right(int, width)
+     * Tests right(int, width).
      */
     public void testRightForInt()
     {
@@ -82,8 +83,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("345", StringUtil.right(345, 2));        
     }
 
+    
     /**
-     * Tests right(String, width)
+     * Tests right(String, width).
      */
     public void testRightForString()
     {
@@ -94,8 +96,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("345", StringUtil.right("345", 2));        
     }
 
+    
     /**
-     * Tests left() for proper truncation behavior
+     * Tests left() for proper truncation behavior.
      */
     public void testLeftForTruncation()
     {
@@ -125,8 +128,9 @@ public class StringUtilTest extends TestCase implements Stringz
             fail("ERROR LEFT 4");
     }
 
+    
     /**
-     * Tests left(int, width)
+     * Tests left(int, width).
      */
     public void testLeftForInt()
     {
@@ -137,8 +141,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("345", StringUtil.left(345, 2));        
     }
 
+    
     /**
-     * Tests static toString( List )
+     * Tests static toString( List ).
      */
     public void testToStringForList()
     {
@@ -164,8 +169,9 @@ public class StringUtilTest extends TestCase implements Stringz
         }
     }
     
+    
     /**
-     * Tests isNullOrBlank()
+     * Tests isNullOrBlank().
      */
     public void testIsNullOrBlank()
     {
@@ -187,8 +193,9 @@ public class StringUtilTest extends TestCase implements Stringz
             !StringUtil.isNullOrEmpty("howdy"));
     }
 
+    
     /**
-     * Tests isNullOrEmpty()
+     * Tests isNullOrEmpty().
      */
     public void testIsNullOrEmpty()
     {
@@ -207,8 +214,9 @@ public class StringUtilTest extends TestCase implements Stringz
             !StringUtil.isNullOrEmpty("howdy"));
     }
     
+    
     /**
-     * Tests getStringRuler()
+     * Tests getStringRuler().
      * 
      * @throws Exception on error
      */
@@ -246,8 +254,9 @@ public class StringUtilTest extends TestCase implements Stringz
         }       
     }
     
+    
     /**
-     * Tests truncate()
+     * Tests truncate().
      */ 
     public void testTruncate() 
     {
@@ -341,8 +350,9 @@ public class StringUtilTest extends TestCase implements Stringz
         
     }
     
+    
     /**
-     * Tests trim() for an empty string
+     * Tests trim() for an empty string.
      */
     public void testTrimEmpty()
     {
@@ -352,8 +362,9 @@ public class StringUtilTest extends TestCase implements Stringz
             "", StringUtil.trim("",'x'));
     }
     
+    
     /**
-     * Tests trim() for a single char string
+     * Tests trim() for a single char string.
      */
     public void testTrimOne()
     {
@@ -364,8 +375,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("trimmed incorrect", s, StringUtil.trim(s,' '));
     }
 
+    
     /**
-     * Tests trim() for larger string
+     * Tests trim() for larger string.
      */
     public void testTrimMany()
     {
@@ -376,8 +388,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("trim incorrect", s, StringUtil.trim(s, 'z'));
     }
  
+    
     /**
-     * Tests trim() for trimming entire string
+     * Tests trim() for trimming entire string.
      */
     public void testTrimEntire()
     {
@@ -387,8 +400,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("trim incorrect", "", StringUtil.trim(s, 'a'));            
     }
     
+    
     /**
-     * Tests trim() for prefix trimming only
+     * Tests trim() for prefix trimming only.
      */
     public void testTrimPrefixOnly()
     {
@@ -398,8 +412,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));
     }
 
+    
     /**
-     * Tests trim() for suffix trimming only
+     * Tests trim() for suffix trimming only.
      */
     public void testTrimSuffixOnly()
     {
@@ -409,8 +424,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));
     }
     
+    
     /**
-     * Tests wrap()
+     * Tests wrap().
      */
     public void testWrap()
     {
@@ -424,8 +440,9 @@ public class StringUtilTest extends TestCase implements Stringz
         logger_.info(StringUtil.wrap(s, 5, false));
     }
 
+    
     /**
-     * Tests replace() for zero replacements
+     * Tests replace() for zero replacements.
      */
     public void testReplaceNone()
     {
@@ -437,8 +454,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals(a, b);
     }
     
+    
     /**
-     * Tests replace() for a single replacement
+     * Tests replace() for a single replacement.
      */
     public void testReplaceOne()
     {
@@ -450,8 +468,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("mister", b);
     }
     
+    
     /**
-     * Tests replace() with max number of replacements
+     * Tests replace() with max number of replacements.
      */
     public void testReplaceMax()
     {
@@ -463,8 +482,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals("ho ho me", b);
     }
     
+    
     /**
-     * Tests isMultiline()
+     * Tests isMultiline().
      */
     public void testIsMultiline()
     {
@@ -484,8 +504,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertEquals(true, StringUtil.isMultiline("a\n"));
     }
     
+    
     /**
-     * Tests tokenize()
+     * Tests tokenize().
      */
     public void testTokenize()
     {
@@ -521,8 +542,9 @@ public class StringUtilTest extends TestCase implements Stringz
             assertEquals("three", StringUtil.tokenize(m, "Z", true)[4]);
     }
     
+    
     /**
-     * Tests getLine()
+     * Tests getLine().
      */
     public void testGetLine()
     {
@@ -586,8 +608,9 @@ public class StringUtilTest extends TestCase implements Stringz
         assertNull(StringUtil.getLine(s, 500));
     }
     
+    
     /**
-     * Tests reverse()
+     * Tests reverse().
      */
     public void testReverse()
     {
@@ -605,5 +628,18 @@ public class StringUtilTest extends TestCase implements Stringz
         // Reverse x 2 = original
         assertEquals("original", 
             StringUtil.reverse(StringUtil.reverse("original")));
+    }
+    
+    
+    /**
+     * Tests addBars().
+     */
+    public void testAddBars()
+    {
+        logger_.info("Running testAddBars...");
+        
+        logger_.debug(StringUtil.addBars(""));
+        logger_.debug(StringUtil.addBars("this is a single line"));
+        logger_.debug(StringUtil.addBars("this\nis a\nmulti-line"));
     }
 }
