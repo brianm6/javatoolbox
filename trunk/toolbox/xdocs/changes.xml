@@ -42,6 +42,7 @@
  * TODO: Expose html formatter properties in TextToolsPlugin
  * TODO: Add undo to TextToolsPlugin
  * TODO: Beef up junit plugin with junitx classes
+ * TODO: Upgrade to Maven 1.0
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
