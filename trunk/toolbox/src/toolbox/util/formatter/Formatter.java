@@ -4,11 +4,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import toolbox.util.service.Nameable;
+import toolbox.workspace.IPreferenced;
 
 /**
  * General purpose formatter interface.
  */
-public interface Formatter extends Nameable
+public interface Formatter extends Nameable, IPreferenced
 {
     /**
      * Returns a formatted version of the input string.

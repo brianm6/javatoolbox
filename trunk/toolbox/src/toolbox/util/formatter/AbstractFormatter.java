@@ -1,5 +1,7 @@
 package toolbox.util.formatter;
 
+import nu.xom.Element;
+
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
@@ -84,5 +86,23 @@ public abstract class AbstractFormatter implements Formatter
         StringOutputStream sos = new StringOutputStream();
         format(sis, sos);
         return sos.toString();
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+    }
+    
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
     }
 }
