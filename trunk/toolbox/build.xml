@@ -259,6 +259,12 @@
         	src       ="${lib}/skinlf.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/junit.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
                              
         <jar 
         	jarfile ="${dist}/toolbox.jar" 
