@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import multivalent.Browser;
 import multivalent.Document;
@@ -65,7 +66,10 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     public void view(File file)
     {
         browser_.eventq(Document.MSG_OPEN, file.toURI());
-        repaint();
+
+        // TODO: figure out how to get the browser to show without manual 
+        //       stimulation.       
+        
     }
     
     
@@ -124,7 +128,7 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
         browser_ = Multivalent.getInstance().getBrowser("name", "Basic");
 
         setLayout(new BorderLayout());
-        add(browser_, BorderLayout.CENTER);
+        add(new JScrollPane(browser_), BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
         
