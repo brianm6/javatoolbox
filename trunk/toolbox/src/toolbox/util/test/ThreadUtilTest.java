@@ -32,7 +32,7 @@ public class ThreadUtilTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
+        //BasicConfigurator.configure();
         TestRunner.run(ThreadUtilTest.class);
     }
 
@@ -46,14 +46,21 @@ public class ThreadUtilTest extends TestCase
     }
 
     /**
-     * Tests run()
+     * Tests run() on a method with no args
      */
-    public void testRunInThread() throws Exception
+    public void testRunSimple() throws Exception
     {
         Tester target = new Tester();
-        
-        /* call simple method with no args */
-        ThreadUtil.run(target, "ping", new Object[0]);
+        ThreadUtil.run(target, "pingSimple", new Object[0]).join();
+        assertTrue("ping was not executed", target.pingSimpleCalled);
+    }
+
+    /**
+     * Tests run() on a method with simple args and arrays
+     */
+    public void testRunArgs() throws Exception
+    {
+        Tester target = new Tester();
         
         /* call method with args */
         Object[] params = new Object[] 
@@ -62,39 +69,79 @@ public class ThreadUtilTest extends TestCase
             new String[] {"element1", "element2"}
         };
        
-        Thread t = ThreadUtil.run(target, "pingArgs", params);
-        t.join();
-        
-        assertTrue("ping was not executed", target.pingCalled);
+        ThreadUtil.run(target, "pingArgs", params).join();
         assertTrue("pingArgs was not executed", target.pingArgsCalled);
     }
+
  
-    public void testRun() throws Exception
+    /**
+     * Tests run() on a method with complex arg types
+     */
+    public void testRunComplex() throws Exception
     {
         Tester target = new Tester();
         
         PrintWriter writer = new PrintWriter(System.out);
-        Writer w2 = writer;
-        ThreadUtil.run(target, "writeDelayed", new Object[] 
-            { w2, new Integer(10), new Integer(1000), 
-                "We are coming for you!"} );        
+        
+        ThreadUtil.run(target, "pingComplex", 
+            new Object[] 
+            { 
+                writer, 
+                new Integer(10), 
+                new Integer(1000), 
+                "hello from testRunComplex()"
+            }).join();
+            
+        assertTrue("pingComplex was not executed", target.pingComplexCalled);
     } 
- 
+
+    /**
+     * Tests run() on a method with primitive args
+     */
+    public void testRunPrimitive() throws Exception
+    {
+        Tester target = new Tester();
+               
+        ThreadUtil.run(target, "pingPrimitive", 
+            new Object[] 
+            { 
+                new Integer(10), 
+                new Character('y'),
+                new Boolean(true),
+                new Long(99L),
+                new Float(100.3f)
+            }).join();
+            
+        assertTrue("pingPrimitive was not executed", target.pingPrimitiveCalled);
+    } 
  
     /**
      * Test class for testRun()
      */   
     public class Tester
     {
-        boolean pingCalled = false;
-        boolean pingArgsCalled = false;
+        public boolean pingSimpleCalled;
+        public boolean pingArgsCalled;
+        public boolean pingComplexCalled;
+        public boolean pingPrimitiveCalled;
+               
+        /**
+         * Default constructor
+         */
+        public Tester()
+        {
+            pingSimpleCalled    = false;
+            pingArgsCalled      = false;
+            pingComplexCalled   = false;
+            pingPrimitiveCalled = false;
+        }
         
         /**
          * Simplest method - no args 
          */
-        public void ping()
+        public void pingSimple()
         {
-            pingCalled = true;
+            pingSimpleCalled = true;
             logger_.info("Called ping()");
         }
         
@@ -107,10 +154,23 @@ public class ThreadUtilTest extends TestCase
             logger_.info("Called pingArgs(" + str + ", " + 
                 ArrayUtil.toString(strArray, false) + ")");
         }
-        
-        public void writeDelayed(Writer pw,  Integer i, Integer i2, String s)
+ 
+        /**
+         * Test method with complex args
+         */       
+        public void pingComplex(Writer pw,  Integer i, Integer i2, String s)
         {
+            pingComplexCalled = true;
             logger_.info("Called write delayed!");
+        }
+        
+        /**
+         * Test method method with primitive args
+         */
+        public void pingPrimitive(int a, char c, boolean b, long l, float f)
+        {
+            pingPrimitiveCalled = true;
+            logger_.info("Called pingPrimitive!");
         }
     }
 }
