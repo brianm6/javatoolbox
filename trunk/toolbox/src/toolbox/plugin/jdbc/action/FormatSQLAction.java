@@ -57,7 +57,7 @@ public class FormatSQLAction extends WorkspaceAction
         }
         else
         {
-            SQLFormatter formatter = new SQLFormatter();
+            SQLFormatter formatter = plugin_.getFormatter();
             String[] statements = StringUtil.tokenize(sql, ";");
             StringBuffer sb = new StringBuffer();
 
