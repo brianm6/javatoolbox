@@ -62,7 +62,7 @@ public class JFlipPaneTest extends UITestCase
         p.add(BorderLayout.SOUTH, createFlipPane(JFlipPane.BOTTOM));
         
         JLabel label = new JSmartLabel("Filler");
-        label.setFont(label.getFont().deriveFont((float)50.0));
+        label.setFont(label.getFont().deriveFont((float) 50.0));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBackground(Color.white);
         label.setForeground(Color.blue);
@@ -80,6 +80,7 @@ public class JFlipPaneTest extends UITestCase
      * 
      * @param pos Position to place the flip pane. 
      *        JFlipPane.TOP|RIGHT|LEFT|RIGHT
+     * @return JFlipPane
      */
     protected JFlipPane createFlipPane(String pos)
     {
@@ -88,8 +89,8 @@ public class JFlipPaneTest extends UITestCase
         fp.addFlipper(card1.getText(), card1);
         
         JButton card2 = new JSmartButton("Button");
-        card2.setPreferredSize(new Dimension(100,100));
-        card2.setMinimumSize(new Dimension(50,50));
+        card2.setPreferredSize(new Dimension(100, 100));
+        card2.setMinimumSize(new Dimension(50, 50));
         fp.addFlipper(card2.getText(), card2);
         
         JFileExplorer explorer = new JFileExplorer(false);

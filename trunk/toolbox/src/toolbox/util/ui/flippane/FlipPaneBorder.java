@@ -56,10 +56,10 @@ public class FlipPaneBorder implements Border
     {
         position_ = position;
         insets_ = new Insets(
-            position.equals(JFlipPane.BOTTOM)?JFlipPane.SPLITTER_WIDTH : 0,
-            position.equals(JFlipPane.RIGHT) ?JFlipPane.SPLITTER_WIDTH : 0,
-            position.equals(JFlipPane.TOP)   ?JFlipPane.SPLITTER_WIDTH : 0,
-            position.equals(JFlipPane.LEFT)  ?JFlipPane.SPLITTER_WIDTH : 0);
+            position.equals(JFlipPane.BOTTOM) ? JFlipPane.SPLITTER_WIDTH : 0,
+            position.equals(JFlipPane.RIGHT)  ? JFlipPane.SPLITTER_WIDTH : 0,
+            position.equals(JFlipPane.TOP)    ? JFlipPane.SPLITTER_WIDTH : 0,
+            position.equals(JFlipPane.LEFT)   ? JFlipPane.SPLITTER_WIDTH : 0);
     } 
 
     //--------------------------------------------------------------------------
@@ -85,15 +85,14 @@ public class FlipPaneBorder implements Border
             return;
 
         if (position_.equals(JFlipPane.BOTTOM))
-            paintHorizBorder(g,x,y,width);
+            paintHorizBorder(g, x, y, width);
         else if (position_.equals(JFlipPane.RIGHT))
-            paintVertBorder(g,x,y,height);
+            paintVertBorder(g, x, y, height);
         else if (position_.equals(JFlipPane.TOP))
-            paintHorizBorder(g,x,y + height - JFlipPane.SPLITTER_WIDTH,
+            paintHorizBorder(g, x, y + height - JFlipPane.SPLITTER_WIDTH, 
                 width);
         else if (position_.equals(JFlipPane.LEFT))
-            paintVertBorder(g,x + width - JFlipPane.SPLITTER_WIDTH,y,
-                height);
+            paintVertBorder(g, x + width - JFlipPane.SPLITTER_WIDTH, y, height);
     } 
 
 
@@ -136,16 +135,16 @@ public class FlipPaneBorder implements Border
         g.setColor(color3_);
         g.fillRect(x, y, width, JFlipPane.SPLITTER_WIDTH);
 
-        for(int i = 0; i < width / 4 - 1; i++)
+        for (int i = 0; i < width / 4 - 1; i++)
         {
             g.setColor(color1_);
-            g.drawLine(x + i * 4 + 2,y + 3, x + i * 4 + 2,y + 3);
+            g.drawLine(x + i * 4 + 2, y + 3, x + i * 4 + 2, y + 3);
             g.setColor(color2_);
-            g.drawLine(x + i * 4 + 3,y + 4, x + i * 4 + 3,y + 4);
+            g.drawLine(x + i * 4 + 3, y + 4, x + i * 4 + 3, y + 4);
             g.setColor(color1_);
-            g.drawLine(x + i * 4 + 4,y + 5, x + i * 4 + 4,y + 5);
+            g.drawLine(x + i * 4 + 4, y + 5, x + i * 4 + 4, y + 5);
             g.setColor(color2_);
-            g.drawLine(x + i * 4 + 5,y + 6, x + i * 4 + 5,y + 6);
+            g.drawLine(x + i * 4 + 5, y + 6, x + i * 4 + 5, y + 6);
         }
     } 
     
@@ -163,16 +162,16 @@ public class FlipPaneBorder implements Border
         g.setColor(color3_);
         g.fillRect(x, y, JFlipPane.SPLITTER_WIDTH, height);
 
-        for(int i = 0; i < height / 4 - 1; i++)
+        for (int i = 0; i < height / 4 - 1; i++)
         {
             g.setColor(color1_);
-            g.drawLine(x + 3,y + i * 4 + 2, x + 3,y + i * 4 + 2);
+            g.drawLine(x + 3, y + i * 4 + 2, x + 3, y + i * 4 + 2);
             g.setColor(color2_);
-            g.drawLine(x + 4,y + i * 4 + 3, x + 4,y + i * 4 + 3);
+            g.drawLine(x + 4, y + i * 4 + 3, x + 4, y + i * 4 + 3);
             g.setColor(color1_);
-            g.drawLine(x + 5,y + i * 4 + 4, x + 5,y + i * 4 + 4);
+            g.drawLine(x + 5, y + i * 4 + 4, x + 5, y + i * 4 + 4);
             g.setColor(color2_);
-            g.drawLine(x + 6,y + i * 4 + 5, x + 6,y + i * 4 + 5);
+            g.drawLine(x + 6, y + i * 4 + 5, x + 6, y + i * 4 + 5);
         }
     } 
 
@@ -182,7 +181,7 @@ public class FlipPaneBorder implements Border
      */
     private void updateColors()
     {
-        if(UIManager.getLookAndFeel() instanceof MetalLookAndFeel)
+        if (UIManager.getLookAndFeel() instanceof MetalLookAndFeel)
         {
             color1_ = MetalLookAndFeel.getControlHighlight();
             color2_ = MetalLookAndFeel.getControlDarkShadow();

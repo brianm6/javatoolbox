@@ -55,7 +55,7 @@ public class FlipCardPanel extends JPanel
      */
     void showCard(String name)
     {
-        ((CardLayout)getLayout()).show(this,name);
+        ((CardLayout) getLayout()).show(this, name);
     } 
 
     //--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ public class FlipCardPanel extends JPanel
      */
     public Dimension getMinimumSize()
     {
-        return new Dimension(0,0);
+        return new Dimension(0, 0);
     } 
     
     
@@ -86,7 +86,7 @@ public class FlipCardPanel extends JPanel
         
         if (flipPane_ == null)
         {
-            pref = new Dimension(0,0);
+            pref = new Dimension(0, 0);
         }
         else
         {

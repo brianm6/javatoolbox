@@ -203,7 +203,8 @@ public class JFlipPane extends JPanel
         else if (position_.equals(JFlipPane.RIGHT))
             rotation = FlipIcon.CW;
         else
-            throw new IllegalArgumentException("Invalid position: "+ position_);
+            throw new IllegalArgumentException(
+                "Invalid position: " + position_);
 
         // Create the button
         JToggleButton button = new JToggleButton();
@@ -310,7 +311,7 @@ public class JFlipPane extends JPanel
      */
     public void setActiveFlipper(String name)
     {
-       setActiveFlipper((JComponent) flippers_.get(name)); 
+        setActiveFlipper((JComponent) flippers_.get(name));
     }
 
 
@@ -456,7 +457,7 @@ public class JFlipPane extends JPanel
         if (collapsed != isCollapsed())
             toggleFlipper();
         
-        String flipper = XOMUtil.getStringAttribute(root, ATTR_ACTIVE,"");
+        String flipper = XOMUtil.getStringAttribute(root, ATTR_ACTIVE, "");
         
         if (!StringUtil.isNullOrEmpty(flipper))
             setActiveFlipper(flipper);
@@ -471,8 +472,12 @@ public class JFlipPane extends JPanel
     public void savePrefs(Element prefs)
     {
         Element flipPane = new Element(NODE_JFLIPPANE);
-        flipPane.addAttribute(new Attribute(ATTR_COLLAPSED, isCollapsed()+""));
-        flipPane.addAttribute(new Attribute(ATTR_DIMENSION, getDimension()+""));
+        
+        flipPane.addAttribute(
+            new Attribute(ATTR_COLLAPSED, isCollapsed() + ""));
+        
+        flipPane.addAttribute(
+            new Attribute(ATTR_DIMENSION, getDimension() + ""));
         
         JComponent flipper = getActiveFlipper();
         
@@ -562,7 +567,7 @@ public class JFlipPane extends JPanel
         else
             left = 0;
 
-        closeButton_.setMargin(new Insets(0,left,0,0));
+        closeButton_.setMargin(new Insets(0, left, 0, 0));
         buttonPanel_.add(closeButton_);
         closeButton_.addActionListener(new FlipperHandler());
 
@@ -643,7 +648,7 @@ public class JFlipPane extends JPanel
         
         Enumeration e = buttonGroup_.getElements();
         
-        while(e.hasMoreElements())
+        while (e.hasMoreElements())
         {
             JComponent c = (JComponent) e.nextElement();
             if (c instanceof JToggleButton)
@@ -690,8 +695,8 @@ public class JFlipPane extends JPanel
         int x, 
         int y)
     {
-        Point p = new Point(x,y);
-        SwingUtilities.convertPointToScreen(p,comp);
+        Point p = new Point(x, y);
+        SwingUtilities.convertPointToScreen(p, comp);
 
         Dimension size   = popup.getPreferredSize();
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -722,7 +727,7 @@ public class JFlipPane extends JPanel
         if (horiz && vert)
             x = origX - size.width - 2;
 
-        popup.show(comp,x,y);
+        popup.show(comp, x, y);
     } 
 
     //--------------------------------------------------------------------------
@@ -790,7 +795,7 @@ public class JFlipPane extends JPanel
         {
             if (evt.getSource() == closeButton_)
             {
-                setActiveFlipper( (JComponent) null);
+                setActiveFlipper((JComponent) null);
             }
             else
             {
@@ -845,7 +850,7 @@ public class JFlipPane extends JPanel
                 {
                     showPopupMenu(
                         popup_, 
-                        (Component)evt.getSource(),
+                        (Component) evt.getSource(),
                         evt.getX(),
                         evt.getY());
                 }

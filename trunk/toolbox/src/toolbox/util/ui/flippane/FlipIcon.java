@@ -92,7 +92,7 @@ public class FlipIcon implements Icon
         font_ = font;
 
         FontRenderContext fontRenderContext = 
-            new FontRenderContext(null,true,true);
+            new FontRenderContext(null, true, true);
             
         glyphs_ = font.createGlyphVector(fontRenderContext, text);
         width_ = (int) glyphs_.getLogicalBounds().getWidth() + 4;
