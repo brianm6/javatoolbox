@@ -4,11 +4,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
 
+import org.apache.log4j.Logger;
+
+import org.jedit.syntax.BatchFileTokenMarker;
+import org.jedit.syntax.CCTokenMarker;
+import org.jedit.syntax.CTokenMarker;
+import org.jedit.syntax.HTMLTokenMarker;
+import org.jedit.syntax.JavaScriptTokenMarker;
 import org.jedit.syntax.JavaTokenMarker;
+import org.jedit.syntax.PerlTokenMarker;
+import org.jedit.syntax.PropsTokenMarker;
+import org.jedit.syntax.SQLTokenMarker;
+import org.jedit.syntax.ShellScriptTokenMarker;
+import org.jedit.syntax.TokenMarker;
+import org.jedit.syntax.XMLTokenMarker;
 
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
@@ -16,10 +30,46 @@ import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 
 /**
- * A viewer to for text documents.
+ * A viewer to for popular text documents with syntax hiliting.
  */
 public class JEditViewer implements DocumentViewer
 {
+    private static final Logger logger_ = Logger.getLogger(JEditViewer.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Map of file extensions to their corresponding TokenMarker class.
+     */
+    private static final Map EXT_MAP;
+    
+    //--------------------------------------------------------------------------
+    // Static Initializers
+    //--------------------------------------------------------------------------
+    
+    static
+    {
+        EXT_MAP = new HashMap();
+        EXT_MAP.put("java", JavaTokenMarker.class);
+        EXT_MAP.put("xml", XMLTokenMarker.class);
+        EXT_MAP.put("xsl", XMLTokenMarker.class);
+        EXT_MAP.put("bat", BatchFileTokenMarker.class);
+        EXT_MAP.put("properties", PropsTokenMarker.class);
+        EXT_MAP.put("props", PropsTokenMarker.class);
+        EXT_MAP.put("sh", ShellScriptTokenMarker.class);
+        EXT_MAP.put("sql", SQLTokenMarker.class);
+        EXT_MAP.put("html", HTMLTokenMarker.class);
+        EXT_MAP.put("htm", HTMLTokenMarker.class);
+        EXT_MAP.put("pl", PerlTokenMarker.class);
+        EXT_MAP.put("js", JavaScriptTokenMarker.class);
+        EXT_MAP.put("c", CTokenMarker.class);
+        EXT_MAP.put("h", CTokenMarker.class);
+        EXT_MAP.put("cc", CCTokenMarker.class);
+        EXT_MAP.put("cpp", CCTokenMarker.class);
+    }
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -34,7 +84,7 @@ public class JEditViewer implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a TextViewer.
+     * Creates a JEditViewer
      */
     public JEditViewer()
     {
@@ -49,9 +99,6 @@ public class JEditViewer implements DocumentViewer
      */
     public void startup(Map init) throws DocumentViewerException
     {
-        //textArea_ = new JEditTextArea();
-        //textArea_.setAntiAliased(SwingUtil.getDefaultAntiAlias());
-        //scroller_ = new JScrollPane(textArea_);
     }
 
     
@@ -62,10 +109,22 @@ public class JEditViewer implements DocumentViewer
     {
         try
         {
-            if (FileUtil.getExtension(file).equalsIgnoreCase("java"))
+            Class c = 
+                (Class) EXT_MAP.get(FileUtil.getExtension(file).toLowerCase());
+            
+            if (c != null)
             {
-                textArea_ = new JEditTextArea(
-                    new JavaTokenMarker(), new JavaDefaults()); 
+                try
+                {
+                    textArea_ = new JEditTextArea(
+                        (TokenMarker) c.newInstance(), new JavaDefaults());
+                    
+                }
+                catch (Exception e)
+                {
+                    logger_.warn("Error instantiating " + c.getName() + ".");
+                    textArea_ = new JEditTextArea();
+                } 
             }
             else
             {    
@@ -141,5 +200,6 @@ public class JEditViewer implements DocumentViewer
      */
     public void shutdown()
     {
+        textArea_ = null;
     }
 }
