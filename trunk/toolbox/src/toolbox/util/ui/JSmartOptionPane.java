@@ -18,7 +18,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -48,15 +47,19 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
 {
     private static final Logger logger_ = 
         Logger.getLogger(JSmartOptionPane.class);
+
+    // TODO: Replace with icons
+    private static final String BUTTON_COLLAPSED = "Details >>";
+    private static final String BUTTON_EXPANDED = "<< No Details";
         
     private JButton okButton_;
     private JButton detailsButton_;
     private boolean expanded_;
 
-    private static final String BUTTON_COLLAPSED = "Details >>";
-    private static final String BUTTON_EXPANDED = "<< No Details";
-
+    /** Containts the detailed message text */
     private JTextArea detailArea_;
+    
+    /** Encapsulating scrollpane for the detailed message area */
     private JScrollPane detailScroller_;
 
     private JButton[] buttons_;
@@ -427,17 +430,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
         String message = exception.getMessage();
         
         if (StringUtil.isNullEmptyOrBlank(message))
-        {
-            try
-            {
-                message = StringUtil.getLine(stack,1);
-            }
-            catch (IOException e)
-            {
-                logger_.error(e);
-                message = stack;
-            }
-        }
+            message = StringUtil.getLine(stack,0);
 
         showDetailedMessageDialog(
             parentComponent, 
