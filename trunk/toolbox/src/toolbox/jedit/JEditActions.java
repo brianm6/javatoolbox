@@ -426,4 +426,34 @@ public final class JEditActions
             area_.selectAll();
         }
     }
+    
+    //--------------------------------------------------------------------------
+    // ClearAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Clears the contents of the text area. 
+     */
+    public static class ClearAction extends JEditAction
+    {
+        /**
+         * Creates a ClearAction.
+         * 
+         * @param area Target text area.
+         */
+        public ClearAction(JEditTextArea area)
+        {
+            super("Clear", area);
+        }
+        
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            area_.setText("");
+        }
+    }
 }
