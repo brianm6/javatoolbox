@@ -58,7 +58,7 @@ public class ExecuteAllAction extends BaseAction
             plugin.getStatusBar().setInfo("Executing...");
             
             String[] stmts = 
-                StringUtils.split(sqlText, QueryPlugin.SQL_TERMINATOR);
+                StringUtils.split(sqlText, plugin.getSqlTerminator());
             
             //logger_.debug(
             //    StringUtil.addBars(ArrayUtil.toString(stmts, true)));
@@ -100,8 +100,8 @@ public class ExecuteAllAction extends BaseAction
                     //
                     
                     if ((!StringUtils.isBlank(results)) &&
-                        (StringUtil.tokenize(results, StringUtil.NL).length < 
-                            QueryPlugin.AUTO_SCROLL_THRESHOLD))
+                        (StringUtil.tokenize(results, StringUtil.NL).length 
+                            < plugin.getAutoScrollThreshold()))
                     {
                         plugin.getResultsArea().scrollToEnd();
                     }

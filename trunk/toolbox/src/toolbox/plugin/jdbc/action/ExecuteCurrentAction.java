@@ -78,7 +78,7 @@ public class ExecuteCurrentAction extends BaseAction
             while (curr < max && !terminatorFound)
             {
                 String line = sqlEditor.getLineText(curr++);
-                int termPos = line.indexOf(QueryPlugin.SQL_TERMINATOR);
+                int termPos = line.indexOf(plugin.getSqlTerminator());
                 
                 if (termPos >= 0)
                 {
@@ -109,8 +109,8 @@ public class ExecuteCurrentAction extends BaseAction
             //plugin.getResultsArea().append(results + "\n");
 
             if ((!StringUtils.isBlank(results)) &&
-                (StringUtil.tokenize(results, StringUtil.NL).length < 
-                    QueryPlugin.AUTO_SCROLL_THRESHOLD))
+                (StringUtil.tokenize(results, StringUtil.NL).length 
+                    < plugin.getAutoScrollThreshold()))
                 plugin.getResultsArea().scrollToEnd();
 
             statusBar.setInfo("Done");
