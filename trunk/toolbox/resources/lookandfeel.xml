@@ -318,61 +318,6 @@
   <!-- Tiny Look and Feel                                                   -->
   <!-- ==================================================================== -->
 
-  <LookAndFeel 
-      name="Tiny"
-      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
-      
-      <Property name="group.name" value="Tiny"/>
-      <Property name="theme.name" value="Default"/>
-      <Property name="theme.file" value="tinylf/Default.theme"/>
-      <Property name="theme.style" value="0"/>      
-  </LookAndFeel>
-
-  <LookAndFeel 
-      name="Tiny"
-      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
-      
-      <Property name="group.name"  value="Tiny"/>
-      <Property name="theme.name"  value="XP Forest"/>
-      <Property name="theme.file"  value="tinylf/XP Forest.theme"/>
-      <Property name="theme.style" value="2"/>
-  </LookAndFeel>
- 
-  <LookAndFeel 
-      name="Tiny"
-      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
-      
-      <Property name="group.name"  value="Tiny"/>
-      <Property name="theme.name"  value="XP Golden"/>
-      <Property name="theme.file"  value="tinylf/XP Golden.theme"/>
-      <Property name="theme.style" value="2"/>
-  </LookAndFeel>
- 
-  <LookAndFeel 
-      name="Tiny"
-      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
-      
-      <Property name="group.name"  value="Tiny"/>
-      <Property name="theme.name"  value="XP Plastic"/>
-      <Property name="theme.file"  value="tinylf/XP Plastic.theme"/>
-      <Property name="theme.style" value="2"/>
-  </LookAndFeel>
- 
-  <LookAndFeel 
-      name="Tiny"
-      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
-      
-      <Property name="group.name"  value="Tiny"/>
-      <Property name="theme.name"  value="XP Silver"/>
-      <Property name="theme.file"  value="tinylf/XP Silver.theme"/>
-      <Property name="theme.style" value="2"/>
-  </LookAndFeel>
- 
   <!--
   	public static final int TINY_STYLE 		= 0;
     public static final int WIN_STYLE 		= 1;
@@ -386,9 +331,20 @@
       action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
       
       <Property name="group.name" value="Tiny"/>
+      <Property name="theme.name" value="Default"/>
+      <Property name="theme.file" value="tinylf/Default.theme"/>
+      <Property name="theme.style" value="3"/>
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
+      
+      <Property name="group.name" value="Tiny"/>
       <Property name="theme.name" value="98 Earth"/>
       <Property name="theme.file" value="tinylf/98 Earth.theme"/>
-      <Property name="theme.style" value="3"/>
+      <Property name="theme.style" value="1"/>
   </LookAndFeel>
 
   <LookAndFeel 
@@ -399,9 +355,75 @@
       <Property name="group.name" value="Tiny"/>
       <Property name="theme.name" value="98 Lego"/>
       <Property name="theme.file" value="tinylf/98 Lego.theme"/>
-      <Property name="theme.style" value="3"/>
+      <Property name="theme.style" value="1"/>
   </LookAndFeel>
 
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
+      
+      <Property name="group.name" value="Tiny"/>
+      <Property name="theme.name" value="98 Light"/>
+      <Property name="theme.file" value="tinylf/98 Light.theme"/>
+      <Property name="theme.style" value="1"/>
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
+      
+      <Property name="group.name" value="Tiny"/>
+      <Property name="theme.name" value="98 Pool"/>
+      <Property name="theme.file" value="tinylf/98 Pool.theme"/>
+      <Property name="theme.style" value="1"/>
+  </LookAndFeel>
+
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
+      
+      <Property name="group.name"  value="Tiny"/>
+      <Property name="theme.name"  value="XP Forest"/>
+      <Property name="theme.file"  value="tinylf/XP Forest.theme"/>
+      <Property name="theme.style" value="1"/>
+  </LookAndFeel>
+  
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
+      
+      <Property name="group.name"  value="Tiny"/>
+      <Property name="theme.name"  value="XP Golden"/>
+      <Property name="theme.file"  value="tinylf/XP Golden.theme"/>
+      <Property name="theme.style" value="1"/>
+  </LookAndFeel>
+ 
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
+      
+      <Property name="group.name"  value="Tiny"/>
+      <Property name="theme.name"  value="XP Plastic"/>
+      <Property name="theme.file"  value="tinylf/XP Plastic.theme"/>
+      <Property name="theme.style" value="1"/>
+  </LookAndFeel>
+ 
+  <LookAndFeel 
+      name="Tiny"
+      class="de.muntjak.tinylookandfeel.TinyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateTinyLookAndFeelAction">
+      
+      <Property name="group.name"  value="Tiny"/>
+      <Property name="theme.name"  value="XP Silver"/>
+      <Property name="theme.file"  value="tinylf/XP Silver.theme"/>
+      <Property name="theme.style" value="1"/>
+  </LookAndFeel>
+ 
   <!-- ==================================================================== -->
   <!-- Jide Look and Feels                                                  -->
   <!-- ==================================================================== -->
