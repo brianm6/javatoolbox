@@ -12,15 +12,23 @@ import toolbox.util.ArrayUtil;
  * <p>
  * Usage:
  * <pre>
- * java -jar toolbox.jar [program name] [program args]
+ * java -jar toolbox.jar <program name> <program args...> 
  * </pre>
  */
 public class Main
 {
+    //--------------------------------------------------------------------------
+    // Static Fields
+    //--------------------------------------------------------------------------
+    
     /** 
-     * Program name to class file map.
+     * Maps an executable's name to its fully qualified class name.
      */
     private static Map programMap_;
+    
+    //--------------------------------------------------------------------------
+    // Static Blocks
+    //--------------------------------------------------------------------------
     
     static
     {
@@ -28,6 +36,7 @@ public class Main
         programMap_ = new HashMap(15);
         
         programMap_.put("findclass",     "toolbox.findclass.Main");
+        programMap_.put("rtelnet",       "toolbox.rtelnet.RemoteTelnet");
         programMap_.put("showclasspath", "toolbox.showclasspath.Main");
         programMap_.put("showpath",      "toolbox.showpath.Main");
         programMap_.put("tail",          "toolbox.tail.Main");
@@ -46,8 +55,8 @@ public class Main
      * Entrypoint.
      * 
      * @param args See below.
-     *        args[0] Program name
-     *        args[1..n] Program arguments
+     *        args[0] Program name.
+     *        args[1..n] Program arguments.
      */
     public static void main(String[] args)
     {
@@ -134,7 +143,8 @@ public class Main
             "       where program is:                               \n" +
             "                                                       \n" +
             "       banner        => creates a text banner          \n" +
-            "       findclass     => find a java class file         \n" + 
+            "       findclass     => find a java class file         \n" +
+            "       rtelnet       => executes a telnet command      \n" +
             "       showclasspath => show detailed classpath info   \n" +
             "       showpath      => show detailed path info        \n" +
             "       tail          => tails a file with follow       \n" +
