@@ -18,6 +18,9 @@ public class BatchingQueueReaderTest extends TestCase
     private static final Logger logger_ = 
         Logger.getLogger(BatchingQueueReaderTest.class);
 
+    /**
+     * Queue to read from in batch mode.
+     */
     private BlockingQueue batches_;
 
     //--------------------------------------------------------------------------

@@ -104,7 +104,6 @@ package toolbox.util.concurrent;
  * @see Semaphore
  * <p>
  */
-
 public class Mutex implements Sync
 {
     /** 
@@ -144,7 +143,7 @@ public class Mutex implements Sync
 
     
     /**
-     * Releases the mutex
+     * Releases the mutex.
      */
     public synchronized void release()
     {

@@ -246,27 +246,27 @@ public interface Sync
     //--------------------------------------------------------------------------
     
     /**  
-     * One second, in milliseconds; convenient as a time-out value 
+     * One second, in milliseconds; convenient as a time-out value. 
      */
     public static final long ONE_SECOND = 1000;
 
     /**  
-     * One minute, in milliseconds; convenient as a time-out value 
+     * One minute, in milliseconds; convenient as a time-out value. 
      */
     public static final long ONE_MINUTE = 60 * ONE_SECOND;
 
     /**  
-     * One hour, in milliseconds; convenient as a time-out value 
+     * One hour, in milliseconds; convenient as a time-out value. 
      */
     public static final long ONE_HOUR = 60 * ONE_MINUTE;
 
     /**  
-     * One day, in milliseconds; convenient as a time-out value 
+     * One day, in milliseconds; convenient as a time-out value. 
      */
     public static final long ONE_DAY = 24 * ONE_HOUR;
 
     /**  
-     * One week, in milliseconds; convenient as a time-out value 
+     * One week, in milliseconds; convenient as a time-out value. 
      */
     public static final long ONE_WEEK = 7 * ONE_DAY;
 
@@ -275,12 +275,12 @@ public interface Sync
     // The value used is the same as in java.util.GregorianCalendar
 
     /** 
-     * One year in milliseconds; convenient as a time-out value  
+     * One year in milliseconds; convenient as a time-out value.  
      */
     public static final long ONE_YEAR = (long) (365.2425 * ONE_DAY);
 
     /** 
-     * One century in milliseconds; convenient as a time-out value 
+     * One century in milliseconds; convenient as a time-out value. 
      */
     public static final long ONE_CENTURY = 100 * ONE_YEAR;
 
