@@ -20,6 +20,7 @@ import electric.xml.Elements;
  */
 public class JTailConfig implements IJTailConfig, XMLConstants
 { 
+    /** Logger **/
     private static final Category logger_ = 
         Category.getInstance(JTailConfig.class);
         
@@ -32,18 +33,22 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     private Dimension size_;
     private String    directory_;
     private ITailPaneConfig[] tailPaneConfigs_;
+    private ITailPaneConfig   defaultConfig_;
     
     /**
      * Constructor for JTailConfig.
      */
     public JTailConfig()
     {
+        defaultConfig_ = new TailPaneConfig();
+        tailPaneConfigs_ = new TailPaneConfig[0];
     }
+
 
     /**
      * Marshals from IJTailConfig -> XML
      * 
-     * @return  Tail XML node
+     * @return  JTail XML node
      * @throws  IOExcetion on IO error
      */
     public Element marshal()  throws IOException 
@@ -62,32 +67,13 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         jtailNode.setAttribute(ATTR_Y, getLocation().y + "");
 
         // Directory
-        jtailNode.setAttribute(ATTR_DIR, getDirectory());
-
-        // Tail element
-        Element tail = new Element(ELEMENT_TAIL);
-        tail.setAttribute(ATTR_AUTOSCROLL, 
-            new Boolean(getDefaultAutoScroll()).toString());
-        tail.setAttribute(ATTR_LINENUMBERS, 
-            new Boolean(getDefaultShowLineNumbers()).toString());
-        
-        // Font element    
-        Element font = new Element(ELEMENT_FONT);
-        font.setAttribute(ATTR_FAMILY, getDefaultFont().getFamily());
-        font.setAttribute(ATTR_STYLE, getDefaultFont().getStyle() + "");
-        font.setAttribute(ATTR_SIZE, getDefaultFont().getSize() + "");            
-        
-        // Filter element
-        Element filter = new Element(ELEMENT_FILTER);
-        filter.setText(getDefaultFilter());
-        
-        // Add child nodes to tail
-        tail.addElement(font);
-        tail.addElement(filter);
+        if (getDirectory() != null)
+            jtailNode.setAttribute(ATTR_DIR, getDirectory());
 
         // Defaults
+        Element defaultTailNode = ((TailPaneConfig) defaultConfig_).marshal();        
         Element defaultsNode = new Element(ELEMENT_DEFAULTS);
-        defaultsNode.addElement(tail);
+        defaultsNode.addElement(defaultTailNode);
         
         jtailNode.addElement(defaultsNode);
         
@@ -112,6 +98,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      */
     public static IJTailConfig unmarshal(Element jtailNode) throws IOException 
     {
+        String method = "[unmars] ";
+        
         IJTailConfig jtailConfig = new JTailConfig();
         
         // Read optional window location
@@ -163,26 +151,27 @@ public class JTailConfig implements IJTailConfig, XMLConstants
             // TODO: set default directory
         }
         
-        // Handle optional default font element    
-        Element fontNode = 
-            jtailNode.getElement(TailPaneConfig.ELEMENT_FONT);
+        Element defaultsNode = jtailNode.getElement(ELEMENT_DEFAULTS);
         
-        if (fontNode != null)
+        if (defaultsNode != null)
         {
-            String family = 
-                fontNode.getAttribute(TailPaneConfig.ATTR_FAMILY);
-                
-            int style = Integer.parseInt(
-                fontNode.getAttribute(TailPaneConfig.ATTR_STYLE));
-                
-            int size = Integer.parseInt(
-                fontNode.getAttribute(TailPaneConfig.ATTR_SIZE));
-                
-            jtailConfig.setDefaultFont(new Font(family, style, size));
+            Element defaultTailNode = defaultsNode.getElement(ELEMENT_TAIL);
+            
+            if (defaultTailNode != null)
+            {
+                jtailConfig.setDefaultConfig(
+                    TailPaneConfig.unmarshal(defaultTailNode));
+            }
+            else
+            {
+                logger_.warn(method + "Expected XML node JTail->Defaults->Tail");
+                jtailConfig.setDefaultConfig(new TailPaneConfig());
+            }
         }
         else
         {
-            jtailConfig.setDefaultFont(SwingUtil.getPreferredMonoFont());
+            logger_.warn(method + "Expected XML node JTail->Defaults");
+            jtailConfig.setDefaultConfig(new TailPaneConfig());            
         }
          
                         
@@ -201,27 +190,64 @@ public class JTailConfig implements IJTailConfig, XMLConstants
                 ArrayUtil.addElement(tailPaneConfigs, tailPaneConfig);
         }
 
-        jtailConfig.setTailPaneConfigs(tailPaneConfigs);
+        jtailConfig.setTailConfigs(tailPaneConfigs);
         
         return jtailConfig;
     }
     
+
+
     /**
-     * Returns the defaultFont.
-     * @return Font
+     * Sets the default tail pane configuration
+     * 
+     * @param defaultConfig  The default tail pane configuration
      */
-    public Font getDefaultFont()
+    public void setDefaultConfig(ITailPaneConfig defaultConfig)
     {
-        return defaultFont_;
+        defaultConfig_ = defaultConfig;
     }
+
+    
+    /**
+     * Returns the default tail pane configuration
+     * 
+     * @return  ITailPaneConfig
+     */
+    public ITailPaneConfig getDefaultConfig()
+    {
+        return defaultConfig_;
+    }
+
+
+    /**
+     * Sets the location.
+     * 
+     * @param location The location to set
+     */
+    public void setLocation(Point location)
+    {
+        location_ = location;
+    }
+
 
     /**
      * Returns the location.
+     * 
      * @return Point
      */
     public Point getLocation()
     {
         return location_;
+    }
+
+
+    /**
+     * Sets the size.
+     * @param size The size to set
+     */
+    public void setSize(Dimension size)
+    {
+        size_ = size;
     }
 
     /**
@@ -232,39 +258,12 @@ public class JTailConfig implements IJTailConfig, XMLConstants
     {
         return size_;
     }
-
-    /**
-     * Sets the defaultFont.
-     * @param defaultFont The defaultFont to set
-     */
-    public void setDefaultFont(Font defaultFont)
-    {
-        defaultFont_ = defaultFont;
-    }
-
-    /**
-     * Sets the location.
-     * @param location The location to set
-     */
-    public void setLocation(Point location)
-    {
-        location_ = location;
-    }
-
-    /**
-     * Sets the size.
-     * @param size The size to set
-     */
-    public void setSize(Dimension size)
-    {
-        size_ = size;
-    }
     
     /**
      * Returns the tailPaneConfigs.
      * @return ITailPaneConfig[]
      */
-    public ITailPaneConfig[] getTailPaneConfigs()
+    public ITailPaneConfig[] getTailConfigs()
     {
         return tailPaneConfigs_;
     }
@@ -273,64 +272,11 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      * Sets the tailPaneConfigs.
      * @param tailPaneConfigs The tailPaneConfigs to set
      */
-    public void setTailPaneConfigs(ITailPaneConfig[] tailPaneConfigs)
+    public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs)
     {
         tailPaneConfigs_ = tailPaneConfigs;
     }
     
-    /**
-     * Returns the defaultAutoScroll.
-     * @return boolean
-     */
-    public boolean getDefaultAutoScroll()
-    {
-        return defaultAutoScroll_;
-    }
-
-    /**
-     * Returns the defaultFilter.
-     * @return String
-     */
-    public String getDefaultFilter()
-    {
-        return defaultFilter_;
-    }
-
-    /**
-     * Returns the defaultShowLineNumbers.
-     * @return boolean
-     */
-    public boolean getDefaultShowLineNumbers()
-    {
-        return defaultShowLineNumbers_;
-    }
-
-    /**
-     * Sets the defaultAutoScroll.
-     * @param defaultAutoScroll The defaultAutoScroll to set
-     */
-    public void setDefaultAutoScroll(boolean defaultAutoScroll)
-    {
-        defaultAutoScroll_ = defaultAutoScroll;
-    }
-
-    /**
-     * Sets the defaultFilter.
-     * @param defaultFilter The defaultFilter to set
-     */
-    public void setDefaultFilter(String defaultFilter)
-    {
-        defaultFilter_ = defaultFilter;
-    }
-
-    /**
-     * Sets the defaultShowLineNumbers.
-     * @param defaultShowLineNumbers The defaultShowLineNumbers to set
-     */
-    public void setDefaultShowLineNumbers(boolean defaultShowLineNumbers)
-    {
-        defaultShowLineNumbers_ = defaultShowLineNumbers;
-    }
 
     /**
      * Returns the last directory selecting in the file explorer pane
