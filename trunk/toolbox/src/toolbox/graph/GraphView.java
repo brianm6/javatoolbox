@@ -8,4 +8,5 @@ import javax.swing.JComponent;
 public interface GraphView
 {
     JComponent getComponent();
+    void setLayout(Layout layout);
 }
