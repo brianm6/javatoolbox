@@ -30,6 +30,9 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -69,7 +72,7 @@ public class FontSelectionPanel extends JPanel
     protected PhraseCanvas phraseCanvas_;
 
     /** Observable used for registering/notifying Observers */
-    protected PublicChangeObservable observable_ = new PublicChangeObservable();
+    protected List listeners_ = new ArrayList();
 
     /** Maximum number of characters permissibile in a valid font size */
     protected int maxNumCharsInFontSize_ = 3;
@@ -150,17 +153,13 @@ public class FontSelectionPanel extends JPanel
         // Font family
         fontFamilyList_ = new JList(availableFontFamilyNames);
         fontFamilyList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        fontFamilyList_.setVisibleRowCount(8);
+        //fontFamilyList_.setVisibleRowCount(8);
         
         ListSelectionListener phraseCanvasUpdater = new ListSelectionListener()
         {
             public void valueChanged(ListSelectionEvent e)
             {
-                if (!e.getValueIsAdjusting())
-                {
-                    observable_.setChanged();
-                    observable_.notifyObservers();
-                }
+                fireFontSelectionChanged();
             }
         };
         
@@ -208,9 +207,12 @@ public class FontSelectionPanel extends JPanel
         phraseCanvas_ =
             new PhraseCanvas(initialFont.getFamily(), initialFont, Color.black);
             
-        addObserver(new Observer()
+        addFontSelectionListener(new IFontSelectionListener()
         {
-            public void update(Observable o, Object arg)
+            /**
+             * @see toolbox.util.ui.font.IFontSelectionListener#fontChanged()
+             */
+            public void fontChanged()
             {
                 try
                 {
@@ -237,7 +239,8 @@ public class FontSelectionPanel extends JPanel
         
         // put into JScrollPane for fmting purposes(no scrolling ever occurs)
         this.add(new JScrollPane(phraseCanvas_), gbc);
-
+        //this.add(phraseCanvas_, gbc);
+        
         // Use FontSizeSynchronizer to ensure consistency between text field &
         // list for font size
         FontSizeSynchronizer fontSizeSynchronizer =
@@ -297,9 +300,9 @@ public class FontSelectionPanel extends JPanel
      * @param   observer   Observer to be added
      * @see     java.util.Observer
      */
-    public void addObserver(Observer observer)
+    public void addFontSelectionListener(IFontSelectionListener listener)
     {
-        observable_.addObserver(observer);
+        listeners_.add(listener);
     }
     
     
@@ -309,12 +312,23 @@ public class FontSelectionPanel extends JPanel
      * @param   observer   Observer to be removed
      * @see     java.util.Observer
      */
-    public void deleteObserver(Observer observer)
+    public void removeFontSelectionListener(IFontSelectionListener listener)
     {
-        observable_.deleteObserver(observer);
+        listeners_.remove(listener);
     }
     
-
+    /**
+     * Fires notification for font selection change
+     */
+    protected void fireFontSelectionChanged()
+    {
+        for (Iterator i = listeners_.iterator(); i.hasNext(); )
+        {
+            IFontSelectionListener listener = (IFontSelectionListener) i.next();
+            listener.fontChanged();
+        }
+    }
+    
     /**
      * Returns the currently selected font family
      * 
@@ -498,17 +512,13 @@ public class FontSelectionPanel extends JPanel
 
             updating_ = true;
             
-            if (!e.getValueIsAdjusting())
-            {
-                Object selectedValue =
-                    ((JList) e.getSource()).getSelectedValue();
-                    
-                if (selectedValue != null)
-                    textField_.setText(selectedValue.toString());
+            Object selectedValue =
+                ((JList) e.getSource()).getSelectedValue();
+                
+            if (selectedValue != null)
+                textField_.setText(selectedValue.toString());
 
-                observable_.setChanged();
-                observable_.notifyObservers();
-            }
+            fireFontSelectionChanged();
             
             updating_ = false;
         }
@@ -579,8 +589,8 @@ public class FontSelectionPanel extends JPanel
                 list_.clearSelection();
             }
             
-            observable_.setChanged();
-            observable_.notifyObservers();
+            fireFontSelectionChanged();
+            
             updating_ = false;
         }
     }
@@ -612,22 +622,6 @@ public class FontSelectionPanel extends JPanel
                     cellHasFocus);
             label.setHorizontalAlignment(JLabel.RIGHT);
             return label;
-        }
-    }
-
-
-    /**
-     * Subclass of {@link java.util.Observable} which allows <tt>public</tt> 
-     * access to the setChanged() method.
-     */
-    protected static class PublicChangeObservable extends Observable
-    {
-        /** 
-         * @see java.util.Observable#setChanged() 
-         */
-        public void setChanged()
-        {
-            super.setChanged();
         }
     }
 }
