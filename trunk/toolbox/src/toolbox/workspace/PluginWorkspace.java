@@ -61,14 +61,13 @@ import toolbox.util.ui.ImageCache;
  */
 public class PluginWorkspace extends JFrame implements IPreferenced
 {
-    /*
-     * TODO: Plugin to configure log4j
-     * TODO: Make plugins detachable
-     * TODO: Make webstart enabled
-     * TODO: Write log4j pattern layout that combines class name and method
-     * TODO: Convert project build and layout to Maven
-     * TODO: Added themes for Tiny Look and Feel
-     */
+     // TODO: Plugin to configure log4j
+     // TODO: Make plugins detachable
+     // TODO: Make webstart enabled
+     // TODO: Write log4j pattern layout that combines class name and method
+     // TODO: Convert project build and layout to Maven
+     // TODO: Added themes for Tiny Look and Feel
+     
     
     //--------------------------------------------------------------------------
     // Constants
@@ -691,6 +690,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         ExitAction()
         {
             super("Exit");
+            putValue(Action.MNEMONIC_KEY, new Integer('X'));
         }
 
         public void actionPerformed(ActionEvent ae)
@@ -732,11 +732,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         public SavePreferencesAction()
         {
             super("Save prefs", false, null, null);
+            putValue(Action.MNEMONIC_KEY, new Integer('S'));
+            
+            putValue(Action.SMALL_ICON, 
+                ImageCache.getIcon(ImageCache.IMAGE_SAVE));
         }
         
-        /**
-         * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
-         */
         public void runAction(ActionEvent e) throws Exception
         {
             savePrefs(prefs_);
@@ -753,6 +754,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         public SetLAFAction(UIManager.LookAndFeelInfo lafInfo)
         {
             super(lafInfo.getName(), false, null, null);
+            putValue(Action.MNEMONIC_KEY, new Integer('L'));
             lafInfo_ = lafInfo;
         }
 
@@ -792,6 +794,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         public GarbageCollectAction()
         {
             super("Run GC", false, null, null);
+            putValue(Action.MNEMONIC_KEY, new Integer('G'));
             
         }
         
