@@ -357,9 +357,9 @@ public class PluginWorkspace extends JFrame implements IStatusBar
             {
                 prefs_.load(new FileInputStream(f));
                 
-                StringWriter sw = new StringWriter();
-                prefs_.list(new PrintWriter(sw));
-                logger_.debug("Prefs:\n" + sw.toString());
+                //StringWriter sw = new StringWriter();
+                //prefs_.list(new PrintWriter(sw));
+                //logger_.debug("Prefs:\n" + sw.toString());
                 
             }
             catch (IOException ioe)
@@ -463,16 +463,12 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         // Activate the currently loaded look and feel in the menu
         String laf = UIManager.getLookAndFeel().getName();        
         
-        logger_.debug("LAF=" + laf);
-        
         for (int i=0; i<lafMenu_.getItemCount(); i++)
         {
             JMenuItem item = lafMenu_.getItem(i);
             
             if (item instanceof JCheckBoxMenuItem)
             {
-                logger_.debug("cb:" + item);      
-                          
                 if (item.getText().equals(laf))
                     item.setSelected(true);
             }
@@ -700,8 +696,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         public void actionPerformed(ActionEvent e)
         {
             try
-            {
-                logger_.debug("Setting LAF to " + lafInfo_.getName());
+            { 
                 UIManager.setLookAndFeel(lafInfo_.getClassName());
                 SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
             }
