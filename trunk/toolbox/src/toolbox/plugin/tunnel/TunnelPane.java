@@ -1,19 +1,18 @@
 package toolbox.plugin.tunnel;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.BufferedOutputStream;
 
 import javax.swing.AbstractAction;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -26,6 +25,8 @@ import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.ui.ImageCache;
+import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
@@ -42,6 +43,8 @@ import toolbox.workspace.IStatusBar;
  */
 public class TunnelPane extends JPanel implements IPreferenced
 {
+    // TODO: Add buttons for lock and unlock to header panel toolbars.
+    
     private static final Logger logger_ = Logger.getLogger(TunnelPane.class);
     
     //--------------------------------------------------------------------------
@@ -63,12 +66,12 @@ public class TunnelPane extends JPanel implements IPreferenced
     /** 
      * Textarea that incoming data from the tunnel is dumped to. 
      */
-    private JSmartTextArea incomingTextArea_;
+    private JSmartTextArea incomingArea_;
     
     /** 
      * Textarea that outgoing data to the tunnel is dumped to. 
      */ 
-    private JSmartTextArea outgoingTextArea_;
+    private JSmartTextArea outgoingArea_;
     
     /** 
      * Refernce to the workspace status bar.
@@ -81,14 +84,14 @@ public class TunnelPane extends JPanel implements IPreferenced
     private JSmartSplitPane splitter_;
     
     /** 
-     * Status label for the incoming text area. 
+     * Header panel for the incoming text area. Needed to updated the title. 
      */
-    private JLabel remoteLabel_;
+    private JHeaderPanel incomingHeader_;
     
     /** 
-     * Status label for the outgoing text area. 
+     * Header panel for the outgoing text area. Needed to update the title. 
      */
-    private JLabel localLabel_;
+    private JHeaderPanel outgoingHeader_;
 
     /**
      * Flip pane that contains the configuration information.
@@ -171,7 +174,7 @@ public class TunnelPane extends JPanel implements IPreferenced
      */
     public JTextArea getIncomingTextArea()
     {
-        return incomingTextArea_;
+        return incomingArea_;
     }
 
     
@@ -204,7 +207,7 @@ public class TunnelPane extends JPanel implements IPreferenced
      */
     public JTextArea getOutgoingTextArea()
     {
-        return outgoingTextArea_;
+        return outgoingArea_;
     }
 
     
@@ -232,35 +235,29 @@ public class TunnelPane extends JPanel implements IPreferenced
         // Center
         JPanel outputPane = new JPanel(new BorderLayout());
         
-            // North
-            JPanel labelPanel = new JPanel(new GridLayout(1, 2));
-    
-            localLabel_ = 
-                new JSmartLabel("Sent to Remote Host", JLabel.CENTER);
-            
-            remoteLabel_ = 
-                new JSmartLabel("Received from Remote Host", JLabel.CENTER);
-    
-            labelPanel.add(localLabel_);
-            labelPanel.add(remoteLabel_);
-    
-            outputPane.add(BorderLayout.NORTH, labelPanel);
-        
             // Center
-            incomingTextArea_ = new JSmartTextArea(true, false);
-            incomingTextArea_.setFont(FontUtil.getPreferredMonoFont());
-            incomingTextArea_.setRows(40);
-            incomingTextArea_.setColumns(80);
+            incomingArea_ = new JSmartTextArea(true, false);
+            incomingArea_.setFont(FontUtil.getPreferredMonoFont());
+            incomingArea_.setRows(40);
+            incomingArea_.setColumns(80);
             
-            outgoingTextArea_ = new JSmartTextArea(true, false);
-            outgoingTextArea_.setFont(FontUtil.getPreferredMonoFont());
-            outgoingTextArea_.setRows(40);
-            outgoingTextArea_.setColumns(80); 
+            outgoingArea_ = new JSmartTextArea(true, false);
+            outgoingArea_.setFont(FontUtil.getPreferredMonoFont());
+            outgoingArea_.setRows(40);
+            outgoingArea_.setColumns(80); 
             
             splitter_ = 
-                new JSmartSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
-                    new JScrollPane(incomingTextArea_), 
-                    new JScrollPane(outgoingTextArea_));
+                new JSmartSplitPane(
+                    JSplitPane.HORIZONTAL_SPLIT, 
+                    true,
+                    incomingHeader_ = new JHeaderPanel(
+                        "Sent to Remote Host", 
+                        createHeaderToolBar(incomingArea_), 
+                        new JScrollPane(incomingArea_)),
+                    outgoingHeader_ = new JHeaderPanel(
+                        "Received from Remote Host", 
+                        createHeaderToolBar(outgoingArea_), 
+                        new JScrollPane(outgoingArea_)));
                 
             splitter_.setContinuousLayout(true);        
             outputPane.add(BorderLayout.CENTER, splitter_);
@@ -298,7 +295,10 @@ public class TunnelPane extends JPanel implements IPreferenced
         configPanel.add(capacityField_ = new JSmartTextField(10));
                         
         configFlipPane_ = new JFlipPane(JFlipPane.LEFT);
-        configFlipPane_.addFlipper("Config", configPanel);
+        
+        configFlipPane_.addFlipper(
+            "Config", new JHeaderPanel("Config", null, configPanel));
+        
         configFlipPane_.setExpanded(false);
         
         add(BorderLayout.WEST, configFlipPane_);
@@ -315,6 +315,24 @@ public class TunnelPane extends JPanel implements IPreferenced
         });
     }
 
+    /**
+     * Creates the common toolbar that is used in the input and output text
+     * areas.
+     * 
+     * @return JToolBar 
+     */
+    protected JToolBar createHeaderToolBar(JSmartTextArea area)
+    {
+        JToolBar tb = JHeaderPanel.createToolBar();
+        
+        tb.add(JHeaderPanel.createButton(
+            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
+            "Clear",
+            area.new ClearAction()));
+        
+        return tb;
+    }
+    
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
@@ -324,8 +342,11 @@ public class TunnelPane extends JPanel implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = XOMUtil.getFirstChildElement(
-            prefs, NODE_TCPTUNNEL_PLUGIN, new Element(NODE_TCPTUNNEL_PLUGIN));
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, 
+                NODE_TCPTUNNEL_PLUGIN, 
+                new Element(NODE_TCPTUNNEL_PLUGIN));
         
         remotePortField_.setText(
             XOMUtil.getStringAttribute(root, ATTR_REMOTE_PORT, ""));
@@ -339,16 +360,16 @@ public class TunnelPane extends JPanel implements IPreferenced
         configFlipPane_.applyPrefs(root);
         splitter_.applyPrefs(root);
     
-        incomingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
+        incomingArea_.applyPrefs(XOMUtil.getFirstChildElement(
             root, NODE_INCOMING, new Element(NODE_INCOMING)));
 
-        capacityField_.setText(incomingTextArea_.getCapacity() + "");
+        capacityField_.setText(incomingArea_.getCapacity() + "");
             
-        outgoingTextArea_.applyPrefs(XOMUtil.getFirstChildElement(
+        outgoingArea_.applyPrefs(XOMUtil.getFirstChildElement(
             root, NODE_OUTGOING, new Element(NODE_OUTGOING)));
             
-        incomingTextArea_.setPruneFactor(50);
-        outgoingTextArea_.setPruneFactor(50);
+        incomingArea_.setPruneFactor(50);
+        outgoingArea_.setPruneFactor(50);
     }
 
     
@@ -372,15 +393,15 @@ public class TunnelPane extends JPanel implements IPreferenced
         splitter_.savePrefs(root);
             
         Element incoming = new Element(NODE_INCOMING);
-        incomingTextArea_.setCapacity(
+        incomingArea_.setCapacity(
             Integer.parseInt(capacityField_.getText()));
-        incomingTextArea_.savePrefs(incoming);
+        incomingArea_.savePrefs(incoming);
         root.appendChild(incoming);
 
         Element outgoing = new Element(NODE_OUTGOING);
-        outgoingTextArea_.setCapacity(
+        outgoingArea_.setCapacity(
             Integer.parseInt(capacityField_.getText()));
-        outgoingTextArea_.savePrefs(outgoing);
+        outgoingArea_.savePrefs(outgoing);
         root.appendChild(outgoing);
         
         XOMUtil.insertOrReplace(prefs, root);
@@ -410,8 +431,8 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         public void actionPerformed(ActionEvent e)
         {
-            incomingTextArea_.setText("");
-            outgoingTextArea_.setText("");
+            incomingArea_.setText("");
+            outgoingArea_.setText("");
         }
     }
 
@@ -458,8 +479,9 @@ public class TunnelPane extends JPanel implements IPreferenced
                               int connBytesRead, 
                               int totalBytesRead)
         {
-            localLabel_.setText("Sent to Remote Host: " + connBytesRead + 
-                                " conn  " + totalBytesRead + " total");
+            incomingHeader_.setTitle(
+                "Sent to Remote Host: " + connBytesRead + " conn  " + 
+                totalBytesRead + " total");
         }
 
         
@@ -471,8 +493,9 @@ public class TunnelPane extends JPanel implements IPreferenced
                                  int connBytesWritten,
                                  int totalBytesWritten)
         {
-            remoteLabel_.setText("Received from Remote Host: " + 
-                connBytesWritten + " conn  " + totalBytesWritten + " total");
+            outgoingHeader_.setTitle(
+                "Received from Remote Host: " + connBytesWritten + " conn  " + 
+                totalBytesWritten + " total");
         }
 
         
@@ -503,10 +526,10 @@ public class TunnelPane extends JPanel implements IPreferenced
                     getRemotePort());
                     
             tunnel_.setIncomingSink(new BufferedOutputStream(
-                new JTextAreaOutputStream(outgoingTextArea_)));
+                new JTextAreaOutputStream(outgoingArea_)));
             
             tunnel_.setOutgoingSink(new BufferedOutputStream(
-                new JTextAreaOutputStream(incomingTextArea_)));
+                new JTextAreaOutputStream(incomingArea_)));
                 
             tunnel_.addTcpTunnelListener(this);
             
