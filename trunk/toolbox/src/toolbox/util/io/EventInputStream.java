@@ -118,16 +118,18 @@ public class EventInputStream extends FilterInputStream
      */
     protected void fireStreamClosed()
     {
-        for (int i=0; i<listeners_.size(); i++)
+        for (int i=0, n=listeners_.size(); i<n; i++)
             ((Listener) listeners_.get(i)).streamClosed(this);               
     }
 
     /** 
      * Fires notification that a byte was read from the stream
+     * 
+     * @param  b  Bytes that was read
      */
     protected void fireByteRead(int b)
     {
-        for (int i=0; i<listeners_.size(); i++)
+        for (int i=0, n=listeners_.size(); i<n; i++)
             ((Listener) listeners_.get(i)).byteRead(this, b);               
     }
 

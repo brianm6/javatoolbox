@@ -20,7 +20,7 @@ public class EventOutputStream extends FilterOutputStream
     /**
      * Total number of bytes written to the stream
      */
-    private int  count_;
+    private int count_;
     
     /**
      * Friendly name for this stream
@@ -42,7 +42,8 @@ public class EventOutputStream extends FilterOutputStream
     }
     
     /**
-     * Creates an EventOutputStream
+     * Creates an EventOutputStream with the given name outputstream to
+     * decorate.
      * 
      * @param  name Stream name
      * @param  out  OutputStream to chain 
@@ -71,8 +72,10 @@ public class EventOutputStream extends FilterOutputStream
         count_++;
         fireByteWritten(b);
     }
-    
+
     /**
+     * Hooks for when the stream is flushed
+     * 
      * @see java.io.FilterOutputStream#flush()
      */
     public void flush() throws IOException
@@ -82,6 +85,8 @@ public class EventOutputStream extends FilterOutputStream
     }
     
     /**
+     * Hooks for when the stream is closed
+     * 
      * @see java.io.FilterOutputStream#close()
      */
     public void close() throws IOException
@@ -109,7 +114,7 @@ public class EventOutputStream extends FilterOutputStream
      */
     protected void fireStreamClosed()
     {
-        for (int i=0; i<listeners_.size(); i++)
+        for (int i=0, n=listeners_.size(); i<n; i++)
             ((Listener) listeners_.get(i)).streamClosed(this);               
     }
 
@@ -118,16 +123,18 @@ public class EventOutputStream extends FilterOutputStream
      */
     protected void fireStreamFlushed()
     {
-        for (int i=0; i<listeners_.size(); i++)
+        for (int i=0, n=listeners_.size(); i<n; i++)
             ((Listener) listeners_.get(i)).streamFlushed(this);               
     }
 
     /** 
      * Fires notification that a byte was written to the stream
+     * 
+     * @param  b  Byte written to stream
      */
     protected void fireByteWritten(int b)
     {
-        for (int i=0; i<listeners_.size(); i++)
+        for (int i=0, n=listeners_.size(); i<n; i++)
             ((Listener) listeners_.get(i)).byteWritten(this, b);               
     }
 
