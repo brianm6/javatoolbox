@@ -50,6 +50,7 @@ import toolbox.plugin.jdbc.action.ListTablesAction;
 import toolbox.plugin.jdbc.action.SQLReferenceAction;
 import toolbox.plugin.jdbc.action.ShowResultsFilterAction;
 import toolbox.util.ClassUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
 import toolbox.util.JDBCSession;
@@ -69,6 +70,8 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.TableSorter;
@@ -246,6 +249,11 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
      * Panel that has both the table and textarea used to show query results.
      */
     private JPanel resultsCardPanel_;
+
+    /**
+     * File explorer accessible via the left flippane.
+     */
+    private JFileExplorer fileExplorer_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -503,6 +511,13 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
             DBConfig.ICON_DBCONFIG, 
             "Databases", 
             dbConfigPane_ = new DBConfig(this));
+        
+        // File Explorer
+        leftFlipPane_.addFlipper(
+            JFileExplorer.ICON, 
+            "File Explorer", 
+            fileExplorer_ = new JFileExplorer(false));
+        fileExplorer_.addFileExplorerListener(new FileSelectionListener());
         
         // Query Plugin Prefs
         leftFlipPane_.addFlipper(
@@ -884,6 +899,8 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
         // Update the db benchmark configuration view
         benchmark_.applyPrefs(root);
         benchmarkView_.setBenchmark(benchmark_);
+        
+        fileExplorer_.applyPrefs(root);
     }
 
 
@@ -921,10 +938,10 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
         areaSplitPane_.savePrefs(root);
         formatter_.savePrefs(root);
         benchmark_.savePrefs(root);
-
+        fileExplorer_.savePrefs(root);
+        
         XOMUtil.insertOrReplace(prefs, root);
     }
-    
     
     //--------------------------------------------------------------------------
     // JavaBean Accessors/Mutators
@@ -1084,5 +1101,27 @@ public class QueryPlugin extends JPanel implements IPlugin, QueryPluginConstants
         }
     }
     
-
+    //--------------------------------------------------------------------------
+    // FileSelectionListener
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Loads selected file from the file explorer into the sql editor.
+     */
+    class FileSelectionListener extends FileExplorerAdapter
+    {
+        public void fileDoubleClicked(String file)
+        {
+            try
+            {
+                sqlEditor_.setText(FileUtil.getFileContents(file));
+                sqlEditor_.setCaretPosition(0);
+                sqlEditor_.scrollToCaret();
+            }
+            catch (Exception ex)
+            {
+                ExceptionUtil.handleUI(ex, logger_);
+            }
+        }
+    }
 }
