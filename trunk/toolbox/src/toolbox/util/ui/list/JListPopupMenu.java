@@ -1,16 +1,12 @@
 package toolbox.util.ui.list;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
 import javax.swing.JList;
 
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
+import toolbox.util.ui.list.action.CopyAction;
+import toolbox.util.ui.list.action.SelectAllAction;
 
 /**
  * PopupMenu for a JList that contains default implemenations of the Copy and
@@ -18,6 +14,8 @@ import toolbox.util.ui.JSmartPopupMenu;
  * 
  * @see javax.swing.JList
  * @see javax.swing.JPopupMenu
+ * @see toolbox.util.ui.list.action.CopyAction
+ * @see toolbox.util.ui.list.action.SelectAllAction
  */
 public class JListPopupMenu extends JSmartPopupMenu
 {
@@ -68,81 +66,8 @@ public class JListPopupMenu extends JSmartPopupMenu
      */
     protected void buildView()
     {
-        add(new JSmartMenuItem(new CopyAction()));
-        add(new JSmartMenuItem(new SelectAllAction()));
+        add(new JSmartMenuItem(new CopyAction(list_)));
+        add(new JSmartMenuItem(new SelectAllAction(list_)));
         list_.addMouseListener(new JPopupListener(this));
-    }
-    
-    //--------------------------------------------------------------------------
-    // CopyAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Copies the contents of the currently selected indices to the clipboard
-     * as toString() results separated by newlines.
-     */    
-    class CopyAction extends AbstractAction
-    {
-        /**
-         * Creates a CopyAction.
-         */
-        CopyAction()
-        {
-            super("Copy");
-        }
-
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            Object[] selected = list_.getSelectedValues();
-            StringBuffer sb = new StringBuffer();
-            
-            // Concat selected items into a text string
-            for (int i = 0; i < selected.length; i++)
-            {
-                sb.append(selected[i].toString());
-                
-                if (i != selected.length - 1)
-                    sb.append("\n");
-            }
-            
-            StringSelection ss = new StringSelection(sb.toString());
-            Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clip.setContents(ss, ss);
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // SelectAllAction
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Selects all items in the list box.
-     */
-    class SelectAllAction extends AbstractAction
-    {
-        /**
-         * Creates a SelectAllAction.
-         */
-        SelectAllAction()
-        {
-            super("Select All");
-        }
-
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            int[] indexes = new int[list_.getModel().getSize()];
-            for (int i = 0; i < indexes.length; indexes[i] = i++);
-            list_.setSelectedIndices(indexes);
-        }
     }
 }
