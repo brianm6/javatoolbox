@@ -279,4 +279,61 @@ public class StringUtilTest extends TestCase
         }
         
     }
+    
+    /**
+     * Tests trim() for an empty string
+     */
+    public void testTrimEmpty()
+    {
+        assertEquals("trimmed empty string incorrect",
+            "", StringUtil.trim("",'x'));
+    }
+    
+    /**
+     * Tests trim() for a single char string
+     */
+    public void testTrimOne()
+    {
+        String s = "x";
+        assertEquals("trimmed incorrect", "", StringUtil.trim(s,'x'));
+        assertEquals("trimmed incorrect", s, StringUtil.trim(s,' '));
+    }
+
+    /**
+     * Tests trim() for larger string
+     */
+    public void testTrimMany()
+    {
+        String s = "..abcdefg..x..";
+        assertEquals("trim incorrect", "abcdefg..x", StringUtil.trim(s,'.'));
+        assertEquals("trim incorrect", s, StringUtil.trim(s, 'z'));
+    }
+ 
+ 
+    /**
+     * Tests trim() for trimming entire string
+     */
+    public void testTrimEntire()
+    {
+        String s = "aaaaaaaaaaaaaaaaaaaaaaaa";
+        assertEquals("trim incorrect", "", StringUtil.trim(s, 'a'));            
+    }
+    
+    /**
+     * Tests trim() for prefix trimming only
+     */
+    public void testTrimPrefixOnly()
+    {
+        String s = ".......aaaaaa";
+        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));            
+    }
+
+    /**
+     * Tests trim() for suffix trimming only
+     */
+    public void testTrimSuffixOnly()
+    {
+        String s = "aaaaaa........";
+        assertEquals("trim incorrect", "aaaaaa", StringUtil.trim(s, '.'));            
+    }
 }
