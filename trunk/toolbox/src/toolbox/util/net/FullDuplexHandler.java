@@ -1,12 +1,28 @@
 package toolbox.util.net;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
 
 /**
- * Abstract base class for POS connection handlers. Provides central  mgmt of
- * queue/connection and also recovery/shutdown of the handler
+ * Abstract class that facilitates the creation of a handler that handles 
+ * input/output in a full duplex manner. That is, neither of the streams
+ * are coupled or dependent on one another thus allowing a full duplex mode
+ * of communication to take place.
+ * 
+ * <pre>
+ * 
+ *   input  thread->         +--handleInput  <== input stream----+
+ *                          /                                     \
+ *   caller thread->  handle                                       connection
+ *                          \                                     /
+ *   output thread->         +--handleOutput ==> output stream---+
+ * 
+ * </pre>
  */
 public abstract class FullDuplexHandler implements IConnectionHandler
 {
@@ -22,18 +38,13 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     /**
      * Thread of execution for handling the input stream
      */
-    private Thread inputStreamThread_;
+    private Thread inputStreamThread_; 
     
     /**
      * Thread of execution for handling the output stream
      */
     private Thread outputStreamThread_;
 
-    /**
-     * Flag that is set if stop() is pending. Error handler checks this flag and
-     * error messages off easy if the stop is pending
-     */
-    private boolean pendingStop_ = false;
 
     //--------------------------------------------------------------------------
     //  Constructors
@@ -51,11 +62,8 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
 
     /**
-     * Common handler for POS message based connections. Functionality includes
-     * maintaining a connection if it shoud drop of become corrupt, 
-     * handling error and exceptions in a uniform way, and making
-     * it straightforward for the handler subclasses to implement
-     * their intended functionality without duplication of behavior.
+     * Handles a connection by taking the input/output streams and 
+     * spawning them off into separate threads of execution.
      * 
      * @param   conn   Connection to read/write messages to/from
      * @return  Null
@@ -63,13 +71,13 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     public final Object handle(IConnection conn) 
     {
         conn_ = conn;
-        String method = "[handle] ";
-
-        logger_.info(method + "handle called");
         
         // Startup input/output stream handlers on separate threads
-        inputStreamThread_  = ThreadUtil.run(this, "handleInput", null);
-        outputStreamThread_ = ThreadUtil.run(this, "handleOutput", null);
+        inputStreamThread_  =
+             ThreadUtil.run(this, "handleInput", null);
+             
+        outputStreamThread_ = 
+            ThreadUtil.run(this, "handleOutput", null);
         
         return null;
     }
@@ -79,7 +87,7 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     //--------------------------------------------------------------------------
     
     /**
-     * Handlees the inputstream
+     * Handles the inputstream
      * 
      * @param  is  Inputstream to handle
      * @throws Exception on error
@@ -110,7 +118,6 @@ public abstract class FullDuplexHandler implements IConnectionHandler
         conn_ = newConnection;
     }
 
-
     /**
      * Accessor for the connection
      * 
@@ -119,5 +126,41 @@ public abstract class FullDuplexHandler implements IConnectionHandler
     public IConnection getConnection()
     {
         return conn_;
+    }
+
+    /**
+     * Convenience accessor for the input stream
+     */    
+    public InputStream getInputStream() throws IOException
+    {
+        return getConnection().getInputStream();
+    }
+    
+    /**
+     * Convenience accessor for the output stream
+     */
+    public OutputStream getOutputStream() throws IOException
+    {
+        return getConnection().getOutputStream();
+    }
+    
+    /**
+     * Returns the inputStreamThread.
+     * 
+     * @return Thread
+     */
+    public Thread getInputStreamThread()
+    {
+        return inputStreamThread_;
+    }
+
+    /**
+     * Returns the outputStreamThread.
+     * 
+     * @return Thread
+     */
+    public Thread getOutputStreamThread()
+    {
+        return outputStreamThread_;
     }
 }
