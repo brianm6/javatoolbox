@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SocketUtil;
-import toolbox.util.io.EventOutputStream;
+import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.io.PrintableOutputStream;
 
@@ -91,12 +91,12 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Stream name for event inputstream.
      */
-    private static final String STREAM_IN = "client <-- tunnel";
+    private static final String NAME_STREAM_IN = "client <-- tunnel";
 
     /**
      * Stream name for event outputstream.
      */
-    private static final String STREAM_OUT = "tunnel --> server";
+    private static final String NAME_STREAM_OUT = "tunnel --> server";
 
     //--------------------------------------------------------------------------
     // Fields
@@ -338,13 +338,14 @@ public class TcpTunnel implements TcpTunnelListener
 
                         outStreams.addStream(rs.getOutputStream());
 
-                        EventOutputStream eos =
-                            new EventOutputStream(
-                                STREAM_OUT, new NullOutputStream());
+                        MonitoredOutputStream mos = 
+                            new MonitoredOutputStream(
+                                NAME_STREAM_OUT, new NullOutputStream());
 
-                        eos.addListener(new OutputStreamListener());
+                        mos.addOutputStreamListener(
+                            new MyOutputStreamListener());
 
-                        outStreams.addStream(eos);
+                        outStreams.addStream(mos);
 
                         printableOutgoingSink_ =
                             new PrintableOutputStream(
@@ -357,13 +358,14 @@ public class TcpTunnel implements TcpTunnelListener
 
                         inStreams.addStream(cs.getOutputStream());
 
-                        EventOutputStream eis =
-                            new EventOutputStream(
-                                STREAM_IN, new NullOutputStream());
+                        MonitoredOutputStream mis =
+                            new MonitoredOutputStream(
+                                NAME_STREAM_IN, new NullOutputStream());
 
-                        eis.addListener(new OutputStreamListener());
+                        mis.addOutputStreamListener(
+                            new MyOutputStreamListener());
 
-                        inStreams.addStream(eis);
+                        inStreams.addStream(mis);
 
                         printableIncomingSink_ =
                             new PrintableOutputStream(
@@ -527,20 +529,22 @@ public class TcpTunnel implements TcpTunnelListener
      * Listener that reports totla number of bytes written/read from the tunnel
      * after the connection is closed.
      */
-    class OutputStreamListener implements EventOutputStream.Listener
+    class MyOutputStreamListener 
+        implements MonitoredOutputStream.OutputStreamListener
     {
         /**
          * Tallies up counts and generates bytesRead/Written events when the
          * stream is closed.
          *
-         * @param stream Stream that was closed.
+         * @see toolbox.util.io.MonitoredOutputStream.OutputStreamListener
+         *      #streamClosed(MonitoredOutputStream)
          */
-        public void streamClosed(EventOutputStream stream)
+        public void streamClosed(MonitoredOutputStream stream)
         {
             String name = stream.getName();
-            int count = stream.getCount();
+            int count = (int) stream.getCount();
 
-            if (name.equals(STREAM_IN))
+            if (name.equals(NAME_STREAM_IN))
             {
                 //logger_.debug(
                 //  "Tallying bytes on stream close event: " +stream.getName());
@@ -548,7 +552,7 @@ public class TcpTunnel implements TcpTunnelListener
                 inTotal_ += count;
                 fireBytesRead(count);
             }
-            else if (name.equals(STREAM_OUT))
+            else if (name.equals(NAME_STREAM_OUT))
             {
                 //logger_.debug(
                 //  "Tallying bytes on stream close event: " +stream.getName());
@@ -562,34 +566,15 @@ public class TcpTunnel implements TcpTunnelListener
                     "Invalid stream name:" + name);
             }
         }
-
-
+     
+        
         /**
-         * @see toolbox.util.io.EventOutputStream.Listener#byteWritten(
-         *      toolbox.util.io.EventOutputStream, int)
+         * @see toolbox.util.io.MonitoredOutputStream.OutputStreamListener
+         *      #streamFlushed(toolbox.util.io.MonitoredOutputStream)
          */
-        public void byteWritten(EventOutputStream stream, int b)
+        public void streamFlushed(MonitoredOutputStream stream)
         {
-        }
-
-
-        /**
-         * @see toolbox.util.io.EventOutputStream.Listener#streamFlushed(
-         *      toolbox.util.io.EventOutputStream)
-         */
-        public void streamFlushed(EventOutputStream stream)
-        {
-        }
-
-
-        /**
-         * @see toolbox.util.io.EventOutputStream.Listener#streamThroughput(
-         *      toolbox.util.io.EventOutputStream, float)
-         */
-        public void streamThroughput(
-            EventOutputStream stream,
-            float bytesPerPeriod)
-        {
+            ; // NO-OP
         }
     }
 }
