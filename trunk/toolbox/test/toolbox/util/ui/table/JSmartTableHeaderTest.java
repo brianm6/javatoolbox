@@ -55,7 +55,8 @@ public class JSmartTableHeaderTest extends UITestCase
             new JSmartTableHeader(table.getColumnModel(), table);
         
         table.setTableHeader(header);
-
+        model.addRow(new String[]{"double click", "on the", "column dividers"});
+        
         for (int i = 0; i < 15;  i++)
         {
             model.addRow(
