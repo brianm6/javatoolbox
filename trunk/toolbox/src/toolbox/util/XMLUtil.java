@@ -9,6 +9,7 @@ import org.apache.xerces.parsers.DOMParser;
 import org.apache.xml.serialize.Method;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -23,12 +24,37 @@ public class XMLUtil
         Logger.getLogger(XMLUtil.class);
         
     /**
-     * Formats and indents XML to make it easy to read
+     * Formats and indents XML. 
+     * 
+     * <pre>
+     * Indent = 2 spaces
+     * Line Width = default (72)
+     * Omit Declaration = false
+     * </pre>
      * 
      * @param   xml  XML string to format
      * @return  Formatted XML string
+     * @throws  SAXException on parsing error
+     * @throws  IOException on I/O error
      */
     public static String format(String xml) throws SAXException, IOException
+    {
+        return format(xml, 2, -1, false);
+    }
+
+    /**
+     * Formats and indents XML to make it easy to read
+     * 
+     * @param   xml        XML string to format
+     * @param   indent     Number of spaces per indentation 
+     * @param   lineWidth  Max line width afterwhich the line is wrapped
+     * @param   omitDeclaration  Set to true to omit the xml declaration
+     * @return  Formatted XML string
+     * @throws  SAXException on parsing error
+     * @throws  IOException on I/O error
+     */
+    public static String format(String xml, int indent, int lineWidth, 
+        boolean omitDeclaration) throws SAXException, IOException
     {
         String formattedXML = null;
 
@@ -37,18 +63,17 @@ public class XMLUtil
         Document doc = parser.getDocument();
         StringWriter writer = new StringWriter();
         OutputFormat format = new OutputFormat();
+        
+        // TODO: what difference does this make?
         format.setMethod(Method.FOP);
-        format.setIndenting(true);
-        format.setLineWidth(80);
-        format.setOmitXMLDeclaration(true);
-        format.setIndent(4);
-        //format.setLineSeparator("\n");
-        //format.setPreserveSpace(true);
-
+        
+        format.setIndenting(indent>0);
+        format.setIndent(indent);
+        if (lineWidth > 0) format.setLineWidth(lineWidth);
+        format.setOmitXMLDeclaration(omitDeclaration);
         XMLSerializer serializer = new XMLSerializer(writer, format);
         serializer.serialize(doc);
         formattedXML = writer.toString();
-
         return formattedXML;
     }
 
