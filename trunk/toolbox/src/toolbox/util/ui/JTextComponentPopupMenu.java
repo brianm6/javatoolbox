@@ -7,20 +7,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.font.FontChooserException;
@@ -36,7 +33,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
     private static final Logger logger_ =
         Logger.getLogger(JTextComponentPopupMenu.class); 
         
-    /** Text component to associate this popup menu with */
+    /** 
+     * Text component to associate this popup menu with 
+     */
     private JTextComponent textComponent_;
 
     //--------------------------------------------------------------------------
@@ -94,6 +93,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
         public CopyAction()
         {
             super("Copy");
+            putValue(Action.MNEMONIC_KEY, new Integer('C'));
+            putValue(Action.SMALL_ICON, 
+                ImageCache.getIcon(ImageCache.IMAGE_COPY));
         }
         
         public void actionPerformed(ActionEvent e)
@@ -110,6 +112,9 @@ public class JTextComponentPopupMenu extends JPopupMenu
         public PasteAction()
         {
             super("Paste");
+            putValue(Action.MNEMONIC_KEY, new Integer('P'));
+            putValue(Action.SMALL_ICON, 
+                ImageCache.getIcon(ImageCache.IMAGE_PASTE));
         }
         
         public void actionPerformed(ActionEvent e)
@@ -147,7 +152,7 @@ public class JTextComponentPopupMenu extends JPopupMenu
         public void actionPerformed(ActionEvent e)
         {
             final Font originalFont = textComponent_.getFont();
-            
+
             // Find parent frame
             Window w = SwingUtilities.getWindowAncestor(textComponent_);
             
@@ -165,6 +170,14 @@ public class JTextComponentPopupMenu extends JPopupMenu
                     {
                         // Set the newly selected font
                         textComponent_.setFont(fontChooser.getSelectedFont());
+
+                        // Fix this and define a common interface to subvert 
+                        // casting                        
+                        if (textComponent_ instanceof JSmartTextArea)
+                        {
+                            ((JSmartTextArea) textComponent_).setAntiAlias(
+                                fontChooser.isAntiAlias());
+                        }
                     }
                     catch (FontChooserException fce)
                     {
@@ -174,13 +187,13 @@ public class JTextComponentPopupMenu extends JPopupMenu
 
                 public void cancelButtonPressed(JFontChooser fontChooser)
                 {
-                    // Just restore the original font
+                    // Just restore the original font...skip antialias cuz
+                    // I'm a lazy bum sometimes..
                     textComponent_.setFont(originalFont);
                 }
 
                 public void applyButtonPressed(JFontChooser fontChooser)
                 {
-                    // Same as OK
                     okButtonPressed(fontChooser);
                 }
             });
@@ -198,6 +211,10 @@ public class JTextComponentPopupMenu extends JPopupMenu
         public FindAction(JTextComponent textComp)
         {
             super("Find..");
+            putValue(Action.MNEMONIC_KEY, new Integer('F'));
+            putValue(Action.SMALL_ICON, 
+                ImageCache.getIcon(ImageCache.IMAGE_FIND));
+            
             final JTextComponent finalTextComp = textComp;
             
             // Bind Ctrl-F to activate the find action
@@ -226,103 +243,80 @@ public class JTextComponentPopupMenu extends JPopupMenu
     /**
      * Inserts the text of a file at the currnet cursor location
      */
-    protected static class InsertFileAction extends AbstractAction
+    protected static class InsertFileAction extends SmartAction
     {
         private static File lastDir_;
         private JTextComponent jtc_;
         
         public InsertFileAction(JTextComponent jtc)
         {
-            super("Insert..");
+            super("Insert..", true, false, null);
             jtc_ = jtc;
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
-            try
-            {
-                JFileChooser chooser = null;
-                
-                if (lastDir_ == null)
-                    chooser = new JFileChooser();
-                else
-                    chooser = new JFileChooser(lastDir_);
+            JFileChooser chooser = null;
+            
+            if (lastDir_ == null)
+                chooser = new JFileChooser();
+            else
+                chooser = new JFileChooser(lastDir_);
 
-                if (chooser.showOpenDialog(jtc_) == 
-                    JFileChooser.APPROVE_OPTION) 
-                {
-                    String txt = FileUtil.getFileContents(
-                        chooser.getSelectedFile().getCanonicalPath());
-                    
-                    int curPos = jtc_.getCaretPosition();    
-                    
-                    jtc_.getDocument().
-                        insertString(curPos, txt, null);                        
-                }
+            if (chooser.showOpenDialog(jtc_) == 
+                JFileChooser.APPROVE_OPTION) 
+            {
+                String txt = FileUtil.getFileContents(
+                    chooser.getSelectedFile().getCanonicalPath());
                 
-                lastDir_ = chooser.getCurrentDirectory();
+                int curPos = jtc_.getCaretPosition();    
+                
+                jtc_.getDocument().
+                    insertString(curPos, txt, null);                        
             }
-            catch (BadLocationException ble)
-            {
-                ExceptionUtil.handleUI(ble, logger_);
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                ExceptionUtil.handleUI(fnfe, logger_);
-            }
-            catch (IOException ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
+            
+            lastDir_ = chooser.getCurrentDirectory();
         }
     }
     
     /**
      * Inserts the text of a file at the currnet cursor location
      */
-    protected static class SaveAsAction extends AbstractAction
+    protected static class SaveAsAction extends SmartAction
     {
         private static File lastDir_;
         private JTextComponent jtc_;
         
         public SaveAsAction(JTextComponent jtc)
         {
-            super("Save As..");
+            super("Save As..", true, false, null);
+            putValue(Action.MNEMONIC_KEY, new Integer('A'));
+            putValue(Action.SMALL_ICON, 
+                ImageCache.getIcon(ImageCache.IMAGE_SAVEAS));
             jtc_ = jtc;
         }
         
-        public void actionPerformed(ActionEvent e)
+        public void runAction(ActionEvent e) throws Exception
         {
-            try
-            {
-                JFileChooser chooser = null;
-                
-                if (lastDir_ == null)
-                    chooser = new JFileChooser();
-                else
-                    chooser = new JFileChooser(lastDir_);
+            JFileChooser chooser = null;
+            
+            if (lastDir_ == null)
+                chooser = new JFileChooser();
+            else
+                chooser = new JFileChooser(lastDir_);
 
-                if (chooser.showSaveDialog(jtc_) == 
-                    JFileChooser.APPROVE_OPTION) 
-                {
-                    String saveFile = 
-                        chooser.getSelectedFile().getCanonicalPath();
-                    
-                    logger_.debug("save file=" + saveFile);
-                    
-                    FileUtil.setFileContents(saveFile, jtc_.getText(), false);
-                }
+            if (chooser.showSaveDialog(jtc_) == 
+                JFileChooser.APPROVE_OPTION) 
+            {
+                String saveFile = 
+                    chooser.getSelectedFile().getCanonicalPath();
                 
-                lastDir_ = chooser.getCurrentDirectory();
+                logger_.debug("save file=" + saveFile);
+                
+                FileUtil.setFileContents(saveFile, jtc_.getText(), false);
             }
-            catch (FileNotFoundException fnfe)
-            {
-                ExceptionUtil.handleUI(fnfe, logger_);
-            }
-            catch (IOException ioe)
-            {
-                ExceptionUtil.handleUI(ioe, logger_);
-            }
+            
+            lastDir_ = chooser.getCurrentDirectory();
         }
     }
 
