@@ -56,6 +56,7 @@
 	<classpathentry kind="lib" path="lib/napkinlf.jar"/>
 	<classpathentry sourcepath="lib/src/oyoahalf-src.zip" kind="lib" path="lib/oyoahalf.jar"/>
 	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
+	<classpathentry sourcepath="lib/src/qdox-src.zip" kind="lib" path="lib/qdox.jar"/>
 	<classpathentry sourcepath="lib/src/saxon-src.zip" kind="lib" path="lib/saxon.jar"/>
 	<classpathentry sourcepath="lib/src/skinlf-src.zip" kind="lib" path="lib/skinlf.jar"/>
 	<classpathentry sourcepath="lib/src/squarenesslf-src.zip" kind="lib" path="lib/squarenesslf.jar"/>
