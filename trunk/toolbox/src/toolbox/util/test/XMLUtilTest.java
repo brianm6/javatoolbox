@@ -45,8 +45,10 @@ public class XMLUtilTest extends TestCase
         
     /**
      * Tests format()
+     * 
+     * @throws Exception on error
      */
-    public void testFormat()
+    public void testFormat() throws Exception
     {
         logger_.info("Running testFormat...");
         
