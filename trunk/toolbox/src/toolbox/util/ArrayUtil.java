@@ -215,7 +215,18 @@ public final class ArrayUtil
     /**
      * Converts an array of objects into a comma delimited single line string 
      * of each elements toString().
-     *
+     * <p>
+     * <b>Example:</b>
+     * <pre class="snippet">
+     * Object[] numbers = {"one", "two", "three"};
+     * System.out.println(ArrayUtil.toString(numbers)); 
+     * </pre>
+     * 
+     * <b>Output:</b>
+     * <pre class="snippet">
+     * [3]{one, two, three}
+     * </pre>
+     * 
      * @param array Array of objects to stringify.
      * @return String of comma delimited array elements toString().
      */
@@ -227,7 +238,22 @@ public final class ArrayUtil
     
     /**
      * Converts an object array into a comma delimited string of 
-     * each elements toString().
+     * each elements toString() with the option to specify that each element
+     * be separated by a newline.
+     * <p>
+     * <b>Example:</b>
+     * <pre class="snippet">
+     * Object[] numbers = {"one", "two", "three"};
+     * System.out.println(ArrayUtil.toString(numbers)); 
+     * </pre>
+     * 
+     * <b>Output:</b>
+     * <pre class="snippet">
+     * [3]{ 
+     * one, 
+     * two, 
+     * three}
+     * </pre>
      *
      * @param array Array of objects to stringify.
      * @param onePerLine If true, the entire contents are represented on a 
