@@ -5,15 +5,19 @@ import java.io.FilenameFilter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.text.DecimalFormat;
 import java.util.Iterator;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.FileUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 
@@ -81,6 +85,11 @@ public class Tree
      * Files are not shown by default 
      */
     private static final boolean DEFAULT_SHOWFILES = false;
+
+    /** 
+     * File sizes are not shown by default 
+     */
+    private static final boolean DEFAULT_SHOWSIZE = false;
     
     /** 
      * Output is sent to System.out by default 
@@ -111,6 +120,11 @@ public class Tree
      * Flag that controls the showing of files 
      */
     private boolean showFiles_;
+
+    /** 
+     * Flag that controls the showing of file size 
+     */
+    private boolean showSize_;
     
     /** 
      * Root directory of the tree 
@@ -132,17 +146,25 @@ public class Tree
         // command line options and arguments
         String rootDir = null;
         boolean showFiles = false;
+        boolean showSize = false;
                 
         CommandLineParser parser = new PosixParser();
         Options options = new Options();
-        Option  fileOption = new Option("f", "files", false, "List files");
-        Option  helpOption = new Option("h", "help", false, "Print usage");
-        Option  helpOption2 = new Option("?", "/?", false, "Print Usage");
+        
+        Option fileOption = new Option(
+            "f", "files", false, "Includes files in the output");
+            
+        Option sizeOption = new Option(
+            "s", "size", false, "Includes file sizes in the output");
+            
+        Option helpOption = new Option("h", "help", false, "Prints usage");
+        Option helpOption2 = new Option("?", "?", false, "Prints usage");
         
         options.addOption(helpOption2);
         options.addOption(helpOption);
-        options.addOption(fileOption);        
-
+        options.addOption(fileOption);
+        options.addOption(sizeOption);        
+    
         CommandLine cmdLine = parser.parse(options, args, true);
     
         for (Iterator i = cmdLine.iterator(); i.hasNext(); )
@@ -154,10 +176,15 @@ public class Tree
             {
                 showFiles = true;
             }
+            if (opt.equals(sizeOption.getOpt()))
+            {
+                showSize = true;
+            }
             else if (opt.equals(helpOption.getOpt())  ||
                      opt.equals(helpOption2.getOpt()))
             {
-                printUsage();
+                printUsage(options);
+                return;
             }
         }
         
@@ -167,8 +194,8 @@ public class Tree
             case 0  :  rootDir = System.getProperty("user.dir"); break;
             case 1  :  rootDir = cmdLine.getArgs()[0]; break;
             default :  System.err.println("ERROR: Invalid arguments");
-                       printUsage(); 
-                       break;
+                       printUsage(options); 
+                       return;
         }
         
         // Create us a tree and let it ride..
@@ -176,7 +203,7 @@ public class Tree
         {
             if (rootDir != null)
             {
-                Tree t = new Tree(new File(rootDir), showFiles);
+                Tree t = new Tree(new File(rootDir), showFiles, showSize);
                 t.showTree();
             }
         }
@@ -198,7 +225,7 @@ public class Tree
      */
     public Tree(File rootDir)
     {
-        this(rootDir, DEFAULT_SHOWFILES, DEFAULT_WRITER);
+        this(rootDir, DEFAULT_SHOWFILES, DEFAULT_SHOWSIZE, DEFAULT_WRITER);
     }
 
     /**
@@ -210,7 +237,7 @@ public class Tree
      */
     public Tree(File rootDir, Writer writer)
     {
-        this(rootDir, DEFAULT_SHOWFILES, writer);    
+        this(rootDir, DEFAULT_SHOWFILES, DEFAULT_SHOWSIZE, writer);    
     }
 
     /**
@@ -222,7 +249,20 @@ public class Tree
      */
     public Tree(File rootDir, boolean showFiles)
     {
-        this(rootDir, showFiles, DEFAULT_WRITER);
+        this(rootDir, showFiles, DEFAULT_SHOWSIZE, DEFAULT_WRITER);
+    }
+
+    /**
+     * Creates a tree with the given root directory and flag to show files.
+     * 
+     * @param rootDir Root directory
+     * @param showFiles If true, includes files (as opposed to just directories)
+     *        in the output 
+     * @param showSize If true, shows the size of the file
+     */
+    public Tree(File rootDir, boolean showFiles, boolean showSize)
+    {
+        this(rootDir, showFiles,showSize, DEFAULT_WRITER);
     }
 
     /**
@@ -231,9 +271,11 @@ public class Tree
      * @param rootDir Root directory of the tree
      * @param showFiles Set to true if you want file info in the tree, false 
      *        otherwise
+     * @param showSize Set to true to print out the size of the file next to the
+     *        filename
      * @param writer Output destination
      */
-    public Tree(File rootDir, boolean showFiles, Writer writer)
+    public Tree(File rootDir, boolean showFiles, boolean showSize,Writer writer)
     {
         rootDir_ = rootDir;
 
@@ -251,6 +293,7 @@ public class Tree
                 rootDir_);
         
         showFiles_ = showFiles;
+        showSize_ = showSize;
         writer_ = new PrintWriter(writer, true);
         dirFilter_ = new DirectoryFilter();
         
@@ -276,12 +319,17 @@ public class Tree
     
     /**
      * Prints program usage
+     * 
+     * @param options Command line options
      */
-    protected static void printUsage()
+    protected static void printUsage(Options options)
     {
-        System.out.println("Tree shows a directory structure.");
-        System.out.println("Usage    : tree [-f] <dir>");
-        System.out.println("Options  : -f  => include files");
+        HelpFormatter hf = new HelpFormatter();
+        hf.printHelp(
+            "tree [options] <directory>",
+            "Shows directory structure in a tree hierarchy.",
+            options,
+            "");
     }
     
     /**
@@ -305,11 +353,38 @@ public class Tree
         if (showFiles_)
         {
             File[] files = rootDir.listFiles(fileFilter_);
+            int longestName = -1;
+            int largestFile = -1;
             
             for (int i = 0; i < files.length; i++)
             {
                 String filler = (dirs.length == 0 ? SPACER : BAR);
-                writer_.println(level + filler + files[i].getName());
+                writer_.print(level + filler + files[i].getName());
+                
+                if (showSize_)
+                {
+                    if (longestName == -1)
+                        longestName = FileUtil
+                            .getLongestFilename(files).getName().length();
+                    
+                    if (largestFile == -1)
+                        largestFile = DecimalFormat.getIntegerInstance().format(
+                            FileUtil.getLargestFile(files).length()).length();
+                      
+                    writer_.print(
+                        StringUtil.repeat(" ", 
+                            longestName - files[i].getName().length()));
+        
+                    String formatted = 
+                        DecimalFormat.getIntegerInstance().format(
+                            files[i].length());
+                              
+                    writer_.print(" " + 
+                        StringUtil.repeat(" ", largestFile - formatted.length())
+                        + formatted);
+                }
+                
+                writer_.println();
             }
     
             // Extra line after last file in a dir        
@@ -363,4 +438,5 @@ public class Tree
         
         return true;
     }
+    
 }
