@@ -11,10 +11,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
@@ -46,10 +43,8 @@ import toolbox.log4j.SmartLogger;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
-import toolbox.util.collections.ObjectComparator;
 import toolbox.util.io.StringOutputStream;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartCheckBoxMenuItem;
@@ -57,7 +52,6 @@ import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.workspace.host.PluginHost;
-import toolbox.workspace.host.PluginHostListener;
 import toolbox.workspace.host.PluginHostManager;
 import toolbox.workspace.prefs.PreferencesDialog;
 import toolbox.workspace.prefs.PreferencesManager;
@@ -69,9 +63,6 @@ import toolbox.workspace.prefs.PreferencesManager;
  */
 public class PluginWorkspace extends JFrame implements IPreferenced
 {
-    // TODO: Make plugins detachable
-    // TODO: Write log4j pattern layout that combines class name and method
-
     private static final Logger logger_ =
         Logger.getLogger(PluginWorkspace.class);
 
@@ -483,7 +474,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menubar.add(createFileMenu());
         menubar.add(LookAndFeelUtil.createLookAndFeelMenu());
         menubar.add(createPreferencesMenu());
-        menubar.add(createPluginMenu());
+        menubar.add(new PluginMenu(this));
         menubar.add(logMenu_);
         return menubar;
     }
@@ -543,128 +534,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         });
 
         return menu;
-    }
-
-
-    /**
-     * Creates the Plugin menu.
-     *
-     * @return JMenu
-     */
-    protected JMenu createPluginMenu()
-    {
-        final Map nameMap_ = new HashMap();
-
-        pluginMenu_ = new JSmartMenu("Plugins");
-        pluginMenu_.setMnemonic('l');
-
-        //
-        // Get the list of plugins and sort it by plugin name
-        //
-        
-        List plugins = PluginDialog.getPluginList();
-        Collections.sort(plugins, new ObjectComparator("name"));
-        
-        //
-        // Iterate over plugin list and create the menu
-        //
-        
-        for (Iterator i = plugins.iterator(); i.hasNext();)
-        {
-            PluginMeta meta = (PluginMeta) i.next();
-
-            JSmartCheckBoxMenuItem mi =
-                new JSmartCheckBoxMenuItem(new AbstractAction(meta.getName())
-                {
-                    /**
-                     * @see java.awt.event.ActionListener#actionPerformed(
-                     *      java.awt.event.ActionEvent)
-                     */
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        JCheckBoxMenuItem cbmi =
-                            (JCheckBoxMenuItem) e.getSource();
-
-                        PluginMeta meta = (PluginMeta)
-                            cbmi.getClientProperty("pluginmeta");
-
-
-                        if (cbmi.isSelected())
-                        {
-                            //
-                            // Load the plugin from scratch
-                            //
-                            try
-                            {
-                                registerPlugin(meta.getClassName());
-                            }
-                            catch (Exception e1)
-                            {
-                                ExceptionUtil.handleUI(e1, logger_);
-                            }
-                        }
-                        else
-                        {
-                            //
-                            // Select the plugin if it is already loaded
-                            //
-                            IPlugin plugin =
-                                getPluginByClass(meta.getClassName());
-
-                            getPluginHost().setSelectedPlugin(plugin);
-                        }
-
-                        cbmi.setSelected(true);
-                    }
-                });
-
-            mi.putClientProperty("pluginmeta", meta);
-            nameMap_.put(meta.getName(), mi);
-            pluginMenu_.add(mi);
-        }
-
-        //
-        // As plugins are loaded/unloaded, the menu has to be updated to reflect
-        // the currently loaded state.
-        //
-        
-        pluginHostManager_.getPluginHost().addPluginHostListener(
-            new PluginHostListener()
-            {
-                /**
-                 * @see toolbox.workspace.host.PluginHostListener#pluginAdded(
-                 *      toolbox.workspace.host.PluginHost,
-                 *      toolbox.workspace.IPlugin)
-                 */
-                public void pluginAdded(PluginHost pluginHost, IPlugin plugin)
-                {
-                    logger_.debug(StringUtil.addBars("PLugin added " + plugin));
-
-                    JSmartCheckBoxMenuItem mi =
-                        (JSmartCheckBoxMenuItem) nameMap_.get(
-                            plugin.getPluginName());
-
-                    mi.setSelected(true);
-                }
-
-
-                /**
-                 * @see toolbox.workspace.host.PluginHostListener#pluginRemoved(
-                 *      toolbox.workspace.host.PluginHost,
-                 *      toolbox.workspace.IPlugin)
-                 */
-                public void pluginRemoved(PluginHost pluginHost, IPlugin plugin)
-                {
-                    logger_.debug(StringUtil.addBars("PLugin removed " + plugin));
-
-                    JCheckBoxMenuItem mi = (JCheckBoxMenuItem)
-                        nameMap_.get(plugin.getPluginName());
-
-                    mi.setSelected(false);
-                }
-            });
-
-        return pluginMenu_;
     }
 
 
