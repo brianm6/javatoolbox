@@ -301,7 +301,6 @@ public class ManagePluginsDialog extends JDialog
     class PluginMeta
     {
         private String className_;
-        private String pluginName_;
         private IPlugin plugin_;
 
         public PluginMeta(String pluginClass)

@@ -57,9 +57,6 @@ public class Tree
     private static final Writer  DEFAULT_WRITER = 
         new OutputStreamWriter(System.out);
         
-    private static final File DEFAULT_ROOT_DIR = 
-        new File(System.getProperty("user.dir"));
-    
     private PrintWriter writer_;
     private FilenameFilter dirFilter_;
     private FilenameFilter fileFilter_;
