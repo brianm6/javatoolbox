@@ -45,7 +45,7 @@
  * TODO: StatCVS: Create output directory if it doesn't already exist
  * TODO: Figure out how to use JGoodies data binding framework 
  * TODO: Integrate automatic build number generation into the build process. 
- * TODO: Add monospaced indicators to the FontChooserDialog
+ * TODO: Update JSmartTableHeader to sort and auto-resize don't conflict
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -91,8 +91,10 @@
   <body>
     
     <release version="2.0" date="August 2004">
-      <action type="add"   >Util - Added FontUtil.isMonospaced()</action>              
-      <action type="update">Util - JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>              
+      <action type="add"   >Util - Added FontUtil.isMonospaced()</action>
+      <action type="update">Util - JSmartTableHeader updated to support auto-resize by clicking on the column divider</action>
+      <action type="add   ">Util - Added emphasis of monospaced fonts to JFontChooser</action>
+      <action type="add   ">Util - Added ability to render font names in the listbox using the font itself in JFontChooser</action>
     </release>
     
     <release version="2.0" date="July 2004">
