@@ -12,11 +12,50 @@ import toolbox.util.net.SocketServerConfig;
  */
 public class Server extends JPanel implements Service
 {
+    /**
+     * Default server port if one is not specified.
+     */
+    public static final int DEFAULT_PORT = 19999;
+
+    /**
+     * Server socket.
+     */
     private SocketServer server_;
-    private int port_ = 19999;
+    
+    /**
+     * Server port.
+     */
+    private int port_;
     
     //--------------------------------------------------------------------------
-    // Constrcutors 
+    // Main
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Entrypoint.
+     * 
+     * @param args First arg is the server port number.
+     * @throws Exception on error.
+     */
+    public static void main(String args[]) throws Exception
+    {
+        int port;
+        
+        switch (args.length)
+        {
+            case 1  : port = Integer.parseInt(args[0]); break;
+            default : port = 19999; 
+        }
+        
+        Server s = new Server(port);
+        s.start();
+        
+        // Must Ctrl-C to stop the server
+        Thread.currentThread().join();
+    }
+    
+    //--------------------------------------------------------------------------
+    // Constructors 
     //--------------------------------------------------------------------------
     
     /**
@@ -24,6 +63,17 @@ public class Server extends JPanel implements Service
      */
     public Server()
     {
+        this(DEFAULT_PORT);
+    }
+    
+    /**
+     * Creates a Server with the given port.
+     * 
+     * @param port Server port
+     */
+    public Server(int port)
+    {
+        port_ = port;
     }
 
     //--------------------------------------------------------------------------
@@ -38,7 +88,7 @@ public class Server extends JPanel implements Service
     protected void init() throws IOException
     {
         SocketServerConfig config = new SocketServerConfig();
-        config.setName("Server");
+        config.setName("NetMeterServer");
         config.setServerPort(port_);
         
         config.setConnectionHandlerType(

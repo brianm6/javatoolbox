@@ -2,24 +2,65 @@ package toolbox.plugin.netmeter;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-
-import javax.swing.JPanel;
+import java.text.NumberFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ElapsedTime;
+import toolbox.util.ThreadUtil;
 import toolbox.util.io.EventOutputStream;
 import toolbox.util.net.SocketConnection;
 
 /**
- * NetMeter Client 
+ * NetMeter Client. 
  */
-public class Client extends JPanel implements Service
+public class Client implements Service
 {
     private static final Logger logger_ = 
         Logger.getLogger(Client.class);
         
     private SocketConnection conn_;
+    private String hostname_;
+    private int port_;
+    private EventOutputStream os_;
+    private boolean stopped_;
+
+    //--------------------------------------------------------------------------
+    // Main
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Entrypoint.
+     * 
+     * @param args First arg is the server hostname. Second arg is the port
+     *        number.
+     * @throws Exception on error.
+     */
+    public static void main(String args[]) throws Exception
+    {
+        String hostname;
+        int port;
+        
+        switch (args.length)
+        {
+            case 2  : hostname = args[0];
+                      port = Integer.parseInt(args[1]); 
+                      break;
+
+            default : hostname = "127.0.0.1"; 
+                      port = Server.DEFAULT_PORT; 
+        }
+        
+        Client c = new Client(hostname, port);
+        c.start();
+        
+        ThreadUtil.sleep(10000);
+        
+        c.stop();
+        
+    }
     
     //--------------------------------------------------------------------------
     // Constructors 
@@ -30,6 +71,16 @@ public class Client extends JPanel implements Service
      */
     public Client()
     {
+        this("127.0.0.1", Server.DEFAULT_PORT);
+    }
+
+    /**
+     * Creates a Client.
+     */
+    public Client(String hostname, int port)
+    {
+        hostname_ = hostname;
+        port_ = port;
     }
     
     //--------------------------------------------------------------------------
@@ -43,25 +94,42 @@ public class Client extends JPanel implements Service
     {
         try
         {
-            conn_ = new SocketConnection("localhost", 19999);
-            //conn_.connect();
-            EventOutputStream os = 
-                new EventOutputStream("Client", 
-                    new BufferedOutputStream(conn_.getOutputStream()));
+            
+            conn_ = new SocketConnection(hostname_, port_);
+            
+            os_ = new EventOutputStream("Client", 
+                        new BufferedOutputStream(conn_.getOutputStream()));
+                        //conn_.getOutputStream());
+            
+            
+            Timer t = new Timer();
+            t.schedule(new Collector(), 1000, 1000);
             
             ElapsedTime time = new ElapsedTime();
             
             byte[] b = "hoooooooooopppppppppppppppppptrtttttttttttttttt".getBytes();
-            for(int i=0; i<500000; i++)
-                os.write(b);
             
-            os.flush();
+            //for(int i=0; i<500000; i++)
+            //    os_.write(b);
+            
+            while (!stopped_)
+            {
+                os_.write(b);
+            }
+            
+            os_.flush();
             conn_.close();
-                            
             time.setEndTime();
-            double thruput = os.getCount()/time.getSeconds();            
             
-            logger_.info("Client thruput: " + thruput + "/" + time.getSeconds() + "==>"  + thruput + "KBytes/sec");
+            double seconds = time.getSeconds() +  (time.getMillis()/(double)1000);
+            double thruput = (os_.getCount() / (double) seconds);            
+            
+            NumberFormat nf = NumberFormat.getIntegerInstance();
+            
+            logger_.info(
+                "Client thruput: " + 
+                nf.format(os_.getCount()) + "/" + nf.format(seconds) + " ==> " + 
+                nf.format(thruput/1000) + " kb/s");
             
             
         }
@@ -77,6 +145,15 @@ public class Client extends JPanel implements Service
      */
     public void stop() throws ServiceException
     {
+        try
+        {
+            stopped_ = true;
+            conn_.close();
+        }
+        catch (IOException e)
+        {
+            throw new ServiceException(e);
+        }
     }
 
 
@@ -111,5 +188,25 @@ public class Client extends JPanel implements Service
     public boolean isPaused()
     {
         return false;
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //--------------------------------------------------------------------------
+    
+    
+    class Collector extends TimerTask
+    {
+        int lastCount_ = 0;
+        
+        public void run()
+        {
+            int current = os_.getCount();
+            int delta = current - lastCount_;
+            lastCount_ = current;
+            
+            NumberFormat nf = NumberFormat.getIntegerInstance();
+            logger_.info("Client thruput: " + nf.format(delta/1000) + " kb/s");
+        }
     }
 }
