@@ -209,6 +209,20 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     }
 
     //--------------------------------------------------------------------------
+    // Package
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns the workspace status bar
+     * 
+     * @return  Status bar
+     */
+    IStatusBar getStatusBar()
+    {
+        return statusBar_;
+    }
+
+    //--------------------------------------------------------------------------
     // Protected
     //--------------------------------------------------------------------------
 
