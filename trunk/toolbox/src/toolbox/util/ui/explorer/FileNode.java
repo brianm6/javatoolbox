@@ -60,6 +60,6 @@ public class FileNode extends DefaultMutableTreeNode
      */
     public int hashCode()
     {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return super.hashCode();
     }
 }
