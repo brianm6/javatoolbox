@@ -10,6 +10,10 @@ import java.util.Date;
  */
 public class TimeUtil
 {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Private constructor
      */
@@ -17,11 +21,15 @@ public class TimeUtil
     {
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
-     * Formats a date
+     * Formats the time portion of a Date object
      * 
-     * @param   d    Date to format
-     * @return  Date in dashed MM-dd-yyyy format
+     * @param   d    Date with time to format
+     * @return  Time in dashed hh:mma format
      */
     public static String format(Date d)
     {

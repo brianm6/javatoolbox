@@ -10,10 +10,14 @@ import org.apache.log4j.Logger;
  */
 public final class ThreadUtil
 {
-    /** Logger **/
+    /** Logger */
     protected static final Logger logger_ = 
         Logger.getLogger(ThreadUtil.class);
-        
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+            
     /**
      * Prevent construction
      */ 
@@ -21,6 +25,10 @@ public final class ThreadUtil
     {
     }
     
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+        
     /**
      * Sleep without all the try/catch business
      * 
@@ -38,6 +46,7 @@ public final class ThreadUtil
         }
     }
     
+    
     /**
      * Joins the current thread without try/catch business
      */
@@ -45,6 +54,7 @@ public final class ThreadUtil
     {
         join(Thread.currentThread(), 0);
     }
+
 
     /**
      * Joins the current thread without try/catch business
@@ -55,6 +65,7 @@ public final class ThreadUtil
     {
         join(Thread.currentThread(), millis);
     }
+
 
     /**
      * Joins the given thread
@@ -76,6 +87,7 @@ public final class ThreadUtil
             }
         }
     }
+
 
     /**
      * Runs an objects method in a separate thread 
@@ -132,6 +144,7 @@ public final class ThreadUtil
          */
         private Object[] params_;
     
+    
         /**
          * Creates a MethodRunner
          * 
@@ -149,6 +162,7 @@ public final class ThreadUtil
             if (params_ == null)
                 params_ = new Object[0];
         }
+        
         
         /**
          * Executes the method provided at time of construction
@@ -172,6 +186,7 @@ public final class ThreadUtil
                 ThreadUtil.logger_.error("run", ite);
             }
         }
+        
         
         /**
          * Dump to string
