@@ -141,68 +141,83 @@ public final class JDBCSession
                IllegalAccessException,
                InstantiationException 
     {
-        if (sessionMap_.containsKey(sessionName))
-            throw new IllegalArgumentException(
-                "Session with name " + sessionName + "already exists.");
-        
-        Session session = new Session(sessionName, null, null, pooled);
-        
-        if (!session.isPooled())
+        try
         {
-            session.setDriver((Driver) Class.forName(driver).newInstance());
+            if (sessionMap_.containsKey(sessionName))
+                throw new IllegalArgumentException(
+                    "Session with name " + sessionName + "already exists.");
             
-            Properties connProps = new Properties();
-            connProps.put("user", user);
-            connProps.put("password", password);
-            connProps.put("url", url);
-            session.setConnProps(connProps);
+            Session session = new Session(sessionName, null, null, pooled);
+            
+            if (!session.isPooled())
+            {
+                session.setDriver((Driver) Class.forName(driver).newInstance());
+                
+                Properties connProps = new Properties();
+                connProps.put("user", user);
+                connProps.put("password", password);
+                connProps.put("url", url);
+                session.setConnProps(connProps);
+            }
+            else
+            {
+                Class.forName(driver);
+                ObjectPool connPool = new GenericObjectPool(null);
+            
+                PoolableConnectionFactory pconnFactory = 
+                    new PoolableConnectionFactory(
+                        new DriverManagerConnectionFactory(url, user, password), 
+                        connPool, 
+                        null, 
+                        null, 
+                        false,  // readonly
+                        true);  // autocommit
+    	
+                Class.forName(JDBCSession.CONN_POOL_DRIVER);
+    	        
+                PoolingDriver poolDriver = (PoolingDriver)
+                    DriverManager.getDriver(JDBCSession.CONN_POOL_URL_PREFIX);
+    	        								  		
+                poolDriver.registerPool(CONN_POOL_NAME + sessionName, connPool);
+    	
+                session.setDriver(poolDriver);
+    	        
+                Properties connProps = new Properties();
+                connProps.put("user", user);
+                connProps.put("password", password);
+                
+                connProps.put(
+                    "url", 
+                    JDBCSession.CONN_POOL_URL_PREFIX 
+                    + CONN_POOL_NAME 
+                    + sessionName);
+                
+                session.setConnProps(connProps);
+            }
+            
+            sessionMap_.put(sessionName, session);
+            
+            Connection conn = getConnection(sessionName);
+            DatabaseMetaData meta = conn.getMetaData();
+            
+            logger_.debug("DB Connect: " + 
+                meta.getDatabaseProductName() + 
+                    meta.getDatabaseProductVersion());
+                
+            JDBCUtil.releaseConnection(conn);
         }
-        else
+        catch (SQLException sqle)
         {
-            Class.forName(driver);
-            ObjectPool connPool = new GenericObjectPool(null);
-        
-            PoolableConnectionFactory pconnFactory = 
-                new PoolableConnectionFactory(
-                    new DriverManagerConnectionFactory(url, user, password), 
-                    connPool, 
-                    null, 
-                    null, 
-                    false,  // readonly
-                    true);  // autocommit
-	
-            Class.forName(JDBCSession.CONN_POOL_DRIVER);
-	        
-            PoolingDriver poolDriver = (PoolingDriver)
-                DriverManager.getDriver(JDBCSession.CONN_POOL_URL_PREFIX);
-	        								  		
-            poolDriver.registerPool(CONN_POOL_NAME + sessionName, connPool);
-	
-            session.setDriver(poolDriver);
-	        
-            Properties connProps = new Properties();
-            connProps.put("user", user);
-            connProps.put("password", password);
+            // Release session if there is a failure
+            logger_.debug(
+                "Removed session " 
+                + sessionName 
+                + " from map because of " 
+                + sqle);
             
-            connProps.put(
-                "url", 
-                JDBCSession.CONN_POOL_URL_PREFIX 
-                + CONN_POOL_NAME 
-                + sessionName);
-            
-            session.setConnProps(connProps);
+            sessionMap_.remove(sessionName);
+            throw sqle; 
         }
-        
-        sessionMap_.put(sessionName, session);
-        
-        Connection conn = getConnection(sessionName);
-        DatabaseMetaData meta = conn.getMetaData();
-        
-        logger_.debug("DB Connect: " + 
-            meta.getDatabaseProductName() + 
-                meta.getDatabaseProductVersion());
-            
-        JDBCUtil.releaseConnection(conn);
     }
 
     
@@ -301,6 +316,8 @@ public final class JDBCSession
                 meta.getDatabaseProductVersion());
             
         JDBCUtil.releaseConnection(conn);
+        
+        // TODO: remove session from map if SQL exception thrown. REthrow exception
     }
     
     
