@@ -15,6 +15,7 @@ package toolbox;
  * TODO: Fix SkinLF resource loading
  * TODO: Add detach notification to tail.
  * TODO: Upgrade to CLI2
+ * TODO: add .cvspass to conf
  * </pre>
  */
 public class TODO
