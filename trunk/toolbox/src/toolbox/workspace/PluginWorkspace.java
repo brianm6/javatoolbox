@@ -62,7 +62,7 @@ import toolbox.workspace.prefs.PreferencesManager;
  */
 public class PluginWorkspace extends JSmartFrame implements IPreferenced
 {
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(PluginWorkspace.class);
 
     //--------------------------------------------------------------------------
@@ -75,6 +75,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
     private static final String   ATTR_LOG_LEVEL    =   "loglevel";
     private static final String   ATTR_DECORATIONS  =   "decorations";
     private static final String   ATTR_PLUGINHOST   =   "pluginhost";
+
 
     // Plugin preferences nodes and attributes.
     private static final String   NODE_PLUGIN       = "Plugin";
@@ -110,6 +111,15 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      * Plugin property that refers to the PluginWorkspace.
      */
     public static final String KEY_WORKSPACE = "workspace.self";
+
+    //--------------------------------------------------------------------------
+    // UI Component Name Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String LABEL_PREFERENCES_MENU = "Preferences";
+    public static final String LABEL_FILE_MENU = "File";
+    public static final String LABEL_EXIT_MENUITEM = "Exit";
+    public static final String TITLE_TOOLBOX = "Toolbox";
 
     //--------------------------------------------------------------------------
     // UI Fields
@@ -234,7 +244,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      */
     public PluginWorkspace(String prefsFile) throws Exception
     {
-        super("Toolbox");
+        super(TITLE_TOOLBOX);
         setPrefsFile(prefsFile);
         init();
         loadPrefs();
@@ -547,7 +557,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      */
     protected JMenu createFileMenu()
     {
-        JMenu fileMenu = new JSmartMenu("File");
+        JMenu fileMenu = new JSmartMenu(LABEL_FILE_MENU);
         fileMenu.setMnemonic('F');
         fileMenu.add(new JSmartMenuItem(new PluginsAction()));
         fileMenu.add(new JSmartMenuItem(new GarbageCollectAction()));
@@ -563,7 +573,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      */
     protected JMenu createPreferencesMenu()
     {
-        JMenu menu = new JSmartMenu("Preferences");
+        JMenu menu = new JSmartMenu(LABEL_PREFERENCES_MENU);
         menu.setMnemonic('P');
         menu.add(new JSmartMenuItem(new SavePreferencesAction()));
 
@@ -579,7 +589,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         menu.add(decorationsCheckBoxItem_);
         menu.add(pluginHostManager_.createMenu());
 
-        menu.add(new AbstractAction("Preferences")
+        menu.add(new AbstractAction(LABEL_PREFERENCES_MENU)
         {
             /**
              * @see java.awt.event.ActionListener#actionPerformed(
@@ -992,7 +1002,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
          */
         ExitAction()
         {
-            super("Exit");
+            super(LABEL_EXIT_MENUITEM);
             putValue(Action.MNEMONIC_KEY, new Integer('X'));
         }
 

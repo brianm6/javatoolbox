@@ -29,6 +29,14 @@ import toolbox.workspace.host.PluginHostListener;
 public class PluginMenu extends JSmartMenu
 {
     private static final Logger logger_ = Logger.getLogger(PluginMenu.class);
+   
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String LABEL = "Plugins";
+
+    private static final String PROP_PLUGINMETA = "pluginmeta";
     
     //--------------------------------------------------------------------------
     // Fields
@@ -55,7 +63,7 @@ public class PluginMenu extends JSmartMenu
      */
     public PluginMenu(PluginWorkspace workspace)
     {
-        super("Plugins");
+        super(LABEL);
         nameMap_ = new HashMap();
         workspace_ = workspace;
         buildView();
@@ -91,7 +99,7 @@ public class PluginMenu extends JSmartMenu
                 new JSmartCheckBoxMenuItem(
                     new LaunchPluginAction(meta.getName()));            
 
-            mi.putClientProperty("pluginmeta", meta);
+            mi.putClientProperty(PROP_PLUGINMETA, meta);
             mi.setToolTipText(meta.getPlugin().getDescription());
             nameMap_.put(meta.getName(), mi);
             add(mi);
@@ -135,7 +143,9 @@ public class PluginMenu extends JSmartMenu
         public void actionPerformed(ActionEvent e)
         {
             JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) e.getSource();
-            PluginMeta meta = (PluginMeta) cbmi.getClientProperty("pluginmeta");
+            
+            PluginMeta meta = (PluginMeta) 
+                cbmi.getClientProperty(PROP_PLUGINMETA);
 
             if (cbmi.isSelected())
             {
