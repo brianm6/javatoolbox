@@ -30,6 +30,9 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.FontUtil;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
+import toolbox.util.ui.JSmartTextField;
 
 /**
  * HTML document viewer that uses the Calpha HTML component.
@@ -78,34 +81,25 @@ public class WebWindowViewer implements DocumentViewer
     // Protected 
     //--------------------------------------------------------------------------
     
-//    /**
-//     * Creates the toolbar.
-//     */
-//    protected JToolBar createToolBar()
-//    {
-//        JToolBar tb = new JToolBar();
-//        tb.setOpaque(false);
-//        //tb.add(getAction(OPEN_ACTION));
-//        //tb.addSeparator();
-//        
-//        tb.add(new AbstractAction("Back") 
-//        {
-//            public void actionPerformed(ActionEvent e)
-//            {
-//                webPane_.back();
-//            }
-//        });
-//        
-//        tb.add(new AbstractAction("Forward") 
-//        {
-//            public void actionPerformed(ActionEvent e)
-//            {
-//                webPane_.forward();
-//            }
-//        });
-//        
-//        return tb;
-//    }
+    /**
+     * Lazily loads the WebWindow component until a document is ready to 
+     * actually be viewed.
+     */
+    protected void lazyLoad()
+    {
+        if (viewerPane_ == null)
+        {
+            webWindow_ = new WebWindow();
+            webPane_ = webWindow_.getHTMLPane();
+            webPane_.setDefaultFont(FontUtil.getPreferredSerifFont());
+            
+            viewerPane_ = new JPanel(new BorderLayout());
+            viewerPane_.add(webWindow_, BorderLayout.CENTER);
+            
+            locationPanel_ = new LocationPanel();
+            viewerPane_.add(locationPanel_, BorderLayout.NORTH);
+        }
+    }
     
     //--------------------------------------------------------------------------
     // DocumentViewer Interface
@@ -116,15 +110,7 @@ public class WebWindowViewer implements DocumentViewer
      */
     public void startup(Map init) throws DocumentViewerException
     {
-        webWindow_ = new WebWindow();
-        webPane_ = webWindow_.getHTMLPane();
-        webPane_.setDefaultFont(FontUtil.getPreferredSerifFont());
-        
-        viewerPane_ = new JPanel(new BorderLayout());
-        viewerPane_.add(webWindow_, BorderLayout.CENTER);
-        
-        locationPanel_ = new LocationPanel(webPane_);
-        viewerPane_.add(locationPanel_, BorderLayout.NORTH);
+        // Delegated to lazyLoad()
     }
 
     
@@ -133,6 +119,8 @@ public class WebWindowViewer implements DocumentViewer
      */
     public void view(File file) throws DocumentViewerException
     {
+        lazyLoad();
+        
         try
         {
             webPane_.loadPage(file.toURL());
@@ -149,6 +137,7 @@ public class WebWindowViewer implements DocumentViewer
      */
     public void view(InputStream is) throws DocumentViewerException
     {
+        lazyLoad();
         webPane_.loadPage(new InputStreamReader(is), null);        
     }
 
@@ -177,6 +166,7 @@ public class WebWindowViewer implements DocumentViewer
      */
     public JComponent getComponent()
     {
+        lazyLoad();
         return viewerPane_;
     }
 
@@ -195,6 +185,10 @@ public class WebWindowViewer implements DocumentViewer
      */
     public void shutdown()
     {
+        locationPanel_ = null;
+        webPane_ = null;
+        webWindow_ = null;
+        viewerPane_ = null;
     }
     
     //--------------------------------------------------------------------------
@@ -202,32 +196,41 @@ public class WebWindowViewer implements DocumentViewer
     //--------------------------------------------------------------------------
     
     /**
-     * URL location panel for the browser.
-     *
-     * @author Javio
+     * Allows entry of a URL and a button to load the URL.
      */
     class LocationPanel extends JPanel implements KeyListener, ActionListener
     {
-        private JTextField textField_;
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
+        
+        /**
+         * URL text field.
+         */
+        private JTextField urlField_;
+        
+        /** 
+         * When pressed, loads the web page in the URL text field.
+         */
         private JButton goButton_;
-        private HTMLPane htmlPane_;
 
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
          * Creates a LocationPanel.
-         * 
-         * @param pane HTML pane.
          */
-        LocationPanel(HTMLPane pane)
+        LocationPanel()
         {
-            htmlPane_ = pane;
             setLayout(new FlowLayout());
-            goButton_ = new JButton("Go");
+            goButton_ = new JSmartButton("Go");
             goButton_.addActionListener(this);
-            textField_ = new JTextField("http://www.yahoo.com");
-            textField_.setEditable(true);
-            textField_.addKeyListener(this);
+            urlField_ = new JSmartTextField("http://www.yahoo.com", 35);
+            urlField_.setEditable(true);
+            urlField_.addKeyListener(this);
             
-            JLabel l = new JLabel("Location:",
+            JLabel l = new JSmartLabel("Location",
                     //new ImageIcon(Helper.getImage("location24.png")), 
                     JLabel.RIGHT);
             
@@ -241,7 +244,7 @@ public class WebWindowViewer implements DocumentViewer
 //                            0, 0,
 //                            0.0, 0.0);
 
-            add(textField_);
+            add(urlField_);
             
 //        Helper.addComponent(this, textField_,
 //                       GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
@@ -263,33 +266,36 @@ public class WebWindowViewer implements DocumentViewer
             
             JToolBar tb = new JToolBar();
             
-            tb.add(new AbstractAction("Back") 
+            tb.add(new JSmartButton(new AbstractAction("Back") 
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    htmlPane_.back();
+                    webPane_.back();
                 }
-            });
+            }));
             
-            tb.add(new AbstractAction("Forward") 
+            tb.add(new JSmartButton(new AbstractAction("Forward") 
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    htmlPane_.forward();
+                    webPane_.forward();
                 }
-            });
-            
+            }));
+                    
             add(tb);
             
         }
 
+        //----------------------------------------------------------------------
+        // Package
+        //----------------------------------------------------------------------
         
         /**
          * Loads the page. 
          */
         void loadPage()
         {
-            String urlStr = textField_.getText();
+            String urlStr = urlField_.getText();
             
             //URL u = Helper.getURL(urlStr);
             
@@ -306,7 +312,7 @@ public class WebWindowViewer implements DocumentViewer
             
             
             if (u != null)
-                htmlPane_.loadPage(u);
+                webPane_.loadPage(u);
         }
 
         //----------------------------------------------------------------------
@@ -343,6 +349,7 @@ public class WebWindowViewer implements DocumentViewer
          */
         public void keyReleased(KeyEvent e)
         {
+            ; // No-op
         }
         
         
@@ -351,6 +358,7 @@ public class WebWindowViewer implements DocumentViewer
          */
         public void keyTyped(KeyEvent e)
         {
+            ; // No-op
         }
     }
 }
