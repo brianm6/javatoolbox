@@ -30,8 +30,8 @@ import toolbox.workspace.IPreferenced;
  * JSmartTable adds the following behavior.
  * <p>
  * <ul>
- *   <li>Antialised text.
- *   <li>Auto-scroll to the last row in the table as data is added.
+ *   <li>Antialiased text
+ *   <li>Autotail switch to always scroll to the bottom of the table
  *   <li>Persistence of preferences
  * </ul>
  *
@@ -44,7 +44,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
     private static final Logger logger_ = Logger.getLogger(JSmartTable.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // XML Preferences Constants
     //--------------------------------------------------------------------------
 
     /**
