@@ -15,7 +15,8 @@ public class AsMap
 {
     public static final Typecast TYPECAST = new Typecast(Map.class);
 
-    static {
+    static 
+    {
         TYPECAST.addSearchPackage(AsMap.class);
     }
 
@@ -28,5 +29,4 @@ public class AsMap
     {
         return (Map) TYPECAST.coerce(object, policy);
     }
-
 }
