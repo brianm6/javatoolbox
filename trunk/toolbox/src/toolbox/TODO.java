@@ -13,6 +13,7 @@ package toolbox;
  * TODO: Get PropertyPrompt working properly
  * TODO: Fix tailing of Log4j in JTail
  * TODO: Fix SkinLF resource loading
+ * TODO: Add detach notification to tail.
  * </pre>
  */
 public class TODO
