@@ -44,8 +44,6 @@ package toolbox;
  * =============================================================================
  * 								JDBCPlugin
  * =============================================================================
- * TODO: Add realtime grep filter to results pane
- * TODO: Fix ClassCastException on execute async
  * TODO: Customize SQLFormatter formatting options
  *       Change formatter to leave "select *" on the same line. Apply to all
  * TODO: check out sql formatter in http://quantum.sourceforge.net/screen_shots.html
@@ -85,7 +83,10 @@ package toolbox;
  *  - Introduced JDBCSession (multi client version of JDBCUtil)
  *  - Fix sql history list getting too big
  *  - Added bunch of shortcut goals for maven generated reports to maven.xml
- *    
+ *  - Fixed ClassCastException in QueryPlugin query execution failure
+ *  - Created DynamicFilterView for real time text area filtering
+ *  - Add realtime filtering to QueryPlugin results pane
+ *      
  * June 2004
  *  - Updated Jode to 1.1.2-pre1
  *  - Added StringUtil.indent()
