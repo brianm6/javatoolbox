@@ -4,7 +4,7 @@ import javax.swing.JComponent;
 
 import toolbox.util.service.Destroyable;
 import toolbox.util.service.Initializable;
-import toolbox.workspace.prefs.Preferences;
+import toolbox.workspace.prefs.IConfigurator;
 
 /**
  * IPlugin defines the interface for any plugins that can hosted by the 
@@ -48,7 +48,7 @@ public interface IPlugin extends Initializable, Destroyable, IPreferenced
     
     
     /**
-     * Returns the preferences configurator for this plugin.  
+     * Returns the configurator for this plugin preferences.  
      */
-    Preferences getPreferences();
+    IConfigurator getConfigurator();
 }

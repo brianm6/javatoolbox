@@ -53,7 +53,6 @@ import toolbox.util.ui.plaf.LookAndFeelUtil;
 import toolbox.workspace.host.PluginHost;
 import toolbox.workspace.host.PluginHostManager;
 import toolbox.workspace.prefs.PreferencesDialog;
-import toolbox.workspace.prefs.PreferencesDialog2;
 import toolbox.workspace.prefs.PreferencesManager;
 
 /**
@@ -609,7 +608,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
              */
             public void actionPerformed(ActionEvent e)
             {
-                new PreferencesDialog2(PluginWorkspace.this,preferencesManager_)
+                new PreferencesDialog(PluginWorkspace.this,preferencesManager_)
                     .setVisible(true);
             }
         }));

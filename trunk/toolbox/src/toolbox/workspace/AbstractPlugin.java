@@ -7,7 +7,7 @@ import toolbox.util.service.ServiceListener;
 import toolbox.util.service.ServiceState;
 import toolbox.util.service.ServiceTransition;
 import toolbox.util.statemachine.StateMachine;
-import toolbox.workspace.prefs.Preferences;
+import toolbox.workspace.prefs.IConfigurator;
 
 /**
  * Abstract base class for IPlugin implementors.
@@ -46,9 +46,9 @@ public abstract class AbstractPlugin implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.workspace.IPlugin#getPreferences()
+     * @see toolbox.workspace.IPlugin#getConfigurator()
      */
-    public Preferences getPreferences()
+    public IConfigurator getConfigurator()
     {
         // TODO: Remove once all plugins implmenments this method.
         return null;
