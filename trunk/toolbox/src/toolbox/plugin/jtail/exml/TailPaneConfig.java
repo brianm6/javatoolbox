@@ -30,13 +30,14 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     private String  filename_;
     private boolean autoScroll_;
     private boolean showLineNumbers_;
+    private boolean antiAlias_;
     private Font    font_;
     private String  filter_;
 
-    //
-    //  CONSTRUCTORS
-    //
-
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Default constructor
      */
@@ -51,29 +52,31 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * @param  file             File to tail
      * @param  autoScroll       Turn on autoscroll
      * @param  showLineNumbers  Shows line numbers in output
+     * @param  antiAlias        Antialias text in output area
      * @param  font             Font of display text area
      * @param  filter           Optional filter (regular expression) 
      *                            for weeding out junk            
      */
-    public TailPaneConfig(String file, boolean autoScroll, boolean showLineNumbers,
-        Font font, String filter)
+    public TailPaneConfig(String file, boolean autoScroll, 
+        boolean showLineNumbers, boolean antiAlias, Font font, String filter)
     {
         setFilename(file);
         setAutoScroll(autoScroll);
         setShowLineNumbers(showLineNumbers);
+        setAntiAlias(antiAlias);
         setFont(font);
         setFilter(filter);
     }
 
-    //
-    //  MEATY STUFF
-    //
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------    
     
     /**
      * Unmarshals an XML element representing a TailConfig object
      * 
-     * @param   tail  Element representing a TailConfigs
-     * @return  Fully populated TailConfig
+     * @param   tail  Element representing a TailPaneConfig
+     * @return  Fully populated TailPaneConfig
      * @throws  IOException on IO error
      */
     public static TailPaneConfig unmarshal(Element tail) throws IOException 
@@ -112,6 +115,14 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         else
             config.setShowLineNumbers(DEFAULT_LINENUMBERS);
         
+        // Optional antiAlias attribute
+        String antiAlias = tail.getAttribute(ATTR_ANTIALIAS);
+        if (antiAlias != null)
+            config.setAntiAlias(new Boolean(antiAlias).booleanValue());
+        else
+            config.setAntiAlias(DEFAULT_ANTIALIAS);
+
+        
         // Handle optional font element    
         Element fontNode = tail.getElement(ELEMENT_FONT);
         
@@ -148,6 +159,15 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 
     /**
      * Marshals from Java object representation to XML representation
+     * <pre>
+     * 
+     * Tail
+     *   |
+     *   +--Font
+     *   |
+     *   +--Filter
+     * 
+     * </pre>
      * 
      * @return  Tail XML node
      * @throws  IOExcetion on IO error
@@ -157,10 +177,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         // Tail element
         Element tail = new Element(ELEMENT_TAIL);
         tail.setAttribute(ATTR_FILE, getFilename());
-        tail.setAttribute(ATTR_AUTOSCROLL, 
-            new Boolean(isAutoScroll()).toString());
-        tail.setAttribute(ATTR_LINENUMBERS, 
-            new Boolean(isShowLineNumbers()).toString());
+        tail.setAttribute(ATTR_AUTOSCROLL, isAutoScroll() + "");
+        tail.setAttribute(ATTR_LINENUMBERS, isShowLineNumbers() + "");
+        tail.setAttribute(ATTR_ANTIALIAS, isAntiAlias() + "");
         
         // Font element    
         Element font = new Element(ELEMENT_FONT);
@@ -189,9 +208,9 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     }
 
 
-    //
-    //  ACCESSORS/MUTATORS
-    //
+    //--------------------------------------------------------------------------
+    //  Accessors/Mutators
+    //--------------------------------------------------------------------------
 
 
     /**
@@ -301,5 +320,26 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
     public void setFilter(String filter)
     {
         filter_ = filter;
+    }
+    
+    /**
+     * Accessor for the antialias flag
+     * 
+     * @return  True if antialias is on, false otherwise
+     */
+    public boolean isAntiAlias()
+    {
+        return antiAlias_;
+    }
+    
+    
+    /**
+     * Mutator for the antialias flag
+     * 
+     * @param  b  True to turn antialias on, false otherwise
+     */
+    public void setAntiAlias(boolean b)
+    {
+        antiAlias_ = b;
     }
 }
