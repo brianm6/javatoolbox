@@ -6,23 +6,13 @@ import javax.swing.Action;
 
 import toolbox.util.ElapsedTime;
 import toolbox.workspace.PluginWorkspace;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Triggers garbage collection and displays before and after stats on the
  * status bar.
  */
-public class GarbageCollectAction extends WorkspaceAction
+public class GarbageCollectAction extends BaseAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Reference to the PluginWorkspace.
-     */
-    private final PluginWorkspace workspace_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -34,8 +24,8 @@ public class GarbageCollectAction extends WorkspaceAction
      */
     public GarbageCollectAction(PluginWorkspace workspace)
     {
-        super("Run GC", false, null, null);
-        workspace_ = workspace;
+        super(workspace);
+        putValue(Action.NAME, "Run GC");
         putValue(Action.MNEMONIC_KEY, new Integer('G'));
     }
 
@@ -44,10 +34,10 @@ public class GarbageCollectAction extends WorkspaceAction
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.util.ui.SmartAction#runAction(
+     * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
      */
-    public void runAction(ActionEvent e) throws Exception
+    public void actionPerformed(ActionEvent e)
     {
         long freeMem  = Runtime.getRuntime().freeMemory();
         long totalMem = Runtime.getRuntime().totalMemory();
@@ -63,7 +53,7 @@ public class GarbageCollectAction extends WorkspaceAction
         maxMem   = Runtime.getRuntime().maxMemory();
         long afterUsedMem  = (totalMem - freeMem) / 1000;
 
-        workspace_.getStatusBar().setInfo("" +
+        getWorkspace().getStatusBar().setInfo("" +
             "<html>" + "<font color='black'>" +
               "Finished GC in " + time + ".   " +
               "Used Before: " + beforeUsedMem + "K   " +
