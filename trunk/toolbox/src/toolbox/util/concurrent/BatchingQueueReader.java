@@ -84,7 +84,7 @@ public class BatchingQueueReader
      * 
      * @throws  IllegalStateException if the reader is already started
      */
-    public void start() throws IllegalStateException
+    public synchronized void start() throws IllegalStateException
     {
         if (!started_)
         {
@@ -127,7 +127,7 @@ public class BatchingQueueReader
      * 
      * @param  listener  Listener to add
      */   
-    public void addBatchingQueueListener(IBatchingQueueListener listener)
+    public synchronized void addBatchingQueueListener(IBatchingQueueListener listener)
     {
         listeners_.add(listener);
     }
@@ -138,7 +138,7 @@ public class BatchingQueueReader
      * 
      * @param  listener  Listener to remove
      */
-    public void removeBatchingQueueListener(IBatchingQueueListener listener)
+    public synchronized void removeBatchingQueueListener(IBatchingQueueListener listener)
     {
         listeners_.remove(listener);
     }
