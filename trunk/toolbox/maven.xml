@@ -39,6 +39,7 @@
        <maven:addPath id="maven.compile.src.set" refid="debug.src"/> 
     </preGoal> 
 
+    <preGoal name="jnlp"/> 
     
     <!-- =================================================================== -->
     <!-- CVS-UPDATE                                                          -->
