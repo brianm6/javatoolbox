@@ -75,6 +75,20 @@
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
   </LookAndFeel>
 
+  <!-- ==================================================================== -->
+  <!-- Alloy Look and Feels                                                 -->
+  <!-- ==================================================================== -->
+
+  <LookAndFeel 
+      name="Alloy" 
+      class="com.incors.plaf.alloy.AlloyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateAlloyLookAndFeelAction">
+
+      <Property	name="theme.name"    value="Alloy"/>
+      <Property	name="theme.class"   value="com.incors.plaf.alloy.DefaultAlloyTheme"/>
+      <Property	name="theme.license" value="2#Horst_Heistermann#1w2sca#5qzosw"/>
+  </LookAndFeel>  
+  
   <LookAndFeel 
       name="Alloy" 
       class="com.incors.plaf.alloy.AlloyLookAndFeel"
@@ -84,7 +98,26 @@
       <Property	name="theme.class"   value="com.incors.plaf.alloy.themes.glass.GlassTheme"/>
       <Property	name="theme.license" value="2#Horst_Heistermann#1w2sca#5qzosw"/>
   </LookAndFeel>  
+  
+  <LookAndFeel 
+      name="Alloy" 
+      class="com.incors.plaf.alloy.AlloyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateAlloyLookAndFeelAction">
 
+      <Property	name="theme.name"    value="Bedouin"/>
+      <Property	name="theme.class"   value="com.incors.plaf.alloy.themes.bedouin.BedouinTheme"/>
+      <Property	name="theme.license" value="2#Horst_Heistermann#1w2sca#5qzosw"/>
+  </LookAndFeel>  
+  
+  <LookAndFeel 
+      name="Alloy" 
+      class="com.incors.plaf.alloy.AlloyLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateAlloyLookAndFeelAction">
+
+      <Property	name="theme.name"    value="Acid"/>
+      <Property	name="theme.class"   value="com.incors.plaf.alloy.themes.acid.AcidTheme"/>
+      <Property	name="theme.license" value="2#Horst_Heistermann#1w2sca#5qzosw"/>
+  </LookAndFeel>  
 
   <!-- ==================================================================== -->
   <!-- JGoodies Look and Feels                                              -->
