@@ -428,7 +428,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     protected void fireFolderSelected(String folder)
     {
         for (int i=0; i<fileExplorerListeners_.length; 
-            fileExplorerListeners_[i++].folderSelected(getFilePath()));
+            fileExplorerListeners_[i++].folderSelected(folder));
     }
     
     /**
