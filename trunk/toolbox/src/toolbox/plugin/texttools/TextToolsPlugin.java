@@ -16,7 +16,6 @@ import java.util.StringTokenizer;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -124,9 +123,10 @@ public class TextPlugin extends JPanel implements IPlugin, Stringz
         return this;
     }
 
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return null;
+        return "Various text processing utilities including sorting, " + 
+               "tokenizing, and regular expression based filtering.";
     }
 
     public void applyPrefs(Properties prefs)

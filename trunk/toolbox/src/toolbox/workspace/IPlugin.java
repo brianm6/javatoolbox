@@ -3,8 +3,6 @@ package toolbox.util.ui.plugin;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenuBar;
-
 /**
  * IPlugin defines the interface for any plugins that can hosted by the 
  * PluginWorkspace.
@@ -22,11 +20,6 @@ import javax.swing.JMenuBar;
  */
 public interface IPlugin
 {
-    /*
-     * TODO: Add getDescription()
-     * TODO: Remove getMenuBar()
-     */
-    
     /**
      * Friendly name of the plugin used for identification in workspace.
      * 
@@ -42,11 +35,9 @@ public interface IPlugin
     public Component getComponent();
     
     /**
-     * Optional menu bar associated with the plugin on the workspace
-     *
-     * @return  Plugin specific menu bar
+     * @return  Short description of the plugin
      */
-    public JMenuBar getMenuBar();
+    public String getDescription();
     
     /**
      * Initializes the plugin

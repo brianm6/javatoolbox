@@ -17,7 +17,6 @@ import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -30,8 +29,8 @@ import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
 import org.jedit.syntax.XMLTokenMarker;
 
-import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JEditPopupMenu;
+import toolbox.jedit.JEditTextArea;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
@@ -346,9 +345,10 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         return this;
     }
 
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return null;
+        return "Transforms valid XSL-FO to either PDF or Postscript using " + 
+               "Apache FOP or RenderX XEP.";
     }
 
     public void init()

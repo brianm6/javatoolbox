@@ -1,4 +1,5 @@
 package toolbox.util.ui.plugin;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,7 +18,6 @@ import java.util.TreeMap;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -30,9 +30,10 @@ import javax.swing.plaf.IconUIResource;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.log4j.Logger;
+
+import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.plugin.IPlugin;
-import toolbox.util.ui.plugin.IStatusBar;
 
 /**
  * Shows UIDefaults for each widget in Swing's library. 
@@ -41,6 +42,9 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 {
+    private static final Logger logger_ =
+        Logger.getLogger(UIDefaultsPlugin.class);
+        
     private JTabbedPane     tabbedPane_;
     private JButton         metalButton_;
     private JButton         windowsButton_;
@@ -50,7 +54,10 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Default constructor
+     */    
     public UIDefaultsPlugin()
     {
     }
@@ -69,9 +76,9 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         return this;
     }
     
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return null;
+        return "Displays UI defaults for the installed Look and Feels.";
     }
     
     public void init()
@@ -135,7 +142,7 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
         }
         catch (Exception e2)
         {
-            System.out.println(e2);
+            ExceptionUtil.handleUI(e2, logger_);
         }
 
         remove(tabbedPane_);

@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.util.Properties;
 
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
@@ -50,9 +49,9 @@ public class JTailPlugin implements IPlugin
         return jtail_.getJMenuBar().getMenu(0);
     }
 
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return jtail_.getJMenuBar();
+        return "Tails files as they grow. Similar to 'tail -f' on Unix";
     }
 
     public void init()

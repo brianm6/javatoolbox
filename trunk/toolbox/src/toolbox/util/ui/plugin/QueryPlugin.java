@@ -12,7 +12,6 @@ import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -22,7 +21,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-
 import org.jedit.syntax.KeywordMap;
 import org.jedit.syntax.SQLTokenMarker;
 import org.jedit.syntax.TextAreaDefaults;
@@ -275,9 +273,9 @@ public class QueryPlugin extends JPanel implements IPlugin
         return this;
     }
 
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return null;
+        return "Simple SQL driven interface to a JDBC accessible database.";
     }
 
     public void applyPrefs(Properties prefs)

@@ -170,9 +170,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         // Create tab
         JPanel pluginPanel = new JPanel(new BorderLayout());
         
-        if (plugin.getMenuBar() != null)
-            pluginPanel.add(BorderLayout.NORTH, plugin.getMenuBar());
-            
         pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
         tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
         tabbedPane_.setSelectedIndex(0);

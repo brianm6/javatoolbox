@@ -15,7 +15,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -39,7 +38,6 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JUnitPlugin extends JPanel implements  IPlugin
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(JUnitPlugin.class);
 
@@ -168,11 +166,11 @@ public class JUnitPlugin extends JPanel implements  IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
      */
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return null;
+        return "JUnit add-on that enables running of test cases by package.";
     }
 
     /**

@@ -3,10 +3,6 @@ package toolbox.tunnel;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 
@@ -15,14 +11,10 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JTcpTunnelPlugin implements IPlugin
 {
-    /**
-     * Delegate
-     */
+    /** Delegate */
     private JTcpTunnelPane jtcpTunnelPane_;
 
-    /**
-     * Hack for out of order init of plug by registerPlugin()
-     */
+    /** Hack for out of order init of plug by registerPlugin() */
     private IStatusBar savedStatusBar_;
     
     //--------------------------------------------------------------------------
@@ -57,19 +49,13 @@ public class JTcpTunnelPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
      */
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        JMenu menu = new JMenu(getName());
-        menu.add(new JMenuItem(jtcpTunnelPane_.new StartTunnelAction()));
-        menu.add(new JMenuItem(jtcpTunnelPane_.new StopTunnelAction()));
-        menu.add(new JMenuItem(jtcpTunnelPane_.new ClearAction()));
-        
-        JMenuBar jmb = new JMenuBar();
-        jmb.add(menu);
-
-        return jmb;
+        return "TCP Tunnel allows you to snoop on incoming/outgoing traffic " + 
+               "by creating an intermediate 'tunnel proxy' between your " +
+               "connection endpoints.";
     }
 
     /**

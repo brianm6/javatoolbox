@@ -3,8 +3,6 @@ package toolbox.findclass;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenuBar;
-
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
@@ -12,17 +10,14 @@ import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**
- * Plugin that wraps JFindClass
+ * Plugin wrapper for JFindClass
  */
 public class JFindClassPlugin implements IPlugin
 {
-    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(JFindClassPlugin.class);
         
-    /**
-     * Delegate JFindClass
-     */    
+    /** Delegate JFindClass */    
     private JFindClass jfindClass_;
     
     //--------------------------------------------------------------------------
@@ -55,11 +50,13 @@ public class JFindClassPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
      */
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return jfindClass_.getJMenuBar();
+        return "Searches the classpath in addition to arbitrary archives and " +
+               "directories for one or more classes. The search string can be "+
+               "regular expression for added flexbility.";
     }
 
     /**

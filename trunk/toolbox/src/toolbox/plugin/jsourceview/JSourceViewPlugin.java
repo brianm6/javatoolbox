@@ -3,8 +3,6 @@ package toolbox.jsourceview;
 import java.awt.Component;
 import java.util.Properties;
 
-import javax.swing.JMenuBar;
-
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 
@@ -13,9 +11,7 @@ import toolbox.util.ui.plugin.IStatusBar;
  */
 public class JSourceViewPlugin implements IPlugin
 {
-    /**
-     * Delegate JSourceView
-     */
+    /** Delegate */
     private JSourceView sourceView_;
     
     //--------------------------------------------------------------------------
@@ -39,11 +35,11 @@ public class JSourceViewPlugin implements IPlugin
     }
 
     /**
-     * @see toolbox.util.ui.plugin.IPlugin#getMenuBar()
+     * @see toolbox.util.ui.plugin.IPlugin#getDescription()
      */
-    public JMenuBar getMenuBar()
+    public String getDescription()
     {
-        return sourceView_.getJMenuBar();
+        return "Provides statistics on java source code.";
     }
 
     /**
