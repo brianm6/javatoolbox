@@ -3,7 +3,10 @@ package toolbox.util.test;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 import org.apache.log4j.Category;
+
 import toolbox.util.RandomUtil;
+import toolbox.util.StringUtil;
+import toolbox.util.io.WrappingWriter;
 
 /**
  * Unit test for RandomUtil
@@ -13,6 +16,7 @@ public class RandomUtilTest extends TestCase
     /** Logger **/
     private static final Category logger_ = 
         Category.getInstance(RandomUtilTest.class);
+
     
     /**
      * Constructor for RandomUtilTest
@@ -24,6 +28,7 @@ public class RandomUtilTest extends TestCase
         super(arg0);
     }
 
+
     /**
      * Entry point
      * 
@@ -33,11 +38,12 @@ public class RandomUtilTest extends TestCase
     {
         TestRunner.run(RandomUtilTest.class);
     }
+
     
     /**
      * Tests nextAlpha()
      */
-    public static void testNextAlpha() 
+    public void testNextAlpha() 
     {
         StringBuffer sb = new StringBuffer();
         
@@ -51,15 +57,17 @@ public class RandomUtilTest extends TestCase
             }
         }
         finally
-        {
-            logger_.debug("Random alphas: " + sb.toString());
+        { 
+            logger_.debug("Random alphas:\n" + 
+                StringUtil.wrapInBox(sb.toString()));
         }
     }
+
     
     /**
      * Tests nextUpperAlpha()
      */
-    public static void testNextUpperAlpha() 
+    public void testNextUpperAlpha() 
     {
         StringBuffer sb = new StringBuffer();
         
@@ -76,14 +84,16 @@ public class RandomUtilTest extends TestCase
         }
         finally
         {
-            logger_.debug("Random upper alphas: " + sb.toString());
+            logger_.debug("Random upper alphas:\n " + 
+                StringUtil.wrapInBox(sb.toString()));
         }
     }
+
 
     /**
      * Tests nextLowerAlpha()
      */
-    public static void testNextLowerAlpha() 
+    public void testNextLowerAlpha() 
     {
         StringBuffer sb = new StringBuffer();
         
@@ -100,8 +110,170 @@ public class RandomUtilTest extends TestCase
         }
         finally
         {
-            logger_.debug("Random lower alphas: " + sb);
+            logger_.debug("Random lower alphas:\n " + 
+                StringUtil.wrapInBox(sb.toString()));
         }
     }       
+
+    
+    /**
+     * Tests nextInt() with no upper boundary
+     */
+    public void testNextInt()
+    {
+        StringBuffer sb = new StringBuffer();
+        
+        for (int j=0; j<300; j++)
+        {
+            int i = RandomUtil.nextInt();    
+            sb.append(i + " ");       
+            assertTrue("int should be >= 0", i >= 0);            
+        }
+        
+        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+    }
+    
+    
+    /**
+     * Tests nextInt() with a ceiling boundary
+     */
+    public void testNextIntCeiling()
+    {
+        StringBuffer sb = new StringBuffer();
+        int ceiling = 500;
+        boolean maxHit = false;
+        boolean minHit = false;
+        
+        while (!maxHit || !minHit)
+        {
+            int i = RandomUtil.nextInt(ceiling); 
+            
+            if (i == ceiling)
+            {
+                sb.append("**");
+                maxHit = true;
+            }
+    
+            if (i == 0)
+            {
+                sb.append("**");
+                minHit = true;                
+            }
+            
+            sb.append(i + " ");       
+            assertTrue("int should be 0..100", i <= ceiling);            
+            
+        }
+        
+        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+    }
+    
+    
+    /**
+     * Tests nextInt() with a small ceiling boundary
+     */
+    public void testNextIntCeilingSmall()
+    {
+        StringBuffer sb = new StringBuffer();
+        int ceiling = 1;
+        boolean maxHit = false;
+        boolean minHit = false;
+        
+        while (!maxHit || !minHit)
+        {
+            int i = RandomUtil.nextInt(ceiling); 
+            
+            if (i == ceiling)
+            {
+                sb.append("**");
+                maxHit = true;
+            }
+    
+            if (i == 0)
+            {
+                sb.append("**");
+                minHit = true;                
+            }
+            
+            sb.append(i + " ");       
+            assertTrue("int should be in range", i <= ceiling);            
+            
+        }
+        
+        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+    }
+
+
+    /**
+     * Tests nextInt() with a floor and ceiling boundary
+     */
+    public void testNextIntFloorCeiling()
+    {
+        StringBuffer sb = new StringBuffer();
+        int floor   = 100;
+        int ceiling = 200;
+        boolean maxHit = false;
+        boolean minHit = false;
+        
+        while (!maxHit || !minHit)
+        {
+            int i = RandomUtil.nextInt(floor, ceiling); 
+            
+            if (i == ceiling)
+            {
+                sb.append("**");
+                maxHit = true;
+            }
+    
+            if (i == floor)
+            {
+                sb.append("*");
+                minHit = true;                
+            }
+            
+            sb.append(i + " ");       
+            assertTrue("int should be greater than floor", i>= floor);
+            assertTrue("int should be less than ceiling", i<=ceiling);            
+        }
+        
+        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+    }
+   
+    
+    /**
+     * Tests nextInt() with a floor and ceiling boundary span of only 1
+     */
+    public void testNextIntFloorCeilingOne()
+    {
+        StringBuffer sb = new StringBuffer();
+        int floor   = 101;
+        int ceiling = 101;
+        boolean maxHit = false;
+        boolean minHit = false;
+        
+        while (!maxHit || !minHit)
+        {
+            int i = RandomUtil.nextInt(floor, ceiling); 
+            
+            if (i == ceiling)
+            {
+                sb.append("*");
+                maxHit = true;
+            }
+            
+            sb.append(i);       
+            
+            if (i == floor)
+            {
+                sb.append("*");
+                minHit = true;                
+            }
+            
+            assertTrue("int should be greater than floor", i>= floor);
+            assertTrue("int should be less than ceiling", i<=ceiling);            
+        }
+        
+        logger_.info("\n" + StringUtil.wrapInBox(sb.toString()));
+    }
 }
 
