@@ -5,7 +5,7 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.junit.JUnitUtil;
+import toolbox.junit.AssertUtil;
 
 /**
  * Unit test for CapsMode.
@@ -32,6 +32,6 @@ public class CapsModeTest extends TestCase
     public void testSerializable()
     {
         logger_.info("Running testSerializable...");
-        JUnitUtil.assertSerializable(CapsMode.LOWERCASE, true, true, null);
+        AssertUtil.assertSerializable(CapsMode.LOWERCASE, true, true, null);
     }
 }

@@ -99,7 +99,7 @@ package toolbox;
  *  - Updated InstantMessenger to the Service interface
  *  - Added capitalization modes to SQLFormatter and sliced up format()
  *  - Added configuration editor for SQLFormatter so settings can be saved
- *  - Added JUnitUtil which contains assertions for serialization
+ *  - Added AssertUtil which contains assertions for serialization
  *
  * May 2004
  *  - Added JDBC benchmark to JDBC plugin

@@ -14,11 +14,11 @@ import junitx.framework.Assert;
 import org.apache.log4j.Logger;
 
 /**
- * Utility methods for JUnit.
+ * Various assertion methods for JUnit.
  */
-public class JUnitUtil
+public class AssertUtil
 {
-    private static final Logger logger_ = Logger.getLogger(JUnitUtil.class);
+    private static final Logger logger_ = Logger.getLogger(AssertUtil.class);
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -27,7 +27,7 @@ public class JUnitUtil
     /**
      * Prevent construction of this static class.
      */
-    private JUnitUtil()
+    private AssertUtil()
     {
     }
     

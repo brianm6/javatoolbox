@@ -7,13 +7,13 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Unit test for JUnitUtil.
+ * Unit test for AssertUtil.
  * 
- * @see toolbox.junit.JUnitUtil
+ * @see toolbox.junit.AssertUtil
  */
-public class JUnitUtilTest extends TestCase
+public class AssertUtilTest extends TestCase
 {
-    private static final Logger logger_ = Logger.getLogger(JUnitUtilTest.class);
+    private static final Logger logger_ = Logger.getLogger(AssertUtilTest.class);
     
     //--------------------------------------------------------------------------
     // Main
@@ -21,7 +21,7 @@ public class JUnitUtilTest extends TestCase
     
     public static void main(String[] args)
     {
-        TestRunner.run(JUnitUtilTest.class);
+        TestRunner.run(AssertUtilTest.class);
     }
 
     //--------------------------------------------------------------------------
@@ -38,19 +38,19 @@ public class JUnitUtilTest extends TestCase
         String s = "hello world";
 
         // Verify serializes
-        JUnitUtil.assertSerializable(s);
+        AssertUtil.assertSerializable(s);
         
         // Verify a.equals(b)
-        JUnitUtil.assertSerializable(s, true);
+        AssertUtil.assertSerializable(s, true);
         
         // Verify a.compare(b);
-        JUnitUtil.assertSerializable(s, false, false, 
+        AssertUtil.assertSerializable(s, false, false, 
             String.CASE_INSENSITIVE_ORDER);
         
         try
         {
             // Verify a != b
-            JUnitUtil.assertSerializable(s, false, true, null);
+            AssertUtil.assertSerializable(s, false, true, null);
         }
         catch (AssertionFailedError e)
         {
@@ -67,12 +67,12 @@ public class JUnitUtilTest extends TestCase
         logger_.info("Running testAssertSerializableStringArray...");
         
         String[] sa = new String[] {"one", "two", "three"};
-        JUnitUtil.assertSerializable(sa);
+        AssertUtil.assertSerializable(sa);
 
         try
         {
             // Verify !a.equals(b)
-            JUnitUtil.assertSerializable(sa, true);
+            AssertUtil.assertSerializable(sa, true);
         }
         catch (AssertionFailedError e)
         {
@@ -82,7 +82,7 @@ public class JUnitUtilTest extends TestCase
         try
         {
             // Verify a != b
-            JUnitUtil.assertSerializable(sa, false, true, null);
+            AssertUtil.assertSerializable(sa, false, true, null);
         }
         catch (AssertionFailedError e)
         {
