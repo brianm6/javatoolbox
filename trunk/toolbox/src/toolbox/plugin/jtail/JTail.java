@@ -1,7 +1,3 @@
-/*
- * (c) Copyright 2001 MyCorporation.
- * All Rights Reserved.
- */
 package toolbox.jtail;
 
 import javax.swing.JDesktopPane;
@@ -12,8 +8,6 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
 
 /**
- * @version 	1.0
- * @author
  */
 public class JTail extends JFrame
 {

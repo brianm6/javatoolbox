@@ -13,7 +13,6 @@ import java.util.Vector;
  *
  * @author Steve Purcell
  * @version $Revision: 1.4 $
- * @see jargs.examples.gnu.OptionTest
  * 
  * Forked from JArgs
  */

@@ -1,7 +1,3 @@
-/*
- * (c) Copyright 2001 MyCorporation.
- * All Rights Reserved.
- */
 package toolbox.jtail;
 
 import java.awt.BorderLayout;
@@ -16,8 +12,7 @@ import javax.swing.JTextArea;
 import org.apache.log4j.Category;
 
 /**
- * @version 	1.0
- * @author
+ * 
  */
 public class TailPanel extends JPanel implements ActionListener
 {

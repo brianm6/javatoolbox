@@ -1,7 +1,3 @@
-/*
- * (c) Copyright 2001 MyCorporation.
- * All Rights Reserved.
- */
 package toolbox.jtail;
 
 import java.awt.BorderLayout;
@@ -11,8 +7,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JTextArea;
 
 /**
- * @version 	1.0
- * @author
  */
 public class JTailRunner extends JInternalFrame
 {
