@@ -22,7 +22,16 @@
         	<j:set var="browser.file" value="firefox"/>
         </j:if>
         
-        <exec vmlauncher="false" executable="${browser.file}"/>
+        <exec spawn="true" vmlauncher="false" executable="${browser.file}"/>
+    </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- XDOC-CLEAN                                                          -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:xdoc-clean" description="Cleans the generated-xdocs directory">
+        <delete dir="${basedir}/target/generated-xdocs" verbose="false"/>
+        <mkdir dir="${basedir}/target/generated-xdocs"/>
     </goal>
     
 
@@ -30,6 +39,7 @@
     <!-- JUNIT                                                               -->
     <!-- =================================================================== -->
     <goal name="toolbox:junit" description="Runs junit and generates a report">
+        <attainGoal name="toolbox:xdoc-clean"/>        
         <attainGoal name="maven-junit-report-plugin:report"/>
         <attainGoal name="xdoc:transform"/>
         <j:set var="browser.file" value="${toolbox.junit.report}"/>
@@ -41,9 +51,22 @@
     <!-- CHANGELOG                                                           -->
     <!-- =================================================================== -->
     <goal name="toolbox:changelog" description="Runs changelog report">
+        <attainGoal name="toolbox:xdoc-clean"/>
         <attainGoal name="maven-changelog-plugin:report"/>
         <attainGoal name="xdoc:transform"/>
         <j:set var="browser.file" value="${toolbox.changelog.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    
+    <!-- =================================================================== -->
+    <!-- CHANGES                                                             -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:changes" description="Runs changes report">
+        <attainGoal name="toolbox:xdoc-clean"/>    
+        <attainGoal name="changes:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.changes.report}"/>
         <attainGoal name="toolbox:browser"/>
     </goal>
 
@@ -60,6 +83,7 @@
     <!-- JAVADOC                                                             -->
     <!-- =================================================================== -->
     <goal name="toolbox:javadoc" description="Runs javadoc report">
+        <attainGoal name="toolbox:xdoc-clean"/>        
         <attainGoal name="maven-javadoc-plugin:report"/>
         <attainGoal name="xdoc:transform"/>
         <j:set var="browser.file" value="${toolbox.javadoc.report}"/>
@@ -71,12 +95,27 @@
     <!-- CLOVER                                                              -->
     <!-- =================================================================== -->
     <goal name="toolbox:clover" description="Runs clover report">
+        <attainGoal name="toolbox:xdoc-clean"/>        
         <attainGoal name="maven-clover-plugin:report"/>
         <attainGoal name="xdoc:transform"/>
         <j:set var="browser.file" value="${toolbox.clover.report}"/>
         <attainGoal name="toolbox:browser"/>
     </goal>
 
+    
+    <!-- =================================================================== -->
+    <!-- STATCVS                                                             -->
+    <!-- =================================================================== -->
+    <goal name="toolbox:statcvs" description="Runs the statcvs report">
+        <attainGoal name="toolbox:xdoc-clean"/>        
+        <attainGoal name="statcvs:report"/>
+        <attainGoal name="xdoc:transform"/>
+        <j:set var="browser.file" value="${toolbox.statcvs.report}"/>
+        <attainGoal name="toolbox:browser"/>
+    </goal>
+
+    <report>maven-statcvs-plugin</report>
+    
     <!-- =================================================================== -->
     <!-- INSTALL-PLUGINS                                                     -->
     <!-- =================================================================== -->
@@ -125,8 +164,6 @@
 	      <version>1.0-SNAPSHOT</version>
 	      <type>plugin</type>
 	    </dependency>    
-        
-        
         -->
     </goal>
 
