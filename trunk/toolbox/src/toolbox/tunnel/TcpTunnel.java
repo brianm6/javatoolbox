@@ -213,10 +213,10 @@ public class TcpTunnel implements TcpTunnelListener
         listeners_  = new ArrayList();
         inTotal_    = 0;
         outTotal_   = 0;
-        supressBinary_ = false;
         
-        incomingSink_   = System.out;
-        outgoingSink_   = System.out;
+        setSupressBinary(false);
+        setIncomingSink(System.out);
+        setOutgoingSink(System.out);
     }    
        
     //--------------------------------------------------------------------------
