@@ -15,12 +15,12 @@ public class RegexFilterReaderTest extends TestCase
 {
     /** Logger **/
     private static final Category logger_ = 
-	    Category.getInstance(RegexFilterReaderTest.class);
+        Category.getInstance(RegexFilterReaderTest.class);
         
     /**
      * Constructor for RegexFilterReaderTest.
      * 
-     * @param arg0
+     * @param  arg0  Name
      */
     public RegexFilterReaderTest(String arg0)
     {
@@ -28,18 +28,21 @@ public class RegexFilterReaderTest extends TestCase
     }
 
     /**
-	 * Entrypoint
-	 *
-	 * @param  args  Arguments
-	 */
+     * Entrypoint
+     *
+     * @param  args  Arguments
+     */
     public static void main(String[] args)
     {
         BasicConfigurator.configure();
         TestRunner.run(RegexFilterReaderTest.class);
     }
     
+    
     /**
      * Tests readLine() for a simple test case
+     * 
+     * @throws Exception on error
      */
     public void testRegexReader() throws Exception
     {

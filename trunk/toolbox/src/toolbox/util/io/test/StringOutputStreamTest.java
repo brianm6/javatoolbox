@@ -10,23 +10,31 @@ import toolbox.util.io.StringOutputStream;
 public class StringOutputStreamTest extends TestCase
 {
     /**
-     * Constructor for StringOutputStreamTest
-     */
-    public StringOutputStreamTest(String arg0)
-    {
-        super(arg0);
-    }
-
-    /**
      * Entrypoint   
+     * 
+     * @param  args  None recognized
      */
     public static void main(String[] args)
     {
         TestRunner.run(StringOutputStreamTest.class);
     }
     
+    
+    /**
+     * Constructor for StringOutputStreamTest
+     * 
+     * @param  arg0  Name
+     */
+    public StringOutputStreamTest(String arg0)
+    {
+        super(arg0);
+    }
+
+    
     /**
      * Tests the write() method
+     * 
+     * @throws Exception on error
      */
     public void testWrite() throws Exception
     {
