@@ -11,14 +11,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import nu.xom.Element;
+
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.PreferencedUtil;
 import toolbox.util.SocketUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.io.MonitoredOutputStream;
 import toolbox.util.io.MulticastOutputStream;
 import toolbox.util.io.PrintableOutputStream;
+import toolbox.util.service.Startable;
+import toolbox.workspace.IPreferenced;
 
 /**
  * Tunnels TCP traffic through a local proxy port before it is forwarded to
@@ -80,10 +86,8 @@ import toolbox.util.io.PrintableOutputStream;
  *   <li>Socket client receives response and processes as normal
  * </ol>
  */
-public class TcpTunnel implements TcpTunnelListener
+public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
 {
-    // TODO: Implements Startable
-    
     private static final Logger logger_ = Logger.getLogger(TcpTunnel.class);
 
     //--------------------------------------------------------------------------
@@ -100,6 +104,21 @@ public class TcpTunnel implements TcpTunnelListener
      */
     private static final String NAME_STREAM_OUT = "tunnel --> server";
 
+    
+    public static final String NODE_TCPTUNNEL = "TCPTunnel";
+    
+    public static final String PROP_SUPPRESS_BINARY = "suppressBinary";
+    public static final String PROP_REMOTE_PORT = "remotePort";
+    public static final String PROP_REMOTE_HOST = "remoteHost";
+    public static final String PROP_LOCAL_PORT = "localPort";
+    
+    public static final String[] SAVED_PROPS = {
+        PROP_LOCAL_PORT,
+        PROP_REMOTE_HOST,
+        PROP_REMOTE_PORT,
+        PROP_SUPPRESS_BINARY 
+    };
+    
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
@@ -112,12 +131,7 @@ public class TcpTunnel implements TcpTunnelListener
     /**
      * Tunnel port on localhost.
      */
-    private int listenPort_;
-
-    /**
-     * Flag to shutdown.
-     */
-    private boolean stopped_;
+    private int localPort_;
 
     /**
      * Intended recipient hostname.
@@ -128,6 +142,11 @@ public class TcpTunnel implements TcpTunnelListener
      * Intended recipient port.
      */
     private int remotePort_;
+    
+    /**
+     * Flag to shutdown.
+     */
+    private boolean stopped_;
 
     /**
      * Listeners of tunnel events.
@@ -184,21 +203,24 @@ public class TcpTunnel implements TcpTunnelListener
     {
         if (args.length != 3)
         {
-            System.err.println("Usage: java " + TcpTunnel.class.getName() +
-                               " listenport tunnelhost tunnelport");
+            System.err.println(
+                "Usage: java " 
+                + TcpTunnel.class.getName() 
+                + " listenport tunnelhost tunnelport");
+            
             System.exit(1);
         }
 
-        int listenport = Integer.parseInt(args[0]);
+        int localPort = Integer.parseInt(args[0]);
         String tunnelhost = args[1];
         int tunnelport = Integer.parseInt(args[2]);
 
         System.out.println(
-            "TcpTunnel: Ready to service connections on port " + listenport);
+            "TcpTunnel: Ready to service connections on port " + localPort);
 
-        TcpTunnel tunnel = new TcpTunnel(listenport, tunnelhost, tunnelport);
-        tunnel.setIncomingSink(System.out);
-        tunnel.setOutgoingSink(System.out);
+        TcpTunnel tunnel = new TcpTunnel(localPort, tunnelhost, tunnelport);
+        //tunnel.setIncomingSink(System.out);
+        //tunnel.setOutgoingSink(System.out);
         tunnel.addTcpTunnelListener(tunnel);
         tunnel.start();
     }
@@ -208,6 +230,17 @@ public class TcpTunnel implements TcpTunnelListener
     //--------------------------------------------------------------------------
 
     /**
+     * Creates a TcpTunnel.
+     */
+    public TcpTunnel()
+    {
+        listeners_  = new ArrayList();
+        inTotal_    = 0;
+        outTotal_   = 0;
+    }
+
+    
+    /**
      * Creates a TcpTunnel with incoming/outgoing data echoed to System.out.
      *
      * @param listenPort Local port to listen on.
@@ -216,14 +249,14 @@ public class TcpTunnel implements TcpTunnelListener
      */
     public TcpTunnel(int listenPort, String remoteHost, int remotePort)
     {
-        listenPort_ = listenPort;
-        remoteHost_ = remoteHost;
-        remotePort_ = remotePort;
         listeners_  = new ArrayList();
         inTotal_    = 0;
         outTotal_   = 0;
 
-        setSupressBinary(false);
+        setLocalPort(listenPort);
+        setRemoteHost(remoteHost);
+        setRemotePort(remotePort);
+        setSuppressBinary(false);
         setIncomingSink(System.out);
         setOutgoingSink(System.out);
     }
@@ -259,7 +292,7 @@ public class TcpTunnel implements TcpTunnelListener
      *
      * @return boolean
      */
-    public boolean isSupressBinary()
+    public boolean isSuppressBinary()
     {
         return supressBinary_;
     }
@@ -270,7 +303,7 @@ public class TcpTunnel implements TcpTunnelListener
      *
      * @param supressBinary The supressBinary to set.
      */
-    public void setSupressBinary(boolean supressBinary)
+    public void setSuppressBinary(boolean supressBinary)
     {
         supressBinary_ = supressBinary;
 
@@ -281,9 +314,50 @@ public class TcpTunnel implements TcpTunnelListener
             printableOutgoingSink_.setEnabled(supressBinary_);
     }
 
+    
+    public int getLocalPort()
+    {
+        return localPort_;
+    }
 
+
+    public void setLocalPort(int localPort)
+    {
+        localPort_ = localPort;
+    }
+
+
+    public String getRemoteHost()
+    {
+        return remoteHost_;
+    }
+
+
+    public void setRemoteHost(String remoteHost)
+    {
+        remoteHost_ = remoteHost;
+    }
+
+
+    public int getRemotePort()
+    {
+        return remotePort_;
+    }
+
+
+    public void setRemotePort(int remotePort)
+    {
+        remotePort_ = remotePort;
+    }
+    
+    //--------------------------------------------------------------------------
+    // Startable Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * Starts the tunnel.
+     * 
+     * @see toolbox.util.service.Startable#start()
      */
     public void start()
     {
@@ -292,7 +366,7 @@ public class TcpTunnel implements TcpTunnelListener
         try
         {
             // Server socket on listenPort
-            ss_ = new ServerSocket(listenPort_);
+            ss_ = new ServerSocket(localPort_);
             ss_.setSoTimeout(5000);
             stopped_ = false;
 
@@ -307,7 +381,7 @@ public class TcpTunnel implements TcpTunnelListener
                         if (!alreadyListened)
                             fireStatusChanged(
                                 "Listening for connections on port " +
-                                    listenPort_);
+                                    localPort_);
 
                         // Client socket
                         Socket cs = ss_.accept();
@@ -316,7 +390,7 @@ public class TcpTunnel implements TcpTunnelListener
                         Socket rs = new Socket(remoteHost_, remotePort_);
 
                         fireStatusChanged(
-                            "Tunnelling port " + listenPort_ +
+                            "Tunnelling port " + localPort_ +
                             " to port " + remotePort_ +
                             " on host " + remoteHost_ + " ...");
 
@@ -406,6 +480,8 @@ public class TcpTunnel implements TcpTunnelListener
 
     /**
      * Stops the tunnel.
+     * 
+     * @see toolbox.util.service.Startable#stop()
      */
     public void stop()
     {
@@ -414,6 +490,40 @@ public class TcpTunnel implements TcpTunnelListener
         fireStatusChanged("Tunnel stopped");
     }
 
+    
+    /**
+     * @see toolbox.util.service.Startable#isRunning()
+     */
+    public boolean isRunning()
+    {
+        return !stopped_;
+    }
+    
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
+     */
+    public void applyPrefs(Element prefs) throws Exception
+    {
+        Element root = XOMUtil.getFirstChildElement(
+            prefs, NODE_TCPTUNNEL, new Element(NODE_TCPTUNNEL));
+        PreferencedUtil.readPreferences(this, root, SAVED_PROPS);
+    }
+
+
+    /**
+     * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
+     */
+    public void savePrefs(Element prefs) throws Exception
+    {
+        Element root = new Element(NODE_TCPTUNNEL);
+        PreferencedUtil.writePreferences(this, root, SAVED_PROPS);
+        XOMUtil.insertOrReplace(prefs, root);
+    }
+    
     //--------------------------------------------------------------------------
     // Event listener support
     //--------------------------------------------------------------------------
