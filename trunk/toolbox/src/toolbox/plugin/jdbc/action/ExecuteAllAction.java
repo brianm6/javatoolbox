@@ -7,19 +7,25 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+
+import org.jedit.syntax.JEditTextArea;
 
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.StringUtil;
+import toolbox.workspace.IStatusBar;
 
 /**
- * Runs all SQL statements in the editor. Each SQL statement must be 
- * terminated by a semicolon. The results are appendended to the output 
- * textarea.
+ * Runs all SQL statements in the editor. Each SQL statement must be terminated
+ * by a semicolon. The results are appendended to the output textarea.
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
 public class ExecuteAllAction extends BaseAction
 {
+    private static final Logger logger_ = 
+        Logger.getLogger(ExecuteAllAction.class);
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -45,12 +51,18 @@ public class ExecuteAllAction extends BaseAction
     public void runAction(ActionEvent e) throws Exception
     {
         QueryPlugin plugin = getPlugin();
+        IStatusBar statusBar = plugin.getStatusBar();
+        JEditTextArea editor = plugin.getSQLEditor();
+        String sqlText = editor.getSelectedText();
         
-        String sqlText = plugin.getSQLEditor().getText().trim();
+        if (StringUtils.isBlank(sqlText))
+            sqlText = editor.getText();
+        
+        sqlText = sqlText.trim();
         
         if (StringUtils.isBlank(sqlText))
         {
-            plugin.getStatusBar().setWarning(
+            statusBar.setWarning(
                 "Enter SQL statements to execute into the editor first.");
         }
         else
@@ -70,6 +82,17 @@ public class ExecuteAllAction extends BaseAction
                 try
                 {
                     stmts[i] = stmts[i].trim();
+
+                    String status =
+                        "Executing statement " 
+                        + (i + 1) 
+                        + " of " 
+                        + stmts.length
+                        + "...";
+
+                    statusBar.setInfo(status);
+                    logger_.debug(status);
+                    
                     String results = plugin.executeSQL(stmts[i]);
                     
                     if (!StringUtil.isMultiline(results))
@@ -108,34 +131,49 @@ public class ExecuteAllAction extends BaseAction
                 }
                 catch (Exception ex)
                 {
-                    // Collect the errors
                     errors.add(ex);
+
+                    // Break out..
+                    if (!plugin.isContinueOnError())
+                        break;
                 }
-                
-                if (errors.size() == 1)
-                {
-                    throw (Exception) errors.get(0);
-                }
-                else if (errors.size() > 1)
-                {
-                    // Merge errors into a single exception if many.
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("Not all statements executed successfully.");
-                    sb.append("\n");
+            }
+            
+            switch (errors.size())
+            {
+                case 0:
+                    statusBar.setInfo(
+                        stmts.length + " statement(s) executed successfully.");
+                    break;
                     
+                case 1:
+                    statusBar.setError("Statement failed execution");
+                    throw (Exception) errors.get(0);
+                    
+                default:
+                    
+                    // Merge errors into a single exception if many.
+                    
+                    StringBuffer sb = new StringBuffer();
+                    sb.append(
+                        errors.size()     
+                        + " out of " 
+                        + stmts.length 
+                        + " statments failed execution.\n");
+
                     for (int j = 0; j < errors.size(); j++)
                     {
                         Exception ex = (Exception) errors.get(j);
-                        sb.append(ex.getMessage()).append("\n");
-                        sb.append(ExceptionUtils.getFullStackTrace(ex));
-                        sb.append("\n");
+                        
+                        sb.append((j + 1) + ") ")  // Exception number
+                          .append(ex.getMessage())
+                          .append("\n")
+                          .append(ExceptionUtils.getFullStackTrace(ex))
+                          .append("\n");
                     }
                     
                     throw new SQLException(sb.toString());
-                }
             }
-
-            plugin.getStatusBar().setInfo("Done");
         }
     }
 }
