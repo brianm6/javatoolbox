@@ -4,6 +4,7 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.log4j.Category;
 import toolbox.util.collections.ObjectMap;
 
 import electric.xml.Attribute;
@@ -15,6 +16,10 @@ import electric.xml.Element;
  */
 public class TailConfig
 {
+    /** Logger **/
+    private static final Category logger_ =
+        Category.getInstance(TailConfig.class);
+    
     // XML Constants
     private static final String ELEMENT_TAIL     = "Tail";
     private static final String ATTR_FILE        = "file";
@@ -117,23 +122,29 @@ public class TailConfig
      */
     public static TailConfig unmarshal(Element tail) throws IOException 
     {
+        
+        // DEBUG
+        
         Attributes attribs = tail.getAttributeObjects();
-
+        
         while (attribs.hasMoreElements())
         {
             Attribute attrib = attribs.next();
-            System.out.println(attrib.getName() + " : " + attrib.getValue());
+            
+            logger_.debug("[unmars] " + attrib.getName() + " : " + 
+                attrib.getValue());
         }
         
+        // REAL 
         
         TailConfig props = new TailConfig();
         props.setFilename(tail.getAttribute(ATTR_FILE));
         
         props.setAutoScroll(
-            Boolean.getBoolean(tail.getAttribute(ATTR_AUTOSCROLL)));
+            new Boolean(tail.getAttribute(ATTR_AUTOSCROLL)).booleanValue());
             
         props.setShowLineNumbers(
-            Boolean.getBoolean(tail.getAttribute(ATTR_LINENUMBERS)));
+            new Boolean(tail.getAttribute(ATTR_LINENUMBERS)).booleanValue());
             
         return props;
     }
