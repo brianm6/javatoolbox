@@ -17,7 +17,7 @@ import toolbox.util.StreamUtil;
 public class XEPProcessor implements FOProcessor
 {
     //--------------------------------------------------------------------------
-    // Interface FOProcessor
+    // FOProcessor Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -65,4 +65,15 @@ public class XEPProcessor implements FOProcessor
         renderPDF(new ByteArrayInputStream(foXML.getBytes("UTF-8")), baos);        
         return baos.toByteArray();
     }
+    
+    /**
+     * @see toolbox.util.xslfo.FOProcessor
+     *      #renderPostscript(java.io.InputStream, java.io.OutputStream)
+     */
+    public void renderPostscript(InputStream foStream, OutputStream psStream)
+        throws Exception
+    {
+        // to do 
+    }
+
 }

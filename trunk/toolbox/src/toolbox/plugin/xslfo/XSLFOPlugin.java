@@ -38,6 +38,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XMLUtil;
+import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -215,6 +216,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         buttonPane.add(new JButton(new FOPRenderAction()));
         buttonPane.add(new JButton(new FOPLaunchAction()));
         buttonPane.add(new JButton(new FOPExportToPDFAction()));
+        buttonPane.add(new JButton(new FOPExportToPostscriptAction()));
         buttonPane.add(new JButton(new XEPRenderAction()));
         buttonPane.add(new JButton(new XEPLaunchAction()));
         
@@ -630,4 +632,57 @@ public class XSLFOPlugin extends JPanel implements IPlugin
             }
         }
     }    
+    
+    /**
+     * Exports XSL-FO to a Postscript file
+     */
+    private class FOPExportToPostscriptAction extends AbstractAction
+    {
+        private File lastDir_;
+        
+        public FOPExportToPostscriptAction()
+        {
+            super("Export to Postscript..");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            try
+            {
+                JFileChooser chooser = null;
+                
+                if (lastDir_ == null)
+                    chooser = new JFileChooser();
+                else
+                    chooser = new JFileChooser(lastDir_);
+
+                if (chooser.showSaveDialog(null) == 
+                    JFileChooser.APPROVE_OPTION) 
+                {
+                    String saveFile = 
+                        chooser.getSelectedFile().getCanonicalPath();
+                    
+                    logger_.debug("Save file=" + saveFile);
+                    
+                    FileOutputStream fos = new FileOutputStream(saveFile);
+                    
+                    getFOP().renderPostscript(
+                        new StringInputStream(xmlArea_.getText()), fos);
+
+//                  getFOP().renderPostscript(
+//                      new FileInputStream(
+//                        "c:\\documents and settings\\administrator\\my documents\\_fopui_raw.xml"), 
+//                        fos);
+                        
+                }
+                
+                lastDir_ = chooser.getCurrentDirectory();
+            }
+            catch (Exception ioe)
+            {
+                ExceptionUtil.handleUI(ioe, logger_);
+            }
+        }
+    }
+
 }

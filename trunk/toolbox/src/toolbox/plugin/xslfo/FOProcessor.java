@@ -42,4 +42,15 @@ public interface FOProcessor
      * @throws  Exception on error
      */    
     public byte[] renderPDF(String foXML) throws Exception;
+    
+    /**
+     * Renders XSL-FO to a Postscript document
+     * 
+     * @param   foStream  Source of XSL-FO
+     * @param   psStream  Destination of Postscript output
+     * @throws  Exception on error
+     */    
+    public void renderPostscript(InputStream foStream, OutputStream psStream)
+        throws Exception;
+    
 }

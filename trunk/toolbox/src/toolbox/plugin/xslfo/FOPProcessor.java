@@ -22,13 +22,14 @@ import org.xml.sax.InputSource;
  */
 public class FOPProcessor implements FOProcessor
 {
-    /** 
-     * Main interface class to FOP 
-     */
-    private Driver driver_;
+    /** Driver for PDF generation */
+    private Driver pdfDriver_;
+    
+    /** Driver for Postscript generation */
+    private Driver psDriver_;
 
     //--------------------------------------------------------------------------
-    // Interface FOProcessor 
+    // FOProcessor Interface
     //--------------------------------------------------------------------------
     
     /**
@@ -36,11 +37,19 @@ public class FOPProcessor implements FOProcessor
      */
     public void initialize()
     {
-        driver_ = new Driver();
+        // Common
         Logger logger = new ConsoleLogger(ConsoleLogger.LEVEL_INFO);
-        driver_.setLogger(logger);
         MessageHandler.setScreenLogger(logger);
-        driver_.setRenderer(Driver.RENDER_PDF);
+                
+        // PDF                
+        pdfDriver_ = new Driver();
+        pdfDriver_.setLogger(logger);
+        pdfDriver_.setRenderer(Driver.RENDER_PDF);
+
+        // Postscript        
+        psDriver_ = new Driver();
+        psDriver_.setLogger(logger);
+        psDriver_.setRenderer(Driver.RENDER_PS);
     }
 
     /**
@@ -61,11 +70,11 @@ public class FOPProcessor implements FOProcessor
     {
         try
         {
-            driver_.reset();
-            driver_.setOutputStream(pdfStream);
+            pdfDriver_.reset();
+            pdfDriver_.setOutputStream(pdfStream);
             Reader reader = new InputStreamReader(foStream, "UTF-8");
-            driver_.setInputSource(new InputSource(reader));
-            driver_.run();
+            pdfDriver_.setInputSource(new InputSource(reader));
+            pdfDriver_.run();
         }
         finally
         {
@@ -82,5 +91,27 @@ public class FOPProcessor implements FOProcessor
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         renderPDF(new ByteArrayInputStream(foXML.getBytes("UTF-8")), baos);
         return baos.toByteArray();
+    }
+
+    /**
+     * @see toolbox.util.xslfo.FOProcessor
+     *      #renderPostscript(java.io.InputStream, java.io.OutputStream)
+     */    
+    public void renderPostscript(InputStream foStream, OutputStream psStream)
+        throws Exception
+    {
+        try
+        {
+            psDriver_.reset();
+            psDriver_.setOutputStream(psStream);
+            Reader reader = new InputStreamReader(foStream, "UTF-8");
+            psDriver_.setInputSource(new InputSource(reader));
+            psDriver_.run();
+        }
+        finally
+        {
+            foStream.close();
+            psStream.close();            
+        }
     }
 }
