@@ -25,6 +25,7 @@ import org.jedit.syntax.ShellScriptTokenMarker;
 import org.jedit.syntax.TokenMarker;
 import org.jedit.syntax.XMLTokenMarker;
 
+import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.FileUtil;
@@ -151,9 +152,10 @@ public class JEditViewer extends AbstractViewer
         {
             try
             {
-                textArea_ = new JEditTextArea(
-                    (TokenMarker) c.newInstance(), new JavaDefaults());
-                
+                textArea_ = 
+                    new JEditTextArea(
+                        (TokenMarker) c.newInstance(), 
+                        new JavaDefaults());
             }
             catch (Exception e)
             {
@@ -163,10 +165,15 @@ public class JEditViewer extends AbstractViewer
         }
         else
         {    
-            textArea_ = new JEditTextArea();
+            textArea_ = 
+                new JEditTextArea(
+                    new PropsTokenMarker(), 
+                    new JavaDefaults());
         }
         
+        // Set font and popup menu...
         textArea_.getPainter().setFont(FontUtil.getPreferredMonoFont());
+        textArea_.setPopupMenu(new JEditPopupMenu(textArea_));
     }
 
     //--------------------------------------------------------------------------
