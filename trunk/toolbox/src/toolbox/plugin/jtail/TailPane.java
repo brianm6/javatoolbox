@@ -91,12 +91,12 @@ import toolbox.workspace.IStatusBar;
  */
 public class TailPane extends JHeaderPanel
 {
-    /*
-     * TODO: Color code keywords
-     * TODO: Color code time lapse delays
-     * TODO: Add option to tail the whole file from the beginning
-     * TODO: Create filter that will accept a beanshell script
-     */
+     // TODO: Color code keywords
+     // TODO: Color code time lapse delays
+     // TODO: Add option to tail the whole file from the beginning
+     // TODO: Create filter that will accept a janino script
+     // TODO: Renamed to TailView
+     // TODO: Tie the state of the buttons directly to thte state of the tail
 
     private static final Logger logger_ = Logger.getLogger(TailPane.class);
 
@@ -220,8 +220,9 @@ public class TailPane extends JHeaderPanel
      * @throws FileNotFoundException if file not found.
      * @throws IOException if an I/O error occurs.
      */
-    public TailPane(ITailPaneConfig config, IStatusBar statusBar) throws
-        IOException, FileNotFoundException
+    public TailPane(
+        ITailPaneConfig config, 
+        IStatusBar statusBar) throws IOException, FileNotFoundException
     {
         super(config.getFilenames()[0]);
         statusBar_ = statusBar;
@@ -540,6 +541,7 @@ public class TailPane extends JHeaderPanel
      * Aggregates a file into an existing tail.
      *
      * @param file File to aggregate.
+     * @throws ServiceException on service error.
      * @throws IOException on I/O error.
      */
     public void aggregate(String file) throws ServiceException, IOException
@@ -615,6 +617,10 @@ public class TailPane extends JHeaderPanel
      */
     public class TailContext
     {
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
+        
         /**
          * File to tail.
          */
@@ -663,7 +669,9 @@ public class TailPane extends JHeaderPanel
                 System.setOut(ps);
 
                 tail_.follow(
-                    new InputStreamReader(pis), new NullWriter(), filename_);
+                    new InputStreamReader(pis), 
+                    new NullWriter(), 
+                    filename_);
 
                 logger_.debug("Tailing System.out...");
             }
@@ -711,6 +719,8 @@ public class TailPane extends JHeaderPanel
 
 
         /**
+         * Returns the tail.
+         * 
          * @return Tail
          */
         public Tail getTail()
@@ -731,9 +741,9 @@ public class TailPane extends JHeaderPanel
         /**
          * Called when next line of input is available. When a new line is
          * available, just push it on the shared queue.
-         *
-         * @param tail Origin of event.
-         * @param line Next line read.
+         * 
+         * @see toolbox.tail.TailListener#nextLine(toolbox.tail.Tail, 
+         *      java.lang.String)
          */
         public void nextLine(Tail tail, String line)
         {
@@ -742,7 +752,7 @@ public class TailPane extends JHeaderPanel
 
 
         /**
-         * @see toolbox.tail.TailAdapter#tailReattached(toolbox.tail.Tail)
+         * @see toolbox.tail.TailListener#tailReattached(toolbox.tail.Tail)
          */
         public void tailReattached(Tail tail)
         {
@@ -959,17 +969,14 @@ public class TailPane extends JHeaderPanel
                 if (tail.isSuspended())
                 {
                     tail.resume();
-                    //putValue(Action.NAME, MODE_PAUSE);
-
-                    statusBar_.setInfo("Unpaused tail for " +
-                        tail.getFile().getCanonicalPath());
+                    statusBar_.setInfo(
+                        "Unpaused " + tail.getFile().getCanonicalPath());
                 }
                 else
                 {
                     tail.suspend();
-                    //putValue(Action.NAME, MODE_UNPAUSE);
-                    statusBar_.setInfo("Paused tail for " +
-                        tail.getFile().getCanonicalPath());
+                    statusBar_.setInfo(
+                        "Paused " + tail.getFile().getCanonicalPath());
                 }
             }
         }
@@ -1012,8 +1019,8 @@ public class TailPane extends JHeaderPanel
                     tail.stop();
             }
 
-            statusBar_.setInfo("Closed tail for " +
-                ArrayUtil.toString(config_.getFilenames()));
+            statusBar_.setInfo(
+                "Closed " + ArrayUtil.toString(config_.getFilenames()));
         }
     }
 
