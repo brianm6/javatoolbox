@@ -141,7 +141,8 @@ public class FindClass
     {
         ignoreCase_  = ignoreCase;
         classToFind_ = classToFind;
-         
+        isCancelled_ = false;
+        
         defaultCollector_.clear();
 
         // Setup regexp based on case sensetivity flag
