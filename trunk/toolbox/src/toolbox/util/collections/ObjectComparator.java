@@ -36,9 +36,11 @@ import java.util.Comparator;
  * @see ObjectMap
  * @author Steven Lee
  */
-public class ObjectComparator implements Comparator, java.io.Serializable
+public class ObjectComparator implements Comparator, Serializable
 {
-
+    /**
+     * Properties to use for comparison.
+     */
     private Property[] props_;
 
     //--------------------------------------------------------------------------
@@ -46,6 +48,8 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     //--------------------------------------------------------------------------
     
     /**
+     * Creates an ObjectComparator.
+     *
      * @param propertyName The property to compare or a period separated list 
      *                     of properties (e.g. address.line1 )
      */
@@ -55,8 +59,10 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     }
 
     /**
-     * @param  propertyName  Property name
-     * @param  comparator    Comparator
+     * Creates an ObjectComparator.
+     *
+     * @param propertyName Property name
+     * @param comparator Comparator
      */
     public ObjectComparator(String propertyName, Comparator comparator)
     {
@@ -64,8 +70,10 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     }
 
     /**
-     * @param  propertyName  Property name
-     * @param  reverseOrder  Reverses the order
+     * Creates an ObjectComparator.
+     *
+     * @param propertyName Property name
+     * @param reverseOrder Reverses the order
      */
     public ObjectComparator(String propertyName, boolean reverseOrder)
     {
@@ -73,8 +81,10 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     }
 
     /**
-     * @param  property1  Property one
-     * @param  property2  Property two
+     * Creates an ObjectComparator.
+     *
+     * @param property1 Property one
+     * @param property2 Property two
      */
     public ObjectComparator(String property1, String property2)
     {
@@ -83,9 +93,11 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     }
 
     /**
-     * @param  property1  Property 1
-     * @param  property2  Property 2
-     * @param  property3  Property 3
+     * Creates an ObjectComparator.
+     *
+     * @param property1 Property 1
+     * @param property2 Property 2
+     * @param property3 Property 3
      */
     public ObjectComparator(String property1,String property2, String property3)
     {
@@ -96,7 +108,9 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     }
 
     /**
-     * @param  prop  Property
+     * Creates an ObjectComparator.
+     *
+     * @param prop Property
      */
     public ObjectComparator(Property prop)
     {
@@ -104,8 +118,10 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     }
 
     /**
-     * @param  prop1  Property 1
-     * @param  prop2  Property 2
+     * Creates an ObjectComparator.
+     *
+     * @param prop1 Property 1
+     * @param prop2 Property 2
      */
     public ObjectComparator(Property prop1, Property prop2)
     {
@@ -113,22 +129,24 @@ public class ObjectComparator implements Comparator, java.io.Serializable
     }
 
     /**
-     * @param  properties  Properties
+     * Creates an ObjectComparator.
+     *
+     * @param properties Properties
      */
     public ObjectComparator(Property[] properties)
     {
-        this.props_ = properties;
+        props_ = properties;
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Comparator Interface
     //--------------------------------------------------------------------------
     
     /**
-     * Compares two objects
+     * Compares the objects using the identified Propertys
      * 
-     * @param  o1  First object
-     * @param  o2  Second object
+     * @param o1 First object
+     * @param o2 Second object
      * @return Zero if equals, -1 
      *         -1   if o1 lessthan o2 
      *          1   if o1 greaterthan o2
@@ -170,11 +188,10 @@ public class ObjectComparator implements Comparator, java.io.Serializable
         return reverseOrder ? -rVal : rVal;
     }
 
-
     /**
-     * Test for equality
+     * Tests for equality.
      * 
-     * @param  obj  Object to test
+     * @param obj Object to test
      * @return True if equal, false otherwise
      */
     public boolean equals(Object obj)
@@ -190,8 +207,17 @@ public class ObjectComparator implements Comparator, java.io.Serializable
             ((ObjectComparator) obj).props_);
     }
 
-    // HELPER METHODS
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
 
+    /**
+     * Gets a property from an object.
+     *
+     * @param obj Object to retrieve the property from
+     * @param property Property to retrieve
+     * @return Value of the property
+     */
     protected Object getProperty(Object obj, Object property)
     {
         return AsMap.of(obj).get(property);
@@ -207,12 +233,29 @@ public class ObjectComparator implements Comparator, java.io.Serializable
      */
     public static class Property implements Serializable
     {
+        /**
+         * Property name
+         */
         private String name_;
-        private boolean reverseOrder_;
-        private Comparator comparator_;
 
         /**
-         * @param  name  Property name
+         * Sort in reverse order
+         */
+        private boolean reverseOrder_;
+
+        /**
+         * Comparator to use
+         */
+        private Comparator comparator_;
+
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+
+        /**
+         * Creates a Property.
+         *
+         * @param name Property name
          */
         public Property(String name)
         {
@@ -220,10 +263,10 @@ public class ObjectComparator implements Comparator, java.io.Serializable
         }
 
         /**
-         * Constructor
+         * Creates a Property.
          * 
-         * @param  name         Property name
-         * @param  reverseOrder Flip order
+         * @param name Property name
+         * @param reverseOrder Flip order
          */
         public Property(String name, boolean reverseOrder)
         {
@@ -231,10 +274,10 @@ public class ObjectComparator implements Comparator, java.io.Serializable
         }
 
         /**
-         * Constructor
+         * Creates a Property.
          * 
-         * @param  name         Name
-         * @param  comparator   Comparator
+         * @param name Name
+         * @param comparator Comparator
          */
         public Property(String name, Comparator comparator)
         {
@@ -242,25 +285,28 @@ public class ObjectComparator implements Comparator, java.io.Serializable
         }
 
         /**
-         * Constructor
+         * Creates a Property.
          * 
-         * @param  name             Property name
-         * @param  reverseOrder     Flip order
-         * @param  comparator       Comparator
+         * @param name Property name
+         * @param reverseOrder Flip order
+         * @param comparator Comparator
          */
-        public Property(String name, boolean reverseOrder, 
-            Comparator comparator)
+        public Property(String name, boolean reverseOrder,Comparator comparator)
         {
             name_ = name;
             reverseOrder_ = reverseOrder;
             comparator_ = comparator;
         }
 
+        //----------------------------------------------------------------------
+        // Overrides java.lang.Object
+        //----------------------------------------------------------------------
+
         /**
-         * Equals
+         * Tests for equality.
          * 
-         * @param  obj  Object
-         * @return TRue or false
+         * @param obj Object
+         * @return True or false
          */
         public boolean equals(Object obj)
         {
@@ -279,5 +325,4 @@ public class ObjectComparator implements Comparator, java.io.Serializable
                 (comparator_ != null && comparator_.equals(p.comparator_)));
         }
     }
-
 }
