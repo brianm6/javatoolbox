@@ -1,5 +1,7 @@
 package toolbox.clearcase.audit;
 
+import org.apache.commons.io.FilenameUtils;
+
 import toolbox.clearcase.IAuditResult;
 import toolbox.clearcase.domain.VersionedFile;
 
@@ -57,6 +59,24 @@ public class AuditResult implements IAuditResult
     public String getFilename() 
     {
         return file_.getName();
+    }
+    
+    
+    /**
+     * @see toolbox.clearcase.IAuditResult#getFileOnly()
+     */
+    public String getFileOnly()
+    {
+        return FilenameUtils.getName(getFilename());
+    }
+    
+    
+    /**
+     * @see toolbox.clearcase.IAuditResult#getPathOnly()
+     */
+    public String getPathOnly()
+    {
+        return FilenameUtils.getPath(getFilename());
     }
     
     
