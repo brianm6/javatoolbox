@@ -117,6 +117,22 @@ public final class FileUtil
         return contents;    
     }
     
+    /**     
+     * Writes a string to a file
+     *     
+     * @param   file        File to write to
+     * @param   contents    Contents to store in the file
+     * @param   append      Specify if you want to append to the file     
+     * @return  Contents of the file as a string
+     * @throws  FileNotFoundException if file not found
+     * @throws  IOException on IO error
+     */    
+    public static String setFileContents(File file, String contents, 
+        boolean append) throws FileNotFoundException, IOException    
+    {   
+        return setFileContents(file.getAbsolutePath(), contents, append);
+    }    
+    
     
     /**
      * Retrieves the System specific temp file directory
