@@ -68,7 +68,6 @@ import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.table.AutoTailAction;
 import toolbox.util.ui.table.JSmartTable;
-import toolbox.util.ui.table.JSmartTableHeader;
 import toolbox.util.ui.table.SmartTableCellRenderer;
 import toolbox.util.ui.table.TableSorter;
 import toolbox.workspace.IPreferenced;
