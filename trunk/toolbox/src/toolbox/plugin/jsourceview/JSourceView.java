@@ -1,6 +1,8 @@
 package toolbox.jsourceview;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -25,6 +27,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
 
@@ -35,6 +42,7 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.ElapsedTime;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.MathUtil;
 import toolbox.util.Queue;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.filter.DirectoryFilter;
@@ -57,10 +65,14 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     // TODO: Figure out how to save table column sizes
     // TODO: Convert actionPerformed() to Actions
     // TODO: Add chart for visualization
-    // TODO: Custom table cell renders to align cell contents/color code unusually
-    //       high or low numbers, etc
+    // TODO: Custom table cell renders to color code unusually high or low 
+    //       numbers, etc
     // TODO: Add regex filter to include/exclude files
-        
+
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+            
     private static final Logger logger_ = 
         Logger.getLogger(JSourceView.class);
 
@@ -76,6 +88,20 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     
     private static final String LABEL_GO     = "Go!";
     private static final String LABEL_CANCEL = "Cancel";
+
+    private static final int COL_NUM        = 0;
+    private static final int COL_DIR        = 1;
+    private static final int COL_FILE       = 2;
+    private static final int COL_CODE       = 3;
+    private static final int COL_COMMENTS   = 4;
+    private static final int COL_BLANK      = 5;
+    private static final int COL_THROWN_OUT = 6;
+    private static final int COL_TOTAL      = 7;
+    private static final int COL_PERCENTAGE = 8;
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     private JTextField  dirField_;
     private JButton     goButton_;
@@ -122,7 +148,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         "Total", 
         "Percentage"
     };
-
+    
     /** 
      * Filter to identify source files 
      */
@@ -282,6 +308,12 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         table_       = new JTable(tableSorter_);
         tableSorter_.addMouseListenerToHeaderInTable(table_);
         
+        // Set alternating row renderer
+        table_.setDefaultRenderer(Integer.class, new TableCellRenderer());
+        table_.setDefaultRenderer(String.class, new TableCellRenderer());
+        
+        tweakTable();
+        
         getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(new JScrollPane(table_), BorderLayout.CENTER);
         
@@ -299,6 +331,55 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
         sourceFilter_.addFilter(new ExtensionFilter("cpp"));
         sourceFilter_.addFilter(new ExtensionFilter("java"));
         sourceFilter_.addFilter(new ExtensionFilter("h"));
+    }
+    
+    /**
+     * Tweaks the table columns for width and extents
+     */
+    protected void tweakTable()
+    {
+        table_.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        TableColumnModel columnModel = table_.getColumnModel();
+
+        // Tweak file number column
+        TableColumn column = columnModel.getColumn(COL_NUM);
+        column.setMinWidth(50);
+        column.setPreferredWidth(50);        
+        column.setMaxWidth(100); 
+        
+        column = columnModel.getColumn(COL_CODE);
+        column.setMinWidth(50);
+        column.setPreferredWidth(50);
+        column.setMaxWidth(130);
+    
+        int min  = 50;
+        int pref = 70;
+        int max  = 150;
+    
+        column = columnModel.getColumn(COL_BLANK);
+        column.setMinWidth(min);
+        column.setPreferredWidth(pref);
+        column.setMaxWidth(max);
+
+        column = columnModel.getColumn(COL_COMMENTS);
+        column.setMinWidth(min);
+        column.setPreferredWidth(pref);
+        column.setMaxWidth(max);
+        
+        column = columnModel.getColumn(COL_THROWN_OUT);
+        column.setMinWidth(min);
+        column.setPreferredWidth(pref);
+        column.setMaxWidth(max);
+        
+        column = columnModel.getColumn(COL_TOTAL);
+        column.setMinWidth(min);
+        column.setPreferredWidth(pref);
+        column.setMaxWidth(max);
+        
+        column = columnModel.getColumn(COL_PERCENTAGE);
+        column.setMinWidth(min);
+        column.setPreferredWidth(pref);
+        column.setMaxWidth(max);
     }
     
     /**
@@ -368,7 +449,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
      */
     class SearchAction extends WorkspaceAction
     {
-        public SearchAction()
+        SearchAction()
         {
             super(LABEL_GO, true, null, workspaceStatusBar_);
         }
@@ -452,7 +533,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     /** 
      * Scans file system recursively for files containing source code.
      */
-    private class ScanDirWorker implements Runnable
+    class ScanDirWorker implements Runnable
     {
         /** 
          * Directory to scan recursively for source files 
@@ -478,7 +559,7 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
          * 
          * @param  dir  Directory root to scan
          */
-        public ScanDirWorker(File dir)
+        ScanDirWorker(File dir)
         {
             dir_       = dir;
             dirFilter_ = new DirectoryFilter();
@@ -550,14 +631,10 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
     /**
      * Pops files off of the work queue and parses them to gather stats
      */
-    private class ParserWorker implements Runnable
+    class ParserWorker implements Runnable
     {
         private boolean cancel_ = false;
         
-        /**
-         * Parses each file on the workqueue and adds the statistics to the
-         * table.
-         */
         public void run()
         {
             ElapsedTime elapsed = new ElapsedTime();
@@ -639,4 +716,124 @@ public class JSourceView extends JFrame implements ActionListener, IPreferenced
             setParseStatus("Search canceled!");            
         }
     }
+
+    //--------------------------------------------------------------------------
+    // Inner Class: TableCellRenderer
+    //--------------------------------------------------------------------------
+        
+    /**
+     * Renderer for the contents of the table
+     */   
+    class TableCellRenderer extends DefaultTableCellRenderer
+    {
+        private DecimalFormat decimalFormatter_;
+        private NumberFormat percentFormatter_;
+        
+        public TableCellRenderer()
+        {
+            decimalFormatter_ = new DecimalFormat("###,###");
+            percentFormatter_ = NumberFormat.getPercentInstance();
+        }
+        
+        //----------------------------------------------------------------------
+        // Overrides javax.swing.table.DefaultTableCellRenderer
+        //----------------------------------------------------------------------
+        
+        /**
+         * Returns the default table cell renderer.
+         *
+         * @param   table       JTable
+         * @param   value       Value to assign to the cell at [row, column]
+         * @param   isSelected  True if the cell is selected
+         * @param   hasFocus    True if cell has focus
+         * @param   row         Row of the cell to render
+         * @param   column      Column of the cell to render
+         * 
+         * @return  Default table cell renderer
+         */
+        public Component getTableCellRendererComponent(
+            JTable  table,
+            Object  value,
+            boolean isSelected,
+            boolean hasFocus,
+            int     row,
+            int     column)
+        {
+            String text = value.toString();
+            
+            if (isSelected)
+            {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            }
+            else
+            {
+                setForeground(table.getForeground());
+    
+                // Alternate row background colors colors
+                                
+                if (MathUtil.isEven(row))
+                    setBackground(table.getBackground());
+                else
+                    setBackground(new Color(240,240,240));
+            }
+    
+            if (hasFocus)
+            {
+                setBorder(
+                    UIManager.getBorder("Table.focusCellHighlightBorder"));
+                    
+                if (table.isCellEditable(row, column))
+                {
+                    setForeground(
+                        UIManager.getColor("Table.focusCellForeground"));
+                        
+                    setBackground(
+                        UIManager.getColor("Table.focusCellBackground"));
+                }
+            }
+            else
+                setBorder(noFocusBorder);
+
+            switch (column)
+            {
+                case COL_NUM:
+                
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                    setValue(text);
+                    break;
+                    
+                case COL_DIR:
+                case COL_FILE:
+                
+                    setHorizontalAlignment(SwingConstants.LEFT);
+                    setValue(text);
+                    break;
+                    
+                case COL_CODE:
+                case COL_COMMENTS:
+                case COL_BLANK:
+                case COL_THROWN_OUT:
+                case COL_TOTAL:
+                
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                    setValue(decimalFormatter_.format(value));
+                    break;
+    
+                case COL_PERCENTAGE:
+                
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                    int i = ((Integer) value).intValue();
+                    Float f = new Float((float) i/100);
+                    setValue(percentFormatter_.format(f));
+                    break;
+                    
+                default:
+                    setValue(value);
+            }
+            
+            return this;
+        }
+    }
+    
 }
