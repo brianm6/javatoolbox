@@ -63,13 +63,13 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     //--------------------------------------------------------------------------
     
     // Preferences
-    public static final String NODE_JEDITTEXTAREA   = "JEditTextArea";
-    public static final String   ATTR_ANTIALIAS     =   "antialias";
-    public static final String   ATTR_WHEELUNIT     =   "mousewheelunit";
-    public static final String   ATTR_TABSIZE       =   "tabsize";
-    public static final String   ATTR_SAVE_CONTENTS =   "savecontents";
-    public static final String   NODE_FONT          =   "Font";
-    public static final String   NODE_CONTENTS      =   "Contents";
+    public static final String NODE_JEDITTEXTAREA  = "JEditTextArea";
+    public static final String   ATTR_ANTIALIAS    = AntiAliased.PROP_ANTIALIAS;
+    public static final String   ATTR_WHEELUNIT    =   "mousewheelunit";
+    public static final String   ATTR_TABSIZE      =   "tabsize";
+    public static final String   ATTR_SAVE_CONTENTS=   "savecontents";
+    public static final String   NODE_FONT         =   "Font";
+    public static final String   NODE_CONTENTS     =   "Contents";
     
     //--------------------------------------------------------------------------
     // Fields 
