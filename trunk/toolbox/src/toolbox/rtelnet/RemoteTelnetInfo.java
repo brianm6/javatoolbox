@@ -10,7 +10,7 @@ package toolbox.rtelnet;
 public class RemoteTelnetInfo
 {
     //--------------------------------------------------------------------------
-    // Defaults
+    // Default Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -88,7 +88,7 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the command.
+     * Returns the telnet command to execute.
      * 
      * @return String
      */
@@ -99,7 +99,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Returns the hostname.
+     * Returns the hostname to connect to.
      * 
      * @return String
      */
@@ -110,7 +110,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Returns the password.
+     * Returns the password as clear text.
      * 
      * @return String
      */
@@ -121,7 +121,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Returns the telnet port.
+     * Returns the telnet port to connect to.
      * 
      * @return int
      */
@@ -132,7 +132,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Returns the username.
+     * Returns the username to authenticate as.
      * 
      * @return String
      */
@@ -143,7 +143,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Sets the command.
+     * Sets the command to execute.
      * 
      * @param command The command to set.
      */
@@ -154,7 +154,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Sets the hostname.
+     * Sets the hostname to telnet to.
      * 
      * @param hostname The hostname to set.
      */
@@ -165,7 +165,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Sets the password.
+     * Sets the password in clear text.
      * 
      * @param password The password to set.
      */
@@ -176,7 +176,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Sets the port.
+     * Sets the port to connect to.
      * 
      * @param port The port to set.
      */
@@ -187,7 +187,7 @@ public class RemoteTelnetInfo
 
     
     /**
-     * Sets the username.
+     * Sets the username to authenticate as.
      * 
      * @param username The username to set.
      */
@@ -201,9 +201,9 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
-     * Returns TelnetInfo as string.
+     * Returns debug friendly state of this object as a string.
      * 
-     * @return String
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
@@ -211,9 +211,9 @@ public class RemoteTelnetInfo
             "TelnetInfo\n" + 
             "==========\n" +
             "Hostname: " + getHostname() + "\n" +
-            "Port    : " + getPort() + "\n" +
+            "Port    : " + getPort()     + "\n" +
             "Username: " + getUsername() + "\n" +
             "Password: " + getPassword() + "\n" +
-            "Command : " + getCommand() + "\n";
+            "Command : " + getCommand()  + "\n" ;
     }
 }

@@ -64,17 +64,6 @@ public class RemoteTelnetClient extends TelnetClient
         monitor.addTransferredListener(new MyTransferredListener());
     }
     
-    class MyTransferredListener implements TransferredListener
-    {
-        public void bytesTransferred(TransferredEvent event)
-        {
-            synchronized(responseStream_)
-            {
-                responseStream_.notify();
-            }
-        }
-    }
-    
     //--------------------------------------------------------------------------
     // Public 
     //--------------------------------------------------------------------------
@@ -178,5 +167,28 @@ public class RemoteTelnetClient extends TelnetClient
     public void disconnect() throws IOException
     {
         super.disconnect();
+    }
+
+    //--------------------------------------------------------------------------
+    // MyTransferredListener
+    //--------------------------------------------------------------------------
+    
+    /**
+     * MyTransferredListener is responsible for notifying the response stream
+     * whenever bytes are transferred. 
+     */
+    class MyTransferredListener implements TransferredListener
+    {
+        /**
+         * @see toolbox.util.io.transferred.TransferredListener#
+         *      bytesTransferred(toolbox.util.io.transferred.TransferredEvent)
+         */
+        public void bytesTransferred(TransferredEvent event)
+        {
+            synchronized(responseStream_)
+            {
+                responseStream_.notify();
+            }
+        }
     }
 }

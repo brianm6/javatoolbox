@@ -24,7 +24,7 @@ public class RemoteTelnet
     private static final Logger logger_ = Logger.getLogger(RemoteTelnet.class);
 
     //--------------------------------------------------------------------------
-    // Fields
+    // Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -288,10 +288,11 @@ public class RemoteTelnet
 
 
     /**
-     * Promps the user to enter a value via the command line.
+     * Prompts the user to enter a value via the command line and returns the
+     * entered value.
      * 
      * @param prompt Prompt that the user is presented with.
-     * @return Value that the user typed in.
+     * @return String
      * @throws IOException on I/O error.
      */
     private String queryUser(String prompt) throws IOException
