@@ -105,6 +105,41 @@ public final class FileUtil
     }
 
 
+    /**
+     * Reads in the contents of a file into byte array
+     *
+     * @param   filename  Name of the file to read in
+     * @return  Files contents as a byte array
+     * @throws  FileNotFoundException if file not found
+     * @throws  IOException on IO error
+     */
+    public static byte[] getFileAsBytes(String filename)
+        throws FileNotFoundException, IOException
+    {
+        InputStream is = null;
+        List byteBuffer = new ArrayList();
+
+        try
+        {
+            is = new BufferedInputStream(new FileInputStream(filename));
+            int b;
+
+            while ((b = is.read()) != -1)
+                byteBuffer.add(new Byte((byte)b));
+        }
+        finally
+        {
+            ResourceCloser.close(is);
+        }
+
+        byte[] buffer = new byte[byteBuffer.size()];
+        
+        for (int i=0; i<byteBuffer.size(); i++)
+            buffer[i] = ((Byte) byteBuffer.get(i)).byteValue();
+            
+        return buffer;
+    }
+
     /**     
      * Writes out the contents to a text file from a single string.     
      *     
@@ -138,6 +173,35 @@ public final class FileUtil
 
 
     /**     
+     * Writes out the contents of a byte array to a file
+     *     
+     * @param   filename    Name of the file     
+     * @param   data        Byte array of data
+     * @param   append      True if append if the file already exists
+     * 
+     * @throws  FileNotFoundException if file not found
+     * @throws  IOException on IO error
+     */
+    public static void setFileContents(
+        String filename,
+        byte[] data,
+        boolean append)
+        throws FileNotFoundException, IOException
+    {
+        FileOutputStream fos = new FileOutputStream(filename, append);
+
+        if (fos == null)
+        {
+            logger_.error("File does not exist: " + filename);
+            throw new FileNotFoundException(filename);
+        }
+
+        fos.write(data);
+        fos.close();
+    }
+
+
+    /**     
      * Writes a string to a file
      *     
      * @param   file        File to write to
@@ -160,7 +224,7 @@ public final class FileUtil
     /**
      * Retrieves the System specific temp file directory
      *
-     * @return        Temp file directory
+     * @return  Temp file directory
      */
     public static File getTempDir()
     {
@@ -183,12 +247,11 @@ public final class FileUtil
 
 
     /**
-     * Retrieves a suitable temporary file name for arbitrary use
-     * based on the systems temporary directory. The returned
-     * string is absolute in form.
+     * Retrieves a suitable temporary file name for arbitrary use based on the 
+     * system's temporary directory. The returned string is absolute in form.
      *
-     * @return    Tempory file name
-     * @throws    IOException on IO error
+     * @return  Temporary file name
+     * @throws  IOException on IO error
      */
     public static String getTempFilename() throws IOException
     {
@@ -214,11 +277,11 @@ public final class FileUtil
 
 
     /**
-     *  Moves a file to a given directory. The destination
-     *  directory must exist and be writable.
+     * Moves a file to a given directory. The destination directory must exist 
+     * and be writable.
      *
-     *  @param    srcFile    File to move
-     *  @param    destDir    Destination directory
+     * @param  srcFile  File to move
+     * @param  destDir  Destination directory
      */
     public static void moveFile(File srcFile, File destDir)
     {
@@ -266,10 +329,10 @@ public final class FileUtil
      * Finds files recursively from a given starting directory using the
      * passed in filter as selection criteria.
      * 
-     * @param    startingDir Start directory for the search
-     * @param    filter      Filename filter criteria
-     * @return   List of filesnames as strings that match the filter 
-     *           from the start dir
+     * @param    startingDir  Start directory for the search
+     * @param    filter       Filename filter criteria
+     * @return   List of filesnames as strings that match the filter from the 
+     *           start dir
      */
     public static List findFilesRecursively(
         String startingDir,
@@ -310,8 +373,8 @@ public final class FileUtil
      * Appends the file separator char to the end of a path if it already
      * doesn't exist.
      * 
-     * @param  path    Path to append file separator
-     * @return Path with suffixed file separator
+     * @param   path    Path to append file separator
+     * @return  Path with suffixed file separator
      */
     public static String trailWithSeparator(String path)
     {
@@ -326,8 +389,8 @@ public final class FileUtil
      * For a given file path, the file separator characters are changed to
      * match the File.separator for the current platform
      * 
-     * @param  path  Path to change
-     * @return Changed path
+     * @param   path  Path to change
+     * @return  Changed path
      */
     public static String matchPlatformSeparator(String path)
     {
