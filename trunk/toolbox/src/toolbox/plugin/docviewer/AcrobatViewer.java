@@ -7,17 +7,14 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import com.adobe.acrobat.Viewer;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.ThreadUtil;
 
 /**
  * AcrobatViewer is a wrapper for Acrobat JavaBean used to view PDF documents.
@@ -57,15 +54,7 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
             
             setLayout(new BorderLayout());
             viewer_ = new Viewer();
-            viewer_.activate();
-            
-            //viewer_.activateWithoutBars();
-            add(new JButton("FUCK ME WITH A POLE"));
-            ThreadUtil.sleep(2000);
-            add(viewer_, BorderLayout.CENTER);
-            logger_.debug("Done");
-            
-            
+            add(BorderLayout.CENTER, viewer_);
         }
         catch (Exception e)
         {
@@ -101,20 +90,21 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
     {
         try
         {
+            viewer_.activate();
             viewer_.setDocumentInputStream(is);
             viewer_.execMenuItem("FitVisibleWidth");
-            
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    invalidate();
-                    repaint();
-                    setSize(viewer_.getSize().width+1, viewer_.getSize().height+1);
-                }
-            });
+            viewer_.execMenuItem("OneColumn");
             
             
+//            SwingUtilities.invokeLater(new Runnable()
+//            {
+//                public void run()
+//                {
+//                    invalidate();
+//                    repaint();
+//                    setSize(viewer_.getSize().width+1, viewer_.getSize().height+1);
+//                }
+//            });
             
         }
         catch (Exception e)
