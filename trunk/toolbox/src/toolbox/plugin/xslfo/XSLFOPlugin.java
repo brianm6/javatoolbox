@@ -38,8 +38,8 @@ import toolbox.jedit.JEditTextArea;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.XMLUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.formatter.XMLFormatter;
 import toolbox.util.io.StringInputStream;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
@@ -555,7 +555,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            xmlArea_.setText(XMLUtil.format(xmlArea_.getText()));
+            xmlArea_.setText(new XMLFormatter().format(xmlArea_.getText()));
         }
     }
 
