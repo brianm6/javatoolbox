@@ -13,6 +13,10 @@ import toolbox.util.io.filter.OrFilter;
  */
 class SourceScanner implements Runnable
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Logical parent of this object.
      */
@@ -44,8 +48,9 @@ class SourceScanner implements Runnable
     
     /**
      * Creates a scanner.
-     * 
-     * @param dir Directory root to scan
+     *
+     * @param view Parent view. 
+     * @param dir Directory root to scan.
      */
     SourceScanner(JSourceView view, File dir)
     {
@@ -67,10 +72,10 @@ class SourceScanner implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Finds all java files in the given directory. Called recursively so
-     * the directory is passed on each invocation.
+     * Finds all java files in the given directory. Called recursively so the
+     * directory is passed on each invocation.
      * 
-     * @param file Directory to scan for files
+     * @param dir Directory to scan for files.
      */
     protected void findJavaFiles(File dir)
     {
@@ -91,7 +96,7 @@ class SourceScanner implements Runnable
         
         if (!ArrayUtil.isNullOrEmpty(dirs))
         {
-            for (int i=0; i<dirs.length; i++)
+            for (int i = 0; i < dirs.length; i++)
             {
                 this.sourceView_.setScanStatus("Scanning " + dirs[i] + " ...");
                 findJavaFiles(dirs[i]);

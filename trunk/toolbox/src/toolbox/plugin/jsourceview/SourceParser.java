@@ -13,8 +13,11 @@ import toolbox.util.FileUtil;
  */
 class SourceParser implements Runnable
 {
-    private static final Logger logger_ = 
-        Logger.getLogger(SourceParser.class);
+    private static final Logger logger_ = Logger.getLogger(SourceParser.class);
+    
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
     
     /**
      * Logical parent.
@@ -33,7 +36,7 @@ class SourceParser implements Runnable
     /**
      * Creates a SourceParser.
      * 
-     * @param JSourceView Parent view.
+     * @param view Parent view.
      */
     SourceParser(JSourceView view)
     {
@@ -95,7 +98,9 @@ class SourceParser implements Runnable
                     ++fileCount;
 
                     // Create table row data and append                    
-                    Object tableRow[] = new Object[JSourceView.COL_NAMES.length];
+                    Object tableRow[] = 
+                        new Object[JSourceView.COL_NAMES.length];
+                    
                     tableRow[0] = new Integer(fileCount);
                     tableRow[1] = FileUtil.stripFile(filename);
                     tableRow[2] = FileUtil.stripPath(filename);

@@ -17,6 +17,10 @@ import toolbox.util.ui.table.SmartTableCellRenderer;
  */   
 public class SourceTableCellRenderer extends SmartTableCellRenderer
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Formatter for whole numbers.
      */
@@ -47,13 +51,13 @@ public class SourceTableCellRenderer extends SmartTableCellRenderer
     /**
      * Returns the default table cell renderer.
      *
-     * @param table JTable
-     * @param value Value to assign to the cell at [row, column]
-     * @param isSelected True if the cell is selected
-     * @param hasFocus True if cell has focus
-     * @param row Row of the cell to render
-     * @param column Column of the cell to render
-     * @return Default table cell renderer
+     * @param table JTable.
+     * @param value Value to assign to the cell at [row, column].
+     * @param isSelected True if the cell is selected.
+     * @param hasFocus True if cell has focus.
+     * @param row Row of the cell to render.
+     * @param column Column of the cell to render.
+     * @return Default table cell renderer.
      */
     public Component getTableCellRendererComponent(
         JTable table,
@@ -79,7 +83,7 @@ public class SourceTableCellRenderer extends SmartTableCellRenderer
             if (MathUtil.isEven(row))
                 setBackground(table.getBackground());
             else
-                setBackground(new Color(240,240,240));
+                setBackground(new Color(240, 240, 240));
         }
 
         if (hasFocus)
@@ -128,7 +132,7 @@ public class SourceTableCellRenderer extends SmartTableCellRenderer
             
                 setHorizontalAlignment(SwingConstants.CENTER);
                 int i = ((Integer) value).intValue();
-                Float f = new Float((float) i/100);
+                Float f = new Float((float) i / 100);
                 setValue(percentFormatter_.format(f));
                 break;
                 

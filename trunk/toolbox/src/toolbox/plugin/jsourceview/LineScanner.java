@@ -5,6 +5,10 @@ package toolbox.jsourceview;
  */
 public class LineScanner implements MachineConstants
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /**
      * Debug flag.
      */
@@ -36,7 +40,7 @@ public class LineScanner implements MachineConstants
      * Creates a LineScanner for the given line of source code. Assumes tabs
      * have already been removed from the line of source code.
      * 
-     * @param line Line of source code
+     * @param line Line of source code.
      */
     public LineScanner(String line)
     {
@@ -50,7 +54,7 @@ public class LineScanner implements MachineConstants
     /**
      * Sets the current line.
      * 
-     * @param line Line of source code
+     * @param line Line of source code.
      */
     public void setLine(String line)
     {
@@ -62,25 +66,25 @@ public class LineScanner implements MachineConstants
     /**
      * Peeks to next token in the line.
      * 
-     * @return State of machine
+     * @return State of machine.
      */
     public int peek()
     {
         String posStr = "pos=" + position_;
         
-        if(debug_)
+        if (debug_)
             System.out.println(posStr);
             
         if (line_.length() == 0)
         {
-            if(debug_)
+            if (debug_)
                 System.out.println("EOL");
             return 1;
         }
         
         if (position_ == line_.length())
         {
-            if(debug_)
+            if (debug_)
                 System.out.println("EOL");
             return 1;
         }
@@ -120,7 +124,7 @@ public class LineScanner implements MachineConstants
             return 0;
         }
         
-        if(debug_)
+        if (debug_)
             System.out.println("ANY_CHAR");
             
         return 0;
@@ -136,7 +140,7 @@ public class LineScanner implements MachineConstants
     {
         int i = peek();
         
-        switch(i)
+        switch (i)
         {
             case 0: /* '\0' */
                 position_++;
@@ -150,8 +154,11 @@ public class LineScanner implements MachineConstants
     
             case 1: /* '\001' */
                 return i;
+                
+            default: 
+                throw new IllegalArgumentException("token " + i + " not valid");
+                
         }
         
-        throw new IllegalArgumentException("token " + i + " not valid!");
     }
 }

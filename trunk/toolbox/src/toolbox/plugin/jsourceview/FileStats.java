@@ -7,6 +7,10 @@ import toolbox.util.collections.AsMap;
  */
 public class FileStats
 {
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * Total number of lines in file. 
      */    
@@ -58,8 +62,8 @@ public class FileStats
     {
         if (codeLines_ > 0 && totalLines_ > 0)
             return (int)
-                (( (float) codeLines_ / (float)
-                    (totalLines_ - blankLines_)) * 100F);
+                (((float) codeLines_ /
+                (float) (totalLines_ - blankLines_)) * 100F);
         else
             return 0;
     }

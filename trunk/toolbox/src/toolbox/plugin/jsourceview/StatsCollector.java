@@ -20,6 +20,10 @@ public class StatsCollector
     private static final Logger logger_ =
         Logger.getLogger(StatsCollector.class);
     
+    //--------------------------------------------------------------------------
+    // Fields 
+    //--------------------------------------------------------------------------
+    
     /** 
      * List of collectors that will analyze the source code. 
      */
@@ -49,9 +53,9 @@ public class StatsCollector
     /**
      * Scans a given file and generates statistics.
      * 
-     * @param filename Name of the file
-     * @return File statistics
-     * @throws IOException on I/O error
+     * @param filename Name of the file.
+     * @return File statistics.
+     * @throws IOException on I/O error.
      */
     public FileStats getStats(String filename) throws IOException
     {
@@ -67,9 +71,9 @@ public class StatsCollector
     /**
      * Scans a given file and generates statistics.
      * 
-     * @param reader Source of source code
-     * @return File statistics
-     * @throws IOException on I/O error
+     * @param rdr Source of source code.
+     * @return File statistics.
+     * @throws IOException on I/O error.
      */
     public FileStats getStats(Reader rdr) throws IOException
     {
@@ -84,9 +88,9 @@ public class StatsCollector
         while ((line_ = reader.readLine()) != null) 
         {
             // Nuke tabs and leading/trailing spaces                
-            line_ = line_.replace('\t',' ').trim();
+            line_ = line_.replace('\t', ' ').trim();
 
-            for (Iterator i = collectors_.iterator(); i.hasNext(); )
+            for (Iterator i = collectors_.iterator(); i.hasNext();)
             {
                 CodeCollector collector = (CodeCollector) i.next();
                 
@@ -152,6 +156,10 @@ public class StatsCollector
      */
     class ImportCollector implements CodeCollector
     {
+        /**
+         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
+         *      toolbox.jsourceview.FileStats, java.lang.String)
+         */
         public boolean identify(FileStats stats, String line)
         {
             boolean done = false;
@@ -176,6 +184,10 @@ public class StatsCollector
      */    
     class BraceCollector implements CodeCollector
     {
+        /**
+         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
+         *      toolbox.jsourceview.FileStats, java.lang.String)
+         */
         public boolean identify(FileStats stats, String line)
         {
             boolean done = false;
@@ -195,11 +207,15 @@ public class StatsCollector
     //--------------------------------------------------------------------------
     
     /**
-     * Collector which identifies empty lines of code also considered
+     * Collector which identifies empty lines of code also considered 
      * whitespace.
      */    
     class BlankCollector implements CodeCollector
     {
+        /**
+         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
+         *      toolbox.jsourceview.FileStats, java.lang.String)
+         */
         public boolean identify(FileStats stats, String line)
         {
             boolean done = false;
@@ -224,6 +240,10 @@ public class StatsCollector
      */
     class TotalCollector implements CodeCollector
     {
+        /**
+         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
+         *      toolbox.jsourceview.FileStats, java.lang.String)
+         */
         public boolean identify(FileStats stats, String line)
         {
             stats.incrementTotalLines();
@@ -240,9 +260,21 @@ public class StatsCollector
      */
     class RealCodeCollector implements CodeCollector
     {
-        LineStatus  status_  = new LineStatus();
-        LineScanner scanner_ = new LineScanner();
+        /**
+         * Status of the line.
+         */
+        private LineStatus  status_  = new LineStatus();
         
+        /**
+         * The line scanner.
+         */
+        private LineScanner scanner_ = new LineScanner();
+        
+        
+        /**
+         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
+         *      toolbox.jsourceview.FileStats, java.lang.String)
+         */
         public boolean identify(FileStats stats, String line)
         {
             scanner_.setLine(line);
@@ -274,6 +306,10 @@ public class StatsCollector
      */    
     class CommentBeginEndCollector implements CodeCollector
     {
+        /**
+         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
+         *      toolbox.jsourceview.FileStats, java.lang.String)
+         */
         public boolean identify(FileStats stats, String line)
         {
             boolean done = false;
