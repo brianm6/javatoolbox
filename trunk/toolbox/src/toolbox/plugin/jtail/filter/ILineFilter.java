@@ -1,9 +1,11 @@
 package toolbox.plugin.jtail.filter;
 
+import toolbox.util.service.Enableable;
+
 /**
  * Filter for a single line of text.
  */
-public interface ILineFilter
+public interface ILineFilter extends Enableable
 {
     /**
      * Filters the line of text.
@@ -12,20 +14,4 @@ public interface ILineFilter
      * @return Mutated line of text as processed by the filter.
      */
     String filter(String line);
-    
-    
-    /**
-     * Is the filter enabled?
-     * 
-     * @return True if the filter is enabled, false otherwise.
-     */
-    boolean isEnabled();
-    
-    
-    /**
-     * Enables/disables the filter.
-     * 
-     * @param b True to enable the filter, false to disable the filter.
-     */
-    void setEnabled(boolean b);
 }
