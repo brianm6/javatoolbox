@@ -4,22 +4,26 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -27,44 +31,60 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import net.sf.jode.decompiler.Decompiler;
 import org.apache.log4j.Category;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.MathUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
+import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
 
+import de.java2html.JavaSource;
+import de.java2html.JavaSource2HTMLConverter;
+import de.java2html.JavaSourceConverter;
+
 /**
- * JFindClass is a GUI front end to FindClass
+ * GUI for FindClass
  */
 public class JFindClass extends JFrame
 {
     /** Logger **/
     private static final Category logger_ = 
         Category.getInstance(JFindClass.class);
-    
+
+    // Search    
     private JTextField           searchField_;
     private JButton              searchButton_;
-    private JStatusPane          statusBar_;
-    
     private JCheckBox            ignoreCaseCheckBox_;
+
+    // Left flip pane            
+    private JFlipPane            leftFlipPane_;
+    private JFileExplorer        fileExplorer_;
     
+    // Top flip pane
+    private JFlipPane            topFlipPane_;
     private JList                pathList_;
     private DefaultListModel     pathModel_;
-    private JFlipPane            flipPane_;
+    private JEditorPane          sourceArea_;
     
+
+    // Results    
     private JTable               resultTable_;
     private ThreadSafeTableModel resultTableModel_;
     private JScrollPane          resultPane_;
     private int                  resultCount_;
     private FindClass            findClass_;
-    private JFileExplorer        explorer_;
+
+    // Status
+    private JStatusPane          statusBar_;
     
     
     /** Result table columns **/    
@@ -77,6 +97,11 @@ public class JFindClass extends JFrame
         "Timestamp"
     };
 
+    private static final int COL_NUM = 0;
+    private static final int COL_SOURCE = 1;
+    private static final int COL_CLASS = 2;
+    private static final int COL_SIZE = 3;
+    private static final int COL_TIMESTAMP = 4;
     
     /**
      * Entrypoint
@@ -89,10 +114,10 @@ public class JFindClass extends JFrame
         jfc.setVisible(true);
     }
 
-    //
-    //  CONSTRUCTORS
-    //
-    
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Constructor for JFindClass
      */
@@ -112,14 +137,14 @@ public class JFindClass extends JFrame
         super(title);
         buildView();
         init();
-        pack();
+        setSize(800,600);
         SwingUtil.centerWindow(this);
     }
 
-    //
-    //  IMPLEMENTATION
-    //
-    
+    //--------------------------------------------------------------------------
+    //  Implementation
+    //--------------------------------------------------------------------------
+ 
     /**
      * Initiailizes 
      */
@@ -135,27 +160,50 @@ public class JFindClass extends JFrame
 
 
     /**
-     * Builds the GUI and to the contentPane
+     * Builds the GUI and adds it to the contentPane
      */
     protected void buildView()
     {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
-        // Search Panel
-        JLabel searchLabel = new JLabel("Find Class");
+        // Search bar
+        buildSearchPanel();
+        
+        // Top flip pane (classpath & decompiler)
+        buildTopFlipPane();
+        
+        // SearchResults
+        buildSearchResultsPanel();
+        
+        // Left flip pane with file explorer
+        buildLeftFlipPane();
 
-        ActionListener actionHandler = new ActionHandler();
+        // Status bar
+        buildStatusBar();
         
+        // Post tweaks
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    /**
+     * Builds the search panel at the top of the GUI with the ignore case box.
+     * Allows the user to enter a regular expression into the search field
+     * and initiate a search.
+     */    
+    protected void buildSearchPanel()
+    {
+        // Search Panel
+        SearchAction searchAction = new SearchAction();
+
+        JLabel searchLabel = new JLabel("Find Class");
         searchField_ = new JTextField(20);
-        searchField_.addActionListener(actionHandler);
+        searchField_.addActionListener(searchAction);
         searchField_.setFont(SwingUtil.getPreferredMonoFont());
-        
-        searchButton_ = new JButton("Find");
-        searchButton_.addActionListener(actionHandler);
-        
+        searchField_.setToolTipText("I like Regular expressions!");
+        searchButton_ = new JButton(searchAction);
         ignoreCaseCheckBox_ = new JCheckBox("Ignore Case", true);
-                
+        
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchPanel.add(searchLabel);
         searchPanel.add(searchField_);
@@ -163,31 +211,74 @@ public class JFindClass extends JFrame
         searchPanel.add(new JLabel("      "));
         searchPanel.add(ignoreCaseCheckBox_);
         
-        contentPane.add(searchPanel, BorderLayout.NORTH);
+        getContentPane().add(searchPanel, BorderLayout.NORTH);
+    }
 
-        // Path & Explorer Panel
-        JLabel pathListLabel = new JLabel("Classpath");
+    /**
+     * Builds the Decompiler panel which shows a class file (search result) in 
+     * decompiled form
+     */
+    protected JPanel buildDecompilerPanel()
+    {
+        // Decpmpiler 
+        JPanel decompilerPanel = new JPanel(new BorderLayout());
+        sourceArea_ = new JEditorPane();
+        sourceArea_.setContentType("text/html");
+        sourceArea_.setFont(SwingUtil.getPreferredMonoFont());
+        decompilerPanel.add(new JScrollPane(sourceArea_), BorderLayout.CENTER);
+        JButton decompileButton = new JButton(new DecompileAction());
+        decompilerPanel.add(BorderLayout.SOUTH, decompileButton);
+        decompilerPanel.setPreferredSize(new Dimension(100, 400));        
+        return decompilerPanel;
+    }
+
+
+    /**
+     * Builds the Classpath panel which shows all paths/archives that have been
+     * targeted for the current search
+     */
+    protected JPanel buildClasspathPanel()
+    {
+        // Classpath 
+        //JLabel pathListLabel = new JLabel("Classpath");
         pathModel_ = new DefaultListModel(); 
         pathList_  = new JList(pathModel_);
         pathList_.setFont(SwingUtil.getPreferredMonoFont());
         
         JPanel pathPanel = new JPanel(new BorderLayout());
-        pathPanel.add(pathListLabel, BorderLayout.NORTH);
+        //pathPanel.add(pathListLabel, BorderLayout.NORTH);
         pathPanel.add(new JScrollPane(pathList_), BorderLayout.CENTER);
+        pathPanel.setPreferredSize(new Dimension(100, 400));
+        return pathPanel;
+    }
 
-        explorer_ = new JFileExplorer(false);
-        explorer_.addJFileExplorerListener(new JFileExplorerHandler());
-        
-        JPanel topPanel = new JPanel(new BorderLayout());
 
-        flipPane_ = new JFlipPane(JFlipPane.LEFT);
-        flipPane_.addFlipper("File Explorer", explorer_);
-        flipPane_.setExpanded(false);
-            
-        topPanel.add(BorderLayout.WEST, flipPane_);
-        topPanel.add(BorderLayout.CENTER, pathPanel);
-                         
-        // Result panel        
+    /**
+     * Builds the flippane at the top of the application which contains the
+     * Classpath and Decompiler panels
+     */
+    protected JPanel buildTopFlipPane()
+    {
+        JPanel pathPanel = buildClasspathPanel();        
+        JPanel decompilerPanel = buildDecompilerPanel();
+                
+        // Top flip pane
+        JFlipPane topFlipPane_ = new JFlipPane(JFlipPane.TOP);
+        topFlipPane_.addFlipper("Classpath", pathPanel);
+        topFlipPane_.addFlipper("Decompiler", decompilerPanel);
+        topFlipPane_.setSelectedFlipper(pathPanel);
+        return topFlipPane_;
+    }
+
+    
+    /**
+     * Builds the Search Results panel which lists the results of the search in
+     * a JTable. Once a result is selected, it can optionally be decompiled
+     * and have the resulting source code appear in the Decompiler panel
+     */
+    protected void buildSearchResultsPanel()
+    {
+        // Search Results panel        
         JLabel resultLabel = new JLabel("Results");
         
         resultTableModel_ = new ThreadSafeTableModel(resultColumns_,0);
@@ -198,26 +289,42 @@ public class JFindClass extends JFrame
         JPanel resultPanel = new JPanel(new BorderLayout());
         resultPanel.add(resultLabel, BorderLayout.NORTH);
         resultPanel.add(resultPane_, BorderLayout.CENTER);
-       
         
-        // Split pane
-        JSplitPane splitPane = 
-            new JSplitPane(
-                JSplitPane.VERTICAL_SPLIT, 
-                topPanel, //topSplitPane, 
-                resultPanel);
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.add(BorderLayout.NORTH, buildTopFlipPane());
+        centerPanel.add(BorderLayout.CENTER, resultPanel);
         
-        contentPane.add(splitPane, BorderLayout.CENTER);
-
-        // Status bar        
-        statusBar_ = new JStatusPane();
-        statusBar_.setStatus("Enter a regular expression and hit Find!");
-        contentPane.add(statusBar_, BorderLayout.SOUTH);
-        
-        // Post tweaks
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
+        getContentPane().add(BorderLayout.CENTER, centerPanel);
     }
 
+
+    /**
+     * Builds the status bar 
+     */
+    protected void buildStatusBar()
+    {
+        // Status bar
+        statusBar_ = new JStatusPane();
+        statusBar_.setStatus("Enter a regular expression and hit Find!");
+        getContentPane().add(statusBar_, BorderLayout.SOUTH);
+    }
+
+
+    /**
+     * Builds the left flip pane which contains the file explorer. The file
+     * explorer can be used to add additional search targets to the Classpath
+     * panel
+     */
+    protected void buildLeftFlipPane()
+    {
+        // Left flip pane - file explorer
+        fileExplorer_ = new JFileExplorer(false);
+        fileExplorer_.addJFileExplorerListener(new JFileExplorerHandler());
+        leftFlipPane_ = new JFlipPane(JFlipPane.LEFT);
+        leftFlipPane_.addFlipper("File Explorer", fileExplorer_);
+        leftFlipPane_.setExpanded(false);
+        getContentPane().add(leftFlipPane_, BorderLayout.WEST);
+    }
 
     /**
      * Tweaks the table columns for width and extents
@@ -265,67 +372,21 @@ public class JFindClass extends JFrame
 
 
     /**
-     * Executes search based on the contents of the search field
+     * Generic error handler for GUI exceptions
      * 
-     * @param  s  Search string (can be a regular expression)
+     * @param  t   Exception causing error
+     * @param  c   Category to log to
      */
-    public void searchButtonClicked(String s) 
+    public void handleException(Throwable t, Category c)
     {
-        try
-        {
-            String search = searchField_.getText().trim();
-            
-            logger_.debug("Searching for " + search);
-            
-            if (StringUtil.isNullOrEmpty(search))
-            {
-                statusBar_.setStatus("Enter class to search");
-            }
-            else
-            {
-                resultTableModel_.setNumRows(0);
-                resultCount_ = 0;
-                
-                Object results[]  = findClass_.findClass(
-                    search, ignoreCaseCheckBox_.isSelected());             
-                    
-                statusBar_.setStatus(results.length + " matches found");
-            }
-        }
-        catch (Exception e)
-        {
-            JSmartOptionPane.showExceptionMessageDialog(JFindClass.this, e);
-        }
+        c.error(t.getMessage(), t);
+        JSmartOptionPane.showExceptionMessageDialog(this, t);
     }
 
-    //
-    //  INNER CLASSES
-    //    
 
-    /**
-     * Handles actions generated by search controls 
-     */
-    class ActionHandler implements ActionListener
-    {
-        /**
-         * ActionListener
-         * 
-         * @param  e  Action event to handle
-         */    
-        public void actionPerformed(ActionEvent e)
-        {
-            Object obj = e.getSource();
-            
-            if (obj == searchButton_ || obj == searchField_)
-            {
-                /* spawn search on separate thread */
-                ThreadUtil.run(
-                    JFindClass.this, 
-                    "searchButtonClicked", 
-                    new Object[] { "String" });
-            }
-        }
-    }
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
 
 
     /**
@@ -481,6 +542,148 @@ public class JFindClass extends JFrame
             setValue(value);
 
             return this;
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    //  Actions
+    //--------------------------------------------------------------------------
+
+    /**
+     * Action to decompile the currently selected class file
+     */
+    private class DecompileAction extends AbstractAction
+    {
+        public DecompileAction()
+        {
+            super("Decompile");
+            putValue(MNEMONIC_KEY, new Integer('D'));    
+            putValue(SHORT_DESCRIPTION, "Decompiles class");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            int idx = resultTable_.getSelectedRow();
+            
+            if (idx >=0)
+            {
+                // Jar or directory path
+                String location = (String) 
+                    resultTable_.getModel().getValueAt(idx, COL_SOURCE); 
+                    
+                // FQN of class
+                String clazz  = (String) 
+                    resultTable_.getModel().getValueAt(idx, COL_CLASS);
+            
+                location = location.trim();
+                clazz  = clazz.trim();
+            
+                // Setup decompiler        
+                Decompiler decompiler = new Decompiler();
+                decompiler.setOption("style", "pascal");
+                decompiler.setOption("tabwidth", "4");
+                decompiler.setErr(new PrintWriter(new NullWriter()));
+                decompiler.setClassPath(location);
+
+                // Java source code will be dumped here                
+                StringWriter writer = new StringWriter();
+                                     
+                try
+                {
+                    decompiler.decompile(clazz, writer, null);
+                }
+                catch(IOException ioe)
+                {
+                    handleException(ioe, logger_);
+                }
+
+                // Nuke the tabs                
+                String java = StringUtil.replace(
+                    writer.getBuffer().toString(), "\t", "    ");
+                    
+//                sourceArea_.setText(java);
+//                sourceArea_.setCaretPosition(0);
+
+                int tabs = 4;
+        
+                //int target = chTarget.getSelectedIndex();
+        
+                // Collect statistical information
+                StringBuffer report = new StringBuffer();
+        
+                // Collect conversion-results
+                StringBuffer sb = new StringBuffer();
+        
+                // Create the converter
+                JavaSourceConverter converter = new JavaSource2HTMLConverter();
+        
+                sb.append(converter.getDocumentHeader());
+                sb.append(converter.getBlockSeparator());
+        
+                JavaSource source = new JavaSource(java, null, 4);
+                source.doParse();
+                converter.convert(source);
+                String block = converter.getResult();
+                sb.append(block);
+        
+                sb.append('\n');
+        
+                //report.append(source.getStatisticsString() + "\n");
+        
+                sb.append(converter.getDocumentFooter());
+                
+                sourceArea_.setText(sb.toString());
+                sourceArea_.setCaretPosition(0);
+            }           
+        }
+        
+    }
+
+    
+    /**
+     * Searches for a class in the displayed classpaths
+     */
+    protected class SearchAction extends AbstractAction
+    {
+        public SearchAction()
+        {
+            super("Search");
+            putValue(MNEMONIC_KEY, new Integer('S'));    
+            putValue(SHORT_DESCRIPTION, "Searches for a class");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            ThreadUtil.run(SearchAction.this, "doSearch", null);
+        }
+        
+        public void doSearch()
+        {
+            try
+            {
+                String search = searchField_.getText().trim();
+                
+                logger_.debug("Searching for " + search);
+                
+                if (StringUtil.isNullOrEmpty(search))
+                {
+                    statusBar_.setStatus("Enter class to search");
+                }
+                else
+                {
+                    resultTableModel_.setNumRows(0);
+                    resultCount_ = 0;
+                    
+                    Object results[]  = findClass_.findClass(
+                        search, ignoreCaseCheckBox_.isSelected());             
+                    
+                    statusBar_.setStatus(results.length + " matches found");
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException(ex, logger_);
+            }
         }
     }
 }
