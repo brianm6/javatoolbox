@@ -20,18 +20,30 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
     /**
      * Queue for started events.
      */
-    private BlockingQueue started_ = new BlockingQueue();
+    private BlockingQueue started_;
 
     /**
-     * Total numver of bytes written through the tunnel.
+     * Total number of bytes written to the tunnel.
      */
     private int totalBytesWritten_;
 
     /**
-     * Total number of bytes read through the tunnel.
+     * Total number of bytes read by the tunnel.
      */
     private int totalBytesRead_;
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Creates a DefaultTcpTunnelListener.
+     */
+    public DefaultTcpTunnelListener() 
+    {
+        started_ = new BlockingQueue();
+    }
+    
     //--------------------------------------------------------------------------
     // TcpTunnelListener Interface
     //--------------------------------------------------------------------------
