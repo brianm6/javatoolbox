@@ -12,12 +12,14 @@ import junit.framework.Assert;
 import toolbox.util.StreamUtil;
 
 /**
- * A {@java.io.File} comparator that can compare on varios file attributes.
+ * A {@java.io.File} comparator that can compare files by a number of file
+ * attributes. Comparison by the following characteristics is supported:
  * <p>
  * <ul>
  *   <li>File name (case insensetive)
  *   <li>File size
  *   <li>File timestamp
+ *   <li>File contents
  * </ul>
  */
 public class FileComparator implements Comparator
@@ -84,7 +86,7 @@ public class FileComparator implements Comparator
     public int compare(Object a, Object b)
 
     {
-        int result;
+        int result = Integer.MAX_VALUE;
         
         File fileA = (File) a;
         File fileB = (File) b;
@@ -125,11 +127,11 @@ public class FileComparator implements Comparator
                 break;
                 
                 
-            default:
-            
-                throw new IllegalArgumentException(
-                    "File comparator does not support comparisons by " + 
-                    compareBy_); 
+//            default:
+//            
+//                throw new IllegalArgumentException(
+//                    "File comparator does not support comparisons by " + 
+//                    compareBy_); 
         }
         
         return result;
@@ -156,9 +158,6 @@ public class FileComparator implements Comparator
         
         if (f2 == null)
             return 1;
-
-        if (f1.equals(f2))
-            return 0;
 
         if (!f1.exists() || !f1.isFile())
             throw new IllegalArgumentException(
