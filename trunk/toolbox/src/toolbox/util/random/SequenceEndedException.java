@@ -6,7 +6,7 @@ package toolbox.util.random;
  * 
  * @see toolbox.util.random.RandomSequence 
  */
-public class SequenceEndedException extends Exception
+public class SequenceEndedException extends RuntimeException
 {
     /**
      * Creates a SequenceEndedException.
