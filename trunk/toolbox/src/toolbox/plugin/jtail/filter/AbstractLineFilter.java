@@ -36,11 +36,11 @@ public abstract class AbstractLineFilter implements ILineFilter
      */
     public AbstractLineFilter(boolean enabled)
     {
-        enabled_ = enabled;    
+        setEnabled(enabled);    
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // Enableable Interface
     //--------------------------------------------------------------------------
     
     /**
