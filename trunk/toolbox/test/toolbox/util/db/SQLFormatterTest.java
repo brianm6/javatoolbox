@@ -18,6 +18,22 @@ public class SQLFormatterTest extends TestCase
         Logger.getLogger(SQLFormatterTest.class);
 
     //--------------------------------------------------------------------------
+    // Test SQL Statements
+    //--------------------------------------------------------------------------
+    
+    private static final String SQL_LOWER = 
+        "select * from user where name like 'Joe'";
+    
+    private static final String SQL_UPPER = 
+        "SELECT * FROM USER WHERE NAME LIKE 'Joe'";
+    
+    private static final String SQL_MIXED = 
+        "sElEcT * fRoM uSeR WhERe nAMe liKE 'Joe'";
+    
+    private static final String[] SQL_ALL = 
+        new String[] {SQL_LOWER, SQL_UPPER, SQL_MIXED };
+    
+    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
@@ -41,9 +57,179 @@ public class SQLFormatterTest extends TestCase
     }
 
     //--------------------------------------------------------------------------
-    // Unit Tests 
+    // Caps Mode Unit Tests 
     //--------------------------------------------------------------------------
 
+    /**
+     * Tests major caps mode formatting.
+     */
+    public void testFormatMajorCapsMode()
+    {
+        logger_.info("Running testFormatMajorCapsMode...");
+        
+        String formatterMode = "major";
+        
+        // Lowercase
+        String[] expectedLower = 
+            new String[] {"select", "from", "where", "Joe"};
+        
+        assertCapsMode(
+            formatterMode, CapsMode.LOWERCASE, SQL_ALL, expectedLower);
+ 
+        // Uppercase
+        String[] expectedUpper = 
+            new String[] {"SELECT", "FROM", "WHERE", "Joe"};
+        
+        assertCapsMode(
+            formatterMode, CapsMode.UPPERCASE, SQL_ALL, expectedUpper);
+
+        // Mixedcase
+        String[] expectedPreserve = 
+            new String[] {"sElEcT", "fRoM", "WhERe", "Joe"};
+        
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_MIXED}, 
+            expectedPreserve);
+        
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_LOWER}, 
+            expectedLower);
+
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_UPPER}, 
+            expectedUpper);
+    }
+
+    
+    /**
+     * Tests minor caps mode formatting.
+     */
+    public void testFormatMinorCapsMode()
+    {
+        logger_.info("Running testFormatMinorCapsMode...");
+        
+        String formatterMode = "minor";
+        
+        // Lowercase
+        String[] expectedLower  = new String[] {"like", "Joe"};
+        assertCapsMode(
+            formatterMode, CapsMode.LOWERCASE, SQL_ALL, expectedLower);
+ 
+        // Uppercase
+        String[] expectedUpper  = new String[] {"LIKE", "Joe"};
+        assertCapsMode(
+            formatterMode, CapsMode.UPPERCASE, SQL_ALL, expectedUpper);
+
+        // Mixedcase
+        String[] expectedPreserve  = new String[] {"liKE", "Joe"};
+        
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_MIXED}, 
+            expectedPreserve);
+        
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_LOWER}, 
+            expectedLower);
+
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_UPPER}, 
+            expectedUpper);
+    }
+
+
+    /**
+     * Tests names caps mode formatting.
+     */
+    public void testFormatNamesCapsMode()
+    {
+        logger_.info("Running testFormatNamesCapsMode...");
+        
+        String formatterMode = "names";
+        
+        // Lowercase
+        String[] expectedLower  = new String[] {"user", "name", "Joe"};
+        assertCapsMode(
+            formatterMode, CapsMode.LOWERCASE, SQL_ALL, expectedLower);
+ 
+        // Uppercase
+        String[] expectedUpper  = new String[] {"USER", "NAME", "Joe"};
+        assertCapsMode(
+            formatterMode, CapsMode.UPPERCASE, SQL_ALL, expectedUpper);
+
+        // Mixedcase
+        String[] expectedPreserve  = new String[] {"uSeR", "nAMe", "Joe"};
+        
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_MIXED}, 
+            expectedPreserve);
+        
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_LOWER}, 
+            expectedLower);
+
+        assertCapsMode(
+            formatterMode, 
+            CapsMode.PRESERVE, 
+            new String[] {SQL_UPPER}, 
+            expectedUpper);
+    }
+
+    
+    /**
+     * Common pattern for verifying the caps mode formatting.
+     * 
+     * @param formatterMode Major, minor, or names.
+     * @param capsMode Caps mode to verify.
+     * @param sqlStatements SQL statements to use as input.
+     * @param expectedKeywords Expected case of keywords in the result.
+     */
+    protected void assertCapsMode(
+        String formatterMode,
+        CapsMode capsMode, 
+        String[] sqlStatements, 
+        String[] expectedKeywords)
+    {
+        for (int i = 0; i < sqlStatements.length; i++)
+        {
+            SQLFormatter sf = new SQLFormatter();
+            
+            if (formatterMode.equals("major"))
+                sf.setMajorCapsMode(capsMode);
+            else if (formatterMode.equals("minor"))
+                sf.setMinorCapsMode(capsMode);
+            else if (formatterMode.equals("names"))
+                sf.setNamesCapsMode(capsMode);
+            else
+                throw new IllegalArgumentException("Invalid formatterMode");
+            
+            String result = sf.format(sqlStatements[i]);
+            logger_.info(StringUtil.banner(result));
+            
+            for (int j = 0; j < expectedKeywords.length; j++)
+                assertTrue(result.indexOf(expectedKeywords[j]) >= 0);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Simple Unit Tests
+    //--------------------------------------------------------------------------
+    
     /**
      * Tests formatting of a simple select stmt.
      */
@@ -51,7 +237,7 @@ public class SQLFormatterTest extends TestCase
     {
         logger_.info("Running testFormatSQL1...");
         
-        String s = formatter_.format("select * from user");
+        String s = formatter_.format("select name, age, height from user");
         logger_.info(StringUtil.addBars(s));
     }
 
