@@ -36,6 +36,8 @@
  * TODO: Write a CVS log formatter to append logs to bottom of a file.
  * TODO: Add class file DocumentViewer
  * TODO: Remove dependency on concurrent.jar
+ * TODO: Fix broken stop on JTail
+ * TODO: Find out why Tiny LAFs are not working
  * =============================================================================
  *                              Build
  * =============================================================================
@@ -230,6 +232,15 @@
           <tr>
             <td width="20%">Lib</td>
             <td>Added backported version of JDK1.5 java.util.concurrent to JDK1.4. Replaced all instances of               BlockingQueue and Mutex with the backported equivalents</td>
+          </tr>
+        </table>
+      </action>
+      
+      <action type="Add">
+        <table>
+          <tr>
+            <td width="20%">Util</td>
+            <td>Added InfoNode Look and Feel</td>
           </tr>
         </table>
       </action>
