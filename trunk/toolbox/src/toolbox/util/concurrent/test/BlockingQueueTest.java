@@ -109,4 +109,21 @@ public class BlockingQueueTest extends TestCase
         t.join();
     }
     
+    /**
+     * Tests toString()
+     * 
+     * @throws Exception on error
+     */
+    public void testToString() throws Exception
+    {
+        logger_.info("Running testToString...");
+        
+        BlockingQueue q = new BlockingQueue();
+        
+        q.push("a");
+        q.push("b");
+        q.push("c");
+        
+        logger_.info("toString: " + q);
+    }
 }
