@@ -112,17 +112,11 @@ public class JFileExplorerTest extends TestCase
             getContentPane().add(testPanel, BorderLayout.SOUTH);
         }        
 
-        /**
-         * @param  file  File double clicked 
-         */
         public void fileDoubleClicked(String file)
         {
             logger_.info("file " + file + " double clicked");
         }
         
-        /**
-         * @param  folder  Folder that was selected
-         */
         public void folderSelected(String folder)
         {
             logger_.info("folder " + folder + " selected");
@@ -133,9 +127,11 @@ public class JFileExplorerTest extends TestCase
             logger_.info("folder " + folder + " double clicked");    
         }
                 
-        /**
-         * @param  e  Action performed
-         */
+        public void fileSelected(String file)
+        {
+            logger_.info("file " + file + " selected");            
+        }
+                
         public void actionPerformed(ActionEvent e)
         {
             jfe_.selectFolder(testField_.getText());
