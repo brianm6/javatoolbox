@@ -7,6 +7,30 @@ import toolbox.util.ArrayUtil;
  */
 public abstract class AbstractService implements Service
 {
+    private static final int STATE_INIT     = 0;
+    private static final int STATE_RUNNING  = 1;
+    private static final int STATE_STOPPED  = 2;
+    private static final int STATE_PAUSED   = 3;
+    private static final int STATE_SHUTDOWN = 4;
+    private static final int STATE_MAX      = 5;
+    
+    private static final String[] STATES; 
+
+    static
+    {
+        STATES = new String[STATE_MAX];
+        STATES[STATE_INIT]     = "initialized";
+        STATES[STATE_RUNNING]  = "running";
+        STATES[STATE_STOPPED]  = "stopped";
+        STATES[STATE_PAUSED]   = "paused";
+        STATES[STATE_SHUTDOWN] = "shutdown";
+    }
+    
+    /**
+     * State of the service.
+     */
+    private int state_;
+    
     /**
      * Array of listeners interested in events that this service generates.
      */
@@ -21,6 +45,7 @@ public abstract class AbstractService implements Service
      */
     public AbstractService()
     {
+        state_ = STATE_INIT;
         listeners_ = new ServiceListener[0];
     }
 
@@ -33,7 +58,14 @@ public abstract class AbstractService implements Service
      */
     public void start() throws ServiceException
     {
-        fireServiceStarted();
+        if (state_ == STATE_INIT || state_ == STATE_STOPPED)
+        {    
+            state_ = STATE_RUNNING;
+            fireServiceStarted();
+        }
+        else
+            throw new IllegalStateException(
+                "Cannot start from current state of " + STATES[state_]);
     }
 
     
@@ -42,7 +74,14 @@ public abstract class AbstractService implements Service
      */
     public void stop() throws ServiceException
     {
-        fireServiceStopped();
+        if (state_ == STATE_RUNNING)
+        {
+            state_ = STATE_STOPPED;
+            fireServiceStopped();
+        }
+        else
+            throw new IllegalStateException(
+                "Cannot stop from current state of " + STATES[state_]);
     }
 
     
@@ -51,7 +90,14 @@ public abstract class AbstractService implements Service
      */
     public void pause() throws ServiceException
     {
-        fireServicePaused();
+        if (state_ == STATE_RUNNING)
+        {
+            state_ = STATE_PAUSED;
+            fireServicePaused();
+        }
+        else
+            throw new IllegalStateException(
+                "Cannot pause from current state of " + STATES[state_]);
     }
 
     
@@ -60,7 +106,14 @@ public abstract class AbstractService implements Service
      */
     public void resume() throws ServiceException
     {
-        fireServiceResumed();
+        if (state_ == STATE_PAUSED)
+        {
+            state_ = STATE_RUNNING;
+            fireServiceResumed();
+        }
+        else
+            throw new IllegalStateException(
+                "Cannot resume from current state of " + STATES[state_]);
     }
 
     
@@ -69,7 +122,7 @@ public abstract class AbstractService implements Service
      */
     public boolean isRunning()
     {
-        return false;
+        return state_ == STATE_RUNNING;
     }
 
     
@@ -78,7 +131,7 @@ public abstract class AbstractService implements Service
      */
     public boolean isPaused()
     {
-        return false;
+        return state_ == STATE_PAUSED;
     }
 
     
