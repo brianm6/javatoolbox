@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Reads a file efficiently in reverse order.
+ * Reader that traverses a file efficiently in reverse order.
  */
 public class ReverseFileReader extends Reader
 {
@@ -46,7 +46,7 @@ public class ReverseFileReader extends Reader
         FileNotFoundException
     {
         file_ = new RandomAccessFile(file, "r");
-        pointer_ = file_.length() - 1;
+        pointer_ = file_.length();
     }
     
     //--------------------------------------------------------------------------
@@ -60,9 +60,9 @@ public class ReverseFileReader extends Reader
     {
         int ch = -1;
         
-        if (pointer_ >= 0)
+        if (!atEnd())
         {
-            file_.seek(pointer_);
+            file_.seek(pointer_ - 1);
             ch = file_.read();
             --pointer_;
         }
@@ -115,9 +115,17 @@ public class ReverseFileReader extends Reader
      */
     public long skip(long n) throws IOException 
     {
+        if (n < 0) 
+            throw new IllegalArgumentException("skip value is negative");
+        
         long skipped;
         
-        if (n > pointer_)
+        if (atEnd())  
+        {
+            // Beginning of file
+            skipped = 0;
+        }
+        else if (n >= pointer_)
         {
             // Attempting to go before beginning of file
             skipped = pointer_;
@@ -158,7 +166,7 @@ public class ReverseFileReader extends Reader
         String line = null;
         StringBuffer sb = new StringBuffer();
         
-        while (pointer_ >= 0)
+        while (!atEnd())
         {
             int i = read();
             char c = (char) i;
@@ -168,7 +176,7 @@ public class ReverseFileReader extends Reader
                 line = sb.toString();
                 break;
             }
-            else if (pointer_ == -1)
+            else if (atEnd())
             {
                 sb.append(c);
                 line = sb.toString();
@@ -207,5 +215,17 @@ public class ReverseFileReader extends Reader
     {
         String line = readLine();
         return (line != null ? StringUtils.reverse(line) : line);
+    }
+    
+    
+    /**
+     * Returns true if the reader position is at the beginning of the file and
+     * there is no more data left to read, false otherwise.
+     *  
+     * @return boolean.
+     */
+    public boolean atEnd()
+    {
+        return pointer_ <= 0;
     }
 }
