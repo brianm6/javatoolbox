@@ -72,6 +72,9 @@ public class AOLMessenger implements InstantMessenger
     // InstantMessenger Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.log4j.im.InstantMessenger#initialize(java.util.Properties)
+     */
     public void initialize(Properties props) throws InstantMessengerException
     {
         long delay = PropertiesUtil.getLong(props, PROP_DELAY, 750);
@@ -121,7 +124,9 @@ public class AOLMessenger implements InstantMessenger
     }
 
     /**
-     * Logs out from AOL 
+     * Logs out from AOL
+     *
+     * @see toolbox.log4j.im.InstantMessenger#logout()
      */
     public void logout() throws InstantMessengerException
     {
@@ -160,6 +165,9 @@ public class AOLMessenger implements InstantMessenger
         }
     }
 
+    /**
+     * @see toolbox.log4j.im.InstantMessenger#shutdown()
+     */
     public void shutdown() throws InstantMessengerException
     {
         try
@@ -173,6 +181,9 @@ public class AOLMessenger implements InstantMessenger
         }
     }
     
+    /**
+     * @see toolbox.log4j.im.InstantMessenger#isConnected()
+     */
     public boolean isConnected()
     {
         return connected_;
@@ -241,7 +252,11 @@ public class AOLMessenger implements InstantMessenger
         //----------------------------------------------------------------------
         // com.wilko.jaim.JaimEventListener Interface
         //----------------------------------------------------------------------
-        
+
+        /**
+         * @see com.wilko.jaim.JaimEventListener#receiveEvent(
+         *      com.wilko.jaim.JaimEvent)
+         */
         public void receiveEvent(JaimEvent event)
         {
             TocResponse response = event.getTocResponse();
@@ -258,28 +273,13 @@ public class AOLMessenger implements InstantMessenger
                 LoginCompleteTocResponse.RESPONSE_TYPE))
             {
                 LogLog.debug("Connected to AOL!");
-                
-                try
-                {
-                    loginQueue_.push(response);
-                }
-                catch (InterruptedException e)
-                {
-                    LogLog.error("receiveEvent", e);
-                }
+                loginQueue_.push(response);
             }
             else if (type.equalsIgnoreCase(
                 ConnectionLostTocResponse.RESPONSE_TYPE))
             {
-                try
-                {
-                    disconnected_.push(response);
-                    LogLog.debug("Disconnected from AOL");
-                }
-                catch (InterruptedException e)
-                {
-                    LogLog.error("receiveEvent", e);
-                }
+                disconnected_.push(response);
+                LogLog.debug("Disconnected from AOL");
             }
             else
             {

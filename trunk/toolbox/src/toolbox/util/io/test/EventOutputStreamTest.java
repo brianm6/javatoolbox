@@ -248,38 +248,17 @@ public class EventOutputStreamTest extends TestCase
         
         public void byteWritten(EventOutputStream stream, int b)
         {
-            try
-            {
-                writeQueue_.push(new Integer(b));
-            }
-            catch (InterruptedException e)
-            {
-                logger_.warn(e);
-            }
+            writeQueue_.push(new Integer(b));
         }
         
         public void streamClosed(EventOutputStream stream)
         {
-            try
-            {
-                closeQueue_.push(stream);
-            }
-            catch (InterruptedException e)
-            {
-                logger_.warn(e);
-            }
+            closeQueue_.push(stream);
         }
 
         public void streamFlushed(EventOutputStream stream)
         {
-            try
-            {
-                flushQueue_.push(stream);
-            }
-            catch (InterruptedException e)
-            {
-                logger_.warn(e);
-            }
+            flushQueue_.push(stream);
         }
         
         public void streamThroughput(EventOutputStream stream, 

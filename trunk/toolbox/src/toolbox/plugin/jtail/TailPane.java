@@ -610,14 +610,7 @@ public class TailPane extends JPanel
          */
         public void nextLine(Tail tail, String line)
         {
-            try
-            {
-                queue_.push(line);
-            }
-            catch (InterruptedException ie)
-            {
-                ExceptionUtil.handleUI(ie, logger_);
-            }
+            queue_.push(line);
         }
         
         /*
@@ -639,7 +632,11 @@ public class TailPane extends JPanel
         //----------------------------------------------------------------------
         //  IBatchingQueueListener Interface
         //----------------------------------------------------------------------
-       
+
+        /**
+         * @see toolbox.util.concurrent.IBatchingQueueListener#nextBatch(
+         *      java.lang.Object[])
+         */
         public void nextBatch(Object[] objs)
         {
             // Iterate over each line delivered            

@@ -401,10 +401,6 @@ public class SocketConnectionTest extends TestCase
                 catch(IOException e)
                 {
                     logger_.error("run", e);
-                } 
-                catch (InterruptedException e)
-                {
-                    logger_.error("run2", e);
                 }
             }
         }

@@ -54,14 +54,7 @@ public class DefaultTcpTunnelListener implements TcpTunnelListener
      */
     public void tunnelStarted(TcpTunnel tunnel)
     {
-        try
-        {
-            started_.push(tunnel);
-        }
-        catch (InterruptedException ie)
-        {
-            logger_.error("tunnelStarted", ie);
-        }
+        started_.push(tunnel);
     }
 
     //--------------------------------------------------------------------------

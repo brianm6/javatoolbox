@@ -209,15 +209,8 @@ public class BatchingQueueReaderTest extends TestCase
     {
         public void nextBatch(Object[] elements)
         {
-            try
-            {
-                logger_.info("nextBatch: " + ArrayUtil.toString(elements));
-                batches_.push(elements);    
-            }
-            catch (InterruptedException ie)
-            {
-                logger_.error("nextBatch", ie);
-            }
+            logger_.info("nextBatch: " + ArrayUtil.toString(elements));
+            batches_.push(elements);
         }
     }
 }

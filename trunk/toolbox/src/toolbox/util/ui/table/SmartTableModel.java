@@ -88,14 +88,7 @@ public class SmartTableModel extends DefaultTableModel
         if (!SwingUtilities.isEventDispatchThread())
         {
             // If not event dispatch thread, push to queue         
-            try
-            {
-                queue_.push(vector);
-            }
-            catch (InterruptedException ioe)
-            {
-                ; // Ignore
-            }
+            queue_.push(vector);
         }
         else
         {

@@ -45,14 +45,7 @@ public class DefaultConnectionListener implements IConnectionListener
     {
         logger_.info("Notification: Connection closed " + connection);
         
-        try
-        {
-            closed_.push(connection);
-        }
-        catch (InterruptedException e)
-        {
-            logger_.error(e);
-        }
+        closed_.push(connection);
     }
     
     /**
@@ -63,14 +56,7 @@ public class DefaultConnectionListener implements IConnectionListener
     {
         logger_.info("Notification: Connection closing " + connection);
         
-        try
-        {
-            closing_.push(connection);
-        }
-        catch (InterruptedException e)
-        {
-            logger_.error(e);
-        }
+        closing_.push(connection);
     }
     
     /**
@@ -80,15 +66,7 @@ public class DefaultConnectionListener implements IConnectionListener
     public void connectionInterrupted(IConnection connection)
     {
         logger_.info("Notification: Connection interrupted" + connection);
-        
-        try
-        {
-            interrupted_.push(connection);
-        }
-        catch (InterruptedException e)
-        {
-            logger_.error(e);
-        }
+        interrupted_.push(connection);
     }
     
     /**
@@ -98,15 +76,7 @@ public class DefaultConnectionListener implements IConnectionListener
     public void connectionStarted(IConnection connection)
     {
         logger_.info("Notification: Connection started" + connection);
-        
-        try
-        {
-            started_.push(connection);
-        }
-        catch (InterruptedException e)
-        {
-            logger_.error(e);
-        }
+        started_.push(connection);
     }
     
     //--------------------------------------------------------------------------

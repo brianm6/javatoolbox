@@ -38,14 +38,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
         //SocketServerTest.logger_.info(
         //  "Listener notified of accept on socket " + socket);
         
-        try
-        {
-            accepted_.push(connection);
-        }
-        catch (InterruptedException e)
-        {
-            logger_.error("socketAccepted", e);
-        }
+        accepted_.push(connection);
     }
     
     /**
@@ -54,14 +47,7 @@ public class DefaultSocketServerListener implements ISocketServerListener
      */
     public void serverStarted(SocketServer server)
     {
-        try
-        {
-            started_.push(server);
-        }
-        catch (InterruptedException e)
-        {
-            logger_.error("serverStarted", e);
-        }            
+        started_.push(server);            
     }
     
     //--------------------------------------------------------------------------

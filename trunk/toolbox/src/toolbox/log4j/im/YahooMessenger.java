@@ -75,6 +75,9 @@ public class YahooMessenger implements InstantMessenger
     // InstantMessenger Interface
     //--------------------------------------------------------------------------
 
+    /**
+     * @see toolbox.log4j.im.InstantMessenger#initialize(java.util.Properties)
+     */
     public void initialize(Properties props)
     {
         invoker_ = new QueuedInvoker();
@@ -184,11 +187,13 @@ public class YahooMessenger implements InstantMessenger
         }
     }
     
+    /**
+     * @see toolbox.log4j.im.InstantMessenger#isConnected()
+     */
     public boolean isConnected()
     {
         return connected_;
     }
-    
     
     //--------------------------------------------------------------------------
     // Inner Classes
@@ -254,53 +259,47 @@ public class YahooMessenger implements InstantMessenger
         // hamsam.api.IMListener Interface
         //----------------------------------------------------------------------
 
+        /**
+         * @see hamsam.api.IMListener#connected(hamsam.protocol.Protocol)
+         */
         public void connected(Protocol protocol)
         {
             LogLog.debug("Connected to Yahoo!");
-            
-            try
-            {
-                connected_.push(CONNECT_SUCCEEDED);
-            }
-            catch (InterruptedException e)
-            {
-                LogLog.error("connected", e);
-            }
+            connected_.push(CONNECT_SUCCEEDED);
         }
         
+        /**
+         * @see hamsam.api.IMListener#connectFailed(
+         *      hamsam.protocol.Protocol, java.lang.String)
+         */
         public void connectFailed(Protocol protocol, String reasonMessage)
         {
             
             LogLog.debug("Connect to Yahoo failed: " + reasonMessage);
-            
-            try
-            {
-                connected_.push(CONNECT_FAILED);
-            }
-            catch (InterruptedException e)
-            {
-                LogLog.error("connectFailed", e);
-            }
+            connected_.push(CONNECT_FAILED);
         }
         
+        /**
+         * @see hamsam.api.IMListener#connecting(hamsam.protocol.Protocol)
+         */
         public void connecting(Protocol protocol)
         {
             LogLog.debug("Connecting to Yahoo...");
         }
 
+        /**
+         * @see hamsam.api.IMListener#disconnected(hamsam.protocol.Protocol)
+         */
         public void disconnected(Protocol protocol)
         {
-            try
-            {
-                disconnected_.push(protocol);
-                LogLog.debug("Disconnected from Yahoo");
-            }
-            catch (InterruptedException e)
-            {
-                LogLog.error("disconnected", e);
-            }
+            disconnected_.push(protocol);
+            LogLog.debug("Disconnected from Yahoo");
         }
         
+        /**
+         * @see hamsam.api.IMListener#protocolMessageReceived(
+         *      hamsam.protocol.Protocol, hamsam.api.Message)
+         */
         public void protocolMessageReceived(Protocol protocol, Message message)
         {
             LogLog.debug("Protocol message: " + message.toString());
