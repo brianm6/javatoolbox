@@ -4,9 +4,8 @@ import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * Regular expression filter. Applies a regular expression to a string
- * of text. If there is a match, the line is returned, otherwise a null
- * is returned.
+ * Regular expression filter. Applies a regular expression to a string of text. 
+ * If there is a match, the line is returned, otherwise a null is returned.
  */
 public class RegexLineFilter extends AbstractLineFilter
 {
@@ -54,9 +53,9 @@ public class RegexLineFilter extends AbstractLineFilter
      * Creates a line filter that applies a regular expression to the contents
      * of a string
      * 
-     * @param  regularExpression     Regular expression to match
-     * @param  matchCase             Set to true to observe case sensetivity
-     * @throws RESyntaxException if the regular expression is invalid
+     * @param   regularExpression     Regular expression to match
+     * @param   matchCase             Set to true to observe case sensetivity
+     * @throws  RESyntaxException if the regular expression is invalid
      */
     public RegexLineFilter(String regularExpression, boolean matchCase)
         throws RESyntaxException
@@ -72,8 +71,8 @@ public class RegexLineFilter extends AbstractLineFilter
     /**
      * Filters a line based on a regular expression
      * 
-     * @param  line  Line to match
-     * @return Line if it matched the regular expression, null otherwise
+     * @param   line  Line to match
+     * @return  Line if it matched the regular expression, null otherwise
      */
     public String filter(String line)
     {
@@ -93,8 +92,8 @@ public class RegexLineFilter extends AbstractLineFilter
     /**
      * Sets the regular expression
      * 
-     * @param  regExp  Regular expression
-     * @throws RESyntaxException on invalid regular expression
+     * @param   regExp  Regular expression
+     * @throws  RESyntaxException on invalid regular expression
      */
     public void setRegularExpression(String regExp) throws RESyntaxException
     {
