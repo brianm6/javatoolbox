@@ -177,7 +177,8 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     public void addSmartTabbedPaneListener(SmartTabbedPaneListener listener)
     {
         listeners_ = 
-            (SmartTabbedPaneListener[]) ArrayUtil.add(listeners_, listener);
+            (SmartTabbedPaneListener[]) 
+                ArrayUtil.add(listeners_, listener);
     }
 
 
@@ -189,7 +190,8 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     public void removeSmartTabbedPaneListener(SmartTabbedPaneListener listener)
     {
         listeners_ = 
-            (SmartTabbedPaneListener[]) ArrayUtil.remove(listeners_, listener);
+            (SmartTabbedPaneListener[]) 
+                ArrayUtil.remove(listeners_, listener);
     }
 
 
@@ -249,6 +251,10 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
      */    
     class MouseListener extends MouseAdapter
     {
+        /**
+         * @see java.awt.event.MouseListener#mouseClicked(
+         *      java.awt.event.MouseEvent)
+         */
         public void mouseClicked(MouseEvent e)
         {
             int tabNumber = getUI().tabForCoordinate(
@@ -256,13 +262,23 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
         
             if (tabNumber >= 0)
             {
+                String title = getTitleAt(tabNumber);
+                
                 Rectangle rect = ((SmartTabbedPaneIcon) 
                     getIconAt(tabNumber)).getBounds();
                 
                 if (rect.contains(e.getX(), e.getY()))
                 {
                     fireTabClosing(tabNumber);
-                    removeTabAt(tabNumber);
+                    
+                    // if the tab was removed by the listener, make sure we
+                    // don't try to remove it again. first make sure the tab
+                    // index is still valid and then double that the title is
+                    // still the same as it was before fireTabClosing()
+                    
+                    if (getTabCount() > tabNumber)
+                        if (getTitleAt(tabNumber).equals(title))
+                            removeTabAt(tabNumber);
                 }
             }
         }
