@@ -49,6 +49,7 @@
 	<classpathentry sourcepath="lib/src/looks-src.zip" kind="lib" path="lib/looks.jar"/>
 	<classpathentry kind="lib" path="lib/metouia.jar"/>
 	<classpathentry sourcepath="lib/src/multivalent-src.zip" kind="lib" path="lib/multivalent.jar"/>
+	<classpathentry kind="lib" path="lib/napkinlf.jar"/>
 	<classpathentry sourcepath="lib/src/oyoahalf-src.zip" kind="lib" path="lib/oyoahalf.jar"/>
 	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
 	<classpathentry sourcepath="lib/src/saxon-src.zip" kind="lib" path="lib/saxon.jar"/>
