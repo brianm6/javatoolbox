@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -13,16 +14,19 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Enumeration;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -40,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.Platform;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -48,6 +53,7 @@ import toolbox.util.io.filter.DirectoryFilter;
 import toolbox.util.io.filter.FileFilter;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartComboBox;
+import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.SmartListCellRenderer;
@@ -86,13 +92,13 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Icon suitable for display in tabs that contain a JFileExplorer.
+     * JFileExplorer icon.
      */
     public static final Icon ICON = 
         ImageCache.getIcon(ImageCache.IMAGE_TREE_CLOSED);
     
     //--------------------------------------------------------------------------
-    // XML Constants
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -111,8 +117,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
     private static final String ATTR_FILE = "file";
 
     //--------------------------------------------------------------------------
-    // Fields : Model
+    // Fields
     //--------------------------------------------------------------------------
+    
+    
+    // Model--------------------------------------------------------------------
     
     /**
      * Model for the file list.
@@ -129,9 +138,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     private DefaultTreeModel treeModel_;
 
-    //--------------------------------------------------------------------------
-    // Fields : UI
-    //--------------------------------------------------------------------------
+    
+    // UI ----------------------------------------------------------------------
     
     /**
      * Splitter that separates the directory tree and file list. The location 
@@ -173,9 +181,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     private InfoBar infoBar_;
     
-    //--------------------------------------------------------------------------
-    // Fields : Event
-    //--------------------------------------------------------------------------
+
+    // Event -------------------------------------------------------------------
     
     /** 
      * List of objects interested in file explorer generated events. 
@@ -193,9 +200,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */
     private DirTreeSelectionListener treeSelectionListener_;
 
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
+    
+    // Misc --------------------------------------------------------------------
     
     /**
      * Current selection path.
@@ -207,7 +213,8 @@ public class JFileExplorer extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a JFileExplorer with a default horizontal splitter.
+     * Creates a JFileExplorer with horizontal splitter between the file and
+     * directory views.
      */
     public JFileExplorer()
     {
@@ -438,7 +445,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
     }
     
     //--------------------------------------------------------------------------
-    // IPreferencesd Interface
+    // IPreferenced Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -717,7 +724,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
 
 
     /**
-     * Finds, sorts, and adds the files according to the path to the file list.
+     * Finds, sorts, and adds the files in the given directory.
      *
      * @param path Path with files.
      */
@@ -934,9 +941,51 @@ public class JFileExplorer extends JPanel implements IPreferenced
          */
         public void mouseClicked(MouseEvent evt)
         {
-            if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && 
-                folderPopup_ != null)
+            if ((evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0 ) // && 
+                // folderPopup_ != null)
             {
+                if (folderPopup_ == null)
+                {
+                    folderPopup_ = new JSmartPopupMenu("DirPopup");
+                    folderPopup_.add(new AbstractAction("Rename")
+                    {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            String path = 
+                                StringUtils.chomp(
+                                    getCurrentPath(), 
+                                    File.separator);
+                            
+                            int lastDirIdx = path.lastIndexOf(File.separator);
+                             
+                            String lastDir = 
+                                (lastDirIdx < 0) 
+                                    ? path 
+                                    : path.substring(lastDirIdx + 1);
+                            
+                            String newName = JOptionPane.showInputDialog(
+                                JFileExplorer.this, "Enter the new name");
+                            
+                            if (!StringUtils.isBlank(newName))
+                            {
+                                File f = new File(path);
+                                f.renameTo(new File(newName));
+         
+                                String folder = getCurrentPath();
+                                String file   = FileUtil.stripPath(getFilePath());
+                                
+                                new DriveComboListener().itemStateChanged(
+                                    new ItemEvent(getRootsComboBox(), 0, null, 
+                                        ItemEvent.ITEM_STATE_CHANGED));
+                                        
+                                selectFolder(folder);
+                                setFileList(folder);
+                                getFileList().setSelectedValue(file, true);
+                            }
+                        }
+                    });
+                }
+                
                 folderPopup_.show(tree_, evt.getX(), evt.getY());
             }
             else if (evt.getClickCount() == 2)
