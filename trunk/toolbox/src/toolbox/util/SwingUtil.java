@@ -17,6 +17,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.Window;
+import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -725,5 +726,21 @@ public final class SwingUtil
         // TODO: Test me
         comp.getInputMap().put(keyStroke, action.getValue(Action.NAME));
         comp.getActionMap().put(action.getValue(Action.NAME), action);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Mouse Stuff
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns true if the event represents a double click of the left mouse 
+     * button, false otherwise.
+     * 
+     * @param e MouseEvent.
+     * @return boolean
+     */
+    public static boolean isDoubleClick(MouseEvent e) 
+    {
+        return (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2);
     }
 }
