@@ -27,9 +27,9 @@ import org.apache.log4j.Logger;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.dump.Dumper;
-import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**

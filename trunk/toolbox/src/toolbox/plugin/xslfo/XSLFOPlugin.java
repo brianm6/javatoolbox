@@ -41,7 +41,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XMLUtil;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
-import toolbox.util.ui.JFlipPane;
+import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IPlugin;
 import toolbox.util.ui.plugin.IStatusBar;
 

@@ -31,8 +31,8 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
-import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JTextComponentPopupMenu;
+import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**

@@ -11,7 +11,8 @@ import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 import toolbox.util.ui.JFileExplorer;
-import toolbox.util.ui.JFlipPane;
+import toolbox.util.ui.flippane.JFlipPane;
+import toolbox.util.ui.flippane.FlipPaneListener;
 
 /**
  * Unit test for JFlipPane
@@ -90,7 +91,7 @@ public class JFlipPaneTest extends JFrame
         JFileExplorer explorer = new JFileExplorer(false);
         fp.addFlipper("File Explorer", explorer);
         
-        fp.addFlipPaneListener(new JFlipPane.JFlipPaneListener()
+        fp.addFlipPaneListener(new FlipPaneListener()
         {
             public void collapsed(JFlipPane flipPane)
             {

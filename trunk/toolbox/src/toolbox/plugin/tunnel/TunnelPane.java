@@ -22,8 +22,8 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.io.JTextAreaOutputStream;
-import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IStatusBar;
 

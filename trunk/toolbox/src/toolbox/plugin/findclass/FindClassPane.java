@@ -52,11 +52,11 @@ import toolbox.util.ThreadUtil;
 import toolbox.util.io.NullWriter;
 import toolbox.util.ui.JFileExplorer;
 import toolbox.util.ui.JFileExplorerAdapter;
-import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JStatusPane;
 import toolbox.util.ui.ThreadSafeTableModel;
+import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.plugin.IStatusBar;
 
 /**

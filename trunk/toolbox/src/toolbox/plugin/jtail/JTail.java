@@ -35,7 +35,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
-import toolbox.util.ui.JFlipPane;
+import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.IFontChooserDialogListener;
 import toolbox.util.ui.font.JFontChooser;
