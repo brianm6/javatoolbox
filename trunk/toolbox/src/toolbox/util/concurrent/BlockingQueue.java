@@ -3,35 +3,46 @@ package toolbox.util.concurrent;
 import java.util.ArrayList;
 
 /**
- * Blocking Queue
+ * Queue that blocks on calls to pull() until an element is available
  */
 public class BlockingQueue
 {
-    private ArrayList _queue = null;
-    private Semaphore _semaphore = null;
-    private Mutex _mutex = new Mutex();
+    private ArrayList   queue_      = null;
+    private Semaphore   semaphore_  = null;
+    private Mutex       mutex_      = new Mutex();
 
+    /**
+     * Default constructor
+     */
     public BlockingQueue()
     {
-        _semaphore = new Semaphore(0);
-        _queue = new ArrayList(50);
+        semaphore_ = new Semaphore(0);
+        queue_ = new ArrayList(50);
     }
 
+    
+    /**
+     * Pulls element off the queue. Blocks until an element is available if the
+     * queue is empty
+     * 
+     * @return  Next element
+     * @throws  InterruptedException on error
+     */
     public Object pull() throws InterruptedException
     {
         try
         {
             try
             {
-                _semaphore.acquire();
-                _mutex.acquire();
-                Object obj = _queue.remove(0);
+                semaphore_.acquire();
+                mutex_.acquire();
+                Object obj = queue_.remove(0);
 
                 return obj;
             }
             finally
             {
-                _mutex.release();
+                mutex_.release();
             }
         }
         catch (InterruptedException e)
@@ -40,13 +51,20 @@ public class BlockingQueue
         }
     }
 
+
+    /**
+     * Pushes an element onto the queue.
+     * 
+     * @param  obj  Object to push onto the queue
+     * @throws InterruptedException
+     */
     public void push(Object obj) throws InterruptedException
     {
         try
         {
-            _mutex.acquire();
-            _queue.add(obj);
-            _semaphore.release();
+            mutex_.acquire();
+            queue_.add(obj);
+            semaphore_.release();
         }
         catch (Exception e)
         {
@@ -54,17 +72,23 @@ public class BlockingQueue
         }
         finally
         {
-            _mutex.release();
+            mutex_.release();
         }
     }
 
+
+    /**
+     * Returns the size of the queue
+     * 
+     * @return Queue size
+     */
     public int size()
     {
         int size = 0;
         try
         {
-            _mutex.acquire();
-            size = _queue.size();
+            mutex_.acquire();
+            size = queue_.size();
         }
         catch (Exception e)
         {
@@ -72,22 +96,9 @@ public class BlockingQueue
         }
         finally
         {
-            _mutex.release();
+            mutex_.release();
         }
 
         return size;
-    }
-    
-    public static void main(String args[]) throws Exception
-    {
-        BlockingQueue bq = new BlockingQueue();
-        //bq.push("one");
-        
-        System.out.println("pulling empty queue");
-        System.out.println("size=" + bq.size());
-        System.out.println(bq.pull());
-        System.out.println(bq.pull());        
-        System.out.println("Done");
-        
     }
 }
