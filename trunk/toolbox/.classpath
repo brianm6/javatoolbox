@@ -3,6 +3,7 @@
 	<classpathentry exported="true" kind="var" path="CLOVER_RUNTIME"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="debug"/>
+	<classpathentry kind="lib" path="resources"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry sourcepath="lib/src/junit-src.zip" kind="lib" path="lib/junit.jar"/>
 	<classpathentry sourcepath="lib/src/log4j-src.zip" kind="lib" path="lib/log4j.jar"/>
@@ -49,7 +50,6 @@
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
 	<classpathentry kind="lib" path="lib/toniclf.jar"/>
 	<classpathentry kind="lib" path="lib/liquidlf.jar"/>
-	<classpathentry kind="lib" path="resources"/>
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
 	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
