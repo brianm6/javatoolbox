@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
@@ -25,10 +25,20 @@ public class JCollapsablePanel extends JHeaderPanel
     //--------------------------------------------------------------------------
     
     /**
+     * Collapsed flag.
+     */
+    private boolean collapsed_;
+    
+    /**
      * Since the content of the panel is removed when collapsed, it is saved
      * here so that it is available when expanded again.
      */
     private Component savedContent_;
+    
+    /**
+     * Two state button that expands/collapsed the content of the header panel.
+     */
+    private JButton toggleButton_;
     
     //--------------------------------------------------------------------------
     // Constructors
@@ -84,6 +94,31 @@ public class JCollapsablePanel extends JHeaderPanel
     {
         super(icon, title, bar, content);
     }
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the collapsed.
+     * 
+     * @return boolean
+     */
+    public boolean isCollapsed()
+    {
+        return collapsed_;
+    }
+    
+    
+    /**
+     * Sets the collapsed.
+     * 
+     * @param collapsed The collapsed to set.
+     */
+    public void setCollapsed(boolean collapsed)
+    {
+        collapsed_ = collapsed;
+    }
     
     //--------------------------------------------------------------------------
     // Protected
@@ -94,17 +129,29 @@ public class JCollapsablePanel extends JHeaderPanel
      */
     protected void makeCollapsable()
     {
-        JToggleButton toggle = 
-            createToggleButton(
-                ImageCache.getIcon(ImageCache.IMAGE_TRIANGLE),
-                "Collapse", 
-                new CollapseAction());
+        toggleButton_ = createButton(new CollapseAction());
         
         JToolBar tb = createToolBar();
-        tb.add(toggle);
+        tb.add(toggleButton_);
         setToolBar(tb);
+        setCollapsed(false);
     }
 
+
+    /**
+     * Gets the appriate icon for the current collapsed state.
+     * 
+     * @return Icon
+     */
+    protected Icon getCollapsedIcon()
+    {
+        return 
+            (collapsed_ ? 
+                ImageCache.getIcon(ImageCache.IMAGE_DOUBLE_ARROW_DOWN) :
+                ImageCache.getIcon(ImageCache.IMAGE_DOUBLE_ARROW_UP));
+        
+    }
+    
     //--------------------------------------------------------------------------
     // CollapseAction
     //--------------------------------------------------------------------------
@@ -115,23 +162,34 @@ public class JCollapsablePanel extends JHeaderPanel
     class CollapseAction extends AbstractAction
     {
         /**
+         * Creates a CollapseAction.
+         */
+        public CollapseAction()
+        {
+            super(null, getCollapsedIcon());
+        }
+        
+        
+        /**
          * @see java.awt.event.ActionListener#actionPerformed(
          *      java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e)
         {
-            if (getContent() instanceof NullComponent)
+            if (collapsed_)
             {
-                logger_.debug("Expanding...");
                 setContent(savedContent_);
             }
             else
             {
-                logger_.debug("Collapsing...");
                 savedContent_ = getContent();
                 setContent(new NullComponent());
             }
-            
+
+            setCollapsed(!isCollapsed());
+            toggleButton_.setIcon(getCollapsedIcon());
+            toggleButton_.setRolloverIcon(getCollapsedIcon());
+
             revalidate();
             ((JComponent) getParent()).revalidate();
         }
