@@ -268,7 +268,9 @@ public class JFileExplorer extends JPanel
             tree_.scrollPathToVisible(tp);
         }
         else
-            throw new IllegalArgumentException("Root didnt match in model!");
+            throw new IllegalArgumentException(
+                "Root didnt match in model!" +
+                    root + new FileNode(pathTokens[0]));
     }
 
     //--------------------------------------------------------------------------
