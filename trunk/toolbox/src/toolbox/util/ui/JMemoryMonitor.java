@@ -117,7 +117,7 @@ public class JMemoryMonitor extends JComponent
         int freeMemory  = (int)(runtime.freeMemory() / 1024);
         int totalMemory = (int)(runtime.totalMemory() / 1024);
         int usedMemory  = (totalMemory - freeMemory);
-        return usedMemory + "/" + totalMemory + "MB";
+        return usedMemory + "M of " + totalMemory + "M";
     }
 
     /**
@@ -181,7 +181,7 @@ public class JMemoryMonitor extends JComponent
         // Draw text
         //
         
-        String str = (usedMemory / 1024) + "/" + (totalMemory / 1024) + "Mb";
+        String str = (usedMemory / 1024) + "M of " + (totalMemory / 1024) + "M";
         FontRenderContext frc = new FontRenderContext(null,false,false);
         Rectangle2D bounds = g.getFont().getStringBounds(str,frc);
         Graphics g2 = g.create();
