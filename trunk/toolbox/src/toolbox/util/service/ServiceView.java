@@ -21,14 +21,12 @@ import toolbox.util.ui.SmartAction;
  * ServiceView a user interface component that presents a view on an object that
  * implements the Service interface. Features include:
  * <ul>
- *  <li>Start, stop, suspend, resume a Service
+ *  <li>Initialize, start, stop, suspend, resume, and destroy a Service
  *  <li>Displays the current state of the Service.
  * </ul>
  */
 public class ServiceView extends JPanel
 {
-    // TODO: Get this working...
-    
     private static final Logger logger_ = Logger.getLogger(ServiceView.class);
     
     //--------------------------------------------------------------------------
@@ -161,8 +159,8 @@ public class ServiceView extends JPanel
      * The internal listener is only interested in the INITIALIZED state so that
      * the initial state of the buttons can be set.
      */
-    class MyServiceListener implements ServiceListener {
-        
+    class MyServiceListener implements ServiceListener 
+    {
         /**
          * @see toolbox.util.service.ServiceListener#serviceStateChanged(
          *      toolbox.util.service.Service)
@@ -217,11 +215,6 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Initializable) service_).initialize(MapUtils.EMPTY_MAP);
-            
-            //((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
-            //((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
-            //((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
-            //((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
         }
     }
 
@@ -251,11 +244,6 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Startable) service_).start();
-            
-//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
-//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
-//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
-//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
         }
     }
 
@@ -285,16 +273,11 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Startable) service_).stop();
-            
-//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(true);
-//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
-//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
-//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
         }
     }
 
     //--------------------------------------------------------------------------
-    // PauseAction
+    // SuspendAction
     //--------------------------------------------------------------------------
 
     /**
@@ -319,11 +302,6 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Suspendable) service_).suspend();
-            
-//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
-//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(false);
-//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(false);
-//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(true);
         }
     }
 
@@ -352,11 +330,6 @@ public class ServiceView extends JPanel
         public void runAction(ActionEvent e) throws Exception
         {
             ((Suspendable) service_).resume();
-            
-//            ((AbstractAction) actions_.get(ACTION_START)).setEnabled(false);
-//            ((AbstractAction) actions_.get(ACTION_STOP)).setEnabled(true);
-//            ((AbstractAction) actions_.get(ACTION_SUSPEND)).setEnabled(true);
-//            ((AbstractAction) actions_.get(ACTION_RESUME)).setEnabled(false);
         }
     }
 
