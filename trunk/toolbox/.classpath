@@ -14,7 +14,6 @@
 	<classpathentry kind="lib" path="lib/batik.jar"/>
 	<classpathentry sourcepath="lib/src/bsh-src.zip" kind="lib" path="lib/bsh.jar"/>
 	<classpathentry kind="lib" path="lib/calphahtml.jar"/>
-	<classpathentry kind="lib" path="build/lib/clover.jar"/>
 	<classpathentry sourcepath="lib/src/commons-beanutils-src.zip" kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry sourcepath="lib/src/commons-cli-src.zip" kind="lib" path="lib/commons-cli.jar"/>
 	<classpathentry sourcepath="lib/src/commons-io-src.zip" kind="lib" path="lib/commons-io.jar"/>
@@ -39,6 +38,7 @@
 	<classpathentry sourcepath="lib/src/jfreechart-src.zip" kind="lib" path="lib/jfreechart.jar"/>
 	<classpathentry sourcepath="lib/src/jode-src.zip" kind="lib" path="lib/jode.jar"/>
 	<classpathentry sourcepath="lib/src/jreversepro-src.zip" kind="lib" path="lib/jreversepro.jar"/>
+	<classpathentry sourcepath="lib/src/jsap-src.zip" kind="lib" path="lib/jsap.jar"/>
 	<classpathentry sourcepath="lib/src/jtidy-src.zip" kind="lib" path="lib/jtidy.jar"/>
 	<classpathentry sourcepath="lib/src/junit-src.zip" kind="lib" path="lib/junit.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
