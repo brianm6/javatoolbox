@@ -19,9 +19,7 @@ import toolbox.util.FontUtil;
 import toolbox.util.RandomUtil;
 
 /**
- * Unit test for JHeaderPanel.
- * 
- * @see toolbox.util.ui.JHeaderPanel
+ * Unit test for {@link toolbox.util.ui.JHeaderPanel}.
  */
 public class JHeaderPanelTest extends UITestCase
 {

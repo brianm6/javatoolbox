@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 
 /**
- * Unit test for JSmartOptionPane.
+ * Unit test for {@link toolbox.util.ui.JSmartFileChooser}.
  */
 public class JSmartFileChooserTest extends UITestCase
 {

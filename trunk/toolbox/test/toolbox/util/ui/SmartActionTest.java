@@ -15,7 +15,7 @@ import toolbox.junit.testcase.UITestCase;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for SmartAction. 
+ * Unit test for {@link toolbox.util.ui.SmartAction}. 
  */
 public class SmartActionTest extends UITestCase
 {

@@ -16,9 +16,7 @@ import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.SmartListCellRenderer;
 
 /**
- * Unit test for Colors.
- * 
- * @see toolbox.util.ui.Colors
+ * Unit test for {@link toolbox.util.ui.Colors}.
  */
 public class ColorsTest extends UITestCase
 {
@@ -53,7 +51,6 @@ public class ColorsTest extends UITestCase
         JSmartList colorList = new JSmartList(colors);
         colorList.setCellRenderer(new ColorCellRenderer());
         launchInDialog(new JScrollPane(colorList));
-        
     }
     
     //--------------------------------------------------------------------------

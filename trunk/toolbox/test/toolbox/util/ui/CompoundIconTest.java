@@ -14,13 +14,11 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 
 /**
- * Unit test for CompoundIcon.
- * 
- * @see toolbox.util.ui.CompoundIcon
+ * Unit test for {@link toolbox.util.ui.CompoundIcon}.
  */
 public class CompoundIconTest extends UITestCase
 {
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(CompoundIconTest.class);
         
     //--------------------------------------------------------------------------

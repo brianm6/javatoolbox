@@ -14,7 +14,7 @@ import toolbox.util.FontUtil;
 import toolbox.util.RandomUtil;
 
 /**
- * Unit test for JSmartTextPane.
+ * Unit test for {@link toolbox.util.ui.JSmartTextPane}.
  */
 public class JSmartTextPaneTest extends UITestCase
 {
@@ -81,5 +81,4 @@ public class JSmartTextPaneTest extends UITestCase
             new JHeaderPanel("testing", null, new JScrollPane(tp)), 
             UITestCase.SCREEN_ONE_HALF);
     }
-    
 }

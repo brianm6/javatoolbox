@@ -18,7 +18,7 @@ import toolbox.util.ui.splitpane.JMultiSplitPane;
 import toolbox.util.ui.splitpane.SplitOrientation;
 
 /**
- * Unit test for JSmartTextArea.
+ * Unit test for {@link toolbox.util.ui.JSmartTextArea}.
  */
 public class JSmartTextAreaTest extends UITestCase
 {

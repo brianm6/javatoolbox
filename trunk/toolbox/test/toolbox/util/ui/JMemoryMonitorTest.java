@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import toolbox.junit.testcase.UITestCase;
 
 /**
- * Unit test for JMemoryMonitor.
+ * Unit test for {@link toolbox.util.ui.JMemoryMonitor}.
  */
 public class JMemoryMonitorTest extends UITestCase
 {

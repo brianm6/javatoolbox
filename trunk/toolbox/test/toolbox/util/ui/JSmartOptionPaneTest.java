@@ -14,7 +14,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
- * Unit test for JSmartOptionPane.
+ * Unit test for {@link toolbox.util.ui.JSmartOptionPane}.
  */
 public class JSmartOptionPaneTest extends UITestCase
 {
@@ -26,7 +26,9 @@ public class JSmartOptionPaneTest extends UITestCase
     //--------------------------------------------------------------------------
     
     private static final String MSG_TITLE = "JSmartOptionPane";
-    private static final String MSG_TEXT = "This is the test of JOptionPane";
+    
+    private static final String MSG_TEXT = 
+        "This is the test of JSmartOptionPane";
     
     //--------------------------------------------------------------------------
     // Fields
