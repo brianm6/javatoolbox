@@ -42,10 +42,10 @@ public interface DocumentViewer
 	 * Determines if a given file type extension is viewable by this document
 	 * viewer.
 	 * 
-	 * @param fileType File extension for the file type.
-	 * @return True if the file type is viewable or false otherwise.
+	 * @param file File to test if this viewer is capable of viewing it.
+	 * @return True if the file is viewable by the plugin, false 
  	 */    
-    boolean isViewable(String fileType);
+    boolean canView(File file);
     
     
     /**
@@ -62,6 +62,14 @@ public interface DocumentViewer
      * @return JComponent
      */
     JComponent getComponent();
+    
+    
+    /**
+     * Returns the UI friendly name of this document viewer.
+     * 
+     * @return String
+     */
+    String getName();
     
     
     /**

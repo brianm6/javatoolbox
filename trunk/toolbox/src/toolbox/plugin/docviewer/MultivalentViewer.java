@@ -22,6 +22,7 @@ import multivalent.std.ui.ForwardBack;
 import multivalent.std.ui.Multipage;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.FileUtil;
 import toolbox.util.ui.JSmartButton;
 
 /**
@@ -59,6 +60,15 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
     
     
     /**
+     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
+     */
+    public String getName()
+    {
+        return "Multivalent";
+    }
+    
+    
+    /**
      * Opens a file for viewing
      * 
      * @param file File to view
@@ -92,11 +102,13 @@ public class MultivalentViewer extends JPanel implements DocumentViewer
 
 
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#isViewable(java.lang.String)
+     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
      */
-    public boolean isViewable(String fileType)
+    public boolean canView(File file)
     {
-        return ArrayUtil.contains(getViewableFileTypes(), fileType);
+        return ArrayUtil.contains(
+                getViewableFileTypes(),
+                FileUtil.getExtension(file));
     }
     
     

@@ -15,6 +15,7 @@ import com.adobe.acrobat.Viewer;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.FileUtil;
 
 /**
  * AcrobatViewer is a wrapper for the Acrobat JavaBean which is used to 
@@ -62,6 +63,15 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
         {
             throw new DocumentViewerException(e);
         }
+    }
+    
+    
+    /**
+     * @see toolbox.plugin.docviewer.DocumentViewer#getName()
+     */
+    public String getName()
+    {
+        return "Acrobat";
     }
     
     
@@ -128,11 +138,13 @@ public class AcrobatViewer extends JPanel implements DocumentViewer
 
 
     /**
-     * @see toolbox.plugin.docviewer.DocumentViewer#isViewable(java.lang.String)
+     * @see toolbox.plugin.docviewer.DocumentViewer#canView(java.io.File)
      */
-    public boolean isViewable(String fileType)
+    public boolean canView(File file)
     {
-        return ArrayUtil.contains(getViewableFileTypes(), fileType);
+        return ArrayUtil.contains(
+                getViewableFileTypes(), 
+                FileUtil.getExtension(file));
     }
 
     
