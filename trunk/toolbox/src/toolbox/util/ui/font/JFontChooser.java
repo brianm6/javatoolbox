@@ -31,10 +31,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
+import toolbox.util.ArrayUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
@@ -77,13 +81,13 @@ public class JFontChooser extends JPanel
     /**
      * List of default font styles.
      */
-    private static final String[] DEFAULT_STYLES = 
+    public static final String[] DEFAULT_STYLES = 
         new String[] {"Plain", "Bold", "Italic", "Bold Italic"};
     
     /**
      * List of default font sizes.
      */
-    private static final int[] DEFAULT_SIZES = 
+    public static final int[] DEFAULT_SIZES = 
         new int[] {7, 8, 9, 10, 11, 12, 14, 16, 18, 24, 36};
 
     
@@ -142,6 +146,14 @@ public class JFontChooser extends JPanel
      */
     private List listeners_;
 
+    /**
+     * Flag to show only monospaced fonts. 
+     */
+    private boolean showOnlyMonospaced_;
+    
+    // TODO: Use phrase
+    private String phrase_;
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -152,6 +164,27 @@ public class JFontChooser extends JPanel
     public JFontChooser()
     {
         this(null);
+    }
+
+    
+    /**
+     * Creates a JFontChooser.
+     */
+    public JFontChooser(
+        boolean antialiased, 
+        boolean monospaceEmphasized, 
+        boolean monospacedOnly, 
+        boolean renderUsingFont)
+    {
+        this(
+            null, 
+            JFontChooser.DEFAULT_STYLES, 
+            JFontChooser.DEFAULT_SIZES, 
+            antialiased);
+        
+        setMonospaceEmphasized(monospaceEmphasized);
+        setShowOnlyMonospaced(monospacedOnly);
+        setRenderedUsingFont(renderUsingFont);
     }
 
 
@@ -197,6 +230,39 @@ public class JFontChooser extends JPanel
         int[] predefinedSizes,     
         boolean antiAlias)
     {
+        this(initialFont, styleDisplayNames, predefinedSizes, antiAlias, false);
+    }
+
+    
+    /**
+     * Constructs a new JFontChooser whose family, style & size widget
+     * selections are set according to the supplied initial Font. Additionally,
+     * the style and size values available will be dictated by the values in
+     * styleDisplayNames and predefinedSizes, respectively.
+     * 
+     * @param initialFont Newly constructed JFontChooser's family, style, and
+     *        size widgets will be set according to this value. This value may
+     *        be null, in which case an initial font will be automatically
+     *        created. This auto-created font will have a family, style, and
+     *        size corresponding to the first avaiable value in the widget form
+     *        family, style, and size respectively.
+     * @param styleDisplayNames Must contain exactly four members. The members
+     *        of this array represent the following styles, in order:
+     *        Font.PLAIN, Font.BOLD, Font.ITALIC, and Font.BOLD+Font.ITALIC.
+     * @param predefinedSizes Must contain one or more predefined font sizes
+     *        which will be available to the user as a convenience for
+     *        populating the font size text field; all values must be greater
+     *        than 0.
+     * @param antiAlias Turns on antialiasing of fonts.
+     */
+    public JFontChooser(
+        Font initialFont, 
+        String[] styleDisplayNames,
+        int[] predefinedSizes,     
+        boolean antiAlias,
+        boolean showMonospacedOnly)
+    {
+        setShowOnlyMonospaced(showMonospacedOnly);
         listeners_ = new ArrayList();
         buildView(initialFont, styleDisplayNames, predefinedSizes, antiAlias);
         wireView();
@@ -231,72 +297,99 @@ public class JFontChooser extends JPanel
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
 
-        String[] availableFontFamilyNames = 
+        List availableFontFamilyNames = ArrayUtil.toList( 
             GraphicsEnvironment
                 .getLocalGraphicsEnvironment()
-                .getAvailableFontFamilyNames();
-
+                .getAvailableFontFamilyNames());
+        
+        if (showOnlyMonospaced_) 
+        {
+            // Filter out variable width fonts...
+            CollectionUtils.filter(availableFontFamilyNames, new Predicate() 
+            {
+                public boolean evaluate(Object object) 
+                {
+                    return FontUtil.isMonospaced(
+                        new Font(object.toString(), Font.PLAIN, 12));
+                }
+            });
+        }
+        
         // Sets initial font if one is not provided
         if (initialFont == null)
             initialFont =  
                 new Font(
-                    availableFontFamilyNames[0], 
+                    availableFontFamilyNames.get(0).toString(), 
                     Font.PLAIN, 
                     predefinedSizes[0]);
 
-        // Configure font family list
-        fontFamilyList_ = new JSmartList(availableFontFamilyNames);
+        // Configure font family list ------------------------------------------
+        
+        fontFamilyList_ = new JSmartList(availableFontFamilyNames.toArray());
         fontFamilyList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontFamilyList_.setVisibleRowCount(8);
         fontFamilyCellRenderer_ = new FontFamilyCellRenderer();
         fontFamilyList_.setCellRenderer(fontFamilyCellRenderer_);
         fontFamilyList_.setName(NAME_FONT_LIST);
         
-        // Add to gridbag
         gbc.weightx    = 1; gbc.weighty   = 1;
         gbc.gridx      = 1; gbc.gridy     = 1;
-        gbc.gridheight = 3; gbc.gridwidth = 1;
+        gbc.gridheight = 2; gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.BOTH;
         add(wrapWithHeading("Font", new JScrollPane(fontFamilyList_)), gbc);
+        
+        // Monospaced checkbox -------------------------------------------------
+        
+        JSmartCheckBox monospaceCheckBox_ = new JSmartCheckBox("Monospace Only");
+        monospaceCheckBox_.setName("Monospace Only");
+        //setShowMonospacedOnly(showMonospacedOnly);
 
-        // Configure font style list
+        gbc.weightx    = 0.75; gbc.weighty   = 0;
+        gbc.gridx      = 1;    gbc.gridy     = 3;
+        gbc.gridheight = 1;    gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        add(monospaceCheckBox_, gbc);
+        
+        // Font style list -----------------------------------------------------
+        
         fontStyleList_ = new FontStyleList(styleDisplayNames);
         fontStyleList_.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontStyleList_.setVisibleRowCount(4);
         fontStyleList_.setName(NAME_STYLE_LIST);
 
-        // Add to gridbag
         gbc.weightx    = 0.75; gbc.weighty   = 1;
         gbc.gridx      = 2;    gbc.gridy     = 1;
         gbc.gridheight = 2;    gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 10, 0, 0);
+        gbc.fill = GridBagConstraints.BOTH;
         add(wrapWithHeading("Style", new JScrollPane(fontStyleList_)), gbc);
 
-        // Configure anti-alias checkbox
+        // Anti-alias checkbox -------------------------------------------------
+        
         antiAliasCheckBox_ = new JSmartCheckBox(new AntiAliasAction());
         antiAliasCheckBox_.setName(NAME_ANTIALIAS_CHECKBOX);
         setAntiAliased(antiAlias);
 
-        // Add to gridbag
         gbc.weightx    = 0.75; gbc.weighty   = 0;
         gbc.gridx      = 2;    gbc.gridy     = 3;
         gbc.gridheight = 1;    gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(antiAliasCheckBox_, gbc);
 
-        // Configure font size field
+        // Font size field -----------------------------------------------------
+        
         fontSizeField_ = new JSmartTextField();
         fontSizeField_.setColumns(4);
         fontSizeField_.setName(NAME_SIZE_FIELD);
         
-        // Add to gridbag
         gbc.weightx    = 0.5;  gbc.weighty   = 0;
         gbc.gridx      = 3;    gbc.gridy     = 1;
         gbc.gridheight = 1;    gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(wrapWithHeading("Size", fontSizeField_), gbc);
         
-        // Configure font size list
+        // Font size list ------------------------------------------------------
+        
         fontSizeList_ =
             new JSmartList(validateAndConvertPredefinedSizes(predefinedSizes));
             
@@ -304,15 +397,15 @@ public class JFontChooser extends JPanel
         fontSizeList_.setVisibleRowCount(4);
         fontSizeList_.setName(NAME_SIZE_LIST);
         
-        // Add to gridbag
         gbc.weightx    = 0.5; gbc.weighty   = 1;
         gbc.gridx      = 3;   gbc.gridy     = 2;
-        gbc.gridheight = 2;   gbc.gridwidth = 1;
+        gbc.gridheight = 1;   gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 10, 0, 0);
         gbc.fill = GridBagConstraints.BOTH;
         add(new JScrollPane(fontSizeList_), gbc);
 
-        // Configure Phrase Canvas (displays current font selection)
+        // Phrase Canvas (displays current font selection) ---------------------
+        
         phraseCanvas_ = 
             new PhraseCanvas(
                 initialFont.getFamily(), 
@@ -325,7 +418,6 @@ public class JFontChooser extends JPanel
         phrasePanel.setBorder(BorderFactory.createEtchedBorder());
         phrasePanel.setPreferredSize(new Dimension(0, 100));
         
-        // Add to gridbag
         gbc.weightx    = 1; gbc.weighty   = 1;
         gbc.gridx      = 1; gbc.gridy     = 4;
         gbc.gridheight = 1; gbc.gridwidth = 3;
@@ -333,6 +425,8 @@ public class JFontChooser extends JPanel
         gbc.fill = GridBagConstraints.BOTH;
         add(phrasePanel, gbc);        
 
+        // ---------------------------------------------------------------------
+        
         // Set initial widget values here at the end of the constructor to 
         // ensure that all listeners have been added beforehand
         // fontFamilyList_.setSelectedValue(initialFont.getFamily(), true);
@@ -585,7 +679,7 @@ public class JFontChooser extends JPanel
     {
         ListModel familyListModel = fontFamilyList_.getModel();
         
-        for (int i = 0; i < familyListModel.getSize(); i++)
+        for (int i = 0, n = familyListModel.getSize(); i < n; i++)
         {
             if (familyListModel.getElementAt(i).equals(family))
             {
@@ -669,6 +763,18 @@ public class JFontChooser extends JPanel
     public boolean isMonospaceEmphasized()
     {
         return fontFamilyCellRenderer_.isMonospacedEmphasized();
+    }
+
+    
+    public boolean isShowOnlyMonospaced()
+    {
+        return showOnlyMonospaced_;
+    }
+    
+    
+    public void setShowOnlyMonospaced(boolean showOnlyMonospaced)
+    {
+        showOnlyMonospaced_ = showOnlyMonospaced;
     }
     
     //--------------------------------------------------------------------------
