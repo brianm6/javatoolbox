@@ -6,12 +6,14 @@ import javax.swing.DefaultComboBoxModel;
 
 /**
  * SortedComboBoxModel sorts combobox items on insertion. Items in the model
- * must implement the comparable interface.
+ * must implement the Comparable interface.
+ * 
+ * @see java.lang.Comparable
  */
 public class SortedComboBoxModel extends DefaultComboBoxModel
 {
     //--------------------------------------------------------------------------
-    // Constructors
+    // Constructors (Pass through)
     //--------------------------------------------------------------------------
     
     /**
@@ -48,6 +50,8 @@ public class SortedComboBoxModel extends DefaultComboBoxModel
     //--------------------------------------------------------------------------
     
     /**
+     * Maintain order on insert.
+     * 
      * @see javax.swing.MutableComboBoxModel#addElement(java.lang.Object)
      */
     public void addElement(Object element)
