@@ -3,6 +3,7 @@ package toolbox.util.test;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.swing.Icon;
@@ -18,12 +19,16 @@ import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
 
 /**
- * Unit test for ResourceUtilTest
+ * Unit test for ResourceUtilTest.
  */
 public class ResourceUtilTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtilTest.class);
+    
+    //--------------------------------------------------------------------------
+    // Constants 
+    //--------------------------------------------------------------------------
     
     /**
      * String embedded in FILE_TEXT used to verify correctness.
@@ -60,7 +65,7 @@ public class ResourceUtilTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -68,48 +73,17 @@ public class ResourceUtilTest extends TestCase
     }
     
     //--------------------------------------------------------------------------
-    // Unit Tests
+    // Unit Tests : getResource()
     //--------------------------------------------------------------------------
     
     /**
-     * Tests the exportToClass() method.
+     * Tests getResource() on a text file in the classpath.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
-    public void testExportToClass() throws Exception
+    public void testGetResource_FileInClasspath() throws Exception
     {
-        logger_.info("Running testExportToClass...");
-        
-        //String treeOpen  = "images" + File.separator + "tree_open.gif";
-        //
-        //String filename = "TreeOpenGIF.java";
-        //    
-        //String javaSrc = ResourceUtil.exportToClass(
-        //    treeOpen, 
-        //    "toolbox.util.ui", 
-        //    "TreeOpenGIF",
-        //    FileUtil.getTempDir());
-        //
-        //logger_.info("Wrote TreeOpenGIF.java to " + 
-        //    FileUtil.getTempDir().getAbsolutePath() + " \n" + javaSrc);
-        //    
-        //String compareSrc = FileUtil.getFileContents(
-        //    FileUtil.getTempDir().getAbsolutePath() + 
-        //    File.separator +
-        //    filename);
-        //    
-        //assertEquals("files don't match" , javaSrc, compareSrc);
-    }
-    
-    
-    /**
-     * Tests getResource() on a text file.
-     * 
-     * @throws Exception on error
-     */
-    public void testGetResourceByFile() throws Exception
-    {
-        logger_.info("Running testGetResource...");
+        logger_.info("Running testGetResource_FileInClasspath...");
         
         InputStream is = ResourceUtil.getResource(FILE_TEXT);
         assertNotNull("stream is null", is);        
@@ -120,9 +94,102 @@ public class ResourceUtilTest extends TestCase
     
     
     /**
+     * Tests getResource() on a text file in the system temp directory by 
+     * using an absolute file path.
+     * 
+     * @throws Exception on error.
+     */
+    public void testGetResource_FileAbsolute() throws Exception
+    {
+        logger_.info("Running testGetResource_FileAbsolute...");
+
+        // Create a file in the tmp dir
+        File tmpFile = null;
+        
+        try
+        {
+            tmpFile = FileUtil.createTempFile();
+            
+            String contents = 
+                getClass().getName() + ":testGetResource_FileAbsolute";
+            
+            FileUtil.setFileContents(tmpFile, contents, false);
+            String absolutePath = tmpFile.getAbsolutePath();
+            logger_.debug("Test file's absolute path: " + absolutePath);
+            
+            InputStream is = ResourceUtil.getResource(absolutePath);
+            assertNotNull("stream is null", is);        
+            
+            String newContents = StreamUtil.asString(is);
+            logger_.info("Contents: " + newContents);
+            assertEquals("File contents don't match", contents, newContents);
+        }
+        finally
+        {
+            FileUtil.delete(tmpFile);
+        }
+    }
+    
+    
+    /**
+     * Tests getResource() on a HTTP URL.
+     * 
+     * @throws Exception on error.
+     */
+    public void testGetResource_FileOverHTTP() throws Exception
+    {
+        logger_.info("Running testGetResource_FileOverHTTP...");
+        
+        InputStream is =  ResourceUtil.getResource(TEST_URL);
+        assertNotNull("stream is null", is);
+        String contents = StreamUtil.asString(is);
+        logger_.info("Resource length: " + contents.length());
+        assertTrue(contents.length() > 0);
+    }
+
+    
+    /**
+     * Tests getResource() failure.
+     * 
+     * @throws Exception on error.
+     */
+    public void testGetResource_Failure() throws Exception
+    {
+        logger_.info("Running testGetResource_Failure...");
+        
+        // Non-existant file
+        try
+        {
+            ResourceUtil.getResource("bogus_file.txt");
+            fail("getResource() should have failed on a non-existant file.");
+        }
+        catch (IOException ioe)
+        {
+            logger_.debug("Failure message: " + 
+                ioe.getClass().getName() + ":" + ioe.getMessage());
+        }
+        
+        // Non-existant HTTP url resource
+        try
+        {
+            ResourceUtil.getResource("http://www.yahoo.com/crap.html");
+            fail("getResource() should fail on a non-existant HTTP file.");
+        }
+        catch (IOException ioe)
+        {
+            logger_.debug("Failure message: " + 
+                ioe.getClass().getName() + ":" + ioe.getMessage());
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // Unit Tests : Other
+    //--------------------------------------------------------------------------
+    
+    /**
      * Tests getResourceAsBytes() on a text file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testGetResourceAsBytes() throws Exception
     {
@@ -139,7 +206,7 @@ public class ResourceUtilTest extends TestCase
     /**
      * Tests getResourceAsTempFile() on a text file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testGetResourceAsTempFile() throws Exception
     {
@@ -171,7 +238,7 @@ public class ResourceUtilTest extends TestCase
     /**
      * Tests getResourceAsIcon() on a GIF file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testGetResourceAsIcon() throws Exception
     {
@@ -187,7 +254,7 @@ public class ResourceUtilTest extends TestCase
     /**
      * Tests getResourceAsImage() on a GIF file.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
     public void testGetResourceAsImage() throws Exception
     {
@@ -206,17 +273,32 @@ public class ResourceUtilTest extends TestCase
     
     
     /**
-     * Tests getResource() on a HTTP URL.
+     * Tests the exportToClass() method.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */
-    public void testGetResourceByURL() throws Exception
+    public void testExportToClass() throws Exception
     {
-        logger_.info("Running testGetResourceByURL...");
+        logger_.info("Running testExportToClass...");
         
-        InputStream is =  ResourceUtil.getResource(TEST_URL);
-        assertNotNull("stream is null", is);
-        String contents = StreamUtil.asString(is);
-        logger_.info("Resource length: " + contents.length());
+        //String treeOpen  = "images" + File.separator + "tree_open.gif";
+        //
+        //String filename = "TreeOpenGIF.java";
+        //    
+        //String javaSrc = ResourceUtil.exportToClass(
+        //    treeOpen, 
+        //    "toolbox.util.ui", 
+        //    "TreeOpenGIF",
+        //    FileUtil.getTempDir());
+        //
+        //logger_.info("Wrote TreeOpenGIF.java to " + 
+        //    FileUtil.getTempDir().getAbsolutePath() + " \n" + javaSrc);
+        //    
+        //String compareSrc = FileUtil.getFileContents(
+        //    FileUtil.getTempDir().getAbsolutePath() + 
+        //    File.separator +
+        //    filename);
+        //    
+        //assertEquals("files don't match" , javaSrc, compareSrc);
     }
 }
