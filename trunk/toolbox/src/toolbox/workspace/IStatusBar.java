@@ -1,31 +1,56 @@
 package toolbox.workspace;
 
 /**
- * Statusbar Interface
+ * Statusbar Interface.
  */
 public interface IStatusBar
 {
-    int BUSY    = 1;
-    int ERROR   = 2;
-    int INFO    = 3;
-    int WARNING = 4;
-    
     /**
-     * Sets the status text
+     * Sets the text of the status bar.
      * 
-     * @param  status  Status text
+     * @param status Status text.
      */
     void setStatus(String status);
     
-    void setBusy(boolean busy);
-    void setError(String status);
-    void setInfo(String status);
-    void setWarning(String status);
     
     /**
-     * Retrieves the status text
+     * Sets the busy state indicator on the status bar.
      * 
-     * @return  Status text
+     * @param busy True to indicate busy, false otherwise.
+     */
+    void setBusy(boolean busy);
+
+    
+    /**
+     * Sets the text of the status bar and indicates that it is an error
+     * message.
+     * 
+     * @param status Error message.
+     */
+    void setError(String status);
+    
+    
+    /**
+     * Sets the text of the status bar and indicates that it is an informational
+     * message.
+     * 
+     * @param status Informational message.
+     */
+    void setInfo(String status);
+    
+    
+    /**
+     * Sets the text of the status bar and indicates that it is a warning.
+     * 
+     * @param status Warning message.
+     */
+    void setWarning(String status);
+    
+    
+    /**
+     * Retrieves the text of the status message.
+     * 
+     * @return String
      */
     String getStatus();
 }
