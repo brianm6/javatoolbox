@@ -36,6 +36,7 @@ import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.textarea.AutoScrollAction;
+import toolbox.util.ui.textarea.LineWrapAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 
@@ -44,8 +45,6 @@ import toolbox.workspace.IStatusBar;
  */
 public class TunnelPane extends JPanel implements IPreferenced
 {
-    // TODO: Add buttons for lock and unlock to header panel toolbars.
-    
     private static final Logger logger_ = Logger.getLogger(TunnelPane.class);
     
     //--------------------------------------------------------------------------
@@ -332,17 +331,27 @@ public class TunnelPane extends JPanel implements IPreferenced
         JToolBar tb = JHeaderPanel.createToolBar();
         
         tb.add(JHeaderPanel.createToggleButton(
+            ImageCache.getIcon(ImageCache.IMAGE_LINEWRAP),
+            "Wrap Lines", 
+            new LineWrapAction(area),
+            area,
+            "lineWrap"));
+        
+        tb.add(JHeaderPanel.createToggleButton(
             ImageCache.getIcon(ImageCache.IMAGE_LOCK),
             "Scroll Lock", 
-            new AutoScrollAction(area)));
+            new AutoScrollAction(area),
+            area,
+            "autoscroll"));
         
         tb.add(JHeaderPanel.createButton(
             ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
             "Clear",
             new ClearAction()));
-        
+
+        // TODO: link to property change
         tb.add(JHeaderPanel.createToggleButton(
-            ImageCache.getIcon(ImageCache.IMAGE_CONFIG),
+            ImageCache.getIcon(ImageCache.IMAGE_FUNNEL),
             "Supress Binary Data",
             new SupressBinaryAction()));
         
@@ -437,7 +446,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         ClearAction()
         {
-            super("Clear");
+            super("Clear", ImageCache.getIcon(ImageCache.IMAGE_CLEAR));
         }
 
         
@@ -471,6 +480,9 @@ public class TunnelPane extends JPanel implements IPreferenced
         StartTunnelAction()
         {
             super("Start", true, false, null);
+            
+            putValue(AbstractAction.SMALL_ICON, 
+                ImageCache.getIcon(ImageCache.IMAGE_PLAY));
         }
 
         //----------------------------------------------------------------------
@@ -483,7 +495,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         public void statusChanged(TcpTunnel tunnel, String status)
         {
-            statusBar_.setStatus(status);
+            statusBar_.setInfo(status);
         }
 
         
@@ -491,9 +503,10 @@ public class TunnelPane extends JPanel implements IPreferenced
          * @see toolbox.tunnel.TcpTunnelListener#bytesRead(
          *      toolbox.tunnel.TcpTunnel, int, int)
          */
-        public void bytesRead(TcpTunnel tunnel, 
-                              int connBytesRead, 
-                              int totalBytesRead)
+        public void bytesRead(
+            TcpTunnel tunnel, 
+            int connBytesRead, 
+            int totalBytesRead)
         {
             incomingHeader_.setTitle(
                 "Sent to Remote Host: " + connBytesRead + " conn  " + 
@@ -505,9 +518,10 @@ public class TunnelPane extends JPanel implements IPreferenced
          * @see toolbox.tunnel.TcpTunnelListener#bytesWritten(
          *      toolbox.tunnel.TcpTunnel, int, int)
          */
-        public void bytesWritten(TcpTunnel tunnel, 
-                                 int connBytesWritten,
-                                 int totalBytesWritten)
+        public void bytesWritten(
+            TcpTunnel tunnel, 
+            int connBytesWritten,
+            int totalBytesWritten)
         {
             outgoingHeader_.setTitle(
                 "Received from Remote Host: " + connBytesWritten + " conn  " + 
@@ -521,7 +535,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         public void tunnelStarted(TcpTunnel tunnel)
         {
-            statusBar_.setStatus("Tunnel started");
+            statusBar_.setInfo("Tunnel started");
         }
 
         
@@ -573,7 +587,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         StopTunnelAction()
         {
-            super("Stop");
+            super("Stop", ImageCache.getIcon(ImageCache.IMAGE_STOP));
         }
 
         
@@ -587,6 +601,9 @@ public class TunnelPane extends JPanel implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // SupressBinaryAction
+    //--------------------------------------------------------------------------
     
     /**
      * Toggles suppressing of binary data from showing up in the output.
