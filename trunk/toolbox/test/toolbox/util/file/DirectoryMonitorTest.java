@@ -12,7 +12,7 @@ import toolbox.util.FileUtil;
 import toolbox.util.ThreadUtil;
 
 /**
- * Unit test for DirectoryMonitor.
+ * Unit test for {@link toolbox.util.file.DirectoryMonitor}.
  */
 public class DirectoryMonitorTest extends TestCase
 {
@@ -103,7 +103,7 @@ public class DirectoryMonitorTest extends TestCase
         File dir = FileUtil.createTempDir();
         
         DirectoryMonitor dm = new DirectoryMonitor(dir);
-        dm.setDelay(500);
+        dm.setDelay(250);
         
         dm.start();
         
@@ -114,7 +114,8 @@ public class DirectoryMonitorTest extends TestCase
         }
         catch (IllegalStateException ise)
         {
-            ; // Success
+            // Success
+            logger_.debug("SUCCESS: start twice failed."); 
         }
         catch (Exception e)
         {
