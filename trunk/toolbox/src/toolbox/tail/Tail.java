@@ -1,6 +1,5 @@
 package toolbox.tail;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -127,6 +126,8 @@ public class Tail implements Runnable
     
     /**
      * Starts tail
+     * 
+     * @throws FileNotFoundException
      */
     public void start() throws FileNotFoundException
     {
@@ -179,6 +180,8 @@ public class Tail implements Runnable
 
     /**
      * Connects to the provided stream source
+     * 
+     * @throws FileNotFoundException
      */
     protected void connect() throws FileNotFoundException
     {
@@ -549,7 +552,7 @@ public class Tail implements Runnable
      * 
      * @return File
      */
-    protected File getFile()
+    public File getFile()
     {
         return file_;
     }
@@ -595,5 +598,4 @@ public class Tail implements Runnable
     {
         reader_ = reader;
     }
-
 }
