@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JList;
 
+import toolbox.util.SwingUtil;
 import toolbox.util.ui.explorer.JFileExplorer;
 
 /**
@@ -40,9 +41,9 @@ public class FileListMouseListener extends AbstractListener
     {
         JList fileList = (JList) evt.getSource();
         
-        if (evt.getClickCount() == 2 && fileList.getSelectedIndex() != -1)
+        if (SwingUtil.isDoubleClick(evt) && fileList.getSelectedIndex() != -1)
         {
-            // double click on a file fires event to listeners 
+            // Double click on a file fires event to listeners 
             getProxy().fireFileDoubleClicked();
         }
         else if (evt.getClickCount() == 1)
@@ -56,18 +57,43 @@ public class FileListMouseListener extends AbstractListener
         }
     }
     
+    
+    /**
+     * No-op
+     * 
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     public void mouseEntered(MouseEvent e)
     {
     }
     
+    
+    /**
+     * No-op
+     * 
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     public void mouseExited(MouseEvent e)
     {
     }
     
+    
+    /**
+     * No-op
+     * 
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent e)
     {
     }
     
+    
+    /**
+     * No-op
+     * 
+     * @see java.awt.event.MouseListener#mouseReleased(
+     *      java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent e)
     {
     }
