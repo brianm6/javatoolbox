@@ -30,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
@@ -148,13 +149,13 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         plugin.init();
         
         // Create tab
-        tabbedPane_.addTab(plugin.getName(), plugin.getComponent());
+        JPanel pluginPanel = new JPanel(new BorderLayout());
+        if (plugin.getMenuBar() != null)
+        	pluginPanel.add(BorderLayout.NORTH, plugin.getMenuBar());
+        pluginPanel.add(BorderLayout.CENTER, plugin.getComponent());
+        tabbedPane_.insertTab(plugin.getName(), null, pluginPanel, null, 0);
+        tabbedPane_.setSelectedIndex(0);
         
-        // Add menu
-        JMenu menu = plugin.getMenu();
-        if (menu !=  null)
-            getJMenuBar().add(menu);
-            
         // Restore preferences
         plugin.applyPrefs(prefs_);
     }
@@ -189,10 +190,15 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         if (hasPlugin(pluginClass))
         {
             IPlugin plugin = getPluginByClass(pluginClass);
-            tabbedPane_.remove(plugin.getComponent());
+            tabbedPane_.remove(tabbedPane_.indexOfTab(plugin.getName()));
             plugin.setStatusBar(null);
             plugins_.remove(plugin.getName());
             plugin.shutdown();
+        }
+        else
+        {
+        	logger_.warn("deregisterPlugin: Plugin " + pluginClass + 
+        		" not found.");
         }
     }
 
