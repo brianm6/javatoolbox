@@ -8,6 +8,8 @@ import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
 
+import toolbox.util.ui.Colors;
+
 /**
  * Customized JEditTextArea defaults for editing SQL files.
  */
@@ -29,7 +31,7 @@ public class SQLDefaults extends TextAreaDefaults
         blockCaret = true;
         electricScroll = 3;
         cols = 80;
-        rows = 15;
+        rows = 10;
         styles = getSyntaxStyles();
         eolMarkers = false;
         paintInvalid = false;
@@ -55,31 +57,41 @@ public class SQLDefaults extends TextAreaDefaults
     /**
      * Customizes the colors used for syntax hiliting the xml.
      * 
-     * @return Syntax styles
+     * @return Syntax styles.
      */
     protected SyntaxStyle[] getSyntaxStyles()
     {
         SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
 
-        styles[Token.COMMENT1] = new SyntaxStyle(Color.lightGray, false, false);
+        styles[Token.COMMENT1] = 
+            new SyntaxStyle(Color.lightGray, false, false);
             
-        styles[Token.COMMENT2] = new SyntaxStyle(Color.gray, false, false);
+        styles[Token.COMMENT2] = 
+            new SyntaxStyle(Color.gray, false, false);
             
-        styles[Token.KEYWORD1] = new SyntaxStyle(Color.blue, false, false);
+        styles[Token.KEYWORD1] = 
+            new SyntaxStyle(Colors.getColor("dark blue"), false, false);
             
-        styles[Token.KEYWORD2] = new SyntaxStyle(Color.blue, true, true);
+        styles[Token.KEYWORD2] = 
+            new SyntaxStyle(Color.blue, true, true);
             
-        styles[Token.KEYWORD3] = new SyntaxStyle(Color.magenta, false, false);
+        styles[Token.KEYWORD3] = 
+            new SyntaxStyle(Color.magenta, false, false);
             
-        styles[Token.LITERAL1] = new SyntaxStyle(Color.green, false, true);
+        styles[Token.LITERAL1] = 
+            new SyntaxStyle(Colors.getColor("blue4"), false, false);
                 
-        styles[Token.LITERAL2] = new SyntaxStyle(Color.orange, false, false);
+        styles[Token.LITERAL2] = 
+            new SyntaxStyle(Color.orange, false, false);
             
-        styles[Token.LABEL] = new SyntaxStyle(Color.pink, false, false);
+        styles[Token.LABEL] = 
+            new SyntaxStyle(Color.pink, false, false);
             
-        styles[Token.OPERATOR] = new SyntaxStyle(Color.green, false, false);
+        styles[Token.OPERATOR] = 
+            new SyntaxStyle(Colors.getColor("red4"), false, false);
             
-        styles[Token.INVALID] = new SyntaxStyle(Color.yellow, true, true);
+        styles[Token.INVALID] = 
+            new SyntaxStyle(Colors.getColor("orange4"), true, true);
 
         return styles;
     }
