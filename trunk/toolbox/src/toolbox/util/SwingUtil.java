@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import net.sourceforge.mlf.metouia.MetouiaLookAndFeel;
@@ -110,6 +112,27 @@ public class SwingUtil
         child.setLocation(
             (parentSize.width - childSize.width) / 2 + loc.x,
             (parentSize.height - childSize.height) / 2 + loc.y);
+    }
+   
+   
+   	/**
+   	 * Given a component, this method will find the root frame ancestor if
+   	 * one exists. i.e Given any component in a Frame, return the Frame given
+   	 * only a refererence to the component
+   	 * 
+   	 * @param   component  Component to find parent frame for
+   	 * @return  Frame that component is a child of or null if the component
+   	 *          does not have a parent frame or if the parent frame is not
+   	 *          a Frame (could be a Dialog).
+   	 * @see     SwingUtilities#getWindowAncestor()
+   	 */
+    public static Frame getFrameAncestor(Component component)
+    {
+		// Find parent window
+		Window w = SwingUtilities.getWindowAncestor(component);
+        
+        // Check if frame and return	
+ 		return (w != null && w instanceof Frame) ? (Frame) w : new Frame();   
     }
    
     //--------------------------------------------------------------------------
