@@ -24,8 +24,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Category;
-
-import toolbox.jtail.config.*;
+import toolbox.jtail.config.IConfigManager;
+import toolbox.jtail.config.IJTailConfig;
+import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.jtail.exml.ConfigManager;
 import toolbox.jtail.exml.TailPaneConfig;
 import toolbox.util.ArrayUtil;
@@ -35,6 +36,8 @@ import toolbox.util.file.FileStuffer;
 import toolbox.util.ui.JFileExplorerAdapter;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartStatusBar;
+import toolbox.util.ui.flipper.IFlipPaneListener;
+import toolbox.util.ui.flipper.JFlipPane;
 import toolbox.util.ui.font.FontSelectionDialog;
 import toolbox.util.ui.font.FontSelectionException;
 import toolbox.util.ui.font.FontSelectionPane;
@@ -51,10 +54,12 @@ public class JTail extends JFrame
 
     private FileSelectionPane fileSelectionPane_;
     private JTabbedPane       tabbedPane_;
+    private JFlipPane         flipPane_;    
     private JSmartStatusBar   statusBar_;    
     private JMenuBar          menuBar_;    
     private Map               tailMap_;
     private boolean           testMode_ = true;
+    private JSplitPane        rootSplitPane_;
 
     /** Configuration manager **/
     private IConfigManager configManager_ = new ConfigManager();
@@ -135,20 +140,47 @@ public class JTail extends JFrame
         getContentPane().setLayout(new BorderLayout());
         
         fileSelectionPane_ = new FileSelectionPane();
+        flipPane_ = new JFlipPane(JFlipPane.LEFT);
+        flipPane_.addFlipper("File Explorer", fileSelectionPane_);
+        
         tabbedPane_ = new JTailTabbedPane();
 
-        JSplitPane rootSplitPane = 
+        rootSplitPane_ = 
             new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                fileSelectionPane_, 
+                flipPane_, 
                 tabbedPane_);                
 
-        getContentPane().add(BorderLayout.CENTER, rootSplitPane);
+        rootSplitPane_.setOneTouchExpandable(true);
+
+        getContentPane().add(BorderLayout.CENTER, rootSplitPane_);
+  
+//        getContentPane().add(BorderLayout.WEST, flipPane_);
+//        getContentPane().add(BorderLayout.CENTER, tabbedPane_);     
         
         statusBar_ = new JSmartStatusBar();
         getContentPane().add(BorderLayout.SOUTH, statusBar_);
         
         setJMenuBar(createMenuBar());
+        
+        flipPane_.addFlipPaneListener(new IFlipPaneListener()
+        {
+            public void flipperCollapsed(JFlipPane flipPane)
+            {
+                logger_.debug("Repainting cuz flipper collapsed");
+                //getContentPane().validate();
+                //rootSplitPane_.revalidate();
+                rootSplitPane_.resetToPreferredSizes();
+            }
+
+            public void flipperExpanded(JFlipPane flipPane)
+            {
+                logger_.debug("Repainting cuz flipper expanded");
+                //getContentPane().validate();
+                //rootSplitPane_.revalidate();
+                rootSplitPane_.resetToPreferredSizes();
+            }
+        });
     }
     
     
