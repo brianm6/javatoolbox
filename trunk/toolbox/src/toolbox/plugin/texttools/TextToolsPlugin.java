@@ -116,6 +116,10 @@ public class TextToolsPlugin extends AbstractPlugin
      */
     private FormatterView formatterView_;
     
+    /**
+     * Configuration that integrates with the workspace's preferences dialog
+     * box. 
+     */
     private TextToolsConfigurator preferences_;
 
     //--------------------------------------------------------------------------
@@ -361,6 +365,11 @@ public class TextToolsPlugin extends AbstractPlugin
                 new Element(NODE_OUTPUT_TEXTAREA)));
 
         splitter_.applyPrefs(root);
+        
+        // if the splitter is not visible, then reset it
+        //if (!splitter_.isShowing())
+        //   splitter_.setDividerLocation((double) 0.5);
+        
         formatterView_.applyPrefs(root);
     }
 
