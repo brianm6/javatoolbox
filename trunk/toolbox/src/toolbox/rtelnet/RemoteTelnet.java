@@ -27,12 +27,12 @@ public class RemoteTelnet
         Logger.getLogger(RemoteTelnet.class);
         
     /** 
-     * Used to read missing telnet info from the standard in 
+     * Used to read missing telnet info from the standard in. 
      */
     private LineNumberReader lnr_;
     
     /** 
-     * Remote telnet authentication, connection, command information 
+     * Remote telnet authentication, connection, command information. 
      */
     private RemoteTelnetInfo options_;
     
@@ -41,7 +41,7 @@ public class RemoteTelnet
     //--------------------------------------------------------------------------
     
     /**
-     * Launches RemoteTelnet
+     * Launches RemoteTelnet.
      * 
      * @param args -h host:port Host and to telnet to
      *             -u username  Telnet username    
@@ -108,7 +108,7 @@ public class RemoteTelnet
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a remote telnet with the given options
+     * Creates a remote telnet with the given options.
      * 
      * @param hostname Host to telnet to
      * @param port Telnet port
@@ -123,8 +123,9 @@ public class RemoteTelnet
         this(new RemoteTelnetInfo(hostname, port, username, password, command));
     }
     
+    
     /**
-     * Creates a remote telnet with the given options
+     * Creates a remote telnet with the given options.
      * 
      * @param options Telnet info
      * @throws IOException on IO error
@@ -139,7 +140,7 @@ public class RemoteTelnet
     //--------------------------------------------------------------------------
 
     /**
-     * Telnets to the remote host and executes the command
+     * Telnets to the remote host and executes the command.
      * 
      * @throws SocketException on socket error
      * @throws IOException on IO error
@@ -177,8 +178,9 @@ public class RemoteTelnet
         //commandLoop(telnet);
     }
     
+    
     /**
-     * Enables interactive telnet
+     * Enables interactive telnet.
      * 
      * @param telnet Telnet client
      * @throws IOException on IO error
@@ -206,7 +208,7 @@ public class RemoteTelnet
     //--------------------------------------------------------------------------
         
     /**
-     * Prints program usage
+     * Prints program usage.
      */
     protected static void printUsage()
     {
@@ -220,9 +222,10 @@ public class RemoteTelnet
                                               "-c command");
     }
     
+    
     /**
      * Verifies that the telnet options are valid. Prompts the user via
-     * the command line if an option is missing or invalid
+     * the command line if an option is missing or invalid.
      * 
      * @throws IOException on error
      */
@@ -244,8 +247,9 @@ public class RemoteTelnet
             options_.setCommand(queryUser("Command: " ));
     }    
 
+
     /**
-     * Promps the user to enter a value via the command line
+     * Promps the user to enter a value via the command line.
      * 
      * @param prompt Prompt that the user is presented with
      * @return Value that the user typed in

@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import org.apache.log4j.Logger;
 
 /**
- * Tails one or more files
+ * Tails one or more files.
  */
 public class Main extends TailAdapter
 {
@@ -19,7 +19,7 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Entrypoint 
+     * Entrypoint. 
      * 
      * @param args List of files to tail
      */    
@@ -33,7 +33,7 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Arg constructor
+     * Arg constructor.
      * 
      * @param args Array of files to tail
      */
@@ -72,7 +72,7 @@ public class Main extends TailAdapter
     //--------------------------------------------------------------------------
     
     /**
-     * Program usage 
+     * Program usage. 
      */
     private void printUsage()
     {

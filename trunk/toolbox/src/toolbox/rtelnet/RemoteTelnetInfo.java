@@ -17,15 +17,16 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor. Sets telnet port to 23
+     * Default constructor. Sets telnet port to 23.
      */    
     public RemoteTelnetInfo()
     {
         setPort(23);
     }
     
+    
     /**
-     * Creates a RemoteTelnetInfo with the given parameters
+     * Creates a RemoteTelnetInfo with the given parameters.
      * 
      * @param hostname Host to telnet to
      * @param port Port to connect to on telnet host
@@ -48,7 +49,7 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the command
+     * Returns the command.
      * 
      * @return String
      */
@@ -58,7 +59,7 @@ public class RemoteTelnetInfo
     }
 
     /**
-     * Returns the hostname
+     * Returns the hostname.
      * 
      * @return String
      */
@@ -68,7 +69,7 @@ public class RemoteTelnetInfo
     }
 
     /**
-     * Returns the password
+     * Returns the password.
      * 
      * @return String
      */
@@ -78,7 +79,7 @@ public class RemoteTelnetInfo
     }
 
     /**
-     * Returns the telnet port
+     * Returns the telnet port.
      * 
      * @return int
      */
@@ -88,7 +89,7 @@ public class RemoteTelnetInfo
     }
 
     /**
-     * Returns the username
+     * Returns the username.
      * 
      * @return String
      */
@@ -152,7 +153,7 @@ public class RemoteTelnetInfo
     //--------------------------------------------------------------------------
     
     /**
-     * Returns TelnetInfo as string
+     * Returns TelnetInfo as string.
      * 
      * @return String
      */

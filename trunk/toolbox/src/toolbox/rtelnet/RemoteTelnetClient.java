@@ -16,12 +16,12 @@ import toolbox.util.ThreadUtil;
 public class RemoteTelnetClient extends TelnetClient implements Runnable
 {
     /** 
-     * Telnet response read from here 
+     * Telnet response read from here.
      */
     private LineNumberReader lnr_;
     
     /** 
-     * Telnet respones are buffered here so that they can be searched 
+     * Telnet respones are buffered here so that they can be searched. 
      */
     private StringBuffer outputBuffer_ = new StringBuffer();
 
@@ -30,7 +30,7 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Wait for a given string in the telnet output stream to be received
+     * Wait for a given string in the telnet output stream to be received.
      * 
      * @param searchString String to search for in the response
      */    
@@ -49,7 +49,7 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     }
 
     /**
-     * Sends a command to the telnet host to be executed
+     * Sends a command to the telnet host to be executed.
      * 
      * @param command Command to execute
      * @throws IOException on IO error
@@ -69,7 +69,7 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     
     /** 
      * Reads from telnet connections output stream and populates the
-     * outputBuffer
+     * outputBuffer.
      */    
     public void run()
     {
@@ -94,7 +94,7 @@ public class RemoteTelnetClient extends TelnetClient implements Runnable
     //--------------------------------------------------------------------------
     
     /**
-     * Hook into connect method to start up the output stream reader
+     * Hook into connect method to start up the output stream reader.
      * 
      * @param hostname Hostname to connect to
      * @param port Telnet port on host

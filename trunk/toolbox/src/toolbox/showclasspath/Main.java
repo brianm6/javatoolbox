@@ -31,37 +31,37 @@ import toolbox.util.StringUtil;
 public final class Main
 {
     /** 
-     * Max length for size column 
+     * Max length for size column.
      */
     private static final int MAX_SIZE_LEN = 12;
     
     /** 
-     * Max length for date column 
+     * Max length for date column.
      */
     private static final int MAX_DATE_LEN = 14;
     
     /** 
-     * Max length for time column 
+     * Max length for time column.
      */
     private static final int MAX_TIME_LEN = 8;
 
     /** 
-     * Column heading for archive 
+     * Column heading for archive.
      */
     private static final String COL_ARCHIVE = "JAR/Directory";
     
     /** 
-     * Column heading for date 
+     * Column heading for date. 
      */
     private static final String COL_DATE = "Date";
     
     /** 
-     * Column heading for size 
+     * Column heading for size. 
      */
     private static final String COL_SIZE = "Size";
     
     /** 
-     * Column heading for time 
+     * Column heading for time.
      */    
     private static final String COL_TIME = "Time";
 
@@ -70,7 +70,7 @@ public final class Main
     //--------------------------------------------------------------------------
     
     /**
-     * Entry point
+     * Entry point.
      * 
      * @param args None recognized
      */
@@ -179,6 +179,7 @@ public final class Main
         }
     }
 
+
     /**
      * Formats date to specific format: 01/01/1980  12/31/1999
      * 
@@ -191,6 +192,7 @@ public final class Main
 
         return dateFormat.format(d);
     }
+
 
     /**
      * Formats the file size length to include commas: 1,233,276
@@ -207,6 +209,7 @@ public final class Main
 
         return new String(sbuf);
     }
+
 
     /**
      * Formats time to specific format:  12:47a  01:07p
@@ -228,8 +231,9 @@ public final class Main
         return timeString;
     }
 
+
     /**
-     * Builds a string with a given number of spaces
+     * Builds a string with a given number of spaces.
      * 
      * @param l number of spaces
      * @return string containing given number of spaces
