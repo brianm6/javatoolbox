@@ -88,10 +88,10 @@ public class StatcvsXMLEngine implements StatcvsEngine
             "http://www.ibiblio.org/maven/jdom/jars/jdom-b10.jar"));
 
         statcvsRealm.addConstituent(new URL(
-            "http://mattpayne.org/java/jfree.chart/jfreechart-0.9.16.jar"));
+            "http://www.ibiblio.org/maven/jfreechart/jars/jfreechart-0.9.16.jar"));
 
         statcvsRealm.addConstituent(new URL(
-            "http://mattpayne.org/java/jfree.chart/jcommon-0.9.1.jar"));
+            "http://www.ibiblio.org/maven/jcommon/jars/jcommon-0.9.1.jar"));
 
         statcvsRealm.addConstituent(new URL(
             "http://www.ibiblio.org/maven/commons-jexl/jars/commons-jexl-1.0-beta-1.jar"));
