@@ -66,6 +66,38 @@ public class FileStats
         blankLines_   += filestats.getBlankLines();
     }
 
+    /**
+     * Increments total lines by one
+     */
+    public void incrementTotalLines()
+    {
+        ++totalLines_;
+    }
+
+    /**
+     * Increments comment lines by one
+     */
+    public void incrementCommentLines()
+    {
+        ++commentLines_;
+    }
+
+    /**
+     * Increments real code lines by one
+     */
+    public void incrementCodeLines()
+    {
+        ++codeLines_;
+    }
+
+    /**
+     * Increments blank lines by one
+     */
+    public void incrementBlankLines()
+    {
+        ++blankLines_;
+    }
+
     //--------------------------------------------------------------------------
     //  Getters/Setters
     //--------------------------------------------------------------------------
