@@ -50,6 +50,10 @@ public class JStatusBar extends JPanel implements IStatusBar
     {
         statusLabel_ = new JLabel("", SwingConstants.LEFT);
         Font f = SwingUtil.getPreferredSerifFont();
+        
+        // TODO: remove once getPreferredSerifFont() gets size from LAF
+        f = f.deriveFont( (float) (f.getSize() - 1));
+        
         statusLabel_.setFont(f);
         FontMetrics fm = statusLabel_.getFontMetrics(f);
         Dimension d = new Dimension(100, (int)(fm.getHeight() * 1.1));
