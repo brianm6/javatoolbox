@@ -6,6 +6,10 @@ package toolbox.findclass;
 public class FindClassAdapter implements IFindClassListener
 {
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for FindClassAdapter.
      */
@@ -13,6 +17,10 @@ public class FindClassAdapter implements IFindClassListener
     {
     }
 
+    //--------------------------------------------------------------------------
+    // IFindClassListener Interface
+    //--------------------------------------------------------------------------
+    
     /**
      * @see IFindClassListener#classFound(FindClassResult)
      */

@@ -99,6 +99,10 @@ public class FindClassResult
         return timestamp_;
     }
     
+    //--------------------------------------------------------------------------
+    // Overridden from java.lang.Object
+    //--------------------------------------------------------------------------
+    
     /**
      * @return Stringified
      */    
