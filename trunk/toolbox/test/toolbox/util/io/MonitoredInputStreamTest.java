@@ -108,9 +108,8 @@ public class MonitoredInputStreamTest extends TestCase
     {
         logger_.info("Running testRead...");
        
-        class MyListener implements MonitoredInputStream.Listener
+        class MyListener implements MonitoredInputStream.InputStreamListener
         {
-            private BlockingQueue q_ = new BlockingQueue();
             private BlockingQueue c_ = new BlockingQueue();
             
             /**
@@ -120,30 +119,6 @@ public class MonitoredInputStreamTest extends TestCase
             public void streamClosed(MonitoredInputStream stream)
             {
                 c_.push("close");
-            }
-
-            
-            /**
-             * @see toolbox.util.io.MonitoredInputStream.Listener#bytesRead(
-             *      toolbox.util.io.MonitoredInputStream, byte[])
-             */
-            public void bytesRead(MonitoredInputStream stream, byte[] bytes)
-            {
-                q_.push(bytes);
-            }
-            
-            
-            /**
-             * Waits for notification of a byte being read from the inputstream.
-             * 
-             * @return byte that was read.
-             * @throws InterruptedException on interruption.
-             */
-            byte waitForByte() throws InterruptedException
-            {
-                byte[] b = (byte[]) q_.pull();
-                assertEquals(b.length, 1);
-                return b[0];
             }
             
             
@@ -160,8 +135,11 @@ public class MonitoredInputStreamTest extends TestCase
         
         MyListener listener = new MyListener();
         String str = RandomUtil.nextString(500);
-        MonitoredInputStream eis = new MonitoredInputStream(new StringInputStream(str));
-        eis.addListener(listener);
+        
+        MonitoredInputStream eis = 
+            new MonitoredInputStream(new StringInputStream(str));
+        
+        eis.addInputStreamListener(listener);
         
         for (int i = 0; i < str.length(); i++)
         {
@@ -173,7 +151,7 @@ public class MonitoredInputStreamTest extends TestCase
        
         eis.close();
         listener.waitForClose();
-        eis.removeListener(listener);
+        eis.removeInputStreamListener(listener);
     }
 
     
@@ -187,9 +165,9 @@ public class MonitoredInputStreamTest extends TestCase
     {
         logger_.info("Running testRead2...");
         
-        MonitoredInputStream.Listener listener = new MonitoredInputStream.Listener()
+        MonitoredInputStream.InputStreamListener listener = 
+            new MonitoredInputStream.InputStreamListener()
         {
-            private BlockingQueue q_ = new BlockingQueue();
             private BlockingQueue c_ = new BlockingQueue();
             
             /**
@@ -199,28 +177,6 @@ public class MonitoredInputStreamTest extends TestCase
             public void streamClosed(MonitoredInputStream stream)
             {
                 c_.push("close");
-            }
-            
-            
-            /**
-             * @see toolbox.util.io.MonitoredInputStream.Listener#bytesRead(
-             *      toolbox.util.io.MonitoredInputStream, byte[])
-             */
-            public void bytesRead(MonitoredInputStream stream, byte[] bytes)
-            {
-                q_.push(bytes);
-            }
-            
-            
-            /**
-             * Waits for notification of a byte being read from the inputstream.
-             * 
-             * @return byte that was read.
-             * @throws InterruptedException on interruption.
-             */
-            byte[] waitForBytes() throws InterruptedException
-            {
-                return (byte[]) q_.pull();
             }
             
             
@@ -237,8 +193,11 @@ public class MonitoredInputStreamTest extends TestCase
         };
         
         String str = RandomUtil.nextString(1000);
-        MonitoredInputStream eis = new MonitoredInputStream(new StringInputStream(str));
-        eis.addListener(listener);
+        
+        MonitoredInputStream eis = 
+            new MonitoredInputStream(new StringInputStream(str));
+        
+        eis.addInputStreamListener(listener);
         
         int cnt = 0;
         
@@ -253,8 +212,10 @@ public class MonitoredInputStreamTest extends TestCase
                 assertEquals(str.charAt(cnt++), b[i]); 
         }
         
-        assertEquals(str.length(), eis.getTransferredMonitor().getBytesTransferred());
+        assertEquals(str.length(), 
+            eis.getTransferredMonitor().getBytesTransferred());
+        
         eis.close();
-        eis.removeListener(listener);
+        eis.removeInputStreamListener(listener);
     }
 }
