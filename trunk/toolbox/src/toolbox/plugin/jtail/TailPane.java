@@ -8,9 +8,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
+import org.apache.log4j.TTCCLayout;
+import org.apache.log4j.WriterAppender;
 import org.apache.regexp.RESyntaxException;
 
 import toolbox.jtail.config.ITailPaneConfig;
@@ -40,6 +45,7 @@ import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
 import toolbox.util.io.NullWriter;
+import toolbox.util.io.ReversePipe;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.plugin.IStatusBar;
 
@@ -53,7 +59,6 @@ public class TailPane extends JPanel
     *       applied/persisted to the tailpane!
     * TODO: Color code keywords
     * TODO: Color code time lapse delays
-    * TODO: Verify regex filtering is working
     * TODO: Move button panel to its own flippane
     * TODO: Add option to tail the whole file from the beginning
     */
@@ -61,16 +66,20 @@ public class TailPane extends JPanel
     private static final Logger logger_ = 
         Logger.getLogger(TailPane.class);
     
-    private JButton        clearButton_;
-    private JButton        pauseButton_;
-    private JButton        startButton_;
-    private JButton        closeButton_;
+    // Special types of Logs that aren't "Files"
+    public static final String LOG_SYSTEM_OUT = "[System.out]";
+    public static final String LOG_LOG4J      = "[Log4J]";
     
-    private JCheckBox      autoScrollBox_;
-    private JCheckBox      lineNumbersBox_;
+    private JButton clearButton_;
+    private JButton pauseButton_;
+    private JButton startButton_;
+    private JButton closeButton_;
     
-    private JTextField     regexField_;
-    private JTextField     cutField_;
+    private JCheckBox autoScrollBox_;
+    private JCheckBox lineNumbersBox_;
+    
+    private JTextField regexField_;
+    private JTextField cutField_;
 
     private BlockingQueue       queue_;
     private BatchingQueueReader queueReader_;
@@ -93,7 +102,6 @@ public class TailPane extends JPanel
 
     /** Configuration */
     private ITailPaneConfig config_;
-    
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -155,17 +163,46 @@ public class TailPane extends JPanel
         tail_ = new Tail();
         tail_.addTailListener(new TailListener());
         
-        if (config_.getFilename().equals("System.out"))
+        String file = config_.getFilename();
+         
+        if (file.equals(LOG_SYSTEM_OUT))
         {
-            // Glue system.out to an inputstream so that it can be tailed
-            PipedOutputStream pos = new PipedOutputStream();
-            PipedInputStream  pis = new PipedInputStream();
-            pos.connect(pis);
-            tail_.follow(new InputStreamReader(pis), new NullWriter());
+            ReversePipe pipe = new ReversePipe(System.out);
+            PrintStream ps = new PrintStream(pipe.getOutputStream(), true);
+            System.setOut(ps);
+            
+            tail_.follow(new InputStreamReader(pipe.getInputStream()), 
+                new NullWriter());
+                
             logger_.debug("Tailing System.out...");
         }
+        else if (file.equals(LOG_LOG4J))
+        {
+            for (Enumeration e = LogManager.getCurrentLoggers(); e.hasMoreElements(); )
+            {
+                Logger logger = (Logger) e.nextElement();
+                
+                System.out.println("Logger: " + logger.getName());
+            }
+            
+            ReversePipe pipe = new ReversePipe();
+            OutputStream pos = pipe.getOutputStream();
+            WriterAppender appender = new WriterAppender(new TTCCLayout(), pos);
+            appender.setImmediateFlush(true);
+            appender.setThreshold(Priority.DEBUG);
+            appender.setName("toolbox-stream-appender");
+            
+            LogManager.getLogger("toolbox").addAppender(appender);
+            
+            tail_.follow(new InputStreamReader(pipe.getInputStream()),
+                new NullWriter());
+                
+            logger_.debug("Tailing Log4J...");                
+        }
         else
-            tail_.follow(new File(config_.getFilename()), new NullWriter());
+        {
+            tail_.follow(new File(file), new NullWriter());
+        }
 
         // Start tail through action so button states are OK
         if (config_.isAutoStart())
@@ -180,7 +217,6 @@ public class TailPane extends JPanel
     {
         tailArea_ = new JSmartTextArea("");
         tailArea_.setFont(SwingUtil.getPreferredMonoFont());
-        //tailArea_.setDoubleBuffered(false);
         
         clearButton_    = new JButton(new ClearAction());
         pauseButton_    = new JButton(new PauseUnpauseAction());
@@ -450,7 +486,11 @@ public class TailPane extends JPanel
             if (StringUtil.isNullOrEmpty(s))
                 regexFilter_.setEnabled(false);
             else
+            {
                 setRegularExpression(getRegularExpression());
+                statusBar_.setStatus("Now matching regular expression: " + s);
+            }
+                
         }
     }
 
