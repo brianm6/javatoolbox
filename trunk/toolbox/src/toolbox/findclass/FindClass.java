@@ -34,8 +34,7 @@ import toolbox.util.io.filter.OrFilter;
  */
 public class FindClass 
 { 
-    private static final Logger logger_ = 
-        Logger.getLogger(Main.class);
+    private static final Logger logger_ = Logger.getLogger(FindClass.class);
     
     //--------------------------------------------------------------------------
     // Fields
@@ -136,7 +135,7 @@ public class FindClass
 
         // Setup regexp based on case sensetivity flag
         regExp_ = new RE(classToFind_);
-        if (ignoreCase)
+        if (ignoreCase_)
             regExp_.setMatchFlags(RE.MATCH_CASEINDEPENDENT);        
 
         String[] targets = (String[])getSearchTargets().toArray(new String[0]);
