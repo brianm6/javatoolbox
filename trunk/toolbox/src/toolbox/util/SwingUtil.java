@@ -73,6 +73,9 @@ public final class SwingUtil
         
         UIManager.installLookAndFeel("XPLookAndFeel", 
             "com.stefankrause.xplookandfeel.XPLookAndFeel");
+            
+        UIManager.installLookAndFeel("TinyLAF", 
+            "de.muntjak.tinylookandfeel.TinyLookAndFeel");
     }
 
     //--------------------------------------------------------------------------
