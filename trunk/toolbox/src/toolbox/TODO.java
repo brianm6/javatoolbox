@@ -12,7 +12,6 @@ package toolbox;
  * TODO: Integrate automatic build number generation into the build process.
  * TODO: Get PropertyPrompt working properly
  * TODO: Add tabs to FIndClass -> Decompiler. One per file
- * TODO: Add dynamic loading of JDBC drivers to JDBC plugin
  * </pre>
  */
 public class TODO
