@@ -4,15 +4,22 @@ import java.io.File;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Category;
+
 import toolbox.util.FileUtil;
 import toolbox.util.ResourceUtil;
+import toolbox.util.StringUtil;
 
 /**
  * Unit test for ResourceUtilTest
  */
 public class ResourceUtilTest extends TestCase
 {
+    /** Logger **/
+    private static final Category logger_ = 
+        Category.getInstance(ResourceUtilTest.class);
+        
+    
     /**
      * Entrypoint
      * 
@@ -20,9 +27,9 @@ public class ResourceUtilTest extends TestCase
      */
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();        
         TestRunner.run(ResourceUtilTest.class);    
     }
+    
     
     /**
      * Constructor for ResourceUtilTest
@@ -43,19 +50,23 @@ public class ResourceUtilTest extends TestCase
     public void testExportToClass() throws Exception
     {
         String treeOpen  = "images" + File.separator + "tree_open.gif";
-        String treeClose = "images" + File.separator + "tree_close.gif";
-        String cdrive    = "images" + File.separator + "cdrive.gif";
-        
-        ResourceUtil.exportToClass(treeOpen, "toolbox.util.ui", 
-            FileUtil.getTempDir().getAbsolutePath() + File.separator + 
-                "TreeOpenGIF");        
+    
+        String filename = "TreeOpenGIF.java";
             
-        ResourceUtil.exportToClass(treeClose, "toolbox.util.ui", 
-            FileUtil.getTempDir().getAbsolutePath() + File.separator + 
-                "TreeCloseGIF");
-                
-        ResourceUtil.exportToClass(cdrive, "toolbox.util.ui", 
-            FileUtil.getTempDir().getAbsolutePath() + File.separator + 
-                "HardDriveGIF");
+        String javaSrc = ResourceUtil.exportToClass(
+            treeOpen, 
+            "toolbox.util.ui", 
+            "TreeOpenGIF",
+            FileUtil.getTempDir());
+    
+        logger_.info("Wrote TreeOpenGIF.java to " + 
+            FileUtil.getTempDir().getAbsolutePath() + " \n" + javaSrc);
+            
+        String compareSrc = FileUtil.getFileContents(
+            FileUtil.getTempDir().getAbsolutePath() + 
+            File.separator +
+            filename);
+            
+        assertEquals("files don't match" , javaSrc, compareSrc);
     }
 }
