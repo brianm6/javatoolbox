@@ -48,8 +48,7 @@ public class RegexFilterTest extends TestCase
      */
     protected void setUp() throws Exception
     {
-        testDir_ = new File(FileUtil.createTempFilename());
-        testDir_.mkdir();
+        testDir_ = FileUtil.createTempDir();
         String base = testDir_.getAbsolutePath() + File.separator;
         
         FileUtil.setFileContents(base + "file.txt", "testing", false);
@@ -67,8 +66,7 @@ public class RegexFilterTest extends TestCase
      */
     protected void tearDown() throws Exception
     {
-        FileUtil.cleanDir(testDir_);
-        testDir_.delete();
+        FileUtil.removeDir(testDir_);
         super.tearDown();
     }
    
