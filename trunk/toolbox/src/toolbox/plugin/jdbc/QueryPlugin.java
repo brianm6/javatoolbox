@@ -71,6 +71,7 @@ import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.table.JSmartTable;
+import toolbox.util.ui.table.TableSorter;
 import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
@@ -88,6 +89,14 @@ import toolbox.workspace.PluginWorkspace;
  *  <li>SQL statements can span multiple lines but must be terminated by a 
  *      semicolon.
  *  <li>Results can be filtered "as you type" by regular expressions.
+ *  <li>Query results can be viewed in either a sortable table or a freeform
+ *      textarea.
+ *  <li>JDBC benchmark is built in.
+ *  <li>SQL formatter with many formatting options.
+ *  <li>Ability to execute a single SQL statement or a group of SQL statements
+ *      in batch mode.
+ *  <li>Multiple JDBC sessions using different JDBC drivers can be active
+ *      simultaneously.
  * </ul>
  *
  * Shortcuts:
@@ -250,10 +259,19 @@ public class QueryPlugin extends JPanel implements IPlugin
      */
     private DBBenchmarkView benchmarkView_;
 
+    /**
+     * Table that shows the results of a SQL query.
+     */
     private JSmartTable resultsTable_;
 
+    /**
+     * Layout that flips between a table in the results panel and a textarea.
+     */
     private CardLayout resultsLayout_;
     
+    /**
+     * Panel that has both the table and textarea used to show query results.
+     */
     private JPanel resultsCardPanel_;
     
     //--------------------------------------------------------------------------
@@ -439,7 +457,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 
                 stmt = 
                     conn.prepareStatement(
-                        sql, 
+                        JDBCSession.prepSQL(sql), 
                         ResultSet.TYPE_SCROLL_INSENSITIVE, 
                         ResultSet.CONCUR_READ_ONLY);
                 
@@ -453,10 +471,12 @@ public class QueryPlugin extends JPanel implements IPlugin
                 
                 // Output to table
                 DefaultTableModel dtm = 
-                    (DefaultTableModel) resultsTable_.getModel();
-                
-                String[] columnNames = JDBCUtil.getColumnNames(resultSet);
-                dtm.setDataVector(tableResults, columnNames);
+                    new DefaultTableModel(
+                        tableResults, 
+                        JDBCUtil.getColumnNames(resultSet)); 
+
+                TableSorter sorter = (TableSorter) resultsTable_.getModel();
+                sorter.setTableModel(dtm);
                 
                 metaResults = formattedResults;
             }
@@ -704,7 +724,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JToggleButton switchResults = JHeaderPanel.createToggleButton(
                 ImageCache.getIcon(ImageCache.IMAGE_DUKE),
                 "Switch results display",
-                new SwitchResultsAction());
+                new ToggleTableAction());
         
         JPanel resultsAreaPanel = new JPanel(new BorderLayout());
         
@@ -723,23 +743,18 @@ public class QueryPlugin extends JPanel implements IPlugin
         resultsLayout_ = new CardLayout();
         resultsCardPanel_ = new JPanel(resultsLayout_);
         
-        resultsTable_ = new JSmartTable(10,10);
+        DefaultTableModel resultsTableModel = new DefaultTableModel(10,10);
+        TableSorter sorter = new TableSorter(resultsTableModel);
+        resultsTable_ = new JSmartTable(sorter);
         resultsTable_.setFont(FontUtil.getPreferredMonoFont());
+        FontUtil.setBold(resultsTable_.getTableHeader());
+        sorter.setTableHeader(resultsTable_.getTableHeader());
         
         resultsCardPanel_.add(new JScrollPane(resultsTable_), CARD_TABLE);
         resultsCardPanel_.add(new JScrollPane(resultsArea_), CARD_TEXTAREA);
         resultsAreaPanel.add(BorderLayout.CENTER, resultsCardPanel_);
         resultsLayout_.show(resultsCardPanel_, CARD_TEXTAREA);
         return new JHeaderPanel("Results", toolbar, resultsCardPanel_);
-    }
-
-    
-    public class SwitchResultsAction extends AbstractAction
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-            resultsLayout_.next(resultsCardPanel_);
-        }
     }
     
     //--------------------------------------------------------------------------
@@ -950,7 +965,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     }
     
     //--------------------------------------------------------------------------
-    // ExecuteAllAction
+    // CtrlUpAction
     //--------------------------------------------------------------------------
 
     /**
@@ -976,6 +991,21 @@ public class QueryPlugin extends JPanel implements IPlugin
             statusBar_.setWarning("TODO: Implement ctrl-up");
             String s = getActiveText();
             logger_.debug(StringUtil.addBars(s));
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // ToggleTableAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Flips between the textarea and the table in the results panel.
+     */
+    public class ToggleTableAction extends AbstractAction
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            resultsLayout_.next(resultsCardPanel_);
         }
     }
 }
