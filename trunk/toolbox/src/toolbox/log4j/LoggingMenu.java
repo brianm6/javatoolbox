@@ -127,12 +127,13 @@ public class LoggingMenu extends JSmartMenu
         add(consoleItem_);
     }
 
+    
     /**
      * Initialzes the selection state of the menu.
      */
     protected void init()
     {
-        logger_ = Logger.getLogger("toolbox");
+        logger_ = Logger.getLogger(LOGGER_TOOLBOX);
         consoleItem_.setSelected(logger_.getAppender(APPENDER_CONSOLE) != null);
     }
     
