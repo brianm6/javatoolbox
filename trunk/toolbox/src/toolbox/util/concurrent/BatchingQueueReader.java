@@ -98,7 +98,7 @@ public class BatchingQueueReader implements Runnable
             IBatchingQueueListener listener = 
                 (IBatchingQueueListener) i.next();
                 
-            listener.notify(elements);
+            listener.nextBatch(elements);
         }    
     }
  
