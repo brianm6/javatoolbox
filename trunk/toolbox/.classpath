@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="var" path="CLOVER_RUNTIME"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="debug"/>
 	<classpathentry kind="src" path="test"/>
@@ -42,6 +41,7 @@
 	<classpathentry sourcepath="lib/src/jakarta-regexp-src.zip" kind="lib" path="lib/jakarta-regexp.jar"/>
 	<classpathentry sourcepath="lib/src/jalopy-src.zip" kind="lib" path="lib/jalopy.jar"/>
 	<classpathentry sourcepath="lib/src/janino-src.zip" kind="lib" path="lib/janino.jar"/>
+	<classpathentry kind="lib" path="lib/jarjar.jar"/>
 	<classpathentry sourcepath="lib/src/javassist-src.zip" kind="lib" path="lib/javassist.jar"/>
 	<classpathentry sourcepath="lib/src/jaxen-src.zip" kind="lib" path="lib/jaxen.jar"/>
 	<classpathentry sourcepath="lib/src/jcommon-src.zip" kind="lib" path="lib/jcommon.jar"/>
@@ -53,6 +53,7 @@
 	<classpathentry sourcepath="lib/src/jreversepro-src.zip" kind="lib" path="lib/jreversepro.jar"/>
 	<classpathentry sourcepath="lib/src/jsap-src.zip" kind="lib" path="lib/jsap.jar"/>
 	<classpathentry sourcepath="lib/src/jtidy-src.zip" kind="lib" path="lib/jtidy.jar"/>
+	<classpathentry kind="lib" path="lib/jung.jar"/>
 	<classpathentry sourcepath="lib/src/junit-src.zip" kind="lib" path="lib/junit.jar"/>
 	<classpathentry sourcepath="lib/src/junit-addons-src.zip" kind="lib" path="lib/junit-addons.jar"/>
 	<classpathentry kind="lib" path="lib/kunststoff.jar"/>
@@ -66,6 +67,7 @@
 	<classpathentry kind="lib" path="lib/napkinlf.jar"/>
 	<classpathentry sourcepath="lib/src/oyoahalf-src.zip" kind="lib" path="lib/oyoahalf.jar"/>
 	<classpathentry sourcepath="lib/src/pollo-src.zip" kind="lib" path="lib/pollo.jar"/>
+	<classpathentry kind="lib" path="lib/prefuse.jar"/>
 	<classpathentry sourcepath="lib/src/qdox-src.zip" kind="lib" path="lib/qdox.jar"/>
 	<classpathentry sourcepath="lib/src/saxon-src.zip" kind="lib" path="lib/saxon.jar"/>
 	<classpathentry sourcepath="lib/src/skinlf-src.zip" kind="lib" path="lib/skinlf.jar"/>

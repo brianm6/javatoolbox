@@ -459,6 +459,16 @@
     </dependency>
 
     <dependency>
+      <id>jarjar</id>
+      <version>LATEST</version>
+      <url>http://jarjar.sf.net</url>      
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+      
+    <dependency>
       <id>janino</id>
       <version>LATEST</version>
       <url>http://www.janino.net</url>      
@@ -574,6 +584,16 @@
       </properties>
     </dependency>
 
+    <dependency>
+      <id>jung</id>
+      <version>LATEST</version>
+      <url>http://jung.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+      
     <dependency>
       <id>junit</id>
       <version>3.8.1</version>
@@ -701,6 +721,16 @@
       </properties>
     </dependency>
 
+    <dependency>
+      <id>prefuse</id>
+      <version>LATEST</version>
+      <url>http://prefuse.sf.net</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>toolbox</fatjar>
+      </properties>
+    </dependency>
+      
     <dependency>
       <id>qdox</id>
       <version>LATEST</version>
@@ -838,7 +868,7 @@
       <id>commons-jelly-tags-beanshell</id>
       <groupId>commons-jelly</groupId>
       <version>SNAPSHOT</version>
-      <!--url>http://www.ibiblio.org/maven/commons-jelly/jars/</url-->
+      <url>http://www.ibiblio.org/maven/commons-jelly/jars/</url>
     </dependency>
 
     <!--
