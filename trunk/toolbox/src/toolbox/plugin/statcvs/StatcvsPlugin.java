@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
@@ -622,7 +623,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             JComponent scope, 
             IStatusBar statusBar)
         {
-            super(name, async, scope, statusBar);
+            super(name, true, async, scope, statusBar);
 
             // Add an action to run before the main action to set the system
             // out and err stream to the text area.            
@@ -884,8 +885,17 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 cvsBaseDir
             };
 
-            new CommandLineParser(args).parse();
-            Main.generateDefaultHTMLSuite();
+            try
+            {
+                new CommandLineParser(args).parse();
+                Main.generateDefaultHTMLSuite();
+            }
+            catch (Exception ee)
+            {
+                System.setSecurityManager(null);
+                logger_.error("Generate Stats failed", ee);
+                ExceptionUtil.handleUI(ee, logger_);
+            }
             
             launchURLField_.setText(
                 "file://" + 
