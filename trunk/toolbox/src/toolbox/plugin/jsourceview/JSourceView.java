@@ -716,4 +716,12 @@ public class JSourceView extends JPanel implements IPreferenced
             }
         }
     }
+
+    /**
+     * 
+     */
+    public void destroy()
+    {
+        tableModel_.destroy();
+    }
 }
