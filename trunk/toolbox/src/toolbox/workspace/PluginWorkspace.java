@@ -41,7 +41,6 @@ import toolbox.util.StreamUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.ImageCache;
-import toolbox.util.ui.JStatusBar;
 import toolbox.util.ui.TryCatchAction;
 
 /**
@@ -49,7 +48,7 @@ import toolbox.util.ui.TryCatchAction;
  * a tab panel. All pluggable GUI components must implements the IPlugin 
  * interface as a base set of functionality to be hosted by PluginWorkspace.
  */
-public class PluginWorkspace extends JFrame
+public class PluginWorkspace extends JFrame implements IPreferenced
 {
     /*
      * TODO: Plugin to configure log4j
@@ -129,7 +128,7 @@ public class PluginWorkspace extends JFrame
         loadPrefs();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        applyPrefs();
+        applyPrefs(prefs_);
     }
 
     //--------------------------------------------------------------------------
@@ -205,7 +204,7 @@ public class PluginWorkspace extends JFrame
     }
 
     //--------------------------------------------------------------------------
-    //  Private
+    // Protected
     //--------------------------------------------------------------------------
 
     /**
@@ -219,7 +218,7 @@ public class PluginWorkspace extends JFrame
         tabbedPane_ = new JTabbedPane();
         contentPane.add(BorderLayout.CENTER, tabbedPane_);
 
-        statusBar_ = new JStatusBar();
+        statusBar_ = new WorkspaceStatusBar();
         statusBar_.setStatus("Howdy pardner!");
         contentPane.add(BorderLayout.SOUTH, (Component) statusBar_);
         
@@ -227,7 +226,8 @@ public class PluginWorkspace extends JFrame
         
         addWindowListener(new CloseWindowListener());
         
-        setIconImage(ImageCache.getImage("toolbox/util/ui/images/Toolbox.gif"));
+        setIconImage(
+            ImageCache.getImage("/toolbox/util/ui/images/Toolbox.gif"));
     }
 
     /**
@@ -297,10 +297,6 @@ public class PluginWorkspace extends JFrame
         return null;
     }
 
-    //--------------------------------------------------------------------------
-    // Preferences Support
-    //--------------------------------------------------------------------------
-    
     /**
      * Loads preferences from $HOME/.toolbox.properties
      */
@@ -333,36 +329,37 @@ public class PluginWorkspace extends JFrame
         }
     }
 
-    /**
-     * Saves preferences to a properties file
-     */
-    protected void savePrefs()
+    //--------------------------------------------------------------------------
+    // IPreferenced Interface
+    //--------------------------------------------------------------------------
+
+    public void savePrefs(Properties prefs)
     {
         boolean maxxed = 
             (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
             
-        PropertiesUtil.setBoolean(prefs_, PROP_MAXXED, maxxed);
+        PropertiesUtil.setBoolean(prefs, PROP_MAXXED, maxxed);
         
         if (!maxxed)
         {
             // Save window location
-            PropertiesUtil.setInteger(prefs_, PROP_XCOORD, getLocation().x);
-            PropertiesUtil.setInteger(prefs_, PROP_YCOORD, getLocation().y);
+            PropertiesUtil.setInteger(prefs, PROP_XCOORD, getLocation().x);
+            PropertiesUtil.setInteger(prefs, PROP_YCOORD, getLocation().y);
         
             // Save window size
-            PropertiesUtil.setInteger(prefs_, PROP_WIDTH, getSize().width);
-            PropertiesUtil.setInteger(prefs_, PROP_HEIGHT, getSize().height); 
+            PropertiesUtil.setInteger(prefs, PROP_WIDTH, getSize().width);
+            PropertiesUtil.setInteger(prefs, PROP_HEIGHT, getSize().height); 
         }
         else
         {
-            prefs_.remove(PROP_XCOORD);
-            prefs_.remove(PROP_YCOORD);
-            prefs_.remove(PROP_WIDTH);
-            prefs_.remove(PROP_HEIGHT);
+            prefs.remove(PROP_XCOORD);
+            prefs.remove(PROP_YCOORD);
+            prefs.remove(PROP_WIDTH);
+            prefs.remove(PROP_HEIGHT);
         }
 
         // Save look and feel
-        prefs_.setProperty(PROP_LAF, 
+        prefs.setProperty(PROP_LAF, 
             UIManager.getLookAndFeel().getClass().getName());
                 
         // Save plugin prefs too
@@ -371,14 +368,14 @@ public class PluginWorkspace extends JFrame
         for (Iterator i = plugins_.values().iterator(); i.hasNext();)
         {
             IPlugin plugin = (IPlugin) i.next();
-            plugin.savePrefs(prefs_);
+            plugin.savePrefs(prefs);
             pluginLine += plugin.getClass().getName() + ",";
         }
         
-        prefs_.setProperty(PROP_LOADED , pluginLine);
+        prefs.setProperty(PROP_LOADED , pluginLine);
         
         // Save currently selected tab
-        PropertiesUtil.setInteger(prefs_, PROP_SELECTED, 
+        PropertiesUtil.setInteger(prefs, PROP_SELECTED, 
             tabbedPane_.getSelectedIndex());
             
         // Save to file
@@ -392,7 +389,7 @@ public class PluginWorkspace extends JFrame
         try
         {
             fos = new FileOutputStream(f);
-            prefs_.store(fos,"");
+            prefs.store(fos,"");
         }
         catch (IOException ioe)
         {
@@ -403,17 +400,17 @@ public class PluginWorkspace extends JFrame
             StreamUtil.close(fos);
         }
         
-        SmartLogger.debug(logger_, PropertiesUtil.toString(prefs_));
+        SmartLogger.debug(logger_, PropertiesUtil.toString(prefs));
         
         statusBar_.setStatus("Saved preferences");
     }
 
     /**
-     * Applies the preferences
+     * @see toolbox.util.ui.plugin.IPreferenced#applyPrefs(java.util.Properties)
      */
-    protected void applyPrefs()
+    public void applyPrefs(Properties prefs)
     {
-        boolean maxxed = PropertiesUtil.getBoolean(prefs_, PROP_MAXXED, false);
+        boolean maxxed = PropertiesUtil.getBoolean(prefs, PROP_MAXXED, false);
         
         // Frame has to be visible before it can be maximized so just queue
         // this bad boy up on the event queue 
@@ -434,20 +431,20 @@ public class PluginWorkspace extends JFrame
         
         // Restore window location
         setLocation(
-            PropertiesUtil.getInteger(prefs_, PROP_XCOORD, 0),
-            PropertiesUtil.getInteger(prefs_, PROP_YCOORD, 0));
+            PropertiesUtil.getInteger(prefs, PROP_XCOORD, 0),
+            PropertiesUtil.getInteger(prefs, PROP_YCOORD, 0));
         
         // Restore window size
         setSize(
-            PropertiesUtil.getInteger(prefs_, PROP_WIDTH, 800),
-            PropertiesUtil.getInteger(prefs_, PROP_HEIGHT, 600));
+            PropertiesUtil.getInteger(prefs, PROP_WIDTH, 800),
+            PropertiesUtil.getInteger(prefs, PROP_HEIGHT, 600));
             
         // Reload Plugins that were saved
-        String pluginLine = prefs_.getProperty(PROP_LOADED ,"");
+        String pluginLine = prefs.getProperty(PROP_LOADED ,"");
         String[] plugins = StringUtil.tokenize(pluginLine, ",");
 
         // Restore look and feel
-        String lafClass = prefs_.getProperty(PROP_LAF);
+        String lafClass = prefs.getProperty(PROP_LAF);
         
         if (lafClass != null)
         {
@@ -491,7 +488,7 @@ public class PluginWorkspace extends JFrame
         
         // Restore last selected tab
         tabbedPane_.setSelectedIndex(
-            PropertiesUtil.getInteger(prefs_, PROP_SELECTED,-1));
+            PropertiesUtil.getInteger(prefs, PROP_SELECTED,-1));
     }       
 
     //--------------------------------------------------------------------------
@@ -521,7 +518,7 @@ public class PluginWorkspace extends JFrame
         {
             try
             {    
-                savePrefs();
+                savePrefs(prefs_);
             }
             catch (Throwable t)
             {
@@ -537,7 +534,7 @@ public class PluginWorkspace extends JFrame
     {
         public void run()
         {
-            applyPrefs();
+            applyPrefs(prefs_);
             //invalidate();
             //doLayout();
             //repaint();
@@ -601,7 +598,7 @@ public class PluginWorkspace extends JFrame
         
         public void actionPerformed(ActionEvent e)
         {
-            savePrefs();
+            savePrefs(prefs_);
         }
     }
 
@@ -661,11 +658,11 @@ public class PluginWorkspace extends JFrame
             statusBar_.setStatus("" +
                 "<html>" + "<font color='black'>" +
                   "Finished GC in " + time + ".   " +
-                  "Used Before: "   + beforeUsedMem + "K   " +
-                  "After: "         + afterUsedMem  + "K   " +
-                  "Freed:<b>"       + (beforeUsedMem - afterUsedMem) + "K</b>   "+ 
-                  "Total:     "     + totalMem/1000 + "K   " +
-                  "Max: "           + maxMem/1000   + "K   " +
+                  "Used Before: " + beforeUsedMem + "K   " +
+                  "After: "       + afterUsedMem  + "K   " +
+                  "Freed:<b>"     + (beforeUsedMem - afterUsedMem) + "K</b>   "+ 
+                  "Total:     "   + totalMem/1000 + "K   " +
+                  "Max: "         + maxMem/1000   + "K   " +
                   "</font>" +
                 "</html>");
         }
