@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Unit test for AbstractService.
+ * 
+ * @see toolbox.util.service.AbstractService
  */
 public class AbstractServiceTest extends TestCase
 {
@@ -38,40 +40,31 @@ public class AbstractServiceTest extends TestCase
      */
     public void testStart() throws ServiceException
     {
+        logger_.info("Running testStart...");
+        
         Service s = new MockService();
         s.addServiceListener(new MockServiceListener());
+        s.initialize();
         s.start();
         assertTrue(s.isRunning());
     }
 
     
     /**
-     * Tests stop()
+     * Tests suspend()
      * 
      * @throws ServiceException on service error.
      */
-    public void testStop() throws ServiceException
+    public void testSuspend() throws ServiceException
     {
+        logger_.info("Running testSuspend...");
+        
         Service s = new MockService();
         s.addServiceListener(new MockServiceListener());
+        s.initialize();
         s.start();
-        s.stop();
-        assertFalse(s.isRunning());
-    }
-
-    
-    /**
-     * Tests pause()
-     * 
-     * @throws ServiceException on service error.
-     */
-    public void testPause() throws ServiceException
-    {
-        Service s = new MockService();
-        s.addServiceListener(new MockServiceListener());
-        s.start();
-        s.pause();
-        assertTrue(s.isPaused());
+        s.suspend();
+        assertTrue(s.isSuspended());
     }
 
     
@@ -82,38 +75,61 @@ public class AbstractServiceTest extends TestCase
      */
     public void testResume() throws ServiceException 
     {
+        logger_.info("Running testResume...");
+        
         Service s = new MockService();
         s.addServiceListener(new MockServiceListener());
+        s.initialize();
         s.start();
-        s.pause();
+        s.suspend();
         s.resume();
-        assertFalse(s.isPaused());
+        assertFalse(s.isSuspended());
     }
 
+    
+    /**
+     * Tests stop()
+     * 
+     * @throws ServiceException on service error.
+     */
+    public void testStop() throws ServiceException
+    {
+        logger_.info("Running testStop...");
+        
+        Service s = new MockService();
+        s.addServiceListener(new MockServiceListener());
+        s.initialize();
+        s.start();
+        s.stop();
+        assertFalse(s.isRunning());
+    }
+
+    
+    /**
+     * Tests destroy()
+     * 
+     * @throws ServiceException on service error.
+     */
+    public void testDestroy() throws ServiceException
+    {
+        logger_.info("Running testDestroy...");
+        
+        Service s = new MockService();
+        s.addServiceListener(new MockServiceListener());
+        s.initialize();
+        s.start();
+        s.stop();
+        s.destroy();
+        assertFalse(s.isRunning());
+    }
+    
     //--------------------------------------------------------------------------
     // MockService
     //--------------------------------------------------------------------------
     
     class MockService extends AbstractService
     {
-        /**
-         * @see toolbox.util.service.AbstractService#start()
-         */
-        public void start() throws ServiceException
-        {
-            try
-            {
-                //checkState(STATE_START);
-            
-                // do your thang
-            
-                super.start();
-            }
-            catch (Exception e)
-            {
-                ; // Rollback on any exceptions
-            }
-        }
+        // No-op so instance can be created.
     }
     
     //--------------------------------------------------------------------------
@@ -123,50 +139,12 @@ public class AbstractServiceTest extends TestCase
     class MockServiceListener implements ServiceListener
     {
         /**
-         * @see toolbox.util.service.ServiceListener#serviceInitialized(
+         * @see toolbox.util.service.ServiceListener#serviceStateChanged(
          *      toolbox.util.service.Service)
          */
-        public void serviceInitialized(Initializable service) 
-            throws ServiceException
+        public void serviceStateChanged(Service service) throws ServiceException
         {
-            logger_.info("Event: service initialized");
-        }
-        
-        /**
-         * @see toolbox.util.service.ServiceListener#servicePaused(
-         *      toolbox.util.service.Service)
-         */
-        public void servicePaused(Service service) throws ServiceException
-        {
-            logger_.info("Event: service paused");
-        }
-
-        /**
-         * @see toolbox.util.service.ServiceListener#serviceResumed(
-         *      toolbox.util.service.Service)
-         */
-        public void serviceResumed(Service service) throws ServiceException
-        {
-            logger_.info("Event: service resumed");
-            
-        }
-
-        /**
-         * @see toolbox.util.service.ServiceListener#serviceStarted(
-         *      toolbox.util.service.Service)
-         */
-        public void serviceStarted(Service service) throws ServiceException
-        {
-            logger_.info("Event: service started");
-        }
-
-        /**
-         * @see toolbox.util.service.ServiceListener#serviceStopped(
-         *      toolbox.util.service.Service)
-         */
-        public void serviceStopped(Service service) throws ServiceException
-        {
-            logger_.info("Event: service stopped");
+            logger_.info("State = " + service.getState());
         }
     }
 }
