@@ -278,7 +278,6 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         JMenu fileMenu = new JMenu("File");
         fileMenu.setMnemonic('F');        
         fileMenu.add(new PluginsAction());
-        fileMenu.add(new ExitAction());
 
         lafMenu_ = new JMenu("Look and Feel");
         
@@ -295,10 +294,10 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         }
         
         fileMenu.add(lafMenu_);
+        fileMenu.add(new ExitAction());            
         
         JMenuBar menubar = new JMenuBar();
         menubar.add(fileMenu);
-        
         return menubar;
     }
 
