@@ -41,7 +41,7 @@ public abstract class TryCatchAction extends AbstractAction
      * @see java.awt.event.ActionListener#
      *      actionPerformed(java.awt.event.ActionEvent)
      */
-    public final void actionPerformed(ActionEvent e)
+    public void actionPerformed(ActionEvent e)
     {
         try
         {

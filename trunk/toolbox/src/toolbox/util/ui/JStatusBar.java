@@ -64,7 +64,7 @@ public class JStatusBar extends JPanel implements IStatusBar
     }
 
     //--------------------------------------------------------------------------
-    // Public
+    // IstatusBar Interface
     //--------------------------------------------------------------------------
 
     /**
@@ -74,7 +74,7 @@ public class JStatusBar extends JPanel implements IStatusBar
      */
     public void setStatus(String status)
     {
-        statusLabel_.setText(status);
+        setStatus(-1, status);
     }    
     
     /**
@@ -83,5 +83,57 @@ public class JStatusBar extends JPanel implements IStatusBar
     public String getStatus()
     {
         return statusLabel_.getText();
+    }
+    
+    /**
+     * @see toolbox.util.ui.plugin.IStatusBar#setBusy(java.lang.String)
+     */
+    public void setBusy(String status)
+    {
+        setStatus(IStatusBar.BUSY, status);
+    }
+
+    /**
+     * @see toolbox.util.ui.plugin.IStatusBar#setError(java.lang.String)
+     */
+    public void setError(String status)
+    {
+        setStatus(IStatusBar.ERROR, status);
+    }
+
+    /**
+     * @see toolbox.util.ui.plugin.IStatusBar#setInfo(java.lang.String)
+     */
+    public void setInfo(String status)
+    {
+        setStatus(IStatusBar.INFO, status);
+    }
+
+    /**
+     * @see toolbox.util.ui.plugin.IStatusBar#setWarning(java.lang.String)
+     */
+    public void setWarning(String status)
+    {
+        setStatus(IStatusBar.WARNING, status);
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    public void setStatus(int state, String status)
+    {
+        switch (state)
+        {
+            case -1 : break;
+            case IStatusBar.BUSY   : statusLabel_.setIcon(ImageCache.getIcon("")); break;
+            case IStatusBar.ERROR  : statusLabel_.setIcon(ImageCache.getIcon("")); break;
+            case IStatusBar.INFO   : statusLabel_.setIcon(ImageCache.getIcon("")); break;
+            case IStatusBar.WARNING: statusLabel_.setIcon(ImageCache.getIcon("")); break;
+            
+            default: throw new IllegalArgumentException("Invalid status bar state: " + state);
+        }
+        
+        statusLabel_.setText(status);
     }
 }
