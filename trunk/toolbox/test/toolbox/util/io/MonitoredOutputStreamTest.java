@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -14,14 +17,11 @@ import org.apache.log4j.Logger;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.RandomUtil;
 import toolbox.util.ThreadUtil;
-import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.io.throughput.MockThroughputListener;
 import toolbox.util.io.throughput.ThroughputMonitor;
 
 /**
- * Unit test for MonitoredOutputStream.
- * 
- * @see toolbox.util.io.throughput.MonitoredOutputStream
+ * Unit test for {@link toolbox.util.io.MonitoredOutputStream}.
  */
 public class MonitoredOutputStreamTest extends TestCase
 {
@@ -282,8 +282,8 @@ public class MonitoredOutputStreamTest extends TestCase
     class OutputStreamListener implements 
         MonitoredOutputStream.OutputStreamListener
     {
-        private BlockingQueue flushQueue_ = new BlockingQueue();
-        private BlockingQueue closeQueue_ = new BlockingQueue();
+        private BlockingQueue flushQueue_ = new LinkedBlockingQueue();
+        private BlockingQueue closeQueue_ = new LinkedBlockingQueue();
         
         //----------------------------------------------------------------------
         // Public
@@ -297,7 +297,7 @@ public class MonitoredOutputStreamTest extends TestCase
          */
         public OutputStream waitForFlush() throws InterruptedException
         {
-            return (OutputStream) flushQueue_.pull();
+            return (OutputStream) flushQueue_.take();
         }
 
         
@@ -309,7 +309,7 @@ public class MonitoredOutputStreamTest extends TestCase
          */
         public OutputStream waitForClose() throws InterruptedException
         {
-            return (OutputStream) closeQueue_.pull();
+            return (OutputStream) closeQueue_.take();
         }
         
         //----------------------------------------------------------------------
@@ -322,7 +322,14 @@ public class MonitoredOutputStreamTest extends TestCase
          */
         public void streamClosed(MonitoredOutputStream stream)
         {
-            closeQueue_.push(stream);
+            try
+            {
+                closeQueue_.put(stream);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
         }
 
         
@@ -332,7 +339,14 @@ public class MonitoredOutputStreamTest extends TestCase
          */
         public void streamFlushed(MonitoredOutputStream stream)
         {
-            flushQueue_.push(stream);
+            try
+            {
+                flushQueue_.put(stream);
+            }
+            catch (InterruptedException e)
+            {
+                logger_.error(e);
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
 package toolbox.util.io;
 
+import edu.emory.mathcs.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.util.concurrent.LinkedBlockingQueue;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -8,14 +11,11 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import toolbox.util.RandomUtil;
-import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.io.throughput.MockThroughputListener;
 import toolbox.util.io.throughput.ThroughputMonitor;
 
 /**
- * Unit test for MonitoredInputStream.
- * 
- * @see toolbox.util.io.MonitoredInputStream
+ * Unit test for {@link toolbox.util.io.MonitoredInputStream}.
  */
 public class MonitoredInputStreamTest extends TestCase
 {
@@ -110,7 +110,7 @@ public class MonitoredInputStreamTest extends TestCase
        
         class MyListener implements MonitoredInputStream.InputStreamListener
         {
-            private BlockingQueue c_ = new BlockingQueue();
+            private BlockingQueue c_ = new LinkedBlockingQueue();
             
             /**
              * @see toolbox.util.io.MonitoredInputStream.Listener#streamClosed(
@@ -118,7 +118,14 @@ public class MonitoredInputStreamTest extends TestCase
              */
             public void streamClosed(MonitoredInputStream stream)
             {
-                c_.push("close");
+                try
+                {
+                    c_.put("close");
+                }
+                catch (InterruptedException e)
+                {
+                    logger_.error(e);
+                }
             }
             
             
@@ -129,7 +136,7 @@ public class MonitoredInputStreamTest extends TestCase
              */
             void waitForClose() throws InterruptedException
             {
-                c_.pull();
+                c_.take();
             }
         };
         
@@ -168,7 +175,7 @@ public class MonitoredInputStreamTest extends TestCase
         MonitoredInputStream.InputStreamListener listener = 
             new MonitoredInputStream.InputStreamListener()
         {
-            private BlockingQueue c_ = new BlockingQueue();
+            private BlockingQueue c_ = new LinkedBlockingQueue();
             
             /**
              * @see toolbox.util.io.MonitoredInputStream.Listener#streamClosed(
@@ -176,7 +183,14 @@ public class MonitoredInputStreamTest extends TestCase
              */
             public void streamClosed(MonitoredInputStream stream)
             {
-                c_.push("close");
+                try
+                {
+                    c_.put("close");
+                }
+                catch (InterruptedException e)
+                {
+                    logger_.error(e);
+                }
             }
             
             
@@ -187,7 +201,7 @@ public class MonitoredInputStreamTest extends TestCase
              */
             void waitForClose() throws InterruptedException
             {
-                c_.pull();
+                c_.take();
             }
             
         };
