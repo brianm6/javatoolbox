@@ -8,6 +8,7 @@ import java.util.Date;
 
 import toolbox.util.DateTimeUtil;
 import toolbox.util.ExceptionUtil;
+import toolbox.util.RandomUtil;
 import toolbox.util.StreamUtil;
 import toolbox.util.ThreadUtil;
 
@@ -292,13 +293,16 @@ public class FileStuffer implements Runnable
         private int cnt_ = 0;
         
         /**
-         * Default stuff provider.
+         * Returns a simple numbered line of text with the date and a random
+         * integer so its easily recognizable as being unique.
          * 
-         * @return  Line number plus time
+         * @return Line number plus time.
          */
         public Object getStuff()
         {
-            return "[" + cnt_++ + "]" + DateTimeUtil.format(new Date());
+            return "[" + cnt_++ + "]" + 
+                DateTimeUtil.formatToSecond(new Date()) + " " +
+                RandomUtil.nextInt(50000);
         }
     }   
 }
