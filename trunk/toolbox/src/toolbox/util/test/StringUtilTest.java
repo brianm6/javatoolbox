@@ -27,7 +27,7 @@ public class StringUtilTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -654,5 +654,28 @@ public class StringUtilTest extends TestCase
         logger_.debug(StringUtil.addBars(""));
         logger_.debug(StringUtil.addBars("this is a single line"));
         logger_.debug(StringUtil.addBars("this\nis a\nmulti-line"));
+    }
+
+    
+    /**
+     * Tests toBoolean().
+     */
+    public void testToBoolean()
+    {
+        logger_.info("Running testToBoolean...");
+        
+        assertTrue(StringUtil.toBoolean("true"));
+        assertTrue(StringUtil.toBoolean("TRUE"));
+        assertTrue(StringUtil.toBoolean("tRuE"));
+     
+        assertFalse(StringUtil.toBoolean("false"));
+        assertFalse(StringUtil.toBoolean("FALSE"));
+        assertFalse(StringUtil.toBoolean("fAlSe"));
+        
+        // These are questionable in my opinion and should throw an 
+        // IllegalArgumentException
+        assertFalse(StringUtil.toBoolean("crap"));
+        assertFalse(StringUtil.toBoolean(""));
+        assertFalse(StringUtil.toBoolean(" "));
     }
 }
