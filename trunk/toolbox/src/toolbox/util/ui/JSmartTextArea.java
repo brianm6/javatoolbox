@@ -16,6 +16,7 @@ import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Element;
 
+import toolbox.util.Assert;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
@@ -49,6 +50,18 @@ public class JSmartTextArea extends JTextArea
      * Check box that toggles antialiasing of text
      */
     private JCheckBoxMenuItem antiAliasItem_;
+    
+    /**
+     * Maximum number of characters allowable in the text area before the text
+     * gets automatically pruned FIFO style.
+     */
+    private int capacity_;
+    
+    /**
+     * Percentage of text to prune once the capacity is reached. Valid values
+     * are in the range [1..100]
+     */
+    private int pruningFactor_;
     
     //--------------------------------------------------------------------------
     //  Constructors
@@ -98,6 +111,8 @@ public class JSmartTextArea extends JTextArea
         buildView();
         setAutoScroll(autoScroll);
         setAntiAlias(antiAlias);
+        setCapacity(Integer.MAX_VALUE);
+        setPruneFactor(0);
     }
 
     //--------------------------------------------------------------------------
@@ -188,7 +203,13 @@ public class JSmartTextArea extends JTextArea
         if (SwingUtilities.isEventDispatchThread())
         {
             super.append(str);
-            
+         
+            int len = getText().length();
+
+            // Let the pruning begin...            
+            if (len > capacity_)
+                setText(getText().substring((pruningFactor_/100) * len));  
+               
             if (isAutoScroll())
                 scrollToEnd();
         }
@@ -242,6 +263,51 @@ public class JSmartTextArea extends JTextArea
     public void setAntiAlias(boolean antiAlias)
     {
         antiAliasItem_.setSelected(antiAlias);
+    }
+
+    /**
+     * Returns the maximum number of characters displayable by the text area
+     * before the contents get pruned.
+     * 
+     * @return Max number of displayable characters
+     */
+    public int getCapacity()
+    {
+        return capacity_;
+    }
+
+    /**
+     * Returns the percentage of text that gets pruned from the text area when
+     * the capacity is reached.
+     * 
+     * @return  Percent of text to prune (0 - 100)
+     */
+    public int getPruneFactor()
+    {
+        return pruningFactor_;
+    }
+
+    /**
+     * Sets the max capacity of the text area.
+     * 
+     * @param i Max capacity
+     */
+    public void setCapacity(int i)
+    {
+        capacity_ = i;
+    }
+
+    /**
+     * Sets the pruning factor
+     * 
+     * @param f Pruning factor
+     */
+    public void setPruneFactor(int f)
+    {
+        Assert.isTrue(f>=0 && f<=100,
+            "Pruning factor must be an integer between 0 and 100"); 
+                
+        pruningFactor_ = f;
     }
 
     //--------------------------------------------------------------------------
