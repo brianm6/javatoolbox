@@ -35,7 +35,7 @@ import toolbox.util.ui.JSmartTextField;
  * validity of the proxy information is on the same panel to provide immediate
  * feedback.
  */
-public class ProxyView extends JHeaderPanel implements PreferencesView
+public class ProxyView extends JHeaderPanel implements Preferences
 {
     //--------------------------------------------------------------------------
     // XML Constants
@@ -154,11 +154,11 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
     }
 
     //--------------------------------------------------------------------------
-    // PreferencesView Interface
+    // Preferences Interface
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#getLabel()
+     * @see toolbox.workspace.prefs.Preferences#getLabel()
      */
     public String getLabel()
     {
@@ -167,7 +167,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#getView()
+     * @see toolbox.workspace.prefs.Preferences#getView()
      */
     public JComponent getView()
     {
@@ -176,7 +176,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#onOK()
+     * @see toolbox.workspace.prefs.Preferences#onOK()
      */
     public void onOK()
     {
@@ -185,7 +185,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#onApply()
+     * @see toolbox.workspace.prefs.Preferences#onApply()
      */
     public void onApply()
     {
@@ -220,7 +220,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
 
 
     /**
-     * @see toolbox.workspace.prefs.PreferencesView#onCancel()
+     * @see toolbox.workspace.prefs.Preferences#onCancel()
      */
     public void onCancel()
     {

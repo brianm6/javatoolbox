@@ -34,7 +34,7 @@ public class PreferencesManager implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Maps a XML node's name to the corresponding PreferencesView class.
+     * Maps a XML node's name to the corresponding Preferences class.
      */
     private Map nodeMap_;
     
@@ -49,11 +49,11 @@ public class PreferencesManager implements IPreferenced
     {
         nodeMap_ = new HashMap();
         
-        PreferencesView proxyView = new ProxyView();
+        Preferences proxyView = new ProxyView();
         nodeMap_.put(ProxyView.NODE_HTTP_PROXY, proxyView);
         SwingUtil.attachPhantom(proxyView.getView());
         
-        PreferencesView lafView = new LookAndFeelPrefsView();
+        Preferences lafView = new LookAndFeelPrefsView();
         nodeMap_.put(LookAndFeelPrefsView.NODE_LOOK_AND_FEEL, lafView);
         SwingUtil.attachPhantom(lafView.getView());
     }
@@ -65,12 +65,12 @@ public class PreferencesManager implements IPreferenced
     /**
      * Returns an array of the preferences views.
      * 
-     * @return PreferencesView[]
+     * @return Preferences[]
      */
-    public PreferencesView[] getPreferences()
+    public Preferences[] getPreferences()
     {
-        return (PreferencesView[]) 
-            nodeMap_.values().toArray(new PreferencesView[0]);
+        return (Preferences[]) 
+            nodeMap_.values().toArray(new Preferences[0]);
     }
     
     //--------------------------------------------------------------------------
@@ -89,7 +89,7 @@ public class PreferencesManager implements IPreferenced
                 new Element(NODE_PREFS));
         
         //
-        // Iterate over the child nodes (each one represents a PreferencesView).
+        // Iterate over the child nodes (each one represents a Preferences).
         // Reassosciate by the node's name, instantiate the class and read in 
         // read/apply the prefs.
         //
@@ -97,7 +97,7 @@ public class PreferencesManager implements IPreferenced
         for (Iterator i = nodeMap_.keySet().iterator(); i.hasNext();)
         {
             String node = (String) i.next();
-            PreferencesView view = (PreferencesView) nodeMap_.get(node);
+            Preferences view = (Preferences) nodeMap_.get(node);
             
             if (view != null)
             {
@@ -120,7 +120,7 @@ public class PreferencesManager implements IPreferenced
         
         for (Iterator i = nodeMap_.values().iterator(); i.hasNext();)
         {
-            PreferencesView view = (PreferencesView) i.next();
+            Preferences view = (Preferences) i.next();
             view.savePrefs(root);
         }
         
