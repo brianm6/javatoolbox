@@ -304,4 +304,20 @@ public class ClassUtil
         
         return classpath;           
     }
+    
+    /**
+     * Strips package name from a fully qualified class name
+     * 
+     * @param   fqn  Fully qualified class name
+     * @return  Name of class only
+ 	 */
+    public static String stripPackage(String fqn)
+    {
+        int idx = fqn.lastIndexOf('.');
+        
+        if (idx >= 0)
+            return fqn.substring(idx+1);
+        else
+            return fqn;
+    }
 }
