@@ -6,14 +6,15 @@ import javax.swing.JComponent;
 import toolbox.workspace.IPreferenced;
 
 /**
- * Preferences is an interface for components that will be shown by the
- * Preferences dialog box in a card like layout once the view's node is selected
- * in the configuration tree.
+ * An IConfigurator is responsible for allowing an IPlugin's preferences to be
+ * viewed and edited via a user interface.
  */
 public interface IConfigurator extends IPreferenced
 {
     /**
-     * The label of the node in the tree that activates this preferences view.  
+     * Returns the text label attached to this configurator. Should be suitable
+     * for display on a button or treenode to activate or select this 
+     * configurators user interface component.  
      *
      * @return String
      */
@@ -21,7 +22,8 @@ public interface IConfigurator extends IPreferenced
 
 
     /**
-     * Returns this preferences user interface component.
+     * Returns this configurators user interface component used to view and
+     * edit plugin preferences.
      *
      * @return JComponent
      */
@@ -29,8 +31,8 @@ public interface IConfigurator extends IPreferenced
 
 
     /**
-     * Returns the icon to use with this configurator in the preferences dialog
-     * box.
+     * Returns the icon to associate with this configurator. The icon should
+     * be suitable for display in a button, treenode, or tab panel.
      * 
      * @return Icon
      */
@@ -38,22 +40,20 @@ public interface IConfigurator extends IPreferenced
     
     
     /**
-     * Called when the user click on the OK button to accept the current
-     * preferences.
+     * Called when the user chooses to accept the current set of preferences.
      */
     void onOK();
 
 
     /**
-     * Called when the user clicks on the Apply button to apply the current
-     * preferences.
+     * Called when the user chooses to apply the current set of preferences.
      */
     void onApply();
 
 
     /**
-     * Called when the user clicks on the Cancel button to dismiss the
-     * preferences dialog box without saving any changed preferences.
+     * Called when the user chooses not to accept the current set of 
+     * preferences.
      */
     void onCancel();
 }
