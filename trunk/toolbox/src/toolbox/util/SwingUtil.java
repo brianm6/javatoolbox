@@ -41,28 +41,28 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
     // Static Fields
     //--------------------------------------------------------------------------
-    
+
     /**
      * Global antialias flag that all 'smart' components are aware of.
      */
     private static boolean defaultAntiAlias_ = true;
-    
+
     /**
      * Phantom frame which is invisible.
      */
     private static JFrame phantomFrame_;
-    
+
     //--------------------------------------------------------------------------
     // Static Block
     //--------------------------------------------------------------------------
 
     // Clover private constructor workaround
     static { new SwingUtil(); }
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
-        
+
     /**
      * Prevent construction.
      */
@@ -73,7 +73,7 @@ public final class SwingUtil
     //--------------------------------------------------------------------------
     // Window Stuff
     //--------------------------------------------------------------------------
-    
+
     /**
      * Sets the size of a window to a given percentage of the users desktop.
      *
@@ -97,7 +97,7 @@ public final class SwingUtil
 
     /**
      * Moves the window to the center of the screen.
-     * 
+     *
      * @param w Window to move.
      */
     public static void centerWindow(Window w)
@@ -114,7 +114,7 @@ public final class SwingUtil
 
     /**
      * Centers a child window relative to its parent window.
-     * 
+     *
      * @param parent Parent window.
      * @param child Child window.
      */
@@ -122,17 +122,17 @@ public final class SwingUtil
     {
         Dimension parentSize = parent.getSize();
         Dimension childSize = child.getSize();
-    
+
         Point loc = parent.getLocation();
         child.setLocation(
             (parentSize.width - childSize.width) / 2 + loc.x,
             (parentSize.height - childSize.height) / 2 + loc.y);
     }
-   
+
 
     /**
      * Finds the frame for a given component.
-     * 
+     *
      * @param component Component to find parent frame for.
      * @return Frame that component is a child of or null if the component does
      *         not have a parent frame or if the parent frame is not a Frame
@@ -143,24 +143,50 @@ public final class SwingUtil
     {
         // Find parent window
         Window w = SwingUtilities.getWindowAncestor(component);
-        
-        // Check if frame and return    
-         return (w != null && w instanceof Frame) ? (Frame) w : new Frame();   
+
+        // Check if frame and return
+         return (w != null && w instanceof Frame) ? (Frame) w : new Frame();
     }
-   
+
+
+    /**
+     * Sets a window's size by a given percentage based on the current size. A
+     * call with the arguments 40 and -20 respectively would increase the width
+     * by 40% and decrease the height by 20%. 
+     *
+     * @param w Window to expand.
+     * @param widthPercentage Percentage to increase the width.
+     * @param heightPercentage Percentage to increase the height.
+     */
+    public static void setSizeAsPercentage(
+        Window w,
+        int widthPercentage,
+        int heightPercentage)
+    {
+        Dimension d = w.getSize();
+
+        d.width = (int)
+            (d.width + (d.width * (widthPercentage / (float) 100)));
+
+        d.height = (int)
+            (d.height + (d.height * (heightPercentage / (float) 100)));
+
+        w.setSize(d);
+    }
+
     //--------------------------------------------------------------------------
     // Cursor Stuff
     //--------------------------------------------------------------------------
-       
+
     /**
      * Sets the cursor to the default cursor on the given component.
-     * 
+     *
      * @param c Component to set the cursor on.
      */
     public static void setDefaultCursor(Component c)
     {
         c.setCursor(Cursor.getDefaultCursor());
-        
+
         if (c instanceof Container)
         {
             Component[] comps = ((Container) c).getComponents();
@@ -171,43 +197,43 @@ public final class SwingUtil
 
     /**
      * Sets the cursor to the wait cursor on the given component.
-     * 
+     *
      * @param c Component to set the cursor on.
      * @return int
      */
     public static int setWaitCursor(Component c)
     {
         int cnt = 1;
-        
+
         c.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
+
         if (c instanceof Container)
         {
             Component[] comps = ((Container) c).getComponents();
             for (int i = 0; i < comps.length; cnt += setWaitCursor(comps[i++]));
         }
-        
+
         return cnt;
     }
-    
+
     //--------------------------------------------------------------------------
     // Desktop Stuff
     //--------------------------------------------------------------------------
-        
-    /** 
-     * Tiles internal frames upon the desktop. 
-     * 
+
+    /**
+     * Tiles internal frames upon the desktop.
+     *
      * @param desktop Desktop on which to tile windows
-     * 
+     *
      * <pre>
-     * 
+     *
      * Based upon the following tiling algorithm:
-     * 
-     * - take the sqroot of the total frames rounded down, that gives 
+     *
+     * - take the sqroot of the total frames rounded down, that gives
      *   the number of columns.
      *
-     * - divide the total frames by the # of columns to get the # 
-     *   of rows in each column, and any remainder is distributed 
+     * - divide the total frames by the # of columns to get the #
+     *   of rows in each column, and any remainder is distributed
      *   amongst the remaining rows from right to left)
      *
      * eg)
@@ -215,25 +241,25 @@ public final class SwingUtil
      *     2  frames, remainder 0, 2 rows
      *     3  frames, remainder 0, 3 rows
      *     4  frames, remainder 0, 2 rows x 2 columns
-     *     5  frames, remainder 1, 2 rows in column I, 
+     *     5  frames, remainder 1, 2 rows in column I,
      *                             3 rows in column II
-     *     10 frames, remainder 1, 3 rows in column I, 
-     *                             3 rows in column II, 
+     *     10 frames, remainder 1, 3 rows in column I,
+     *                             3 rows in column II,
      *                             4 rows in column III
      *     16 frames, 4 rows x 4 columns
-     * 
+     *
      * Pseudocode:
-     * 
-     *     while (frames) 
-     *     { 
+     *
+     *     while (frames)
+     *     {
      *         numCols = (int)sqrt(totalFrames);
      *         numRows = totalFrames / numCols;
      *         remainder = totalFrames % numCols;
-     * 
-     *         if ((numCols-curCol) <= remainder) 
+     *
+     *         if ((numCols-curCol) <= remainder)
      *             numRows++; // add an extra row for this column
      *     }
-     * 
+     *
      * </pre>
      */
     public static void tile(JDesktopPane desktop)
@@ -241,11 +267,11 @@ public final class SwingUtil
         Rectangle viewP = desktop.getBounds();
         int totalNonIconFrames = 0;
         JInternalFrame[] frames = desktop.getAllFrames();
-        
+
         for (int i = 0; i < frames.length; i++)
         {
             if (!frames[i].isIcon())
-            { 
+            {
                 // don't include iconified frames...
                 totalNonIconFrames++;
             }
@@ -275,7 +301,7 @@ public final class SwingUtil
                 for (curRow = 0; curRow < numRows; curRow++)
                 {
                     while (frames[i].isIcon())
-                    { 
+                    {
                         // find the next visible frame
                         i++;
                     }
@@ -292,10 +318,10 @@ public final class SwingUtil
         }
     }
 
-    
+
     /**
      * Cascades all internal frames on a desktop.
-     * 
+     *
      * @param desktop Desktop on with to cascade all internal frames.
      */
     public static void cascade(JDesktopPane desktop)
@@ -312,9 +338,9 @@ public final class SwingUtil
             if (!frame.isIcon())
             {
                 // Fix me
-                frame.setSize(new Dimension(200, 200) 
+                frame.setSize(new Dimension(200, 200)
                  /*f.getInitialDimensions()*/);
-                    
+
                 frame.setLocation(cascade(desktop, frame, cnt++));
             }
         }
@@ -324,7 +350,7 @@ public final class SwingUtil
     /**
      * Cascades the given internal frame based upon the current number of
      * internal frames.
-     * 
+     *
      * @param desktop Desktop.
      * @param frame Internal frame to cascade.
      * @return Point object representing the location assigned to the internal
@@ -342,7 +368,7 @@ public final class SwingUtil
      * @param desktop Desktop upon which frame is visible.
      * @param f Internal frame to cascade.
      * @param count Count to use in cascading the internal frame.
-     * @return Point object representing the location assigned to the internal 
+     * @return Point object representing the location assigned to the internal
      *         frame upon the virtual desktop.
      */
     private static Point cascade(
@@ -352,7 +378,7 @@ public final class SwingUtil
     {
         int windowWidth = f.getWidth();
         int windowHeight = f.getHeight();
-        
+
         int xoffset = 30;
         int yoffset = 30;
 
@@ -360,15 +386,15 @@ public final class SwingUtil
 
         // get # of windows that fit horizontally
         int numFramesWide = (viewP.width - windowWidth) / xoffset;
-        
+
         if (numFramesWide < 1)
         {
             numFramesWide = 1;
         }
-        
+
         // get # of windows that fit vertically
         int numFramesHigh = (viewP.height - windowHeight) / yoffset;
-        
+
         if (numFramesHigh < 1)
         {
             numFramesHigh = 1;
@@ -376,21 +402,21 @@ public final class SwingUtil
 
         // position relative to the current viewport (viewP.x/viewP.y)
         // (so new windows appear onscreen)
-        int xLoc = viewP.x + 
-                   xoffset * 
-                   ((count + 1) - 
+        int xLoc = viewP.x +
+                   xoffset *
+                   ((count + 1) -
                    (numFramesWide - 1) *
                    (count / numFramesWide));
-                   
-        int yLoc = viewP.y + 
-                   yoffset * 
-                   ((count + 1) - 
+
+        int yLoc = viewP.y +
+                   yoffset *
+                   ((count + 1) -
                    numFramesHigh *
                    (count / numFramesHigh));
 
         return new Point(xLoc, yLoc);
     }
-    
+
     //--------------------------------------------------------------------------
     //  Widget/Layout Stuff
     //--------------------------------------------------------------------------
@@ -400,12 +426,12 @@ public final class SwingUtil
      *
      * @param component Component to wrap.
      * @return JPanel
-     */    
+     */
     public static JPanel wrap(JComponent component)
     {
         JPanel panel = new JPanel(new FlowLayout());
         panel.add(component);
-        return panel;    
+        return panel;
     }
 
 
@@ -413,13 +439,13 @@ public final class SwingUtil
      * Wraps a component tightly in a JPanel using BorderLayout.
      *
      * @param component Component to wrap.
-     * @return JPanel 
-     */    
+     * @return JPanel
+     */
     public static JPanel wrapTight(JComponent component)
     {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(BorderLayout.CENTER, component);
-        return panel;    
+        return panel;
     }
 
 
@@ -427,54 +453,54 @@ public final class SwingUtil
      * Converts a JPopupMenu into its equivalent JMenu. The components are
      * cannibalized from the JPopupMenu so it is no longer valid after this
      * call.
-     * 
+     *
      * @param popup Popupmenu to convert.
      * @return JMenu
      */
     public static JMenu popupToMenu(JPopupMenu popup)
     {
         JMenu menu = new JMenu(popup.getLabel());
-        
+
         while (popup.getComponentCount() > 0)
         {
             Component c = popup.getComponent(0);
             menu.add(c);
             menu.validate();
         }
-        
+
         return menu;
     }
-    
+
     //--------------------------------------------------------------------------
     // AntiAliased
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns true if antialiasing for all 'smart' components is enabled, false
      * otherwise.
-     * 
+     *
      * @return boolean
      */
     public static boolean getDefaultAntiAlias()
     {
         return defaultAntiAlias_;
     }
-    
+
 
     /**
      * Sets the flag for antialiasing all 'smart' components.
-     * 
+     *
      * @param b Antialias flag.
      */
     public static void setDefaultAntiAlias(boolean b)
     {
-        defaultAntiAlias_ = b; 
+        defaultAntiAlias_ = b;
     }
-    
+
 
     /**
      * Sets the antialiased flag on a tree of components.
-     * 
+     *
      * @param c Root component.
      * @param b Antialias flag.
      */
@@ -483,12 +509,12 @@ public final class SwingUtil
         if (c instanceof AntiAliased)
         {
             logger_.debug(
-                "AA set to " + b + " on component " + 
+                "AA set to " + b + " on component " +
                     ClassUtil.stripPackage(c.getClass().getName()));
 
             ((AntiAliased) c).setAntiAliased(b);
         }
-            
+
         if (c instanceof Container)
         {
             Component[] comps = ((Container) c).getComponents();
@@ -496,31 +522,31 @@ public final class SwingUtil
         }
     }
 
-    
+
     /**
      * Turns on antialiasing for a graphics context.
-     * 
+     *
      * @param graphics Graphics context.
      * @param antiAliased Set to true to turn antialiasing on for the graphics
      *        context; false to turn it off.
      */
-    public static void makeAntiAliased(Graphics graphics, 
+    public static void makeAntiAliased(Graphics graphics,
         boolean antiAliased)
-    {    
+    {
         //((Graphics2D)g).setRenderingHint
         //  (RenderingHints.KEY_ANTIALIASING,
         //   RenderingHints.VALUE_ANTIALIAS_ON);
-    
+
         ((Graphics2D) graphics).setRenderingHint(
             RenderingHints.KEY_TEXT_ANTIALIASING,
-            (antiAliased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON 
+            (antiAliased ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON
                        : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     }
-    
+
     //--------------------------------------------------------------------------
     // JTree
     //--------------------------------------------------------------------------
-    
+
     /**
      * Expands or collapses all the nodes in a tree.
      *
@@ -533,7 +559,7 @@ public final class SwingUtil
         expandAll(tree, new TreePath(root), expand);
     }
 
-    
+
     /**
      * Expands or collapses all the nodes in a tree.
      *
@@ -545,7 +571,7 @@ public final class SwingUtil
     {
         // Traverse children
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        
+
         if (node.getChildCount() >= 0)
         {
             for (Enumeration e = node.children(); e.hasMoreElements();)
@@ -566,37 +592,37 @@ public final class SwingUtil
             tree.collapsePath(parent);
         }
     }
-    
+
     //--------------------------------------------------------------------------
     // Phantom Frame
     //--------------------------------------------------------------------------
-    
+
     /**
      * Adds a component to an invisible frame for the purposes of a LAF change
      * propagating to the component before the compnent is made visible.
-     * 
+     *
      * @param c Component to temporarily associate with an invisible frame.
      */
     public static void attachPhantom(Component c)
     {
         if (phantomFrame_ == null)
             phantomFrame_ = new JFrame();
-        
+
         phantomFrame_.getContentPane().add(c);
     }
-    
-    
+
+
     /**
      * Adds a component to an invisible frame for the purposes of a LAF change
      * propagating to the component before the compnent is made visible.
-     * 
+     *
      * @param c Component to temporarily associate with an invisible frame.
      */
     public static void detachPhantom(Component c)
     {
         if (phantomFrame_ == null)
             phantomFrame_ = new JFrame();
-        
+
         phantomFrame_.getContentPane().remove(c);
     }
 }
