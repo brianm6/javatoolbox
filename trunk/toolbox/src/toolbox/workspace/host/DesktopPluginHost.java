@@ -2,14 +2,19 @@ package toolbox.workspace.host;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
+import javax.swing.JMenuBar;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -18,13 +23,18 @@ import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
+import toolbox.util.beans.BeanPropertyFilter;
 import toolbox.util.ui.JSmartInternalFrame;
+import toolbox.util.ui.JSmartMenu;
+import toolbox.util.ui.JSmartMenuItem;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.PluginWorkspace;
@@ -35,8 +45,8 @@ import toolbox.workspace.PluginWorkspace;
  * 
  * @see toolbox.workspace.host.TabbedPluginHost 
  */
-public class DesktopPluginHost extends AbstractPluginHost 
-    implements IPreferenced
+public class DesktopPluginHost extends AbstractPluginHost implements PluginHost, 
+    IPreferenced
 {
     private static final Logger logger_ = 
         Logger.getLogger(DesktopPluginHost.class);
@@ -46,17 +56,17 @@ public class DesktopPluginHost extends AbstractPluginHost
     //--------------------------------------------------------------------------
     
     /**
-     * Desktop.
+     * Desktop on which the plugins are added in separate internal frames.
      */
     private JDesktopPane desktop_;
     
     /**
-     * Maps IPlugin -> JInternalFrame.
+     * Maps an IPlugin -> JInternalFrame.
      */
     private BidiMap pluginMap_;
     
     /**
-     * Maps JInternalFrame -> IPlugin. 
+     * Maps a JInternalFrame -> IPlugin. 
      */
     private BidiMap frameMap_;
 
@@ -81,6 +91,9 @@ public class DesktopPluginHost extends AbstractPluginHost
         desktop_ = new JDesktopPane();
         pluginMap_ = new DualHashBidiMap();
         frameMap_ = pluginMap_.inverseBidiMap();
+        
+        addWindowMenu();
+        
         
         /*
         SwingUtilities.invokeLater(new Runnable() 
@@ -261,6 +274,7 @@ public class DesktopPluginHost extends AbstractPluginHost
      */
     public void shutdown()
     {
+        removeWindowMenu();
         desktop_.removeAll();
         desktop_ = null;
         
@@ -273,7 +287,6 @@ public class DesktopPluginHost extends AbstractPluginHost
     //--------------------------------------------------------------------------
     // IPreferenced Interface
     //--------------------------------------------------------------------------
-    
     
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
@@ -360,5 +373,67 @@ public class DesktopPluginHost extends AbstractPluginHost
         }
 
         XOMUtil.insertOrReplace(prefs, root);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Adds the Window menu to the menu bar on plugin startup. 
+     */
+    protected void addWindowMenu()
+    {
+        JMenuBar menuBar = workspace_.getJMenuBar();
+        JSmartMenu windowMenu = new JSmartMenu("Window");
+        windowMenu.setName("Window");
+        
+        windowMenu.add(new JSmartMenuItem(new AbstractAction("Tile")
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtil.tile(desktop_);
+            }
+        }));
+
+        windowMenu.add(new JSmartMenuItem(new AbstractAction("Cascade")
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                SwingUtil.cascade(desktop_);
+            }
+        }));
+        
+        // If this is the initial plugin host, then the initialization sequence
+        // has not yet created the menubar. Workaround if null...
+        
+        if (menuBar != null)
+        {
+            menuBar.add(windowMenu);
+            menuBar.revalidate();
+        }
+        else
+            logger_.debug("TODO: Fix adding Window menu to null menubar");
+    }
+    
+    
+    /**
+     * Removes the Window menu from the menu bar on plugin host shutdown. 
+     */
+    protected void removeWindowMenu()
+    {
+        JMenuBar menuBar = workspace_.getJMenuBar();
+        List results = new ArrayList();
+        SwingUtil.findInstancesOf(JSmartMenu.class, menuBar, results);
+        
+        CollectionUtils.filter(
+            results, 
+            new BeanPropertyFilter("name", "Window"));
+        
+        if (!results.isEmpty())
+        {
+            menuBar.remove((JSmartMenu) results.iterator().next());
+            logger_.debug("Removed window menu from menu bar");
+        }
     }
 }
