@@ -2,6 +2,7 @@ package toolbox.tunnel.test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -15,6 +16,7 @@ import toolbox.tunnel.DefaultTcpTunnelListener;
 import toolbox.tunnel.TcpTunnel;
 import toolbox.util.SocketUtil;
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.StringOutputStream;
 import toolbox.util.net.DefaultSocketServerListener;
 import toolbox.util.net.SocketServer;
 import toolbox.util.net.SocketServerConfig;
@@ -74,9 +76,18 @@ public class TcpTunnelTest extends TestCase
         // Setup tunnel
         int tunnelPort = SocketUtil.getFreePort();
         
-        TcpTunnel tunnel = new TcpTunnel(
-            tunnelPort, "localhost", serverConfig.getServerPort());
-            
+        TcpTunnel tunnel = 
+            new TcpTunnel(
+                tunnelPort, 
+                "localhost", 
+                serverConfig.getServerPort());
+
+        OutputStream ab = new StringOutputStream();
+        tunnel.setIncomingSink(ab);
+        
+        OutputStream ba = new StringOutputStream();
+        tunnel.setOutgoingSink(ba);
+        
         DefaultTcpTunnelListener tunnelListener =
             new DefaultTcpTunnelListener();
         
@@ -87,31 +98,77 @@ public class TcpTunnelTest extends TestCase
         // Setup client
         Socket socket = new Socket("localhost", tunnelPort);
         
-        PrintWriter pw = new PrintWriter(
-            new OutputStreamWriter(socket.getOutputStream()));
+        PrintWriter pw = 
+            new PrintWriter(
+                new OutputStreamWriter(
+                    socket.getOutputStream()));
             
-        BufferedReader br = new BufferedReader(
-            new InputStreamReader(socket.getInputStream()));
+        BufferedReader br = 
+            new BufferedReader(
+                new InputStreamReader(
+                    socket.getInputStream()));
 
         // Send some data
-        String s = "Hello";
-        logger_.info("out: " + s);
-        pw.println(s);
-        pw.flush();
+        write(pw, "Hello");
         
         // Send of data should trigger tunnel to connect to server
         serverListener.waitForAccept();
         
         // Read result
-        String echo = br.readLine();
-        logger_.info("in: " + echo);
-        assertEquals(s, echo);
+        String response = read(br);
+        assertEquals(response, response);
         
         // Tear down
-        pw.println("terminate");
-        pw.flush();
-        socket.close();
+        write(pw, "terminate");
+
+        //logger_.info(StringUtil.addBars("a->b:\n" + ab));
+        //logger_.info(StringUtil.addBars("b->a:\n" + ba));
+        
         tunnel.stop();
         server.stop();
+        
+        // Make sure count of bytes send/received adds up
+        int r = tunnelListener.getTotalBytesRead();
+        int w = tunnelListener.getTotalBytesWritten();
+        
+        logger_.info("Bytes read   : " + r);
+        logger_.info("Bytes written: " + w);
+        
+        int len = "Hello".length() + "terminate".length() + "\r\n".length() * 2;
+        assertEquals(len, r);
+        assertEquals(len, w);
+    }
+    
+    //--------------------------------------------------------------------------
+    // Helpers
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Convenience to write a msg to the server.
+     * 
+     * @param pw Writer.
+     * @param msg Message.
+     */
+    private void write(PrintWriter pw, String msg)
+    {
+        logger_.info("a->b " + msg);
+        pw.println(msg);
+        pw.flush();
+        ThreadUtil.sleep(1000);
+    }
+    
+    
+    /**
+     * Convenience to read a msg from the server.
+     * 
+     * @param br Reader.
+     * @return Message.
+     * @throws Exception on error.
+     */
+    public String read(BufferedReader br) throws Exception
+    {
+        String msg = br.readLine();
+        logger_.info("a<-b " + msg);
+        return msg;
     }
 }
