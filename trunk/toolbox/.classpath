@@ -47,5 +47,6 @@
     <classpathentry kind="var" path="TOOLBOX_RESOURCES"/>
     <classpathentry kind="lib" path="lib/multivalent.jar"/>
     <classpathentry kind="lib" path="lib/jreversepro.jar"/>
+    <classpathentry kind="lib" path="lib/hsqldb.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
