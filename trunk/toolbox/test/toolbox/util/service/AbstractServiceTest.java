@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class AbstractServiceTest extends TestCase
 {
-    // TODO: Revisit
+    // TODO: Remove me!
     
     private static final Logger logger_ = 
         Logger.getLogger(AbstractServiceTest.class);

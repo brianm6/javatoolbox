@@ -4,7 +4,10 @@ import toolbox.util.ArrayUtil;
 import toolbox.util.statemachine.StateMachine;
 
 /**
- * Event notification implementation for ObservableService implementors.
+ * Event notification implementation for ObservableService implementors. This
+ * class is meant to be be embedded in Service implementations that wish to 
+ * delegate the job of handling registration of listeners and firing of events
+ * to a common class.
  */
 public class ServiceNotifier implements ObservableService
 {

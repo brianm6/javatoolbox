@@ -1,7 +1,7 @@
 package toolbox.util.service;
 
 /**
- * Suspendable service.
+ * Implemented by services which can suspend and resume operation.
  */              
 public interface Suspendable extends Service
 {
@@ -17,7 +17,7 @@ public interface Suspendable extends Service
     
     
     /**
-     * Resumes the service and returns it to a running state.
+     * Resumes the service.
      * 
      * @throws IllegalStateException if the service cannot be resumed from its
      *         current state.

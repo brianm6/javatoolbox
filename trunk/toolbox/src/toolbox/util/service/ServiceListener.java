@@ -7,8 +7,7 @@ package toolbox.util.service;
 public interface ServiceListener
 {
     /**
-     * Notification that the given services state has changed from the oldState
-     * to the newState.
+     * Notification that the given services state has changed.
      * 
      * @param service Service whose state has changed.
      * @throws ServiceException on error.

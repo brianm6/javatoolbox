@@ -27,6 +27,8 @@ import toolbox.util.ui.SmartAction;
  */
 public class ServiceView extends JPanel
 {
+    // TODO: Get this working...
+    
     private static final Logger logger_ = Logger.getLogger(ServiceView.class);
     
     //--------------------------------------------------------------------------

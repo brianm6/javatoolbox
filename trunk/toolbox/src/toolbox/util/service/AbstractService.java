@@ -13,6 +13,8 @@ import toolbox.util.statemachine.StateMachine;
 public abstract class AbstractService 
     implements Startable, Initializable, Suspendable, Destroyable
 {
+    // TODO: Remove me!
+    
     private static final Logger logger_ = 
         Logger.getLogger(AbstractService.class);
     

@@ -3,7 +3,8 @@ package toolbox.util.service;
 import toolbox.util.statemachine.StateMachine;
 
 /**
- * ObservableService is a notification interface for Service implementors.
+ * ObservableService is a notification interface for Service implementors that
+ * with to support dissemination of events via aa ServiceListener.
  * 
  * @see toolbox.util.service.ServiceNotifier
  */
@@ -25,5 +26,10 @@ public interface ObservableService
     void removeServiceListener(ServiceListener listener);
 
     
+    /**
+     * Returns this service's finite state machine.
+     * 
+     * @return StateMachine
+     */
     StateMachine getStateMachine();
 }

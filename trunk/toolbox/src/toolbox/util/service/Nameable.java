@@ -1,12 +1,25 @@
 package toolbox.util.service;
 
 /**
- * Nameable interface is for entities which can be referenced via a name.
+ * Implemented by objects which can be referenced by name.
  */
 public interface Nameable
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
-     * Returns this elements name.
+     * Javabean name property.
+     */
+    static final String PROP_NAME = "name";
+
+    //--------------------------------------------------------------------------
+    // Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns this object's name.
      *
      * @return String
      */
@@ -14,9 +27,9 @@ public interface Nameable
     
     
     /**
-     * Sets this elements name.
+     * Sets this object's name.
      *
-     * @param name Name
+     * @param name Name to set.
      */
     void setName(String name);
 }

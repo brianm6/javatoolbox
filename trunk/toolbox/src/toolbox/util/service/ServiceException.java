@@ -1,7 +1,7 @@
 package toolbox.util.service;
 
 /**
- * ServiceException is thrown for Service related failures.
+ * ServiceException is thrown in the event of Service related failures.
  */
 public class ServiceException extends RuntimeException
 {
@@ -15,6 +15,8 @@ public class ServiceException extends RuntimeException
     
     /**
      * Creates a ServiceException.
+     * 
+     * @param message Error message.
      */
     public ServiceException(String message)
     {

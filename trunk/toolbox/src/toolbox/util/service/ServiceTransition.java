@@ -4,7 +4,7 @@ import toolbox.util.statemachine.impl.DefaultTransition;
 
 /**
  * A ServiceTransitions represents an activity that causes a change of state
- * in Service.
+ * in a Service.
  * 
  * @see toolbox.util.service.Service
  * @see toolbox.util.service.ServiceState

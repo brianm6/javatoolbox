@@ -12,7 +12,7 @@ import toolbox.util.statemachine.StateMachine;
 import toolbox.util.statemachine.StateMachineFactory;
 
 /**
- * Service utility class. 
+ * {@link Service} utility class. 
  */
 public class ServiceUtil
 {
@@ -32,9 +32,15 @@ public class ServiceUtil
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a state machine for the given list of Service classes.
+     * Creates a state machine for the given list of Service attribute classes.
+     * Returns null if the passed in list of services is not recognized as 
+     * forming a valid finite state machine. The idea is to support a subset
+     * of the various Service attributes (Initializable, Startable, Suspendable,
+     * etc) that form the more popular combinations. If a given configuration
+     * is not supported, it will be necessary to construct it manually.
      * 
-     * @param name Name to assign to the StateMachine.
+     * @param serviceClasses Array of interfaces which extend Service (in other
+     *        words, an array of characteristics which the serviec exhibits).
      * @return StateMachine
      */
     public static StateMachine createStateMachine(Class[] serviceClasses)
@@ -214,7 +220,9 @@ public class ServiceUtil
     }
 
     /**
-     * Creates a state machine given the implemtations of the given service.
+     * Creates a state machine for the given Service. The state machine is
+     * determined by interrogating the service and finding out which service
+     * attributes it implements.
      *  
      * @param service Service implementing Initializable, Startable, 
      *        Suspendable, and Destroyable.
@@ -244,6 +252,11 @@ public class ServiceUtil
     // Private
     //--------------------------------------------------------------------------
     
+    /**
+     * Returns an Initializable state machine.
+     * 
+     * @return StateMachine
+     */
     private static StateMachine createInitializable()
     {
         StateMachine machine = 
@@ -265,8 +278,13 @@ public class ServiceUtil
         machine.reset();
         return machine;
     }
+
     
-    
+    /**
+     * Returns an Startable state machine.
+     * 
+     * @return StateMachine
+     */
     private static StateMachine createStartable()
     {
         StateMachine machine = 
@@ -291,6 +309,11 @@ public class ServiceUtil
     }
     
     
+    /**
+     * Returns a state machine which is Startable and Suspendable.
+     * 
+     * @return StateMachine
+     */
     private static StateMachine createStartableSuspendable()
     {
         StateMachine machine = 
@@ -326,6 +349,12 @@ public class ServiceUtil
     }
 
     
+    /**
+     * Returns a state machine which is Initializable, Startable, Suspendable,
+     * and Destroyable.
+     * 
+     * @return StateMachine
+     */
     private static StateMachine createAll()
     {
         StateMachine machine = StateMachineFactory.createStateMachine("All");
@@ -384,6 +413,11 @@ public class ServiceUtil
     }
 
     
+    /**
+     * Returns a state machine which is Intitializable and Destroyable.
+     * 
+     * @return StateMachine
+     */
     private static StateMachine createInitializableDestroyable()
     {
         StateMachine machine = 
@@ -415,6 +449,12 @@ public class ServiceUtil
     }
     
     
+    /**
+     * Returns a state machine that is Initializable, Startable, and 
+     * Destroyable.
+     * 
+     * @return StateMachine
+     */
     private static StateMachine createInitializableStartableDestroyable()
     {
         StateMachine machine = 
@@ -463,6 +503,11 @@ public class ServiceUtil
     }
     
     
+    /**
+     * Returns a state machine which is Initializable and Startable.
+     * 
+     * @return StateMachine
+     */
     private static StateMachine createInitializableStartable()
     {
         StateMachine machine = 
@@ -498,5 +543,4 @@ public class ServiceUtil
         machine.reset();
         return machine;
     }
-    
 }

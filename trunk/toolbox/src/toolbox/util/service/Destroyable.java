@@ -1,7 +1,7 @@
 package toolbox.util.service;
 
 /**
- * Destroyable service.
+ * Implemented by services which are destroyable. 
  * 
  * @see toolbox.util.service.Initializable
  */

@@ -20,7 +20,7 @@ public class ServiceState extends DefaultState
         new ServiceState("uninitialized");
     
     /**
-     * Initialized state. A service can only be initialized once.
+     * Initialized state.
      */
     public static final ServiceState INITIALIZED = 
         new ServiceState("initialized");
