@@ -29,6 +29,16 @@ import toolbox.util.ui.JSmartCheckBox;
 public class JFontChooserDialog extends JDialog
 {
     //--------------------------------------------------------------------------
+    // UI Component Name Constants
+    //--------------------------------------------------------------------------
+    
+    public static final String NAME_APPLY_BUTTON = "apply.button";
+
+    public static final String NAME_CANCEL_BUTTON = "cancel.button";
+
+    public static final String NAME_OK_BUTTON = "ok.button";
+
+    //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
     
@@ -191,6 +201,10 @@ public class JFontChooserDialog extends JDialog
         okButton_     = new JSmartButton(new OKAction());
         cancelButton_ = new JSmartButton(new CancelAction());
         applyButton_  = new JSmartButton(new ApplyAction());
+        
+        applyButton_.setName(NAME_APPLY_BUTTON);
+        cancelButton_.setName(NAME_CANCEL_BUTTON);
+        okButton_.setName(NAME_OK_BUTTON);
         
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(okButton_);
