@@ -279,6 +279,9 @@ public class FileStuffer implements Runnable
      */
     public interface IStuffProvider
     {
+        /**
+         * @return  Stuff
+         */
         public Object getStuff();
     }
     
