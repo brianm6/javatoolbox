@@ -5,17 +5,17 @@ package toolbox.workspace;
  */
 public class PluginException extends Exception
 {
-
     /**
-     * 
+     * Creates a PluginException
      */
     public PluginException()
     {
-        super();
     }
 
     /**
-     * @param message
+     * Creates a PluginException
+     * 
+     * @param message Error message
      */
     public PluginException(String message)
     {
@@ -23,7 +23,9 @@ public class PluginException extends Exception
     }
 
     /**
-     * @param cause
+     * Creates a PluginException
+     * 
+     * @param cause Originating exception
      */
     public PluginException(Throwable cause)
     {
@@ -31,8 +33,10 @@ public class PluginException extends Exception
     }
 
     /**
-     * @param message
-     * @param cause
+     * Creates a PluginException
+     * 
+     * @param message Error message
+     * @param cause Originating exception
      */
     public PluginException(String message, Throwable cause)
     {
