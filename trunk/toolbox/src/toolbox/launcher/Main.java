@@ -1,6 +1,5 @@
 package toolbox.launcher;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -23,19 +22,20 @@ public class Main
         /* map program names to class names */
         programMap_ = new HashMap(10);
         
-        programMap_.put("findclass",     "toolbox.findclass.Main");
-        programMap_.put("jfindclass",    "toolbox.findclass.JFindClass");
+        programMap_.put("findclass",  "toolbox.findclass.Main");
+        programMap_.put("jfindclass", "toolbox.findclass.JFindClass");
         programMap_.put("showclasspath", "toolbox.showclasspath.Main");
-        programMap_.put("showpath",      "toolbox.showpath.Main");
-        programMap_.put("jsourceview",   "toolbox.jsourceview.JSourceView");
-        programMap_.put("jtail",         "toolbox.jtail.JTail");
-        programMap_.put("tail",          "toolbox.tail.Main");
-        programMap_.put("jtcptunnel",    "toolbox.tunnel.JTcpTunnel");
-        programMap_.put("tcptunnel",     "toolbox.tunnel.TcpTunnel");
-        programMap_.put("tree",          "toolbox.tree.Tree");
-        programMap_.put("sqlviewer",     "toolbox.sqlviewer.SQLViewer");
+        programMap_.put("showpath",   "toolbox.showpath.Main");
+        programMap_.put("jsourceview","toolbox.jsourceview.JSourceView");
+        programMap_.put("jtail",      "toolbox.jtail.JTail");
+        programMap_.put("tail",       "toolbox.tail.Main");
+        programMap_.put("jtcptunnel", "toolbox.tunnel.JTcpTunnel");
+        programMap_.put("tcptunnel",  "toolbox.tunnel.TcpTunnel");
+        programMap_.put("tree",       "toolbox.tree.Tree");
+        programMap_.put("sqlviewer",  "toolbox.sqlviewer.SQLViewer");
+        programMap_.put("banner",     "toolbox.util.Banner");
+        programMap_.put("workspace",  "toolbox.util.ui.plugin.PluginWorkspace");
     }
-
     
     /**
      * Entrypoint 
@@ -78,15 +78,16 @@ public class Main
                     String[] newArgs = new String[0];
                     
                     if (args.length > 1)
-                        newArgs = (String[]) ArrayUtil.subset(
-                            args, 1, args.length - 1);
+                    {
+                        newArgs = (String[]) 
+                            ArrayUtil.subset(args, 1, args.length-1);
+                    }
                   
                     // Launch program      
                     launch((String)programMap_.get(args[0]), newArgs);
                 } 
                 break;
-        }
-        
+        }    
     }
     
     //--------------------------------------------------------------------------
@@ -101,7 +102,6 @@ public class Main
      */
     protected void launch(String className, String[] args)
     {
-          
         try 
         {
             Class c = Class.forName(className);
@@ -111,27 +111,7 @@ public class Main
                 
             m.invoke(null, new Object[] { args } );
         } 
-        catch(SecurityException e) 
-        {
-            System.out.println("Error: " + e);
-            e.printStackTrace();
-        } 
-        catch(ClassNotFoundException e) 
-        {
-            System.out.println("Error: " + e);
-            e.printStackTrace();
-        } 
-        catch(NoSuchMethodException e) 
-        {
-            System.out.println("Error: " + e);
-            e.printStackTrace();
-        }
-        catch(IllegalAccessException e) 
-        {
-            System.out.println("Error: " + e);
-            e.printStackTrace();
-        } 
-        catch(InvocationTargetException e) 
+        catch(Throwable e) 
         {
             System.out.println("Error: " + e);
             e.printStackTrace();
@@ -149,6 +129,7 @@ public class Main
             "                                                       \n" +
             "       where program is:                               \n" +
             "                                                       \n" +
+            "       banner        => creates a text banner          \n" +
             "       findclass     => find a java class file         \n" + 
             "       showclasspath => show detailed classpath info   \n" +
             "       showpath      => show detailed path info        \n" +
@@ -160,7 +141,8 @@ public class Main
             "       jsourceview   => java code counter              \n" +
             "       jtail         => java tailer (GUI)              \n" +
             "       jtcptunnel    => tcp tunnel  (GUI)              \n" +
-            "       sqlviewer     => unmangles sql statements       \n" );
+            "       sqlviewer     => unmangles sql statements       \n" +
+            "       workspace     => plugin workspace               \n");
     }
     
 }
