@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
-import org.apache.commons.lang.Validate;
 
 import toolbox.util.ArrayUtil;
 
@@ -47,7 +46,7 @@ public abstract class AbstractService implements Service
     static 
     {
         // Populate strict service state transitions
-        TRANSITIONS_STRICT = new HashMap(7);
+        TRANSITIONS_STRICT = new HashMap(8);
 
         TRANSITIONS_STRICT.put(
             new MultiKey(
@@ -369,6 +368,36 @@ public abstract class AbstractService implements Service
         for (int i = 0; i < listeners_.length; 
             listeners_[i++].serviceStateChanged(this));
     }
+
+    
+    /**
+     * Answers the following question is strict state transitions are enabled.
+     * Does the given activity result in a valid state transition from the 
+     * current state to a target state?
+     * 
+     * @param activity Activity to check.
+     * @throws ServiceException if the activity is not a valid from the current
+     *         state.
+     */
+    protected void checkTransition(ServiceActivity activity) 
+        throws ServiceException
+    {
+        if (isStrict()) 
+        {
+            ServiceState nextState = (ServiceState)
+                TRANSITIONS_STRICT.get(new MultiKey(getState(), activity));
+
+            if (nextState == null)
+            {
+                throw new ServiceException(
+                    "Invalid service state transition from " 
+                    + getState()
+                    + " state with the "
+                    + activity 
+                    + " activity.");
+            }
+        }
+    }
     
     
     /**
@@ -380,30 +409,8 @@ public abstract class AbstractService implements Service
      */
     protected void transition(ServiceActivity activity) throws ServiceException
     {
-        if (isStrict()) 
-        {
-            ServiceState nextState = (ServiceState) 
-                TRANSITIONS_STRICT.get(new MultiKey(getState(), activity));
-
-            try
-            {
-                Validate.isTrue(nextState != null);
-                setState(nextState);
-            }
-            catch (IllegalArgumentException iae)
-            {
-                throw new ServiceException(
-                        "Invalid service state transition from " 
-                        + getState()
-                        + " with activity "
-                        + activity);
-            }
-        }
-        else
-        {
-            setState((ServiceState) TRANSITIONS_RELAXED.get(activity));
-        }
-            
+        checkTransition(activity);
+        setState((ServiceState) TRANSITIONS_RELAXED.get(activity));
         fireServiceStateChanged();
     }
 }
