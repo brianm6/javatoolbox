@@ -12,10 +12,10 @@ import toolbox.util.ui.font.IFontChooserDialogListener;
 /**
  * Unit test for JFontChooserDialog
  */
-public class FontSelectionDialogTest extends TestCase
+public class JFontChooserDialogTest extends TestCase
 {
     private static final Category logger_ = 
-        Category.getInstance(FontSelectionDialogTest.class);
+        Category.getInstance(JFontChooserDialogTest.class);
         
     /**
      * Entry point
@@ -24,15 +24,15 @@ public class FontSelectionDialogTest extends TestCase
      */
     public static void main(String[] args)
     {
-        TestRunner.run(FontSelectionDialogTest.class);
+        TestRunner.run(JFontChooserDialogTest.class);
     }
 
     /**
-     * Constructor for FontSelectionDialogTest.
+     * Constructor for JFontChooserDialogTest.
      * 
      * @param arg0 Name
      */
-    public FontSelectionDialogTest(String arg0)
+    public JFontChooserDialogTest(String arg0)
     {
         super(arg0);
     }

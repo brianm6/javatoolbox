@@ -10,7 +10,7 @@ import toolbox.util.ui.font.JFontChooser;
 /**
  * Unit test for JFontChooser
  */
-public class FontSelectionPanelTest extends TestCase
+public class JFontChooserTest extends TestCase
 {
     /**
      * Entry point
@@ -19,15 +19,15 @@ public class FontSelectionPanelTest extends TestCase
      */
     public static void main(String[] args)
     {
-        junit.textui.TestRunner.run(FontSelectionPanelTest.class);
+        junit.textui.TestRunner.run(JFontChooserTest.class);
     }
 
     /**
-     * Constructor for FontSelectionPanelTest.
+     * Constructor for JFontChooserTest.
      * 
      * @param arg0 Name
      */
-    public FontSelectionPanelTest(String arg0)
+    public JFontChooserTest(String arg0)
     {
         super(arg0);
     }
