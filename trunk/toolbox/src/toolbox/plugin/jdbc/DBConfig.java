@@ -13,11 +13,13 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 
 import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
+import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.util.ui.plugin.IPreferenced;
@@ -32,16 +34,29 @@ public class DBConfig extends JPanel implements IPreferenced
     private static final Logger logger_ = 
         Logger.getLogger(DBConfig.class);
     
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
-     * XML: DBConfig has [0..n] DBProfile children
+     * DBConfig has zero or more DBProfile children
      */
     private static final String NODE_DBCONFIG = "DBConfig";
+
+    /**
+     * Index of last selected database profile
+     */
+    private static final String ATTR_SELECTED = "selected";
     
     /**
-     * XML: DBProfile is a child of DBConfig
+     * DBProfile is a child of DBConfig
      */
     private static final String NODE_DBPROFILE = "DBProfile";
-    
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+        
     /**
      * Parent of this panel
      */
@@ -193,9 +208,12 @@ public class DBConfig extends JPanel implements IPreferenced
             try
             { 
                 Elements dbProfiles = dbConfig.getChildElements(NODE_DBPROFILE);
-                
+                                
                 for (int i=0, n = dbProfiles.size(); i<n; i++)
                     addProfile(new DBProfile(dbProfiles.get(i).toXML()));
+                    
+                profileCombo_.setSelectedIndex(
+                    XOMUtil.getIntegerAttribute(dbConfig, ATTR_SELECTED, 0));
             }
             catch (Exception ioe)
             {
@@ -212,6 +230,9 @@ public class DBConfig extends JPanel implements IPreferenced
     {
         Element dbConfig = new Element(NODE_DBCONFIG);
         
+        dbConfig.addAttribute(
+            new Attribute(ATTR_SELECTED, profileCombo_.getSelectedIndex()+""));
+            
         for (int i=0, n=profileCombo_.getItemCount(); i<n; i++)
         {
             DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
