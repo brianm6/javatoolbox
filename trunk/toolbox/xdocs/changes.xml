@@ -118,6 +118,7 @@
       <action type="update">StatcvsPlugin - Updated to use a collapsable panel for the cvs projects view</action>
       <action type="update">LookAndFeel - Upgraded to Skin Look and Feel 1.2.9 with new Beige Azul themepack</action>
       <action type="update">Misc - Updated various forms throughout the GUI to use JGoodies Forms layout</action>
+      <action type="remove">Util - Removed unused layouts</action>
     </release>
 
     <release version="2.0" date="June 2004">
