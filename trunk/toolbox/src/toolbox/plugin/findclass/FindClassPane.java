@@ -519,9 +519,9 @@ public class FindClassPane extends JPanel implements IPreferenced
         /**
          * When a search is cancelled, update the status bar.
          *
-         * @see toolbox.findclass.FindClassListener#searchCancelled()
+         * @see toolbox.findclass.FindClassListener#searchCanceled()
          */
-        public void searchCancelled()
+        public void searchCanceled()
         {
             statusBar_.setInfo("Search cancelled");
         }
@@ -667,9 +667,9 @@ public class FindClassPane extends JPanel implements IPreferenced
         /**
          * When a search is cancelled, update the status bar.
          * 
-         * @see toolbox.findclass.FindClassListener#searchCancelled()
+         * @see toolbox.findclass.FindClassListener#searchCanceled()
          */
-        public void searchCancelled()
+        public void searchCanceled()
         {
             statusBar_.setInfo("Search canceled");
             runFinally();
@@ -1034,15 +1034,22 @@ public class FindClassPane extends JPanel implements IPreferenced
             }
             else
             {
-                statusBar_.setInfo("Canceling search...");
-                findClass_.cancelSearch();
-
-                if (searchThread_ != null)
-                    ThreadUtil.join(searchThread_, 60000);
-
-                putValue(NAME, MODE_SEARCH);
-                putValue(MNEMONIC_KEY, new Integer('S'));
-                statusBar_.setInfo("Search canceled");
+                if (!findClass_.isCanceled())
+                {
+                    statusBar_.setInfo("Canceling search...");
+                    findClass_.cancel();
+    
+                    if (searchThread_ != null)
+                        ThreadUtil.join(searchThread_, 60000);
+    
+                    putValue(NAME, MODE_SEARCH);
+                    putValue(MNEMONIC_KEY, new Integer('S'));
+                    statusBar_.setInfo("Search canceled");
+                }
+                else
+                {
+                    statusBar_.setInfo("Search was previously canceled.");
+                }
             }
         }
 

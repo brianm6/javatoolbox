@@ -216,7 +216,7 @@ public class FindClassTest extends TestCase
         ThreadUtil.sleep(500);
         
         logger_.info("Before cancel..");
-        finder.cancelSearch();
+        finder.cancel();
         logger_.info("After cancelled..");
         
         listener.waitForCancel();
@@ -307,9 +307,9 @@ public class FindClassTest extends TestCase
         /**
          * Waits for the search to be canceled.
          * 
-         * @see toolbox.findclass.FindClassListener#searchCancelled()
+         * @see toolbox.findclass.FindClassListener#searchCanceled()
          */
-        public void searchCancelled()
+        public void searchCanceled()
         {
             logger_.info("SearchCanceled");
             cancel_.release();
