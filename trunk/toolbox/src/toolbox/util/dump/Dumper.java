@@ -20,7 +20,8 @@ import org.apache.regexp.RESyntaxException;
 public class Dumper
 {
     /** Logger **/
-	public static final Logger logger_ = Logger.getLogger(Dumper.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(Dumper.class);
     
     /**
      * Carriage-return 
@@ -29,7 +30,7 @@ public class Dumper
 
     /** 
      * Maximum depth of recursion
-	 */
+     */
     private int maxDepth_ = Integer.MAX_VALUE;
 
     /** 
@@ -74,7 +75,7 @@ public class Dumper
     /**
      * Creates an object Dumper
      * 
-     * @param	formatter  Dump formatting and output criteria
+     * @param    formatter  Dump formatting and output criteria
      */
     public Dumper(IDumpFormatter formatter)
     {
@@ -230,7 +231,7 @@ public class Dumper
      * @param     clazz     Class representing level in class hierarchy
      * @param     obj       Object to dump
      * @param     buffer    Dump buffer
-     * @param     depth	    Recursion depth
+     * @param     depth        Recursion depth
      * @throws    IllegalAccessException on illegal access
      */    
     private void dump(Class clazz,  Object obj, StringBuffer buffer,
@@ -284,7 +285,8 @@ public class Dumper
                         (cache_.hasTraversed(value)))
                     {
                         buffer.append("[Visited] ");
-                        buffer.append(cache_.getInfo(value).getField().getName());
+                        buffer.append(
+                            cache_.getInfo(value).getField().getName());
                         buffer.append(CR);
                     }
                     else
@@ -312,8 +314,8 @@ public class Dumper
     /**
      * Appends the given classes inheritance tree to the dump buffer
      * 
-     * @param 	clazz    Class for which to print the tree	
-     * @param 	buffer   Dump buffer
+     * @param     clazz    Class for which to print the tree    
+     * @param     buffer   Dump buffer
      */
     public void appendInheritance(Class clazz, StringBuffer buffer)
     {
@@ -444,8 +446,8 @@ public class Dumper
     /**
      * Translates modifiers passed as an INT to a STRING.
      * 
-     * @param  	mod  Modifier
-     * @return 	String modifier
+     * @param      mod  Modifier
+     * @return     String modifier
      */
     private String getModifiersAsString(int mod)
     {
@@ -486,7 +488,7 @@ public class Dumper
     /**
      * Appends to the object dump buffer
      * 
-     * @param buffer	Dump buffer
+     * @param buffer    Dump buffer
      * @param txt       Text to append
      * @param depth     Recursion Depth
      */
@@ -610,7 +612,7 @@ public class Dumper
         }
         
         /**
-		 * @return Sequence number for unique identification
+         * @return Sequence number for unique identification
          */
         public String getSequenceNumber()
         {
@@ -618,8 +620,8 @@ public class Dumper
         }
         
         /**
-         * @return 	True if the object has been traversed previously, false
-         * 			otherwise.
+         * @return     True if the object has been traversed previously, false
+         *             otherwise.
          */
         public boolean hasTraversed()
         {
@@ -629,7 +631,7 @@ public class Dumper
         /**
          * Set the flag for whether the object has been traversed already
          * 
-         * @param 	traversed 	Traversed flag
+         * @param     traversed     Traversed flag
          */
         public void setTraversed(boolean traversed)
         {
@@ -637,7 +639,7 @@ public class Dumper
         }
         
         /**
-		 * @return Field if any that was related to this object
+         * @return Field if any that was related to this object
          */
         public Field getField()
         {
@@ -700,12 +702,12 @@ public class Dumper
 
     class FieldNameComparator implements Comparator
     {
-		public int compare(Object o1, Object o2)
-		{
+        public int compare(Object o1, Object o2)
+        {
             String name1 = ((Field)o1).getName();
             String name2 = ((Field)o2).getName();
             return name1.compareTo(name2);
-		}
+        }
     }
     
     /**
@@ -838,7 +840,7 @@ public class Dumper
         {
             //indent(buffer, depth);
             //                    buffer.append("[Visited ");
-            //                    buffer.append(cache_.getInfo(value).getLabel());
+          //                    buffer.append(cache_.getInfo(value).getLabel());
             //                    buffer.append("]");
             //                    buffer.append(CR);
         }
@@ -863,7 +865,7 @@ public class Dumper
             //}
 
                                 // Recurse
-            //                    if (i == (fields.length -2 && fields.length > 1 ))
+        //                    if (i == (fields.length -2 && fields.length > 1 ))
             //                    {
             //                        // At end and more then one dir
             //                        dump(value, buffer, depth + SPACER);

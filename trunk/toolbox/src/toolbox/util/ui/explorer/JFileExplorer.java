@@ -494,7 +494,8 @@ public class JFileExplorer extends JPanel
     protected void setTreeFolders(String pathToAddFolders,
         DefaultMutableTreeNode currentNode)
     {
-        File[] files = new File(pathToAddFolders).listFiles(new DirectoryFilter());
+        File[] files = 
+            new File(pathToAddFolders).listFiles(new DirectoryFilter());
         Arrays.sort(files, new FileComparator());
         String[] fileList = new String[files.length];
 

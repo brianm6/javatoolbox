@@ -37,14 +37,14 @@ public class BasicDumpFormatter implements IDumpFormatter
     private boolean showInheritance_;
     
     //--------------------------------------------------------------------------
-    //  Public
+    //  Constructors
     //--------------------------------------------------------------------------
 
     /**
      * Default constructor
      * 
      * @throws  RESyntaxException on regular expression error
-	 */
+     */
     public BasicDumpFormatter() throws RESyntaxException
     {
         excludedClasses_ = new ArrayList();
@@ -57,10 +57,14 @@ public class BasicDumpFormatter implements IDumpFormatter
         setShowInheritance(false);
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+    
     /**
      * Excludes a class from the object dump
      *
-     * @param  	clazz  Class to exclude
+     * @param   clazz  Class to exclude
      * @throws  RESyntaxException on regular expression error 
      */
     public void excludeClass(Class clazz) throws RESyntaxException
@@ -72,7 +76,7 @@ public class BasicDumpFormatter implements IDumpFormatter
      * Excludes one or more classes matching a regular expression from the
      * object dump.
      *
-     * @param 	classFilter  Regular expression representing classes to exclude
+     * @param   classFilter  Regular expression representing classes to exclude
      * @throws  RESyntaxException on regular expression error 
      */
     public void excludeClasses(String classFilter) throws RESyntaxException
@@ -84,8 +88,8 @@ public class BasicDumpFormatter implements IDumpFormatter
      * Excludes one or more fields matching a regular expression from the
      * object dump
      *
-     * @param 	fieldFilter  Regular expression represeting fields names to
-     * 						 exclude
+     * @param   fieldFilter  Regular expression represeting fields names to
+     *                       exclude
      * @throws  RESyntaxException on regular expression error 
      */
     public void excludeFields(String fieldFilter) throws RESyntaxException
@@ -97,8 +101,8 @@ public class BasicDumpFormatter implements IDumpFormatter
      * Allows stripping of the package name when printing out a classes 
      * fully qualified name.
      * 
-     * @param 	b   If true, package will be choped from a class name,
-     * 				otherwise the FQN will be used
+     * @param     b   If true, package will be choped from a class name,
+     *                otherwise the FQN will be used
      */
     public void setStripPackage(boolean b)
     {
@@ -108,7 +112,7 @@ public class BasicDumpFormatter implements IDumpFormatter
     /**
      * Flag to set the display of the class inheritance hierarchy
      * 
-     * @param  b	If true, show inheritance hierarchy, otherwise just print
+     * @param  b    If true, show inheritance hierarchy, otherwise just print
      *              the name of the current class in the hierarchy
      */
     public void setShowInheritance(boolean b)
@@ -117,17 +121,17 @@ public class BasicDumpFormatter implements IDumpFormatter
     }
     
     //--------------------------------------------------------------------------
-	//  IDumpFormatter Interface
-	//--------------------------------------------------------------------------
+    //  IDumpFormatter Interface
+    //--------------------------------------------------------------------------
 
-	/**
-	 * @see toolbox.util.IDumper#includeClass(java.lang.Class)
-	 */
-	public boolean shouldInclude(Class clazz)
-	{
+    /**
+     * @see toolbox.util.IDumper#includeClass(java.lang.Class)
+     */
+    public boolean shouldInclude(Class clazz)
+    {
         String name = clazz.getName();
         
-		for (Iterator i = excludedClasses_.iterator(); i.hasNext(); )
+        for (Iterator i = excludedClasses_.iterator(); i.hasNext(); )
         {
             RE regExp = (RE) i.next();
             
@@ -136,13 +140,13 @@ public class BasicDumpFormatter implements IDumpFormatter
         }
         
         return true;
-	}
+    }
 
-	/**
-	 * @see toolbox.util.IDumper#includeField(java.lang.reflect.Field)
-	 */
-	public boolean shouldInclude(Field field)
-	{
+    /**
+     * @see toolbox.util.IDumper#includeField(java.lang.reflect.Field)
+     */
+    public boolean shouldInclude(Field field)
+    {
         String name = field.getName();
 
         // Skip static fields
@@ -158,37 +162,37 @@ public class BasicDumpFormatter implements IDumpFormatter
         }
 
         return true;
-	}
+    }
     
     /**
-	 * @see toolbox.util.dump.IDumpFormatter#formatClass(java.lang.Class)
-	 */
-	public String formatClass(Class clazz)
-	{
-		return formatClass(clazz.getName());
-	}
+     * @see toolbox.util.dump.IDumpFormatter#formatClass(java.lang.Class)
+     */
+    public String formatClass(Class clazz)
+    {
+        return formatClass(clazz.getName());
+    }
 
     /**
-	 * @see toolbox.util.dump.IDumpFormatter#formatClass(java.lang.String)
-	 */
-	public String formatClass(String className)
-	{
+     * @see toolbox.util.dump.IDumpFormatter#formatClass(java.lang.String)
+     */
+    public String formatClass(String className)
+    {
         return (stripPackage_ ? ClassUtil.stripPackage(className) : className);
-	}
+    }
 
     /**
-	 * @see toolbox.util.dump.IDumpFormatter#showInheritance()
-	 */
-	public boolean showInheritance()
-	{
-		return showInheritance_;
-	}
+     * @see toolbox.util.dump.IDumpFormatter#showInheritance()
+     */
+    public boolean showInheritance()
+    {
+        return showInheritance_;
+    }
     
     /**
-	 * @see toolbox.util.dump.IDumpFormatter#sortFields()
-	 */
-	public boolean sortFields()
-	{
-		return true;
-	}
+     * @see toolbox.util.dump.IDumpFormatter#sortFields()
+     */
+    public boolean sortFields()
+    {
+        return true;
+    }
 }

@@ -11,8 +11,8 @@ public interface IDumpFormatter
     /**
      * Should the given class be included in the dump?
      * 
-     * @param 	clazz	 Class to test for inclusion
-     * @return 	boolean  True if class should be included, false otherwise
+     * @param     clazz    Class to test for inclusion
+     * @return    boolean  True if class should be included, false otherwise
      */
     public boolean shouldInclude(Class clazz);
 
@@ -26,29 +26,29 @@ public interface IDumpFormatter
     
     /**
      * @return True if the inheritance tree should be shown for each object
-     * 		   traversed.
+     *         traversed.
      */
     public boolean showInheritance();
     
     /**
      * Formats the presentation of a classes' name
      * 
-     * @param 	className  Class name to format
-     * @return 	Formatted class name
+     * @param     className  Class name to format
+     * @return    Formatted class name
      */
     public String  formatClass(String className);
     
     /**
      * Formats the presentation of a classes' name
      * 
-     * @param 	clazz  Class name to format
-     * @return 	Formatted classname
+     * @param     clazz  Class name to format
+     * @return    Formatted classname
      */
     public String  formatClass(Class clazz);
     
     /**
-	 * @return	True if the fields in a class should be sorted alphabetically,
-     *          false otherwise.
+     * @return    True if the fields in a class should be sorted alphabetically,
+     *            false otherwise.
      */
     public boolean sortFields();
 }

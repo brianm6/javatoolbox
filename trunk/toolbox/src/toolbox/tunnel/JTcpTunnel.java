@@ -35,12 +35,11 @@ import toolbox.util.ui.layout.ParagraphLayout;
  * JTcpTunnel tunnels TCP traffic between a port on the localhost and a port
  * on a remote host. All bytes sent/received are displayed in the GUI for
  * visual inspection.
- * <p>
- * TODO: Add filtering
  */
 public class JTcpTunnel extends JFrame
 {
-	public static final Logger logger_ = Logger.getLogger(JTcpTunnel.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JTcpTunnel.class);
     
     private int         listenPort_;
     private String      tunnelHost_;
@@ -246,13 +245,17 @@ public class JTcpTunnel extends JFrame
         
         JPanel configPanel = new JPanel(new ParagraphLayout());
         
-        configPanel.add(new JLabel("Local Tunnel Port"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(
+            new JLabel("Local Tunnel Port"), ParagraphLayout.NEW_PARAGRAPH);
         configPanel.add(localPortField_ = new JTextField(10));
-        configPanel.add(new JLabel("Remote Host"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(
+            new JLabel("Remote Host"), ParagraphLayout.NEW_PARAGRAPH);
         configPanel.add(remoteHostField_ = new JTextField(10));
-        configPanel.add(new JLabel("Remote Port"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(
+            new JLabel("Remote Port"), ParagraphLayout.NEW_PARAGRAPH);
         configPanel.add(remortPortField_ = new JTextField(10));      
-        configPanel.add(new JButton(new StartTunnelAction()),ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(
+            new JButton(new StartTunnelAction()),ParagraphLayout.NEW_PARAGRAPH);
         configPanel.add(new JButton(new StopTunnelAction()));  
         
         JFlipPane configFlipPane = new JFlipPane(JFlipPane.LEFT);
@@ -307,8 +310,8 @@ public class JTcpTunnel extends JFrame
     }
     
     //--------------------------------------------------------------------------
-	//  Actions
-	//--------------------------------------------------------------------------
+    //  Actions
+    //--------------------------------------------------------------------------
 
     /**
      * Starts the tunnel
@@ -320,9 +323,9 @@ public class JTcpTunnel extends JFrame
             super("Start");
         }
         
-		public void actionPerformed(ActionEvent e)
-		{
-		}
+        public void actionPerformed(ActionEvent e)
+        {
+        }
     }
 
     /**
@@ -335,9 +338,9 @@ public class JTcpTunnel extends JFrame
             super("Stop");
         }
         
-		public void actionPerformed(ActionEvent e)
-		{
-		}
+        public void actionPerformed(ActionEvent e)
+        {
+        }
     }
     
     //--------------------------------------------------------------------------

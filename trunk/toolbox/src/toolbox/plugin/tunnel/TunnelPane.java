@@ -30,12 +30,11 @@ import toolbox.util.ui.layout.ParagraphLayout;
  * JTcpTunnel tunnels TCP traffic between a port on the localhost and a port
  * on a remote host. All bytes sent/received are displayed in the GUI for
  * visual inspection.
- * <p>
- * TODO: Add filtering
  */
 public class JTcpTunnelPane extends JPanel
 {
-	public static final Logger logger_ = Logger.getLogger(JTcpTunnelPane.class);
+    private static final Logger logger_ = 
+        Logger.getLogger(JTcpTunnelPane.class);
     
     private int         listenPort_;
     private String      tunnelHost_;
@@ -201,11 +200,14 @@ public class JTcpTunnelPane extends JPanel
         
         JPanel configPanel = new JPanel(new ParagraphLayout());
         
-        configPanel.add(new JLabel("Local Tunnel Port"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(new JLabel("Local Tunnel Port"), 
+            ParagraphLayout.NEW_PARAGRAPH);
         configPanel.add(localPortField_ = new JTextField(10));
-        configPanel.add(new JLabel("Remote Host"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(new JLabel("Remote Host"), 
+            ParagraphLayout.NEW_PARAGRAPH);
         configPanel.add(remoteHostField_ = new JTextField(10));
-        configPanel.add(new JLabel("Remote Port"), ParagraphLayout.NEW_PARAGRAPH);
+        configPanel.add(new JLabel("Remote Port"), 
+            ParagraphLayout.NEW_PARAGRAPH);
         configPanel.add(remotePortField_ = new JTextField(10));      
         
         JFlipPane configFlipPane = new JFlipPane(JFlipPane.LEFT);
@@ -227,8 +229,8 @@ public class JTcpTunnelPane extends JPanel
     }
     
     //--------------------------------------------------------------------------
-	//  Actions
-	//--------------------------------------------------------------------------
+    //  Actions
+    //--------------------------------------------------------------------------
 
     /**
      * Clears the contents of the two output text areas
@@ -257,13 +259,17 @@ public class JTcpTunnelPane extends JPanel
             super("Start");
         }
         
-		public void actionPerformed(ActionEvent e)
-		{
+        public void actionPerformed(ActionEvent e)
+        {
             try
             {
-                listenPort_ = Integer.parseInt(localPortField_.getText().trim());
+                listenPort_ = 
+                    Integer.parseInt(localPortField_.getText().trim());
+                    
                 tunnelHost_ = remoteHostField_.getText().trim();
-                tunnelPort_ = Integer.parseInt(remotePortField_.getText().trim());
+                
+                tunnelPort_ = 
+                    Integer.parseInt(remotePortField_.getText().trim());
                 
                 if (StringUtil.isNullOrEmpty(tunnelHost_))
                     throw new IllegalArgumentException(
@@ -274,7 +280,7 @@ public class JTcpTunnelPane extends JPanel
                 JSmartOptionPane.showExceptionMessageDialog(
                     JTcpTunnelPane.this, ex);
             }
-		}
+        }
     }
 
     /**
@@ -287,9 +293,9 @@ public class JTcpTunnelPane extends JPanel
             super("Stop");
         }
         
-		public void actionPerformed(ActionEvent e)
-		{
-		}
+        public void actionPerformed(ActionEvent e)
+        {
+        }
     }
     
     //--------------------------------------------------------------------------
