@@ -32,8 +32,6 @@ package toolbox;
  * TODO: Fix JTail recent menu
  * TODO: Update all command line tools using new help format in findclass
  * TODO: Tree - add inverse regex, case sensetive regex, and html output
- * TODO: Update EventInput/OutputStream to emit events every duration of time or
- *       every x number of bytes read/written.
  * TODO: Change String parameter to a File object in FileExplorerListener
  * TODO: Added number of files/selected files to the JFileExplorer InfoBar
  * =============================================================================
@@ -81,7 +79,11 @@ package toolbox;
  *  - Added ThroughputMonitor component
  *  - Added TransferredMonitor component
  *  - Added MonitoredInput/OutputStream
- *  - Updated to commons-dbcp-1.2 and commons-pool-1.2
+ *  - Updated to 
+ *    commons-dbcp-1.2.1 
+ *    commons-pool-1.2 
+ *    commons-logging-1.0.4
+ *    xom-1.0a2
  *  - Look and feel decorations flag now works but requires a restart
  * 
  * May 2004
