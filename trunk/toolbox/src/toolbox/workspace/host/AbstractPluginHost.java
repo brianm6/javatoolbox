@@ -18,6 +18,7 @@ import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Abstract implementation of a PluginHost that captures behavior common to 
@@ -380,14 +381,14 @@ public abstract class AbstractPluginHost implements PluginHost, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
     }
     
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
     }
 }

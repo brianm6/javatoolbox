@@ -33,6 +33,7 @@ import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.SmartAction;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * UI Component that allows the user to enter a dynamic filter as java code.
@@ -143,7 +144,7 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(prefs, 
             NODE_DYNAMIC_FILTER_VIEW, new Element(NODE_DYNAMIC_FILTER_VIEW));
@@ -155,7 +156,7 @@ public class DynamicFilterView extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_DYNAMIC_FILTER_VIEW);
         sourceArea_.savePrefs(root);

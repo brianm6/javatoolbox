@@ -38,6 +38,7 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Plugin host that associates each plugin with a JInternalFrame. Multiple
@@ -265,7 +266,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         logger_.debug("Applying DesktopPluginHost preferences");
         
@@ -328,7 +329,7 @@ public class DesktopPluginHost extends AbstractPluginHost implements PluginHost,
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_PLUGINHOST);
         root.addAttribute(new Attribute(ATTR_CLASS, getClass().getName()));

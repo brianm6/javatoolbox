@@ -33,6 +33,7 @@ import toolbox.util.XOMUtil;
 import toolbox.util.ui.CompoundIcon;
 import toolbox.util.ui.layout.StackLayout;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * JFlipPane is basically a collapsable tabpanel with a built in slider to 
@@ -458,7 +459,7 @@ public class JFlipPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = 
             XOMUtil.getFirstChildElement(
@@ -482,7 +483,7 @@ public class JFlipPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element flipPane = new Element(NODE_JFLIPPANE);
         PreferencedUtil.writePreferences(this, flipPane, SAVED_PROPS);

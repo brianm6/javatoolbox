@@ -13,6 +13,7 @@ import toolbox.util.formatter.XMLFormatter;
 import toolbox.util.ui.BeanSheet;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
+import toolbox.workspace.PreferencedException;
 import toolbox.workspace.prefs.IConfigurator;
 
 /**
@@ -166,7 +167,7 @@ public class TextToolsConfigurator extends JPanel implements IConfigurator
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
     }
 
@@ -174,7 +175,7 @@ public class TextToolsConfigurator extends JPanel implements IConfigurator
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
     }
 }

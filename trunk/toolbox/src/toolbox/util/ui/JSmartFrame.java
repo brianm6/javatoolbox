@@ -13,6 +13,7 @@ import nu.xom.Element;
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * JSmartFrame is an extension of JFrame that supports persistence of
@@ -95,7 +96,7 @@ public class JSmartFrame extends JFrame implements IPreferenced
      * 
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = 
             XOMUtil.getFirstChildElement(
@@ -128,7 +129,7 @@ public class JSmartFrame extends JFrame implements IPreferenced
      * 
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JFRAME);
 

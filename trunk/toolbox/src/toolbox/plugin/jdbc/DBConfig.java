@@ -41,6 +41,7 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PreferencedException;
 
 /**
  * JDBC driver and connection settings configuration panel.
@@ -275,7 +276,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element dbConfig = prefs.getFirstChildElement(NODE_DBCONFIG);
           
@@ -348,7 +349,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element dbConfig = new Element(NODE_DBCONFIG);
             

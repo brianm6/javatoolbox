@@ -84,6 +84,7 @@ import toolbox.util.ui.textarea.action.ClearAction;
 import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Simple SQL Plugin that allows you to query and update a database via JDBC.
@@ -905,7 +906,7 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root =
             XOMUtil.getFirstChildElement(
@@ -946,7 +947,7 @@ public class QueryPlugin extends AbstractPlugin implements QueryPluginConstants
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_QUERY_PLUGIN);
 

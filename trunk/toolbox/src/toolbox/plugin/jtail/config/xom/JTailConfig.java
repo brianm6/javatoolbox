@@ -8,6 +8,7 @@ import toolbox.plugin.jtail.config.ITailViewConfig;
 import toolbox.util.ArrayUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * XOM based implemenation of the IJTailConfig interface that marshals 
@@ -90,7 +91,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = prefs.getFirstChildElement(NODE_JTAIL);
         
@@ -124,7 +125,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JTAIL);
 

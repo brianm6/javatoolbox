@@ -67,6 +67,7 @@ import toolbox.util.ui.list.SmartListCellRenderer;
 import toolbox.util.ui.tree.JSmartTree;
 import toolbox.util.ui.tree.SmartTreeCellRenderer;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Simple file system explorer. 
@@ -447,7 +448,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      * 
      * @param prefs Element to save preferences to.
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JFILEEXPLORER);
         
@@ -470,7 +471,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
      * 
      * @param prefs XML DOM to read the preferences from.  
      */   
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JFILEEXPLORER, new Element(NODE_JFILEEXPLORER));

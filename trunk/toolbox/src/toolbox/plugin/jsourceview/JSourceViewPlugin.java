@@ -9,6 +9,7 @@ import nu.xom.Element;
 import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Plugin wrapper for JSourceView.
@@ -88,7 +89,7 @@ public class JSourceViewPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         delegate_.applyPrefs(prefs);    
     }
@@ -97,7 +98,7 @@ public class JSourceViewPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         delegate_.savePrefs(prefs);
     }

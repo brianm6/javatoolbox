@@ -9,6 +9,7 @@ import nu.xom.Element;
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * JSmartInternalFrame is an extension of JInternalFrame that supports
@@ -83,7 +84,7 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
      * 
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = prefs.getFirstChildElement(NODE_JFRAME);
         PreferencedUtil.applyPrefs(root, this, DEFAULT_BOUNDS); 
@@ -95,7 +96,7 @@ public class JSmartInternalFrame extends JInternalFrame implements IPreferenced
      * 
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JFRAME);
         PreferencedUtil.savePrefs(root, this);

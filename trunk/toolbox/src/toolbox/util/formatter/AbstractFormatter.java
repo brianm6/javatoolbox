@@ -4,6 +4,7 @@ import nu.xom.Element;
 
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
+import toolbox.workspace.PreferencedException;
 
 /**
  * An abstract implementation of a {@link Formatter} that assumes responsibility
@@ -93,7 +94,7 @@ public abstract class AbstractFormatter implements Formatter
      *
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
     }
 
@@ -103,7 +104,7 @@ public abstract class AbstractFormatter implements Formatter
      *
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
     }
 }

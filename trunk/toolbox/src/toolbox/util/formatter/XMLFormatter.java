@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XMLUtil;
 import toolbox.util.XOMUtil;
+import toolbox.workspace.PreferencedException;
 
 /**
  * XML formatter that uses <a href="http://xml.apache.org/xerces2-j/">Xerces</a> 
@@ -176,7 +177,7 @@ public class XMLFormatter extends AbstractFormatter
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_XMLFORMATTER, new Element(NODE_XMLFORMATTER));
@@ -188,7 +189,7 @@ public class XMLFormatter extends AbstractFormatter
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_XMLFORMATTER);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);

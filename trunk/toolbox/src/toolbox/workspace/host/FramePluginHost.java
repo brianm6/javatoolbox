@@ -32,6 +32,7 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Plugin host that associates each plugin with a JFrame.
@@ -249,7 +250,7 @@ public class FramePluginHost extends AbstractPluginHost implements PluginHost,
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
 //        logger_.debug("Applying FramePluginHost preferences");
 //        
@@ -312,7 +313,7 @@ public class FramePluginHost extends AbstractPluginHost implements PluginHost,
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
 //        Element root = new Element(NODE_PLUGINHOST);
 //        root.addAttribute(new Attribute(ATTR_CLASS, getClass().getName()));

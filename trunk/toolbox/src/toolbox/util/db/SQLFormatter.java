@@ -16,6 +16,7 @@ import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.formatter.AbstractFormatter;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * SQLFormatter is a pretty printer for SQL statements.
@@ -949,7 +950,7 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = 
             XOMUtil.getFirstChildElement(
@@ -964,7 +965,7 @@ public class SQLFormatter extends AbstractFormatter implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_SQLFORMATTER);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);

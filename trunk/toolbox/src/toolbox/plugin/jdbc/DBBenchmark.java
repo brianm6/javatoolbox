@@ -34,6 +34,7 @@ import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * This is a sample implementation of the Transaction Processing Performance
@@ -323,7 +324,7 @@ public class DBBenchmark implements Startable, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = 
             XOMUtil.getFirstChildElement(
@@ -338,7 +339,7 @@ public class DBBenchmark implements Startable, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_DBBENCHMARK);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);

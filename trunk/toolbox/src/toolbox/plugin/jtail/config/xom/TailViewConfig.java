@@ -14,6 +14,7 @@ import toolbox.plugin.jtail.config.ITailViewConfig;
 import toolbox.util.FontUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * TailConfig is a data object that captures the configuration of a given tail 
@@ -129,7 +130,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = prefs.getFirstChildElement(NODE_TAIL);
        
@@ -176,7 +177,7 @@ public class TailViewConfig implements ITailViewConfig, XMLConstants,
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_TAIL);
 

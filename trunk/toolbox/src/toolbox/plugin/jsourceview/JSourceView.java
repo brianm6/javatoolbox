@@ -44,6 +44,7 @@ import toolbox.util.ui.table.TableSorter;
 import toolbox.util.ui.table.action.AutoTailAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PreferencedException;
 import toolbox.workspace.WorkspaceAction;
 
 /**
@@ -324,7 +325,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = 
             XOMUtil.getFirstChildElement(
@@ -342,7 +343,7 @@ public class JSourceView extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JSOURCEVIEW_PLUGIN);
         

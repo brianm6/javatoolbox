@@ -51,6 +51,7 @@ import toolbox.util.ui.font.JFontChooser;
 import toolbox.util.ui.font.JFontChooserDialog;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PreferencedException;
 
 /**
  * JTail is a GUI front end for {@link toolbox.tail.Tail}. <p>
@@ -389,7 +390,7 @@ public class JTail extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = 
             XOMUtil.getFirstChildElement(
@@ -413,7 +414,14 @@ public class JTail extends JPanel implements IPreferenced
             if (config.getFont() == null)
                 config.setFont(jtailConfig_.getDefaultConfig().getFont());
             
-            addTail(config);
+            try
+            {
+                addTail(config);
+            }
+            catch (IOException e)
+            {
+                throw new PreferencedException(e);
+            }
         }
     
         fileSelectionPane_.getFileExplorer().applyPrefs(root);
@@ -441,7 +449,7 @@ public class JTail extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JTAIL_PLUGIN);
         
@@ -449,10 +457,17 @@ public class JTail extends JPanel implements IPreferenced
         
         for (Iterator i = tailMap_.entrySet().iterator(); i.hasNext();)
         {
-            Map.Entry entry = (Map.Entry) i.next();
-            TailPane tailPane = (TailPane) entry.getValue();            
-            ITailViewConfig config = tailPane.getConfiguration();
-            configs = (ITailViewConfig[]) ArrayUtil.add(configs, config);    
+            try
+            {
+                Map.Entry entry = (Map.Entry) i.next();
+                TailPane tailPane = (TailPane) entry.getValue();
+                ITailViewConfig config = tailPane.getConfiguration();
+                configs = (ITailViewConfig[]) ArrayUtil.add(configs, config); 
+            }
+            catch (Exception e)
+            {
+                throw new PreferencedException(e);
+            }    
         }
         
         jtailConfig_.setTailConfigs(configs);

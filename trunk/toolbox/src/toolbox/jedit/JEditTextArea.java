@@ -22,6 +22,7 @@ import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.AntiAliased;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Modified JEditTextArea that supports a host of convenient features.
@@ -304,7 +305,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JEDITTEXTAREA, new Element(NODE_JEDITTEXTAREA));
@@ -339,7 +340,7 @@ public class JEditTextArea extends org.jedit.syntax.JEditTextArea
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JEDITTEXTAREA);
         root.addAttribute(new Attribute(ATTR_TABSIZE, getTabSize() + ""));

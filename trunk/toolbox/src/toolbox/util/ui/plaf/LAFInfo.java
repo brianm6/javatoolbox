@@ -17,6 +17,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 import toolbox.util.service.Nameable;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * LAFInfo is used to capture additional info about a look and feel instance.
@@ -196,7 +197,7 @@ public class LAFInfo implements IPreferenced, Nameable
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element lookAndFeelNode) throws Exception
+    public void applyPrefs(Element lookAndFeelNode) throws PreferencedException
     {
         Assert.assertEquals(
                 "Wrong element",
@@ -223,7 +224,7 @@ public class LAFInfo implements IPreferenced, Nameable
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element laf = new Element(NODE_LOOKANDFEEL);
         laf.addAttribute(new Attribute(ATTR_NAME, getName()));

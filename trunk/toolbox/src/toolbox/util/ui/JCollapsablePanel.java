@@ -17,6 +17,7 @@ import nu.xom.Element;
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Extension of JHeaderPanel that allows the panels contents to be collapsed
@@ -237,7 +238,7 @@ public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = 
             XOMUtil.getFirstChildElement(
@@ -252,7 +253,7 @@ public class JCollapsablePanel extends JHeaderPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JCOLLAPSABLEPANEL);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPERTIES);

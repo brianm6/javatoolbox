@@ -36,6 +36,7 @@ import toolbox.util.ui.list.JListPopupMenu;
 import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.list.RegexListModelFilter;
 import toolbox.workspace.AbstractPlugin;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Simple plugin that allows running of JUnit tests by package.
@@ -215,7 +216,7 @@ public class JUnitPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JUNIT_PLUGIN, new Element(NODE_JUNIT_PLUGIN));
@@ -228,7 +229,7 @@ public class JUnitPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JUNIT_PLUGIN);
         root.addAttribute(new Attribute(ATTR_FILTER, filterField_.getText()));

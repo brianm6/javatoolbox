@@ -9,6 +9,7 @@ import nu.xom.Element;
 
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * JSmartSplitPane is a split pane that can remember its divider location.
@@ -102,7 +103,7 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JSPLITPANE, new Element(NODE_JSPLITPANE));
@@ -118,7 +119,7 @@ public class JSmartSplitPane extends JSplitPane implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JSPLITPANE);
         

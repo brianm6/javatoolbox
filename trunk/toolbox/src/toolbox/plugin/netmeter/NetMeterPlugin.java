@@ -13,6 +13,7 @@ import nu.xom.Element;
 
 import toolbox.util.ui.layout.GridLayoutPlus;
 import toolbox.workspace.AbstractPlugin;
+import toolbox.workspace.PreferencedException;
 
 /**
  * A NetMeter Plugin connects to another instance of NetMeter Plugin for the
@@ -166,7 +167,7 @@ public class NetMeterPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
     }
 
@@ -174,7 +175,7 @@ public class NetMeterPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
     }
 }

@@ -12,6 +12,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceTransition;
 import toolbox.workspace.AbstractPlugin;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Plugin wrapper for FindClassPane.
@@ -105,7 +106,7 @@ public class FindClassPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         delegate_.applyPrefs(prefs);
     }
@@ -114,7 +115,7 @@ public class FindClassPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         delegate_.savePrefs(prefs);    
     }

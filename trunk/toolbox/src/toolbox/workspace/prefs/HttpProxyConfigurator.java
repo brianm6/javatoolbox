@@ -30,6 +30,7 @@ import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartOptionPane;
 import toolbox.util.ui.JSmartTextField;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Configures proxy settings for the JVM. Plain old proxy servers are supported
@@ -263,7 +264,7 @@ public class HttpProxyConfigurator extends JHeaderPanel implements IConfigurator
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element httpProxy =
             XOMUtil.getFirstChildElement(
@@ -307,7 +308,7 @@ public class HttpProxyConfigurator extends JHeaderPanel implements IConfigurator
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element httpProxy = new Element(NODE_HTTP_PROXY);
 

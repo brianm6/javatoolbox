@@ -23,6 +23,7 @@ import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.font.FontChooserException;
 import toolbox.util.ui.font.JFontChooser;
+import toolbox.workspace.PreferencedException;
 import toolbox.workspace.prefs.IConfigurator;
 
 /**
@@ -219,7 +220,7 @@ public class LookAndFeelConfigurator extends JHeaderPanel
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
 //        Element httpProxy =
 //            XOMUtil.getFirstChildElement(
@@ -263,7 +264,7 @@ public class LookAndFeelConfigurator extends JHeaderPanel
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
 //        Element httpProxy = new Element(NODE_HTTP_PROXY);
 //

@@ -19,6 +19,7 @@ import toolbox.util.ui.action.AntiAliasAction;
 import toolbox.util.ui.textarea.action.AutoTailAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Extends the functionality of JTextArea by adding the following features.
@@ -421,7 +422,7 @@ public class JSmartTextArea extends JTextArea
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_JSMARTTEXTAREA, new Element(NODE_JSMARTTEXTAREA));
@@ -436,7 +437,7 @@ public class JSmartTextArea extends JTextArea
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JSMARTTEXTAREA);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);

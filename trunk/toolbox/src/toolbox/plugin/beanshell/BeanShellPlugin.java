@@ -18,6 +18,7 @@ import toolbox.util.service.ServiceTransition;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.AbstractPlugin;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Interactive <a href=http://www.beanshell.org>Beanshell<a> Plugin.
@@ -135,7 +136,7 @@ public class BeanShellPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
     }
 
@@ -143,7 +144,7 @@ public class BeanShellPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
     }
 }

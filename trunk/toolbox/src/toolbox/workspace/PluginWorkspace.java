@@ -744,7 +744,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      * 
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_WORKSPACE);
 
@@ -790,10 +790,17 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
         root.addAttribute(new Attribute(
             ATTR_LOG_LEVEL, Logger.getRootLogger().getLevel().toString()));
 
-        //
-        // Save look and feel
-        //
-        LookAndFeelUtil.savePrefs(root);
+        try
+        {
+            //
+            // Save look and feel
+            //
+            LookAndFeelUtil.savePrefs(root);
+        }
+        catch (Exception e)
+        {
+            ExceptionUtil.handleUI(e, logger_);
+        }
 
         //
         // Save prefs managed by the PreferencesManager
@@ -826,7 +833,6 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
 
         for (int i = 0; i < unloaded.size(); i++)
             root.appendChild(unloaded.get(i).copy());
-
 
         getPluginHost().savePrefs(root);
 
@@ -868,7 +874,7 @@ public class PluginWorkspace extends JSmartFrame implements IPreferenced
      * 
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
 

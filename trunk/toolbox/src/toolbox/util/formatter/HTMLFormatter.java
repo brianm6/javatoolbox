@@ -11,6 +11,7 @@ import org.w3c.tidy.Tidy;
 
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
+import toolbox.workspace.PreferencedException;
 
 /**
  * HTML formatter that uses <a href="http://jtidy.sf.net">JTidy</a> internally
@@ -148,7 +149,7 @@ public class HTMLFormatter extends AbstractFormatter
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_HTMLFORMATTER, new Element(NODE_HTMLFORMATTER));
@@ -160,7 +161,7 @@ public class HTMLFormatter extends AbstractFormatter
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_HTMLFORMATTER);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);

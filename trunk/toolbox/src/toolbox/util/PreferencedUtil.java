@@ -11,6 +11,8 @@ import nu.xom.Element;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import toolbox.workspace.PreferencedException;
+
 /**
  * Utility methods for classes implementing IPreferenced.
  * 
@@ -78,33 +80,40 @@ public class PreferencedUtil
      * @param node XML node to add attributes to.
      * @param propNames Array of javabean property names/XML attribute names to
      *        to read/write.
-     * @throws Exception on error.
+     * @throws PreferencedException on error.
      */
     public static void writePreferences(
         Object bean, 
         Element node, 
         String[] propNames)
-        throws Exception
+        throws PreferencedException
     {
-        BeanInfo info = Introspector.getBeanInfo(bean.getClass());
-        PropertyDescriptor[] ds = info.getPropertyDescriptors();
-        
-        for (int i = 0; i < ds.length; i++)
+        try
         {
-            PropertyDescriptor descriptor = ds[i];
-            String propName = descriptor.getName();
-            
-            if (ArrayUtil.contains(propNames, propName))
-            {    
-                // If the value is null, leave it out
-                String value = BeanUtils.getProperty(bean, propName);
+            BeanInfo info = Introspector.getBeanInfo(bean.getClass());
+            PropertyDescriptor[] ds = info.getPropertyDescriptors();
 
-                if (value != null)
+            for (int i = 0; i < ds.length; i++)
+            {
+                PropertyDescriptor descriptor = ds[i];
+                String propName = descriptor.getName();
+
+                if (ArrayUtil.contains(propNames, propName))
                 {
-                    Attribute attr = new Attribute(propName, value);
-                    node.addAttribute(attr);
+                    // If the value is null, leave it out
+                    String value = BeanUtils.getProperty(bean, propName);
+
+                    if (value != null)
+                    {
+                        Attribute attr = new Attribute(propName, value);
+                        node.addAttribute(attr);
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
+            throw new PreferencedException(e);
         }
     }
 
@@ -130,29 +139,36 @@ public class PreferencedUtil
      * @param node XML node to read the attributes from.
      * @param propNames Array of javabean property names/XML attribute names to
      *        to read/write.
-     * @throws Exception on error.
+     * @throws PreferencedException on error.
      */
     public static void readPreferences(
         Object bean, 
         Element node, 
         String[] propNames)
-        throws Exception
+        throws PreferencedException
     {
-        BeanInfo info = Introspector.getBeanInfo(bean.getClass());
-        PropertyDescriptor[] ds = info.getPropertyDescriptors();
-        
-        for (int i = 0; i < ds.length; i++)
+        try
         {
-            PropertyDescriptor descriptor = ds[i];
-            String propName = descriptor.getName();
-            
-            if (ArrayUtil.contains(propNames, propName))
-            {    
-                Attribute attr = node.getAttribute(propName);
-                
-                if (attr != null)
-                    BeanUtils.setProperty(bean, propName, attr.getValue());
+            BeanInfo info = Introspector.getBeanInfo(bean.getClass());
+            PropertyDescriptor[] ds = info.getPropertyDescriptors();
+
+            for (int i = 0; i < ds.length; i++)
+            {
+                PropertyDescriptor descriptor = ds[i];
+                String propName = descriptor.getName();
+
+                if (ArrayUtil.contains(propNames, propName))
+                {
+                    Attribute attr = node.getAttribute(propName);
+
+                    if (attr != null)
+                        BeanUtils.setProperty(bean, propName, attr.getValue());
+                }
             }
+        }
+        catch (Exception ie)
+        {
+            throw new PreferencedException(ie);
         }
     }
     
@@ -208,6 +224,7 @@ public class PreferencedUtil
         node.addAttribute(new Attribute(ATTR_HEIGHT, r.height + ""));
     }
 
+    
     /**
      * Convenience method to return the child element of a given node.
      * If the child element does not exist, it is created and returned.

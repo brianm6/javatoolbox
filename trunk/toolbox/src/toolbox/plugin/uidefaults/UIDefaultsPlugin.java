@@ -38,6 +38,7 @@ import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.workspace.AbstractPlugin;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Shows UIDefaults for each widget in Swing's library for all currently
@@ -136,7 +137,7 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs)
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
     }
 
@@ -144,7 +145,7 @@ public class UIDefaultsPlugin extends AbstractPlugin implements ActionListener
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws PreferencedException
     {
     }
 

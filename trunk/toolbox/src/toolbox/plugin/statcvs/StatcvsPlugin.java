@@ -3,6 +3,7 @@ package toolbox.plugin.statcvs;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ import toolbox.util.ui.layout.ParagraphLayout;
 import toolbox.workspace.AbstractPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.PreferencedException;
 import toolbox.workspace.WorkspaceAction;
 
 /**
@@ -609,7 +611,7 @@ public class StatcvsPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root =
             XOMUtil.getFirstChildElement(
@@ -625,45 +627,39 @@ public class StatcvsPlugin extends AbstractPlugin
 
         if (projects.getChildCount() == 0)
         {
-            projectCombo_.addItem(new CVSProject(
-                "Sourceforge",
-                "<module>",
-                ":pserver:anonymous@cvs.sourceforge.net:2401/cvsroot/<module>",
-                "",
-                FileUtil.getTempDir().getCanonicalPath(),
-                false,
-                "",
-                CLASS_STATCVS_ENGINE));
+            try
+            {
+                projectCombo_
+                    .addItem(new CVSProject(
+                        "Sourceforge",
+                        "<module>",
+                        ":pserver:anonymous@cvs.sourceforge.net:2401/cvsroot/<module>",
+                        "", FileUtil.getTempDir().getCanonicalPath(), false,
+                        "", CLASS_STATCVS_ENGINE));
 
-            projectCombo_.addItem(new CVSProject(
-                "java.dev.net",
-                "<module>",
-                ":pserver:<username>@cvs.dev.java.net:2401/cvs",
-                "",
-                FileUtil.getTempDir().getCanonicalPath(),
-                false,
-                "",
-                CLASS_STATCVS_ENGINE));
+                projectCombo_.addItem(new CVSProject("java.dev.net",
+                    "<module>",
+                    ":pserver:<username>@cvs.dev.java.net:2401/cvs", "",
+                    FileUtil.getTempDir().getCanonicalPath(), false, "",
+                    CLASS_STATCVS_ENGINE));
 
-            projectCombo_.addItem(new CVSProject(
-                "Apache",
-                "<module>",
-                ":pserver:anoncvs@cvs.apache.org:2401/home/cvspublic",
-                "",
-                FileUtil.getTempDir().getCanonicalPath(),
-                false,
-                "",
-                CLASS_STATCVS_ENGINE));
+                projectCombo_.addItem(new CVSProject("Apache", "<module>",
+                    ":pserver:anoncvs@cvs.apache.org:2401/home/cvspublic", "",
+                    FileUtil.getTempDir().getCanonicalPath(), false, "",
+                    CLASS_STATCVS_ENGINE));
 
-            projectCombo_.addItem(new CVSProject(
-                "Statcvs",
-                "statcvs",
-                ":pserver:anonymous@cvs.sourceforge.net:2401/cvsroot/statcvs",
-                "",
-                FileUtil.getTempDir().getCanonicalPath(),
-                false,
-                "",
-                CLASS_STATCVS_ENGINE));
+                projectCombo_
+                    .addItem(new CVSProject(
+                        "Statcvs",
+                        "statcvs",
+                        ":pserver:anonymous@cvs.sourceforge.net:2401/cvsroot/statcvs",
+                        "", FileUtil.getTempDir().getCanonicalPath(), false,
+                        "", CLASS_STATCVS_ENGINE));
+            }
+            catch (IOException e)
+            {
+                throw new PreferencedException(e);
+            }
         }
         else
         {
@@ -672,9 +668,16 @@ public class StatcvsPlugin extends AbstractPlugin
 
             for (int i = 0, n = projectList.size(); i < n; i++)
             {
-                Element projectNode = projectList.get(i);
-                CVSProject project = new CVSProject(projectNode.toXML());
-                addProject(project);
+                try
+                {
+                    Element projectNode = projectList.get(i);
+                    CVSProject project = new CVSProject(projectNode.toXML());
+                    addProject(project);
+                }
+                catch (Exception e)
+                {
+                    throw new PreferencedException(e);
+                }
             }
 
             projectCombo_.setSelectedIndex(
@@ -689,7 +692,7 @@ public class StatcvsPlugin extends AbstractPlugin
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_STATCVS_PLUGIN);
         Element projects = new Element(NODE_CVSPROJECTS);

@@ -17,6 +17,7 @@ import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Configures proxy settings for the JVM. Plain old proxy servers are supported
@@ -175,7 +176,7 @@ public class SwingConfigurator extends JHeaderPanel implements IConfigurator
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         
         Element swing =
@@ -201,7 +202,7 @@ public class SwingConfigurator extends JHeaderPanel implements IConfigurator
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element swing = new Element(NODE_SWING);
 

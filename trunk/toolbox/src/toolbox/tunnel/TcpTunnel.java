@@ -30,6 +30,7 @@ import toolbox.util.service.ServiceUtil;
 import toolbox.util.service.Startable;
 import toolbox.util.statemachine.StateMachine;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Tunnels TCP traffic through a local proxy port before it is forwarded to
@@ -484,7 +485,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_TCPTUNNEL, new Element(NODE_TCPTUNNEL));
@@ -495,7 +496,7 @@ public class TcpTunnel implements TcpTunnelListener, Startable, IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_TCPTUNNEL);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);

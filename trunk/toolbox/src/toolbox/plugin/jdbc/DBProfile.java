@@ -10,6 +10,7 @@ import org.apache.commons.codec.binary.Base64;
 import toolbox.util.PreferencedUtil;
 import toolbox.util.XOMUtil;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * DBProfile contains all necessary attributes to locate, authenticate, and 
@@ -153,7 +154,7 @@ public class DBProfile implements IPreferenced, Serializable
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_DBPROFILE, new Element(NODE_DBPROFILE));
@@ -167,7 +168,7 @@ public class DBProfile implements IPreferenced, Serializable
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_DBPROFILE);
         PreferencedUtil.writePreferences(this, root, SAVED_PROPS);

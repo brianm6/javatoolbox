@@ -13,6 +13,7 @@ import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Popup menu with commonly used functionality for JEditTextArea subclasses.
@@ -109,7 +110,7 @@ public class JEditPopupMenu extends JSmartPopupMenu implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(prefs, NODE_JEDITPOPUPMENU,
             new Element(NODE_JEDITPOPUPMENU));
@@ -122,7 +123,7 @@ public class JEditPopupMenu extends JSmartPopupMenu implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JEDITPOPUPMENU);
         for (Iterator iter = subComponents_.iterator(); iter.hasNext();)

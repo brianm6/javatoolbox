@@ -16,11 +16,13 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartFileChooser;
+import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Inserts the text of a file at the current cursor location.
  */
-public class InsertFileAction extends AbstractJEditAction
+public class InsertFileAction extends AbstractJEditAction implements IPreferenced
 {
     private static final Logger logger_ = 
         Logger.getLogger(InsertFileAction.class);
@@ -95,7 +97,7 @@ public class InsertFileAction extends AbstractJEditAction
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(prefs, 
             NODE_INSERT_FILE_ACTION, new Element(NODE_INSERT_FILE_ACTION));
@@ -107,7 +109,7 @@ public class InsertFileAction extends AbstractJEditAction
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_INSERT_FILE_ACTION);
         chooser_.savePrefs(root);

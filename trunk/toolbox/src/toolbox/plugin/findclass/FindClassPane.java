@@ -63,6 +63,7 @@ import toolbox.util.ui.table.action.AutoTailAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
+import toolbox.workspace.PreferencedException;
 import toolbox.workspace.WorkspaceAction;
 
 /**
@@ -400,7 +401,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root =
             XOMUtil.getFirstChildElement(prefs,
@@ -436,7 +437,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_JFINDCLASS_PLUGIN);
 

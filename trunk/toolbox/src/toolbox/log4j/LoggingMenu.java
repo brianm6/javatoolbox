@@ -30,6 +30,7 @@ import toolbox.util.ui.JSmartFrame;
 import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartTextArea;
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Log4J specific logging menu that provides useful functionality. Perfect for
@@ -229,7 +230,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = XOMUtil.getFirstChildElement(
             prefs, NODE_LOGGING_MENU, new Element(NODE_LOGGING_MENU));
@@ -252,7 +253,7 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_LOGGING_MENU);
         root.addAttribute(new Attribute(ATTR_LEVEL, getLogLevel().toString()));

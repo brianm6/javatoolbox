@@ -40,6 +40,7 @@ import toolbox.util.ui.textarea.action.AutoTailAction;
 import toolbox.util.ui.textarea.action.LineWrapAction;
 import toolbox.workspace.IPreferenced;
 import toolbox.workspace.IStatusBar;
+import toolbox.workspace.PreferencedException;
 
 /**
  * User interface for TCPTunnel.
@@ -407,7 +408,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root =
             XOMUtil.getFirstChildElement(
@@ -440,7 +441,7 @@ public class TunnelPane extends JPanel implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs) throws Exception
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_TCPTUNNEL_PLUGIN);
         tunnel_.savePrefs(root);

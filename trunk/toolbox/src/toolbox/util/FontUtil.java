@@ -18,6 +18,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 
 import toolbox.workspace.IPreferenced;
+import toolbox.workspace.PreferencedException;
 
 /**
  * Font Utilities.
@@ -344,7 +345,7 @@ public final class FontUtil implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#applyPrefs(nu.xom.Element)
      */
-    public void applyPrefs(Element prefs) throws Exception
+    public void applyPrefs(Element prefs) throws PreferencedException
     {
         Element root = PreferencedUtil.getElement(prefs, NODE_FONTUTIL);
         
@@ -363,7 +364,7 @@ public final class FontUtil implements IPreferenced
     /**
      * @see toolbox.workspace.IPreferenced#savePrefs(nu.xom.Element)
      */
-    public void savePrefs(Element prefs)
+    public void savePrefs(Element prefs) throws PreferencedException
     {
         Element root = new Element(NODE_FONTUTIL);
 
