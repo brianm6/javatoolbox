@@ -142,7 +142,7 @@ public class Main extends FindClassAdapter
     public void search() throws RESyntaxException, IOException
     {
         FindClass finder = new FindClass();
-        finder.addFindClassListener(this);
+        finder.addSearchListener(this);
 
         if (showTargets_)
         {        
