@@ -514,6 +514,7 @@ public class JHeaderPanel extends JPanel
     {
         JToolBar tb = new JToolBar();
         tb.setRollover(true);
+        tb.setFloatable(false);
         return tb;
     }
     
@@ -561,6 +562,31 @@ public class JHeaderPanel extends JPanel
         jb.setRolloverIcon(icon);
         jb.setMargin(new Insets(0,0,0,0));
         jb.setText(null);
+        return jb;
+    }
+
+    
+    /**
+     * Creates a toggle button specifically for a toolbar to be placed in a 
+     * JHeaderPanel.
+     * 
+     * @param icon Button's icon.
+     * @param tooltip Buttons tooltip.
+     * @param action Action to execute.
+     * @param propertyChangeSource Source of the property change event that 
+     *        will toggle this button.
+     * @param property Name of the property change event to listen for.
+     * @return JToggleButton
+     */
+    public static JSmartToggleButton createToggleButton(
+        Icon icon, 
+        String tooltip, 
+        Action action,
+        JComponent propertyChangeSource,
+        String property)
+    {
+        JSmartToggleButton jb = createToggleButton(icon, tooltip, action);
+        jb.toggleOnProperty(propertyChangeSource, property);
         return jb;
     }
 }
