@@ -33,7 +33,7 @@ public class JavaDefaults extends TextAreaDefaults
         styles = getSyntaxStyles();
         eolMarkers=false;
         paintInvalid=false;
-        popup = new JEditTextAreaPopupMenu();
+        popup = new JEditPopupMenu();
 
         // Same        
         inputHandler = new DefaultInputHandler();

@@ -42,8 +42,8 @@ import org.jedit.syntax.TextAreaDefaults;
 
 import net.sf.jode.decompiler.Decompiler;
 
+import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
-import toolbox.jedit.JEditTextAreaPopupMenu;
 import toolbox.jedit.JavaDefaults;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
@@ -285,8 +285,8 @@ public class JFindClass extends JFrame
             new JEditTextArea(new JavaTokenMarker(), defaults);
 
         // Hack for circular reference in popup menu            
-        ((JEditTextAreaPopupMenu) defaults.popup).setTextArea(sourceArea_);
-        ((JEditTextAreaPopupMenu) defaults.popup).buildView();
+        ((JEditPopupMenu) defaults.popup).setTextArea(sourceArea_);
+        ((JEditPopupMenu) defaults.popup).buildView();
             
         JButton decompileButton = new JButton(new DecompileAction());
         JPanel decompilerPanel = new JPanel(new BorderLayout());
