@@ -75,6 +75,7 @@ public class JCollapsablePanel extends JHeaderPanel
             }
             
             revalidate();
+            ((JComponent) getParent()).revalidate();
         }
     }
 
