@@ -13,7 +13,7 @@ import toolbox.util.AssertionException;
 public class AssertTest extends TestCase
 {
     /** Logger **/
-    private static final Category logger = 
+    private static final Category logger_ = 
         Category.getInstance(AssertTest.class);
     
     /**
@@ -35,43 +35,128 @@ public class AssertTest extends TestCase
     }
     
     /**
-     * Tests the isTrue() method 
+     * Tests equals(double)
      */
-    public void testIsTrue() throws Exception
+    public void testEqualsDouble() throws Exception
     {
-        Assert.isTrue(true);
+        Assert.equals(1.0d, 1.0d, 0.0, "equal");
         
         try
         {
-            Assert.isTrue(false);
-            fail();
+            Assert.equals(1.0d, 2.0d, 0.0, "not equal");
+            fail("testEqualsDouble");
         }
-        catch(AssertionException ae)
+        catch (AssertionException e)
         {
-            logger.info("isTrue passed");
+            logger_.info("Passed: " + e.getMessage());
+        }
+    }    
+    
+    /**
+     * Tests equals(float)
+     */
+    public void testEqualsFloat() throws Exception
+    {
+        Assert.equals(1.0f, 1.0f, 0.0, "equal");
+        
+        try
+        {
+            Assert.equals(1.0f, 2.0f, 0.0, "not equal");
+            fail("testEqualsFloat");
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());
+        }
+    }    
+    
+    /**
+     * Tests equals(long)
+     */
+    public void testEqualsLong() throws Exception
+    {
+        Assert.equals(111L, 111L, "equal");
+        
+        try
+        {
+            Assert.equals(111L, 222L,"not equal");
+            fail("testEqualsLong");
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());
+        }
+    }    
+   
+    /**
+     * Tests equals(Object)
+     */
+    public void testEqualsObject() throws Exception
+    {
+        Assert.equals("one", "one", "equal");
+        
+        try
+        {
+            Assert.equals("one", "two", "not equal");
+            fail("testEqualsObject");
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());
+        }
+    }    
+    
+    /**
+     * Tests isFalse()
+     */
+    public void testIsFalse() throws Exception
+    {
+        Assert.isFalse(false, "isFalse");
+        
+        try
+        {
+            Assert.isFalse(true, "isFalse");
+            fail("testIsFalse");
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());            
         }
     }
     
     /**
-     * Tests the isTrue(String,...) method
+     * Tests isTrue()
      */
-    public void testIsTrueString() throws Exception
+    public void testIsTrue() throws Exception
     {
-        String failureString = "passed in false";
-        
-        Assert.isTrue(true, "passed in true");
+        Assert.isTrue(true, "isTrue");
         
         try
         {
-            Assert.isTrue(false, failureString);
-            fail();
+            Assert.isTrue(false, "isTrue");
+            fail("testIsTrue");
         }
-        catch(AssertionException ae)
+        catch (AssertionException e)
         {
-            logger.info("Assert string: " + ae.getMessage());
-            
-            assertEquals("string passed to assert don't match", 
-                failureString, ae.getMessage());
+            logger_.info("Passed: " + e.getMessage());            
+        }
+    }
+    
+    /**
+     * Tests notNull()
+     */
+    public void testNotNull() throws Exception
+    {
+        Assert.notNull("i am not null", "Object is not null");
+        
+        try
+        {
+            Assert.notNull(null, "Obiect is null");
+            fail("testNotNull");       
+        }
+        catch (AssertionException e)
+        {
+            logger_.info("Passed: " + e.getMessage());
         }
     }
 }
