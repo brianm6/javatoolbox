@@ -50,7 +50,7 @@
  * TODO: Rename Banner.java to Figlet
  * TODO: Extend PropertySheet to smooth fonts
  * TODO: Add regular expression cheat sheet (TextToolsPlugin maybe)
- * TODO: Write a state machine
+ * TODO: Apply StateMachine to Service interface
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -118,6 +118,7 @@
       <action type="update">Build - Updated fatjar maven goals to pull the list of jars directly from the Maven POM instead of the hardcoded list used previously</action>
       <action type="update">Util - Added javabean property to JSmartTextArea to control updates on the event dispatch thread</action>
       <action type="build ">Added custom stylesheet for jxr plugin (decrease code font size and made Verdana the default font)</action>
+      <action type="util  ">Added simple implemenation of a finite state machine to toolbox.util.statemachine.</action>
     </release>
     
     <release version="2.0" date="July 2004">
