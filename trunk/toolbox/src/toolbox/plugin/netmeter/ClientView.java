@@ -21,16 +21,16 @@ import toolbox.util.ui.layout.ParagraphLayout;
 /**
  * ClientView concepts.
  * <ul>
- * <li>ClientView is a read-only UI component that displays throughput stats.
- * <li>ClientView is a view and controller in MVC terms.
- * <li>ClientView contains a non-UI embedded Client which serves as the MVC 
- *     Model
- * <li>ClientView contains an embedded ServiceView UI component that allows
- *     manipulation of the service state.
+ *  <li>ClientView is a read-only UI component that displays throughput stats.
+ *  <li>ClientView is a view and controller in MVC terms.
+ *  <li>ClientView contains a non-UI embedded Client which serves as the MVC 
+ *      Model
+ *  <li>ClientView contains an embedded ServiceView UI component that allows
+ *      manipulation of the service state.
  * </ul>
  */
-public class ClientView extends JHeaderPanel implements ServiceListener, 
-                                                        ThroughputListener
+public class ClientView extends JHeaderPanel 
+    implements ServiceListener, ThroughputListener
 {
     //--------------------------------------------------------------------------
     // Fields
@@ -69,14 +69,29 @@ public class ClientView extends JHeaderPanel implements ServiceListener,
      * Creates a ClientView.
      * 
      * @param client Client attached to this view.
+     * @throws ServiceException on service error.
      */
-    public ClientView(Client client)
+    public ClientView(Client client) throws ServiceException 
     {
         super("Client");
         client_ = client;
-        client_.addServiceListener(this);
-        client_.addThroughputListener(this);
+        
+        // Order or initialization is very important! 
+
+        // buildView() before all so that widgets are non-null so that this
+        // component can react to notifications that mutate widgets
         buildView();
+        
+        // addServiceListener() before initialize() so this component can
+        // react to the firing of the initialized event.
+        client_.addServiceListener(this);
+        
+        // initialize() before addThroughputListener() so that clients 
+        // internal monitor is non-null.
+        client_.initialize();
+        
+        // last
+        client_.addThroughputListener(this);
     }
     
     //--------------------------------------------------------------------------
@@ -163,6 +178,16 @@ public class ClientView extends JHeaderPanel implements ServiceListener,
     //--------------------------------------------------------------------------
     // ServiceListener Interface
     //--------------------------------------------------------------------------
+
+    /**
+     * @see toolbox.util.service.ServiceListener#serviceInitialized(
+     *      toolbox.util.service.Service)
+     */
+    public void serviceInitialized(Service service) throws ServiceException
+    {
+        statusField_.setText("Initialized");
+    }
+    
     
     /**
      * @see toolbox.util.service.ServiceListener#serviceStarted(
