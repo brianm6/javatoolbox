@@ -1,16 +1,16 @@
 package toolbox.util.service;
 
-import toolbox.util.AbstractConstant;
+import toolbox.util.statemachine.impl.DefaultState;
 
 /**
- * ServiceState represents the six distincy states of a Service.
+ * ServiceState represents the six distinct states of a Service.
  * 
  * @see toolbox.util.service.Service
  */
-public class ServiceState extends AbstractConstant
+public class ServiceState extends DefaultState
 {
     //--------------------------------------------------------------------------
-    // Constants
+    // ServiceState Constants
     //--------------------------------------------------------------------------
     
     /**
@@ -50,15 +50,6 @@ public class ServiceState extends AbstractConstant
         new ServiceState("destroyed");
     
     //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * String version of the state.
-     */
-    private String state_;
-    
-    //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
@@ -69,7 +60,7 @@ public class ServiceState extends AbstractConstant
      */
     private ServiceState(String state)
     {
-        state_ = state;
+        super(state);
     }
     
     //--------------------------------------------------------------------------
@@ -77,12 +68,12 @@ public class ServiceState extends AbstractConstant
     //--------------------------------------------------------------------------
     
     /**
-     * Returns state in string form.
+     * Returns the states name.
      * 
      * @see java.lang.Object#toString()
      */
     public String toString()
     {
-        return state_;
+        return getName();
     }
 }
