@@ -98,7 +98,7 @@ public class UIConsole extends JFrame implements Console
             new HistoryUpAction(this));
 
         // Create the stream for I/O in the consoles
-        textAreaInputStream_ = new TextAreaInputStream(consoleArea_);
+        textAreaInputStream_ = new TextAreaInputStream(/*consoleArea_*/);
         inputStream_ = new LineInputStream(textAreaInputStream_);
         
         //outputStream_ = new PrintStream(
@@ -512,17 +512,13 @@ public class UIConsole extends JFrame implements Console
 
     public class TextAreaInputStream extends PipedInputStream
     {
-
-        private UIConsoleArea consoleArea;
         private OutputStream out;
         private int numKeysTyped;
 
-
-        public TextAreaInputStream(UIConsoleArea newTextArea)
+        public TextAreaInputStream()
         {
             try
             {
-                consoleArea = newTextArea;
                 out = new PipedOutputStream(this);
                 numKeysTyped = 0;
             }
