@@ -29,6 +29,9 @@ public final class FileUtil
     private static final Logger logger_ = 
         Logger.getLogger(FileUtil.class);
 
+    // Clover private constructor workaround
+    static { new FileUtil(); }
+
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------

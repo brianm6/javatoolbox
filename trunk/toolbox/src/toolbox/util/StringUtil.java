@@ -17,9 +17,11 @@ import toolbox.util.io.WrappingWriter;
  */
 public final class StringUtil
 {
-    /** Logger */
     private static final Logger logger_ = 
         Logger.getLogger(StringUtil.class);
+    
+    // Clover private constructor workaround
+    static { new StringUtil(); }
     
     //--------------------------------------------------------------------------
     // Constructors

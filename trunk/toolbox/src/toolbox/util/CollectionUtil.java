@@ -8,6 +8,9 @@ import java.util.HashSet;
  */
 public final class CollectionUtil
 {
+    // Clover private constructor workaround
+    static { new CollectionUtil(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

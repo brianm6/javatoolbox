@@ -11,6 +11,9 @@ import java.util.Properties;
  */
 public final class PropertiesUtil
 {
+    // Clover private constructor workaround
+    static { new PropertiesUtil(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

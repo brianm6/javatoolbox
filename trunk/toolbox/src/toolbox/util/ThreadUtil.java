@@ -10,9 +10,11 @@ import org.apache.log4j.Logger;
  */
 public final class ThreadUtil
 {
-    /** Logger */
     protected static final Logger logger_ = 
         Logger.getLogger(ThreadUtil.class);
+
+    // Clover private constructor workaround
+    static { new ThreadUtil(); }
 
     //--------------------------------------------------------------------------
     // Constructors

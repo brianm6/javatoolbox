@@ -26,11 +26,13 @@ import org.apache.log4j.Logger;
 /**
  * Swing Utility Class
  */
-public class SwingUtil
+public final class SwingUtil
 {
-    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(SwingUtil.class);
+
+    // Clover private constructor workaround
+    static { new SwingUtil(); }
     
     /** 
      * Preferred monospaced font

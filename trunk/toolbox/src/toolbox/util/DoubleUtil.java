@@ -8,12 +8,15 @@ import java.text.ParseException;
  */
 public class DoubleUtil
 {
+    // Clover private constructor workaround
+    static { new DoubleUtil(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
     
     /**
-     * Constructor for DoubleUtil.
+     * Prevent Construction
      */
     private DoubleUtil()
     {

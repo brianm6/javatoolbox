@@ -8,13 +8,14 @@ import java.util.Map;
  */
 public class MapUtil
 {
+    // Clover private constructor workaround
+    static { new MapUtil(); }
 
     /**
      * Constructor for MapUtil.
      */
     private MapUtil()
     {
-        super();
     }
     
     /**

@@ -8,6 +8,9 @@ import java.util.Random;
  */
 public final class RandomUtil
 {
+    // Clover private constructor workaround
+    static { new RandomUtil(); }
+
     /** 
      * Random number generator 
      */

@@ -20,6 +20,9 @@ public final class Platform
     //--------------------------------------------------------------------------
     // Static Block
     //--------------------------------------------------------------------------
+
+    // Clover private constructor workaround
+    static { new Platform(); }
     
     static
     {

@@ -8,8 +8,11 @@ import java.util.Date;
  * Utility class that deals only with the TIME portions of the 
  * <code>java.util.Date</code> object
  */
-public class TimeUtil
+public final class TimeUtil
 {
+    // Clover private constructor workaround
+    static { new TimeUtil(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

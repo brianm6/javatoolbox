@@ -55,6 +55,9 @@ public final class ResourceCloser
     private static Logger logger_ =
         Logger.getLogger(ResourceCloser.class);
 
+    // Clover private constructor workaround
+    static { new ResourceCloser(); }
+
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------

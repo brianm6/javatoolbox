@@ -18,6 +18,9 @@ public class StreamUtil
 {
     private static final Logger logger_ = 
         Logger.getLogger(StreamUtil.class);
+
+    // Clover private constructor workaround
+    static { new StreamUtil(); }
  
     //--------------------------------------------------------------------------
     // Constructors

@@ -13,6 +13,9 @@ import java.util.Date;
  */
 public final class DateTimeUtil
 {
+    // Clover private constructor workaround
+    static { new DateTimeUtil(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

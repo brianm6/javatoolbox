@@ -20,6 +20,9 @@ import java.util.Date;
  */
 public final class DateUtil
 {
+    // Clover private constructor workaround
+    static { new DateUtil(); }
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

@@ -23,6 +23,9 @@ public final class JDBCUtil
     public static final Logger logger_ =
         Logger.getLogger(JDBCUtil.class);
 
+    // Clover private constructor workaround
+    static { new JDBCUtil(); }
+
     /** 
      * JDBC connection properties 
      */

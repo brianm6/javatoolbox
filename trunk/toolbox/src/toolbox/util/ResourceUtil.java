@@ -20,6 +20,9 @@ public final class ResourceUtil
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtil.class);
 
+    // Clover private constructor workaround
+    static { new ResourceUtil(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

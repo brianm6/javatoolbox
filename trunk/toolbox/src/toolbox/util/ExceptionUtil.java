@@ -12,6 +12,9 @@ import toolbox.util.ui.JSmartOptionPane;
  */
 public final class ExceptionUtil
 {
+    // Clover private constructor workaround
+    static { new ExceptionUtil(); }
+
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------

@@ -5,6 +5,9 @@ package toolbox.util;
  */
 public final class MathUtil 
 {
+    // Clover private constructor workaround
+    static { new MathUtil(); }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

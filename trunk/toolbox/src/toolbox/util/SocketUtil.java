@@ -18,6 +18,9 @@ public class SocketUtil
     private static final Logger logger_ = 
         Logger.getLogger(SocketUtil.class);
 
+    // Clover private constructor workaround
+    static { new SocketUtil(); }
+
     /** 
      * Value embedded in message for an accept() timeout 
      */
