@@ -529,4 +529,41 @@ public final class ClassUtil
                (idx > 0) &&                // separator can't be first char
                (idx < clazz.length() - 1); // separator can't be the last char
     }
+    
+    
+    /**
+     * Takes an array of arbitrary objects and returns an array containing the
+     * <code>Class</code> type of each <code>Object<code>.
+     * <p>
+     * If the array of objects is null or the array is empty, an empty array of 
+     * type <code>Class</code> is returned.
+     * <p>
+     * <b>Example</b>
+     * <pre class="snippet">
+     *   Object[] objs = new Object[] { "Hello", new ArrayList(), new Date()};
+     *   Class[] types = ClassUtil.toClass(objs);
+     *   for (int i = 0; i < types.length; System.out.println(types[i++]);
+     * </pre>
+     * <b>Output</b>
+     * <pre class="snippet">
+     *   java.lang.String
+     *   java.util.ArrayList
+     *   java.util.Date 
+     * </pre>
+     * 
+     * @param objs Array of objects to retrieve the classes for.
+     * @return Class[]
+     */
+    public static Class[] toClass(Object[] objs)
+    {
+        if (objs == null || objs.length == 0)
+            return new Class[0];
+        
+        Class[] result = new Class[objs.length];
+        
+        for (int i = 0; i < objs.length; i++)
+            result[i] = objs[i].getClass();
+        
+        return result;
+    }
 }
