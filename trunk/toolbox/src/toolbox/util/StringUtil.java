@@ -619,18 +619,6 @@ public final class StringUtil
 
     
     /**
-     * Converts a string into a boolean value.
-     * 
-     * @param s String containing boolean value.
-     * @return Boolean equivalent of the string.
-     */
-    public static boolean toBoolean(String s)
-    {
-        return new Boolean(s).booleanValue();        
-    }
-    
-    
-    /**
      * Encloses a string in horizontal bars for easier identification when
      * printing out. 
      * <p>

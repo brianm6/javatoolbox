@@ -280,7 +280,7 @@ public class StringUtilTest extends TestCase
     //--------------------------------------------------------------------------
     
     /**
-     * Tests static toString( List ).
+     * Tests static toString(List).
      */
     public void testToStringForList()
     {
@@ -591,37 +591,14 @@ public class StringUtilTest extends TestCase
     
     
     /**
-     * Tests addBars().
+     * Tests banner()
      */
-    public void testAddBars()
+    public void testBanner()
     {
-        logger_.info("Running testAddBars...");
+        logger_.info("Running testBanner...");
         
         logger_.debug(StringUtil.banner(""));
         logger_.debug(StringUtil.banner("this is a single line"));
         logger_.debug(StringUtil.banner("this\nis a\nmulti-line"));
-    }
-
-    
-    /**
-     * Tests toBoolean().
-     */
-    public void testToBoolean()
-    {
-        logger_.info("Running testToBoolean...");
-        
-        assertTrue(StringUtil.toBoolean("true"));
-        assertTrue(StringUtil.toBoolean("TRUE"));
-        assertTrue(StringUtil.toBoolean("tRuE"));
-     
-        assertFalse(StringUtil.toBoolean("false"));
-        assertFalse(StringUtil.toBoolean("FALSE"));
-        assertFalse(StringUtil.toBoolean("fAlSe"));
-        
-        // These are questionable in my opinion and should throw an 
-        // IllegalArgumentException
-        assertFalse(StringUtil.toBoolean("crap"));
-        assertFalse(StringUtil.toBoolean(""));
-        assertFalse(StringUtil.toBoolean(" "));
     }
 }
