@@ -3,7 +3,6 @@ package toolbox.util.ui.plugin;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -34,6 +33,7 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JFlipPane;
 import toolbox.util.ui.JTextComponentPopupMenu;
+import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
  * Simple SQL query panel
@@ -145,7 +145,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         JPopupMenu popup = new JTextComponentPopupMenu(outputArea_);
         
         JSplitPane splitPane = 
-            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+            new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 new JScrollPane(inputArea_), 
                 new JScrollPane(outputArea_));
 
@@ -168,23 +168,25 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Builds the Configuration view in a Flip pane
      * 
-     * @return JPanel
+     * @return JPanel containing the Configuration UI
      */
     protected JPanel buildConfigView()
     {
-        JPanel cp = new JPanel(new GridLayout(4,2));
+        JPanel cp = new JPanel(new ParagraphLayout());
         
-        cp.add(SwingUtil.wrap(new JLabel("Driver")));
-        cp.add(SwingUtil.wrap(driverField_ = new JTextField(15)));
+        cp.add(new JLabel("Driver"), ParagraphLayout.NEW_PARAGRAPH);
+        cp.add(driverField_ = new JTextField(15));
        
-        cp.add(SwingUtil.wrap(new JLabel("URL")));
-        cp.add(SwingUtil.wrap(urlField_ = new JTextField(15)));
+        cp.add(new JLabel("URL"), ParagraphLayout.NEW_PARAGRAPH);
+        cp.add(urlField_ = new JTextField(15));
         
-        cp.add(SwingUtil.wrap(new JLabel("User")));
-        cp.add(SwingUtil.wrap(userField_ = new JTextField(15)));
+        cp.add(new JLabel("User"), ParagraphLayout.NEW_PARAGRAPH);
+        cp.add(userField_ = new JTextField(15));
          
-        cp.add(SwingUtil.wrap(new JLabel("Password")));
-        cp.add(SwingUtil.wrap(passwordField_ = new JTextField(15)));
+        cp.add(new JLabel("Password"), ParagraphLayout.NEW_PARAGRAPH);
+        cp.add(passwordField_ = new JTextField(15));
+
+        cp.add(new JButton(new ConnectAction()), ParagraphLayout.NEW_PARAGRAPH);
 
         JFlipPane jfp = new JFlipPane(JFlipPane.LEFT);
         jfp.addFlipper("JDBC Config", cp);
@@ -316,10 +318,10 @@ public class QueryPlugin extends JPanel implements IPlugin
                 addToHistory(historyItems[i]);
         }
             
-        driverField_.setText(prefs.getProperty(KEY_DRIVER, "??"));
-        urlField_.setText(prefs.getProperty(KEY_URL, "??"));
-        userField_.setText(prefs.getProperty(KEY_USER, "??"));
-        passwordField_.setText(prefs.getProperty(KEY_PASSWORD, "??"));
+        driverField_.setText(prefs.getProperty(KEY_DRIVER, ""));
+        urlField_.setText(prefs.getProperty(KEY_URL, ""));
+        userField_.setText(prefs.getProperty(KEY_USER, ""));
+        passwordField_.setText(prefs.getProperty(KEY_PASSWORD, ""));
     }
 
     /**
@@ -457,5 +459,34 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             outputArea_.setText("");            
         }
+    }
+    
+    
+    /**
+     * Connects to the database
+     */
+    class ConnectAction extends AbstractAction
+    {
+        public ConnectAction()
+        {
+            super("Connect");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            try
+            {
+                JDBCUtil.init(
+                    driverField_.getText(),
+                    urlField_.getText(),
+                    userField_.getText(),
+                    passwordField_.getText());
+            }
+            catch (ClassNotFoundException cnfe)
+            {
+                ExceptionUtil.handleUI(cnfe, logger_);
+            }
+        }
+
     }
 }
