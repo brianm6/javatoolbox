@@ -24,10 +24,10 @@ import javax.swing.table.TableColumnModel;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.Queue;
-import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JHeaderPanel;
@@ -326,7 +326,7 @@ public class JSourceView extends JPanel implements IPreferenced
         dirField_.setText(XOMUtil.getStringAttribute(root, ATTR_LAST_DIR, ""));
         dirField_.setCaretPosition(0);
         
-        if (!StringUtil.isNullOrBlank(dirField_.getText()))
+        if (!StringUtils.isBlank(dirField_.getText()))
             lastDir_ = new File(dirField_.getText());
         
         table_.applyPrefs(root);
@@ -649,7 +649,7 @@ public class JSourceView extends JPanel implements IPreferenced
                     "Save to file",
                     JOptionPane.QUESTION_MESSAGE);
             
-                if (!StringUtil.isNullOrBlank(s))
+                if (!StringUtils.isBlank(s))
                     tableModel_.saveToFile(s);
             }
         }

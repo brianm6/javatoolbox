@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Stack;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
@@ -472,7 +473,7 @@ public class Dumper
             {
                 result = "null";
             }
-            else if (StringUtil.isNullOrBlank(toString))
+            else if (StringUtils.isBlank(toString))
             {
                 result = stripped;
             }

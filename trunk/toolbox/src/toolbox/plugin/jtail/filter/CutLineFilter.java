@@ -2,11 +2,11 @@ package toolbox.plugin.jtail.filter;
 
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import toolbox.util.Assert;
 import toolbox.util.AssertionException;
-import toolbox.util.StringUtil;
 
 /**
  * Filter that cuts a specified number of columns from a line base on a simple
@@ -101,7 +101,7 @@ public class CutLineFilter extends AbstractLineFilter
     {
         cut_ = cut;
 
-        if (StringUtil.isNullOrEmpty(cut_))
+        if (StringUtils.isEmpty(cut_))
             setEnabled(false);
         else
         {        

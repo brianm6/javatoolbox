@@ -3,6 +3,8 @@ package toolbox.util;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Utility class for doubles.
  */
@@ -36,7 +38,7 @@ public final class DoubleUtil
     {
         boolean b = false;
         
-        if (StringUtil.isNullOrBlank(s))
+        if (StringUtils.isBlank(s))
             b = false;
         else
         {

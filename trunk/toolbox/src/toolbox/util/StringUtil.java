@@ -250,31 +250,6 @@ public final class StringUtil
     
     
     /**
-     * Convenience method to check if a string is null or of zero length.
-     * 
-     * @param s String to check.
-     * @return True if the string is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(String s) 
-    {
-        return (s == null || s.length() == 0);
-    }
-    
-    
-    /**
-     * Convenience method to check if a string is null, empty, or blank
-     * (contains only spaces).
-     * 
-     * @param s String to check.
-     * @return True if not null, empty, or blank; false otherwise.
-     */
-    public static boolean isNullOrBlank(String s)
-    {
-        return (isNullOrEmpty(s) || s.trim().length() == 0);
-    }
-
-    
-    /**
      * Generates a numbered ruler underneath a string for character counting 
      * purposes. For example:
      * <pre>

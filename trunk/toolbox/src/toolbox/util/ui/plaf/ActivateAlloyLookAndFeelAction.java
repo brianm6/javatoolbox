@@ -8,9 +8,8 @@ import com.incors.plaf.alloy.AlloyLookAndFeel;
 import com.incors.plaf.alloy.AlloyTheme;
 import com.incors.plaf.alloy.DefaultAlloyTheme;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.StringUtil;
 
 /**
  * Action that activates the Alloy Look And Feel.
@@ -60,7 +59,7 @@ public class ActivateAlloyLookAndFeelAction extends ActivateLookAndFeelAction
         AlloyTheme defaultTheme = new DefaultAlloyTheme();
         AlloyTheme theme = defaultTheme;
         
-        if (!StringUtil.isNullOrEmpty(clazz))
+        if (!StringUtils.isEmpty(clazz))
         {
             try
             {

@@ -18,6 +18,7 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import org.netbeans.lib.cvsclient.commandLine.CVSCommand;
@@ -367,7 +368,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {
         String text = field.getText();
 
-        if (StringUtil.isNullOrBlank(text))
+        if (StringUtils.isBlank(text))
             throw new IllegalArgumentException(
                 "Field '" + field.getName() + "' must have a value.");
     }
@@ -474,7 +475,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
         logger_.debug("lines: " + ArrayUtil.toString(lines, true));
 
-        if (StringUtil.isNullOrBlank(lines[0]))
+        if (StringUtils.isBlank(lines[0]))
             firstBlank = true;
         else if (lines[0].startsWith("RCS"))
             firstRCS = true;
@@ -1053,7 +1054,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         {
             String current = projectCombo_.getEditor().getItem().toString();
 
-            if (StringUtil.isNullOrBlank(current))
+            if (StringUtils.isBlank(current))
             {
                 statusBar_.setWarning("Project name cannot be empty");
             }
@@ -1153,7 +1154,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
 
             if (!found)
             {
-                if (StringUtil.isNullOrBlank(current))
+                if (StringUtils.isBlank(current))
                     statusBar_.setInfo("Select a project to delete.");
                 else
                     statusBar_.setWarning(

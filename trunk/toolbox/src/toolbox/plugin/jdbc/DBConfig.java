@@ -18,6 +18,7 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
@@ -305,7 +306,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         {
             
             DBProfile profile = (DBProfile) profileCombo_.getItemAt(i);
-            if (!StringUtil.isNullOrBlank(profile.getProfileName()))
+            if (!StringUtils.isBlank(profile.getProfileName()))
                 dbConfig.appendChild(profile.toDOM());
         }
 
@@ -344,7 +345,7 @@ public class DBConfig extends JHeaderPanel implements IPreferenced
         {
             statusBar_.setInfo("Connecting to the database...");
             
-            if (StringUtil.isNullOrBlank(jarField_.getText()))
+            if (StringUtils.isBlank(jarField_.getText()))
             {    
                 JDBCUtil.init(
                     driverField_.getText(),

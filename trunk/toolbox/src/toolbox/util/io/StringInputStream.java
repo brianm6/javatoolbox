@@ -3,6 +3,7 @@ package toolbox.util.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
@@ -153,7 +154,7 @@ public class StringInputStream extends InputStream
      */
     public synchronized void append(String s)
     {
-        if (!StringUtil.isNullOrEmpty(s))
+        if (!StringUtils.isEmpty(s))
         {
             buffer_.append(s);
             

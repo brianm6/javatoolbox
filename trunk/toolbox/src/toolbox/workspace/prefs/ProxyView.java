@@ -16,8 +16,9 @@ import javax.swing.SwingConstants;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
+
 import toolbox.util.ResourceUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JHeaderPanel;
@@ -193,7 +194,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
             System.setProperty("proxyHost", proxyHostnameField_.getText());
             System.setProperty("proxyPort", proxyPortField_.getText());
 
-            if (!StringUtil.isNullOrBlank(proxyUserNameField_.getText()))
+            if (!StringUtils.isBlank(proxyUserNameField_.getText()))
             {
                 Authenticator.setDefault(new Authenticator()
                 {

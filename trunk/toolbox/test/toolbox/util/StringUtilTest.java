@@ -10,7 +10,6 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.log4j.SmartLogger;
-import toolbox.util.StringUtil;
 
 /**
  * Unit test for StringUtil.
@@ -166,51 +165,6 @@ public class StringUtilTest extends TestCase
                     + expected
                     + ")");
         }
-    }
-    
-    
-    /**
-     * Tests isNullOrBlank().
-     */
-    public void testIsNullOrBlank()
-    {
-        logger_.info("Running testIsNullOrBlank...");
-        
-        assertTrue("pass in null should return true", 
-            StringUtil.isNullOrEmpty(null));
-            
-        assertTrue("pass in empty should return true", 
-            StringUtil.isNullOrEmpty(""));
-            
-        assertTrue("pass in space should return true", 
-            !StringUtil.isNullOrEmpty(" "));
-
-        assertTrue("pass in lotsa spaces should return true", 
-            !StringUtil.isNullOrEmpty("                   "));
-            
-        assertTrue("pass in string should return false", 
-            !StringUtil.isNullOrEmpty("howdy"));
-    }
-
-    
-    /**
-     * Tests isNullOrEmpty().
-     */
-    public void testIsNullOrEmpty()
-    {
-        logger_.info("Running testIsNullOrEmpty...");
-        
-        assertTrue("pass in null should return true", 
-            StringUtil.isNullOrEmpty(null));
-            
-        assertTrue("pass in empty shoudl return true", 
-            StringUtil.isNullOrEmpty(""));
-            
-        assertTrue("pass in space should return false", 
-            !StringUtil.isNullOrEmpty(" "));
-            
-        assertTrue("pass in string should return false", 
-            !StringUtil.isNullOrEmpty("howdy"));
     }
     
     

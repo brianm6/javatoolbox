@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
-
-import toolbox.util.StringUtil;
 
 /**
  * Task that prompts user for property values to allow interactive builds.
@@ -243,7 +242,7 @@ public class PropertyPromptTask extends Task
         proposedValue_ = getProject().getProperty(propertyName_);
         String currentValue = defaultValue_;
         
-        if (StringUtil.isNullOrBlank(currentValue) && proposedValue_ != null)
+        if (StringUtils.isBlank(currentValue) && proposedValue_ != null)
             currentValue = proposedValue_;
         
         if (!(useExistingValue_ && proposedValue_ != null))

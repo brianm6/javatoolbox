@@ -40,6 +40,7 @@ import javax.swing.tree.TreeSelectionModel;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
@@ -410,11 +411,11 @@ public class JFileExplorer extends JPanel implements IPreferenced
         Element root = new Element(NODE_JFILEEXPLORER);
         
         String path = getCurrentPath();
-        if (!StringUtil.isNullOrEmpty(path))
+        if (!StringUtils.isEmpty(path))
             root.addAttribute(new Attribute(ATTR_PATH, path));
             
         String file = (String) fileList_.getSelectedValue();
-        if (!StringUtil.isNullOrEmpty(file))
+        if (!StringUtils.isEmpty(file))
             root.addAttribute(new Attribute(ATTR_FILE, file));
             
         splitPane_.savePrefs(root);
@@ -440,7 +441,7 @@ public class JFileExplorer extends JPanel implements IPreferenced
         
         // Restore selected file    
         String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
-        if (!StringUtil.isNullOrEmpty(file))
+        if (!StringUtils.isEmpty(file))
             fileList_.setSelectedValue(file, true);
 
         splitPane_.applyPrefs(root);        

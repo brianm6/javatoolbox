@@ -35,6 +35,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.OptionPaneUI;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ExceptionUtil;
@@ -473,7 +474,7 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener,
         String stack = ExceptionUtil.getStackTrace(exception);
         String message = exception.getMessage();
 
-        if (StringUtil.isNullOrBlank(message))
+        if (StringUtils.isBlank(message))
             message = StringUtil.getLine(stack, 0);
 
         showDetailedMessageDialog(

@@ -4,7 +4,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import toolbox.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link java.io.OutputStream} that filters out non-printable characters
@@ -96,7 +96,7 @@ public class PrintableOutputStream extends FilterOutputStream
             super.write(b);
         else if ((b >=  32 && b <= 126) || c == '\n' || c == '\t') 
             super.write(b);
-        else if (!StringUtil.isNullOrEmpty(replacement_))
+        else if (!StringUtils.isEmpty(replacement_))
             out.write(replacement_.getBytes());  // Is this a NO NO?
     }
     

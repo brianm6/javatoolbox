@@ -18,6 +18,7 @@ import javax.swing.JToolBar;
 
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
@@ -180,7 +181,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
     protected String getInputText()
     {
         String selected = inputArea_.getSelectedText();
-        return (StringUtil.isNullOrBlank(selected)
+        return (StringUtils.isBlank(selected)
                     ? inputArea_.getText()
                     : selected);
     }
@@ -355,7 +356,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin
         {
             String text = getInputText();
 
-            if (StringUtil.isNullOrEmpty(text))
+            if (StringUtils.isEmpty(text))
             {
                 statusBar_.setInfo("Nothing to sort.");
             }

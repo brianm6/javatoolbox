@@ -23,6 +23,7 @@ import javax.swing.JToolBar;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.IntRange;
 import org.apache.log4j.Logger;
 
@@ -447,7 +448,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         IntRange range = new IntRange(0);
         String selected = sqlEditor_.getSelectedText();
 
-        if (!StringUtil.isNullOrEmpty(selected))
+        if (!StringUtils.isEmpty(selected))
         {
             range = new IntRange(
                 sqlEditor_.getSelectionStart(), sqlEditor_.getSelectionEnd());
@@ -713,7 +714,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             String sql = sqlEditor_.getText();
 
-            if (StringUtil.isNullOrBlank(sql))
+            if (StringUtils.isBlank(sql))
             {
                 statusBar_.setInfo("Enter SQL to execute");
             }
@@ -723,7 +724,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 String results = executeSQL(sqlEditor_.getText());
                 resultsArea_.append(results);
 
-                if ((!StringUtil.isNullOrBlank(results)) &&
+                if ((!StringUtils.isBlank(results)) &&
                     (StringUtil.tokenize(results, StringUtil.NL).length < 50))
                     resultsArea_.scrollToEnd();
 
@@ -759,7 +760,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             String sql = sqlEditor_.getLineText(sqlEditor_.getCaretLine());
 
-            if (StringUtil.isNullOrBlank(sql))
+            if (StringUtils.isBlank(sql))
             {
                 statusBar_.setInfo("Enter SQL to execute");
             }
@@ -769,7 +770,7 @@ public class QueryPlugin extends JPanel implements IPlugin
                 String results = executeSQL(sql);
                 resultsArea_.append(results);
 
-                if ((!StringUtil.isNullOrBlank(results)) &&
+                if ((!StringUtils.isBlank(results)) &&
                     (StringUtil.tokenize(results, StringUtil.NL).length < 50))
                     resultsArea_.scrollToEnd();
 
@@ -804,7 +805,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             String sql = getActiveText();
 
-            if (StringUtil.isNullOrBlank(sql))
+            if (StringUtils.isBlank(sql))
             {
                 statusBar_.setWarning("Nothing to format.");
             }
@@ -956,7 +957,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         {
             String table = resultsArea_.getSelectedText();
 
-            if (StringUtil.isNullOrBlank(table))
+            if (StringUtils.isBlank(table))
             {
                 JSmartOptionPane.showMessageDialog(QueryPlugin.this,
                     "Select text matching the column name from the output " +

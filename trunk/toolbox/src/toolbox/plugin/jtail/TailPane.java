@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.TTCCLayout;
@@ -36,7 +37,6 @@ import toolbox.tail.TailAdapter;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FontUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.concurrent.BatchingQueueReader;
 import toolbox.util.concurrent.BlockingQueue;
 import toolbox.util.concurrent.IBatchingQueueListener;
@@ -806,7 +806,7 @@ public class TailPane extends JHeaderPanel
         {
             String s = getRegularExpression();
 
-            if (StringUtil.isNullOrEmpty(s))
+            if (StringUtils.isEmpty(s))
                 regexFilter_.setEnabled(false);
             else
             {
@@ -834,7 +834,7 @@ public class TailPane extends JHeaderPanel
         {
             String s = getCutExpression();
 
-            if (StringUtil.isNullOrEmpty(s))
+            if (StringUtils.isEmpty(s))
                 cutFilter_.setEnabled(false);
             else
                 setCutExpression(getCutExpression());

@@ -21,6 +21,8 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
 import com.martiansoftware.jsap.stringparsers.StringStringParser;
 
+import org.apache.commons.lang.StringUtils;
+
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
@@ -556,7 +558,7 @@ public class Tree2
         // If a regex is passed and the user forgot to turn on the -files
         // flag, just turn it on automatically.
         //
-        boolean useRegex = !StringUtil.isNullOrBlank(regex_);
+        boolean useRegex = !StringUtils.isBlank(regex_);
         showFiles_ = useRegex | showDate_ | showSize_ ? true : showFiles;
         
         if (showFiles_)

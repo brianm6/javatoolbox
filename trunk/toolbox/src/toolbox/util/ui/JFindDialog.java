@@ -14,9 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.action.DisposeAction;
 import toolbox.util.ui.statusbar.SimpleStatusBar;
@@ -147,7 +147,7 @@ public class JFindDialog extends JDialog
         {
             String searchFor = findField_.getText();
 
-            if (!StringUtil.isNullOrEmpty(searchFor))
+            if (!StringUtils.isEmpty(searchFor))
             {
                 String text = initiator_.getText();
 

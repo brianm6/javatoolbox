@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ResourceUtil;
 import toolbox.util.StreamUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.collections.AsMap;
 
 /**
@@ -352,7 +352,7 @@ public class SocketServerConfig
     {
         String clazzName = getConnectionHandlerType();
 
-        if (StringUtil.isNullOrEmpty(clazzName))
+        if (StringUtils.isEmpty(clazzName))
         {
             throw new IllegalStateException("Connection handler not set.");
         }

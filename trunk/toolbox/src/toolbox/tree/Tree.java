@@ -20,6 +20,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang.StringUtils;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.DateTimeUtil;
@@ -578,7 +579,7 @@ public class Tree
         // If a regex is passed and the user forgot to turn on the -files
         // flag, just turn it on automatically.
         //
-        boolean useRegex = !StringUtil.isNullOrBlank(regex_);
+        boolean useRegex = !StringUtils.isBlank(regex_);
         showFiles_ = useRegex | showDate_ | showSize_ ? true : showFiles;
         
         if (showFiles_)

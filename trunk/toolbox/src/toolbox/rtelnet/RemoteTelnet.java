@@ -13,9 +13,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import toolbox.util.StringUtil;
 
 /**
  * Remote telnet driver enables you to establish a telnet session with a 
@@ -238,19 +237,19 @@ public class RemoteTelnet
      */
     protected void verifyOptions() throws IOException
     {
-        if (StringUtil.isNullOrEmpty(options_.getHostname()))
+        if (StringUtils.isEmpty(options_.getHostname()))
             options_.setHostname(queryUser("Hostname: "));
             
         if (options_.getPort() == 0)
             options_.setPort(Integer.parseInt(queryUser("Port: ")));
             
-        if (StringUtil.isNullOrEmpty(options_.getUsername()))
+        if (StringUtils.isEmpty(options_.getUsername()))
             options_.setUsername(queryUser("Username: "));
             
-        if (StringUtil.isNullOrEmpty(options_.getPassword()))
+        if (StringUtils.isEmpty(options_.getPassword()))
             options_.setPassword(queryUser("Password: "));
             
-        if (StringUtil.isNullOrEmpty(options_.getCommand()))
+        if (StringUtils.isEmpty(options_.getCommand()))
             options_.setCommand(queryUser("Command: "));
     }    
 

@@ -10,6 +10,8 @@ import nu.xom.Node;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
 
+import org.apache.commons.lang.StringUtils;
+
 import toolbox.util.io.StringInputStream;
 import toolbox.util.io.StringOutputStream;
 
@@ -45,7 +47,7 @@ public class XOMUtil
     {
         int intValue = defaultValue;
         
-        if (node != null && !StringUtil.isNullOrBlank(node.getValue()))
+        if (node != null && !StringUtils.isBlank(node.getValue()))
         {
             try
             {
@@ -74,7 +76,7 @@ public class XOMUtil
     {
         String stringValue = defaultValue;
         
-        if (node != null && !StringUtil.isNullOrBlank(node.getValue()))
+        if (node != null && !StringUtils.isBlank(node.getValue()))
             stringValue = node.getValue();
             
         return stringValue;
@@ -93,7 +95,7 @@ public class XOMUtil
     {
         boolean booleanValue = defaultValue;
         
-        if (node != null && !StringUtil.isNullOrBlank(node.getValue()))
+        if (node != null && !StringUtils.isBlank(node.getValue()))
             booleanValue = new Boolean(node.getValue()).booleanValue();
             
         return booleanValue;

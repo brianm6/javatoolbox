@@ -5,11 +5,10 @@ import java.util.List;
 
 import javax.swing.ListModel;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
-
-import toolbox.util.StringUtil;
 
 /**
  * A ListModel that filters the text contents based on matching a regular 
@@ -112,7 +111,7 @@ public class RegexListModelFilter extends AbstractListModelFilter
         regex_ = regex;
 
         // Match all on null or empty
-        if (StringUtil.isNullOrEmpty(regex_))
+        if (StringUtils.isEmpty(regex_))
             regex_ = MATCH_ALL;
             
         try

@@ -17,12 +17,12 @@ import javax.swing.JToolBar;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.tunnel.TcpTunnel;
 import toolbox.tunnel.TcpTunnelListener;
 import toolbox.util.FontUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
 import toolbox.util.ui.ImageCache;
@@ -545,7 +545,7 @@ public class TunnelPane extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            if (StringUtil.isNullOrEmpty(getRemoteHost()))
+            if (StringUtils.isEmpty(getRemoteHost()))
                 throw new IllegalArgumentException(
                     "Please specify the remote hostname");
 

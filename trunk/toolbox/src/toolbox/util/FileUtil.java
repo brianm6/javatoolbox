@@ -17,6 +17,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.collections.AsMap;
@@ -518,7 +519,7 @@ public final class FileUtil
      */    
     public static void delete(String file)
     {
-        if (file != null && !StringUtil.isNullOrBlank(file))
+        if (file != null && !StringUtils.isBlank(file))
             new File(file).delete();
     }
 

@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -403,7 +404,7 @@ public final class JDBCUtil
             String colName = meta.getColumnLabel(i);
             
             colName = 
-                (StringUtil.isNullOrBlank(colName) ? "[NULL]" : colName.trim());
+                (StringUtils.isBlank(colName) ? "[NULL]" : colName.trim());
                     
             header  [i - 1] = colName;
             colWidth[i - 1] = colName.length();

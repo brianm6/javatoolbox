@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.apache.commons.lang.StringUtils;
+
 import toolbox.util.ExceptionUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.ui.SmartAction;
@@ -141,7 +143,7 @@ public abstract class WorkspaceAction extends SmartAction
             Throwable caught = getCaught();
             String message = caught.getMessage();
             
-            if (StringUtil.isNullOrBlank(message))
+            if (StringUtils.isBlank(message))
             {
                 message = 
                     StringUtil.getLine(ExceptionUtil.getStackTrace(caught), 0);

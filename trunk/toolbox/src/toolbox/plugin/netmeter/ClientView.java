@@ -5,7 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import toolbox.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
+
 import toolbox.util.service.Service;
 import toolbox.util.service.ServiceException;
 import toolbox.util.service.ServiceListener;
@@ -91,7 +92,7 @@ public class ClientView extends JHeaderPanel implements ServiceListener,
         
         if (client_ != null)
         {
-            if (StringUtil.isNullOrEmpty(client_.getHostname()))
+            if (StringUtils.isEmpty(client_.getHostname()))
                 serverHostnameField_.setText("localhost");
             else
                 serverHostnameField_.setText(client_.getHostname());

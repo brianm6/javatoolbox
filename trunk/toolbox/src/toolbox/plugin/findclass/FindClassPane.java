@@ -38,6 +38,7 @@ import javax.swing.table.TableColumnModel;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
@@ -48,7 +49,6 @@ import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
 import toolbox.util.FileUtil;
 import toolbox.util.MathUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
@@ -62,7 +62,7 @@ import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.JSmartToggleButton;
-import toolbox.util.ui.action.*;
+import toolbox.util.ui.action.RepaintAction;
 import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -1048,7 +1048,7 @@ public class FindClassPane extends JPanel implements IPreferenced
             {
                 search_ = searchField_.getText().trim();
 
-                if (StringUtil.isNullOrBlank(search_))
+                if (StringUtils.isBlank(search_))
                     statusBar_.setWarning("Enter class to search for");
                 else
                 {

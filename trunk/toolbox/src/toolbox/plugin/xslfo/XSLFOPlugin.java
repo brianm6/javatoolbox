@@ -20,10 +20,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import com.adobe.acrobat.Viewer;
+
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.fop.apps.Fop;
 import org.apache.log4j.Logger;
+
 import org.jedit.syntax.SyntaxStyle;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.Token;
@@ -33,22 +37,19 @@ import toolbox.jedit.JEditPopupMenu;
 import toolbox.jedit.JEditTextArea;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XMLUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.StringInputStream;
-import toolbox.util.ui.explorer.JFileExplorer;
-import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartSplitPane;
+import toolbox.util.ui.explorer.FileExplorerAdapter;
+import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.workspace.IPlugin;
 import toolbox.workspace.IStatusBar;
 import toolbox.workspace.PluginWorkspace;
 import toolbox.workspace.WorkspaceAction;
-
-import com.adobe.acrobat.Viewer;
 
 /**
  * XSLFO Plugin is a simple GUI interface to edit, process and view transformed
@@ -280,7 +281,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
      */
     protected void viewPDFExternal(String outfile)
     {
-        if (StringUtil.isNullOrEmpty(pdfViewerPath_))
+        if (StringUtils.isEmpty(pdfViewerPath_))
         {
             try
             {
@@ -492,7 +493,7 @@ public class XSLFOPlugin extends JPanel implements IPlugin
         xmlArea_.savePrefs(root);
         splitPane_.savePrefs(root);
         
-        if (!StringUtil.isNullOrEmpty(pdfViewerPath_))
+        if (!StringUtils.isEmpty(pdfViewerPath_))
         {
             Element pdf = new Element(NODE_PDF_VIEWER);
             pdf.appendChild(pdfViewerPath_);

@@ -30,10 +30,10 @@ import javax.swing.SwingUtilities;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
-import toolbox.util.StringUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JSmartButton;
@@ -461,7 +461,7 @@ public class JFlipPane extends JPanel
         
         String flipper = XOMUtil.getStringAttribute(root, ATTR_ACTIVE, "");
         
-        if (!StringUtil.isNullOrEmpty(flipper))
+        if (!StringUtils.isEmpty(flipper))
             setActiveFlipper(flipper);
             
         repaint();
