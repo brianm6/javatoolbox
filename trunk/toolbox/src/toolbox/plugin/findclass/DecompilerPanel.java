@@ -21,7 +21,9 @@ import toolbox.jedit.JavaDefaults;
 import toolbox.util.ClassUtil;
 import toolbox.util.ExceptionUtil;
 import toolbox.util.FileUtil;
+import toolbox.util.FontUtil;
 import toolbox.util.StreamUtil;
+import toolbox.util.SwingUtil;
 import toolbox.util.decompiler.Decompiler;
 import toolbox.util.decompiler.DecompilerException;
 import toolbox.util.decompiler.DecompilerFactory;
@@ -136,6 +138,8 @@ public class DecompilerPanel extends JHeaderPanel
         
         JEditTextArea sourceArea = new JEditTextArea(
             new JavaTokenMarker(), defaults);
+        
+        sourceArea.getPainter().setFont(FontUtil.getPreferredMonoFont());
 
         // Hack for circular reference in popup menu            
         ((JEditPopupMenu) defaults.popup).setTextArea(sourceArea);
