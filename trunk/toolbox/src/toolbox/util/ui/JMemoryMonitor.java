@@ -36,10 +36,33 @@ public class JMemoryMonitor extends JComponent
         
     private static final String TEST_STRING = "999/999Mb";
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Metrics.
+     */
     private LineMetrics lineMetrics_;
+    
+    /**
+     * Background gradient start color.
+     */
     private Color progressForeground_;
+    
+    /**
+     * Background gradient end color.
+     */
     private Color progressBackground_;
+    
+    /**
+     * Timer that refreshes the monitor even x number of seconds.
+     */
     private Timer timer_;
+    
+    /**
+     * Custom font for the label.
+     */
     private Font labelFont_;
 
     //--------------------------------------------------------------------------
@@ -101,6 +124,7 @@ public class JMemoryMonitor extends JComponent
         ToolTipManager.sharedInstance().registerComponent(this);
     }
 
+    
     /**
      * @see java.awt.Component#removeNotify()
      */
@@ -110,6 +134,7 @@ public class JMemoryMonitor extends JComponent
         ToolTipManager.sharedInstance().unregisterComponent(this);
         super.removeNotify();
     }
+    
     
     /**
      * @see javax.swing.JComponent#getToolTipText()
@@ -123,6 +148,7 @@ public class JMemoryMonitor extends JComponent
         return usedMemory + "M of " + totalMemory + "M";
     }
 
+    
     /**
      * @see javax.swing.JComponent#getToolTipLocation(java.awt.event.MouseEvent)
      */
@@ -131,6 +157,7 @@ public class JMemoryMonitor extends JComponent
         return new Point(event.getX(), -20);
     }
 
+    
     /**
      * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
      */
@@ -218,7 +245,7 @@ public class JMemoryMonitor extends JComponent
     }
 
     //--------------------------------------------------------------------------
-    // ActionListener Interface
+    // RefreshAction
     //--------------------------------------------------------------------------
 
     /** 
