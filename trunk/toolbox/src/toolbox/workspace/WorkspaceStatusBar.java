@@ -70,7 +70,9 @@ public class WorkspaceStatusBar extends JStatusBar implements IStatusBar
         {
             public void mousePressed(MouseEvent e)
             {
+                setStatus("Garbage collecting...");
                 System.gc();
+                setStatus("Garbage collecting...done.");
             }
         });
 
