@@ -9,10 +9,30 @@ import org.apache.log4j.Logger;
 import toolbox.util.ArrayUtil;
 
 /**
- * MulticastOutputStream is an OutputStream that has multicast behavior. 
- * Multiple streams can be added to a multicast group so that writes to the 
- * MulticastOutputStream will be channeled to each stream in the group.
+ * An OutputStream that multicasts stream operations to one or more registered 
+ * OutputStreams. 
+ * <p>
+ * Example:
+ * <pre>
+ * MulticastOutputStream mos = new MulticastOutputStream();
  * 
+ * try
+ * {
+ *     mos.addStream(new FileOutputStream("file.txt"));
+ *     mos.addStream(new PipedOutputStream());
+ *     mos.addStream(new DataOutputStream(new StringOutputStream()));
+ *     mos.write("hey ya!".getBytes());
+ * }
+ * catch (Exception e)
+ * {
+ *     System.err.println(e);
+ * }
+ * finally
+ * {
+ *      StreamUtil.close(mos);
+ * }
+ * </pre>
+ *
  * @see toolbox.util.io.test.MulticastOutputStreamTest
  */
 public class MulticastOutputStream extends OutputStream
@@ -84,32 +104,55 @@ public class MulticastOutputStream extends OutputStream
     //--------------------------------------------------------------------------
 
     /**
-     * Writes integer to each stream in the multicast group.
+     * Writes an integer to each stream in the multicast group. If one of the 
+     * writes should fail, the failure is logged and the operation continues. 
      * 
      * @param b Integer to write.
-     * @throws IOException on I/O error.
+     * @throws IOException but really logs them instead.
      */
     public synchronized void write(int b) throws IOException
     {
-        for (int i = 0; i < streams_.length; streams_[i++].write(b));
+        for (int i = 0; i < streams_.length; i++)
+        {
+            try
+            {
+                streams_[i].write(b);
+            }
+            catch (IOException ioe)
+            {
+                logger_.error(ioe);
+            }
+        }
     }
 
     
     /**
-     * Flushes all streams in the multicast group.
+     * Flushes all streams in the multicast group. If one of the streams should
+     * fail, the failure is logged and the operation continues.
      * 
-     * @throws IOException on I/O error.
+     * @throws IOException but really logs them instead. 
      */
     public synchronized void flush() throws IOException
     {
-        for (int i = 0; i < streams_.length; streams_[i++].flush());
+        for (int i = 0; i < streams_.length; i++)
+        {
+            try
+            {
+                streams_[i].flush();
+            }
+            catch (IOException ioe)
+            {
+                logger_.error(ioe);
+            }
+        }
     }
 
     
     /**
-     * Closes all streams in the multicast group.
+     * Closes all streams in the multicast group. If one of the streams should
+     * fail, the failure is logged and the operation continues.
      * 
-     * @throws IOException on I/O error.
+     * @throws IOException but really logs them instead.
      */
     public synchronized void close() throws IOException
     {
