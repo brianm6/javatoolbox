@@ -3,10 +3,10 @@ package toolbox.util.test;
 import java.io.PrintWriter;
 import java.io.Writer;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
 import toolbox.util.ThreadUtil;
@@ -58,7 +58,6 @@ public class ThreadUtilTest extends TestCase
         // Not much to test
         ThreadUtil.sleep(1000);
     }
-
     
     /**
      * Tests join(Thread)
@@ -71,7 +70,6 @@ public class ThreadUtilTest extends TestCase
         t.start();
         ThreadUtil.join(t);
     }
-
 
     /**
      * Tests join(Thread, millis)
@@ -86,7 +84,6 @@ public class ThreadUtilTest extends TestCase
         assertTrue("Thread should still be alive", t.isAlive());
     }
 
-
     /**
      * Tests join()
      */
@@ -96,7 +93,6 @@ public class ThreadUtilTest extends TestCase
         
         ThreadUtil.join(1000);
     }
-
 
     /**
      * Tests run() on a method with no args
@@ -112,7 +108,6 @@ public class ThreadUtilTest extends TestCase
         assertTrue("ping was not executed", target.pingSimpleCalled_);
     }
 
-
     /**
      * Tests run() on a method with a single arg
      * 
@@ -126,7 +121,6 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.run(target, "pingOneArg", "hello").join();
         assertTrue("ping was not executed", target.pingOneArgCalled_);
     }
-
 
     /**
      * Tests run() on a method with simple args and arrays
@@ -149,7 +143,6 @@ public class ThreadUtilTest extends TestCase
         ThreadUtil.run(target, "pingArgs", params).join();
         assertTrue("pingArgs was not executed", target.pingArgsCalled_);
     }
-
  
     /**
      * Tests run() on a method with complex arg types
@@ -200,7 +193,6 @@ public class ThreadUtilTest extends TestCase
         
     } 
 
-
     /**
      * Tests run() on a method with primitive args
      * 
@@ -225,7 +217,6 @@ public class ThreadUtilTest extends TestCase
         assertTrue("pingPrimitive was not executed", 
             target.pingPrimitiveCalled_);
     } 
- 
  
     /**
      * Tests from an inner class
@@ -313,14 +304,19 @@ public class ThreadUtilTest extends TestCase
          */
         public void pingPrimitive(int a, /*char c,*/ boolean b, long l, float f)
         {
+          
             pingPrimitiveCalled_ = true;
             
             logger_.info("Called pingPrimitive with " + 
                 a + " " + b + " " + l + " " + f);
         }
         
+        /**
+         * Test method which will accept Writer/PrintWriter
+         */
         public void pingAssignable(Writer w)
         {
+            logger_.info(w.getClass().getName());
             pingAssignableCalled_ = true;        
         }
         
