@@ -59,6 +59,7 @@ public class JSourceViewPlugin implements IPlugin
      */
     public void savePrefs(Properties prefs)
     {
+        sourceView_.savePrefs(prefs);
     }
 
     /**
@@ -66,6 +67,7 @@ public class JSourceViewPlugin implements IPlugin
      */
     public void applyPrefs(Properties prefs)
     {
+        sourceView_.applyPrefs(prefs);
     }
 
     /**
