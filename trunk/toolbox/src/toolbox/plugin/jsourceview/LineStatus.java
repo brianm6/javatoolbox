@@ -1,7 +1,8 @@
 package toolbox.jsourceview;
 
 /**
- * LineStatus
+ * LineStatus represents the current status of a line of source while it
+ * is being parsed.
  */
 public class LineStatus
 {
