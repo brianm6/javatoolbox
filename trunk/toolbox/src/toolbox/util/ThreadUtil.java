@@ -1,11 +1,8 @@
 package toolbox.util;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
-import toolbox.util.reflect.SmartClassManager;
-import toolbox.util.reflect.SmartClass;
-
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.log4j.Category;
 
 /**
@@ -72,6 +69,20 @@ public final class ThreadUtil
         }
     }
 
+
+    /**
+     * Runs an objects method in a thread 
+     * 
+     * @param   target      Object which contains method to run
+     * @param   methodName  Name of the method to execute
+     * @param   param       Method's single argument
+     * @return  Thread that method is/was executed on
+     */
+    public static Thread run(Object target, String methodName, Object param)
+    {
+        return run(target, methodName, new Object[] {param});
+    }
+
     
     /**
      * Runs an objects method in a thread 
@@ -83,82 +94,88 @@ public final class ThreadUtil
      */
     public static Thread run(Object target, String methodName, Object[] params)
     {
-        /* create thread with a MethodRunner and start */
+        // Create thread with a MethodRunner and start
         Runnable runnable = new MethodRunner(target, methodName, params);
         Thread thread = new Thread(runnable);
-        thread.start();
-        return thread;
+        thread.start(); 
+        return thread; 
     }
-}
 
-
-/**
- * Runs a method on a given object in a thread
- */        
-class MethodRunner implements Runnable
-{
-    /** Name of method to execute **/
-    private String method;
-    
-    /** Object to execute the method on **/
-    private Object target;
-    
-    /** Parameters to pass on the method invocation **/
-    private Object[] params;
-
-    /**
-     * Creates a MethodRunner
-     * 
-     * @param  newTarget   Target object of method invocation
-     * @param  newMethod   Method name on target object
-     * @param  newParams   List of parameters to the method
-     */
-    public MethodRunner(Object newTarget, String newMethod, Object[] newParams)
-    {
-        target = newTarget;
-        method = newMethod;                    
-        params = newParams;
-    }
+    //--------------------------------------------------------------------------
+    //  Inner Classes
+    //--------------------------------------------------------------------------
     
     /**
-     * Executes the method provided at time of construction
-     */
-    public void run()
+     * Runs a method on a given object in a thread
+     */        
+    static class MethodRunner implements Runnable
     {
-        try
-        {   
-            SmartClass clazz = SmartClassManager.forClass(target.getClass());
-            clazz.invoke(target, method, params);
-        }
-        catch (NoSuchMethodException nsme)
+        /** 
+         * Name of method to execute 
+         */
+        private String method;
+        
+        /** 
+         * Object to execute the method on 
+         */
+        private Object target;
+        
+        /** 
+         * Parameters to pass on the method invocation 
+         */
+        private Object[] params;
+    
+        /**
+         * Creates a MethodRunner
+         * 
+         * @param  newTarget   Target object of method invocation
+         * @param  newMethod   Method name on target object
+         * @param  newParams   List of parameters to the method
+         */
+        public MethodRunner(Object newTarget, String newMethod, Object[] newParams)
         {
-            ThreadUtil.logger_.error(toString(), nsme);
-        }        
-        catch (IllegalAccessException iae)
-        {
-            ThreadUtil.logger_.error("run", iae);
-        }
-        catch (InvocationTargetException ite)
-        {
-            ThreadUtil.logger_.error("run", ite);
-        }
-        catch (Exception e)
-        {
-            ThreadUtil.logger_.error("run", e);
+            target = newTarget;
+            method = newMethod;                    
+            params = newParams;
+            
+            if (params == null)
+                params = new Object[0];
         }
         
-    }
-    
-    /**
-     * Dump to string
-     * 
-     * @return  Object state as a string
-     */
-    public String toString()
-    {
-        return "\n" +
-               "target=" + target.getClass().getName() + "\n" +
-               "method=" + method + "\n" +
-               "params=" + (params != null ? ArrayUtil.toString(params) : null);
+        /**
+         * Executes the method provided at time of construction
+         */
+        public void run()
+        {
+            try
+            {   
+                MethodUtils.invokeMethod(target, method, params);
+            }
+            catch (NoSuchMethodException nsme)
+            {
+                ThreadUtil.logger_.error(toString(), nsme);
+            }        
+            catch (IllegalAccessException iae)
+            {
+                ThreadUtil.logger_.error("run", iae);
+            }
+            catch (InvocationTargetException ite)
+            {
+                ThreadUtil.logger_.error("run", ite);
+            }
+        }
+        
+        /**
+         * Dump to string
+         * 
+         * @return  Object state as a string
+         */
+        public String toString()
+        {
+            return "\n" +
+                   "target=" + target.getClass().getName() + "\n" +
+                   "method=" + method + "\n" +
+                   "params=" + (params != null ? ArrayUtil.toString(params) : null);
+        }
     }
 }
