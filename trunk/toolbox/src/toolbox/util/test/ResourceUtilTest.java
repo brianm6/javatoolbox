@@ -22,17 +22,32 @@ public class ResourceUtilTest extends TestCase
 {
     private static final Logger logger_ = 
         Logger.getLogger(ResourceUtilTest.class);
-
+    
+    /**
+     * String embedded in FILE_TEXT used to verify correctness
+     */
     private static final String MATCH_STRING = "ResourceUtil";
     
+    /**
+     * URL to test getResource() via HTTP 
+     */
     private static final String TEST_URL = "http://www.yahoo.com/index.html";
     
+    /**
+     * Text file to load as a resource
+     */
     private static final String FILE_TEXT = 
         "/toolbox/util/test/ResourceUtilTest_Text.txt";
         
+    /**
+     * Binary file to load as a resource
+     */
     private static final String FILE_BINARY =
         "/toolbox/util/test/ResourceUtilTest_Binary.dat";
         
+    /**
+     * Image file to load as a resource
+     */
     private static final String FILE_IMAGE = 
         "/toolbox/util/test/ResourceUtilTest_Image.gif";
         
@@ -63,25 +78,25 @@ public class ResourceUtilTest extends TestCase
     {
         logger_.info("Running testExportToClass...");
         
-//        String treeOpen  = "images" + File.separator + "tree_open.gif";
-//    
-//        String filename = "TreeOpenGIF.java";
-//            
-//        String javaSrc = ResourceUtil.exportToClass(
-//            treeOpen, 
-//            "toolbox.util.ui", 
-//            "TreeOpenGIF",
-//            FileUtil.getTempDir());
-//    
-//        logger_.info("Wrote TreeOpenGIF.java to " + 
-//            FileUtil.getTempDir().getAbsolutePath() + " \n" + javaSrc);
-//            
-//        String compareSrc = FileUtil.getFileContents(
-//            FileUtil.getTempDir().getAbsolutePath() + 
-//            File.separator +
-//            filename);
-//            
-//        assertEquals("files don't match" , javaSrc, compareSrc);
+        //String treeOpen  = "images" + File.separator + "tree_open.gif";
+        //
+        //String filename = "TreeOpenGIF.java";
+        //    
+        //String javaSrc = ResourceUtil.exportToClass(
+        //    treeOpen, 
+        //    "toolbox.util.ui", 
+        //    "TreeOpenGIF",
+        //    FileUtil.getTempDir());
+        //
+        //logger_.info("Wrote TreeOpenGIF.java to " + 
+        //    FileUtil.getTempDir().getAbsolutePath() + " \n" + javaSrc);
+        //    
+        //String compareSrc = FileUtil.getFileContents(
+        //    FileUtil.getTempDir().getAbsolutePath() + 
+        //    File.separator +
+        //    filename);
+        //    
+        //assertEquals("files don't match" , javaSrc, compareSrc);
     }
     
     /**
