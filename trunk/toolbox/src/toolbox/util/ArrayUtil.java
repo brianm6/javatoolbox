@@ -94,44 +94,39 @@ public final class ArrayUtil
     }
 
     /**
-     * Returns subset of a given array of objects
+     * Returns the subset of an array of objects
      * 
-     * @param    array       The array to get subset of
-     * @param    startIndex  The starting index (inclusive)
-     * @param    endIndex    The ending index (inclusive)
-     * @return   Subset of array
+     * @param   array       Array to extract subset from
+     * @param   startIndex  Starting index of the subset (zero based)
+     * @param   endIndex    Ending index (inclusive)
+     * @return  Subset of the array
+     * @throws  IllegalArgumentException if indices are out of bounds.
      */
     public static Object[] subset(Object[] array, int startIndex, int endIndex)
     {
-        int      len       = array.length;
-        Class    classType = array.getClass().getComponentType();
-        Object[] subArray  = null;
-                
+        int      len    = array.length;
+        Class    clazz  = array.getClass().getComponentType();                
 
         if (len == 0)
-            return (Object[])Array.newInstance(classType, 0);
-        else
-        {        
-            // Do bounds checking
-            Assert.isTrue(startIndex <= endIndex, 
-                          "Start index " + startIndex + 
-                          " must be <= end index of " + 
-                          endIndex);
-                          
-            Assert.isTrue(endIndex < len, 
-                          "End index " + endIndex + 
-                          " must be < array length of " + len);
-    
-            // Copy array
-            int subLen = (endIndex - startIndex) + 1;
-            subArray = (Object[])Array.newInstance(classType, subLen);
-            int s = 0;
-    
-            for (int i = startIndex; i <= endIndex;)
-                subArray[s++] = array[i++];
+        {
+            return (Object[]) Array.newInstance(clazz, 0);
         }
-
-        return subArray;
+        else if (startIndex >= 0        &&
+                 startIndex <= len - 1  &&
+                 startIndex <= endIndex &&
+                 endIndex < len)
+        { 
+            int subLen = endIndex - startIndex + 1;
+            Object[] subset = (Object[])Array.newInstance(clazz, subLen);
+            System.arraycopy(array, startIndex, subset, 0, subLen);
+            return subset;
+        }
+        else
+        {
+            throw new IllegalArgumentException(
+                "Subset [" + startIndex + ", " + endIndex + "] " +
+                "is not valid for the range [0," + (len-1) + "]");
+        }
     }
 
     /**
@@ -281,15 +276,15 @@ public final class ArrayUtil
      * Concats two arrays (one right after the other) with homogenous content.
      * Arrays must contain elements of the same type!
      * 
-     * @param    head  Array at front
-     * @param    tail  Array at back
-     * @return   Concatenated array
+     * @param   head  Array at the head of the resulting array
+     * @param   tail  Array at the tail of the resulting array
+     * @return  Concatenated array
      */
     public static Object[] concat(Object[] head, Object[] tail)
     {
         int      len    = head.length + tail.length;
         Class    clazz  = head.getClass().getComponentType();
-        Object[] result = (Object[])Array.newInstance(clazz, len);
+        Object[] result = (Object[]) Array.newInstance(clazz, len);
         
         System.arraycopy(head, 0, result, 0, head.length);
         System.arraycopy(tail, 0, result, head.length, tail.length);
