@@ -400,7 +400,7 @@ public class JSourceView extends JFrame implements ActionListener
             if (cancel_)
                 return;
                 
-            Thread.currentThread().yield();
+            Thread.yield();
             
             // Process files in current directory
             File srcFiles[] = file.listFiles(sourceFilter_);
@@ -483,7 +483,7 @@ public class JSourceView extends JFrame implements ActionListener
                     tableModel_.addRow(tableRow);
                 }
                 
-                Thread.currentThread().yield();
+                Thread.yield();
             }
         
             // Make separator row
