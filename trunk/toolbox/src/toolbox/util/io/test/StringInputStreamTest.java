@@ -1,10 +1,11 @@
 package toolbox.util.io.test;
 
-import org.apache.log4j.Logger;
-
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.apache.log4j.Logger;
+
+import toolbox.util.Stringz;
 import toolbox.util.ThreadUtil;
 import toolbox.util.io.StringInputStream;
 
@@ -52,7 +53,6 @@ public class StringInputStreamTest extends TestCase
         assertEquals("String read from stream doesn't match", str, compare);
     }
     
-    
     /**
      * Tests the read() method when stream is empty
      * 
@@ -69,7 +69,6 @@ public class StringInputStreamTest extends TestCase
             
         assertEquals("read() should return -1", -1, sis.read());
     }
-
     
     /**
      * Tests available() method
@@ -94,7 +93,6 @@ public class StringInputStreamTest extends TestCase
         assertEquals("available is incorrect", many.length(), sis.available());
     }
     
-    
     /** 
      * Tests read on an empty stream with ignore EOF set to true
      * 
@@ -113,6 +111,9 @@ public class StringInputStreamTest extends TestCase
         
         for (int i=0; i<iterations; i++)                  
         {
+            if (i == 2)
+                logger_.info(Stringz.NL + sis.toString());
+                
             int c = sis.read();
             logger_.info("Read: " + (char)c);
             assertEquals('x', (char)c);
@@ -152,10 +153,10 @@ public class StringInputStreamTest extends TestCase
     /**
      * Stuffs a stream
      * 
-     * @param  sis          Stream to stuff
-     * @param  delay        Delay in ms
-     * @param  s            String being stuffed
-     * @param  iterations   Number of iterations
+     * @param  sis         Stream to stuff
+     * @param  delay       Delay in ms
+     * @param  s           String being stuffed
+     * @param  iterations  Number of iterations
      */
     public void stuffStream(StringInputStream sis, int delay, String s, 
         int iterations) 
