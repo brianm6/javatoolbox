@@ -44,8 +44,6 @@
  * =============================================================================
  * TODO: Customize SQLFormatter formatting options
  *       Change formatter to leave "select *" on the same line. Apply to all
- * TODO: check out sql formatter in http://quantum.sourceforge.net/screen_shots.html
- * TODO: Build error pane because dialog boxes are annoying
  * TODO: icons for execute all, execute selected, execute current
  * TODO: Ctrl-Up/Down should scroll through query history
  * TODO: Update ExecuteCurrentAction to execute multiple sql statements within
@@ -95,6 +93,7 @@
       <action type="add"   >Added realtime filtering to QueryPlugin results pane</action>              
       <action type="add"   >Added this changes report to maven</action>
       <action type="update">Upgraded to cvs 1.12.9 to get maven-statcvs-plugin working</action>
+      <action type="add"   >QueryPlugin error messages can now be redirected to the results pane.</action>
     </release>
 
     <release version="2.0" date="June 2004">
