@@ -27,7 +27,7 @@ public class FileUtilTest extends TestCase
     /**
      * Entrypoint.
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -510,6 +510,151 @@ public class FileUtilTest extends TestCase
         assertEquals(path, trailed);
     }    
     
+    //--------------------------------------------------------------------------
+    // delete()
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests delete(File).
+     * 
+     * @throws Exception on error
+     */
+    public void testDeleteByFile() throws Exception
+    {
+        logger_.info("Running testDeleteByFile...");
+        
+        String file = FileUtil.generateTempFilename();
+        FileUtil.setFileContents(file, "test data", false);
+        File f = new File(file);
+        assertTrue(f.exists());
+        FileUtil.delete(f);
+        assertTrue(!f.exists());
+    }
+    
+    
+    /**
+     * Tests delete(String).
+     * 
+     * @throws Exception on error
+     */
+    public void testDeleteByFilename() throws Exception
+    {
+        logger_.info("Running testDeleteByFilename...");
+        
+        String file = FileUtil.generateTempFilename();
+        FileUtil.setFileContents(file, "test data", false);
+        File f = new File(file);
+        assertTrue(f.exists());
+        FileUtil.delete(file);
+        assertTrue(!f.exists());
+    }
+    
+    
+    /**
+     * Tests delete() on a non-existant file.
+     * 
+     * @throws Exception on error
+     */
+    public void testDeleteBogusFile() throws Exception
+    {
+        logger_.info("Running testDeleteBogusFile...");
+        
+        try
+        {
+            File f = new File("some_bogus_file");
+            FileUtil.delete(f);
+            assertNotNull("Success");
+        }
+        catch (Exception e)
+        {
+            // Delete should be quiet no matter what so we don't expect an
+            // exception to be thrown on a non-existant file.
+            fail("Delete of non-existant file should not generate an error.");   
+        }
+        
+        try
+        {
+            FileUtil.delete("some_bogus_file");
+            assertNotNull("Success");
+        }
+        catch (Exception e)
+        {
+            // Delete should be quiet no matter what so we don't expect an
+            // exception to be thrown on a non-existant file.
+            fail("Delete of non-existant file should not generate an error.");   
+        }
+    }
+    
+    
+    /**
+     * Tests delete() passed a null object.
+     * 
+     * @throws Exception on error
+     */
+    public void testDeleteNull() throws Exception
+    {
+        logger_.info("Running testDeleteNull...");
+        
+        try
+        {
+            FileUtil.delete((File) null);
+            assertNotNull("Success");
+        }
+        catch (Exception e)
+        {
+            fail("Delete error for null should be suppressed.");   
+        }
+        
+        try
+        {
+            FileUtil.delete((String) null);
+            assertNotNull("Success");
+        }
+        catch (Exception e)
+        {
+            fail("Delete error for null should be suppressed.");   
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // getExtension()
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests getExtension(String)
+     */
+    public void testGetExtensionByFilename()
+    {
+        logger_.info("Running testGetExtensionByFilename...");
+        
+        assertEquals("txt", FileUtil.getExtension("file.txt"));
+        assertEquals("txt", FileUtil.getExtension("file.name.txt"));
+        assertEquals("txt", FileUtil.getExtension(".txt"));
+        assertEquals("", FileUtil.getExtension("noextension"));
+        assertEquals("", FileUtil.getExtension(""));
+        assertEquals("", FileUtil.getExtension("file.txt."));
+    }
+    
+    
+    /**
+     * Tests getExtension(File)
+     */
+    public void testGetExtensionByFile()
+    {
+        logger_.info("Running testGetExtensionByFile...");
+        
+        File t = FileUtil.getTempDir();
+        assertEquals("txt", FileUtil.getExtension(new File(t, "file.txt")));
+        assertEquals("txt", FileUtil.getExtension(new File(t, "file.ame.txt")));
+        assertEquals("txt", FileUtil.getExtension(new File(t, ".txt")));
+        assertEquals("", FileUtil.getExtension(new File(t, "noextension")));
+        assertEquals("", FileUtil.getExtension(new File(t, "")));
+        assertEquals("", FileUtil.getExtension(new File(t, "file.txt.")));
+    }
+    
+    //--------------------------------------------------------------------------
+    // Misc
+    //--------------------------------------------------------------------------
     
     /**
      * Tests matchPlatformSeparator().
@@ -579,23 +724,6 @@ public class FileUtilTest extends TestCase
                 "c:" + s + "a" + s + "c" + s + ".." + s + "file.txt"));
     }
     
-    
-    /**
-     * Tests delete().
-     * 
-     * @throws Exception on error
-     */
-    public void testDelete() throws Exception
-    {
-        logger_.info("Running testDelete...");
-        
-        String file = FileUtil.generateTempFilename();
-        FileUtil.setFileContents(file, "test data", false);
-        File f = new File(file);
-        assertTrue(f.exists());
-        FileUtil.delete(file);
-        assertTrue(!f.exists());
-    }
     
     
     /**
@@ -675,38 +803,5 @@ public class FileUtilTest extends TestCase
         // TODO: write me
         
         //assertTrue(true);
-    }
-    
-    
-    /**
-     * Tests getExtension(String)
-     */
-    public void testGetExtensionByFilename()
-    {
-        logger_.info("Running testGetExtensionByFilename...");
-        
-        assertEquals("txt", FileUtil.getExtension("file.txt"));
-        assertEquals("txt", FileUtil.getExtension("file.name.txt"));
-        assertEquals("txt", FileUtil.getExtension(".txt"));
-        assertEquals("", FileUtil.getExtension("noextension"));
-        assertEquals("", FileUtil.getExtension(""));
-        assertEquals("", FileUtil.getExtension("file.txt."));
-    }
-    
-    
-    /**
-     * Tests getExtension(File)
-     */
-    public void testGetExtensionByFile()
-    {
-        logger_.info("Running testGetExtensionByFile...");
-        
-        File t = FileUtil.getTempDir();
-        assertEquals("txt", FileUtil.getExtension(new File(t, "file.txt")));
-        assertEquals("txt", FileUtil.getExtension(new File(t, "file.ame.txt")));
-        assertEquals("txt", FileUtil.getExtension(new File(t, ".txt")));
-        assertEquals("", FileUtil.getExtension(new File(t, "noextension")));
-        assertEquals("", FileUtil.getExtension(new File(t, "")));
-        assertEquals("", FileUtil.getExtension(new File(t, "file.txt.")));
     }
 }
