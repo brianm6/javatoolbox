@@ -10,6 +10,7 @@ import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.explorer.action.CreateDirAction;
 import toolbox.util.ui.explorer.action.DeleteDirAction;
+import toolbox.util.ui.explorer.action.DirPropertiesAction;
 import toolbox.util.ui.explorer.action.RenameDirAction;
 
 /**
@@ -52,6 +53,7 @@ public class DirTreeMouseListener extends AbstractListener
                 popup.add(new CreateDirAction(getExplorer()));
                 popup.add(new DeleteDirAction(getExplorer()));
                 popup.add(new RenameDirAction(getExplorer()));
+                popup.add(new DirPropertiesAction(getExplorer()));
                 getProxy().setFolderPopup(popup);
             }
             
