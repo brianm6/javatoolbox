@@ -48,9 +48,9 @@ public class Dumper
     private Cache cache_ = new Cache();
     
     /**
-     * Dump formatting and output criteria
+     * Dump formatter and configuration
      */
-    private IDumpCriteria criteria_;
+    private IDumpFormatter formatter_;
     
     private static final String SPACER   = "    ";
     private static final String BAR      = "|   ";
@@ -68,17 +68,17 @@ public class Dumper
      */
     public Dumper() throws RESyntaxException
     {
-        this (new BasicDumpCriteria());
+        this (new BasicDumpFormatter());
     }   
 
     /**
-     * Creates a Dumper
+     * Creates an object Dumper
      * 
-     * @param criteria  Dump formatting and output criteria
+     * @param	formatter  Dump formatting and output criteria
      */
-    public Dumper(IDumpCriteria criteria)
+    public Dumper(IDumpFormatter formatter)
     {
-        criteria_ = criteria;
+        formatter_ = formatter;
     }
 
     //--------------------------------------------------------------------------
@@ -194,13 +194,13 @@ public class Dumper
     private void dump(Class clazz,  Object obj, StringBuffer buffer,
         String depth) throws IllegalAccessException
     {
-        if (!criteria_.includeClass(clazz))
+        if (!formatter_.shouldInclude(clazz))
             return;
         
         // Get list of classses fields
         Field[] fields = clazz.getDeclaredFields();
         
-        if (criteria_.sortFields())
+        if (formatter_.sortFields())
             Arrays.sort(fields, new FieldNameComparator());
         
         for (int i = 0; i < fields.length; i++)
@@ -209,7 +209,7 @@ public class Dumper
             field.setAccessible(true);
 
             // Exclude field based on criteria            
-            if (criteria_.includeField(field))
+            if (formatter_.shouldInclude(field))
             {
                 Class  type  = field.getType();
                 Object value = field.get(obj);
@@ -274,7 +274,7 @@ public class Dumper
      */
     public void appendInheritance(Class clazz, StringBuffer buffer)
     {
-        if (criteria_.showInheritance())
+        if (formatter_.showInheritance())
         {
             if (clazz.isPrimitive())
             {
@@ -288,7 +288,7 @@ public class Dumper
                 do
                 {
                     String className = currentClass.getName();
-                    buffer.append(criteria_.formatClass(className));
+                    buffer.append(formatter_.formatClass(className));
 
                     if (!(currentClass == Object.class))
                         buffer.append(" -> ");
@@ -377,17 +377,17 @@ public class Dumper
             indent(buffer, depth);
             buffer.append(txt);
             
-            if (!criteria_.showInheritance())
+            if (!formatter_.showInheritance())
             {
                 String className = tmpClass.getName();
-                buffer.append(criteria_.formatClass(className));
+                buffer.append(formatter_.formatClass(className));
             }
             else
             {
                 do
                 {
                     String className = tmpClass.getName();
-                    buffer.append(criteria_.formatClass(className));
+                    buffer.append(formatter_.formatClass(className));
                     
                     if (!(tmpClass == Object.class))
                         buffer.append(" -> ");
