@@ -11,6 +11,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
 import nu.xom.Attribute;
@@ -77,7 +78,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
      * Field for the passward if the proxy requires authentication. The password
      * is stored in clear text.
      */
-    protected JSmartTextField proxyPasswordField_;
+    protected JPasswordField proxyPasswordField_;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -144,7 +145,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
         p.add(new JSmartLabel("Password", SwingConstants.RIGHT), gbc);
 
         gbc.gridx++;
-        p.add(proxyPasswordField_ = new JSmartTextField(14), gbc);
+        p.add(proxyPasswordField_ = new JPasswordField(14), gbc);
 
         gbc.gridy++;
         p.add(new JSmartButton(new TestProxyAction()), gbc);
@@ -202,7 +203,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
                     {
                         return new PasswordAuthentication(
                             proxyUserNameField_.getText(),
-                            proxyPasswordField_.getText().toCharArray());
+                            proxyPasswordField_.getPassword());
 
                             //proxyPassword == null ? new char[0] : proxyPassword.toCharArray() );
                     }
@@ -304,7 +305,7 @@ public class ProxyView extends JHeaderPanel implements PreferencesView
         httpProxy.addAttribute(
             new Attribute(
                 ATTR_HTTP_PROXY_PASSWORD,
-                proxyPasswordField_.getText().trim()));
+                new String(proxyPasswordField_.getPassword()).trim()));
 
         XOMUtil.insertOrReplace(prefs, httpProxy);
     }
