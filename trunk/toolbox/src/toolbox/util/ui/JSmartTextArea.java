@@ -4,13 +4,14 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.apache.log4j.Logger;
 
 import toolbox.util.Assert;
 import toolbox.util.FontUtil;
@@ -26,6 +27,8 @@ import toolbox.util.ui.plugin.IPreferenced;
  *   <li>Popup menu with cut/copy/paste/save/insert
  *   <li>Capacity limit with the automatic pruning of text
  *   <li>Support to save/restore preferences to XML
+ *   <li>Makes sure all appends are executed on the event dispatch thread
+ *   <li>Popupmenu access to toggle the built in line wrapping
  * </ul>
  */
 public class JSmartTextArea extends JTextArea implements AntiAliased, 
@@ -39,6 +42,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     private static final String   ATTR_ANTIALIAS      = "antialias";
     private static final String   ATTR_CAPACITY       = "capacity";
     private static final String   ATTR_PRUNING_FACTOR = "pruningFactor";
+    private static final String   ATTR_WRAPLINES      = "wrapLines";
     private static final String NODE_FONT             = "Font";
     
     /** 
@@ -49,12 +53,17 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
     /**
      * Check box that toggles autoscroll
      */
-    private JSmartCheckBoxMenuItem autoScrollCheckBox_;
+    private JCheckBoxMenuItem autoScrollCheckBox_;
     
     /** 
      * Check box that toggles antialiasing of text
      */
-    private JSmartCheckBoxMenuItem antiAliasCheckBox_;
+    private JCheckBoxMenuItem antiAliasCheckBox_;
+    
+    /**
+     * Check box that toggles line wrapping
+     */
+    private JCheckBoxMenuItem wrapLinesCheckBox_;
     
     /**
      * Maximum number of characters allowable in the text area before the text
@@ -143,6 +152,9 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
 
         setPruneFactor(XOMUtil.getIntegerAttribute(
             root, ATTR_PRUNING_FACTOR, 0));
+
+        setLineWrap(XOMUtil.getBooleanAttribute(
+            root, ATTR_WRAPLINES, false));
                         
         if (XOMUtil.getFirstChildElement(root, NODE_FONT, null) != null)        
             setFont(FontUtil.toFont(root.getFirstChildElement(NODE_FONT)));
@@ -157,6 +169,7 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         root.addAttribute(new Attribute(ATTR_AUTOSCROLL, isAutoScroll()+""));
         root.addAttribute(new Attribute(ATTR_ANTIALIAS, isAntiAliased()+""));
         root.addAttribute(new Attribute(ATTR_CAPACITY, getCapacity()+""));
+        root.addAttribute(new Attribute(ATTR_WRAPLINES, getLineWrap()+""));
         
         root.addAttribute(
             new Attribute(ATTR_PRUNING_FACTOR,getPruneFactor()+""));
@@ -197,17 +210,17 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         if (SwingUtilities.isEventDispatchThread())
         {
             super.append(str);
-         
             int len = getDocument().getLength();
 
             // Let the pruning begin...            
             if (len > capacity_)
             {
-                int nlen = (int) ((float)pruningFactor_/100 * len);
+                int nlen = (int) ((float) pruningFactor_/100 * len);
                 logger_.debug("Pruning " + len + " to " + nlen);
                 setText(getText().substring(nlen));
             }  
-               
+            
+            // Handle autoscrolling   
             if (isAutoScroll() && str.indexOf('\n') >= 0)
                 scrollToEnd();
         }
@@ -221,6 +234,17 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
                 }
             });
         }
+    }
+    
+    /**
+     * @see javax.swing.JTextArea#setLineWrap(boolean)
+     */
+    public void setLineWrap(boolean wrap)
+    {
+        // Have to keep the cb on the popup menu in sync with the swing comps
+        // internal state.
+        wrapLinesCheckBox_.setSelected(wrap);
+        super.setLineWrap(wrap);
     }
     
     //--------------------------------------------------------------------------
@@ -332,10 +356,13 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
         // Build popup menu and add register with textarea
         autoScrollCheckBox_ = new JSmartCheckBoxMenuItem(new AutoScrollAction());
         antiAliasCheckBox_  = new JSmartCheckBoxMenuItem(new AntiAliasAction());
+        wrapLinesCheckBox_  = new JSmartCheckBoxMenuItem(new WrapLinesAction());
+        
         popupMenu_ = new JTextComponentPopupMenu(this);
         popupMenu_.addSeparator();
         popupMenu_.add(autoScrollCheckBox_);
         popupMenu_.add(antiAliasCheckBox_);
+        popupMenu_.add(wrapLinesCheckBox_);
     }    
 
     //--------------------------------------------------------------------------
@@ -374,7 +401,23 @@ public class JSmartTextArea extends JTextArea implements AntiAliased,
             repaint();
         }
     }
-    
+
+    /**
+     * Toggles line wrapping
+     */
+    class WrapLinesAction extends AbstractAction 
+    {
+        public WrapLinesAction()
+        {
+            super("Wrap Lines");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            setLineWrap(wrapLinesCheckBox_.isSelected());
+        }
+    }
+
     /**
      * Clears the text area
      */
