@@ -8,11 +8,12 @@ import java.text.NumberFormat;
 import org.apache.log4j.Logger;
 
 import toolbox.util.ThreadUtil;
+import toolbox.util.io.Bandwidth;
 import toolbox.util.io.MonitoredOutputStream;
+import toolbox.util.io.ThrottledOutputStream;
 import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputEvent;
 import toolbox.util.io.throughput.ThroughputListener;
-import toolbox.util.io.throughput.ThroughputMonitor;
 import toolbox.util.net.SocketConnection;
 import toolbox.util.service.AbstractService;
 import toolbox.util.service.ServiceException;
@@ -54,9 +55,19 @@ public class Client extends AbstractService
     private MonitoredOutputStream mos_;
     
     /**
+     * Throttles the monitoredoutputstream.
+     */
+    private ThrottledOutputStream tos_;
+    
+    /**
+     * Bandwidth for the throttled output stream.
+     */
+    private Bandwidth bandwidth_;
+    
+    /**
      * Monitors the throughput of the stream.
      */
-    private ThroughputMonitor monitor_;
+    private DefaultThroughputMonitor monitor_;
     
     /**
      * Internal flag used to terminate the connection.
@@ -131,6 +142,7 @@ public class Client extends AbstractService
     {
         setHostname(hostname);
         setPort(port);
+        setBandwidth(new Bandwidth(50000, 50000, Bandwidth.TYPE_BOTH));
     }
 
     //--------------------------------------------------------------------------
@@ -191,6 +203,27 @@ public class Client extends AbstractService
         port_ = port;
     }
 
+    
+    /**
+     * @return
+     */
+    public Bandwidth getBandwidth()
+    {
+        
+        if (tos_ ==  null)
+            return bandwidth_;
+        else
+            return tos_.getBandwidth(); 
+    }
+    
+    
+    public void setBandwidth(Bandwidth bandwidth)
+    {
+        bandwidth_ = bandwidth;
+        if (tos_ != null)
+            tos_.setBandwidth(bandwidth);
+    }
+    
     //--------------------------------------------------------------------------
     // Service Interface 
     //--------------------------------------------------------------------------
@@ -224,14 +257,17 @@ public class Client extends AbstractService
                     mos_.getThroughputMonitor().setSampleInterval(1000);
                     mos_.getThroughputMonitor().setMonitoringThroughput(true);
                     
+                    tos_ = new ThrottledOutputStream(mos_);
+                    tos_.setBandwidth(bandwidth_);
+                    
                     byte[] b = "abcdefghijklmnopqrstuvwxyz123456789".getBytes();
             
                     while (!stopped_) {
-                        mos_.write(b);
+                        tos_.write(b);
                         ThreadUtil.sleep(0);
                     }
             
-                    mos_.flush();
+                    tos_.flush();
                     conn_.close();
                 }
                 catch (IOException ioe)
@@ -333,4 +369,5 @@ public class Client extends AbstractService
                 + " bytes/s");
         }
     }
+
 }
