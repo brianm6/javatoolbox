@@ -59,12 +59,10 @@ import toolbox.util.ui.table.TableSorter;
  */
 public class JSourceView extends JPanel implements IPreferenced
 {
-    // TODO: Update Queue to BlockingQueue
     // TODO: Figure out how to save table column sizes
     // TODO: Add chart for visualization
     // TODO: Custom table cell renders to color code unusually high or low 
     //       numbers, etc
-    // TODO: Add regex filter to include/exclude files
 
     //--------------------------------------------------------------------------
     // Constants
