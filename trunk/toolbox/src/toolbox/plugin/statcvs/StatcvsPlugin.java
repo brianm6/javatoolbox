@@ -55,7 +55,6 @@ import toolbox.util.ui.layout.ParagraphLayout;
 public class StatcvsPlugin extends JPanel implements IPlugin
 {
     // TODO: Add nuke checkout dir
-    // TODO: Implement recent pattern
     // TODO: Add support for projects that span multiple modules
     
     private static final Logger logger_ = 
@@ -556,6 +555,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     // Inner Classes
     //--------------------------------------------------------------------------
     
+    /**
+     * Data object that encapsulates information related to a CVS project
+     */
     class CVSProject 
     {
         private static final String NODE_CVSPROJECT  = "CVSProject";
@@ -588,11 +590,15 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         /** Field that contains the URL to view the generated statcvs report */
         private String launchURL_;
         
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
-         * Creates a CVSProject from XML
+         * Creates a CVSProject from its XML representation
          *
          * @param  xml  String containing a valid XML persistence of CVSProject
-         * @throws IOException on I/O error 
+         * @throws Exception on error 
          */
         public CVSProject(String xml) throws Exception
         {
@@ -618,7 +624,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         }
         
         /**
-         * Arg constructor 
+         * Creates a CVSProject 
          * 
          * @param project      Project name
          * @param module       CVS module name
@@ -641,10 +647,14 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             setLaunchURL(launchURL);
         }
 
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
+        
         /**
          * Returns an XML representation of the data contained in this project.
          * 
-         * @return  XML string
+         * @return XML string
          */
         public String toXML()
         {
@@ -654,7 +664,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         /**
          * Returns a DOM representation of the data contained in this project.
          * 
-         * @return  DOM tree
+         * @return DOM tree
          */    
         public Element toDOM()
         {
@@ -885,7 +895,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class LoginAction extends StatcvsAction
     {
-        public LoginAction()
+        LoginAction()
         {
             super("Login", true, null, statusBar_);
         }
@@ -923,7 +933,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */    
     class CheckoutAction extends StatcvsAction
     {
-        public CheckoutAction()
+        CheckoutAction()
         {
             super("Checkout", true, null, statusBar_);
         }
@@ -962,7 +972,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */    
     class LogAction extends StatcvsAction
     {
-        public LogAction()
+        LogAction()
         {
             super("Generate CVS Log", true, null, statusBar_);
         }
@@ -1008,7 +1018,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */    
     class GenerateStatsAction extends StatcvsAction
     {
-        public GenerateStatsAction()
+        GenerateStatsAction()
         {
             super("Generate Stats", true, null, statusBar_);
         }
@@ -1055,7 +1065,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class LaunchAction extends StatcvsAction
     {
-        public LaunchAction()
+        LaunchAction()
         {
             super("View stats report", false, null, null);
         }
@@ -1097,9 +1107,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
     {
         SaveAction()
         {
-            super("", ImageCache.getIcon("/toolbox/util/ui/images/Save.gif"));
+            super("", ImageCache.getIcon(ImageCache.IMAGE_SAVE));
             putValue(SHORT_DESCRIPTION, "Saves the project");
-            
         }
         
         public void actionPerformed(ActionEvent e)
@@ -1116,7 +1125,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
                 
                 for (int i=0; i< projectCombo_.getItemCount(); i++)
                 {
-                    CVSProject project = (CVSProject) projectCombo_.getItemAt(i);
+                    CVSProject project = (CVSProject)projectCombo_.getItemAt(i);
                     
                     if (project.getProject().equals(current))
                     {
@@ -1156,9 +1165,9 @@ public class StatcvsPlugin extends JPanel implements IPlugin
      */
     class DeleteAction extends AbstractAction
     {
-        public DeleteAction()  
+        DeleteAction()  
         {
-            super("", ImageCache.getIcon("/toolbox/util/ui/images/Delete.gif"));
+            super("", ImageCache.getIcon(ImageCache.IMAGE_DELETE));
             putValue(SHORT_DESCRIPTION, "Deletes the project");
         }
     
