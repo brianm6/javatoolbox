@@ -80,12 +80,12 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * XML: Node that contains 0..n RecentTail nodes 
      */
-    private static final String NODE_RECENT       = "Recent";
+    private static final String NODE_RECENT = "Recent";
     
     /**
      * XML: Node that contains all tail information to re-hydrate a given tail
      */
-    private static final String NODE_RECENT_TAIL  = "RecentTail";
+    private static final String NODE_RECENT_TAIL = "RecentTail";
          
     /** 
      * Menu of recently tailed files. A tail becomes 'recent' when it is closed. 
@@ -133,7 +133,7 @@ public class JTail extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
     
     /**
-     * Default constructor
+     * Creates a JTail
      */
     public JTail()
     {
@@ -230,7 +230,7 @@ public class JTail extends JFrame implements IPreferenced
     /**
      * Adds a tail of the given configuration to the output area
      * 
-     * @param  config  Tail configuration
+     * @param config Tail configuration
      * @throws IOException on I/O error
      */     
     protected void addTail(ITailPaneConfig config) throws IOException
@@ -246,9 +246,12 @@ public class JTail extends JFrame implements IPreferenced
         
         // Tab config
         tabbedPane_.addTab(makeTabLabel(config), tailPane);
+        
         tabbedPane_.setToolTipTextAt(
-            tabbedPane_.getTabCount()-1, makeTabLabel(config));
+            tabbedPane_.getTabCount()-1, makeTabToolTip(config));
+            
         tabbedPane_.setSelectedComponent(tailPane);
+        
         statusBar_.setStatus("Added tail for " + 
             ArrayUtil.toString(config.getFilenames(), false));
     }
@@ -299,12 +302,40 @@ public class JTail extends JFrame implements IPreferenced
         StringBuffer tabname = new StringBuffer();
         String[] filenames = config.getFilenames();
         tabname.append("<html><center>");
+        
         for (int i=0; i<filenames.length; i++)
         {
             tabname.append(FileUtil.stripPath(filenames[i]));
+            
             if (i+1 < filenames.length)
                 tabname.append("<br>");
         }
+        
+        tabname.append("</center></html>");
+        
+        return tabname.toString();
+    }    
+
+    /**
+     * Makes an easy to read tooltip for the TailPane tab
+     * 
+     * @param config TailPane configuration
+     * @return String
+     */
+    protected String makeTabToolTip(ITailPaneConfig config)
+    {
+        StringBuffer tabname = new StringBuffer();
+        String[] filenames = config.getFilenames();
+        tabname.append("<html><center>");
+        
+        for (int i=0; i<filenames.length; i++)
+        {
+            tabname.append(filenames[i]);
+            
+            if (i+1 < filenames.length)
+                tabname.append("<br>");
+        }
+        
         tabname.append("</center></html>");
         
         return tabname.toString();
