@@ -100,7 +100,7 @@ public class PrintableOutputStreamTest extends TestCase
         assertEquals(expected, sos.toString());
 
         // Try with an empty replacement
-        pos.setReplacement("");
+        pos.setSubstitute("");
         sos.getBuffer().setLength(0);
         pos.write(input);
         expected = "abc123";
