@@ -111,8 +111,11 @@
     <!-- =================================================================== -->    
 
 	<release version="2.0" date="October 2004">
-      <action type="add">Util - Added ClassUtils.findInPath() to find executables on the system path</action>
-      <action type="add">Util - Added Create and Delete directory to the JFileExplorer popup menu</action>
+      <action type="add"   >Util - Added ClassUtils.findInPath() to find executables on the system path</action>
+      <action type="add"   >Util - Added Create and Delete directory to the JFileExplorer popup menu</action>
+      <action type="update">FindClassPlugin - Updated Jad decompiler to support decompilation of inner classes</action>
+      <action type="update">Util - Updated the default StateMachine interface to support retrieval of transitions to and from a given state</action>
+      
 	</release>
 
     <!-- =================================================================== -->
