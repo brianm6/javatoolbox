@@ -63,4 +63,31 @@ public class RegexLineFilterTest extends TestCase
         filter.setRegularExpression("ABC");
         assertNull(filter.filter(str));
     }
+    
+    
+    /**
+     * Tests the filter when disabled.
+     */
+    public void testFilterDisabled()
+    {
+        logger_.info("Running testFilterDisabled...");
+        
+        RegexLineFilter d = new RegexLineFilter(".*");
+        d.setEnabled(false);
+        assertEquals("howdy", d.filter("howdy"));        
+    }
+    
+    
+    /**
+     * Tests the filter for null input.
+     */
+    public void testFilterNull()
+    {
+        logger_.info("Running testFilterNull...");
+        
+        RegexLineFilter d = new RegexLineFilter();
+        d.setEnabled(true);
+        assertNull(d.filter(null)); 
+    }
+    
 }
