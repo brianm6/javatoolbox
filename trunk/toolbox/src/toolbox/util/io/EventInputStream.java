@@ -3,8 +3,8 @@ package toolbox.util.io;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+
+import toolbox.util.ArrayUtil;
 
 /**
  * Input stream that generates events for common stream operations and also
@@ -15,7 +15,7 @@ public class EventInputStream extends FilterInputStream
     /**
      * List of registered listeners interested in stream events
      */
-    private List listeners_;
+    private Listener[] listeners_;
     
     /**
      * Total number of bytes read from the stream
@@ -51,7 +51,7 @@ public class EventInputStream extends FilterInputStream
     {
         super(in);
         name_ = name;
-        listeners_ = new ArrayList(2);
+        listeners_ = new Listener[0];
         count_ = 0;
     }
     
@@ -108,7 +108,7 @@ public class EventInputStream extends FilterInputStream
      */
     public void addListener(Listener listener)
     {
-        listeners_.add(listener);
+        listeners_ = (Listener[]) ArrayUtil.add(listeners_, listener);
     }
     
     /** 
@@ -116,8 +116,8 @@ public class EventInputStream extends FilterInputStream
      */
     protected void fireStreamClosed()
     {
-        for (int i=0, n=listeners_.size(); i<n; i++)
-            ((Listener) listeners_.get(i)).streamClosed(this);               
+        for (int i=0; i<listeners_.length; i++)
+            listeners_[i].streamClosed(this);               
     }
 
     /** 
@@ -127,8 +127,8 @@ public class EventInputStream extends FilterInputStream
      */
     protected void fireByteRead(int b)
     {
-        for (int i=0, n=listeners_.size(); i<n; i++)
-            ((Listener) listeners_.get(i)).byteRead(this, b);               
+        for (int i=0; i<listeners_.length; i++)
+            listeners_[i].byteRead(this, b);               
     }
 
     //--------------------------------------------------------------------------
