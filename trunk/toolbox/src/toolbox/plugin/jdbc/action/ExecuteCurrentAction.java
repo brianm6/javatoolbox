@@ -7,24 +7,14 @@ import org.apache.commons.lang.StringUtils;
 import toolbox.jedit.JEditTextArea;
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.StringUtil;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Runs the query and appends the results to the output text area.
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
-public class ExecuteCurrentAction extends WorkspaceAction
+public class ExecuteCurrentAction extends BaseAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Parent plugin.
-     */
-    private final QueryPlugin plugin_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -36,8 +26,12 @@ public class ExecuteCurrentAction extends WorkspaceAction
      */
     public ExecuteCurrentAction(QueryPlugin plugin)
     {
-        super("Execute Current Statement", true, plugin, plugin.getStatusBar());
-        plugin_ = plugin;
+        super(
+            plugin, 
+            "Execute sql statement", 
+            true, 
+            plugin, 
+            plugin.getStatusBar());
     }
 
     //--------------------------------------------------------------------------
@@ -54,7 +48,7 @@ public class ExecuteCurrentAction extends WorkspaceAction
         // By default, execute the selected text
         //
 
-        String sql = plugin_.getSQLEditor().getSelectedText();
+        String sql = getPlugin().getSQLEditor().getSelectedText();
 
         //
         // If no text is selected, then execute the current statement. This
@@ -64,7 +58,7 @@ public class ExecuteCurrentAction extends WorkspaceAction
 
         if (StringUtils.isBlank(sql))
         {
-            JEditTextArea sqlEditor = plugin_.getSQLEditor();
+            JEditTextArea sqlEditor = getPlugin().getSQLEditor();
             int max = sqlEditor.getLineCount();
             int curr = sqlEditor.getCaretLine();
             boolean terminatorFound = false;
@@ -72,10 +66,10 @@ public class ExecuteCurrentAction extends WorkspaceAction
 
             while (curr <= max && !terminatorFound)
             {
-                String line = plugin_.getSQLEditor().getLineText(curr++);
+                String line = getPlugin().getSQLEditor().getLineText(curr++);
                 int pos = -1;
                 
-                if ((pos = line.indexOf(";")) >= 0)
+                if ((pos = line.indexOf(QueryPlugin.SQL_TERMINATOR)) >= 0)
                 {
                     stmt.append(line.substring(0, pos + 1));
                     terminatorFound = true;
@@ -97,21 +91,19 @@ public class ExecuteCurrentAction extends WorkspaceAction
 
         if (StringUtils.isBlank(sql))
         {
-            plugin_.getStatusBar().setInfo("Enter SQL to execute");
+            getPlugin().getStatusBar().setInfo("Enter SQL to execute");
         }
         else
         {
-            //QueryPlugin.logger_.debug("Executing SQL: \n" + sql);
-
-            plugin_.getStatusBar().setInfo("Executing...");
-            String results = plugin_.executeSQL(sql);
-            plugin_.getResultsArea().append(results + "\n");
+            getPlugin().getStatusBar().setInfo("Executing...");
+            String results = getPlugin().executeSQL(sql);
+            getPlugin().getResultsArea().append(results + "\n");
 
             if ((!StringUtils.isBlank(results)) &&
                 (StringUtil.tokenize(results, StringUtil.NL).length < 50))
-                plugin_.getResultsArea().scrollToEnd();
+                getPlugin().getResultsArea().scrollToEnd();
 
-            plugin_.getStatusBar().setInfo("Done");
+            getPlugin().getStatusBar().setInfo("Done");
         }
     }
 }

@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.JDBCUtil;
 import toolbox.util.ui.JSmartOptionPane;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Queries the DB metadata and dumps a list of all columns. If a table name is
@@ -19,17 +18,8 @@ import toolbox.workspace.WorkspaceAction;
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
-public class ListColumnsAction extends WorkspaceAction
+public class ListColumnsAction extends BaseAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Parent plugin.
-     */
-    private QueryPlugin plugin_;
-    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -41,8 +31,7 @@ public class ListColumnsAction extends WorkspaceAction
      */
     public ListColumnsAction(QueryPlugin plugin)
     {
-        super("List Columns", true, true, null, plugin.getStatusBar());
-        plugin_ = plugin;
+        super(plugin, "List Columns", true, null, plugin.getStatusBar());
     }
 
     //--------------------------------------------------------------------------
@@ -54,11 +43,11 @@ public class ListColumnsAction extends WorkspaceAction
      */
     public void runAction(ActionEvent e) throws Exception
     {
-        String tableName = plugin_.getResultsArea().getSelectedText();
+        String tableName = getPlugin().getResultsArea().getSelectedText();
 
         if (StringUtils.isBlank(tableName))
         {
-            JSmartOptionPane.showMessageDialog(plugin_,
+            JSmartOptionPane.showMessageDialog(getPlugin(),
                 "Select text matching the column name from the output " +
                 "area.", "Error", JSmartOptionPane.ERROR_MESSAGE);
         }
@@ -72,7 +61,7 @@ public class ListColumnsAction extends WorkspaceAction
                 DatabaseMetaData meta = conn.getMetaData();
                 ResultSet rs = meta.getColumns(null, null, tableName, null);
                 String tables = JDBCUtil.format(rs);
-                plugin_.getResultsArea().append(tables);
+                getPlugin().getResultsArea().append(tables);
             }
             finally
             {

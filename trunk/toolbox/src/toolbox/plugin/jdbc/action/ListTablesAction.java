@@ -7,24 +7,14 @@ import java.sql.ResultSet;
 
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.JDBCUtil;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Queries the DB metadata and dumps a list of the tables.
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
-public class ListTablesAction extends WorkspaceAction
+public class ListTablesAction extends BaseAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Parent plugin.
-     */
-    private final QueryPlugin plugin_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -36,8 +26,7 @@ public class ListTablesAction extends WorkspaceAction
      */
     public ListTablesAction(QueryPlugin plugin)
     {
-        super("List Tables", true, true, null, plugin.getStatusBar());
-        plugin_ = plugin;
+        super(plugin, "List Tables", true, null, plugin.getStatusBar());
     }
 
     //--------------------------------------------------------------------------
@@ -54,7 +43,7 @@ public class ListTablesAction extends WorkspaceAction
         DatabaseMetaData meta = conn.getMetaData();
         ResultSet rs = meta.getTables(null, null, null, null);
         String tables = JDBCUtil.format(rs);
-        plugin_.getResultsArea().append(tables);
+        getPlugin().getResultsArea().append(tables);
         JDBCUtil.releaseConnection(conn);
     }
 }

@@ -3,8 +3,6 @@ package toolbox.plugin.jdbc.action;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
-
 import org.apache.commons.lang.ClassUtils;
 
 import toolbox.plugin.jdbc.QueryPlugin;
@@ -17,17 +15,8 @@ import toolbox.util.ResourceUtil;
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
-public class SQLReferenceAction extends AbstractAction
+public class SQLReferenceAction extends BaseAction
 {
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Parent plugin.
-     */
-    private final QueryPlugin plugin_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -39,7 +28,7 @@ public class SQLReferenceAction extends AbstractAction
      */
     public SQLReferenceAction(QueryPlugin plugin)
     {
-        plugin_ = plugin;
+        super(plugin, "SQL Reference", false, null, null);
     }
 
     //--------------------------------------------------------------------------
@@ -47,10 +36,9 @@ public class SQLReferenceAction extends AbstractAction
     //--------------------------------------------------------------------------
     
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(
-     *      java.awt.event.ActionEvent)
+     * @see toolbox.util.ui.SmartAction#runAction(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e)
+    public void runAction(ActionEvent e)
     {
         String sqlRef = File.separator +
             FileUtil.trailWithSeparator(ClassUtil.packageToPath(
@@ -58,8 +46,8 @@ public class SQLReferenceAction extends AbstractAction
 
         sqlRef = sqlRef.replace(File.separatorChar, '/');
 
-        plugin_.getSQLEditor().setText(
-            plugin_.getSQLEditor().getText() + "\n" +
+        getPlugin().getSQLEditor().setText(
+            getPlugin().getSQLEditor().getText() + "\n" +
                 ResourceUtil.getResourceAsString(sqlRef));
     }
 }

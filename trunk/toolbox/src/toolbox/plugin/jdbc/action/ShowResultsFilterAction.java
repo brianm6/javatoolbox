@@ -9,13 +9,12 @@ import org.apache.log4j.Logger;
 
 import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.ui.textarea.DynamicFilterView;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Toggles the visibility of the filter view that is attached to the botton
  * of the results text area.
  */
-public class ShowResultsFilterAction extends WorkspaceAction
+public class ShowResultsFilterAction extends BaseAction
 {
     private static final Logger logger_ = 
         Logger.getLogger(ShowResultsFilterAction.class);
@@ -23,11 +22,6 @@ public class ShowResultsFilterAction extends WorkspaceAction
     //--------------------------------------------------------------------------
     // Fields
     //--------------------------------------------------------------------------
-    
-    /**
-     * Parent plugin.
-     */
-    private QueryPlugin plugin_;
     
     /**
      * Panel to add the filter too.
@@ -50,8 +44,7 @@ public class ShowResultsFilterAction extends WorkspaceAction
      */
     public ShowResultsFilterAction(QueryPlugin plugin, JPanel resultsPanel)
     {
-        super("Show results filter", false, false, null, plugin.getStatusBar());
-        plugin_ = plugin;
+        super(plugin, "Show results filter", false, null, plugin.getStatusBar());
         resultsPanel_ = resultsPanel;
     }
 
@@ -65,7 +58,7 @@ public class ShowResultsFilterAction extends WorkspaceAction
     public void runAction(ActionEvent e) throws Exception
     {
         if (filterView_ == null)
-            filterView_ = new DynamicFilterView(plugin_.getResultsArea());
+            filterView_ = new DynamicFilterView(getPlugin().getResultsArea());
 
         if (filterView_.isShowing())
             resultsPanel_.remove(filterView_);

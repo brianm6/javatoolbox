@@ -9,27 +9,17 @@ import toolbox.plugin.jdbc.QueryPlugin;
 import toolbox.util.ArrayUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.db.SQLFormatter;
-import toolbox.workspace.WorkspaceAction;
 
 /**
  * Formats the current or selected sql statements.
  * 
  * @see toolbox.plugin.jdbc.QueryPlugin
  */
-public class FormatSQLAction extends WorkspaceAction
+public class FormatSQLAction extends BaseAction
 {
     private static final Logger logger_ = 
         Logger.getLogger(FormatSQLAction.class);
     
-    //--------------------------------------------------------------------------
-    // Fields
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Parent plugin.
-     */
-    private final QueryPlugin plugin_;
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -41,8 +31,7 @@ public class FormatSQLAction extends WorkspaceAction
      */
     public FormatSQLAction(QueryPlugin plugin)
     {
-        super("Format", false, null, plugin.getStatusBar());
-        plugin_ = plugin;
+        super(plugin, "Format", false, null, plugin.getStatusBar());
     }
 
     //--------------------------------------------------------------------------
@@ -54,17 +43,17 @@ public class FormatSQLAction extends WorkspaceAction
      */
     public void runAction(ActionEvent e) throws Exception
     {
-        String sql = plugin_.getActiveText();
+        String sql = getPlugin().getActiveText();
 
         if (StringUtils.isBlank(sql))
         {
-            plugin_.getStatusBar().setWarning("Nothing to format.");
+            getPlugin().getStatusBar().setWarning("Nothing to format.");
         }
         else
         {
             sql = StringUtils.replace(sql, "\n", "");
             
-            SQLFormatter formatter = plugin_.getFormatter();
+            SQLFormatter formatter = getPlugin().getFormatter();
             String[] statements = StringUtil.tokenize(sql, ";", true);
             StringBuffer sb = new StringBuffer();
 
@@ -96,7 +85,7 @@ public class FormatSQLAction extends WorkspaceAction
                 
             }
             
-            plugin_.setActiveText(sb.toString());
+            getPlugin().setActiveText(sb.toString());
         }
     }
 }
