@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Unit test for PrintableOutputStream.
+ * 
+ * @see toolbox.util.io.PrintableOutputStream
  */
 public class PrintableOutputStreamTest extends TestCase
 {
@@ -121,5 +123,38 @@ public class PrintableOutputStreamTest extends TestCase
         String input = "\n\t\n\t\n";
         pos.write(input.getBytes());
         assertEquals(input, sos.toString());
+    }
+    
+    
+    /**
+     * Tests the write() method when the stream is disabled.
+     * 
+     * @throws Exception on error.
+     */
+    public void testWriteDisabled() throws Exception
+    {
+        logger_.info("Running testWriteDisabled...");
+        
+        StringOutputStream sos = new StringOutputStream();
+        PrintableOutputStream pos = new PrintableOutputStream(sos);
+        
+        assertTrue(pos.isEnabled());
+        pos.setEnabled(false);
+        
+        byte[] input = new byte[] { 
+            1, 2, 3, 4, 
+            "a".getBytes()[0], 
+            "b".getBytes()[0],
+            "c".getBytes()[0],
+            5, 6, 7, 8,
+            "1".getBytes()[0], 
+            "2".getBytes()[0],
+            "3".getBytes()[0],
+            1, 2, 3, 4};
+        
+        String expected = new String(input);
+        pos.write(input);
+        assertEquals(expected, sos.toString());
+        assertFalse(pos.isEnabled());
     }
 }
