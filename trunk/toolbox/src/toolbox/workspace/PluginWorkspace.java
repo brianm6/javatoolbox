@@ -15,7 +15,6 @@ import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -115,7 +114,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Look and Feel Menu Items. 
      */
     private JMenu lookAndFeelMenu_;
-    
+
+    /**
+     * Log4J specific logging menu.
+     */
+    private LoggingMenu logMenu_;
+
     /** 
      * Preferences stored as XML. 
      */
@@ -141,11 +145,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     private LookAndFeelManager lafManager_;
 
-    /**
-     * Maps Log Level -> JCheckBoxMenuItem.
-     */
-    private Map levelMap_;
-    
     /**
      * Manages the plugin host.
      */
@@ -191,10 +190,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         super("Toolbox");
         init();
         loadPrefs();
-        setLAF(prefs_);
         buildView();
+        setLAF(prefs_);
         applyPrefs(prefs_);        
-        setVisible(true);
+        setVisible(true);        
     }
 
     //--------------------------------------------------------------------------
@@ -353,11 +352,12 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     protected void init()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
         lafManager_ = new LookAndFeelManager();
-        levelMap_ = new HashMap();
-        
         pluginHostManager_ = new PluginHostManager();
+        
+        // Have to build log menu here cuz buildView() requires it to set
+        // the initial value of the console logger checkbox state.
+        logMenu_ = new LoggingMenu();
         
         // TODO: Use plugin host in props file
         //pluginHostManager_.installPluginHost(PluginHostManager.HOST_TABBED);
@@ -409,7 +409,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menubar.add(createFileMenu());
         menubar.add(lafManager_.createLookAndFeelMenu());
         menubar.add(createPreferencesMenu());
-        menubar.add(createLoggingMenu());
+        menubar.add(logMenu_);
         return menubar;
     }
 
@@ -448,42 +448,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         menu.add(pluginHostManager_.createMenu());
         
         return menu;
-    }
-
-    
-    /**
-     * Creates the Logging menu. 
-     * 
-     * @return JMenu
-     */
-    protected JMenu createLoggingMenu()
-    {
-        JMenu fileMenu = new JSmartMenu("Logging");
-        fileMenu.setMnemonic('L');
-        
-        ButtonGroup group = new ButtonGroup();
-        
-        Level[] levels = new Level[]
-        {
-            Level.ALL, 
-            Level.DEBUG, 
-            Level.INFO, 
-            Level.ERROR, 
-            Level.FATAL, 
-            Level.OFF
-        };
-        
-        for (int i=0; i<levels.length; i++)
-        {
-            JCheckBoxMenuItem cbmi =
-                new JSmartCheckBoxMenuItem(new SetLogLevelAction(levels[i]));
-            
-            levelMap_.put(levels[i], cbmi);
-            group.add(cbmi);
-            fileMenu.add(cbmi);
-        }
-        
-        return fileMenu;            
     }
 
     
@@ -733,17 +697,14 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, 800),
             XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, 600));
 
+        // Restore log level even if it conflicts with log4j.xml
         Level level = 
             Level.toLevel(
                 XOMUtil.getStringAttribute(
                     root, ATTR_LOG_LEVEL, 
                         Logger.getLogger("toolbox").getLevel().toString()));
 
-        new SetLogLevelAction(level).actionPerformed(
-            new ActionEvent(this, 1, ""));
-        
-        JCheckBoxMenuItem cbmi = (JCheckBoxMenuItem) levelMap_.get(level);
-        cbmi.setSelected(true);
+        logMenu_.setLogLevel(level);
         
         lafManager_.selectOnMenu();
         
@@ -960,39 +921,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 SwingUtil.setAntiAliased(comps[i++], b));
             SwingUtil.setAntiAliased(PluginWorkspace.this.getJMenuBar(), b);
             PluginWorkspace.this.repaint();
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // SetLogLevelAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Action to set the logging level.
-     */
-    class SetLogLevelAction extends AbstractAction
-    {
-        private Level level_;
-        
-        /**
-         * Creates a SetLogLevelAction.
-         * 
-         * @param level Logging level to activate
-         */
-        SetLogLevelAction(Level level)
-        {
-            super(level.toString());
-            level_ = level;
-        }
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent arg0)
-        {
-            Logger logger = Logger.getLogger("toolbox");
-            logger.setLevel(level_);
         }
     }
 }
