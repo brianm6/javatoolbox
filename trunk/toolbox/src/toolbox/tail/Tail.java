@@ -57,57 +57,59 @@ public class Tail
         Logger.getLogger(Tail.class);
     
     /** 
-     * Default number of lines to print for backlog 
+     * Default number of lines to print from the bottom of an existing file
+     * when a new tail is started. 
      */ 
     public static final int DEFAULT_BACKLOG = 20;
 
     /** 
-     * Tail listeners 
+     * Tail listeners. 
      */ 
     private TailListener[] listeners_;
     
     /** 
-     * Writer where tail output will be sent 
+     * Writer where tail output is sent. 
      */ 
     private Writer sink_;
 
     /** 
-     * Tailer thread 
+     * Thread attached to the tailing behavior. 
      */ 
     private Thread tailer_;
 
     /** 
-     * Reader which tail will follow 
+     * Reader which is the source of data that is tailed. 
      */
     private BufferedReader reader_;
     
     /** 
-     * File which tail will follow 
+     * File which is the source of data that is tailed. 
      */ 
     private File file_;
 
     /** 
-     * Number of lines backlog to print if tailing a file 
+     * Number of lines to print from the bottom of an existing file when a new 
+     * tail is started. 
      */
     private int backlog_;
      
     /** 
-     * Paused state of the tailer (not thread!) 
+     * Paused state of the tail (not thread!). 
      */
     private boolean paused_;
 
     /** 
-     * Flag set if the tailer thread needs to shutdown 
+     * Flag that notifies tail to shutdown gracefully. 
      */ 
     private boolean pendingShutdown_;
     
     /** 
-     * Thread name..mostly for debugging 
+     * Thread name..mostly for debugging. 
      */
     private String threadName_;
     
     //--------------------------------------------------------------------------
-    //  Constructors
+    // Constructors
     //--------------------------------------------------------------------------
     
     /**
@@ -138,6 +140,7 @@ public class Tail
         sink_ = writeTo;
     }
 
+    
     /**
      * Follows the given reader sending the tail output to the writer.
      * 
@@ -155,6 +158,7 @@ public class Tail
         threadName_ = threadName;
     }
     
+    
     /**
      * Returns true if the tail is running, false otherwise. This has no 
      * bearing on whether the tail is paused or not.
@@ -166,8 +170,9 @@ public class Tail
         return (tailer_ != null && tailer_.isAlive());
     }
     
+    
     /**
-     * Starts the tail
+     * Starts the tail.
      * 
      * @throws FileNotFoundException on file error
      */
@@ -185,8 +190,9 @@ public class Tail
             logger_.warn("Tail is already running");
     }
 
+    
     /**
-     * Stops the tail
+     * Stops the tail.
      */
     public void stop()
     {
@@ -219,8 +225,9 @@ public class Tail
             logger_.warn("Tail is already stopped");
     }
 
+    
     /**
-     * Pauses the tail
+     * Pauses the tail.
      */
     public void pause()
     {
@@ -228,8 +235,9 @@ public class Tail
             paused_ = true;
     }
 
+    
     /**
-     * Unpauses the tail 
+     * Unpauses the tail. 
      */
     public void unpause()
     {
@@ -244,6 +252,7 @@ public class Tail
         }
     }
     
+    
     /**
      * Returns true if the tail is paused, false otherwise.
      * 
@@ -254,6 +263,7 @@ public class Tail
         return paused_;
     }
 
+    
     /**
      * Returns the number of backlog lines to print when initially tailing a 
      * file.
@@ -265,6 +275,7 @@ public class Tail
         return backlog_;
     }
 
+    
     /**
      * Sets the number of lines to backlog.
      * 
@@ -275,8 +286,9 @@ public class Tail
         backlog_ = i;
     }
 
+    
     /**
-     * Returns true if tailing a file, false if tailing a reader
+     * Returns true if tailing a file, false if tailing a reader.
      * 
      * @return boolean
      */
@@ -285,6 +297,7 @@ public class Tail
         return file_ != null;        
     }
 
+    
     /**
      * Returns the file being tailed.
      * 
@@ -298,11 +311,9 @@ public class Tail
     //--------------------------------------------------------------------------
     // Overrides java.lang.Object
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Returns string dump of this tail.
-     * 
-     * @return String
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {
@@ -314,7 +325,7 @@ public class Tail
     //--------------------------------------------------------------------------
 
     /**
-     * Wait while the tail is paused
+     * Wait while the tail is paused.
      */
     protected void checkPaused()
     {
@@ -338,8 +349,9 @@ public class Tail
         }
     }
 
+    
     /**
-     * Shows the backlog of the file being followed
+     * Shows the backlog of the file being followed.
      * 
      * @throws IOException on I/O error
      * @throws FileNotFoundException on non-existant file
@@ -368,8 +380,9 @@ public class Tail
         }
     }
 
+    
     /**
-     * Connects to the available source for data. Reader or File
+     * Connects to the available source for data. Reader or File.
      * 
      * @throws FileNotFoundException if file not found
      */
@@ -395,6 +408,7 @@ public class Tail
         listeners_ = (TailListener[]) ArrayUtil.add(listeners_, listener);
     }
 
+    
     /**
      * Removes a listener from the tail.
      * 
@@ -405,8 +419,9 @@ public class Tail
         listeners_ = (TailListener[]) ArrayUtil.remove(listeners_, listener);
     }
     
+    
     /**
-     * Fires event for availability of the next line of the tail
+     * Fires event for availability of the next line of the tail.
      * 
      * @param line Next line of the tail
      */
@@ -435,6 +450,7 @@ public class Tail
         }
     }
 
+    
     /**
      * Fires event when tail is stopped
      */
@@ -442,6 +458,7 @@ public class Tail
     {
         ArrayUtil.invoke(listeners_, "tailStopped", new Object[] { this });
     }
+    
     
     /**
      * Fires event when tail is started
@@ -451,6 +468,7 @@ public class Tail
         ArrayUtil.invoke(listeners_, "tailStarted", new Object[] { this });
     }
     
+    
     /**
      * Fires event when tail has reached the end of stream/reader/etc
      */
@@ -458,6 +476,7 @@ public class Tail
     {
         ArrayUtil.invoke(listeners_, "tailEnded", new Object[] { this });
     }
+    
     
     /**
      * Fires an event when the tail is unpaused 
@@ -467,6 +486,7 @@ public class Tail
         ArrayUtil.invoke(listeners_, "tailUnpaused", new Object[] { this });
     }
     
+    
     /**
      * Fires an event when the tail is paused 
      */
@@ -475,6 +495,7 @@ public class Tail
         ArrayUtil.invoke(listeners_, "tailPaused", new Object[] { this });
     }
 
+    
     /**
      * Fires an event when the tail is re-attached to its source 
      */
@@ -488,7 +509,7 @@ public class Tail
     //--------------------------------------------------------------------------
 
     /**
-     * Continuous tailer
+     * Continuous tailer.
      */        
     class Tailer implements Runnable
     {
