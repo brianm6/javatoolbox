@@ -1,11 +1,21 @@
 package toolbox.junit;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+
+import com.l2fprod.common.propertysheet.PropertySheet;
+import com.l2fprod.common.propertysheet.PropertySheetPanel;
 
 import junit.framework.TestCase;
 
@@ -13,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import toolbox.util.ClassUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.plaf.LookAndFeelUtil;
 
 /**
@@ -197,4 +208,53 @@ public class UITestCase extends TestCase
     protected void launchInPanel(JComponent c)
     {
     }
+    
+    
+    /**
+     * Creates an editable property sheet for the given object.
+     * 
+     * @param bean Java bean.
+     * @return JPanel
+     */
+    protected JPanel createPropertySheet(final Object bean) throws Exception
+    {
+        BeanInfo beanInfo =
+            Introspector.getBeanInfo(
+                bean.getClass(), 
+                bean.getClass().getSuperclass());
+        
+        final PropertySheetPanel propSheet = new PropertySheetPanel();
+        propSheet.setMode(PropertySheet.VIEW_AS_CATEGORIES);
+        propSheet.setProperties(beanInfo.getPropertyDescriptors());
+        
+        //PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
+        //System.out.println(ArrayUtil.toString(pds, true));
+        //
+        //System.out.println(beanInfo.getBeanDescriptor().getBeanClass());
+        //
+        //for (int i=0; i<pds.length; i++)
+        //{
+        //    PropertyDescriptor pd = pds[i];
+        //    System.out.println(pd.getDisplayName());
+        //}
+        
+        propSheet.readFromObject(bean);
+        
+        JButton updateButton = new JSmartButton(new AbstractAction()
+        {
+            {
+                putValue(Action.NAME, "Update");
+            }
+            
+            public void actionPerformed(ActionEvent e)
+            {
+                propSheet.writeToObject(bean);
+            }
+        });
+        
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(propSheet, BorderLayout.CENTER);
+        panel.add(updateButton, BorderLayout.SOUTH);
+        return panel;
+    }    
 }
