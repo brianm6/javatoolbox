@@ -13,3 +13,4 @@ junit*.properties
 *.log
 .externalToolBuilders
 .clover
+sandbox
