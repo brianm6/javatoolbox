@@ -12,23 +12,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
-import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
-import com.jgoodies.plaf.plastic.PlasticTheme;
 
 import nu.xom.Attribute;
 import nu.xom.Builder;
@@ -56,6 +49,8 @@ import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 import toolbox.util.ui.tabbedpane.JSmartTabbedPane;
 import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
+import toolbox.workspace.lookandfeel.LookAndFeelException;
+import toolbox.workspace.lookandfeel.LookAndFeelManager;
 
 /**
  * Generic Frame that accepts pluggable GUI components that are displayed on
@@ -64,12 +59,9 @@ import toolbox.util.ui.tabbedpane.SmartTabbedPaneListener;
  */
 public class PluginWorkspace extends JFrame implements IPreferenced
 {
-     // TODO: Plugin to configure log4j
      // TODO: Make plugins detachable
      // TODO: Make webstart enabled
      // TODO: Write log4j pattern layout that combines class name and method
-     // TODO: Convert project build and layout to Maven
-     // TODO: Added themes for Tiny Look and Feel
     
     //--------------------------------------------------------------------------
     // Constants
@@ -85,6 +77,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     private static final String   ATTR_XCOORD       = "xcoord";
     private static final String   ATTR_YCOORD       = "ycoord";
     private static final String   ATTR_LAF          = "lookandfeel";
+    private static final String   ATTR_LAF_THEME    = "lookandfeel.theme";
     private static final String   ATTR_SELECTED_TAB = "selectedtab";
     private static final String   ATTR_SMOOTH_FONTS = "smoothfonts";
     
@@ -136,7 +129,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     /** 
      * Map of (pluginName:String, pluginInstance:IPlugin) 
      */
-    private Map plugins_ = new SequencedHashMap();
+    private Map plugins_;
     
     /** 
      * Default initialization map for all plugins. Passed into IPlugin.startup() 
@@ -152,6 +145,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      * Smooth fonts check box
      */
     private JCheckBoxMenuItem smoothFontsCheckBoxItem_;
+    
+    /**
+     * Delegate for all things look and feel related.
+     */
+    private LookAndFeelManager lafManager_;
 
     //--------------------------------------------------------------------------
     // Main 
@@ -164,8 +162,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     public static void main(String args[])
     {
-        JFrame.setDefaultLookAndFeelDecorated(true);    // to decorate frames
-        JDialog.setDefaultLookAndFeelDecorated(true);   // to decorate dialogs
+        JFrame.setDefaultLookAndFeelDecorated(false);    // to decorate frames
+        JDialog.setDefaultLookAndFeelDecorated(false);   // to decorate dialogs
+
+        SwingUtil.getLAFs();
 
         try
         {
@@ -189,12 +189,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     public PluginWorkspace() throws Exception
     {
         super("Toolbox");
-        
+        init();
         loadPrefs();
         setLAF(prefs_);
         buildView();
         applyPrefs(prefs_);        
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
@@ -367,6 +366,17 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
+     * Initializes the plugin workspace
+     */
+    protected void init()
+    {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        plugins_ = new SequencedHashMap(); 
+        lafManager_ = new LookAndFeelManager();       
+    }
+    
+    /**
      * Builds the GUI
      */
     protected void buildView()
@@ -401,6 +411,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         JMenuBar menubar = new JMenuBar();
         menubar.add(createFileMenu());
+        menubar.add(lafManager_.createLookAndFeelMenu());
         menubar.add(createPreferencesMenu());
         return menubar;
     }
@@ -415,57 +426,11 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         JMenu fileMenu = new JSmartMenu("File");
         fileMenu.setMnemonic('F');        
         fileMenu.add(new JSmartMenuItem(new PluginsAction()));
-        fileMenu.add(new JSmartMenuItem(new SavePreferencesAction()));
-        fileMenu.add(createLookAndFeelMenu());
         fileMenu.add(new JSmartMenuItem(new GarbageCollectAction()));
         fileMenu.add(new JSmartMenuItem(new ExitAction()));
         return fileMenu;            
     }
 
-    /**
-     * Creates the look and feel menu by querying the UIManager for all 
-     * installed look and feels.
-     * 
-     * @return Menu with all look and feels installed.
-     */
-    protected JMenu createLookAndFeelMenu()
-    {
-        lookAndFeelMenu_ = new JSmartMenu("Look and Feel");
-        
-        UIManager.LookAndFeelInfo[] lookAndFeels_ = SwingUtil.getLAFs();
-        ButtonGroup group = new ButtonGroup();
-        
-        for (int i=0; i<lookAndFeels_.length; i++)
-        {
-            JCheckBoxMenuItem lookAndFeelItem_ = 
-                new JSmartCheckBoxMenuItem(new SetLAFAction(lookAndFeels_[i]));
-            
-            group.add(lookAndFeelItem_);
-            lookAndFeelMenu_.add(lookAndFeelItem_);
-        }
-        
-        lookAndFeelMenu_.addSeparator();
-        lookAndFeelMenu_.add(createThemesMenu());
-        
-        return lookAndFeelMenu_;
-    }
-
-    /**
-     * Creates a themes menu for the plastic jgoodies.com look and feels
-     * 
-     * @return Menu with all the themes 
-     */
-    protected JMenu createThemesMenu()
-    {
-        JMenu menu = new JSmartMenu("Themes");
-        List themes = PlasticLookAndFeel.getInstalledThemes();
-        
-        for (int i=0, n=themes.size(); i<n; i++)
-            menu.add(new JSmartMenuItem(
-                new SetThemeAction((PlasticTheme) themes.get(i))));
-        
-        return menu;
-    }
 
     /**
      * Creates the preferences menu
@@ -476,6 +441,8 @@ public class PluginWorkspace extends JFrame implements IPreferenced
     {
         JMenu menu = new JSmartMenu("Preferences");
         menu.setMnemonic('P');
+
+        menu.add(new JSmartMenuItem(new SavePreferencesAction()));
 
         smoothFontsCheckBoxItem_ = 
             new JSmartCheckBoxMenuItem(new AntiAliasAction());
@@ -563,34 +530,72 @@ public class PluginWorkspace extends JFrame implements IPreferenced
      */
     protected void setLAF(Element prefs)
     {
-        Element root = prefs.getFirstChildElement(NODE_WORKSPACE);
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, NODE_WORKSPACE, new Element(NODE_WORKSPACE));
         
-        if (root != null)
-        {    
-            // Restore look and feel
-            String lafClass = XOMUtil.getStringAttribute(root, ATTR_LAF, null);
-            
-            if (lafClass != null)
-            {
-                try
-                {
-                    UIManager.setLookAndFeel(lafClass);
-                    
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
-                        public void run()
-                        {
-                            SwingUtilities.updateComponentTreeUI(
-                                PluginWorkspace.this);
-                        }
-                    });
-                }
-                catch (Exception e)
-                {
-                    ExceptionUtil.handleUI(e, logger_);
-                }   
-            }
-        }    
+        try
+        {
+            lafManager_.setLookAndFeel(root);
+        }
+        catch (LookAndFeelException lfe)
+        {
+            ExceptionUtil.handleUI(lfe, logger_);
+        }
+
+
+//        // Restore look and feel
+//        String lafClass = XOMUtil.getStringAttribute(root, ATTR_LAF, null);
+//        String lafTheme = XOMUtil.getStringAttribute(root, ATTR_LAF_THEME, null);
+//
+//        if (!StringUtil.isNullOrEmpty(lafClass))
+//        {
+//            try
+//            {
+//                boolean found = false;
+//
+//                UIManager.LookAndFeelInfo[] infos = 
+//                    UIManager.getInstalledLookAndFeels();
+//
+//                for (int i=0; i<infos.length; i++)
+//                {
+//                    if (infos[i].getClassName().equals(lafClass))
+//                    {
+//                        found = true;
+//
+//                        if (lafClass.equals(SkinLookAndFeel.class.getName()))
+//                        {
+//                            found = true;
+//
+//                            WorkspaceAction sla = 
+//                                new SetSkinLAFAction(
+//                                    infos[i],
+//                                    (String) skinThemes_.get(lafTheme),
+//                                    lafTheme);
+//
+//                            sla.runAction(new ActionEvent(this,-1,""));
+//                            break;
+//        
+//                        }
+//                        else
+//                        {
+//                            WorkspaceAction sla = new SetLAFAction(infos[i]);
+//                            sla.runAction(new ActionEvent(this,-1,""));
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//                if (!found)
+//                    logger_.warn("Look and Feel "+lafClass+" is not installed.");
+//            }
+//            catch (Exception e)
+//            {
+//                ExceptionUtil.handleUI(e, logger_);
+//            }   
+//        }
+//        else
+//            logger_.error("\n" + Banner.getBanner("Skipping LAF"));
     }       
 
     //--------------------------------------------------------------------------
@@ -627,10 +632,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             root.addAttribute(new Attribute(ATTR_HEIGHT, getSize().height+"")); 
         }
 
-        // Save look and feel
-        root.addAttribute(new Attribute(
-            ATTR_LAF, UIManager.getLookAndFeel().getClass().getName()));
-            
         // Save currently selected tab
         root.addAttribute(
             new Attribute(ATTR_SELECTED_TAB,tabbedPane_.getSelectedIndex()+""));
@@ -640,6 +641,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             new Attribute(
                 ATTR_SMOOTH_FONTS, 
                 smoothFontsCheckBoxItem_.isSelected()+""));
+
+        // Save look and feel
+        lafManager_.savePrefs(root);
                 
         // Save loaded plugin prefs
         for (Iterator i = plugins_.values().iterator(); i.hasNext();)
@@ -678,7 +682,7 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             writer = new FileWriter(userhome + FILE_PREFS);
             StringOutputStream sos = new StringOutputStream();
             Serializer serializer = new Serializer(sos);
-            serializer.setIndent(3);
+            serializer.setIndent(2);
             serializer.setLineSeparator("\n");
             //serializer.setMaxLength(80);
             serializer.write(new Document(root));
@@ -743,46 +747,10 @@ public class PluginWorkspace extends JFrame implements IPreferenced
             XOMUtil.getIntegerAttribute(root, ATTR_WIDTH, 800),
             XOMUtil.getIntegerAttribute(root, ATTR_HEIGHT, 600));
 
+        lafManager_.selectOnMenu();
+    
         if (root != null)
         {    
-            // Restore look and feel
-            String lafClass = XOMUtil.getStringAttribute(root, ATTR_LAF, null);
-            
-//            if (lafClass != null)
-//            {
-//                try
-//                {
-//                    UIManager.setLookAndFeel(lafClass);
-//                    
-//                    SwingUtilities.invokeLater(new Runnable()
-//                    {
-//                        public void run()
-//                        {
-//                            SwingUtilities.updateComponentTreeUI(
-//                                PluginWorkspace.this);
-//                        }
-//                    });
-//                }
-//                catch (Exception e)
-//                {
-//                    ExceptionUtil.handleUI(e, logger_);
-//                }   
-//            }
-    
-            // Activate the currently loaded look and feel in the menu
-            String lafName = UIManager.getLookAndFeel().getName();        
-            
-            for (int i=0; i<lookAndFeelMenu_.getItemCount(); i++)
-            {
-                JMenuItem item = lookAndFeelMenu_.getItem(i);
-                
-                if (item instanceof JCheckBoxMenuItem)
-                {
-                    if (item.getText().equals(lafName))
-                        item.setSelected(true);
-                }
-            }
-            
             // Iterate over the list of plugins. If the plugin has the 'loaded'
             // attribute then register() it otherwise add to the unloadedPrefs_
             // DOM for later use.
@@ -797,8 +765,9 @@ public class PluginWorkspace extends JFrame implements IPreferenced
                 {    
                     try
                     {
-                        String pluginClass = XOMUtil.getStringAttribute(
-                            pluginNode, ATTR_CLASS, "");
+                        String pluginClass = 
+                            XOMUtil.getStringAttribute(
+                                pluginNode, ATTR_CLASS, "");
                         
                         registerPlugin(pluginClass, pluginNode);       
                     }
@@ -953,48 +922,6 @@ public class PluginWorkspace extends JFrame implements IPreferenced
         }
     }
 
-    /**
-     * Action that sets and look and feel
-     */    
-    class SetLAFAction extends WorkspaceAction
-    {
-        private UIManager.LookAndFeelInfo lafInfo_;
-        
-        SetLAFAction(UIManager.LookAndFeelInfo lafInfo)
-        {
-            super(lafInfo.getName(), false, null, null);
-            putValue(Action.MNEMONIC_KEY, new Integer('L'));
-            lafInfo_ = lafInfo;
-        }
-
-        public void runAction(ActionEvent e) throws Exception
-        {
-            UIManager.setLookAndFeel(lafInfo_.getClassName());
-            SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
-        }
-    }
-
-    /**
-     * Action that sets the plastic theme
-     */    
-    class SetThemeAction extends WorkspaceAction
-    {
-        private PlasticTheme theme_;
-        
-        SetThemeAction(PlasticTheme theme)
-        {
-            super(theme.getName(), false, null, null);
-            theme_ = theme;
-        }
-
-        public void runAction(ActionEvent e) throws Exception
-        {
-            PlasticLookAndFeel.setMyCurrentTheme(theme_);
-            UIManager.setLookAndFeel(UIManager.getLookAndFeel());
-            SwingUtilities.updateComponentTreeUI(PluginWorkspace.this);
-        }
-    }
-    
     /**
      * Triggers garbage collection
      */
