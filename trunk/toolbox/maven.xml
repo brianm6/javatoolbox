@@ -120,8 +120,9 @@
     <!-- =================================================================== -->
     <goal name="jnlp-deploy" description="Deploys the JNLP distribution to Tomcat">
       <copy todir="k:/winapps/win2k/Tomcat41/webapps/ROOT/" 
-            verbose="true" 
-            overwrite="true">
+            verbose="true"
+            quiet="fals" 
+            overwrite="false">
         <fileset dir="${basedir}/target/jnlp" includes="*.*"/>
       </copy>
     </goal> 
