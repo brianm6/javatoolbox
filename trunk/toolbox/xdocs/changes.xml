@@ -121,6 +121,8 @@
             <action type="update">FindClass - Replaced toolbox.io.filter classes with commion-io equivalents</action>
             <action type="add"   >Util - Added Cancelable interface</action>
             <action type="update">FindClass - Now implements the Cancelable interface</action>
+            <action type="update">JSourceView - SourceScanner now implements Cancelable</action>
+            <action type="update">Util - Removed dependence on toolbox.util.io.filter and refactored to use commons-io filter classes</action>
         </release>
 
         <!-- =================================================================== -->
