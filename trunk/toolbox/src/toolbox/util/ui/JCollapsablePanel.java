@@ -117,7 +117,10 @@ public class JCollapsablePanel extends JHeaderPanel
      */
     public void setCollapsed(boolean collapsed)
     {
-        collapsed_ = collapsed;
+        if (collapsed == isCollapsed())
+            return;
+            
+        new CollapseAction().toggle(); 
     }
     
     //--------------------------------------------------------------------------
@@ -176,6 +179,15 @@ public class JCollapsablePanel extends JHeaderPanel
          */
         public void actionPerformed(ActionEvent e)
         {
+            toggle();
+        }
+        
+        
+        /**
+         * Toggles the collapsed state of the panel.
+         */
+        public void toggle()
+        {
             if (collapsed_)
             {
                 setContent(savedContent_);
@@ -186,7 +198,7 @@ public class JCollapsablePanel extends JHeaderPanel
                 setContent(new NullComponent());
             }
 
-            setCollapsed(!isCollapsed());
+            collapsed_ = !collapsed_;
             toggleButton_.setIcon(getCollapsedIcon());
             toggleButton_.setRolloverIcon(getCollapsedIcon());
 
