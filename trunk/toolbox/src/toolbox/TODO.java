@@ -19,7 +19,6 @@ package toolbox;
  * TODO: Really pick apart JSmartTextArea and figure out a good way optimizing
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
- * TODO: Separate unit tests from main source branch + reconfig maven.
  * TODO: Add a filled bar mode to JSourceView
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
@@ -44,8 +43,10 @@ package toolbox;
  * TODO: TCPTunnel: Figure out why it freezes up
  * =============================================================================
  * 
- * COMPLETED: Add Plugin menu
- * 
+ * =============================== COMPLETED ===================================
+ * - Add Plugin menu
+ * - Separate unit tests from main source branch + reconfig maven.
+ * ============================================================================= 
  * </pre>
  */
 public class TODO
