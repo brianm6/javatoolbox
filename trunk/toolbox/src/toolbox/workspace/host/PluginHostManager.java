@@ -22,9 +22,7 @@ import toolbox.workspace.WorkspaceAction;
 /**
  * Manages multiple plugin hosts and the behavior required to switch between 
  * them.
- * 
  * <p>
- * 
  * <ul>
  *   <li>A recepticle is the only container an external entity (in our case the
  *       PluginWorkspace) needs to expose plugins.
@@ -59,12 +57,12 @@ public class PluginHostManager
     //--------------------------------------------------------------------------
 
     /**
-     * The currently active plugin host
+     * The currently active plugin host.
      */
     private PluginHost current_;
 
     /**
-     * Wrapper component for the plugin hosts UI 'component'
+     * Wrapper component for the plugin hosts UI 'component'.
      */
     private JComponent recepticle_;
     
@@ -73,7 +71,7 @@ public class PluginHostManager
     //--------------------------------------------------------------------------
     
     /**
-     * Creates a PluginHostManager for the given workspace
+     * Creates a PluginHostManager for the given workspace.
      */
     public PluginHostManager()
     {
@@ -85,7 +83,7 @@ public class PluginHostManager
     //--------------------------------------------------------------------------
     
     /**
-     * Returns the UI recepticle for the plugin host
+     * Returns the UI recepticle for the plugin host.
      * 
      * @return JComponent
      */
@@ -220,17 +218,17 @@ public class PluginHostManager
     //--------------------------------------------------------------------------
     
     /**
-     * Switches out the current PluginHost for the given PluginHost
+     * Switches out the current PluginHost for the given PluginHost.
      */
     class ActivatePluginHostAction extends WorkspaceAction
     {
         /**
-         * The plugin host to activate
+         * The plugin host to activate.
          */
         private PluginHost newPluginHost_;
         
         /**
-         * Creates an ActivatePluginHostAction
+         * Creates an ActivatePluginHostAction.
          * 
          * @param pluginHost Plugin host to activate
          */

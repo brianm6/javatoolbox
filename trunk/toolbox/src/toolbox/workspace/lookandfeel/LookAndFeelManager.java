@@ -25,7 +25,8 @@ import toolbox.util.ui.JSmartMenu;
 import toolbox.util.ui.JSmartMenuItem;
 
 /**
- * LookAndFeelManager 
+ * LookAndFeelManager manages the available Swing Look & Feels and provides
+ * convenience methods to generate menus and switch between them.
  */
 public class LookAndFeelManager
 {
@@ -80,7 +81,7 @@ public class LookAndFeelManager
     }
 
     /**
-     * Class look and feel classname -> menu item
+     * Maps look and feel classname to its corresponding menu item.
      */
     private Map menuItemMap_;
     
@@ -89,7 +90,7 @@ public class LookAndFeelManager
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a LookAndFeelManager
+     * Creates a LookAndFeelManager.
      */
     public LookAndFeelManager()
     {
@@ -121,7 +122,7 @@ public class LookAndFeelManager
 
 
     /**
-     * Selects the currently active look and feel on the look and feel menu
+     * Selects the currently active look and feel on the look and feel menu.
      */ 
     public void selectOnMenu()
     {
@@ -134,7 +135,7 @@ public class LookAndFeelManager
 
 
     /**
-     * Sets the look and feel given a DOM
+     * Sets the look and feel given a DOM.
      * 
      * @param prefs DOM to read preferences from
      * @throws LookAndFeelException on error
@@ -205,7 +206,7 @@ public class LookAndFeelManager
 
 
     /**
-     * Creates a themes menu for the plastic jgoodies.com look and feels
+     * Creates a themes menu for the plastic jgoodies.com look and feels.
      * 
      * @return JMenu 
      */
@@ -224,7 +225,7 @@ public class LookAndFeelManager
 
     /**
      * Saves currently active look and feel to a node in the given
-     * element
+     * element.
      *
      * @param workspace Node in which to save look and feel info
      */

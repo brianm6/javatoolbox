@@ -18,7 +18,7 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
         Logger.getLogger(ActivateLookAndFeelAction.class);
     
     /**
-     * The look and feel to activate
+     * The look and feel to activate.
      */    
     private UIManager.LookAndFeelInfo info_;
     
@@ -27,7 +27,7 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
     //--------------------------------------------------------------------------
 
     /**
-     * Creates an ActivateLookAndFeelAction
+     * Creates an ActivateLookAndFeelAction.
      * 
      * @param lookAndFeel LookAndFeelInfo of look and feel to activate
      */
@@ -38,7 +38,7 @@ public class ActivateLookAndFeelAction extends WorkspaceAction
     }
 
     //--------------------------------------------------------------------------
-    // SmartAction Interface
+    // SmartAction Implementation
     //--------------------------------------------------------------------------
         
     /**

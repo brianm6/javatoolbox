@@ -1,19 +1,20 @@
 package toolbox.workspace.lookandfeel;
 
 /**
- * LookAndFeelException
+ * LookAndFeelException is generated for any look and feel generated faults.
  */
 public class LookAndFeelException extends Exception
 {
     /**
-     * Creates a LookAndFeelException
+     * Creates a LookAndFeelException.
      */
     public LookAndFeelException()
     {
     }
 
+    
     /**
-     * Creates a LookAndFeelException
+     * Creates a LookAndFeelException.
      * 
      * @param message Error message
      */
@@ -22,8 +23,9 @@ public class LookAndFeelException extends Exception
         super(message);
     }
 
+    
     /**
-     * Creates a LookAndFeelException
+     * Creates a LookAndFeelException.
      * 
      * @param cause Original cause
      */
@@ -32,8 +34,9 @@ public class LookAndFeelException extends Exception
         super(cause);
     }
 
+    
     /**
-     * Creates a LookAndFeelException
+     * Creates a LookAndFeelException.
      * 
      * @param message Error message
      * @param cause Original cause
