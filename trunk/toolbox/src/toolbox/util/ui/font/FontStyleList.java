@@ -2,13 +2,13 @@ package toolbox.util.ui.font;
 
 import java.awt.Font;
 
-import javax.swing.JList;
+import toolbox.util.ui.JSmartList;
 
 /**
  * Represents a list of the four font styles: plain, bold, italic, and bold 
  * italic
  */
-public class FontStyleList extends JList
+public class FontStyleList extends JSmartList
 {
     //--------------------------------------------------------------------------
     //  Constructors
@@ -18,7 +18,7 @@ public class FontStyleList extends JList
      * Construct a new FontStyleList, using the supplied values for style
      * display names
      * 
-     * @param   styleDisplayNames   
+     * @param styleDisplayNames   
      * 
      *      Must contain exactly four members. The members of this array 
      *      represent the following styles, in order: Font.PLAIN, 
@@ -40,9 +40,9 @@ public class FontStyleList extends JList
     /**
      * Returns currently selected font style
      * 
-     * @return  currently selected font style
-     * @throws  FontChooserException thrown if no font style is currently 
-     *          selected
+     * @return currently selected font style
+     * @throws FontChooserException thrown if no font style is currently 
+     *         selected
      */
     public int getSelectedStyle() throws FontChooserException
     {
@@ -65,9 +65,9 @@ public class FontStyleList extends JList
     /**
      * Change the currently selected style in this FontStyleList
      * 
-     * @param   style   New selected style for this FontStyleList
-     * @throws  IllegalArgumentException thrown if style is not one of 
-     *          Font.PLAIN, Font.BOLD, Font.ITALIC, or Font.BOLD+Font.ITALIC
+     * @param style New selected style for this FontStyleList
+     * @throws IllegalArgumentException thrown if style is not one of 
+     *         Font.PLAIN, Font.BOLD, Font.ITALIC, or Font.BOLD+Font.ITALIC
      */
     public void setSelectedStyle(int style) throws IllegalArgumentException
     {
@@ -98,8 +98,8 @@ public class FontStyleList extends JList
     /**
      * Validates style display names
      * 
-     * @param   styleDisplayNames  Style display names
-     * @return  String array
+     * @param styleDisplayNames Style display names
+     * @return String array
      */
     private static String[] 
         validateStyleDisplayNames(String[] styleDisplayNames)
