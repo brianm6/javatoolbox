@@ -9,6 +9,7 @@ import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputMonitor;
 import toolbox.util.io.transferred.DefaultTransferredMonitor;
 import toolbox.util.io.transferred.TransferredMonitor;
+import toolbox.util.service.Nameable;
 
 /**
  * MonitoredInputStream supports the following features.
@@ -22,7 +23,7 @@ import toolbox.util.io.transferred.TransferredMonitor;
  * @see toolbox.util.io.throughput.ThroughputMonitor
  * @see toolbox.util.io.transferred.TransferredMonitor 
  */
-public class MonitoredInputStream extends FilterInputStream
+public class MonitoredInputStream extends FilterInputStream implements Nameable
 {
     //--------------------------------------------------------------------------
     // Fields 
@@ -162,13 +163,13 @@ public class MonitoredInputStream extends FilterInputStream
     
 
     //--------------------------------------------------------------------------
-    // Public
+    // Nameable Interface
     //--------------------------------------------------------------------------
     
     /**
      * Returns the friendly name of the stream.
      * 
-     * @return Stream name.
+     * @see toolbox.util.service.Nameable#getName()
      */
     public String getName()
     {
@@ -177,13 +178,16 @@ public class MonitoredInputStream extends FilterInputStream
 
     
     /**
-     * @param name The name to set.
+     * @see toolbox.util.service.Nameable#setName(java.lang.String)
      */
     public void setName(String name)
     {
         name_ = name;
     }
 
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
     
     /**
      * @return Returns the throughputMonitor.

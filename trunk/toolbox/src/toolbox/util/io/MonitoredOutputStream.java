@@ -11,6 +11,7 @@ import toolbox.util.io.throughput.DefaultThroughputMonitor;
 import toolbox.util.io.throughput.ThroughputMonitor;
 import toolbox.util.io.transferred.DefaultTransferredMonitor;
 import toolbox.util.io.transferred.TransferredMonitor;
+import toolbox.util.service.Nameable;
 
 /**
  * MonitoredOutputStream supports the following features.
@@ -20,8 +21,11 @@ import toolbox.util.io.transferred.TransferredMonitor;
  *   <li>Monitoring of the total bytes written (polling)
  *   <li>Monitoring of significant stream events (close, flush,etc) (observable)
  * </ul>
+ * 
+ * @see toolbox.util.io.MonitoredInputStream
  */
 public class MonitoredOutputStream extends FilterOutputStream 
+    implements Nameable 
 {
     private static final Logger logger_ = 
         Logger.getLogger(MonitoredOutputStream.class);
@@ -145,6 +149,29 @@ public class MonitoredOutputStream extends FilterOutputStream
     }
 
     //--------------------------------------------------------------------------
+    // Nameable Interface
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the stream name.
+     * 
+     * @see toolbox.util.service.Nameable#getName()
+     */
+    public String getName()
+    {
+        return name_;
+    }
+
+    
+    /**
+     * @see toolbox.util.service.Nameable#setName(java.lang.String)
+     */
+    public void setName(String name)
+    {
+        name_ = name;
+    }
+
+    //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
     
@@ -157,28 +184,8 @@ public class MonitoredOutputStream extends FilterOutputStream
     {
         return getTransferredMonitor().getBytesTransferred();
     }
-        
     
-    /**
-     * Returns the stream name.
-     * 
-     * @return String
-     */
-    public String getName()
-    {
-        return name_;
-    }
 
-    
-    /**
-     * @param name The name to set.
-     */
-    public void setName(String name)
-    {
-        name_ = name;
-    }
-    
-    
     /**
      * @return Returns the throughputMonitor.
      */
