@@ -58,29 +58,37 @@ public class JSourceView extends JPanel implements IPreferenced
     private static final Logger logger_ = Logger.getLogger(JSourceView.class);
 
     //--------------------------------------------------------------------------
-    // Constants
+    // UI Component Names & Labels
+    //--------------------------------------------------------------------------
+
+    // Labels
+    public static final String LABEL_GO_BUTTON         = "Go!";
+    public static final String LABEL_CANCEL_BUTTON     = "Cancel";
+    
+    // Names
+    public static final String NAME_DIRECTORY_FIELD    = "directory.field";
+    public static final String NAME_CHART_BUTTON       = "chart.button";
+    public static final String NAME_SCROLL_LOCK_BUTTON = "scrollLock.button";
+    public static final String NAME_SAVE_BUTTON        = "save.button";
+
+    //--------------------------------------------------------------------------
+    // IPreferenced Constants
     //--------------------------------------------------------------------------
 
     /**
-     * XML: Root preferences element.
+     * Root preferences element.
      */
     private static final String NODE_JSOURCEVIEW_PLUGIN = "JSourceViewPlugin";
     
     /**
-     * XML: Attribute of JSourceViewPlugin that stores the current directory.
+     * Attribute of JSourceViewPlugin that stores the current directory.
      */
     private static final String ATTR_LAST_DIR = "dir";
-    
-    /**
-     * Button label to start search.
-     */
-    protected static final String LABEL_GO = "Go!";
-    
-    /**
-     * Button label to cancel the search once started.
-     */
-    protected static final String LABEL_CANCEL = "Cancel";
 
+    //--------------------------------------------------------------------------
+    // Table Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Row number column.
      */
@@ -120,7 +128,7 @@ public class JSourceView extends JPanel implements IPreferenced
      * Total number of lines column.
      */
     protected static final int COL_TOTAL = 7;
-    
+
     /**
      * Percentage of code to comments column.
      */
@@ -221,7 +229,7 @@ public class JSourceView extends JPanel implements IPreferenced
      * Remembers last selected directory in the Directory chooser.
      */
     private File lastDir_;
-    
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -360,6 +368,8 @@ public class JSourceView extends JPanel implements IPreferenced
         setLayout(new BorderLayout());
         
         dirField_ = new JSmartTextField(35);
+        dirField_.setName(NAME_DIRECTORY_FIELD);
+        
         goButton_ = new JSmartButton();
         pickDirButton_ = new JSmartButton(new PickDirectoryAction());
         
@@ -422,6 +432,11 @@ public class JSourceView extends JPanel implements IPreferenced
                 ImageCache.getIcon(ImageCache.IMAGE_SAVE),
                 "Save results",
                 new SaveResultsAction());
+        
+        // Set names so unit test can find them
+        pieChart.setName(NAME_CHART_BUTTON);
+        tail.setName(NAME_SCROLL_LOCK_BUTTON);
+        save.setName(NAME_SAVE_BUTTON);
         
         JToolBar tb = JHeaderPanel.createToolBar();
         tb.add(pieChart);
@@ -508,7 +523,7 @@ public class JSourceView extends JPanel implements IPreferenced
          */
         SearchAction()
         {
-            super(LABEL_GO, true, null, workspaceStatusBar_);
+            super(LABEL_GO_BUTTON, true, null, workspaceStatusBar_);
         }
 
         
@@ -518,9 +533,9 @@ public class JSourceView extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            if (goButton_.getText().equals(LABEL_GO))
+            if (goButton_.getText().equals(LABEL_GO_BUTTON))
             {
-                goButton_.setText(LABEL_CANCEL);
+                goButton_.setText(LABEL_CANCEL_BUTTON);
                 String dir = dirField_.getText();
                 workQueue_ = new Queue();
                 tableModel_.setRowCount(0);
@@ -549,7 +564,7 @@ public class JSourceView extends JPanel implements IPreferenced
             }
             else
             {
-                goButton_.setText(LABEL_GO);
+                goButton_.setText(LABEL_GO_BUTTON);
                 scanDirWorker_.cancel();
                 parserWorker_.cancel();
             
@@ -655,6 +670,9 @@ public class JSourceView extends JPanel implements IPreferenced
         }
     }
     
+    //--------------------------------------------------------------------------
+    // ShowPieChartAction
+    //--------------------------------------------------------------------------
     
     /**
      * Shows a pie chart of the statistics results.
