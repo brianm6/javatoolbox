@@ -1,18 +1,24 @@
 package toolbox.util.ui.tabbedpane;
 
 import java.awt.Component;
+import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
 import toolbox.util.ArrayUtil;
+import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.AntiAliased;
 import toolbox.util.ui.ImageCache;
@@ -30,11 +36,7 @@ import toolbox.util.ui.ImageCache;
  */
 public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
 {
-    //--------------------------------------------------------------------------
-    // Constants
-    //--------------------------------------------------------------------------
-    
-    private static final Logger logger_ =
+    private static final Logger logger_ = 
         Logger.getLogger(JSmartTabbedPane.class);
     
     //--------------------------------------------------------------------------
@@ -117,9 +119,39 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
         {    
             addMouseListener(new MouseListener());
             closeIcon_ = ImageCache.getIcon(ImageCache.IMAGE_CROSS);
+            
+            KeyStroke ctrlw = 
+                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK);
+                
+            getInputMap().put(ctrlw, "closetab");
+            getActionMap().put("closetab", new CloseTabAction());
         }
     }
 
+    
+    /**
+     * Closes the currently selected tab.
+     */
+    class CloseTabAction extends AbstractAction
+    {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            logger_.debug(StringUtil.addBars("Got a Ctrl-W"));
+            
+            int tabNumber = getSelectedIndex();
+            
+            if (tabNumber >= 0)
+            {    
+                fireTabClosing(tabNumber);
+                removeTabAt(tabNumber);
+            }
+        }
+    }
+    
     
     /**
      * Creates a JSmartTabbedPane.
@@ -274,8 +306,8 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
                     
                     // if the tab was removed by the listener, make sure we
                     // don't try to remove it again. first make sure the tab
-                    // index is still valid and then double that the title is
-                    // still the same as it was before fireTabClosing()
+                    // index is still valid and then double check that the title
+                    // is still the same as it was before fireTabClosing()
                     
                     if (getTabCount() > tabNumber)
                         if (getTitleAt(tabNumber).equals(title))
