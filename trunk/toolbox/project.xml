@@ -429,6 +429,16 @@
     </dependency>
 
     <dependency>
+      <id>infonodelf</id>
+      <version>LATEST</version>
+      <url>http://sourceforge.net/projects/infonode/</url>
+      <properties>
+        <jnlp.jar>true</jnlp.jar>
+        <fatjar>laf</fatjar>
+      </properties>
+    </dependency>
+
+    <dependency>
       <id>jakarta-oro</id>
       <version>LATEST</version>
       <url>http://jakarta.apache.org/oro</url>

@@ -38,6 +38,7 @@
 	<classpathentry sourcepath="lib/src/hamsam-src.zip" kind="lib" path="lib/hamsam.jar"/>
 	<classpathentry kind="lib" path="lib/hippolf.jar"/>
 	<classpathentry sourcepath="lib/src/hsqldb-src.zip" kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/infonodelf.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta-oro.jar"/>
 	<classpathentry sourcepath="lib/src/jakarta-regexp-src.zip" kind="lib" path="lib/jakarta-regexp.jar"/>
 	<classpathentry sourcepath="lib/src/jalopy-src.zip" kind="lib" path="lib/jalopy.jar"/>
