@@ -13,6 +13,7 @@ package toolbox;
  * TODO: Get PropertyPrompt working properly
  * TODO: Add tabs to FIndClass -> Decompiler. One per file
  * TODO: Fix tailing of Log4j in JTail
+ * TODO: Fix SkinLF resource loading
  * </pre>
  */
 public class TODO
