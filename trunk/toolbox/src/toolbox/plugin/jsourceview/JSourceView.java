@@ -55,15 +55,11 @@ public class JSourceView extends JPanel implements IPreferenced
     // TODO: Custom table cell renders to color code unusually high or low 
     //       numbers, etc
     
+    private static final Logger logger_ = Logger.getLogger(JSourceView.class);
 
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
-
-    /**
-     * Logger.
-     */
-    private static final Logger logger_ = Logger.getLogger(JSourceView.class);
 
     /**
      * XML: Root preferences element.
@@ -409,7 +405,7 @@ public class JSourceView extends JPanel implements IPreferenced
         
         JButton pieChart = 
             JHeaderPanel.createButton(
-                ImageCache.getIcon(ImageCache.IMAGE_BAR_CHART),
+                ImageCache.getIcon(ImageCache.IMAGE_PIE_CHART),
                 "Show Pie Chart", 
                 new ShowPieChartAction());
 
