@@ -3,6 +3,7 @@ package toolbox.plugin.statcvs;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
@@ -525,7 +526,7 @@ public class StatcvsPlugin extends JPanel implements IPlugin
         Element projects = XOMUtil.getFirstChildElement(
             root, NODE_CVSPROJECTS, new Element(NODE_CVSPROJECTS));
             
-        if (projects.getChildCount() > 0)
+        if (projects.getChildCount() == 0)
         {
             projectCombo_.addItem(new CVSProject(
                 "Sourceforge",
@@ -674,8 +675,8 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            new LoginAction().runAction(e);
-            new CheckoutAction().runAction(e);
+            new LoginAction().runAction();
+            new CheckoutAction().runAction();
             new LogAction().runAction(e);
             new GenerateStatsAction().runAction(e);
             new LaunchAction().runAction(e);
@@ -706,6 +707,15 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
+            runAction();
+        }
+
+        
+        /**
+         * Non-event friendly way to invoke directly.
+         */
+        public void runAction()
+        {
             verify();
             setDebug();
             
@@ -723,12 +733,27 @@ public class StatcvsPlugin extends JPanel implements IPlugin
             if (cvspass.exists())  
                 cvspass.delete();
 
-            String[] args = 
-                new String[] {"-d", cvsRootField_.getText(), "login"};
+            String[] cvsargs = new String[] 
+            {
+                "-d", 
+                cvsRootField_.getText(), 
+                "login"
+            };
             
-            CVSCommand.main(args);
+            StringOutputStream cvsout = new StringOutputStream();
+            StringOutputStream cvserr = new StringOutputStream();
             
-            statusBar_.setInfo("Login done");
+            boolean success = CVSCommand.processCommand(
+                cvsargs, 
+                null, 
+                checkoutDirField_.getText(), //System.getProperty("user.dir"),
+                new PrintStream(cvsout), 
+                new PrintStream(cvserr));
+            
+            outputArea_.append(cvsout.toString() + "\n");
+            outputArea_.append(cvserr.toString() + "\n");
+            
+            statusBar_.setInfo(success ? "Login completed" : "Login failed");
         }
     }
 
@@ -756,30 +781,46 @@ public class StatcvsPlugin extends JPanel implements IPlugin
          */
         public void runAction(ActionEvent e) throws Exception
         {
+            runAction();
+        }
+
+        
+        /**
+         * Non-event friendly way to invoke directly.
+         */
+        public void runAction()
+        {
             verify();
             setDebug();
             
-            statusBar_.setInfo("Checking out " + cvsModuleField_.getText() + 
+            statusBar_.setInfo(
+                "Checking out " + cvsModuleField_.getText() + 
                 " module to " + checkoutDirField_.getText() + "...");
 
             setUserDir(checkoutDirField_.getText());
 
-            String args[] = new String[] 
+            String cvsargs[] = new String[] 
             { 
-                "-d", cvsRootField_.getText(), 
-                "checkout", cvsModuleField_.getText() 
+                "-d", 
+                cvsRootField_.getText(), 
+                "checkout", 
+                cvsModuleField_.getText() 
             };
 
-            try
-            {            
-                CVSCommand.main(args);
-            }
-            finally
-            {
-                restoreUserDir();                    
-            }
+            StringOutputStream cvsout = new StringOutputStream();
+            StringOutputStream cvserr = new StringOutputStream();
             
-            statusBar_.setInfo("Checkout done");
+            boolean success = CVSCommand.processCommand(
+                cvsargs, 
+                null, 
+                System.getProperty("user.dir"), //checkoutDirField_.getText(),
+                new PrintStream(cvsout), 
+                new PrintStream(cvserr));
+            
+            outputArea_.append(cvsout.toString() + "\n");
+            outputArea_.append(cvserr.toString() + "\n");
+            
+            statusBar_.setInfo(success ? "Checkout done" : "Checkout failed");
         }
     }
 
