@@ -208,16 +208,6 @@
         	dest      ="${classes}" 
         	overwrite ="false" />
         	
-        <!--unjar 
-        	src       ="${lib}/EXML.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" /-->
-
-        <!--unjar 
-        	src       ="${lib}/dom.jar" 
-            dest      ="${classes}" 
-            overwrite ="false" /-->
-
         <unjar 
         	src       ="${lib}/java2html.jar" 
             dest      ="${classes}" 
@@ -288,14 +278,80 @@
             dest      ="${classes}" 
             overwrite ="false" />
 
-        <unjar 
+        <unjar  
         	src       ="${lib}/xercesImpl.jar" 
             dest      ="${classes}" 
             overwrite ="false" />
-                             
+
+		<!--=======================-->
+		<!-- Supports XSLFO plugin -->
+		<!--=======================-->
+		
+        <unjar 
+        	src       ="${lib}/acrobat.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/jedit-syntax.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+        <unjar 
+        	src       ="${lib}/fop.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+            
+        <unjar 
+        	src       ="${lib}/batik.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+            
+        <unjar 
+        	src       ="${lib}/avalon-framework.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+        
+       	<unjar 
+        	src       ="${lib}/apple-mrj.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+            
+       	<unjar 
+        	src       ="${lib}/xep.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+            
+       	<unjar 
+        	src       ="${lib}/xt.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+            
+       	<unjar 
+        	src       ="${lib}/saxon.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+            
+		<unjar 
+        	src       ="${lib}/cryptix32.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+		<unjar 
+        	src       ="${lib}/cryptix32-pgp.jar" 
+            dest      ="${classes}" 
+            overwrite ="false" />
+
+		<!-- ==================================== -->
+
+		<copy todir="${classes}" overwrite="yes" verbose="true">
+            <fileset dir="${top}/debug" includes="**/*.class"/>
+        </copy>
+		            
         <jar 
         	jarfile ="${dist}/toolbox.jar" 
-            manifest="${src}/META-INF/MANIFEST.MF">
+            manifest="${src}/META-INF/MANIFEST.MF"
+            compress="yes">
 
             <fileset dir="${classes}"   excludes="**/MANIFEST.MF,**/test/**"/>
             <fileset dir="${resources}" excludes="**/test/**"/>
@@ -591,6 +647,7 @@
     <!--=============================--> 
     <!--       OBFUSCATE             -->
     <!--=============================-->
+    <!--
 	<taskdef name="obfuscate"
 		     classname="com.yworks.yguard.ObfuscatorTask" 
 		     classpath="build/lib/yguard.jar"/>
@@ -602,7 +659,7 @@
 		<obfuscate mainclass="toolbox.launcher.Main" 
 			       conserveManifest="true">
 				
-				<!-- logfile="log.xml"-->
+				
 					
 			<inoutpair in="${dist}/toolbox.jar" out="${dist}/toolbox_obf.jar"/>
 	
@@ -659,6 +716,8 @@
 			
 		</obfuscate>
 		
+		
 	</target>
+	-->
 	
 </project>
