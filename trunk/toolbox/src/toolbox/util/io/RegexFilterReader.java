@@ -9,9 +9,31 @@ import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 /**
- * RegexFilterReader applies a regular expression to each line read from a 
- * Reader. If the line matches the regular expression, it is included and 
- * remains in the stream, otherwise the line is omitted.
+ * A {@link java.io.Reader} that applies a regular expression to each line read 
+ * from a Reader. If the line does not match the regular expression, it is 
+ * discarded from the stream.
+ * <p>
+ * Example:
+ * <pre>
+ * StringReader sr = new StringReader("a \n ab \n abc");
+ * 
+ * RegexFilterReader rfr = 
+ *     new RegexFilterReader(
+ *          sr,      // Reader to filter
+ *          ".*b.*", // Regular expression
+ *          false);  // Ignore case
+ * 
+ * String line = null;
+ * 
+ * // prints out matching lines ab and abc
+ * while ((line = rfr.readLine()) != null)
+ *     System.out.println("Line matched: " + line);
+ *  
+ * </pre>
+ * 
+ * @see java.io.LineNumberReader
+ * @see java.io.Reader
+ * @see org.apache.regexp.RE
  */
 public class RegexFilterReader extends LineNumberReader
 {
@@ -25,7 +47,7 @@ public class RegexFilterReader extends LineNumberReader
     /** 
      * Default regular expression matches all if one is not specified. 
      */    
-    private static final String DEFAULT_MATCH = ".";
+    private static final String DEFAULT_MATCH = ".*";
 
     //--------------------------------------------------------------------------
     // Fields 
