@@ -385,18 +385,20 @@ public class JSmartOptionPane extends JOptionPane implements ActionListener
      * Creates an instance of <code>JOptionPane</code> to display a message
      * with the specified message type, options, and icon.
      *
-     * @param message the <code>Object</code> to display
+     * @param message     the <code>Object</code> to display
+     * @param details     the message details shown in flipper area
      * @param messageType the type of message to be displayed:
-     *                  <code>ERROR_MESSAGE</code>,
-     *          <code>INFORMATION_MESSAGE</code>,
-     *          <code>WARNING_MESSAGE</code>,
-     *                  <code>QUESTION_MESSAGE</code>,
-     *          or <code>PLAIN_MESSAGE</code>
-     * @param optionType the options to display in the pane:
-     *                  <code>DEFAULT_OPTION</code>, <code>YES_NO_OPTION</code>,
-     *          <code>YES_NO_CANCEL_OPTION</code>,
-     *                  <code>OK_CANCEL_OPTION</code>
-     * @param icon the <code>Icon</code> image to display
+     *                    <code>ERROR_MESSAGE</code>,
+     *                    <code>INFORMATION_MESSAGE</code>,
+     *                    <code>WARNING_MESSAGE</code>,
+     *                    <code>QUESTION_MESSAGE</code>, or
+     *                    <code>PLAIN_MESSAGE</code>
+     * @param optionType  the options to display in the pane:
+     *                    <code>DEFAULT_OPTION</code>, 
+     *                    <code>YES_NO_OPTION</code>,
+     *                    <code>YES_NO_CANCEL_OPTION</code>,
+     *                    <code>OK_CANCEL_OPTION</code>
+     * @param icon        the <code>Icon</code> image to display
      */
     public JSmartOptionPane(
         Object message,
