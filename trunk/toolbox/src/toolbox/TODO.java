@@ -20,7 +20,8 @@ package toolbox;
  *       the addition of large sections of text. Unhook model, insert, rehook 
  *       model is a possiblity.
  * TODO: Convert all gifs to pngs.
- *  * =============================================================================
+ * TODO: Separate unit tests from main source branch + reconfig maven.
+ * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
  * TODO: FindClass: Reduce startup time.
