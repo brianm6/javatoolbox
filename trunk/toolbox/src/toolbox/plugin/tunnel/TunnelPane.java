@@ -25,8 +25,11 @@ import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
 import toolbox.util.XOMUtil;
 import toolbox.util.io.JTextAreaOutputStream;
+import toolbox.util.ui.JSmartButton;
+import toolbox.util.ui.JSmartLabel;
 import toolbox.util.ui.JSmartSplitPane;
 import toolbox.util.ui.JSmartTextArea;
+import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.SmartAction;
 import toolbox.util.ui.flippane.JFlipPane;
 import toolbox.util.ui.layout.ParagraphLayout;
@@ -41,6 +44,7 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     private static final Logger logger_ = 
         Logger.getLogger(JTcpTunnelPane.class);
     
+    // Preferences
     private static final String NODE_TCPTUNNEL_PLUGIN = "TCPTunnelPlugin";
     private static final String   ATTR_REMOTE_PORT    = "remoteport";
     private static final String   ATTR_REMOTE_HOST    = "remotehost";
@@ -128,9 +132,9 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
     /**
      * Creates a JTcpTunnelPane with the given parameters
      * 
-     * @param  listenPort   Port to listen on
-     * @param  remoteHost   Host to tunnel to
-     * @param  remotePort   Port to tunnel to
+     * @param listenPort Port to listen on
+     * @param remoteHost Host to tunnel to
+     * @param remotePort Port to tunnel to
      */
     public JTcpTunnelPane(int listenPort, String remoteHost, int remotePort)
     {
@@ -293,10 +297,10 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
             JPanel labelPanel = new JPanel(new GridLayout(1,2));
     
             localLabel_ = 
-                new JLabel("Sent to Remote Host", JLabel.CENTER);
+                new JSmartLabel("Sent to Remote Host", JLabel.CENTER);
     
             remoteLabel_ = 
-                new JLabel("Received from Remote Host", JLabel.CENTER);
+                new JSmartLabel("Received from Remote Host", JLabel.CENTER);
     
             labelPanel.add(localLabel_);
             labelPanel.add(remoteLabel_);
@@ -328,9 +332,9 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         JPanel actionPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel();
 
-        buttonPanel.add(new JButton(new StartTunnelAction()));
-        buttonPanel.add(new JButton(new StopTunnelAction()));
-        buttonPanel.add(clearButton_ = new JButton(new ClearAction()));
+        buttonPanel.add(new JSmartButton(new StartTunnelAction()));
+        buttonPanel.add(new JSmartButton(new StopTunnelAction()));
+        buttonPanel.add(clearButton_ = new JSmartButton(new ClearAction()));
         
         actionPanel.add(BorderLayout.CENTER, buttonPanel);
         add(BorderLayout.SOUTH, actionPanel);
@@ -338,21 +342,21 @@ public class JTcpTunnelPane extends JPanel implements IPreferenced
         // West
         JPanel configPanel = new JPanel(new ParagraphLayout());
         
-        configPanel.add(new JLabel("Local Tunnel Port"), 
+        configPanel.add(new JSmartLabel("Local Tunnel Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(listenPortField_ = new JTextField(10));
+        configPanel.add(listenPortField_ = new JSmartTextField(10));
         
-        configPanel.add(new JLabel("Remote Host"), 
+        configPanel.add(new JSmartLabel("Remote Host"), 
             ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(remoteHostField_ = new JTextField(10));
+        configPanel.add(remoteHostField_ = new JSmartTextField(10));
         
-        configPanel.add(new JLabel("Remote Port"), 
+        configPanel.add(new JSmartLabel("Remote Port"), 
             ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(remotePortField_ = new JTextField(10));      
+        configPanel.add(remotePortField_ = new JSmartTextField(10));      
         
-        configPanel.add(new JLabel("Max Capacity"),
+        configPanel.add(new JSmartLabel("Max Capacity"),
             ParagraphLayout.NEW_PARAGRAPH);
-        configPanel.add(capacityField_ = new JTextField(10));
+        configPanel.add(capacityField_ = new JSmartTextField(10));
                         
         configFlipPane_ = new JFlipPane(JFlipPane.LEFT);
         configFlipPane_.addFlipper("Config", configPanel);
