@@ -13,11 +13,16 @@ import toolbox.util.ExceptionUtil;
 /**
  * JTailTabbedPane
  */
-public class JTailTabbedPane extends JTabbedPane implements TailPane.ITailPaneListener
+public class JTailTabbedPane extends JTabbedPane 
+    implements TailPane.ITailPaneListener
 {
     private static final Logger logger_ =
         Logger.getLogger(JTailTabbedPane.class);
-    
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
     /**
      * Creates a JTailTabbedPane
      */
@@ -26,9 +31,16 @@ public class JTailTabbedPane extends JTabbedPane implements TailPane.ITailPaneLi
         init();
     }
 
+    //--------------------------------------------------------------------------
+    // Protected
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Inits the tabbed pane
+     */
     protected void init()
     {
-        addPropertyChangeListener( new PropertyChangeListener()
+        addPropertyChangeListener(new PropertyChangeListener()
         {
             public void propertyChange(PropertyChangeEvent evt)
             {
@@ -36,42 +48,40 @@ public class JTailTabbedPane extends JTabbedPane implements TailPane.ITailPaneLi
             }
         });
     }
-   
+
+    //--------------------------------------------------------------------------
+    // ITailPaneListener Interface
+    //--------------------------------------------------------------------------
+
     /**
-     * Tail pane listener
+     * @see toolbox.jtail.TailPane.ITailPaneListener#newDataAvailable(
+     *      toolbox.jtail.TailPane)
      */
-//    public class TailPaneListener implements TailPane.ITailPaneListener
-//    {
-        /**
-         * @see toolbox.jtail.TailPane.ITailPaneListener#newDataAvailable(
-         *      toolbox.jtail.TailPane)
-         */
-        public void newDataAvailable(TailPane tailPane)
+    public void newDataAvailable(TailPane tailPane)
+    {
+        int index = indexOfComponent(tailPane);
+        setTitleAt(index, "* " + getTitleAt(index));
+    }
+
+    /**
+     * @see toolbox.jtail.TailPane.ITailPaneListener#tailAggregated(
+     *      toolbox.jtail.TailPane)
+     */
+    public void tailAggregated(TailPane tailPane)
+    {
+        int index = indexOfComponent(tailPane);
+
+        try
         {
-            int index = indexOfComponent(tailPane);
-            setTitleAt(index, "* "+ getTitleAt(index));
+            setTitleAt(index, JTail.makeTabLabel(tailPane.getConfiguration()));
+
+            setToolTipTextAt(
+                index,
+                JTail.makeTabToolTip(tailPane.getConfiguration()));
         }
-        
-        /**
-         * @see toolbox.jtail.TailPane.ITailPaneListener#tailAggregated(
-         *      toolbox.jtail.TailPane)
-         */
-        public void tailAggregated(TailPane tailPane)
+        catch (IOException e)
         {
-            int index = indexOfComponent(tailPane);
-            
-            try
-            {
-                setTitleAt(
-                    index, JTail.makeTabLabel(tailPane.getConfiguration()));
- 
-                setToolTipTextAt(
-                    index, JTail.makeTabToolTip(tailPane.getConfiguration()));
-            }
-            catch (IOException e)
-            {
-                ExceptionUtil.handleUI(e, logger_);
-            }
+            ExceptionUtil.handleUI(e, logger_);
         }
-//    }
+    }
 }
