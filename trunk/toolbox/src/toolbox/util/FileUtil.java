@@ -280,8 +280,7 @@ public final class FileUtil
          *       complicated scenarios involving permissions, attributes, 
          *       existence that need to be accounted for. 
          */
-        String method = "[move  ] ";
-        logger_.debug(method + "Moving " + srcFile + " => " + destDir);
+        logger_.debug("Moving " + srcFile + " => " + destDir);
 
         InputStream is = null;
         OutputStream os = null;
@@ -306,7 +305,7 @@ public final class FileUtil
         }
         catch (IOException e)
         {
-            logger_.error(method, e);
+            logger_.error("moveFile", e);
         }
         finally
         {

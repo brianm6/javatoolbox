@@ -148,14 +148,12 @@ public class ArrayUtilTest extends TestCase
     {
         logger_.info("Running testSubsetObjectAll...");
         
-        String method = "[subObj] ";
-        
         String[] objs = new String[] { "zero", "one", "two", "three" };
         
         String[] subset = (String[]) ArrayUtil.subset(objs, 1, 2);
         
-        logger_.info(method + ArrayUtil.toString(objs));
-        logger_.info(method + ArrayUtil.toString(subset));
+        logger_.info(ArrayUtil.toString(objs));
+        logger_.info(ArrayUtil.toString(subset));
         
         assertEquals("first index is incorrect", "one", subset[0]);
         assertEquals("second index is incorrect", "two", subset[1]);
@@ -214,7 +212,7 @@ public class ArrayUtilTest extends TestCase
             "[10]{one, two, three, four, five, six, seven, eight, nine, ten}";
             
         String result   = ArrayUtil.toString(s, false);
-        logger_.info("[toStrn] " + result);
+        logger_.info(result);
         assertEquals("strings don't match", expected, result);
 
     }
@@ -228,7 +226,7 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testToStringEmpty...");
         
         String[] s = new String[0];
-        logger_.info("[sempty] " + ArrayUtil.toString(s));
+        logger_.info(ArrayUtil.toString(s));
     }
     
 
@@ -240,8 +238,8 @@ public class ArrayUtilTest extends TestCase
         logger_.info("Running testToStringOneElementOnePerLine...");
         
         String[] s = new String[] { "hello"};
-        logger_.info("[oneelm] " + ArrayUtil.toString(s, true));
-        logger_.info("[oneelm] " + ArrayUtil.toString(s, false));        
+        logger_.info(ArrayUtil.toString(s, true));
+        logger_.info(ArrayUtil.toString(s, false));        
     }
 
 
@@ -259,7 +257,7 @@ public class ArrayUtilTest extends TestCase
         };
         
         String result   = ArrayUtil.toString(s, true);
-        logger_.info("[oneper]\n " + result);
+        logger_.info("\n " + result);
     }
 
     
@@ -464,7 +462,7 @@ public class ArrayUtilTest extends TestCase
         String[] head = new String[0];
         String[] tail = new String[0];
         
-        String[] concatted = (String[])ArrayUtil.concat(head, tail);
+        String[] concatted = (String[]) ArrayUtil.concat(head, tail);
         
         assertEquals("concatted array should be empty", 0, concatted.length);
         assertEquals("concatted array class type should string", String.class,

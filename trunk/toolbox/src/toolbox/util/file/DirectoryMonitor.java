@@ -96,9 +96,7 @@ public class DirectoryMonitor
      */
     public void stop() throws InterruptedException
     {
-        String method = "[stop  ]";
-        
-        logger_.debug(method + "Shutting down..");
+        logger_.debug("Shutting down..");
         shutdown_ = true;
         
         // wait at most 10 secs for monitor to shutdown
@@ -222,13 +220,11 @@ public class DirectoryMonitor
     {
         public void run()
         {
-            String method = "[run   ] ";
-
             // DEBUG 
-            logger_.debug(method + "Monitoring: " + getDirectory());
+            logger_.debug("Monitoring: " + getDirectory());
+            
             for (Iterator i = activities_.iterator(); i.hasNext(); )
-                logger_.debug(method + "Activity: " + i.next());
-
+                logger_.debug("Activity: " + i.next());
     
             // Check termination flag
             while (!shutdown_)
@@ -243,9 +239,8 @@ public class DirectoryMonitor
                     // Only notify if there is actually some activity       
                     if (activeFiles.length > 0)
                     {
-                        logger_.debug(method + 
-                            "Active files in monitored dir= " + 
-                                ArrayUtil.toString(activeFiles));
+                        logger_.debug("Active files in monitored dir= " + 
+                            ArrayUtil.toString(activeFiles));
         
                         // Eat exceptions so rest of listeners get serviced
                         try
@@ -254,7 +249,7 @@ public class DirectoryMonitor
                         }
                         catch(Exception e)
                         {
-                            logger_.error(method + e.getMessage(), e);
+                            logger_.error("ActivityRunner.run", e);
                         }
                     }
                     

@@ -122,7 +122,7 @@ public class FindClass
      * @throws  IOException on I/O error
      * @throws  RESyntaxException on regular expression error
      */
-    public FindClassResult[] findClass(String classToFind, boolean ignoreCase) 
+    public FindClassResult[] findClass(String classToFind,boolean ignoreCase) 
         throws RESyntaxException, IOException
     { 
         // result collector
@@ -259,8 +259,6 @@ public class FindClass
      */
     protected void buildSearchTargets()
     {
-        String method = "[build ] ";
-        
         // build list of archives and dirs to search
         searchTargets_ = new ArrayList();
         searchTargets_.addAll(getClassPathTargets());
@@ -269,13 +267,13 @@ public class FindClass
         // print out search targets if debub is on
         if (logger_.isDebugEnabled())
         {
-            logger_.debug(method + "Search targets");
-            logger_.debug(method + "==============================");
+            logger_.debug("Search targets");
+            logger_.debug("==============================");
             
             for (Iterator i = searchTargets_.iterator(); 
-                i.hasNext(); logger_.debug(method + i.next()));
+                i.hasNext(); logger_.debug(i.next()));
                 
-            logger_.debug(method + "==============================");
+            logger_.debug("==============================");
         }
     }
     
@@ -410,8 +408,6 @@ public class FindClass
      */    
     protected void findInPath(String pathName) 
     { 
-        String method = "[findIn] ";
-        
         // tack a slash on the end
         if (!pathName.endsWith( File.separator ))
             pathName += File.separator;
@@ -430,7 +426,7 @@ public class FindClass
                 
             dotted = searchTarget.substring(pathName.length());
             
-            logger_.debug(method + "file = " + dotted);
+            logger_.debug("file = " + dotted);
             
             if (regExp_.match(dotted))
             {

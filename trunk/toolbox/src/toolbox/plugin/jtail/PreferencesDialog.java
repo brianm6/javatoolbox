@@ -137,8 +137,6 @@ public class PreferencesDialog extends JDialog implements ActionListener
      */
     public void actionPerformed(ActionEvent e)
     {
-        String method = "[actPrf] ";
-        
         String action = e.getActionCommand();
         
         if (action.equals(ACTION_OK))
@@ -147,10 +145,11 @@ public class PreferencesDialog extends JDialog implements ActionListener
         }
         else if (action.equals(ACTION_CANCEL))
         {
+            
         }
         else
         {
-            logger_.warn(method + 
+            logger_.warn(
                 "No handler in actionPerformed() for command " + action);
         }        
     }

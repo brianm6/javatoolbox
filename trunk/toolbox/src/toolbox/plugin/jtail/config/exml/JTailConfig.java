@@ -60,8 +60,6 @@ public class JTailConfig implements IJTailConfig, XMLConstants
      */
     public Element marshal()  throws IOException 
     {
-        String method = "[marshl] ";
-        
         // Root config node
         Element jtailNode = new Element(ELEMENT_JTAIL);
         
@@ -85,8 +83,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants
         jtailNode.addElement(defaultsNode);
         
         // Save child ITailPaneConfigs
-        logger_.debug(method + 
-            "Saving " + tailPaneConfigs_.length + " configurations");
+        logger_.debug("Saving " + tailPaneConfigs_.length + " configurations");
 
         for (int i=0; i<tailPaneConfigs_.length;
             jtailNode.addElement((

@@ -255,10 +255,7 @@ public class JFlipPane extends JPanel
      */
     public JToggleButton getButtonFor(JComponent flipper)
     {
-        //String method = "[butFor] ";
-        
-        //logger_.debug(method + 
-        //  "Button count=" + buttonGroup_.getButtonCount());
+        //logger_.debug("Button count=" + buttonGroup_.getButtonCount());
         
         Enumeration e = buttonGroup_.getElements();
         
@@ -286,8 +283,6 @@ public class JFlipPane extends JPanel
      */   
     public Dimension getPreferredSize()
     {
-        //String method = "[prfSiz] ";
-        
         Dimension pref;
         
         if (!isCollapsed())
@@ -631,26 +626,23 @@ public class JFlipPane extends JPanel
     {
         public void actionPerformed(ActionEvent evt)
         {
-            String method = "[actPrf] ";
-            
             if(evt.getSource() == closeButton_)
                 setSelectedFlipper(null);
             else
             {
                 JComponent button = (JComponent)evt.getSource();
                 String name = button.getName();
-                logger_.debug(method + "Flipper " + name + " selected");
+                logger_.debug("Flipper " + name + " selected");
                 JComponent flipper = (JComponent)flippers_.get(name);
                 
                 if (isFlipperSelected(flipper))
                 {
-                    logger_.debug(method + "Toggeling flipper");
+                    logger_.debug("Toggeling flipper");
                     toggleFlipper();
-                    
                 }
                 else 
                 {
-                    logger_.debug(method + "Selecting flipper");
+                    logger_.debug("Selecting flipper");
                     
                     // Must be expanded before flipper can be selected
                     if (isCollapsed())
@@ -665,7 +657,6 @@ public class JFlipPane extends JPanel
             }
         }
     } 
-
 
     /**
      * Mouse handle to show popup menu
@@ -1202,8 +1193,6 @@ public class JFlipPane extends JPanel
          */
         public Dimension getPreferredSize()
         {
-            //String method = "[prfSiz] ";
-            
             Dimension pref;
             
             if(flipPane_ == null)
@@ -1233,9 +1222,8 @@ public class JFlipPane extends JPanel
                     pref = new Dimension(dim + JFlipPane.SPLITTER_WIDTH + 3, 0);
                 }
             }
-            
 
-            //fcpLogger_.info(method + "prefsize=" + pref);
+            //fcpLogger_.info("prefsize=" + pref);
             
             return pref;
         } 
