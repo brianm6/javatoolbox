@@ -72,13 +72,6 @@
   </LookAndFeel>
 
   <LookAndFeel
-      name="Infonode"
-      class="net.infonode.gui.laf.InfoNodeLookAndFeel"
-      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
-      <Property name="group.name" value="Others"/>
-  </LookAndFeel>
-
-  <LookAndFeel
       name="Hippo"
       class="se.diod.hippo.plaf.HippoLookAndFeel"
       action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
@@ -484,6 +477,40 @@
       <Property name="theme.name"  value="XP Silver"/>
       <Property name="theme.file"  value="tinylf/XP Silver.theme"/>
       <Property name="theme.style" value="1"/>
+  </LookAndFeel>
+
+  <!-- ==================================================================== -->
+  <!-- InfoNode Look and Feels                                              -->
+  <!-- ==================================================================== -->
+
+  <LookAndFeel
+      name="Blue Ice"
+      class="net.infonode.gui.laf.InfoNodeLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateInfonodeLookAndFeelAction">
+ 
+      <Property name="group.name"   value="Infonode"/>
+      <Property name="theme.class"  value="net.infonode.gui.laf.InfoNodeLookAndFeelThemes"/>
+      <Property name="theme.method" value="getBlueIceTheme"/>
+  </LookAndFeel>
+
+  <LookAndFeel
+      name="Dark Blue Green"
+      class="net.infonode.gui.laf.InfoNodeLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateInfonodeLookAndFeelAction">
+
+      <Property name="group.name"   value="Infonode"/>
+      <Property name="theme.class"  value="net.infonode.gui.laf.InfoNodeLookAndFeelThemes"/>
+      <Property name="theme.method" value="getDarkBlueGreenTheme"/>
+  </LookAndFeel>
+
+  <LookAndFeel
+      name="Gray"
+      class="net.infonode.gui.laf.InfoNodeLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateInfonodeLookAndFeelAction">
+
+      <Property name="group.name"   value="Infonode"/>
+      <Property name="theme.class"  value="net.infonode.gui.laf.InfoNodeLookAndFeelThemes"/>
+      <Property name="theme.method" value="getGrayTheme"/>
   </LookAndFeel>
 
   <!-- ==================================================================== -->
