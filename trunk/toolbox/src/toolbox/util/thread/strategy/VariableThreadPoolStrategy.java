@@ -207,7 +207,7 @@ public class VariableThreadPoolStrategy extends ThreadedDispatcherStrategy
     /**
      * Publish a null request for each thread in the pool to signal shutdown.
      */
-    public void shutdown()
+    public void destroy()
     {
         for (int i = 0; i < currentSize_; ++i)
             try

@@ -149,7 +149,7 @@ public class SocketServer implements Runnable
         // Set exit variant to at least try to shutdown gracefully
         shutdown_ = true;
 
-        dispatcher_.shutdown();
+        dispatcher_.destroy();
         dispatcher_ = null;
 
         serverSocket_.close();

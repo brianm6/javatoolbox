@@ -55,7 +55,7 @@ public abstract class AbstractDispatcherStrategy
     /**
      * Performs any cleanup activities.
      */
-    public void shutdown()
+    public void destroy()
     {
     }
 }

@@ -88,11 +88,11 @@ public abstract class AbstractDispatcher
     /**
      * Terminates all publishing activities. 
      */
-    public final synchronized void shutdown()
+    public final synchronized void destroy()
     {
         if (running_)
         {
-            strategy_.shutdown();
+            strategy_.destroy();
             running_ = false;
         }
     }

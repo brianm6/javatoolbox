@@ -162,6 +162,6 @@ public class AsyncConnectionHandlerTest extends TestCase
         
         logger_.info(rv.getValue());
         
-        dispatcher.shutdown();
+        dispatcher.destroy();
     }
 }
