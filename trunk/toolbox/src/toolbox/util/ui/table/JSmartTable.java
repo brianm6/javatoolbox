@@ -35,8 +35,8 @@ import toolbox.workspace.IPreferenced;
  * </ul>
  * 
  * @see JSmartTableHeader
- * @see JSmartTableModel
- * @see SmartTableCellRender
+ * @see SmartTableModel
+ * @see SmartTableCellRenderer
  */
 public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 {
@@ -272,7 +272,7 @@ public class JSmartTable extends JTable implements AntiAliased, IPreferenced
 
     
     /**
-     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
     {

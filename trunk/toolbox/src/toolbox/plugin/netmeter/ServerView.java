@@ -115,8 +115,8 @@ public class ServerView extends JHeaderPanel implements ServiceListener
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.netmeter.ServiceListener#serviceStarted(
-     *      toolbox.plugin.netmeter.Service)
+     * @see toolbox.util.service.ServiceListener#serviceStarted(
+     *      toolbox.util.service.Service)
      */
     public void serviceStarted(Service service) throws ServiceException
     {
@@ -125,8 +125,8 @@ public class ServerView extends JHeaderPanel implements ServiceListener
     
     
     /**
-     * @see toolbox.plugin.netmeter.ServiceListener#servicePaused(
-     *      toolbox.plugin.netmeter.Service)
+     * @see toolbox.util.service.ServiceListener#servicePaused(
+     *      toolbox.util.service.Service)
      */
     public void servicePaused(Service service) throws ServiceException
     {
@@ -135,8 +135,8 @@ public class ServerView extends JHeaderPanel implements ServiceListener
     
     
     /**
-     * @see toolbox.plugin.netmeter.ServiceListener#serviceResumed(
-     *      toolbox.plugin.netmeter.Service)
+     * @see toolbox.util.service.ServiceListener#serviceResumed(
+     *      toolbox.util.service.Service)
      */
     public void serviceResumed(Service service) throws ServiceException
     {
@@ -145,8 +145,8 @@ public class ServerView extends JHeaderPanel implements ServiceListener
     
     
     /**
-     * @see toolbox.plugin.netmeter.ServiceListener#serviceStopped(
-     *      toolbox.plugin.netmeter.Service)
+     * @see toolbox.util.service.ServiceListener#serviceStopped(
+     *      toolbox.util.service.Service)
      */
     public void serviceStopped(Service service) throws ServiceException
     {

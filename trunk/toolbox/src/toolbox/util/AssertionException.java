@@ -1,7 +1,7 @@
 package toolbox.util;
 
 /**
- * Represents an assertion violation.
+ * AssertionException represents an assertion violation.
  *
  * @see Assert
  */
@@ -12,7 +12,7 @@ public class AssertionException extends RuntimeException
     //--------------------------------------------------------------------------
     
     /**
-     * Create a default instance.
+     * Creates an AssertionException.
      */
     public AssertionException()
     {
@@ -20,9 +20,9 @@ public class AssertionException extends RuntimeException
     
     
     /**
-     * Create an instance with a descriptive message.
+     * Creates an AssertionException with a descriptive message.
      *
-     * @param message A descriptive message string
+     * @param message A descriptive message string.
      */
     public AssertionException(String message)
     {

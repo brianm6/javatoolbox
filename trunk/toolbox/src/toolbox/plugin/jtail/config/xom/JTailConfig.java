@@ -51,8 +51,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.jtail.config.IJTailConfig#setDefaultConfig(
-     *      toolbox.jtail.config.ITailPaneConfig)
+     * @see toolbox.plugin.jtail.config.IJTailConfig#setDefaultConfig(
+     *      toolbox.plugin.jtail.config.ITailPaneConfig)
      */
     public void setDefaultConfig(ITailPaneConfig defaultConfig)
     {
@@ -61,7 +61,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 
     
     /**
-     * @see toolbox.jtail.config.IJTailConfig#getDefaultConfig()
+     * @see toolbox.plugin.jtail.config.IJTailConfig#getDefaultConfig()
      */
     public ITailPaneConfig getDefaultConfig()
     {
@@ -70,7 +70,7 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 
     
     /**
-     * @see toolbox.jtail.config.IJTailConfig#getTailConfigs()
+     * @see toolbox.plugin.jtail.config.IJTailConfig#getTailConfigs()
      */
     public ITailPaneConfig[] getTailConfigs()
     {
@@ -79,8 +79,8 @@ public class JTailConfig implements IJTailConfig, XMLConstants, IPreferenced
 
     
     /**
-     * @see toolbox.jtail.config.IJTailConfig#setTailConfigs(
-     *      toolbox.jtail.config.ITailPaneConfig[])
+     * @see toolbox.plugin.jtail.config.IJTailConfig#setTailConfigs(
+     *      toolbox.plugin.jtail.config.ITailPaneConfig[])
      */
     public void setTailConfigs(ITailPaneConfig[] tailPaneConfigs)
     {

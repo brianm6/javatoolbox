@@ -54,8 +54,8 @@ public class JTailTabbedPane extends JTabbedPane
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.jtail.TailPane.ITailPaneListener#newDataAvailable(
-     *      toolbox.jtail.TailPane)
+     * @see toolbox.plugin.jtail.TailPane.ITailPaneListener#newDataAvailable(
+     *      toolbox.plugin.jtail.TailPane)
      */
     public void newDataAvailable(TailPane tailPane)
     {
@@ -65,8 +65,8 @@ public class JTailTabbedPane extends JTabbedPane
 
     
     /**
-     * @see toolbox.jtail.TailPane.ITailPaneListener#tailAggregated(
-     *      toolbox.jtail.TailPane)
+     * @see toolbox.plugin.jtail.TailPane.ITailPaneListener#tailAggregated(
+     *      toolbox.plugin.jtail.TailPane)
      */
     public void tailAggregated(TailPane tailPane)
     {

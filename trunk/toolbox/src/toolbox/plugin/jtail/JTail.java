@@ -782,8 +782,8 @@ public class JTail extends JFrame implements IPreferenced
         //----------------------------------------------------------------------
         
         /**
-         * @see toolbox.util.ui.font.IFontChooserDialogListener#
-         *      applyButtonPressed(toolbox.util.ui.font.JFontChooser)
+         * @see toolbox.util.ui.font.IFontChooserDialogListener
+         *      #applyButtonPressed(toolbox.util.ui.font.JFontChooser)
          */
         public void applyButtonPressed(JFontChooser fontChooser)
         {
@@ -807,8 +807,8 @@ public class JTail extends JFrame implements IPreferenced
 
         
         /**
-         * @see toolbox.util.ui.font.IFontChooserDialogListener#
-         *      cancelButtonPressed(toolbox.util.ui.font.JFontChooser)
+         * @see toolbox.util.ui.font.IFontChooserDialogListener
+         *      #cancelButtonPressed(toolbox.util.ui.font.JFontChooser)
          */
         public void cancelButtonPressed(JFontChooser fontChooser)
         {

@@ -389,8 +389,9 @@ public class SametimeMessenger implements InstantMessenger
     class SametimeComponentListener implements ComponentListener
     {
         /**
-         * @see com.lotus.sametime.core.comparch.ComponentListener#
-         *      componentLoaded(com.lotus.sametime.core.comparch.STCompApi)
+         * @see 
+         *  com.lotus.sametime.core.comparch.ComponentListener#componentLoaded(
+         *  com.lotus.sametime.core.comparch.STCompApi)
          */
         public void componentLoaded(STCompApi arg0)
         {

@@ -22,7 +22,7 @@ public class XEPProcessor implements FOProcessor
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.util.xslfo.FOProcessor#initialize(java.util.Properties)
+     * @see toolbox.plugin.xslfo.FOProcessor#initialize(java.util.Properties)
      */
     public void initialize(Properties props)
     {
@@ -32,7 +32,7 @@ public class XEPProcessor implements FOProcessor
 
     
     /**
-     * @see toolbox.util.xslfo.FOProcessor#renderPDF(java.io.InputStream, 
+     * @see toolbox.plugin.xslfo.FOProcessor#renderPDF(java.io.InputStream, 
      *      java.io.OutputStream)
      */
     public void renderPDF(InputStream foStream, OutputStream pdfStream)
@@ -50,7 +50,7 @@ public class XEPProcessor implements FOProcessor
     
     
     /**
-     * @see toolbox.util.xslfo.FOProcessor#renderPostscript(java.io.InputStream,
+     * @see toolbox.plugin.xslfo.FOProcessor#renderPostscript(java.io.InputStream,
      *      java.io.OutputStream)
      */
     public void renderPostscript(InputStream foStream, OutputStream psStream)

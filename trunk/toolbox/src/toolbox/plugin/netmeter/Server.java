@@ -128,7 +128,7 @@ public class Server extends AbstractService
     //--------------------------------------------------------------------------
 
     /**
-     * @see toolbox.plugin.netmeter.Service#start()
+     * @see toolbox.util.service.Service#start()
      */
     public void start() throws ServiceException
     {
@@ -151,7 +151,7 @@ public class Server extends AbstractService
 
 
     /**
-     * @see toolbox.plugin.netmeter.Service#stop()
+     * @see toolbox.util.service.Service#stop()
      */
     public void stop() throws ServiceException
     {
@@ -171,7 +171,7 @@ public class Server extends AbstractService
 
 
     /**
-     * @see toolbox.plugin.netmeter.Service#pause()
+     * @see toolbox.util.service.Service#pause()
      */
     public void pause() throws ServiceException
     {
@@ -180,7 +180,7 @@ public class Server extends AbstractService
 
 
     /**
-     * @see toolbox.plugin.netmeter.Service#resume()
+     * @see toolbox.util.service.Service#resume()
      */
     public void resume() throws ServiceException
     {
@@ -189,7 +189,7 @@ public class Server extends AbstractService
 
 
     /**
-     * @see toolbox.plugin.netmeter.Service#isRunning()
+     * @see toolbox.util.service.Service#isRunning()
      */
     public boolean isRunning()
     {
@@ -198,7 +198,7 @@ public class Server extends AbstractService
 
 
     /**
-     * @see toolbox.plugin.netmeter.Service#isPaused()
+     * @see toolbox.util.service.Service#isPaused()
      */
     public boolean isPaused()
     {

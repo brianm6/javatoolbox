@@ -147,7 +147,7 @@ public class EventInputStream extends FilterInputStream
     /** 
      * Fires notification that a byte was read from the stream.
      * 
-     * @param b Bytes that was read.
+     * @param bytes Bytes that was read.
      */
     protected void fireBytesRead(byte[] bytes)
     {

@@ -97,7 +97,7 @@ public class JSmartTextField extends JTextField implements AntiAliased
 
 
     /**
-     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
     {

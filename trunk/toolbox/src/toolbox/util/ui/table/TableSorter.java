@@ -588,8 +588,8 @@ public class TableSorter extends TableMap
     final class TableHeaderCellRenderer extends SmartTableCellRenderer
     {
         /**
-         * @see javax.swing.table.TableCellRenderer#
-         *      getTableCellRendererComponent(javax.swing.JTable, 
+         * @see javax.swing.table.TableCellRenderer
+         *      #getTableCellRendererComponent(javax.swing.JTable, 
          *      java.lang.Object, boolean, boolean, int, int)
          */
         public Component getTableCellRendererComponent(

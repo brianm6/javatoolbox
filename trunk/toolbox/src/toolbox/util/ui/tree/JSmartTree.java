@@ -19,7 +19,7 @@ import toolbox.util.ui.AntiAliased;
  *   <li>Antialised text
  * </ul>
  * 
- * @see SmartTreeCellRender
+ * @see SmartTreeCellRenderer
  */
 public class JSmartTree extends JTree implements AntiAliased
 {

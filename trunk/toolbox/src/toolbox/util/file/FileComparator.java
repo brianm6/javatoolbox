@@ -12,7 +12,7 @@ import junit.framework.Assert;
 import toolbox.util.StreamUtil;
 
 /**
- * A {@java.io.File} comparator that can compare files by a number of file
+ * A {@link java.io.File} comparator that can compare files by a number of file
  * attributes. Comparison by the following characteristics is supported:
  * <p>
  * <ul>
@@ -150,7 +150,6 @@ public class FileComparator implements Comparator
      */
     protected int compareByContents(File f1, File f2)
     {
-
         if ((f1 == f2) || (f1 != null && f1.equals(f2)))
             return 0;
         

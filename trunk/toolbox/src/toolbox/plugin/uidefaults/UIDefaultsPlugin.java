@@ -442,8 +442,8 @@ public class UIDefaultsPlugin extends JPanel implements IPlugin, ActionListener
 
         
         /**
-         * @see javax.swing.table.TableCellRenderer#
-         *      getTableCellRendererComponent(javax.swing.JTable, 
+         * @see javax.swing.table.TableCellRenderer
+         *      #getTableCellRendererComponent(javax.swing.JTable, 
          *      java.lang.Object, boolean, boolean, int, int)
          */
         public Component getTableCellRendererComponent(

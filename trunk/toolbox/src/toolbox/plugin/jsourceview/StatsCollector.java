@@ -157,8 +157,8 @@ public class StatsCollector
     class ImportCollector implements CodeCollector
     {
         /**
-         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
-         *      toolbox.jsourceview.FileStats, java.lang.String)
+         * @see toolbox.plugin.jsourceview.StatsCollector.CodeCollector
+         *      #identify(toolbox.plugin.jsourceview.FileStats,java.lang.String)
          */
         public boolean identify(FileStats stats, String line)
         {
@@ -185,8 +185,8 @@ public class StatsCollector
     class BraceCollector implements CodeCollector
     {
         /**
-         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
-         *      toolbox.jsourceview.FileStats, java.lang.String)
+         * @see toolbox.plugin.jsourceview.StatsCollector.CodeCollector
+         *      #identify(toolbox.plugin.jsourceview.FileStats,java.lang.String)
          */
         public boolean identify(FileStats stats, String line)
         {
@@ -213,8 +213,8 @@ public class StatsCollector
     class BlankCollector implements CodeCollector
     {
         /**
-         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
-         *      toolbox.jsourceview.FileStats, java.lang.String)
+         * @see toolbox.plugin.jsourceview.StatsCollector.CodeCollector
+         *      #identify(toolbox.plugin.jsourceview.FileStats,java.lang.String)
          */
         public boolean identify(FileStats stats, String line)
         {
@@ -241,8 +241,8 @@ public class StatsCollector
     class TotalCollector implements CodeCollector
     {
         /**
-         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
-         *      toolbox.jsourceview.FileStats, java.lang.String)
+         * @see toolbox.plugin.jsourceview.StatsCollector.CodeCollector
+         *      #identify(toolbox.plugin.jsourceview.FileStats,java.lang.String)
          */
         public boolean identify(FileStats stats, String line)
         {
@@ -272,8 +272,8 @@ public class StatsCollector
         
         
         /**
-         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
-         *      toolbox.jsourceview.FileStats, java.lang.String)
+         * @see toolbox.plugin.jsourceview.StatsCollector.CodeCollector
+         *      #identify(toolbox.plugin.jsourceview.FileStats,java.lang.String)
          */
         public boolean identify(FileStats stats, String line)
         {
@@ -300,15 +300,15 @@ public class StatsCollector
     //--------------------------------------------------------------------------
     
     /**
-     * Collector which identifies starting an ending tags for comments 
-     * occupying a line all by themselves. These lines are categorized as 
-     * "thrown out". 
-     */    
+     * Collector which identifies starting an ending tags for comments
+     * occupying a line all by themselves. These lines are categorized as
+     * "thrown out".
+     */
     class CommentBeginEndCollector implements CodeCollector
     {
         /**
-         * @see toolbox.jsourceview.StatsCollector.CodeCollector#identify(
-         *      toolbox.jsourceview.FileStats, java.lang.String)
+         * @see toolbox.plugin.jsourceview.StatsCollector.CodeCollector
+         *      #identify(toolbox.plugin.jsourceview.FileStats,java.lang.String)
          */
         public boolean identify(FileStats stats, String line)
         {

@@ -10,6 +10,10 @@ import java.awt.Component;
  */
 public class StatusConstraint implements StatusArea
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Flag for relative layout. 
      */
@@ -82,8 +86,8 @@ public class StatusConstraint implements StatusArea
 
 
     /**
-     * @see toolbox.util.ui.statusbar.StatusArea#
-     *      getRequiredWidth(java.awt.Component)
+     * @see toolbox.util.ui.statusbar.StatusArea#getRequiredWidth(
+     *      java.awt.Component)
      */
     public float getRequiredWidth(Component component)
     {

@@ -2283,7 +2283,7 @@ public class Banner
     /**
      * Executes banner via Command line args.
      * 
-     * @param args See printUsage()
+     * @param args See printUsage().
      */
     public static void main(String args[])
     {
@@ -2411,8 +2411,8 @@ public class Banner
     /**
      * Converts from ASCII to a banner.
      *
-     * @param message Message
-     * @return Banner as a string
+     * @param message Message.
+     * @return Banner as a string.
      */
     public static String getBanner(String message)
     {
@@ -2424,11 +2424,11 @@ public class Banner
      * Converts from ASCII to a banner, eventually centering each line,
      * folding after each word, or when the width limit is reached.
      *
-     * @param message Message
-     * @param splitAtWord True if split at word
-     * @param leftJustify True to left justify text
-     * @param splitWidth Width of split
-     * @return Banner as a string
+     * @param message Message.
+     * @param splitAtWord True if split at word.
+     * @param leftJustify True to left justify text.
+     * @param splitWidth Width of split.
+     * @return Banner as a string.
      */
     public static String getBanner(String message, boolean splitAtWord,
         boolean leftJustify, int splitWidth)
@@ -2442,12 +2442,12 @@ public class Banner
      * Converts from ASCII to a banner, eventually centering each line,
      * folding after each word, or when the width limit is reached.
      * 
-     * @param message Message
-     * @param figletFont Font
-     * @param splitAtWord True if split at word
-     * @param leftJustify True to left justify text
-     * @param splitWidth Width of split
-     * @return Banner as a string
+     * @param message Message.
+     * @param figletFont Font.
+     * @param splitAtWord True if split at word.
+     * @param leftJustify True to left justify text.
+     * @param splitWidth Width of split.
+     * @return Banner as a string.
      */
     public static String getBanner(String message, BannerFont figletFont,
         boolean splitAtWord, boolean leftJustify, int splitWidth)
@@ -2506,8 +2506,8 @@ public class Banner
     /**
      * Gimme the maximum width of a converted text.
      * 
-     * @param message Message
-     * @return Width of text
+     * @param message Message.
+     * @return Width of text.
      */
     public static int getBannerWidth(String message)
     {
@@ -2528,9 +2528,9 @@ public class Banner
     /**
      * Move a banner to the right (for centering).
      * 
-     * @param message Text of message
-     * @param offset Offset to start
-     * @return Banner moved to the right
+     * @param message Text of message.
+     * @param offset Offset to start.
+     * @return Banner moved to the right.
      */
     private static String scroll(String message, int offset)
     {
@@ -2552,11 +2552,11 @@ public class Banner
     /**
      * Append a new banner line (center if needed).
      * 
-     * @param text Existing text
-     * @param line New line
-     * @param leftJustify True to left justify
-     * @param splitWidth Width at which to split a line
-     * @return Banner with new line appended
+     * @param text Existing text.
+     * @param line New line.
+     * @param leftJustify True to left justify.
+     * @param splitWidth Width at which to split a line.
+     * @return Banner with new line appended.
      */
     private static String addLine(String text, String line, boolean leftJustify,
         int splitWidth)
@@ -2575,9 +2575,9 @@ public class Banner
     /**
      * Create a banner from text.
      * 
-     * @param message Message
-     * @param font Font to use
-     * @return Banner
+     * @param message Message.
+     * @param font Font to use.
+     * @return Banner.
      */
     private static String convertOneLine(String message, BannerFont font)
     {
@@ -2601,10 +2601,10 @@ public class Banner
     /**
      * Appends a word to a banner.
      * 
-     * @param message Banner to append word to
-     * @param end Word to append to the banner
-     * @param font Font to use
-     * @return Banner with word appended
+     * @param message Banner to append word to.
+     * @param end Word to append to the banner.
+     * @param font Font to use.
+     * @return Banner with word appended.
      */
     private static String append(String message, String end, BannerFont font)
     {
@@ -2662,6 +2662,10 @@ public class Banner
      */ 
     static class BannerFont
     {
+        //----------------------------------------------------------------------
+        //  Fields
+        //----------------------------------------------------------------------
+        
         private char hardblank_;
         private int height_ = -1;
         private int heightWithoutDescenders_ = -1;
@@ -2677,17 +2681,18 @@ public class Banner
         /**
          * Creates a banner font.
          * 
-         * @param fontData Figlet font data
+         * @param fontData Figlet font data.
          */        
         public BannerFont(String fontData)
         {
             readFont(new StringReader(fontData));
         }
 
+        
         /**
          * Creates a banner font.
          *
-         * @param aURL URL to figlet font data
+         * @param aURL URL to figlet font data.
          */            
         public BannerFont(URL aURL)
         {
@@ -2709,26 +2714,34 @@ public class Banner
         //----------------------------------------------------------------------
         
         /**
-         * @return Font data
+         * Returns the font data.
+         * 
+         * @return char[][]
          */
         public char[][][] getFont()
         {
             return font_;
         }
     
+        
         /**
-         * @param c Char to get
-         * @return Char in font
+         * Gets the data for a given character.
+         * 
+         * @param c Char to get.
+         * @return Char in font.
          */
         public char[][] getChar(int c)
         {
             return font_[c];
         }
     
+        
         /**
-         * @param c Char
-         * @param l Line
-         * @return Character line string
+         * Gets the data for a given character line.
+         * 
+         * @param c Character.
+         * @param l Line number.
+         * @return Character line string.
          */
         public String getCharLineString(int c, int l)
         {
@@ -2745,7 +2758,7 @@ public class Banner
         /**
          * Reads figlet font_ data from an inputstream.
          * 
-         * @param is Inputstream to read font data from
+         * @param reader Reader to read font data from.
          */
         protected void readFont(Reader reader)
         {

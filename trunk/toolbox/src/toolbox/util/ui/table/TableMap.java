@@ -124,8 +124,8 @@ public class TableMap extends AbstractTableModel implements TableModelListener
     //--------------------------------------------------------------------------
 
     /**
-     * @see javax.swing.event.TableModelListener#
-     *      tableChanged(javax.swing.event.TableModelEvent)
+     * @see javax.swing.event.TableModelListener#tableChanged(
+     *      javax.swing.event.TableModelEvent)
      */
     public void tableChanged(TableModelEvent e)
     {

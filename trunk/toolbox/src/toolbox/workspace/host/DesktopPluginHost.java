@@ -152,7 +152,7 @@ public class DesktopPluginHost extends AbstractPluginHost
     
     
     /**
-     * @see toolbox.workspace.host.PluginHost#selectPlugin(
+     * @see toolbox.workspace.host.PluginHost#setSelectedPlugin(
      *      toolbox.workspace.IPlugin)
      */
     public void setSelectedPlugin(IPlugin plugin)

@@ -7,6 +7,10 @@ import toolbox.util.ArrayUtil;
  */
 public abstract class AbstractService implements Service
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     private static final int STATE_INIT     = 0;
     private static final int STATE_RUNNING  = 1;
     private static final int STATE_STOPPED  = 2;
@@ -25,7 +29,11 @@ public abstract class AbstractService implements Service
         STATES[STATE_PAUSED]   = "paused";
         STATES[STATE_SHUTDOWN] = "shutdown";
     }
-    
+
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+
     /**
      * State of the service.
      */
@@ -54,7 +62,7 @@ public abstract class AbstractService implements Service
     //--------------------------------------------------------------------------
     
     /**
-     * @see toolbox.plugin.netmeter.Service#start()
+     * @see toolbox.util.service.Service#start()
      */
     public void start() throws ServiceException
     {
@@ -70,7 +78,7 @@ public abstract class AbstractService implements Service
 
     
     /**
-     * @see toolbox.plugin.netmeter.Service#stop()
+     * @see toolbox.util.service.Service#stop()
      */
     public void stop() throws ServiceException
     {
@@ -86,7 +94,7 @@ public abstract class AbstractService implements Service
 
     
     /**
-     * @see toolbox.plugin.netmeter.Service#pause()
+     * @see toolbox.util.service.Service#pause()
      */
     public void pause() throws ServiceException
     {
@@ -102,7 +110,7 @@ public abstract class AbstractService implements Service
 
     
     /**
-     * @see toolbox.plugin.netmeter.Service#resume()
+     * @see toolbox.util.service.Service#resume()
      */
     public void resume() throws ServiceException
     {
@@ -118,7 +126,7 @@ public abstract class AbstractService implements Service
 
     
     /**
-     * @see toolbox.plugin.netmeter.Service#isRunning()
+     * @see toolbox.util.service.Service#isRunning()
      */
     public boolean isRunning()
     {
@@ -127,7 +135,7 @@ public abstract class AbstractService implements Service
 
     
     /**
-     * @see toolbox.plugin.netmeter.Service#isPaused()
+     * @see toolbox.util.service.Service#isPaused()
      */
     public boolean isPaused()
     {
@@ -136,8 +144,8 @@ public abstract class AbstractService implements Service
 
     
     /**
-     * @see toolbox.plugin.netmeter.Service#addServiceListener(
-     *      toolbox.plugin.netmeter.ServiceListener)
+     * @see toolbox.util.service.Service#addServiceListener(
+     *      toolbox.util.service.ServiceListener)
      */
     public void addServiceListener(ServiceListener listener)
     {

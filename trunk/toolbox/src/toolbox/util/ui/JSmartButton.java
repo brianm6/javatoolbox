@@ -96,7 +96,7 @@ public class JSmartButton extends JButton implements AntiAliased
 
     
     /**
-     * @see toolbox.util.ui.AntiAliased#setAntiAlias(boolean)
+     * @see toolbox.util.ui.AntiAliased#setAntiAliased(boolean)
      */
     public void setAntiAliased(boolean b)
     {
