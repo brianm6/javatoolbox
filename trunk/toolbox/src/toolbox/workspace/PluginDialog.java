@@ -40,7 +40,11 @@ import toolbox.util.ui.JListPopupMenu;
  */
 public class ManagePluginsDialog extends JDialog
 {
-    /** Logger **/
+    private JButton removeButton_;
+
+    private JButton addButton_;
+
+    /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(ManagePluginsDialog.class);
         
@@ -75,6 +79,9 @@ public class ManagePluginsDialog extends JDialog
     //  Private
     //--------------------------------------------------------------------------
     
+    /**
+     * Builds the view of the GUI
+     */
     protected void buildView()
     {
         Dimension prefSize = new Dimension(150,200);
@@ -114,11 +121,13 @@ public class ManagePluginsDialog extends JDialog
         gbc.weighty    = 1;
         gbc.anchor     = GridBagConstraints.SOUTH;
         gbc.insets     = new Insets(5,0,5,0);
-        midButtonPanel.add(new JButton(new AddNewPluginAction()), gbc);
+        midButtonPanel.add(
+        	addButton_ = new JButton(new AddNewPluginAction()), gbc);
         
         gbc.gridy++;
         gbc.anchor     = GridBagConstraints.NORTH;
-        midButtonPanel.add(new JButton(new RemovePluginAction()), gbc);
+        midButtonPanel.add(
+        	removeButton_ = new JButton(new RemovePluginAction()), gbc);
 
         // Lists and buttons
         JPanel listPanel = new JPanel(new GridBagLayout());
@@ -185,6 +194,9 @@ public class ManagePluginsDialog extends JDialog
             PluginMeta meta = new PluginMeta(plugin);
             activeModel_.addElement(meta);
         }
+        
+        removeButton_.setEnabled(activeModel_.size() > 0);
+        addButton_.setEnabled(inactiveModel_.size() > 0);
     }
     
     /**
@@ -253,8 +265,8 @@ public class ManagePluginsDialog extends JDialog
                     
                 Object plugin = null;
 
-                // Excluse plugins that can't be instantiated
-                // for whatever reason
+                // Excluse plugins that can't be instantiated for whatever 
+                // reason
                 try
                 {                            
                     plugin = Class.forName(clazz).newInstance();
@@ -267,8 +279,7 @@ public class ManagePluginsDialog extends JDialog
                     skip = true;
                 }
                 
-                // Make sure plugin class implements 
-                // the IPlugin interface
+                // Make sure plugin class implements the IPlugin interface
                 if (!skip)
                 {
                     if (plugin instanceof IPlugin)
@@ -281,6 +292,9 @@ public class ManagePluginsDialog extends JDialog
                 }
             }
         }
+        
+		removeButton_.setEnabled(activeModel_.size() > 0);
+		addButton_.setEnabled(inactiveModel_.size() > 0);
     }
     
     /**
@@ -350,8 +364,8 @@ public class ManagePluginsDialog extends JDialog
     //----------------------------------------------------------------------
     
     /**
-     * Adds a plugin - moves the plugin from the inactive list to the 
-     * active list
+     * Adds a plugin - moves the plugin from the inactive list to the active 
+     * list
      */
     class AddNewPluginAction extends AbstractAction
     {
@@ -385,8 +399,8 @@ public class ManagePluginsDialog extends JDialog
     }
     
     /**
-     * Deactivates/removes a plugin and moves the plugin from the active
-     * list to the inactive list
+     * Deactivates/removes a plugin and moves the plugin from the active list 
+     * to the inactive list
      */
     class RemovePluginAction extends AbstractAction
     {
@@ -456,4 +470,3 @@ public class ManagePluginsDialog extends JDialog
         }
     }
 }
-    
