@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.log4j.Logger;
@@ -80,6 +81,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     private Map plugins_ = new SequencedHashMap();
 
+    private String[] pluginNames_ = new String[0];
     
     /**
      * Entrypoint 
@@ -113,25 +115,17 @@ public class PluginWorkspace extends JFrame implements IStatusBar
      */
     public PluginWorkspace(String[] plugins) throws Exception
     {
-        super("Plugin Frame");
+        super("Plugin Workspace");
             
         buildView();
         loadPrefs();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        for (int i=0; i< plugins.length; i++)
-            registerPlugin(plugins[i]);
         
-//        SwingUtilities.invokeLater(new Runnable ()
-//        {
-//            public void run()
-//            {
-//                applyPrefs();                        
-//            }
-//        });
-
-        applyPrefs();
+        // Nasty hack so plugins get initialized after the empty
+        // workspace has been realized
+        SwingUtilities.invokeLater(new PostInit());
     }
+
 
     //--------------------------------------------------------------------------
     //  Public
@@ -270,6 +264,7 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         prefs_ = new Properties();
         
         String userhome = System.getProperty("user.home");
+        
         if (!userhome.endsWith(File.separator))
             userhome = userhome + File.separator;
             
@@ -477,6 +472,30 @@ public class PluginWorkspace extends JFrame implements IStatusBar
         {
             savePrefs();            
         }
+        
+        public void windowOpened(WindowEvent e)
+        {
+            logger_.info("windowOpened()");
+        }
+    }
+
+	/**
+	 * Post initialization of the GUI after the frame has
+	 * been realized
+	 */    
+    class PostInit implements Runnable
+    {
+        public PostInit()
+        {
+        }
+        
+        public void run()
+        {
+            applyPrefs();
+            invalidate();
+            doLayout();
+            repaint();
+        }        
     }
     
     /**
