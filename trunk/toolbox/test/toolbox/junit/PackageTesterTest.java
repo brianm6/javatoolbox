@@ -1,11 +1,9 @@
-package toolbox.junit.test;
-
-import org.apache.log4j.Logger;
+package toolbox.junit;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import toolbox.junit.PackageTester;
+import org.apache.log4j.Logger;
 
 /**
  * Unit test for PackageTester.

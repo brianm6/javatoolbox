@@ -1,11 +1,9 @@
-package toolbox.findclass.test;
-
-import org.apache.log4j.Logger;
+package toolbox.findclass;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import toolbox.findclass.Main;
+import org.apache.log4j.Logger;
 
 /**
  * Unit test for Main.

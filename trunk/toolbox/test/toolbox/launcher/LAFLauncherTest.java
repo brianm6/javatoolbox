@@ -1,4 +1,4 @@
-package toolbox.launcher.test;
+package toolbox.launcher;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -6,7 +6,6 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.StandaloneTestCase;
-import toolbox.launcher.LAFLauncher;
 
 /**
  * Unit test for LAFLauncher.

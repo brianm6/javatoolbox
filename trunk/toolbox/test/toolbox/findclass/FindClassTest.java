@@ -1,4 +1,4 @@
-package toolbox.findclass.test;
+package toolbox.findclass;
 
 import java.io.File;
 import java.util.Iterator;
@@ -9,9 +9,6 @@ import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
 
-import toolbox.findclass.FindClass;
-import toolbox.findclass.FindClassListener;
-import toolbox.findclass.FindClassResult;
 import toolbox.util.ArrayUtil;
 import toolbox.util.ClassUtil;
 import toolbox.util.FileUtil;

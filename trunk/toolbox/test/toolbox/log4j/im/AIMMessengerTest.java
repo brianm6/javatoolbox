@@ -1,4 +1,4 @@
-package toolbox.log4j.im.test;
+package toolbox.log4j.im;
 
 import java.util.Properties;
 
@@ -8,8 +8,6 @@ import junit.textui.TestRunner;
 import org.apache.log4j.Logger;
 
 import toolbox.junit.StandaloneTestCase;
-import toolbox.log4j.im.AIMMessenger;
-import toolbox.log4j.im.InstantMessenger;
 import toolbox.util.ThreadUtil;
 
 /**

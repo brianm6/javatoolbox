@@ -1,4 +1,4 @@
-package toolbox.jedit.test;
+package toolbox.jedit;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,9 +22,6 @@ import org.apache.log4j.Logger;
 import org.jedit.syntax.TextAreaDefaults;
 import org.jedit.syntax.XMLTokenMarker;
 
-import toolbox.jedit.JEditPopupMenu;
-import toolbox.jedit.JEditTextArea;
-import toolbox.jedit.JavaDefaults;
 import toolbox.junit.UITestCase;
 import toolbox.util.SwingUtil;
 import toolbox.util.ui.JSmartComboBox;

@@ -1,29 +1,26 @@
-package toolbox.log4j.im.test;
+package toolbox.log4j.im;
 
 import java.util.Properties;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import toolbox.junit.StandaloneTestCase;
-import toolbox.log4j.im.InstantMessenger;
-import toolbox.log4j.im.YahooMessenger;
 import toolbox.util.ResourceUtil;
 import toolbox.util.ThreadUtil;
 import toolbox.util.XMLUtil;
 
 /**
- * Unit test for YahooMessenger.
+ * Unit test for AOLMessenger.
  */
-public class YahooMessengerTest extends TestCase implements StandaloneTestCase
+public class AOLMessengerTest extends TestCase implements StandaloneTestCase
 {
     private static final Logger logger_ =
-        Logger.getLogger(YahooMessengerTest.class);
-
+        Logger.getLogger(AOLMessengerTest.class);
+    
     //--------------------------------------------------------------------------
     // Constants
     //--------------------------------------------------------------------------
@@ -36,12 +33,13 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Yahoo user that the messages will originate from.
      */
-    private static final String FROM_USER = "supahfuzz";
+    private static final String FROM_USER = "supahfuzzy";
     
     /**
      * Password of the FROM_USER.
      */
     private static final String FROM_PASSWORD = "techno"; 
+        
         
     //--------------------------------------------------------------------------
     // Main
@@ -54,7 +52,7 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
      */
     public static void main(String[] args)
     {
-        TestRunner.run(YahooMessengerTest.class);
+        TestRunner.run(AOLMessengerTest.class);
     }
     
     //--------------------------------------------------------------------------
@@ -68,23 +66,27 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
      */    
     public void testLifeCycle() throws Exception
     {
+        //LogLog.setInternalDebugging(true);
+        
         logger_.info("Running testLifeCycle...");
         
-        InstantMessenger messenger = new YahooMessenger();
+        InstantMessenger messenger = new AOLMessenger();
+        
+        logger_.debug("Before init...");   
         messenger.initialize(new Properties());
         
-        logger_.debug("Before login...");
+        logger_.debug("Before login...");    
         messenger.login(FROM_USER, FROM_PASSWORD);
         
-        logger_.debug("Before send...");
-        messenger.send(TO_USER, "Hello from the testLifeCycle unit test.");
+        logger_.debug("Before send...");     
+        messenger.send(TO_USER, "Hello from the " + 
+            getClass().getName() + ".testLifeCycle unit test."); 
+        ThreadUtil.sleep(10000);
         
-        ThreadUtil.sleep(5000);
-        
-        logger_.debug("Before logout...");
+        logger_.debug("Before logout...");   
         messenger.logout();
         
-        logger_.debug("Before shutdown...");
+        logger_.debug("Before shutdown..."); 
         messenger.shutdown();
         
         logger_.debug("All done!");
@@ -94,23 +96,24 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
     /**
      * Tests sending a whole slew of messages.
      * 
-     * @throws Exception on error.
+     * @throws Exception on error
      */    
-    public void testSendMany() throws Exception
+    public void xtestSendMany() throws Exception
     {
         logger_.info("Running testSendMany...");
         
-        int max = 20;
-        
-        InstantMessenger messenger = new YahooMessenger();
-        messenger.initialize(new Properties());
-        messenger.login(FROM_USER, FROM_PASSWORD);
-        
-        for (int i = 0; i < max; i++)
+        InstantMessenger messenger = new AOLMessenger();
+        Properties props = new Properties();
+        props.setProperty(InstantMessenger.PROP_THROTTLE, 500 + "");
+
+        messenger.login("supahfuzzy", "techno");
+
+        for (int i = 0; i < 100; i++)
         {
+            ThreadUtil.sleep(300); // throttle
             messenger.send(
-                TO_USER,
-                "This is message number " + (i + 1) + " of " + max);
+                "analogue",
+                "This is message number " + (i + 1) + " of 100");
         }
         
         messenger.logout();
@@ -122,22 +125,20 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
      * Tests that the configuration in the xml file is read and executed
      * correctly.
      *  
-     * @throws Exception on error.
+     * @throws Exception on error
      */
-    public void testConfigByXML() throws Exception
+    public void xtestConfigByXML() throws Exception
     {
         logger_.info("Running testConfigByXML...");
-
-        String appenderName = "testXMLInit_appender";
-        String loggerName   = "testXMLInit_logger";
-
+        
         String xmlConfig = 
             ResourceUtil.getResourceAsString(
-                "/toolbox/log4j/im/test/YahooMessengerTest.xml");
-
-        // Load config from xml file        
+                "/toolbox/log4j/im/AOLMessengerTest.xml");
+        
+        //BasicConfigurator.resetConfiguration();
         DOMConfigurator.configure(XMLUtil.toElement(xmlConfig));
-        Logger logger = Logger.getLogger(loggerName);
+        
+        Logger logger = Logger.getLogger("testXMLInit_logger");
         
         logger.debug("debug");
         logger.info("info");
@@ -146,10 +147,6 @@ public class YahooMessengerTest extends TestCase implements StandaloneTestCase
         
         ThreadUtil.sleep(2000);
         
-        // Cleanup
-        Appender appender = logger.getAppender(appenderName);
-        logger_.info("Closing appender " + appender.getName());
-        appender.close();
-        logger.removeAppender(appenderName);
+        Logger.getRootLogger().removeAppender("testXMLInit_appender");
     }
 }

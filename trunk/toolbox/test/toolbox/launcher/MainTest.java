@@ -1,11 +1,9 @@
-package toolbox.launcher.test;
+package toolbox.launcher;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
-
-import toolbox.launcher.Main;
 
 /**
  * Unit test for Main.

@@ -1,4 +1,4 @@
-package toolbox.junit.test;
+package toolbox.junit;
 
 import java.util.Enumeration;
 
@@ -7,8 +7,6 @@ import junit.runner.TestCollector;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.Logger;
-
-import toolbox.junit.JarTestCollector;
 
 /**
  * Unit test for JarTestCollector.
