@@ -87,7 +87,6 @@ public class LoggingMenu extends JSmartMenu implements IPreferenced
      * Name of the console appender in /resources/log4j.xml.
      */
     private static final String APPENDER_CONSOLE = "console";
-
     
     //--------------------------------------------------------------------------
     // Fields
