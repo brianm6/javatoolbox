@@ -497,6 +497,11 @@ public class ServiceUtil
             ServiceTransition.STOP, 
             ServiceState.RUNNING,
             ServiceState.STOPPED);
+
+        machine.addTransition(
+            ServiceTransition.DESTROY, 
+            ServiceState.STOPPED,
+            ServiceState.DESTROYED);
         
         machine.reset();
         return machine;
