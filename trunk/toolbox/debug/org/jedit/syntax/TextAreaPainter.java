@@ -1,11 +1,23 @@
 package org.jedit.syntax;
 
-import javax.swing.ToolTipManager;
-import javax.swing.text.*;
-import javax.swing.JComponent;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
-import java.awt.font.FontRenderContext;
-import java.awt.*;
+
+import javax.swing.JComponent;
+import javax.swing.ToolTipManager;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.Segment;
+import javax.swing.text.TabExpander;
+import javax.swing.text.Utilities;
 
 //
 // Modifications made to paint() to support anti-aliasing of text
