@@ -77,6 +77,7 @@ public class DecompilerTest extends TestCase
         for (int i = 0; i < decompilers_.length; i++)
         {
             String tmpClass = null;
+            Decompiler d = decompilers_[i];
             
             try
             {
@@ -86,16 +87,14 @@ public class DecompilerTest extends TestCase
                 tmpClass = FileUtil.createTempFilename() + ".class";
                 
                 FileUtil.setFileContents(
-                        tmpClass, StreamUtil.toBytes(is), false);
+                    tmpClass, StreamUtil.toBytes(is), false);
                 
-                String source = decompilers_[i].decompile(new File(tmpClass));
-                
-                logger_.debug(StringUtil.addBars(source));
+                String source = d.decompile(new File(tmpClass));
+                logger_.debug(StringUtil.addBars("// " + d + "\n" + source));
             }
             catch (IllegalArgumentException iae)
             {
-                logger_.info("Decompiler " + 
-                    decompilers_[i].getClass().getName() + 
+                logger_.info("Decompiler " + d.getClass().getName() + 
                     " does not support this method.");                
             }
             finally
