@@ -263,25 +263,6 @@ public final class JDBCUtil
         ResultSet rs = meta.getTables(null, null, null, null);
         ResultSetMetaData rsmeta = rs.getMetaData();
         int cnt = rsmeta.getColumnCount();
-        
-        /*
-        int tableColumn = -1;
-        
-        for (int i = 0; i < cnt; i++)
-        {
-            String columnName = rsmeta.getColumnName(i);
-            
-            if (columnName.equalsIgnoreCase("TABLE_NAME"))
-            {
-                tableColumn = i;
-                break;
-            }
-        }
-        
-        if (tableColumn > -1)
-        {
-        */
-        
         List tables = new ArrayList();
         
         while (rs.next())
