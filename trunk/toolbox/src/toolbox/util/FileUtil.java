@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import toolbox.util.collections.AsMap;
 import toolbox.util.io.filter.DirectoryFilter;
 
 /**
@@ -615,5 +616,17 @@ public final class FileUtil
             ext = s.substring(i + 1);
         
         return ext;
+    }
+ 
+    
+    /**
+     * Runs a file through AsMap to get a dump.
+     *  
+     * @param f File to get info for.
+     * @return String
+     */
+    public static String getInfo(File f)
+    {
+        return AsMap.of(f).toString();
     }
 }
