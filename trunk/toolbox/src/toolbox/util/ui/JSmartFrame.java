@@ -97,7 +97,9 @@ public class JSmartFrame extends JFrame implements IPreferenced
      */
     public void applyPrefs(Element prefs) throws Exception
     {
-        Element root = prefs.getFirstChildElement(NODE_JFRAME);
+        Element root = 
+            XOMUtil.getFirstChildElement(
+                prefs, NODE_JFRAME, new Element(NODE_JFRAME)); 
 
         // Takes care of the bounds only
         PreferencedUtil.applyPrefs(root, this);
