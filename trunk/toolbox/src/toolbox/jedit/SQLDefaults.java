@@ -64,10 +64,10 @@ public class SQLDefaults extends TextAreaDefaults
         SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
 
         styles[Token.COMMENT1] = 
-            new SyntaxStyle(Color.lightGray, false, false);
+            new SyntaxStyle(Colors.getColor("dark red") , false, false);
             
         styles[Token.COMMENT2] = 
-            new SyntaxStyle(Color.gray, false, false);
+            new SyntaxStyle(Color.gray, false, true);
             
         styles[Token.KEYWORD1] = 
             new SyntaxStyle(Colors.getColor("dark blue"), false, false);
