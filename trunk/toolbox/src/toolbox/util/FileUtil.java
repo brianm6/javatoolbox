@@ -477,4 +477,50 @@ public final class FileUtil
         if (file != null && !StringUtil.isNullOrBlank(file))
             new File(file).delete();
     }
+
+    /**
+     * Returns the file with the longest name. If more than one file has the
+     * longest length, then the first file encountered in the array will be
+     * returned.
+     * 
+     * @param files Array of files to scan
+     * @return File with longest name
+     */    
+    public static File getLongestFilename(File[] files)
+    {
+        File longest = null;
+        
+        if (!ArrayUtil.isNullOrEmpty(files))
+        {   
+            longest = files[0]; 
+            for (int i=1; i<files.length; i++)
+                if (files[i].getName().length() > longest.getName().length())
+                    longest = files[i];
+        }
+        
+        return longest;
+    }
+    
+    /**
+     * Returns the largest file in the given array of files. If more than one 
+     * file has the largest size, then the first file encountered in the array 
+     * will be returned.
+     * 
+     * @param files Array of files to scan
+     * @return File with the largest size in bytes
+     */    
+    public static File getLargestFile(File[] files)
+    {
+        File largest = null;
+        
+        if (!ArrayUtil.isNullOrEmpty(files))
+        {   
+            largest = files[0]; 
+            for (int i=1; i<files.length; i++)
+                if (files[i].length() > largest.length())
+                    largest = files[i];
+        }
+        
+        return largest;
+    }
 }
