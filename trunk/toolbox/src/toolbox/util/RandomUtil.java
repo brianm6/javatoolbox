@@ -1,5 +1,6 @@
 package toolbox.util;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -7,11 +8,19 @@ import java.util.Random;
  */
 public final class RandomUtil
 {
-    /** random number generator **/
+    /** 
+     * Random number generator 
+     */
     private static Random r = new Random(System.currentTimeMillis());
   
-    /** All alpha characters **/
+    /** 
+     * All alpha characters 
+     */
     private static final String alphaChars = "abcdefghijklmnopqrstuvwxyz";
+    
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
     
     /**
      * Prevent construction
@@ -20,7 +29,10 @@ public final class RandomUtil
     {
     }
 
-
+    //--------------------------------------------------------------------------
+    // Static Methods
+    //--------------------------------------------------------------------------
+    
     /**
      * Generates an unsigned random integer in the range [0..MAX_INT]
      * 
@@ -132,4 +144,29 @@ public final class RandomUtil
     {
         return (nextInt() %2 == 0);
     }
+    
+    
+    /**
+     * Returns a randomly chosen element from the passed in array
+     * 
+     * @param   pickList  Array of objects to pick from
+     * @return  Randomly chosen element from the pickList. Null if array is 
+     *          empty.
+     */
+    public static Object nextElement(Object[] pickList)
+    {
+        return (pickList.length == 0 ? null : pickList[nextInt(pickList.length-1)]);        
+    }    
+
+
+    /**
+     * Returns a randomly chosen element from the passed in list
+     * 
+     * @param   list     List to pick random element from
+     * @return  Randomly chosen element from the list. Null if list is empty.
+     */
+    public static Object nextElement(List list)
+    {
+        return (list.size() == 0 ? null : list.get(nextInt(list.size()-1)));        
+    }    
 }
