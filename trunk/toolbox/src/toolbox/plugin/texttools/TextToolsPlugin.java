@@ -32,7 +32,6 @@ import toolbox.jtail.filter.RegexLineFilter;
 import toolbox.util.Banner;
 import toolbox.util.FontUtil;
 import toolbox.util.StringUtil;
-import toolbox.util.Stringz;
 import toolbox.util.XOMUtil;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartLabel;
@@ -58,7 +57,7 @@ import toolbox.workspace.PluginWorkspace;
  *   <li>Escapes/unescapes XML and HTML
  * </ul>
  */ 
-public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
+public class TextToolsPlugin extends JPanel implements IPlugin
 { 
     // TODO: Add checkbox/combo to set type of text (xml, java) and syntax 
     //       hilite as appropriate.
@@ -104,6 +103,11 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
      * Main splitter between the input and output areas.
      */
     private JSmartSplitPane splitter_;
+
+    /**
+     * Text field that holds the column at which to wrap for WrapAction.
+     */
+    private JSmartTextField wrapField_;
    
     //--------------------------------------------------------------------------
     // Constructors
@@ -137,6 +141,9 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
         buttonPanel.add(new JSmartButton(new SortAction()));
         buttonPanel.add(new JSmartButton(new BannerAction()));
         buttonPanel.add(new JSmartButton(new QuoteAction()));
+        buttonPanel.add(new JSmartButton(new WrapAction()));
+        buttonPanel.add(wrapField_ = new JSmartTextField(3));
+        wrapField_.setText("80");
         
         // Root 
         setLayout(new BorderLayout());
@@ -311,7 +318,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
             else
             {
                 outputArea_.setText("");
-                Object[] lines = StringUtil.tokenize(text, NL);
+                Object[] lines = StringUtil.tokenize(text, StringUtil.NL);
                 List linez = new ArrayList();
                 
                 for (int i=0; i<lines.length; i++)
@@ -320,7 +327,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
                 Collections.sort(linez);
                 
                 for (Iterator i = linez.iterator(); i.hasNext(); )
-                    outputArea_.append(i.next() + NL);
+                    outputArea_.append(i.next() + StringUtil.NL);
             }
         }
     }
@@ -343,10 +350,10 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
 
         public void runAction(ActionEvent e) throws Exception
         {
-            String[] lines = StringUtil.tokenize(getInputText(), NL);
+            String[] lines = StringUtil.tokenize(getInputText(), StringUtil.NL);
             
             for (int i=0; i<lines.length; i++)
-                outputArea_.append(NL + Banner.getBanner(lines[i]));
+                outputArea_.append(StringUtil.NL + Banner.getBanner(lines[i]));
         }
     }
 
@@ -369,7 +376,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
         public void actionPerformed(ActionEvent e)
         {
             String text = getInputText();        
-            String[] lines = StringUtil.tokenize(text, NL);
+            String[] lines = StringUtil.tokenize(text, StringUtil.NL);
             StringBuffer sb = new StringBuffer();
             
             for (int i=0; i<lines.length; i++)
@@ -383,7 +390,51 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
                 sb.append("\"");
                 sb.append(line);
                 sb.append("\"");
-                sb.append(NL);
+                sb.append(StringUtil.NL);
+            }
+            
+            outputArea_.append(sb.toString());
+        }
+    }
+    
+    //--------------------------------------------------------------------------
+    // WrapAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Wraps a multiline string in double quotes.
+     */
+    class WrapAction extends AbstractAction
+    {
+        WrapAction()
+        {
+            super("Wrap");
+            putValue(MNEMONIC_KEY, new Integer('W'));
+            putValue(SHORT_DESCRIPTION, "Wraps text before quoting");
+        }
+        
+        public void actionPerformed(ActionEvent e)
+        {
+            String text = getInputText();
+            
+            String wrapped = StringUtil.wrap(
+                    text, Integer.parseInt(wrapField_.getText()), "", "");
+            
+            String[] lines = StringUtil.tokenize(wrapped, StringUtil.NL);
+            StringBuffer sb = new StringBuffer();
+            
+            for (int i=0; i<lines.length; i++)
+            {
+                // Escape embedded quotes
+                String line = StringUtil.replace(lines[i], "\"", "\\\"");
+                
+                if (i > 0)
+                    sb.append("+ ");
+                
+                sb.append("\"");
+                sb.append(line);
+                sb.append("\"");
+                sb.append(StringUtil.NL);
             }
             
             outputArea_.append(sb.toString());
@@ -427,7 +478,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
             statusBar_.setStatus("RE: '" + regex + "'");
             
             if (cache_ == null)
-                cache_ = StringUtil.tokenize(getInputText(), NL);
+                cache_ = StringUtil.tokenize(getInputText(), StringUtil.NL);
 
             String[] lines = cache_;                
             
@@ -446,7 +497,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
                     if (passed != null)
                     {
                         sb.append(passed);
-                        sb.append(NL);
+                        sb.append(StringUtil.NL);
                     }
                 }
                 
@@ -580,7 +631,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
                         delimiterField_.getText());
             
                 while(st.hasMoreElements())
-                    outputArea_.append(st.nextToken() + NL);
+                    outputArea_.append(st.nextToken() + StringUtil.NL);
                     
                 statusBar_.setStatus(st.countTokens() + " tokens identified.");
             }
@@ -603,7 +654,7 @@ public class TextToolsPlugin extends JPanel implements IPlugin, Stringz
                        
             public void actionPerformed(ActionEvent e)
             {
-                StringTokenizer st = new StringTokenizer(getInputText(), NL);
+                StringTokenizer st = new StringTokenizer(getInputText(), StringUtil.NL);
                 StringBuffer sb = new StringBuffer();
                     
                 while (st.hasMoreElements())
