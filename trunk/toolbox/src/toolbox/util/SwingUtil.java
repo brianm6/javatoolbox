@@ -18,11 +18,9 @@ import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import net.sourceforge.mlf.metouia.MetouiaLookAndFeel;
 import org.apache.log4j.Logger;
 
 /**
@@ -130,24 +128,24 @@ public class SwingUtil
     }
    
    
-   	/**
-   	 * Given a component, this method will find the root frame ancestor if
-   	 * one exists. i.e Given any component in a Frame, return the Frame given
-   	 * only a refererence to the component
-   	 * 
-   	 * @param   component  Component to find parent frame for
-   	 * @return  Frame that component is a child of or null if the component
-   	 *          does not have a parent frame or if the parent frame is not
-   	 *          a Frame (could be a Dialog).
-   	 * @see     SwingUtilities#getWindowAncestor()
-   	 */
+   /**
+    * Given a component, this method will find the root frame ancestor if
+    * one exists. i.e Given any component in a Frame, return the Frame given
+    * only a refererence to the component
+    * 
+    * @param   component  Component to find parent frame for
+    * @return  Frame that component is a child of or null if the component
+    *          does not have a parent frame or if the parent frame is not
+    *          a Frame (could be a Dialog).
+    * @see     SwingUtilities#getWindowAncestor()
+    */
     public static Frame getFrameAncestor(Component component)
     {
-		// Find parent window
-		Window w = SwingUtilities.getWindowAncestor(component);
+        // Find parent window
+        Window w = SwingUtilities.getWindowAncestor(component);
         
-        // Check if frame and return	
- 		return (w != null && w instanceof Frame) ? (Frame) w : new Frame();   
+        // Check if frame and return    
+         return (w != null && w instanceof Frame) ? (Frame) w : new Frame();   
     }
    
     //--------------------------------------------------------------------------
@@ -339,6 +337,8 @@ public class SwingUtil
 
     /**
      * Retrieves list of availble look and feels available
+     * 
+     * @return Array of look and feels
      */
     public static UIManager.LookAndFeelInfo[] getLAFs()
     {
@@ -507,13 +507,13 @@ public class SwingUtil
         int windowWidth = f.getWidth();
         int windowHeight = f.getHeight();
         
-        int X_OFFSET = 30;
-        int Y_OFFSET = 30;
+        int xoffset = 30;
+        int yoffset = 30;
 
         Rectangle viewP = desktop.getBounds();
 
         // get # of windows that fit horizontally
-        int numFramesWide = (viewP.width - windowWidth) / X_OFFSET;
+        int numFramesWide = (viewP.width - windowWidth) / xoffset;
         
         if (numFramesWide < 1)
         {
@@ -521,7 +521,7 @@ public class SwingUtil
         }
         
         // get # of windows that fit vertically
-        int numFramesHigh = (viewP.height - windowHeight) / Y_OFFSET;
+        int numFramesHigh = (viewP.height - windowHeight) / yoffset;
         
         if (numFramesHigh < 1)
         {
@@ -531,13 +531,13 @@ public class SwingUtil
         // position relative to the current viewport (viewP.x/viewP.y)
         // (so new windows appear onscreen)
         int xLoc = viewP.x + 
-                   X_OFFSET * 
+                   xoffset * 
                    ((count + 1) - 
                    (numFramesWide - 1) * 
                    (int) (count / numFramesWide));
                    
         int yLoc = viewP.y + 
-                   Y_OFFSET * 
+                   yoffset * 
                    ((count + 1) - 
                    numFramesHigh * 
                    (int) (count / numFramesHigh));

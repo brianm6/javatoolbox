@@ -1,9 +1,9 @@
 package toolbox.findclass.test;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.findclass.Main;
 
@@ -61,8 +61,8 @@ public class MainTest extends TestCase
      */
     public void testPrintUsage()
     {
-    	logger_.info("Running testPrintUsage...");
-    	
-    	Main.main(new String[] { "-badflag"});
+        logger_.info("Running testPrintUsage...");
+        
+        Main.main(new String[] { "-badflag"});
     }
 }

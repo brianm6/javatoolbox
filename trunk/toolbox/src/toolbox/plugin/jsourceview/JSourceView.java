@@ -63,9 +63,8 @@ public class JSourceView extends JFrame implements ActionListener
 
     private Thread        scanDirThread_;
     private ScanDirWorker scanDirWorker_;
-    
-    private Thread       parserThread_;
-    private ParserWorker parserWorker_;
+    private Thread        parserThread_;
+    private ParserWorker  parserWorker_;
     
     /** 
      * Platform path separator 
@@ -195,30 +194,30 @@ public class JSourceView extends JFrame implements ActionListener
         }
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Public 
     //--------------------------------------------------------------------------
     
-	/**
-	 * Sets the text of the scan status
-	 * 
-	 * @param  s  Status text
-	 */
-	public void setScanStatus(String s)
-	{
-		scanStatusLabel_.setText(s);
-	}
+    /**
+     * Sets the text of the scan status
+     * 
+     * @param  s  Status text
+     */
+    public void setScanStatus(String s)
+    {
+        scanStatusLabel_.setText(s);
+    }
 
 
-	/**
-	 * Sets the text of the parse status
-	 * 
-	 * @param  s  Parse status text
-	 */
-	public void setParseStatus(String s)
-	{
-		parseStatusLabel_.setText(s);
-	}
+    /**
+     * Sets the text of the parse status
+     * 
+     * @param  s  Parse status text
+     */
+    public void setParseStatus(String s)
+    {
+        parseStatusLabel_.setText(s);
+    }
 
     //--------------------------------------------------------------------------
     //  Private
@@ -254,6 +253,7 @@ public class JSourceView extends JFrame implements ActionListener
         
         return menuBar_;
     }
+
 
     /**
      * Saves the results to a file

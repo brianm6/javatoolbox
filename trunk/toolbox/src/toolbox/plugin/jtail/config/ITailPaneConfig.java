@@ -28,7 +28,7 @@ public interface ITailPaneConfig
     /** Default cut expression is empty string */
     public static final String  DEFAULT_CUT_EXPRESSION = "";
 
-	
+    
     /**
      * Returns the autoScroll nature of the text area.
      * 
@@ -142,18 +142,18 @@ public interface ITailPaneConfig
     public void setAntiAlias(boolean b);
     
     
-	/**
-	 * Mutator for the autostart flag
-	 * 
-	 * @param  autoStart  True to turn autostart on, false otherwise
-	 */
-	public void setAutoStart(boolean autoStart);
-	
-	
-	/**
-	 * Accessor for the autostart flag
-	 * 
-	 * @return  Autostart flag
-	 */
-	public boolean isAutoStart();
+    /**
+     * Mutator for the autostart flag
+     * 
+     * @param  autoStart  True to turn autostart on, false otherwise
+     */
+    public void setAutoStart(boolean autoStart);
+    
+    
+    /**
+     * Accessor for the autostart flag
+     * 
+     * @return  Autostart flag
+     */
+    public boolean isAutoStart();
 }

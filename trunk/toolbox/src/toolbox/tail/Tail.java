@@ -255,17 +255,17 @@ public class Tail implements Runnable
     }
 
 
-	/**
-	 * Removes a writer from the list of tail sinks
-	 * 
-	 * @param  writer  Writer to remove
-	 */
-	public void removeWriter(Writer writer)
-	{
-		writers_.remove(writer);
-	}
-	
-	
+    /**
+     * Removes a writer from the list of tail sinks
+     * 
+     * @param  writer  Writer to remove
+     */
+    public void removeWriter(Writer writer)
+    {
+        writers_.remove(writer);
+    }
+    
+    
     /**
      * Adds an output stream to the list of tail sinks
      * 

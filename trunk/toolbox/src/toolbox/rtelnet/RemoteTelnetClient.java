@@ -15,91 +15,93 @@ import toolbox.util.ThreadUtil;
  */
 public class RemoteTelnetClient extends TelnetClient implements Runnable
 {
-	/** Telnet response read from here */
-	private LineNumberReader lnr_;
-	
-	/** Telnet respones are buffered here so that they can be searched */
-	private StringBuffer outputBuffer_ = new StringBuffer();
+    /** Telnet response read from here */
+    private LineNumberReader lnr_;
+    
+    /** Telnet respones are buffered here so that they can be searched */
+    private StringBuffer outputBuffer_ = new StringBuffer();
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Public 
     //--------------------------------------------------------------------------
     
-	/**
-	 * Wait for a given string in the telnet output stream to be received
-	 * 
-	 * @param	searchString  String to search for in the response
-	 */	
-	public synchronized void waitFor(String searchString)
-	{
-		while (true)
-		{
-			if (outputBuffer_.indexOf(searchString) >= 0)
-			{
-				outputBuffer_.delete(0, outputBuffer_.length()-1);
-				return;
-			}
-			else
-				ThreadUtil.sleep(1);
-		}
-	}
+    /**
+     * Wait for a given string in the telnet output stream to be received
+     * 
+     * @param    searchString  String to search for in the response
+     */    
+    public synchronized void waitFor(String searchString)
+    {
+        while (true)
+        {
+            if (outputBuffer_.indexOf(searchString) >= 0)
+            {
+                outputBuffer_.delete(0, outputBuffer_.length()-1);
+                return;
+            }
+            else
+                ThreadUtil.sleep(1);
+        }
+    }
 
-	/**
-	 * Sends a command to the telnet host to be executed
-	 * 
-	 * @param   command  Command to execute
-	 * @throws  IOException on IO error
-	 */	
-	public void sendCommand(String command) throws IOException
-	{
-		getOutputStream().write((command+"\n").getBytes());
-		getOutputStream().flush();
-		
-		// Sleep to avoid race condition
-		ThreadUtil.sleep(1000);
-	}
+    /**
+     * Sends a command to the telnet host to be executed
+     * 
+     * @param   command  Command to execute
+     * @throws  IOException on IO error
+     */    
+    public void sendCommand(String command) throws IOException
+    {
+        getOutputStream().write((command+"\n").getBytes());
+        getOutputStream().flush();
+        
+        // Sleep to avoid race condition
+        ThreadUtil.sleep(1000);
+    }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Runnable Interface
     //--------------------------------------------------------------------------
     
     /** 
      * Reads from telnet connections output stream and populates the
      * outputBuffer
-     */	
-	public void run()
-	{
+     */    
+    public void run()
+    {
         try
         {
             while (true)
             {
-            	int c = getInputStream().read();
-            	char x = (char)c;
-            	System.out.print(x); 
-				outputBuffer_.append(x);                	
+                int c = getInputStream().read();
+                char x = (char)c;
+                System.out.print(x); 
+                outputBuffer_.append(x);                    
             }
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-	}
-	
-	//--------------------------------------------------------------------------
+    }
+    
+    //--------------------------------------------------------------------------
     // Overridden from org.apache.commons.net.telnet.TelnetClient 
     //--------------------------------------------------------------------------
     
-	/**
-	 * Hook into connect method to start up the output stream reader
-	 * 
-	 * @param	hostname  Hostname to connect to
-	 * @param  port      Telnet port on host
+    /**
+     * Hook into connect method to start up the output stream reader
+     * 
+     * @param  hostname  Hostname to connect to
+     * @param  port      Telnet port on host
+     * @throws SocketException on socket error
+     * @throws IOException on IO error
      */
     public void connect(String hostname, int port)
         throws SocketException, IOException
     {
         super.connect(hostname, port);
-		Thread t = new Thread(this);
-		t.start();
+        Thread t = new Thread(this);
+        t.start();
     }
 }

@@ -22,37 +22,40 @@ public class Main
      */
     public static void main(String[] args)
     {
-    	new Main();
+        new Main();
     }
-	
-	//--------------------------------------------------------------------------
+    
+    //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
     
-	public Main()
-	{
-		checkList_ = new ArrayList();
-		
-		StringTokenizer st = new StringTokenizer(
-			System.getProperty("java.library.path"), 
-				System.getProperty("path.separator"));
+    /**
+     * Default constructor
+     */
+    public Main()
+    {
+        checkList_ = new ArrayList();
+        
+        StringTokenizer st = new StringTokenizer(
+            System.getProperty("java.library.path"), 
+                System.getProperty("path.separator"));
 
-		// Find longest for formatting
-		while (st.hasMoreElements())
-		{
-			String path = (String)st.nextToken();
-			System.out.print(path);
+        // Find longest for formatting
+        while (st.hasMoreElements())
+        {
+            String path = (String)st.nextToken();
+            System.out.print(path);
 
-			if (isDupe(path))
-				System.out.print("\t** DUPLICATE **");
-			else
-				checkList_.add(path);
+            if (isDupe(path))
+                System.out.print("\t** DUPLICATE **");
+            else
+                checkList_.add(path);
 
-			System.out.println();
-		}
-	}
-	
-	//--------------------------------------------------------------------------
+            System.out.println();
+        }
+    }
+    
+    //--------------------------------------------------------------------------
     // Private 
     //--------------------------------------------------------------------------
     

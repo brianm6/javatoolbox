@@ -10,41 +10,41 @@ import toolbox.showclasspath.Main;
  */
 public class MainTest extends TestCase
 {
-	/**
-	 * Entrypoint
-	 * 
-	 * @param  args  None recognized
-	 */	
-	public static void main(String[] args)
-	{
-		TestRunner.run(MainTest.class);
-	}
+    /**
+     * Entrypoint
+     * 
+     * @param  args  None recognized
+     */    
+    public static void main(String[] args)
+    {
+        TestRunner.run(MainTest.class);
+    }
 
-	//--------------------------------------------------------------------------
-	// Constructors
-	//--------------------------------------------------------------------------
-	
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+    
     /**
      * Constructor for MainTest.
      * 
-     * @param arg0
+     * @param arg0  Test name
      */
     public MainTest(String arg0)
     {
         super(arg0);
     }
 
-	//--------------------------------------------------------------------------
-	// Unit Tests
-	//--------------------------------------------------------------------------
-	
-	/**
-	 * Tests the main entry point
-	 */
+    //--------------------------------------------------------------------------
+    // Unit Tests
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Tests the main entry point
+     */
     public void testMain()
     {
-    	// Just run main..can't do much else
-    	
-    	Main.main(new String[0]);
+        // Just run main..can't do much else
+        
+        Main.main(new String[0]);
     }
 }

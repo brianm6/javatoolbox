@@ -97,8 +97,8 @@ public class Main extends FindClassAdapter
                 // Invalid
                 case  0: 
                 default: 
-                	mainClass.printUsage(); 
-                	return;
+                    mainClass.printUsage(); 
+                    return;
             }
         }
         catch (RESyntaxException re)

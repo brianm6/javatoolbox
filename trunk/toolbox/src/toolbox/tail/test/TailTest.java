@@ -5,10 +5,10 @@ import java.io.PipedWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.log4j.Logger;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
-import org.apache.log4j.Logger;
 
 import toolbox.tail.ITailListener;
 import toolbox.tail.Tail;
@@ -21,7 +21,6 @@ import toolbox.util.io.StringOutputStream;
  */
 public class TailTest extends TestCase
 {
-    
     /** Logger */
     public static final Logger logger_ =
         Logger.getLogger(TailTest.class);
@@ -83,8 +82,8 @@ public class TailTest extends TestCase
         tail.addOutputStream(sos);
         tail.addWriter(sw);
 
-		// Create a listener so we can test event
-		TestTailListener listener = new TestTailListener();        
+        // Create a listener so we can test event
+        TestTailListener listener = new TestTailListener();        
         tail.addTailListener(listener);
         
         logger_.info(tail.toString());
@@ -99,12 +98,12 @@ public class TailTest extends TestCase
         
         tail.pause();
         listener.waitForPause();
-		ThreadUtil.sleep(1000);
-		
+        ThreadUtil.sleep(1000);
+        
         tail.unpause();
         listener.waitForUnpause();
-		ThreadUtil.sleep(1000);
-		
+        ThreadUtil.sleep(1000);
+        
         tail.stop();
         listener.waitForStop();
         
@@ -175,14 +174,14 @@ class TestTailListener implements ITailListener
     {
         logger_.debug(line);
         
-		try
-		{
-			nextLineEvents_.push("nextLine");    
-		}
-		catch (Exception e)
-		{
-			logger_.error(e);
-		}
+        try
+        {
+            nextLineEvents_.push("nextLine");    
+        }
+        catch (Exception e)
+        {
+            logger_.error(e);
+        }
         
     }
 
@@ -193,14 +192,14 @@ class TestTailListener implements ITailListener
     {
         logger_.info("tail started");
         
-		try
-		{
-			startEvents_.push("start");    
-		}
-		catch (Exception e)
-		{
-			logger_.error(e);
-		}
+        try
+        {
+            startEvents_.push("start");    
+        }
+        catch (Exception e)
+        {
+            logger_.error(e);
+        }
     }
     
     
@@ -211,14 +210,14 @@ class TestTailListener implements ITailListener
     {
         logger_.info("tail stopped");
         
-		try
-		{
-			stopEvents_.push("stop");    
-		}
-		catch (Exception e)
-		{
-			logger_.error(e);
-		}
+        try
+        {
+            stopEvents_.push("stop");    
+        }
+        catch (Exception e)
+        {
+            logger_.error(e);
+        }
     }
   
   
@@ -229,14 +228,14 @@ class TestTailListener implements ITailListener
     {
         logger_.info("tail ended");
         
-		try
-		{
-			endedEvents_.push("ended");    
-		}
-		catch (Exception e)
-		{
-			logger_.error(e);
-		}
+        try
+        {
+            endedEvents_.push("ended");    
+        }
+        catch (Exception e)
+        {
+            logger_.error(e);
+        }
     }
     
     
@@ -249,7 +248,7 @@ class TestTailListener implements ITailListener
         
         try
         {
-			pauseEvents_.push("pause");    
+            pauseEvents_.push("pause");    
         }
         catch (Exception e)
         {
@@ -265,33 +264,33 @@ class TestTailListener implements ITailListener
     {
         logger_.info("tail unpaused");
         
-		try
-		{
-			unpauseEvents_.push("unpause");    
-		}
-		catch (Exception e)
-		{
-			logger_.error(e);
-		}
+        try
+        {
+            unpauseEvents_.push("unpause");    
+        }
+        catch (Exception e)
+        {
+            logger_.error(e);
+        }
     }
     
     public void waitForStart() throws InterruptedException
     {
-		startEvents_.pull();
+        startEvents_.pull();
     }
     
     public void waitForStop() throws InterruptedException
     {
-    	stopEvents_.pull();
+        stopEvents_.pull();
     }
     
     public void waitForPause() throws InterruptedException
     {
-    	pauseEvents_.pull();
+        pauseEvents_.pull();
     }
     
     public void waitForUnpause() throws InterruptedException
     {
-    	unpauseEvents_.pull();
+        unpauseEvents_.pull();
     }
 }

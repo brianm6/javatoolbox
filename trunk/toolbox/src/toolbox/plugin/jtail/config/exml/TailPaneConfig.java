@@ -11,13 +11,12 @@ import toolbox.jtail.config.ITailPaneConfig;
 import toolbox.util.collections.AsMap;
     
 /**
- * TailConfig is a data object that captures the configuration of a
- * given tail instance with the ability to marshal itself to and from 
- * XML format. 
+ * TailConfig is a data object that captures the configuration of a given tail 
+ * instance with the ability to marshal itself to and from XML format. 
  */
 public class TailPaneConfig implements ITailPaneConfig, XMLConstants
 {
-    /** Logger **/
+    /** Logger */
     private static final Logger logger_ =
         Logger.getLogger(TailPaneConfig.class);
     
@@ -51,7 +50,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
      * @param  antiAlias        Antialias text in output area
      * @param  font             Font of display text area
      * @param  filter           Optional filter (regular expression) 
-     *                            for weeding out junk            
+     *                          for weeding out junk            
      */
     public TailPaneConfig(String file, boolean autoScroll, 
         boolean showLineNumbers, boolean antiAlias, Font font, String filter)
@@ -342,7 +341,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         cutExpression_ = cutExpression;
     }
     
-	/* (non-Javadoc)
+    /**
      * @see toolbox.jtail.config.ITailPaneConfig#isAutoStart()
      */
     public boolean isAutoStart()
@@ -351,13 +350,11 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         return false;
     }
 
-	/* (non-Javadoc)
+    /**
      * @see toolbox.jtail.config.ITailPaneConfig#setAutoStart(boolean)
      */
     public void setAutoStart(boolean autoStart)
     {
         // TODO Auto-generated method stub
-
     }
-    
 }

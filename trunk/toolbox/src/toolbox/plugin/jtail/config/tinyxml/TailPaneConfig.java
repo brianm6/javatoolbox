@@ -108,12 +108,12 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         else
             config.setAntiAlias(DEFAULT_ANTIALIAS);
 
-		// Optional autoStart attribute
-		String autoStart = tail.getAttr(ATTR_AUTOSTART);
-		if (autoStart != null)
-			config.setAutoStart(new Boolean(autoStart).booleanValue());
-		else
-			config.setAutoStart(DEFAULT_AUTOSTART);
+        // Optional autoStart attribute
+        String autoStart = tail.getAttr(ATTR_AUTOSTART);
+        if (autoStart != null)
+            config.setAutoStart(new Boolean(autoStart).booleanValue());
+        else
+            config.setAutoStart(DEFAULT_AUTOSTART);
         
         // Handle optional font element    
         XMLNode fontNode = tail.getNode(ELEMENT_FONT);
@@ -207,7 +207,7 @@ public class TailPaneConfig implements ITailPaneConfig, XMLConstants
         return tail;
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Overridden from java.lang.Object 
     //--------------------------------------------------------------------------
     

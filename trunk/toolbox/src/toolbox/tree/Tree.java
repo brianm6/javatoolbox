@@ -125,11 +125,11 @@ public class Tree
         // Create us a tree and let it ride..
         try
         {
-        	if (rootDir != null)
-        	{
-	            Tree t = new Tree(new File(rootDir), showFiles);
-	            t.showTree();
-        	}
+            if (rootDir != null)
+            {
+                Tree t = new Tree(new File(rootDir), showFiles);
+                t.showTree();
+            }
         }
         catch (IllegalArgumentException e)
         {

@@ -6,44 +6,44 @@ package toolbox.rtelnet;
  */
 public class RemoteTelnetInfo
 {
-	private String hostname_;
-	private int    port_;
-	private String username_;
-	private String password_;
-	private String command_;
+    private String hostname_;
+    private int    port_;
+    private String username_;
+    private String password_;
+    private String command_;
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Constructors 
     //--------------------------------------------------------------------------
     
     /**
      * Default constructor. Sets telnet port to 23
-     */	
-	public RemoteTelnetInfo()
-	{
-		setPort(23);
-	}
-	
-	/**
-	 * Creates a RemoteTelnetInfo with the given parameters
-	 * 
-	 * @param hostname	 Host to telnet to
-	 * @param port      Port to connect to on telnet host
-	 * @param username  Username 
-	 * @param password  Password
-	 * @param command   Command to execute
-	 */
-	public RemoteTelnetInfo(String hostname, int port, String username, 
-		String password, String command)
-	{
-		setHostname(hostname);
-		setPort(port);
-		setUsername(username);
-		setPassword(password);
-		setCommand(command);	
-	}
-	
-	//--------------------------------------------------------------------------
+     */    
+    public RemoteTelnetInfo()
+    {
+        setPort(23);
+    }
+    
+    /**
+     * Creates a RemoteTelnetInfo with the given parameters
+     * 
+     * @param hostname  Host to telnet to
+     * @param port      Port to connect to on telnet host
+     * @param username  Username 
+     * @param password  Password
+     * @param command   Command to execute
+     */
+    public RemoteTelnetInfo(String hostname, int port, String username, 
+        String password, String command)
+    {
+        setHostname(hostname);
+        setPort(port);
+        setUsername(username);
+        setPassword(password);
+        setCommand(command);    
+    }
+    
+    //--------------------------------------------------------------------------
     // Public 
     //--------------------------------------------------------------------------
     
@@ -137,19 +137,22 @@ public class RemoteTelnetInfo
         username_ = username;
     }
 
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Overridden from java.lang.Object  
     //--------------------------------------------------------------------------
     
-	public String toString()
-	{
-		return 
-			"TelnetInfo\n" + 
-			"==========\n" +
-			"Hostname: " + getHostname() + "\n" +
-			"Port    : " + getPort() + "\n" +
-			"Username: " + getUsername() + "\n" +
-			"Password: " + getPassword() + "\n" +
-			"Command : " + getCommand() + "\n";
-	}
+    /**
+     * @return TelnetInfo as string
+     */
+    public String toString()
+    {
+        return 
+            "TelnetInfo\n" + 
+            "==========\n" +
+            "Hostname: " + getHostname() + "\n" +
+            "Port    : " + getPort() + "\n" +
+            "Username: " + getUsername() + "\n" +
+            "Password: " + getPassword() + "\n" +
+            "Command : " + getCommand() + "\n";
+    }
 }
