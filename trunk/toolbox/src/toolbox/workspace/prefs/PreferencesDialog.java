@@ -152,12 +152,13 @@ public class PreferencesDialog extends JDialog
         for (int i = 0; i < prefs.length; registerView(prefs[i++]));
 
         SwingUtil.expandAll(tree_, true);
+        tree_.setSelectionRow(1);
     }
 
 
     /**
      * Builds the ok/cancel/apply button panel.
-     *
+     *-
      * @return JPanel
      */
     protected JPanel buildButtonPanel()
