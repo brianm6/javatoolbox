@@ -22,10 +22,10 @@ public class Main
     public static void main(String[] args)
     {
         StringTokenizer st = new StringTokenizer(
-                                     System.getProperty("java.library.path"), 
-                                     System.getProperty("path.separator"));
+        	System.getProperty("java.library.path"), 
+            	System.getProperty("path.separator"));
 
-        // find longest for formatting
+        // Find longest for formatting
         while (st.hasMoreElements())
         {
             String path = (String)st.nextToken();
@@ -40,14 +40,17 @@ public class Main
         }
     }
 
-
+	//--------------------------------------------------------------------------
+    // Private 
+    //--------------------------------------------------------------------------
+    
     /**
      * Checks if a path is a duplicate by checking the existing list
      * 
-     * @param  dupe  Path to check for duplicate
-     * @return True if duplicate, flase otherwise
+     * @param   dupe   Path to check for duplicate
+     * @return  True if duplicate, flase otherwise
      */
-    public static boolean isDupe(String dupe)
+    private static boolean isDupe(String dupe)
     {
         for (Enumeration e = checkList_.elements(); e.hasMoreElements();)
         {
@@ -59,5 +62,4 @@ public class Main
 
         return false;
     }
-
 }
