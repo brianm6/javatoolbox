@@ -43,5 +43,7 @@
     <classpathentry kind="lib" path="lib/xom.jar" sourcepath="/toolbox/lib/src/xom-src.zip"/>
     <classpathentry kind="lib" path="lib/jaimlib.jar"/>
     <classpathentry kind="lib" path="lib/bsh.jar" sourcepath="/toolbox/lib/src/bsh-src.zip"/>
+    <classpathentry kind="lib" path="lib/sametime-comm.jar"/>
+    <classpathentry kind="lib" path="lib/sametime-comm-res.jar"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
