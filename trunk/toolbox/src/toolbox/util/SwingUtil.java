@@ -69,9 +69,8 @@ public final class SwingUtil
         UIManager.installLookAndFeel("Kunststoff",    
             "com.incors.plaf.kunststoff.KunststoffLookAndFeel");
         
-        //System.setProperty("skinlf.themepack", "toolbox.jar");
-        //UIManager.installLookAndFeel("SkinLF", 
-        //    "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
+        UIManager.installLookAndFeel("SkinLF", 
+            "com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
             
         UIManager.installLookAndFeel("JGoodies Plastic",
             "com.jgoodies.plaf.plastic.PlasticLookAndFeel");
@@ -327,7 +326,7 @@ public final class SwingUtil
         UIManager.setLookAndFeel(
             "javax.swing.plaf.metal.MetalLookAndFeel");
             
-        //SwingUtilities.updateComponentTreeUI(frame);
+        propagateChangeInLAF();
     }
     
     /**
@@ -339,6 +338,8 @@ public final class SwingUtil
     {
         UIManager.setLookAndFeel(
             "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            
+        propagateChangeInLAF();            
     }
  
     /**
@@ -350,6 +351,8 @@ public final class SwingUtil
     {
         UIManager.setLookAndFeel(
             "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            
+        propagateChangeInLAF();            
     }
  
     /**
@@ -361,6 +364,8 @@ public final class SwingUtil
     { 
         UIManager.setLookAndFeel(
             "net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
+            
+        propagateChangeInLAF();            
     }
 
     /**
@@ -371,6 +376,7 @@ public final class SwingUtil
     public static void setSkinLAF() throws Exception
     { 
         UIManager.setLookAndFeel("com.l2fprod.gui.plaf.skin.SkinLookAndFeel");
+        propagateChangeInLAF();
     }
 
     /**
@@ -382,10 +388,8 @@ public final class SwingUtil
     { 
         UIManager.setLookAndFeel(
             "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
-            
-        Frame[] frames = Frame.getFrames();
-        for (int i=0; i<frames.length; i++)
-            SwingUtilities.updateComponentTreeUI(frames[i]);                    
+        
+        propagateChangeInLAF();            
     }
 
     /**
@@ -396,6 +400,18 @@ public final class SwingUtil
     public static UIManager.LookAndFeelInfo[] getLAFs()
     {
         return UIManager.getInstalledLookAndFeels();
+    }
+    
+    /**
+     * Propagates the change in LookAndFeel selection to all known windows.
+     * Appropriate to be called immediately after UIManager.setLookAndFeel().
+     */
+    public static void propagateChangeInLAF()
+    {
+        Frame[] frames = Frame.getFrames();
+        
+        for (int i=0; i<frames.length; i++)
+            SwingUtilities.updateComponentTreeUI(frames[i]);                    
     }
     
     //--------------------------------------------------------------------------
