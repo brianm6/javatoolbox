@@ -334,21 +334,24 @@ public class JFileExplorer extends JPanel implements IPreferenced
      */   
     public void applyPrefs(Element prefs)
     {
-        Element root = prefs.getFirstChildElement(NODE_JFILEEXPLORER);
-        
-        // Restore expanded directory
-        selectFolder(
-            XOMUtil.getStringAttribute(
-                root, ATTR_PATH, System.getProperty("user.dir")));
-        
-        // Restore selected file    
-        String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
-        if (!StringUtil.isNullOrEmpty(file))
-            fileList_.setSelectedValue(file, true);
-        
-        // Restore divider location    
-        splitPane_.setDividerLocation(
-            XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER, 150));    
+        if (prefs != null)
+        {
+            Element root = prefs.getFirstChildElement(NODE_JFILEEXPLORER);
+            
+            // Restore expanded directory
+            selectFolder(
+                XOMUtil.getStringAttribute(
+                    root, ATTR_PATH, System.getProperty("user.dir")));
+            
+            // Restore selected file    
+            String file = XOMUtil.getStringAttribute(root, ATTR_FILE, null);
+            if (!StringUtil.isNullOrEmpty(file))
+                fileList_.setSelectedValue(file, true);
+            
+            // Restore divider location    
+            splitPane_.setDividerLocation(
+                XOMUtil.getIntegerAttribute(root, ATTR_DIVIDER, 150));
+        }
     }
     
 
