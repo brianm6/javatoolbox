@@ -51,4 +51,20 @@ public interface Service extends Initializable, Startable, Suspendable,
      * @param listener Listener to remove.
      */
     void removeServiceListener(ServiceListener listener);
+    
+    
+    /**
+     * Enables/disables enforcement of strict state transitions.
+     * 
+     * @param b True for strict state transitions, false otherwise.
+     */
+    void setStrict(boolean b);
+    
+    
+    /**
+     * Returns true if strict state transitions are enabled, false othewise.
+     * 
+     * @return boolean
+     */
+    boolean isStrict();
 }
