@@ -31,6 +31,7 @@ import toolbox.util.ExceptionUtil;
 import toolbox.util.JDBCUtil;
 import toolbox.util.StringUtil;
 import toolbox.util.SwingUtil;
+import toolbox.util.ThreadUtil;
 import toolbox.util.ui.TryCatchAction;
 import toolbox.util.ui.JTextComponentPopupMenu;
 import toolbox.util.ui.flippane.JFlipPane;
@@ -52,12 +53,17 @@ import toolbox.util.ui.layout.ParagraphLayout;
  * <table border=1>
  *   <tr><th>Key</th><th>Function</th></tr>
  *   <tr><td>Ctrl-Enter</td><td>Execute query</td></tr>
+ *   <tr><td>Ctrl-Up</td><td>Scroll up in SQL history</td></tr>
+ *   <tr><td>Ctrl-Down</td><td>Scroll down in SQL history</td></tr>
  * </table>
  */ 
 public class QueryPlugin extends JPanel implements IPlugin
 {
     /*
      * TODO: create SQLDefaults for syntax hiliting
+     * TODO: Ctrl-Up/Down should scroll through query history
+     * TODO: Move num rows to top of display and stop scrolling down to bottom
+     * TODO: find busy cursor that goes down ui hierarchy
      */
      
     public static final Logger logger_ =
@@ -80,6 +86,9 @@ public class QueryPlugin extends JPanel implements IPlugin
     
     /** Property key for JDBC password */
     public static final String PROP_PASSWORD = "query.plugin.password";
+    
+    /** Property key for the contents of the SQL text area */
+    public static final String PROP_CONTENTS = "query.plugin.contents";
     
     // SQL query & results stuff
     private IStatusBar      statusBar_;    
@@ -130,19 +139,13 @@ public class QueryPlugin extends JPanel implements IPlugin
         
         sqlArea_.getInputHandler().addKeyBinding(
             "C+ENTER", new ExecuteAction());
-        
-        // Wire CTRL-Enter to execute the query
-        //sqlArea_.getPainter().addKeyListener( new KeyAdapter()
-        //{
-        //    public void keyTyped(KeyEvent e)
-        //    {
-        //        if ((e.getKeyChar() ==  '\n') && ((KeyEvent.getKeyModifiersText(
-        //            e.getModifiers()).equals("Ctrl"))))
-        //                (new ExecuteAction()).actionPerformed(
-        //                    new ActionEvent(sqlArea_, 0, "" ));
-        //    }
-        //});
-        
+       
+        sqlArea_.getInputHandler().addKeyBinding(
+            "CS+ENTER", new ExecuteCurrentAction());
+             
+        sqlArea_.getInputHandler().addKeyBinding(
+            "C+UP", new CtrlUpAction());
+                         
         resultsArea_ = new JTextArea();
         resultsArea_.setFont(SwingUtil.getPreferredMonoFont());
         new JTextComponentPopupMenu(resultsArea_);
@@ -298,7 +301,7 @@ public class QueryPlugin extends JPanel implements IPlugin
         urlField_.setText(prefs.getProperty(PROP_URL, ""));
         userField_.setText(prefs.getProperty(PROP_USER, ""));
         passwordField_.setText(prefs.getProperty(PROP_PASSWORD, ""));
-        
+        sqlArea_.setText(prefs.getProperty(PROP_CONTENTS, ""));
         leftFlipPane_.applyPrefs(prefs, PROP_PREFIX);
     }
 
@@ -308,17 +311,15 @@ public class QueryPlugin extends JPanel implements IPlugin
         StringBuffer sb = new StringBuffer("");
         
         for (Iterator i =  sqlHistory_.values().iterator(); i.hasNext(); )
-        {
-            String sql = (String) i.next();
-            sb.append(sql + "|");
-        }
+            sb.append(i.next().toString() + "|");
         
-        prefs.setProperty(PROP_HISTORY, sb.toString());
-        prefs.setProperty(PROP_DRIVER, driverField_.getText().trim());
-        prefs.setProperty(PROP_URL, urlField_.getText().trim());
-        prefs.setProperty(PROP_USER, userField_.getText().trim());
+        prefs.setProperty(PROP_HISTORY,  sb.toString());
+        prefs.setProperty(PROP_DRIVER,   driverField_.getText().trim());
+        prefs.setProperty(PROP_URL,      urlField_.getText().trim());
+        prefs.setProperty(PROP_USER,     userField_.getText().trim());
         prefs.setProperty(PROP_PASSWORD, passwordField_.getText().trim());
-        
+        prefs.setProperty(PROP_CONTENTS, sqlArea_.getText().trim());
+           
         leftFlipPane_.savePrefs(prefs, PROP_PREFIX);
     }
 
@@ -338,7 +339,7 @@ public class QueryPlugin extends JPanel implements IPlugin
     /**
      * Runs the query and appends the results to the output text area
      */
-    private class ExecuteAction extends TryCatchAction
+    private class ExecuteAction extends TryCatchAction implements Runnable
     {
         public ExecuteAction()
         {
@@ -349,26 +350,61 @@ public class QueryPlugin extends JPanel implements IPlugin
     
         public void tryActionPerformed(ActionEvent e)
         {
-            String sql = sqlArea_.getText();        
-            
-            if (StringUtil.isNullOrEmpty(sql))
-            {
+            if (StringUtil.isNullOrBlank(sqlArea_.getText()))
                 statusBar_.setStatus("Enter SQL to execute");
-            }
             else
+                ThreadUtil.run(this, "run", null);
+        }
+        
+        public void run()
+        {
+            try
+            {   
+                statusBar_.setStatus("Executing...");
+                SwingUtil.setWaitCursor(getComponent());
+                String results = executeSQL(sqlArea_.getText());        
+                resultsArea_.append(results);
+            }
+            finally
             {
-                try
-                {   
-                    statusBar_.setStatus("Executing...");
-                    SwingUtil.setWaitCursor(QueryPlugin.this);
-                    String results = executeSQL(sql);        
-                    resultsArea_.append(results);
-                }
-                finally
-                {
-                    SwingUtil.setDefaultCursor(QueryPlugin.this);
-                    statusBar_.setStatus("Done");
-                }
+                SwingUtil.setDefaultCursor(getComponent());
+                statusBar_.setStatus("Done");
+            }
+        }
+    }
+
+    /**
+     * Runs the query and appends the results to the output text area
+     */
+    private class ExecuteCurrentAction extends TryCatchAction implements Runnable
+    {
+        public ExecuteCurrentAction()
+        {
+            super("Execute Current Statement");
+        }
+    
+        public void tryActionPerformed(ActionEvent e)
+        {
+            if (StringUtil.isNullOrBlank(sqlArea_.getText()))
+                statusBar_.setStatus("Enter SQL to execute");
+            else
+                ThreadUtil.run(this, "run", null);
+        }
+        
+        public void run()
+        {
+            try
+            {   
+                String sql = sqlArea_.getLineText(sqlArea_.getCaretLine());
+                statusBar_.setStatus("Executing...");
+                SwingUtil.setWaitCursor(getComponent());
+                String results = executeSQL(sql);        
+                resultsArea_.append(results);
+            }
+            finally
+            {
+                SwingUtil.setDefaultCursor(getComponent());
+                statusBar_.setStatus("Done");
             }
         }
     }
@@ -411,6 +447,22 @@ public class QueryPlugin extends JPanel implements IPlugin
             resultsArea_.setText("");            
         }
     }
+
+    /**
+     * Ctrl-Up Key action
+     */
+    private class CtrlUpAction extends AbstractAction
+    {
+        public CtrlUpAction()
+        {
+            super("Scroll History Up");
+        }
+    
+        public void actionPerformed(ActionEvent e)
+        {
+            statusBar_.setStatus("Ctrl-up registered!");
+        }
+    }
     
     /**
      * Connects to the database
@@ -443,3 +495,17 @@ public class QueryPlugin extends JPanel implements IPlugin
         }
     }
 }
+
+
+// Wire CTRL-Enter to execute the query
+//sqlArea_.getPainter().addKeyListener( new KeyAdapter()
+//{
+//    public void keyTyped(KeyEvent e)
+//    {
+//        if ((e.getKeyChar() ==  '\n') && ((KeyEvent.getKeyModifiersText(
+//            e.getModifiers()).equals("Ctrl"))))
+//                (new ExecuteAction()).actionPerformed(
+//                    new ActionEvent(sqlArea_, 0, "" ));
+//    }
+//});
+        
