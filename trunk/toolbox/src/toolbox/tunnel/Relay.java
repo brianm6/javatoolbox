@@ -12,26 +12,29 @@ import toolbox.util.ResourceCloser;
  */
 public class Relay implements Runnable
 {
-    private static final int BUFSIZ = 1024;
+    private static final int BUFFER_SIZE = 1024;
     
     private InputStream   in_;
     private OutputStream  out_;
-    private byte[]        buf_ = new byte[BUFSIZ];
+    private int           count_;    
+    private byte[]        buffer_;
 
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new relay
+     * Creates a new relay between an input and output stream
      * 
-     * @param  in   Input stream
-     * @param  out  Output stream
+     * @param  in   Input stream to read bytes from
+     * @param  out  Output stream to write bytes to
      */
     public Relay(InputStream in, OutputStream out)
     {
-        in_ = in;
-        out_ = out;
+        in_     = in;
+        out_    = out;
+        count_  = 0;
+        buffer_ = new byte[BUFFER_SIZE];
     }
 
     //--------------------------------------------------------------------------
@@ -47,10 +50,11 @@ public class Relay implements Runnable
 
         try
         {
-            while ((n = in_.read(buf_)) > 0)
+            while ((n = in_.read(buffer_)) > 0)
             {
-                out_.write(buf_, 0, n);
+                out_.write(buffer_, 0, n);
                 out_.flush();
+                count_ += n;
             }
         }
         catch (IOException e)
