@@ -12,10 +12,14 @@ import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.layout.ParagraphLayout;
 
 /**
- * ServerView.
+ * ServerView is an updateable view of the Server object. 
  */
 public class ServerView extends JPanel implements ServiceListener
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Non-UI server component.
      */
@@ -57,7 +61,7 @@ public class ServerView extends JPanel implements ServiceListener
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {

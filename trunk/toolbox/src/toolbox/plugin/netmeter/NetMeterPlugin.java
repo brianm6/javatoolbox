@@ -23,6 +23,10 @@ import toolbox.workspace.IPlugin;
  */
 public class NetMeterPlugin extends JPanel implements IPlugin
 {
+    //--------------------------------------------------------------------------
+    // Constants
+    //--------------------------------------------------------------------------
+    
     /**
      * Default server hostname if none is specified.
      */
@@ -32,6 +36,10 @@ public class NetMeterPlugin extends JPanel implements IPlugin
      * Default server port if none is specified.
      */
     public static final int DEFAULT_PORT = 9999;
+    
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
     
     /**
      * Grid that factory created clients and servers are placed on.
@@ -69,7 +77,7 @@ public class NetMeterPlugin extends JPanel implements IPlugin
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     public void buildView()
     {

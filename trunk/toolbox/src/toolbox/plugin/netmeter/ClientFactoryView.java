@@ -29,6 +29,10 @@ import toolbox.util.ui.layout.ParagraphLayout;
  */
 public class ClientFactoryView extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Parent plugin.
      */
@@ -64,7 +68,7 @@ public class ClientFactoryView extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -114,11 +118,19 @@ public class ClientFactoryView extends JPanel
      */
     class CreateAction extends AbstractAction
     {
+        /**
+         * Creates a CreateAction.
+         */
         public CreateAction()
         {
             super("Create Client");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             Client client = new Client(

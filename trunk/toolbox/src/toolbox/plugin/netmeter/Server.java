@@ -12,6 +12,10 @@ import toolbox.util.service.*;
  */
 public class Server extends AbstractService
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Server socket which sits and waits for client connections.
      */
@@ -90,7 +94,7 @@ public class Server extends AbstractService
     /**
      * Sets the server port number.
      * 
-     * @param port Port number
+     * @param port Port number.
      */
     public void setPort(int port)
     {
@@ -104,7 +108,7 @@ public class Server extends AbstractService
     /**
      * Initializes the server.
      * 
-     * @throws IOException on I/O error
+     * @throws IOException on I/O error.
      */
     protected void init() throws IOException
     {

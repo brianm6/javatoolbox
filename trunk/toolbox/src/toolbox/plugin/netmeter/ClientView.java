@@ -25,6 +25,10 @@ import toolbox.util.ui.layout.ParagraphLayout;
  */
 public class ClientView extends JPanel implements ServiceListener, StatsListener
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Non-UI client object.
      */
@@ -72,7 +76,7 @@ public class ClientView extends JPanel implements ServiceListener, StatsListener
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {

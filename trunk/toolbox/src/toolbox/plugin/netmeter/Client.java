@@ -25,6 +25,10 @@ public class Client extends AbstractService
 {
     private static final Logger logger_ = Logger.getLogger(Client.class);
     
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Client side socket connection to the server.
      */
@@ -122,8 +126,8 @@ public class Client extends AbstractService
     /**
      * Creates a Client.
      * 
-     * @param hostname Server hostname
-     * @param port Server port
+     * @param hostname Server hostname.
+     * @param port Server port.
      */
     public Client(String hostname, int port)
     {
@@ -309,6 +313,9 @@ public class Client extends AbstractService
     {
         int lastCount_ = 0;
         
+        /**
+         * @see java.lang.Runnable#run()
+         */
         public void run()
         {
             int current = os_.getCount();

@@ -26,6 +26,10 @@ import toolbox.util.ui.layout.ParagraphLayout;
  */
 public class ServerFactoryView extends JPanel
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Parent plugin.
      */
@@ -56,7 +60,7 @@ public class ServerFactoryView extends JPanel
     //--------------------------------------------------------------------------
     
     /**
-     * Builds the GUI.
+     * Constructs the user interface.
      */
     protected void buildView()
     {
@@ -86,11 +90,19 @@ public class ServerFactoryView extends JPanel
      */
     class CreateAction extends AbstractAction
     {
+        /**
+         * Creates a CreateAction.
+         */
         public CreateAction()
         {
             super("Create Server");
         }
+
         
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e)
         {
             Server server = new Server(
