@@ -30,7 +30,7 @@ public class Dumper
     /** 
      * Maximum depth of recursion
 	 */
-    private static final int MAX_DEPTH = 20;
+    private int maxDepth_ = Integer.MAX_VALUE;
 
     /** 
      * Amount of space reserved for the label
@@ -87,18 +87,32 @@ public class Dumper
     
     /**
      * Recursively (depth-first) dives down this object's
-     * attributes and converts them to a readably formatted string.
+     * attributes and converts them to a readable formatted string.
      * 
      * @param  obj  Object to dump
      * @return String dump
      */
     public static String dump(Object obj)
     {
+        return dump(obj, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Recursively (depth-first) dives down this object's
+     * attributes and converts them to a readable formatted string.
+     * 
+     * @param   obj          Object to dump
+     * @param   maxDepth     Max number of levels to recurse down into the obj
+     * @return  Object dumped as a tree 
+     */
+    public static String dump(Object obj, int maxDepth)
+    {
         String dump = null;
         
         try
         {
             Dumper dumper = new Dumper();
+            dumper.setMaxDepth(maxDepth);
             dump = dumper.nonStaticDumpObject(obj);    
         }
         catch (RESyntaxException re)
@@ -108,6 +122,32 @@ public class Dumper
         
         return dump;        
     }
+
+    //--------------------------------------------------------------------------
+    //  Public
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns the maxDepth.
+     * 
+     * @return Max number of levels to recurse from the root object
+     */
+    public int getMaxDepth()
+    {
+        return maxDepth_;
+    }
+
+    /**
+     * Sets the maxDepth.
+     * 
+     * @param maxDepth Max number of levels to recurse from the root object
+     */
+    public void setMaxDepth(int maxDepth)
+    {
+        maxDepth_ = maxDepth;
+    }
+
+
 
     //--------------------------------------------------------------------------
     //  Private
@@ -176,7 +216,9 @@ public class Dumper
             while (!stack.isEmpty())
             {
                 Class c = (Class) stack.pop();
-                dump(c, obj, buffer, depth);
+                
+                if (depth.length()/4 <= maxDepth_)           
+                    dump(c, obj, buffer, depth);
             }
         }
     }
@@ -259,7 +301,8 @@ public class Dumper
                         
                         buffer.append(CR);
                         
-                        dump(type, value, buffer, depth + BAR);
+                        if ((depth + BAR).length()/4 < maxDepth_)
+                            dump(type, value, buffer, depth + BAR);
                     }
                 }
             }
@@ -745,7 +788,9 @@ public class Dumper
     //        }
     //
     //        buffer.append(CR);
-    //    }
+    //    
+    
+
 }
 
 //            if (i == (fields.length - 1) && fields.length > 1 )
