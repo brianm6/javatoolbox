@@ -100,6 +100,14 @@
       <Property name="group.name" value="Others"/>            
   </LookAndFeel>
   -->
+
+  <LookAndFeel 
+      name="Napkin"
+      class="napkin.NapkinLookAndFeel"
+      action="toolbox.util.ui.plaf.ActivateLookAndFeelAction">
+      <Property name="group.name" value="Others"/>            
+  </LookAndFeel>
+
   
   <!-- ==================================================================== -->
   <!-- Alloy Look and Feels                                                 -->
