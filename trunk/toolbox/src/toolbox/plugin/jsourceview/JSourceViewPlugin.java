@@ -37,7 +37,7 @@ public class JSourceViewPlugin implements IPlugin
      */
     public JComponent getComponent()
     {
-        return (JComponent) delegate_.getContentPane();
+        return delegate_;
     }
 
     /**
