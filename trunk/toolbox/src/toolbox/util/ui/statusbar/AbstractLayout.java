@@ -7,12 +7,18 @@ import java.awt.LayoutManager2;
 
 /**
  * AbstractLayout used for the status bar.
- * <p>
- * Originally created by Claude Duguay<br>
- * Copyright (c) 2000<br>
+ * 
+ * <code>
+ * Originally created by Claude Duguay
+ * Copyright (c) 2000
+ * <code>
  */
 public abstract class AbstractLayout implements LayoutManager2
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /** 
      * Horizonal gap between components. 
      */
@@ -78,7 +84,7 @@ public abstract class AbstractLayout implements LayoutManager2
     /**
      * Set the horizontal gap between components.
      * 
-     * @param gap Horizontal gap to be set
+     * @param gap Horizontal gap to be set.
      */
     public void setHgap(int gap)
     {
@@ -89,7 +95,7 @@ public abstract class AbstractLayout implements LayoutManager2
     /**
      * Set the vertical gap between components.
      * 
-     * @param gap Vertical gap to be set
+     * @param gap Vertical gap to be set.
      */
     public void setVgap(int gap)
     {
@@ -168,7 +174,7 @@ public abstract class AbstractLayout implements LayoutManager2
      * origin, 1 is aligned the furthest away from the origin, 0.5 is centered,
      * etc.
      * 
-     * @param parent Parent container
+     * @param parent Parent container.
      * @return float
      */
     public float getLayoutAlignmentX(Container parent)
@@ -184,7 +190,7 @@ public abstract class AbstractLayout implements LayoutManager2
      * origin, 1 is aligned the furthest away from the origin, 0.5 is centered,
      * etc.
      * 
-     * @param parent Parent container
+     * @param parent Parent container.
      * @return float
      */
     public float getLayoutAlignmentY(Container parent)

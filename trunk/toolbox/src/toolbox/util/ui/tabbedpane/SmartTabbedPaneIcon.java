@@ -13,6 +13,10 @@ import javax.swing.Icon;
  */
 class SmartTabbedPaneIcon implements Icon
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * X position.
      */
@@ -35,7 +39,7 @@ class SmartTabbedPaneIcon implements Icon
     /***
      * Creates a SmartTabbedPaneIcon.
      * 
-     * @param icon Icon to wrap
+     * @param icon Icon to wrap.
      */
     public SmartTabbedPaneIcon(Icon icon)
     {

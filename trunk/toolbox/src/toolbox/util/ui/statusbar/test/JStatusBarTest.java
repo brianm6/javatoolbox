@@ -29,7 +29,7 @@ public class JStatusBarTest extends UITestCase
     /**
      * Entrypoint. 
      * 
-     * @param args None recognized
+     * @param args None recognized.
      */
     public static void main(String[] args)
     {
@@ -43,7 +43,7 @@ public class JStatusBarTest extends UITestCase
     /**
      * Tests JStatusBar.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testJStatusBar() throws Exception
     {

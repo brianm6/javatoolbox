@@ -48,12 +48,12 @@ public class SmartTabbedPaneUI extends BasicTabbedPaneUI
     /**
      * Creates a SmartTabbedPaneUI.
      * 
-     * @param horTextPosition Horizontal text position. 
-     *        Use SwingConstants.[LEFT|RIGHT]
+     * @param horizTextPosition Horizontal text position. Use 
+     *        SwingConstants.[LEFT|RIGHT]
      */
-    public SmartTabbedPaneUI(int horTextPosition)
+    public SmartTabbedPaneUI(int horizTextPosition)
     {
-        horizontalTextPosition_ = horTextPosition;
+        horizontalTextPosition_ = horizTextPosition;
     }
 
     //--------------------------------------------------------------------------

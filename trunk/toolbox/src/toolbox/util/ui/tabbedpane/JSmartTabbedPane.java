@@ -130,30 +130,6 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
 
     
     /**
-     * Closes the currently selected tab.
-     */
-    class CloseTabAction extends AbstractAction
-    {
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            logger_.debug(StringUtil.addBars("Got a Ctrl-W"));
-            
-            int tabNumber = getSelectedIndex();
-            
-            if (tabNumber >= 0)
-            {    
-                fireTabClosing(tabNumber);
-                removeTabAt(tabNumber);
-            }
-        }
-    }
-    
-    
-    /**
      * Creates a JSmartTabbedPane.
      * 
      * @param tabPlacement Tab placement.
@@ -273,6 +249,33 @@ public class JSmartTabbedPane extends JTabbedPane implements AntiAliased
     {
         SwingUtil.makeAntiAliased(gc, isAntiAliased());
         super.paintComponent(gc);
+    }
+
+    //--------------------------------------------------------------------------
+    // CloseTabAction
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Closes the currently selected tab.
+     */
+    class CloseTabAction extends AbstractAction
+    {
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *      java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            logger_.debug(StringUtil.addBars("Got a Ctrl-W"));
+            
+            int tabNumber = getSelectedIndex();
+            
+            if (tabNumber >= 0)
+            {    
+                fireTabClosing(tabNumber);
+                removeTabAt(tabNumber);
+            }
+        }
     }
     
     //--------------------------------------------------------------------------

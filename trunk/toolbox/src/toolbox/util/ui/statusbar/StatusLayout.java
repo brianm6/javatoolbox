@@ -15,6 +15,10 @@ import java.util.Map;
  */
 public class StatusLayout extends AbstractLayout
 {
+    //--------------------------------------------------------------------------
+    // Fields
+    //--------------------------------------------------------------------------
+    
     /**
      * Maps a component to its constraints.
      */

@@ -40,7 +40,7 @@ public class SimpleStatusBarTest extends UITestCase
     /**
      * Tests SimpleStatusBar.
      * 
-     * @throws Exception on error
+     * @throws Exception on error.
      */    
     public void testSimpleStatusBar() throws Exception
     {
