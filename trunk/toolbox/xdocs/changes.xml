@@ -41,6 +41,7 @@
  * TODO: Expose xml formatter properties in TextToolsPlugin
  * TODO: Expose html formatter properties in TextToolsPlugin
  * TODO: Add undo to TextToolsPlugin
+ * TODO: Beef up junit plugin with junitx classes
  * =============================================================================
  * TODO: DocViewer: Fix colors in pollo doc viewer.
  * =============================================================================
@@ -54,7 +55,6 @@
  *       a selection.
  * TODO: Switch between grid and text view
  * TODO: Lift more stuff from hsqldb manager
- * TODO: Move benchmark to its own panel with preferences.
  * TODO: Base 64 encode passwords (statcvs, jdbcplugin, etc)
  * =============================================================================
  *                              FindClassPlugin
