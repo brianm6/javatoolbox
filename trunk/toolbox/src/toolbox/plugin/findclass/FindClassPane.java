@@ -15,15 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -43,7 +36,7 @@ import org.apache.log4j.Logger;
 import org.apache.regexp.RESyntaxException;
 
 import toolbox.findclass.FindClass;
-import toolbox.findclass.FindClassAdapter;
+import toolbox.findclass.FindClassListener;
 import toolbox.findclass.FindClassResult;
 import toolbox.util.ClassUtil;
 import toolbox.util.DateTimeUtil;
@@ -54,19 +47,15 @@ import toolbox.util.XOMUtil;
 import toolbox.util.ui.ImageCache;
 import toolbox.util.ui.JCollapsablePanel;
 import toolbox.util.ui.JHeaderPanel;
-import toolbox.util.ui.JPopupListener;
 import toolbox.util.ui.JSmartButton;
 import toolbox.util.ui.JSmartCheckBox;
 import toolbox.util.ui.JSmartLabel;
-import toolbox.util.ui.JSmartMenuItem;
-import toolbox.util.ui.JSmartPopupMenu;
 import toolbox.util.ui.JSmartTextField;
 import toolbox.util.ui.JSmartToggleButton;
 import toolbox.util.ui.action.RepaintAction;
 import toolbox.util.ui.explorer.FileExplorerAdapter;
 import toolbox.util.ui.explorer.JFileExplorer;
 import toolbox.util.ui.flippane.JFlipPane;
-import toolbox.util.ui.list.JSmartList;
 import toolbox.util.ui.table.AutoTailAction;
 import toolbox.util.ui.table.JSmartTable;
 import toolbox.util.ui.table.SmartTableCellRenderer;
@@ -108,16 +97,6 @@ public class FindClassPane extends JPanel implements IPreferenced
     private JTextField searchField_;
 
     /**
-     * Executes the search.
-     */
-    private JButton searchButton_;
-
-    /**
-     * Executes a search for duplicate classes in the list of targets.
-     */
-    private JButton dupesButton_;
-
-    /**
      * Allows user to toggle case sensetivity in the search.
      */
     private JCheckBox ignoreCaseCheckBox_;
@@ -142,21 +121,10 @@ public class FindClassPane extends JPanel implements IPreferenced
     private JFlipPane topFlipPane_;
 
     /**
-     * List containing the jars/directories that are included in the search.
+     * Contains a table with the list of jars to search.
      */
-    private JList searchList_;
-
-    /**
-     * Data model for the list of search targets.
-     */
-    private DefaultListModel searchListModel_;
-
-    /**
-     * Popup menu activated by right clicking on the search target list.
-     * Allows the user to clear the list or remove individual entries.
-     */
-    private JPopupMenu searchPopupMenu_;
-
+    private SearchTargetPanel searchTargetPanel_;
+    
     // Results
 
     /**
@@ -174,11 +142,6 @@ public class FindClassPane extends JPanel implements IPreferenced
      * column header.
      */
     private TableSorter resultTableSorter_;
-
-    /**
-     * Scroller for the results.
-     */
-    private JScrollPane resultPane_;
 
     /**
      * Allows user to toggle partial string hiliting of the search string
@@ -230,11 +193,10 @@ public class FindClassPane extends JPanel implements IPreferenced
 
         buildView();
         findClass_ = new FindClass();
-        //findClass_.addSearchListener(new SearchListener());
         List targets = findClass_.getSearchTargets();
 
-        for (Iterator i = targets.iterator(); i.hasNext();
-            searchListModel_.addElement(i.next()));
+        for (Iterator i = targets.iterator(); i.hasNext();)
+        	searchTargetPanel_.addSearchTarget(i.next().toString());
     }
 
 
@@ -244,9 +206,6 @@ public class FindClassPane extends JPanel implements IPreferenced
     protected void buildView()
     {
         setLayout(new BorderLayout());
-
-        // Search bar - north
-        //buildSearchPanel();
 
         // Top flip pane (classpath & decompiler) - center - north
         buildSearchTargetDecompilerFlipPane();
@@ -270,24 +229,16 @@ public class FindClassPane extends JPanel implements IPreferenced
     {
         // Search Panel
 
-        // Action is stared by search textfield and button
-        Action searchAction = new SearchAction();
-
-        JLabel searchLabel = new JSmartLabel("Find Class");
-
         searchField_ = new JSmartTextField(20);
-        searchField_.setAction(searchAction);
-        searchField_.setToolTipText("I like Regular expressions!");
-
-        searchButton_          = new JSmartButton(searchAction);
-        dupesButton_           = new JSmartButton(new FindDupesAction());
-        ignoreCaseCheckBox_    = new JSmartCheckBox("Ignore Case", true);
+        searchField_.setAction(new SearchAction());
+        searchField_.setToolTipText("I like regular expressions!");
+        ignoreCaseCheckBox_ = new JSmartCheckBox("Ignore Case", true);
 
         JPanel searchPanel = new JPanel(new FlowLayout());
-        searchPanel.add(searchLabel);
+        searchPanel.add(new JSmartLabel("Find Class"));
         searchPanel.add(searchField_);
-        searchPanel.add(searchButton_);
-        searchPanel.add(dupesButton_);
+        searchPanel.add(new JSmartButton(new SearchAction()));
+        searchPanel.add(new JSmartButton(new FindDupesAction()));
         searchPanel.add(new JSmartLabel("      "));
         searchPanel.add(ignoreCaseCheckBox_);
 
@@ -296,54 +247,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         return p;
     }
 
-
-    /**
-     * Builds the Classpath panel which shows all paths/archives that have been
-     * targeted for the current search.
-     *
-     * @return Classpath Panel.
-     */
-    protected JPanel buildSearchTargetFlipper()
-    {
-        searchListModel_ = new DefaultListModel();
-        searchList_ = new JSmartList(searchListModel_);
-
-        // Create popup menu and wire it to the JList
-        searchPopupMenu_ = new JSmartPopupMenu();
-        searchPopupMenu_.add(new JSmartMenuItem(new ClearTargetsAction()));
-        searchPopupMenu_.add(new JSmartMenuItem(new RemoveTargetsAction()));
-
-        searchPopupMenu_.add(
-            new JSmartMenuItem(new AddClasspathTargetAction()));
-
-        searchList_.addMouseListener(new JPopupListener(searchPopupMenu_));
-
-        JToolBar tb = JHeaderPanel.createToolBar();
-        tb.add(JHeaderPanel.createButton(
-            ImageCache.getIcon(ImageCache.IMAGE_TABLES),
-            "Add classpath",
-            new AddClasspathTargetAction()));
-
-        tb.add(JHeaderPanel.createButton(
-            ImageCache.getIcon(ImageCache.IMAGE_DELETE),
-            "Remove search target",
-            new RemoveTargetsAction()));
-
-        tb.add(JHeaderPanel.createButton(
-            ImageCache.getIcon(ImageCache.IMAGE_CLEAR),
-            "Clear",
-            new ClearTargetsAction()));
-
-        JHeaderPanel header =
-            new JHeaderPanel(
-                "Search Targets",
-                tb,
-                new JScrollPane(searchList_));
-
-        return header;
-    }
-
-
+    
     /**
      * Builds the flippane at the top of the application which contains the
      * Classpath and Decompiler panels.
@@ -352,14 +256,11 @@ public class FindClassPane extends JPanel implements IPreferenced
      */
     protected JPanel buildSearchTargetDecompilerFlipPane()
     {
-        JPanel pathPanel = buildSearchTargetFlipper();
-        JPanel decompilerPanel = new DecompilerPanel(resultTable_);
-
-        // Top flip pane
+        searchTargetPanel_ = new SearchTargetPanel();
         topFlipPane_ = new JFlipPane(JFlipPane.TOP);
-        topFlipPane_.addFlipper("Search Targets", pathPanel);
-        topFlipPane_.addFlipper("Decompiler", decompilerPanel);
-        topFlipPane_.setActiveFlipper(pathPanel);
+        topFlipPane_.addFlipper("Search Targets", searchTargetPanel_);
+        topFlipPane_.addFlipper("Decompiler", new DecompilerPanel(resultTable_));
+        topFlipPane_.setActiveFlipper(searchTargetPanel_);
         return topFlipPane_;
     }
 
@@ -375,7 +276,6 @@ public class FindClassPane extends JPanel implements IPreferenced
         resultTableModel_  = new ResultsTableModel();
         resultTableSorter_ = new TableSorter(resultTableModel_);
         resultTable_       = new JSmartTable(resultTableSorter_);
-        resultPane_        = new JScrollPane(resultTable_);
         
         resultTableSorter_.setTableHeader(resultTable_.getTableHeader());
         tweakTable();
@@ -404,7 +304,9 @@ public class FindClassPane extends JPanel implements IPreferenced
         tb.add(showPathToggleButton_);
         tb.add(hiliteToggleButton_);
         tb.add(autoTailButton);
-        JHeaderPanel resultPanel = new JHeaderPanel("Results", tb, resultPane_);
+        
+        JHeaderPanel resultPanel = 
+            new JHeaderPanel("Results", tb, new JScrollPane(resultTable_));
 
         JPanel glue = new JPanel(new BorderLayout());
         glue.add(BorderLayout.NORTH, buildSearchInputPanel());
@@ -547,19 +449,18 @@ public class FindClassPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Listens for events generated by the search process and updates the
-     * GUI accordingly.
+     * Listens for events generated by the search process and updates the user
+     * interface accordingly.
      */
-    class SearchListener extends FindClassAdapter
+    class SearchListener implements FindClassListener
     {
         //----------------------------------------------------------------------
-        // Overrides toolbox.findclass.FindClassAdapter
+        // FindClassListener Interface
         //----------------------------------------------------------------------
 
         /**
          * When a class is found, add it to the result table.
          *
-         * @param searchResult Info on class that was found.
          * @see toolbox.findclass.FindClassListener#classFound(
          *      toolbox.findclass.FindClassResult)
          */
@@ -571,9 +472,8 @@ public class FindClassPane extends JPanel implements IPreferenced
 
         /**
          * When a target is searched, update the status bar and hilight the
-         * archive being search in the search list.
+         * archive being searched in the search target list.
          *
-         * @param target Target that is being searched.
          * @see toolbox.findclass.FindClassListener#searchingTarget(
          *      java.lang.String)
          */
@@ -586,7 +486,7 @@ public class FindClassPane extends JPanel implements IPreferenced
                 public void run()
                 {
                     statusBar_.setInfo("Searching " + target2 + " ...");
-                    searchList_.setSelectedValue(target2, true);
+                    searchTargetPanel_.selectSearchTarget(target2);
                 }
             });
         }
@@ -604,6 +504,9 @@ public class FindClassPane extends JPanel implements IPreferenced
 
 
         /**
+         * When a search is completed, update the status bar with the total
+         * number of items found.
+         * 
          * @see toolbox.findclass.FindClassListener#searchCompleted(
          *      java.lang.String)
          */
@@ -624,7 +527,6 @@ public class FindClassPane extends JPanel implements IPreferenced
                         resultTableModel_.getRowCount() + " matches found.");
                 }
             });
-
         }
     }
 
@@ -637,14 +539,22 @@ public class FindClassPane extends JPanel implements IPreferenced
      * keeps track of which classes are found more than once and keeps a
      * running tally in addition to adding it to the search result table.
      */
-    class FindDupesListener extends FindClassAdapter
+    class FindDupesListener implements FindClassListener
     {
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
+        
         /**
          * Map of duplicates. The key is the class name and the value is an
          * List containing the FindClassResult's found for that class.
          */
         private Map dupes_;
 
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
          * Creates a FindDupesListener.
          */
@@ -653,7 +563,10 @@ public class FindClassPane extends JPanel implements IPreferenced
             dupes_ = new HashMap();
         }
 
-
+        //----------------------------------------------------------------------
+        // Protected
+        //----------------------------------------------------------------------
+        
         /**
          * Adds the results to the table.
          *
@@ -683,7 +596,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         }
 
         //----------------------------------------------------------------------
-        // Overrides toolbox.findclass.FindClassAdapter
+        // FindClassListener Interface
         //----------------------------------------------------------------------
 
         /**
@@ -723,12 +636,14 @@ public class FindClassPane extends JPanel implements IPreferenced
         public void searchingTarget(String target)
         {
             statusBar_.setInfo("Searching " + target + " ...");
-            searchList_.setSelectedValue(target, true);
+            searchTargetPanel_.selectSearchTarget(target);
         }
 
 
         /**
          * When a search is cancelled, update the status bar.
+         * 
+         * @see toolbox.findclass.FindClassListener#searchCancelled()
          */
         public void searchCancelled()
         {
@@ -785,10 +700,10 @@ public class FindClassPane extends JPanel implements IPreferenced
                     while (i.hasNext())
                     {
                         String target = (String) i.next();
-                        searchListModel_.addElement(target);
+                        searchTargetPanel_.addSearchTarget(target);
                     }
 
-                    searchListModel_.addElement(folder);
+                    searchTargetPanel_.addSearchTarget(folder);
                 }
             }.actionPerformed(new ActionEvent(new Object(), 1, ""));
         }
@@ -802,7 +717,7 @@ public class FindClassPane extends JPanel implements IPreferenced
         public void fileDoubleClicked(String file)
         {
             if (ClassUtil.isArchive(file))
-                searchListModel_.addElement(file);
+                searchTargetPanel_.addSearchTarget(file);
             else
                 statusBar_.setWarning(file + " is not a valid archive.");
         }
@@ -963,7 +878,7 @@ public class FindClassPane extends JPanel implements IPreferenced
     //--------------------------------------------------------------------------
 
     /**
-     * Searches for duplicate classes.
+     * Searches for duplicate classes in the list of search targets.
      */
     class FindDupesAction extends WorkspaceAction
     {
@@ -1007,12 +922,15 @@ public class FindClassPane extends JPanel implements IPreferenced
             findClass_.removeSearchListeners();
             findClass_.addSearchListener(new FindDupesListener());
 
-            // Copy targets from GUI --> findClass_
-            for (int i = 0, n = searchListModel_.size(); i < n; i++)
-                findClass_.addSearchTarget("" + searchListModel_.elementAt(i));
-
+            //
+            // Copy targets from SearchPanel --> findClass_
+            //
+            
+            Object[] targets = searchTargetPanel_.getSearchTargets();
+            for (int i = 0; i < targets.length; i++) 
+                findClass_.addSearchTarget(targets[i].toString());
+            
             Object results[] = findClass_.findClass(".*", false);
-
             statusBar_.setInfo(results.length + " duplicates found.");
         }
     }
@@ -1027,23 +945,48 @@ public class FindClassPane extends JPanel implements IPreferenced
      */
     class SearchAction extends WorkspaceAction
     {
-        private static final String SEARCH = "Search";
-        private static final String CANCEL = "Cancel";
+        //----------------------------------------------------------------------
+        // Fields
+        //----------------------------------------------------------------------
+        
+        /**
+         * Puts action in Search mode.
+         */
+        private static final String MODE_SEARCH = "Search";
+        
+        /**
+         * Puts action in Cancel mode (once a search is started).
+         */
+        private static final String MODE_CANCEL = "Cancel";
 
+        /**
+         * The background thread conducting the search.
+         */
         private Thread searchThread_;
+        
+        /**
+         * The class to search for.
+         */
         private String search_;
 
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
+        
         /**
          * Creates a SearchAction.
          */
         SearchAction()
         {
-            super(SEARCH, true, null, statusBar_);
+            super(MODE_SEARCH, true, null, statusBar_);
             putValue(MNEMONIC_KEY, new Integer('S'));
             putValue(SHORT_DESCRIPTION, "Searches for a class");
         }
 
-
+        //----------------------------------------------------------------------
+        // Overrides SmartAction
+        //----------------------------------------------------------------------
+        
         /**
          * Branch on whether we're searching of canceling an existing search.
          *
@@ -1052,7 +995,7 @@ public class FindClassPane extends JPanel implements IPreferenced
          */
         public void runAction(ActionEvent e) throws Exception
         {
-            if (getValue(NAME).equals(SEARCH))
+            if (getValue(NAME).equals(MODE_SEARCH))
             {
                 search_ = searchField_.getText().trim();
 
@@ -1073,13 +1016,16 @@ public class FindClassPane extends JPanel implements IPreferenced
                 if (searchThread_ != null)
                     ThreadUtil.join(searchThread_, 60000);
 
-                putValue(NAME, SEARCH);
+                putValue(NAME, MODE_SEARCH);
                 putValue(MNEMONIC_KEY, new Integer('S'));
                 statusBar_.setInfo("Search canceled");
             }
         }
 
-
+        //----------------------------------------------------------------------
+        // Package
+        //----------------------------------------------------------------------
+        
         /**
          * Do the search.
          *
@@ -1091,7 +1037,7 @@ public class FindClassPane extends JPanel implements IPreferenced
             logger_.debug("Searching for '" + search_ + "'");
 
             // Flip title
-            putValue(NAME, CANCEL);
+            putValue(NAME, MODE_CANCEL);
             putValue(MNEMONIC_KEY, new Integer('C'));
 
             // Empty results table
@@ -1102,119 +1048,17 @@ public class FindClassPane extends JPanel implements IPreferenced
             findClass_.removeSearchListeners();
             findClass_.addSearchListener(new SearchListener());
 
-            // Copy 1-1 from the seach list model to FindClass
-            for (int i = 0, n = searchListModel_.size(); i < n; i++)
-                findClass_.addSearchTarget("" + searchListModel_.elementAt(i));
-
+            Object[] targets = searchTargetPanel_.getSearchTargets();
+            for (int i = 0; i < targets.length; i++) 
+                findClass_.addSearchTarget(targets[i].toString());
+            
             // Execute the search
             findClass_.findClass(search_, ignoreCaseCheckBox_.isSelected());
 
             //statusBar_.setStatus(results.length + " matches found.");
 
-            putValue(NAME, SEARCH);
+            putValue(NAME, MODE_SEARCH);
             putValue(MNEMONIC_KEY, new Integer('S'));
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // ClearTargetsAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Clears all entries in the search list.
-     */
-    class ClearTargetsAction extends AbstractAction
-    {
-        /**
-         * Creates a ClearTargetsAction.
-         */
-        ClearTargetsAction()
-        {
-            super("Clear");
-            putValue(MNEMONIC_KEY, new Integer('C'));
-            putValue(SHORT_DESCRIPTION, "Clears search targets");
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            searchListModel_.removeAllElements();
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // AddClasspathTargetAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Adds the current classpath to the search list.
-     */
-    class AddClasspathTargetAction extends AbstractAction
-    {
-        /**
-         * Creates a AddClasspathTargetAction.
-         */
-        AddClasspathTargetAction()
-        {
-            super("Add Classpath");
-            putValue(MNEMONIC_KEY, new Integer('A'));
-            putValue(SHORT_DESCRIPTION,
-                "Adds the current classpath to the search list");
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            List targets = findClass_.getClassPathTargets();
-
-            Iterator i = targets.iterator();
-
-            while (i.hasNext())
-            {
-                String target = (String) i.next();
-                searchListModel_.addElement(target);
-            }
-        }
-    }
-
-    //--------------------------------------------------------------------------
-    // RemoteTargetsAction
-    //--------------------------------------------------------------------------
-
-    /**
-     * Removes selected target entries from the search list.
-     */
-    class RemoveTargetsAction extends AbstractAction
-    {
-        /**
-         * Creates a RemoveTargetsAction.
-         */
-        RemoveTargetsAction()
-        {
-            super("Remove");
-            putValue(MNEMONIC_KEY, new Integer('R'));
-            putValue(SHORT_DESCRIPTION, "Removes search targets");
-        }
-
-
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(
-         *      java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            Object[] selected = searchList_.getSelectedValues();
-
-            for (int i = 0; i < selected.length; i++)
-                searchListModel_.removeElement(selected[i]);
         }
     }
 }
